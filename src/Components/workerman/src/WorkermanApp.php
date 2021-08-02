@@ -121,16 +121,40 @@ class WorkermanApp extends CliApp
             {
                 $imiRuntime = Imi::getRuntimePath('imi-runtime-bak');
                 Imi::buildRuntime($imiRuntime);
-                // 执行命令行生成缓存
-                $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
-                    'imi-runtime' => $imiRuntime,
-                ]);
-                do
+                $success = false;
+                if (\extension_loaded('pcntl'))
                 {
+                    $pid = pcntl_fork();
+                    if ($pid)
+                    {
+                        pcntl_wait($status);
+                        if (0 === $status)
+                        {
+                            $success = true;
+                        }
+                    }
+                    elseif (0 === $pid)
+                    {
+                        // 子进程
+                        Scanner::scanVendor();
+                        Scanner::scanApp();
+                        exit;
+                    }
+                }
+
+                if (!$success)
+                {
+                    // 执行命令行生成缓存
+                    $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
+                        'imi-runtime' => $imiRuntime,
+                    ]);
                     passthru(\Imi\cmd($cmd), $code);
-                    $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
-                    sleep(1);
-                } while (0 !== $code);
+                    if (0 !== $code)
+                    {
+                        exit($code);
+                    }
+                }
+                $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
 
                 return LoadRuntimeResult::ALL;
             }

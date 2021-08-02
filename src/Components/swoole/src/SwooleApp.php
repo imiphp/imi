@@ -164,16 +164,17 @@ class SwooleApp extends CliApp
             {
                 $imiRuntime = Imi::getRuntimePath('imi-runtime-bak');
                 Imi::buildRuntime($imiRuntime);
+
                 // 执行命令行生成缓存
                 $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
                     'imi-runtime' => $imiRuntime,
                 ]);
-                do
+                passthru(\Imi\cmd($cmd), $code);
+                if (0 !== $code)
                 {
-                    passthru(\Imi\cmd($cmd), $code);
-                    $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
-                    sleep(1);
-                } while (0 !== $code);
+                    exit($code);
+                }
+                $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
 
                 return LoadRuntimeResult::ALL;
             }
