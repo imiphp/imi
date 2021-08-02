@@ -31,6 +31,8 @@
 
 ## 使用说明
 
+阿里云集群用户，请把 `script_check_enable` 设置改为 `0`
+
 > 可以参考 `example`、`tests` 目录示例。
 
 项目配置文件：
