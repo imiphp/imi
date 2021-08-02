@@ -138,6 +138,7 @@ class WorkermanApp extends CliApp
                         // 子进程
                         Scanner::scanVendor();
                         Scanner::scanApp();
+                        Imi::buildRuntime();
                         exit;
                     }
                 }
