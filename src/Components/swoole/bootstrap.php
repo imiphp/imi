@@ -68,9 +68,16 @@ return function () {
         catch (\Throwable $th)
         {
             $status = 255;
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            try
+            {
+                /** @var \Imi\Log\ErrorLog $errorLog */
+                $errorLog = App::getBean('ErrorLog');
+                $errorLog->onException($th);
+            }
+            catch (\Throwable $tth)
+            {
+                throw $th;
+            }
         }
     });
     Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
