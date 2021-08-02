@@ -80,6 +80,12 @@ return function () {
             }
         }
     });
-    Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
-    exit($status);
+    if (0 === $status)
+    {
+        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
+    }
+    else
+    {
+        exit($status);
+    }
 };

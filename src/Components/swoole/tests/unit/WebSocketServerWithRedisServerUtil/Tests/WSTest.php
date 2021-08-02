@@ -22,6 +22,7 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
+            sleep(1);
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'test',
@@ -65,6 +66,7 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
+            sleep(1);
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'gg',
             ])));
@@ -82,6 +84,7 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
+            sleep(1);
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'test',
                 'username'  => 'test',
@@ -92,6 +95,7 @@ class WSTest extends BaseTest
 
             $client = $http->websocket($this->host . 'test');
             $this->assertTrue($client->isConnected());
+            sleep(1);
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'test',
                 'username'  => 'test',
