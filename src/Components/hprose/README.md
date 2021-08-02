@@ -191,8 +191,8 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 运行环境
 
-- [PHP](https://php.net/) >= 7.1
-- [Composer](https://getcomposer.org/)
+- [PHP](https://php.net/) >= 7.4
+- [Composer](https://getcomposer.org/) >= 2.0
 - [Swoole](https://www.swoole.com/) >= 4.1.0
 
 ## 版权信息
