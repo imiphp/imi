@@ -22,6 +22,16 @@ use Imi\Util\Imi;
 class FpmApp extends BaseApp
 {
     /**
+     * 应用模式的配置.
+     */
+    protected array $appConfig = [
+        'annotation_manager_annotations'               => false,
+        'annotation_manager_annotations_cache'         => true,
+        'annotation_manager_annotation_relation'       => false,
+        'annotation_manager_annotation_relation_cache' => true,
+    ];
+
+    /**
      * 构造方法.
      */
     public function __construct(string $namespace)
