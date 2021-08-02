@@ -1,7 +1,7 @@
 # imi-jwt
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi-jwt.svg)](https://packagist.org/packages/imiphp/imi-jwt)
-[![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.1.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![IMI License](https://img.shields.io/github/license/imiphp/imi-jwt.svg)](https://github.com/imiphp/imi-jwt/blob/master/LICENSE)
 

@@ -1,7 +1,7 @@
 # imi-hprose
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi-hprose.svg)](https://packagist.org/packages/imiphp/imi-hprose)
-[![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.1.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![IMI License](https://img.shields.io/github/license/imiphp/imi-hprose.svg)](https://github.com/imiphp/imi-hprose/blob/master/LICENSE)
 
