@@ -22,6 +22,8 @@
 
 ## 使用
 
+阿里云集群用户，请把 `script_check_enable` 设置改为 `0`
+
 在项目 `config/config.php` 中配置：
 
 ```php

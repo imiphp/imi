@@ -41,7 +41,7 @@ trait TRedisPool
                     {
                         [$host, $port] = explode(':', $node);
                     }
-                    $redisSentinel = new \RedisSentinel($host, $port, $config['timeout'] ?? null, $config['persistent'] ?? null, $config['retryInterval'] ?? null, $config['readTimeout'] ?? null);
+                    $redisSentinel = new \RedisSentinel($host, $port, $config['timeout'] ?? 0, $config['persistent'] ?? false, $config['retryInterval'] ?? 0, $config['readTimeout'] ?? 0);
                     $masterArray = $redisSentinel->master($master);
                     if (\is_array($masterArray) && isset($masterArray['ip'], $masterArray['port']))
                     {
@@ -57,7 +57,7 @@ trait TRedisPool
                 }
                 break;
             case RedisMode::CLUSTER:
-                $redis = new \RedisCluster($config['name'] ?? null, $config['seeds'] ?? [], $config['timeout'] ?? null, $config['readTimeout'] ?? null, $config['persistent'] ?? null, $config['password'] ?? null);
+                $redis = new \RedisCluster($config['name'] ?? null, $config['seeds'] ?? [], $config['timeout'] ?? 0, $config['readTimeout'] ?? 0, $config['persistent'] ?? false, $config['password'] ?? null);
                 break;
             default:
                 throw new InvalidArgumentException(sprintf('Invalid mode %s', $mode));
