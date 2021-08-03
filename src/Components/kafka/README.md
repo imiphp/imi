@@ -22,7 +22,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-kafka": "^1.0.0"
+        "imiphp/imi-kafka": "2.0.x-dev"
     }
 }
 ```

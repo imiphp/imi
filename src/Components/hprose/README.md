@@ -20,7 +20,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-hprose": "^1.2"
+        "imiphp/imi-hprose": "2.0.x-dev"
     }
 }
 ```

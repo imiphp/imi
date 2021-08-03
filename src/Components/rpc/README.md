@@ -20,7 +20,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-rpc": "~1.0"
+        "imiphp/imi-rpc": "2.0.x-dev"
     }
 }
 ```

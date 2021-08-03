@@ -18,7 +18,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-jwt": "~1.0"
+        "imiphp/imi-jwt": "2.0.x-dev"
     }
 }
 ```

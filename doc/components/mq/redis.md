@@ -22,7 +22,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-queue": "^1.0.0"
+        "imiphp/imi-queue": "2.0.x-dev"
     }
 }
 ```

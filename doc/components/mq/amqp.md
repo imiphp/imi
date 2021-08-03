@@ -15,7 +15,7 @@ Github: <https://github.com/imiphp/imi-amqp>
 ```json
 {
     "require": {
-        "imiphp/imi-amqp": "^1.0.0"
+        "imiphp/imi-amqp": "2.0.x-dev"
     }
 }
 ```

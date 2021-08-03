@@ -20,7 +20,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-rate-limit": "~1.0"
+        "imiphp/imi-rate-limit": "2.0.x-dev"
     }
 }
 ```
