@@ -131,3 +131,23 @@ function runTestServer(string $name, array $options): void
 }
 
 startServer();
+
+register_shutdown_function(function () {
+    echo 'check ports...', \PHP_EOL;
+    foreach ([13000, 13004, 12900] as $port)
+    {
+        echo "checking port {$port}...";
+        $count = 0;
+        while (checkPort('127.0.0.1', $port))
+        {
+            if ($count >= 10)
+            {
+                echo 'failed', \PHP_EOL;
+                continue 2;
+            }
+            ++$count;
+            sleep(1);
+        }
+        echo 'OK', \PHP_EOL;
+    }
+});

@@ -65,6 +65,7 @@ jobs:
           docker exec ${ENV_SERVICE} php -v && php -m
           docker exec ${ENV_SERVICE} php --ri swoole
           docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer config -g process-timeout 600
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
           docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
@@ -113,6 +114,21 @@ jobs:
       - name: test
         run: |
           composer test
+      - name: Test components
+        run: |
+          composer test-swoole
+          composer test-workerman
+          composer test-workerman-gateway
+          composer test-fpm
+          composer test-jwt
+          composer test-queue
+          composer test-grpc
+          composer test-snowflake
+          composer test-mqtt
+          composer test-smarty
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
 
   ci-windows:
     runs-on: windows-latest

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $date = date('Y-m-d');
 
 echo '[Base Component]', \PHP_EOL;
@@ -40,7 +42,15 @@ foreach ([
     }
     else
     {
-        echo 'Not found!', \PHP_EOL;
+        $fileName = dirname(__DIR__) . '/src/Components/swoole/tests/unit/' . $name . '/logs/log-' . $date . '.log';
+        if (is_file($fileName))
+        {
+            echo file_get_contents($fileName), \PHP_EOL;
+        }
+        else
+        {
+            echo 'Not found!', \PHP_EOL;
+        }
     }
 }
 

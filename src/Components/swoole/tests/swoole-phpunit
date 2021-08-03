@@ -83,6 +83,11 @@ Co\run(function () use (&$code) {
             throw $e;
         }
     }
+    catch (\Throwable $th)
+    {
+        $code = 255;
+        throw $th;
+    }
     finally
     {
         Timer::clearAll();

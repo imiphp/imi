@@ -190,24 +190,32 @@ function startServer(): void
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
-            shell_exec("{$cmd}");
-
-            register_shutdown_function(function () use ($name, $options) {
-                \Swoole\Runtime::enableCoroutine(false);
-                // stop server
-                $cmd = $options['stop'];
-                echo "Stoping {$name}...", \PHP_EOL;
-                shell_exec("{$cmd}");
-                echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
-            });
-
-            if (($options['checkStatus'])())
+            exec("{$cmd}", $output, $code);
+            fwrite(\STDOUT, implode(\PHP_EOL, $output));
+            if (0 === $code)
             {
-                echo "{$name} started!", \PHP_EOL;
+                register_shutdown_function(function () use ($name, $options) {
+                    \Swoole\Runtime::enableCoroutine(false);
+                    // stop server
+                    $cmd = $options['stop'];
+                    echo "Stoping {$name}...", \PHP_EOL;
+                    exec($cmd, $output, $code);
+                    fwrite(\STDOUT, implode(\PHP_EOL, $output));
+                    echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
+                });
+
+                if (($options['checkStatus'])())
+                {
+                    echo "{$name} started!", \PHP_EOL;
+                }
+                else
+                {
+                    throw new \RuntimeException("{$name} check status failed");
+                }
             }
             else
             {
-                throw new \RuntimeException("{$name} start failed");
+                throw new \RuntimeException("{$name} start failed, code={$code}");
             }
         };
     }
@@ -217,7 +225,8 @@ function startServer(): void
     register_shutdown_function(function () {
         \Swoole\Runtime::enableCoroutine(false);
         echo 'check ports...', \PHP_EOL;
-        echo shell_exec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+        exec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php', $output, $code);
+        fwrite(\STDOUT, implode(\PHP_EOL, $output));
     });
 }
 
