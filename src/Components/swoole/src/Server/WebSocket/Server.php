@@ -157,12 +157,10 @@ class Server extends Base implements IWebSocketServer
                 }
                 finally
                 {
-                    var_dump(isset($channel));
-                    if (isset($channel))
+                    if (isset($channel, $channelId))
                     {
                         while (($channel->stats()['consumer_num'] ?? 0) > 0)
                         {
-                            var_dump('push');
                             $channel->push(1);
                         }
                         ChannelContainer::removeChannel($channelId);

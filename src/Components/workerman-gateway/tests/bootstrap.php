@@ -130,6 +130,21 @@ function runTestServer(string $name, array $options): void
     }
 }
 
+/**
+ * 检查端口是否可以被绑定.
+ */
+function checkPort(string $host, int $port, ?int &$errno = null, ?string &$errstr = null): bool
+{
+    $socket = @stream_socket_client('tcp://' . $host . ':' . $port, $errno, $errstr, 3);
+    if (!$socket)
+    {
+        return false;
+    }
+    fclose($socket);
+
+    return true;
+}
+
 startServer();
 
 register_shutdown_function(function () {

@@ -119,7 +119,7 @@ class Server extends Base implements ITcpServer
                 }
                 finally
                 {
-                    if (isset($channel))
+                    if (isset($channel, $channelId))
                     {
                         while (($channel->stats()['consumer_num'] ?? 0) > 0)
                         {
