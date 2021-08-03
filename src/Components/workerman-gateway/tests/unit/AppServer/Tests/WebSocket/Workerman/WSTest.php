@@ -20,7 +20,6 @@ class WSTest extends BaseTest
         $this->go(function () {
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
-            sleep(1);
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'login',
                 'username'  => 'test',
@@ -64,7 +63,6 @@ class WSTest extends BaseTest
         $this->go(function () {
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
-            sleep(1);
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'gg',
             ])));
@@ -80,7 +78,6 @@ class WSTest extends BaseTest
         $this->go(function () {
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
-            sleep(1);
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'test',
                 'username'  => 'test',
@@ -92,7 +89,6 @@ class WSTest extends BaseTest
 
             $client = new Client($this->host . 'test', $this->host);
             $this->assertTrue($client->connect());
-            sleep(1);
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'test',
                 'username'  => 'test',

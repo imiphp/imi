@@ -57,7 +57,6 @@ class ServerUtilTest extends BaseTest
                 $this->assertTrue($client->isConnected());
                 for ($_ = 0; $_ < 3; ++$_)
                 {
-                    sleep(1);
                     $this->assertTrue($client->send(json_encode([
                         'action'    => 'info',
                     ])));
@@ -118,7 +117,6 @@ class ServerUtilTest extends BaseTest
                     $this->assertTrue($client->isConnected());
                     for ($_ = 0; $_ < 3; ++$_)
                     {
-                        sleep(1);
                         $this->assertTrue($client->send(json_encode([
                             'action'    => 'login',
                             'username'  => 'testSend',
@@ -217,7 +215,6 @@ class ServerUtilTest extends BaseTest
             $this->assertTrue($client1->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
-                sleep(1);
                 $this->assertTrue($client1->send(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
@@ -239,7 +236,6 @@ class ServerUtilTest extends BaseTest
             $this->assertTrue($client2->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
-                sleep(1);
                 $this->assertTrue($client2->send(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
@@ -283,7 +279,6 @@ class ServerUtilTest extends BaseTest
         $this->assertTrue($client1->isConnected());
         for ($_ = 0; $_ < 3; ++$_)
         {
-            sleep(1);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
@@ -302,7 +297,6 @@ class ServerUtilTest extends BaseTest
         $this->assertTrue($client2->isConnected());
         for ($_ = 0; $_ < 3; ++$_)
         {
-            sleep(1);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',

@@ -24,7 +24,6 @@ class WSTest extends BaseTest
             $this->assertTrue($client->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
-                sleep(1);
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'login',
                     'username'  => 'test',
@@ -78,7 +77,6 @@ class WSTest extends BaseTest
                 $this->assertTrue($client->isConnected());
                 for ($_ = 0; $_ < 3; ++$_)
                 {
-                    sleep(1);
                     $this->assertTrue($client->send(json_encode([
                         'action'    => 'reconnect',
                         'token'     => 'test',
@@ -124,7 +122,6 @@ class WSTest extends BaseTest
             $this->assertTrue($client->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
-                sleep(1);
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'gg',
                 ])));
@@ -150,7 +147,6 @@ class WSTest extends BaseTest
             $this->assertTrue($client->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
-                sleep(1);
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'test',
                     'username'  => 'test',
@@ -170,7 +166,6 @@ class WSTest extends BaseTest
             $recv = null;
             for ($_ = 0; $_ < 3; ++$_)
             {
-                sleep(1);
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'test',
                     'username'  => 'test',

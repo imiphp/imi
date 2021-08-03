@@ -31,7 +31,6 @@ class ServerUtilTest extends BaseTest
         $this->go(function () {
             $client1 = new Client($this->host, $this->host);
             $this->assertTrue($client1->connect());
-            sleep(1);
             $this->assertTrue($client1->sendData(json_encode([
                 'action'    => 'info',
             ])));
@@ -42,7 +41,6 @@ class ServerUtilTest extends BaseTest
 
             $client2 = new Client($this->host, $this->host);
             $this->assertTrue($client2->connect());
-            sleep(1);
             $this->assertTrue($client2->sendData(json_encode([
                 'action'    => 'info',
             ])));
@@ -53,7 +51,6 @@ class ServerUtilTest extends BaseTest
 
             $client3 = new Client($this->host, $this->host);
             $this->assertTrue($client3->connect());
-            sleep(1);
             $this->assertTrue($client3->sendData(json_encode([
                 'action'    => 'login',
                 'username'  => 'testSend',
@@ -112,7 +109,6 @@ class ServerUtilTest extends BaseTest
             {
                 $clients[] = $client = new Client($this->host, $this->host);
                 $this->assertTrue($client->connect());
-                sleep(1);
                 $this->assertTrue($client->sendData(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
@@ -150,7 +146,6 @@ class ServerUtilTest extends BaseTest
     {
         $client1 = new Client($this->host, $this->host);
         $this->assertTrue($client1->connect());
-        sleep(1);
         $this->assertTrue($client1->sendData(json_encode([
             'action'    => 'login',
             'username'  => 'testClose',

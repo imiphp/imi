@@ -58,7 +58,6 @@ class ServerUtilTest extends BaseTest
                     $http->timeout = 10000;
                     $client = $http->websocket($this->host);
                     $this->assertTrue($client->isConnected());
-                    sleep(1);
                     $this->assertTrue($client->send(json_encode([
                         'action'    => 'login',
                         'username'  => 'testSend',
@@ -120,7 +119,6 @@ class ServerUtilTest extends BaseTest
                 $http->timeout = 10000;
                 $client = $http->websocket($this->host);
                 $this->assertTrue($client->isConnected());
-                sleep(1);
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
