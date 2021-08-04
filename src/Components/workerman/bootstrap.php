@@ -14,7 +14,8 @@ return function () {
     {
         (function () use (&$path) {
             foreach ([
-                $_SERVER['PWD'] ?? getcwd(),
+                $_SERVER['PWD'],
+                getcwd(),
                 dirname(__DIR__, 3),
                 dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
             ] as $path)
