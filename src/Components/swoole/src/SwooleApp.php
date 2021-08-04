@@ -26,6 +26,7 @@ use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
@@ -162,8 +163,9 @@ class SwooleApp extends CliApp
             $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
                 'imi-runtime' => $imiRuntime,
             ]);
-            exec(\Imi\cmd($cmd), $output, $code);
-            fwrite(\STDOUT, implode(\PHP_EOL, $output));
+            exec(\Imi\cmd($cmd), $cmdOutput, $code);
+            $output = new ConsoleOutput();
+            $output->writeln(implode(\PHP_EOL, $cmdOutput));
             if (0 !== $code)
             {
                 exit($code);
