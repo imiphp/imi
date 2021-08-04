@@ -11,7 +11,7 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
 use Imi\WorkermanGateway\Server\Util\TGatewayServerUtil;
 
-if (\extension_loaded('swoole') && interface_exists(\Imi\Swoole\SwooleApp::class))
+if (\extension_loaded('swoole') && class_exists(\Imi\Swoole\SwooleApp::class))
 {
     /**
      * @Bean("SwooleGatewayServerUtil")

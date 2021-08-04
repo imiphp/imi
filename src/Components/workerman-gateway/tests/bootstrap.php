@@ -79,11 +79,20 @@ function startServer(): void
     if ('/' === \DIRECTORY_SEPARATOR)
     {
         register_shutdown_function(function () {
-            echo 'Stoping WorkermanServer...', \PHP_EOL;
-            shell_exec(<<<CMD
-kill `ps -ef|grep "WorkerMan: master process"|grep -v grep|awk '{print $2}'`
-CMD);
-            echo 'WorkermanServer stoped!', \PHP_EOL, \PHP_EOL;
+            echo 'Stoping WorkermanServers...', \PHP_EOL;
+            if ('Darwin' === \PHP_OS)
+            {
+                $keyword = 'workerman/start';
+            }
+            else
+            {
+                $keyword = 'WorkerMan: master process';
+            }
+            exec(<<<CMD
+kill `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`
+CMD, $output);
+            fwrite(\STDOUT, implode(\PHP_EOL, $output));
+            echo 'WorkermanServers stoped!', \PHP_EOL, \PHP_EOL;
         });
     }
 }
@@ -149,7 +158,7 @@ startServer();
 
 register_shutdown_function(function () {
     echo 'check ports...', \PHP_EOL;
-    foreach ([13000, 13004, 12900] as $port)
+    foreach ([13000, 13002, 13004, 12900] as $port)
     {
         echo "checking port {$port}...";
         $count = 0;
