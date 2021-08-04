@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://raw.githubusercontent.com/imiphp/imi/dev/res/logo.png" alt="imi" />
+        <img src="https://raw.githubusercontent.com/imiphp/imi/2.x/res/logo.png" alt="imi" />
     </a>
 </p>
 
