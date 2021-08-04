@@ -87,7 +87,6 @@ class KafkaQueueDriver implements IQueueDriver
             $key = $message->getKey();
             $headers = $message->getHeaders();
             $partition = $message->getPartition();
-            $brokerId = $message->getBrokerId();
         }
         $producer->send($this->name, $message->getMessage(), $key ?? null, $headers ?? [], $partition ?? null);
 
