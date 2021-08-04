@@ -64,7 +64,7 @@ class DbResource extends BasePoolResource
     {
         $db = $this->db;
         // 如果在事务中，则回滚
-        if ($db->inTransaction())
+        if ($db->isConnected() && $db->inTransaction())
         {
             $db->rollBack();
         }

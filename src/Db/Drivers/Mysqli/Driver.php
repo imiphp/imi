@@ -89,7 +89,10 @@ class Driver extends Base implements IDb
 
     public function __destruct()
     {
-        $this->close();
+        if ($this->instance)
+        {
+            $this->close();
+        }
     }
 
     /**
