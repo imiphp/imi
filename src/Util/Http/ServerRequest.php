@@ -425,14 +425,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             ]))
             {
                 $content = $this->body->getContents();
-                $this->post = $data = json_decode($content, true);
-                if (Config::get('@currentServer.jsonBodyIsObject', false))
+                $parsedBody = json_decode($content, !Config::get('@currentServer.jsonBodyIsObject', false));
+                if ($parsedBody)
                 {
-                    $parsedBody = json_decode($content, false);
-                }
-                else
-                {
-                    $parsedBody = $data;
+                    $this->post = $parsedBody;
                 }
             }
             // xml
