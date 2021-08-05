@@ -10,6 +10,7 @@ use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -120,6 +121,16 @@ class ProcessManager
             mt_srand();
             $exitCode = 0;
             $callable = function () use ($swooleProcess, $args, $name, $processOption, &$exitCode) {
+                if ($inCoroutine = Coroutine::isIn())
+                {
+                    Coroutine::defer(function () use ($name, $swooleProcess) {
+                        // 进程结束事件
+                        Event::trigger('IMI.PROCESS.END', [
+                            'name'      => $name,
+                            'process'   => $swooleProcess,
+                        ]);
+                    });
+                }
                 try
                 {
                     if ($processOption['options']['unique'] && !static::lockProcess($name))
@@ -153,11 +164,14 @@ class ProcessManager
                 }
                 finally
                 {
-                    // 进程结束事件
-                    Event::trigger('IMI.PROCESS.END', [
-                        'name'      => $name,
-                        'process'   => $swooleProcess,
-                    ]);
+                    if (!$inCoroutine)
+                    {
+                        // 进程结束事件
+                        Event::trigger('IMI.PROCESS.END', [
+                            'name'      => $name,
+                            'process'   => $swooleProcess,
+                        ]);
+                    }
                 }
             };
             if ($processOption['options']['co'])
@@ -235,7 +249,7 @@ class ProcessManager
             $cmd .= ' --pipeType ' . $pipeType;
         }
 
-        return \Swoole\Coroutine::exec($cmd);
+        return Coroutine::exec($cmd);
     }
 
     /**
