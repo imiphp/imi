@@ -3,3 +3,6 @@
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /res export-ignore
+/tests export-ignore
+/dev export-ignore
+/bin export-ignore
