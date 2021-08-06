@@ -195,7 +195,7 @@ class LocalServerUtil implements ISwooleServerUtil
                     'serverName'         => $server->getName(),
                     'needResponse'       => $this->needResponse,
                 ]);
-                if ($this->needResponse && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if (isset($channel) && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
@@ -328,7 +328,7 @@ class LocalServerUtil implements ISwooleServerUtil
                     'serverName'    => $server->getName(),
                     'needResponse'  => $this->needResponse,
                 ]);
-                if ($this->needResponse && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if (isset($channel) && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
@@ -426,7 +426,7 @@ class LocalServerUtil implements ISwooleServerUtil
                     'serverName'    => $server->getName(),
                     'needResponse'  => $this->needResponse,
                 ]);
-                if ($this->needResponse && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if (isset($channel) && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {

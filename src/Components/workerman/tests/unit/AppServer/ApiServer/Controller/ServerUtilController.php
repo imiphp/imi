@@ -89,6 +89,8 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
+     *
+     * @param int|string $clientId
      */
     public function close($clientId, string $flag): array
     {

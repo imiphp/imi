@@ -32,6 +32,7 @@ foreach ([
     'WebSocketServer',
     'TCPServer',
     'UDPServer',
+    'WebSocketServerWithRedisServerUtil',
 ] as $name)
 {
     echo '[Swoole ', $name, ']', \PHP_EOL;

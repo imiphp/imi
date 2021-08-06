@@ -26,6 +26,7 @@ class OnExistsRequest implements IEventListener
         var_dump(__CLASS__, $eData);
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
+        $result = false;
         if (isset($data['clientIds']))
         {
             foreach ($data['clientIds'] as $clientId)
@@ -39,10 +40,6 @@ class OnExistsRequest implements IEventListener
         elseif (isset($data['clientId']))
         {
             $result = Server::exists($data['clientId'], $data['serverName'], false);
-        }
-        else
-        {
-            $result = false;
         }
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
