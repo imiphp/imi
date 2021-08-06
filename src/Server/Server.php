@@ -158,6 +158,24 @@ class Server
     }
 
     /**
+     * 连接是否存在.
+     *
+     * @param string|int|null $clientId
+     */
+    public static function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        return static::getInstance($serverName)->exists($clientId, $serverName, $toAllWorkers);
+    }
+
+    /**
+     * 指定标记的连接是否存在.
+     */
+    public static function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        return static::getInstance($serverName)->flagExists($flag, $serverName, $toAllWorkers);
+    }
+
+    /**
      * 获取服务器.
      */
     public static function getServer(?string $serverName = null): ?IServer

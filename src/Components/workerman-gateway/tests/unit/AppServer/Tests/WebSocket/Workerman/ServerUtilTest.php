@@ -146,25 +146,71 @@ class ServerUtilTest extends BaseTest
         });
     }
 
-    public function testClose(): void
+    public function testExists(): void
     {
-        $client1 = new Client($this->host, $this->host);
+        $client1 = new Client($this->host, $this->httpHost);
         $this->assertTrue($client1->connect());
-        sleep(1);
         $this->assertTrue($client1->sendData(json_encode([
-            'action'    => 'login',
-            'username'  => 'testClose',
+            'action'    => 'info',
         ])));
         $recvData = $client1->receive();
         $recv = reset($recvData)->getPayload();
         $recvData1 = json_decode($recv, true);
-        $this->assertTrue($recvData1['success'] ?? null, 'Not found success');
+        $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
+
+        $client2 = new Client($this->host, $this->httpHost);
+        $this->assertTrue($client2->connect());
+        $this->assertTrue($client2->sendData(json_encode([
+            'action'    => 'login',
+            'username'  => 'testExists',
+        ])));
+        $recvData = $client2->receive();
+        $recv = reset($recvData)->getPayload();
+        $recvData2 = json_decode($recv, true);
+        $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
         $http3 = new HttpRequest();
-        $response = $http3->post($this->httpHost . 'serverUtil/close', ['flag' => 'testClose']);
+        $response = $http3->post($this->httpHost . 'serverUtil/exists', ['clientId' => $recvData1['clientId'], 'flag' => 'testExists']);
         $this->assertEquals([
-            'flag' => 1,
+            'clientId' => true,
+            'flag'     => true,
+        ], $response->json(true));
+        $client1->disconnect();
+        $client2->disconnect();
+    }
+
+    public function testClose(): void
+    {
+        $client1 = new Client($this->host, $this->httpHost);
+        $this->assertTrue($client1->connect());
+        sleep(1);
+        $this->assertTrue($client1->sendData(json_encode([
+            'action'    => 'info',
+        ])));
+        $recvData = $client1->receive();
+        $recv = reset($recvData)->getPayload();
+        $recvData1 = json_decode($recv, true);
+        $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
+
+        $client2 = new Client($this->host, $this->httpHost);
+        $this->assertTrue($client2->connect());
+        sleep(1);
+        $this->assertTrue($client2->sendData(json_encode([
+            'action'    => 'login',
+            'username'  => 'testClose',
+        ])));
+        $recvData = $client2->receive();
+        $recv = reset($recvData)->getPayload();
+        $recvData2 = json_decode($recv, true);
+        $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
+
+        $http3 = new HttpRequest();
+        $response = $http3->post($this->httpHost . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
+        $this->assertEquals([
+            'clientId' => 1,
+            'flag'     => 1,
         ], $response->json(true));
         $this->assertEquals('', $client1->receive());
+        $this->assertEquals('', $client2->receive());
     }
 }

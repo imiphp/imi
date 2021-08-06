@@ -29,8 +29,9 @@ class OnSendToClientIdsRequest implements IEventListener
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('sendToClientIdsResponse', [
-                'messageId' => $data['messageId'],
-                'result'    => $result,
+                'messageId'  => $data['messageId'],
+                'result'     => $result,
+                'serverName' => $data['serverName'],
             ], $workerId, $data['serverName']);
         }
     }

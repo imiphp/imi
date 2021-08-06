@@ -27,6 +27,11 @@ class LocalServerUtil implements ISwooleServerUtil
     protected bool $needResponse = true;
 
     /**
+     * 等待响应超时时间.
+     */
+    protected float $waitResponseTimeout = 30;
+
+    /**
      * 发送消息给 Worker 进程，使用框架内置格式.
      *
      * 返回成功发送消息数量
@@ -130,7 +135,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag, $serverName);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -179,7 +184,10 @@ class LocalServerUtil implements ISwooleServerUtil
             $id = uniqid('', true);
             try
             {
-                $channel = ChannelContainer::getChannel($id);
+                if ($this->needResponse)
+                {
+                    $channel = ChannelContainer::getChannel($id);
+                }
                 $count = $this->sendMessage('sendToClientIdsRequest', [
                     'messageId'          => $id,
                     'clientIds'          => $clientIds,
@@ -187,11 +195,11 @@ class LocalServerUtil implements ISwooleServerUtil
                     'serverName'         => $server->getName(),
                     'needResponse'       => $this->needResponse,
                 ]);
-                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if ($this->needResponse && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
-                        $result = $channel->pop(30);
+                        $result = $channel->pop($this->waitResponseTimeout);
                         if (false === $result)
                         {
                             break;
@@ -202,7 +210,10 @@ class LocalServerUtil implements ISwooleServerUtil
             }
             finally
             {
-                ChannelContainer::removeChannel($id);
+                if ($this->needResponse)
+                {
+                    ChannelContainer::removeChannel($id);
+                }
             }
         }
         else
@@ -248,7 +259,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag, $serverName);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -307,18 +318,21 @@ class LocalServerUtil implements ISwooleServerUtil
             $id = uniqid('', true);
             try
             {
-                $channel = ChannelContainer::getChannel($id);
+                if ($this->needResponse)
+                {
+                    $channel = ChannelContainer::getChannel($id);
+                }
                 $count = $this->sendMessage('sendRawToAllRequest', [
                     'messageId'     => $id,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
                     'needResponse'  => $this->needResponse,
                 ]);
-                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if ($this->needResponse && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
-                        $result = $channel->pop(30);
+                        $result = $channel->pop($this->waitResponseTimeout);
                         if (false === $result)
                         {
                             break;
@@ -329,7 +343,10 @@ class LocalServerUtil implements ISwooleServerUtil
             }
             finally
             {
-                ChannelContainer::removeChannel($id);
+                if ($this->needResponse)
+                {
+                    ChannelContainer::removeChannel($id);
+                }
             }
         }
         else
@@ -398,7 +415,10 @@ class LocalServerUtil implements ISwooleServerUtil
             $id = uniqid('', true);
             try
             {
-                $channel = ChannelContainer::getChannel($id);
+                if ($this->needResponse)
+                {
+                    $channel = ChannelContainer::getChannel($id);
+                }
                 $count = $this->sendMessage('sendToGroupsRequest', [
                     'messageId'     => $id,
                     'groups'        => $groups,
@@ -406,11 +426,11 @@ class LocalServerUtil implements ISwooleServerUtil
                     'serverName'    => $server->getName(),
                     'needResponse'  => $this->needResponse,
                 ]);
-                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if ($this->needResponse && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
-                        $result = $channel->pop(30);
+                        $result = $channel->pop($this->waitResponseTimeout);
                         if (false === $result)
                         {
                             break;
@@ -421,7 +441,10 @@ class LocalServerUtil implements ISwooleServerUtil
             }
             finally
             {
-                ChannelContainer::removeChannel($id);
+                if ($this->needResponse)
+                {
+                    ChannelContainer::removeChannel($id);
+                }
             }
         }
         else
@@ -503,7 +526,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag, $serverName);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -516,6 +539,128 @@ class LocalServerUtil implements ISwooleServerUtil
         }
 
         return $this->close($clientIds, $serverName, $toAllWorkers);
+    }
+
+    /**
+     * 连接是否存在.
+     *
+     * @param string|int|null $clientId
+     */
+    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        if (null === $clientId)
+        {
+            $clientId = ConnectionContext::getClientId();
+        }
+        $server = $this->getServer($serverName);
+        $swooleServer = $server->getSwooleServer();
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        {
+            $id = uniqid('', true);
+            try
+            {
+                $channel = ChannelContainer::getChannel($id);
+                $count = $this->sendMessage('existsRequest', [
+                    'messageId'    => $id,
+                    'clientId'     => $clientId,
+                    'serverName'   => $server->getName(),
+                    'needResponse' => true,
+                ]);
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                {
+                    for ($i = $count; $i > 0; --$i)
+                    {
+                        $result = $channel->pop($this->waitResponseTimeout);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        if ($result['result'] ?? false)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                ChannelContainer::removeChannel($id);
+            }
+        }
+        else
+        {
+            return $swooleServer->exists((int) $clientId);
+        }
+
+        return false;
+    }
+
+    /**
+     * 指定标记的连接是否存在.
+     */
+    public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        if (null === $flag)
+        {
+            $clientIds = [ConnectionContext::getClientId()];
+        }
+        else
+        {
+            $clientIds = ConnectionContext::getClientIdByFlag($flag, $serverName);
+            if (!$clientIds)
+            {
+                return false;
+            }
+        }
+
+        $server = $this->getServer($serverName);
+        $swooleServer = $server->getSwooleServer();
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        {
+            $id = uniqid('', true);
+            try
+            {
+                $channel = ChannelContainer::getChannel($id);
+                // count问题
+                $count = $this->sendMessage('existsRequest', [
+                    'messageId'    => $id,
+                    'clientIds'    => $clientIds,
+                    'serverName'   => $server->getName(),
+                    'needResponse' => true,
+                ]);
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                {
+                    for ($i = $count; $i > 0; --$i)
+                    {
+                        $result = $channel->pop($this->waitResponseTimeout);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        if ($result['result'] ?? false)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                ChannelContainer::removeChannel($id);
+            }
+        }
+        else
+        {
+            foreach ($clientIds as $clientId)
+            {
+                if ($swooleServer->exists((int) $clientId))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

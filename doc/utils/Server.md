@@ -1,6 +1,6 @@
 # 服务器工具类
 
-**类名:** `Imi\Swoole\Server\Server`
+**类名:** `Imi\Server\Server`
 
 服务器工具类，支持向客户端进行消息推送，部分工具类实现还支持了分布式消息推送。
 
@@ -381,3 +381,31 @@ Server::closeByFlag('user1', 'myServer'); // 指定服务器名
 // BASE模式下，只关闭当前 worker 中的连接（默认关闭所有进程的指定连接）
 Server::closeByFlag('user1', 'myServer', false);
 ```
+
+### exists
+
+连接是否存在
+
+> 即便连接存在，也不代表连接 100% 联通，请勿过于依赖此方法。
+
+> 推荐仅在 Local、Gateway 模式使用。如在 Redis、Channel 模式下使用可能获取到的结果不准确。
+
+```php
+var_dump(Server::exists(123));
+```
+
+### flagExists
+
+指定标记的连接是否存在
+
+> 即便连接存在，也不代表连接 100% 联通，请勿过于依赖此方法。
+
+> 推荐仅在 Local、Gateway 模式使用。如在 Redis、Channel 模式下使用可能获取到的结果不准确。
+
+```php
+var_dump(Server::flagExists('user-123'));
+```
+
+### 其它
+
+> 连接上下文的使用：<https://doc.imiphp.com/v2.0/components/websocketServer/session.html>
