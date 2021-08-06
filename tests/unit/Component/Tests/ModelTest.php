@@ -301,44 +301,18 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeSave(): void
     {
-        for ($_ = 0; $_ < 3; ++$_)
-        {
-            try
-            {
-                $th = null;
-                $record = UpdateTime::newInstance();
-                $this->assertUpdateTime($record, 'save');
-            }
-            catch (\Throwable $th)
-            {
-                sleep(1);
-            }
-        }
-        if (isset($th))
-        {
-            throw $th;
-        }
+        $this->go(function () {
+            $record = UpdateTime::newInstance();
+            $this->assertUpdateTime($record, 'save');
+        }, null, 3);
     }
 
     public function testUpdateTimeUpdate(): void
     {
-        for ($_ = 0; $_ < 3; ++$_)
-        {
-            try
-            {
-                $th = null;
-                $record = UpdateTime::find(1);
-                $this->assertUpdateTime($record, 'update');
-            }
-            catch (\Throwable $th)
-            {
-                sleep(1);
-            }
-        }
-        if (isset($th))
-        {
-            throw $th;
-        }
+        $this->go(function () {
+            $record = UpdateTime::find(1);
+            $this->assertUpdateTime($record, 'update');
+        }, null, 3);
     }
 
     public function testModelReferenceGetter(): void

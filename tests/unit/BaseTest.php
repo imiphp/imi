@@ -12,22 +12,36 @@ if (class_exists(TestCase::class))
     {
         public const PERFORMANCE_COUNT = 1000;
 
-        protected function go(callable $callable, ?callable $finally = null): void
+        protected function go(callable $callable, ?callable $finally = null, int $retry = 0): void
         {
-            try
+            for ($i = 0; $i <= $retry; ++$i)
             {
-                $callable();
-            }
-            catch (\Throwable $th)
-            {
-                throw $th;
-            }
-            finally
-            {
+                if ($i > 0)
+                {
+                    echo 'retry:', $i, \PHP_EOL;
+                    sleep(1);
+                }
+                $throwable = null;
+                try
+                {
+                    $callable();
+                }
+                catch (\Throwable $th)
+                {
+                    $throwable = $th;
+                }
                 if ($finally)
                 {
                     $finally();
                 }
+                if (!$throwable || !$throwable instanceof \PHPUnit\Framework\SelfDescribing)
+                {
+                    break;
+                }
+            }
+            if (isset($throwable))
+            {
+                throw $throwable;
             }
         }
 
