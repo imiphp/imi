@@ -21,7 +21,6 @@ class OnExistsResponse implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        var_dump(__CLASS__, $e->getData());
         $data = $e->getData()['data'];
         if (ChannelContainer::hasChannel($data['messageId']))
         {

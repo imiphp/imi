@@ -86,6 +86,7 @@ jobs:
         swoole: [4.7]
     env:
       MYSQL_SERVER_PASSWORD: ""
+      PHP_VERSION: ${{ matrix.php }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -97,15 +98,8 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-      - name: install db
-        run: |
-          brew install mysql redis
-          brew services start mysql
-          brew services start redis
-      - name: install php
-        run: .github/macos/install-php7.4-mac.sh
-      - name: install swoole
-        run: .github/macos/install-swoole.sh 4.7.0
+      - name: install env
+        run: .github/macos/install-env.sh
       - name: prepare
         run: |
           composer update --prefer-dist --no-progress

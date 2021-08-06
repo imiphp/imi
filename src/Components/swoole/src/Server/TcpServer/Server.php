@@ -8,9 +8,9 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
-use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Server\Contract\ISwooleTcpServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\ConnectEventParam;
 use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
@@ -21,7 +21,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
  *
  * @Bean("TcpServer")
  */
-class Server extends Base implements ITcpServer
+class Server extends Base implements ISwooleTcpServer
 {
     /**
      * 是否支持 SSL.
@@ -216,5 +216,13 @@ class Server extends Base implements ITcpServer
     public function send($clientId, string $data): bool
     {
         return $this->getSwooleServer()->send((int) $clientId, $data);
+    }
+
+    /**
+     * 是否同步连接.
+     */
+    public function isSyncConnect(): bool
+    {
+        return $this->syncConnect;
     }
 }

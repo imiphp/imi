@@ -11,18 +11,17 @@ use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
-use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Server\Contract\ISwooleWebSocketServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
 use Imi\Swoole\Server\Event\Param\MessageEventParam;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Http\Listener\BeforeRequest;
-use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
 use Swoole\WebSocket\Server as WebSocketServer;
@@ -32,7 +31,7 @@ use Swoole\WebSocket\Server as WebSocketServer;
  *
  * @Bean("WebSocketServer")
  */
-class Server extends Base implements IWebSocketServer
+class Server extends Base implements ISwooleWebSocketServer
 {
     /**
      * 是否为 wss 服务
@@ -48,22 +47,6 @@ class Server extends Base implements IWebSocketServer
      * 是否为 http2 服务
      */
     private bool $http2 = false;
-
-    /**
-     * 同步连接，当连接事件执行完后，才执行 message 事件.
-     */
-    private bool $syncConnect = true;
-
-    /**
-     * 构造方法.
-     *
-     * @param bool $isSubServer 是否为子服务器
-     */
-    public function __construct(string $name, array $config, bool $isSubServer = false)
-    {
-        parent::__construct($name, $config, $isSubServer);
-        $this->syncConnect = $config['syncConnect'] ?? true;
-    }
 
     /**
      * 获取协议名称.
@@ -128,11 +111,6 @@ class Server extends Base implements IWebSocketServer
             $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
-                    if ($this->syncConnect)
-                    {
-                        $channelId = 'connection:' . $swooleRequest->fd;
-                        $channel = ChannelContainer::getChannel($channelId);
-                    }
                     $request = new SwooleRequest($this, $swooleRequest);
                     $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::create([
@@ -155,17 +133,6 @@ class Server extends Base implements IWebSocketServer
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
-                finally
-                {
-                    if (isset($channel, $channelId))
-                    {
-                        while (($channel->stats()['consumer_num'] ?? 0) > 0)
-                        {
-                            $channel->push(1);
-                        }
-                        ChannelContainer::removeChannel($channelId);
-                    }
-                }
             });
         }
         else
@@ -179,14 +146,6 @@ class Server extends Base implements IWebSocketServer
             $this->swoolePort->on('message', \is_callable($event) ? $event : function (WebSocketServer $server, \Swoole\WebSocket\Frame $frame) {
                 try
                 {
-                    if ($this->syncConnect)
-                    {
-                        $channelId = 'connection:' . $frame->fd;
-                        if (ChannelContainer::hasChannel($channelId))
-                        {
-                            ChannelContainer::pop($channelId);
-                        }
-                    }
                     RequestContext::muiltiSet([
                         'server'        => $this,
                         'clientId'      => $frame->fd,

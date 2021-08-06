@@ -13,6 +13,7 @@ use Imi\Server\ServerManager;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Contract\ISwooleHttpServer;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
@@ -29,7 +30,7 @@ use Swoole\Http\Server as HttpServer;
  *
  * @Bean("HttpServer")
  */
-class Server extends Base
+class Server extends Base implements ISwooleHttpServer
 {
     /**
      * 是否为 https 服务
