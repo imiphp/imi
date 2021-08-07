@@ -59,8 +59,6 @@ class File extends Base
 
     /**
      * 读取session.
-     *
-     * @return string
      */
     public function read(string $sessionId): string
     {
