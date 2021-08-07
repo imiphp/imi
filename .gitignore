@@ -11,5 +11,4 @@ composer.lock
 /src/Components/*/vendor
 /split-repository/vendor
 /.vscode
-*.cache
 *.pid
