@@ -1,8 +1,8 @@
 # imi-apidoc
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi-apidoc.svg)](https://packagist.org/packages/imiphp/imi-apidoc)
-[![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.4.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.7.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![IMI License](https://img.shields.io/github/license/imiphp/imi-apidoc.svg)](https://github.com/imiphp/imi-apidoc/blob/master/LICENSE)
 
 ## 介绍
@@ -26,7 +26,7 @@ imi-apidoc 基于 [zircote/swagger-php](https://github.com/zircote/swagger-php) 
 ```json
 {
     "require": {
-        "imiphp/imi-apidoc": "^1.0.0"
+        "imiphp/imi-apidoc": "2.0.x-dev"
     }
 }
 ```
@@ -150,9 +150,9 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 运行环境
 
-- [PHP](https://php.net/) >= 7.1
-- [Composer](https://getcomposer.org/)
-- [Swoole](https://www.swoole.com/) >= 4.4.0
+- [PHP](https://php.net/) >= 7.4
+- [Composer](https://getcomposer.org/) >= 2.0
+- [Swoole](https://www.swoole.com/) >= 4.7.0
 
 ## 版权信息
 

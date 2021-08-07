@@ -75,11 +75,27 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
+     *
+     * @param int|string $clientId
      */
-    public function close(string $flag): array
+    public function exists($clientId, string $flag): array
     {
         return [
-            'flag' => Server::closeByFlag($flag, $this->getServerName()),
+            'clientId'   => Server::exists($clientId),
+            'flag'       => Server::flagExists($flag),
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @param int|string $clientId
+     */
+    public function close($clientId, string $flag): array
+    {
+        return [
+            'clientId' => Server::close($clientId),
+            'flag'     => Server::closeByFlag($flag, $this->getServerName()),
         ];
     }
 

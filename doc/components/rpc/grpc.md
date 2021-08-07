@@ -17,7 +17,7 @@ Github: <https://github.com/imiphp/imi-grpc>
 ```json
 {
     "require": {
-        "imiphp/imi-grpc": "^1.0.0"
+        "imiphp/imi-grpc": "2.0.x-dev"
     }
 }
 ```

@@ -89,6 +89,19 @@ class ServerUtilController extends HttpController
      *
      * @param int|string $clientId
      */
+    public function exists($clientId, string $flag): array
+    {
+        return [
+            'clientId'   => Server::exists($clientId),
+            'flag'       => Server::flagExists($flag),
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @param int|string $clientId
+     */
     public function close($clientId, string $flag): array
     {
         return [

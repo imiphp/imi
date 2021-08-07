@@ -13,7 +13,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-rate-limit": "~1.0"
+        "imiphp/imi-rate-limit": "2.0.x-dev"
     }
 }
 ```
@@ -21,6 +21,8 @@
 然后执行 `composer update` 安装。
 
 ## 使用
+
+阿里云集群用户，请把 `script_check_enable` 设置改为 `0`
 
 在项目 `config/config.php` 中配置：
 

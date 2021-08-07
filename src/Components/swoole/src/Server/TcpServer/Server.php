@@ -8,24 +8,41 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
-use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Server\Contract\ISwooleTcpServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\ConnectEventParam;
 use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
+use Imi\Swoole\Util\Co\ChannelContainer;
 
 /**
  * TCP 服务器类.
  *
  * @Bean("TcpServer")
  */
-class Server extends Base implements ITcpServer
+class Server extends Base implements ISwooleTcpServer
 {
     /**
      * 是否支持 SSL.
      */
     private bool $ssl = false;
+
+    /**
+     * 同步连接，当连接事件执行完后，才执行 receive 事件.
+     */
+    private bool $syncConnect = true;
+
+    /**
+     * 构造方法.
+     *
+     * @param bool $isSubServer 是否为子服务器
+     */
+    public function __construct(string $name, array $config, bool $isSubServer = false)
+    {
+        parent::__construct($name, $config, $isSubServer);
+        $this->syncConnect = $config['syncConnect'] ?? true;
+    }
 
     /**
      * 获取协议名称.
@@ -85,6 +102,11 @@ class Server extends Base implements ITcpServer
             $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
+                    if ($this->syncConnect)
+                    {
+                        $channelId = 'connection:' . $fd;
+                        $channel = ChannelContainer::getChannel($channelId);
+                    }
                     $this->trigger('connect', [
                         'server'          => $this,
                         'clientId'        => $fd,
@@ -94,6 +116,17 @@ class Server extends Base implements ITcpServer
                 catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
+                }
+                finally
+                {
+                    if (isset($channel, $channelId))
+                    {
+                        while (($channel->stats()['consumer_num'] ?? 0) > 0)
+                        {
+                            $channel->push(1);
+                        }
+                        ChannelContainer::removeChannel($channelId);
+                    }
                 }
             });
         }
@@ -108,6 +141,14 @@ class Server extends Base implements ITcpServer
             $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) {
                 try
                 {
+                    if ($this->syncConnect)
+                    {
+                        $channelId = 'connection:' . $fd;
+                        if (ChannelContainer::hasChannel($channelId))
+                        {
+                            ChannelContainer::pop($channelId);
+                        }
+                    }
                     $this->trigger('receive', [
                         'server'          => $this,
                         'clientId'        => $fd,
@@ -175,5 +216,13 @@ class Server extends Base implements ITcpServer
     public function send($clientId, string $data): bool
     {
         return $this->getSwooleServer()->send((int) $clientId, $data);
+    }
+
+    /**
+     * 是否同步连接.
+     */
+    public function isSyncConnect(): bool
+    {
+        return $this->syncConnect;
     }
 }

@@ -112,6 +112,18 @@ interface IServerUtil
     public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
+     * 连接是否存在.
+     *
+     * @param string|int|null $clientId
+     */
+    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool;
+
+    /**
+     * 指定标记的连接是否存在.
+     */
+    public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool;
+
+    /**
      * 获取服务器.
      *
      * @return \Imi\Server\Contract\IServer|null

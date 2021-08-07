@@ -8,9 +8,9 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
-use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Server\Contract\ISwooleUdpServer;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
 
 /**
@@ -18,7 +18,7 @@ use Imi\Swoole\Server\Event\Param\PacketEventParam;
  *
  * @Bean("UdpServer")
  */
-class Server extends Base implements IUdpServer
+class Server extends Base implements ISwooleUdpServer
 {
     /**
      * 是否支持 SSL.

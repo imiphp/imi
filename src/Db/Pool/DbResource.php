@@ -57,13 +57,10 @@ class DbResource extends BasePoolResource
     public function reset(): void
     {
         $db = $this->db;
-        if ($db->isConnected())
+        // 如果在事务中，则回滚
+        if ($db->isConnected() && $db->inTransaction())
         {
-            // 如果在事务中，则回滚
-            if ($db->inTransaction())
-            {
-                $db->rollBack();
-            }
+            $db->rollBack();
         }
     }
 

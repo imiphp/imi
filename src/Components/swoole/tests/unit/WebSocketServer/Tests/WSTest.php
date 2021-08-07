@@ -22,19 +22,11 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
-            for ($_ = 0; $_ < 3; ++$_)
-            {
-                sleep(1);
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'login',
-                    'username'  => 'test',
-                ])));
-                $recv = $client->recv();
-                if ($recv)
-                {
-                    break;
-                }
-            }
+            $this->assertTrue($client->send(json_encode([
+                'action'    => 'login',
+                'username'  => 'test',
+            ])));
+            $recv = $client->recv();
             // @phpstan-ignore-next-line
             $this->assertNotFalse($recv);
             // @phpstan-ignore-next-line
@@ -76,19 +68,11 @@ class WSTest extends BaseTest
                 $http->timeout = 10000;
                 $client = $http->websocket($this->host);
                 $this->assertTrue($client->isConnected());
-                for ($_ = 0; $_ < 3; ++$_)
-                {
-                    sleep(1);
-                    $this->assertTrue($client->send(json_encode([
-                        'action'    => 'reconnect',
-                        'token'     => 'test',
-                    ])));
-                    $recv = $client->recv();
-                    if ($recv)
-                    {
-                        break;
-                    }
-                }
+                $this->assertTrue($client->send(json_encode([
+                    'action'    => 'reconnect',
+                    'token'     => 'test',
+                ])));
+                $recv = $client->recv();
                 if (false !== $recv)
                 {
                     $recvData = json_decode($recv, true);
@@ -122,18 +106,10 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
-            for ($_ = 0; $_ < 3; ++$_)
-            {
-                sleep(1);
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'gg',
-                ])));
-                $recv = $client->recv();
-                if ($recv)
-                {
-                    break;
-                }
-            }
+            $this->assertTrue($client->send(json_encode([
+                'action'    => 'gg',
+            ])));
+            $recv = $client->recv();
             // @phpstan-ignore-next-line
             $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
@@ -148,19 +124,11 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
-            for ($_ = 0; $_ < 3; ++$_)
-            {
-                sleep(1);
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'test',
-                    'username'  => 'test',
-                ])));
-                $recv = $client->recv();
-                if ($recv)
-                {
-                    break;
-                }
-            }
+            $this->assertTrue($client->send(json_encode([
+                'action'    => 'test',
+                'username'  => 'test',
+            ])));
+            $recv = $client->recv();
             // @phpstan-ignore-next-line
             $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
@@ -168,19 +136,11 @@ class WSTest extends BaseTest
             $client = $http->websocket($this->host . 'test');
             $this->assertTrue($client->isConnected());
             $recv = null;
-            for ($_ = 0; $_ < 3; ++$_)
-            {
-                sleep(1);
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'test',
-                    'username'  => 'test',
-                ])));
-                $recv = $client->recv();
-                if ($recv)
-                {
-                    break;
-                }
-            }
+            $this->assertTrue($client->send(json_encode([
+                'action'    => 'test',
+                'username'  => 'test',
+            ])));
+            $recv = $client->recv();
             $this->assertEquals(json_encode([
                 'data'  => [
                     'action'    => 'test',

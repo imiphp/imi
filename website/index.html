@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>imi框架官网 - 基于Swoole的PHP协程开发框架|PHP框架|Swoole框架</title>
         <meta name="keywords" content="imi,imi框架,php框架,swoole,swoole框架,php协程框架,php异步框架" />
-        <meta name="description" content="imi是基于Swoole的PHP协程开发框架，高性能，功能强大，开发方便！支持 Http、Http2、WebSocket、TCP、UDP、MQTT 应用开发。由 Swoole 提供强力驱动，Swoole 拥有常驻内存、协程非阻塞 IO 等特性。" />
+        <meta name="description" content="imi是长连接分布式微服务 PHP 开发框架，多容器、分布式、高性能、次世代！支持 Http、Http2、WebSocket、TCP、UDP、MQTT 应用开发。由 Swoole 提供强力驱动，Swoole 拥有常驻内存、协程非阻塞 IO 等特性。" />
         <link rel="shortcut icon" href="favicon.ico">
         <link href="css/uikit.min.css" type="text/css" rel="stylesheet">
         <link href="css/site.css" type="text/css" rel="stylesheet">
@@ -60,12 +60,12 @@
                     <p>
                         <img src="images/logo-icon.png" alt="imi 框架 Logo"/>
                     </p>
-                    <h1>imi 框架——基于Swoole的PHP协程开发框架</h1>
+                    <h1>imi v2.0 长连接分布式 PHP 开发框架</h1>
                     <p class="uk-h2 uk-text-muted">
-                        高性能，功能强大，运行稳定，开发方便
+                        多容器、分布式、高性能、次世代
                     </p>
                         <p>
-                            支持 Http、Http2、WebSocket、TCP、UDP、MQTT 等主流协议的服务开发<br/>特别适合互联网微服务、即时通讯聊天im、物联网等场景！
+                            它可以运行在 PHP-FPM、Swoole、Workerman 多种容器环境下。<br/>现已被用于文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端、数据迁移服务（虎扑）等项目中。
                         </p>
                         <p>
                             <code>imi 于 2018 年立项并发布了第一个版本</code>
@@ -80,9 +80,9 @@
                         <a href="https://doc.imiphp.com" class="repo-button" target="_blank"><img src="images/logo-icon.png"/>imi 开发手册</a>
                     </div>
                     <div class="uk-block uk-grid uk-flex-center" style="padding-bottom: 0;">
-                        <div>PHP >= 7.1</div>
-                        <div>Composer</div>
-                        <div>Swoole >= 4.4.0</div>
+                        <div>PHP >= 7.4</div>
+                        <div>Composer >= 2.0</div>
+                        <div>Swoole >= 4.7.0</div>
                         <div>Redis、PDO</div>
                     </div>
                     <h2>imi 入门视频教程(免费11集全)</h2>
@@ -97,7 +97,7 @@
                         <a href="https://github.com/yurunsoft/imi-gobang" class="repo-button" target="_blank" rel="nofollow"><img src="images/github.ico"/>五子棋完整源码下载</a>
                     </div>
                     <br/>
-                    <div>QQ群了解一下？群号：17916227，或者戳这里👉<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=d798f9763a255582caeec0608ab1eaf2b42a6230afea7a45a2cf462822484bd6" rel="nofollow"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="宇润 PHP 组件全家桶 &amp; S" title="宇润 PHP 组件全家桶 &amp; S"></a></div>
+                    <div>QQ群了解一下？群号：17916227，或者戳这里👉<a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=d798f9763a255582caeec0608ab1eaf2b42a6230afea7a45a2cf462822484bd6" rel="nofollow"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="宇润 PHP 组件全家桶 &amp; S" title="宇润 PHP 组件全家桶 &amp; S"></a></div>
                     <br />
                 </div>
             </div>
@@ -108,19 +108,19 @@
                         <table>
                             <tr>
                                 <th>Http Server</th>
-                                <td><code>composer create-project imiphp/project-http</code></td>
+                                <td><code>composer create-project imiphp/project-http:2.0.x-dev</code></td>
                             </tr>
                             <tr>
                                 <th>WebSocket Server</th>
-                                <td><code>composer create-project imiphp/project-websocket</code></td>
+                                <td><code>composer create-project imiphp/project-websocket:2.0.x-dev</code></td>
                             </tr>
                             <tr>
                                 <th>TCP Server</th>
-                                <td><code>composer create-project imiphp/project-tcp</code></td>
+                                <td><code>composer create-project imiphp/project-tcp:2.0.x-dev</code></td>
                             </tr>
                             <tr>
                                 <th>UDP Server</th>
-                                <td><code>composer create-project imiphp/project-udp</code></td>
+                                <td><code>composer create-project imiphp/project-udp:2.0.x-dev</code></td>
                             </tr>
                             <tr>
                                 <th>MQTT Server</th>
@@ -135,14 +135,14 @@
                         <div class="uk-flex-order-last-small uk-flex-order-first-medium">
                             <div class="uk-panel uk-panel-space uk-panel-box">
                                 <h3 class="uk-text-bolder">常驻内存</h3>
-                                <p class="uk-text-muted">作为 Swoole 框架，能够避免重复加载带来的性能损耗，提升性能</p>
+                                <p class="uk-text-muted">基于 Swoole 和 Workerman，能够避免重复加载带来的性能损耗，提升性能</p>
                             </div>
                         </div>
                         <div class="">
                             <div class="uk-panel uk-panel-space uk-panel-box">
                                 <h3 class="uk-text-bolder">协程异步</h3>
                                 <p class="uk-text-muted">
-                                    提高对数据库查询等 I/O 密集型场景并发处理能力
+                                    Swoole 协程提高对数据库查询、接口请求等 I/O 密集型场景并发处理能力
                                 </p>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                                 进程/进程池
                             </div>
                             <div class="uk-button component">
-                                命令行开发辅助工具
+                                一把梭的分布式长连接解决方案
                             </div>
                             <div class="uk-button component">
                                 <i class="fa fa-thumbs-o-up"></i>
@@ -271,17 +271,6 @@
                                     </p>
                                     <p>
                                         博文地址：<a href="https://blog.csdn.net/qq_32783703/article/details/113576741" target="_blank">https://blog.csdn.net/qq_32783703/article/details/113576741</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="uk-panel uk-panel-box">
-                                <h3 class="uk-text-bolder"><a href="https://api.oioweb.cn" target="_blank">教书先生API - 提供免费接口调用平台</a></h3>
-                                <p class="uk-text-center"><img src="images/anli/jsxsapi.png"/></p>
-                                <div class="uk-text-left">
-                                    <p><b>项目介绍：</b>教书先生API是免费提供API数据接口调用服务平台 - 我们致力于为用户提供稳定、快速的免费API数据接口服务。</p>
-                                    <p><b>感言：</b></p>
-                                    <p>
-                                        之前的话服务器配置是8H8G 30M这样的一个配置，每天日300万+的一个请求量，有一次是某个接口因一个错误时不时会导致服务器直接宕机，一个偶然的搜索看到了群主（宇润）大佬的一个imi项目，于是熬夜给程序内部请求核心代码换上了imi，正好手里面有一台1H2G 5M的服务器，拿来测试了一下，配合Redis 200万-300万+一点问题都没有的，最后还是要感谢宇润大佬的开源项目。
                                     </p>
                                 </div>
                             </div>

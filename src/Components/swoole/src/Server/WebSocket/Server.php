@@ -11,11 +11,11 @@ use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
-use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Server\Contract\ISwooleWebSocketServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
 use Imi\Swoole\Server\Event\Param\MessageEventParam;
@@ -31,7 +31,7 @@ use Swoole\WebSocket\Server as WebSocketServer;
  *
  * @Bean("WebSocketServer")
  */
-class Server extends Base implements IWebSocketServer
+class Server extends Base implements ISwooleWebSocketServer
 {
     /**
      * 是否为 wss 服务

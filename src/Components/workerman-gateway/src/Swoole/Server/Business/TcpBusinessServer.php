@@ -21,7 +21,7 @@ use Workerman\Gateway\Gateway\Contract\IGatewayClient;
 use Workerman\Gateway\Gateway\GatewayWorkerClient;
 use Yurun\Swoole\CoPool\CoPool;
 
-if (\extension_loaded('swoole'))
+if (\extension_loaded('swoole') && class_exists(\Imi\Swoole\SwooleApp::class))
 {
     /**
      * @Bean("SwooleGatewayTcpBusinessServer")

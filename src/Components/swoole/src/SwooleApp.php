@@ -26,6 +26,7 @@ use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
@@ -128,11 +129,7 @@ class SwooleApp extends CliApp
         $this->initRuntime();
         $input = new ArgvInput();
         $isServerStart = ('swoole/start' === ($_SERVER['argv'][1] ?? null));
-        if ($isServerStart)
-        {
-            $result = false;
-        }
-        else
+        if (!$isServerStart)
         {
             // 尝试加载项目运行时
             $appRuntimeFile = $input->getParameterOption('--app-runtime');
@@ -152,34 +149,33 @@ class SwooleApp extends CliApp
             // 尝试加载默认 runtime
             $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'), true);
         }
-        if ($result)
-        {
-            return LoadRuntimeResult::IMI_LOADED;
-        }
-        else
+        if (!$result)
         {
             // 不使用缓存时去扫描
             Scanner::scanImi();
-            if ($isServerStart)
-            {
-                $imiRuntime = Imi::getRuntimePath('imi-runtime-bak');
-                Imi::buildRuntime($imiRuntime);
-                // 执行命令行生成缓存
-                $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
-                    'imi-runtime' => $imiRuntime,
-                ]);
-                do
-                {
-                    passthru(\Imi\cmd($cmd), $code);
-                    $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
-                    sleep(1);
-                } while (0 !== $code);
-
-                return LoadRuntimeResult::ALL;
-            }
-
-            return LoadRuntimeResult::IMI_LOADED;
         }
+        if ($isServerStart)
+        {
+            $imiRuntime = Imi::getRuntimePath('imi-runtime');
+            Imi::buildRuntime($imiRuntime);
+
+            // 执行命令行生成缓存
+            $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
+                'imi-runtime' => $imiRuntime,
+            ]);
+            exec(\Imi\cmd($cmd), $cmdOutput, $code);
+            $output = new ConsoleOutput();
+            $output->writeln(implode(\PHP_EOL, $cmdOutput));
+            if (0 !== $code)
+            {
+                exit($code);
+            }
+            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+
+            return LoadRuntimeResult::ALL;
+        }
+
+        return LoadRuntimeResult::IMI_LOADED;
     }
 
     /**

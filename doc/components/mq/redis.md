@@ -22,7 +22,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-queue": "^1.0.0"
+        "imiphp/imi-queue": "2.0.x-dev"
     }
 }
 ```
@@ -30,6 +30,8 @@
 然后执行 `composer update` 安装。
 
 ## 使用说明
+
+阿里云集群用户，请把 `script_check_enable` 设置改为 `0`
 
 > 可以参考 `example`、`tests` 目录示例。
 

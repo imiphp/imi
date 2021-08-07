@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://raw.githubusercontent.com/imiphp/imi/dev/res/logo.png" alt="imi" />
+        <img src="https://raw.githubusercontent.com/imiphp/imi/2.x/res/logo.png" alt="imi" />
     </a>
 </p>
 
@@ -90,7 +90,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 * Linux 系统 (Swoole 不支持在 Windows 上运行)
 * [PHP](https://php.net/) >= 7.4
-* [Composer](https://getcomposer.org/)
+* [Composer](https://getcomposer.org/) >= 2.0
 * [Swoole](https://www.swoole.com/) >= 4.7.0
 * Redis、PDO 扩展
 

@@ -11,7 +11,7 @@ use Imi\Util\Socket\IPEndPoint;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
-if (\extension_loaded('swoole'))
+if (\extension_loaded('swoole') && class_exists(\Imi\Swoole\SwooleApp::class))
 {
     class WorkermanGatewaySwooleRequest extends Request
     {

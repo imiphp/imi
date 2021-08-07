@@ -370,6 +370,56 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
+     * 连接是否存在.
+     *
+     * @param string|int|null $clientId
+     */
+    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        $server = $this->getServer($serverName);
+        if (!$server)
+        {
+            return false;
+        }
+        $worker = $server->getWorker();
+        if (null === $clientId)
+        {
+            $clientId = ConnectionContext::getClientId();
+        }
+
+        return isset($worker->connections[$clientId]);
+    }
+
+    /**
+     * 指定标记的连接是否存在.
+     */
+    public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        if (null === $flag)
+        {
+            $clientIds = [ConnectionContext::getClientId()];
+        }
+        else
+        {
+            $clientIds = ConnectionContext::getClientIdByFlag($flag, $serverName);
+        }
+        if ($clientIds)
+        {
+            $server = $this->getServer($serverName);
+            $worker = $server->getWorker();
+            foreach ($clientIds as $clientId)
+            {
+                if (isset($worker->connections[$clientId]))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * 获取服务器.
      */
     public function getServer(?string $serverName = null): ?IWorkermanServer

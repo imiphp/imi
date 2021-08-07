@@ -24,7 +24,9 @@ class FpmRuntimeModeHandler implements IRuntimeModeHandler
         {
             foreach ([
                 '@app.imi.runtime.annotation_manager_annotations',
+                '@app.imi.runtime.annotation_manager_annotations_cache',
                 '@app.imi.runtime.annotation_manager_annotation_relation',
+                '@app.imi.runtime.annotation_manager_annotation_relation_cache',
             ] as $name)
             {
                 if (null === Config::get($name))

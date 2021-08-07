@@ -65,7 +65,7 @@ class RedisResource extends BasePoolResource
         $redis = $this->redis;
         if (!$redis->isCluster() && $redis->isConnected() && !$redis->select($config['db'] ?? 0))
         {
-            throw new \RedisException('Redis select db failed');
+            throw new \RedisException($redis->getLastError());
         }
         $optScan = $config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
         if (!$redis->setOption(\Redis::OPT_SCAN, $optScan))

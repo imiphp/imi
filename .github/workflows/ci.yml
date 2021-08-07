@@ -65,6 +65,7 @@ jobs:
           docker exec ${ENV_SERVICE} php -v && php -m
           docker exec ${ENV_SERVICE} php --ri swoole
           docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer config -g process-timeout 600
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
           docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
@@ -85,6 +86,7 @@ jobs:
         swoole: [4.7]
     env:
       MYSQL_SERVER_PASSWORD: ""
+      PHP_VERSION: ${{ matrix.php }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -96,15 +98,8 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-      - name: install db
-        run: |
-          brew install mysql redis
-          brew services start mysql
-          brew services start redis
-      - name: install php
-        run: .github/macos/install-php7.4-mac.sh
-      - name: install swoole
-        run: .github/macos/install-swoole.sh 4.7.0
+      - name: install env
+        run: .github/macos/install-env.sh
       - name: prepare
         run: |
           composer update --prefer-dist --no-progress
@@ -113,6 +108,21 @@ jobs:
       - name: test
         run: |
           composer test
+      - name: Test components
+        run: |
+          composer test-swoole
+          composer test-workerman
+          composer test-workerman-gateway
+          composer test-fpm
+          composer test-jwt
+          composer test-queue
+          composer test-grpc
+          composer test-snowflake
+          composer test-mqtt
+          composer test-smarty
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
 
   ci-windows:
     runs-on: windows-latest

@@ -85,11 +85,7 @@ class WorkermanApp extends CliApp
         $this->initRuntime();
         $input = new ArgvInput();
         $isServerStart = ('workerman/start' === ($_SERVER['argv'][1] ?? null));
-        if ($isServerStart)
-        {
-            $result = false;
-        }
-        else
+        if (!$isServerStart)
         {
             // 尝试加载项目运行时
             $appRuntimeFile = $input->getParameterOption('--app-runtime');
@@ -109,34 +105,55 @@ class WorkermanApp extends CliApp
             // 尝试加载默认 runtime
             $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'), true);
         }
-        if ($result)
-        {
-            return LoadRuntimeResult::IMI_LOADED;
-        }
-        else
+        if (!$result)
         {
             // 不使用缓存时去扫描
             Scanner::scanImi();
-            if ($isServerStart)
+        }
+        if ($isServerStart)
+        {
+            $imiRuntime = Imi::getRuntimePath('imi-runtime');
+            Imi::buildRuntime($imiRuntime);
+            $success = false;
+            if (\extension_loaded('pcntl'))
             {
-                $imiRuntime = Imi::getRuntimePath('imi-runtime-bak');
-                Imi::buildRuntime($imiRuntime);
+                $pid = pcntl_fork();
+                if ($pid)
+                {
+                    pcntl_wait($status);
+                    if (0 === $status)
+                    {
+                        $success = true;
+                    }
+                }
+                elseif (0 === $pid)
+                {
+                    // 子进程
+                    Scanner::scanVendor();
+                    Scanner::scanApp();
+                    Imi::buildRuntime();
+                    exit;
+                }
+            }
+
+            if (!$success)
+            {
                 // 执行命令行生成缓存
                 $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
                     'imi-runtime' => $imiRuntime,
                 ]);
-                do
+                passthru(\Imi\cmd($cmd), $code);
+                if (0 !== $code)
                 {
-                    passthru(\Imi\cmd($cmd), $code);
-                    $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
-                    sleep(1);
-                } while (0 !== $code);
-
-                return LoadRuntimeResult::ALL;
+                    exit($code);
+                }
             }
+            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
 
-            return LoadRuntimeResult::IMI_LOADED;
+            return LoadRuntimeResult::ALL;
         }
+
+        return LoadRuntimeResult::IMI_LOADED;
     }
 
     /**

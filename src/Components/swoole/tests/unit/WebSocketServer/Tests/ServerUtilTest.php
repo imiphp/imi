@@ -55,18 +55,11 @@ class ServerUtilTest extends BaseTest
                 $http->timeout = 10000;
                 $client = $http->websocket($this->host);
                 $this->assertTrue($client->isConnected());
-                for ($_ = 0; $_ < 3; ++$_)
-                {
-                    sleep(1);
-                    $this->assertTrue($client->send(json_encode([
-                        'action'    => 'info',
-                    ])));
-                    $recv = $client->recv();
-                    if ($recv && ($recvData = json_decode($recv, true)) && isset($recvData['clientId']))
-                    {
-                        break;
-                    }
-                }
+                $this->assertTrue($client->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client->recv();
+                $recvData = json_decode($recv, true);
                 if (!isset($recvData['clientId']))
                 {
                     $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
@@ -116,19 +109,11 @@ class ServerUtilTest extends BaseTest
                     $http->timeout = 10000;
                     $client = $http->websocket($this->host);
                     $this->assertTrue($client->isConnected());
-                    for ($_ = 0; $_ < 3; ++$_)
-                    {
-                        sleep(1);
-                        $this->assertTrue($client->send(json_encode([
-                            'action'    => 'login',
-                            'username'  => 'testSend',
-                        ])));
-                        $recv = $client->recv();
-                        if ($recv)
-                        {
-                            break;
-                        }
-                    }
+                    $this->assertTrue($client->send(json_encode([
+                        'action'    => 'login',
+                        'username'  => 'testSend',
+                    ])));
+                    $recv = $client->recv();
                     // @phpstan-ignore-next-line
                     $recvData = json_decode($recv, true);
                     $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
@@ -199,14 +184,12 @@ class ServerUtilTest extends BaseTest
                 'sendToAll'     => 3,
                 'sendRawToAll'  => 3,
             ], $response->json(true));
-        });
+        }, null, 3);
     }
 
     public function testSendToGroup(): void
     {
         $this->go(function () {
-            $th = null;
-
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -215,19 +198,11 @@ class ServerUtilTest extends BaseTest
             $http1->timeout = 10000;
             $client1 = $http1->websocket($this->host);
             $this->assertTrue($client1->isConnected());
-            for ($_ = 0; $_ < 3; ++$_)
-            {
-                sleep(1);
-                $this->assertTrue($client1->send(json_encode([
-                    'action'    => 'login',
-                    'username'  => uniqid('', true),
-                ])));
-                $recv = $client1->recv();
-                if ($recv)
-                {
-                    break;
-                }
-            }
+            $this->assertTrue($client1->send(json_encode([
+                'action'    => 'login',
+                'username'  => uniqid('', true),
+            ])));
+            $recv = $client1->recv();
             // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
             $this->assertTrue($recvData['success'] ?? null, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
@@ -237,19 +212,11 @@ class ServerUtilTest extends BaseTest
             $http2->timeout = 10000;
             $client2 = $http2->websocket($this->host);
             $this->assertTrue($client2->isConnected());
-            for ($_ = 0; $_ < 3; ++$_)
-            {
-                sleep(1);
-                $this->assertTrue($client2->send(json_encode([
-                    'action'    => 'login',
-                    'username'  => uniqid('', true),
-                ])));
-                $recv = $client2->recv();
-                if ($recv)
-                {
-                    break;
-                }
-            }
+            $this->assertTrue($client2->send(json_encode([
+                'action'    => 'login',
+                'username'  => uniqid('', true),
+            ])));
+            $recv = $client2->recv();
             // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
             $this->assertTrue($recvData['success'] ?? null, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
@@ -271,60 +238,47 @@ class ServerUtilTest extends BaseTest
             }
             $client1->close();
             $client2->close();
-        });
+        }, null, 3);
     }
 
     public function testClose(): void
     {
-        $http1 = new HttpRequest();
-        $http1->retry = 3;
-        $http1->timeout = 10000;
-        $client1 = $http1->websocket($this->host);
-        $this->assertTrue($client1->isConnected());
-        for ($_ = 0; $_ < 3; ++$_)
-        {
-            sleep(1);
+        $this->go(function () {
+            $http1 = new HttpRequest();
+            $http1->retry = 3;
+            $http1->timeout = 10000;
+            $client1 = $http1->websocket($this->host);
+            $this->assertTrue($client1->isConnected());
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
             $recv = $client1->recv();
-            if ($recv && ($recvData1 = json_decode($recv, true)) && isset($recvData1['clientId']))
-            {
-                break;
-            }
-        }
-        $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
+            $recvData1 = json_decode($recv, true);
+            $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
-        $http2 = new HttpRequest();
-        $http2->retry = 3;
-        $http1->timeout = 10000;
-        $client2 = $http2->websocket($this->host);
-        $this->assertTrue($client2->isConnected());
-        for ($_ = 0; $_ < 3; ++$_)
-        {
-            sleep(1);
+            $http2 = new HttpRequest();
+            $http2->retry = 3;
+            $http1->timeout = 10000;
+            $client2 = $http2->websocket($this->host);
+            $this->assertTrue($client2->isConnected());
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',
             ])));
             $recv = $client2->recv();
-            if ($recv)
-            {
-                break;
-            }
-        }
-        // @phpstan-ignore-next-line
-        $recvData2 = json_decode($recv, true);
-        $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
+            // @phpstan-ignore-next-line
+            $recvData2 = json_decode($recv, true);
+            $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
-        $http3 = new HttpRequest();
-        // @phpstan-ignore-next-line
-        $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
-        $this->assertEquals([
-            'clientId'   => 1,
-            'flag'       => 1,
-        ], $response->json(true));
-        $this->assertEquals('', $client1->recv(1));
-        $this->assertEquals('', $client2->recv(1));
+            $http3 = new HttpRequest();
+            // @phpstan-ignore-next-line
+            $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
+            $this->assertEquals([
+                'clientId'   => 1,
+                'flag'       => 1,
+            ], $response->json(true));
+            $this->assertEquals('', $client1->recv(1));
+            $this->assertEquals('', $client2->recv(1));
+        }, null, 3);
     }
 }

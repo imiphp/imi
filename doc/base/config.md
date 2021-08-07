@@ -118,6 +118,8 @@ return [
         'mode'		=>	SWOOLE_BASE,
         // 参考 swoole sockType，可选
         'sockType'	=>	SWOOLE_SOCK_TCP,
+        // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP 有效
+        'syncConnect' => true,
         // 服务器配置，参数用法同\Swoole\Server->set($configs)
         // 参考: http://wiki.swoole.com/#/server/setting
         // 参考: http://wiki.swoole.com/#/websocket_server?id=%e9%80%89%e9%a1%b9

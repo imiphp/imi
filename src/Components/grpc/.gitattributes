@@ -4,3 +4,6 @@
 /.gitignore export-ignore
 /res export-ignore
 /example export-ignore
+/tests export-ignore
+/dev export-ignore
+/bin export-ignore

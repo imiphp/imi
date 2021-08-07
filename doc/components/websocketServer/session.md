@@ -1,6 +1,6 @@
-# 会话数据
+# 连接上下文
 
-imi 中长连接服务（Http2、WebSocket、TCP）中使用 `Imi\ConnectionContext` 类对连接的会话数据进行管理。在整个连接的生命周期中都有效。
+imi 中长连接服务（Http2、WebSocket、TCP）中使用 `Imi\ConnectionContext` 类对连接上下文的会话数据进行管理。在整个连接的生命周期中都有效。
 
 比如我们可以在客户端发送认证鉴权操作时，向连接上下文中写入当前客户端的id等信息。
 

@@ -18,7 +18,8 @@ return function () {
             {
                 (function () use (&$path) {
                     foreach ([
-                        $_SERVER['PWD'] ?? getcwd(),
+                        $_SERVER['PWD'],
+                        getcwd(),
                         dirname(__DIR__, 4), // 在非工作路径，使用绝对路径启动
                     ] as $path)
                     {
@@ -65,7 +66,27 @@ return function () {
         {
             $status = $e->getStatus();
         }
+        catch (\Throwable $th)
+        {
+            $status = 255;
+            try
+            {
+                /** @var \Imi\Log\ErrorLog $errorLog */
+                $errorLog = App::getBean('ErrorLog');
+                $errorLog->onException($th);
+            }
+            catch (\Throwable $tth)
+            {
+                throw $th;
+            }
+        }
     });
-    Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
-    exit($status);
+    if (0 === $status)
+    {
+        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
+    }
+    else
+    {
+        exit($status);
+    }
 };

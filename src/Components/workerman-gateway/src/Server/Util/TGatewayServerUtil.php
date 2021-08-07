@@ -212,15 +212,6 @@ trait TGatewayServerUtil
         {
             return $this->close(null, $serverName, false);
         }
-        if (null === $serverName)
-        {
-            $server = $this->getServer($serverName);
-            if (!$server)
-            {
-                return 0;
-            }
-            $serverName = $server->getName();
-        }
 
         $count = 0;
         foreach ((array) $flag as $tmpFlag)
@@ -233,5 +224,23 @@ trait TGatewayServerUtil
         }
 
         return $count;
+    }
+
+    /**
+     * 连接是否存在.
+     *
+     * @param string|int|null $clientId
+     */
+    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        return (bool) Gateway::isOnline($clientId);
+    }
+
+    /**
+     * 指定标记的连接是否存在.
+     */
+    public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool
+    {
+        return (bool) Gateway::isUidOnline($flag);
     }
 }

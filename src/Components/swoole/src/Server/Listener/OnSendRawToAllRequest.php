@@ -29,8 +29,9 @@ class OnSendRawToAllRequest implements IEventListener
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('sendRawToAllResponse', [
-                'messageId' => $data['messageId'],
-                'result'    => $result,
+                'messageId'  => $data['messageId'],
+                'result'     => $result,
+                'serverName' => $data['serverName'],
             ], $workerId, $data['serverName']);
         }
     }
