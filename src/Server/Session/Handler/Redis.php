@@ -74,7 +74,7 @@ class Redis extends Base
     {
         return ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionID) {
             return $redis->get($this->getKey($sessionID));
-        }, $this->poolName, true);
+        }, $this->poolName, true) ?: '';
     }
 
     /**
