@@ -59,8 +59,9 @@ class File extends Base
 
     /**
      * 读取session.
+     * @return false|string
      */
-    public function read(string $sessionId): string
+    public function read(string $sessionId)
     {
         $fileName = $this->getFileName($sessionId);
         if (is_file($fileName))
@@ -69,7 +70,7 @@ class File extends Base
         }
         else
         {
-            return '';
+            return false;
         }
     }
 

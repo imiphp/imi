@@ -55,7 +55,7 @@ class Redis extends Base
     /**
      * 读取session.
      *
-     * @return mixed
+     * @return false|string
      */
     public function read(string $sessionId)
     {
