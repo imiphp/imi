@@ -86,7 +86,8 @@ class SessionManager
         else
         {
             $data = $handler->read($sessionId);
-            if (false === $data){
+            if (false === $data)
+            {
                 $this->start(null);
             }
             else
