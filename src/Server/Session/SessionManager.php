@@ -86,9 +86,11 @@ class SessionManager
         else
         {
             $data = $handler->read($sessionId);
-            if ($data === false){
+            if (false === $data){
                 $this->start(null);
-            }else{
+            }
+            else
+            {
                 $this->id = $sessionId;
                 $this->data = $handler->decode($data);
             }
