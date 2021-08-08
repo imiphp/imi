@@ -57,6 +57,7 @@ class ServerUtilTest extends BaseTest
                 'username'  => 'testSend',
             ])));
             $recv = $client->recv();
+            $this->assertNotFalse($recv);
             $recvData = json_decode($recv, true);
             $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
 
@@ -99,6 +100,7 @@ class ServerUtilTest extends BaseTest
                     'username'  => uniqid('', true),
                 ])));
                 $recv = $client->recv();
+                $this->assertNotFalse($recv);
                 $recvData = json_decode($recv, true);
                 $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
                 $waitChannel->push(1);
