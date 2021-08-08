@@ -71,7 +71,7 @@ class File extends Base
      *
      * @param string $sessionID
      *
-     * @return mixed
+     * @return string
      */
     public function read($sessionID)
     {
