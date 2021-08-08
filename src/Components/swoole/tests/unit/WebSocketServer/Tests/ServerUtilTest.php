@@ -59,6 +59,7 @@ class ServerUtilTest extends BaseTest
                     'action'    => 'info',
                 ])));
                 $recv = $client->recv();
+                $this->assertNotFalse($recv);
                 $recvData = json_decode($recv, true);
                 if (!isset($recvData['clientId']))
                 {
@@ -114,6 +115,7 @@ class ServerUtilTest extends BaseTest
                         'username'  => 'testSend',
                     ])));
                     $recv = $client->recv();
+                    $this->assertNotFalse($recv);
                     // @phpstan-ignore-next-line
                     $recvData = json_decode($recv, true);
                     $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
