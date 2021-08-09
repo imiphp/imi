@@ -365,7 +365,7 @@ class ModelGenerate extends BaseCommand
     {
         $firstType = explode(' ', $type)[0];
         static $map = null;
-        if(!$map)
+        if (!$map)
         {
             $map = [
                 'int'       => ['int', 'int'],
@@ -379,7 +379,7 @@ class ModelGenerate extends BaseCommand
                 'float'     => ['float', 'float'],
                 'decimal'   => ['string|float|int', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int' : ''],
                 'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
-            ]
+            ];
         }
 
         return $map[$firstType] ?? ['string', 'string'];
