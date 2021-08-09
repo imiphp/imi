@@ -45,7 +45,7 @@ class AnnotationParser
 
     public function parse(string $className, bool $transaction = true): void
     {
-        if (interface_exists($className, false) || trait_exists($className, false) || !class_exists($className))
+        if (!class_exists($className) && !interface_exists($className, false) && !trait_exists($className, false))
         {
             return;
         }
