@@ -374,7 +374,7 @@ class ModelGenerate extends BaseCommand
             'year'      => ['int', 'int'],
             'double'    => ['float', 'float'],
             'float'     => ['float', 'float'],
-            'decimal'   => ['float', 'float'],
+            'decimal'   => ['string', 'string'],
             'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
         ];
 
