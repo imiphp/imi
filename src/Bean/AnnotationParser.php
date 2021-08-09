@@ -11,7 +11,6 @@ use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
 use Imi\Util\Imi;
 use Yurun\Doctrine\Common\Annotations\AnnotationReader;
-use Yurun\Doctrine\Common\Annotations\AnnotationRegistry;
 use Yurun\Doctrine\Common\Annotations\FileCacheReader;
 use Yurun\Doctrine\Common\Annotations\Reader;
 
@@ -44,17 +43,9 @@ class AnnotationParser
      */
     private Reader $reader;
 
-    public function __construct()
-    {
-        // 注册注解自动加载
-        AnnotationRegistry::registerLoader(function (string $class): bool {
-            return class_exists($class) || interface_exists($class, false);
-        });
-    }
-
     public function parse(string $className, bool $transaction = true): void
     {
-        if (!class_exists($className) && !interface_exists($className, false) && !trait_exists($className, false))
+        if (interface_exists($className, false) || trait_exists($className, false) || !class_exists($className))
         {
             return;
         }
