@@ -377,7 +377,7 @@ class ModelGenerate extends BaseCommand
                 'year'      => ['int', 'int'],
                 'double'    => ['float', 'float'],
                 'float'     => ['float', 'float'],
-                'decimal'   => ['string|float|int', version_compare(\PHP_VERSION, '8.0') ? 'string|float|int' : ''],
+                'decimal'   => ['string|float|int', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int' : ''],
                 'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
             ]
         }
