@@ -100,7 +100,7 @@ Github: <https://github.com/imiphp/imi-hprose>
 - `async` 该设置表示本服务函数是否为异步函数，异步函数的最后一个参数是一个回调函数，用户需要在异步函数中调用该回调方法来传回返回值
 - `passContext` 该属性为 boolean 类型，默认值为 false。具体请参考 Hprose 文档
 
-> Hprose 文档参考：https://github.com/hprose/hprose-php/wiki/06-Hprose-服务器#addfunction-%E6%96%B9%E6%B3%95
+> Hprose 文档参考：<https://github.com/hprose/hprose-php/wiki/06-Hprose-服务器#addfunction-%E6%96%B9%E6%B3%95>
 
 ## 客户端
 

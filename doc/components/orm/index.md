@@ -8,7 +8,7 @@ imi 中目前支持两个模型：数据库模型、内存表模型
 
 在 imi 框架中，提供了一个模型生成工具。使用该工具生成的模型，在使用时无需手动定义字段，支持 IDE 代码提示。
 
-模型生成命令使用说明：<https://doc.imiphp.com/dev/generate/model.html>
+模型生成命令使用说明：<https://doc.imiphp.com/v2.0/dev/generate/model.html>
 
 ## 模型字段和序列化
 
