@@ -51,14 +51,14 @@ return function () {
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)
                 {
-                    $appPath = $path ?? dirname($_SERVER['SCRIPT_NAME'], 2);
+                    $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? dirname($_SERVER['SCRIPT_NAME'], 2));
                     $config = include File::path($appPath, 'config/config.php');
                     if (!isset($config['namespace']))
                     {
                         echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', \PHP_EOL;
                         exit(255);
                     }
-                    App::setNx(AppContexts::APP_PATH, $appPath);
+                    App::setNx(AppContexts::APP_PATH, $appPath, true);
                     $namespace = $config['namespace'];
                 }
 
