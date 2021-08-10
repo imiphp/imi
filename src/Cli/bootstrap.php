@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Imi\Cli;
+
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Util\File;
@@ -16,8 +18,8 @@ return function () {
             foreach ([
                 $_SERVER['PWD'],
                 getcwd(),
-                dirname(__DIR__, 3),
-                dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
+                \dirname(__DIR__, 3),
+                \dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
             ] as $path)
             {
                 $fileName = $path . '/vendor/autoload.php';
@@ -40,7 +42,7 @@ return function () {
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)
         {
-            $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? dirname($_SERVER['SCRIPT_NAME'], 2));
+            $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? \dirname($_SERVER['SCRIPT_NAME'], 2));
             $config = include File::path($appPath, 'config/config.php');
             if (!isset($config['namespace']))
             {

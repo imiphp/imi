@@ -198,6 +198,7 @@ class App
             if (!(
                 (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
                 || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
+                || (isset($backtrace['function']) && Text::startwith($backtrace['function'], 'Imi\\'))
             ))
             {
                 throw new \RuntimeException('Cannot write to read-only application context');
@@ -217,6 +218,10 @@ class App
      */
     public static function setNx(string $name, $value, bool $readonly = false): bool
     {
+        if (\array_key_exists($name, static::$context))
+        {
+            return false;
+        }
         if (isset(static::$contextReadonly[$name]))
         {
             $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT | \DEBUG_BACKTRACE_IGNORE_ARGS, 2);
@@ -224,6 +229,7 @@ class App
             if (!(
                 (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
                 || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
+                || (isset($backtrace['function']) && Text::startwith($backtrace['function'], 'Imi\\'))
             ))
             {
                 throw new \RuntimeException('Cannot write to read-only application context');
@@ -233,16 +239,9 @@ class App
         {
             static::$contextReadonly[$name] = true;
         }
-        if (\array_key_exists($name, static::$context))
-        {
-            return false;
-        }
-        else
-        {
-            static::$context[$name] = $value;
+        static::$context[$name] = $value;
 
-            return true;
-        }
+        return true;
     }
 
     /**
