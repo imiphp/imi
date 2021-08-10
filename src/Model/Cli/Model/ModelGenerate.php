@@ -364,19 +364,23 @@ class ModelGenerate extends BaseCommand
     private function dbFieldTypeToPhp(string $type): array
     {
         $firstType = explode(' ', $type)[0];
-        static $map = [
-            'int'       => ['int', 'int'],
-            'smallint'  => ['int', 'int'],
-            'tinyint'   => ['int', 'int'],
-            'mediumint' => ['int', 'int'],
-            'bigint'    => ['int', 'int'],
-            'bit'       => ['bool', 'bool'],
-            'year'      => ['int', 'int'],
-            'double'    => ['float', 'float'],
-            'float'     => ['float', 'float'],
-            'decimal'   => ['float', 'float'],
-            'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
-        ];
+        static $map = null;
+        if (!$map)
+        {
+            $map = [
+                'int'       => ['int', 'int'],
+                'smallint'  => ['int', 'int'],
+                'tinyint'   => ['int', 'int'],
+                'mediumint' => ['int', 'int'],
+                'bigint'    => ['int', 'int'],
+                'bit'       => ['bool', 'bool'],
+                'year'      => ['int', 'int'],
+                'double'    => ['float', 'float'],
+                'float'     => ['float', 'float'],
+                'decimal'   => ['string|float|int', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int' : ''],
+                'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
+            ];
+        }
 
         return $map[$firstType] ?? ['string', 'string'];
     }

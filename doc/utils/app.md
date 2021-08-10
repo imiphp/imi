@@ -48,6 +48,20 @@
 
 第三个参数可以禁止非 `Imi\` 开头的命名空间的类，对应用上下文中`$name`对应的值进行写操作。
 
+### setNx
+
+设置应用上下文数据，当指定名称不存在时才设置
+
+`public static function setNx(string $name, $value, bool $readonly = false): bool`
+
+第三个参数可以禁止非 `Imi\` 开头的命名空间的类，对应用上下文中`$name`对应的值进行写操作。
+
+### has
+
+应用上下文数据是否存在
+
+`public static function has(string $name): bool`
+
 ### getImiVersion
 
 获取 imi 版本

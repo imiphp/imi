@@ -86,7 +86,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function redirect(string $url, int $status = 302): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
-        return $this->__getProxyInstance()->redirect($url, $status);
+        return self::__getProxyInstance()->redirect($url, $status);
     }
 
     /**
@@ -94,7 +94,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function send(): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
-        return $this->__getProxyInstance()->send(...\func_get_args());
+        return self::__getProxyInstance()->send(...\func_get_args());
     }
 
     /**
@@ -102,7 +102,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
-        return $this->__getProxyInstance()->sendFile($filename, $offset, $length);
+        return self::__getProxyInstance()->sendFile($filename, $offset, $length);
     }
 
     /**
@@ -110,7 +110,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function isHeaderWritable(): bool
     {
-        return $this->__getProxyInstance()->isHeaderWritable(...\func_get_args());
+        return self::__getProxyInstance()->isHeaderWritable(...\func_get_args());
     }
 
     /**
@@ -118,7 +118,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function isBodyWritable(): bool
     {
-        return $this->__getProxyInstance()->isBodyWritable(...\func_get_args());
+        return self::__getProxyInstance()->isBodyWritable(...\func_get_args());
     }
 
     /**
@@ -126,7 +126,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function setStatus(int $code, string $reasonPhrase = ''): \Imi\Util\Http\Contract\IResponse
     {
-        return $this->__getProxyInstance()->setStatus($code, $reasonPhrase);
+        return self::__getProxyInstance()->setStatus($code, $reasonPhrase);
     }
 
     /**
@@ -134,7 +134,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): \Imi\Util\Http\Contract\IResponse
     {
-        return $this->__getProxyInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+        return self::__getProxyInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
     /**
@@ -142,7 +142,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): \Imi\Util\Http\Contract\IResponse
     {
-        return $this->__getProxyInstance()->setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+        return self::__getProxyInstance()->setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
     /**
@@ -150,7 +150,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getCookieParams(): array
     {
-        return $this->__getProxyInstance()->getCookieParams(...\func_get_args());
+        return self::__getProxyInstance()->getCookieParams(...\func_get_args());
     }
 
     /**
@@ -158,7 +158,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getCookie(string $name, $default = null)
     {
-        return $this->__getProxyInstance()->getCookie($name, $default);
+        return self::__getProxyInstance()->getCookie($name, $default);
     }
 
     /**
@@ -166,7 +166,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getTrailers(): array
     {
-        return $this->__getProxyInstance()->getTrailers(...\func_get_args());
+        return self::__getProxyInstance()->getTrailers(...\func_get_args());
     }
 
     /**
@@ -174,7 +174,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function hasTrailer(string $name): bool
     {
-        return $this->__getProxyInstance()->hasTrailer($name);
+        return self::__getProxyInstance()->hasTrailer($name);
     }
 
     /**
@@ -182,7 +182,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getTrailer(string $name): ?string
     {
-        return $this->__getProxyInstance()->getTrailer($name);
+        return self::__getProxyInstance()->getTrailer($name);
     }
 
     /**
@@ -190,7 +190,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withTrailer(string $name, string $value): \Imi\Util\Http\Contract\IResponse
     {
-        return $this->__getProxyInstance()->withTrailer($name, $value);
+        return self::__getProxyInstance()->withTrailer($name, $value);
     }
 
     /**
@@ -198,7 +198,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function setTrailer(string $name, string $value): \Imi\Util\Http\Contract\IResponse
     {
-        return $this->__getProxyInstance()->setTrailer($name, $value);
+        return self::__getProxyInstance()->setTrailer($name, $value);
     }
 
     /**
@@ -206,7 +206,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getStatusCode()
     {
-        return $this->__getProxyInstance()->getStatusCode(...\func_get_args());
+        return self::__getProxyInstance()->getStatusCode(...\func_get_args());
     }
 
     /**
@@ -214,7 +214,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withStatus($code, $reasonPhrase = '')
     {
-        return $this->__getProxyInstance()->withStatus($code, $reasonPhrase);
+        return self::__getProxyInstance()->withStatus($code, $reasonPhrase);
     }
 
     /**
@@ -222,7 +222,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getReasonPhrase()
     {
-        return $this->__getProxyInstance()->getReasonPhrase(...\func_get_args());
+        return self::__getProxyInstance()->getReasonPhrase(...\func_get_args());
     }
 
     /**
@@ -230,7 +230,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getProtocolVersion()
     {
-        return $this->__getProxyInstance()->getProtocolVersion(...\func_get_args());
+        return self::__getProxyInstance()->getProtocolVersion(...\func_get_args());
     }
 
     /**
@@ -238,7 +238,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withProtocolVersion($version)
     {
-        return $this->__getProxyInstance()->withProtocolVersion($version);
+        return self::__getProxyInstance()->withProtocolVersion($version);
     }
 
     /**
@@ -246,7 +246,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getHeaders()
     {
-        return $this->__getProxyInstance()->getHeaders(...\func_get_args());
+        return self::__getProxyInstance()->getHeaders(...\func_get_args());
     }
 
     /**
@@ -254,7 +254,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function hasHeader($name)
     {
-        return $this->__getProxyInstance()->hasHeader($name);
+        return self::__getProxyInstance()->hasHeader($name);
     }
 
     /**
@@ -262,7 +262,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getHeader($name)
     {
-        return $this->__getProxyInstance()->getHeader($name);
+        return self::__getProxyInstance()->getHeader($name);
     }
 
     /**
@@ -270,7 +270,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getHeaderLine($name)
     {
-        return $this->__getProxyInstance()->getHeaderLine($name);
+        return self::__getProxyInstance()->getHeaderLine($name);
     }
 
     /**
@@ -278,7 +278,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withHeader($name, $value)
     {
-        return $this->__getProxyInstance()->withHeader($name, $value);
+        return self::__getProxyInstance()->withHeader($name, $value);
     }
 
     /**
@@ -286,7 +286,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withAddedHeader($name, $value)
     {
-        return $this->__getProxyInstance()->withAddedHeader($name, $value);
+        return self::__getProxyInstance()->withAddedHeader($name, $value);
     }
 
     /**
@@ -294,7 +294,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withoutHeader($name)
     {
-        return $this->__getProxyInstance()->withoutHeader($name);
+        return self::__getProxyInstance()->withoutHeader($name);
     }
 
     /**
@@ -302,7 +302,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function getBody()
     {
-        return $this->__getProxyInstance()->getBody(...\func_get_args());
+        return self::__getProxyInstance()->getBody(...\func_get_args());
     }
 
     /**
@@ -310,7 +310,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
-        return $this->__getProxyInstance()->withBody($body);
+        return self::__getProxyInstance()->withBody($body);
     }
 
     /**
@@ -318,7 +318,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function setProtocolVersion(string $version): \Imi\Util\Http\Contract\IMessage
     {
-        return $this->__getProxyInstance()->setProtocolVersion($version);
+        return self::__getProxyInstance()->setProtocolVersion($version);
     }
 
     /**
@@ -326,7 +326,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function setHeader(string $name, $value): \Imi\Util\Http\Contract\IMessage
     {
-        return $this->__getProxyInstance()->setHeader($name, $value);
+        return self::__getProxyInstance()->setHeader($name, $value);
     }
 
     /**
@@ -334,7 +334,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function addHeader(string $name, $value): \Imi\Util\Http\Contract\IMessage
     {
-        return $this->__getProxyInstance()->addHeader($name, $value);
+        return self::__getProxyInstance()->addHeader($name, $value);
     }
 
     /**
@@ -342,7 +342,7 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function removeHeader(string $name): \Imi\Util\Http\Contract\IMessage
     {
-        return $this->__getProxyInstance()->removeHeader($name);
+        return self::__getProxyInstance()->removeHeader($name);
     }
 
     /**
@@ -350,6 +350,6 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
      */
     public function setBody(\Psr\Http\Message\StreamInterface $body): \Imi\Util\Http\Contract\IMessage
     {
-        return $this->__getProxyInstance()->setBody($body);
+        return self::__getProxyInstance()->setBody($body);
     }
 }

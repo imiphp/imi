@@ -252,17 +252,20 @@ class ActionMiddleware implements MiddlewareInterface
             {
                 throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
             }
-            switch ($actionMethodCacheItem->getType())
+            if (null !== $value)
             {
-                case 'int':
-                    $value = (int) $value;
-                    break;
-                case 'float':
-                    $value = (float) $value;
-                    break;
-                case 'bool':
-                    $value = (bool) $value;
-                    break;
+                switch ($actionMethodCacheItem->getType())
+                {
+                    case 'int':
+                        $value = (int) $value;
+                        break;
+                    case 'float':
+                        $value = (float) $value;
+                        break;
+                    case 'bool':
+                        $value = (bool) $value;
+                        break;
+                }
             }
             $result[] = $value;
         }

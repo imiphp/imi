@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Imi\Workerman;
+
 use Imi\App;
+use Imi\AppContexts;
 use Imi\Event\Event;
 use Imi\Util\File;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -16,8 +19,8 @@ return function () {
             foreach ([
                 $_SERVER['PWD'],
                 getcwd(),
-                dirname(__DIR__, 3),
-                dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
+                \dirname(__DIR__, 3),
+                \dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
             ] as $path)
             {
                 $fileName = $path . '/vendor/autoload.php';
@@ -44,12 +47,14 @@ return function () {
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)
         {
-            $config = include File::path($path ?? dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');
+            $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? \dirname($_SERVER['SCRIPT_NAME'], 2));
+            $config = include File::path($appPath, 'config/config.php');
             if (!isset($config['namespace']))
             {
                 echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', \PHP_EOL;
                 exit(255);
             }
+            App::setNx(AppContexts::APP_PATH, $appPath, true);
             $namespace = $config['namespace'];
         }
 

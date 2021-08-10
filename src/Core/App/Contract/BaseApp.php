@@ -12,7 +12,6 @@ use Imi\Core\Runtime\Handler\DefaultRuntimeModeHandler;
 use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
 use Imi\Main\Helper;
-use Imi\Util\Imi;
 
 abstract class BaseApp implements IApp
 {
@@ -44,35 +43,13 @@ abstract class BaseApp implements IApp
 
         $appPath = App::get(AppContexts::APP_PATH);
         $hasAppConfig = false;
-        if ($appPath)
+        // 加载项目目录下的 env
+        DotEnv::load([$appPath]);
+        $fileName = $appPath . '/config/config.php';
+        if (is_file($fileName))
         {
-            // 加载项目目录下的 env
-            DotEnv::load([$appPath]);
-            $fileName = $appPath . '/config/config.php';
-            if (is_file($fileName))
-            {
-                Config::addConfig('@app', include $fileName);
-                $hasAppConfig = true;
-            }
-        }
-        else
-        {
-            $paths = Imi::getNamespacePaths($this->namespace);
-
-            // 加载项目目录下的 env
-            DotEnv::load($paths);
-
-            // 加载项目配置文件
-            foreach ($paths as $path)
-            {
-                $fileName = $path . '/config/config.php';
-                if (is_file($fileName))
-                {
-                    Config::addConfig('@app', include $fileName);
-                    $hasAppConfig = true;
-                    break;
-                }
-            }
+            Config::addConfig('@app', include $fileName);
+            $hasAppConfig = true;
         }
         if (!$hasAppConfig)
         {

@@ -33,7 +33,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
      */
     public function getClientId()
     {
-        return $this->__getProxyInstance()->getClientId(...\func_get_args());
+        return self::__getProxyInstance()->getClientId(...\func_get_args());
     }
 
     /**
@@ -41,7 +41,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
      */
     public function getData(): string
     {
-        return $this->__getProxyInstance()->getData(...\func_get_args());
+        return self::__getProxyInstance()->getData(...\func_get_args());
     }
 
     /**
@@ -49,7 +49,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
      */
     public function getFormatData()
     {
-        return $this->__getProxyInstance()->getFormatData(...\func_get_args());
+        return self::__getProxyInstance()->getFormatData(...\func_get_args());
     }
 
     /**
@@ -57,7 +57,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
      */
     public function getOpcode(): int
     {
-        return $this->__getProxyInstance()->getOpcode(...\func_get_args());
+        return self::__getProxyInstance()->getOpcode(...\func_get_args());
     }
 
     /**
@@ -65,7 +65,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
      */
     public function isFinish(): bool
     {
-        return $this->__getProxyInstance()->isFinish(...\func_get_args());
+        return self::__getProxyInstance()->isFinish(...\func_get_args());
     }
 
     /**
@@ -73,6 +73,6 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
      */
     public function getClientAddress(): IPEndPoint
     {
-        return $this->__getProxyInstance()->getClientAddress(...\func_get_args());
+        return self::__getProxyInstance()->getClientAddress(...\func_get_args());
     }
 }
