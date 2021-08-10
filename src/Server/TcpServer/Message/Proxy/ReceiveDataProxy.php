@@ -29,7 +29,7 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
      */
     public function getClientId()
     {
-        return $this->__getProxyInstance()->getClientId(...\func_get_args());
+        return self::__getProxyInstance()->getClientId(...\func_get_args());
     }
 
     /**
@@ -37,7 +37,7 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
      */
     public function getData(): string
     {
-        return $this->__getProxyInstance()->getData(...\func_get_args());
+        return self::__getProxyInstance()->getData(...\func_get_args());
     }
 
     /**
@@ -45,7 +45,7 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
      */
     public function getFormatData()
     {
-        return $this->__getProxyInstance()->getFormatData(...\func_get_args());
+        return self::__getProxyInstance()->getFormatData(...\func_get_args());
     }
 
     /**
@@ -53,6 +53,6 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
      */
     public function getClientAddress(): IPEndPoint
     {
-        return $this->__getProxyInstance()->getClientAddress(...\func_get_args());
+        return self::__getProxyInstance()->getClientAddress(...\func_get_args());
     }
 }
