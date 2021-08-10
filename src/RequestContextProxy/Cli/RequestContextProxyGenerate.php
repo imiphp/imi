@@ -178,7 +178,7 @@ class RequestContextProxyGenerate
                 }
                 else
                 {
-                    $code .= "\$this->__getProxyInstance()->{$methodName}({$paramsTpls['call']});";
+                    $code .= "self::__getProxyInstance()->{$methodName}({$paramsTpls['call']});";
                     $static = '';
                 }
                 $methodCodes .= <<<TPL

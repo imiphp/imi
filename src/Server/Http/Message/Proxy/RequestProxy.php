@@ -94,7 +94,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function get($name = null, $default = null)
     {
-        return $this->__getProxyInstance()->get($name, $default);
+        return $thisself::__getProxyInstance()->get($name, $default);
     }
 
     /**
@@ -102,7 +102,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function post($name = null, $default = null)
     {
-        return $this->__getProxyInstance()->post($name, $default);
+        return $thisself::__getProxyInstance()->post($name, $default);
     }
 
     /**
@@ -110,7 +110,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function hasGet($name)
     {
-        return $this->__getProxyInstance()->hasGet($name);
+        return $thisself::__getProxyInstance()->hasGet($name);
     }
 
     /**
@@ -118,7 +118,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function hasPost($name)
     {
-        return $this->__getProxyInstance()->hasPost($name);
+        return $thisself::__getProxyInstance()->hasPost($name);
     }
 
     /**
@@ -126,7 +126,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function request($name = null, $default = null)
     {
-        return $this->__getProxyInstance()->request($name, $default);
+        return $thisself::__getProxyInstance()->request($name, $default);
     }
 
     /**
@@ -134,7 +134,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function hasRequest($name)
     {
-        return $this->__getProxyInstance()->hasRequest($name);
+        return $thisself::__getProxyInstance()->hasRequest($name);
     }
 
     /**
@@ -142,7 +142,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getSwooleRequest(): \Swoole\Http\Request
     {
-        return $this->__getProxyInstance()->getSwooleRequest(...\func_get_args());
+        return $thisself::__getProxyInstance()->getSwooleRequest(...\func_get_args());
     }
 
     /**
@@ -150,7 +150,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getServerInstance(): \Imi\Server\Base
     {
-        return $this->__getProxyInstance()->getServerInstance(...\func_get_args());
+        return $thisself::__getProxyInstance()->getServerInstance(...\func_get_args());
     }
 
     /**
@@ -158,7 +158,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getServerParams()
     {
-        return $this->__getProxyInstance()->getServerParams(...\func_get_args());
+        return $thisself::__getProxyInstance()->getServerParams(...\func_get_args());
     }
 
     /**
@@ -166,7 +166,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getCookieParams()
     {
-        return $this->__getProxyInstance()->getCookieParams(...\func_get_args());
+        return $thisself::__getProxyInstance()->getCookieParams(...\func_get_args());
     }
 
     /**
@@ -174,7 +174,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withCookieParams(array $cookies)
     {
-        return $this->__getProxyInstance()->withCookieParams($cookies);
+        return $thisself::__getProxyInstance()->withCookieParams($cookies);
     }
 
     /**
@@ -182,7 +182,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getQueryParams()
     {
-        return $this->__getProxyInstance()->getQueryParams(...\func_get_args());
+        return $thisself::__getProxyInstance()->getQueryParams(...\func_get_args());
     }
 
     /**
@@ -190,7 +190,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withQueryParams(array $query)
     {
-        return $this->__getProxyInstance()->withQueryParams($query);
+        return $thisself::__getProxyInstance()->withQueryParams($query);
     }
 
     /**
@@ -198,7 +198,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getUploadedFiles()
     {
-        return $this->__getProxyInstance()->getUploadedFiles(...\func_get_args());
+        return $thisself::__getProxyInstance()->getUploadedFiles(...\func_get_args());
     }
 
     /**
@@ -206,7 +206,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
-        return $this->__getProxyInstance()->withUploadedFiles($uploadedFiles);
+        return $thisself::__getProxyInstance()->withUploadedFiles($uploadedFiles);
     }
 
     /**
@@ -214,7 +214,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getParsedBody()
     {
-        return $this->__getProxyInstance()->getParsedBody(...\func_get_args());
+        return $thisself::__getProxyInstance()->getParsedBody(...\func_get_args());
     }
 
     /**
@@ -222,7 +222,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withParsedBody($data)
     {
-        return $this->__getProxyInstance()->withParsedBody($data);
+        return $thisself::__getProxyInstance()->withParsedBody($data);
     }
 
     /**
@@ -230,7 +230,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getAttributes()
     {
-        return $this->__getProxyInstance()->getAttributes(...\func_get_args());
+        return $thisself::__getProxyInstance()->getAttributes(...\func_get_args());
     }
 
     /**
@@ -238,7 +238,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getAttribute($name, $default = null)
     {
-        return $this->__getProxyInstance()->getAttribute($name, $default);
+        return $thisself::__getProxyInstance()->getAttribute($name, $default);
     }
 
     /**
@@ -246,7 +246,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withAttribute($name, $value)
     {
-        return $this->__getProxyInstance()->withAttribute($name, $value);
+        return $thisself::__getProxyInstance()->withAttribute($name, $value);
     }
 
     /**
@@ -254,7 +254,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withoutAttribute($name)
     {
-        return $this->__getProxyInstance()->withoutAttribute($name);
+        return $thisself::__getProxyInstance()->withoutAttribute($name);
     }
 
     /**
@@ -262,7 +262,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getRequestTarget()
     {
-        return $this->__getProxyInstance()->getRequestTarget(...\func_get_args());
+        return $thisself::__getProxyInstance()->getRequestTarget(...\func_get_args());
     }
 
     /**
@@ -270,7 +270,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withRequestTarget($requestTarget)
     {
-        return $this->__getProxyInstance()->withRequestTarget($requestTarget);
+        return $thisself::__getProxyInstance()->withRequestTarget($requestTarget);
     }
 
     /**
@@ -278,7 +278,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getMethod()
     {
-        return $this->__getProxyInstance()->getMethod(...\func_get_args());
+        return $thisself::__getProxyInstance()->getMethod(...\func_get_args());
     }
 
     /**
@@ -286,7 +286,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withMethod($method)
     {
-        return $this->__getProxyInstance()->withMethod($method);
+        return $thisself::__getProxyInstance()->withMethod($method);
     }
 
     /**
@@ -294,7 +294,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getUri()
     {
-        return $this->__getProxyInstance()->getUri(...\func_get_args());
+        return $thisself::__getProxyInstance()->getUri(...\func_get_args());
     }
 
     /**
@@ -302,7 +302,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false)
     {
-        return $this->__getProxyInstance()->withUri($uri, $preserveHost);
+        return $thisself::__getProxyInstance()->withUri($uri, $preserveHost);
     }
 
     /**
@@ -310,7 +310,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getProtocolVersion()
     {
-        return $this->__getProxyInstance()->getProtocolVersion(...\func_get_args());
+        return $thisself::__getProxyInstance()->getProtocolVersion(...\func_get_args());
     }
 
     /**
@@ -318,7 +318,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withProtocolVersion($version)
     {
-        return $this->__getProxyInstance()->withProtocolVersion($version);
+        return $thisself::__getProxyInstance()->withProtocolVersion($version);
     }
 
     /**
@@ -326,7 +326,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getHeaders()
     {
-        return $this->__getProxyInstance()->getHeaders(...\func_get_args());
+        return $thisself::__getProxyInstance()->getHeaders(...\func_get_args());
     }
 
     /**
@@ -334,7 +334,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function hasHeader($name)
     {
-        return $this->__getProxyInstance()->hasHeader($name);
+        return $thisself::__getProxyInstance()->hasHeader($name);
     }
 
     /**
@@ -342,7 +342,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getHeader($name)
     {
-        return $this->__getProxyInstance()->getHeader($name);
+        return $thisself::__getProxyInstance()->getHeader($name);
     }
 
     /**
@@ -350,7 +350,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getHeaderLine($name)
     {
-        return $this->__getProxyInstance()->getHeaderLine($name);
+        return $thisself::__getProxyInstance()->getHeaderLine($name);
     }
 
     /**
@@ -358,7 +358,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withHeader($name, $value)
     {
-        return $this->__getProxyInstance()->withHeader($name, $value);
+        return $thisself::__getProxyInstance()->withHeader($name, $value);
     }
 
     /**
@@ -366,7 +366,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withAddedHeader($name, $value)
     {
-        return $this->__getProxyInstance()->withAddedHeader($name, $value);
+        return $thisself::__getProxyInstance()->withAddedHeader($name, $value);
     }
 
     /**
@@ -374,7 +374,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withoutHeader($name)
     {
-        return $this->__getProxyInstance()->withoutHeader($name);
+        return $thisself::__getProxyInstance()->withoutHeader($name);
     }
 
     /**
@@ -382,7 +382,7 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function getBody()
     {
-        return $this->__getProxyInstance()->getBody(...\func_get_args());
+        return $thisself::__getProxyInstance()->getBody(...\func_get_args());
     }
 
     /**
@@ -390,6 +390,6 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Con
      */
     public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
-        return $this->__getProxyInstance()->withBody($body);
+        return $thisself::__getProxyInstance()->withBody($body);
     }
 }
