@@ -114,6 +114,10 @@ class App
         static::$container = new Container();
         // 注解管理器初始化
         AnnotationManager::init();
+        if (!self::has(AppContexts::APP_PATH))
+        {
+            self::set(AppContexts::APP_PATH, Imi::getNamespacePath($namespace), true);
+        }
         static::$isInited = true;
         Event::trigger('IMI.INITED');
     }
@@ -204,6 +208,49 @@ class App
             static::$contextReadonly[$name] = true;
         }
         static::$context[$name] = $value;
+    }
+
+    /**
+     * 设置应用上下文数据，当指定名称不存在时才设置.
+     *
+     * @param mixed $value
+     */
+    public static function setNx(string $name, $value, bool $readonly = false): bool
+    {
+        if (isset(static::$contextReadonly[$name]))
+        {
+            $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT | \DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $backtrace = $backtrace[1] ?? null;
+            if (!(
+                (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
+                || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
+            ))
+            {
+                throw new \RuntimeException('Cannot write to read-only application context');
+            }
+        }
+        elseif ($readonly)
+        {
+            static::$contextReadonly[$name] = true;
+        }
+        if (\array_key_exists($name, static::$context))
+        {
+            return false;
+        }
+        else
+        {
+            static::$context[$name] = $value;
+
+            return true;
+        }
+    }
+
+    /**
+     * 应用上下文数据是否存在.
+     */
+    public static function has(string $name): bool
+    {
+        return \array_key_exists($name, static::$context);
     }
 
     /**

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Imi\Fpm\Server\Cli;
 
 use Imi\App;
+use Imi\AppContexts;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Util\File;
-use Imi\Util\Imi;
 
 /**
  * @Command("fpm")
@@ -27,7 +27,7 @@ class Server extends BaseCommand
      */
     public function start(string $host, int $port): void
     {
-        $cmd = '"' . \PHP_BINARY . '" -S ' . $host . ':' . $port . ' -t "' . File::path(Imi::getNamespacePath(App::getNamespace()), 'public') . '"';
+        $cmd = '"' . \PHP_BINARY . '" -S ' . $host . ':' . $port . ' -t "' . File::path(App::get(AppContexts::APP_PATH), 'public') . '"';
         $descriptorspec = [
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
             ['pipe', 'w'],  // 标准输出，子进程向此管道中写入数据

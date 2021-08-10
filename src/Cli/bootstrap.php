@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Imi\App;
+use Imi\AppContexts;
 use Imi\Util\File;
 use Symfony\Component\Console\Input\ArgvInput;
 
@@ -39,12 +40,14 @@ return function () {
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)
         {
-            $config = include File::path($path ?? dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');
+            $appPath = $path ?? dirname($_SERVER['SCRIPT_NAME'], 2);
+            $config = include File::path($appPath, 'config/config.php');
             if (!isset($config['namespace']))
             {
                 echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', \PHP_EOL;
                 exit(255);
             }
+            App::setNx(AppContexts::APP_PATH, $appPath);
             $namespace = $config['namespace'];
         }
 
