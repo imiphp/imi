@@ -1,6 +1,6 @@
 # HTTP 验证器
 
-请先阅读 [验证器](/components/validation/index.html) 章节，HTTP 验证器基于验证器扩展，基本使用方式相似。
+请先阅读 [验证器](/v2.0/components/validation/index.html) 章节，HTTP 验证器基于验证器扩展，基本使用方式相似。
 
 首先，HTTP 验证器是`@HttpValidation`注解，它只能写在方法上。写了这个注解，在`action`方法调用前会触发验证，验证失败同样的抛出异常
 
