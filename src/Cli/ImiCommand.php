@@ -87,7 +87,7 @@ class ImiCommand extends Command
         {
             /** @var Argument $argumentAnnotation */
             $type = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
-            if (ArgType::ARRAY === $argumentAnnotation->type)
+            if (ArgType::ARRAY === $argumentAnnotation->type || ArgType::ARRAY_EX === $argumentAnnotation->type)
             {
                 $type |= InputArgument::IS_ARRAY;
             }
@@ -97,7 +97,7 @@ class ImiCommand extends Command
         {
             /** @var Option $optionAnnotation */
             $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputArgument::OPTIONAL;
-            if (ArgType::ARRAY === $optionAnnotation->type)
+            if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
             {
                 $mode |= InputOption::VALUE_IS_ARRAY;
             }
@@ -227,6 +227,12 @@ class ImiCommand extends Command
                 if (!\is_array($value))
                 {
                     $value = explode(',', $value);
+                }
+                break;
+            case ArgType::ARRAY_EX:
+                if (\is_array($value) && !isset($value[1]) && isset($value[0]))
+                {
+                    $value = explode(',', $value[0]);
                 }
                 break;
         }

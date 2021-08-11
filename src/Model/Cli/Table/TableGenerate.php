@@ -32,8 +32,8 @@ class TableGenerate extends BaseCommand
      * @Option(name="namespace", type=ArgType::STRING, default=null, comments="模型所在命名空间，支持半角逗号分隔传多个，默认不传则为全部")
      * @Option(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
      * @Option(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
-     * @Option(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
-     * @Option(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
+     * @Option(name="include", type=ArgType::ARRAY_EX, default={}, comments="要包含的表名，以半角逗号分隔")
+     * @Option(name="exclude", type=ArgType::ARRAY_EX, default={}, comments="要排除的表名，以半角逗号分隔")
      * @Option(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的表，请慎重！true-全覆盖;false-不覆盖;默认缺省状态为false")
      *
      * @param string|bool $override

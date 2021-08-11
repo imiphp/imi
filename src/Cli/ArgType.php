@@ -23,6 +23,8 @@ class ArgType
 
     public const ARRAY = 'array';
 
+    public const ARRAY_EX = 'array_ex';
+
     private function __construct()
     {
     }

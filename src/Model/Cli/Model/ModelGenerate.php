@@ -33,9 +33,9 @@ class ModelGenerate extends BaseCommand
      * @Argument(name="baseClass", type=ArgType::STRING, default="Imi\Model\Model", comments="生成的Model所继承的基类,默认\Imi\Model\Model,可选")
      * @Option(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
      * @Option(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
-     * @Option(name="prefix", type=ArgType::ARRAY, default={}, comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
-     * @Option(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
-     * @Option(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
+     * @Option(name="prefix", type=ArgType::ARRAY_EX, default={}, comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
+     * @Option(name="include", type=ArgType::ARRAY_EX, default={}, comments="要包含的表名，以半角逗号分隔")
+     * @Option(name="exclude", type=ArgType::ARRAY_EX, default={}, comments="要排除的表名，以半角逗号分隔")
      * @Option(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false")
      * @Option(name="config", type=ArgType::STRING, default=true, comments="配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true")
      * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
@@ -282,15 +282,11 @@ class ModelGenerate extends BaseCommand
                 $isPk = 'PRI' === $field['Key'];
             }
             [$phpType, $phpDefinitionType] = $this->dbFieldTypeToPhp($typeName);
-            if (!empty($phpDefinitionType))
-            {
-                $phpDefinitionType = '?' . $phpDefinitionType;
-            }
             $data['fields'][] = [
                 'name'              => $field['Field'],
                 'varName'           => Text::toCamelName($field['Field']),
                 'type'              => $typeName,
-                'phpType'           => $phpType . '|null',
+                'phpType'           => $phpType,
                 'phpDefinitionType' => $phpDefinitionType,
                 'length'            => $length,
                 'accuracy'          => $accuracy,
@@ -368,21 +364,21 @@ class ModelGenerate extends BaseCommand
         if (!$map)
         {
             $map = [
-                'int'       => ['int', 'int'],
-                'smallint'  => ['int', 'int'],
-                'tinyint'   => ['int', 'int'],
-                'mediumint' => ['int', 'int'],
-                'bigint'    => ['int', 'int'],
-                'bit'       => ['bool', 'bool'],
-                'year'      => ['int', 'int'],
-                'double'    => ['float', 'float'],
-                'float'     => ['float', 'float'],
-                'decimal'   => ['string|float|int', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int' : ''],
-                'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
+                'int'       => ['int|null', '?int'],
+                'smallint'  => ['int|null', '?int'],
+                'tinyint'   => ['int|null', '?int'],
+                'mediumint' => ['int|null', '?int'],
+                'bigint'    => ['int|null', '?int'],
+                'bit'       => ['bool|null', '?bool'],
+                'year'      => ['int|null', '?int'],
+                'double'    => ['float|null', '?float'],
+                'float'     => ['float|null', '?float'],
+                'decimal'   => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : ''],
+                'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', ''],
             ];
         }
 
-        return $map[$firstType] ?? ['string', 'string'];
+        return $map[$firstType] ?? ['string|null', '?string'];
     }
 
     /**
