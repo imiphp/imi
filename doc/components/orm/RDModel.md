@@ -578,17 +578,20 @@ TestModel::sum('id');
 ```php
 // update tb_test set a = 'abc' where id > 5
 TestModel::updateBatch([
-    'a'	=>	'abc',
-], 'id > 5');
+        'a'	=> 'abc',
+    ], [
+        'id' => ['>', 5]
+    ]);
 ```
 
 ### 批量删除
 
 ```php
-// delete tb_test set a = 'abc' where id > 5
+// delete tb_test where a = 'abc' and id > 5
 TestModel::deleteBatch([
-    'a'	=>	'abc',
-], 'id > 5');
+    'a' => ['=', 'abc'],
+    'id' => ['>', 5]
+]);
 ```
 
 ### 查询器
