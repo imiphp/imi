@@ -89,6 +89,12 @@ imi 在 PSR-7 基础上，为所有 `withXXX` 方法都加上了 `setXXX` 用法
 $request = \Imi\RequestContext::get('request');
 ```
 
+当然，你还可以直接通过请求上下文代理类，在任意地方使用：
+
+```php
+\Imi\Server\Http\Message\Proxy\RequestProxy::post('id');
+```
+
 #### 获取 GET 参数
 
 `public function get($name = null, $default = null)`
@@ -269,6 +275,12 @@ imi 在 PSR-7 基础上，为所有 `withXXX` 方法都加上了 `setXXX` 用法
 ```php
 /** @var \Imi\Server\Http\Message\Response $request */
 $response = \Imi\RequestContext::get('response');
+```
+
+当然，你还可以直接通过请求上下文代理类，在任意地方使用：
+
+```php
+return \Imi\Server\Http\Message\Proxy\ResponseProxy::withStatus(404);
 ```
 
 直接对该对象操作无效，需要如下使用才可。

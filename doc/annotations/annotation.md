@@ -32,7 +32,13 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
+ * 
+ * // 下面是IDE提示注释
+ * @property string $name 随便定义的属性
+ * @property int $age 随便定义的属性
  */
+// 下面的是原生注解定义
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class MyAnnotation extends Base
 {
     /**
@@ -42,17 +48,12 @@ class MyAnnotation extends Base
     protected ?string $defaultFieldName = 'name';
 
     /**
-     * 随便定义的属性
-     * @var string
+     * 构造方法里定义注解的属性，并且设置默认值
      */
-    public $name;
-
-    /**
-     * 随便定义的属性
-     * @var int
-     */
-    public $age;
-
+    public function __construct(?array $__data = null, string $name = '', int $age = 0)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }
 ```
 
@@ -82,6 +83,9 @@ class Test
      * @MyAnnotation("a")
      * @MyAnnotation(name="b", age=11)
      */
+    // 下面是原生注解用法
+    #[MyAnnotation(name: 'a')]
+    #[MyAnnotation(name: 'b', age: 11)]
     public function aaa()
     {
 

@@ -95,6 +95,12 @@ return ['success'=>true];
 
 ### $data
 
+当然，你还可以直接通过请求上下文代理类，在任意地方使用：
+
+```php
+\Imi\Server\UdpServer\Message\Proxy\PacketDataProxy::getFormatData();
+```
+
 #### 方法
 
 ```php

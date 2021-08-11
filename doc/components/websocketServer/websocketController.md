@@ -120,6 +120,12 @@ $this->server->groupCall('组名', 'push', ['success'=>true]);
 
 ### $frame
 
+当然，你还可以直接通过请求上下文代理类，在任意地方使用：
+
+```php
+\Imi\Server\WebSocket\Message\Proxy\FrameProxy::getFormatData();
+```
+
 #### 方法
 
 公用方法：
