@@ -129,8 +129,6 @@ class Container implements ContainerInterface
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
-     *
-     * @return mixed
      */
     public function getSingleton(string $id): object
     {
