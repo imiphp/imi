@@ -12,31 +12,36 @@ use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
 
 /**
  * 一个简单的控制器
  * @Controller
  * @View(renderType="json")
+ * @HtmlView(baseDir="index/")
  */
 class Index extends HttpController
 {
-	/**
-	 * 一个动作
-	 * @Action
-	 * @Route(url="/")
-	 * @View(renderType="html", template="index")
-	 */
-	public function index()
-	{
-		return $this->response->write('hello imi!');
-	}
+       /**
+        * 一个动作
+        * @Action
+        * @Route(url="/")
+        * @View(renderType="html")
+        * @HtmlView(template="index")
+        */
+        public function index()
+        {
+            return $this->response->write('hello imi!');
+        }
 }
 ```
 
-如上代码所示，`@View`注解可以写在类和方法的注释中。
+如上代码所示，`@View`和`@HtmlView`注解可以写在类和方法的注释中。
 
-类注解代表针对所有动作设定的视图配置，在单个方法上写注解，会覆盖类注解。
+`@HtmlView`注解的`baseDir`属性是模板基础路径，`/`开头为绝对路径。
+
+类注解代表针对所有动作设定的视图配置，在单个方法上写注解，会覆盖类注解对应的配置。
 
 ## json
 
@@ -120,7 +125,8 @@ return [
 ```php
 /**
  * @Action
- * @View(renderType="html", template="a/b")
+ * @View(renderType="html")
+ * @HtmlView(template="a/b")
  */
 public function index()
 {
@@ -146,7 +152,7 @@ public function index()
 
 #### 模版文件
 
-`模版文件根路径/a/b.html`
+`模版基础路径/a/b.html`
 
 ```html
 <?=$content?>

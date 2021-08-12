@@ -150,6 +150,7 @@ class ServerUtilTest extends BaseTest
     {
         $client1 = new Client($this->host, $this->httpHost);
         $this->assertTrue($client1->connect());
+        sleep(1);
         $this->assertTrue($client1->sendData(json_encode([
             'action'    => 'info',
         ])));
@@ -160,6 +161,7 @@ class ServerUtilTest extends BaseTest
 
         $client2 = new Client($this->host, $this->httpHost);
         $this->assertTrue($client2->connect());
+        sleep(1);
         $this->assertTrue($client2->sendData(json_encode([
             'action'    => 'login',
             'username'  => 'testExists',
