@@ -149,6 +149,16 @@ class App
     }
 
     /**
+     * 获取单例对象
+     *
+     * @param array $params
+     */
+    public static function getSingleton(string $name, ...$params): object
+    {
+        return static::$container->getSingleton($name, ...$params);
+    }
+
+    /**
      * 当前是否为调试模式.
      */
     public static function isDebug(): bool

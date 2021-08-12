@@ -11,6 +11,11 @@ use Psr\Container\ContainerInterface;
 class Container implements ContainerInterface
 {
     /**
+     * Bean 对象们.
+     */
+    private array $beanObjects = [];
+
+    /**
      * 单例对象们.
      */
     private array $singletonObjects = [];
@@ -30,8 +35,8 @@ class Container implements ContainerInterface
      *
      * @param string $id 标识符
      *
-     * @throws NotFoundExceptionInterface  没有找到对象
-     * @throws ContainerExceptionInterface 检索时出错
+     * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
+     * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      *
      * @return mixed entry
      */
@@ -40,10 +45,10 @@ class Container implements ContainerInterface
         // 实现传递实例化参数
         $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
-        $singletonObjects = &$this->singletonObjects;
-        if (isset($singletonObjects[$id]) && 1 === \func_num_args())
+        $beanObjects = &$this->beanObjects;
+        if (isset($beanObjects[$id]) && 1 === \func_num_args())
         {
-            return $singletonObjects[$id];
+            return $beanObjects[$id];
         }
 
         if ('' === $id)
@@ -65,7 +70,7 @@ class Container implements ContainerInterface
                     $object = BeanFactory::newInstanceNoInit($className, ...$params);
                     if ([] === $params)
                     {
-                        $singletonObjects[$id] = $object;
+                        $beanObjects[$id] = $object;
                     }
                 }
                 else
@@ -102,7 +107,7 @@ class Container implements ContainerInterface
                 // 传参实例化强制不使用单例
                 if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
                 {
-                    $singletonObjects[$id] = $object;
+                    $beanObjects[$id] = $object;
                 }
             }
             break;
@@ -116,13 +121,102 @@ class Container implements ContainerInterface
     }
 
     /**
+     * 从容器中获取实例对象，如果不存在则实例化.
+     *
+     * 此方法实例化的对象，AOP、注解等都对它不产生作用
+     *
+     * @param string $id 标识符
+     *
+     * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
+     * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
+     *
+     * @return mixed
+     */
+    public function getSingleton(string $id): object
+    {
+        // 实现传递实例化参数
+        $params = \func_get_args();
+        // 单例中有数据，且无实例化参数时直接返回单例
+        $beanObjects = &$this->beanObjects;
+        if (isset($beanObjects[$id]) && 1 === \func_num_args())
+        {
+            return $beanObjects[$id];
+        }
+
+        if ('' === $id)
+        {
+            throw new ContainerException('$id can not be a empty string value');
+        }
+
+        unset($params[0]);
+
+        $binds = &$this->binds;
+
+        do
+        {
+            if (isset($binds[$id]))
+            {
+                $className = $binds[$id];
+                if (class_exists($className))
+                {
+                    $object = new $className(...$params);
+                    if ([] === $params)
+                    {
+                        $beanObjects[$id] = $object;
+                    }
+                }
+                else
+                {
+                    $id = $className;
+                    continue;
+                }
+            }
+            else
+            {
+                $data = BeanManager::get($id);
+                if ($data)
+                {
+                    $className = $data['className'];
+                    if (class_exists($className))
+                    {
+                        $object = new $data['className'](...$params);
+                    }
+                    else
+                    {
+                        $id = $className;
+                        continue;
+                    }
+                }
+                elseif (class_exists($id))
+                {
+                    $object = new $id(...$params);
+                }
+                else
+                {
+                    throw new ContainerException(sprintf('%s not found', $id));
+                }
+
+                // 传参实例化强制不使用单例
+                if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
+                {
+                    $beanObjects[$id] = $object;
+                }
+            }
+            break;
+        } while (true);
+
+        // @phpstan-ignore-next-line
+        return $object;
+    }
+
+    /**
      * 实例对象是否存在.
      *
      * @param string $id 标识符
      */
     public function has(string $id): bool
     {
-        return '' !== $id && isset($this->singletonObjects[$id]);
+        return '' !== $id && isset($this->beanObjects[$id]);
     }
 
     /**

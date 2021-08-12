@@ -51,6 +51,14 @@ $object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
 $object = \Imi\RequestContext::getBean('XXX');
 ```
 
+### 全局单例容器
+
+此方法实例化的对象，AOP、注解等都对它不产生作用，只是单纯的单例
+
+```php
+$object = \Imi\App::getSingleton('XXX');
+```
+
 ## 容器绑定
 
 **配置绑定：**

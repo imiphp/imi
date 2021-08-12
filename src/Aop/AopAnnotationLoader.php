@@ -13,45 +13,30 @@ use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Model\MethodAnnotationRelation;
+use Imi\Util\DelayClassCallable;
 
 class AopAnnotationLoader
 {
-    private static array $map = [];
+    private static bool $loaded = false;
 
     private function __construct()
     {
     }
 
-    public static function getMap(): array
-    {
-        return self::$map;
-    }
-
-    public static function setMap(array $map): void
-    {
-        self::$map = $map;
-    }
-
     public static function load(bool $force = true): void
     {
-        if (!$force && self::$map)
+        if (!$force && self::$loaded)
         {
             return;
         }
-        $map = [];
         foreach (AnnotationManager::getAnnotationPoints(Aspect::class) as $item)
         {
             /** @var Aspect $aspectAnnotation */
             $aspectAnnotation = $item->getAnnotation();
             $className = $item->getClass();
-            $classObject = new $className();
             foreach (AnnotationManager::getMethodsAnnotations($className, PointCut::class) as $methodName => $pointCuts)
             {
-                $callback = [$classObject, $methodName];
-                $mapItem = [
-                    'callback' => [$className, $methodName],
-                    'priority' => $aspectAnnotation->priority,
-                ];
+                $callback = new DelayClassCallable($className, $methodName);
                 /** @var Before|null $beforeAnnotation */
                 $beforeAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, Before::class)[0] ?? null;
                 /** @var After|null $beforeAnnotation */
@@ -87,8 +72,6 @@ class AopAnnotationLoader
                                         'extra' => $beforeAnnotation->toArray(),
                                     ];
                                     AopManager::addBefore($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                    $mapItem['options'] = $options;
-                                    $map[$class]['methods'][$method]['before'][] = $mapItem;
                                 }
                                 if ($afterAnnotation)
                                 {
@@ -97,8 +80,6 @@ class AopAnnotationLoader
                                         'extra' => $afterAnnotation->toArray(),
                                     ];
                                     AopManager::addAfter($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                    $mapItem['options'] = $options;
-                                    $map[$class]['methods'][$method]['after'][] = $mapItem;
                                 }
                                 if ($aroundAnnotation)
                                 {
@@ -107,8 +88,6 @@ class AopAnnotationLoader
                                         'extra' => $aroundAnnotation->toArray(),
                                     ];
                                     AopManager::addAround($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                    $mapItem['options'] = $options;
-                                    $map[$class]['methods'][$method]['around'][] = $mapItem;
                                 }
                                 if ($afterReturningAnnotation)
                                 {
@@ -117,8 +96,6 @@ class AopAnnotationLoader
                                         'extra' => $afterReturningAnnotation->toArray(),
                                     ];
                                     AopManager::addAfterReturning($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                    $mapItem['options'] = $options;
-                                    $map[$class]['methods'][$method]['afterReturning'][] = $mapItem;
                                 }
                                 if ($afterThrowingAnnotation)
                                 {
@@ -127,8 +104,6 @@ class AopAnnotationLoader
                                         'extra' => $afterThrowingAnnotation->toArray(),
                                     ];
                                     AopManager::addAfterThrowing($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                    $mapItem['options'] = $options;
-                                    $map[$class]['methods'][$method]['afterThrowing'][] = $mapItem;
                                 }
                             }
                             break;
@@ -163,8 +138,6 @@ class AopAnnotationLoader
                                             'extra' => $beforeAnnotation->toArray(),
                                         ];
                                         AopManager::addBefore($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                        $mapItem['options'] = $options;
-                                        $map[$class]['methods'][$method]['before'][] = $mapItem;
                                     }
                                     if ($afterAnnotation)
                                     {
@@ -173,8 +146,6 @@ class AopAnnotationLoader
                                             'extra' => $afterAnnotation->toArray(),
                                         ];
                                         AopManager::addAfter($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                        $mapItem['options'] = $options;
-                                        $map[$class]['methods'][$method]['after'][] = $mapItem;
                                     }
                                     if ($aroundAnnotation)
                                     {
@@ -183,8 +154,6 @@ class AopAnnotationLoader
                                             'extra' => $aroundAnnotation->toArray(),
                                         ];
                                         AopManager::addAround($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                        $mapItem['options'] = $options;
-                                        $map[$class]['methods'][$method]['around'][] = $mapItem;
                                     }
                                     if ($afterReturningAnnotation)
                                     {
@@ -193,8 +162,6 @@ class AopAnnotationLoader
                                             'extra' => $afterReturningAnnotation->toArray(),
                                         ];
                                         AopManager::addAfterReturning($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                        $mapItem['options'] = $options;
-                                        $map[$class]['methods'][$method]['afterReturning'][] = $mapItem;
                                     }
                                     if ($afterThrowingAnnotation)
                                     {
@@ -203,8 +170,6 @@ class AopAnnotationLoader
                                             'extra' => $afterThrowingAnnotation->toArray(),
                                         ];
                                         AopManager::addAfterThrowing($class, $method, $callback, $aspectAnnotation->priority, $options);
-                                        $mapItem['options'] = $options;
-                                        $map[$class]['methods'][$method]['afterThrowing'][] = $mapItem;
                                     }
                                 }
                             }
@@ -215,6 +180,6 @@ class AopAnnotationLoader
                 }
             }
         }
-        self::$map = $map;
+        self::$loaded = true;
     }
 }
