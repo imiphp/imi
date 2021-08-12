@@ -673,23 +673,17 @@ class AnnotationParser
             {
                 continue;
             }
+            AnnotationManager::clearClassAllAnnotations($className);
             if (class_exists($className))
             {
                 $this->parse($className, false);
             }
-            else
-            {
-                AnnotationManager::clearClassAllAnnotations($className);
-            }
             foreach (ClassObject::getSubClasses($className, $this->getClasses()) as $subClassName)
             {
+                AnnotationManager::clearClassAllAnnotations($subClassName);
                 if (class_exists($subClassName))
                 {
                     $this->parse($subClassName, false);
-                }
-                else
-                {
-                    AnnotationManager::clearClassAllAnnotations($subClassName);
                 }
             }
         }
