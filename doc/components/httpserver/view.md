@@ -23,17 +23,17 @@ use Imi\Server\View\Annotation\View;
  */
 class Index extends HttpController
 {
-	/**
-	 * 一个动作
-	 * @Action
-	 * @Route(url="/")
-	 * @View(renderType="html")
-         * @HtmlView(template="index")
-	 */
-	public function index()
-	{
-		return $this->response->write('hello imi!');
-	}
+       /**
+        * 一个动作
+        * @Action
+        * @Route(url="/")
+        * @View(renderType="html")
+        * @HtmlView(template="index")
+        */
+        public function index()
+        {
+            return $this->response->write('hello imi!');
+        }
 }
 ```
 
