@@ -28,7 +28,7 @@ class Index extends HttpController
 	 * @Action
 	 * @Route(url="/")
 	 * @View(renderType="html")
-     * @HtmlView(template="index")
+         * @HtmlView(template="index")
 	 */
 	public function index()
 	{
