@@ -281,13 +281,14 @@ class ModelGenerate extends BaseCommand
             {
                 $isPk = 'PRI' === $field['Key'];
             }
-            [$phpType, $phpDefinitionType] = $this->dbFieldTypeToPhp($typeName);
+            [$phpType, $phpDefinitionType, $typeConvert] = $this->dbFieldTypeToPhp($typeName);
             $data['fields'][] = [
                 'name'              => $field['Field'],
                 'varName'           => Text::toCamelName($field['Field']),
                 'type'              => $typeName,
                 'phpType'           => $phpType,
                 'phpDefinitionType' => $phpDefinitionType,
+                'typeConvert'       => $typeConvert,
                 'length'            => $length,
                 'accuracy'          => $accuracy,
                 'nullable'          => 'YES' === $field['Null'],
@@ -355,7 +356,7 @@ class ModelGenerate extends BaseCommand
     /**
      * 数据库字段类型转PHP的字段类型.
      *
-     * 返回格式：[显示类型，定义类型]
+     * 返回格式：[显示类型, 定义类型, 强制类型转换]
      */
     private function dbFieldTypeToPhp(string $type): array
     {
@@ -364,17 +365,17 @@ class ModelGenerate extends BaseCommand
         if (!$map)
         {
             $map = [
-                'int'       => ['int|null', '?int'],
-                'smallint'  => ['int|null', '?int'],
-                'tinyint'   => ['int|null', '?int'],
-                'mediumint' => ['int|null', '?int'],
-                'bigint'    => ['int|null', '?int'],
-                'bit'       => ['bool|null', '?bool'],
-                'year'      => ['int|null', '?int'],
-                'double'    => ['float|null', '?float'],
-                'float'     => ['float|null', '?float'],
-                'decimal'   => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : ''],
-                'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', ''],
+                'int'       => ['int|null', '?int', '(int)'],
+                'smallint'  => ['int|null', '?int', '(int)'],
+                'tinyint'   => ['int|null', '?int', '(int)'],
+                'mediumint' => ['int|null', '?int', '(int)'],
+                'bigint'    => ['int|null', '?int', '(int)'],
+                'bit'       => ['bool|null', '?bool', '(bool)'],
+                'year'      => ['int|null', '?int', '(int)'],
+                'double'    => ['float|null', '?float', '(float)'],
+                'float'     => ['float|null', '?float', '(float)'],
+                'decimal'   => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : '', ''],
+                'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', '', ''],
             ];
         }
 

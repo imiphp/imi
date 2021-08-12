@@ -1,4 +1,5 @@
-<?php echo '<?php'; ?>
+<?php declare(strict_types=1);
+echo '<?php'; ?>
 
 declare(strict_types=1);
 
@@ -66,7 +67,7 @@ abstract class <?php echo $className; ?>Base extends Model
 
      * @return static
      */
-    public function set<?php echo ucfirst($field['varName']); ?>(<?php if ($field['typeDefinition'] && $field['phpDefinitionType']) { ?><?php echo $field['phpDefinitionType']; ?> <?php } ?>$<?php echo $field['varName']; ?>)
+    public function set<?php echo ucfirst($field['varName']); ?>($<?php echo $field['varName']; ?>)
     {
 <?php if ($lengthCheck && $length = [
     'char'       => $field['length'],
@@ -85,7 +86,7 @@ abstract class <?php echo $className; ?>Base extends Model
             throw new \InvalidArgumentException('The maximum length of $<?php echo $field['varName']; ?> is <?php echo $length; ?>');
         }
 <?php } ?>
-        $this-><?php echo $field['varName']; ?> = $<?php echo $field['varName']; ?>;
+        $this-><?php echo $field['varName']; ?> = <?php echo $field['typeConvert']; ?>$<?php echo $field['varName']; ?>;
         return $this;
     }
 
