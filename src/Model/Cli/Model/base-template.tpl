@@ -86,7 +86,7 @@ abstract class <?php echo $className; ?>Base extends Model
             throw new \InvalidArgumentException('The maximum length of $<?php echo $field['varName']; ?> is <?php echo $length; ?>');
         }
 <?php } ?>
-        $this-><?php echo $field['varName']; ?> = <?php echo $field['typeConvert']; ?>$<?php echo $field['varName']; ?>;
+        $this-><?php echo $field['varName']; ?> = null === $<?php echo $field['varName']; ?> ? null : <?php echo $field['typeConvert']; ?>$<?php echo $field['varName']; ?>;
         return $this;
     }
 

@@ -379,7 +379,7 @@ class ModelGenerate extends BaseCommand
             ];
         }
 
-        return $map[$firstType] ?? ['string|null', '?string'];
+        return $map[$firstType] ?? ['string|null', '?string', '(string)'];
     }
 
     /**
