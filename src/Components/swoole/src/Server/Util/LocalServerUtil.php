@@ -531,12 +531,12 @@ class LocalServerUtil implements ISwooleServerUtil
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
-                        $result = $channel->pop($this->waitResponseTimeout);
-                        if (false === $result)
+                        $popResult = $channel->pop($this->waitResponseTimeout);
+                        if (false === $popResult)
                         {
                             break;
                         }
-                        $result += ($result['result'] ?? 0);
+                        $result += ($popResult['result'] ?? 0);
                     }
                 }
             }
