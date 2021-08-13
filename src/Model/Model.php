@@ -704,7 +704,7 @@ abstract class Model extends BaseModel
         $result = new LazyArrayObject();
         $canUpdateTime = 'save' === $type || 'update' === $type;
         $objectIsObject = \is_object($object);
-        foreach ($meta->getDbFields() as $dbFielName => $item)
+        foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
             ['propertyName' => $name, 'column' => $column] = $item;
@@ -739,11 +739,11 @@ abstract class Model extends BaseModel
                         $value = (int) date('Y');
                         break;
                     default:
-                        throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFielName, $column->type));
+                        throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFieldName, $column->type));
                 }
                 if ($objectIsObject)
                 {
-                    $object->$dbFielName = $value;
+                    $object->$dbFieldName = $value;
                 }
             }
             elseif (\array_key_exists($name, $data))
@@ -788,7 +788,7 @@ abstract class Model extends BaseModel
                     }
                     break;
             }
-            $result[$dbFielName] = $value;
+            $result[$dbFieldName] = $value;
         }
 
         // 更新时无需更新主键
