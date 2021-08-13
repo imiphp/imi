@@ -71,10 +71,6 @@ class Redis implements IGroupHandler
         {
             $this->key = 'imi:' . App::getNamespace() . ':connect_group';
         }
-        if (null === $this->redisPool)
-        {
-            return;
-        }
         $workerId = Worker::getWorkerId();
         $this->masterPID = $masterPID = Worker::getMasterPid();
         if (0 === $workerId)
@@ -95,7 +91,7 @@ class Redis implements IGroupHandler
         {
             $redis->del($this->key . ':master_pid');
         }
-        if ($r = $redis->setnx($this->key . ':master_pid', $this->masterPID))
+        if ($redis->setnx($this->key . ':master_pid', $this->masterPID))
         {
             // 清空分组列表
             $groupsKey = $this->getGroupsKey();

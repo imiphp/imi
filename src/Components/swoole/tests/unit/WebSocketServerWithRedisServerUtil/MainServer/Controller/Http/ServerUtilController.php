@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Controll
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
 
 /**
@@ -51,14 +52,20 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      */
-    public function send(string $flag): array
+    public function send(array $clientIds, string $flag): array
     {
         $data = [
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
         $result = [];
+        $result['send1'] = Server::send($data);
+        $result['send2'] = Server::send($data, $clientIds[0]);
+        $result['send3'] = Server::send($data, $clientIds);
         $result['sendByFlag'] = Server::sendByFlag($data, $flag);
+        $result['sendRaw1'] = Server::sendRaw($dataStr);
+        $result['sendRaw2'] = Server::sendRaw($dataStr, $clientIds[0]);
+        $result['sendRaw3'] = Server::sendRaw($dataStr, $clientIds);
         $result['sendRawByFlag'] = Server::sendRawByFlag($dataStr, $flag);
 
         $result['sendToAll'] = Server::sendToAll($data);
@@ -76,7 +83,11 @@ class ServerUtilController extends HttpController
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
-        $result = [];
+        var_dump(ServerManager::getServer('main')->getGroup('g1')->getClientIds());
+        $result = [
+            // @phpstan-ignore-next-line
+            'groupClientIdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
+        ];
 
         $result['sendToGroup'] = Server::sendToGroup('g1', $data);
         $result['sendRawToGroup'] = Server::sendRawToGroup('g1', $dataStr);

@@ -80,10 +80,6 @@ class Redis implements IHandler
         {
             $this->key = 'imi:' . App::getNamespace() . ':connect_context';
         }
-        if (null === $this->redisPool)
-        {
-            return;
-        }
         $workerId = Worker::getWorkerId();
         $this->masterPID = $masterPID = Worker::getMasterPid();
 

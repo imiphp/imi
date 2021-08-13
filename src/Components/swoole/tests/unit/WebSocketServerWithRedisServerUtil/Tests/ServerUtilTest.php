@@ -44,66 +44,33 @@ class ServerUtilTest extends BaseTest
     public function testSend(): void
     {
         $this->go(function () {
-            $dataStr = json_encode([
-                'data'  => 'test',
-            ]);
-            $http = new HttpRequest();
-            $http->retry = 3;
-            $http->timeout = 10000;
-            $client = $http->websocket($this->host);
-            $this->assertTrue($client->isConnected());
-            $this->assertTrue($client->send(json_encode([
-                'action'    => 'login',
-                'username'  => 'testSend',
-            ])));
-            $recv = $client->recv();
-            $this->assertNotFalse($recv);
-            $recvData = json_decode($recv, true);
-            $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
-
-            $http2 = new HttpRequest();
-            $response = $http2->post($this->host . 'serverUtil/send', [
-                'flag' => 'testSend',
-            ], 'json');
-
-            for ($i = 0; $i < 4; ++$i)
-            {
-                $recvResult = $client->recv();
-                $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
-            }
-
-            $this->assertEquals([
-                'sendByFlag'    => 1,
-                'sendRawByFlag' => 1,
-                'sendToAll'     => 1,
-                'sendRawToAll'  => 1,
-            ], $response->json(true));
-        }, null, 3);
-    }
-
-    public function testSendToGroup(): void
-    {
-        $this->go(function () {
             $th = null;
-            $waitChannel = new Channel(16);
-            $func = function ($recvCount) use ($waitChannel) {
+            $channel = new Channel(16);
+            $func = function ($index, $recvCount) use ($channel) {
                 $dataStr = json_encode([
                     'data'  => 'test',
                 ]);
-                $http = new HttpRequest();
-                $http->retry = 3;
-                $http->timeout = 10000;
-                $client = $http->websocket($this->host);
-                $this->assertTrue($client->isConnected());
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'login',
-                    'username'  => uniqid('', true),
-                ])));
-                $recv = $client->recv();
-                $this->assertNotFalse($recv);
-                $recvData = json_decode($recv, true);
-                $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
-                $waitChannel->push(1);
+                do
+                {
+                    echo 'try get workerId ', $index, \PHP_EOL;
+                    $http = new HttpRequest();
+                    $http->retry = 3;
+                    $http->timeout = 10000;
+                    $client = $http->websocket($this->host);
+                    $this->assertTrue($client->isConnected());
+                    $this->assertTrue($client->send(json_encode([
+                        'action'    => 'info',
+                    ])));
+                    $recv = $client->recv();
+                    $this->assertNotFalse($recv);
+                    $recvData = json_decode($recv, true);
+                    if (!isset($recvData['clientId']))
+                    {
+                        $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
+                    }
+                } while ($index !== $recvData['workerId']);
+                // @phpstan-ignore-next-line
+                $channel->push([$index => $recvData['clientId']]);
                 for ($i = 0; $i < $recvCount; ++$i)
                 {
                     $recvResult = $client->recv();
@@ -111,26 +78,77 @@ class ServerUtilTest extends BaseTest
                 }
                 $client->close();
             };
-            for ($i = 0; $i < 2; ++$i)
-            {
-                go(function () use ($func, $waitChannel) {
-                    try
+            $waitChannel = new Channel(16);
+            go(function () use ($func, $channel, $waitChannel) {
+                try
+                {
+                    $func(0, 6);
+                    $waitChannel->push(1);
+                }
+                catch (\Throwable $th)
+                {
+                    $channel->push($th);
+                    $waitChannel->push($th);
+                }
+            });
+            go(function () use ($func, $channel, $waitChannel) {
+                try
+                {
+                    $func(1, 4);
+                    $waitChannel->push(1);
+                }
+                catch (\Throwable $th)
+                {
+                    $channel->push($th);
+                    $waitChannel->push($th);
+                }
+            });
+            go(function () use ($waitChannel, $channel) {
+                try
+                {
+                    $dataStr = json_encode([
+                        'data'  => 'test',
+                    ]);
+                    $http = new HttpRequest();
+                    $http->retry = 3;
+                    $http->timeout = 10000;
+                    $client = $http->websocket($this->host);
+                    $this->assertTrue($client->isConnected());
+                    $this->assertTrue($client->send(json_encode([
+                        'action'    => 'login',
+                        'username'  => 'testSend',
+                    ])));
+                    $recv = $client->recv();
+                    $this->assertNotFalse($recv);
+                    // @phpstan-ignore-next-line
+                    $recvData = json_decode($recv, true);
+                    $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
+                    $channel->push('test');
+                    for ($i = 0; $i < 4; ++$i)
                     {
-                        $func(2);
-                        $waitChannel->push(1);
+                        $recvResult = $client->recv();
+                        $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                     }
-                    catch (\Throwable $th)
-                    {
-                        $waitChannel->push($th);
-                    }
-                });
-            }
+                    $client->close();
+                    $waitChannel->push(1);
+                }
+                catch (\Throwable $th)
+                {
+                    $channel->push($th);
+                    $waitChannel->push($th);
+                }
+            });
+            $clientIds = [];
             $th = null;
-            for ($i = 0; $i < 2; ++$i)
+            for ($i = 0; $i < 3; ++$i)
             {
-                $result = $waitChannel->pop();
+                $result = $channel->pop(30);
                 $this->assertNotFalse($result);
-                if ($result instanceof \Throwable)
+                if (\is_array($result))
+                {
+                    $clientIds[key($result)] = current($result);
+                }
+                elseif ($result instanceof \Throwable)
                 {
                     $th = $result;
                 }
@@ -139,10 +157,15 @@ class ServerUtilTest extends BaseTest
             {
                 throw $th;
             }
+            ksort($clientIds);
+            $this->assertCount(2, $clientIds);
             $http = new HttpRequest();
-            $response = $http->get($this->host . 'serverUtil/sendToGroup');
+            $response = $http->post($this->host . 'serverUtil/send', [
+                'clientIds'  => $clientIds,
+                'flag'       => 'testSend',
+            ], 'json');
             $th = null;
-            for ($i = 0; $i < 2; ++$i)
+            for ($i = 0; $i < 3; ++$i)
             {
                 $result = $waitChannel->pop();
                 $this->assertNotFalse($result);
@@ -156,20 +179,112 @@ class ServerUtilTest extends BaseTest
                 throw $th;
             }
             $this->assertEquals([
-                'sendToGroup'    => 2,
-                'sendRawToGroup' => 2,
+                'send1'         => 0,
+                'send2'         => 1,
+                'send3'         => 2,
+                'sendByFlag'    => 1,
+                'sendRaw1'      => 0,
+                'sendRaw2'      => 1,
+                'sendRaw3'      => 2,
+                'sendRawByFlag' => 1,
+                'sendToAll'     => 3,
+                'sendRawToAll'  => 3,
             ], $response->json(true));
+        }, null, 3);
+    }
+
+    public function testSendToGroup(): void
+    {
+        $this->go(function () {
+            $dataStr = json_encode([
+                'data'  => 'test',
+            ]);
+            do
+            {
+                echo 'try get workerId 0', \PHP_EOL;
+                $http1 = new HttpRequest();
+                $http1->retry = 3;
+                $http1->timeout = 10000;
+                $client1 = $http1->websocket($this->host);
+                $this->assertTrue($client1->isConnected());
+                $this->assertTrue($client1->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client1->recv();
+                $recvData = json_decode($recv, true);
+                $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+            } while (0 !== $recvData['workerId']);
+            $this->assertTrue($client1->send(json_encode([
+                'action'    => 'login',
+                'username'  => uniqid('', true),
+            ])));
+            $recv = $client1->recv();
+            // @phpstan-ignore-next-line
+            $recvData = json_decode($recv, true);
+            $this->assertTrue($recvData['success'] ?? null, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+
+            do
+            {
+                echo 'try get workerId 1', \PHP_EOL;
+                $http2 = new HttpRequest();
+                $http2->retry = 3;
+                $http2->timeout = 10000;
+                $client2 = $http2->websocket($this->host);
+                $this->assertTrue($client2->isConnected());
+                $this->assertTrue($client2->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client2->recv();
+                $recvData = json_decode($recv, true);
+                $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+            } while (1 !== $recvData['workerId']);
+            $this->assertTrue($client2->send(json_encode([
+                'action'    => 'login',
+                'username'  => uniqid('', true),
+            ])));
+            $recv = $client2->recv();
+            // @phpstan-ignore-next-line
+            $recvData = json_decode($recv, true);
+            $this->assertTrue($recvData['success'] ?? null, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+
+            $http = new HttpRequest();
+            $response = $http->get($this->host . 'serverUtil/sendToGroup');
+            $this->assertEquals([
+                'groupClientIdCount'   => 2,
+                'sendToGroup'          => 2,
+                'sendRawToGroup'       => 2,
+            ], $response->json(true));
+
+            for ($i = 0; $i < 2; ++$i)
+            {
+                $recvResult = $client1->recv();
+                $this->assertEquals($dataStr, $recvResult, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+                $recvResult = $client2->recv();
+                $this->assertEquals($dataStr, $recvResult, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+            }
+            $client1->close();
+            $client2->close();
         }, null, 3);
     }
 
     public function testExists(): void
     {
         $this->go(function () {
-            $http1 = new HttpRequest();
-            $http1->retry = 3;
-            $http1->timeout = 10000;
-            $client1 = $http1->websocket($this->host);
-            $this->assertTrue($client1->isConnected());
+            do
+            {
+                echo 'try get workerId 0', \PHP_EOL;
+                $http1 = new HttpRequest();
+                $http1->retry = 3;
+                $http1->timeout = 10000;
+                $client1 = $http1->websocket($this->host);
+                $this->assertTrue($client1->isConnected());
+                $this->assertTrue($client1->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client1->recv();
+                $recvData = json_decode($recv, true);
+                $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+            } while (0 !== $recvData['workerId']);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
@@ -177,11 +292,21 @@ class ServerUtilTest extends BaseTest
             $recvData1 = json_decode($recv, true);
             $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
-            $http2 = new HttpRequest();
-            $http2->retry = 3;
-            $http1->timeout = 10000;
-            $client2 = $http2->websocket($this->host);
-            $this->assertTrue($client2->isConnected());
+            do
+            {
+                echo 'try get workerId 1', \PHP_EOL;
+                $http2 = new HttpRequest();
+                $http2->retry = 3;
+                $http2->timeout = 10000;
+                $client2 = $http2->websocket($this->host);
+                $this->assertTrue($client2->isConnected());
+                $this->assertTrue($client2->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client2->recv();
+                $recvData = json_decode($recv, true);
+                $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+            } while (1 !== $recvData['workerId']);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testExists',
@@ -204,11 +329,21 @@ class ServerUtilTest extends BaseTest
     public function testClose(): void
     {
         $this->go(function () {
-            $http1 = new HttpRequest();
-            $http1->retry = 3;
-            $http1->timeout = 10000;
-            $client1 = $http1->websocket($this->host);
-            $this->assertTrue($client1->isConnected());
+            do
+            {
+                echo 'try get workerId 0', \PHP_EOL;
+                $http1 = new HttpRequest();
+                $http1->retry = 3;
+                $http1->timeout = 10000;
+                $client1 = $http1->websocket($this->host);
+                $this->assertTrue($client1->isConnected());
+                $this->assertTrue($client1->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client1->recv();
+                $recvData = json_decode($recv, true);
+                $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+            } while (0 !== $recvData['workerId']);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
@@ -216,20 +351,32 @@ class ServerUtilTest extends BaseTest
             $recvData1 = json_decode($recv, true);
             $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
-            $http2 = new HttpRequest();
-            $http2->retry = 3;
-            $http1->timeout = 10000;
-            $client2 = $http2->websocket($this->host);
-            $this->assertTrue($client2->isConnected());
+            do
+            {
+                echo 'try get workerId 1', \PHP_EOL;
+                $http2 = new HttpRequest();
+                $http2->retry = 3;
+                $http2->timeout = 10000;
+                $client2 = $http2->websocket($this->host);
+                $this->assertTrue($client2->isConnected());
+                $this->assertTrue($client2->send(json_encode([
+                    'action'    => 'info',
+                ])));
+                $recv = $client2->recv();
+                $recvData = json_decode($recv, true);
+                $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+            } while (1 !== $recvData['workerId']);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',
             ])));
             $recv = $client2->recv();
+            // @phpstan-ignore-next-line
             $recvData2 = json_decode($recv, true);
             $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
             $http3 = new HttpRequest();
+            // @phpstan-ignore-next-line
             $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
             $this->assertEquals([
                 'clientId'   => 1,
