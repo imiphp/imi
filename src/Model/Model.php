@@ -702,7 +702,8 @@ abstract class Model extends BaseModel
             $data = $_data;
         }
         $result = new LazyArrayObject();
-        $canUpdateTime = 'save' === $type || 'update' === $type;
+        $isUpdate = 'update' === $type;
+        $canUpdateTime = $isUpdate || 'save' === $type;
         $objectIsObject = \is_object($object);
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
@@ -756,6 +757,10 @@ abstract class Model extends BaseModel
             }
             else
             {
+                if ($isUpdate)
+                {
+                    continue;
+                }
                 $value = null;
             }
             if (null === $value && !$column->nullable)
@@ -792,7 +797,7 @@ abstract class Model extends BaseModel
         }
 
         // 更新时无需更新主键
-        if ('update' === $type)
+        if ($isUpdate)
         {
             foreach ($meta->getId() as $id)
             {
