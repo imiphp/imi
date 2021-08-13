@@ -12,6 +12,7 @@ use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Main\Helper;
+use function Imi\ttyExec;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\ConsoleEvents;
@@ -142,7 +143,7 @@ class WorkermanApp extends CliApp
                 $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
                     'imi-runtime' => $imiRuntime,
                 ]);
-                passthru(\Imi\cmd($cmd), $code);
+                $code = ttyExec(\Imi\cmd($cmd));
                 if (0 !== $code)
                 {
                     exit($code);

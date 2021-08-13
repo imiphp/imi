@@ -19,6 +19,7 @@ use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
 use Imi\Swoole\Context\CoroutineContextManager;
 use Imi\Swoole\Util\AtomicManager;
+use function Imi\ttyExec;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
@@ -26,7 +27,6 @@ use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
@@ -163,9 +163,7 @@ class SwooleApp extends CliApp
             $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
                 'imi-runtime' => $imiRuntime,
             ]);
-            exec(\Imi\cmd($cmd), $cmdOutput, $code);
-            $output = new ConsoleOutput();
-            $output->writeln(implode(\PHP_EOL, $cmdOutput));
+            $code = ttyExec(\Imi\cmd($cmd));
             if (0 !== $code)
             {
                 exit($code);

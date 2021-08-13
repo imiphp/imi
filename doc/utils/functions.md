@@ -60,3 +60,15 @@ getenv() 函数的封装，支持默认值
 ```php
 echo \Imi\cmd('ls');
 ```
+
+### Imi\ttyExec
+
+尝试使用 tty 模式执行命令，可以保持带颜色格式的输出
+
+返回进程退出码
+
+定义：`function ttyExec(string|array $commands): int`
+
+```php
+\Imi\tty('ls');
+```

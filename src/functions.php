@@ -69,6 +69,8 @@ namespace
 
 namespace Imi
 {
+    use Symfony\Component\Process\Process;
+
     /**
      * 处理命令行，执行后不会有 sh 进程.
      */
@@ -82,5 +84,30 @@ namespace Imi
         {
             return $cmd;
         }
+    }
+
+    /**
+     * 尝试使用 tty 模式执行命令，可以保持带颜色格式的输出
+     * 返回进程退出码
+     *
+     * @param string|array $commands
+     */
+    function ttyExec($commands): int
+    {
+        if (\is_array($commands))
+        {
+            $process = new Process($commands);
+        }
+        else
+        {
+            $process = Process::fromShellCommandline($commands);
+        }
+        if ('\\' !== \DIRECTORY_SEPARATOR && $process->isTtySupported())
+        {
+            $process->setTty(true);
+        }
+        $process->start();
+
+        return $process->wait();
     }
 }

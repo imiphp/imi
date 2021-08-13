@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use function Imi\ttyExec;
 use Symfony\Component\Console\Input\ArgvInput;
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -88,10 +89,9 @@ function startServer(): void
             {
                 $keyword = 'WorkerMan: master process';
             }
-            exec(<<<CMD
+            ttyExec(<<<CMD
 kill `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`
-CMD, $output);
-            fwrite(\STDOUT, implode(\PHP_EOL, $output));
+CMD);
             echo 'WorkermanServers stoped!', \PHP_EOL, \PHP_EOL;
         });
     }

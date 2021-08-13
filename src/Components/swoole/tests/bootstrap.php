@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use function Imi\ttyExec;
 use function Yurun\Swoole\Coroutine\batch;
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -190,8 +191,7 @@ function startServer(): void
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
-            exec("{$cmd}", $output, $code);
-            fwrite(\STDOUT, implode(\PHP_EOL, $output));
+            $code = ttyExec($cmd);
             if (0 === $code)
             {
                 register_shutdown_function(function () use ($name, $options) {
@@ -199,8 +199,7 @@ function startServer(): void
                     // stop server
                     $cmd = $options['stop'];
                     echo "Stoping {$name}...", \PHP_EOL;
-                    exec($cmd, $output, $code);
-                    fwrite(\STDOUT, implode(\PHP_EOL, $output));
+                    ttyExec($cmd);
                     echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
                 });
 
@@ -225,8 +224,7 @@ function startServer(): void
     register_shutdown_function(function () {
         \Swoole\Runtime::enableCoroutine(false);
         echo 'check ports...', \PHP_EOL;
-        exec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php', $output, $code);
-        fwrite(\STDOUT, implode(\PHP_EOL, $output));
+        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
     });
 }
 
