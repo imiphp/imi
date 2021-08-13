@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use ArrayObject;
+use JsonSerializable;
 
 /**
  * 同时可以作为数组和对象访问的类.
  */
-class LazyArrayObject extends ArrayObject
+class LazyArrayObject extends ArrayObject implements JsonSerializable
 {
     /**
      * @param mixed $input
@@ -17,6 +18,11 @@ class LazyArrayObject extends ArrayObject
     public function __construct($input = [], int $flags = self::ARRAY_AS_PROPS, string $iteratorClass = 'ArrayIterator')
     {
         parent::__construct($input, $flags, $iteratorClass);
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->getArrayCopy();
     }
 
     /**
