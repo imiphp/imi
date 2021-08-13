@@ -512,33 +512,63 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        if (null === $flag)
+        $server = $this->getServer($serverName);
+        $swooleServer = $server->getSwooleServer();
+        $result = 0;
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && null !== $flag)
         {
-            $clientId = ConnectionContext::getClientId();
-            if (!$clientId)
+            $id = uniqid('', true);
+            try
             {
-                return 0;
+                $channel = ChannelContainer::getChannel($id);
+                $count = $this->sendMessage('closeByFlagRequest', [
+                    'messageId'    => $id,
+                    'flag'         => $flag,
+                    'serverName'   => $server->getName(),
+                    'needResponse' => true,
+                ]);
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                {
+                    for ($i = $count; $i > 0; --$i)
+                    {
+                        $result = $channel->pop($this->waitResponseTimeout);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $result += ($result['result'] ?? 0);
+                    }
+                }
             }
-            $clientIds = [(int) $clientId];
+            finally
+            {
+                ChannelContainer::removeChannel($id);
+            }
         }
         else
         {
-            $clientIds = [];
-            foreach ((array) $flag as $tmpFlag)
+            if (null === $flag)
             {
-                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag, $serverName);
-                if ($clientId)
+                $clientIds = [ConnectionContext::getClientId()];
+            }
+            else
+            {
+                $clientIds = ConnectionContext::getClientIdByFlag($flag, $serverName);
+                if (!$clientIds)
                 {
-                    $clientIds = array_merge($clientIds, $clientId);
+                    return 0;
                 }
             }
-            if (!$clientIds)
+            foreach ($clientIds as $clientId)
             {
-                return 0;
+                if ($swooleServer->close((int) $clientId))
+                {
+                    ++$result;
+                }
             }
         }
 
-        return $this->close($clientIds, $serverName, $toAllWorkers);
+        return $result;
     }
 
     /**
@@ -600,31 +630,17 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
-        if (null === $flag)
-        {
-            $clientIds = [ConnectionContext::getClientId()];
-        }
-        else
-        {
-            $clientIds = ConnectionContext::getClientIdByFlag($flag, $serverName);
-            if (!$clientIds)
-            {
-                return false;
-            }
-        }
-
         $server = $this->getServer($serverName);
         $swooleServer = $server->getSwooleServer();
-        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && null !== $flag)
         {
             $id = uniqid('', true);
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                // count问题
                 $count = $this->sendMessage('existsRequest', [
                     'messageId'    => $id,
-                    'clientIds'    => $clientIds,
+                    'flag'         => $flag,
                     'serverName'   => $server->getName(),
                     'needResponse' => true,
                 ]);
@@ -651,6 +667,18 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         else
         {
+            if (null === $flag)
+            {
+                $clientIds = [ConnectionContext::getClientId()];
+            }
+            else
+            {
+                $clientIds = ConnectionContext::getClientIdByFlag($flag, $serverName);
+                if (!$clientIds)
+                {
+                    return false;
+                }
+            }
             foreach ($clientIds as $clientId)
             {
                 if ($swooleServer->exists((int) $clientId))

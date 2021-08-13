@@ -11,7 +11,6 @@ return [
     ],
     'beans'    => [
         'HttpDispatcher'    => [
-            // TODO：注入失败
             'middlewares'    => [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],

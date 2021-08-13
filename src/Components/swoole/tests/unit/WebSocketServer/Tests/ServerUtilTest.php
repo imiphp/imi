@@ -247,7 +247,12 @@ class ServerUtilTest extends BaseTest
             $recvData = json_decode($recv, true);
             $this->assertTrue($recvData['success'] ?? null, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
 
-            $http = new HttpRequest();
+            do
+            {
+                $http = new HttpRequest();
+                $response = $http->get($this->host . 'serverUtil/info');
+                $data = $response->json(true);
+            } while (0 !== ($data['workerId'] ?? null));
             $response = $http->get($this->host . 'serverUtil/sendToGroup');
             $this->assertEquals([
                 'groupClientIdCount'   => 2,
@@ -306,7 +311,7 @@ class ServerUtilTest extends BaseTest
                 $recv = $client2->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
-            } while (1 !== $recvData['workerId']);
+            } while (0 !== $recvData['workerId']);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testExists',
@@ -315,7 +320,12 @@ class ServerUtilTest extends BaseTest
             $recvData2 = json_decode($recv, true);
             $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
-            $http3 = new HttpRequest();
+            do
+            {
+                $http3 = new HttpRequest();
+                $response = $http3->get($this->host . 'serverUtil/info');
+                $data = $response->json(true);
+            } while (1 !== ($data['workerId'] ?? null));
             $response = $http3->post($this->host . 'serverUtil/exists', ['clientId' => $recvData1['clientId'], 'flag' => 'testExists']);
             $this->assertEquals([
                 'clientId'   => true,
@@ -365,7 +375,7 @@ class ServerUtilTest extends BaseTest
                 $recv = $client2->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
-            } while (1 !== $recvData['workerId']);
+            } while (0 !== $recvData['workerId']);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',
@@ -375,7 +385,12 @@ class ServerUtilTest extends BaseTest
             $recvData2 = json_decode($recv, true);
             $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
-            $http3 = new HttpRequest();
+            do
+            {
+                $http3 = new HttpRequest();
+                $response = $http3->get($this->host . 'serverUtil/info');
+                $data = $response->json(true);
+            } while (1 !== ($data['workerId'] ?? null));
             // @phpstan-ignore-next-line
             $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
             $this->assertEquals([

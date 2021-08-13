@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Controller\Http;
 
+use Imi\ConnectionContext;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
+use Imi\Worker;
 
 /**
  * 服务器工具类.
@@ -17,6 +19,17 @@ use Imi\Swoole\Server\Server;
  */
 class ServerUtilController extends HttpController
 {
+    /**
+     * @Action
+     */
+    public function info(): array
+    {
+        return [
+            'clientId' => ConnectionContext::getClientId(),
+            'workerId' => Worker::getWorkerId(),
+        ];
+    }
+
     /**
      * @Action
      */

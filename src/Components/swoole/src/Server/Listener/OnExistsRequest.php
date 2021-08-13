@@ -26,15 +26,9 @@ class OnExistsRequest implements IEventListener
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $result = false;
-        if (isset($data['clientIds']))
+        if (isset($data['flag']))
         {
-            foreach ($data['clientIds'] as $clientId)
-            {
-                if ($result = Server::exists($clientId, $data['serverName'], false))
-                {
-                    break;
-                }
-            }
+            $result = Server::flagExists($data['flag'], $data['serverName'], false);
         }
         elseif (isset($data['clientId']))
         {
