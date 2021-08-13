@@ -83,7 +83,6 @@ class ServerUtilController extends HttpController
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
-        var_dump(ServerManager::getServer('main')->getGroup('g1')->getClientIds());
         $result = [
             // @phpstan-ignore-next-line
             'groupClientIdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
