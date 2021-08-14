@@ -9,7 +9,7 @@ AOP（Aspect-Oriented Programming 面向切面编程）是一种在运行时，
 从而改变其原有的行为的编程思想。可以在不改变原有逻辑的基础上，
 增加一些额外的功能，例如日志记录，性能统计，安全控制，事务处理，异常处理等。 
   
-详细介绍请见：<https://doc.imiphp.com/v2.0/core/server.html>
+详细介绍请见：<https://doc.imiphp.com/v2.0/components/aop/index.html>
 
 ## Demo
 
