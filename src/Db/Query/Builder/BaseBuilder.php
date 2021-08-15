@@ -73,15 +73,22 @@ abstract class BaseBuilder implements IBuilder
         {
             return '';
         }
-        $result = implode(' ', $join);
+        $result = [];
+        $query = $this->query;
         $params = &$this->params;
         foreach ($join as $item)
         {
+            $result[] = $item->toString($query);
             $binds = $item->getBinds();
             if ($binds)
             {
                 $params = array_merge($params, $binds);
             }
+        }
+        $result = implode(' ', $result);
+        if ($result !== '')
+        {
+            $result = ' ' . $result;
         }
 
         return $result;
