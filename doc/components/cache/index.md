@@ -116,7 +116,7 @@ Imi\Cache\CacheManager::clear('缓存名称');
  */
 ```
 
-`lockable` 用法请参考 [Lock](/V2.0/components/lock/index.html)
+`lockable` 用法请参考 [Lock](/v2.0/components/lock/index.html)
 
 `preventBreakdown` 如果设为 `true`，会在获得锁后，尝试获取缓存，如果缓存存在则不再执行方法体
 
