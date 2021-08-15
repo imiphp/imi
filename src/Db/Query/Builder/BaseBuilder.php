@@ -86,7 +86,7 @@ abstract class BaseBuilder implements IBuilder
             }
         }
         $result = implode(' ', $result);
-        if ($result !== '')
+        if ('' !== $result)
         {
             $result = ' ' . $result;
         }
