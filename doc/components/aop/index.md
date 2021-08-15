@@ -96,18 +96,10 @@ imi 支持的通知点有：
 
 ## 通知执行顺序
 ### 正常执行时
-@Around
-→ @Before
-→ `$joinPoint->proceed()`
-→ @After
-→ @AfterReturning
-→ @Around
+@Around → @Before → `$joinPoint->proceed()`→ @After → @AfterReturning → @Around
 
 ###有异常抛出时
-@Around
-→ @Before
-→ 抛出异常
-→ @AfterThrowing
+@Around → @Before → 抛出异常 → @AfterThrowing
 
 ## 使用方法
 
