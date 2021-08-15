@@ -74,7 +74,7 @@ imi 支持的通知点有：
 
 #### @Before
 
-前置操作
+前置操作，注意与`@Around`区别。
 
 #### @After
 
@@ -82,7 +82,9 @@ imi 支持的通知点有：
 
 #### @Around
 
-环绕操作。先触发环绕操作，在前置操作前和后置操作后，都可以做一些事情。甚至可以完全不让原方法运行，在环绕中实现该方法功能。
+环绕操作。先触发环绕操作，在前置操作前和后置操作后，都可以做一些事情。
+
+与`@Before`区别：`@Around`先于`@Before`执行，并可以完全不让原方法运行，可用于请求拦截等操作。
 
 #### @AfterReturning
 
@@ -91,6 +93,13 @@ imi 支持的通知点有：
 #### @AfterThrowing
 
 在抛出异常后触发，允许设置`allow`和`deny`，设置允许和拒绝捕获的异常类
+
+## 通知执行顺序
+### 正常执行时
+@Around → @Before → `$joinPoint->proceed()`→ @After → @AfterReturning → @Around
+
+###有异常抛出时
+@Around → @Before → 抛出异常 → @AfterThrowing
 
 ## 使用方法
 
