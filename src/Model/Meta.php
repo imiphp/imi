@@ -144,7 +144,7 @@ class Meta
         {
             /** @var Column $column */
             $column = $columns[0];
-            if (isset($column->name))
+            if (null !== $column->name)
             {
                 $dbFields[$column->name] = [
                     'propertyName' => $name,
