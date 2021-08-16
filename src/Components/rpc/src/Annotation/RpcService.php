@@ -21,7 +21,7 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class RpcService extends Inject
 {
-    public function __construct(?array $__data = null, ?string $poolName = null, ?string $serviceName = null)
+    public function __construct(?array $__data = null, string $name = '', array $args = [], ?string $poolName = null, ?string $serviceName = null)
     {
         parent::__construct(...\func_get_args());
     }

@@ -20,7 +20,7 @@ use Imi\Rpc\Annotation\RpcService;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class GrpcService extends RpcService
 {
-    public function __construct(?array $__data = null, ?string $poolName = null, ?string $serviceName = null, ?string $interface = null)
+    public function __construct(?array $__data = null, string $name = '', array $args = [], ?string $poolName = null, ?string $serviceName = null, ?string $interface = null)
     {
         parent::__construct(...\func_get_args());
     }
