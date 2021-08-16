@@ -5,6 +5,7 @@ namespace Imi\Model\Relation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
+use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSelect;
@@ -18,6 +19,7 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Util\ArrayList;
 use Imi\Util\ClassObject;
 use Imi\Util\Imi;
+use Imi\Util\Text;
 
 abstract class Query
 {
@@ -226,8 +228,7 @@ abstract class Query
         $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
         $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
-        static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
-        $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
+        $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
 
         $model->$propertyName = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
@@ -256,10 +257,10 @@ abstract class Query
             if (null !== $list)
             {
                 // 关联数据
-                static::appendMany($model->$propertyName, $list, $middleFields, $struct->getMiddleModel());
+                static::appendMany($model->$propertyName, $list, $middleTable, $struct->getMiddleModel());
 
                 // 右侧表数据
-                static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
+                static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $struct->getRightModel());
             }
         }
         Event::trigger($eventName . '.AFTER', [
@@ -474,8 +475,7 @@ abstract class Query
         $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
         $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
-        static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
-        $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
+        $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
 
         $model->$propertyName = new ArrayList($struct->getRightModel());
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
@@ -504,7 +504,7 @@ abstract class Query
             if (null !== $list)
             {
                 // 关联数据
-                static::appendMany($model->$propertyName, $list, $rightFields, $struct->getRightModel());
+                static::appendMany($model->$propertyName, $list, $rightTable, $struct->getRightModel());
             }
         }
         Event::trigger($eventName . '.AFTER', [
@@ -534,8 +534,7 @@ abstract class Query
         $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
         $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
-        static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
-        $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
+        $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
 
         $model->$propertyName = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
@@ -561,10 +560,10 @@ abstract class Query
             if (null !== $list)
             {
                 // 关联数据
-                static::appendMany($model->$propertyName, $list, $middleFields, $struct->getMiddleModel());
+                static::appendMany($model->$propertyName, $list, $middleTable, $struct->getMiddleModel());
 
                 // 右侧表数据
-                static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
+                static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $struct->getRightModel());
             }
         }
         Event::trigger($eventName . '.AFTER', [
@@ -625,53 +624,55 @@ abstract class Query
      *
      * @param string $middleModel
      * @param string $rightModel
-     * @param array  $middleFields
-     * @param array  $rightFields
-     *
-     * @return void
-     */
-    private static function parseManyToManyQueryFields($middleModel, $rightModel, &$middleFields, &$rightFields)
-    {
-        $middleFields = [];
-        $rightFields = [];
-
-        $middleTable = $middleModel::__getMeta()->getTableName();
-        $rightTable = $rightModel::__getMeta()->getTableName();
-
-        foreach ($middleModel::__getMeta()->getDbFields() as $name => $_)
-        {
-            $middleFields[$middleTable . '_' . $name] = $name;
-        }
-
-        foreach ($rightModel::__getMeta()->getDbFields() as $name => $_)
-        {
-            $rightFields[$rightTable . '_' . $name] = $name;
-        }
-    }
-
-    /**
-     * 合并多对多查询字段.
-     *
-     * @param string $middleTable
-     * @param array  $middleFields
-     * @param string $rightTable
-     * @param array  $rightFields
      *
      * @return array
      */
-    private static function mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields)
+    private static function parseManyToManyQueryFields($middleModel, $rightModel): array
     {
-        $result = [];
-        foreach ($middleFields as $alias => $fieldName)
+        $fields = [];
+
+        /** @var \Imi\Model\Meta $middleModelMeta */
+        $middleModelMeta = $middleModel::__getMeta();
+        $middleTable = $middleModelMeta->getTableName();
+        /** @var \Imi\Model\Meta $rightModelMeta */
+        $rightModelMeta = $rightModel::__getMeta();
+        $rightTable = $rightModelMeta->getTableName();
+
+        foreach ($middleModelMeta->getDbFields() as $name => $_)
         {
-            $result[] = $middleTable . '.' . $fieldName . ' ' . $alias;
+            $fields[] = $field = new Field();
+            $field->setTable($middleTable);
+            $field->setField($name);
+            $field->setAlias($middleTable . '_' . $name);
         }
-        foreach ($rightFields as $alias => $fieldName)
+        foreach ($middleModelMeta->getSqlColumns() as $name => $sqlAnnotations)
         {
-            $result[] = $rightTable . '.' . $fieldName . ' ' . $alias;
+            /** @var \Imi\Model\Annotation\Sql $sqlAnnotation */
+            $sqlAnnotation = $sqlAnnotations[0];
+            $fields[] = $field = new Field();
+            $field->useRaw();
+            $field->setRawSQL($sqlAnnotation->sql);
+            $field->setAlias($middleTable . '_' . $name);
         }
 
-        return $result;
+        foreach ($rightModelMeta->getDbFields() as $name => $_)
+        {
+            $fields[] = $field = new Field();
+            $field->setTable($rightTable);
+            $field->setField($name);
+            $field->setAlias($rightTable . '_' . $name);
+        }
+        foreach ($rightModelMeta->getSqlColumns() as $name => $sqlAnnotations)
+        {
+            /** @var \Imi\Model\Annotation\Sql $sqlAnnotation */
+            $sqlAnnotation = $sqlAnnotations[0];
+            $fields[] = $field = new Field();
+            $field->useRaw();
+            $field->setRawSQL($sqlAnnotation->sql);
+            $field->setAlias($rightTable . '_' . $name);
+        }
+
+        return $fields;
     }
 
     /**
@@ -679,19 +680,36 @@ abstract class Query
      *
      * @param \Imi\Util\ArrayList $manyList
      * @param array               $dataList
-     * @param array               $fields
+     * @param string              $table
      * @param string              $modelClass
      *
      * @return void
      */
-    private static function appendMany($manyList, $dataList, $fields, $modelClass)
+    private static function appendMany($manyList, $dataList, $table, $modelClass)
     {
+        $tableLength = \strlen($table);
+        $keysMap = [];
         foreach ($dataList as $row)
         {
             $tmpRow = [];
-            foreach ($fields as $alias => $fieldName)
+            foreach ($row as $key => $value)
             {
-                $tmpRow[$fieldName] = $row[$alias];
+                if (isset($keysMap[$key]))
+                {
+                    if (false !== $keysMap[$key])
+                    {
+                        $tmpRow[$keysMap[$key]] = $value;
+                    }
+                }
+                elseif (Text::startwith($key, $table))
+                {
+                    $keysMap[$key] = $realKey = substr($key, $tableLength);
+                    $tmpRow[$realKey] = $value;
+                }
+                else
+                {
+                    $keysMap[$key] = false;
+                }
             }
             $manyList->append($modelClass::createFromRecord($tmpRow));
         }
