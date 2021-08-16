@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://raw.githubusercontent.com/imiphp/imi/2.x/res/logo.png" alt="imi" />
+        <img src="https://cdn.jsdelivr.net/gh/imiphp/imi@2.0/res/logo.png" alt="imi" />
     </a>
 </p>
 
@@ -139,18 +139,6 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ---
 
-* [教书先生API - 提供免费接口调用平台](https://api.oioweb.cn/)
-
-![教书先生API](https://www.imiphp.com/images/anli/jsxsapi.png "教书先生API")
-
-**项目介绍：** 教书先生API是免费提供API数据接口调用服务平台 - 我们致力于为用户提供稳定、快速的免费API数据接口服务。
-
-**感言：**
-
-之前的话服务器配置是8H8G 30M这样的一个配置，每天日300万+的一个请求量，有一次是某个接口因一个错误时不时会导致服务器直接宕机，一个偶然的搜索看到了群主（宇润）大佬的一个imi项目，于是熬夜给程序内部请求核心代码换上了imi，正好手里面有一台1H2G 5M的服务器，拿来测试了一下，配合Redis 200万-300万+一点问题都没有的，最后还是要感谢宇润大佬的开源项目。
-
----
-
 ## 版权信息
 
 imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免费使用。
@@ -186,6 +174,6 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 ## 捐赠
 
-![捐赠](https://cdn.jsdelivr.net/gh/imiphp/imi@dev/res/pay.png)
+![捐赠](https://cdn.jsdelivr.net/gh/imiphp/imi@2.0/res/pay.png)
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……
