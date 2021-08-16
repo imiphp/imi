@@ -65,6 +65,11 @@ class Query
         {
             static::initByOneToMany($model, $propertyName, $annotation);
         }
+        // @phpstan-ignore-next-line
+        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
+        }
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
         {
             static::initByManyToMany($model, $propertyName, $annotation);
@@ -76,11 +81,6 @@ class Query
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
             static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
-        }
-        // @phpstan-ignore-next-line
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
-        {
-            static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
         }
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
         {
