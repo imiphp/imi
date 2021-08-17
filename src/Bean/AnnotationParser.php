@@ -43,9 +43,21 @@ class AnnotationParser
      */
     private Reader $reader;
 
+    /**
+     * 类型是否存在的缓存.
+     */
+    private array $existsMap = [];
+
     public function parse(string $className, bool $transaction = true): void
     {
-        if (!class_exists($className) && !interface_exists($className, false) && !trait_exists($className, false))
+        if (isset($this->existsMap[$className]))
+        {
+            if (!$this->existsMap[$className])
+            {
+                return;
+            }
+        }
+        elseif (!($this->existsMap[$className] = (class_exists($className) || interface_exists($className, false) || trait_exists($className, false))))
         {
             return;
         }
