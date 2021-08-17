@@ -18,7 +18,7 @@ else
 { ?>@Entity(false)<?php } ?>
 
  * @Table(name="<?php echo $table['name']; ?>"<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?><?php if ($poolName) { ?>, dbPoolName="<?php echo $poolName; ?>"<?php } ?>)
- * @DDL("<?php echo str_replace('"', '""', $ddl); ?>")
+ * @DDL(sql="<?php echo str_replace('"', '""', $ddl); ?>", decode="<?php echo $ddlDecode; ?>")
 <?php foreach ($fields as $field) { ?>
  * @property <?php echo $field['phpType']; ?> $<?php echo $field['varName']; ?> <?php echo '' === $field['comment'] ? '' : $field['comment']; ?>
 

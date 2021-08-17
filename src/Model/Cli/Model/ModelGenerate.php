@@ -41,13 +41,14 @@ class ModelGenerate extends BaseCommand
      * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
-     * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      * @Option(name="lengthCheck", type=ArgType::BOOLEAN, default=false, comments="是否检查字符串字段长度,可选")
+     * @Option(name="ddlEncode", type=ArgType::STRING, comments="DDL 编码函数", default="")
+     * @Option(name="ddlDecode", type=ArgType::STRING, comments="DDL 解码函数", default="")
      *
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode): void
     {
         $override = (string) $override;
         switch ($override)
@@ -197,6 +198,19 @@ class ModelGenerate extends BaseCommand
             {
                 $ddl = str_replace(\PHP_EOL, ' ', $ddl);
             }
+            if ('' === $ddlEncode)
+            {
+                // 未指定编码方式，判断存在注释时，base64 编码
+                if (false !== strpos($ddl, '/*'))
+                {
+                    $ddl = base64_encode($ddl);
+                    $ddlDecode = 'base64_decode';
+                }
+            }
+            else
+            {
+                $ddl = $ddlEncode($ddl);
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
@@ -209,6 +223,7 @@ class ModelGenerate extends BaseCommand
                 'entity'        => $entity,
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
+                'ddlDecode'     => $ddlDecode,
                 'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
                 'lengthCheck'   => $lengthCheck,
             ];
