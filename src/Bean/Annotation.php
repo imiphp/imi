@@ -136,14 +136,13 @@ class Annotation
             $pattern = null;
         }
         $parser = $this->parser;
-        $this->loader->loadModuleAnnotations($namespace, function (string $fileNamespace) use ($pattern, $parser) {
+        $this->loader->loadModuleAnnotations($namespace, function (string $fileNamespace, string $fileName) use ($pattern, $parser) {
             if ($pattern && 1 === preg_match($pattern, $fileNamespace))
             {
                 return;
             }
-            if (!$parser->isParsed($fileNamespace))
+            if (!$parser->isParsed($fileNamespace) && $parser->parse($fileNamespace, true, $fileName))
             {
-                $parser->parse($fileNamespace);
                 $parser->execParse($fileNamespace);
             }
         }, $pathPattern);
