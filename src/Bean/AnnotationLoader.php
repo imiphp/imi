@@ -90,7 +90,7 @@ class AnnotationLoader
                 }
                 $fileNamespace = $namespace . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . basename($path, '.php'));
                 // 回调
-                $callback($fileNamespace);
+                $callback($fileNamespace, $path);
             }
         }
     }

@@ -44,22 +44,20 @@ class AnnotationParser
     private Reader $reader;
 
     /**
-     * 类型是否存在的缓存.
+     * 初始化时后的 get_included_files() 值
      */
-    private array $existsMap = [];
+    private array $initIncludeFiles = [];
 
-    public function parse(string $className, bool $transaction = true): void
+    public function __construct()
     {
-        if (isset($this->existsMap[$className]))
+        $this->initIncludeFiles = get_included_files();
+    }
+
+    public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
+    {
+        if (!class_exists($className, null === $fileName || !\in_array($fileName, $this->initIncludeFiles)) && !interface_exists($className, false) && !trait_exists($className, false))
         {
-            if (!$this->existsMap[$className])
-            {
-                return;
-            }
-        }
-        elseif (!($this->existsMap[$className] = (class_exists($className) || interface_exists($className, false) || trait_exists($className, false))))
-        {
-            return;
+            return false;
         }
         if ($transaction)
         {
@@ -85,6 +83,8 @@ class AnnotationParser
         {
             AnnotationManager::setRemoveWhenset(true);
         }
+
+        return true;
     }
 
     public function execParse(string $className): void
