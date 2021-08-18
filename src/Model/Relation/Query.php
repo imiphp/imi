@@ -55,6 +55,26 @@ abstract class Query
             {
                 static::initByPolymorphicToOne($model, $propertyName, $annotation);
             }
+            // @phpstan-ignore-next-line
+            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+            {
+                static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
+            }
+            // @phpstan-ignore-next-line
+            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+            {
+                static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
+            }
+            // @phpstan-ignore-next-line
+            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+            {
+                static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
+            }
+            // @phpstan-ignore-next-line
+            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
+            {
+                static::initByPolymorphicToMany($model, $propertyName, $annotation);
+            }
         }
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
         {
@@ -64,25 +84,9 @@ abstract class Query
         {
             static::initByOneToMany($model, $propertyName, $annotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
-        {
-            static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
-        }
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
         {
             static::initByManyToMany($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
-        {
-            static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
-        {
-            static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
-        {
-            static::initByPolymorphicToMany($model, $propertyName, $annotation);
         }
     }
 
@@ -274,123 +278,139 @@ abstract class Query
     /**
      * 初始化多态一对一关系.
      *
-     * @param \Imi\Model\Model                                   $model
-     * @param string                                             $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
+     * @param \Imi\Model\Model                                     $model
+     * @param string                                               $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne[] $annotation
      *
      * @return void
      */
     public static function initByPolymorphicOneToOne($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        if (class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
-
-        $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
-        $leftField = $struct->getLeftField();
-        $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        if (null === $model->$leftField)
+        foreach ($annotation as $annotationItem)
         {
-            $rightModel = $modelClass::newInstance();
-        }
-        else
-        {
-            /** @var IQuery $query */
-            $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
-            if ($annotation->fields)
+            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
             {
-                $query->field(...$annotation->fields);
-            }
-            Event::trigger($eventName . '.BEFORE', [
-                'model'        => $model,
-                'propertyName' => $propertyName,
-                'annotation'   => $annotation,
-                'struct'       => $struct,
-                'query'        => $query,
-            ]);
-            $rightModel = $query->select()->get();
-            if (null === $rightModel)
-            {
-                $rightModel = $modelClass::newInstance();
+                if (class_exists($annotationItem->model))
+                {
+                    $modelClass = $annotationItem->model;
+                }
+                else
+                {
+                    $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
+                }
+
+                $struct = new PolymorphicOneToOne($className, $propertyName, $annotationItem);
+                $leftField = $struct->getLeftField();
+                $rightField = $struct->getRightField();
+
+                if (null === $model->$leftField)
+                {
+                    $rightModel = $modelClass::newInstance();
+                }
+                else
+                {
+                    /** @var IQuery $query */
+                    $query = $modelClass::query()->where($annotationItem->type, '=', $annotationItem->typeValue)->where($rightField, '=', $model->$leftField);
+                    if ($annotationItem->fields)
+                    {
+                        $query->field(...$annotationItem->fields);
+                    }
+                    Event::trigger($eventName . '.BEFORE', [
+                        'model'        => $model,
+                        'propertyName' => $propertyName,
+                        'annotation'   => $annotation,
+                        'struct'       => $struct,
+                        'query'        => $query,
+                    ]);
+                    $rightModel = $query->select()->get();
+                    if (null === $rightModel)
+                    {
+                        $rightModel = $modelClass::newInstance();
+                    }
+                }
+
+                $model->$propertyName = $rightModel;
+                break;
             }
         }
 
-        $model->$propertyName = $rightModel;
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
             'annotation'   => $annotation,
-            'struct'       => $struct,
+            'struct'       => $struct ?? null,
         ]);
     }
 
     /**
      * 初始化多态一对多关系.
      *
-     * @param \Imi\Model\Model                                    $model
-     * @param string                                              $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
+     * @param \Imi\Model\Model                                      $model
+     * @param string                                                $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany[] $annotation
      *
      * @return void
      */
     public static function initByPolymorphicOneToMany($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        if (class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
-
-        $struct = new PolymorphicOneToMany($className, $propertyName, $annotation);
-        $leftField = $struct->getLeftField();
-        $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        $model->$propertyName = $modelPropery = new ArrayList($modelClass);
-        if (null !== $model->$leftField)
+        foreach ($annotation as $annotationItem)
         {
-            /** @var IQuery $query */
-            $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
-            if ($annotation->fields)
+            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
             {
-                $query->field(...$annotation->fields);
-            }
-            if ($annotation->order)
-            {
-                $query->orderRaw($annotation->order);
-            }
-            Event::trigger($eventName . '.BEFORE', [
-                'model'        => $model,
-                'propertyName' => $propertyName,
-                'annotation'   => $annotation,
-                'struct'       => $struct,
-                'query'        => $query,
-            ]);
-            $list = $query->select()->getArray();
-            if (null !== $list)
-            {
-                $modelPropery->append(...$list);
+                if (class_exists($annotationItem->model))
+                {
+                    $modelClass = $annotationItem->model;
+                }
+                else
+                {
+                    $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
+                }
+
+                $struct = new PolymorphicOneToMany($className, $propertyName, $annotationItem);
+                $leftField = $struct->getLeftField();
+                $rightField = $struct->getRightField();
+
+                $model->$propertyName = $modelPropery = new ArrayList($modelClass);
+                if (null !== $model->$leftField)
+                {
+                    /** @var IQuery $query */
+                    $query = $modelClass::query()->where($annotationItem->type, '=', $annotationItem->typeValue)->where($rightField, '=', $model->$leftField);
+                    if ($annotationItem->fields)
+                    {
+                        $query->field(...$annotationItem->fields);
+                    }
+                    if ($annotationItem->order)
+                    {
+                        $query->orderRaw($annotationItem->order);
+                    }
+                    Event::trigger($eventName . '.BEFORE', [
+                        'model'        => $model,
+                        'propertyName' => $propertyName,
+                        'annotation'   => $annotation,
+                        'struct'       => $struct,
+                        'query'        => $query,
+                    ]);
+                    $list = $query->select()->getArray();
+                    if (null !== $list)
+                    {
+                        $modelPropery->append(...$list);
+                    }
+                }
+                break;
             }
         }
+
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
             'annotation'   => $annotation,
-            'struct'       => $struct,
+            'struct'       => $struct ?? null,
         ]);
     }
 
@@ -459,118 +479,134 @@ abstract class Query
     /**
      * 初始化多态，对应的实体模型列表.
      *
-     * @param \Imi\Model\Model                                 $model
-     * @param string                                           $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
+     * @param \Imi\Model\Model                                   $model
+     * @param string                                             $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicToMany[] $annotation
      *
      * @return void
      */
     public static function initByPolymorphicToMany($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
-        $leftField = $struct->getLeftField();
-        $rightField = $struct->getRightField();
-        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
-        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
-
-        $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
-
-        $model->$propertyName = new ArrayList($struct->getRightModel());
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        if (null !== $model->$leftField)
+        foreach ($annotation as $annotationItem)
         {
-            $query = Db::query($className::__getMeta()->getDbPoolName())
-                        ->table($rightTable)
-                        ->field(...$fields)
-                        ->join($middleTable, $middleTable . '.' . $struct->getMiddleLeftField(), '=', $rightTable . '.' . $rightField)
-                        ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
-                        ->where($middleTable . '.' . $struct->getMiddleRightField(), '=', $model->$leftField);
-            if ($annotation->order)
+            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
             {
-                $query->orderRaw($annotation->order);
-            }
-            Event::trigger($eventName . '.BEFORE', [
-                'model'        => $model,
-                'propertyName' => $propertyName,
-                'annotation'   => $annotation,
-                'struct'       => $struct,
-                'query'        => $query,
-            ]);
-            $list = $query->select()
-                          ->getArray();
-            if (null !== $list)
-            {
-                // 关联数据
-                static::appendMany($model->$propertyName, $list, $rightTable, $struct->getRightModel());
+                $struct = new PolymorphicManyToMany($className, $propertyName, $annotationItem);
+                $leftField = $struct->getLeftField();
+                $rightField = $struct->getRightField();
+                $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
+                $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
+
+                $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+
+                $model->$propertyName = new ArrayList($struct->getRightModel());
+
+                if (null !== $model->$leftField)
+                {
+                    $query = Db::query($className::__getMeta()->getDbPoolName())
+                                ->table($rightTable)
+                                ->field(...$fields)
+                                ->join($middleTable, $middleTable . '.' . $struct->getMiddleLeftField(), '=', $rightTable . '.' . $rightField)
+                                ->where($middleTable . '.' . $annotationItem->type, '=', $annotationItem->typeValue)
+                                ->where($middleTable . '.' . $struct->getMiddleRightField(), '=', $model->$leftField);
+                    if ($annotationItem->order)
+                    {
+                        $query->orderRaw($annotationItem->order);
+                    }
+                    Event::trigger($eventName . '.BEFORE', [
+                        'model'        => $model,
+                        'propertyName' => $propertyName,
+                        'annotation'   => $annotation,
+                        'struct'       => $struct,
+                        'query'        => $query,
+                    ]);
+                    $list = $query->select()
+                                  ->getArray();
+                    if (null !== $list)
+                    {
+                        // 关联数据
+                        static::appendMany($model->$propertyName, $list, $rightTable, $struct->getRightModel());
+                    }
+                }
+                break;
             }
         }
+
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
             'annotation'   => $annotation,
-            'struct'       => $struct,
+            'struct'       => $struct ?? null,
         ]);
     }
 
     /**
      * 初始化多态多对多关系.
      *
-     * @param \Imi\Model\Model                                     $model
-     * @param string                                               $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
+     * @param \Imi\Model\Model                                       $model
+     * @param string                                                 $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany[] $annotation
      *
      * @return void
      */
     public static function initByPolymorphicManyToMany($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
-        $leftField = $struct->getLeftField();
-        $rightField = $struct->getRightField();
-        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
-        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
-
-        $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
-
-        $model->$propertyName = new ArrayList($struct->getMiddleModel());
-        $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        if (null !== $model->$leftField)
+        foreach ($annotation as $annotationItem)
         {
-            $query = Db::query($className::__getMeta()->getDbPoolName())
-                        ->table($rightTable)
-                        ->field(...$fields)
-                        ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
-                        ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
-                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField);
-            Event::trigger($eventName . '.BEFORE', [
-                'model'        => $model,
-                'propertyName' => $propertyName,
-                'annotation'   => $annotation,
-                'struct'       => $struct,
-                'query'        => $query,
-            ]);
-            $list = $query->select()
-                          ->getArray();
-            if (null !== $list)
+            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
             {
-                // 关联数据
-                static::appendMany($model->$propertyName, $list, $middleTable, $struct->getMiddleModel());
+                $struct = new PolymorphicManyToMany($className, $propertyName, $annotationItem);
+                $leftField = $struct->getLeftField();
+                $rightField = $struct->getRightField();
+                $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
+                $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
-                // 右侧表数据
-                static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $struct->getRightModel());
+                $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+
+                $model->$propertyName = new ArrayList($struct->getMiddleModel());
+                $model->{$annotationItem->rightMany} = new ArrayList($struct->getRightModel());
+
+                if (null !== $model->$leftField)
+                {
+                    $query = Db::query($className::__getMeta()->getDbPoolName())
+                                ->table($rightTable)
+                                ->field(...$fields)
+                                ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
+                                ->where($middleTable . '.' . $annotationItem->type, '=', $annotationItem->typeValue)
+                                ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField);
+                    Event::trigger($eventName . '.BEFORE', [
+                        'model'        => $model,
+                        'propertyName' => $propertyName,
+                        'annotation'   => $annotation,
+                        'struct'       => $struct,
+                        'query'        => $query,
+                    ]);
+                    $list = $query->select()
+                                  ->getArray();
+                    if (null !== $list)
+                    {
+                        // 关联数据
+                        static::appendMany($model->$propertyName, $list, $middleTable, $struct->getMiddleModel());
+
+                        // 右侧表数据
+                        static::appendMany($model->{$annotationItem->rightMany}, $list, $rightTable, $struct->getRightModel());
+                    }
+                }
+                break;
             }
         }
+
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
             'annotation'   => $annotation,
-            'struct'       => $struct,
+            'struct'       => $struct ?? null,
         ]);
     }
 
