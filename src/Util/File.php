@@ -70,7 +70,7 @@ class File
     /**
      * 枚举文件，支持自定义中断进入下一级目录.
      *
-     * @return \Generator
+     * @return \Generator|false
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {

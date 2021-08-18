@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\HotUpdate\Monitor;
 
-use Imi\Util\Bit;
 use Imi\Util\File;
+use Imi\Util\Imi;
 
 class Inotify extends BaseMonitor
 {
@@ -24,7 +24,7 @@ class Inotify extends BaseMonitor
     /**
      * inotify_add_watch() mask参数.
      */
-    protected int $mask = IN_MODIFY | IN_MOVE | IN_CREATE | IN_DELETE;
+    protected int $mask = \IN_MODIFY | \IN_MOVE | \IN_CREATE | \IN_DELETE;
 
     /**
      * 更改的文件们.
@@ -50,9 +50,11 @@ class Inotify extends BaseMonitor
         $this->handler = $handler = inotify_init();
         stream_set_blocking($handler, false);
 
-        $excludePaths = &$this->excludePaths;
-        $excludeRule = &$this->excludeRule;
-        $excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $excludePaths));
+        $excludePaths = array_map(function ($item) {
+            return Imi::parseRule($item);
+        }, $this->excludePaths);
+
+        $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
         $paths = &$this->paths;
         $mask = &$this->mask;
         $includePaths = $this->includePaths;
@@ -60,40 +62,24 @@ class Inotify extends BaseMonitor
         {
             foreach ($includePaths as $path)
             {
-                if (!is_dir($path))
+                if (is_file($path) && !is_dir($path))
                 {
                     continue;
                 }
-                inotify_add_watch($handler, $path, $mask);
-                $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO);
-                $iterator = new \RecursiveIteratorIterator($directory);
-                if ('' === $excludeRule)
+                $paths[$path] ??= inotify_add_watch($handler, $path, $mask);
+                foreach (File::enumFile($path) as $file)
                 {
-                    foreach ($iterator as $fileName => $fileInfo)
+                    $fullPath = $file->getFullPath();
+                    if (!is_dir($fullPath))
                     {
-                        $filePath = \dirname($fileName);
-                        $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
+                        continue;
                     }
-                }
-                else
-                {
-                    foreach (File::enumFile($path) as $file)
+                    if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
                     {
-                        $fullPath = $file->getFullPath();
-                        if ($excludePaths)
-                        {
-                            foreach ($excludePaths as $path)
-                            {
-                                if (substr($fullPath, 0, \strlen($path)) === $path)
-                                {
-                                    $file->setContinue(false);
-                                    continue 2;
-                                }
-                            }
-                        }
-                        $filePath = $file->getPath();
-                        $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
+                        $file->setContinue(false);
+                        continue;
                     }
+                    $paths[$fullPath] ??= inotify_add_watch($handler, $fullPath, $mask);
                 }
             }
         }
@@ -109,6 +95,7 @@ class Inotify extends BaseMonitor
         $paths = &$this->paths;
         $handler = &$this->handler;
         $mask = &$this->mask;
+        $excludeRule = $this->excludeRule;
         do
         {
             /** @var array|false $readResult */
@@ -126,13 +113,9 @@ class Inotify extends BaseMonitor
                 }
                 $filePath = File::path($key, $item['name']);
                 $filePathIsDir = is_dir($filePath);
-                if (!$filePathIsDir)
+                if (!$filePathIsDir && ('' === $excludeRule || preg_match($excludeRule, $filePath)))
                 {
                     $changedFiles[] = $filePath;
-                }
-                if ((Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
-                {
-                    $paths[$filePath] = inotify_add_watch($handler, $filePath, $mask);
                 }
             }
         } while (true);
@@ -144,13 +127,5 @@ class Inotify extends BaseMonitor
     public function getChangedFiles(): array
     {
         return array_values(array_unique($this->changedFiles));
-    }
-
-    /**
-     * 判断路径是否被排除.
-     */
-    protected function isExclude(string $filePath): bool
-    {
-        return preg_match("/^(?!{$this->excludeRule}).+$/i", $filePath) > 0;
     }
 }

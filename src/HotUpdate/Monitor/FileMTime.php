@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\HotUpdate\Monitor;
 
 use Imi\Util\File;
+use Imi\Util\Imi;
 
 class FileMTime extends BaseMonitor
 {
@@ -19,39 +20,37 @@ class FileMTime extends BaseMonitor
     private array $changedFiles = [];
 
     /**
+     * 排除规则.
+     */
+    private string $excludeRule = '';
+
+    /**
      * 初始化.
      */
     protected function init(): void
     {
-        $excludePaths = &$this->excludePaths;
         $includePaths = &$this->includePaths;
-        foreach ($excludePaths as $i => $path)
+
+        $excludePaths = array_map(function ($item) {
+            return Imi::parseRule($item);
+        }, $this->excludePaths);
+
+        $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
+
+        foreach ($includePaths as $path)
         {
-            if (!$excludePaths[$i] = realpath($path))
+            if ($enumResult = File::enumFile($path))
             {
-                unset($excludePaths[$i]);
-                continue;
-            }
-        }
-        foreach ($includePaths as $i => $path)
-        {
-            if (!$includePaths[$i] = $path = realpath($path))
-            {
-                unset($includePaths[$i]);
-                continue;
-            }
-            foreach (File::enumFile($path) as $file)
-            {
-                $fullPath = $file->getFullPath();
-                foreach ($excludePaths as $path)
+                foreach ($enumResult as $file)
                 {
-                    if (substr($fullPath, 0, \strlen($path)) === $path)
+                    $fullPath = $file->getFullPath();
+                    if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
                     {
                         $file->setContinue(false);
-                        continue 2;
+                        continue;
                     }
+                    $this->parseInitFile($fullPath);
                 }
-                $this->parseInitFile($fullPath);
             }
         }
     }
@@ -86,29 +85,27 @@ class FileMTime extends BaseMonitor
         $changedFiles = [];
         $excludePaths = &$this->excludePaths;
         $includePaths = $this->includePaths;
+        $excludeRule = $this->excludeRule;
         // 包含的路径中检测
         if ($includePaths)
         {
             foreach ($includePaths as $path)
             {
-                foreach (File::enumFile($path) as $file)
+                if ($enumResult = File::enumFile($path))
                 {
-                    $fullPath = $file->getFullPath();
-                    if ($excludePaths)
+                    foreach ($enumResult as $file)
                     {
-                        foreach ($excludePaths as $path)
+                        $fullPath = $file->getFullPath();
+                        if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
                         {
-                            if (substr($fullPath, 0, \strlen($path)) === $path)
-                            {
-                                $file->setContinue(false);
-                                continue 2;
-                            }
+                            $file->setContinue(false);
+                            continue;
                         }
-                    }
-                    if ($this->parseCheckFile($fullPath))
-                    {
-                        $changedFiles[] = $fullPath;
-                        $changed = true;
+                        if ($this->parseCheckFile($fullPath))
+                        {
+                            $changedFiles[] = $fullPath;
+                            $changed = true;
+                        }
                     }
                 }
             }
