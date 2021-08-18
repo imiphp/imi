@@ -93,7 +93,7 @@ class File
                 {
                     yield $item;
                 }
-                if (is_dir($fullPath) && $item->getContinue())
+                if ($item->getContinue() && is_dir($fullPath))
                 {
                     foreach (static::enumFile($fullPath, $pattern, $extensionNames) as $fileItem)
                     {

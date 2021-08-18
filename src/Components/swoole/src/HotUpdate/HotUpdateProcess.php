@@ -116,7 +116,7 @@ class HotUpdateProcess extends BaseProcess
             // 检测间隔延时
             if ($this->timespan > 0)
             {
-                $time = (int) ($this->timespan - (microtime(true) - $time));
+                $time = $this->timespan - (microtime(true) - $time);
                 if ($time <= 0)
                 {
                     $time = 10000;
@@ -130,7 +130,7 @@ class HotUpdateProcess extends BaseProcess
             {
                 $time = 10000;
             }
-            usleep($time);
+            usleep((int) $time);
             $time = microtime(true);
             // 检查文件是否有修改
             if ($monitor->isChanged())

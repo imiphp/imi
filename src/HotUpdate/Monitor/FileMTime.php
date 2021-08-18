@@ -32,7 +32,6 @@ class FileMTime extends BaseMonitor
                 unset($excludePaths[$i]);
                 continue;
             }
-            $excludePaths[$i] .= '/';
         }
         foreach ($includePaths as $i => $path)
         {
