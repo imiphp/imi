@@ -2,9 +2,9 @@
 
 ## 命令模式
 
-守护进程方式启动：`bin/imi swoole/start -d`
+守护进程方式启动：`bin/imi-swoole swoole/start -d`
 
-重定向标准输入输出：`bin/imi swoole/start -d 文件名.log`
+重定向标准输入输出：`bin/imi-swoole swoole/start -d 文件名.log`
 
 > 此方法只可让服务在后台运行，退出 ssh 后不被终止。
 

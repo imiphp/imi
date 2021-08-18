@@ -14,10 +14,10 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi process/start 进程名称
+HttpDemo/bin/imi-swoole process/start 进程名称
 
 # 跟上进程需要获取的参数
-HttpDemo/bin/imi process/start 进程名称 --a 1 --b 2
+HttpDemo/bin/imi-swoole process/start 进程名称 --a 1 --b 2
 ```
 
 ## 运行进程
@@ -27,12 +27,12 @@ HttpDemo/bin/imi process/start 进程名称 --a 1 --b 2
 > 与启动进程不同，直接在启动的进程中执行进程逻辑，一般推荐使用本方法
 
 必选参数：
-`-name` 进程名称，通过`@Process`注解定义
+`name` 进程名称，通过`@Process`注解定义
 
 示例：
 
 ```shell
-HttpDemo/bin/imi process/run -name 进程名称
+HttpDemo/bin/imi-swoole process/run 进程名称
 ```
 
 ## 启动进程池

@@ -74,7 +74,7 @@ echo Imi::getClassPropertyValue('ServerGroup', 'groupHandler');
 获取imi命令行
 
 ```php
-// php /mnt/d/projects/imi-demo/HttpDemo/bin/imi swoole/reload
+// php /mnt/d/projects/imi-demo/HttpDemo/bin/imi-swoole swoole/reload
 echo Imi::getImiCmd('swoole', 'reload');
 ```
 

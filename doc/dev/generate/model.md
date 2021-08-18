@@ -22,7 +22,7 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi generate/model "命名空间"
+HttpDemo/bin/imi-cli generate/model "命名空间"
 ```
 
 ## 相关配置

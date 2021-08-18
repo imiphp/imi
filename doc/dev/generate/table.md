@@ -17,7 +17,7 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi generate/table
+HttpDemo/bin/imi-cli generate/table
 ```
 
 ## 事件监听
