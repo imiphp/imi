@@ -74,7 +74,10 @@ class Inotify extends BaseMonitor
                 {
                     continue;
                 }
-                $paths[$path] ??= inotify_add_watch($handler, $path, $mask);
+                if (!isset($paths[$path]))
+                {
+                    $paths[$path] = inotify_add_watch($handler, $path, $mask);
+                }
                 foreach (File::enumFile($path) as $file)
                 {
                     $fullPath = $file->getFullPath();
@@ -87,7 +90,10 @@ class Inotify extends BaseMonitor
                         $file->setContinue(false);
                         continue;
                     }
-                    $paths[$fullPath] ??= inotify_add_watch($handler, $fullPath, $mask);
+                    if (!isset($paths[$path]))
+                    {
+                        $paths[$fullPath] = inotify_add_watch($handler, $fullPath, $mask);
+                    }
                 }
             }
         }
