@@ -49,8 +49,24 @@ class ModelGenerate extends BaseCommand
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, bool $generateDDL, string $ddlEncode, string $ddlDecode): void
-    {
+    public function generate(
+        string $namespace,
+        string $baseClass,
+        ?string $database,
+        ?string $poolName,
+        array $prefix,
+        array $include,
+        array $exclude,
+        $override,
+        $config,
+        ?string $basePath,
+        bool $entity,
+        bool $sqlSingleLine,
+        bool $lengthCheck,
+        bool $generateDDL,
+        string $ddlEncode,
+        string $ddlDecode
+    ): void {
         $override = (string) $override;
         switch ($override)
         {
