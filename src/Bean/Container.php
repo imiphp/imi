@@ -135,10 +135,10 @@ class Container implements ContainerInterface
         // 实现传递实例化参数
         $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
-        $beanObjects = &$this->beanObjects;
-        if (isset($beanObjects[$id]) && 1 === \func_num_args())
+        $singletonObjects = &$this->singletonObjects;
+        if (isset($singletonObjects[$id]) && 1 === \func_num_args())
         {
-            return $beanObjects[$id];
+            return $singletonObjects[$id];
         }
 
         if ('' === $id)
@@ -160,7 +160,7 @@ class Container implements ContainerInterface
                     $object = new $className(...$params);
                     if ([] === $params)
                     {
-                        $beanObjects[$id] = $object;
+                        $singletonObjects[$id] = $object;
                     }
                 }
                 else
@@ -197,7 +197,7 @@ class Container implements ContainerInterface
                 // 传参实例化强制不使用单例
                 if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
                 {
-                    $beanObjects[$id] = $object;
+                    $singletonObjects[$id] = $object;
                 }
             }
             break;
