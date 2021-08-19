@@ -55,26 +55,31 @@ class Query
         // @phpstan-ignore-next-line
         if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
+            // @phpstan-ignore-next-line
             static::initByPolymorphicToOne($model, $propertyName, $annotation);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
+            // @phpstan-ignore-next-line
             static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
+            // @phpstan-ignore-next-line
             static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
         {
+            // @phpstan-ignore-next-line
             static::initByPolymorphicToMany($model, $propertyName, $annotation);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
+            // @phpstan-ignore-next-line
             static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
         }
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
