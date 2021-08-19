@@ -5,6 +5,7 @@
     "description": "imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。",
     "require": {
         "php": ">=7.4",
+        "ext-json": "*",
         "yurunsoft/doctrine-annotations": "^1.73.0",
         "psr/log": "~1.0",
         "psr/container": "~1.1",
@@ -21,7 +22,7 @@
         "yurunsoft/ide-helper": "~1.0",
         "yurunsoft/yurun-http": "^4.0.0",
         "phpunit/phpunit": ">=9",
-        "friendsofphp/php-cs-fixer": "^2.19.0",
+        "friendsofphp/php-cs-fixer": "^3.0.2",
         "phpstan/phpstan": "^0.12.91"
     },
     "autoload": {
@@ -40,6 +41,9 @@
         "files": [
             "dev/include.php"
         ]
+    },
+    "suggest": {
+        "ext-inotify": "高性能热更新支持"
     },
     "prefer-stable": true,
     "bin": [
