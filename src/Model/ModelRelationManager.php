@@ -38,8 +38,7 @@ class ModelRelationManager
             {
                 continue;
             }
-            $annotation = $annotations[0];
-            Query::init($model, $propertyName, $annotation);
+            Query::init($model, $propertyName, $annotations);
         }
     }
 
@@ -66,7 +65,7 @@ class ModelRelationManager
         {
             if (isset($relations[$name]))
             {
-                Query::init($model, $name, $relations[$name][0], true);
+                Query::init($model, $name, $relations[$name], true);
             }
         }
     }

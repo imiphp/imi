@@ -33,10 +33,10 @@ class Query
     /**
      * 初始化.
      *
-     * @param \Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[] $annotation
-     * @param bool                                                  $forceInit  是否强制更新
+     * @param \Imi\Bean\Annotation\Base[] $annotation
+     * @param bool                        $forceInit  是否强制更新
      */
-    public static function init(Model $model, string $propertyName, $annotation, bool $forceInit = false): void
+    public static function init(Model $model, string $propertyName, array $annotation, bool $forceInit = false): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -50,46 +50,44 @@ class Query
             }
         }
 
-        if (\is_array($annotation))
+        $firstAnnotation = reset($annotation);
+
+        // @phpstan-ignore-next-line
+        if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
-            $firstAnnotation = reset($annotation);
-            // @phpstan-ignore-next-line
-            if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
-            {
-                static::initByPolymorphicToOne($model, $propertyName, $annotation);
-            }
-            // @phpstan-ignore-next-line
-            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
-            {
-                static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
-            }
-            // @phpstan-ignore-next-line
-            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
-            {
-                static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
-            }
-            // @phpstan-ignore-next-line
-            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
-            {
-                static::initByPolymorphicToMany($model, $propertyName, $annotation);
-            }
-            // @phpstan-ignore-next-line
-            elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
-            {
-                static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
-            }
+            static::initByPolymorphicToOne($model, $propertyName, $annotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+        // @phpstan-ignore-next-line
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
-            static::initByOneToOne($model, $propertyName, $annotation);
+            static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+        // @phpstan-ignore-next-line
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
-            static::initByOneToMany($model, $propertyName, $annotation);
+            static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+        // @phpstan-ignore-next-line
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
         {
-            static::initByManyToMany($model, $propertyName, $annotation);
+            static::initByPolymorphicToMany($model, $propertyName, $annotation);
+        }
+        // @phpstan-ignore-next-line
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+        {
+            static::initByOneToOne($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+        {
+            static::initByOneToMany($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+        {
+            static::initByManyToMany($model, $propertyName, $firstAnnotation);
         }
     }
 
