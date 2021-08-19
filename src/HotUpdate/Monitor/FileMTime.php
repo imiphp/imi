@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\HotUpdate\Monitor;
 
 use Imi\Util\File;
+use Imi\Util\Imi;
 
 class FileMTime extends BaseMonitor
 {
@@ -21,54 +24,49 @@ class FileMTime extends BaseMonitor
     private $changedFiles = [];
 
     /**
+     * 排除规则.
+     *
+     * @var string
+     */
+    private $excludeRule = '';
+
+    /**
      * 初始化.
      *
      * @return void
      */
     protected function init()
     {
-        $excludePaths = &$this->excludePaths;
         $includePaths = &$this->includePaths;
-        foreach ($excludePaths as $i => $path)
+
+        $excludePaths = array_map(function ($item) {
+            return Imi::parseRule($item);
+        }, $this->excludePaths);
+
+        $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
+
+        foreach ($includePaths as $path)
         {
-            if (!$excludePaths[$i] = realpath($path))
+            if ($enumResult = File::enumFile($path))
             {
-                unset($excludePaths[$i]);
-                continue;
-            }
-            $excludePaths[$i] .= '/';
-        }
-        foreach ($includePaths as $i => $path)
-        {
-            if (!$includePaths[$i] = $path = realpath($path))
-            {
-                unset($includePaths[$i]);
-                continue;
-            }
-            foreach (File::enumFile($path) as $file)
-            {
-                $fullPath = $file->getFullPath();
-                foreach ($excludePaths as $path)
+                foreach ($enumResult as $file)
                 {
-                    if (substr($fullPath, 0, \strlen($path)) === $path)
+                    $fullPath = $file->getFullPath();
+                    if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
                     {
                         $file->setContinue(false);
-                        continue 2;
+                        continue;
                     }
+                    $this->parseInitFile($fullPath);
                 }
-                $this->parseInitFile($fullPath);
             }
         }
     }
 
     /**
      * 处理初始化文件.
-     *
-     * @param string $fileName
-     *
-     * @return void
      */
-    protected function parseInitFile($fileName)
+    protected function parseInitFile(string $fileName): void
     {
         if (is_file($fileName))
         {
@@ -81,14 +79,12 @@ class FileMTime extends BaseMonitor
 
     /**
      * 检测文件是否有更改.
-     *
-     * @return bool
      */
     public function isChanged(): bool
     {
         $changed = false;
         $files = &$this->files;
-        $files = array_map(function ($item) {
+        $files = array_map(function (array $item): array {
             $item['exists'] = false;
 
             return $item;
@@ -97,29 +93,27 @@ class FileMTime extends BaseMonitor
         $changedFiles = [];
         $excludePaths = &$this->excludePaths;
         $includePaths = $this->includePaths;
+        $excludeRule = $this->excludeRule;
         // 包含的路径中检测
         if ($includePaths)
         {
             foreach ($includePaths as $path)
             {
-                foreach (File::enumFile($path) as $file)
+                if ($enumResult = File::enumFile($path))
                 {
-                    $fullPath = $file->getFullPath();
-                    if ($excludePaths)
+                    foreach ($enumResult as $file)
                     {
-                        foreach ($excludePaths as $path)
+                        $fullPath = $file->getFullPath();
+                        if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
                         {
-                            if (substr($fullPath, 0, \strlen($path)) === $path)
-                            {
-                                $file->setContinue(false);
-                                continue 2;
-                            }
+                            $file->setContinue(false);
+                            continue;
                         }
-                    }
-                    if ($this->parseCheckFile($fullPath))
-                    {
-                        $changedFiles[] = $fullPath;
-                        $changed = true;
+                        if ($this->parseCheckFile($fullPath))
+                        {
+                            $changedFiles[] = $fullPath;
+                            $changed = true;
+                        }
                     }
                 }
             }
@@ -140,8 +134,6 @@ class FileMTime extends BaseMonitor
 
     /**
      * 获取变更的文件们.
-     *
-     * @return array
      */
     public function getChangedFiles(): array
     {
@@ -150,12 +142,8 @@ class FileMTime extends BaseMonitor
 
     /**
      * 处理检查文件是否更改，返回是否更改.
-     *
-     * @param string $fileName
-     *
-     * @return bool
      */
-    protected function parseCheckFile($fileName)
+    protected function parseCheckFile(string $fileName): bool
     {
         $files = &$this->files;
         $isFile = is_file($fileName);

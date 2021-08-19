@@ -90,7 +90,7 @@ class Annotation
             $list = [];
             foreach ($ignoredNamespaces as $ns)
             {
-                $list[] = str_replace('\\*', '.*', preg_quote($ns));
+                $list[] = Imi::parseRule($ns);
             }
             $pattern = '/^((' . implode(')|(', $list) . '))$/';
         }

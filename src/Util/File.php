@@ -70,11 +70,9 @@ abstract class File
     /**
      * 枚举文件，支持自定义中断进入下一级目录.
      *
-     * @param string $dirPath
-     *
-     * @return \Generator
+     * @return \Generator|false
      */
-    public static function enumFile(string $dirPath)
+    public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
         if (!is_dir($dirPath))
         {
@@ -86,10 +84,18 @@ abstract class File
             if ('.' !== $file && '..' !== $file)
             {
                 $item = new FileEnumItem($dirPath, $file);
-                yield $item;
-                if (is_dir($item) && $item->getContinue())
+                $fullPath = $item->getFullPath();
+                if (null !== $pattern && !preg_match($pattern, $fullPath))
                 {
-                    foreach (static::enumFile($item) as $fileItem)
+                    continue;
+                }
+                if (!$extensionNames || \in_array(pathinfo($fullPath, \PATHINFO_EXTENSION), $extensionNames))
+                {
+                    yield $item;
+                }
+                if ($item->getContinue() && is_dir($fullPath))
+                {
+                    foreach (static::enumFile($fullPath, $pattern, $extensionNames) as $fileItem)
                     {
                         yield $fileItem;
                     }
