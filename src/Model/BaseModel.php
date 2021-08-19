@@ -126,7 +126,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 {
                     $fieldAnnotation = null;
                 }
-                if ($fieldAnnotation)
+                if ($fieldAnnotation && \is_string($v))
                 {
                     switch ($fieldAnnotation->type)
                     {
@@ -138,7 +138,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                             }
                             break;
                         case 'list':
-                            if (null !== $v && null !== $fieldAnnotation->listSeparator)
+                            if ('' === $v)
+                            {
+                                $v = [];
+                            }
+                            elseif (null !== $fieldAnnotation->listSeparator)
                             {
                                 $v = explode($fieldAnnotation->listSeparator, $v);
                             }
