@@ -20,12 +20,12 @@ class Bean extends Base
     /**
      * 单例模式.
      */
-    const INSTANCE_TYPE_SINGLETON = 'singleton';
+    public const INSTANCE_TYPE_SINGLETON = 'singleton';
 
     /**
      * 每次实例化.
      */
-    const INSTANCE_TYPE_EACH_NEW = 'eachNew';
+    public const INSTANCE_TYPE_EACH_NEW = 'eachNew';
 
     /**
      * 只传一个参数时的参数名.
