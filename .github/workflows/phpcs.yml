@@ -16,7 +16,7 @@ jobs:
         with:
           php-version: ${{ env.php-versions }}
           tools: pecl, composer:v2
-          extensions: redis, swoole
+          extensions: redis, swoole, inotify
           coverage: none
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
