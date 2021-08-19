@@ -42,13 +42,14 @@ class ModelGenerate extends BaseCommand
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      * @Option(name="lengthCheck", type=ArgType::BOOLEAN, default=false, comments="是否检查字符串字段长度,可选")
+     * @Option(name="generateDDL", type=ArgType::BOOLEAN, default=true, comments="是否生成 DDL,默认true,可选")
      * @Option(name="ddlEncode", type=ArgType::STRING, comments="DDL 编码函数", default="")
      * @Option(name="ddlDecode", type=ArgType::STRING, comments="DDL 解码函数", default="")
      *
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, bool $generateDDL, string $ddlEncode, string $ddlDecode): void
     {
         $override = (string) $override;
         switch ($override)
@@ -188,28 +189,35 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
-            $ddl = $this->getDDL($query, $table);
-            if ($withRecords)
+            if ($generateDDL)
             {
-                $dataList = $query->from($table)->select()->getArray();
-                $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
-            }
-            if ($sqlSingleLine)
-            {
-                $ddl = str_replace(\PHP_EOL, ' ', $ddl);
-            }
-            if ('' === $ddlEncode)
-            {
-                // 未指定编码方式，判断存在注释时，base64 编码
-                if (false !== strpos($ddl, '/*'))
+                $ddl = $this->getDDL($query, $table);
+                if ($withRecords)
                 {
-                    $ddl = base64_encode($ddl);
-                    $ddlDecode = 'base64_decode';
+                    $dataList = $query->from($table)->select()->getArray();
+                    $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
+                }
+                if ($sqlSingleLine)
+                {
+                    $ddl = str_replace(\PHP_EOL, ' ', $ddl);
+                }
+                if ('' === $ddlEncode)
+                {
+                    // 未指定编码方式，判断存在注释时，base64 编码
+                    if (false !== strpos($ddl, '/*'))
+                    {
+                        $ddl = base64_encode($ddl);
+                        $ddlDecode = 'base64_decode';
+                    }
+                }
+                else
+                {
+                    $ddl = $ddlEncode($ddl);
                 }
             }
             else
             {
-                $ddl = $ddlEncode($ddl);
+                $ddl = '';
             }
             $data = [
                 'namespace'     => $modelNamespace,

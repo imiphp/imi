@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace <?php echo $namespace; ?>\Base;
 
 use <?php echo $baseClassName; ?> as Model;
-use Imi\Model\Annotation\DDL;
+<?php if (!empty($ddl)) { ?>use Imi\Model\Annotation\DDL;<?php } ?>
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
@@ -18,7 +18,9 @@ else
 { ?>@Entity(false)<?php } ?>
 
  * @Table(name="<?php echo $table['name']; ?>"<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?><?php if ($poolName) { ?>, dbPoolName="<?php echo $poolName; ?>"<?php } ?>)
+<?php if (!empty($ddl)) { ?>
  * @DDL(sql="<?php echo str_replace('"', '""', $ddl); ?>", decode="<?php echo $ddlDecode; ?>")
+<?php } ?>
 <?php foreach ($fields as $field) { ?>
  * @property <?php echo $field['phpType']; ?> $<?php echo $field['varName']; ?> <?php echo '' === $field['comment'] ? '' : $field['comment']; ?>
 
