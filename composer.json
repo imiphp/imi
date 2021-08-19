@@ -43,7 +43,7 @@
         ]
     },
     "suggest": {
-        "ext-inotify": "高性能热更新监控支持inotify"
+        "ext-inotify": "高性能热更新支持"
     },
     "prefer-stable": true,
     "bin": [
