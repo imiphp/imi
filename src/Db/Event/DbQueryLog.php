@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Db\Event\Param\DbExecuteEventParam;
 use Imi\Db\Event\Param\DbPrepareEventParam;
 use Imi\Event\Event;
+use Imi\Util\DelayBeanCallable;
 
 /**
  * @Bean("DbQueryLog")
@@ -25,12 +26,12 @@ class DbQueryLog
     {
         if ($this->enable)
         {
-            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'exec', [$this, 'aopExecute']);
-            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'query', [$this, 'aopExecute']);
-            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'batchExec', [$this, 'aopExecute']);
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'exec', new DelayBeanCallable('DbQueryLog', 'aopExecute'));
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'query', new DelayBeanCallable('DbQueryLog', 'aopExecute'));
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'batchExec', new DelayBeanCallable('DbQueryLog', 'aopExecute'));
 
-            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'prepare', [$this, 'aopPrepare']);
-            AopManager::addAround('Imi\Db\*Drivers\*\Statement', 'execute', [$this, 'aopStatementExecute']);
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'prepare', new DelayBeanCallable('DbQueryLog', 'aopPrepare'));
+            AopManager::addAround('Imi\Db\*Drivers\*\Statement', 'execute', new DelayBeanCallable('DbQueryLog', 'aopStatementExecute'));
         }
     }
 
