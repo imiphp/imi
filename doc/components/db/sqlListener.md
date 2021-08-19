@@ -45,7 +45,7 @@ class DbExecuteListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         Log::info(sprintf('[%ss] %s', round($e->time, 3), $e->sql));
     }
@@ -83,7 +83,7 @@ class DbPrepareListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         Log::info(sprintf('[prepare] %s', $e->sql));
     }
