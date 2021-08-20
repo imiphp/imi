@@ -6,6 +6,7 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
@@ -126,7 +127,7 @@ class ActionMiddleware implements MiddlewareInterface
                 }
                 else
                 {
-                    $class = \get_class($callable[0]);
+                    $class = BeanFactory::getObjectClass($callable[0]);
                 }
                 $method = $callable[1];
                 $actionMethodParams = &$this->actionMethodParams;

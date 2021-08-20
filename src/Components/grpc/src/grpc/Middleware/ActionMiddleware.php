@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Grpc\Middleware;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionUtil;
 use Imi\Controller\HttpController;
 use Imi\Grpc\Parser;
@@ -141,7 +142,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
             else
             {
-                $class = \get_class($routeResult->callable[0]);
+                $class = BeanFactory::getObjectClass($routeResult->callable[0]);
             }
             $method = $routeResult->callable[1];
             if (isset($this->actionMethodParams[$class][$method]))
