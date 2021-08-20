@@ -20,7 +20,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-amqp": "2.0.x-dev"
+        "imiphp/imi-amqp": "~2.0.0"
     }
 }
 ```

@@ -20,7 +20,7 @@ MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT�
 ```json
 {
     "require": {
-        "imiphp/imi-mqtt": "2.0.x-dev"
+        "imiphp/imi-mqtt": "~2.0.0"
     }
 }
 ```
@@ -94,7 +94,7 @@ MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT�
 
 在控制器方法中返回一个包对象，代表响应当前请求。
 
-同样支持`\Imi\Server\Server::send()`等方法，详见：<https://doc.imiphp.com/utils/Server.html>
+同样支持`\Imi\Server\Server::send()`等方法，详见：<https://doc.imiphp.com/v2.0/utils/Server.html>
 
 ### MQTT 客户端开发
 

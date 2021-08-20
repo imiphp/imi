@@ -10,7 +10,7 @@
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/imiphp/imi/ci/dev)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.7.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
-[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
+[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.0/)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE)
 [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
@@ -74,17 +74,17 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ## 开始使用
 
-创建 Http Server 项目：`composer create-project imiphp/project-http:2.0.x-dev`
+创建 Http Server 项目：`composer create-project imiphp/project-http`
 
-创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:2.0.x-dev`
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket`
 
-创建 TCP Server 项目：`composer create-project imiphp/project-tcp:2.0.x-dev`
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp`
 
-创建 UDP Server 项目：`composer create-project imiphp/project-udp:2.0.x-dev`
+创建 UDP Server 项目：`composer create-project imiphp/project-udp`
 
 创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt`
 
-[完全开发手册](https://doc.imiphp.com)
+[完全开发手册](https://doc.imiphp.com/v2.0/)
 
 ## 运行环境
 
@@ -114,6 +114,14 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 * 感言
 
 ### 案例展示
+
+* [腾悦物联](https://www.teny.tech/)
+
+![腾悦物联](https://www.imiphp.com/images/anli/tengyue.jpg "腾悦物联")
+
+**项目介绍：** 基于imi开发的高性能高并发分布式（千万级设备）的能源销售管理平台，提供多场景充电桩、售电柜、换电柜、智能电池等设备接入，开放API第三方应用五分钟即可完成新能源物联网售电设备接入
+
+---
 
 * [看个蛋影视搜索 - 全网影视资源搜索平台](http://www.kangedan.com/)
 

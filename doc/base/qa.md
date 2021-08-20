@@ -8,7 +8,7 @@
 
 ## 通过 `composer create-project` 创建项目后无法以 Swoole 模式运行
 
-**解决方案：** 为 Windows 系统用户兼容考虑，默认没有引入 Swoole 组件，如有需要请手动引入：`composer require imiphp/imi-swoole:2.0.x-dev`
+**解决方案：** 为 Windows 系统用户兼容考虑，默认没有引入 Swoole 组件，如有需要请手动引入：`composer require imiphp/imi-swoole`
 
 ## Composer 引入 `imi-swoole` 组件报错
 

@@ -18,7 +18,7 @@ imi 框架的雪花算法生成组件
 ```json
 {
     "require": {
-        "imiphp/imi-snowflake": "2.0.x-dev"
+        "imiphp/imi-snowflake": "~2.0.0"
     }
 }
 ```
