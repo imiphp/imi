@@ -282,8 +282,8 @@ abstract class Query
     /**
      * 初始化多态一对一关系.
      *
-     * @param \Imi\Model\Model                                     $model
-     * @param string                                               $propertyName
+     * @param \Imi\Model\Model                                   $model
+     * @param string                                             $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
      *
      * @return void
@@ -345,8 +345,8 @@ abstract class Query
     /**
      * 初始化多态一对多关系.
      *
-     * @param \Imi\Model\Model                                      $model
-     * @param string                                                $propertyName
+     * @param \Imi\Model\Model                                    $model
+     * @param string                                              $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
      *
      * @return void
@@ -536,8 +536,8 @@ abstract class Query
     /**
      * 初始化多态多对多关系.
      *
-     * @param \Imi\Model\Model                                       $model
-     * @param string                                                 $propertyName
+     * @param \Imi\Model\Model                                     $model
+     * @param string                                               $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
      *
      * @return void
