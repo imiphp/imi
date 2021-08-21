@@ -11,6 +11,7 @@ imi 的命令行工具使用注解来定义
 | 属性名称 | 说明 |
 |-|-
 | name | 工具名称 |
+| description | 操作描述 |
 
 ### @CommandAction
 
@@ -61,7 +62,7 @@ use Imi\Cli\Annotation\Arg;
 class Test
 {
     /**
-     * @CommandAction("hello")
+     * @CommandAction(name="hello", description="Hello world")
      * @Arg(name="username", type="string", default="默认值")
      */
     public function hello($username)

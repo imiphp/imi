@@ -24,7 +24,7 @@ class Process extends BaseCommand
     /**
      * 开启一个进程，可以任意添加参数.
      *
-     * @CommandAction(name="start", dynamicOptions=true)
+     * @CommandAction(name="start", dynamicOptions=true, description="开启一个进程")
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
      * @Option(name="redirectStdinStdout", type=ArgType::BOOL, default=null, comments="重定向子进程的标准输入和输出。启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。")
@@ -47,7 +47,7 @@ class Process extends BaseCommand
     /**
      * 开启一个进程池，可以任意添加参数.
      *
-     * @CommandAction(name="pool", dynamicOptions=true)
+     * @CommandAction(name="pool", dynamicOptions=true, description="开启一个进程池")
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="进程池名称，通过@ProcessPool注解定义")
      * @Option(name="worker", type=ArgType::INT, default=null, comments="进程数量，不传则根据注解配置设定")
@@ -68,7 +68,7 @@ class Process extends BaseCommand
     /**
      * 运行一个进程.
      *
-     * @CommandAction(name="run", dynamicOptions=true)
+     * @CommandAction(name="run", dynamicOptions=true, description="运行一个进程")
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
      */

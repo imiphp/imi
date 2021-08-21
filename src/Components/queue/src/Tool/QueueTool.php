@@ -17,7 +17,7 @@ class QueueTool
     /**
      * 获取队列状态
      *
-     * @CommandAction("status")
+     * @CommandAction("status", description="获取队列状态")
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void
@@ -30,7 +30,7 @@ class QueueTool
     /**
      * 将失败消息恢复到队列.
      *
-     * @CommandAction("restoreFail")
+     * @CommandAction(name="restoreFail", description="将失败消息恢复到队列")
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void
@@ -43,7 +43,7 @@ class QueueTool
     /**
      * 将超时消息恢复到队列.
      *
-     * @CommandAction("restoreTimeout")
+     * @CommandAction(name="restoreTimeout", description="将超时消息恢复到队列")
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void

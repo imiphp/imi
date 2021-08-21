@@ -29,7 +29,7 @@ class Server extends BaseCommand
     /**
      * 开启服务
      *
-     * @CommandAction(name="start")
+     * @CommandAction(name="start", description="启动 workerman 服务")
      * @Option(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
      * @Option(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * @Option(name="daemon", shortcut="d", type=ArgType::BOOL, required=false, default=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式")
@@ -105,7 +105,7 @@ class Server extends BaseCommand
     /**
      * 停止服务
      *
-     * @CommandAction(name="stop")
+     * @CommandAction(name="stop", description="停止 workerman 服务")
      */
     public function stop(): void
     {

@@ -27,7 +27,7 @@ class TableGenerate extends BaseCommand
      *
      * 注意，本工具是删除重建表，会丢失数据，生产环境慎重使用！
      *
-     * @CommandAction("table")
+     * @CommandAction(name="table", description="表生成")
      *
      * @Option(name="namespace", type=ArgType::STRING, default=null, comments="模型所在命名空间，支持半角逗号分隔传多个，默认不传则为全部")
      * @Option(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")

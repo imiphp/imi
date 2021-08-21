@@ -27,7 +27,7 @@ class ModelGenerate extends BaseCommand
     /**
      * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
      *
-     * @CommandAction("model")
+     * @CommandAction(name="model", description="模型生成")
      *
      * @Argument(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
      * @Argument(name="baseClass", type=ArgType::STRING, default="Imi\Model\Model", comments="生成的Model所继承的基类,默认\Imi\Model\Model,可选")
