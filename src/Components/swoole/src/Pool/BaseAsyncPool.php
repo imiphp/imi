@@ -256,7 +256,7 @@ abstract class BaseAsyncPool extends BasePool
         if (null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0)
         {
             $gcInterval = $this->config->getGCInterval();
-            if (null !== $gcInterval)
+            if ($gcInterval > 0)
             {
                 $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
                 Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {

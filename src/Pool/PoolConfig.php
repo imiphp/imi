@@ -27,7 +27,7 @@ class PoolConfig implements IPoolConfig
     /**
      * 资源回收时间间隔，单位：秒.
      */
-    protected int $gcInterval = 60;
+    protected ?int $gcInterval = 60;
 
     /**
      * 资源最大存活时间，单位：秒.
