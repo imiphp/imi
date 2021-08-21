@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Aop\Annotation;
 
-use Imi\App;
 use Imi\Bean\Annotation\Inherit;
 use Imi\RequestContext;
-use Imi\Swoole\Util\Coroutine;
 
 /**
  * 属性注入
@@ -40,13 +38,6 @@ class RequestInject extends BaseInjectValue
      */
     public function getRealValue()
     {
-        if (Coroutine::isIn())
-        {
-            return RequestContext::getBean($this->name, ...$this->args);
-        }
-        else
-        {
-            return App::getBean($this->name, ...$this->args);
-        }
+        return RequestContext::getBean($this->name, ...$this->args);
     }
 }

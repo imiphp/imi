@@ -6,11 +6,11 @@ namespace Imi\Swoole\Server\ConnectionContext\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
+use Imi\Event\EventParam;
 use Imi\RequestContext;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Listener\IAppInitEventListener;
-use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Util\Imi;
 
 /**
@@ -21,7 +21,7 @@ class AppInit implements IAppInitEventListener
     /**
      * 事件处理方法.
      */
-    public function handle(AppInitEventParam $e): void
+    public function handle(EventParam $e): void
     {
         foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {

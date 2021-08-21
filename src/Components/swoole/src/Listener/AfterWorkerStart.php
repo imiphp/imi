@@ -11,7 +11,6 @@ use Imi\Server\Http\Listener\HttpRouteInit;
 use Imi\Server\Server;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
-use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\SwooleWorker;
 use Imi\Util\Imi;
@@ -35,7 +34,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
             if (0 === Worker::getWorkerId() && !$this->checkInitFlagFile($initFlagFile))
             {
                 Event::trigger('IMI.APP.INIT', [
-                ], $e->getTarget(), AppInitEventParam::class);
+                ], $e->getTarget());
 
                 file_put_contents($initFlagFile, SwooleWorker::getMasterPid());
 
