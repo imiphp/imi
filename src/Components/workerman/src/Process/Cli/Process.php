@@ -20,7 +20,7 @@ class Process extends BaseCommand
     /**
      * 开启一个进程，可以任意添加参数.
      *
-     * @CommandAction(name="start", dynamicOptions=true)
+     * @CommandAction(name="start", dynamicOptions=true, description="启动一个进程")
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
      */

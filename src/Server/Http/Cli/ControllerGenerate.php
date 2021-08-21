@@ -21,7 +21,7 @@ class ControllerGenerate extends BaseCommand
     /**
      * 生成一个 Http Controller.
      *
-     * @CommandAction("httpController")
+     * @CommandAction(name="httpController", description="生成 Http Controller")
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="生成的 Controller 类名")
      * @Argument(name="namespace", type=ArgType::STRING, required=true, comments="生成的 Controller 所在命名空间")

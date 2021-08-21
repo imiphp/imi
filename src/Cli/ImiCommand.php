@@ -7,6 +7,7 @@ namespace Imi\Cli;
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Cli\Annotation\Argument;
+use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Event\Event;
 use Symfony\Component\Console\Command\Command;
@@ -83,6 +84,12 @@ class ImiCommand extends Command
 
     protected function configure(): void
     {
+        /** @var CommandAction $commandAction */
+        $commandAction = AnnotationManager::getMethodAnnotations($this->className, $this->methodName, CommandAction::class)[0] ?? null;
+        if (null !== $commandAction)
+        {
+            $this->setDescription($commandAction->description ?? '');
+        }
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
         {
             /** @var Argument $argumentAnnotation */
@@ -139,7 +146,7 @@ class ImiCommand extends Command
      *
      * @return int 0 if everything went fine, or an exit code
      *
-     * @throws LogicException When this abstract method is not implemented
+     * @throws \LogicException When this abstract method is not implemented
      *
      * @see setCode()
      */
