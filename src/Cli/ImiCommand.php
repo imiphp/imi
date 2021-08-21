@@ -86,7 +86,8 @@ class ImiCommand extends Command
     {
         /** @var CommandAction $commandAction */
         $commandAction = AnnotationManager::getMethodAnnotations($this->className, $this->methodName, CommandAction::class)[0] ?? null;
-        if ($commandAction) {
+        if ($commandAction)
+        {
             $this->setDescription($commandAction->description ?? '');
         }
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
