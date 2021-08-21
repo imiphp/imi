@@ -26,7 +26,7 @@ class CommandAction extends Base
      */
     protected ?string $defaultFieldName = 'name';
 
-    public function __construct(?array $__data = null, ?string $name = null, bool $dynamicOptions = false)
+    public function __construct(?array $__data = null, ?string $name = null, ?string $description = null, bool $dynamicOptions = false)
     {
         parent::__construct(...\func_get_args());
     }
