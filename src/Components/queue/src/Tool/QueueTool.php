@@ -17,7 +17,7 @@ class QueueTool
     /**
      * 获取队列状态
      *
-     * @CommandAction("status", description="获取队列状态")
+     * @CommandAction(name="status", description="获取队列状态")
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void
