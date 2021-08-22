@@ -234,11 +234,6 @@ class ImiCommand extends Command
                 break;
             case ArgType::BOOL:
             case ArgType::BOOLEAN:
-                // if (null === $value)
-                // {
-                //     $value = true;
-                // }
-                // else
                 if (\is_string($value))
                 {
                     $value = (bool) json_decode($value);
