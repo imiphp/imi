@@ -42,7 +42,7 @@ imi 的命令行工具使用注解来定义
 |-|-
 | name | 参数名称 |
 | shortcut | 参数短名称 |
-| type | 参数类型，支持：`string/int/float/boolean/array`，也可以使用`\Imi\Cli\ArgType::XXX` |
+| type | 参数类型，支持：`none/string/int/float/boolean/array`，也可以使用`\Imi\Cli\ArgType::XXX` |
 | default | 默认值 |
 | required | 是否是必选参数，默认`false` |
 | comments | 注释 |
