@@ -94,4 +94,4 @@ class RequestContextProxy extends Base
 
 查看帮助：
 
-`imi generate/requestContextProxy -h`
+`imi-xxx generate/requestContextProxy -h`

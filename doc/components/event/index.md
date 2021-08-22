@@ -33,7 +33,7 @@ class Init implements IEventListener
 }
 ```
 
-首先需要定义一个类，类名和位置无所谓，只要配置了`beanScan`能被扫描到即可。
+首先需要定义一个类，类名和位置无所谓。
 
 类必须实现`IEventListener`接口和`public function handle(EventParam $e)`方法。
 
@@ -124,7 +124,7 @@ class BeforeRequest implements IRequestEventListener
 }
 ```
 
-首先需要定义一个类，类名和位置无所谓，只要配置了`beanScan`能被扫描到即可。
+首先需要定义一个类，类名和位置无所谓。
 
 类必须实现对应接口和`handle()`方法，每个类的事件定义不同。
 

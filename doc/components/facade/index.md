@@ -92,4 +92,4 @@ class Facade extends Base
 
 查看帮助：
 
-`imi generate/facade -h`
+`imi-xxx generate/facade -h`
