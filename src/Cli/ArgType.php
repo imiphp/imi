@@ -9,6 +9,8 @@ namespace Imi\Cli;
  */
 class ArgType
 {
+    public const NONE = 'none';
+
     public const STRING = 'string';
 
     public const INT = 'int';

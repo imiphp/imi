@@ -103,12 +103,21 @@ class ImiCommand extends Command
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Option::class) as $optionAnnotation)
         {
             /** @var Option $optionAnnotation */
-            $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputArgument::OPTIONAL;
-            if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
+            if (ArgType::NONE === $optionAnnotation->type)
             {
-                $mode |= InputOption::VALUE_IS_ARRAY;
+                $mode = InputOption::VALUE_NONE;
+                $default = null;
             }
-            $this->addOption($optionAnnotation->name, $optionAnnotation->shortcut, $mode, $optionAnnotation->comments, $optionAnnotation->default);
+            else
+            {
+                $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputArgument::OPTIONAL;
+                if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
+                {
+                    $mode |= InputOption::VALUE_IS_ARRAY;
+                }
+                $default = $optionAnnotation->default;
+            }
+            $this->addOption($optionAnnotation->name, $optionAnnotation->shortcut, $mode, $optionAnnotation->comments, $default);
         }
     }
 
@@ -214,6 +223,7 @@ class ImiCommand extends Command
     {
         switch ($option['type'])
         {
+            case ArgType::NONE:
             case ArgType::STRING:
                 break;
             case ArgType::INT:
