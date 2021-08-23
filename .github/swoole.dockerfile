@@ -9,7 +9,7 @@ RUN set -eux \
     && docker-php-ext-install bcmath mysqli pdo_mysql pdo_pgsql pcntl \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    && curl https://github.com/swoole/ext-postgresql/archive/refs/tags/v4.7.0.tar.gz -o ext-postgresql.tar.gz && tar -xzvf ext-postgresql.tar.gz && cd ext-postgresql && phpize && ./configure && make -j$(sysctl -n hw.ncpu) && make install && docker-php-ext-enable swoole_postgresql && php --ri swoole_postgresql\
+    && curl -o ext-postgresql.tar.gz https://github.com/swoole/ext-postgresql/archive/refs/tags/v4.7.0.tar.gz && tar -xzvf ext-postgresql.tar.gz && cd ext-postgresql && phpize && ./configure && make -j$(sysctl -n hw.ncpu) && make install && docker-php-ext-enable swoole_postgresql && php --ri swoole_postgresql\
     && ( \
         [ $(php -r "echo PHP_VERSION_ID < 80000 ? 1 : 0;") = "0" ] \
         || (pecl install hprose && docker-php-ext-enable hprose) \
