@@ -146,7 +146,7 @@ after Imi\Swoole\Redis\Pool\CoroutineRedisPool::getResource(): 0/1
 after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 ```
 
-类名、方法名和命名空间没有要求，只要`beanScan`里能扫描到即可。
+类名、方法名和命名空间没有要求。
 
 类注释中必须写`@Aspect`表明是一个切面类
 
@@ -391,7 +391,7 @@ $testClass->test();
 
 ### 非 Bean 类使用属性注入
 
-imi 提供了一个 `Imi\Bean\Traits\TAutoInject` 来让非 `Bean` 类也能够使用属性注入。也就是直接`new`对象，也可以自动注入属性。当然，这个类的命名空间必须在`beanScan`中配置，能被扫描到才可以正常注入。
+imi 提供了一个 `Imi\Bean\Traits\TAutoInject` 来让非 `Bean` 类也能够使用属性注入。也就是直接`new`对象，也可以自动注入属性。
 
 无构造方法的类：
 

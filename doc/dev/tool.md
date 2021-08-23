@@ -54,7 +54,7 @@ namespace ImiApp\Tool;
 
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
-use Imi\Cli\Annotation\Arg;
+use Imi\Cli\Annotation\Option;
 
 /**
  * @Command("test")
@@ -63,21 +63,16 @@ class Test
 {
     /**
      * @CommandAction(name="hello", description="Hello world")
-     * @Arg(name="username", type="string", default="默认值")
+     * @Argument(name="content", type=\Imi\Cli\ArgType::STRING)
+     * @Option(name="username", type=\Imi\Cli\ArgType::STRING, default="默认值")
      */
-    public function hello($username)
+    public function hello(string $content, string $username): void
     {
-        echo "hello {$username}", PHP_EOL;
+        echo "{$username}: {$content}", PHP_EOL;
     }
 
 }
 ```
-
-## beanScan
-
-工具所在命名空间必须在项目配置`@app.beanScan`中定义
-
-如上面例子中的`ImiApp\Tool`必须定义在`@app.beanScan`
 
 ## 加载注解
 
@@ -93,4 +88,4 @@ class Test
 
 上面的例子调用示例：
 
-`imi test/hello -username yurun`
+`imi test/hello "content内容" --username yurun`

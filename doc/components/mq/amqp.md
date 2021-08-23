@@ -267,8 +267,6 @@ class TestPublisher extends BasePublisher
 }
 ```
 
-> 该类所在命名空间必须能被扫描到，要在`beanScan`中配置
-
 ### 发布消息
 
 ```php

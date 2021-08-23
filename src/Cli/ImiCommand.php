@@ -110,7 +110,7 @@ class ImiCommand extends Command
             }
             else
             {
-                $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputArgument::OPTIONAL;
+                $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
                 if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
                 {
                     $mode |= InputOption::VALUE_IS_ARRAY;
@@ -195,11 +195,20 @@ class ImiCommand extends Command
         {
             if (isset($arguments[$param->name]))
             {
-                $value = $this->parseArgValue($this->input->getArgument($param->name), $arguments[$param->name]);
+                $argument = $arguments[$param->name];
+                $value = $this->parseArgValue($this->input->getArgument($argument['argumentName']), $argument);
             }
             elseif (isset($options[$param->name]))
             {
-                $value = $this->parseArgValue($this->input->getOption($param->name), $options[$param->name]);
+                $option = $options[$param->name];
+                $value = $this->parseArgValue($this->input->getOption($option['optionName']), $option);
+                if (ArgType::BOOL === $option['type'] && null === $value)
+                {
+                    if ($this->input->hasParameterOption('--' . $option['optionName']) || (null !== $option['shortcut'] && $this->input->hasParameterOption('-' . $option['shortcut'])))
+                    {
+                        $value = true;
+                    }
+                }
             }
             else
             {

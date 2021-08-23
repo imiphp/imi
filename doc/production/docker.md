@@ -33,13 +33,16 @@ RUN pecl install redis && docker-php-ext-enable redis
 # 版本也可以自行修改
 FROM php:7.4-cli
 
-RUN apt update && apt install unzip
+RUN apt update && apt install unzip libevent-dev libssl-dev
 
 # 安装必要的扩展
-RUN docker-php-ext-install mysqli pdo_mysql pcntl event > /dev/null
+RUN docker-php-ext-install mysqli pdo_mysql pcntl sockets > /dev/null
 
 # 安装 Redis 扩展
 RUN pecl install redis && docker-php-ext-enable redis
+
+# 安装 Event 扩展，提升 Workerman 性能
+RUN pecl install event && docker-php-ext-enable event
 
 # 安装 Composer，如果不需要可以注释
 RUN curl -o /usr/bin/composer https://getcomposer.org/composer.phar && chmod +x /usr/bin/composer
