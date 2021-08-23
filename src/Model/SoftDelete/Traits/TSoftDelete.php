@@ -12,7 +12,6 @@ use Imi\Event\Event;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\BeforeDeleteEventParam;
 use Imi\Model\Model;
-use Imi\Model\ModelQuery;
 use Imi\Model\ModelRelationManager;
 use Imi\Model\SoftDelete\Annotation\SoftDelete;
 
@@ -57,7 +56,7 @@ trait TSoftDelete
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = ModelQuery::class): IQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
     {
         /** @var IQuery $query */
         $query = parent::query($poolName, $queryType, $queryClass);
@@ -72,7 +71,7 @@ trait TSoftDelete
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = ModelQuery::class): IQuery
+    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
     {
         return parent::query($poolName, $queryType, $queryClass);
     }

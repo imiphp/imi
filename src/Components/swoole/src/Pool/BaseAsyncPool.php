@@ -53,13 +53,16 @@ abstract class BaseAsyncPool extends BasePool
      */
     public function open(): void
     {
-        parent::open();
-        // 定时资源回收
-        $this->stopAutoGC();
-        $this->startAutoGC();
-        // 心跳
-        $this->stopHeartbeat();
-        $this->startHeartbeat();
+        if (Coroutine::isIn())
+        {
+            parent::open();
+            // 定时资源回收
+            $this->stopAutoGC();
+            $this->startAutoGC();
+            // 心跳
+            $this->stopHeartbeat();
+            $this->startHeartbeat();
+        }
     }
 
     /**

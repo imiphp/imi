@@ -6,9 +6,10 @@ ARG PHP_JIT="0"
 
 RUN set -eux \
     && apt-get update && apt-get -y install procps libpq-dev unzip \
-    && docker-php-ext-install bcmath mysqli pdo_mysql pcntl \
+    && docker-php-ext-install bcmath mysqli pdo_mysql pdo_pgsql pcntl \
     && pecl install redis \
     && docker-php-ext-enable redis \
+    && wget -O ext-postgresql.zip https://github.com/swoole/ext-postgresql/archive/refs/tags/v4.7.0.zip && unzip ext-postgresql.zip && cd ext-postgresql-4.7.0 && phpize && ./configure && make -j$(sysctl -n hw.ncpu) && make install && docker-php-ext-enable swoole_postgresql && php --ri swoole_postgresql\
     && ( \
         [ $(php -r "echo PHP_VERSION_ID < 80000 ? 1 : 0;") = "0" ] \
         || (pecl install hprose && docker-php-ext-enable hprose) \
