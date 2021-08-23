@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Unit\Model;
 
-use Imi\PgSql\Test\Model\Tree;
-use Imi\PgSql\Test\Model\TreeWithChildren;
+use Imi\Pgsql\Test\Model\Tree;
+use Imi\Pgsql\Test\Model\TreeWithChildren;
 use Imi\Test\BaseTest;
 
 /**

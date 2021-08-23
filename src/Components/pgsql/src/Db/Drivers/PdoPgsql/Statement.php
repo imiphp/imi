@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Db\Drivers\PdoPgSql;
+namespace Imi\Pgsql\Db\Drivers\PdoPgsql;
 
 use Imi\Db\Exception\DbException;
 use Imi\Pgsql\Db\Contract\IPgsqlDb;

@@ -119,7 +119,7 @@ class SqlUtil
     }
 
     /**
-     * 转义 PgSql 字符串.
+     * 转义 Pgsql 字符串.
      */
     public static function pgsqlEscapeString(string $value): string
     {

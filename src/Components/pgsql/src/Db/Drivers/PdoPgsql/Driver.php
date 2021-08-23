@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Db\Drivers\PdoPgSql;
+namespace Imi\Pgsql\Db\Drivers\PdoPgsql;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
@@ -19,7 +19,7 @@ use PDO;
 /**
  * PDO Pgsql驱动.
  *
- * @Bean("PdoPgSqlDriver")
+ * @Bean("PdoPgsqlDriver")
  */
 class Driver extends PgsqlBase implements IPgsqlDb
 {

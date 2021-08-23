@@ -60,7 +60,7 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'dbClass'     => 'PdoPgSqlDriver',
+                'dbClass'     => 'PdoPgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
@@ -82,7 +82,7 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'dbClass'     => 'PdoPgSqlDriver',
+                'dbClass'     => 'PdoPgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
@@ -118,7 +118,7 @@ return [
         'defaultPool' => 'maindb',
         'connections' => [
             'maindb' => [
-                'dbClass'     => 'PdoPgSqlDriver',
+                'dbClass'     => 'PdoPgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),

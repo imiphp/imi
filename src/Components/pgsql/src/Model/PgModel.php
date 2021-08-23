@@ -8,7 +8,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Model\Model;
 
 /**
- * PgSql 模型.
+ * Pgsql 模型.
  */
 class PgModel extends Model
 {

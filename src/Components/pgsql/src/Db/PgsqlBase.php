@@ -8,7 +8,7 @@ use Imi\Db\Drivers\Base;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Pgsql\Db\Query\PgsqlQuery;
 
-abstract class PgSqlBase extends Base
+abstract class PgsqlBase extends Base
 {
     /**
      * 创建查询构建器.

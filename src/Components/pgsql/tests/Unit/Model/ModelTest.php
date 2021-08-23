@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Unit\Model;
 
-use Imi\PgSql\Test\Model\Member;
-use Imi\PgSql\Test\Model\MemberWithSqlField;
-use Imi\PgSql\Test\Model\ReferenceGetterTestModel;
-use Imi\PgSql\Test\Model\TestJson;
-use Imi\PgSql\Test\Model\TestJsonNotCamel;
-use Imi\PgSql\Test\Model\TestSoftDelete;
-use Imi\PgSql\Test\Model\UpdateTime;
+use Imi\Pgsql\Test\Model\Member;
+use Imi\Pgsql\Test\Model\MemberWithSqlField;
+use Imi\Pgsql\Test\Model\ReferenceGetterTestModel;
+use Imi\Pgsql\Test\Model\TestJson;
+use Imi\Pgsql\Test\Model\TestJsonNotCamel;
+use Imi\Pgsql\Test\Model\TestSoftDelete;
+use Imi\Pgsql\Test\Model\UpdateTime;
 use Imi\Test\BaseTest;
 
 /**

@@ -6,6 +6,6 @@ namespace Imi\Pgsql\Db\Contract;
 
 use Imi\Db\Interfaces\IDb;
 
-interface IPgSqlDb extends IDb
+interface IPgsqlDb extends IDb
 {
 }

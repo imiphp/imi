@@ -6,6 +6,6 @@ namespace Imi\Pgsql\Db\Contract;
 
 use Imi\Db\Interfaces\IStatement;
 
-interface IPgSqlStatement extends IStatement
+interface IPgsqlStatement extends IStatement
 {
 }
