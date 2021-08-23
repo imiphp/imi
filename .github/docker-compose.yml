@@ -20,6 +20,7 @@ services:
 
   postgres:
     image: postgres:13
+    container_name: "postgres"
     environment:
       POSTGRES_USER: root
       POSTGRES_DB: db_imi_test
