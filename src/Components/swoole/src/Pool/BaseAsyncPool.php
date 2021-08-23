@@ -53,16 +53,25 @@ abstract class BaseAsyncPool extends BasePool
      */
     public function open(): void
     {
+        // 初始化队列
+        $this->initQueue();
         if (Coroutine::isIn())
         {
-            parent::open();
-            // 定时资源回收
-            $this->stopAutoGC();
-            $this->startAutoGC();
-            // 心跳
-            $this->stopHeartbeat();
-            $this->startHeartbeat();
+            // 填充最少资源数
+            $this->fillMinResources();
         }
+        else
+        {
+            go(function () {
+                $this->fillMinResources();
+            });
+        }
+        // 定时资源回收
+        $this->stopAutoGC();
+        $this->startAutoGC();
+        // 心跳
+        $this->stopHeartbeat();
+        $this->startHeartbeat();
     }
 
     /**
