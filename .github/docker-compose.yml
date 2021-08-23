@@ -80,6 +80,7 @@ services:
       - redis
       - rabbitmq
       - kafka1
+      - postgres
     environment:
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: redis
@@ -107,6 +108,7 @@ services:
       - redis
       - rabbitmq
       - kafka1
+      - postgres
     environment:
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: redis
