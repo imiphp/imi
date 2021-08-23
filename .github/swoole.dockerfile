@@ -11,7 +11,7 @@ RUN set -eux \
     && docker-php-ext-enable redis \
     && pecl install inotify \
     && docker-php-ext-enable inotify \
-    && curl -L -o ext-postgresql.tar.gz https://github.com/swoole/ext-postgresql/archive/refs/tags/v4.7.0.tar.gz && tar -xvf ext-postgresql.tar.gz && cd ext-postgresql && phpize && ./configure && make -j$(sysctl -n hw.ncpu) && make install && docker-php-ext-enable swoole_postgresql && php --ri swoole_postgresql\
+    && curl -L -o ext-postgresql.tar.gz https://github.com/swoole/ext-postgresql/archive/refs/tags/v4.7.0.tar.gz && tar -xvf ext-postgresql.tar.gz && cd ext-postgresql-4.7.0 && phpize && ./configure && make -j$(sysctl -n hw.ncpu) && make install && docker-php-ext-enable swoole_postgresql && php --ri swoole_postgresql\
     && ( \
         [ $(php -r "echo PHP_VERSION_ID < 80000 ? 1 : 0;") = "0" ] \
         || (pecl install hprose && docker-php-ext-enable hprose) \
