@@ -23,4 +23,4 @@ jobs:
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
       - name: Coding Standards Tests
-        run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
+        run: docker exec ${ENV_SERVICE} ./vendor/bin/php-cs-fixer fix --dry-run --diff

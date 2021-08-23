@@ -32,6 +32,7 @@ jobs:
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
           docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
+          docker exec postgres psql -d db_imi_test -U rooot -f .github/pgsql.sql
       - name: Test
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test components
@@ -69,6 +70,7 @@ jobs:
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
           docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
+          docker exec postgres psql -d db_imi_test -U rooot -f .github/pgsql.sql
       - name: Test
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test components
