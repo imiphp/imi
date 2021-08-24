@@ -6,23 +6,21 @@ jobs:
   tests:
     runs-on: ubuntu-20.04
     env:
-      php-versions: 8.0
+      SWOOLE_DOCKER_VERSION: 4.7-php7.4
+      ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.php-versions }}
-          tools: pecl, composer:v2
-          extensions: redis, swoole, inotify
-          coverage: none
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --ignore-platform-reqs --no-scripts
+      - name: Prepare
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} php -v \
+            && php -m \
+            && php --ri swoole \
+            && composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
+          docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
       - name: Coding Standards Tests
-        run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
+        run: docker exec ${ENV_SERVICE} ./vendor/bin/php-cs-fixer fix --dry-run --diff

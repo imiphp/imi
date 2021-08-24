@@ -21,6 +21,8 @@ use Imi\Util\LazyArrayObject;
  */
 abstract class Model extends BaseModel
 {
+    public const DEFAULT_QUERY_CLASS = ModelQuery::class;
+
     public function __init(array $data = []): void
     {
         if ($this->__meta->hasRelation())
@@ -38,7 +40,7 @@ abstract class Model extends BaseModel
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = ModelQuery::class): IQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
     {
         $meta = static::__getMeta(static::__getRealClassName());
 
@@ -673,6 +675,31 @@ abstract class Model extends BaseModel
     }
 
     /**
+     * @return mixed
+     */
+    protected static function parseDateTime(?string $columnType)
+    {
+        switch ($columnType)
+        {
+            case 'date':
+                return date('Y-m-d');
+            case 'time':
+                return date('H:i:s');
+            case 'datetime':
+            case 'timestamp':
+                return date('Y-m-d H:i:s');
+            case 'int':
+                return time();
+            case 'bigint':
+                return (int) (microtime(true) * 1000);
+            case 'year':
+                return (int) date('Y');
+            default:
+                return null;
+        }
+    }
+
+    /**
      * 处理保存的数据.
      *
      * @param object|array  $data
@@ -718,29 +745,10 @@ abstract class Model extends BaseModel
             // 字段自动更新时间
             if ($canUpdateTime && $column->updateTime)
             {
-                switch ($columnType)
+                $value = static::parseDateTime($columnType);
+                if (null === $value)
                 {
-                    case 'date':
-                        $value = date('Y-m-d');
-                        break;
-                    case 'time':
-                        $value = date('H:i:s');
-                        break;
-                    case 'datetime':
-                    case 'timestamp':
-                        $value = date('Y-m-d H:i:s');
-                        break;
-                    case 'int':
-                        $value = time();
-                        break;
-                    case 'bigint':
-                        $value = (int) (microtime(true) * 1000);
-                        break;
-                    case 'year':
-                        $value = (int) date('Y');
-                        break;
-                    default:
-                        throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFieldName, $column->type));
+                    throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFieldName, $columnType));
                 }
                 if ($objectIsObject)
                 {

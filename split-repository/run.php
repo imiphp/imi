@@ -185,6 +185,9 @@ static $storeRepoMap = [
     'src/Components/swoole-tracker' => [
         'git@github.com:imiphp/imi-swoole-tracker',
     ],
+    'src/Components/pgsql' => [
+        'git@github.com:imiphp/imi-pgsql',
+    ],
 ];
 
 $mainRepoPath = dirname(__DIR__) . '/';

@@ -20,12 +20,15 @@ services:
 
   postgres:
     image: postgres:13
+    container_name: "postgres"
     environment:
       POSTGRES_USER: root
       POSTGRES_DB: db_imi_test
       POSTGRES_PASSWORD: root
     ports:
       - "5432:5432"
+    volumes:
+      - "${GITHUB_WORKSPACE}:/imi:rw"
 
   redis:
     image: redis:6-alpine
@@ -78,9 +81,11 @@ services:
       - redis
       - rabbitmq
       - kafka1
+      - postgres
     environment:
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: redis
+      PGSQL_SERVER_HOST: postgres
       MYSQL_SERVER_PASSWORD: ""
       AMQP_SERVER_HOST: "rabbitmq"
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
@@ -105,9 +110,11 @@ services:
       - redis
       - rabbitmq
       - kafka1
+      - postgres
     environment:
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: redis
+      PGSQL_SERVER_HOST: postgres
       MYSQL_SERVER_PASSWORD: ""
       AMQP_SERVER_HOST: "rabbitmq"
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"

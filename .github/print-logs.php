@@ -125,6 +125,7 @@ foreach ([
     'kafka',
     'mqtt',
     'smarty',
+    'pgsql',
 ] as $component)
 {
     $filename = $dir . $component . '/example/.runtime/logs/cli.log';

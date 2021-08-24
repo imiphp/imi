@@ -1,0 +1,22 @@
+{
+    "name": "imiphp/imi-pgsql",
+    "type": "library",
+    "license": "MIT",
+    "description": "imi 框架配套的 pgsql 组件",
+    "require": {
+    },
+    "require-dev": {
+        "swoole/ide-helper": "^4.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\Pgsql\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Pgsql\\Test\\": "tests/"
+        }
+    },
+    "scripts": {}
+}
