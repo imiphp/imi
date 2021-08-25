@@ -158,6 +158,9 @@ class ImiCommand extends Command
             $input->setDynamicOptions($this->dynamicOptions);
         }
 
+        static::$inputInstance = $input;
+        static::$outputInstance = $output;
+
         return parent::run($input, $output);
     }
 
