@@ -155,11 +155,13 @@ class ImiCommand extends Command
     {
         if ($input instanceof ImiArgvInput)
         {
+            static::$inputInstance = $input;
             $input->setDynamicOptions($this->dynamicOptions);
         }
-
-        static::$inputInstance = $input;
-        static::$outputInstance = $output;
+        if ($output instanceof ImiConsoleOutput)
+        {
+            static::$outputInstance = $output;
+        }
 
         return parent::run($input, $output);
     }
