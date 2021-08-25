@@ -108,9 +108,9 @@ class ImiCommand extends Command
         {
             $this->setDescription($commandAction->description ?? '');
         }
+        /** @var Argument $argumentAnnotation */
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
         {
-            /** @var Argument $argumentAnnotation */
             $mode = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
             if (ArgType::ARRAY === $argumentAnnotation->type || ArgType::ARRAY_EX === $argumentAnnotation->type)
             {
@@ -118,6 +118,7 @@ class ImiCommand extends Command
             }
             $this->addArgument($argumentAnnotation->name, $mode, $argumentAnnotation->comments, $argumentAnnotation->default);
         }
+        /** @var Option $optionAnnotation */
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Option::class) as $optionAnnotation)
         {
             if (ArgType::BOOLEAN_NEGATABLE === $optionAnnotation->type)
@@ -126,7 +127,6 @@ class ImiCommand extends Command
             }
             else
             {
-                /** @var Option $optionAnnotation */
                 $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
                 if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
                 {
