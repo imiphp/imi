@@ -10,7 +10,7 @@ use Imi\Bean\BeanManager;
 use Imi\Bean\Scanner;
 use Imi\Cache\CacheManager;
 use Imi\Cli\CliApp;
-use Imi\Cli\ImiArgvInput;
+use Imi\Cli\ImiCommand;
 use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
@@ -71,7 +71,7 @@ class SwooleApp extends CliApp
     {
         try
         {
-            $this->cli->run(new ImiArgvInput());
+            $this->cli->run(ImiCommand::getInput(), ImiCommand::getOutput());
         }
         catch (\Swoole\ExitException $e)
         {

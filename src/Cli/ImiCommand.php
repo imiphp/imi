@@ -51,6 +51,20 @@ class ImiCommand extends Command
 
     protected array $optionsDefinition = [];
 
+    protected static ImiArgvInput $inputInstance;
+
+    protected static ImiArgvOutput $outputInstance;
+
+    public static function getInput(): ImiArgvInput
+    {
+        return static::$inputInstance ??= new ImiArgvInput();
+    }
+
+    public static function getOutput(): ImiArgvOutput
+    {
+        return static::$outputInstance ??= new ImiArgvOutput();
+    }
+
     /**
      * Get 类名.
      */

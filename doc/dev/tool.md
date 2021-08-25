@@ -70,17 +70,16 @@ class Test extends BaseCommand
     public function hello(string $content, string $username): void
     {
         echo "{$username}: {$content}", PHP_EOL;
+
+        // 通过 input 对象获取参数
+        $this->input->getArgument('content');
+        $this->input->getOption('username');
+
+        // 通过 output 对象输出
+        $this->output->writeln("{$username}: {$content}");
     }
 
 }
-```
-
-## 加载注解
-
-默认命令行工具是不加载项目子模块（子服务器）中的注解的，如需使用请调用：
-
-```php
-\Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
 ```
 
 ## 工具调用
@@ -90,3 +89,11 @@ class Test extends BaseCommand
 上面的例子调用示例：
 
 `imi test/hello "content内容" --username yurun`
+
+## 全局任意地方获取 input、output 对象
+
+```php
+use Imi\Cli\ImiCommand;
+$input = ImiCommand::getInput();
+$output = ImiCommand::getOutput();
+```

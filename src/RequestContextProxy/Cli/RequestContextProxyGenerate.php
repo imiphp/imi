@@ -9,7 +9,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionUtil;
-use Imi\Main\Helper;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Operation;
@@ -38,7 +37,6 @@ class RequestContextProxyGenerate
      */
     public function generate(string $target, string $class, string $name, ?string $bean, ?string $interface): void
     {
-        Annotation::getInstance()->init(Helper::getAppMains());
         if (class_exists($class) || interface_exists($class))
         {
             $fromClass = $class;

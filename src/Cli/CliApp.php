@@ -138,7 +138,7 @@ class CliApp extends BaseApp
     {
         try
         {
-            $this->cli->run(new ImiArgvInput());
+            $this->cli->run(ImiCommand::getInput(), ImiCommand::getOutput());
         }
         catch (\Exception $th)
         {
