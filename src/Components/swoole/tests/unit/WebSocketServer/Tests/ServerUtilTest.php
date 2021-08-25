@@ -44,7 +44,6 @@ class ServerUtilTest extends BaseTest
     public function testSend(): void
     {
         $this->go(function () {
-            $th = null;
             $channel = new Channel(16);
             $func = function ($index, $recvCount) use ($channel) {
                 $dataStr = json_encode([
@@ -141,10 +140,9 @@ class ServerUtilTest extends BaseTest
                 }
             });
             $clientIds = [];
-            $th = null;
             for ($i = 0; $i < 3; ++$i)
             {
-                $result = $channel->pop(30);
+                $result = $channel->pop(10);
                 $this->assertNotFalse($result);
                 if (\is_array($result))
                 {
@@ -152,12 +150,8 @@ class ServerUtilTest extends BaseTest
                 }
                 elseif ($result instanceof \Throwable)
                 {
-                    $th = $result;
+                    throw $result;
                 }
-            }
-            if (isset($th))
-            {
-                throw $th;
             }
             ksort($clientIds);
             $this->assertCount(2, $clientIds);
@@ -166,19 +160,14 @@ class ServerUtilTest extends BaseTest
                 'clientIds'  => $clientIds,
                 'flag'       => 'testSend',
             ], 'json');
-            $th = null;
             for ($i = 0; $i < 3; ++$i)
             {
                 $result = $waitChannel->pop();
                 $this->assertNotFalse($result);
                 if ($result instanceof \Throwable)
                 {
-                    $th = $result;
+                    throw $result;
                 }
-            }
-            if (isset($th))
-            {
-                throw $th;
             }
             $this->assertEquals([
                 'send1'         => 0,

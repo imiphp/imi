@@ -74,7 +74,7 @@ return [
             'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      => 13006,
             'configs'   => [
-                'count' => 2,
+                'count' => 'Linux' === \PHP_OS ? 2 : 1,
             ],
         ],
         'websocket' => [
