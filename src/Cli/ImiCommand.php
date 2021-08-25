@@ -53,16 +53,16 @@ class ImiCommand extends Command
 
     protected static ImiArgvInput $inputInstance;
 
-    protected static ImiArgvOutput $outputInstance;
+    protected static ImiConsoleOutput $outputInstance;
 
     public static function getInput(): ImiArgvInput
     {
         return static::$inputInstance ??= new ImiArgvInput();
     }
 
-    public static function getOutput(): ImiArgvOutput
+    public static function getOutput(): ImiConsoleOutput
     {
-        return static::$outputInstance ??= new ImiArgvOutput();
+        return static::$outputInstance ??= new ImiConsoleOutput();
     }
 
     /**

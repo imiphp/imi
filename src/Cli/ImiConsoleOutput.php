@@ -6,6 +6,6 @@ namespace Imi\Cli;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class ImiArgvOutput extends ConsoleOutput
+class ImiConsoleOutput extends ConsoleOutput
 {
 }
