@@ -43,6 +43,6 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 捐赠
 
-<img src="https://raw.githubusercontent.com/imiphp/imi/dev/res/pay.png"/>
+<img src="https://raw.githubusercontent.com/imiphp/imi/2.0/res/pay.png"/>
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……
