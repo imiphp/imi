@@ -6,13 +6,13 @@ namespace Imi\Cron;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Cli\ImiCommand;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Consts\CronTaskType;
 use Imi\Cron\Contract\ICronManager;
 use Imi\Cron\Contract\ICronTask;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
-use Symfony\Component\Console\Input\ArgvInput;
 
 /**
  * 定时任务管理器.
@@ -46,7 +46,7 @@ class CronManager implements ICronManager
         {
             if (ProcessType::PROCESS === App::get(ProcessAppContexts::PROCESS_TYPE))
             {
-                $input = new ArgvInput();
+                $input = ImiCommand::getInput();
                 $this->socketFile = $input->getParameterOption('--cron-sock');
                 if (!$this->socketFile)
                 {

@@ -12,7 +12,6 @@ use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -22,8 +21,6 @@ class CliApp extends BaseApp
 
     protected EventDispatcher $cliEventDispatcher;
 
-    protected ArgvInput $input;
-
     /**
      * 构造方法.
      */
@@ -31,7 +28,6 @@ class CliApp extends BaseApp
     {
         parent::__construct($namespace);
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
-        $this->input = new ArgvInput();
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
         $this->cli = $cli = new Application('imi', App::getImiVersion());
         $cli->setDispatcher($dispatcher);
@@ -72,7 +68,7 @@ class CliApp extends BaseApp
     public function loadRuntime(): int
     {
         $this->initRuntime();
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         // 尝试加载项目运行时
         $appRuntimeFile = $input->getParameterOption('--app-runtime');
         if (false !== $appRuntimeFile && Imi::loadRuntimeInfo($appRuntimeFile))

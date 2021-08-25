@@ -7,7 +7,6 @@ namespace Imi\Cli;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Util\File;
-use Symfony\Component\Console\Input\ArgvInput;
 
 return function () {
     $path = null;
@@ -38,7 +37,7 @@ return function () {
     }
 
     App::run((function () use ($path): string {
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)
         {

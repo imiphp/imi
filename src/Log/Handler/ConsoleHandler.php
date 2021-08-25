@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Log\Handler;
 
+use Imi\Cli\ImiCommand;
 use Monolog\Handler\AbstractProcessingHandler;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -17,7 +17,7 @@ class ConsoleHandler extends AbstractProcessingHandler
 
     public function __construct(?OutputInterface $output = null)
     {
-        $this->output = $output ?? new ConsoleOutput();
+        $this->output = $output ?? ImiCommand::getOutput();
     }
 
     /**

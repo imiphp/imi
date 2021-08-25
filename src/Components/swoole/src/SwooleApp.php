@@ -26,7 +26,6 @@ use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
@@ -127,7 +126,7 @@ class SwooleApp extends CliApp
     public function loadRuntime(): int
     {
         $this->initRuntime();
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $isServerStart = ('swoole/start' === ($_SERVER['argv'][1] ?? null));
         if (!$isServerStart)
         {

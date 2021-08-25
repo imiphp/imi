@@ -6,9 +6,9 @@ namespace Imi\Swoole;
 
 use Imi\App;
 use Imi\AppContexts;
+use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Util\File;
-use Symfony\Component\Console\Input\ArgvInput;
 
 return function () {
     $status = 0;
@@ -50,7 +50,7 @@ return function () {
 
             // 运行
             App::run((function () use ($path): string {
-                $input = new ArgvInput();
+                $input = ImiCommand::getInput();
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)
                 {

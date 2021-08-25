@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Dev;
 
 use FilesystemIterator;
+use Imi\Cli\ImiCommand;
 use function implode;
 use function method_exists;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Process\Process;
 
 class Plugin
@@ -15,7 +15,7 @@ class Plugin
     public static function dev(): void
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
-        $output = new ConsoleOutput();
+        $output = ImiCommand::getOutput();
         foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())

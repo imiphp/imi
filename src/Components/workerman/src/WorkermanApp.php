@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation;
 use Imi\Bean\Scanner;
 use Imi\Cli\CliApp;
+use Imi\Cli\ImiCommand;
 use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
@@ -17,7 +18,6 @@ use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Input\ArgvInput;
 
 class WorkermanApp extends CliApp
 {
@@ -84,7 +84,7 @@ class WorkermanApp extends CliApp
     public function loadRuntime(): int
     {
         $this->initRuntime();
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $isServerStart = ('workerman/start' === ($_SERVER['argv'][1] ?? null));
         if (!$isServerStart)
         {

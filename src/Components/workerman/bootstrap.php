@@ -6,9 +6,9 @@ namespace Imi\Workerman;
 
 use Imi\App;
 use Imi\AppContexts;
+use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Util\File;
-use Symfony\Component\Console\Input\ArgvInput;
 
 return function () {
     $path = null;
@@ -43,7 +43,7 @@ return function () {
     Event::on('IMI.BUILD_RUNTIME', \Imi\Workerman\Process\Listener\BuildRuntimeListener::class, 19940000);
 
     App::run((function () use ($path): string {
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)
         {
