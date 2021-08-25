@@ -55,11 +55,12 @@ namespace ImiApp\Tool;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("test")
  */
-class Test
+class Test extends BaseCommand
 {
     /**
      * @CommandAction(name="hello", description="Hello world")

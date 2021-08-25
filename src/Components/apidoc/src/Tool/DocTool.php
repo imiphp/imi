@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
+use Imi\Cli\Contract\BaseCommand;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
@@ -32,7 +33,7 @@ use ReflectionMethod;
 /**
  * @Command("doc")
  */
-class DocTool
+class DocTool extends BaseCommand
 {
     /**
      * 生成 API 接口文档.

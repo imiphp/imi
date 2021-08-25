@@ -7,12 +7,13 @@ namespace Imi\Queue\Tool;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 use Imi\Queue\Facade\Queue;
 
 /**
  * @Command("queue")
  */
-class QueueTool
+class QueueTool extends BaseCommand
 {
     /**
      * 获取队列状态
