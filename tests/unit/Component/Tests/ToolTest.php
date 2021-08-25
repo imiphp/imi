@@ -71,4 +71,27 @@ class ToolTest extends BaseTest
 
         $assert(' imi', ['imi', 'imi', 'imi']);
     }
+
+    public function testNegatable(): void
+    {
+        $cmd = \Imi\cmd('"' . \PHP_BINARY . '" "' . File::path(\dirname(Imi::getNamespacePath('Imi')), 'src', 'Cli', 'bin', 'imi-cli"') . ' TestTool/testNegatable --app-namespace "Imi\Test\Component"');
+
+        $assert = function (string $suffix, array $results) use ($cmd) {
+            exec($cmd . $suffix, $output, $exitCode);
+            $this->assertEquals(0, $exitCode);
+            $assertContent = [];
+            foreach ($results as $result)
+            {
+                $assertContent[] = 'bool(' . var_export($result, true) . ')';
+            }
+            $this->assertEquals($assertContent, \array_slice($output, -\count($results)));
+        };
+
+        $assert('', [false, false]);
+
+        $assert(' --test', [true, true]);
+        $assert(' -t', [true, true]);
+
+        $assert(' --no-test', [false, false]);
+    }
 }

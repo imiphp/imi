@@ -111,20 +111,27 @@ class ImiCommand extends Command
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
         {
             /** @var Argument $argumentAnnotation */
-            $type = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
+            $mode = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
             if (ArgType::ARRAY === $argumentAnnotation->type || ArgType::ARRAY_EX === $argumentAnnotation->type)
             {
-                $type |= InputArgument::IS_ARRAY;
+                $mode |= InputArgument::IS_ARRAY;
             }
-            $this->addArgument($argumentAnnotation->name, $type, $argumentAnnotation->comments, $argumentAnnotation->default);
+            $this->addArgument($argumentAnnotation->name, $mode, $argumentAnnotation->comments, $argumentAnnotation->default);
         }
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Option::class) as $optionAnnotation)
         {
-            /** @var Option $optionAnnotation */
-            $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
-            if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
+            if (ArgType::BOOLEAN_NEGATABLE === $optionAnnotation->type)
             {
-                $mode |= InputOption::VALUE_IS_ARRAY;
+                $mode = InputOption::VALUE_NEGATABLE;
+            }
+            else
+            {
+                /** @var Option $optionAnnotation */
+                $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
+                if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
+                {
+                    $mode |= InputOption::VALUE_IS_ARRAY;
+                }
             }
             $this->addOption($optionAnnotation->name, $optionAnnotation->shortcut, $mode, $optionAnnotation->comments, $optionAnnotation->default);
         }
@@ -244,7 +251,7 @@ class ImiCommand extends Command
                 {
                     $option = $options[$paramOptionName];
                     $value = $this->parseArgValue($this->input->getOption($option['optionName']), $option);
-                    if (ArgType::BOOL === $option['type'] && null === $value)
+                    if (ArgType::isBooleanType($option['type']) && null === $value)
                     {
                         if ($this->input->hasParameterOption('--' . $option['optionName']) || (null !== $option['shortcut'] && $this->input->hasParameterOption('-' . $option['shortcut'])))
                         {

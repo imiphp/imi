@@ -52,4 +52,15 @@ class TestTool extends BaseCommand
         var_dump($content, $content2);
         var_dump($this->input->getArgument('content'));
     }
+
+    /**
+     * @CommandAction(name="testNegatable")
+     *
+     * @Option(name="test", shortcut="t", type=ArgType::BOOL_NEGATABLE, default=false)
+     */
+    public function testNegatable(bool $test): void
+    {
+        var_dump($test);
+        var_dump($this->input->getOption('test'));
+    }
 }

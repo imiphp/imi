@@ -17,9 +17,13 @@ class ArgType
 
     public const DOUBLE = 'float';
 
-    public const BOOL = 'boolean';
+    public const BOOL = self::BOOLEAN;
 
     public const BOOLEAN = 'boolean';
+
+    public const BOOL_NEGATABLE = self::BOOLEAN_NEGATABLE;
+
+    public const BOOLEAN_NEGATABLE = 'boolean_negatable';
 
     public const ARRAY = 'array';
 
@@ -27,5 +31,10 @@ class ArgType
 
     private function __construct()
     {
+    }
+
+    public static function isBooleanType(string $type): bool
+    {
+        return self::BOOLEAN === $type || self::BOOLEAN_NEGATABLE === $type;
     }
 }

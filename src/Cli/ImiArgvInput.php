@@ -35,7 +35,7 @@ class ImiArgvInput extends Input
         $optionsDefinition = $command->getOptionsDefinition();
         foreach ($this->options as $name => &$value)
         {
-            if (isset($optionsDefinition[$name]) && ArgType::BOOL === $optionsDefinition[$name]['type'])
+            if (isset($optionsDefinition[$name]) && ArgType::isBooleanType($optionsDefinition[$name]['type']))
             {
                 if (null === $value)
                 {
