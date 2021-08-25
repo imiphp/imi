@@ -9,10 +9,10 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionUtil;
+use Imi\Cli\Annotation\Command;
+use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Annotation\Option;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
-use Imi\Tool\Annotation\Arg;
-use Imi\Tool\Annotation\Operation;
-use Imi\Tool\Annotation\Tool;
 use Imi\Tool\ArgType;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -20,20 +20,20 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * @Tool("generate")
+ * @Command("generate")
  */
 class RequestContextProxyGenerate
 {
     /**
      * 生成请求上下文代理类.
      *
-     * @Operation("requestContextProxy")
+     * @CommandAction("requestContextProxy")
      *
-     * @Arg(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
-     * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
-     * @Arg(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
-     * @Arg(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
-     * @Arg(name="interface", type=ArgType::STRING, default=null, comments="生成的目标类要实现的接口")
+     * @Option(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
+     * @Option(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
+     * @Option(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
+     * @Option(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
+     * @Option(name="interface", type=ArgType::STRING, default=null, comments="生成的目标类要实现的接口")
      */
     public function generate(string $target, string $class, string $name, ?string $bean, ?string $interface): void
     {
