@@ -17,6 +17,11 @@ abstract class BaseTest extends \Imi\Test\BaseTest
         {
             if ($i > 0)
             {
+                $backtrace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1] ?? null;
+                if ($backtrace)
+                {
+                    echo $backtrace['class'] , $backtrace['type'] , $backtrace['function'], '()', \PHP_EOL;
+                }
                 echo 'lastUseTime:', $time, 's', \PHP_EOL;
                 echo 'retry:', $i, \PHP_EOL;
                 sleep(1);
@@ -41,6 +46,10 @@ abstract class BaseTest extends \Imi\Test\BaseTest
             if (!$throwable || !$throwable instanceof \PHPUnit\Framework\SelfDescribing)
             {
                 break;
+            }
+            if ($i > 0)
+            {
+                echo 'useTime:', $time, 's', \PHP_EOL;
             }
         }
         if (isset($throwable))
