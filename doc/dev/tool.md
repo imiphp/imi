@@ -33,6 +33,7 @@ imi 的命令行工具使用注解来定义
 | default | 默认值 |
 | required | 是否是必选参数，默认`false` |
 | comments | 注释 |
+| to | 将参数值绑定到指定名称的参数 |
 
 ### @Option
 
@@ -46,6 +47,7 @@ imi 的命令行工具使用注解来定义
 | default | 默认值 |
 | required | 是否是必选参数，默认`false` |
 | comments | 注释 |
+| to | 将参数值绑定到指定名称的参数 |
 
 ## 工具定义
 

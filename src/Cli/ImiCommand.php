@@ -207,26 +207,55 @@ class ImiCommand extends Command
         $args = [];
         foreach ($methodRef->getParameters() as $param)
         {
-            if (isset($arguments[$param->name]))
+            $paramArgumentName = null;
+            foreach ($arguments as $argument)
             {
-                $argument = $arguments[$param->name];
-                $value = $this->parseArgValue($this->input->getArgument($argument['argumentName']), $argument);
-            }
-            elseif (isset($options[$param->name]))
-            {
-                $option = $options[$param->name];
-                $value = $this->parseArgValue($this->input->getOption($option['optionName']), $option);
-                if (ArgType::BOOL === $option['type'] && null === $value)
+                if ($param->name === $argument['to'])
                 {
-                    if ($this->input->hasParameterOption('--' . $option['optionName']) || (null !== $option['shortcut'] && $this->input->hasParameterOption('-' . $option['shortcut'])))
-                    {
-                        $value = true;
-                    }
+                    $paramArgumentName = $argument['argumentName'];
+                    break;
                 }
+            }
+            if (null === $paramArgumentName && isset($arguments[$param->name]))
+            {
+                $paramArgumentName = $param->name;
+            }
+            if (null !== $paramArgumentName)
+            {
+                $argument = $arguments[$paramArgumentName];
+                $value = $this->parseArgValue($this->input->getArgument($argument['argumentName']), $argument);
             }
             else
             {
-                $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+                $paramOptionName = null;
+                foreach ($options as $option)
+                {
+                    if ($param->name === $option['to'])
+                    {
+                        $paramOptionName = $option['optionName'];
+                        break;
+                    }
+                }
+                if (null === $paramOptionName && isset($options[$param->name]))
+                {
+                    $paramOptionName = $param->name;
+                }
+                if (null !== $paramOptionName)
+                {
+                    $option = $options[$paramOptionName];
+                    $value = $this->parseArgValue($this->input->getOption($option['optionName']), $option);
+                    if (ArgType::BOOL === $option['type'] && null === $value)
+                    {
+                        if ($this->input->hasParameterOption('--' . $option['optionName']) || (null !== $option['shortcut'] && $this->input->hasParameterOption('-' . $option['shortcut'])))
+                        {
+                            $value = true;
+                        }
+                    }
+                }
+                else
+                {
+                    $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+                }
             }
             $args[] = $value;
         }
