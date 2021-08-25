@@ -47,6 +47,10 @@ class ImiCommand extends Command
 
     protected OutputInterface $output;
 
+    protected array $argumentsDefinition = [];
+
+    protected array $optionsDefinition = [];
+
     /**
      * Get 类名.
      */
@@ -165,8 +169,13 @@ class ImiCommand extends Command
     protected function executeCommand(): int
     {
         Event::trigger('IMI.COMMAND.BEFORE');
-        $instance = new $this->className($this, $this->input, $this->output);
         $args = $this->getCallToolArgs();
+        $input = $this->input;
+        if ($input instanceof ImiArgvInput)
+        {
+            $input->parseByCommand($this);
+        }
+        $instance = new $this->className($this, $input, $this->output);
         $instance->{$this->methodName}(...$args);
         Event::trigger('IMI.COMMAND.AFTER');
 
@@ -179,8 +188,8 @@ class ImiCommand extends Command
     private function getCallToolArgs(): array
     {
         $methodRef = new \ReflectionMethod($this->className, $this->methodName);
-        $arguments = CliManager::getArguments($this->commandName, $this->actionName);
-        $options = CliManager::getOptions($this->commandName, $this->actionName);
+        $this->argumentsDefinition = $arguments = CliManager::getArguments($this->commandName, $this->actionName);
+        $this->optionsDefinition = $options = CliManager::getOptions($this->commandName, $this->actionName);
         $args = [];
         foreach ($methodRef->getParameters() as $param)
         {
@@ -254,5 +263,15 @@ class ImiCommand extends Command
         }
 
         return $value;
+    }
+
+    public function getArgumentsDefinition(): array
+    {
+        return $this->argumentsDefinition;
+    }
+
+    public function getOptionsDefinition(): array
+    {
+        return $this->optionsDefinition;
     }
 }

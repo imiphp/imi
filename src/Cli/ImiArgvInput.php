@@ -30,6 +30,25 @@ class ImiArgvInput extends Input
         parent::__construct($definition);
     }
 
+    public function parseByCommand(ImiCommand $command): void
+    {
+        $optionsDefinition = $command->getOptionsDefinition();
+        foreach ($this->options as $name => &$value)
+        {
+            if (isset($optionsDefinition[$name]) && ArgType::BOOL === $optionsDefinition[$name]['type'])
+            {
+                if (null === $value)
+                {
+                    $value = true;
+                }
+                else
+                {
+                    $value = (bool) $value;
+                }
+            }
+        }
+    }
+
     protected function setTokens(array $tokens): void
     {
         $this->tokens = $tokens;
