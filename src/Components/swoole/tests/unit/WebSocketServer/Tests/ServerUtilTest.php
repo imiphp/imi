@@ -54,7 +54,7 @@ class ServerUtilTest extends BaseTest
                     echo 'try get workerId ', $index, \PHP_EOL;
                     $http = new HttpRequest();
                     $http->retry = 3;
-                    $http->timeout = 10000;
+                    $http->timeout = 15000;
                     $client = $http->websocket($this->host);
                     $this->assertTrue($client->isConnected());
                     $this->assertTrue($client->send(json_encode([
@@ -110,7 +110,7 @@ class ServerUtilTest extends BaseTest
                     ]);
                     $http = new HttpRequest();
                     $http->retry = 3;
-                    $http->timeout = 10000;
+                    $http->timeout = 15000;
                     $client = $http->websocket($this->host);
                     $this->assertTrue($client->isConnected());
                     $group = uniqid('', true);
