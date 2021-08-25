@@ -90,7 +90,7 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      */
-    public function sendToGroup(): array
+    public function sendToGroup(string $group): array
     {
         $data = [
             'data'  => 'test',
@@ -98,11 +98,11 @@ class ServerUtilController extends HttpController
         $dataStr = json_encode($data);
         $result = [
             // @phpstan-ignore-next-line
-            'groupClientIdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
+            'groupClientIdCount' => ServerManager::getServer('main')->getGroup($group)->count(),
         ];
 
-        $result['sendToGroup'] = Server::sendToGroup('g1', $data);
-        $result['sendRawToGroup'] = Server::sendRawToGroup('g1', $dataStr);
+        $result['sendToGroup'] = Server::sendToGroup($group, $data);
+        $result['sendRawToGroup'] = Server::sendRawToGroup($group, $dataStr);
 
         return $result;
     }

@@ -28,7 +28,7 @@ class TestController extends WebSocketController
     public function login(\stdClass $data): array
     {
         ConnectionContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->frame->getClientId());
+        $this->server->joinGroup($data->group, $this->frame->getClientId());
         ConnectionContext::bind($data->username);
 
         return [
@@ -70,7 +70,7 @@ class TestController extends WebSocketController
     public function send(\stdClass $data): void
     {
         $message = ConnectionContext::get('username') . ':' . $data->message;
-        $this->server->groupCall('g1', 'push', $message);
+        $this->server->groupCall($data->group, 'push', $message);
     }
 
     /**

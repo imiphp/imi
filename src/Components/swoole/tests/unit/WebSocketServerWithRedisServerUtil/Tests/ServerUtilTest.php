@@ -114,9 +114,11 @@ class ServerUtilTest extends BaseTest
                     $http->timeout = 10000;
                     $client = $http->websocket($this->host);
                     $this->assertTrue($client->isConnected());
+                    $group = uniqid('', true);
                     $this->assertTrue($client->send(json_encode([
                         'action'    => 'login',
                         'username'  => 'testSend',
+                        'group'     => $group,
                     ])));
                     $recv = $client->recv();
                     $this->assertNotFalse($recv);
@@ -214,9 +216,11 @@ class ServerUtilTest extends BaseTest
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
             } while (0 !== $recvData['workerId']);
+            $group = uniqid('', true);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'login',
                 'username'  => uniqid('', true),
+                'group'     => $group,
             ])));
             $recv = $client1->recv();
             // @phpstan-ignore-next-line
@@ -241,6 +245,7 @@ class ServerUtilTest extends BaseTest
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => uniqid('', true),
+                'group'     => $group,
             ])));
             $recv = $client2->recv();
             // @phpstan-ignore-next-line
@@ -253,7 +258,7 @@ class ServerUtilTest extends BaseTest
                 $response = $http->get($this->host . 'serverUtil/info');
                 $data = $response->json(true);
             } while (0 !== ($data['workerId'] ?? null));
-            $response = $http->get($this->host . 'serverUtil/sendToGroup');
+            $response = $http->get($this->host . 'serverUtil/sendToGroup', ['group' => $group]);
             $this->assertEquals([
                 'groupClientIdCount'   => 2,
                 'sendToGroup'          => 2,
@@ -312,9 +317,11 @@ class ServerUtilTest extends BaseTest
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
             } while (1 !== $recvData['workerId']);
+            $group = uniqid('', true);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testExists',
+                'group'     => $group,
             ])));
             $recv = $client2->recv();
             $recvData2 = json_decode($recv, true);
@@ -376,9 +383,11 @@ class ServerUtilTest extends BaseTest
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
             } while (1 !== $recvData['workerId']);
+            $group = uniqid('', true);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',
+                'group'     => $group,
             ])));
             $recv = $client2->recv();
             // @phpstan-ignore-next-line
