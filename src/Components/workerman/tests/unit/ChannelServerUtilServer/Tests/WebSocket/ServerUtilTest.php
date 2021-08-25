@@ -30,11 +30,12 @@ class ServerUtilTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $response = $http->get($this->httpHost . 'serverUtil/sendMessage');
+            $all = 'Linux' === \PHP_OS ? 2 : 1;
             $this->assertEquals([
-                'sendMessageAll'    => 2,
+                'sendMessageAll'    => $all,
                 'sendMessage1'      => 1,
                 'sendMessage2'      => 2,
-                'sendMessageRawAll' => 2,
+                'sendMessageRawAll' => $all,
                 'sendMessageRaw1'   => 1,
                 'sendMessageRaw2'   => 2,
             ], $response->json(true));

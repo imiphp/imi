@@ -22,9 +22,11 @@ class WSTest extends BaseTest
             $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
+            $group = uniqid('', true);
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'test',
+                'group'     => $group,
             ])));
             $recv = $client->recv();
             $this->assertNotFalse($recv);
@@ -50,6 +52,7 @@ class WSTest extends BaseTest
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'send',
                 'message'   => $time,
+                'group'     => $group,
             ])));
             $recv = $client->recv();
             $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
