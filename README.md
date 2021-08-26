@@ -123,6 +123,14 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ---
 
+* [Adorecipe鸡尾酒资源库](https://adorecipe.com)
+
+![Adorecipe鸡尾酒资源库](https://www.imiphp.com/images/anli/adorecipe.jpg "Adorecipe鸡尾酒资源库")
+
+**项目介绍：** 本项目是基于imi 2.0的高性能 MVC 实战项目（一人完成开发），搭配 nginx 实现前端静态资源的访问及缓存，View 层很任性地采用了原生模板渲染。项目中大量使用了 imi 提供的缓存注解，优化数据查询的性能，点赞等场景使用了 imi 提供的锁机制保证并发场景下的数据一致性。强推大家使用 imi 开发此类项目！
+
+---
+
 * [看个蛋影视搜索 - 全网影视资源搜索平台](http://www.kangedan.com/)
 
 ![看个蛋影视搜索](https://www.imiphp.com/images/anli/kangedan.jpg "看个蛋影视搜索")
