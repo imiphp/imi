@@ -168,6 +168,10 @@ request 数据包含 get/post/cookie
 `public function getUri()`
 
 > 协议会根据当前服务器是否启用 `ssl` 判断，支持协议：`http/https/ws/wss`
+> URI结构`[scheme:]//[user-info@]host[:port][/path][?query][#fragment]`
+> 当请求通过`nginx`转发时，此方法目前暂时无法正确判断`scheme`
+> 可在`nginx`配置`location`中添加 `proxy_set_header X-Forwarded-Proto $scheme;`
+> 通过获取请求头`$this->request->getHeaderLine('x-forwarded-proto');`来获取对应的`scheme`
 
 #### 获取 Swoole 服务器对象
 
@@ -248,11 +252,21 @@ string(47) "/xxx.html"
 
 #### 获取客户端IP地址
 
+客户端直连服务端的情况下
+
 ```php
 $address = $this->request->getClientAddress();
 $address->getAddress(); // ip
 $address->getPort(); // 端口
 echo $address; // ip:端口
+```
+
+若使用nginx转发到服务端情况下
+
+> 需在`nginx`配置`location`中添加`proxy_set_header X-Real-IP $remote_addr;`
+
+```php
+$address = $this->request->getHeaderLine('x-real-ip');
 ```
 
 #### 获取 Swoole Request 对象

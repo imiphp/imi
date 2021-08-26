@@ -79,20 +79,41 @@
 
 ### HTTPS
 
+推荐配置如下
+
 ```conf
+server {
+    listen       80;
+    server_name  {域名};
+    return 301 https://$server_name$request_uri;
+}
+
+# 在下面配置 imi 服务 HTTP 地址
+upstream  imiserver { 
+    server  127.0.0.1:8080 weight=1 fail_timeout=60s;
+}
+
 server {
     listen 443 ssl;
     server_name {域名};
+    root {静态资源目录路径};
+    
     access_log  /var/log/nginx/{域名}.access.log  main;
     error_log  /var/log/nginx/{域名}.error.log  error;
+    
     ssl_certificate      {证书}.pem;
     ssl_certificate_key  {证书}.key;
+    ssl_session_timeout 5m;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
 
     location / {
-        proxy_set_header Host $host;
+        proxy_pass http://imiserver;
+        proxy_redirect off;
+        proxy_set_header Host $host:$server_port;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_pass http://127.0.0.1:8080; # imi 服务 HTTP 地址
     }
 }
 ```
