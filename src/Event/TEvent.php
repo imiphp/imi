@@ -28,6 +28,13 @@ trait TEvent
     private array $eventChangeRecords = [];
 
     /**
+     * 排序后的事件对象
+     *
+     * @var \Imi\Event\EventItem[][]
+     */
+    private array $sortedEventQueue = [];
+
+    /**
      * 事件监听.
      *
      * @param string|string[] $name     事件名称
@@ -55,7 +62,11 @@ trait TEvent
             {
                 $item->callbackClass = $callbackClass;
             }
-            $this->eventChangeRecords[$eventName] = true;
+            if (isset($this->eventQueue[$eventName]))
+            {
+                $this->eventQueue[$eventName]->insert($item, $priority);
+                $this->eventChangeRecords[$eventName] ??= 2;
+            }
         }
     }
 
@@ -87,7 +98,11 @@ trait TEvent
             {
                 $item->callbackClass = $callbackClass;
             }
-            $this->eventChangeRecords[$eventName] = true;
+            if (isset($this->eventQueue[$eventName]))
+            {
+                $this->eventQueue[$eventName]->insert($item, $priority);
+                $this->eventChangeRecords[$eventName] ??= 2;
+            }
         }
     }
 
@@ -121,7 +136,7 @@ trait TEvent
                 {
                     unset($events[$eventName]);
                 }
-                $eventChangeRecords[$eventName] = true;
+                $eventChangeRecords[$eventName] = 1;
             }
         }
     }
@@ -136,9 +151,8 @@ trait TEvent
      */
     public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
-        $eventQueue = &$this->eventQueue;
         // 获取回调列表
-        if (!isset($eventQueue[$name]))
+        if (!isset($this->eventQueue[$name]))
         {
             $options = ClassEventManager::getByObjectEvent($this, $name);
             if (!$options && empty($this->events[$name]))
@@ -146,16 +160,15 @@ trait TEvent
                 return;
             }
             $eventsMap = &$this->events[$name];
-            $queue = $this->rebuildEventQueue($name);
-            foreach ($options as $className => $option)
+            if ($options)
             {
-                // 数据映射
-                $eventsMap[] = $item = new EventItem(function ($param) use ($className) {
-                    $obj = BeanFactory::newInstance($className);
-                    $obj->handle($param);
-                }, $option['priority']);
-                $queue->insert($item, $option['priority']);
+                foreach ($options as $className => $option)
+                {
+                    // 数据映射
+                    $this->on($name, $className, $option['priority']);
+                }
             }
+            $this->rebuildEventQueue($name);
         }
         elseif (empty($this->events[$name]))
         {
@@ -163,20 +176,15 @@ trait TEvent
         }
         elseif (isset($this->eventChangeRecords[$name]))
         {
-            $queue = $this->rebuildEventQueue($name);
+            $this->rebuildEventQueue($name);
         }
-        else
-        {
-            $queue = $eventQueue[$name];
-        }
-        $callbacks = clone $queue;
         // 实例化参数
         $param = new $paramClass($name, $data, $target);
         $oneTimeCallbacks = [];
         try
         {
             /** @var EventItem $option */
-            foreach ($callbacks as $option)
+            foreach ($this->sortedEventQueue[$name] as $option)
             {
                 // 仅触发一次
                 if ($option->oneTime)
@@ -209,7 +217,7 @@ trait TEvent
                         }
                     }
                 }
-                $this->eventChangeRecords[$name] = true;
+                $this->eventChangeRecords[$name] = 1;
             }
         }
     }
@@ -217,19 +225,26 @@ trait TEvent
     /**
      * 重建事件队列.
      */
-    private function rebuildEventQueue(string $name): \SplPriorityQueue
+    private function rebuildEventQueue(string $name): void
     {
-        $this->eventQueue[$name] = $queue = new \SplPriorityQueue();
-        $events = $this->events[$name] ?? [];
-        if ($events)
+        if (1 === ($this->eventChangeRecords[$name] ?? 1))
         {
-            foreach ($events as $item)
+            $this->eventQueue[$name] = $queue = new \SplPriorityQueue();
+            $events = $this->events[$name] ?? [];
+            if ($events)
             {
-                $queue->insert($item, $item->priority);
+                foreach ($events as $item)
+                {
+                    $queue->insert($item, $item->priority);
+                }
             }
+            $clonedQueue = clone $queue;
         }
+        else
+        {
+            $clonedQueue = clone $this->eventQueue[$name];
+        }
+        $this->sortedEventQueue[$name] = iterator_to_array($clonedQueue);
         $this->eventChangeRecords[$name] = null;
-
-        return $queue;
     }
 }
