@@ -9,7 +9,6 @@ use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoDelete;
-use Imi\Model\Annotation\Relation\RelationBase;
 use Imi\Model\Model;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
@@ -25,8 +24,10 @@ class Delete
 
     /**
      * 处理删除.
+     *
+     * @param \Imi\Bean\Annotation\Base[] $annotations
      */
-    public static function parse(Model $model, string $propertyName, RelationBase $annotation): void
+    public static function parse(Model $model, string $propertyName, array $annotations): void
     {
         if (!$model->$propertyName)
         {
@@ -40,30 +41,44 @@ class Delete
         {
             return;
         }
-        if ($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+
+        $firstAnnotation = reset($annotations);
+
+        // @phpstan-ignore-next-line
+        if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
-            static::parseByOneToOne($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
-        {
-            static::parseByOneToMany($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
-        {
-            static::parseByManyToMany($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
-        {
-            static::parseByPolymorphicOneToOne($model, $propertyName, $annotation);
-        }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
-        {
-            static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
+            // @phpstan-ignore-next-line
+            static::parseByPolymorphicToOne($model, $propertyName, $annotations);
         }
         // @phpstan-ignore-next-line
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
-            static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
+            // @phpstan-ignore-next-line
+            static::parseByPolymorphicOneToOne($model, $propertyName, $firstAnnotation);
+        }
+        // @phpstan-ignore-next-line
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+        {
+            // @phpstan-ignore-next-line
+            static::parseByPolymorphicOneToMany($model, $propertyName, $firstAnnotation);
+        }
+        // @phpstan-ignore-next-line
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            // @phpstan-ignore-next-line
+            static::parseByPolymorphicManyToMany($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+        {
+            static::parseByOneToOne($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+        {
+            static::parseByOneToMany($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+        {
+            static::parseByManyToMany($model, $propertyName, $firstAnnotation);
         }
     }
 
@@ -154,6 +169,38 @@ class Delete
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
+    }
+
+    /**
+     * 处理多态一对一删除.
+     *
+     * @param \Imi\Model\Annotation\Relation\PolymorphicToOne[] $annotations
+     */
+    public static function parseByPolymorphicToOne(Model $model, string $propertyName, array $annotations): void
+    {
+        foreach ($annotations as $annotationItem)
+        {
+            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
+            {
+                $className = BeanFactory::getObjectClass($model);
+                $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+
+                Event::trigger($eventName . '.BEFORE', [
+                    'model'        => $model,
+                    'propertyName' => $propertyName,
+                    'annotation'   => $annotationItem,
+                ]);
+
+                $model->$propertyName->delete();
+
+                Event::trigger($eventName . '.AFTER', [
+                    'model'        => $model,
+                    'propertyName' => $propertyName,
+                    'annotation'   => $annotationItem,
+                ]);
+                break;
+            }
+        }
     }
 
     /**

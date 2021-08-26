@@ -33,10 +33,10 @@ class Query
     /**
      * 初始化.
      *
-     * @param \Imi\Bean\Annotation\Base[] $annotation
-     * @param bool                        $forceInit  是否强制更新
+     * @param \Imi\Bean\Annotation\Base[] $annotations
+     * @param bool                        $forceInit   是否强制更新
      */
-    public static function init(Model $model, string $propertyName, array $annotation, bool $forceInit = false): void
+    public static function init(Model $model, string $propertyName, array $annotations, bool $forceInit = false): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -50,13 +50,13 @@ class Query
             }
         }
 
-        $firstAnnotation = reset($annotation);
+        $firstAnnotation = reset($annotations);
 
         // @phpstan-ignore-next-line
         if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
             // @phpstan-ignore-next-line
-            static::initByPolymorphicToOne($model, $propertyName, $annotation);
+            static::initByPolymorphicToOne($model, $propertyName, $annotations);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
@@ -74,7 +74,7 @@ class Query
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
         {
             // @phpstan-ignore-next-line
-            static::initByPolymorphicToMany($model, $propertyName, $annotation);
+            static::initByPolymorphicToMany($model, $propertyName, $annotations);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
@@ -376,13 +376,13 @@ class Query
     /**
      * 初始化多态，对应的实体模型.
      *
-     * @param \Imi\Model\Annotation\Relation\PolymorphicToOne[] $annotation
+     * @param \Imi\Model\Annotation\Relation\PolymorphicToOne[] $annotations
      */
-    public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotation): void
+    public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotations): void
     {
         $className = BeanFactory::getObjectClass($model);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
-        foreach ($annotation as $annotationItem)
+        foreach ($annotations as $annotationItem)
         {
             if ($model->{$annotationItem->type} == $annotationItem->typeValue)
             {
@@ -434,14 +434,14 @@ class Query
     /**
      * 初始化多态，对应的实体模型列表.
      *
-     * @param \Imi\Model\Annotation\Relation\PolymorphicToMany[] $annotation
+     * @param \Imi\Model\Annotation\Relation\PolymorphicToMany[] $annotations
      */
-    public static function initByPolymorphicToMany(Model $model, string $propertyName, array $annotation): void
+    public static function initByPolymorphicToMany(Model $model, string $propertyName, array $annotations): void
     {
         $className = BeanFactory::getObjectClass($model);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        foreach ($annotation as $annotationItem)
+        foreach ($annotations as $annotationItem)
         {
             if ($model->{$annotationItem->type} == $annotationItem->typeValue)
             {
