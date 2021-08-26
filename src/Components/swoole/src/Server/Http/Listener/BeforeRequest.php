@@ -36,7 +36,6 @@ class BeforeRequest implements IRequestEventListener
      */
     public function handle(RequestEventParam $e): void
     {
-        $request = $e->request;
         $server = $this->server;
         if ($server->isHttp2())
         {
@@ -47,6 +46,6 @@ class BeforeRequest implements IRequestEventListener
         // 中间件
         /** @var Dispatcher $dispatcher */
         $dispatcher = $this->dispatcher ??= $server->getBean('HttpDispatcher');
-        $dispatcher->dispatch($request);
+        $dispatcher->dispatch($e->request);
     }
 }

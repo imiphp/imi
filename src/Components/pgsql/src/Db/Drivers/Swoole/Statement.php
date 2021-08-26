@@ -175,14 +175,6 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     {
         /** @var \Swoole\Coroutine\PostgreSQL $pgDb */
         $pgDb = $this->db->getInstance();
-        // $this->queryResult = $queryResult = $pgDb->execute($this->statementName, $inputParameters ?? []);
-        // if ($fetchResult = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC))
-        // {
-        //     $this->result = $fetchResult;
-        // }
-
-        // return (bool) $queryResult;
-        // $statement = $this->statement;
         if (null === $this->statementName)
         {
             $this->queryResult = $queryResult = $pgDb->query($this->lastSql);
