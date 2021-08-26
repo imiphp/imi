@@ -70,11 +70,18 @@ class SwooleApp extends CliApp
     {
         try
         {
-            parent::run();
+            $this->cli->run(ImiCommand::getInput(), ImiCommand::getOutput());
         }
         catch (\Swoole\ExitException $e)
         {
             throw $e;
+        }
+        catch (\Exception $th)
+        {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($th);
+            exit(255);
         }
     }
 
