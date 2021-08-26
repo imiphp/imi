@@ -10,7 +10,7 @@ use Imi\Bean\BeanManager;
 use Imi\Bean\Scanner;
 use Imi\Cache\CacheManager;
 use Imi\Cli\CliApp;
-use Imi\Cli\ImiArgvInput;
+use Imi\Cli\ImiCommand;
 use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
@@ -26,7 +26,6 @@ use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
@@ -71,7 +70,7 @@ class SwooleApp extends CliApp
     {
         try
         {
-            $this->cli->run(new ImiArgvInput());
+            $this->cli->run(ImiCommand::getInput(), ImiCommand::getOutput());
         }
         catch (\Swoole\ExitException $e)
         {
@@ -127,7 +126,7 @@ class SwooleApp extends CliApp
     public function loadRuntime(): int
     {
         $this->initRuntime();
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $isServerStart = ('swoole/start' === ($_SERVER['argv'][1] ?? null));
         if (!$isServerStart)
         {

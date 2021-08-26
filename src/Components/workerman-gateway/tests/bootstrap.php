@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Imi\Cli\ImiCommand;
 use function Imi\ttyExec;
-use Symfony\Component\Console\Input\ArgvInput;
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -62,7 +62,7 @@ function startServer(): void
         ];
     }
 
-    $input = new ArgvInput();
+    $input = ImiCommand::getInput();
     switch ($input->getParameterOption('--testsuite'))
     {
         case 'swoole':

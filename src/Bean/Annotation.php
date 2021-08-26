@@ -169,7 +169,7 @@ class Annotation
         }
         foreach ($annotation as $k => $v)
         {
-            if ($skipDefaultValue && $v === $defaultProperties[$k] ?? null)
+            if ($skipDefaultValue && $v === ($defaultProperties[$k] ?? null))
             {
                 continue;
             }

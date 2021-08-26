@@ -29,10 +29,11 @@ imi 的命令行工具使用注解来定义
 | 属性名称 | 说明 |
 |-|-
 | name | 参数名称 |
-| type | 参数类型，支持：`string/int/float/boolean/array`，也可以使用`\Imi\Cli\ArgType::XXX` |
+| type | 参数类型，支持：`string/int/float/boolean/array/boolean_negatable`，也可以使用`\Imi\Cli\ArgType::XXX` |
 | default | 默认值 |
 | required | 是否是必选参数，默认`false` |
 | comments | 注释 |
+| to | 将参数值绑定到指定名称的参数 |
 
 ### @Option
 
@@ -42,10 +43,11 @@ imi 的命令行工具使用注解来定义
 |-|-
 | name | 参数名称 |
 | shortcut | 参数短名称 |
-| type | 参数类型，支持：`string/int/float/boolean/array`，也可以使用`\Imi\Cli\ArgType::XXX` |
+| type | 参数类型，支持：`string/int/float/boolean/array/boolean_negatable`，也可以使用`\Imi\Cli\ArgType::XXX` |
 | default | 默认值 |
 | required | 是否是必选参数，默认`false` |
 | comments | 注释 |
+| to | 将参数值绑定到指定名称的参数 |
 
 ## 工具定义
 
@@ -55,11 +57,12 @@ namespace ImiApp\Tool;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("test")
  */
-class Test
+class Test extends BaseCommand
 {
     /**
      * @CommandAction(name="hello", description="Hello world")
@@ -69,17 +72,16 @@ class Test
     public function hello(string $content, string $username): void
     {
         echo "{$username}: {$content}", PHP_EOL;
+
+        // 通过 input 对象获取参数
+        $this->input->getArgument('content');
+        $this->input->getOption('username');
+
+        // 通过 output 对象输出
+        $this->output->writeln("{$username}: {$content}");
     }
 
 }
-```
-
-## 加载注解
-
-默认命令行工具是不加载项目子模块（子服务器）中的注解的，如需使用请调用：
-
-```php
-\Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
 ```
 
 ## 工具调用
@@ -89,3 +91,11 @@ class Test
 上面的例子调用示例：
 
 `imi test/hello "content内容" --username yurun`
+
+## 全局任意地方获取 input、output 对象
+
+```php
+use Imi\Cli\ImiCommand;
+$input = ImiCommand::getInput();
+$output = ImiCommand::getOutput();
+```

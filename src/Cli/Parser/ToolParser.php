@@ -55,7 +55,7 @@ class ToolParser extends BaseParser
                 $commandAnnotation = $data[$className]['Command'];
                 /** @var CommandAction $commandActionAnnotation */
                 $commandActionAnnotation = $data[$className]['CommandAction'][$targetName];
-                CliManager::addArgument($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->type, $annotation->default, $annotation->required, $annotation->comments);
+                CliManager::addArgument($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->type, $annotation->default, $annotation->required, $annotation->comments, $annotation->to);
             };
             if (isset($data[$className]['Command']) && isset($data[$className]['CommandAction'][$targetName]))
             {
@@ -73,7 +73,7 @@ class ToolParser extends BaseParser
                 $commandAnnotation = $data[$className]['Command'];
                 /** @var CommandAction $commandActionAnnotation */
                 $commandActionAnnotation = $data[$className]['CommandAction'][$targetName];
-                CliManager::addOption($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->shortcut, $annotation->type, $annotation->default, $annotation->required, $annotation->comments);
+                CliManager::addOption($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->shortcut, $annotation->type, $annotation->default, $annotation->required, $annotation->comments, $annotation->to);
             };
             if (isset($data[$className]['Command']) && isset($data[$className]['CommandAction'][$targetName]))
             {

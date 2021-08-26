@@ -47,6 +47,24 @@ class ImiCommand extends Command
 
     protected OutputInterface $output;
 
+    protected array $argumentsDefinition = [];
+
+    protected array $optionsDefinition = [];
+
+    protected static ImiArgvInput $inputInstance;
+
+    protected static ImiConsoleOutput $outputInstance;
+
+    public static function getInput(): ImiArgvInput
+    {
+        return static::$inputInstance ??= new ImiArgvInput();
+    }
+
+    public static function getOutput(): ImiConsoleOutput
+    {
+        return static::$outputInstance ??= new ImiConsoleOutput();
+    }
+
     /**
      * Get 类名.
      */
@@ -90,23 +108,30 @@ class ImiCommand extends Command
         {
             $this->setDescription($commandAction->description ?? '');
         }
+        /** @var Argument $argumentAnnotation */
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
         {
-            /** @var Argument $argumentAnnotation */
-            $type = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
+            $mode = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
             if (ArgType::ARRAY === $argumentAnnotation->type || ArgType::ARRAY_EX === $argumentAnnotation->type)
             {
-                $type |= InputArgument::IS_ARRAY;
+                $mode |= InputArgument::IS_ARRAY;
             }
-            $this->addArgument($argumentAnnotation->name, $type, $argumentAnnotation->comments, $argumentAnnotation->default);
+            $this->addArgument($argumentAnnotation->name, $mode, $argumentAnnotation->comments, $argumentAnnotation->default);
         }
+        /** @var Option $optionAnnotation */
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Option::class) as $optionAnnotation)
         {
-            /** @var Option $optionAnnotation */
-            $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
-            if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
+            if (ArgType::BOOLEAN_NEGATABLE === $optionAnnotation->type)
             {
-                $mode |= InputOption::VALUE_IS_ARRAY;
+                $mode = InputOption::VALUE_NEGATABLE;
+            }
+            else
+            {
+                $mode = $optionAnnotation->required ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
+                if (ArgType::ARRAY === $optionAnnotation->type || ArgType::ARRAY_EX === $optionAnnotation->type)
+                {
+                    $mode |= InputOption::VALUE_IS_ARRAY;
+                }
             }
             $this->addOption($optionAnnotation->name, $optionAnnotation->shortcut, $mode, $optionAnnotation->comments, $optionAnnotation->default);
         }
@@ -130,7 +155,12 @@ class ImiCommand extends Command
     {
         if ($input instanceof ImiArgvInput)
         {
+            static::$inputInstance = $input;
             $input->setDynamicOptions($this->dynamicOptions);
+        }
+        if ($output instanceof ImiConsoleOutput)
+        {
+            static::$outputInstance = $output;
         }
 
         return parent::run($input, $output);
@@ -165,8 +195,13 @@ class ImiCommand extends Command
     protected function executeCommand(): int
     {
         Event::trigger('IMI.COMMAND.BEFORE');
-        $instance = new $this->className($this, $this->input, $this->output);
         $args = $this->getCallToolArgs();
+        $input = $this->input;
+        if ($input instanceof ImiArgvInput)
+        {
+            $input->parseByCommand($this);
+        }
+        $instance = new $this->className($this, $input, $this->output);
         $instance->{$this->methodName}(...$args);
         Event::trigger('IMI.COMMAND.AFTER');
 
@@ -179,31 +214,60 @@ class ImiCommand extends Command
     private function getCallToolArgs(): array
     {
         $methodRef = new \ReflectionMethod($this->className, $this->methodName);
-        $arguments = CliManager::getArguments($this->commandName, $this->actionName);
-        $options = CliManager::getOptions($this->commandName, $this->actionName);
+        $this->argumentsDefinition = $arguments = CliManager::getArguments($this->commandName, $this->actionName);
+        $this->optionsDefinition = $options = CliManager::getOptions($this->commandName, $this->actionName);
         $args = [];
         foreach ($methodRef->getParameters() as $param)
         {
-            if (isset($arguments[$param->name]))
+            $paramArgumentName = null;
+            foreach ($arguments as $argument)
             {
-                $argument = $arguments[$param->name];
-                $value = $this->parseArgValue($this->input->getArgument($argument['argumentName']), $argument);
-            }
-            elseif (isset($options[$param->name]))
-            {
-                $option = $options[$param->name];
-                $value = $this->parseArgValue($this->input->getOption($option['optionName']), $option);
-                if (ArgType::BOOL === $option['type'] && null === $value)
+                if ($param->name === $argument['to'])
                 {
-                    if ($this->input->hasParameterOption('--' . $option['optionName']) || (null !== $option['shortcut'] && $this->input->hasParameterOption('-' . $option['shortcut'])))
-                    {
-                        $value = true;
-                    }
+                    $paramArgumentName = $argument['argumentName'];
+                    break;
                 }
+            }
+            if (null === $paramArgumentName && isset($arguments[$param->name]))
+            {
+                $paramArgumentName = $param->name;
+            }
+            if (null !== $paramArgumentName)
+            {
+                $argument = $arguments[$paramArgumentName];
+                $value = $this->parseArgValue($this->input->getArgument($argument['argumentName']), $argument);
             }
             else
             {
-                $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+                $paramOptionName = null;
+                foreach ($options as $option)
+                {
+                    if ($param->name === $option['to'])
+                    {
+                        $paramOptionName = $option['optionName'];
+                        break;
+                    }
+                }
+                if (null === $paramOptionName && isset($options[$param->name]))
+                {
+                    $paramOptionName = $param->name;
+                }
+                if (null !== $paramOptionName)
+                {
+                    $option = $options[$paramOptionName];
+                    $value = $this->parseArgValue($this->input->getOption($option['optionName']), $option);
+                    if (ArgType::isBooleanType($option['type']) && null === $value)
+                    {
+                        if ($this->input->hasParameterOption('--' . $option['optionName']) || (null !== $option['shortcut'] && $this->input->hasParameterOption('-' . $option['shortcut'])))
+                        {
+                            $value = true;
+                        }
+                    }
+                }
+                else
+                {
+                    $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+                }
             }
             $args[] = $value;
         }
@@ -254,5 +318,15 @@ class ImiCommand extends Command
         }
 
         return $value;
+    }
+
+    public function getArgumentsDefinition(): array
+    {
+        return $this->argumentsDefinition;
+    }
+
+    public function getOptionsDefinition(): array
+    {
+        return $this->optionsDefinition;
     }
 }

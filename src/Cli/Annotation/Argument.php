@@ -19,6 +19,7 @@ use Imi\Bean\Annotation\Parser;
  * @property mixed       $default  默认值
  * @property bool        $required 是否是必选参数
  * @property string      $comments 注释
+ * @property string      $to       将参数值绑定到指定名称的参数
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
 class Argument extends Base
@@ -31,7 +32,7 @@ class Argument extends Base
     /**
      * @param mixed $default
      */
-    public function __construct(?array $__data = null, string $name = '', ?string $type = null, $default = null, bool $required = false, string $comments = '')
+    public function __construct(?array $__data = null, string $name = '', ?string $type = null, $default = null, bool $required = false, string $comments = '', string $to = '')
     {
         parent::__construct(...\func_get_args());
     }

@@ -6,6 +6,7 @@ namespace Imi\Swoole\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
+use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Server\Http\Listener\HttpRouteInit;
 use Imi\Server\Server;
@@ -15,7 +16,6 @@ use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\SwooleWorker;
 use Imi\Util\Imi;
 use Imi\Worker;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=Imi\Util\ImiPriority::IMI_MIN)
@@ -38,7 +38,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
 
                 file_put_contents($initFlagFile, SwooleWorker::getMasterPid());
 
-                (new ConsoleOutput())->writeln('<info>App Inited</info>');
+                ImiCommand::getOutput()->writeln('<info>App Inited</info>');
             }
         }
         // worker 初始化

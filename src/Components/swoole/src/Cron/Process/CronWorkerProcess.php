@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Imi\Swoole\Cron\Process;
 
 use Imi\App;
+use Imi\Cli\ImiCommand;
 use Imi\Cron\Util\CronUtil;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
-use Symfony\Component\Console\Input\ArgvInput;
 
 /**
  * 定时任务工作进程.
@@ -21,7 +21,7 @@ class CronWorkerProcess extends BaseProcess
     {
         $success = false;
         $message = '';
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $id = $input->getParameterOption('--id');
         try
         {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\Cron;
 
+use Imi\Cli\ImiCommand;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Util\CronUtil;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\Contract\IProcess;
-use Symfony\Component\Console\Input\ArgvInput;
 
 /**
  * @Cron(id="TaskProcess1", second="3n")
@@ -20,7 +20,7 @@ class TaskProcess implements IProcess
     {
         $success = false;
         $message = '';
-        $input = new ArgvInput();
+        $input = ImiCommand::getInput();
         $id = $input->getParameterOption('--id');
         if (false === $id)
         {
