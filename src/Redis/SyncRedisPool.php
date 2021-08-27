@@ -14,7 +14,7 @@ class SyncRedisPool extends BaseSyncPool
     use TUriResourceConfig;
 
     /**
-     * 数据库操作类.
+     * 鏁版嵁搴撴搷浣滅被.
      */
     protected string $handlerClass = \Redis::class;
 
