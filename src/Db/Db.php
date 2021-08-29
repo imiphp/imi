@@ -68,14 +68,19 @@ class Db
             $db = $context[$requestContextKey] ?? null;
             if (null === $db)
             {
-                $config = Config::get('@app.db.connections.' . $poolName);
-                if (null === $config)
+                $db = App::get($requestContextKey);
+                if (null === $db)
                 {
-                    throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+                    $config = Config::get('@app.db.connections.' . $poolName);
+                    if (null === $config)
+                    {
+                        throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+                    }
+                    /** @var IDb $db */
+                    $db = $context[$requestContextKey] = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
+                    $db->open();
+                    App::set($requestContextKey, $db);
                 }
-                /** @var IDb $db */
-                $db = $context[$requestContextKey] = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
-                $db->open();
             }
 
             return $db;

@@ -67,16 +67,21 @@ class RedisManager
             $redis = $context[$requestContextKey] ?? null;
             if (null === $redis)
             {
-                $config = Config::get('@app.redis.connections.' . $poolName);
-                if (null === $config)
+                $redis = App::get($requestContextKey);
+                if (null === $redis)
                 {
-                    throw new \RuntimeException(sprintf('Not found redis config %s', $poolName));
-                }
+                    $config = Config::get('@app.redis.connections.' . $poolName);
+                    if (null === $config)
+                    {
+                        throw new \RuntimeException(sprintf('Not found redis config %s', $poolName));
+                    }
 
-                $class = $config['handlerClass'] ?? \Redis::class;
-                /** @var RedisHandler $redis */
-                $redis = $context[$requestContextKey] = App::getBean(RedisHandler::class, new $class());
-                self::initRedisConnection($redis, $config);
+                    $class = $config['handlerClass'] ?? \Redis::class;
+                    /** @var RedisHandler $redis */
+                    $redis = $context[$requestContextKey] = App::getBean(RedisHandler::class, new $class());
+                    self::initRedisConnection($redis, $config);
+                    App::set($requestContextKey, $redis);
+                }
             }
 
             return $redis;
