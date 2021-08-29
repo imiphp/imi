@@ -220,7 +220,7 @@ class Driver extends PgsqlBase implements IPgsqlDb
      */
     public function errorCode()
     {
-        return $this->instance->errCode;
+        return $this->instance->errCode ?? 0;
     }
 
     /**
@@ -228,7 +228,7 @@ class Driver extends PgsqlBase implements IPgsqlDb
      */
     public function errorInfo(): string
     {
-        return $this->instance->error;
+        return $this->instance->error ?? '';
     }
 
     /**

@@ -155,7 +155,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function errorInfo(): string
     {
-        return $this->errorInfo();
+        return $this->db->errorInfo();
     }
 
     /**
