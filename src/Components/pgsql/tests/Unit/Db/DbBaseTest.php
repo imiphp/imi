@@ -77,8 +77,11 @@ abstract class DbBaseTest extends TestCase
     public function testPrepareNamed(): void
     {
         $db = Db::getInstance($this->poolName);
-        $stmt = $db->prepare('select * from tb_article where id = :id');
+
+        // 有冒号
+        $stmt = $db->prepare('select tb_article.*, :v as v from tb_article where id = :id');
         $stmt->bindValue(':id', 1);
+        $stmt->bindValue(':v', 2);
         Assert::assertTrue($stmt->execute());
         Assert::assertEquals([
             [
@@ -86,6 +89,22 @@ abstract class DbBaseTest extends TestCase
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
+                'v'         => 2,
+            ],
+        ], $stmt->fetchAll());
+
+        // 无冒号
+        $stmt = $db->prepare('select tb_article.*, :v as v from tb_article where id = :id');
+        $stmt->bindValue('id', 1);
+        $stmt->bindValue('v', 2);
+        Assert::assertTrue($stmt->execute());
+        Assert::assertEquals([
+            [
+                'id'        => '1',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'v'         => 2,
             ],
         ], $stmt->fetchAll());
     }

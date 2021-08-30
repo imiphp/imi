@@ -185,9 +185,12 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         }
         else
         {
-            $bindValues = $this->bindValues ?? [];
-            $this->bindValues = [];
-            if (null !== $inputParameters)
+            if (null === $inputParameters)
+            {
+                $inputParameters = $this->bindValues;
+            }
+            $this->bindValues = $bindValues = [];
+            if ($inputParameters)
             {
                 $sqlParamsMap = $this->sqlParamsMap;
                 if ($sqlParamsMap)
@@ -198,20 +201,20 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                         {
                             $bindValues[$index] = $inputParameters[$paramName];
                         }
+                        elseif (isset($inputParameters[$key = ':' . $paramName]))
+                        {
+                            $bindValues[$index] = $inputParameters[$key];
+                        }
+                        elseif (isset($inputParameters[$index + 1]))
+                        {
+                            $bindValues[$index] = $inputParameters[$index + 1];
+                        }
                     }
                 }
-                elseif ($inputParameters)
+                else
                 {
-                    foreach ($inputParameters as $k => $v)
-                    {
-                        $bindValues[$k] = $v;
-                    }
+                    $bindValues = array_values($inputParameters);
                 }
-            }
-            if ($bindValues)
-            {
-                ksort($bindValues);
-                $bindValues = array_values($bindValues);
             }
             $this->queryResult = $queryResult = $pgDb->execute($this->statementName, $bindValues);
             if (false === $queryResult)

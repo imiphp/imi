@@ -377,6 +377,21 @@ public function getInstance();
 public function getTransaction();
 ```
 
+## 预处理
+
+使用预处理可以防止 SQL 注入。
+
+```php
+$db = Db::getNewInstance();
+
+$stmt = $db->prepare('select ?'); // 预处理问号形式
+$stmt->execute([1]); // 执行只能传索引数组
+
+$stmt = $db->prepare('select :abc'); // 预处理定义参数名
+$stmt->execute([':abc' => 1]); // 执行可以带冒号传参
+$stmt->execute(['abc' => 1]); // 执行可以不带冒号传参
+```
+
 ## 查询构建器
 
 imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
