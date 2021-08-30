@@ -49,6 +49,13 @@ class PoolConfig implements IPoolConfig
     protected ?float $maxUsedTime = null;
 
     /**
+     * 资源最大空闲回收时间，单位：秒.
+     *
+     * @var float|null
+     */
+    protected ?float $maxIdleTime = null;
+
+    /**
      * 当前请求上下文资源检查状态间隔，单位：支持小数的秒.
      *
      * 为 null 则不限制
@@ -229,6 +236,30 @@ class PoolConfig implements IPoolConfig
     public function setMaxUsedTime(?float $maxUsedTime): self
     {
         $this->maxUsedTime = $maxUsedTime;
+
+        return $this;
+    }
+
+    /**
+     * Get 每次获取资源最大空闲回收时间.
+     *
+     * @return float|null
+     */
+    public function getMaxIdleTime(): ?float
+    {
+        return $this->maxIdleTime;
+    }
+
+    /**
+     * Set 每次获取资源最大空闲回收时间.
+     *
+     * @param float|null $maxIdleTime
+     *
+     * @return static
+     */
+    public function setMaxIdleTime(?float $maxIdleTime): self
+    {
+        $this->maxIdleTime = $maxIdleTime;
 
         return $this;
     }

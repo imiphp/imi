@@ -105,6 +105,23 @@ interface IPoolConfig
      */
     public function setMaxUsedTime(?float $maxUsedTime): self;
 
+
+    /**
+     * Get 每次获取资源最大空闲回收时间.
+     *
+     * @return float|null
+     */
+    public function getMaxIdleTime(): ?float;
+
+    /**
+     * Set 每次获取资源最大空闲回收时间.
+     *
+     * @param float|null $maxIdleTime
+     *
+     * @return static
+     */
+    public function setMaxIdleTime(?float $maxIdleTime): self;
+
     /**
      * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒.
      */
