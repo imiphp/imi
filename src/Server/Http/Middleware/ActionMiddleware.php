@@ -73,12 +73,12 @@ class ActionMiddleware implements MiddlewareInterface
         // 执行动作
         // @phpstan-ignore-next-line
         $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
-        $routeItem = $result->routeItem;
         // 视图
         if ($actionResult instanceof IHttpResponse)
         {
             return $actionResult;
         }
+        $routeItem = $result->routeItem;
         if ($actionResult instanceof \Imi\Server\View\Annotation\View)
         {
             // 动作返回的值是@View注解
