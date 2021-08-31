@@ -10,6 +10,22 @@
 
 同步池子仅在`task`进程使用，异步池子在`worker`进程使用。一般使用时无需自行判断在哪个进程，框架会自动帮你获取对应的连接。
 
+## 连接池配置
+
+| 选项                         | 说明                                                 | 类型   | 默认值                              |
+|------------------------------|------------------------------------------------------|-:-:----|-------------------------------------|
+| maxResources                 | 池子中最多资源数                                     | int    | 10                                  |
+| minResources                 | 池子中最少资源数                                     | int    | 1                                   |
+| gcInterval                   | 资源回收时间间隔，单位：秒，`null`则不限制           | ?int   | 60                                  |
+| maxActiveTime                | 获取资源最大存活时间，单位：秒，`null`则不限制       | ?int   | `null`                              |
+| waitTimeout                  | 等待资源最大超时时间，单位：毫秒                     | int    | 3000                                |
+| heartbeatInterval            | 心跳时间间隔，单位：秒，`null`则不启用               | ?float | `null`                              |
+| checkStateWhenGetResource    | 当获取资源时是否检查状态，单位：秒，`null`则不限制   | bool   | `true`                              |
+| maxUsedTime                  | 每次获取资源最长使用时间，单位：秒，`null`则不限制   | ?float | `null`                              |
+| maxIdleTime                  | 资源创建后最大空闲回收时间，单位：秒，`null`则不限制 | ?float | `null`                              |
+| requestResourceCheckInterval | 当前请求上下文资源检查状态间隔                       | float  | 30                                  |
+| resourceConfigMode           | 负载均衡模式，TURN：轮流、RANDOM：随机               | int    | `Imi\Pool\ResourceConfigMode::TURN` |
+
 ## 获取连接
 
 ### 获取池子中的资源
@@ -38,9 +54,7 @@ $result = \Imi\Pool\PoolManager::use($poolName, function($resource, \Swoole\Coro
 });
 ```
 
-`$poolName`-池子名称
-第二个参数为回调，接收两个参数，第一个资源本身，第二个为资源里面的实例。比如上面的是Redis
-回调的返回值也会成为use方法的返回值
+`$poolName`-池子名称 第二个参数为回调，接收两个参数，第一个资源本身，第二个为资源里面的实例。比如上面的是Redis 回调的返回值也会成为use方法的返回值
 
 ## 手动释放连接
 
