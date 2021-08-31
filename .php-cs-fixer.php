@@ -40,7 +40,10 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->exclude(__DIR__ . '/vendor')
+            ->exclude([
+                __DIR__ . '/vendor',
+                __DIR__ . '/src/Components/*/vendor',
+            ])
             ->in(__DIR__ . '/src')
             ->in(__DIR__ . '/config')
             ->in(__DIR__ . '/tests')
