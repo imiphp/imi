@@ -107,14 +107,14 @@ interface IPoolConfig
 
 
     /**
-     * Get 每次获取资源最大空闲回收时间.
+     * Get 资源创建后最大空闲回收时间.
      *
      * @return float|null
      */
     public function getMaxIdleTime(): ?float;
 
     /**
-     * Set 每次获取资源最大空闲回收时间.
+     * Set 资源创建后最大空闲回收时间.
      *
      * @param float|null $maxIdleTime
      *
