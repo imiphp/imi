@@ -175,9 +175,12 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         }
         else
         {
-            $bindValues = $this->bindValues;
-            $this->bindValues = [];
-            if (null !== $inputParameters)
+            if (null === $inputParameters)
+            {
+                $inputParameters = $this->bindValues;
+            }
+            $this->bindValues = $bindValues = [];
+            if ($inputParameters)
             {
                 $sqlParamsMap = $this->sqlParamsMap;
                 if ($sqlParamsMap)
@@ -188,9 +191,13 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
                         {
                             $bindValues[$index] = $inputParameters[$paramName];
                         }
+                        elseif (isset($inputParameters[$key = ':' . $paramName]))
+                        {
+                            $bindValues[$index] = $inputParameters[$key];
+                        }
                     }
                 }
-                elseif ($inputParameters)
+                else
                 {
                     foreach ($inputParameters as $k => $v)
                     {

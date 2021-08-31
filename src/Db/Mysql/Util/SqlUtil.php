@@ -26,8 +26,8 @@ class SqlUtil
     {
         $map = [];
 
-        return preg_replace_callback('/:[a-zA-Z0-9_]+/', function (array $match) use (&$map): string {
-            $map[] = $match[0];
+        return preg_replace_callback('/:([a-zA-Z0-9_]+)/', function (array $match) use (&$map): string {
+            $map[] = $match[1];
 
             return '?';
         }, $sql);
