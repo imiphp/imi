@@ -15,6 +15,7 @@ use Swoole\Coroutine;
 use Yurun\Swoole\CoPool\CoPool;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
+use function Yurun\Swoole\Coroutine\goWait;
 
 /**
  * 队列消费基类.
@@ -89,15 +90,17 @@ abstract class BaseQueueConsumer
                     }
                     else
                     {
-                        Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
-                            'queue'     => $queue,
-                            'message'   => $message,
-                        ], $this, ConsumerBeforeConsumeParam::class);
-                        $this->consume($message, $queue);
-                        Event::trigger('IMI.QUEUE.CONSUMER.AFTER_CONSUME', [
-                            'queue'     => $queue,
-                            'message'   => $message,
-                        ], $this, ConsumerAfterConsumeParam::class);
+                        goWait(function () use ($queue, $message) {
+                            Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
+                                'queue'     => $queue,
+                                'message'   => $message,
+                            ], $this, ConsumerBeforeConsumeParam::class);
+                            $this->consume($message, $queue);
+                            Event::trigger('IMI.QUEUE.CONSUMER.AFTER_CONSUME', [
+                                'queue'     => $queue,
+                                'message'   => $message,
+                            ], $this, ConsumerAfterConsumeParam::class);
+                        });
                     }
                 }
                 catch (\Throwable $th)
