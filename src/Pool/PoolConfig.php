@@ -50,8 +50,6 @@ class PoolConfig implements IPoolConfig
 
     /**
      * 资源创建后最大空闲回收时间，单位：秒.
-     *
-     * @var float|null
      */
     protected ?float $maxIdleTime = null;
 
@@ -242,8 +240,6 @@ class PoolConfig implements IPoolConfig
 
     /**
      * Get 资源创建后最大空闲回收时间.
-     *
-     * @return float|null
      */
     public function getMaxIdleTime(): ?float
     {
@@ -252,8 +248,6 @@ class PoolConfig implements IPoolConfig
 
     /**
      * Set 资源创建后最大空闲回收时间.
-     *
-     * @param float|null $maxIdleTime
      *
      * @return static
      */

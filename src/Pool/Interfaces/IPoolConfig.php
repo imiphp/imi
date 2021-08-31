@@ -105,18 +105,13 @@ interface IPoolConfig
      */
     public function setMaxUsedTime(?float $maxUsedTime): self;
 
-
     /**
      * Get 资源创建后最大空闲回收时间.
-     *
-     * @return float|null
      */
     public function getMaxIdleTime(): ?float;
 
     /**
      * Set 资源创建后最大空闲回收时间.
-     *
-     * @param float|null $maxIdleTime
      *
      * @return static
      */
