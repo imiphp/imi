@@ -156,7 +156,7 @@ abstract class BasePool implements IPool
             $maxIdleTime = $config->getMaxIdleTime();
             $time = microtime(true);
 
-            $needGcIdleResource = null !== $maxIdleTime && $this->getCount() > $this->getConfig()->getMinResources();
+            $needGcIdleResource = null !== $maxIdleTime && $this->getCount() > $config->getMinResources();
 
             foreach ($pool as $key => $item)
             {
