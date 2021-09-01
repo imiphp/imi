@@ -155,11 +155,14 @@ abstract class BasePool implements IPool
             $maxUsedTime = $config->getMaxUsedTime();
             $maxIdleTime = $config->getMaxIdleTime();
             $time = microtime(true);
+
+            $needGcIdleResource = null !== $maxIdleTime && $this->getCount() > $config->getMinResources();
+
             foreach ($pool as $key => $item)
             {
                 if (
                     (null !== $maxActiveTime && $item->isFree() && $time - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
-                    || (null !== $maxIdleTime && $item->isFree() && $time - $item->getLastReleaseTime() >= $maxIdleTime) // 最大空闲时间
+                    || ($needGcIdleResource && $item->isFree() && $time - $item->getLastReleaseTime() >= $maxIdleTime) // 最大空闲时间
                     || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && $time - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
                     ) {
                     $item->getResource()->close();
