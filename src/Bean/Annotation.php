@@ -112,7 +112,7 @@ class Annotation
             $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.appIgnorePaths', []));
         }
         $ignoredPaths = array_map(function ($item) {
-            return preg_quote($item, '/');
+            return Imi::parseRule($item);
         }, $ignoredPaths);
         if ($ignoredPaths)
         {
