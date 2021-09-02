@@ -79,12 +79,12 @@ class AMQPResource extends BasePoolResource
             try
             {
                 $channel->close();
-                unset($this->connection->channels[$key]);
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 /* Ignore closing errors */
             }
+            unset($this->connection->channels[$key]);
         }
     }
 

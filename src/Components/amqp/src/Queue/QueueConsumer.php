@@ -79,7 +79,10 @@ class QueueConsumer extends BaseConsumer
             $this->stop();
         }
         $this->connection = $this->getConnection();
-        $this->channel = $this->connection->channel();
+        if($this->connection->isConnected())
+        {
+            $this->channel = $this->connection->channel();
+        }
     }
 
     /**

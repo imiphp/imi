@@ -183,7 +183,7 @@ class SwooleIO extends AbstractIO
 
         if (false === $buffer)
         {
-            throw new AMQPRuntimeException('Error sending data');
+            throw new AMQPRuntimeException('Error sending data, errno=' . $this->sock->errCode);
         }
 
         if (0 === $buffer && !$this->sock->connected)
