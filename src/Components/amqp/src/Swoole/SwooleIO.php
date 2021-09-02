@@ -242,7 +242,7 @@ class SwooleIO extends AbstractIO
             $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 1000, function () {
                 if ($this->sock && $this->sock->isConnected())
                 {
-                    $this->write_heartbeat();
+                    $this->check_heartbeat();
                 }
             });
         }
