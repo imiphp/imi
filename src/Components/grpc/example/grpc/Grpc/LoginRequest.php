@@ -31,9 +31,9 @@ class LoginRequest extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *                    Optional. Data for populating the Message object.
      *
-     *     @var string $phone
+     *     @var string
      *           手机号
-     *     @var string $password
+     *     @var string
      *           密码
      * }
      */
