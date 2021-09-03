@@ -17,6 +17,11 @@ imi v2.x 开始采用了 monolog 作为日志组件，废弃了 v1 中的配置�
                 // 命令行配置，仅 Swoole、Workerman 推荐
                 [
                     'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                    // 日志 Handler 构造方法参数，具体参数详见该类构造方法
+                    'construct' => [
+                        'level'  => \Monolog\Logger::DEBUG,
+                        'bubble' => true,
+                    ],
                     'formatter' => [
                         'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
                         'construct' => [
@@ -31,9 +36,11 @@ imi v2.x 开始采用了 monolog 作为日志组件，废弃了 v1 中的配置�
                 [
                     // 日志 Handler 类名
                     'class'     => \Monolog\Handler\RotatingFileHandler::class,
-                    // 日志 Handler 构造方法参数
+                    // 日志 Handler 构造方法参数，具体参数详见该类构造方法
                     'construct' => [
                         'filename' => dirname(__DIR__) . '/logs/log.log',
+                        'level'    => \Monolog\Logger::DEBUG,
+                        'bubble'   => true,
                     ],
                     // Formatter
                     'formatter' => [
