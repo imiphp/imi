@@ -254,10 +254,12 @@ class SwooleIO extends AbstractIO
             $this->heartbeatTimerId = null;
         }
     }
-    
+
     /**
-     * Heartbeat logic: check connection health here
+     * Heartbeat logic: check connection health here.
+     *
      * @return void
+     *
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */
     public function check_heartbeat()
