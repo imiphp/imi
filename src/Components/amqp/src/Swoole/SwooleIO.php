@@ -185,7 +185,7 @@ class SwooleIO extends AbstractIO
 
         if (false === $buffer)
         {
-            throw new AMQPRuntimeException('Error sending data, errno=' . $this->sock->errCode);
+            throw new AMQPConnectionClosedException('Error sending data, errno=' . $this->sock->errCode);
         }
 
         if (0 === $buffer && !$this->sock->connected)
@@ -230,8 +230,6 @@ class SwooleIO extends AbstractIO
      */
     protected function do_select($sec, $usec)
     {
-        $this->check_heartbeat();
-
         return 1;
     }
 
@@ -242,7 +240,7 @@ class SwooleIO extends AbstractIO
             $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 1000, function () {
                 if ($this->sock && $this->sock->isConnected())
                 {
-                    $this->check_heartbeat();
+                    $this->write_heartbeat();
                 }
             });
         }
@@ -255,5 +253,14 @@ class SwooleIO extends AbstractIO
             \Swoole\Timer::clear($this->heartbeatTimerId);
             $this->heartbeatTimerId = null;
         }
+    }
+    
+    /**
+     * Heartbeat logic: check connection health here
+     * @return void
+     * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
+     */
+    public function check_heartbeat()
+    {
     }
 }
