@@ -51,7 +51,7 @@ class FpmResponse extends Response
      */
     public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
-        parent::withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+        parent::setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
         $this->changedCookieNames[$key] = true;
 
         return $this;
