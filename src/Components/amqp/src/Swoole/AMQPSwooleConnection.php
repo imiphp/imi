@@ -82,6 +82,8 @@ class AMQPSwooleConnection extends AbstractConnection
 
     /**
      * Connects to the AMQP server.
+     *
+     * @return void
      */
     protected function connect()
     {
@@ -131,7 +133,7 @@ class AMQPSwooleConnection extends AbstractConnection
     /**
      * Sends a heartbeat message.
      */
-    protected function write_heartbeat()
+    protected function write_heartbeat(): void
     {
         $pkt = new AMQPWriter();
         $pkt->write_octet(8);
