@@ -4,12 +4,18 @@ namespace Imi\AMQP\Swoole;
 
 use Imi\Util\Coroutine;
 use PhpAmqpLib\Connection\AbstractConnection;
+use PhpAmqpLib\Wire\AMQPWriter;
 
 /**
  * @source https://github.com/swoole/php-amqplib/blob/master/PhpAmqpLib/Connection/AMQPSwooleConnection.php
  */
 class AMQPSwooleConnection extends AbstractConnection
 {
+    /**
+     * @var int|null
+     */
+    protected $heartbeatTimerId = null;
+
     /**
      * @param string   $host
      * @param int      $port
@@ -72,5 +78,66 @@ class AMQPSwooleConnection extends AbstractConnection
         {
             $this->io->close();
         }
+    }
+
+    /**
+     * Connects to the AMQP server.
+     */
+    protected function connect()
+    {
+        parent::connect();
+        $this->startHeartbeat();
+    }
+
+    /**
+     * Requests a connection close.
+     *
+     * @param int    $reply_code
+     * @param string $reply_text
+     * @param array  $method_sig
+     *
+     * @return mixed|null
+     */
+    public function close($reply_code = 0, $reply_text = '', $method_sig = [0, 0])
+    {
+        $this->stopHeartbeat();
+        $result = parent::close($reply_code, $reply_text, $method_sig);
+
+        return $result;
+    }
+
+    protected function startHeartbeat(): void
+    {
+        if ($this->heartbeat > 0)
+        {
+            $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 500, function () {
+                if ($this->isConnected())
+                {
+                    $this->write_heartbeat();
+                }
+            });
+        }
+    }
+
+    protected function stopHeartbeat(): void
+    {
+        if ($this->heartbeatTimerId)
+        {
+            \Swoole\Timer::clear($this->heartbeatTimerId);
+            $this->heartbeatTimerId = null;
+        }
+    }
+
+    /**
+     * Sends a heartbeat message.
+     */
+    protected function write_heartbeat()
+    {
+        $pkt = new AMQPWriter();
+        $pkt->write_octet(8);
+        $pkt->write_short(0);
+        $pkt->write_long(0);
+        $pkt->write_octet(0xCE);
+        $this->write($pkt->getvalue());
     }
 }

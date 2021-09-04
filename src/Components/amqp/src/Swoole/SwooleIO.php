@@ -12,7 +12,7 @@ use PhpAmqpLib\Wire\IO\AbstractIO;
  */
 class SwooleIO extends AbstractIO
 {
-    const READ_BUFFER_WAIT_INTERVAL = 100000;
+    public const READ_BUFFER_WAIT_INTERVAL = 100000;
 
     /**
      *  @var float
@@ -43,11 +43,6 @@ class SwooleIO extends AbstractIO
      * @var string
      */
     private $buffer = '';
-
-    /**
-     * @var int|null
-     */
-    protected $heartbeatTimerId = null;
 
     /**
      * @param string        $host
@@ -97,7 +92,6 @@ class SwooleIO extends AbstractIO
             throw new AMQPRuntimeException(sprintf('Error Connecting to server(%s): %s ', $sock->errCode, swoole_strerror($sock->errCode)), $sock->errCode);
         }
         $this->sock = $sock;
-        $this->startHeartbeat();
     }
 
     /**
@@ -199,7 +193,6 @@ class SwooleIO extends AbstractIO
      */
     public function close()
     {
-        $this->stopHeartbeat();
         if ($this->sock)
         {
             $this->sock->close();
@@ -229,28 +222,6 @@ class SwooleIO extends AbstractIO
     protected function do_select($sec, $usec)
     {
         return 1;
-    }
-
-    protected function startHeartbeat(): void
-    {
-        if ($this->heartbeat > 0)
-        {
-            $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 1000, function () {
-                if ($this->sock && $this->sock->isConnected())
-                {
-                    $this->write_heartbeat();
-                }
-            });
-        }
-    }
-
-    protected function stopHeartbeat(): void
-    {
-        if ($this->heartbeatTimerId)
-        {
-            \Swoole\Timer::clear($this->heartbeatTimerId);
-            $this->heartbeatTimerId = null;
-        }
     }
 
     /**
