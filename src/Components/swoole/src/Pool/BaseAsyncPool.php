@@ -209,9 +209,8 @@ abstract class BaseAsyncPool extends BasePool
     protected function buildQueue(): void
     {
         // 清空队列
-        $count = $this->getFree();
         $queue = $this->queue;
-        for ($i = 0; $i < $count; ++$i)
+        while (!$queue->isEmpty())
         {
             $queue->pop();
         }
@@ -220,7 +219,10 @@ abstract class BaseAsyncPool extends BasePool
             // 重新建立队列
             foreach ($this->pool as $item)
             {
-                $queue->push($item);
+                if ($item->isFree())
+                {
+                    $queue->push($item);
+                }
             }
         }
     }
