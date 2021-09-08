@@ -53,12 +53,10 @@ class WorkermanApp extends CliApp
         return 'workerman';
     }
 
-    /**
-     * 加载配置.
-     */
-    public function loadConfig(bool $initDotEnv = true): void
+    protected function __loadConfig(): void
     {
-        parent::loadConfig(false);
+        parent::__loadConfig();
+
         foreach (Config::get('@app.workermanServer', []) as $name => $config)
         {
             // 加载服务器配置文件
@@ -71,10 +69,6 @@ class WorkermanApp extends CliApp
                     break;
                 }
             }
-        }
-        if ($initDotEnv)
-        {
-            $this->loadDotEnv();
         }
     }
 

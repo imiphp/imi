@@ -345,10 +345,7 @@ class ProcessManager
     private static function getLockFileName(string $name): string
     {
         $path = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()), 'processLock');
-        if (!is_dir($path))
-        {
-            File::createDir($path);
-        }
+        File::createDir($path);
 
         return File::path($path, $name . '.lock');
     }

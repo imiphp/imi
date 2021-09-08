@@ -6,12 +6,15 @@ namespace Imi\Core\App\Contract;
 
 use Imi\App;
 use Imi\AppContexts;
+use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Config\DotEnv\DotEnv;
 use Imi\Core\Runtime\Handler\DefaultRuntimeModeHandler;
 use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
 use Imi\Main\Helper;
+use Imi\Util\File;
+use Imi\Util\Imi;
 
 abstract class BaseApp implements IApp
 {
@@ -33,41 +36,49 @@ abstract class BaseApp implements IApp
         $this->namespace = $namespace;
     }
 
-    /**
-     * 加载配置.
-     */
-    public function loadConfig(bool $initDotEnv = true): void
+    protected function __loadConfig(): void
     {
         // 加载框架配置
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
 
         $appPath = App::get(AppContexts::APP_PATH);
-        $hasAppConfig = false;
         // 加载项目目录下的 env
         DotEnv::load([$appPath]);
         $fileName = $appPath . '/config/config.php';
         if (is_file($fileName))
         {
-            Config::addConfig('@app', include $fileName);
-            $hasAppConfig = true;
+            $appConfig = include $fileName;
         }
-        if (!$hasAppConfig)
+        else
         {
-            Config::setConfig('@app', []);
-        }
-
-        $appConfig = Config::get('@app');
-        App::setDebug($appConfig['debug'] ?? true);
-        if ($initDotEnv)
-        {
-            $this->loadDotEnv();
+            $appConfig = [];
         }
 
         // 应用模式配置
         $appModeConfig = $appConfig['imi'] ?? [];
         $appTypeConfig = $appConfig[$this->getType()]['imi'] ?? [];
-        Config::set('@app.imi', array_merge($this->appConfig, $appModeConfig, $appTypeConfig));
-        Config::set('@app.imi.beans', array_merge($this->appConfig['beans'] ?? [], $appModeConfig['beans'] ?? [], $appTypeConfig['beans'] ?? []));
+        $appConfig['imi'] = array_merge($this->appConfig, $appModeConfig, $appTypeConfig);
+        $appConfig['imi']['beans'] = array_merge($this->appConfig['beans'] ?? [], $appModeConfig['beans'] ?? [], $appTypeConfig['beans'] ?? []);
+
+        Config::addConfig('@app', $appConfig);
+    }
+
+    /**
+     * 加载配置.
+     */
+    public function loadConfig(): void
+    {
+        $this->__loadConfig();
+
+        $this->loadDotEnv();
+
+        $appConfig = Config::get('@app');
+        App::setDebug($appConfig['debug'] ?? true);
+        $enableFileCache = BeanFactory::$enableFileCache = $appConfig['imi']['bean']['fileCache'] ?? false;
+        if ($enableFileCache)
+        {
+            File::createDir(Imi::getRuntimePath('classes'));
+        }
     }
 
     /**

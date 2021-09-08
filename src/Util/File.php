@@ -281,7 +281,7 @@ class File
     public static function putContents(string $fileName, string $data, int $flags = 0, $context = null)
     {
         $dir = \dirname($fileName);
-        if (!is_dir($dir) && !static::createDir($dir))
+        if (!static::createDir($dir))
         {
             throw new \RuntimeException(sprintf('Create dir %s failed', $dir));
         }

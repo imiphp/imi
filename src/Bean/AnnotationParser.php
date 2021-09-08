@@ -7,6 +7,7 @@ namespace Imi\Bean;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Inherit;
 use Imi\Bean\Parser\BaseParser;
+use Imi\Config;
 use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
 use Imi\Util\Imi;
@@ -48,9 +49,15 @@ class AnnotationParser
      */
     private array $initIncludeFiles = [];
 
+    /**
+     * 是否启用注解缓存.
+     */
+    private bool $enableAnnotationCache = false;
+
     public function __construct()
     {
         $this->initIncludeFiles = get_included_files();
+        $this->enableAnnotationCache = Config::get('@app.imi.annotation.cache', false);
     }
 
     public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
@@ -738,13 +745,13 @@ class AnnotationParser
         {
             return $this->reader;
         }
-        if ('cli' === \PHP_SAPI)
+        if ($this->enableAnnotationCache)
         {
-            return $this->reader = new AnnotationReader();
+            return $this->reader = new FileCacheReader(new AnnotationReader(), Imi::getRuntimePath('annotation'));
         }
         else
         {
-            return $this->reader = new FileCacheReader(new AnnotationReader(), Imi::getRuntimePath('annotation'));
+            return $this->reader = new AnnotationReader();
         }
     }
 

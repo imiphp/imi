@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Fpm;
 
-use Imi\App;
-use Imi\Bean\BeanContexts;
 use Imi\Bean\Scanner;
 use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
@@ -36,24 +34,11 @@ class FpmApp extends BaseApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
-        App::set(BeanContexts::FIXED_EVAL_NAME, true);
     }
 
-    /**
-     * 加载配置.
-     */
-    public function loadConfig(bool $initDotEnv = true): void
+    protected function __loadConfig(): void
     {
-        parent::loadConfig(false);
-        $dir = Imi::getRuntimePath('classes');
-        if (!is_dir($dir))
-        {
-            File::createDir($dir);
-        }
-        if ($initDotEnv)
-        {
-            $this->loadDotEnv();
-        }
+        parent::__loadConfig();
 
         $appConfig = Config::get('@app');
         $serverPath = $appConfig['fpm']['serverPath'] ?? null;

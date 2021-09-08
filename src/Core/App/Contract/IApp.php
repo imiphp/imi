@@ -17,7 +17,7 @@ interface IApp
     /**
      * 加载配置.
      */
-    public function loadConfig(bool $initDotEnv = true): void;
+    public function loadConfig(): void;
 
     /**
      * 加载入口.

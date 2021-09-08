@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Bean;
 
 use Imi\Aop\AopManager;
-use Imi\App;
 use Imi\Util\Imi;
 use InvalidArgumentException;
 
@@ -20,6 +19,13 @@ class BeanFactory
      * 类名映射.
      */
     private static array $classNameMap = [];
+
+    /**
+     * 是否启用 bean 文件缓存.
+     *
+     * @var bool
+     */
+    public static $enableFileCache = false;
 
     private function __construct()
     {
@@ -52,7 +58,7 @@ class BeanFactory
         }
         else
         {
-            if (App::get(BeanContexts::FIXED_EVAL_NAME, false))
+            if (self::$enableFileCache)
             {
                 static::parseEvalName($class, $fileName, $className);
                 if (is_file($fileName))
