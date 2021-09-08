@@ -255,9 +255,9 @@ class IndexController extends HttpController
      *
      * @return mixed
      */
-    public function download()
+    public function download(?string $contentType = null, ?string $outputFileName = null)
     {
-        return RequestContext::get('response')->sendFile(__FILE__);
+        return RequestContext::get('response')->sendFile(__FILE__, $contentType, $outputFileName);
     }
 
     /**

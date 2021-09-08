@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\Tests;
 
+use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\StatusCode;
 use Yurun\Util\HttpRequest;
 
@@ -107,8 +108,27 @@ class ResponseTest extends BaseTest
      */
     public function testDownload(): void
     {
+        $content = file_get_contents(\dirname(__DIR__) . '/ApiServer/Controller/IndexController.php');
+
         $http = new HttpRequest();
         $response = $http->get($this->host . 'download');
-        $this->assertEquals(file_get_contents(\dirname(__DIR__) . '/ApiServer/Controller/IndexController.php'), $response->body());
+        $this->assertEquals($content, $response->body());
+        $this->assertEquals(MediaType::APPLICATION_OCTET_STREAM, $response->getHeaderLine('content-type'));
+        $this->assertEquals('attachment; filename*=UTF-8\'\'IndexController.php', $response->getHeaderLine('content-disposition'));
+
+        $response = $http->get($this->host . 'download', [
+            'outputFileName' => '测试.jpg',
+        ]);
+        $this->assertEquals($content, $response->body());
+        $this->assertEquals(MediaType::IMAGE_JPEG, $response->getHeaderLine('content-type'));
+        $this->assertEquals('attachment; filename*=UTF-8\'\'' . rawurlencode('测试.jpg'), $response->getHeaderLine('content-disposition'));
+
+        $response = $http->get($this->host . 'download', [
+            'contentType'    => MediaType::IMAGE_PNG,
+            'outputFileName' => '测试.jpg',
+        ]);
+        $this->assertEquals($content, $response->body());
+        $this->assertEquals(MediaType::IMAGE_PNG, $response->getHeaderLine('content-type'));
+        $this->assertEquals('attachment; filename*=UTF-8\'\'' . rawurlencode('测试.jpg'), $response->getHeaderLine('content-disposition'));
     }
 }

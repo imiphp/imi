@@ -100,9 +100,9 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
     /**
      * {@inheritDoc}
      */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0): \Imi\Server\Http\Message\Contract\IHttpResponse
+    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
-        return self::__getProxyInstance()->sendFile($filename, $offset, $length);
+        return self::__getProxyInstance()->sendFile($filename, $contentType, $outputFileName, $offset, $length);
     }
 
     /**

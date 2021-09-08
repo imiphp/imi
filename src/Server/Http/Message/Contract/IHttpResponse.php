@@ -30,7 +30,7 @@ interface IHttpResponse extends IResponse
      * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
      * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
      */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0): self;
+    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): self;
 
     /**
      * 响应头是否可写.
