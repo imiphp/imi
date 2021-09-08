@@ -135,7 +135,7 @@ class ProcessManager
                 {
                     if ($processOption['options']['unique'] && !static::lockProcess($name))
                     {
-                        throw new \RuntimeException('Lock process lock file error');
+                        throw new \RuntimeException(sprintf('Lock process %s failed', $name));
                     }
                     // 加载服务器注解
                     Scanner::scanVendor();
