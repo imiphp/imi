@@ -32,7 +32,8 @@ class Index extends HttpController
         */
         public function index()
         {
-            return $this->response->write('hello imi!');
+            $this->response->getBody()->write('hello imi!');
+			return $this->response;
         }
 }
 ```

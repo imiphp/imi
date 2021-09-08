@@ -64,7 +64,7 @@ class Main extends BaseMain
 ```php
 <?php
 return [
-    // 加载子配置文件，可以使用 \Imi\Config::get('@.别名1.xxx') 获取
+    // 加载子配置文件，可以使用 \Imi\Config::get('@server.子服务名.别名1.xxx') 获取
     'configs'    =>    [
         "别名1"    =>    '配置文件路径1',
         "别名2"    =>    '配置文件路径2',

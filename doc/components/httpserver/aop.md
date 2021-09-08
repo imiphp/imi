@@ -46,10 +46,10 @@ class Fuck
         /** @var \Imi\Server\Http\Message\Response $response */
         $response = RequestContext::get('response');
         $response->withHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON_UTF8)
-                 ->write(json_encode([
+                 ->getBody()->write(json_encode([
                     'result' => 'fuck1',
-                 ]))
-                 ->send();
+                 ]));
+        $response->send();
         // 如果需要执行原动作方法，可以去掉注释
         // $returnValue = $joinPoint->proceed();
         // return $returnValue; // 返回原返回值
