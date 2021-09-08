@@ -141,7 +141,11 @@ class CronManager
     {
         if (isset($this->tasks[$id]))
         {
-            unset($this->tasks[$id], $this->realTasks[$id]);
+            unset($this->tasks[$id]);
+        }
+        if (isset($this->realTasks[$id]))
+        {
+            unset($this->realTasks[$id]);
         }
     }
 
