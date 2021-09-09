@@ -156,7 +156,7 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseOrder(array $order): string
     {
-        if (isset($order[0]))
+        if ($order)
         {
             $params = &$this->params;
             $orderStrs = [];
@@ -186,7 +186,7 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseGroup(array $group): string
     {
-        if (isset($group[0]))
+        if ($group)
         {
             $groups = [];
             $query = $this->query;

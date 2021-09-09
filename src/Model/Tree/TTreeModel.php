@@ -69,7 +69,7 @@ trait TTreeModel
         if (\is_array($parentId))
         {
             $ids = $parentId;
-            if (!isset($ids[0]))
+            if (!$ids)
             {
                 return [];
             }

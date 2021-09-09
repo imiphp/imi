@@ -70,7 +70,7 @@ class WSRouteInit implements IEventListener
                 {
                     /** @var \Imi\Server\WebSocket\Route\Annotation\WSRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, WSRoute::class);
-                    if (!isset($routes[0]))
+                    if (!$routes)
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
                     }

@@ -70,7 +70,7 @@ class UdpRouteInit implements IEventListener
                 {
                     /** @var UdpRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, UdpRoute::class);
-                    if (!isset($routes[0]))
+                    if (!$routes)
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
                     }

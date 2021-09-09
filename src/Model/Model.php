@@ -69,7 +69,7 @@ abstract class Model extends BaseModel
      */
     public static function find(...$ids): ?self
     {
-        if (!isset($ids[0]))
+        if (!$ids)
         {
             return null;
         }
@@ -267,7 +267,7 @@ abstract class Model extends BaseModel
                 }
             }
         }
-        if (!isset($conditionId[0]))
+        if (!$conditionId)
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }

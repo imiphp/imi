@@ -13,7 +13,7 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
      */
     protected function parseField(array $fields): string
     {
-        if (!isset($fields[0]))
+        if (!$fields)
         {
             return '*';
         }

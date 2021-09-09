@@ -52,7 +52,7 @@ class AutoValidationAop
             }
         }
 
-        if (isset($annotations[0]))
+        if ($annotations)
         {
             $data = [];
             foreach ($target as $name => $value)
@@ -94,7 +94,7 @@ class AutoValidationAop
         $methodName = $joinPoint->getMethod();
 
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName);
-        if (isset($annotations[0]))
+        if ($annotations)
         {
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
             $data['$this'] = $target;

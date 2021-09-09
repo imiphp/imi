@@ -27,46 +27,47 @@ class ObjectArrayHelper
     public static function get(&$object, string $name, $default = null)
     {
         $names = explode('.', $name);
-        $result = &$object;
-        foreach ($names as $nameItem)
+        // @phpstan-ignore-next-line
+        if ($names)
         {
-            if (\is_array($result))
+            $result = &$object;
+            foreach ($names as $nameItem)
             {
-                // 数组
-                if (isset($result[$nameItem]))
+                if (\is_array($result))
                 {
-                    $result = &$result[$nameItem];
+                    // 数组
+                    if (isset($result[$nameItem]))
+                    {
+                        $result = &$result[$nameItem];
+                    }
+                    else
+                    {
+                        return $default;
+                    }
+                }
+                elseif (\is_object($result))
+                {
+                    // 对象
+                    if (isset($result->$nameItem))
+                    {
+                        $result = &$result->$nameItem;
+                    }
+                    else
+                    {
+                        return $default;
+                    }
                 }
                 else
                 {
                     return $default;
                 }
             }
-            elseif (\is_object($result))
-            {
-                // 对象
-                if (isset($result->$nameItem))
-                {
-                    $result = &$result->$nameItem;
-                }
-                else
-                {
-                    return $default;
-                }
-            }
-            else
-            {
-                return $default;
-            }
-        }
-        if (isset($names[0]))
-        {
+
             return $result;
         }
-        else
-        {
-            return $default;
-        }
+
+        // @phpstan-ignore-next-line
+        return $default;
     }
 
     /**

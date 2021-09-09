@@ -25,7 +25,7 @@ class BatchInsertBuilder extends BaseBuilder
         {
             $list = iterator_to_array($list);
         }
-        if (!isset($list[0]))
+        if (!$list)
         {
             throw new \RuntimeException('Batch insert must have at least 1 data');
         }

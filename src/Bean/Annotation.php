@@ -187,7 +187,7 @@ class Annotation
             }
             $properties[] = $k . '=' . $value;
         }
-        if (isset($properties[0]))
+        if ($properties)
         {
             $result .= '(' . implode(', ', $properties) . ')';
         }

@@ -71,7 +71,7 @@ class HttpRouteInit implements IEventListener
                 foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $actionAnnotations)
                 {
                     $routeAnnotations = AnnotationManager::getMethodAnnotations($className, $methodName, Route::class);
-                    if (isset($routeAnnotations[0]))
+                    if ($routeAnnotations)
                     {
                         $routes = $routeAnnotations;
                     }

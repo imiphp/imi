@@ -39,7 +39,7 @@ abstract class BaseRequestContextProxy
         {
             /** @var RequestContextProxy[] $annotations */
             $annotations = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class);
-            if (!isset($annotations[0]))
+            if (!$annotations)
             {
                 throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', $currentClass));
             }
@@ -67,7 +67,7 @@ abstract class BaseRequestContextProxy
         {
             /** @var RequestContextProxy[] $annotations */
             $annotations = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class);
-            if (!isset($annotations[0]))
+            if (!$annotations)
             {
                 throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', $currentClass));
             }

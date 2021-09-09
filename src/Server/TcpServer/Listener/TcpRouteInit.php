@@ -66,7 +66,7 @@ class TcpRouteInit implements IEventListener
                 {
                     /** @var TcpRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, TcpRoute::class);
-                    if (!isset($routes[0]))
+                    if (!$routes)
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
                     }

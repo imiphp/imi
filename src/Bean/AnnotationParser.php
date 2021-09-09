@@ -491,7 +491,7 @@ class AnnotationParser
             return;
         }
         $annotations = AnnotationManager::getClassAnnotations($className, null, false);
-        if (!isset($annotations[0]))
+        if (!$annotations)
         {
             return;
         }

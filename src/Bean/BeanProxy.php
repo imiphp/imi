@@ -36,7 +36,7 @@ class BeanProxy
             self::doAspect($className, $method, 'around', function (AopItem $aopItem, Around $annotation) use (&$aroundAspectDoList) {
                 $aroundAspectDoList[] = $aopItem->getCallback();
             });
-            if (!isset($aroundAspectDoList[0]))
+            if (!$aroundAspectDoList)
             {
                 // 正常请求
                 return self::callOrigin($object, $className, $method, $args, $callback);
@@ -75,10 +75,10 @@ class BeanProxy
             $isCancelThrow = false;
             self::doAspect($className, $method, 'afterThrowing', function (AopItem $aopItem, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
                 // 验证异常是否捕获
-                if (isset($annotation->allow[0]) || isset($annotation->deny[0]))
+                if ($annotation->allow || $annotation->deny)
                 {
                     $throwableClassName = \get_class($throwable);
-                    if (isset($annotation->allow[0]))
+                    if ($annotation->allow)
                     {
                         $allowResult = false;
                         foreach ($annotation->allow as $rule)

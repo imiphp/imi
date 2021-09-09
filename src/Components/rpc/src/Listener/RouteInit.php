@@ -60,7 +60,7 @@ class RouteInit implements IEventListener
                 {
                     /** @var \Imi\Rpc\Route\Annotation\Contract\IRpcRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, $routeAnnotationClass);
-                    if (!isset($routes[0]))
+                    if (!$routes)
                     {
                         $routes = [
                             $route->getDefaultRouteAnnotation($className, $methodName, $classAnnotation),

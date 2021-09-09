@@ -142,7 +142,7 @@ trait TSoftDelete
      */
     public static function findDeleted(...$ids): ?Model
     {
-        if (!isset($ids[0]))
+        if (!$ids)
         {
             return null;
         }

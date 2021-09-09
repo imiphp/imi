@@ -112,7 +112,7 @@ class File
      */
     public static function path(string ...$args): string
     {
-        if (!isset($args[0]))
+        if (!$args)
         {
             return '';
         }

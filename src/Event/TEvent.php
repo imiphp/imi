@@ -203,7 +203,7 @@ trait TEvent
         finally
         {
             // 仅触发一次的处理
-            if (isset($oneTimeCallbacks[0]))
+            if ($oneTimeCallbacks)
             {
                 $eventsMap = &$this->events[$name];
                 foreach ($eventsMap as $eventsKey => $item)

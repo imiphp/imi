@@ -40,7 +40,7 @@ class AutoValidationAop
         $methodName = $joinPoint->getMethod();
 
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName);
-        if (isset($annotations[0]))
+        if ($annotations)
         {
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
 

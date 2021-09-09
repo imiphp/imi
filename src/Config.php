@@ -39,7 +39,7 @@ class Config
             static::$configs[$first] = $configData = new ArrayData([]);
         }
 
-        if (isset($nameSplit[0]))
+        if ($nameSplit)
         {
             $configName = implode('.', $nameSplit);
             $configData->set($configName, $config);
@@ -122,7 +122,7 @@ class Config
                 $names = self::$dotRulesCache[$name] = Imi::parseDotRule($name);
             }
         }
-        if (isset($names[0]))
+        if ($names)
         {
             $first = array_shift($names);
             $configs = &static::$configs;
@@ -165,7 +165,7 @@ class Config
                 $names = self::$dotRulesCache[$name] = Imi::parseDotRule($name);
             }
         }
-        if (isset($names[0]))
+        if ($names)
         {
             $first = array_shift($names);
             if ('@currentServer' === $first)
@@ -189,6 +189,7 @@ class Config
             $configs = &static::$configs;
             if (isset($configs[$first]))
             {
+                // @phpstan-ignore-next-line
                 if ($names)
                 {
                     $result = $configs[$first]->get($names, null);
@@ -207,6 +208,7 @@ class Config
                 $first = '@app';
                 unset($names[0]);
 
+                // @phpstan-ignore-next-line
                 if ($names)
                 {
                     return $configs[$first]->get($names, $default);
@@ -241,7 +243,7 @@ class Config
                 $names = self::$dotRulesCache[$name] = Imi::parseDotRule($name);
             }
         }
-        if (isset($names[0]))
+        if ($names)
         {
             $first = array_shift($names);
             $configs = &static::$configs;
