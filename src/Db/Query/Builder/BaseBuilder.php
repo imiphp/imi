@@ -188,7 +188,14 @@ abstract class BaseBuilder implements IBuilder
     {
         if (isset($group[0]))
         {
-            return ' group by ' . implode(',', $group);
+            $groups = [];
+            $query = $this->query;
+            foreach ($group as $tmpGroup)
+            {
+                $groups[] = $tmpGroup->toString($query);
+            }
+
+            return ' group by ' . implode(',', $groups);
         }
         else
         {
