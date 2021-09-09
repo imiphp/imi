@@ -79,7 +79,18 @@ class SwooleRequest extends Request
         $swooleRequest = $this->swooleRequest;
         $get = $swooleRequest->get;
 
-        $this->uri = Uri::makeUri($swooleRequest->header['host'], $swooleRequest->server['path_info'], null === $get ? '' : (http_build_query($get, '', '&')), null, $scheme);
+        $host = $swooleRequest->header['host'] ?? null;
+        if ($host)
+        {
+            $port = null;
+        }
+        else
+        {
+            $host = '127.0.0.1';
+            $port = $swooleRequest->server['server_port'];
+        }
+
+        $this->uri = Uri::makeUri($host, $swooleRequest->server['path_info'], null === $get ? '' : (http_build_query($get, '', '&')), $port, $scheme);
     }
 
     /**
