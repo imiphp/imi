@@ -23,6 +23,23 @@ RUN docker-php-ext-install mysqli pdo_mysql > /dev/null
 RUN pecl install redis && docker-php-ext-enable redis
 ```
 
+**PHP8.0-alpine Dockerfile:**
+
+```yml
+# 版本也可以自行修改
+FROM phpswoole/swoole:php8.0-alpine
+
+# 安装拓展支持
+RUN apk update && apk add gcc libc-dev make autoconf bash git
+# 安装redis拓展
+RUN set -ex \
+    && pecl update-channels \
+    && pecl install redis-stable \
+    && docker-php-ext-enable redis
+# 安装pdo拓展
+RUN docker-php-ext-install pdo_mysql mysqli
+```
+
 ## Workerman 模式
 
 推荐使用 PHP 公共 Docker：<https://hub.docker.com/_/php>
