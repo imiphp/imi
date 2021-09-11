@@ -69,6 +69,6 @@ class DbResource extends BasePoolResource
      */
     public function checkState(): bool
     {
-        return $this->db->isConnected();
+        return $this->db->ping();
     }
 }

@@ -77,6 +77,14 @@ class Driver extends MysqlBase implements IMysqlDb
      */
     public function isConnected(): bool
     {
+        return (bool) $this->instance;
+    }
+
+    /**
+     * ping 检查是否已连接.
+     */
+    public function ping(): bool
+    {
         $instance = $this->instance;
 
         return $instance && $instance->query('select 1');

@@ -230,86 +230,74 @@ $returnValue = Db::use(function(IDb $db){
 ```php
 /**
  * 打开
- * @return boolean
  */
-public function open();
+public function open(): bool;
 
 /**
- * 关闭
- * @return void
+ * 关闭.
  */
-public function close();
+public function close(): void;
 
 /**
- * 是否已连接
- * @return boolean
+ * 是否已连接.
  */
 public function isConnected(): bool;
 
 /**
+ * ping 检查是否已连接.
+ */
+public function ping(): bool;
+
+/**
  * 启动一个事务
- * @return boolean
  */
 public function beginTransaction(): bool;
 
 /**
  * 提交一个事务
- * @return boolean
  */
 public function commit(): bool;
 
 /**
  * 回滚事务
- * 支持设置回滚事务层数，如果不设置则为全部回滚
- * @param int $levels
- * @return boolean
+ * 支持设置回滚事务层数，如果不设置则为全部回滚.
  */
-public function rollBack($levels = null): bool;
+public function rollBack(?int $levels = null): bool;
 
 /**
- * 获取事务层数
- *
- * @return int
+ * 获取事务层数.
  */
 public function getTransactionLevels(): int;
 
 /**
  * 返回错误码
+ *
  * @return mixed
  */
 public function errorCode();
 
 /**
- * 返回错误信息
- * @return array
+ * 返回错误信息.
  */
 public function errorInfo(): string;
 
 /**
- * 获取最后一条执行的SQL语句
- * @return string
+ * 获取最后一条执行的SQL语句.
  */
-public function lastSql();
+public function lastSql(): string;
 
 /**
- * 执行一条 SQL 语句，并返回受影响的行数
- *
- * @param string $sql
- *
- * @return integer
+ * 执行一条 SQL 语句，并返回受影响的行数.
  */
 public function exec(string $sql): int;
 
 /**
- * 批量执行 SQL，返回查询结果
- *
- * @param string $sql
- * @return array
+ * 批量执行 SQL，返回查询结果.
  */
 public function batchExec(string $sql): array;
 
 /**
- * 取回一个数据库连接的属性
+ * 取回一个数据库连接的属性.
  *
  * @param mixed $attribute
  *
@@ -318,67 +306,54 @@ public function batchExec(string $sql): array;
 public function getAttribute($attribute);
 
 /**
- * 设置属性
+ * 设置属性.
  *
  * @param mixed $attribute
  * @param mixed $value
- *
- * @return bool
  */
-public function setAttribute($attribute, $value);
+public function setAttribute($attribute, $value): bool;
 
 /**
- * 检查是否在一个事务内
- * @return bool
+ * 检查是否在一个事务内.
  */
 public function inTransaction(): bool;
 
 /**
  * 返回最后插入行的ID或序列值
- *
- * @param string $name
- *
- * @return string
  */
-public function lastInsertId(string $name = null);
+public function lastInsertId(?string $name = null): string;
 
 /**
- * 返回受上一个 SQL 语句影响的行数
- * @return int
+ * 返回受上一个 SQL 语句影响的行数.
  */
 public function rowCount(): int;
 
 /**
  * 准备执行语句并返回一个语句对象
- *
- * @param string $sql
- * @param array  $driverOptions
- *
- * @return IStatement|bool
  */
-public function prepare(string $sql, array $driverOptions = []);
+public function prepare(string $sql, array $driverOptions = []): \Imi\Db\Interfaces\IStatement;
 
 /**
  * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
- *
- * @param string $sql
- *
- * @return IStatement|bool
  */
-public function query(string $sql);
+public function query(string $sql): \Imi\Db\Interfaces\IStatement;
 
 /**
- * 获取原对象实例
+ * 获取原对象实例.
+ *
  * @return object
  */
 public function getInstance();
 
 /**
- * Get 事务管理
- *
- * @return \Imi\Db\Transaction\Transaction
- */ 
-public function getTransaction();
+ * Get 事务管理.
+ */
+public function getTransaction(): \Imi\Db\Transaction\Transaction;
+
+/**
+ * 创建查询构建器.
+ */
+public function createQuery(?string $modelClass = null): \Imi\Db\Query\Interfaces\IQuery;
 ```
 
 ## 预处理

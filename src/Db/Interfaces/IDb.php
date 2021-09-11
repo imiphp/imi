@@ -26,6 +26,11 @@ interface IDb extends IHashCode
     public function isConnected(): bool;
 
     /**
+     * ping 检查是否已连接.
+     */
+    public function ping(): bool;
+
+    /**
      * 启动一个事务
      */
     public function beginTransaction(): bool;
