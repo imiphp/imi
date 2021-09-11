@@ -97,7 +97,7 @@ abstract class Query implements IQuery
         $this->isInitDb = null !== $db;
         $this->poolName = $poolName;
         $this->modelClass = $modelClass;
-        $this->queryType = $queryType;
+        $this->queryType = $queryType ?? QueryType::WRITE;
         $this->isInitQueryType = null !== $queryType;
     }
 
@@ -107,7 +107,7 @@ abstract class Query implements IQuery
         $this->option = new QueryOption();
         if (!$this->isInitQueryType)
         {
-            $this->queryType = null;
+            $this->queryType = QueryType::WRITE;
         }
     }
 
@@ -995,10 +995,6 @@ abstract class Query implements IQuery
     {
         try
         {
-            if (null === $this->queryType)
-            {
-                $this->queryType = QueryType::WRITE;
-            }
             $db = &$this->db;
             if (!$this->isInitDb)
             {
@@ -1105,13 +1101,7 @@ abstract class Query implements IQuery
      */
     protected function isInTransaction(): bool
     {
-        $poolName = $this->poolName;
-        if (null === $poolName)
-        {
-            $poolName = Db::getDefaultPoolName();
-        }
-
-        return Db::getInstance($poolName)->inTransaction();
+        return QueryType::WRITE === $this->queryType && Db::getInstance($this->poolName)->inTransaction();
     }
 
     /**
