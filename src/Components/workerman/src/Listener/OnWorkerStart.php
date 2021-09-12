@@ -20,11 +20,11 @@ class OnWorkerStart implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        foreach (Config::get('@app.db.connections') as $name => $_)
+        foreach (Config::get('@app.db.connections', []) as $name => $_)
         {
             App::set('__db.' . $name, null);
         }
-        foreach (Config::get('@app.redis.connections') as $name => $_)
+        foreach (Config::get('@app.redis.connections', []) as $name => $_)
         {
             App::set('__redis.' . $name, null);
         }
