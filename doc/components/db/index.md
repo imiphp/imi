@@ -166,7 +166,6 @@ return [
         'statement'     =>  [
             'cache' =>  true, // 是否开启 statement 缓存，默认开启
         ],
-                    // 'initSqls' => [
         'connections' => [
             'alias1' => [
                 'host' => '127.0.0.1',
@@ -189,12 +188,10 @@ return [
                 // ],
                 // 当获取资源时，是否检查状态
                 // 'checkStateWhenGetResource' => true,
+                // 心跳时间间隔，单位：秒
+                // 'heartbeatInterval' => null,
             ],
-                        // 'initSqls' => [
-                        // 'initSqls' => [
         ],
-                    // 'initSqls' => [
-                    // 'initSqls' => [
     ],
 ];
 ```

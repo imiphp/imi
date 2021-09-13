@@ -109,6 +109,17 @@ return [
     'db'    => [
         // 默认连接池名
         'defaultPool'    => 'maindb',
+        'connections'    => [
+            'maindb'         => [
+                'host'              => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'              => imiGetEnv('MYSQL_SERVER_PORT', 3306),
+                'username'          => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                'password'          => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'database'          => 'mysql',
+                'charset'           => 'utf8mb4',
+                'heartbeatInterval' => 30,
+            ],
+        ],
     ],
 
     // redis 配置
@@ -117,9 +128,10 @@ return [
         'defaultPool'   => 'redis',
         'connections'   => [
             'redis' => [
-                'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'              => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'              => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                'password'          => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'heartbeatInterval' => 30,
             ],
         ],
     ],

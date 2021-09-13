@@ -12,6 +12,7 @@ use Imi\Db\Query\QueryType;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
+use Imi\Timer\Timer;
 
 class Db
 {
@@ -94,18 +95,38 @@ class Db
                     throw new \RuntimeException(sprintf('Database %s connection failed', $poolName));
                 }
                 App::set($requestContextKey, $db);
+                if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
+                {
+                    Timer::tick((int) ($heartbeatInterval * 1000), function () use ($requestContextKey) {
+                        /** @var IDb|null $db */
+                        $db = App::get($requestContextKey);
+                        if (!$db)
+                        {
+                            return;
+                        }
+                        self::heartbeat($db);
+                    });
+                }
             }
             elseif ($config['checkStateWhenGetResource'] ?? true)
             {
-                if (!$db->ping())
-                {
-                    $db->close();
-                    $db->open();
-                }
+                self::heartbeat($db);
             }
             $requestContext[$requestContextKey] = $db;
 
             return $db;
+        }
+    }
+
+    /**
+     * 心跳.
+     */
+    public static function heartbeat(IDb $db): void
+    {
+        if (!$db->ping())
+        {
+            $db->close();
+            $db->open();
         }
     }
 

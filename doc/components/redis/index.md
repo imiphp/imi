@@ -124,6 +124,8 @@ return [
                 // 'db'	=>	0,
                 // 当获取资源时，是否检查状态
                 // 'checkStateWhenGetResource' => true,
+                // 心跳时间间隔，单位：秒
+                // 'heartbeatInterval' => null,
             ],
         ],
     ],

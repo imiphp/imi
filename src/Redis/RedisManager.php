@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
+use Imi\Timer\Timer;
 
 class RedisManager
 {
@@ -91,25 +92,45 @@ class RedisManager
                 $redis = App::getBean(RedisHandler::class, new $class());
                 self::initRedisConnection($redis, $config);
                 App::set($requestContextKey, $redis);
+                if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
+                {
+                    Timer::tick((int) ($heartbeatInterval * 1000), function () use ($requestContextKey) {
+                        /** @var RedisHandler|null $redis */
+                        $redis = App::get($requestContextKey);
+                        if (!$redis)
+                        {
+                            return;
+                        }
+                        self::heartbeat($redis);
+                    });
+                }
             }
             elseif ($config['checkStateWhenGetResource'] ?? true)
             {
-                try
-                {
-                    $result = $redis->ping();
-                    // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
-                    if (true !== $result && '+PONG' !== $result)
-                    {
-                        $redis->reconnect();
-                    }
-                }
-                catch (\Throwable $ex)
-                {
-                    $redis->reconnect();
-                }
+                self::heartbeat($redis);
             }
 
             return $redis;
+        }
+    }
+
+    /**
+     * 心跳.
+     */
+    public static function heartbeat(RedisHandler $redis): void
+    {
+        try
+        {
+            $result = $redis->ping();
+            // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
+            if (true !== $result && '+PONG' !== $result)
+            {
+                $redis->reconnect();
+            }
+        }
+        catch (\Throwable $ex)
+        {
+            $redis->reconnect();
         }
     }
 
