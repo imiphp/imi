@@ -2,26 +2,26 @@
 
 namespace Imi\Model\Relation;
 
-use Imi\Event\Event;
-use Imi\Model\Model;
-use Imi\Bean\BeanFactory;
-use Imi\Model\Relation\Struct\OneToOne;
-use Imi\Model\Relation\Struct\OneToMany;
-use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Bean\BeanFactory;
+use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoInsert;
-use Imi\Model\Relation\Struct\PolymorphicOneToOne;
-use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Model\Model;
+use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 abstract class Insert
 {
     /**
      * 处理插入.
      *
-     * @param \Imi\Model\Model          $model
-     * @param string                    $propertyName
+     * @param \Imi\Model\Model            $model
+     * @param string                      $propertyName
      * @param \Imi\Bean\Annotation\Base[] $annotations
      *
      * @return void

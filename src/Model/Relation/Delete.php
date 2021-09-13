@@ -2,25 +2,25 @@
 
 namespace Imi\Model\Relation;
 
-use Imi\Event\Event;
-use Imi\Model\Model;
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Model\Relation\Struct\OneToOne;
-use Imi\Model\Relation\Struct\OneToMany;
-use Imi\Model\Relation\Struct\ManyToMany;
-use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoDelete;
-use Imi\Model\Relation\Struct\PolymorphicOneToOne;
+use Imi\Model\Model;
+use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 abstract class Delete
 {
     /**
      * 处理删除.
      *
-     * @param \Imi\Model\Model                        $model
-     * @param string                                  $propertyName
+     * @param \Imi\Model\Model            $model
+     * @param string                      $propertyName
      * @param \Imi\Bean\Annotation\Base[] $annotations
      *
      * @return void
@@ -42,7 +42,6 @@ abstract class Delete
 
         $firstAnnotation = reset($annotations);
 
-        
         if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
             // @phpstan-ignore-next-line
