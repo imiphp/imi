@@ -29,12 +29,12 @@ abstract class Query
      *
      * @param \Imi\Model\Model            $model
      * @param string                      $propertyName
-     * @param \Imi\Bean\Annotation\Base[] $annotation
+     * @param \Imi\Bean\Annotation\Base[] $annotations
      * @param bool                        $forceInit    是否强制更新
      *
      * @return void
      */
-    public static function init(Model $model, string $propertyName, array $annotation, bool $forceInit = false): void
+    public static function init(Model $model, string $propertyName, array $annotations, bool $forceInit = false): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -48,13 +48,13 @@ abstract class Query
             }
         }
 
-        $firstAnnotation = reset($annotation);
+        $firstAnnotation = reset($annotations);
 
         // @phpstan-ignore-next-line
         if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
             // @phpstan-ignore-next-line
-            static::initByPolymorphicToOne($model, $propertyName, $annotation);
+            static::initByPolymorphicToOne($model, $propertyName, $annotations);
         }
         // @phpstan-ignore-next-line
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
@@ -78,7 +78,7 @@ abstract class Query
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToMany)
         {
             // @phpstan-ignore-next-line
-            static::initByPolymorphicToMany($model, $propertyName, $annotation);
+            static::initByPolymorphicToMany($model, $propertyName, $annotations);
         }
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
         {
