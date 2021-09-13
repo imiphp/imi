@@ -122,6 +122,8 @@ return [
                 // 'password'	=>	null,
                 // 第几个库
                 // 'db'	=>	0,
+                // 当获取资源时，是否检查状态
+                // 'checkStateWhenGetResource' => true,
             ],
         ],
     ],

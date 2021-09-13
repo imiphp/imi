@@ -187,6 +187,8 @@ return [
                 //     'select 1',
                 //     'select 2',
                 // ],
+                // 当获取资源时，是否检查状态
+                // 'checkStateWhenGetResource' => true,
             ],
                         // 'initSqls' => [
                         // 'initSqls' => [
