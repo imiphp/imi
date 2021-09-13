@@ -47,6 +47,11 @@ interface IPool
     public function release(IPoolResource $resource): void;
 
     /**
+     * 从连接池移除资源.
+     */
+    public function removeResource(IPoolResource $resource, bool $buildQueue = false): void;
+
+    /**
      * 资源回收.
      */
     public function gc(): void;

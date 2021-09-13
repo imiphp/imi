@@ -248,11 +248,40 @@ class RedisHandler
     private $redis;
 
     /**
+     * 连接主机名.
+     */
+    private string $host = '';
+
+    /**
+     * 连接端口号.
+     */
+    private int $port = 0;
+
+    /**
+     * 连接超时时间.
+     */
+    private float $timeout = 0;
+
+    /**
+     * 登录凭证
+     *
+     * @var mixed
+     */
+    private $auth = null;
+
+    /**
      * @param \Redis|\RedisCluster $redis
      */
     public function __construct($redis)
     {
         $this->redis = $redis;
+        if (!$this->isCluster() && $redis->isConnected())
+        {
+            $this->host = $redis->getHost();
+            $this->port = $redis->getPort();
+            $this->timeout = $redis->getTimeout();
+            $this->auth = $redis->getAuth();
+        }
     }
 
     /**
@@ -260,7 +289,28 @@ class RedisHandler
      */
     public function __call(string $name, array $arguments)
     {
-        return $this->redis->$name(...$arguments);
+        $redis = $this->redis;
+        $result = $redis->$name(...$arguments);
+        if (!$this->isCluster())
+        {
+            switch ($name)
+            {
+                case 'connect':
+                case 'open':
+                    if ($redis->isConnected())
+                    {
+                        $this->host = $redis->getHost();
+                        $this->port = $redis->getPort();
+                        $this->timeout = $redis->getTimeout();
+                    }
+                    // no break
+                case 'auth':
+                    $this->auth = $redis->getAuth();
+                    break;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -271,6 +321,32 @@ class RedisHandler
     public function getInstance()
     {
         return $this->redis;
+    }
+
+    /**
+     * 重新连接.
+     */
+    public function reconnect(): bool
+    {
+        $redis = $this->redis;
+        $redis->close();
+        if (!$this->isCluster())
+        {
+            if ($redis->connect($this->host, $this->port, $this->timeout))
+            {
+                $auth = $this->auth;
+                if (null !== $auth && !$redis->auth($auth))
+                {
+                    throw new \RedisException($redis->getLastError());
+                }
+            }
+            else
+            {
+                throw new \RedisException($redis->getLastError());
+            }
+        }
+
+        return true;
     }
 
     /**

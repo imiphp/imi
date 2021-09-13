@@ -15,6 +15,11 @@ use Imi\RequestContext;
 
 class Db
 {
+    /**
+     * 连接配置.
+     */
+    private static ?array $connections = null;
+
     private function __construct()
     {
     }
@@ -64,19 +69,41 @@ class Db
         else
         {
             $requestContextKey = '__db.' . $poolName;
-            $db = App::get($requestContextKey);
-            if (null === $db)
+            $requestContext = RequestContext::getContext();
+            if (isset($requestContext[$requestContextKey]))
             {
-                $config = Config::get('@app.db.connections.' . $poolName);
-                if (null === $config)
-                {
-                    throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
-                }
+                return $requestContext[$requestContextKey];
+            }
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.db.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
+            /** @var IDb|null $db */
+            $db = App::get($requestContextKey);
+            if (null === $db || !$db->isConnected())
+            {
                 /** @var IDb $db */
                 $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
-                $db->open();
+                if (!$db->open())
+                {
+                    throw new \RuntimeException(sprintf('Database %s connection failed', $poolName));
+                }
                 App::set($requestContextKey, $db);
             }
+            elseif ($config['checkStateWhenGetResource'] ?? true)
+            {
+                if (!$db->ping())
+                {
+                    $db->close();
+                    $db->open();
+                }
+            }
+            $requestContext[$requestContextKey] = $db;
 
             return $db;
         }

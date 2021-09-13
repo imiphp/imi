@@ -11,6 +11,11 @@ use Imi\RequestContext;
 
 class RedisManager
 {
+    /**
+     * 连接配置.
+     */
+    private static ?array $connections = null;
+
     private function __construct()
     {
     }
@@ -63,19 +68,45 @@ class RedisManager
         else
         {
             $requestContextKey = '__redis.' . $poolName;
+            $requestContext = RequestContext::getContext();
+            if (isset($requestContext[$requestContextKey]))
+            {
+                return $requestContext[$requestContextKey];
+            }
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.redis.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found redis config %s', $poolName));
+            }
+            /** @var RedisHandler|null $redis */
             $redis = App::get($requestContextKey);
             if (null === $redis)
             {
-                $config = Config::get('@app.redis.connections.' . $poolName);
-                if (null === $config)
-                {
-                    throw new \RuntimeException(sprintf('Not found redis config %s', $poolName));
-                }
                 $class = $config['handlerClass'] ?? \Redis::class;
                 /** @var RedisHandler $redis */
                 $redis = App::getBean(RedisHandler::class, new $class());
                 self::initRedisConnection($redis, $config);
                 App::set($requestContextKey, $redis);
+            }
+            elseif ($config['checkStateWhenGetResource'] ?? true)
+            {
+                try
+                {
+                    $result = $redis->ping();
+                    // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
+                    if (true !== $result && '+PONG' !== $result)
+                    {
+                        $redis->reconnect();
+                    }
+                }
+                catch (\Throwable $ex)
+                {
+                    $redis->reconnect();
+                }
             }
 
             return $redis;

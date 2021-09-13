@@ -142,6 +142,23 @@ abstract class BasePool implements IPool
     }
 
     /**
+     * 从连接池移除资源.
+     */
+    public function removeResource(IPoolResource $resource, bool $buildQueue = false): void
+    {
+        $hash = $resource->hashCode();
+        $pool = &$this->pool;
+        if (isset($pool[$hash]))
+        {
+            unset($pool[$hash]);
+        }
+        if ($buildQueue)
+        {
+            $this->buildQueue();
+        }
+    }
+
+    /**
      * 资源回收.
      */
     public function gc(): void

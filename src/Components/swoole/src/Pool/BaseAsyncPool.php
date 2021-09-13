@@ -118,9 +118,9 @@ abstract class BaseAsyncPool extends BasePool
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] lock resource failed', $this->getName()));
         }
+        $resource = $poolItem->getResource();
         try
         {
-            $resource = $poolItem->getResource();
             if ($config->isCheckStateWhenGetResource() && !$resource->checkState())
             {
                 $resource->close();
@@ -132,7 +132,7 @@ abstract class BaseAsyncPool extends BasePool
         }
         catch (\Throwable $th)
         {
-            $poolItem->release();
+            $this->removeResource($resource);
             throw $th;
         }
 
@@ -182,9 +182,9 @@ abstract class BaseAsyncPool extends BasePool
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] lock resource failed', $this->getName()));
         }
+        $resource = $poolItem->getResource();
         try
         {
-            $resource = $poolItem->getResource();
             if (($this->config->isCheckStateWhenGetResource() && !$resource->checkState()))
             {
                 $resource->close();
@@ -196,7 +196,7 @@ abstract class BaseAsyncPool extends BasePool
         }
         catch (\Throwable $th)
         {
-            $poolItem->release();
+            $this->removeResource($resource);
             throw $th;
         }
 
