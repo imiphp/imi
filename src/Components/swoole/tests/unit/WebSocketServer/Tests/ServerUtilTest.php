@@ -93,44 +93,53 @@ class ServerUtilTest extends BaseTest
             $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $clients[] = $client;
 
-            $http = new HttpRequest();
-            $response = $http->post($this->host . 'serverUtil/send', [
-                'clientIds'  => $clientIds,
-                'flag'       => 'testSend',
-            ], 'json');
-            $this->assertEquals([
-                'send1'         => 0,
-                'send2'         => 1,
-                'send3'         => 2,
-                'sendByFlag'    => 1,
-                'sendRaw1'      => 0,
-                'sendRaw2'      => 1,
-                'sendRaw3'      => 2,
-                'sendRawByFlag' => 1,
-                'sendToAll'     => 3,
-                'sendRawToAll'  => 3,
-            ], $response->json(true));
-
-            // recv
-            $client = $clients[0];
-            for ($i = 0; $i < 6; ++$i)
+            for ($workerId = 0; $workerId < 2; ++$workerId)
             {
-                $recvResult = $client->recv();
-                $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
-            }
+                do
+                {
+                    $http = new HttpRequest();
+                    $response = $http->get($this->host . 'serverUtil/info');
+                    $data = $response->json(true);
+                } while ($workerId !== ($data['workerId'] ?? null));
 
-            $client = $clients[1];
-            for ($i = 0; $i < 4; ++$i)
-            {
-                $recvResult = $client->recv();
-                $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
-            }
+                $response = $http->post($this->host . 'serverUtil/send', [
+                    'clientIds'  => $clientIds,
+                    'flag'       => 'testSend',
+                ], 'json');
+                $this->assertEquals([
+                    'send1'         => 0,
+                    'send2'         => 1,
+                    'send3'         => 2,
+                    'sendByFlag'    => 1,
+                    'sendRaw1'      => 0,
+                    'sendRaw2'      => 1,
+                    'sendRaw3'      => 2,
+                    'sendRawByFlag' => 1,
+                    'sendToAll'     => 3,
+                    'sendRawToAll'  => 3,
+                ], $response->json(true));
 
-            $client = $clients[2];
-            for ($i = 0; $i < 4; ++$i)
-            {
-                $recvResult = $client->recv();
-                $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
+                // recv
+                $client = $clients[0];
+                for ($i = 0; $i < 6; ++$i)
+                {
+                    $recvResult = $client->recv();
+                    $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
+                }
+
+                $client = $clients[1];
+                for ($i = 0; $i < 4; ++$i)
+                {
+                    $recvResult = $client->recv();
+                    $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
+                }
+
+                $client = $clients[2];
+                for ($i = 0; $i < 4; ++$i)
+                {
+                    $recvResult = $client->recv();
+                    $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
+                }
             }
         }, null, 3);
     }
