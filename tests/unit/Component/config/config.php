@@ -200,7 +200,7 @@ return [
             ],
         ],
     ] + (
-        (PHP_OS_FAMILY === 'Linux') ? [
+        (imiGetEnv('REDIS_SERVER_UNIX')) ? [
             'redis_unix'    => [
                 'pool'    => [
                     'class'        => \Imi\Redis\SyncRedisPool::class,
@@ -210,7 +210,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => '/tmp/docker/redis.sock',
+                    'host'      => imiGetEnv('REDIS_SERVER_UNIX'),
                     'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                 ],
             ],
