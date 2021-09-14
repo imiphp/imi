@@ -1,5 +1,13 @@
 version: "3.4"
+volumes:
+  shared-volume:
 services:
+  shared-tmp:
+    image: busybox
+    command: chmod -R 777 /tmp/docker
+    volumes:
+      - shared-volume:/tmp/docker
+
   mysql:
     image: mysql:${MYSQL_DOCKER_VERSION}
     container_name: mysql
@@ -33,6 +41,12 @@ services:
   redis:
     image: redis:6-alpine
     container_name: redis
+    depends_on:
+      - shared-tmp
+    command: redis-server /etc/redis.conf
+    volumes:
+      - ./redis.conf:/etc/redis.conf
+      - shared-volume:/tmp/docker
     ports:
       - 6379:6379
 
@@ -77,6 +91,7 @@ services:
   swoole:
     container_name: "swoole"
     depends_on:
+      - shared-tmp
       - mysql
       - redis
       - rabbitmq
@@ -97,6 +112,7 @@ services:
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/composer:/root/.composer/cache/files:rw"
+      - shared-volume:/tmp/docker
     working_dir: /imi
     ulimits:
       core: -1
@@ -106,6 +122,7 @@ services:
   swoole-php8:
     container_name: "swoole-php8"
     depends_on:
+      - shared-tmp
       - mysql
       - redis
       - rabbitmq
@@ -127,6 +144,7 @@ services:
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/composer:/root/.composer/cache/files:rw"
+      - shared-volume:/tmp/docker
     working_dir: /imi
     ulimits:
       core: -1

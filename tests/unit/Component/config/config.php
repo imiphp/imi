@@ -199,7 +199,23 @@ return [
                 'db'          => 1,
             ],
         ],
-    ],
+    ] + (
+        (PHP_OS_FAMILY === 'Linux') ? [
+            'redis_unix'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\SyncRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
+                    ],
+                ],
+                'resource'    => [
+                    'host'      => '/tmp/docker/redis.sock',
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                ],
+            ],
+        ] : []
+    ),
     // db 配置
     'db' => [
         // 默认连接池名
