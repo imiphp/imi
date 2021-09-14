@@ -176,7 +176,17 @@ class RedisManager
     {
         if (!$redis->isCluster())
         {
-            $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
+            $scheme = $config['scheme'] ?? 'tcp';
+            switch ($scheme) {
+                case 'tcp':
+                    $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
+                    break;
+                case 'unix':
+                    $redis->connect($config['host']);
+                    break;
+                default:
+                    throw new \RuntimeException(sprintf('Redis not support scheme: %s', $scheme));
+            }
             if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
             {
                 throw new \RedisException($redis->getLastError());
