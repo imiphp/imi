@@ -25,10 +25,12 @@ class RedisResource extends BasePoolResource
     {
         parent::__construct($pool);
 
-        if (isset($config['timeout'])) {
+        if (isset($config['timeout']))
+        {
             $config['timeout'] = (float) $config['timeout'];
         }
-        if (isset($config['db'])) {
+        if (isset($config['db']))
+        {
             $config['db'] = (int) $config['db'];
         }
 
