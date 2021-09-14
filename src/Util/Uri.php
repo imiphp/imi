@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Psr\Http\Message\UriInterface;
+use function parse_url;
+use function sprintf;
+use function str_replace;
 
 class Uri implements UriInterface
 {
@@ -55,10 +58,20 @@ class Uri implements UriInterface
 
     public function __construct(string $uri = '')
     {
+        $isUnixSocket = str_starts_with($uri, 'unix:///');
+        if ($isUnixSocket)
+        {
+            $uri = str_replace('unix:///', 'unix://', $uri);
+        }
         $uriOption = parse_url($uri);
         if (false === $uriOption)
         {
             throw new \InvalidArgumentException(sprintf('Uri %s parse error', $uri));
+        }
+        if ($isUnixSocket)
+        {
+            $uriOption['host'] = "/{$uriOption['host']}{$uriOption['path']}";
+            $uriOption['path'] = '';
         }
         $this->scheme = $uriOption['scheme'] ?? '';
         $this->host = $uriOption['host'] ?? '';

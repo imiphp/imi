@@ -21,7 +21,6 @@ trait TUriResourceConfig
             foreach ($list as $uri)
             {
                 $uriObj = new Uri($uri);
-                $config['scheme'] = $uriObj->getScheme();
                 parse_str($uriObj->getQuery(), $config);
                 $config['host'] ??= $uriObj->getHost();
                 $config['port'] ??= $uriObj->getPort();
