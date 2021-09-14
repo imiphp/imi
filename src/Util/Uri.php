@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use Psr\Http\Message\UriInterface;
 use function parse_url;
+use Psr\Http\Message\UriInterface;
 use function sprintf;
 use function str_replace;
 
