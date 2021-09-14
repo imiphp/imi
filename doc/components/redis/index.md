@@ -66,7 +66,6 @@ return [
                 // 第几个库
                 // 'db'	=>	0,
                 // --- Unix Socket 连接参数示范（仅支持单机模式） ---
-                // 'scheme'	=>	'unix',
                 // 'host'	=>	'/var/run/redis/redis-server.sock',
 
                 // --- 哨兵模式配置 ---
