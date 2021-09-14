@@ -65,6 +65,9 @@ return [
                 // 'password'	=>	null,
                 // 第几个库
                 // 'db'	=>	0,
+                // --- Unix Socket 连接参数示范（仅支持单机模式） ---
+                // 'scheme'	=>	'unix',
+                // 'host'	=>	'/var/run/redis/redis-server.sock',
 
                 // --- 哨兵模式配置 ---
                 'mode' => \Imi\Redis\Enum\RedisMode::SENTINEL,
@@ -95,7 +98,7 @@ return [
                 'readTimeout' => null,
             ],
             // uri资源配置，以分号;分隔多个，参数使用query参数格式，特殊字符需要转码
-            // 'resource'  =>  'tcp://192.168.0.222&timeout=60;tcp://192.168.0.222',
+            // 'resource'  =>  'tcp://192.168.0.222?timeout=60;tcp://192.168.0.222',
         ],
     ],
 ];
