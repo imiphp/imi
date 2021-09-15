@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Imi\Util\Imi;
+
 $rootPath = dirname(__DIR__) . '/';
 
 return [
@@ -24,8 +26,12 @@ return [
         ], // 要排除的路径数组，支持通配符*
     ],
     'AutoRunProcessManager' => [
-        'processes' => [
+        'processes' => Imi::checkAppType('swoole') ? [
             'TestProcess',
+            'QueueConsumer',
+        ] : [
+            'TestProcess1',
+            'TestProcess2',
             'QueueConsumer',
         ],
     ],

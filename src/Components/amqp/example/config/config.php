@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Imi\Util\Imi;
+
 defined('AMQP_SERVER_HOST') || define('AMQP_SERVER_HOST', imiGetEnv('AMQP_SERVER_HOST', '127.0.0.1'));
 
 return [
@@ -24,18 +26,31 @@ return [
 
     // 组件命名空间
     'components'    => [
-        'Swoole' => 'Imi\Swoole',
-        'AMQP'   => 'Imi\AMQP',
+        'Swoole'    => 'Imi\Swoole',
+        'Workerman' => 'Imi\Workerman',
+        'AMQP'      => 'Imi\AMQP',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'AMQPApp\ApiServer',
-        'type'         => Imi\Swoole\Server\Type::HTTP,
+        'type'         => \Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
         'port'         => 8080,
         'configs'      => [
             'worker_num'        => 1,
+        ],
+    ],
+
+    // Workerman 服务器配置
+    'workermanServer' => [
+        'http' => [
+            'namespace'    => 'AMQPApp\ApiServer',
+            'type'         => \Imi\Workerman\Server\Type::HTTP,
+            'host'         => '127.0.0.1',
+            'port'         => 8080,
+            'configs'      => [
+            ],
         ],
     ],
 
@@ -44,7 +59,7 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'    => Imi::checkAppType('swoole') ? [
         'redis'    => [
             'pool'    => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
@@ -74,12 +89,29 @@ return [
                 'password'  => 'guest',
             ],
         ],
-    ],
+    ] : [],
 
     // redis 配置
     'redis' => [
         // 数默认连接池名
-        'defaultPool'   => 'redis',
+        'defaultPool' => 'redis',
+        'connections' => [
+            'redis' => [
+                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => 6379,
+                'password'  => null,
+            ],
+        ],
+    ],
+    'amqp' => [
+        'connections' => [
+            'rabbit'    => [
+                'host'      => AMQP_SERVER_HOST,
+                'port'      => 5672,
+                'user'      => 'guest',
+                'password'  => 'guest',
+            ],
+        ],
     ],
     // 日志配置
     'logger' => [

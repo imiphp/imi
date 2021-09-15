@@ -11,25 +11,19 @@ use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Contract\IQueueConsumer;
 use Imi\AMQP\Message;
-use SplQueue;
 use Swoole\Coroutine\Channel;
 
-class QueueConsumer extends BaseConsumer implements IQueueConsumer
+class SwooleQueueConsumer extends BaseConsumer implements IQueueConsumer
 {
-    // /**
-    //  * 结果通道.
-    //  */
-    // private Channel $resultChannel;
-
-    // /**
-    //  * 本地缓存的队列长度.
-    //  */
-    // protected int $queueLength;
+    /**
+     * 结果通道.
+     */
+    private Channel $resultChannel;
 
     /**
-     * 队列.
+     * 本地缓存的队列长度.
      */
-    private SplQueue $queue;
+    protected int $queueLength;
 
     public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, string $poolName = null)
     {
@@ -58,8 +52,8 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
             $list[] = new Consumer($consumer);
         }
         $this->consumers = $list;
-        $this->queue = new SplQueue();
 
+        $this->resultChannel = new Channel();
         $this->reopen();
     }
 
@@ -94,19 +88,19 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
         if (!$this->channel || !$this->channel->is_consuming())
         {
             $this->reopen();
-            $this->channel->basic_qos(0, 1, false);
+            $this->channel->basic_qos(0, $this->queueLength, false);
             $this->declareConsumer();
             $this->bindConsumer();
         }
         try
         {
             $this->channel->wait(null, false, $timeout);
-            if ($this->queue->isEmpty())
+            if ($this->resultChannel->isEmpty())
             {
                 return null;
             }
 
-            return $this->queue->pop() ?: null;
+            return $this->resultChannel->pop(0.001) ?: null;
         }
         catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
         {
@@ -142,6 +136,6 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
      */
     protected function consume(IMessage $message)
     {
-        $this->queue->push($message);
+        $this->resultChannel->push($message);
     }
 }

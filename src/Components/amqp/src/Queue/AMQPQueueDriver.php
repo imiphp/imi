@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Queue;
 
+use Imi\AMQP\Contract\IQueueConsumer;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Queue\Contract\IMessage;
@@ -12,6 +13,7 @@ use Imi\Queue\Enum\QueueType;
 use Imi\Queue\Exception\QueueException;
 use Imi\Queue\Model\QueueStatus;
 use Imi\Redis\RedisManager;
+use Imi\Util\Imi;
 use Imi\Util\Traits\TDataToProperty;
 
 /**
@@ -105,10 +107,8 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 消费者.
-     *
-     * @var \Imi\AMQP\Queue\QueueConsumer|null
      */
-    private ?QueueConsumer $consumer;
+    private ?IQueueConsumer $consumer;
 
     /**
      * 超时队列发布者.
@@ -119,10 +119,8 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 超时队列消费者.
-     *
-     * @var \Imi\AMQP\Queue\QueueConsumer|null
      */
-    private ?QueueConsumer $timeoutConsumer;
+    private ?IQueueConsumer $timeoutConsumer;
 
     /**
      * 失败队列发布者.
@@ -133,10 +131,8 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 失败队列消费者.
-     *
-     * @var \Imi\AMQP\Queue\QueueConsumer|null
      */
-    private ?QueueConsumer $failConsumer;
+    private ?IQueueConsumer $failConsumer;
 
     /**
      * AMQP 的队列名称.
@@ -211,7 +207,8 @@ class AMQPQueueDriver implements IQueueDriver
         ];
         $this->publisher = BeanFactory::newInstance(QueuePublisher::class, $exchanges, $queues, $publishers, $this->poolName);
         $this->delayPublisher = BeanFactory::newInstance(QueuePublisher::class, $exchanges, $delayQueues, $delayPublishers, $this->poolName);
-        $this->consumer = BeanFactory::newInstance(QueueConsumer::class, $this->queueLength, $exchanges, $queues, $consumers, $this->poolName);
+        $consumerClass = Imi::checkAppType('swoole') ? SwooleQueueConsumer::class : QueueConsumer::class;
+        $this->consumer = BeanFactory::newInstance($consumerClass, $this->queueLength, $exchanges, $queues, $consumers, $this->poolName);
         if ($this->supportTimeout)
         {
             $this->timeoutQueueName = $timeoutQueueName = ('imi-' . $name . '-timeout');
@@ -227,7 +224,7 @@ class AMQPQueueDriver implements IQueueDriver
                     'queue'         => $timeoutQueueName,
                 ],
             ], $this->poolName);
-            $this->timeoutConsumer = BeanFactory::newInstance(QueueConsumer::class, 1, $exchanges, [
+            $this->timeoutConsumer = BeanFactory::newInstance($consumerClass, 1, $exchanges, [
                 [
                     'name'          => $timeoutQueueName,
                     'routingKey'    => self::ROUTING_TIMEOUT,
@@ -256,7 +253,7 @@ class AMQPQueueDriver implements IQueueDriver
                     'queue'         => $failQueueName,
                 ],
             ], $this->poolName);
-            $this->failConsumer = BeanFactory::newInstance(QueueConsumer::class, 1, $exchanges, [
+            $this->failConsumer = BeanFactory::newInstance($consumerClass, 1, $exchanges, [
                 [
                     'name'          => $failQueueName,
                     'routingKey'    => self::ROUTING_FAIL,
