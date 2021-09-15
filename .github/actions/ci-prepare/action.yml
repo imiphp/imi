@@ -2,9 +2,6 @@ name: 'test-steps'
 description: 'ci test step'
 
 inputs:
-  swoole:
-    required: true
-    description: 'Swoole Version'
   env:
     required: true
     description: 'Env Service Name'
@@ -12,11 +9,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Cache dependencies
-      uses: actions/cache@v2
-      with:
-        path: /tmp/composer
-        key: ${{ runner.os }}-composer-${{ inputs.swoole }}-${{ hashFiles('**/composer.json') }}
     - name: Prepare
       shell: bash
       run: |
@@ -29,9 +21,3 @@ runs:
         .github/prepare-kafka.sh
         docker exec ${{ inputs.env }} bash tests/db/install-db.sh
         docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
-    - name: Test
-      shell: bash
-      run: docker exec ${{ inputs.env }} composer test
-    - name: Test components
-      shell: bash
-      run: docker exec ${{ inputs.env }} composer test-components

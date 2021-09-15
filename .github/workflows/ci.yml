@@ -97,14 +97,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Tests
-        uses: ./.github/actions/test-steps
+      - name: Cache dependencies
+        uses: actions/cache@v2
         with:
-          env: ${ENV_SERVICE}
-          swoole: ${{ matrix.swoole }}
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+      - name: Prepare
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
+      - name: Test
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
       - name: Print logs
         if: failure()
-        shell: bash
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
 #  ci-macos:
