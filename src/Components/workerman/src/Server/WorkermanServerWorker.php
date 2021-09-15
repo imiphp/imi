@@ -36,8 +36,11 @@ class WorkermanServerWorker extends Worker
         static::$stdoutFile = '/dev/null';
         static::$pidFile = '';
         static::$logFile = '';
+        // @phpstan-ignore-next-line
         static::$globalEvent = null;
+        // @phpstan-ignore-next-line
         static::$onMasterReload = null;
+        // @phpstan-ignore-next-line
         static::$onMasterStop = null;
         static::$eventLoopClass = '';
         static::$processTitle = 'WorkerMan';
@@ -88,7 +91,9 @@ class WorkermanServerWorker extends Worker
             \E_USER_DEPRECATED   => 'E_USER_DEPRECATED',   // 16384
         ];
         static::$_gracefulStop = false;
+        // @phpstan-ignore-next-line
         static::$_outputStream = null;
+        // @phpstan-ignore-next-line
         static::$_outputDecorated = null;
     }
 }

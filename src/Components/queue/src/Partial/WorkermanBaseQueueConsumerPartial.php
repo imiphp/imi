@@ -24,10 +24,6 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
         {
             $this->working = true;
             $config = $this->imiQueue->getQueueConfig($this->name);
-            if (null === $co)
-            {
-                $co = $config->getCo();
-            }
             $queue = $this->imiQueue->getQueue($this->name);
             do
             {
