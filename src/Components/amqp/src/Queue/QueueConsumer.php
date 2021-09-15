@@ -12,24 +12,18 @@ use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Contract\IQueueConsumer;
 use Imi\AMQP\Message;
 use SplQueue;
-use Swoole\Coroutine\Channel;
 
 class QueueConsumer extends BaseConsumer implements IQueueConsumer
 {
-    // /**
-    //  * 结果通道.
-    //  */
-    // private Channel $resultChannel;
-
-    // /**
-    //  * 本地缓存的队列长度.
-    //  */
-    // protected int $queueLength;
-
     /**
      * 队列.
      */
     private SplQueue $queue;
+
+    /**
+     * 本地缓存的队列长度.
+     */
+    protected int $queueLength;
 
     public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, string $poolName = null)
     {

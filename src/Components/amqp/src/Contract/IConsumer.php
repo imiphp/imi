@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Contract;
 
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
+
 /**
  * 消费者.
  */
@@ -23,4 +26,14 @@ interface IConsumer
      * 关闭.
      */
     public function close(): void;
+
+    /**
+     * Get 连接.
+     */
+    public function getAMQPConnection(): AbstractConnection;
+
+    /**
+     * Get 频道.
+     */
+    public function getAMQPChannel(): AMQPChannel;
 }
