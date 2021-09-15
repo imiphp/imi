@@ -339,7 +339,9 @@ class RedisHandler
             if ($this->isUnix)
             {
                 $result = $redis->connect($this->host);
-            } else {
+            }
+            else
+            {
                 $result = $redis->connect($this->host, $this->port, $this->timeout);
             }
             if ($result)
