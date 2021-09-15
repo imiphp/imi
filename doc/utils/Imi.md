@@ -193,3 +193,16 @@ public static function getCygwinVersion(): string
  */
 public static function isDockerEnvironment(): bool
 ```
+
+### checkAppType
+
+检查应用运行类型
+
+```php
+/**
+ * 检查应用运行类型.
+ */
+public static function checkAppType(string $appType): bool
+```
+
+> 目前支持：swoole、workerman、fpm、cli

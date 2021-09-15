@@ -17,6 +17,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Util\Imi;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -125,7 +126,7 @@ trait TAMQP
         }
         elseif (isset($connectionConfig))
         {
-            if (Coroutine::isIn())
+            if (Imi::checkAppType('swoole') && Coroutine::isIn())
             {
                 $className = AMQPSwooleConnection::class;
             }

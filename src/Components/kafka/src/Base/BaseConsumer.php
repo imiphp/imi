@@ -9,6 +9,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Kafka\Annotation\Consumer as ConsumerAnnotation;
 use Imi\Kafka\Contract\IConsumer;
 use Imi\Kafka\Pool\KafkaPool;
+use Imi\Util\Imi;
 use longlang\phpkafka\Consumer\ConsumeMessage;
 use longlang\phpkafka\Consumer\Consumer;
 use function Yurun\Swoole\Coroutine\goWait;
@@ -56,10 +57,18 @@ abstract class BaseConsumer implements IConsumer
             $message = $consumer->consume();
             if ($message)
             {
-                goWait(function () use ($message, $consumer) {
+                if (Imi::checkAppType('swoole'))
+                {
+                    goWait(function () use ($message, $consumer) {
+                        $this->consume($message);
+                        $consumer->ack($message);
+                    });
+                }
+                else
+                {
                     $this->consume($message);
                     $consumer->ack($message);
-                });
+                }
             }
         }
     }

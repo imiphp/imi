@@ -76,7 +76,7 @@ class ProcessManager
         }
         $processName = $alias ?? $name;
         self::$processes[$processName] = $worker = new WorkermanServerWorker();
-        $worker->name = $name;
+        $worker->name = $processName;
         $worker->reloadable = false;
         $worker->onWorkerStart = function (Worker $worker) use ($args, $processName, $options) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);

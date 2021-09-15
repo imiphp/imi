@@ -9,6 +9,7 @@ use Imi\AMQP\Contract\IConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Enum\ConsumerResult;
 use Imi\App;
+use Imi\Util\Imi;
 use function Yurun\Swoole\Coroutine\goWait;
 
 /**
@@ -75,9 +76,16 @@ abstract class BaseConsumer implements IConsumer
                         /** @var \Imi\AMQP\Message $messageInstance */
                         $messageInstance = new $messageClass();
                         $messageInstance->setAMQPMessage($message);
-                        $result = goWait(function () use ($messageInstance) {
-                            return $this->consume($messageInstance);
-                        });
+                        if (Imi::checkAppType('swoole'))
+                        {
+                            $result = goWait(function () use ($messageInstance) {
+                                return $this->consume($messageInstance);
+                            });
+                        }
+                        else
+                        {
+                            $result = $this->consume($messageInstance);
+                        }
                         switch ($result)
                         {
                             case ConsumerResult::ACK:

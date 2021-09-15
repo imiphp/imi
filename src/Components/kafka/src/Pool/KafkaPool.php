@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Imi\Kafka\Pool;
 
 use Imi\App;
+use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
+use Imi\Util\Imi;
 use longlang\phpkafka\Consumer\Consumer;
 use longlang\phpkafka\Consumer\ConsumerConfig;
 use longlang\phpkafka\Producer\Producer;
@@ -18,11 +20,33 @@ use longlang\phpkafka\Producer\ProducerConfig;
 class KafkaPool
 {
     /**
+     * 连接配置.
+     */
+    private static ?array $connections = null;
+
+    /**
      * 获取新的连接实例.
      */
     public static function getNewInstance(?string $poolName = null): Producer
     {
-        return PoolManager::getResource(static::parsePoolName($poolName))->getInstance();
+        $poolName = static::parsePoolName($poolName);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getResource($poolName)->getInstance();
+        }
+        else
+        {
+            $config = Config::get('@app.kafka.connections.' . $poolName);
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
+
+            $producerConfig = self::createProducerConfig($config);
+            $producer = new Producer($producerConfig);
+
+            return $producer;
+        }
     }
 
     /**
@@ -30,7 +54,40 @@ class KafkaPool
      */
     public static function getInstance(?string $poolName = null): Producer
     {
-        return PoolManager::getRequestContextResource(static::parsePoolName($poolName))->getInstance();
+        $poolName = static::parsePoolName($poolName);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getRequestContextResource($poolName)->getInstance();
+        }
+        else
+        {
+            $requestContextKey = '__kafka.' . $poolName;
+            $requestContext = RequestContext::getContext();
+            if (isset($requestContext[$requestContextKey]))
+            {
+                return $requestContext[$requestContextKey];
+            }
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.kafka.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found kafka config %s', $poolName));
+            }
+            /** @var Producer|null $connection */
+            $connection = App::get($requestContextKey);
+            if (null === $connection)
+            {
+                $producerConfig = self::createProducerConfig($config);
+                $connection = new Producer($producerConfig);
+                App::set($requestContextKey, $connection);
+            }
+            $requestContext[$requestContextKey] = $connection;
+
+            return $connection;
+        }
     }
 
     /**
@@ -113,9 +170,26 @@ class KafkaPool
      */
     public static function createConsumer(?string $poolName = null, $topic = null, array $config = []): Consumer
     {
-        /** @var KafkaCoroutinePool|KafkaSyncPool $pool */
-        $pool = PoolManager::getInstance(self::parsePoolName($poolName));
+        if (Imi::checkAppType('swoole'))
+        {
+            /** @var KafkaCoroutinePool|KafkaSyncPool $pool */
+            $pool = PoolManager::getInstance(self::parsePoolName($poolName));
 
-        return $pool->createConsumer($topic, $config);
+            return $pool->createConsumer($topic, $config);
+        }
+        else
+        {
+            if (null === $poolName)
+            {
+                $poolName = self::parsePoolName($poolName);
+            }
+            $config = self::createConsumerConfig(array_merge(Config::get('@app.kafka.connections.' . $poolName), $config));
+            if ($topic)
+            {
+                $config->setTopic($topic);
+            }
+
+            return new Consumer($config);
+        }
     }
 }

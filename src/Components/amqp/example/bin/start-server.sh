@@ -2,6 +2,8 @@
 
 __DIR__=$(cd `dirname $0`; pwd)
 
-${__DIR__}/stop-server.sh
+rm -rf ${__DIR__}/../.runtime/*runtime
 
-nohup $__DIR__/imi swoole/start > "$__DIR__/../.runtime/logs/cli.log" 2>&1 & echo $! > "$__DIR__/server.pid"
+${__DIR__}/stop-server.sh $1
+
+nohup $__DIR__/imi-$1 $1/start > "$__DIR__/../.runtime/logs/cli.log" 2>&1 & echo $! > "$__DIR__/server.pid"

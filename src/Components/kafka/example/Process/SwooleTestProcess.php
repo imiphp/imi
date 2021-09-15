@@ -13,7 +13,7 @@ use Imi\Swoole\Process\BaseProcess;
 /**
  * @Process(name="TestProcess")
  */
-class TestProcess extends BaseProcess
+class SwooleTestProcess extends BaseProcess
 {
     /**
      * @Inject("TestConsumer")
