@@ -199,23 +199,7 @@ return [
                 'db'          => 1,
             ],
         ],
-    ] + (
-        (imiGetEnv('REDIS_SERVER_UNIX')) ? [
-            'redis_unix'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_UNIX'),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ],
-            ],
-        ] : []
-    ),
+    ],
     // db 配置
     'db' => [
         // 默认连接池名

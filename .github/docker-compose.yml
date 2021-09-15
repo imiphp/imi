@@ -99,7 +99,7 @@ services:
       - postgres
     environment:
       MYSQL_SERVER_HOST: mysql
-      REDIS_SERVER_HOST: redis
+      REDIS_SERVER_HOST: ${REDIS_SERVER_HOST}
       REDIS_SERVER_UNIX: /tmp/docker/redis.sock
       PGSQL_SERVER_HOST: postgres
       MYSQL_SERVER_PASSWORD: ""
@@ -131,8 +131,7 @@ services:
       - postgres
     environment:
       MYSQL_SERVER_HOST: mysql
-      REDIS_SERVER_HOST: redis
-      REDIS_SERVER_UNIX: /tmp/docker/redis.sock
+      REDIS_SERVER_HOST: ${REDIS_SERVER_HOST}
       PGSQL_SERVER_HOST: postgres
       MYSQL_SERVER_PASSWORD: ""
       AMQP_SERVER_HOST: "rabbitmq"
