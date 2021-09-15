@@ -64,7 +64,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         run: |
-          docker-compose -f ./.github/docker-compose.yml up -d swoole
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
           docker exec ${ENV_SERVICE} php -v && php -m
           docker exec ${ENV_SERVICE} php --ri swoole
           docker exec ${ENV_SERVICE} composer -V
@@ -103,7 +103,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         run: |
-          docker-compose -f ./.github/docker-compose.yml up -d swoole
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
           docker exec ${ENV_SERVICE} php -v && php -m
           docker exec ${ENV_SERVICE} php --ri swoole
           docker exec ${ENV_SERVICE} composer -V
