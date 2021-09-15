@@ -87,7 +87,7 @@ jobs:
       fail-fast: false
       matrix:
         swoole: [ 4.7-php7.4, 4.7-php8.0 ]
-        mysql: [ 5.7 ]
+        mysql: [ 8.0 ]
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
