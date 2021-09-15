@@ -90,35 +90,21 @@ jobs:
         swoole: [ 4.7-php7.4 ]
         mysql: [ 8.0 ]
     env:
+      ENV_SERVICE: swoole
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-      ENV_SERVICE: swoole
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Tests
+        uses: ./.github/actions/test-steps
         with:
-          path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
-      - name: Prepare
-        run: |
-          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
-          docker exec ${ENV_SERVICE} php -v && php -m
-          docker exec ${ENV_SERVICE} php --ri swoole
-          docker exec ${ENV_SERVICE} composer -V
-          docker exec ${ENV_SERVICE} composer config -g process-timeout 600
-          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
-          .github/prepare-kafka.sh
-          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
-          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
-#      - name: Test
-#        run: docker exec ${ENV_SERVICE} composer test
-      - name: Test components
-        run: docker exec ${ENV_SERVICE} composer test-components
+          env: ${ENV_SERVICE}
+          swoole: ${{ matrix.swoole }}
       - name: Print logs
         if: failure()
+        shell: bash
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
 #  ci-macos:
