@@ -9,10 +9,11 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Queue\Model\Message;
-use Swoole\Coroutine;
+use Imi\Timer\Timer;
 
 /**
  * @Listener("IMI.MAIN_SERVER.WORKER.START.APP")
+ * @Listener("IMI.WORKERMAN.SERVER.WORKER_START")
  */
 class WorkerStartListener implements IEventListener
 {
@@ -29,24 +30,16 @@ class WorkerStartListener implements IEventListener
     public function handle(EventParam $e): void
     {
         // 每 1 秒投递进 test1 队列
-        Coroutine::create(function () {
-            while (true)
-            {
-                $message = new Message();
-                $message->setMessage((string) time());
-                $this->imiQueue->getQueue('test1')->push($message);
-                sleep(1);
-            }
+        Timer::tick(1000, function () {
+            $message = new Message();
+            $message->setMessage((string) time());
+            $this->imiQueue->getQueue('test1')->push($message);
         });
         // 每 3 秒投递进 test2 队列
-        Coroutine::create(function () {
-            while (true)
-            {
-                $message = new Message();
-                $message->setMessage((string) time());
-                $this->imiQueue->getQueue('test2')->push($message);
-                sleep(3);
-            }
+        Timer::tick(3000, function () {
+            $message = new Message();
+            $message->setMessage((string) time());
+            $this->imiQueue->getQueue('test2')->push($message);
         });
     }
 }
