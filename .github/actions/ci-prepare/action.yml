@@ -1,5 +1,5 @@
-name: 'test-steps'
-description: 'ci test step'
+name: 'ci-prepare'
+description: 'ci-prepare'
 
 inputs:
   env:
@@ -15,7 +15,7 @@ runs:
         docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }}
         docker exec ${{ inputs.env }} php -v && php -m
         docker exec ${{ inputs.env }} php --ri swoole
-        docker exec ${{ inputs.env }} php -r "var_dump(opcache_get_status(false));"
+        docker exec ${{ inputs.env }} php -r "echo 'opcache config: '; print_r(opcache_get_status(false));"
         docker exec ${{ inputs.env }} composer -V
         docker exec ${{ inputs.env }} composer config -g process-timeout 600
         docker exec ${{ inputs.env }} composer update --no-interaction --prefer-dist --no-progress
