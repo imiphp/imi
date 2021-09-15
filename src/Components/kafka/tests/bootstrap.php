@@ -34,10 +34,15 @@ function checkHttpServerStatus()
 function startServer()
 {
     $dirname = dirname(__DIR__);
+    $mode = getenv('AMQP_TEST_MODE');
+    if (!$mode)
+    {
+        throw new InvalidArgumentException('Invalid env AMQP_TEST_MODE');
+    }
     $servers = [
         'HttpServer'    => [
-            'start'         => $dirname . '/example/bin/start-server.sh',
-            'stop'          => $dirname . '/example/bin/stop-server.sh',
+            'start'         => $dirname . '/example/bin/start-server.sh ' . $mode,
+            'stop'          => $dirname . '/example/bin/stop-server.sh ' . $mode,
             'checkStatus'   => 'checkHttpServerStatus',
         ],
     ];

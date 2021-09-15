@@ -8,11 +8,12 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Kafka\Annotation\Consumer;
 use Imi\Kafka\Base\BaseConsumer;
 use Imi\Redis\Redis;
+use KafkaApp\Annotation\GetGroupId;
 use longlang\phpkafka\Consumer\ConsumeMessage;
 
 /**
  * @Bean("TestConsumer")
- * @Consumer(topic="queue-imi-1", groupId="test-consumer")
+ * @Consumer(topic="queue-imi-1", groupId=@GetGroupId)
  */
 class TestConsumer extends BaseConsumer
 {

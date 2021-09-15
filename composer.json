@@ -62,7 +62,7 @@
         "test-jwt": "tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
         "test-queue": "src/Components/swoole/tests/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
         "test-amqp": "AMQP_TEST_MODE=swoole src/Components/swoole/tests/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml && AMQP_TEST_MODE=workerman src/Components/swoole/tests/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
-        "test-kafka": "src/Components/swoole/tests/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
+        "test-kafka": "AMQP_TEST_MODE=swoole src/Components/swoole/tests/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml && AMQP_TEST_MODE=workerman src/Components/swoole/tests/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
         "test-grpc": "src/Components/swoole/tests/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
         "test-snowflake": "tests/phpunit -c src/Components/snowflake/tests/phpunit.xml",
         "test-mqtt": "src/Components/swoole/tests/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
