@@ -659,4 +659,12 @@ class Imi
 
         return false;
     }
+
+    /**
+     * 检查应用运行类型.
+     */
+    public static function checkAppType(string $appType): bool
+    {
+        return App::isInited() && $appType === App::getApp()->getType();
+    }
 }

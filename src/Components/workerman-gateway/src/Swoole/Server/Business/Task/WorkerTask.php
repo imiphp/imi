@@ -21,7 +21,7 @@ use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 use function Yurun\Swoole\Coroutine\goWait;
 
-if (\extension_loaded('swoole') && class_exists(\Imi\Swoole\SwooleApp::class))
+if (\Imi\Util\Imi::checkAppType('swoole'))
 {
     class WorkerTask implements ICoTask
     {
