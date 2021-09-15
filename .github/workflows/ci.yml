@@ -3,91 +3,76 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-#  ci-php8-jit:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        swoole: [4.7-php8.0]
-#        mysql: [8.0]
-#    env:
-#      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-#      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-#      ENV_SERVICE: swoole-php8
-#      REDIS_SERVER_HOST: redis
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: /tmp/composer
-#          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
-#      - name: Prepare
-#        run: |
-#          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
-#          docker exec ${ENV_SERVICE} php -v && php -m
-#          docker exec ${ENV_SERVICE} php --ri swoole
-#          docker exec ${ENV_SERVICE} php -r "var_dump(opcache_get_status(false));"
-#          docker exec ${ENV_SERVICE} composer -V
-#          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
-#          .github/prepare-kafka.sh
-#          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
-#          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
-#      - name: Test
-#        run: docker exec ${ENV_SERVICE} composer test
-#      - name: Test components
-#        run: docker exec ${ENV_SERVICE} composer test-components
-#      - name: Print logs
-#        if: failure()
-#        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
-#
-#  ci-php:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        swoole: [4.7-php7.4, 4.7-php8.0]
-#        mysql: [5.7, 8.0]
-#    env:
-#      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-#      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-#      ENV_SERVICE: swoole
-#      REDIS_SERVER_HOST: redis
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: /tmp/composer
-#          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
-#      - name: Prepare
-#        run: |
-#          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
-#          docker exec ${ENV_SERVICE} php -v && php -m
-#          docker exec ${ENV_SERVICE} php --ri swoole
-#          docker exec ${ENV_SERVICE} composer -V
-#          docker exec ${ENV_SERVICE} composer config -g process-timeout 600
-#          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
-#          .github/prepare-kafka.sh
-#          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
-#          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
-#      - name: Test
-#        run: docker exec ${ENV_SERVICE} composer test
-#      - name: Test components
-#        run: docker exec ${ENV_SERVICE} composer test-components
-#      - name: Print logs
-#        if: failure()
-#        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+  ci-php8-jit:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [4.7-php8.0]
+        mysql: [8.0]
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      ENV_SERVICE: swoole-php8
+      REDIS_SERVER_HOST: redis
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+      - name: Prepare
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
+      - name: Test
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+
+  ci-php:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [4.7-php7.4, 4.7-php8.0]
+        mysql: [5.7, 8.0]
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      ENV_SERVICE: swoole
+      REDIS_SERVER_HOST: redis
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+      - name: Prepare
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
+      - name: Test
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php-unix:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-#        swoole: [ 4.7-php7.4, 4.7-php8.0 ]
-        swoole: [ 4.7-php7.4 ]
+        swoole: [ 4.7-php7.4, 4.7-php8.0 ]
         mysql: [ 8.0 ]
     env:
       ENV_SERVICE: swoole
@@ -114,101 +99,101 @@ jobs:
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
-#  ci-macos:
-#    runs-on: macos-latest
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        php: [7.4]
-#        swoole: [4.7]
-#    env:
-#      MYSQL_SERVER_PASSWORD: ""
-#      PHP_VERSION: ${{ matrix.php }}
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Get composer cache directory
-#        id: composer-cache
-#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: ${{ steps.composer-cache.outputs.dir }}
-#          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-#      - name: install env
-#        run: .github/macos/install-env.sh
-#      - name: prepare
-#        run: |
-#          composer update --prefer-dist --no-progress
-#          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-#          tests/db/install-db.sh
-#      - name: test
-#        run: |
-#          composer test
-#      - name: Test components
-#        run: |
-#          composer test-swoole
-#          composer test-workerman
-#          composer test-workerman-gateway
-#          composer test-fpm
-#          composer test-jwt
-#          composer test-queue
-#          composer test-grpc
-#          composer test-snowflake
-#          composer test-mqtt
-#          composer test-smarty
-#      - name: Print logs
-#        if: failure()
-#        run: php .github/print-logs.php
-#
-#  ci-windows:
-#    runs-on: windows-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Setup MySQL
-#        uses: shogo82148/actions-setup-mysql@v1
-#        with:
-#          mysql-version: "8.0"
-#          root-password: root
-#
-#      - name: Setup Redis-server
-#        run: |
-#          nuget install redis-64 -excludeversion
-#          redis-64\tools\redis-server.exe --service-install
-#          redis-64\tools\redis-server.exe --service-start
-#          '@ECHO Redis Started'
-#
-#      - name: Setup PHP
-#        uses: shivammathur/setup-php@v2
-#        with:
-#          php-version: 7.4
-#          ini-values: session.save_path=C:\temp
-#          tools: pecl
-#          extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql
-#
-#      - name: Get composer cache directory
-#        id: composer-cache
-#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: ${{ steps.composer-cache.outputs.dir }}
-#          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-#
-#      - name: prepare
-#        run: |
-#          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-#          composer update --prefer-dist --no-progress
-#          php src/Cli/bin/imi-cli generate/table --app-namespace "Imi\Test\Component"
-#
-#      - name: test
-#        run: |
-#          php tests\phpunit -c .\tests\phpunit.xml
-#          php tests\phpunit -c src\Components\fpm\tests\phpunit.xml
-#          php tests\phpunit -c src\Components\workerman\tests\phpunit.xml
-#          php tests\phpunit -c src\Components\workerman-gateway\tests\phpunit.xml --testsuite workerman
-#      - name: Print logs
-#        if: failure()
-#        run: php .github/print-logs.php
+  ci-macos:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4]
+        swoole: [4.7]
+    env:
+      MYSQL_SERVER_PASSWORD: ""
+      PHP_VERSION: ${{ matrix.php }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+      - name: install env
+        run: .github/macos/install-env.sh
+      - name: prepare
+        run: |
+          composer update --prefer-dist --no-progress
+          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          tests/db/install-db.sh
+      - name: test
+        run: |
+          composer test
+      - name: Test components
+        run: |
+          composer test-swoole
+          composer test-workerman
+          composer test-workerman-gateway
+          composer test-fpm
+          composer test-jwt
+          composer test-queue
+          composer test-grpc
+          composer test-snowflake
+          composer test-mqtt
+          composer test-smarty
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
+
+  ci-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.0"
+          root-password: root
+
+      - name: Setup Redis-server
+        run: |
+          nuget install redis-64 -excludeversion
+          redis-64\tools\redis-server.exe --service-install
+          redis-64\tools\redis-server.exe --service-start
+          '@ECHO Redis Started'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          ini-values: session.save_path=C:\temp
+          tools: pecl
+          extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+
+      - name: prepare
+        run: |
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          php src/Cli/bin/imi-cli generate/table --app-namespace "Imi\Test\Component"
+
+      - name: test
+        run: |
+          php tests\phpunit -c .\tests\phpunit.xml
+          php tests\phpunit -c src\Components\fpm\tests\phpunit.xml
+          php tests\phpunit -c src\Components\workerman\tests\phpunit.xml
+          php tests\phpunit -c src\Components\workerman-gateway\tests\phpunit.xml --testsuite workerman
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
