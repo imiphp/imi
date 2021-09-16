@@ -28,13 +28,13 @@ return [
         'SessionCookie'    =>    [
             // 是否启用 Cookie
             'enable'    =>  true,
-            // Cookie 的 生命周期，以秒为单位。
+            // Cookie 的生命周期，以秒为单位。
             'lifetime'    =>    0,
-            // 此 cookie 的有效 路径。 on the domain where 设置为“/”表示对于本域上所有的路径此 cookie 都可用。
+            // 此 cookie 的有效路径。 on the domain where 设置为“/”表示对于本域上所有的路径此 cookie 都可用。
             'path'        =>    '/',
-            // Cookie 的作用 域。 例如：“www.php.net”。 如果要让 cookie 在所有的子域中都可用，此参数必须以点（.）开头，例如：“.php.net”。
+            // Cookie 的作用域。 例如：“www.php.net”。 如果要让 cookie 在所有的子域中都可用，此参数必须以点（.）开头，例如：“.php.net”。
             'domain'    =>    '',
-            // 设置为 TRUE 表示 cookie 仅在使用 安全 链接时可用。
+            // 设置为 TRUE 表示 cookie 仅在使用安全链接时可用。
             'secure'    =>    false,
             // 设置为 TRUE 表示 PHP 发送 cookie 的时候会使用 httponly 标记。
             'httponly'    =>    false,
@@ -138,10 +138,20 @@ Session::delete($name)
 Session::once($name, $default = false)
 ```
 
-### 清空
+### 清空数据
+
+清空数据是数据没了，文件、key还在
 
 ```php
 Session::clear();
+```
+
+### 销毁数据
+
+销毁数据是文件、key都没了，当前 session 也关闭了
+
+```php
+Session::destroy();
 ```
 
 ### 自定义 Session ID 获取方式
@@ -160,3 +170,31 @@ config.php:
     ],
 ]
 ```
+
+### 其它
+
+开启：`public function start(?string $sessionId = null): void`
+
+关闭：`public function close(): void`
+
+保存：`public function save(): void`
+
+保存并关闭：`public function commit(): void`
+
+是否已开启：`public function isStart()`
+
+尝试垃圾回收：`public function tryGC(): void`
+
+垃圾回收：`public function gc(): void`
+
+获取 Session name：`public function getName(): string`
+
+获取 Session id：`public function getId(): string`
+
+获取 Session 处理器：`public function getHandler(): \Imi\Server\Session\Handler\ISessionHandler`
+
+获取 Session 配置：`public function getConfig(): \Imi\Server\Session\SessionConfig`
+
+是否修改了 Session 数据：`public function isChanged(): bool`
+
+当前是否是新的会话：`public function isNewSession(): bool`
