@@ -8,7 +8,7 @@ imi v2.0 开始，新增了长连接分布式解决方案。
 
 组件引入：`composer require imiphp/imi-workerman-gateway`
 
-Demo: `composer create-project imiphp/project-websocket`
+Demo: `composer create-project imiphp/project-websocket:~2.0`
 
 ## 模式
 
