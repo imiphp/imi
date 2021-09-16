@@ -119,9 +119,9 @@ class ArrayUtil
     }
 
     /**
-     * 随机获得数组中的值，返回一个保持键值对应的数组.
+     * 随机获得数组中的值.
      */
-    public static function random(array $array, int $number = 1): array
+    public static function random(array $array, int $number = 1, bool $keepKey = true): array
     {
         $result = [];
         $keys = array_rand($array, $number);
@@ -131,7 +131,14 @@ class ArrayUtil
             {
                 break;
             }
-            $result[$key] = $array[$key];
+            if ($keepKey)
+            {
+                $result[$key] = $array[$key];
+            }
+            else
+            {
+                $result[] = $array[$key];
+            }
         }
 
         return $result;

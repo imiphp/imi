@@ -169,13 +169,23 @@ var_dump(ArrayUtil::isAssoc($array));
 
 ### random
 
-随机获得数组中的值，返回一个保持键值对应的数组
+随机获得数组中的值
+
+保持键名：
 
 ```php
-$array = [1, 2, 3];
-// 返回随机的数组，如：[k1=>v1]，第二个参数缺省默认为1
+$array = ['a' => 1, 'b' => 2, 'c' => 3];
+// 返回随机的数组，如：['a' => 1]，第二个参数缺省默认为1
 var_dump(ArrayUtil::random($array));
 
-// 返回随机的数组，如：[k1=>v1, k2=>v2]
+// 返回随机的数组，如：['b' => 2, 'a' => 1]
 var_dump(ArrayUtil::random($array, 2));
+```
+
+不保持键名：
+
+```php
+$array = ['a' => 1, 'b' => 2, 'c' => 3];
+// 返回随机的数组，如：[1, 2]
+var_dump(ArrayUtil::random($array, 2, false));
 ```
