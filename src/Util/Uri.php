@@ -8,6 +8,7 @@ use function parse_url;
 use Psr\Http\Message\UriInterface;
 use function sprintf;
 use function str_replace;
+use function var_dump;
 
 class Uri implements UriInterface
 {
@@ -112,7 +113,9 @@ class Uri implements UriInterface
             $port = ':' . $port;
         }
         // 路径
-        $path = '/' . ltrim($path, '/');
+        if ('' !== $path) {
+            $path = '/' . ltrim($path, '/');
+        }
         // 查询参数
         $query = ('' === $query ? '' : ('?' . $query));
         // 锚点

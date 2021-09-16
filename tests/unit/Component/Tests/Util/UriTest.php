@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
 use Imi\Util\Uri;
+use function var_dump;
 
 /**
  * @testdox Imi\Util\Uri
@@ -54,5 +55,12 @@ class UriTest extends BaseTest
         $this->assertEquals('/var/run/redis/redis-server.sock', $uri->getHost());
         $this->assertEquals('', $uri->getPath());
         $this->assertEquals('timeout=60&db=1', $uri->getQuery());
+
+        $this->assertEquals($url, (string) $uri);
+
+        $this->assertEquals(
+            $url,
+            Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo())
+        );
     }
 }
