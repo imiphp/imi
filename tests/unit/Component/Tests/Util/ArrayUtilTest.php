@@ -172,6 +172,12 @@ class ArrayUtilTest extends BaseTest
         {
             $this->assertEquals($arr[$k] ?? null, $v);
         }
+
+        $result = ArrayUtil::random($arr, 1);
+        foreach ($result as $k => $v)
+        {
+            $this->assertEquals($arr[$k] ?? null, $v);
+        }
     }
 
     /**
