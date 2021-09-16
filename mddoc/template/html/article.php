@@ -34,7 +34,7 @@
                     <a href="/v2.0/" target="_blank" style="padding-right: 40px;">v2.0 <span class="layui-badge">新</span></a>
                 </li>
                 <li class="layui-nav-item layui-this" lay-unselect>
-                    <a href="/" target="_blank">v1.x</a>
+                    <a href="/v1/" target="_blank">v1.x</a>
                 </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a id="btn-about" href="javascript:;">关于</a>
