@@ -5,6 +5,7 @@
     "description": "imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman 多种容器环境下。它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。",
     "require": {
         "php": ">=7.4",
+        "composer-runtime-api": "^2.0",
         "ext-json": "*",
         "yurunsoft/doctrine-annotations": "^1.73.0",
         "psr/log": "~1.0",
