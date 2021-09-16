@@ -183,6 +183,12 @@ class ArrayUtilTest extends BaseTest
             $this->assertTrue(\in_array($v, $arr));
             ++$i;
         }
+
+        $result = ArrayUtil::random($arr, 1);
+        foreach ($result as $k => $v)
+        {
+            $this->assertEquals($arr[$k] ?? null, $v);
+        }
     }
 
     /**

@@ -125,7 +125,7 @@ class ArrayUtil
     {
         $result = [];
         $keys = array_rand($array, $number);
-        foreach ($keys as $key)
+        foreach ((array) $keys as $key)
         {
             if (!isset($array[$key]))
             {
