@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi;
 
+use Composer\InstalledVersions;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\ReflectionContainer;
@@ -14,6 +15,7 @@ use Imi\Event\Event;
 use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
+use function substr;
 
 class App
 {
@@ -271,34 +273,10 @@ class App
         {
             return static::$imiVersion;
         }
-        // composer
-        $loaders = Composer::getClassLoaders();
-        if ($loaders)
-        {
-            foreach ($loaders as $loader)
-            {
-                $ref = ReflectionContainer::getClassReflection(\get_class($loader));
-                $fileName = \dirname($ref->getFileName(), 3) . '/composer.lock';
-                if (is_file($fileName))
-                {
-                    $data = json_decode(file_get_contents($fileName), true);
-                    foreach ($data['packages'] ?? [] as $item)
-                    {
-                        if ('imiphp/imi' === $item['name'] || 'yurunsoft/imi' === $item['name'])
-                        {
-                            return static::$imiVersion = $item['version'];
-                        }
-                    }
-                }
-            }
-        }
-        // git
-        if (preg_match('/\*([^\r\n]+)/', shell_exec('which git && git branch') ?? '', $matches) > 0)
-        {
-            return static::$imiVersion = trim($matches[1]);
-        }
-
-        return static::$imiVersion = 'Unknown';
+        $version = InstalledVersions::getPrettyVersion('imiphp/imi');
+        $hash = InstalledVersions::getReference('imiphp/imi');
+        $hash = substr($hash, 0, 7);
+        return static::$imiVersion = "{$version} ({$hash})";
     }
 
     /**
