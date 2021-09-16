@@ -47,7 +47,6 @@ class UriTest extends BaseTest
         $this->assertEquals($url, (string) $uri);
         $this->assertEquals($url, Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo()));
 
-
         $url = 'unix:///var/run/redis/redis-server.sock?timeout=60&db=1';
         $uri = new Uri($url);
         $this->assertEquals('unix', $uri->getScheme());

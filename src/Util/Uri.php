@@ -112,7 +112,8 @@ class Uri implements UriInterface
             $port = ':' . $port;
         }
         // 路径
-        if ('' !== $path) {
+        if ('' !== $path)
+        {
             $path = '/' . ltrim($path, '/');
         }
         // 查询参数
