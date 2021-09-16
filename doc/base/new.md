@@ -2,15 +2,15 @@
 
 ## 项目初始化
 
-创建 Http Server 项目：`composer create-project imiphp/project-http`
+创建 Http Server 项目：`composer create-project imiphp/project-http:~1.0`
 
-创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket`
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~1.0`
 
-创建 TCP Server 项目：`composer create-project imiphp/project-tcp`
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~1.0`
 
-创建 UDP Server 项目：`composer create-project imiphp/project-udp`
+创建 UDP Server 项目：`composer create-project imiphp/project-udp:~1.0`
 
-创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt`
+创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~1.0`
 
 > 如何运行请看上面项目中的`README.md`
 
