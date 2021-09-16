@@ -7,12 +7,10 @@ namespace Imi;
 use Composer\InstalledVersions;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
-use Imi\Bean\ReflectionContainer;
 use Imi\Bean\Scanner;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
-use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 use function substr;
@@ -275,8 +273,17 @@ class App
         }
         $version = InstalledVersions::getPrettyVersion('imiphp/imi');
         $hash = InstalledVersions::getReference('imiphp/imi');
-        $hash = substr($hash, 0, 7);
-        return static::$imiVersion = "{$version} ({$hash})";
+        if ($hash)
+        {
+            $hash = substr($hash, 0, 7);
+            static::$imiVersion = "{$version} ({$hash})";
+        }
+        else
+        {
+            static::$imiVersion = $version;
+        }
+
+        return static::$imiVersion;
     }
 
     /**
