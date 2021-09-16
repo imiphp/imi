@@ -6,7 +6,6 @@ namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
 use Imi\Util\Uri;
-use function var_dump;
 
 /**
  * @testdox Imi\Util\Uri

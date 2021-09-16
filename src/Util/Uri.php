@@ -8,7 +8,6 @@ use function parse_url;
 use Psr\Http\Message\UriInterface;
 use function sprintf;
 use function str_replace;
-use function var_dump;
 
 class Uri implements UriInterface
 {
