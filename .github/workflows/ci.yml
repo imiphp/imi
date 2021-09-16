@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole: [ 4.7-php7.4, 4.7-php8.0 ]
+        swoole: [ 4.7-php8.0 ]
         mysql: [ 8.0 ]
     env:
       ENV_SERVICE: swoole
