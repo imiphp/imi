@@ -37,7 +37,7 @@
 ]
 ```
 
-连接池配置：
+连接池配置：（Swoole）
 
 ```php
 [
@@ -73,6 +73,19 @@
         ],
     ]
 ]
+```
+
+连接配置：（Workerman）
+
+```php
+'kafka' => [
+    'connections' => [
+        'kafka'    => [
+            'bootstrapServers' => KAFKA_BOOTSTRAP_SERVERS,
+            'groupId'          => 'test2',
+        ],
+    ],
+],
 ```
 
 默认连接池：

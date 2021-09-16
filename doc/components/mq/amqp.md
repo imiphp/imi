@@ -37,7 +37,7 @@ Github: <https://github.com/imiphp/imi-amqp>
 ]
 ```
 
-连接池配置：
+连接池配置：（Swoole）
 
 ```php
 [
@@ -76,6 +76,21 @@ Github: <https://github.com/imiphp/imi-amqp>
         ],
     ]
 ]
+```
+
+连接配置：（Workerman）
+
+```php
+'amqp' => [
+    'connections' => [
+        'rabbit'    => [
+            'host'      => '127.0.0.1',
+            'port'      => 5672,
+            'user'      => 'guest',
+            'password'  => 'guest',
+        ],
+    ],
+],
 ```
 
 默认连接池：
