@@ -1,0 +1,24 @@
+name: 'ci-prepare'
+description: 'ci-prepare'
+
+inputs:
+  env:
+    required: true
+    description: 'Env Service Name'
+
+runs:
+  using: composite
+  steps:
+    - name: Prepare
+      shell: bash
+      run: |
+        docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }}
+        docker exec ${{ inputs.env }} php -v && php -m
+        docker exec ${{ inputs.env }} php --ri swoole
+        docker exec ${{ inputs.env }} php -r "echo 'opcache config: '; print_r(opcache_get_status(false));"
+        docker exec ${{ inputs.env }} composer -V
+        docker exec ${{ inputs.env }} composer config -g process-timeout 600
+        docker exec ${{ inputs.env }} composer update --no-interaction --prefer-dist --no-progress
+        .github/prepare-kafka.sh
+        docker exec ${{ inputs.env }} bash tests/db/install-db.sh
+        docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql

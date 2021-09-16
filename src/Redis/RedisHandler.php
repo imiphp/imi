@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Redis;
 
 use RedisException;
+use function str_contains;
 
 /**
  * imi 框架中封装的 Redis 类.
@@ -247,6 +248,8 @@ class RedisHandler
      */
     private $redis;
 
+    private bool $isUnix = false;
+
     /**
      * 连接主机名.
      */
@@ -300,6 +303,7 @@ class RedisHandler
                     if ($redis->isConnected())
                     {
                         $this->host = $redis->getHost();
+                        $this->isUnix = str_contains($this->host, '/');
                         $this->port = $redis->getPort();
                         $this->timeout = $redis->getTimeout();
                     }
@@ -332,7 +336,15 @@ class RedisHandler
         $redis->close();
         if (!$this->isCluster())
         {
-            if ($redis->connect($this->host, $this->port, $this->timeout))
+            if ($this->isUnix)
+            {
+                $result = $redis->connect($this->host);
+            }
+            else
+            {
+                $result = $redis->connect($this->host, $this->port, $this->timeout);
+            }
+            if ($result)
             {
                 $auth = $this->auth;
                 if (null !== $auth && !$redis->auth($auth))

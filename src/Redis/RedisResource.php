@@ -24,6 +24,16 @@ class RedisResource extends BasePoolResource
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, RedisHandler $redis, array $config)
     {
         parent::__construct($pool);
+
+        if (isset($config['timeout']))
+        {
+            $config['timeout'] = (float) $config['timeout'];
+        }
+        if (isset($config['db']))
+        {
+            $config['db'] = (int) $config['db'];
+        }
+
         $this->redis = $redis;
         $this->config = $config;
     }

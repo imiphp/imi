@@ -57,8 +57,13 @@ return [
             'resource' => [
                 // --- 单机模式配置 ---
                 // 'mode' => \Imi\Redis\Enum\RedisMode::STANDALONE,
+
+                // --- Tcp 连接参数示范 ---
                 // 'host'	=>	'127.0.0.1',
                 // 'port'	=>	6379,
+                // --- Unix Socket 连接参数示范（仅支持单机模式） ---
+                // 'host'	=>	'/var/run/redis/redis-server.sock',
+
                 // 是否自动序列化变量
                 // 'serialize'	=>	true,
                 // 密码
@@ -95,7 +100,9 @@ return [
                 'readTimeout' => null,
             ],
             // uri资源配置，以分号;分隔多个，参数使用query参数格式，特殊字符需要转码
-            // 'resource'  =>  'tcp://192.168.0.222&timeout=60;tcp://192.168.0.222',
+            // 'resource'  =>  'tcp://192.168.0.222?timeout=60&db=1;tcp://192.168.0.222',
+            // uri资源配置，Unix Socket 连接参数示范（仅支持单机模式）
+            // 'resource'  =>  'unix:///var/run/redis/redis-server.sock?db=1',
         ],
     ],
 ];
@@ -114,8 +121,12 @@ return [
         'quickFromRequestContext'	=>	true, // 从当前上下文中获取公用连接
         'connections'   => [
             'alias1' => [
+                // --- Tcp 连接参数示范 ---
                 // 'host'	=>	'127.0.0.1',
                 // 'port'	=>	6379,
+                // --- Unix Socket 连接参数示范（仅支持单机模式） ---
+                // 'host'	=>	'/var/run/redis/redis-server.sock',
+
                 // 是否自动序列化变量
                 // 'serialize'	=>	true,
                 // 密码

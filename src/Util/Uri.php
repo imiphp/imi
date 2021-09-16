@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use function parse_url;
 use Psr\Http\Message\UriInterface;
+use function sprintf;
+use function str_replace;
 
 class Uri implements UriInterface
 {
@@ -55,10 +58,20 @@ class Uri implements UriInterface
 
     public function __construct(string $uri = '')
     {
+        $isUnixSocket = str_starts_with($uri, 'unix:///');
+        if ($isUnixSocket)
+        {
+            $uri = str_replace('unix:///', 'unix://', $uri);
+        }
         $uriOption = parse_url($uri);
         if (false === $uriOption)
         {
             throw new \InvalidArgumentException(sprintf('Uri %s parse error', $uri));
+        }
+        if ($isUnixSocket)
+        {
+            $uriOption['host'] = "/{$uriOption['host']}{$uriOption['path']}";
+            $uriOption['path'] = '';
         }
         $this->scheme = $uriOption['scheme'] ?? '';
         $this->host = $uriOption['host'] ?? '';
@@ -99,7 +112,10 @@ class Uri implements UriInterface
             $port = ':' . $port;
         }
         // 路径
-        $path = '/' . ltrim($path, '/');
+        if ('' !== $path)
+        {
+            $path = '/' . ltrim($path, '/');
+        }
         // 查询参数
         $query = ('' === $query ? '' : ('?' . $query));
         // 锚点

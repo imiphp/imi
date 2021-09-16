@@ -46,5 +46,19 @@ class UriTest extends BaseTest
         $this->assertEquals('www.imiphp.com:4433', Uri::getDomain($uri));
         $this->assertEquals($url, (string) $uri);
         $this->assertEquals($url, Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo()));
+
+        $url = 'unix:///var/run/redis/redis-server.sock?timeout=60&db=1';
+        $uri = new Uri($url);
+        $this->assertEquals('unix', $uri->getScheme());
+        $this->assertEquals('/var/run/redis/redis-server.sock', $uri->getHost());
+        $this->assertEquals('', $uri->getPath());
+        $this->assertEquals('timeout=60&db=1', $uri->getQuery());
+
+        $this->assertEquals($url, (string) $uri);
+
+        $this->assertEquals(
+            $url,
+            Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo())
+        );
     }
 }

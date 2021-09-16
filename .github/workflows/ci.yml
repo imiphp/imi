@@ -14,6 +14,7 @@ jobs:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       ENV_SERVICE: swoole-php8
+      REDIS_SERVER_HOST: redis
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,16 +24,9 @@ jobs:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
-        run: |
-          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
-          docker exec ${ENV_SERVICE} php -v && php -m
-          docker exec ${ENV_SERVICE} php --ri swoole
-          docker exec ${ENV_SERVICE} php -r "var_dump(opcache_get_status(false));"
-          docker exec ${ENV_SERVICE} composer -V
-          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
-          .github/prepare-kafka.sh
-          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
-          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
       - name: Test
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test components
@@ -52,6 +46,7 @@ jobs:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       ENV_SERVICE: swoole
+      REDIS_SERVER_HOST: redis
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -61,16 +56,41 @@ jobs:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
-        run: |
-          docker-compose -f ./.github/docker-compose.yml up -d swoole
-          docker exec ${ENV_SERVICE} php -v && php -m
-          docker exec ${ENV_SERVICE} php --ri swoole
-          docker exec ${ENV_SERVICE} composer -V
-          docker exec ${ENV_SERVICE} composer config -g process-timeout 600
-          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
-          .github/prepare-kafka.sh
-          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
-          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
+      - name: Test
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+
+  ci-php-unix:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [ 4.7-php8.0 ]
+        mysql: [ 8.0 ]
+    env:
+      ENV_SERVICE: swoole
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      REDIS_SERVER_HOST: /tmp/docker/redis.sock
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+      - name: Prepare
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
       - name: Test
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test components

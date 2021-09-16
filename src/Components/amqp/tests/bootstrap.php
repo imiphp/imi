@@ -81,7 +81,9 @@ function startServer()
 
 (function () {
     $redis = new \Redis();
-    if (!$redis->connect(getenv('REDIS_SERVER_HOST') ?: '127.0.0.1', 6379))
+    $host = getenv('REDIS_SERVER_HOST') ?: '127.0.0.1';
+    $port = (int) (getenv('REDIS_SERVER_PORT') ?: 6379);
+    if (!(str_contains($host, '/') ? $redis->connect($host) : $redis->connect($host, $port)))
     {
         exit('Redis connect failed');
     }
