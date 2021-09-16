@@ -97,7 +97,7 @@ class App
         $appInstance->init();
         // 注册错误日志
         self::getBean('ErrorLog')->register();
-        Event::trigger('IMI.APP_INIT');
+        Event::trigger('IMI.APP_RUN');
         // 运行
         $appInstance->run();
     }

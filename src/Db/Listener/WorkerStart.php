@@ -12,7 +12,7 @@ use Imi\Event\IEventListener;
 use Imi\Util\ImiPriority;
 
 /**
- * @Listener(eventName="IMI.APP_INIT", priority=ImiPriority::IMI_MAX)
+ * @Listener(eventName="IMI.APP_RUN", priority=ImiPriority::IMI_MAX)
  */
 class WorkerStart implements IEventListener
 {
