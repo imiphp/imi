@@ -116,7 +116,9 @@ class TestRedisModel extends RedisModel
 需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法。
 
 #### @RedisEntity
+
 指定当前类为Redis实体类
+
 **可选属性：**
 
 `poolName`redis连接池名称
@@ -130,6 +132,8 @@ class TestRedisModel extends RedisModel
 `ttl`数据默认的过期时间，null为永不过期，hash 存储模式不支持过期
 
 `storage`Redis 实体类存储模式，支持：string、hash、hash_object
+
+`formatter` 格式；可选：`Imi\Util\Format\Json`、`Imi\Util\Format\PhpSerialize`，或者可以自行实现`Imi\Util\Format\IFormat`接口
 
 **storage 属性说明：**
 
@@ -146,6 +150,7 @@ hash 模式，使用 hset/hget 存序列化后的对象
 hash 对象模式，使用 hset/hget，将对象存到一个 key 中，member 为字段名
 
 #### @Column
+
 Redis模型中只有name生效
 
 ## 模型操作

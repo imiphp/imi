@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\TestRedisHashModel;
+use Imi\Test\Component\Model\TestRedisHashWithFormatterModel;
 
 /**
  * @testdox RedisModel Hash
@@ -98,5 +99,54 @@ class RedisModelHashTest extends BaseTest
             'id'    => 2,
             'name'  => 'b',
         ]));
+    }
+
+    public function testFormatter(): void
+    {
+        $record = TestRedisHashWithFormatterModel::newInstance([
+            'id'    => 1,
+            'name'  => 'a',
+        ]);
+        $record->age = 11;
+        $this->assertTrue($record->save());
+
+        $expected = [
+            'id'    => 1,
+            'name'  => 'a',
+            'age'   => 11,
+        ];
+        $record = TestRedisHashWithFormatterModel::find([
+            'id'    => 1,
+            'name'  => 'a',
+        ]);
+        $this->assertNotNull($record);
+        $this->assertEquals($expected, $record->toArray());
+
+        $expected = [
+            [
+                'id'    => 1,
+                'name'  => 'a',
+                'age'   => 11,
+            ],
+            [
+                'id'    => 2,
+                'name'  => 'b',
+                'age'   => 22,
+            ],
+        ];
+        $record = TestRedisHashWithFormatterModel::newInstance([
+            'id'    => 2,
+            'name'  => 'b',
+            'age'   => 22,
+        ]);
+        $this->assertTrue($record->save());
+        $list = TestRedisHashWithFormatterModel::select([
+            'id'    => 1,
+            'name'  => 'a',
+        ], [
+            'id'    => 2,
+            'name'  => 'b',
+        ]);
+        $this->assertEquals($expected, json_decode(json_encode($list), true));
     }
 }

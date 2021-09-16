@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Model;
 
+use Imi\App;
 use Imi\Model\Enum\RedisStorageMode;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
+use Imi\Util\Format\IFormat;
 
 /**
  * Redis 模型.
@@ -50,10 +52,22 @@ abstract class RedisModel extends BaseModel
         {
             case RedisStorageMode::STRING:
                 $data = static::__getRedis()->get($key);
+                if ($data && null !== $redisEntity->formatter)
+                {
+                    /** @var IFormat $formatter */
+                    $formatter = App::getBean($redisEntity->formatter);
+                    $data = $formatter->decode($data);
+                }
                 break;
             case RedisStorageMode::HASH:
                 $member = static::generateMember($condition);
                 $data = static::__getRedis()->hGet($key, $member);
+                if ($data && null !== $redisEntity->formatter)
+                {
+                    /** @var IFormat $formatter */
+                    $formatter = App::getBean($redisEntity->formatter);
+                    $data = $formatter->decode($data);
+                }
                 break;
             case RedisStorageMode::HASH_OBJECT:
                 $data = static::__getRedis()->hGetAll($key);
@@ -86,6 +100,11 @@ abstract class RedisModel extends BaseModel
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
+        if (null !== $redisEntity->formatter)
+        {
+            /** @var IFormat $formatter */
+            $formatter = App::getBean($redisEntity->formatter);
+        }
         $keys = [];
         if ($conditions)
         {
@@ -105,6 +124,10 @@ abstract class RedisModel extends BaseModel
                     {
                         if (null !== $data)
                         {
+                            if (isset($formatter))
+                            {
+                                $data = $formatter->decode($data);
+                            }
                             $record = static::createFromRecord($data);
                             $record->key = $keys[$i];
                             $list[] = $record;
@@ -135,6 +158,10 @@ abstract class RedisModel extends BaseModel
                             {
                                 if (null !== $data)
                                 {
+                                    if (isset($formatter))
+                                    {
+                                        $data = $formatter->decode($data);
+                                    }
                                     $record = static::createFromRecord($data);
                                     $record->key = $key;
                                     if (isset($members[$i]))
@@ -180,17 +207,38 @@ abstract class RedisModel extends BaseModel
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                if (null === $this->__ttl)
+                if (null === $redisEntity->formatter)
                 {
-                    return $redis->set($this->__getKey(), $this->toArray());
+                    $data = $this->toArray();
                 }
                 else
                 {
-                    return $redis->set($this->__getKey(), $this->toArray(), $this->__ttl);
+                    /** @var IFormat $formatter */
+                    $formatter = App::getBean($redisEntity->formatter);
+                    $data = $formatter->encode($this->toArray());
+                }
+                if (null === $this->__ttl)
+                {
+                    return $redis->set($this->__getKey(), $data);
+                }
+                else
+                {
+                    return $redis->set($this->__getKey(), $data, $this->__ttl);
                 }
                 // no break
             case RedisStorageMode::HASH:
-                return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $this->toArray());
+                if (null === $redisEntity->formatter)
+                {
+                    $data = $this->toArray();
+                }
+                else
+                {
+                    /** @var IFormat $formatter */
+                    $formatter = App::getBean($redisEntity->formatter);
+                    $data = $formatter->encode($this->toArray());
+                }
+
+                return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $data);
             case RedisStorageMode::HASH_OBJECT:
                 $key = $this->__getKey();
                 $result = $redis->hMset($key, $this->toArray());
