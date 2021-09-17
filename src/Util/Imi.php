@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use Composer\InstalledVersions;
 use Imi\App;
 use Imi\Bean\Annotation;
 use Imi\Bean\BeanManager;
@@ -429,7 +428,8 @@ class Imi
             mkdir($cacheName, 0775, true);
         }
         $data = [];
-        $data['__imi_ver'] = InstalledVersions::getReference('imiphp/imi');
+        $data['imiVersion'] = App::getImiVersion();
+        $data['imiVersionReference'] = App::getImiVersionReference();
         Event::trigger('IMI.BUILD_RUNTIME', [
             'cacheName' => $cacheName,
             'data'      => &$data,
@@ -452,8 +452,10 @@ class Imi
         {
             return false;
         }
-        if (isset($data['__imi_ver']) && $data['__imi_ver'] !== InstalledVersions::getReference('imiphp/imi'))
-        {
+        if (
+            (isset($data['imiVersionReference']) && $data['imiVersionReference'] !== App::getImiVersionReference())
+            || (isset($data['imiVersion']) && $data['imiVersion'] !== App::getImiVersion())
+        ) {
             return false;
         }
         $success = true;

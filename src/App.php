@@ -56,8 +56,6 @@ class App
 
     /**
      * imi 版本引用 Hash.
-     *
-     * @var string|null
      */
     private static ?string $imiVersionReference = null;
 
