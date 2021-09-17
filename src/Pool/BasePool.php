@@ -216,7 +216,10 @@ abstract class BasePool implements IPool
         {
             ++$addingResources;
             $resource = $this->createResource();
-            $resource->open();
+            if (!$resource->open())
+            {
+                throw new \RuntimeException(sprintf('Open pool [%s] resource failed', $this->name));
+            }
 
             $hash = $resource->hashCode();
             $this->pool[$hash] = new $this->poolItemClass($resource);

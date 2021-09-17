@@ -6,6 +6,7 @@ namespace Imi\Db;
 
 use Imi\App;
 use Imi\Config;
+use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\QueryType;
@@ -92,7 +93,7 @@ class Db
                 $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
                 if (!$db->open())
                 {
-                    throw new \RuntimeException(sprintf('Database %s connection failed', $poolName));
+                    throw new DbException('Db connect error: [' . $db->errorCode() . '] ' . $db->errorInfo());
                 }
                 App::set($requestContextKey, $db);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)

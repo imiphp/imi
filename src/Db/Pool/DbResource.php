@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Pool;
 
+use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
 use Imi\Pool\BasePoolResource;
 
@@ -29,8 +30,12 @@ class DbResource extends BasePoolResource
     public function open(): bool
     {
         $db = $this->db;
+        if (!$db->open())
+        {
+            throw new DbException('Db connect error: [' . $db->errorCode() . '] ' . $db->errorInfo());
+        }
 
-        return $db->open();
+        return true;
     }
 
     /**
