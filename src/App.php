@@ -55,6 +55,13 @@ class App
     private static ?string $imiVersion = null;
 
     /**
+     * imi 版本引用 Hash.
+     *
+     * @var string|null
+     */
+    private static ?string $imiVersionReference = null;
+
+    /**
      * App 实例对象
      */
     private static IApp $app;
@@ -271,19 +278,32 @@ class App
         {
             return static::$imiVersion;
         }
-        $version = InstalledVersions::getPrettyVersion('imiphp/imi');
-        $hash = InstalledVersions::getReference('imiphp/imi');
-        if ($hash)
+
+        return static::$imiVersion = InstalledVersions::getPrettyVersion('imiphp/imi');
+    }
+
+    /**
+     * 获取 imi 版本引用 Hash.
+     */
+    public static function getImiVersionReference(bool $isShort = false): string
+    {
+        if (null === static::$imiVersionReference)
         {
-            $hash = substr($hash, 0, 7);
-            static::$imiVersion = "{$version} ({$hash})";
-        }
-        else
-        {
-            static::$imiVersion = $version;
+            static::$imiVersionReference = InstalledVersions::getReference('imiphp/imi') ?? '';
         }
 
-        return static::$imiVersion;
+        return $isShort ? substr(static::$imiVersionReference, 0, 7) : static::$imiVersionReference;
+    }
+
+    /**
+     * 获取 imi 版本号.
+     */
+    public static function getImiPrettyVersion(): string
+    {
+        $version = self::getImiVersion();
+        $hash = self::getImiVersionReference(true);
+
+        return empty($hash) ? $version : "{$version} ($hash)";
     }
 
     /**

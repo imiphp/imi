@@ -29,7 +29,7 @@ class CliApp extends BaseApp
         parent::__construct($namespace);
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
-        $this->cli = $cli = new Application('imi', App::getImiVersion());
+        $this->cli = $cli = new Application('imi', App::getImiPrettyVersion());
         $cli->setDispatcher($dispatcher);
         $cli->setCatchExceptions(false);
 

@@ -171,7 +171,7 @@ STR
         $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
         $this->output->writeln('<info>Version:</info> v' . \PHP_VERSION);
         $this->output->writeln('<info>Swoole:</info> v' . \SWOOLE_VERSION);
-        $this->output->writeln('<info>imi:</info> ' . App::getImiVersion());
+        $this->output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
         $this->output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
 
         $this->output->writeln('');
