@@ -428,6 +428,8 @@ class Imi
             mkdir($cacheName, 0775, true);
         }
         $data = [];
+        $data['imiVersion'] = App::getImiVersion();
+        $data['imiVersionReference'] = App::getImiVersionReference();
         Event::trigger('IMI.BUILD_RUNTIME', [
             'cacheName' => $cacheName,
             'data'      => &$data,
@@ -448,6 +450,12 @@ class Imi
         $data = unserialize(file_get_contents($fileName));
         if (!$data)
         {
+            return false;
+        }
+        if (
+            (isset($data['imiVersionReference']) && $data['imiVersionReference'] !== App::getImiVersionReference())
+            || (isset($data['imiVersion']) && $data['imiVersion'] !== App::getImiVersion())
+        ) {
             return false;
         }
         $success = true;

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Imi;
 
+use Composer\InstalledVersions;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
-use Imi\Bean\ReflectionContainer;
 use Imi\Bean\Scanner;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
-use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
+use function substr;
 
 class App
 {
@@ -53,6 +53,11 @@ class App
      * @var string
      */
     private static ?string $imiVersion = null;
+
+    /**
+     * imi 版本引用 Hash.
+     */
+    private static ?string $imiVersionReference = null;
 
     /**
      * App 实例对象
@@ -271,34 +276,32 @@ class App
         {
             return static::$imiVersion;
         }
-        // composer
-        $loaders = Composer::getClassLoaders();
-        if ($loaders)
+
+        return static::$imiVersion = InstalledVersions::getPrettyVersion('imiphp/imi');
+    }
+
+    /**
+     * 获取 imi 版本引用 Hash.
+     */
+    public static function getImiVersionReference(bool $isShort = false): string
+    {
+        if (null === static::$imiVersionReference)
         {
-            foreach ($loaders as $loader)
-            {
-                $ref = ReflectionContainer::getClassReflection(\get_class($loader));
-                $fileName = \dirname($ref->getFileName(), 3) . '/composer.lock';
-                if (is_file($fileName))
-                {
-                    $data = json_decode(file_get_contents($fileName), true);
-                    foreach ($data['packages'] ?? [] as $item)
-                    {
-                        if ('imiphp/imi' === $item['name'] || 'yurunsoft/imi' === $item['name'])
-                        {
-                            return static::$imiVersion = $item['version'];
-                        }
-                    }
-                }
-            }
-        }
-        // git
-        if (preg_match('/\*([^\r\n]+)/', shell_exec('which git && git branch') ?? '', $matches) > 0)
-        {
-            return static::$imiVersion = trim($matches[1]);
+            static::$imiVersionReference = InstalledVersions::getReference('imiphp/imi') ?? '';
         }
 
-        return static::$imiVersion = 'Unknown';
+        return $isShort ? substr(static::$imiVersionReference, 0, 7) : static::$imiVersionReference;
+    }
+
+    /**
+     * 获取 imi 版本号.
+     */
+    public static function getImiPrettyVersion(): string
+    {
+        $version = self::getImiVersion();
+        $hash = self::getImiVersionReference(true);
+
+        return empty($hash) ? $version : "{$version} ($hash)";
     }
 
     /**
