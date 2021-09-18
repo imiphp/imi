@@ -324,6 +324,8 @@ class WorkerErrorEventParam extends EventParam
 
 ### Http Server
 
+事件监听：`@ClassEventListener(className="Imi\Swoole\Server\Http\Server", eventName="事件名")`
+
 #### request
 
 事件参数：
@@ -374,6 +376,8 @@ class CloseEventParam extends EventParam
 ```
 
 ### WebSocket Server
+
+事件监听：`@ClassEventListener(className="Imi\Swoole\Server\WebSocket\Server", eventName="事件名")`
 
 #### handShake
 
@@ -473,6 +477,8 @@ class CloseEventParam extends EventParam
 ```
 
 ### TCP Server
+
+事件监听：`@ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server", eventName="事件名")`
 
 #### connect
 
@@ -606,6 +612,8 @@ class BufferEventParam extends EventParam
 ```
 
 ### UDP Server
+
+事件监听：`@ClassEventListener(className="Imi\Swoole\Server\UdpServer\Server", eventName="事件名")`
 
 #### packet
 
