@@ -453,8 +453,8 @@ class Imi
             return false;
         }
         if (
-            (isset($data['imiVersionReference']) && $data['imiVersionReference'] !== App::getImiVersionReference())
-            || (isset($data['imiVersion']) && $data['imiVersion'] !== App::getImiVersion())
+            (($data['imiVersionReference'] ?? null) !== App::getImiVersionReference())
+            || (($data['imiVersion'] ?? null) !== App::getImiVersion())
         ) {
             return false;
         }
