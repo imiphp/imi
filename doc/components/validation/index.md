@@ -485,11 +485,9 @@ use Imi\Validate\Annotation\Integer;
 class TestSceneValidator extends Validator
 {
     /**
-     * 场景定义
-     *
-     * @var array|null
+     * 场景定义.
      */
-    protected $scene = [
+    protected ?array $scene = [
         'a' =>  ['decimal'],
         'b' =>  ['int'],
         'c' =>  ['decimal', 'int'],
