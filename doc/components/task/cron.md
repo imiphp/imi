@@ -35,9 +35,24 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 ### 定义任务
 
 #### Task 任务
+使用task定时任务时，需要在项目config.php中的服务器配置里，开启`task_worker_num`参数，否则会报下面的错：
+
+Uncaught ErrorException: Swoole\Server::task(): task method can't be executed without task worker
+```php
+// 主服务器配置
+'mainServer'    =>    [
+    'namespace'    =>    'ImiApp\ApiServer',
+    'type'        =>    Imi\Server\Type::HTTP,
+    'host'        =>    '0.0.0.0',
+    'port'        =>    9501,
+    'configs'    =>    [
+        // 'worker_num'        =>  8,
+        'task_worker_num'   =>  16, // 必须开启这个参数，否则报错
+    ],
+],
+```
 
 与异步任务写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
-
 ```php
 <?php
 namespace Imi\Test\HttpServer\Cron;
@@ -70,7 +85,7 @@ class TaskCron implements ITaskHandler
     }
  
     /**
-     * 任务结束时触发
+     * 任务结束时触发（定时任务并不能出发该方法，但必须定义，否则报错）
      * @param \swoole_server $server
      * @param int $taskId
      * @param mixed $data
