@@ -36,6 +36,21 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 
 #### Task 任务
 
+使用Task定时任务时，需要在项目服务器配置文件中开启task进程配置。
+```
+// 主服务器配置
+'mainServer'    =>    [
+    'namespace'    =>    'ImiApp\ApiServer',
+    'type'        =>    Imi\Server\Type::HTTP,
+    'host'        =>    '0.0.0.0',
+    'port'        =>    9501,
+    'configs'    =>    [
+        // 'worker_num'        =>  8,
+        'task_worker_num'   =>  16,     // 开启此参数即可，开启个数可根据需求设置
+    ],
+],
+```
+
 与异步任务写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
 
 ```php
@@ -70,7 +85,7 @@ class TaskCron implements ITaskHandler
     }
  
     /**
-     * 任务结束时触发
+     * 任务结束时触发（注意，此方法在定时任务中无法触发，但必须定义）
      * @param \swoole_server $server
      * @param int $taskId
      * @param mixed $data
