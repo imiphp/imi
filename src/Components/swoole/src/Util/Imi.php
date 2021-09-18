@@ -6,6 +6,7 @@ namespace Imi\Swoole\Util;
 
 use Imi\App;
 use Imi\Config;
+use Imi\Swoole\Process\ProcessManager;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Worker;
 
@@ -124,6 +125,15 @@ class Imi
         else
         {
             throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
+        }
+    }
+
+    public static function reloadProcess()
+    {
+        foreach (ProcessManager::getProcessListWithManager() as $item) {
+            /** @var \Swoole\Process $process */
+            $process = $item['process'];
+            \Swoole\Process::kill($process->pid, \SIGTERM);
         }
     }
 }

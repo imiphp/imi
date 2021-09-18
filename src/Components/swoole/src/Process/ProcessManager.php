@@ -38,6 +38,13 @@ class ProcessManager
      */
     private static array $managerProcesses = [];
 
+    /**
+     * 挂载在管理进程下的进程列表
+     *
+     * @var array<array{name: string, alias: ?string, process: Process}>
+     */
+    private static array $managerProcessesList = [];
+
     private function __construct()
     {
     }
@@ -289,6 +296,11 @@ class ProcessManager
         $swooleServer = $server->getSwooleServer();
         $swooleServer->addProcess($process);
         static::$managerProcesses[$name][$alias] = $process;
+        static::$managerProcessesList[] = [
+            'name' => $name,
+            'alias' => $alias,
+            'process' => $process,
+        ];
 
         return $process;
     }
@@ -299,6 +311,15 @@ class ProcessManager
     public static function getProcessWithManager(string $name, ?string $alias = null): ?Process
     {
         return static::$managerProcesses[$name][$alias] ?? null;
+    }
+
+    /**
+     * 获取挂载在管理进程下的进程列表
+     */
+    public static function getProcessListWithManager(): array
+    {
+        $s = static::$managerProcessesList[0]['name'];
+        return static::$managerProcessesList;
     }
 
     /**
