@@ -6,6 +6,7 @@ namespace Imi\Swoole\Process;
 
 use Imi\App;
 use Imi\Bean\Scanner;
+use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
@@ -275,6 +276,7 @@ class ProcessManager
 
         $process = \Symfony\Component\Process\Process::fromShellCommandline($cmd);
         $process->setTimeout(null);
+        $process->setTty(ImiCommand::getOutput()->isDecorated());
         $process->start();
 
         if ($stdEcho) {
