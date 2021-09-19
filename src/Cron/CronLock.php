@@ -58,8 +58,8 @@ class CronLock
             /** @var \Imi\Lock\Handler\ILockHandler $lock */
             $lock = $locks[$id] = App::getBean('RedisLock', $id, [
                 'poolName'      => $task->getRedisPool(),
-                'waitTimeout'   => (int) $task->getLockWaitTimeout() * 1000,
-                'lockExpire'    => (int) $task->getMaxExecutionTime() * 1000,
+                'waitTimeout'   => (int) ($task->getLockWaitTimeout() * 1000),
+                'lockExpire'    => (int) ($task->getMaxExecutionTime() * 1000),
                 'keyPrefix'     => $keyPrefix,
             ]);
         }
