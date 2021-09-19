@@ -208,7 +208,7 @@ class CronManager implements ICronManager
                     break;
                 case CronTaskType::PROCESS:
                     $task = function (string $id, $data) use ($class) {
-                        ProcessManager::run('CronWorkerProcess', [
+                        ProcessManager::runEx('CronWorkerProcess', [
                             'id'         => $id,
                             'data'       => json_encode($data),
                             'class'      => $class,
@@ -236,7 +236,7 @@ class CronManager implements ICronManager
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
             }
             $task = function (string $id, $data) use ($process) {
-                ProcessManager::run($process->name, [
+                ProcessManager::runEx($process->name, [
                     'id'         => $id,
                     'data'       => json_encode($data),
                     'cron-sock'  => $this->getSocketFile(),

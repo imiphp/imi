@@ -253,6 +253,45 @@ class ProcessManager
     }
 
     /**
+     * 运行进程，协程挂起等待进程执行返回
+     * 执行完成返回数组，包含了进程退出的状态码、信号、输出内容。
+     * array(
+     *     'code'   => 0,
+     *     'signal' => 0,
+     *     'output' => '',
+     * );.
+     */
+    public static function runEx(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdEcho = false): array
+    {
+        $cmd = Imi::getImiCmd('process/run', [$name], $args);
+        if (null !== $redirectStdinStdout)
+        {
+            $cmd .= ' --redirectStdinStdout ' . $redirectStdinStdout;
+        }
+        if (null !== $pipeType)
+        {
+            $cmd .= ' --pipeType ' . $pipeType;
+        }
+
+        $process = \Symfony\Component\Process\Process::fromShellCommandline($cmd);
+        $process->setTimeout(null);
+        $process->start();
+
+        if ($stdEcho) {
+            $process->wait(function ($type, $buffer) use (&$output) {
+                echo $buffer;
+            });
+        } else {
+            $process->wait();
+        }
+        return [
+            'code' => $process->getExitCode(),
+            'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
+            'output' => '', // 不记录输出了，省点内存。
+        ];
+    }
+
+    /**
      * 运行进程，创建一个协程执行进程，无法获取进程执行结果
      * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
      * array(
