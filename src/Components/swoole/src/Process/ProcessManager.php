@@ -279,15 +279,19 @@ class ProcessManager
         $process->setTty(ImiCommand::getOutput()->isDecorated());
         $process->start();
 
-        if ($stdEcho) {
-            $process->wait(function ($type, $buffer) use (&$output) {
+        if ($stdEcho)
+        {
+            $process->wait(function ($type, $buffer) {
                 echo $buffer;
             });
-        } else {
+        }
+        else
+        {
             $process->wait();
         }
+
         return [
-            'code' => $process->getExitCode(),
+            'code'   => $process->getExitCode(),
             'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
             'output' => '', // 不记录输出了，省点内存。
         ];

@@ -43,7 +43,7 @@ class CronManager implements ICronManager
     protected ?string $socketFile = null;
 
     /**
-     * 任务进程支持回显终端输出
+     * 任务进程支持回显终端输出.
      */
     protected bool $stdEcho = true;
 
