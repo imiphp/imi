@@ -255,12 +255,9 @@ class ProcessManager
 
     /**
      * 运行进程，协程挂起等待进程执行返回
-     * 执行完成返回数组，包含了进程退出的状态码、信号、输出内容。
-     * array(
-     *     'code'   => 0,
-     *     'signal' => 0,
-     *     'output' => '',
-     * );.
+     * 执行完成返回数组，包含了进程退出的状态码、信号。
+     *
+     * @return array{code: int, signal: int}
      */
     public static function runEx(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdEcho = false): array
     {
@@ -293,7 +290,6 @@ class ProcessManager
         return [
             'code'   => $process->getExitCode(),
             'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
-            'output' => '', // 不记录输出了，省点内存。
         ];
     }
 
