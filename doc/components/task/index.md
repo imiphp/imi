@@ -19,28 +19,23 @@ use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
 class Test implements ITaskHandler
 {
-	/**
-	 * 任务处理方法
-	 * @param TaskParam $param
-	 * @param \Swoole\Server $server
-	 * @param integer $taskId
-	 * @param integer $WorkerId
-	 * @return void
-	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
+    /**
+     * 任务处理方法.
+     *
+     * @return mixed
+     */
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();
 	}
 
-	/**
-	 * 任务结束时触发
-	 * @param \swoole_server $server
-	 * @param int $taskId
-	 * @param mixed $data
-	 * @return void
-	 */
-	public function finish(\Swoole\Server $server, int $taskId, $data)
+    /**
+     * 任务结束时触发.
+     *
+     * @param mixed $data
+     */
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
 	{
 		
 	}
@@ -117,28 +112,23 @@ use Imi\Swoole\Task\Interfaces\ITaskHandler;
  */
 class Test implements ITaskHandler
 {
-	/**
-	 * 任务处理方法
-	 * @param TaskParam $param
-	 * @param \Swoole\Server $server
-	 * @param integer $taskId
-	 * @param integer $WorkerId
-	 * @return void
-	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
+    /**
+     * 任务处理方法.
+     *
+     * @return mixed
+     */
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();
 	}
 
-	/**
-	 * 任务结束时触发
-	 * @param \swoole_server $server
-	 * @param int $taskId
-	 * @param mixed $data
-	 * @return void
-	 */
-	public function finish(\Swoole\Server $server, int $taskId, $data)
+    /**
+     * 任务结束时触发.
+     *
+     * @param mixed $data
+     */
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
 	{
 		
 	}

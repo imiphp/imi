@@ -70,28 +70,23 @@ use Imi\Swoole\Task\Interfaces\ITaskHandler;
 class TaskCron implements ITaskHandler
 {
     /**
-     * 任务处理方法
-     * @param TaskParam $param
-     * @param \Swoole\Server $server
-     * @param integer $taskId
-     * @param integer $WorkerId
-     * @return void
+     * 任务处理方法.
+     *
+     * @return mixed
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
     {
         // 上报任务完成
         CronUtil::reportCronResult($param->getData()['id'], true, '');
         return date('Y-m-d H:i:s');
     }
- 
+
     /**
-     * 任务结束时触发（定时任务并不能出发该方法，但必须定义，否则报错）
-     * @param \swoole_server $server
-     * @param int $taskId
+     * 任务结束时触发.
+     *
      * @param mixed $data
-     * @return void
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data)
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
     {
     }
 
