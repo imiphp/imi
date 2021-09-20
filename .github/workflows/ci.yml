@@ -250,7 +250,7 @@ jobs:
           php-version: 7.4
           ini-values: session.save_path=C:\temp
           tools: pecl
-          extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, event
+          extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event
 
       - name: Get composer cache directory
         id: composer-cache

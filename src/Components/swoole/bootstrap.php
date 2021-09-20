@@ -21,12 +21,16 @@ return function () {
             {
                 (function () use (&$path) {
                     foreach ([
-                        $_SERVER['PWD'],
+                        $_SERVER['PWD'] ?? null,
                         getcwd(),
                         \dirname(__DIR__, 3),
                         \dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
                     ] as $path)
                     {
+                        if (!$path)
+                        {
+                            continue;
+                        }
                         $fileName = $path . '/vendor/autoload.php';
                         if (is_file($fileName))
                         {
