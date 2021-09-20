@@ -199,7 +199,7 @@ jobs:
           tools: pecl
           extensions: >
             bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets,
-            swoole/swoole-src@4.7.1
+            swoole-swoole/swoole-src@v4.7.1
         env:
           SWOOLE_CONFIGURE_OPTS: --enable-openssl --enable-http2 --enable-mysqlnd
       - name: Check Version
