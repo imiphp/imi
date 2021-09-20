@@ -19,7 +19,6 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
 use Swoole\Process;
-use function var_dump;
 
 /**
  * 进程管理类.
@@ -252,6 +251,7 @@ class ProcessManager
         if ($stdOutput)
         {
             /** @var \Symfony\Component\Process\Process $process */
+            $process = null;
             ttyExec($cmd, null, $process);
 
             return [
