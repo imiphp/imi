@@ -6,7 +6,7 @@ ARG PHP_JIT="0"
 
 RUN set -eux \
     && apt-get update && apt-get -y install procps libpq-dev unzip git libevent-dev libssl-dev \
-    && docker-php-ext-install bcmath mysqli pdo_mysql pdo_pgsql pcntl \
+    && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql pdo_pgsql pcntl sockets \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && pecl install inotify \

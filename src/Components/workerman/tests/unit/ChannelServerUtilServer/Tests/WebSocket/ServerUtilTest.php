@@ -94,16 +94,16 @@ class ServerUtilTest extends BaseTest
                 'sendRawToAll'  => 1,
             ], $response->json(true));
 
+            sleep(1);
+
             $expectedData = json_encode(['data' => 'test']);
             $count = 0;
             for ($i = 0; $i < 2 && $count < 2; ++$i)
             {
                 $this->assertIsArray($recvDatas = $client1->receive());
-                var_dump(\count($recvDatas));
                 foreach ($recvDatas as $recvData)
                 {
                     $recv = $recvData->getPayload();
-                    var_dump($recv);
                     if ($expectedData === $recv)
                     {
                         ++$count;
@@ -190,6 +190,8 @@ class ServerUtilTest extends BaseTest
                 'sendRawToGroup' => 1,
             ], $response->json(true));
 
+            sleep(1);
+
             $expectedData = json_encode(['data' => 'test']);
             foreach ($clients as $client)
             {
@@ -197,11 +199,9 @@ class ServerUtilTest extends BaseTest
                 for ($i = 0; $i < 2 && $count < 2; ++$i)
                 {
                     $this->assertIsArray($recvDatas = $client->receive());
-                    var_dump(\count($recvDatas));
                     foreach ($recvDatas as $recvData)
                     {
                         $recv = $recvData->getPayload();
-                        var_dump($recv);
                         if ($expectedData === $recv)
                         {
                             ++$count;
