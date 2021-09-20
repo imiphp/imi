@@ -179,7 +179,7 @@ jobs:
         php: [7.4]
         swoole: [v4.7.1]
     env:
-      MYSQL_SERVER_PASSWORD: ""
+      MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
     steps:
       - name: Checkout
@@ -230,7 +230,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         run: |
-          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
       - name: Test
