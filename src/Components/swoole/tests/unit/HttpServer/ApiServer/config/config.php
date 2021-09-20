@@ -48,7 +48,7 @@ return [
             ],
         ],
         'ExecuteTimeoutMiddleware' => [
-            'maxExecuteTime'    => 3000,
+            'maxExecuteTime'    => 1000,
         ],
         'HttpNotFoundHandler'   => [
             'handler'   => 'MyHttpNotFoundHandler',

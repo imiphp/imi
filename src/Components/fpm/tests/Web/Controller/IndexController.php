@@ -258,18 +258,6 @@ class IndexController extends HttpController
 
     /**
      * @Action
-     */
-    public function executeTimeout(): array
-    {
-        sleep(5);
-
-        return [
-            'success'    => true,
-        ];
-    }
-
-    /**
-     * @Action
      * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
      */
     public function regularExpression1(int $id, int $page): array

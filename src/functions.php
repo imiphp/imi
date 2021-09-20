@@ -92,15 +92,15 @@ namespace Imi
      *
      * @param string|array $commands
      */
-    function ttyExec($commands): int
+    function ttyExec($commands, ?float $timeout = null, ?Process &$process = null): int
     {
         if (\is_array($commands))
         {
-            $process = new Process($commands);
+            $process = new Process($commands, null, null, null, $timeout);
         }
         else
         {
-            $process = Process::fromShellCommandline($commands);
+            $process = Process::fromShellCommandline($commands, null, null, null, $timeout);
         }
         if ('\\' !== \DIRECTORY_SEPARATOR && $process->isTtySupported())
         {

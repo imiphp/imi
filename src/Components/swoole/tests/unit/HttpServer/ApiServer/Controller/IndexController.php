@@ -288,7 +288,7 @@ class IndexController extends HttpController
      */
     public function executeTimeout(): array
     {
-        Coroutine::sleep(5);
+        Coroutine::sleep(2);
 
         return [
             'success'    => true,
