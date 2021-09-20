@@ -19,6 +19,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
 use Swoole\Process;
+use function Imi\ttyExec;
 
 /**
  * 进程管理类.
@@ -238,7 +239,7 @@ class ProcessManager
      *     'output' => '',
      * );.
      */
-    public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): array
+    public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdOutput = false): array
     {
         $cmd = Imi::getImiCmd('process/run', [$name], $args);
         if (null !== $redirectStdinStdout)
@@ -259,7 +260,7 @@ class ProcessManager
      *
      * @return array{code: int, signal: int}
      */
-    public static function runEx(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdEcho = false): array
+    public static function runTty(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): array
     {
         $cmd = Imi::getImiCmd('process/run', [$name], $args);
         if (null !== $redirectStdinStdout)
@@ -271,21 +272,7 @@ class ProcessManager
             $cmd .= ' --pipeType ' . $pipeType;
         }
 
-        $process = \Symfony\Component\Process\Process::fromShellCommandline($cmd);
-        $process->setTimeout(null);
-        $process->setTty(ImiCommand::getOutput()->isDecorated());
-        $process->start();
-
-        if ($stdEcho)
-        {
-            $process->wait(function ($type, $buffer) {
-                echo $buffer;
-            });
-        }
-        else
-        {
-            $process->wait();
-        }
+        ttyExec($cmd, null, $process);
 
         return [
             'code'   => $process->getExitCode(),

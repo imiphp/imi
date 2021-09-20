@@ -102,12 +102,19 @@ namespace Imi
         {
             $process = Process::fromShellCommandline($commands, null, null, null, $timeout);
         }
-        if ('\\' !== \DIRECTORY_SEPARATOR && $process->isTtySupported())
+
+        if ('/' === \DIRECTORY_SEPARATOR && $process->isTtySupported())
         {
             $process->setTty(true);
+            $process->wait();
         }
-        $process->start();
+        else
+        {
+            $process->wait(function ($type, $buffer) {
+                echo $buffer;
+            });
+        }
 
-        return $process->wait();
+        return $process->getExitCode();
     }
 }
