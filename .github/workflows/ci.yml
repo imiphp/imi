@@ -193,7 +193,7 @@ jobs:
         with:
           redis-version: '6.x'
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@verbose
         with:
           php-version: ${{ matrix.php }}
           tools: pecl
