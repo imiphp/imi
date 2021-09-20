@@ -102,6 +102,7 @@ class ServerUtilTest extends BaseTest
                 foreach ($recvDatas as $recvData)
                 {
                     $recv = $recvData->getPayload();
+                    var_dump($recv);
                     if ($expectedData === $recv)
                     {
                         ++$count;
@@ -198,6 +199,7 @@ class ServerUtilTest extends BaseTest
                     foreach ($recvDatas as $recvData)
                     {
                         $recv = $recvData->getPayload();
+                        var_dump($recv);
                         if ($expectedData === $recv)
                         {
                             ++$count;
