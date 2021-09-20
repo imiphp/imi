@@ -341,7 +341,7 @@ class CronRandomWorker implements ICronTask
 [
     'CronManager'   =>  [
         // 启用任务进程终端输出
-        'stdEcho' => true,
+        'stdOutput' => true,
         // 任务列表定义
         'tasks' =>  [
             // 任务唯一ID
