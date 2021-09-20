@@ -199,7 +199,7 @@ jobs:
         id: opecssl-dir
         run: echo "::set-output name=path::$(brew --prefix openssl)"
       - name: Setup PHP
-        uses: shivammathur/setup-php@verbose
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           tools: pecl
