@@ -202,25 +202,25 @@ jobs:
       - name: Test
         run: composer test
       - name: Test swoole
-        run: docker exec ${ENV_SERVICE} composer test-swoole
+        run: composer test-swoole
       - name: Test workerman
-        run: docker exec ${ENV_SERVICE} composer test-workerman
+        run: composer test-workerman
       - name: Test workerman-gateway
-        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+        run: composer test-workerman-gateway
       - name: Test fpm
-        run: docker exec ${ENV_SERVICE} composer test-fpm
+        run: composer test-fpm
       - name: Test jwt
-        run: docker exec ${ENV_SERVICE} composer test-jwt
+        run: composer test-jwt
       - name: Test queue
-        run: docker exec ${ENV_SERVICE} composer test-queue
+        run: composer test-queue
       - name: Test grpc
-        run: docker exec ${ENV_SERVICE} composer test-grpc
+        run: composer test-grpc
       - name: Test snowflake
-        run: docker exec ${ENV_SERVICE} composer test-snowflake
+        run: composer test-snowflake
       - name: Test mqtt
-        run: docker exec ${ENV_SERVICE} composer test-mqtt
+        run: composer test-mqtt
       - name: Test smarty
-        run: docker exec ${ENV_SERVICE} composer test-smarty
+        run: composer test-smarty
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
