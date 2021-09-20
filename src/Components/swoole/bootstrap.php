@@ -34,15 +34,13 @@ return function () {
                         $fileName = $path . '/vendor/autoload.php';
                         if (is_file($fileName))
                         {
-                            break;
+                            require $fileName;
+
+                            return;
                         }
                     }
-                    if (!is_file($fileName))
-                    {
-                        echo 'No file vendor/autoload.php', \PHP_EOL;
-                        exit(255);
-                    }
-                    require $fileName;
+                    echo 'No file vendor/autoload.php', \PHP_EOL;
+                    exit(255);
                 })();
             }
 
