@@ -83,6 +83,8 @@ class ServerUtilTest extends BaseTest
                 'sendRawToAll'  => 3,
             ], $response->json(true));
 
+            sleep(1);
+
             $expectedData = json_encode(['data' => 'test']);
             $count = 0;
             for ($i = 0; $i < 6 && $count < 6; ++$i)
@@ -170,6 +172,8 @@ class ServerUtilTest extends BaseTest
                 'sendToGroup'    => 2,
                 'sendRawToGroup' => 2,
             ], $response->json(true));
+
+            sleep(1);
 
             $expectedData = json_encode(['data' => 'test']);
             foreach ($clients as $client)
