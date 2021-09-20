@@ -19,6 +19,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
 use Swoole\Process;
+use function var_dump;
 
 /**
  * 进程管理类.
@@ -232,6 +233,8 @@ class ProcessManager
      * 运行进程，协程挂起等待进程执行返回
      * 执行完成返回数组，包含了进程退出的状态码、信号。
      *
+     * @param bool $stdOutput 输出控制：true，打印到终端，不返回、false，不输出终端，返回输出
+     *
      * @return array{code: int, signal: int}
      */
     public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdOutput = false): array
@@ -248,11 +251,13 @@ class ProcessManager
 
         if ($stdOutput)
         {
+            /** @var \Symfony\Component\Process\Process $process */
             ttyExec($cmd, null, $process);
 
             return [
                 'code'   => $process->getExitCode(),
                 'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
+                'output' => '',
             ];
         }
         else
