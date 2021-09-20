@@ -177,7 +177,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4]
-        swoole: [4.7]
+        swoole: [v4.7.1]
     env:
       MYSQL_SERVER_PASSWORD: ""
       PHP_VERSION: ${{ matrix.php }}
@@ -203,13 +203,15 @@ jobs:
           tools: pecl
           extensions: >
             bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets,
-            swoole-swoole/swoole-src@v4.7.1
+            swoole-swoole/swoole-src@${{ matrix.swoole }}
         env:
           SWOOLE_CONFIGURE_OPTS: >
             --enable-openssl
+            --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
             --enable-http2
             --enable-mysqlnd
-            --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
+            --enable-swoole-json
+            --enable-swoole-curl
       - name: Check Version
         run: |
           php -v
@@ -224,8 +226,6 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-      - name: Install env
-        run: .github/macos/install-env.sh
       - name: Prepare
         run: |
           composer update --prefer-dist --no-progress
