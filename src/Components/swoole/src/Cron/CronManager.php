@@ -45,7 +45,7 @@ class CronManager implements ICronManager
     /**
      * 任务进程支持回显终端输出.
      */
-    protected bool $setOutput = true;
+    protected bool $stdOutput = true;
 
     /**
      * 真实的任务对象列表.
@@ -218,7 +218,7 @@ class CronManager implements ICronManager
                             'data'       => json_encode($data),
                             'class'      => $class,
                             'cron-sock'  => $this->getSocketFile(),
-                        ], null, null, $this->setOutput);
+                        ], null, null, $this->stdOutput);
                     };
                     break;
                 case CronTaskType::CRON_PROCESS:
@@ -245,7 +245,7 @@ class CronManager implements ICronManager
                     'id'         => $id,
                     'data'       => json_encode($data),
                     'cron-sock'  => $this->getSocketFile(),
-                ], null, null, $this->setOutput);
+                ], null, null, $this->stdOutput);
             };
         }
         elseif (is_subclass_of($class, ITaskHandler::class))
