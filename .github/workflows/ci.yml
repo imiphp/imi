@@ -189,9 +189,13 @@ jobs:
         with:
           mysql-version: "8.0"
           root-password: root
-      - uses: shogo82148/actions-setup-redis@v1
+      - name: Setup Redis
+        uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: '6.x'
+      - name: Get Openssl Dir
+        id: opecssl-dir
+        run: echo "::set-output name=path::$(brew --prefix openssl)"
       - name: Setup PHP
         uses: shivammathur/setup-php@verbose
         with:
@@ -201,7 +205,11 @@ jobs:
             bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets,
             swoole-swoole/swoole-src@v4.7.1
         env:
-          SWOOLE_CONFIGURE_OPTS: --enable-openssl --enable-http2 --enable-mysqlnd
+          SWOOLE_CONFIGURE_OPTS: >
+            --enable-openssl
+            --enable-http2
+            --enable-mysqlnd
+            --with-openssl-dir=${{ steps.opecssl-dir.outputs.path }}
       - name: Check Version
         run: |
           php -v
