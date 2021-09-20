@@ -67,8 +67,14 @@ echo \Imi\cmd('ls');
 
 返回进程退出码
 
-定义：`function ttyExec(string|array $commands): int`
+定义：`function ttyExec(string|array $commands, ?float $timeout = null, ?\Symfony\Component\Process\Process &$process = null): int`
 
 ```php
-\Imi\tty('ls');
+\Imi\tty('ls'); // 默认不超时
+
+\Imi\tty('sleep 2', 1.5); // 1.5 秒超时
+
+\Imi\tty('ls', null, $process); // 捕获 \Symfony\Component\Process\Process 对象
 ```
+
+超时会抛出异常：`\Symfony\Component\Process\Exception\ProcessTimedOutException`
