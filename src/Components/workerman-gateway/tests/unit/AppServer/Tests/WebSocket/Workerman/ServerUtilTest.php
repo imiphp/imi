@@ -32,7 +32,13 @@ class ServerUtilTest extends BaseTest
         $this->go(function () use (&$client1, &$client2, &$client3) {
             $client1 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client1->connect());
+            $client2 = new Client($this->host, $this->httpHost);
+            $this->assertTrue($client2->connect());
+            $client3 = new Client($this->host, $this->httpHost);
+            $this->assertTrue($client3->connect());
+
             sleep(1);
+
             $this->assertTrue($client1->sendData(json_encode([
                 'action'    => 'info',
             ])));
@@ -41,9 +47,6 @@ class ServerUtilTest extends BaseTest
             $recvData1 = json_decode($recv, true);
             $this->assertTrue(isset($recvData1['clientId']));
 
-            $client2 = new Client($this->host, $this->httpHost);
-            $this->assertTrue($client2->connect());
-            sleep(1);
             $this->assertTrue($client2->sendData(json_encode([
                 'action'    => 'info',
             ])));
@@ -52,9 +55,6 @@ class ServerUtilTest extends BaseTest
             $recvData2 = json_decode($recv, true);
             $this->assertTrue(isset($recvData2['clientId']));
 
-            $client3 = new Client($this->host, $this->httpHost);
-            $this->assertTrue($client3->connect());
-            sleep(1);
             $this->assertTrue($client3->sendData(json_encode([
                 'action'    => 'login',
                 'username'  => 'testSend',
@@ -155,7 +155,12 @@ class ServerUtilTest extends BaseTest
             {
                 $clients[] = $client = new Client($this->host, $this->httpHost);
                 $this->assertTrue($client->connect());
-                sleep(1);
+            }
+
+            sleep(1);
+
+            foreach ($clients as $client)
+            {
                 $this->assertTrue($client->sendData(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
@@ -207,7 +212,11 @@ class ServerUtilTest extends BaseTest
         {
             $client1 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client1->connect());
+            $client2 = new Client($this->host, $this->httpHost);
+            $this->assertTrue($client2->connect());
+
             sleep(1);
+
             $this->assertTrue($client1->sendData(json_encode([
                 'action'    => 'info',
             ])));
@@ -216,9 +225,6 @@ class ServerUtilTest extends BaseTest
             $recvData1 = json_decode($recv, true);
             $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
-            $client2 = new Client($this->host, $this->httpHost);
-            $this->assertTrue($client2->connect());
-            sleep(1);
             $this->assertTrue($client2->sendData(json_encode([
                 'action'    => 'login',
                 'username'  => 'testExists',
@@ -255,7 +261,11 @@ class ServerUtilTest extends BaseTest
         {
             $client1 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client1->connect());
+            $client2 = new Client($this->host, $this->httpHost);
+            $this->assertTrue($client2->connect());
+
             sleep(1);
+
             $this->assertTrue($client1->sendData(json_encode([
                 'action'    => 'info',
             ])));
@@ -264,9 +274,6 @@ class ServerUtilTest extends BaseTest
             $recvData1 = json_decode($recv, true);
             $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
-            $client2 = new Client($this->host, $this->httpHost);
-            $this->assertTrue($client2->connect());
-            sleep(1);
             $this->assertTrue($client2->sendData(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',
