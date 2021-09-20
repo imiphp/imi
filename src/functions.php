@@ -103,7 +103,7 @@ namespace Imi
             $process = Process::fromShellCommandline($commands, null, null, null, $timeout);
         }
 
-        if ('/' === \DIRECTORY_SEPARATOR && $process->isTtySupported())
+        if ('/' === \DIRECTORY_SEPARATOR && Process::isTtySupported())
         {
             $process->setTty(true);
             $process->run();
