@@ -31,7 +31,7 @@ abstract class BaseCacheTest extends BaseTest
         }
         Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 1));
         Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
-        usleep(1100000);
+        usleep(1500000);
         Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
     }
 
@@ -63,7 +63,7 @@ abstract class BaseCacheTest extends BaseTest
             Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values, 1));
             $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
             Assert::assertEquals($values, $getValues);
-            usleep(1100000);
+            usleep(1500000);
             Assert::assertEquals([
                 'k1'    => 'none',
                 'k2'    => 'none',
