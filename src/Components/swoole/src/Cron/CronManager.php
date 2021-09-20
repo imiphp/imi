@@ -43,6 +43,11 @@ class CronManager implements ICronManager
     protected ?string $socketFile = null;
 
     /**
+     * 任务进程支持回显终端输出.
+     */
+    protected bool $setOutput = true;
+
+    /**
      * 真实的任务对象列表.
      *
      * @var \Imi\Cron\CronTask[]
@@ -208,12 +213,12 @@ class CronManager implements ICronManager
                     break;
                 case CronTaskType::PROCESS:
                     $task = function (string $id, $data) use ($class) {
-                        ProcessManager::runTty('CronWorkerProcess', [
+                        ProcessManager::run('CronWorkerProcess', [
                             'id'         => $id,
                             'data'       => json_encode($data),
                             'class'      => $class,
                             'cron-sock'  => $this->getSocketFile(),
-                        ]);
+                        ], null, null, $this->setOutput);
                     };
                     break;
                 case CronTaskType::CRON_PROCESS:
@@ -236,11 +241,11 @@ class CronManager implements ICronManager
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
             }
             $task = function (string $id, $data) use ($process) {
-                ProcessManager::runTty($process->name, [
+                ProcessManager::run($process->name, [
                     'id'         => $id,
                     'data'       => json_encode($data),
                     'cron-sock'  => $this->getSocketFile(),
-                ]);
+                ], null, null, $this->setOutput);
             };
         }
         elseif (is_subclass_of($class, ITaskHandler::class))

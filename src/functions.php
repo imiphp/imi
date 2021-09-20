@@ -106,11 +106,11 @@ namespace Imi
         if ('/' === \DIRECTORY_SEPARATOR && $process->isTtySupported())
         {
             $process->setTty(true);
-            $process->wait();
+            $process->run();
         }
         else
         {
-            $process->wait(function ($type, $buffer) {
+            $process->run(function ($type, $buffer) {
                 echo $buffer;
             });
         }

@@ -6,20 +6,19 @@ namespace Imi\Swoole\Process;
 
 use Imi\App;
 use Imi\Bean\Scanner;
-use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
+use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
 use Swoole\Process;
-use function Imi\ttyExec;
 
 /**
  * 进程管理类.
@@ -231,13 +230,9 @@ class ProcessManager
 
     /**
      * 运行进程，协程挂起等待进程执行返回
-     * 不返回\Swoole\Process对象实例
-     * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
-     * array(
-     *     'code'   => 0,
-     *     'signal' => 0,
-     *     'output' => '',
-     * );.
+     * 执行完成返回数组，包含了进程退出的状态码、信号。
+     *
+     * @return array{code: int, signal: int}
      */
     public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdOutput = false): array
     {
@@ -251,33 +246,19 @@ class ProcessManager
             $cmd .= ' --pipeType ' . $pipeType;
         }
 
-        return Coroutine::exec($cmd);
-    }
-
-    /**
-     * 运行进程，协程挂起等待进程执行返回
-     * 执行完成返回数组，包含了进程退出的状态码、信号。
-     *
-     * @return array{code: int, signal: int}
-     */
-    public static function runTty(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): array
-    {
-        $cmd = Imi::getImiCmd('process/run', [$name], $args);
-        if (null !== $redirectStdinStdout)
+        if ($stdOutput)
         {
-            $cmd .= ' --redirectStdinStdout ' . $redirectStdinStdout;
+            ttyExec($cmd, null, $process);
+
+            return [
+                'code'   => $process->getExitCode(),
+                'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
+            ];
         }
-        if (null !== $pipeType)
+        else
         {
-            $cmd .= ' --pipeType ' . $pipeType;
+            return Coroutine::exec($cmd);
         }
-
-        ttyExec($cmd, null, $process);
-
-        return [
-            'code'   => $process->getExitCode(),
-            'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
-        ];
     }
 
     /**
