@@ -120,7 +120,7 @@ class RedisModelTest extends BaseTest
         ]);
         $this->assertEquals($expected, $record->toArray());
 
-        sleep(3);
+        usleep(1100000);
         $record = TestRedisModel2::find([
             'id'    => 1,
             'name'  => 'a',

@@ -45,9 +45,6 @@ return [
                 'php',
             ],
         ],
-        'ExecuteTimeoutMiddleware' => [
-            'maxExecuteTime'    => 3000,
-        ],
         'HttpNotFoundHandler'   => [
             'handler'   => 'MyHttpNotFoundHandler',
         ],

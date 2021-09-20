@@ -232,7 +232,7 @@ class RequestTest extends BaseTest
         $time = microtime(true);
         $response = $http->get($this->host . 'executeTimeout');
         $time = microtime(true) - $time;
-        $this->assertLessThan(5, $time);
+        $this->assertLessThan(2, $time);
         $this->assertEquals('<h1>Request execute timeout</h1>', $response->body());
     }
 
