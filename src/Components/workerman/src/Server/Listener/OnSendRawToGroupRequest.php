@@ -8,6 +8,8 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\RequestContext;
+use Imi\Server\ServerManager;
 use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
@@ -24,6 +26,7 @@ class OnSendRawToGroupRequest implements IEventListener
     {
         $data = $e->getData();
         ['data' => $data, 'groupName' => $groupName, 'serverName' => $serverName] = $data['data'];
+        RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */
         $serverUtil = App::getBean(LocalServerUtil::class);

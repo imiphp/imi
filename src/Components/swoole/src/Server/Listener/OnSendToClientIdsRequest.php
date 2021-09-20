@@ -7,6 +7,8 @@ namespace Imi\Swoole\Server\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\RequestContext;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
 
@@ -25,14 +27,16 @@ class OnSendToClientIdsRequest implements IEventListener
         $eData = $e->getData();
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
-        $result = Server::sendRaw($data['data'], $data['clientIds'], $data['serverName'], false);
+        $serverName = $data['serverName'];
+        RequestContext::set('server', ServerManager::getServer($serverName));
+        $result = Server::sendRaw($data['data'], $data['clientIds'], $serverName, false);
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('sendToClientIdsResponse', [
                 'messageId'  => $data['messageId'],
                 'result'     => $result,
-                'serverName' => $data['serverName'],
-            ], $workerId, $data['serverName']);
+                'serverName' => $serverName,
+            ], $workerId, $serverName);
         }
     }
 }
