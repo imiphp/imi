@@ -99,6 +99,7 @@ class ServerUtilTest extends BaseTest
             for ($i = 0; $i < 2 && $count < 2; ++$i)
             {
                 $this->assertIsArray($recvDatas = $client1->receive());
+                var_dump(\count($recvDatas));
                 foreach ($recvDatas as $recvData)
                 {
                     $recv = $recvData->getPayload();
@@ -196,6 +197,7 @@ class ServerUtilTest extends BaseTest
                 for ($i = 0; $i < 2 && $count < 2; ++$i)
                 {
                     $this->assertIsArray($recvDatas = $client->receive());
+                    var_dump(\count($recvDatas));
                     foreach ($recvDatas as $recvData)
                     {
                         $recv = $recvData->getPayload();
