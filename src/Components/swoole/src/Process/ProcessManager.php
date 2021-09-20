@@ -12,6 +12,7 @@ use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
+use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
@@ -229,15 +230,13 @@ class ProcessManager
 
     /**
      * 运行进程，协程挂起等待进程执行返回
-     * 不返回\Swoole\Process对象实例
-     * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
-     * array(
-     *     'code'   => 0,
-     *     'signal' => 0,
-     *     'output' => '',
-     * );.
+     * 执行完成返回数组，包含了进程退出的状态码、信号。
+     *
+     * @param bool $stdOutput 输出控制：true，打印到终端，不返回、false，不输出终端，返回输出
+     *
+     * @return array{code: int, signal: int}
      */
-    public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): array
+    public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdOutput = false): array
     {
         $cmd = Imi::getImiCmd('process/run', [$name], $args);
         if (null !== $redirectStdinStdout)
@@ -249,7 +248,22 @@ class ProcessManager
             $cmd .= ' --pipeType ' . $pipeType;
         }
 
-        return Coroutine::exec($cmd);
+        if ($stdOutput)
+        {
+            /** @var \Symfony\Component\Process\Process $process */
+            $process = null;
+            ttyExec($cmd, null, $process);
+
+            return [
+                'code'   => $process->getExitCode(),
+                'signal' => $process->isTerminated() ? $process->getTermSignal() : $process->getStopSignal(),
+                'output' => '',
+            ];
+        }
+        else
+        {
+            return Coroutine::exec($cmd);
+        }
     }
 
     /**

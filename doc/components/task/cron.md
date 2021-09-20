@@ -340,6 +340,9 @@ class CronRandomWorker implements ICronTask
 ```php
 [
     'CronManager'   =>  [
+        // 启用任务进程终端输出
+        'stdOutput' => true,
+        // 任务列表定义
         'tasks' =>  [
             // 任务唯一ID
             'taskName'  =>  [
