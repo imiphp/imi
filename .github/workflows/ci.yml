@@ -189,6 +189,8 @@ jobs:
         with:
           mysql-version: "8.0"
           root-password: root
+          my-cnf: |
+            socket=/tmp/mysql.sock
       - name: Setup Redis
         uses: shogo82148/actions-setup-redis@v1
         with:
@@ -228,11 +230,9 @@ jobs:
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         run: |
-          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
-          php src/Cli/bin/imi-cli generate/table --app-namespace "Imi\Test\Component"
-#          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-#          tests/db/install-db.sh
+          tests/db/install-db.sh
       - name: Test
         run: composer test
       - name: Test swoole
