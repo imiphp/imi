@@ -4,9 +4,9 @@ FROM phpswoole/swoole:${SWOOLE_DOCKER_VERSION}
 
 ARG POSTGRESQL_VERSION=""
 
+COPY script/ /tmp/script
+
 RUN set -eux \
-    && ls -l /imi \
-    && bash ./script/hprose.sh \
     && apt-get update && apt-get -y install procps libpq-dev unzip git libevent-dev libssl-dev \
     && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql pdo_pgsql pcntl sockets \
     && pecl install redis \
@@ -15,6 +15,6 @@ RUN set -eux \
     && docker-php-ext-enable inotify \
     && pecl install event \
     && docker-php-ext-enable --ini-name z-event.ini event \
-    && bash ./script/swoole_postgresql.sh ${POSTGRESQL_VERSION} \
-    && bash ./script/hprose.sh \
+    && bash /tmp/script/swoole_postgresql.sh ${POSTGRESQL_VERSION} \
+    && bash /tmp/script/hprose.sh \
     && echo "zend_extension=opcache.so" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
