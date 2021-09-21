@@ -5,6 +5,8 @@ FROM phpswoole/swoole:${SWOOLE_DOCKER_VERSION}
 ARG POSTGRESQL_VERSION=""
 
 RUN set -eux \
+    && ls -l . \
+    && bash ./script/hprose.sh \
     && apt-get update && apt-get -y install procps libpq-dev unzip git libevent-dev libssl-dev \
     && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql pdo_pgsql pcntl sockets \
     && pecl install redis \
