@@ -13,7 +13,6 @@ jobs:
     env:
       ENV_SERVICE: swoole
       PHP_JIT: yes
-      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       REDIS_SERVER_HOST: redis
@@ -127,7 +126,6 @@ jobs:
         mysql: [ 8.0 ]
     env:
       ENV_SERVICE: swoole
-      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
