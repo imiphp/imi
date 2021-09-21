@@ -11,9 +11,11 @@ jobs:
         swoole: [4.7-php8.0]
         mysql: [8.0]
     env:
+      ENV_SERVICE: swoole
+      PHP_JIT: yes
+      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-      ENV_SERVICE: swoole-php8
       REDIS_SERVER_HOST: redis
     steps:
       - name: Checkout
@@ -67,9 +69,10 @@ jobs:
         swoole: [4.7-php7.4, 4.7-php8.0]
         mysql: [5.7, 8.0]
     env:
+      ENV_SERVICE: swoole
+      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-      ENV_SERVICE: swoole
       REDIS_SERVER_HOST: redis
     steps:
       - name: Checkout
@@ -124,6 +127,7 @@ jobs:
         mysql: [ 8.0 ]
     env:
       ENV_SERVICE: swoole
+      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
@@ -204,7 +208,7 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: pecl
           extensions: >
-            bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets,
+            bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets,
             swoole-swoole/swoole-src@${{ matrix.swoole }}
         env:
           SWOOLE_CONFIGURE_OPTS: >

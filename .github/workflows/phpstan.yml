@@ -15,10 +15,10 @@ jobs:
       - name: Prepare
         run: |
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
-          docker exec ${ENV_SERVICE} php -v \
-            && php -m \
-            && php --ri swoole \
-            && composer -V
+          docker exec ${ENV_SERVICE} php -v
+          docker exec ${ENV_SERVICE} php -m
+          docker exec ${ENV_SERVICE} php --ri swoole
+          docker exec ${ENV_SERVICE} composer -V
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
