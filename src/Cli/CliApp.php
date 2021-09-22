@@ -84,7 +84,7 @@ class CliApp extends BaseApp
         else
         {
             // 尝试加载默认 runtime
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'), true);
+            $result = Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('imi-runtime'), true);
         }
         if (!$result)
         {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Process\Cli;
 
-use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -26,9 +25,6 @@ class Process extends BaseCommand
      */
     public function start(string $name): void
     {
-        // 加载服务器注解
-        Scanner::scanVendor();
-        Scanner::scanApp();
         $worker = ProcessManager::newProcess($name);
         ($worker->onWorkerStart)();
     }

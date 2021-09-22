@@ -140,7 +140,7 @@ class SwooleApp extends CliApp
         else
         {
             // 尝试加载默认 runtime
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'), true);
+            $result = Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('imi-runtime'), true);
         }
         if (!$result)
         {
@@ -149,7 +149,7 @@ class SwooleApp extends CliApp
         }
         if ($isServerStart)
         {
-            $imiRuntime = Imi::getRuntimePath('imi-runtime');
+            $imiRuntime = Imi::getCurrentModeRuntimePath('imi-runtime');
             Imi::buildRuntime($imiRuntime);
 
             // 执行命令行生成缓存
@@ -161,7 +161,7 @@ class SwooleApp extends CliApp
             {
                 exit($code);
             }
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+            $result = Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
 
             return LoadRuntimeResult::ALL;
         }

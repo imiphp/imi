@@ -21,13 +21,13 @@ imi v2.0 版本开始，支持运行在 PHP-FPM 环境中。
 
 在生产环境中，我们建议你每次部署都重新生成运行时缓存，以获得性能提升。
 
-生成项目缓存命令：`vendor/bin/imi-cli imi/buildRuntime --app-namespace "项目命名空间" --runtimeMode=Fpm`
+生成项目缓存命令：`vendor/bin/imi-cli imi/buildRuntime --app-namespace "项目命名空间" --runtimeMode=fpm`
 
 > 生成后，会在 `.runtime` 目录中生成 `runtime`，部署更新项目时需要手动删除
 
 ---
 
-如果你是开发时，建议生成框架运行时缓存：`vendor/bin/imi-cli imi/buildImiRuntime --app-namespace "项目命名空间"`
+如果你是开发时，建议生成框架运行时缓存：`vendor/bin/imi-cli imi/buildImiRuntime --app-namespace "项目命名空间" --runtimeMode=fpm`
 
 > 生成后，会在 `.runtime` 目录中生成 `imi-runtime`，更新框架后需要手动删除
 

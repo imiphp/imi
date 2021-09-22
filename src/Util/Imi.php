@@ -413,6 +413,22 @@ class Imi
     }
 
     /**
+     * 获取模式对应的运行时目录路径.
+     */
+    public static function getModeRuntimePath(?string $mode = null, string ...$path): string
+    {
+        return self::getRuntimePath($mode ?? App::getApp()->getType(), ...$path);
+    }
+
+    /**
+     * 获取当前模式对应的运行时目录路径.
+     */
+    public static function getCurrentModeRuntimePath(string ...$path): string
+    {
+        return self::getRuntimePath(App::getApp()->getType(), ...$path);
+    }
+
+    /**
      * 构建运行时缓存.
      *
      * @param string|null $cacheName 如果为空则默认为runtime
@@ -421,7 +437,7 @@ class Imi
     {
         if (null === $cacheName)
         {
-            $cacheName = self::getRuntimePath('runtime');
+            $cacheName = self::getCurrentModeRuntimePath('runtime');
         }
         if (!is_dir($cacheName))
         {

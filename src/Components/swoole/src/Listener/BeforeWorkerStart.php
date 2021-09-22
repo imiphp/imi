@@ -26,7 +26,7 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         // 随机数播种
         mt_srand();
 
-        ImiUtil::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime'));
+        ImiUtil::loadRuntimeInfo(ImiUtil::getCurrentModeRuntimePath('runtime'));
 
         if ($e->server->getSwooleServer()->taskworker)
         {

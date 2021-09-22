@@ -27,12 +27,13 @@ class Imi extends BaseCommand
      *
      * @CommandAction(name="buildImiRuntime", description="构建框架预加载缓存")
      * @Option(name="file", type=ArgType::STRING, default=null, comments="可以指定生成到目标文件")
+     * @Option(name="runtimeMode", type=ArgType::STRING, default=null, comments="指定运行时模式")
      */
-    public function buildImiRuntime(?string $file): void
+    public function buildImiRuntime(?string $file, ?string $runtimeMode = null): void
     {
         if (null === $file)
         {
-            $file = \Imi\Util\Imi::getRuntimePath('imi-runtime');
+            $file = \Imi\Util\Imi::getModeRuntimePath($runtimeMode, 'imi-runtime');
         }
         ImiUtil::buildRuntime($file);
         $this->output->writeln('<info>Build imi runtime complete</info>');
@@ -42,10 +43,11 @@ class Imi extends BaseCommand
      * 清除框架预加载缓存.
      *
      * @CommandAction(name="clearImiRuntime", description="清除框架预加载缓存")
+     * @Option(name="runtimeMode", type=ArgType::STRING, default=null, comments="指定运行时模式")
      */
-    public function clearImiRuntime(): void
+    public function clearImiRuntime(?string $runtimeMode = null): void
     {
-        $file = ImiUtil::getRuntimePath('imi-runtime');
+        $file = ImiUtil::getModeRuntimePath($runtimeMode, 'imi-runtime');
         if (File::deleteDir($file))
         {
             $this->output->writeln('<info>Clear imi runtime complete</info>');
@@ -82,12 +84,12 @@ class Imi extends BaseCommand
             }
         }
 
-        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime')))
+        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo(ImiUtil::getModeRuntimePath($runtimeMode, 'runtime')))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
         }
-        else
+        elseif ($confirm)
         {
             Scanner::scanVendor();
             Scanner::scanApp();
@@ -100,10 +102,11 @@ class Imi extends BaseCommand
      * 清除项目预加载缓存.
      *
      * @CommandAction(name="clearRuntime", description="清除项目预加载缓存")
+     * @Option(name="runtimeMode", type=ArgType::STRING, default=null, comments="指定运行时模式")
      */
-    public function clearRuntime(): void
+    public function clearRuntime(?string $runtimeMode = null): void
     {
-        $file = \Imi\Util\Imi::getRuntimePath('runtime');
+        $file = \Imi\Util\Imi::getModeRuntimePath($runtimeMode, 'runtime');
         if (File::deleteDir($file))
         {
             $this->output->writeln('<info>Clear app runtime complete</info>');
