@@ -64,40 +64,38 @@ class CronProcess extends BaseProcess
 
     protected function startSocketServer(): void
     {
-        imigo(function () {
-            $socketFile = $this->cronManager->getSocketFile();
-            if (is_file($socketFile))
+        $socketFile = $this->cronManager->getSocketFile();
+        if (is_file($socketFile))
+        {
+            unlink($socketFile);
+        }
+        $this->socket = $socket = stream_socket_server('unix://' . $socketFile, $errno, $errstr);
+        if (false === $socket)
+        {
+            throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %s', $errno, $errstr, $socketFile));
+        }
+        $this->running = true;
+        $running = &$this->running;
+        $this->startSchedule();
+        while ($running)
+        {
+            $arrRead = [$socket];
+            $write = $except = [];
+            if (stream_select($arrRead, $write, $except, 3) > 0)
             {
-                unlink($socketFile);
-            }
-            $this->socket = $socket = stream_socket_server('unix://' . $socketFile, $errno, $errstr);
-            if (false === $socket)
-            {
-                throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %s', $errno, $errstr, $socketFile));
-            }
-            $this->running = true;
-            $running = &$this->running;
-            $this->startSchedule();
-            while ($running)
-            {
-                $arrRead = [$socket];
-                $write = $except = [];
-                if (stream_select($arrRead, $write, $except, 3) > 0)
+                $conn = stream_socket_accept($socket, 1);
+                if (false === $conn)
                 {
-                    $conn = stream_socket_accept($socket, 1);
-                    if (false === $conn)
-                    {
-                        continue;
-                    }
-                    imigo(function () use ($conn) {
-                        $this->parseConn($conn);
-                        fclose($conn);
-                    });
+                    continue;
                 }
+                imigo(function () use ($conn) {
+                    $this->parseConn($conn);
+                    fclose($conn);
+                });
             }
-            // @phpstan-ignore-next-line
-            fclose($socket);
-        });
+        }
+        // @phpstan-ignore-next-line
+        fclose($socket);
     }
 
     /**
