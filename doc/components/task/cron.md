@@ -102,7 +102,7 @@ class TaskCron implements ITaskHandler
 namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Util\Args;
-use Imi\Swoole\Process\IProcess;
+use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Util\CronUtil;
 use Imi\Swoole\Process\Annotation\Process;
@@ -114,7 +114,7 @@ use Swoole\Event;
  */
 class TaskProcess implements IProcess
 {
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $success = false;
         $message = '';

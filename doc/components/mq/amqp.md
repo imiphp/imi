@@ -379,7 +379,7 @@ class TestProcess extends BaseProcess
      */
     protected $testConsumer2;
 
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         // 启动消费者
         go(function(){

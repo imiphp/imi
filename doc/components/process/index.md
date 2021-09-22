@@ -17,7 +17,7 @@ use Imi\Swoole\Process\Annotation\Process;
  */
 class TestProcess extends BaseProcess
 {
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         var_dump($this->data);
         sleep(3);

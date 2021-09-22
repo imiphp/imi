@@ -175,7 +175,7 @@ class TestProcess extends BaseProcess
      */
     protected $testConsumer;
 
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $this->runConsumer($this->testConsumer);
         \Swoole\Coroutine::yield();
