@@ -261,7 +261,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 // 随机数播种
                 mt_srand();
 
-                Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+                Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
 
                 // 创建共享 Worker 的服务
                 $config = $this->config;

@@ -98,7 +98,7 @@ class WorkermanApp extends CliApp
         else
         {
             // 尝试加载默认 runtime
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'), true);
+            $result = Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('imi-runtime'), true);
         }
         if (!$result)
         {
@@ -107,7 +107,7 @@ class WorkermanApp extends CliApp
         }
         if ($isServerStart)
         {
-            $imiRuntime = Imi::getRuntimePath('imi-runtime');
+            $imiRuntime = Imi::getCurrentModeRuntimePath('imi-runtime');
             Imi::buildRuntime($imiRuntime);
             $success = false;
             if (\extension_loaded('pcntl'))
@@ -143,7 +143,7 @@ class WorkermanApp extends CliApp
                     exit($code);
                 }
             }
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+            $result = Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
 
             return LoadRuntimeResult::ALL;
         }

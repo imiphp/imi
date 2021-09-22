@@ -200,7 +200,7 @@ class HotUpdateProcess extends BaseProcess
         $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
             'changedFilesFile'  => $this->changedFilesFile,
             'confirm'           => true,
-            'app-runtime'       => Imi::getRuntimePath('runtime'),
+            'app-runtime'       => Imi::getCurrentModeRuntimePath('runtime'),
         ]);
         static $descriptorspec = [
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据

@@ -67,10 +67,10 @@ class FpmApp extends BaseApp
     {
         $this->initRuntime();
         // 尝试加载项目运行时
-        $fileName = Imi::getRuntimePath('runtime');
+        $fileName = Imi::getCurrentModeRuntimePath('runtime');
         if (!Imi::loadRuntimeInfo($fileName))
         {
-            $fileName = Imi::getRuntimePath('imi-runtime');
+            $fileName = Imi::getCurrentModeRuntimePath('imi-runtime');
             $isBuildRuntime = !Imi::loadRuntimeInfo($fileName, true);
             if ($isBuildRuntime)
             {
