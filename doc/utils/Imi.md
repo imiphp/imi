@@ -93,6 +93,24 @@ echo Imi::getRuntimePath('a.jpg');
 echo Imi::getRuntimePath('a', 'b.jpg');
 ```
 
+### getModeRuntimePath
+
+获取模式对应的运行时目录路径
+
+```php
+// 返回：运行时目录路径/swoole/a/b.jpg
+echo Imi::getModeRuntimePath('swoole', 'a', 'b.jpg');
+```
+
+### getCurrentModeRuntimePath
+
+获取当前模式对应的运行时目录路径
+
+```php
+// 返回：运行时目录路径/swoole/a/b.jpg
+echo Imi::getModeRuntimePath('a', 'b.jpg');
+```
+
 ### buildRuntime
 
 构建运行时缓存
