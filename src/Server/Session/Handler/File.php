@@ -50,7 +50,8 @@ class File extends Base
         foreach ($files as $file)
         {
             $fileName = $file->getPathname();
-            if (filemtime($fileName) <= $maxTime)
+            $filemtime = filemtime($fileName);
+            if (false !== $filemtime && $filemtime <= $maxTime)
             {
                 unlink($fileName);
             }

@@ -376,7 +376,8 @@ class File extends Base
             return false;
         }
         $maxTime = time() - $data['ttl'];
-        if (filemtime($fileName) <= $maxTime)
+        $filemtime = filemtime($fileName);
+        if (false !== $filemtime && $filemtime <= $maxTime)
         {
             unlink($exDataFileName);
 
