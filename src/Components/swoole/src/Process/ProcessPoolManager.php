@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Process;
 
 use Imi\App;
-use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Swoole\Util\Imi;
 use RuntimeException;
@@ -89,9 +88,6 @@ class ProcessPoolManager
             mt_srand();
             \Swoole\Coroutine\run(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
                 $processInstance = App::getBean($processPoolOption['className'], $args);
-                // 加载服务器注解
-                Scanner::scanVendor();
-                Scanner::scanApp();
                 // 进程开始事件
                 Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [
                     'name'          => $name,

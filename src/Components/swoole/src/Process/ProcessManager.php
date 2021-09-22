@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Process;
 
 use Imi\App;
-use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
@@ -138,9 +137,6 @@ class ProcessManager
                     {
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
                     }
-                    // 加载服务器注解
-                    Scanner::scanVendor();
-                    Scanner::scanApp();
                     // 进程开始事件
                     Event::trigger('IMI.PROCESS.BEGIN', [
                         'name'      => $name,

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Model\Cli\Table;
 
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
@@ -40,8 +39,6 @@ class TableGenerate extends BaseCommand
      */
     public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, $override): void
     {
-        Scanner::scanVendor();
-        Scanner::scanApp();
         Event::trigger('IMI.GENERATE_MODEL.BEFORE');
         $override = (bool) json_decode((string) $override);
         $query = Db::query($poolName);

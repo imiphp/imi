@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process\Cli;
 
-use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -33,9 +32,6 @@ class Process extends BaseCommand
     public function start(string $name, ?bool $redirectStdinStdout, ?int $pipeType): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType) {
-            // 加载服务器注解
-            Scanner::scanVendor();
-            Scanner::scanApp();
             $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
             $process->start();
             $result = \Swoole\Process::wait(true);
@@ -57,9 +53,6 @@ class Process extends BaseCommand
     public function pool(string $name, ?int $worker, ?int $ipcType, ?string $msgQueueKey): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $worker, $ipcType, $msgQueueKey) {
-            // 加载服务器注解
-            Scanner::scanVendor();
-            Scanner::scanApp();
             $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
             $processPool->start();
         });
@@ -75,9 +68,6 @@ class Process extends BaseCommand
     public function run(string $name): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name) {
-            // 加载服务器注解
-            Scanner::scanVendor();
-            Scanner::scanApp();
             $processOption = ProcessManager::get($name);
             if (null === $processOption)
             {

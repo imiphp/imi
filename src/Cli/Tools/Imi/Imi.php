@@ -89,7 +89,7 @@ class Imi extends BaseCommand
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
         }
-        else
+        elseif ($confirm)
         {
             Scanner::scanVendor();
             Scanner::scanApp();
