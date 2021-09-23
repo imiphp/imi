@@ -62,7 +62,8 @@ trait TSoftDelete
         $query = parent::query($poolName, $queryType, $queryClass);
         $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
 
-        if ($softDeleteAnnotation->default === null) {
+        if (null === $softDeleteAnnotation->default)
+        {
             return $query->whereIsNull($softDeleteAnnotation->field);
         }
         return $query->where($softDeleteAnnotation->field, '=', $softDeleteAnnotation->default);
