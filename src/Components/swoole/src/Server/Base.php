@@ -227,6 +227,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'server'    => $this,
                         'workerId'  => $workerId,
                     ], $this, WorkerStartEventParam::class);
+                    Event::trigger('IMI.SERVER.WORKER_START', [
+                        'server'   => $this,
+                        'workerId' => $workerId,
+                    ], $this);
                 }
                 catch (\Throwable $ex)
                 {
@@ -242,6 +246,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'server'    => $this,
                         'workerId'  => $workerId,
                     ], $this, WorkerStopEventParam::class);
+                    Event::trigger('IMI.SERVER.WORKER_STOP', [
+                        'server'   => $this,
+                        'workerId' => $workerId,
+                    ], $this);
                 }
                 catch (\Throwable $ex)
                 {

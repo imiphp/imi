@@ -78,21 +78,29 @@
 
 无
 
-### IMI.INIT.WORKER.BEFORE
+### IMI.SERVER.WORKER_START
 
-Worker 进程初始化后置
+服务器 worker 进程启动事件
 
-事件参数：
-
-无
-
-### IMI.INIT.WORKER.AFTER
-
-Worker 进程初始化后置
+> 此事件常驻内存容器下，都会触发调用
 
 事件参数：
 
-无
+```php
+\Imi\Server\Contract\IServer $server, int $workerId
+```
+
+### IMI.SERVER.WORKER_STOP
+
+服务器 worker 进程停止事件
+
+事件参数：
+
+```php
+\Imi\Server\Contract\IServer $server, int $workerId
+```
+
+> 此事件常驻内存容器下，都会触发调用
 
 ### IMI.PROCESS.BEGIN
 

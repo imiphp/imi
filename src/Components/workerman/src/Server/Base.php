@@ -316,6 +316,10 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server' => $this,
                     'worker' => $worker,
                 ], $this);
+                Event::trigger('IMI.SERVER.WORKER_START', [
+                    'server'   => $this,
+                    'workerId' => $worker->id,
+                ], $this);
 
                 \Imi\Worker::inited();
                 foreach (ServerManager::getServers() as $name => $_)
@@ -340,6 +344,10 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 Event::trigger('IMI.WORKERMAN.SERVER.WORKER_STOP', [
                     'server' => $this,
                     'worker' => $worker,
+                ], $this);
+                Event::trigger('IMI.SERVER.WORKER_STOP', [
+                    'server'   => $this,
+                    'workerId' => $worker->id,
                 ], $this);
                 RequestContext::destroy();
             }
