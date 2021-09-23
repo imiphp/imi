@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Annotation\Relation\AutoUpdate;
 use Imi\Model\Annotation\Relation\RelationBase;
+use Imi\Model\Model;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -21,13 +22,13 @@ abstract class Update
     /**
      * 处理更新.
      *
-     * @param \Imi\Model\Model          $model
-     * @param string                    $propertyName
-     * @param \Imi\Bean\Annotation\Base $annotation
+     * @param \Imi\Model\Model            $model
+     * @param string                      $propertyName
+     * @param \Imi\Bean\Annotation\Base[] $annotations
      *
      * @return void
      */
-    public static function parse($model, $propertyName, $annotation)
+    public static function parse($model, $propertyName, $annotations)
     {
         if (!$model->$propertyName)
         {
@@ -51,29 +52,36 @@ abstract class Update
             return;
         }
 
-        if ($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+        $firstAnnotation = reset($annotations);
+
+        if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
         {
-            static::parseByOneToOne($model, $propertyName, $annotation);
+            // @phpstan-ignore-next-line
+            static::parseByPolymorphicToOne($model, $propertyName, $annotations);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
         {
-            static::parseByOneToMany($model, $propertyName, $annotation);
+            static::parseByOneToOne($model, $propertyName, $firstAnnotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
         {
-            static::parseByManyToMany($model, $propertyName, $annotation);
+            static::parseByOneToMany($model, $propertyName, $firstAnnotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
         {
-            static::parseByPolymorphicOneToOne($model, $propertyName, $annotation);
+            static::parseByManyToMany($model, $propertyName, $firstAnnotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
-            static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
+            static::parseByPolymorphicOneToOne($model, $propertyName, $firstAnnotation);
         }
-        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
-            static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
+            static::parseByPolymorphicOneToMany($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::parseByPolymorphicManyToMany($model, $propertyName, $firstAnnotation);
         }
     }
 
@@ -583,5 +591,37 @@ abstract class Update
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
+    }
+
+    /**
+     * 处理多态一对一更新.
+     *
+     * @param \Imi\Model\Annotation\Relation\PolymorphicToOne[] $annotations
+     */
+    public static function parseByPolymorphicToOne(Model $model, string $propertyName, array $annotations): void
+    {
+        foreach ($annotations as $annotationItem)
+        {
+            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
+            {
+                $className = BeanFactory::getObjectClass($model);
+                $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+                Event::trigger($eventName . '.BEFORE', [
+                    'model'        => $model,
+                    'propertyName' => $propertyName,
+                    'annotation'   => $annotationItem,
+                ]);
+
+                $model->$propertyName->update();
+
+                Event::trigger($eventName . '.AFTER', [
+                    'model'        => $model,
+                    'propertyName' => $propertyName,
+                    'annotation'   => $annotationItem,
+                ]);
+                break;
+            }
+        }
     }
 }

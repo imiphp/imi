@@ -87,8 +87,7 @@ abstract class ModelRelationManager
             {
                 continue;
             }
-            $annotation = $annotations[0];
-            Insert::parse($model, $propertyName, $annotation);
+            Insert::parse($model, $propertyName, $annotations);
         }
     }
 
@@ -107,8 +106,7 @@ abstract class ModelRelationManager
             {
                 continue;
             }
-            $annotation = $annotations[0];
-            Update::parse($model, $propertyName, $annotation);
+            Update::parse($model, $propertyName, $annotations);
         }
     }
 
@@ -127,8 +125,7 @@ abstract class ModelRelationManager
             {
                 continue;
             }
-            $annotation = $annotations[0];
-            Delete::parse($model, $propertyName, $annotation);
+            Delete::parse($model, $propertyName, $annotations);
         }
     }
 
