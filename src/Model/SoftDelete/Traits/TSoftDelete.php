@@ -66,6 +66,7 @@ trait TSoftDelete
         {
             return $query->whereIsNull($softDeleteAnnotation->field);
         }
+
         return $query->where($softDeleteAnnotation->field, '=', $softDeleteAnnotation->default);
     }
 
