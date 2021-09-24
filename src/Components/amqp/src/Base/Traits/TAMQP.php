@@ -45,28 +45,28 @@ trait TAMQP
      *
      * @var \Imi\AMQP\Annotation\Queue[]
      */
-    protected array $queues;
+    protected array $queues = [];
 
     /**
      * 交换机配置列表.
      *
      * @var \Imi\AMQP\Annotation\Exchange[]
      */
-    protected array $exchanges;
+    protected array $exchanges = [];
 
     /**
      * 发布者列表.
      *
      * @var \Imi\AMQP\Annotation\Publisher[]
      */
-    protected array $publishers;
+    protected array $publishers = [];
 
     /**
      * 消费者列表.
      *
      * @var \Imi\AMQP\Annotation\Consumer[]
      */
-    protected array $consumers;
+    protected array $consumers = [];
 
     /**
      * 连接池名称.
