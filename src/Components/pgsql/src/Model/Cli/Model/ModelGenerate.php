@@ -266,7 +266,6 @@ SQL)->getArray();
     private function parseFields(array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
     {
         $idCount = 0;
-        var_dump($fields);
         foreach ($fields as $i => $field)
         {
             if ($field['atttypmod'] > -1)

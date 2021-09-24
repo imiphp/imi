@@ -17,24 +17,22 @@ use Imi\Model\Model as Model;
  * @Table(name="tb_article", id={"id"})
  * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
- * @property int|null $id 
- * @property string|null $title 
- * @property string|null $content 
- * @property string|null $time 
+ * @property int|null    $id
+ * @property string|null $title
+ * @property string|null $content
+ * @property string|null $time
  */
 abstract class ArticleBase extends Model
 {
     /**
      * id.
+     *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     * @var int|null
      */
-    protected ?int $id = NULL;
+    protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -43,26 +41,27 @@ abstract class ArticleBase extends Model
 
     /**
      * 赋值 id.
+     *
      * @param int|null $id id
+     *
      * @return static
      */
     public function setId($id)
     {
-        $this->id = null === $id ? null : (int)$id;
+        $this->id = null === $id ? null : (int) $id;
+
         return $this;
     }
 
     /**
      * title.
+     *
      * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     * @var string|null
      */
-    protected ?string $title = NULL;
+    protected ?string $title = null;
 
     /**
      * 获取 title.
-     *
-     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -71,30 +70,31 @@ abstract class ArticleBase extends Model
 
     /**
      * 赋值 title.
+     *
      * @param string|null $title title
+     *
      * @return static
      */
     public function setTitle($title)
     {
-        if (is_string($title) && mb_strlen($title) > 255)
+        if (\is_string($title) && mb_strlen($title) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $title is 255');
         }
-        $this->title = null === $title ? null : (string)$title;
+        $this->title = null === $title ? null : (string) $title;
+
         return $this;
     }
 
     /**
      * content.
+     *
      * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     * @var string|null
      */
-    protected ?string $content = NULL;
+    protected ?string $content = null;
 
     /**
      * 获取 content.
-     *
-     * @return string|null
      */
     public function getContent(): ?string
     {
@@ -103,30 +103,31 @@ abstract class ArticleBase extends Model
 
     /**
      * 赋值 content.
+     *
      * @param string|null $content content
+     *
      * @return static
      */
     public function setContent($content)
     {
-        if (is_string($content) && mb_strlen($content) > 16777215)
+        if (\is_string($content) && mb_strlen($content) > 16777215)
         {
             throw new \InvalidArgumentException('The maximum length of $content is 16777215');
         }
-        $this->content = null === $content ? null : (string)$content;
+        $this->content = null === $content ? null : (string) $content;
+
         return $this;
     }
 
     /**
      * time.
+     *
      * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     * @var string|null
      */
     protected ?string $time = 'CURRENT_TIMESTAMP';
 
     /**
      * 获取 time.
-     *
-     * @return string|null
      */
     public function getTime(): ?string
     {
@@ -135,13 +136,15 @@ abstract class ArticleBase extends Model
 
     /**
      * 赋值 time.
+     *
      * @param string|null $time time
+     *
      * @return static
      */
     public function setTime($time)
     {
-        $this->time = null === $time ? null : (string)$time;
+        $this->time = null === $time ? null : (string) $time;
+
         return $this;
     }
-
 }

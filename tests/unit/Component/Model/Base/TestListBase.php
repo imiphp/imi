@@ -17,22 +17,20 @@ use Imi\Model\Model as Model;
  * @Table(name="tb_test_list", id={"id"})
  * @DDL(sql="CREATE TABLE `tb_test_list` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `list` varchar(255) NOT NULL DEFAULT '',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
- * @property int|null $id 
- * @property string|null $list 
+ * @property int|null    $id
+ * @property string|null $list
  */
 abstract class TestListBase extends Model
 {
     /**
      * id.
+     *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     * @var int|null
      */
-    protected ?int $id = NULL;
+    protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -41,18 +39,23 @@ abstract class TestListBase extends Model
 
     /**
      * 赋值 id.
+     *
      * @param int|null $id id
+     *
      * @return static
      */
     public function setId($id)
     {
-        $this->id = null === $id ? null : (int)$id;
+        $this->id = null === $id ? null : (int) $id;
+
         return $this;
     }
 
     /**
      * list.
+     *
      * @Column(name="list", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     *
      * @var string|null
      */
     protected $list = '';
@@ -69,17 +72,19 @@ abstract class TestListBase extends Model
 
     /**
      * 赋值 list.
+     *
      * @param string|null $list list
+     *
      * @return static
      */
     public function setList($list)
     {
-        if (is_string($list) && mb_strlen($list) > 255)
+        if (\is_string($list) && mb_strlen($list) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $list is 255');
         }
-        $this->list = null === $list ? null : (string)$list;
+        $this->list = null === $list ? null : (string) $list;
+
         return $this;
     }
-
 }

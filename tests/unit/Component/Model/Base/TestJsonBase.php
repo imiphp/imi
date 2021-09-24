@@ -17,22 +17,20 @@ use Imi\Model\Model as Model;
  * @Table(name="tb_test_json", id={"id"})
  * @DDL(sql="CREATE TABLE `tb_test_json` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `json_data` json NOT NULL COMMENT 'json数据',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='test'", decode="")
  *
- * @property int|null $id 
+ * @property int|null                                    $id
  * @property \Imi\Util\LazyArrayObject|object|array|null $jsonData json数据
  */
 abstract class TestJsonBase extends Model
 {
     /**
      * id.
+     *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     * @var int|null
      */
-    protected ?int $id = NULL;
+    protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -41,22 +39,27 @@ abstract class TestJsonBase extends Model
 
     /**
      * 赋值 id.
+     *
      * @param int|null $id id
+     *
      * @return static
      */
     public function setId($id)
     {
-        $this->id = null === $id ? null : (int)$id;
+        $this->id = null === $id ? null : (int) $id;
+
         return $this;
     }
 
     /**
      * json数据.
-     * json_data
+     * json_data.
+     *
      * @Column(name="json_data", type="json", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     *
      * @var \Imi\Util\LazyArrayObject|object|array|null
      */
-    protected $jsonData = NULL;
+    protected $jsonData = null;
 
     /**
      * 获取 jsonData - json数据.
@@ -70,13 +73,15 @@ abstract class TestJsonBase extends Model
 
     /**
      * 赋值 jsonData - json数据.
+     *
      * @param \Imi\Util\LazyArrayObject|object|array|null $jsonData json_data
+     *
      * @return static
      */
     public function setJsonData($jsonData)
     {
         $this->jsonData = null === $jsonData ? null : $jsonData;
+
         return $this;
     }
-
 }
