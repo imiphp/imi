@@ -39,7 +39,7 @@ class ValidatorHelper
         // 小数精度
         if (null !== $accuracy)
         {
-            return preg_match('/^-?\d+\.\d{1,' . ((int) $accuracy) . '}$/', (string) $value) > 0;
+            return preg_match('/^-?\d+\.\d{1,' . $accuracy . '}$/', (string) $value) > 0;
         }
 
         return is_numeric($value) && false !== strpos((string) $value, '.');
@@ -88,7 +88,7 @@ class ValidatorHelper
         // 小数精度
         if (null !== $accuracy)
         {
-            return preg_match('/^-?\d+(\.\d{1,' . ((int) $accuracy) . '})?$/', (string) $value) > 0;
+            return preg_match('/^-?\d+(\.\d{1,' . $accuracy . '})?$/', (string) $value) > 0;
         }
 
         return is_numeric($value);
@@ -97,19 +97,22 @@ class ValidatorHelper
     /**
      * 判断文本长度，以字节为单位.
      *
-     * @param int $max
+     * @param mixed $value
+     * @param int   $max
      */
-    public static function length(string $val, int $min, ?int $max = null): bool
+    public static function length($value, int $min, ?int $max = null): bool
     {
-        return isset($val[$min - 1]) && (null === $max || !isset($val[$max]));
+        return isset($value[$min - 1]) && (null === $max || !isset($value[$max]));
     }
 
     /**
      * 判断文本长度，以字符为单位.
+     *
+     * @param mixed $value
      */
-    public static function lengthChar(string $val, int $min, ?int $max = null): bool
+    public static function lengthChar($value, int $min, ?int $max = null): bool
     {
-        $len = mb_strlen($val, 'utf8');
+        $len = mb_strlen((string) $value, 'utf8');
         $result = ($len >= $min);
         if (null !== $max)
         {
@@ -121,104 +124,130 @@ class ValidatorHelper
 
     /**
      * 判断空文本.
+     *
+     * @param mixed $value
      */
-    public static function emptyStr(string $str): bool
+    public static function emptyStr($value): bool
     {
-        return '' === $str;
+        return '' === $value;
     }
 
     /**
      * 判断不为空文本.
+     *
+     * @param mixed $value
      */
-    public static function notEmptyStr(string $str): bool
+    public static function notEmptyStr($value): bool
     {
-        return '' !== $str;
+        return '' !== $value;
     }
 
     /**
      * 检测邮箱格式.
+     *
+     * @param mixed $email
      */
-    public static function email(string $email): bool
+    public static function email($email): bool
     {
-        return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', $email) > 0;
+        return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', (string) $email) > 0;
     }
 
     /**
      * 检测中国手机号码格式.
+     *
+     * @param mixed $str
      */
-    public static function cnMobile(string $str): bool
+    public static function cnMobile($str): bool
     {
-        return preg_match('/1\d{10}/', $str) > 0;
+        return preg_match('/1\d{10}/', (string) $str) > 0;
     }
 
     /**
      * 检测中国电话号码格式，支持400、800等.
+     *
+     * @param mixed $str
      */
-    public static function tel(string $str): bool
+    public static function tel($str): bool
     {
-        return preg_match('/^(((\d{3,4}-)?(\d{7,8}){1}(-\d{2,4})?)|((\d{3,4}-)?(\d{3,4}){1}(-\d{3,4})))$/', $str) > 0;
+        return preg_match('/^(((\d{3,4}-)?(\d{7,8}){1}(-\d{2,4})?)|((\d{3,4}-)?(\d{3,4}){1}(-\d{3,4})))$/', (string) $str) > 0;
     }
 
     /**
      * 检测中国手机电话号码格式.
+     *
+     * @param mixed $str
      */
-    public static function mobile(string $str): bool
+    public static function mobile($str): bool
     {
-        return preg_match('/^(1(([35789][0-9])|(47)))\d{8}$/', $str) > 0;
+        return preg_match('/^(1(([35789][0-9])|(47)))\d{8}$/', (string) $str) > 0;
     }
 
     /**
      * 检测是否符合中国固话或手机格式，支持400、800等.
+     *
+     * @param mixed $str
      */
-    public static function phone(string $str): bool
+    public static function phone($str): bool
     {
         return static::mobile($str) || static::tel($str);
     }
 
     /**
      * 检测中国邮政编码
+     *
+     * @param mixed $str
      */
-    public static function postcode(string $str): bool
+    public static function postcode($str): bool
     {
-        return preg_match('/^\d{6}$/', $str) > 0;
+        return preg_match('/^\d{6}$/', (string) $str) > 0;
     }
 
     /**
      * 检测URL地址
+     *
+     * @param mixed $str
      */
-    public static function url(string $str): bool
+    public static function url($str): bool
     {
-        return preg_match('/^([a-z]*:\/\/)?(localhost|(([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?))\.?\/?/i', $str) > 0;
+        return preg_match('/^([a-z]*:\/\/)?(localhost|(([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?))\.?\/?/i', (string) $str) > 0;
     }
 
     /**
      * 检测QQ号是否符合规则.
+     *
+     * @param mixed $str
      */
-    public static function qq(string $str): bool
+    public static function qq($str): bool
     {
-        return preg_match('/^[1-9]{1}[0-9]{4,10}$/', $str) > 0;
+        return preg_match('/^[1-9]{1}[0-9]{4,10}$/', (string) $str) > 0;
     }
 
     /**
      * 判断IP地址是否符合IP的格式，ipv4或ipv6.
+     *
+     * @param mixed $str
      */
-    public static function ip(string $str): bool
+    public static function ip($str): bool
     {
         return static::ipv4($str) || static::ipv6($str);
     }
 
     /**
      * 判断IP地址是否是合法的ipv4格式.
+     *
+     * @param mixed $str
      */
-    public static function ipv4(string $str): bool
+    public static function ipv4($str): bool
     {
-        return preg_match('/\A((([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\Z/', $str) > 0;
+        return preg_match('/\A((([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\Z/', (string) $str) > 0;
     }
 
     /**
      * 判断IP地址是否是合法的ipv6格式.
+     *
+     * @param mixed $str
      */
-    public static function ipv6(string $str): bool
+    public static function ipv6($str): bool
     {
         return preg_match('/\A
 (?:
@@ -249,7 +278,7 @@ class ValidatorHelper
 |
 (?:(?:[a-f0-9]{1,4}:){0,6}[a-f0-9]{1,4})?::
 )
-)\Z/ix', $str) > 0;
+)\Z/ix', (string) $str) > 0;
     }
 
     /**
@@ -425,9 +454,12 @@ class ValidatorHelper
 
     /**
      * 检测中国居民身份证，支持15位和18位.
+     *
+     * @param mixed $id_card
      */
-    public static function cnIdcard(string $id_card): bool
+    public static function cnIdcard($id_card): bool
     {
+        $id_card = (string) $id_card;
         /**
          * 计算身份证校验码，根据国家标准GB 11643-1999.
          *
@@ -519,8 +551,10 @@ class ValidatorHelper
 
     /**
      * 文本验证
+     *
+     * @param mixed $str
      */
-    public static function text(string $str, int $min, ?int $max = null, bool $char = false): bool
+    public static function text($str, int $min, ?int $max = null, bool $char = false): bool
     {
         if ($char)
         {
