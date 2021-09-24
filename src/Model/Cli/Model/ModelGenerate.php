@@ -308,6 +308,7 @@ class ModelGenerate extends BaseCommand
                 'accuracy'          => $accuracy,
                 'nullable'          => 'YES' === $field['Null'],
                 'default'           => $field['Default'],
+                'defaultValue'      => $this->parseFieldDefaultValue($typeName, $field['Default']),
                 'isPrimaryKey'      => $isPk,
                 'primaryKeyIndex'   => $isPk ? $idCount : -1,
                 'isAutoIncrement'   => false !== strpos($field['Extra'], 'auto_increment'),
@@ -395,6 +396,51 @@ class ModelGenerate extends BaseCommand
         }
 
         return $map[$firstType] ?? ['string|null', '?string', '(string)'];
+    }
+
+    /**
+     * 处理字段默认值
+     *
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    private function parseFieldDefaultValue(string $type, $default)
+    {
+        if (null === $default)
+        {
+            return null;
+        }
+        switch ($type)
+        {
+            case 'int':
+            case 'smallint':
+            case 'tinyint':
+            case 'mediumint':
+            case 'bigint':
+            case 'year':
+                return (int) $default;
+            case 'bit':
+                return (bool) $default;
+            case 'double':
+            case 'float':
+                return (float) $default;
+            case 'char':
+            case 'varchar':
+            case 'binary':
+            case 'varbinary':
+            case 'tinyblob':
+            case 'blob':
+            case 'mediumblob':
+            case 'longblob':
+            case 'text':
+            case 'mediumtext':
+            case 'enum':
+            case 'set':
+                return (string) $default;
+            default:
+                return null;
+        }
     }
 
     /**

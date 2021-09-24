@@ -266,6 +266,7 @@ SQL)->getArray();
     private function parseFields(array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
     {
         $idCount = 0;
+        var_dump($fields);
         foreach ($fields as $i => $field)
         {
             if ($field['atttypmod'] > -1)
@@ -288,7 +289,7 @@ SQL)->getArray();
             $data['fields'][] = [
                 'name'              => $field['attname'],
                 'varName'           => Text::toCamelName($field['attname']),
-                'type'              => '_' === $field['typname'][0] ? substr($field['typname'], 1) : $field['typname'],
+                'type'              => $type = ('_' === $field['typname'][0] ? substr($field['typname'], 1) : $field['typname']),
                 'ndims'             => $field['attndims'],
                 'phpType'           => $phpType . '|null',
                 'phpDefinitionType' => $phpDefinitionType,
@@ -296,6 +297,7 @@ SQL)->getArray();
                 'accuracy'          => $accuracy,
                 'nullable'          => 'f' === $field['attnotnull'],
                 'default'           => $field['adsrc'],
+                'defaultValue'      => $this->parseFieldDefaultValue($type, $field['adsrc']),
                 'isPrimaryKey'      => $isPk,
                 'primaryKeyIndex'   => $field['ordinal_position'] ?? -1,
                 'isAutoIncrement'   => '' !== $field['attidentity'],
@@ -350,15 +352,13 @@ SQL)->getArray();
             'serial'      => ['int', 'int'],
             'bigserial'   => ['int', 'int'],
             'serial2'     => ['int', 'int'],
-            'serial8'     => ['int', 'int'],
             'serial4'     => ['int', 'int'],
+            'serial8'     => ['int', 'int'],
             'bool'        => ['bool', 'bool'],
             'boolean'     => ['bool', 'bool'],
             'double'      => ['float', 'float'],
             'float4'      => ['float', 'float'],
-            'float48'     => ['float', 'float'],
-            'decimal'     => ['float', 'float'],
-            'numeric'     => ['float', 'float'],
+            'float8'      => ['float', 'float'],
             'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
             'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
         ];
@@ -371,5 +371,49 @@ SQL)->getArray();
         }
 
         return $result;
+    }
+
+    /**
+     * 处理字段默认值
+     *
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    private function parseFieldDefaultValue(string $type, $default)
+    {
+        if (null === $default)
+        {
+            return null;
+        }
+        switch ($type)
+        {
+            case 'int':
+            case 'int2':
+            case 'int4':
+            case 'int8':
+            case 'smallint':
+            case 'bigint':
+            case 'smallserial':
+            case 'serial':
+            case 'bigserial':
+            case 'serial2':
+            case 'serial4':
+            case 'serial8':
+                return (int) $default;
+            case 'bool':
+            case 'boolean':
+                return (bool) $default;
+            case 'double':
+            case 'float4':
+            case 'float8':
+                return (float) $default;
+            case 'varchar':
+            case 'char':
+            case 'text':
+                return (string) $default;
+            default:
+                return null;
+        }
     }
 }

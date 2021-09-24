@@ -15,21 +15,24 @@ use Imi\Pgsql\Model\PgModel as Model;
  * @Entity
  * @Table(name="tb_tree", id={"id"})
  *
- * @property int|null    $id
- * @property int|null    $parentId
- * @property string|null $name
+ * @property int|null $id 
+ * @property int|null $parentId 
+ * @property string|null $name 
  */
 abstract class TreeBase extends Model
 {
     /**
      * id.
-     *
+
      * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0)
+     * @var int|null
      */
-    protected ?int $id = null;
+    protected ?int $id = NULL;
 
     /**
      * 获取 id.
+     *
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -40,25 +43,26 @@ abstract class TreeBase extends Model
      * 赋值 id.
      *
      * @param int|null $id id
-     *
      * @return static
      */
     public function setId(?int $id)
     {
         $this->id = $id;
-
         return $this;
     }
 
     /**
      * parent_id.
-     *
+
      * @Column(name="parent_id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @var int|null
      */
-    protected ?int $parentId = null;
+    protected ?int $parentId = NULL;
 
     /**
      * 获取 parentId.
+     *
+     * @return int|null
      */
     public function getParentId(): ?int
     {
@@ -69,25 +73,26 @@ abstract class TreeBase extends Model
      * 赋值 parentId.
      *
      * @param int|null $parentId parent_id
-     *
      * @return static
      */
     public function setParentId(?int $parentId)
     {
         $this->parentId = $parentId;
-
         return $this;
     }
 
     /**
      * name.
-     *
+
      * @Column(name="name", type="varchar", length=0, accuracy=32, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @var string|null
      */
-    protected ?string $name = null;
+    protected ?string $name = NULL;
 
     /**
      * 获取 name.
+     *
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -98,13 +103,12 @@ abstract class TreeBase extends Model
      * 赋值 name.
      *
      * @param string|null $name name
-     *
      * @return static
      */
     public function setName(?string $name)
     {
         $this->name = $name;
-
         return $this;
     }
+
 }

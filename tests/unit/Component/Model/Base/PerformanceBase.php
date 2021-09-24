@@ -15,22 +15,24 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name="tb_performance", id={"id"})
- * @DDL("CREATE TABLE `tb_performance` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value` varchar(255) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * @DDL(sql="CREATE TABLE `tb_performance` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value` varchar(255) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
- * @property int|null    $id
- * @property string|null $value
+ * @property int|null $id 
+ * @property string|null $value 
  */
 abstract class PerformanceBase extends Model
 {
     /**
      * id.
-     *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @var int|null
      */
-    protected ?int $id = null;
+    protected ?int $id = NULL;
 
     /**
      * 获取 id.
+     *
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -39,27 +41,26 @@ abstract class PerformanceBase extends Model
 
     /**
      * 赋值 id.
-     *
      * @param int|null $id id
-     *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
-
+        $this->id = null === $id ? null : (int)$id;
         return $this;
     }
 
     /**
      * value.
-     *
      * @Column(name="value", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @var string|null
      */
-    protected ?string $value = null;
+    protected ?string $value = NULL;
 
     /**
      * 获取 value.
+     *
+     * @return string|null
      */
     public function getValue(): ?string
     {
@@ -68,19 +69,17 @@ abstract class PerformanceBase extends Model
 
     /**
      * 赋值 value.
-     *
      * @param string|null $value value
-     *
      * @return static
      */
-    public function setValue(?string $value)
+    public function setValue($value)
     {
-        if (\is_string($value) && mb_strlen($value) > 255)
+        if (is_string($value) && mb_strlen($value) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $value is 255');
         }
-        $this->value = $value;
-
+        $this->value = null === $value ? null : (string)$value;
         return $this;
     }
+
 }

@@ -11,26 +11,28 @@ use Imi\Model\Annotation\Table;
 use Imi\Model\Model as Model;
 
 /**
- * tb_test_json 基类.
+ * test 基类.
  *
  * @Entity
  * @Table(name="tb_test_json", id={"id"})
- * @DDL("CREATE TABLE `tb_test_json` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `json_data` json NOT NULL COMMENT 'json数据',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * @DDL(sql="CREATE TABLE `tb_test_json` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `json_data` json NOT NULL COMMENT 'json数据',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='test'", decode="")
  *
- * @property int|null                             $id
- * @property \Imi\Util\LazyArrayObject|array|null $jsonData json数据
+ * @property int|null $id 
+ * @property \Imi\Util\LazyArrayObject|object|array|null $jsonData json数据
  */
 abstract class TestJsonBase extends Model
 {
     /**
      * id.
-     *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @var int|null
      */
-    protected ?int $id = null;
+    protected ?int $id = NULL;
 
     /**
      * 获取 id.
+     *
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -39,32 +41,27 @@ abstract class TestJsonBase extends Model
 
     /**
      * 赋值 id.
-     *
      * @param int|null $id id
-     *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
-
+        $this->id = null === $id ? null : (int)$id;
         return $this;
     }
 
     /**
-     * json数据
-     * json_data.
-     *
+     * json数据.
+     * json_data
      * @Column(name="json_data", type="json", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var \Imi\Util\LazyArrayObject|array|null
+     * @var \Imi\Util\LazyArrayObject|object|array|null
      */
-    protected $jsonData = null;
+    protected $jsonData = NULL;
 
     /**
      * 获取 jsonData - json数据.
      *
-     * @return \Imi\Util\LazyArrayObject|array|null
+     * @return \Imi\Util\LazyArrayObject|object|array|null
      */
     public function getJsonData()
     {
@@ -73,15 +70,13 @@ abstract class TestJsonBase extends Model
 
     /**
      * 赋值 jsonData - json数据.
-     *
-     * @param \Imi\Util\LazyArrayObject|array|null $jsonData json_data
-     *
+     * @param \Imi\Util\LazyArrayObject|object|array|null $jsonData json_data
      * @return static
      */
     public function setJsonData($jsonData)
     {
-        $this->jsonData = $jsonData;
-
+        $this->jsonData = null === $jsonData ? null : $jsonData;
         return $this;
     }
+
 }
