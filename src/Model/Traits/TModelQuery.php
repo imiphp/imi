@@ -82,7 +82,7 @@ trait TModelQuery
             else
             {
                 $field = new Field();
-                $field->setValue($v, $this);
+                $field->setValue($v ?? '', $this);
             }
         }
         else

@@ -30,7 +30,7 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
                 else
                 {
                     $field = new Field();
-                    $field->setValue($v, $query);
+                    $field->setValue($v ?? '', $query);
                 }
             }
             else

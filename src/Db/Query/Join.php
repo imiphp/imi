@@ -46,7 +46,10 @@ class Join implements IJoin
     public function __construct(IQuery $query, ?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner')
     {
         $this->table = $thisTable = new Table();
-        $thisTable->setValue($table, $query);
+        if (null !== $table)
+        {
+            $thisTable->setValue($table, $query);
+        }
         if (null !== $tableAlias)
         {
             $thisTable->setAlias($tableAlias);
