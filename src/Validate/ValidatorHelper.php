@@ -405,9 +405,10 @@ class ValidatorHelper
     /**
      * 值在范围内.
      *
-     * @param mixed $value
+     * @param mixed        $value
+     * @param string|array $list
      */
-    public static function in($value, array $list): bool
+    public static function in($value, $list): bool
     {
         if (!\is_array($list))
         {
@@ -420,9 +421,10 @@ class ValidatorHelper
     /**
      * 值不在范围内.
      *
-     * @param mixed $value
+     * @param mixed        $value
+     * @param string|array $list
      */
-    public static function notIn($value, array $list): bool
+    public static function notIn($value, $list): bool
     {
         if (!\is_array($list))
         {
