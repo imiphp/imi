@@ -59,6 +59,7 @@ class Container implements ContainerInterface
         unset($params[0]);
 
         $binds = &$this->binds;
+        $originId = $id;
 
         do
         {
@@ -70,7 +71,7 @@ class Container implements ContainerInterface
                     $object = BeanFactory::newInstanceNoInit($className, ...$params);
                     if ([] === $params)
                     {
-                        $beanObjects[$id] = $object;
+                        $beanObjects[$originId] = $object;
                     }
                 }
                 else
@@ -107,7 +108,7 @@ class Container implements ContainerInterface
                 // 传参实例化强制不使用单例
                 if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
                 {
-                    $beanObjects[$id] = $object;
+                    $beanObjects[$originId] = $object;
                 }
             }
             break;
