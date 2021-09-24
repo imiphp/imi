@@ -144,7 +144,7 @@ class HotUpdateProcess extends BaseProcess
     private function clearCache(): void
     {
         static $functions = [
-            'apc_clear_cache',
+            'apcu_clear_cache',
             'opcache_reset',
         ];
         foreach ($functions as $function)
