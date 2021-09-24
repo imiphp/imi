@@ -11,10 +11,6 @@ interface IPublisher
 {
     /**
      * 发布消息.
-     *
-     * @param \Imi\AMQP\Contract\IMessage $message
-     *
-     * @return void
      */
-    public function publish(IMessage $message);
+    public function publish(IMessage $message): bool;
 }
