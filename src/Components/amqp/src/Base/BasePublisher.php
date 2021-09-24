@@ -53,7 +53,7 @@ abstract class BasePublisher implements IPublisher
             $this->connection->reconnect();
             $this->channel = null;
         }
-        if (!$this->channel)
+        if (!$this->channel || !$this->channel->is_open())
         {
             $this->channel = $this->connection->channel();
             $this->channel->confirm_select();

@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
+use Imi\RequestContext;
 use Imi\Server\Http\Listener\HttpRouteInit;
 use Imi\Server\Server;
 use Imi\Server\ServerManager;
@@ -43,8 +44,9 @@ class AfterWorkerStart implements IWorkerStartEventListener
         }
         // worker 初始化
         Worker::inited();
-        foreach (ServerManager::getServers() as $name => $_)
+        foreach (ServerManager::getServers() as $name => $server)
         {
+            RequestContext::set('server', $server);
             Server::getInstance($name);
         }
         $httpRouteInit = new HttpRouteInit();
