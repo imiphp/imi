@@ -34,6 +34,7 @@ foreach ([
     'UDPServer',
     'WebSocketServerWithRedisServerUtil',
     'WebSocketServerWithAmqpServerUtil',
+    'WebSocketServerWithAmqpRouteServerUtil',
 ] as $name)
 {
     echo '[Swoole ', $name, ']', \PHP_EOL;
