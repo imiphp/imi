@@ -14,7 +14,95 @@ Demo: `composer create-project imiphp/project-websocket:~2.0`
 
 ### 消息队列模式
 
-#### Redis 发布订阅
+#### AMQP
+
+支持 RabbitMQ 或其他支持 AMQP 协议的消息队列。
+
+使用发布订阅模式，每个消费者（Worker 进程）都是一个绑定到交换机的单独队列
+
+无法准确判断指定连接是否存在于其他服务，需要业务层面自行实现
+
+所有模式都不推荐使用持久化特性，因为没有实际意义
+
+> 此模式仅支持 Swoole
+
+##### AMQP 一把梭模式
+
+无视 routingKey，所有队列全盘接收所有指令，简单易用，但性能较差
+
+**用法：**
+
+项目配置文件：
+
+```php
+'imi' => [
+    'beans' => [
+        'ServerUtil' => 'AmqpServerUtil',
+    ],
+],
+'beans' => [
+    'AmqpServerUtil' => [
+        // 'amqpName' => null, // amqp 连接名称
+        // 交换机配置，同 AMQP 组件的 @Exchange 注解参数
+        'exchangeConfig' => [
+            'name' => 'imi_server_util_test', // 交换机名
+            'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::FANOUT, // fanout 模式
+        ],
+        // 队列配置，同 AMQP 组件的 @Queue 注解参数
+        'queueConfig' => [
+            'name'    => 'imi_server_util_', // 每个进程中的队列名前缀，如果是多实例部署，请设为不同的
+            'durable' => false, // 非持久化
+        ],
+        // 'consumerClass' => 'AmqpServerConsumer', // 消费者类，如有需要可以覆盖自己实现
+        // 'publisherClass' => 'AmqpServerPublisher', // 发布者类，如有需要可以覆盖自己实现
+    ],
+],
+```
+
+##### AMQP 路由模式
+
+队列根据routingkey接收指定消息，需要配置对应的 GroupHandler、ConnectionContextHandler
+
+每当绑定、解绑 Group、flag，都会去绑定和解绑，对应的交换机、队列、routingkey
+
+消费者只会接收到与自己相关的消息
+
+**用法：**
+
+项目配置文件：
+
+```php
+'imi' => [
+    'beans' => [
+        'ServerUtil' => 'AmqpServerUtil',
+    ],
+],
+'beans' => [
+    'ServerGroup' => [
+        'groupHandler' => 'GroupAmqp', // 配置对应的 GroupHandler
+    ],
+    'ConnectionContextStore'   => [
+        'handlerClass'  => 'ConnectionContextAmqp', // 配置对应的 ConnectionContextHandler
+    ],
+    'AmqpServerUtil' => [
+        // 'amqpName' => null, // amqp 连接名称
+        // 交换机配置，同 AMQP 组件的 @Exchange 注解参数
+        'exchangeConfig' => [
+            'name' => 'imi_server_util_test', // 交换机名
+            'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::DIRECT, // direct 模式
+        ],
+        // 队列配置，同 AMQP 组件的 @Queue 注解参数
+        'queueConfig' => [
+            'name'    => 'imi_server_util_', // 每个进程中的队列名前缀，如果是多实例部署，请设为不同的
+            'durable' => false, // 非持久化
+        ],
+        // 'consumerClass' => 'AmqpServerConsumer', // 消费者类，如有需要可以覆盖自己实现
+        // 'publisherClass' => 'AmqpServerPublisher', // 发布者类，如有需要可以覆盖自己实现
+    ],
+],
+```
+
+#### Redis
 
 采用 Redis 发布订阅实现，每个服务器连接到 Redis 并订阅。
 
