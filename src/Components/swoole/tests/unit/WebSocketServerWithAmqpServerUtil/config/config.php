@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+defined('AMQP_SERVER_HOST') || define('AMQP_SERVER_HOST', imiGetEnv('AMQP_SERVER_HOST', '127.0.0.1'));
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Swoole\Test\WebSocketServerWithAmqpServerUtil',
@@ -105,7 +107,7 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => '127.0.0.1',
+                'host'      => AMQP_SERVER_HOST,
                 'port'      => 5672,
                 'user'      => 'guest',
                 'password'  => 'guest',
