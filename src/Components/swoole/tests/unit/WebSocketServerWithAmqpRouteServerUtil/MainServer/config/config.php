@@ -7,19 +7,19 @@ return [
     ],
     // bean扫描目录
     'beanScan'    => [
-        'Imi\Swoole\Test\WebSocketServerWithAmqpServerUtil\MainServer\Controller',
-        'Imi\Swoole\Test\WebSocketServerWithAmqpServerUtil\MainServer\Listener',
-        'Imi\Swoole\Test\WebSocketServerWithAmqpServerUtil\MainServer\Error',
+        'Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Controller',
+        'Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Listener',
+        'Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Error',
     ],
     'beans'    => [
         'WebSocketDispatcher'    => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
-                \Imi\Swoole\Test\WebSocketServerWithAmqpServerUtil\MainServer\Middleware\Test::class,
+                \Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Middleware\Test::class,
             ],
         ],
         'ServerGroup' => [
-            'groupHandler' => 'GroupLocal',
+            'groupHandler' => 'GroupAmqp',
         ],
         'HttpDispatcher'    => [
             'middlewares'    => [
@@ -28,7 +28,7 @@ return [
             ],
         ],
         'ConnectionContextStore'   => [
-            'handlerClass'  => 'ConnectionContextLocal',
+            'handlerClass'  => 'ConnectionContextAmqp',
             'ttl'           => 600,
         ],
         'WSRouteNotFoundHandler'    => [
@@ -36,11 +36,11 @@ return [
         ],
         'AmqpServerUtil' => [
             'exchangeConfig' => [
-                'name' => 'imi_server_util_test',
-                'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::FANOUT,
+                'name' => 'imi_server_util_route_test',
+                'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::DIRECT,
             ],
             'queueConfig' => [
-                'name'    => 'imi_server_util_',
+                'name'    => 'imi_server_util_route_',
                 'durable' => false,
             ],
         ],

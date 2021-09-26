@@ -170,6 +170,25 @@ function startServer(): void
         return $serverStarted;
     }
 
+    // @phpstan-ignore-next-line
+    function checkWebSocketServerWithAmqpRouteServerUtilStatus(): bool
+    {
+        $serverStarted = false;
+        for ($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            @file_get_contents('http://127.0.0.1:13010/', false, $context);
+            if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            {
+                $serverStarted = true;
+                break;
+            }
+        }
+
+        return $serverStarted;
+    }
+
     $servers = [
         'HttpServer'    => [
             'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
@@ -209,6 +228,11 @@ function startServer(): void
             'start'         => __DIR__ . '/unit/WebSocketServerWithAmqpServerUtil/bin/start.sh',
             'stop'          => __DIR__ . '/unit/WebSocketServerWithAmqpServerUtil/bin/stop.sh',
             'checkStatus'   => 'checkWebSocketServerWithAmqpServerUtilStatus',
+        ];
+        $servers['WebSocketServerWithAmqpRouteServerUtil'] = [
+            'start'         => __DIR__ . '/unit/WebSocketServerWithAmqpRouteServerUtil/bin/start.sh',
+            'stop'          => __DIR__ . '/unit/WebSocketServerWithAmqpRouteServerUtil/bin/stop.sh',
+            'checkStatus'   => 'checkWebSocketServerWithAmqpRouteServerUtilStatus',
         ];
     }
 

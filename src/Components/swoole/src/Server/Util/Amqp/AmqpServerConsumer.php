@@ -48,6 +48,24 @@ if (class_exists(\Imi\AMQP\Main::class))
         }
 
         /**
+         * 绑定路由键.
+         */
+        public function bindRoutingKey(string $routingKey): void
+        {
+            $channel = $this->getConnection()->channel();
+            $channel->queue_bind($this->consumers[0]->queue, $this->exchanges[0]->name, $routingKey);
+        }
+
+        /**
+         * 解绑路由键.
+         */
+        public function unbindRoutingKey(string $routingKey): void
+        {
+            $channel = $this->getConnection()->channel();
+            $channel->queue_unbind($this->consumers[0]->queue, $this->exchanges[0]->name, $routingKey);
+        }
+
+        /**
          * 消费任务
          *
          * @return mixed

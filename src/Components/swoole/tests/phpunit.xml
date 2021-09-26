@@ -27,6 +27,7 @@
         </testsuite>
         <testsuite name="WebSocketServerWithAmqpServerUtil">
             <directory>unit/WebSocketServerWithAmqpServerUtil/Tests</directory>
+            <directory>unit/WebSocketServerWithAmqpRouteServerUtil/Tests</directory>
         </testsuite>
         <testsuite name="TCPServer">
             <directory>unit/TCPServer/Tests</directory>
