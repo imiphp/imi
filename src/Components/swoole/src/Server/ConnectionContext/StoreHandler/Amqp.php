@@ -14,9 +14,7 @@ use Imi\Server\ConnectionContext\StoreHandler\Local;
 class Amqp extends Local
 {
     /**
-     * 绑定一个标记到当前连接.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function bind(string $flag, $clientId): void
     {
@@ -31,10 +29,7 @@ class Amqp extends Local
     }
 
     /**
-     * 取消绑定.
-     *
-     * @param int|string $clientId
-     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
+     * {@inheritDoc}
      */
     public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {

@@ -66,7 +66,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         }
 
         /**
-         * 消费任务
+         * {@inheritDoc}
          *
          * @return mixed
          */
@@ -74,7 +74,6 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             try
             {
-                var_dump('consume: ' . $message->getBody());
                 $data = json_decode($message->getBody(), true);
                 $serverName = $data['serverName'];
                 RequestContext::set('server', $server = ServerManager::getServer($serverName));
