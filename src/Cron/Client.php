@@ -86,6 +86,7 @@ class Client
         {
             fclose($this->socket);
             $this->socket = null;
+            $this->connected = false;
         }
     }
 
