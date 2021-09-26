@@ -183,6 +183,7 @@ jobs:
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
+      IMI_TEST_AMQP_SERVER_UTIL: 0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
