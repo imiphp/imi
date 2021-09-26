@@ -203,7 +203,7 @@ function startServer(): void
         ],
     ];
 
-    if (getenv('IMI_TEST_AMQP_SERVER_UTIL') ?: true)
+    if (imiGetEnv('IMI_TEST_AMQP_SERVER_UTIL', true))
     {
         $servers['WebSocketServerWithAmqpServerUtil'] = [
             'start'         => __DIR__ . '/unit/WebSocketServerWithAmqpServerUtil/bin/start.sh',
