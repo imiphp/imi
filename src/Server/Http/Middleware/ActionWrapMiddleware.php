@@ -35,9 +35,19 @@ class ActionWrapMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
         $middlewares = $result->routeItem->middlewares;
-        $middlewares[] = $this->actionMiddleware;
-        $handler = new RequestHandler($middlewares);
+        if ($middlewares)
+        {
+            $middlewares[] = $this->actionMiddleware;
+            $subHandler = new RequestHandler($middlewares);
 
-        return $handler->handle($request);
+            return $subHandler->handle($request);
+        }
+        else
+        {
+            /** @var \Psr\Http\Server\MiddlewareInterface $requestHandler */
+            $requestHandler = RequestContext::getServerBean($this->actionMiddleware);
+
+            return $requestHandler->process($request, $handler);
+        }
     }
 }

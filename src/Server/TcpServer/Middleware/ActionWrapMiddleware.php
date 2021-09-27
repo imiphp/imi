@@ -34,9 +34,19 @@ class ActionWrapMiddleware implements IMiddleware
             return $handler->handle($data);
         }
         $middlewares = $result->routeItem->middlewares;
-        $middlewares[] = $this->actionMiddleware;
-        $handler = new ReceiveHandler($middlewares);
+        if ($middlewares)
+        {
+            $middlewares[] = $this->actionMiddleware;
+            $subHandler = new ReceiveHandler($middlewares);
 
-        return $handler->handle($data);
+            return $subHandler->handle($data);
+        }
+        else
+        {
+            /** @var \Imi\Server\TcpServer\Middleware\IMiddleware $requestHandler */
+            $requestHandler = RequestContext::getServerBean($this->actionMiddleware);
+
+            return $requestHandler->process($data, $handler);
+        }
     }
 }

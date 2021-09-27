@@ -47,9 +47,10 @@ class Dispatcher
     {
         if (!$this->finalMiddlewares)
         {
-            return $this->finalMiddlewares = array_merge($this->middlewares, [
-                \Imi\Server\UdpServer\Middleware\ActionWrapMiddleware::class,
-            ]);
+            $middlewares = $this->middlewares;
+            $middlewares[] = \Imi\Server\UdpServer\Middleware\ActionWrapMiddleware::class;
+
+            return $this->finalMiddlewares = $middlewares;
         }
 
         return $this->finalMiddlewares;
