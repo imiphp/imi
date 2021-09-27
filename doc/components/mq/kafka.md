@@ -43,32 +43,17 @@
 [
     'pools'    =>    [
         'kafka'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Kafka\Pool\KafkaSyncPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'bootstrapServers' => KAFKA_BOOTSTRAP_SERVERS,
-                    'groupId'          => 'test',
-                    // 其它配置请参考：https://github.com/longyan/phpkafka/blob/master/doc/consumer.md#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0
+            'pool'    => [
+                'class'        => \Imi\Kafka\Pool\KafkaCoroutinePool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 1,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Kafka\Pool\KafkaCoroutinePool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'bootstrapServers' => KAFKA_BOOTSTRAP_SERVERS,
-                    'groupId'          => 'test',
-                ],
+            'resource'    => [
+                'bootstrapServers' => KAFKA_BOOTSTRAP_SERVERS,
+                'groupId'          => 'test',
+                // 其它配置请参考：https://github.com/longyan/phpkafka/blob/master/doc/consumer.md#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0
             ],
         ],
     ]

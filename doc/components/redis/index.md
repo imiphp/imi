@@ -22,10 +22,10 @@ return [
         // 连接池名称
         'alias1' => [
             'pool' => [
-                // 同步池类名
-                'class'     =>    \Imi\Redis\SyncRedisPool::class,
                 // 协程池类名
                 'class'    =>    \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                // 同步池类名，一般用不着
+                // 'class'     =>    \Imi\Redis\SyncRedisPool::class,
                 'config' => [
                     // 池子中最多资源数
                     // 'maxResources' => 10,

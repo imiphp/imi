@@ -23,10 +23,10 @@ return [
         // 连接池名称
         'alias1' => [
             'pool' => [
-                // 同步池类名
-                'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
                 'class'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                // 同步池类名，一般用不着
+                // 'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数
@@ -89,10 +89,10 @@ return [
         // 如果在事务中，默认都走主库
         'alias1.slave' => [
             'pool' => [
-                // 同步池类名
-                'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
                 'class'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                // 同步池类名，一般用不着
+                // 'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数

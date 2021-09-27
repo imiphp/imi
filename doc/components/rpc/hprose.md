@@ -110,32 +110,17 @@ Github: <https://github.com/imiphp/imi-hprose>
 [
     'pools'    =>    [
         '连接池名'    =>    [
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Rpc\Client\Pool\RpcClientSyncPool::class,
-                    'config'    =>    [
-                        // 连接池通用，查阅文档
-                    ],
+            'pool'    =>    [
+                'class'        =>    \Imi\Rpc\Client\Pool\RpcClientCoroutinePool::class,
+                'config'    =>    [
+                    // 连接池通用，查阅文档
                 ],
-                'resource'    =>    [
-                    'clientClass'    =>    \Imi\Hprose\Client\HproseSocketClient::class,
-                    'uris'    =>    'tcp://127.0.0.1:50001', // 连接地址
-                    // 其它配置
-                ]
             ],
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Rpc\Client\Pool\RpcClientCoroutinePool::class,
-                    'config'    =>    [
-                        // 连接池通用，查阅文档
-                    ],
-                ],
-                'resource'    =>    [
-                    'clientClass'    =>    \Imi\Hprose\Client\HproseSocketClient::class,
-                    'uris'    =>    'tcp://127.0.0.1:50001', // 连接地址
-                    // 其它配置
-                ]
-            ],
+            'resource'    =>    [
+                'clientClass'    =>    \Imi\Hprose\Client\HproseSocketClient::class,
+                'uris'    =>    'tcp://127.0.0.1:50001', // 连接地址
+                // 其它配置
+            ]
         ],
     ],
     'rpc'    =>    [

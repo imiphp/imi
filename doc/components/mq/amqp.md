@@ -43,36 +43,19 @@ Github: <https://github.com/imiphp/imi-amqp>
 [
     'pools'    =>    [
         'rabbit'    =>  [
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\AMQP\Pool\AMQPSyncPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    0,
-                    ],
+            'pool'    =>    [
+                'class'        =>    \Imi\AMQP\Pool\AMQPCoroutinePool::class,
+                'config'    =>    [
+                    'maxResources'    =>    10,
+                    'minResources'    =>    1,
                 ],
-                'resource'    =>    [
-                    'host'      => '127.0.0.1',
-                    'port'      => 5672,
-                    'user'      => 'guest',
-                    'password'  => 'guest',
-                ]
             ],
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\AMQP\Pool\AMQPCoroutinePool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
-                    ],
-                ],
-                'resource'    =>    [
-                    'host'      => '127.0.0.1',
-                    'port'      => 5672,
-                    'user'      => 'guest',
-                    'password'  => 'guest',
-                ]
-            ],
+            'resource'    =>    [
+                'host'      => '127.0.0.1',
+                'port'      => 5672,
+                'user'      => 'guest',
+                'password'  => 'guest',
+            ]
         ],
     ]
 ]
