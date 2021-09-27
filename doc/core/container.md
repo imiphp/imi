@@ -89,6 +89,9 @@ use Imi\App;
 // 绑定
 App::getContainer()->bind('aaa', XXX::class);
 
+// 绑定带参数，单例模式，禁用递归依赖
+App::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, false);
+
 // 实例化
 $obj = App::getBean('aaa');
 ```
@@ -100,6 +103,9 @@ use Imi\Server\ServerManager;
 
 // 绑定
 ServerManager::getServer()->getContainer()->bind('aaa', XXX::class);
+
+// 绑定带参数，单例模式，禁用递归依赖
+ServerManager::getServer()->getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, false);
 
 // 实例化
 $obj = ServerManager::getServer()->getContainer()->getBean('aaa');
@@ -113,9 +119,14 @@ use Imi\RequestContext;
 // 绑定
 RequestContext::getContainer()->bind('aaa', XXX::class);
 
+// 绑定带参数，单例模式，禁用递归依赖
+RequestContext::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, false);
+
 // 实例化
 $obj = RequestContext::getBean('aaa');
 ```
+
+> 禁用递归依赖可以规避服务启动后，第一次访问概率报错问题
 
 ## 容器对象类 (Bean)
 
@@ -133,7 +144,12 @@ $obj = RequestContext::getBean('aaa');
 namespace Test;
 
 /**
+ * 下面两种写法相同（注意实际不要写多个 Bean 注解） 
  * @Bean("MyTest")
+ * @Bean(name="MyTest")
+ * 
+ * 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
+ * @Bean(name="MyTest", instanceType=\Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion=false)
  */
 class ABCDEFG
 {

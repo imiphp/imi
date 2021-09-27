@@ -28,7 +28,7 @@ class BeanParser extends BaseParser
         if ($annotation instanceof \Imi\Bean\Annotation\Bean)
         {
             $beanName = $annotation->name ?? $className;
-            BeanManager::add($className, $beanName, $annotation->instanceType);
+            BeanManager::add($className, $beanName, $annotation->instanceType, $annotation->recursion);
         }
         elseif ($annotation instanceof BaseInjectValue)
         {

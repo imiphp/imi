@@ -7,7 +7,7 @@ namespace Imi\Server\Session;
 use Imi\Bean\Annotation\Bean;
 
 /**
- * @Bean("SessionCookie")
+ * @Bean(name="SessionCookie", recursion=false)
  */
 class SessionCookie
 {

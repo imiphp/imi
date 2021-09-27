@@ -10,7 +10,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 use Imi\Util\Socket\IPEndPoint;
 
 /**
- * @Bean(name="WebSocketFrameProxy")
+ * @Bean(name="WebSocketFrameProxy", recursion=false)
  * @RequestContextProxy(class="Imi\Server\WebSocket\Message\IFrame", name="frame")
  *
  * @method int|string                  getClientId()

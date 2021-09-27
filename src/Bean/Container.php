@@ -58,20 +58,24 @@ class Container implements ContainerInterface
 
         unset($params[0]);
 
-        $binds = &$this->binds;
+        $binds = $this->binds;
         $originId = $id;
 
         do
         {
             if (isset($binds[$id]))
             {
-                $className = $binds[$id];
+                $data = $binds[$id];
+                $className = $data['className'];
                 if (class_exists($className))
                 {
-                    $object = BeanFactory::newInstanceNoInit($className, ...$params);
-                    if ([] === $params)
+                    if ($data['recursion'])
                     {
-                        $beanObjects[$originId] = $object;
+                        $object = BeanFactory::newInstanceNoInit($className, ...$params);
+                    }
+                    else
+                    {
+                        $object = BeanFactory::newInstance($className, ...$params);
                     }
                 }
                 else
@@ -88,7 +92,14 @@ class Container implements ContainerInterface
                     $className = $data['className'];
                     if (class_exists($className))
                     {
-                        $object = BeanFactory::newInstanceNoInit($data['className'], ...$params);
+                        if ($data['recursion'])
+                        {
+                            $object = BeanFactory::newInstanceNoInit($data['className'], ...$params);
+                        }
+                        else
+                        {
+                            $object = BeanFactory::newInstance($data['className'], ...$params);
+                        }
                     }
                     else
                     {
@@ -104,18 +115,20 @@ class Container implements ContainerInterface
                 {
                     throw new ContainerException(sprintf('%s not found', $id));
                 }
-
-                // 传参实例化强制不使用单例
-                if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
-                {
-                    $beanObjects[$originId] = $object;
-                }
+            }
+            // 传参实例化强制不使用单例
+            if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
+            {
+                $beanObjects[$originId] = $object;
             }
             break;
         } while (true);
 
-        // @phpstan-ignore-next-line
-        BeanFactory::initInstance($object, $params);
+        if ($data['recursion'] ?? true)
+        {
+            // @phpstan-ignore-next-line
+            BeanFactory::initInstance($object, $params);
+        }
 
         // @phpstan-ignore-next-line
         return $object;
@@ -149,13 +162,14 @@ class Container implements ContainerInterface
 
         unset($params[0]);
 
-        $binds = &$this->binds;
+        $binds = $this->binds;
 
         do
         {
             if (isset($binds[$id]))
             {
-                $className = $binds[$id];
+                $data = $binds[$id];
+                $className = $data['className'];
                 if (class_exists($className))
                 {
                     $object = new $className(...$params);
@@ -194,12 +208,11 @@ class Container implements ContainerInterface
                 {
                     throw new ContainerException(sprintf('%s not found', $id));
                 }
-
-                // 传参实例化强制不使用单例
-                if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
-                {
-                    $singletonObjects[$id] = $object;
-                }
+            }
+            // 传参实例化强制不使用单例
+            if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
+            {
+                $singletonObjects[$id] = $object;
             }
             break;
         } while (true);
@@ -221,9 +234,13 @@ class Container implements ContainerInterface
     /**
      * 绑定名称和类名.
      */
-    public function bind(string $name, string $class): void
+    public function bind(string $name, string $class, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON, bool $recursion = true): void
     {
-        $this->binds[$name] = $class;
+        $this->binds[$name] = [
+            'className'    => $class,
+            'instanceType' => $instanceType,
+            'recursion'    => $recursion,
+        ];
     }
 
     /**
@@ -231,7 +248,20 @@ class Container implements ContainerInterface
      */
     public function setBinds(array $binds): void
     {
-        $this->binds = $binds;
+        $result = [];
+        foreach ($binds as $key => $value)
+        {
+            if (\is_string($value))
+            {
+                $value = [
+                    'className'    => $value,
+                    'instanceType' => Bean::INSTANCE_TYPE_SINGLETON,
+                    'recursion'    => true,
+                ];
+            }
+            $result[$key] = $value;
+        }
+        $this->binds = $result;
     }
 
     /**
@@ -239,7 +269,18 @@ class Container implements ContainerInterface
      */
     public function appendBinds(array $binds): void
     {
-        $this->binds = array_merge($this->binds, $binds);
+        foreach ($binds as $key => $value)
+        {
+            if (\is_string($value))
+            {
+                $value = [
+                    'className'    => $value,
+                    'instanceType' => Bean::INSTANCE_TYPE_SINGLETON,
+                    'recursion'    => true,
+                ];
+            }
+            $this->binds[$key] = $value;
+        }
     }
 
     /**

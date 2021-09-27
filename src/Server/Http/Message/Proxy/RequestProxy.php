@@ -10,7 +10,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 use Imi\Util\Socket\IPEndPoint;
 
 /**
- * @Bean(name="HttpRequestProxy")
+ * @Bean(name="HttpRequestProxy", recursion=false)
  * @RequestContextProxy(class="Imi\Server\Http\Message\Contract\IHttpRequest", name="request")
  *
  * @method mixed             getCookie(string $name, $default = NULL)

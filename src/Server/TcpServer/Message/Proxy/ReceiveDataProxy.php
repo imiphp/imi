@@ -10,7 +10,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 use Imi\Util\Socket\IPEndPoint;
 
 /**
- * @Bean(name="TcpReceiveDataProxy")
+ * @Bean(name="TcpReceiveDataProxy", recursion=false)
  * @RequestContextProxy(class="Imi\Server\TcpServer\Message\IReceiveData", name="receiveData")
  *
  * @method int|string                  getClientId()
