@@ -25,7 +25,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * 协程工作池.
          */
-        private ?CoPool $coPool;
+        private ?CoPool $coPool = null;
 
         /**
          * 开始消费循环.
