@@ -119,6 +119,10 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
     {
+        if (\is_int($parameter))
+        {
+            --$parameter;
+        }
         $this->bindValues[$parameter] = $value;
 
         return true;
@@ -205,9 +209,9 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                         {
                             $bindValues[$index] = $inputParameters[$key];
                         }
-                        elseif (isset($inputParameters[$index + 1]))
+                        elseif (isset($inputParameters[$index]))
                         {
-                            $bindValues[$index] = $inputParameters[$index + 1];
+                            $bindValues[$index] = $inputParameters[$index];
                         }
                     }
                 }

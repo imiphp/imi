@@ -79,6 +79,27 @@ abstract class DbBaseTest extends BaseTest
                 'time'      => '2019-06-21 00:00:00',
             ],
         ], $stmt->fetchAll());
+
+        $stmt = $db->prepare('select * from tb_article where id = ?');
+        Assert::assertTrue($stmt->execute([1]));
+        Assert::assertEquals([
+            [
+                'id'        => '1',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+            ],
+        ], $stmt->fetchAll());
+
+        $stmt = $db->prepare('select ? as a, ? as b, ? as c');
+        Assert::assertTrue($stmt->execute([1, 2, 3]));
+        Assert::assertEquals([
+            [
+                'a' => 1,
+                'b' => 2,
+                'c' => 3,
+            ],
+        ], $stmt->fetchAll());
     }
 
     public function testPrepareNamed(): void
@@ -105,6 +126,22 @@ abstract class DbBaseTest extends BaseTest
         $stmt->bindValue('id', 1);
         $stmt->bindValue('v', 2);
         Assert::assertTrue($stmt->execute());
+        Assert::assertEquals([
+            [
+                'id'        => '1',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'v'         => 2,
+            ],
+        ], $stmt->fetchAll());
+
+        // execute
+        $stmt = $db->prepare('select tb_article.*, :v as v from tb_article where id = :id');
+        Assert::assertTrue($stmt->execute([
+            'id' => 1,
+            ':v' => 2,
+        ]));
         Assert::assertEquals([
             [
                 'id'        => '1',
