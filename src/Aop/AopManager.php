@@ -97,10 +97,10 @@ class AopManager
         else
         {
             self::$cache[$class]['before'][] = $result;
-            if (isset(self::$parsedCache[$class]['before']))
-            {
-                unset(self::$parsedCache[$class]['before']);
-            }
+        }
+        if (isset(self::$parsedCache[$class]['before']))
+        {
+            unset(self::$parsedCache[$class]['before']);
         }
 
         return $result;
@@ -116,10 +116,10 @@ class AopManager
         else
         {
             self::$cache[$class]['after'][] = $result;
-            if (isset(self::$parsedCache[$class]['after']))
-            {
-                unset(self::$parsedCache[$class]['after']);
-            }
+        }
+        if (isset(self::$parsedCache[$class]['after']))
+        {
+            unset(self::$parsedCache[$class]['after']);
         }
 
         return $result;
@@ -135,10 +135,10 @@ class AopManager
         else
         {
             self::$cache[$class]['around'][] = $result;
-            if (isset(self::$parsedCache[$class]['around']))
-            {
-                unset(self::$parsedCache[$class]['around']);
-            }
+        }
+        if (isset(self::$parsedCache[$class]['around']))
+        {
+            unset(self::$parsedCache[$class]['around']);
         }
 
         return $result;
@@ -154,10 +154,10 @@ class AopManager
         else
         {
             self::$cache[$class]['afterReturning'][] = $result;
-            if (isset(self::$parsedCache[$class]['afterReturning']))
-            {
-                unset(self::$parsedCache[$class]['afterReturning']);
-            }
+        }
+        if (isset(self::$parsedCache[$class]['afterReturning']))
+        {
+            unset(self::$parsedCache[$class]['afterReturning']);
         }
 
         return $result;
@@ -173,10 +173,10 @@ class AopManager
         else
         {
             self::$cache[$class]['afterThrowing'][] = $result;
-            if (isset(self::$parsedCache[$class]['afterThrowing']))
-            {
-                unset(self::$parsedCache[$class]['afterThrowing']);
-            }
+        }
+        if (isset(self::$parsedCache[$class]['afterThrowing']))
+        {
+            unset(self::$parsedCache[$class]['afterThrowing']);
         }
 
         return $result;
