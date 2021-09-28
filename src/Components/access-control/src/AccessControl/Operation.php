@@ -17,7 +17,7 @@ abstract class Operation
     }
 
     /**
-     * 修改操作权限
+     * 修改操作权限.
      */
     public static function update(int $id, string $name, ?string $code, int $parentId = 0, int $index = 0, string $description = ''): bool
     {
@@ -25,7 +25,7 @@ abstract class Operation
     }
 
     /**
-     * 删除操作权限
+     * 删除操作权限.
      */
     public static function delete(int $id): bool
     {
@@ -33,7 +33,7 @@ abstract class Operation
     }
 
     /**
-     * 查询列表
+     * 查询列表.
      */
     public static function selectList(): array
     {
@@ -41,7 +41,7 @@ abstract class Operation
     }
 
     /**
-     * 转为树形
+     * 转为树形.
      */
     public function listToTree(array $list): array
     {
