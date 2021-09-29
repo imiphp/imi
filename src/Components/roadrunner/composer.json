@@ -1,0 +1,24 @@
+{
+    "name": "imiphp/imi-roadrunner",
+    "type": "library",
+    "license": "MulanPSL-1.0",
+    "description": "imi roadrunner component",
+    "require": {
+        "spiral/roadrunner": "~2.0",
+        "symfony/yaml": "^5.3",
+        "nyholm/psr7": "^1.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\RoadRunner\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\RoadRunner\\Test\\": "tests/unit/"
+        }
+    }
+}

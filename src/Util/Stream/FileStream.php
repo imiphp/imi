@@ -27,13 +27,18 @@ class FileStream implements StreamInterface
     protected string $mode = '';
 
     /**
-     * @param string|Uri $uri
+     * @param string|resource|Uri $uri
      */
     public function __construct($uri, string $mode = StreamMode::READ_WRITE)
     {
         if (\is_string($uri))
         {
             $this->uri = $uri = new Uri($uri);
+        }
+        elseif (\is_resource($uri))
+        {
+            $this->stream = $uri;
+            $this->uri = new Uri($this->getMetadata('uri') ?? '');
         }
         elseif ($uri instanceof Uri)
         {
@@ -44,10 +49,13 @@ class FileStream implements StreamInterface
             $uri = $this->uri;
         }
         $this->mode = $mode;
-        $this->stream = fopen($uri->__toString(), $mode);
-        if (false === $this->stream)
+        if (!$this->stream)
         {
-            throw new \RuntimeException(sprintf('Open stream %s error', (string) $uri));
+            $this->stream = fopen($uri->__toString(), $mode);
+            if (false === $this->stream)
+            {
+                throw new \RuntimeException(sprintf('Open stream %s error', (string) $uri));
+            }
         }
     }
 
