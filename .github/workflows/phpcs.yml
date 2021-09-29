@@ -8,6 +8,7 @@ jobs:
     env:
       SWOOLE_DOCKER_VERSION: 4.7-php7.4
       ENV_SERVICE: swoole-only
+      ROADRUNNER_DOCKER_VERSION: 2.4.2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
