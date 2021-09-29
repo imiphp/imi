@@ -4,22 +4,4 @@ server:
 http:
   address: 0.0.0.0:13000
   pool:
-    num_workers: 4
-
-reload:
-  # sync interval
-  interval: 1s
-  # global patterns to sync
-  patterns: [ ".php" ]
-  # list of included for sync services
-  services:
-    http:
-      # recursive search for file patterns to add
-      recursive: true
-      # ignored folders
-      ignore: [ "vendor" ]
-      # service specific file pattens to sync
-      patterns: [ ".php", ".go", ".md" ]
-      # directories to sync. If recursive is set to true,
-      # recursive sync will be applied only to the directories in `dirs` section
-      dirs: [ "." ]
+    num_workers: 2

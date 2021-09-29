@@ -121,7 +121,10 @@ class Server extends BaseServer
             // 命令行启动
             [$cmd, $env] = (function () {
                 $env = [];
-                $cmd = escapeshellarg(RoadRunner::getBinaryPath()) . ' serve';
+                $cmd = [
+                    RoadRunner::getBinaryPath(),
+                    'serve',
+                ];
                 $serverConfig = $this->config;
                 $workDir = $serverConfig['workDir'] ?? null;
                 if (null === $workDir)
@@ -130,7 +133,8 @@ class Server extends BaseServer
                 }
                 if (null !== $workDir)
                 {
-                    $cmd .= ' -w ' . escapeshellarg($workDir);
+                    $cmd[] = '-w';
+                    $cmd[] = $workDir;
                 }
                 $config = $serverConfig['config'] ?? null;
                 if (null === $config && null !== $workDir)
@@ -139,7 +143,8 @@ class Server extends BaseServer
                 }
                 if (null !== $config)
                 {
-                    $cmd .= ' -c ' . escapeshellarg($config);
+                    $cmd[] = '-c';
+                    $cmd[] = $config;
                     $env['IMI_ROADRUNNER_CONFIG'] = $config;
                     $rrYaml = Yaml::parseFile($config);
                     $url = parse_url($rrYaml['http']['address'] ?? '');
@@ -153,7 +158,7 @@ class Server extends BaseServer
 
                 return [$cmd, $env];
             })();
-            $process = Process::fromShellCommandline($cmd, null, $env, null, null);
+            $process = new Process($cmd, null, $env, null, null);
             $isTTY = '/' === \DIRECTORY_SEPARATOR && Process::isTtySupported();
             if ($isTTY)
             {

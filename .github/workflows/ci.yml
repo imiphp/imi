@@ -219,7 +219,7 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: pecl
           extensions: >
-            bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets,
+            bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, zip,
             swoole-swoole/swoole-src@${{ matrix.swoole }}
         env:
           SWOOLE_CONFIGURE_OPTS: >
