@@ -196,6 +196,7 @@ jobs:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      GITHUB_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2

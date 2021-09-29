@@ -159,7 +159,14 @@ class Server extends BaseServer
                 return [$cmd, $env];
             })();
             $process = new Process($cmd, null, $env, null, null);
-            $isTTY = '/' === \DIRECTORY_SEPARATOR && Process::isTtySupported();
+            try
+            {
+                $isTTY = '/' === \DIRECTORY_SEPARATOR && Process::isTtySupported();
+            }
+            catch (\Throwable $th)
+            {
+                $isTTY = false;
+            }
             if ($isTTY)
             {
                 $process->setTty(true);
