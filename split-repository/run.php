@@ -188,6 +188,9 @@ static $storeRepoMap = [
     'src/Components/pgsql' => [
         'git@github.com:imiphp/imi-pgsql',
     ],
+    'src/Components/roadrunner' => [
+        'git@github.com:imiphp/imi-roadrunner',
+    ],
 ];
 
 $mainRepoPath = dirname(__DIR__) . '/';

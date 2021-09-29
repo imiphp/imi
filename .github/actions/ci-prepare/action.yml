@@ -19,6 +19,7 @@ runs:
         docker exec ${{ inputs.env }} php --ri swoole
         docker exec ${{ inputs.env }} php -r "echo 'opcache config: '; print_r(opcache_get_status(false));"
         docker exec ${{ inputs.env }} composer -V
+        docker exec ${{ inputs.env }} rr -v
     - name: Prepare
       shell: bash
       run: |
