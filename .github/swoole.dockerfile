@@ -6,7 +6,7 @@ FROM phpswoole/swoole:${SWOOLE_DOCKER_VERSION}
 
 ARG POSTGRESQL_VERSION=""
 
-COPY --from=roadrunner /usr/bin/rr /usr/bin/rr
+COPY --from=roadrunner /usr/bin/rr /usr/local/bin
 COPY script/ /tmp/script
 
 RUN set -eux \
