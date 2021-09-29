@@ -57,17 +57,18 @@ Operation::create('权限名称', '权限代码', $parentId, $index, '介绍');
 ```
 #### 修改操作权限
 ```php
-// 参数比创建时多了权限id，其余都一样
-Operation::update('权限id','权限名称', '权限代码', $parentId, $index, '介绍');
+// 参数比创建时多了权限id，其余都一样，注意权限id是int类型
+Operation::update(权限id, '权限名称', '权限代码', $parentId, $index, '介绍');
 ```
 #### 删除操作权限
 ```php
-Operation::delete('权限id');
+// 注意权限id是int类型
+Operation::delete(权限id);
 ```
 #### 查询操作操作权限列表
 ```php
-// 查询权限列表
-$data = Operation::selectList('权限id');
+// 查询权限列表，注意权限id是int类型
+$data = Operation::selectList();
 // 将列表转换为树状结构
 $tree = Operation::listToTree($data);
 ```
