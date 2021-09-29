@@ -8,9 +8,9 @@ $__DIR__ = $(Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 if ($d)
 {
-    Start-Process -PassThru -FilePath "php" -ArgumentList """$__DIR__\..\..\..\..\..\..\Cli\bin\imi-cli"" rr/start --app-namespace ""Imi\RoadRunner\Test\HttpServer"" -w ""$__DIR__\.."""
+    Start-Process -PassThru -FilePath "php" -ArgumentList """$__DIR__\cli"" rr/start --app-namespace ""Imi\RoadRunner\Test\HttpServer"" -w ""$__DIR__\.."""
 }
 else
 {
-    php "$__DIR__\..\..\..\..\..\..\Cli\bin\imi-cli" rr/start --app-namespace "Imi\RoadRunner\Test\HttpServer" -w "$__DIR__\..\"
+    php "$__DIR__\Cli\bin\imi-cli" rr/start --app-namespace "Imi\RoadRunner\Test\HttpServer" -w "$__DIR__\..\"
 }
