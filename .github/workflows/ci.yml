@@ -195,7 +195,7 @@ jobs:
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
-      IMI_ROADRUNNER_BINARY: ${{ github.workflow }}/rr
+      IMI_ROADRUNNER_BINARY: ${{ github.action_path }}/rr
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -282,7 +282,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      IMI_ROADRUNNER_BINARY: ${{ github.workflow }}\rr
+      IMI_ROADRUNNER_BINARY: ${{ github.action_path }}\rr
 
     steps:
       - uses: actions/checkout@v2

@@ -9,7 +9,6 @@ use Imi\AppContexts;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
-use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\RoadRunner\Http\Message\RoadRunnerResponse;
 use Imi\RoadRunner\Util\RoadRunner;
@@ -61,7 +60,6 @@ class Server extends BaseServer
      */
     public function start(): void
     {
-        Log::info(App::getApp()->getType());
         if (Imi::checkAppType('roadrunner'))
         {
             // worker
@@ -94,6 +92,7 @@ class Server extends BaseServer
                             'request'  => $request,
                             'response' => $response,
                         ]);
+                        // @phpstan-ignore-next-line
                         $dispatcher->dispatch($request);
                     }
                     catch (\Throwable $th)
@@ -104,7 +103,7 @@ class Server extends BaseServer
                         }
                         else
                         {
-                            $worker->getWorker()->error((string) $e);
+                            $worker->getWorker()->error((string) $th);
                         }
                     }
                 }

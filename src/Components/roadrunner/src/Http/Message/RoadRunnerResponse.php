@@ -17,9 +17,9 @@ class RoadRunnerResponse extends Response
      */
     protected array $changedCookieNames = [];
 
-    protected \Spiral\RoadRunner\Http\PSR7Worker $worker;
+    protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker;
 
-    public function __construct(\Spiral\RoadRunner\Http\PSR7Worker $worker)
+    public function __construct(?\Spiral\RoadRunner\Http\PSR7Worker $worker = null)
     {
         parent::__construct();
         $this->worker = $worker;
