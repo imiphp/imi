@@ -282,7 +282,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
 
     steps:
       - uses: actions/checkout@v2
