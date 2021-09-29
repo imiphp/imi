@@ -58,7 +58,7 @@ Operation::create('权限名称', '权限代码', $parentId, $index, '介绍');
 #### 修改操作权限
 ```php
 // 参数比创建时多了权限id，其余都一样，注意权限id是int类型
-Operation::update(权限id,'权限名称', '权限代码', $parentId, $index, '介绍');
+Operation::update(权限id, '权限名称', '权限代码', $parentId, $index, '介绍');
 ```
 #### 删除操作权限
 ```php
