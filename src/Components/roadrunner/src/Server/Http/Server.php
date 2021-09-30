@@ -185,6 +185,7 @@ class Server extends BaseServer
                     // 热更新进程检测，没有运行就拉起
                     if ($enableHotUpdate && (!$hotUpdateProcess || !$hotUpdateProcess->isRunning()))
                     {
+                        // @phpstan-ignore-next-line
                         $hotUpdateProcess = Process::fromShellCommandline($hotUpdateCmd, null, $env, null, null);
                         $hotUpdateProcess->start();
                     }
