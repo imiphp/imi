@@ -371,6 +371,41 @@ class Imi
     }
 
     /**
+     * 获取imi命令行.
+     */
+    public static function getImiCmdArray(string $commandName, array $arguments = [], array $options = []): array
+    {
+        $cmd = [
+            \PHP_BINARY,
+            App::get(ProcessAppContexts::SCRIPT_NAME),
+            $commandName,
+        ];
+        // $cmd = '"' . \PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $commandName;
+        $options['app-namespace'] ??= App::getNamespace();
+        if ($arguments)
+        {
+            foreach ($arguments as $v)
+            {
+                $cmd[] = $v;
+            }
+        }
+        foreach ($options as $k => $v)
+        {
+            if (is_numeric($k))
+            {
+                $cmd[] = '-' . (isset($v[1]) ? '-' : '') . $v;
+            }
+            else
+            {
+                $cmd[] = '-' . (isset($k[1]) ? '-' : '') . $k;
+                $cmd[] = $v;
+            }
+        }
+
+        return $cmd;
+    }
+
+    /**
      * 运行时目录路径.
      *
      * @return string

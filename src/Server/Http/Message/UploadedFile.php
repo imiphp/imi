@@ -13,7 +13,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * 文件在客户端时的文件名.
      */
-    protected string $fileName = '';
+    protected string $fileName;
 
     /**
      * 文件mime类型.
@@ -23,7 +23,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * 临时文件名.
      */
-    protected string $tmpFileName = '';
+    protected ?string $tmpFileName = null;
 
     /**
      * 文件大小，单位：字节
@@ -38,18 +38,28 @@ class UploadedFile implements UploadedFileInterface
     /**
      * 文件流
      */
-    protected FileStream $stream;
+    protected StreamInterface $stream;
 
     /**
      * 文件是否被移动过.
      */
     protected bool $isMoved = false;
 
-    public function __construct(string $fileName, string $mediaType, string $tmpFileName, int $size, int $error)
+    /**
+     * @param string|StreamInterface $tmpFileName
+     */
+    public function __construct(string $fileName, string $mediaType, $tmpFileName, int $size, int $error)
     {
         $this->fileName = $fileName;
         $this->mediaType = $mediaType;
-        $this->tmpFileName = $tmpFileName;
+        if ($tmpFileName instanceof StreamInterface)
+        {
+            $this->stream = $tmpFileName;
+        }
+        else
+        {
+            $this->tmpFileName = $tmpFileName;
+        }
         $this->size = $size;
         $this->error = $error;
     }
@@ -122,13 +132,29 @@ class UploadedFile implements UploadedFileInterface
         {
             throw new \RuntimeException('$file can not be moved');
         }
-        if (is_uploaded_file($this->tmpFileName))
+        if (null === $this->tmpFileName)
         {
-            $this->isMoved = move_uploaded_file($this->tmpFileName, $targetPath);
+            $this->isMoved = false;
+            $srcStream = $this->getStream();
+            $srcStream->rewind();
+            $targetStream = new FileStream($targetPath);
+            while ('' !== ($content = $srcStream->read(4096)))
+            {
+                $targetStream->write($content);
+            }
+            $targetStream->close();
+            $this->isMoved = true;
         }
         else
         {
-            $this->isMoved = rename($this->tmpFileName, $targetPath);
+            if (is_uploaded_file($this->tmpFileName))
+            {
+                $this->isMoved = move_uploaded_file($this->tmpFileName, $targetPath);
+            }
+            else
+            {
+                $this->isMoved = rename($this->tmpFileName, $targetPath);
+            }
         }
         if (!$this->isMoved)
         {
@@ -209,7 +235,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Get 临时文件名.
      */
-    public function getTmpFileName(): string
+    public function getTmpFileName(): ?string
     {
         return $this->tmpFileName;
     }

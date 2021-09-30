@@ -120,6 +120,25 @@ else
     }
 }
 
+echo '[RoadRunner]', \PHP_EOL;
+$fileName = dirname(__DIR__) . '/src/Components/roadrunner/tests/unit/HttpServer/logs/cli.log';
+if (is_file($fileName))
+{
+    echo file_get_contents($fileName), \PHP_EOL;
+}
+else
+{
+    $fileName = dirname(__DIR__) . '/src/Components/roadrunner/tests/unit/HttpServer/logs/log-' . $date . '.log';
+    if (is_file($fileName))
+    {
+        echo file_get_contents($fileName), \PHP_EOL;
+    }
+    else
+    {
+        echo 'Not found!', \PHP_EOL;
+    }
+}
+
 $dir = dirname(__DIR__) . '/src/Components/';
 foreach ([
     'amqp',

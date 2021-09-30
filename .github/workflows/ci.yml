@@ -10,12 +10,14 @@ jobs:
       matrix:
         swoole: [4.7-php8.0]
         mysql: [8.0]
+        roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       PHP_JIT: yes
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       REDIS_SERVER_HOST: redis
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -36,6 +38,8 @@ jobs:
         run: docker exec ${ENV_SERVICE} composer test-workerman
       - name: Test workerman-gateway
         run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+      - name: Test roadrunner
+        run: docker exec ${ENV_SERVICE} composer test-roadrunner
       - name: Test fpm
         run: docker exec ${ENV_SERVICE} composer test-fpm
       - name: Test jwt
@@ -67,12 +71,14 @@ jobs:
       matrix:
         swoole: [4.7-php7.4, 4.7-php8.0]
         mysql: [5.7, 8.0]
+        roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       REDIS_SERVER_HOST: redis
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -93,6 +99,8 @@ jobs:
         run: docker exec ${ENV_SERVICE} composer test-workerman
       - name: Test workerman-gateway
         run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+      - name: Test roadrunner
+        run: docker exec ${ENV_SERVICE} composer test-roadrunner
       - name: Test fpm
         run: docker exec ${ENV_SERVICE} composer test-fpm
       - name: Test jwt
@@ -124,11 +132,13 @@ jobs:
       matrix:
         swoole: [ 4.7-php8.0 ]
         mysql: [ 8.0 ]
+        roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -149,6 +159,8 @@ jobs:
         run: docker exec ${ENV_SERVICE} composer test-workerman
       - name: Test workerman-gateway
         run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+      - name: Test roadrunner
+        run: docker exec ${ENV_SERVICE} composer test-roadrunner
       - name: Test fpm
         run: docker exec ${ENV_SERVICE} composer test-fpm
       - name: Test jwt
@@ -184,6 +196,8 @@ jobs:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
       IMI_TEST_AMQP_SERVER_UTIL: 0
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      GITHUB_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -207,7 +221,7 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: pecl
           extensions: >
-            bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets,
+            bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, zip,
             swoole-swoole/swoole-src@${{ matrix.swoole }}
         env:
           SWOOLE_CONFIGURE_OPTS: >
@@ -235,6 +249,8 @@ jobs:
         run: |
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
+          src/Components/roadrunner/vendor/bin/rr get-binary
+          ./rr -v
           tests/db/install-db.sh
       - name: Test
         run: composer test
@@ -244,6 +260,8 @@ jobs:
         run: composer test-workerman
       - name: Test workerman-gateway
         run: composer test-workerman-gateway
+      - name: Test roadrunner
+        run: composer test-roadrunner
       - name: Test fpm
         run: composer test-fpm
       - name: Test jwt
@@ -264,6 +282,9 @@ jobs:
 
   ci-windows:
     runs-on: windows-latest
+
+    env:
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
 
     steps:
       - uses: actions/checkout@v2
@@ -302,16 +323,20 @@ jobs:
         run: |
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
-          php src/Cli/bin/imi-cli generate/table --app-namespace "Imi\Test\Component"
+          src\Components\roadrunner\vendor\bin\rr get-binary
+          .\rr -v
+          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
 
       - name: Test
-        run: php tests\phpunit -c .\tests\phpunit.xml
+        run: composer test
       - name: Test fpm
-        run: php tests\phpunit -c src\Components\fpm\tests\phpunit.xml
+        run: composer test-fpm
       - name: Test workerman
-        run: php tests\phpunit -c src\Components\workerman\tests\phpunit.xml
+        run: composer test-workerman
       - name: Test workerman-gateway
-        run: php tests\phpunit -c src\Components\workerman-gateway\tests\phpunit.xml --testsuite workerman
+        run: composer test-workerman-gateway-w
+      - name: Test roadrunner
+        run: composer test-roadrunner
       - name: Print logs
         if: failure()
-        run: php .github/print-logs.php
+        run: php .github\print-logs.php

@@ -376,7 +376,14 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
         {
             foreach ($uploadedFiles as $key => $file)
             {
-                $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+                if (\is_array($file))
+                {
+                    $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+                }
+                else
+                {
+                    $objectFiles[$key] = $file;
+                }
             }
         }
         $this->uploadedFilesInited = true;
