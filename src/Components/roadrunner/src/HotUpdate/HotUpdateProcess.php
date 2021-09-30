@@ -301,4 +301,12 @@ class HotUpdateProcess
             $this->initBuildRuntime();
         }
     }
+
+    /**
+     * Get 是否开启热更新，默认开启.
+     */
+    public function getStatus(): bool
+    {
+        return $this->status;
+    }
 }

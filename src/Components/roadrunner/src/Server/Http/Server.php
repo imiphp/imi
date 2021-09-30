@@ -170,7 +170,12 @@ class Server extends BaseServer
             }
             /** @var Process|null $hotUpdateProcess */
             $hotUpdateProcess = null;
-            $hotUpdateCmd = cmd(Imi::getImiCmd('rr/hotUpdate', [], $options));
+            /** @var \Imi\RoadRunner\HotUpdate\HotUpdateProcess $hotUpdate */
+            $hotUpdate = App::getBean('hotUpdate');
+            if ($enableHotUpdate = $hotUpdate->getStatus())
+            {
+                $hotUpdateCmd = cmd(Imi::getImiCmd('rr/hotUpdate', [], $options));
+            }
             $rrProcess->start();
             try
             {
@@ -178,15 +183,18 @@ class Server extends BaseServer
                 while ($rrProcess->isRunning())
                 {
                     // 热更新进程检测，没有运行就拉起
-                    if (!$hotUpdateProcess || !$hotUpdateProcess->isRunning())
+                    if ($enableHotUpdate && (!$hotUpdateProcess || !$hotUpdateProcess->isRunning()))
                     {
                         $hotUpdateProcess = Process::fromShellCommandline($hotUpdateCmd, null, $env, null, null);
                         $hotUpdateProcess->start();
                     }
                     // RoadRunner worker 输出
                     echo $rrProcess->getIncrementalOutput(), $rrProcess->getIncrementalErrorOutput();
-                    // 热更新进程输出
-                    echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
+                    if ($hotUpdateProcess)
+                    {
+                        // 热更新进程输出
+                        echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
+                    }
                     usleep(1000);
                 }
                 echo $rrProcess->getIncrementalOutput(), $rrProcess->getIncrementalErrorOutput();
@@ -197,13 +205,21 @@ class Server extends BaseServer
                     while ($hotUpdateProcess->isRunning())
                     {
                         echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
+                        usleep(1000);
                     }
                     echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
                 }
             }
             finally
             {
-                $rrProcess->stop();
+                if ($rrProcess->isRunning())
+                {
+                    $rrProcess->stop();
+                }
+                if ($hotUpdateProcess && $hotUpdateProcess->isRunning())
+                {
+                    $hotUpdateProcess->stop();
+                }
             }
         }
     }
