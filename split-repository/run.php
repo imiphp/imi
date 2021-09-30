@@ -218,7 +218,7 @@ foreach ($storeRepoMap as $name => $urls)
     else
     {
         chdir(__DIR__);
-        execCMD('git clone ' . $url, '克隆' . $url);
+        execCMD('git clone ' . escapeshellarg($url), '克隆' . $url);
         chdir($repoPath);
     }
 
@@ -228,17 +228,17 @@ foreach ($storeRepoMap as $name => $urls)
     {
         if (!in_array('* ' . $branch, $branches))
         {
-            if (in_array('  remotes/origin/' . $branch, $branches))
+            if (in_array('  remotes/origin/' . escapeshellarg($branch), $branches))
             {
-                execCMD('git checkout -b ' . $branch . ' remotes/origin/' . $branch);
+                execCMD('git checkout -b ' . escapeshellarg($branch) . ' ' . escapeshellarg('remotes/origin/' . $branch));
             }
             elseif (in_array('  ' . $branch, $branches))
             {
-                execCMD('git checkout ' . $branch);
+                execCMD('git checkout ' . escapeshellarg($branch));
             }
             else
             {
-                execCMD('git checkout -b ' . $branch);
+                execCMD('git checkout -b ' . escapeshellarg($branch));
             }
         }
     }
@@ -246,16 +246,14 @@ foreach ($storeRepoMap as $name => $urls)
     $len = count($urls);
     for ($i = 1; $i < $len; ++$i)
     {
-        execCMD('git remote remove r' . $i . ' ' . $urls[$i], '删除远端' . $i);
-        execCMD('git remote add r' . $i . ' ' . $urls[$i], '增加远端' . $i);
+        execCMD('git remote remove r' . $i . ' ' . escapeshellarg($urls[$i]), '删除远端' . $i);
+        execCMD('git remote add r' . $i . ' ' . escapeshellarg($urls[$i]), '增加远端' . $i);
     }
     $path = $name . '/';
     $pathLen = strlen($path);
     foreach ($commits as $commit)
     {
         chdir($mainRepoPath);
-        execCMD('git show ' . $commit . ' -s --format=%cn', '', $result);
-        $author = $result[0];
         execCMD('git show ' . $commit . ' -s --format=%ad', '', $result);
         $date = $result[0];
         execCMD('git show ' . $commit . ' -s --format=%s', '', $result);
@@ -306,7 +304,7 @@ foreach ($storeRepoMap as $name => $urls)
                         }
                         file_put_contents($repoFilePath, file_get_contents($originFileName));
                         chdir($repoPath);
-                        execCMD('git add ' . $repoFilePath, 'git add');
+                        execCMD('git add ' . escapeshellarg($repoFilePath), 'git add');
                         execCMD('git update-index --chmod=' . (is_executable($originFileName) ? '+' : '-') . 'x ' . $repoFilePath);
                         $needCommit = true;
                     }
@@ -329,7 +327,7 @@ foreach ($storeRepoMap as $name => $urls)
                         }
                         file_put_contents($repoFilePath, file_get_contents($originFileName));
                         chdir($repoPath);
-                        execCMD('git add ' . $repoFilePath, 'git add');
+                        execCMD('git add ' . escapeshellarg($repoFilePath), 'git add');
                         execCMD('git update-index --chmod=' . (is_executable($originFileName) ? '+' : '-') . 'x ' . $repoFilePath);
                         $needCommit = true;
                     }
@@ -349,18 +347,20 @@ foreach ($storeRepoMap as $name => $urls)
             continue;
         }
         chdir($mainRepoPath);
-        $authorName = trim(shell_exec('git show ' . $commit . ' -s --format=%cn'));
-        $authorEmail = trim(shell_exec('git show ' . $commit . ' -s --format=%ce'));
+        $committerName = trim(shell_exec('git show ' . $commit . ' -s --format=%cn'));
+        $committerEmail = trim(shell_exec('git show ' . $commit . ' -s --format=%ce'));
+        $authorName = trim(shell_exec('git show ' . $commit . ' -s --format=%an'));
+        $authorEmail = trim(shell_exec('git show ' . $commit . ' -s --format=%ae'));
 
         chdir($repoPath);
         if ($noBranch)
         {
-            execCMD('git branch -M ' . $branch, '');
+            execCMD('git branch -M ' . escapeshellarg($branch), '');
         }
         execCMD('git status -s', '', $result);
         if ($result)
         {
-            execCMD('git config user.name "' . $authorName . '" && git config user.email "' . $authorEmail . '" && git commit --author "' . $author . ' <' . $authorEmail . '>" --date "' . $date . '" -am \'' . $message . '\'', 'git commit', $result, function (array $result, int $resultCode) {
+            execCMD('git config user.name ' . escapeshellarg($committerName) . ' && git config user.email ' . escapeshellarg($committerEmail) . ' && git commit --author ' . escapeshellarg($authorName . ' <' . $authorEmail . '>') . ' --date ' . escapeshellarg($date) . ' -am ' . escapeshellarg($message), 'git commit', $result, function (array $result, int $resultCode) {
                 return false !== strpos(implode(\PHP_EOL, $result), 'nothing to commit');
             });
         }
@@ -370,11 +370,11 @@ foreach ($storeRepoMap as $name => $urls)
     {
         if (0 === $i)
         {
-            execCMD('git push --set-upstream origin ' . $branch, '推送');
+            execCMD('git push --set-upstream origin ' . escapeshellarg($branch), '推送');
         }
         else
         {
-            execCMD('git push --set-upstream r' . $i . ' ' . $branch, '推送' . $i);
+            execCMD('git push --set-upstream r' . $i . ' ' . escapeshellarg($branch), '推送' . $i);
         }
     }
 }
