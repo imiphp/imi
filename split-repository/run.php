@@ -254,10 +254,6 @@ foreach ($storeRepoMap as $name => $urls)
     foreach ($commits as $commit)
     {
         chdir($mainRepoPath);
-        execCMD('git show ' . $commit . ' -s --format=%ad', '', $result);
-        $date = $result[0];
-        execCMD('git show ' . $commit . ' -s --format=%s', '', $result);
-        $message = $result[0];
         execCMD('git --no-pager show ' . $commit . ' --stat=99999', '提交记录', $result);
 
         $needCommit = false;
@@ -351,6 +347,8 @@ foreach ($storeRepoMap as $name => $urls)
         $committerEmail = trim(shell_exec('git show ' . $commit . ' -s --format=%ce'));
         $authorName = trim(shell_exec('git show ' . $commit . ' -s --format=%an'));
         $authorEmail = trim(shell_exec('git show ' . $commit . ' -s --format=%ae'));
+        $date = trim(shell_exec('git show ' . $commit . ' -s --format=%ad'));
+        $message = trim(shell_exec('git show ' . $commit . ' -s --format=%s'));
 
         chdir($repoPath);
         if ($noBranch)
