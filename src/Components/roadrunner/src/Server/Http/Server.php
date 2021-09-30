@@ -7,6 +7,7 @@ namespace Imi\RoadRunner\Server\Http;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Bean\Annotation\Bean;
+use function Imi\cmd;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
 use Imi\RequestContext;
@@ -119,20 +120,17 @@ class Server extends BaseServer
         else
         {
             // 命令行启动
-            [$cmd, $env] = (function () {
-                $env = [];
+            [$cmd, $env, $options] = (function () {
+                $env = $options = [];
                 $cmd = [
                     RoadRunner::getBinaryPath(),
                     'serve',
                 ];
                 $serverConfig = $this->config;
-                $workDir = $serverConfig['workDir'] ?? null;
-                if (null === $workDir)
-                {
-                    $workDir = App::get(AppContexts::APP_PATH);
-                }
+                $workDir = $serverConfig['workDir'] ?? App::get(AppContexts::APP_PATH);
                 if (null !== $workDir)
                 {
+                    $options['w'] = $workDir;
                     $cmd[] = '-w';
                     $cmd[] = $workDir;
                 }
@@ -143,6 +141,7 @@ class Server extends BaseServer
                 }
                 if (null !== $config)
                 {
+                    $options['c'] = $config;
                     $cmd[] = '-c';
                     $cmd[] = $config;
                     $env['IMI_ROADRUNNER_CONFIG'] = $config;
@@ -156,32 +155,55 @@ class Server extends BaseServer
                     $env['IMI_ROADRUNNER_SSL'] = isset($rrYaml['http']['ssl']);
                 }
 
-                return [$cmd, $env];
+                return [$cmd, $env, $options];
             })();
-            $process = new Process($cmd, null, $env, null, null);
+            $rrProcess = new Process($cmd, null, $env, null, null);
             try
             {
-                $isTTY = '/' === \DIRECTORY_SEPARATOR && Process::isTtySupported();
+                if ('/' === \DIRECTORY_SEPARATOR && Process::isTtySupported())
+                {
+                    $rrProcess->setTty(true);
+                }
             }
             catch (\Throwable $th)
             {
-                $isTTY = false;
             }
-            if ($isTTY)
+            /** @var Process|null $hotUpdateProcess */
+            $hotUpdateProcess = null;
+            $hotUpdateCmd = cmd(Imi::getImiCmd('rr/hotUpdate', [], $options));
+            $rrProcess->start();
+            try
             {
-                $process->setTty(true);
+                File::putContents(Imi::getModeRuntimePath('roadrunner', 'server.pid'), (string) $rrProcess->getPid());
+                while ($rrProcess->isRunning())
+                {
+                    // 热更新进程检测，没有运行就拉起
+                    if (!$hotUpdateProcess || !$hotUpdateProcess->isRunning())
+                    {
+                        $hotUpdateProcess = Process::fromShellCommandline($hotUpdateCmd, null, $env, null, null);
+                        $hotUpdateProcess->start();
+                    }
+                    // RoadRunner worker 输出
+                    echo $rrProcess->getIncrementalOutput(), $rrProcess->getIncrementalErrorOutput();
+                    // 热更新进程输出
+                    echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
+                    usleep(1000);
+                }
+                echo $rrProcess->getIncrementalOutput(), $rrProcess->getIncrementalErrorOutput();
+                // 停止热更新进程
+                if ($hotUpdateProcess)
+                {
+                    $hotUpdateProcess->stop();
+                    while ($hotUpdateProcess->isRunning())
+                    {
+                        echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
+                    }
+                    echo $hotUpdateProcess->getIncrementalOutput(), $hotUpdateProcess->getIncrementalErrorOutput();
+                }
             }
-            $process->start();
-            File::putContents(Imi::getModeRuntimePath('roadrunner', 'server.pid'), (string) $process->getPid());
-            if ($isTTY)
+            finally
             {
-                exit($process->wait());
-            }
-            else
-            {
-                exit($process->wait(function ($type, $buffer) {
-                    echo $buffer;
-                }));
+                $rrProcess->stop();
             }
         }
     }
@@ -241,7 +263,10 @@ class Server extends BaseServer
      */
     public function reload(): void
     {
-        $cmd = escapeshellarg(RoadRunner::getBinaryPath()) . ' reset';
+        $cmd = [
+            RoadRunner::getBinaryPath(),
+            'reset',
+        ];
         $serverConfig = $this->config;
         $workDir = $serverConfig['workDir'] ?? null;
         if (null === $workDir)
@@ -250,7 +275,8 @@ class Server extends BaseServer
         }
         if (null !== $workDir)
         {
-            $cmd .= ' -w ' . escapeshellarg($workDir);
+            $cmd[] = '-w';
+            $cmd[] = $workDir;
         }
         $config = $serverConfig['config'] ?? null;
         if (null === $config && null !== $workDir)
@@ -259,20 +285,19 @@ class Server extends BaseServer
         }
         if (null !== $config)
         {
-            $cmd .= ' -c ' . escapeshellarg($config);
+            $cmd[] = '-c';
+            $cmd[] = $config;
         }
-        if (Imi::checkAppType('roadrunner'))
-        {
-            exec($cmd, $output, $code);
-        }
-        else
-        {
-            $code = ttyExec($cmd);
-        }
-        if (0 !== $code)
-        {
-            throw new \RuntimeException(sprintf('Reload server failed! code: %s', $code));
-        }
+        $process = new Process($cmd);
+        $process->start();
+        $process->waitUntil(function ($type, $buffer) {
+            if (Process::ERR === $type)
+            {
+                throw new \RuntimeException('Cannot reload RoadRunner: ' . $buffer);
+            }
+
+            return true;
+        });
     }
 
     /**
