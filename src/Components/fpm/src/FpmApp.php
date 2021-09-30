@@ -28,14 +28,6 @@ class FpmApp extends BaseApp
         'annotation_manager_annotation_relation_cache' => true,
     ];
 
-    /**
-     * 构造方法.
-     */
-    public function __construct(string $namespace)
-    {
-        parent::__construct($namespace);
-    }
-
     protected function __loadConfig(): void
     {
         parent::__loadConfig();
