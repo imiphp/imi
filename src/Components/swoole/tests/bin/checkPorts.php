@@ -17,7 +17,7 @@ function checkPort(string $host, int $port, ?int &$errno = null, ?string &$errst
     return true;
 }
 
-foreach ([13000, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008] as $port)
+foreach ([13000, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010] as $port)
 {
     echo "checking port {$port}...";
     $count = 0;
