@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use function Imi\ttyExec;
 use Imi\Util\File;
 
 /**
@@ -27,18 +28,10 @@ class Server extends BaseCommand
      */
     public function start(string $host, int $port): void
     {
-        $cmd = '"' . \PHP_BINARY . '" -S ' . $host . ':' . $port . ' -t "' . File::path(App::get(AppContexts::APP_PATH), 'public') . '"';
-        $descriptorspec = [
-            ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
-            ['pipe', 'w'],  // 标准输出，子进程向此管道中写入数据
-        ];
-        $p = proc_open(\Imi\cmd($cmd), $descriptorspec, $pipes, null, null, [
-            'bypass_shell' => true,
+        ttyExec([
+            \PHP_BINARY,
+            '-S', $host . ':' . $port,
+            '-t', File::path(App::get(AppContexts::APP_PATH), 'public'),
         ]);
-        while ($tmp = fgets($pipes[1]))
-        {
-            echo $tmp;
-        }
-        proc_close($p);
     }
 }
