@@ -125,8 +125,6 @@ function saveConfig(): void
     ]);
 }
 
-chdir(__DIR__);
-
 static $storeRepoMap = [
     'src/Components/swoole' => [
         'git@github.com:imiphp/imi-swoole',
@@ -193,6 +191,10 @@ static $storeRepoMap = [
     ],
 ];
 
+setlocale(\LC_CTYPE, 'en_US.UTF-8');
+
+chdir(__DIR__);
+
 $mainRepoPath = dirname(__DIR__) . '/';
 
 loadConfig();
@@ -228,7 +230,7 @@ foreach ($storeRepoMap as $name => $urls)
     {
         if (!in_array('* ' . $branch, $branches))
         {
-            if (in_array('  remotes/origin/' . escapeshellarg($branch), $branches))
+            if (in_array('  remotes/origin/' . $branch, $branches))
             {
                 execCMD('git checkout -b ' . escapeshellarg($branch) . ' ' . escapeshellarg('remotes/origin/' . $branch));
             }
