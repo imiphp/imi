@@ -234,15 +234,15 @@ class ProcessManager
      */
     public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, bool $stdOutput = false): array
     {
-        $cmd = Imi::getImiCmd('process/run', [$name], $args);
         if (null !== $redirectStdinStdout)
         {
-            $cmd .= ' --redirectStdinStdout ' . $redirectStdinStdout;
+            $args['redirectStdinStdout'] = $redirectStdinStdout;
         }
         if (null !== $pipeType)
         {
-            $cmd .= ' --pipeType ' . $pipeType;
+            $args['pipeType'] = $pipeType;
         }
+        $cmd = Imi::getImiCmd('process/run', [$name], $args);
 
         if ($stdOutput)
         {

@@ -17,3 +17,5 @@ TCPServer: `13003`
 UDPServer: `13004`
 
 WebSocketServerWithRedisServerUtil: `13008`
+
+WebSocketServerWithAmqpServerUtil: `13009`

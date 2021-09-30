@@ -11,12 +11,14 @@ imi v2.x 开始采用了 monolog 作为日志组件，废弃了 v1 中的配置�
 ```php
 // 日志配置
 'logger' => [
+    // 'default' => 'imi', // 默认 channel
     'channels' => [
         'imi' => [
             'handlers' => [
                 // 命令行配置，仅 Swoole、Workerman 推荐
                 [
                     'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                    // 'env' => ['swoole'], // 允许的运行环境，只有是数组内的运行环境才有效，默认为 null 则不限制
                     // 日志 Handler 构造方法参数，具体参数详见该类构造方法
                     'construct' => [
                         'level'  => \Monolog\Logger::DEBUG,

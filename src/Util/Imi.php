@@ -346,13 +346,13 @@ class Imi
      */
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
-        $cmd = '"' . \PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $commandName;
+        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME)) . ' ' . escapeshellarg($commandName);
         $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
             foreach ($arguments as $v)
             {
-                $cmd .= ' "' . $v . '"';
+                $cmd .= ' ' . escapeshellarg($v);
             }
         }
         foreach ($options as $k => $v)
@@ -363,7 +363,7 @@ class Imi
             }
             else
             {
-                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . $k . ' "' . $v . '"';
+                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . $k . ' ' . escapeshellarg($v);
             }
         }
 

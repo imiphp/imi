@@ -2,6 +2,7 @@
 
 /.gitattributes export-ignore
 /.gitignore export-ignore
+/.github export-ignore
 /res export-ignore
 /example export-ignore
 /tests export-ignore
