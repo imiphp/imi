@@ -51,3 +51,5 @@ return [
 ## 命令
 
 启动开发服务: `vendor/bin/imi-cli fpm/start`
+
+> 此命令仅限于开发使用，正式环境推荐配合 Nginx 或 Apache 运行
