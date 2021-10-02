@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Aop;
 
+use function array_merge;
 use Imi\App;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
 use Imi\Lock\Annotation\Lockable;
 use Imi\Lock\Exception\LockFailException;
+use Imi\Lock\Lock;
 use Imi\Util\ClassObject;
 use Imi\Util\ObjectArrayHelper;
 
@@ -30,6 +32,22 @@ trait TLockableParser
     {
         $class = get_parent_class($object);
 
+        // 加载配置
+        if (null !== $lockable->id && $lockable->useConfig)
+        {
+            $options = Lock::getOptions();
+
+            if (!empty($config = $options[$lockable->id] ?? null))
+            {
+                if (!empty($config->class))
+                {
+                    $lockable->type = $config->class;
+                }
+
+                $lockable->options = array_merge($config->options, $lockable->options ?? []);
+            }
+        }
+
         // Lock 类型
         if (null === $lockable->type)
         {
@@ -42,8 +60,22 @@ trait TLockableParser
 
         // options
         $options = $lockable->options;
-        $options['waitTimeout'] ??= $lockable->waitTimeout;
-        $options['lockExpire'] ??= $lockable->lockExpire;
+        if (null !== $lockable->waitTimeout)
+        {
+            $options['waitTimeout'] = $lockable->waitTimeout;
+        }
+        elseif (!isset($options['waitTimeout']))
+        {
+            $options['waitTimeout'] = 3000;
+        }
+        if (null !== $lockable->lockExpire)
+        {
+            $options['lockExpire'] = $lockable->lockExpire;
+        }
+        elseif (!isset($options['lockExpire']))
+        {
+            $options['lockExpire'] = 3000;
+        }
 
         // Lock 对象
         $locker = App::getBean($type, $this->getLockerId($class, $method, $args, $lockable), $options);
