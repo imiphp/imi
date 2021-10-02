@@ -352,7 +352,7 @@ class Imi
         {
             foreach ($arguments as $v)
             {
-                $cmd .= ' ' . escapeshellarg($v);
+                $cmd .= ' ' . escapeshellarg((string) $v);
             }
         }
         foreach ($options as $k => $v)
@@ -363,7 +363,7 @@ class Imi
             }
             else
             {
-                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . $k . ' ' . escapeshellarg($v);
+                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . $k . ' ' . escapeshellarg((string) $v);
             }
         }
 
