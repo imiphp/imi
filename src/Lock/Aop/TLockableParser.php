@@ -60,22 +60,8 @@ trait TLockableParser
 
         // options
         $options = $lockable->options;
-        if (null !== $lockable->waitTimeout)
-        {
-            $options['waitTimeout'] = $lockable->waitTimeout;
-        }
-        elseif (!isset($options['waitTimeout']))
-        {
-            $options['waitTimeout'] = 3000;
-        }
-        if (null !== $lockable->lockExpire)
-        {
-            $options['lockExpire'] = $lockable->lockExpire;
-        }
-        elseif (!isset($options['lockExpire']))
-        {
-            $options['lockExpire'] = 3000;
-        }
+        $options['waitTimeout'] = null !== $lockable->waitTimeout ? $lockable->waitTimeout : ($options['waitTimeout'] ?? 3000);
+        $options['lockExpire'] = null !== $lockable->lockExpire ? $lockable->lockExpire : ($options['lockExpire'] ?? 3000);
 
         // Lock 对象
         $locker = App::getBean($type, $this->getLockerId($class, $method, $args, $lockable), $options);
