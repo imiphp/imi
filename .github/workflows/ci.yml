@@ -214,7 +214,9 @@ jobs:
           redis-version: '6.x'
       - name: Get Openssl Dir
         id: opecssl-dir
-        run: echo "::set-output name=path::$(brew --prefix openssl)"
+        run: |
+          brew install openssl@1.1
+          echo "::set-output name=path::$(brew --prefix openssl@1.1)"
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
