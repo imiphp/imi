@@ -34,7 +34,7 @@ class BeanFactory
     /**
      * 实例化.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $class
      * @param mixed           ...$args
@@ -52,7 +52,7 @@ class BeanFactory
     /**
      * 实例化，但不初始化.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $class
      * @param mixed           ...$args
@@ -98,7 +98,7 @@ class BeanFactory
     /**
      * 增强实例化.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $class
      *
@@ -115,7 +115,7 @@ class BeanFactory
     /**
      * 增强实例化，但不初始化.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $class
      *
