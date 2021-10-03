@@ -23,6 +23,8 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
+        - '#Method Imi\\Bean\\BeanFactory::newInstanceNoInit\(\) should return T of object but returns mixed.#'
+        - '#Unable to resolve the template type T in call to method static method Imi\\Bean\\BeanFactory::newInstance(NoInit|Ex|ExNoInit)?\(\)#'
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
         - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
         - '#Unsafe usage of new static\(\).+#'
