@@ -101,7 +101,6 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T> $class
-     * @param mixed           ...$args
      *
      * @return T
      */
@@ -119,7 +118,6 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T> $class
-     * @param mixed           ...$args
      *
      * @return T
      */
