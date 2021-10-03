@@ -79,7 +79,7 @@ class Server extends BaseCommand
     {
         return ServerManager::createServer('main', [
             'type'    => 'RoadRunnerHttpServer',
-            'workDir' => realpath($workDir),
+            'workDir' => null === $workDir ? getcwd() : realpath($workDir),
             'config'  => $config,
         ]);
     }
