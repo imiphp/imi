@@ -94,17 +94,19 @@ server:
 http:
   # 配置监听地址
   address: 0.0.0.0:8080
+  pool:
+    num_workers: 2 # 设置进程数量
   # 静态文件访问配置
-    static:
-      dir: "."
-      forbid: [""]
-      allow: [".txt", ".php"]
-      calculate_etag: false
-      weak: false
-      request:
-        input: "custom-header"
-      response:
-        output: "output-header"
+  static:
+    dir: "."
+    forbid: [""]
+    allow: [".txt", ".php"]
+    calculate_etag: false
+    weak: false
+    request:
+      input: "custom-header"
+    response:
+      output: "output-header"
 
 rpc:
   listen: tcp://127.0.0.1:6001
