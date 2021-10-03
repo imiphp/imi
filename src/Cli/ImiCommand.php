@@ -248,9 +248,23 @@ class ImiCommand extends Command
                         break;
                     }
                 }
-                if (null === $paramOptionName && isset($options[$param->name]))
+                if (null === $paramOptionName)
                 {
-                    $paramOptionName = $param->name;
+                    if (isset($options[$param->name]))
+                    {
+                        $paramOptionName = $param->name;
+                    }
+                    else
+                    {
+                        foreach ($options as $option)
+                        {
+                            if ($param->name === $option['shortcut'])
+                            {
+                                $paramOptionName = $option['optionName'];
+                                break;
+                            }
+                        }
+                    }
                 }
                 if (null !== $paramOptionName)
                 {

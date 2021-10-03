@@ -29,12 +29,14 @@ class ArgType
 
     public const ARRAY_EX = 'array_ex';
 
+    public const MIXED = 'mixed';
+
     private function __construct()
     {
     }
 
     public static function isBooleanType(string $type): bool
     {
-        return self::BOOLEAN === $type || self::BOOLEAN_NEGATABLE === $type;
+        return self::BOOLEAN === $type || self::BOOLEAN_NEGATABLE === $type || self::MIXED === $type;
     }
 }
