@@ -129,6 +129,14 @@ public $options = [];
  * @var callable
  */
 public $afterLock;
+
+/**
+ * 允许注解引用配置文件中相同锁id的配置
+ * 当该选项为真且声明`LockId`情况下，将尝试从配置文件加载相同`id`的配置，但仍然以注解定义的值为首选值。
+ * 
+ * @var bool
+ */
+public $useConfig = true;
 ```
 
 ### 用法示例
