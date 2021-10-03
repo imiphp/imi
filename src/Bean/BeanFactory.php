@@ -33,9 +33,12 @@ class BeanFactory
 
     /**
      * 实例化.
+     *
      * @template T
+     *
      * @param class-string<T> $class
-     * @param mixed ...$args
+     * @param mixed           ...$args
+     *
      * @return T
      */
     public static function newInstance(string $class, ...$args): object
@@ -48,9 +51,12 @@ class BeanFactory
 
     /**
      * 实例化，但不初始化.
+     *
      * @template T
+     *
      * @param class-string<T> $class
-     * @param mixed ...$args
+     * @param mixed           ...$args
+     *
      * @return T
      */
     public static function newInstanceNoInit(string $class, ...$args): object
@@ -91,9 +97,12 @@ class BeanFactory
 
     /**
      * 增强实例化.
+     *
      * @template T
+     *
      * @param class-string<T> $class
-     * @param mixed ...$args
+     * @param mixed           ...$args
+     *
      * @return T
      */
     public static function newInstanceEx(string $class, array $args = []): object
@@ -106,10 +115,12 @@ class BeanFactory
 
     /**
      * 增强实例化，但不初始化.
+     *
      * @template T
+     *
      * @param class-string<T> $class
      * @param mixed           ...$args
-     * @param array|null      $resultArgs
+     *
      * @return T
      */
     public static function newInstanceExNoInit(string $class, array $args, ?array &$resultArgs = []): object
