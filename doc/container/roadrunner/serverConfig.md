@@ -6,7 +6,9 @@
 [
     // 服务器配置，写死
     'roadRunnerServer' => [
-        'main' => [],
+        'main' => [
+            'namespace' => 'ImiApp\ApiServer', // Http 服务的命名空间，为空则使用项目命名空间
+        ],
     ],
 
     // 日志配置

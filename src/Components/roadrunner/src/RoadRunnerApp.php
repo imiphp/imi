@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\RoadRunner;
 
+use Imi\Bean\Annotation;
 use Imi\Bean\Scanner;
 use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
+use Imi\Main\Helper;
 use Imi\RoadRunner\Server\Type;
 use Imi\Server\ServerManager;
 use Imi\Util\Imi;
@@ -21,21 +23,30 @@ class RoadRunnerApp extends BaseApp
     protected array $appConfig = [
     ];
 
+    /**
+     * 构造方法.
+     */
+    public function __construct(string $namespace)
+    {
+        parent::__construct($namespace);
+        Event::one('IMI.SCAN_APP', function () {
+            $this->onScanApp();
+        });
+    }
+
     protected function __loadConfig(): void
     {
         parent::__loadConfig();
 
-        foreach (Config::get('@app.roadRunnerServer', []) as $name => $config)
+        $config = Config::get('@app.roadRunnerServer.main', []);
+        // 加载服务器配置文件
+        foreach (Imi::getNamespacePaths($config['namespace'] ?? $this->namespace) as $path)
         {
-            // 加载服务器配置文件
-            foreach (Imi::getNamespacePaths($config['namespace'] ?? $this->namespace) as $path)
+            $fileName = $path . '/config/config.php';
+            if (is_file($fileName))
             {
-                $fileName = $path . '/config/config.php';
-                if (is_file($fileName))
-                {
-                    Config::addConfig('@server.' . $name, include $fileName);
-                    break;
-                }
+                Config::addConfig('@server.main', include $fileName);
+                break;
             }
         }
     }
@@ -74,14 +85,11 @@ class RoadRunnerApp extends BaseApp
      */
     public function run(): void
     {
-        $server = ServerManager::getServer('main');
-        if (null === $server)
-        {
-            $server = ServerManager::createServer('main', [
-                'type'      => Type::HTTP,
-                'namespace' => $this->namespace,
-            ]);
-        }
+        $config = Config::get('@app.roadRunnerServer.main', []);
+        $server = ServerManager::createServer('main', [
+            'type'      => Type::HTTP,
+            'namespace' => $config['namespace'] ?? $this->namespace,
+        ]);
         Event::trigger('IMI.APP.INIT', [], $this);
         $server->start();
     }
@@ -92,5 +100,22 @@ class RoadRunnerApp extends BaseApp
     public function getType(): string
     {
         return 'roadrunner';
+    }
+
+    /**
+     * 加载入口.
+     */
+    public function loadMain(): void
+    {
+        parent::loadMain();
+        $config = Config::get('@app.roadRunnerServer.main', []);
+        Helper::getMain($config['namespace'] ?? $this->namespace, 'server.main');
+    }
+
+    private function onScanApp(): void
+    {
+        $config = Config::get('@app.roadRunnerServer.main', []);
+        $namespaces = [$config['namespace'] ?? $this->namespace];
+        Annotation::getInstance()->initByNamespace($namespaces);
     }
 }

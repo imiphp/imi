@@ -77,19 +77,23 @@ class Server extends BaseServer
                 {
                     (new HttpRouteInit())->handle(new EventParam(''));
                 }
+                RequestContext::set('server', $this);
                 /** @var \Imi\Server\Http\Dispatcher $dispatcher */
                 $dispatcher = $this->getBean('HttpDispatcher');
                 $this->worker = $worker = \Spiral\RoadRunner\Worker::create();
                 $psrFactory = new \Imi\RoadRunner\Http\Psr17Factory();
                 $this->psr7Worker = $worker = new \Spiral\RoadRunner\Http\PSR7Worker($worker, $psrFactory, $psrFactory, $psrFactory);
+                /** @var \Imi\Server\Http\Error\IErrorHandler $httpErrorHandler */
+                $httpErrorHandler = $this->getBean('HttpErrorHandler');
+                /** @var \Imi\Log\ErrorLog $errorLog */
+                $errorLog = App::getBean('ErrorLog');
 
+                $response = new RoadRunnerResponse($worker);
                 while ($request = $worker->waitRequest())
                 {
                     try
                     {
-                        $response = new RoadRunnerResponse($worker);
                         RequestContext::muiltiSet([
-                            'server'   => $this,
                             'request'  => $request,
                             'response' => $response,
                         ]);
@@ -98,15 +102,16 @@ class Server extends BaseServer
                     }
                     catch (\Throwable $th)
                     {
-                        if (true !== $this->getBean('HttpErrorHandler')->handle($th))
+                        if (true !== $httpErrorHandler->handle($th))
                         {
-                            App::getBean('ErrorLog')->onException($th);
+                            $errorLog->onException($th);
                         }
                         else
                         {
                             $worker->getWorker()->error((string) $th);
                         }
                     }
+                    $response = new RoadRunnerResponse($worker);
                 }
             }
             finally
