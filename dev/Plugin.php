@@ -23,7 +23,7 @@ class Plugin
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         $output = ImiCommand::getOutput();
-        $maxCount = 4;
+        $maxCount = 6;
         /** @var Process[] $readyProcesses */
         $readyProcesses = [];
         /** @var Process[] $activeProcesses */
@@ -89,12 +89,6 @@ class Plugin
             /* @phpstan-ignore-next-line */
             $p->setCommandLine(implode(' ', $cmd));
         }
-//        $p->run(function ($type, $buffer) {
-//            echo $buffer;
-//        });
-
-//        $result = $p->isSuccessful() ? '<info>success</info>' : "<error>fail({$p->getExitCode()})</error>";
-//        $output->writeln("[Update <info>{$dir->getBasename()}</info>]: {$result}");
         return $p;
     }
 }
