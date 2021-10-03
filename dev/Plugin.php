@@ -6,15 +6,10 @@ namespace Imi\Dev;
 
 use FilesystemIterator;
 use Imi\Cli\ImiCommand;
-use Swoole\Coroutine;
-use function count;
-use function imiGetEnv;
 use function implode;
 use function method_exists;
-use Swoole\Event;
-use Swoole\Runtime;
-use Symfony\Component\Process\Process;
 use function realpath;
+use Symfony\Component\Process\Process;
 use function usleep;
 
 class Plugin
@@ -23,11 +18,10 @@ class Plugin
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         $output = ImiCommand::getOutput();
-        $maxCount = 6;
+        $maxCount = 4;
+        $running = 0;
         /** @var Process[] $readyProcesses */
         $readyProcesses = [];
-        /** @var Process[] $activeProcesses */
-        $activeProcesses = [];
         foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())
@@ -39,32 +33,31 @@ class Plugin
             {
                 continue;
             }
-            $output->writeln("[Update <info>{$dir->getBasename()}</info>]");
             $process = self::createProcess($dir);
             $readyProcesses[$dir->getBasename()] = $process;
         }
 
-        while (count($readyProcesses) || count($activeProcesses)) {
-            foreach ($activeProcesses as $name => $process) {
-                if (!$process->isRunning()) {
+        while (\count($readyProcesses))
+        {
+            foreach ($readyProcesses as $name => $process)
+            {
+                if (!$process->isStarted() && $maxCount > $running)
+                {
+                    ++$running;
+                    $output->writeln("[Update <info>{$name}</info>]");
+                    $process->start(function ($type, $buffer) {
+                        echo $buffer;
+                    });
+                }
+                elseif ($process->isStarted() && !$process->isRunning())
+                {
+                    --$running;
                     $result = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
                     $output->writeln("[Update <info>{$name}</info>]: {$result}");
-                    unset($activeProcesses[$name]);
+                    unset($readyProcesses[$name]);
                 }
-
-                // check every second
-                usleep(1000 * 10);
             }
-            foreach ($readyProcesses as $name => $process) {
-                if (count($activeProcesses) >= $maxCount) {
-                    break;
-                }
-                unset($readyProcesses[$name]);
-                $process->start(function ($type, $buffer) {
-                    echo $buffer;
-                });
-                $activeProcesses[$name] = $process;
-            }
+            usleep(1000 * 10);
         }
     }
 
@@ -89,6 +82,7 @@ class Plugin
             /* @phpstan-ignore-next-line */
             $p->setCommandLine(implode(' ', $cmd));
         }
+
         return $p;
     }
 }
