@@ -6,6 +6,7 @@ namespace Imi\Cli;
 
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
@@ -201,7 +202,7 @@ class ImiCommand extends Command
         {
             $input->parseByCommand($this);
         }
-        $instance = new $this->className($this, $input, $this->output);
+        $instance = BeanFactory::newInstance($this->className, $this, $input, $this->output);
         $instance->{$this->methodName}(...$args);
         Event::trigger('IMI.COMMAND.AFTER');
 
