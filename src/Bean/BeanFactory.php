@@ -34,7 +34,7 @@ class BeanFactory
     /**
      * 实例化.
      *
-     * @template T of object
+     * @template T
      *
      * @param class-string<T> $class
      * @param mixed           ...$args
@@ -52,7 +52,7 @@ class BeanFactory
     /**
      * 实例化，但不初始化.
      *
-     * @template T of object
+     * @template T
      *
      * @param class-string<T> $class
      * @param mixed           ...$args
@@ -92,13 +92,14 @@ class BeanFactory
             $classNameMap[$class] = $className;
         }
 
+        /** @var class-string<T> $className */
         return new $className(...$args);
     }
 
     /**
      * 增强实例化.
      *
-     * @template T of object
+     * @template T
      *
      * @param class-string<T> $class
      *
@@ -115,7 +116,7 @@ class BeanFactory
     /**
      * 增强实例化，但不初始化.
      *
-     * @template T of object
+     * @template T
      *
      * @param class-string<T> $class
      *
