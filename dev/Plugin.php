@@ -57,7 +57,7 @@ class Plugin
                     unset($readyProcesses[$name]);
                 }
             }
-            usleep(1000 * 10);
+            usleep(1000);
         }
     }
 
