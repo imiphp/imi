@@ -146,7 +146,12 @@ class App
     /**
      * 获取Bean对象
      *
-     * @param array $params
+     * @template T
+     *
+     * @param class-string<T> $name
+     * @param mixed           ...$params
+     *
+     * @return T
      */
     public static function getBean(string $name, ...$params): object
     {

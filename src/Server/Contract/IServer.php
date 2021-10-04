@@ -36,7 +36,12 @@ interface IServer extends IEvent
     /**
      * 获取Bean对象
      *
-     * @param mixed $params
+     * @template T
+     *
+     * @param class-string<T> $name
+     * @param mixed           ...$params
+     *
+     * @return T
      */
     public function getBean(string $name, ...$params): object;
 

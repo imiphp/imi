@@ -72,7 +72,7 @@ abstract class BaseServer implements IServer
     /**
      * 获取Bean对象
      *
-     * @param mixed $params
+     * {@inheritDoc}
      */
     public function getBean(string $name, ...$params): object
     {
