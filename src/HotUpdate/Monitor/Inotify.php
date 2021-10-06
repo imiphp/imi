@@ -96,7 +96,7 @@ class Inotify extends BaseMonitor
         $handler = &$this->handler;
         $mask = &$this->mask;
         $excludeRule = $this->excludeRule;
-        do
+        while (true)
         {
             /** @var array|false $readResult */
             $readResult = inotify_read($handler);
@@ -118,7 +118,7 @@ class Inotify extends BaseMonitor
                     $changedFiles[] = $filePath;
                 }
             }
-        } while (true);
+        }
     }
 
     /**

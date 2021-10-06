@@ -34,9 +34,14 @@ class BeanFactory
     /**
      * 实例化.
      *
-     * @param mixed ...$args
+     * @template T
+     *
+     * @param class-string<T>|string $class
+     * @param mixed                  ...$args
+     *
+     * @return T
      */
-    public static function newInstance(string $class, ...$args): object
+    public static function newInstance(string $class, ...$args)
     {
         $object = self::newInstanceNoInit($class, ...$args);
         static::initInstance($object, $args);
@@ -47,9 +52,14 @@ class BeanFactory
     /**
      * 实例化，但不初始化.
      *
-     * @param mixed ...$args
+     * @template T
+     *
+     * @param class-string<T>|string $class
+     * @param mixed                  ...$args
+     *
+     * @return T
      */
-    public static function newInstanceNoInit(string $class, ...$args): object
+    public static function newInstanceNoInit(string $class, ...$args)
     {
         $classNameMap = &static::$classNameMap;
         if (isset($classNameMap[$class]))
@@ -82,13 +92,20 @@ class BeanFactory
             $classNameMap[$class] = $className;
         }
 
+        /** @var class-string<T> $className */
         return new $className(...$args);
     }
 
     /**
      * 增强实例化.
+     *
+     * @template T
+     *
+     * @param class-string<T>|string $class
+     *
+     * @return T
      */
-    public static function newInstanceEx(string $class, array $args = []): object
+    public static function newInstanceEx(string $class, array $args = [])
     {
         $object = self::newInstanceExNoInit($class, $args, $resultArgs);
         static::initInstance($object, $resultArgs);
@@ -98,8 +115,14 @@ class BeanFactory
 
     /**
      * 增强实例化，但不初始化.
+     *
+     * @template T
+     *
+     * @param class-string<T>|string $class
+     *
+     * @return T
      */
-    public static function newInstanceExNoInit(string $class, array $args, ?array &$resultArgs = []): object
+    public static function newInstanceExNoInit(string $class, array $args, ?array &$resultArgs = [])
     {
         $resultArgs = [];
         foreach (ReflectionContainer::getClassReflection($class)->getConstructor()->getParameters() as $param)

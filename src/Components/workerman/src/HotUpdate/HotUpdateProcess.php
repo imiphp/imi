@@ -216,7 +216,7 @@ class HotUpdateProcess extends BaseProcess
                 echo $tmp;
             }
 
-            do
+            while (true)
             {
                 $status = proc_get_status($this->buildRuntimeHandler);
                 if (!($status['running'] ?? false))
@@ -224,7 +224,7 @@ class HotUpdateProcess extends BaseProcess
                     break;
                 }
                 usleep(1000);
-            } while (true);
+            }
 
             if (0 !== $status['exitcode'])
             {

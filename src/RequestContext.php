@@ -165,9 +165,14 @@ class RequestContext
     /**
      * 在当前请求上下文中获取Bean对象
      *
-     * @param array $params
+     * @template T
+     *
+     * @param class-string<T>|string $name
+     * @param mixed                  ...$params
+     *
+     * @return T
      */
-    public static function getBean(string $name, ...$params): object
+    public static function getBean(string $name, ...$params)
     {
         $instance = static::getInstance();
         $context = $instance->get($instance->getCurrentFlag(), true);

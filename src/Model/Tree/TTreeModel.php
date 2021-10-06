@@ -89,7 +89,7 @@ trait TTreeModel
         }
         $level = 1;
         $parentField = static::__getTreeModel()->parentField;
-        do
+        while (true)
         {
             $i = null;
             foreach ($idsList as $i => $ids)
@@ -110,7 +110,7 @@ trait TTreeModel
             {
                 break;
             }
-        } while (true);
+        }
 
         return array_merge(...$idsList2);
     }
@@ -165,7 +165,7 @@ trait TTreeModel
         $parents = [];
         $treeItem = $this;
         $parentField = static::__getTreeModel()->parentField;
-        do
+        while (true)
         {
             $treeItem = static::find($treeItem[$parentField]);
             if (!$treeItem)
@@ -173,7 +173,7 @@ trait TTreeModel
                 break;
             }
             $parents[] = $treeItem;
-        } while (true);
+        }
 
         return $parents;
     }

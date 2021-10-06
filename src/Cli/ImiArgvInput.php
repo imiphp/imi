@@ -157,7 +157,7 @@ class ImiArgvInput extends Input
 
         if (false !== $pos = strpos($name, '='))
         {
-            if (0 === \strlen($value = substr($name, $pos + 1)))
+            if ('' === ($value = substr($name, $pos + 1)))
             {
                 array_unshift($this->parsed, $value);
             }

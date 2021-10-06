@@ -239,7 +239,8 @@ LUA
             {
                 return null;
             }
-        } while (($useTime = (microtime(true) - $time)) < $timeout);
+        }
+        while (($useTime = (microtime(true) - $time)) < $timeout);
 
         return null;
     }

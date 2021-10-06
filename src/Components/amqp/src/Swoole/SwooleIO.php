@@ -122,7 +122,7 @@ class SwooleIO extends AbstractIO
     {
         $this->check_heartbeat();
 
-        do
+        while (true)
         {
             if ($len <= \strlen($this->buffer))
             {
@@ -157,7 +157,7 @@ class SwooleIO extends AbstractIO
             }
 
             $this->buffer .= $read_buffer;
-        } while (true);
+        }
 
         // @phpstan-ignore-next-line
         return false;

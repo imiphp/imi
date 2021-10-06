@@ -61,7 +61,7 @@ class Container implements ContainerInterface
         $binds = $this->binds;
         $originId = $id;
 
-        do
+        while (true)
         {
             if (isset($binds[$id]))
             {
@@ -94,11 +94,11 @@ class Container implements ContainerInterface
                     {
                         if ($data['recursion'])
                         {
-                            $object = BeanFactory::newInstanceNoInit($data['className'], ...$params);
+                            $object = BeanFactory::newInstanceNoInit($className, ...$params);
                         }
                         else
                         {
-                            $object = BeanFactory::newInstance($data['className'], ...$params);
+                            $object = BeanFactory::newInstance($className, ...$params);
                         }
                     }
                     else
@@ -122,7 +122,7 @@ class Container implements ContainerInterface
                 $beanObjects[$originId] = $object;
             }
             break;
-        } while (true);
+        }
 
         if ($data['recursion'] ?? true)
         {
@@ -164,7 +164,7 @@ class Container implements ContainerInterface
 
         $binds = $this->binds;
 
-        do
+        while (true)
         {
             if (isset($binds[$id]))
             {
@@ -215,7 +215,7 @@ class Container implements ContainerInterface
                 $singletonObjects[$id] = $object;
             }
             break;
-        } while (true);
+        }
 
         // @phpstan-ignore-next-line
         return $object;

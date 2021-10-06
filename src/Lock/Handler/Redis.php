@@ -67,7 +67,7 @@ class Redis extends BaseLock
         $beginTime = microtime(true);
         $waitTimeout = $this->waitTimeout;
         $waitSleepTime = $this->waitSleepTime;
-        do
+        while (true)
         {
             if ($this->__tryLock())
             {
@@ -81,7 +81,7 @@ class Redis extends BaseLock
             {
                 break;
             }
-        } while (true);
+        }
 
         return false;
     }

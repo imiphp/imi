@@ -75,7 +75,8 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     {
                         App::getBean('ErrorLog')->onException($th);
                     }
-                } while ($this->working);
+                }
+                while ($this->working);
             };
             if ($co > 0)
             {
