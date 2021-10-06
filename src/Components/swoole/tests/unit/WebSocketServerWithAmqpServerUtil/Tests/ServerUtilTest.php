@@ -70,7 +70,8 @@ class ServerUtilTest extends BaseTest
                     {
                         $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
                     }
-                } while ($i !== $recvData['workerId']);
+                }
+                while ($i !== $recvData['workerId']);
                 $clients[] = $client;
                 $clientIds[] = $recvData['clientId'];
             }
@@ -100,7 +101,8 @@ class ServerUtilTest extends BaseTest
                     $http = new HttpRequest();
                     $response = $http->get($this->host . 'serverUtil/info');
                     $data = $response->json(true);
-                } while ($workerId !== ($data['workerId'] ?? null));
+                }
+                while ($workerId !== ($data['workerId'] ?? null));
 
                 $response = $http->post($this->host . 'serverUtil/send', [
                     'clientIds'  => $clientIds,
@@ -164,7 +166,8 @@ class ServerUtilTest extends BaseTest
                 $recv = $client1->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
-            } while (0 !== $recvData['workerId']);
+            }
+            while (0 !== $recvData['workerId']);
             $group = uniqid('', true);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'login',
@@ -190,7 +193,8 @@ class ServerUtilTest extends BaseTest
                 $recv = $client2->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
-            } while (1 !== $recvData['workerId']);
+            }
+            while (1 !== $recvData['workerId']);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => uniqid('', true),
@@ -206,7 +210,8 @@ class ServerUtilTest extends BaseTest
                 $http = new HttpRequest();
                 $response = $http->get($this->host . 'serverUtil/info');
                 $data = $response->json(true);
-            } while (0 !== ($data['workerId'] ?? null));
+            }
+            while (0 !== ($data['workerId'] ?? null));
             $response = $http->get($this->host . 'serverUtil/sendToGroup', ['group' => $group]);
             $this->assertEquals([
                 'groupClientIdCount'   => 1,
@@ -243,7 +248,8 @@ class ServerUtilTest extends BaseTest
                 $recv = $client1->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
-            } while (0 !== $recvData['workerId']);
+            }
+            while (0 !== $recvData['workerId']);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
@@ -265,7 +271,8 @@ class ServerUtilTest extends BaseTest
                 $recv = $client2->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
-            } while (0 !== $recvData['workerId']);
+            }
+            while (0 !== $recvData['workerId']);
             $group = uniqid('', true);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
@@ -281,7 +288,8 @@ class ServerUtilTest extends BaseTest
                 $http3 = new HttpRequest();
                 $response = $http3->get($this->host . 'serverUtil/info');
                 $data = $response->json(true);
-            } while (1 !== ($data['workerId'] ?? null));
+            }
+            while (1 !== ($data['workerId'] ?? null));
             $response = $http3->post($this->host . 'serverUtil/exists', ['clientId' => $recvData1['clientId'], 'flag' => 'testExists']);
             $this->assertEquals([
                 'clientId'   => true,
@@ -309,7 +317,8 @@ class ServerUtilTest extends BaseTest
                 $recv = $client1->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client1->getErrorCode() . '-' . $client1->getErrorMessage());
-            } while (0 !== $recvData['workerId']);
+            }
+            while (0 !== $recvData['workerId']);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
@@ -331,7 +340,8 @@ class ServerUtilTest extends BaseTest
                 $recv = $client2->recv();
                 $recvData = json_decode($recv, true);
                 $this->assertTrue(isset($recvData['clientId']), $client2->getErrorCode() . '-' . $client2->getErrorMessage());
-            } while (0 !== $recvData['workerId']);
+            }
+            while (0 !== $recvData['workerId']);
             $group = uniqid('', true);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
@@ -348,7 +358,8 @@ class ServerUtilTest extends BaseTest
                 $http3 = new HttpRequest();
                 $response = $http3->get($this->host . 'serverUtil/info');
                 $data = $response->json(true);
-            } while (1 !== ($data['workerId'] ?? null));
+            }
+            while (1 !== ($data['workerId'] ?? null));
             // @phpstan-ignore-next-line
             $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
             $this->assertEquals([

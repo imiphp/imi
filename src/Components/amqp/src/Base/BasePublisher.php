@@ -102,7 +102,8 @@ abstract class BasePublisher implements IPublisher
                         throw $th;
                     }
                 }
-            } while ($continue);
+            }
+            while ($continue);
         }
         $this->channel->set_ack_handler(function () {
         });

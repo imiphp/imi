@@ -125,7 +125,8 @@ class ErrorLog
             {
                 $throwables[] = $prev;
             }
-        } while ($prev);
+        }
+        while ($prev);
         $throwables = array_reverse($throwables);
         foreach ($throwables as $throwable)
         {

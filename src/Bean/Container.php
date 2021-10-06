@@ -61,7 +61,7 @@ class Container implements ContainerInterface
         $binds = $this->binds;
         $originId = $id;
 
-        do
+        while (true)
         {
             if (isset($binds[$id]))
             {
@@ -122,7 +122,7 @@ class Container implements ContainerInterface
                 $beanObjects[$originId] = $object;
             }
             break;
-        } while (true);
+        }
 
         if ($data['recursion'] ?? true)
         {
@@ -164,7 +164,7 @@ class Container implements ContainerInterface
 
         $binds = $this->binds;
 
-        do
+        while (true)
         {
             if (isset($binds[$id]))
             {
@@ -215,7 +215,7 @@ class Container implements ContainerInterface
                 $singletonObjects[$id] = $object;
             }
             break;
-        } while (true);
+        }
 
         // @phpstan-ignore-next-line
         return $object;

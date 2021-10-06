@@ -213,7 +213,7 @@ class HotUpdateProcess
                 echo $tmp;
             }
 
-            do
+            while (true)
             {
                 $status = proc_get_status($this->buildRuntimeHandler);
                 if (!($status['running'] ?? false))
@@ -221,7 +221,7 @@ class HotUpdateProcess
                     break;
                 }
                 usleep(1000);
-            } while (true);
+            }
 
             if (0 !== $status['exitcode'])
             {

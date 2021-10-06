@@ -171,7 +171,8 @@ class CronProcess extends BaseProcess
                 {
                     usleep((int) ($sleep * 1000000));
                 }
-            } while ($running);
+            }
+            while ($running);
         });
     }
 

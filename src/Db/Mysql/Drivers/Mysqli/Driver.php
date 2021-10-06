@@ -261,7 +261,7 @@ class Driver extends MysqlBase implements IMysqlDb
             throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
         $results = [];
-        do
+        while (true)
         {
             $result = $instance->store_result();
             if ($result)
@@ -281,7 +281,7 @@ class Driver extends MysqlBase implements IMysqlDb
             {
                 break;
             }
-        } while (true);
+        }
 
         return $results;
     }

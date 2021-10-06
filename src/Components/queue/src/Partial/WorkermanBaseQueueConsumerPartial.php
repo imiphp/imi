@@ -58,7 +58,8 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
                 {
                     App::getBean('ErrorLog')->onException($th);
                 }
-            } while ($this->working);
+            }
+            while ($this->working);
         }
 
         /**

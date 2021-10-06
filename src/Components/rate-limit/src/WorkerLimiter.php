@@ -67,7 +67,7 @@ abstract class WorkerLimiter
         }
         $isBlockingRetry = false;
         $beginBlockingRetryTime = 0;
-        do
+        while (true)
         {
             // 加锁
             $workerId = WorkerLimiterLock::lock($name, $max, $timeout, $poolName);
@@ -104,7 +104,7 @@ abstract class WorkerLimiter
             WorkerLimiterLock::unlock($name, $workerId, $poolName);
 
             return $result;
-        } while (true);
+        }
     }
 
     /**
