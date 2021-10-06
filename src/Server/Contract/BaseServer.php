@@ -74,7 +74,7 @@ abstract class BaseServer implements IServer
      *
      * {@inheritDoc}
      */
-    public function getBean(string $name, ...$params): object
+    public function getBean(string $name, ...$params)
     {
         return $this->container->get($name, ...$params);
     }

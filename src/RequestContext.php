@@ -167,12 +167,12 @@ class RequestContext
      *
      * @template T
      *
-     * @param class-string<T> $name
+     * @param class-string<T>|string $name
      * @param mixed           ...$params
      *
      * @return T
      */
-    public static function getBean(string $name, ...$params): object
+    public static function getBean(string $name, ...$params)
     {
         $instance = static::getInstance();
         $context = $instance->get($instance->getCurrentFlag(), true);

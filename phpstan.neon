@@ -23,8 +23,6 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
-        - '#Parameter \#1 \$name of (static )?method .+::getBean\(\) expects class-string<\S+>, string given#'
-        - '#PHPDoc tag @return with type mixed is not subtype of native type object#'
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
         - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
         - '#Unsafe usage of new static\(\).+#'
