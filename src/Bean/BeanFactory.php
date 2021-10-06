@@ -37,7 +37,7 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T>|string $class
-     * @param mixed           ...$args
+     * @param mixed                  ...$args
      *
      * @return T
      */
@@ -55,7 +55,7 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T>|string $class
-     * @param mixed           ...$args
+     * @param mixed                  ...$args
      *
      * @return T
      */

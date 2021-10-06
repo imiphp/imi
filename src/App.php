@@ -149,7 +149,7 @@ class App
      * @template T
      *
      * @param class-string<T>|string $name
-     * @param mixed           ...$params
+     * @param mixed                  ...$params
      *
      * @return T
      */
