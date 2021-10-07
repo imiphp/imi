@@ -43,12 +43,12 @@ abstract class BaseLock implements ILockHandler
     protected float $beginTime = 0;
 
     /**
-     * 超时异常
+     * 执行超时抛出异常.
      */
     protected bool $timeoutException = false;
 
     /**
-     * 解锁异常
+     * 解锁失败抛出异常.
      */
     protected bool $unlockException = false;
 

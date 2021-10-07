@@ -137,6 +137,20 @@ public $afterLock;
  * @var bool
  */
 public $useConfig = true;
+
+/**
+ * 执行超时抛出异常。
+ * 
+ * @var bool
+ */
+public $timeoutException = false;
+
+/**
+ * 解锁失败抛出异常。
+ * 
+ * @var bool
+ */
+public $unlockException = false;
 ```
 
 ### 用法示例
