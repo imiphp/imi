@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\IDEHelper;
 
+use function file_put_contents;
 use Imi\Bean\BeanManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 use Imi\Util\Imi;
-use function file_put_contents;
 
 class BuildIDEHelper implements IEventListener
 {
@@ -25,12 +25,14 @@ class BuildIDEHelper implements IEventListener
         Log::info('buildIdeHelper');
     }
 
-    protected function buildBean()
+    protected function buildBean(): void
     {
         $mappingStr = "        '' => '@',\n";
 
-        foreach (BeanManager::getMap() as $name => $item) {
-            if (!isset($item['class']) || $name !== $item['class']['beanName']) {
+        foreach (BeanManager::getMap() as $name => $item)
+        {
+            if (!isset($item['class']) || $name !== $item['class']['beanName'])
+            {
                 continue;
             }
             $item = $item['class'];
@@ -41,7 +43,7 @@ class BuildIDEHelper implements IEventListener
         $this->beanMapping = $mappingStr;
     }
 
-    protected function save()
+    protected function save(): void
     {
         $output = <<<META
         <?php
