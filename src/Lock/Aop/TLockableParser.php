@@ -63,6 +63,8 @@ trait TLockableParser
         $options = $lockable->options;
         $options['waitTimeout'] = null !== $lockable->waitTimeout ? $lockable->waitTimeout : ($options['waitTimeout'] ?? 3000);
         $options['lockExpire'] = null !== $lockable->lockExpire ? $lockable->lockExpire : ($options['lockExpire'] ?? 3000);
+        $options['timeoutException'] = null !== $lockable->timeoutException ? $lockable->timeoutException : ($options['timeoutException'] ?? false);
+        $options['unlockException'] = null !== $lockable->unlockException ? $lockable->unlockException : ($options['unlockException'] ?? false);
 
         // Lock 对象
         /** @var ILockHandler $locker */
