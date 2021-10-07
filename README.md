@@ -28,7 +28,12 @@ imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/imag
 
 ## 官方视频教程（完全免费）
 
-imi 框架入门教程（免费11集全）<https://www.bilibili.com/video/av78158909>
+imi 2.0 基础视频教程(免费连载中):
+
+<https://space.bilibili.com/768718/channel/seriesdetail?sid=274078>
+<https://www.zhihu.com/people/yurunsoft/zvideos>
+
+imi 1.0 框架入门教程（免费11集全）<https://www.bilibili.com/video/av78158909>
 
 imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.bilibili.com/768718/channel/detail?cid=136926>
 
