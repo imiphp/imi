@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Handler;
 
+use Imi\Lock\Exception\LockFailException;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use function microtime;
@@ -40,6 +41,16 @@ abstract class BaseLock implements ILockHandler
      * 执行时间.
      */
     protected float $beginTime = 0;
+
+    /**
+     * 超时异常
+     */
+    protected bool $timeoutException = false;
+
+    /**
+     * 解锁异常
+     */
+    protected bool $unlockException = false;
 
     public function __construct(string $id, array $options = [])
     {
@@ -148,11 +159,27 @@ abstract class BaseLock implements ILockHandler
         $executeTime = microtime(true) - $this->beginTime;
         if ($executeTime * 1000 > $this->lockExpire)
         {
-            Log::warning(sprintf('Lock timeout, id:%s, set timeout for %.3fs, execute time for %.3fs', $this->id, $this->lockExpire / 1000, $executeTime));
+            $message = sprintf('Lock execute timeout, id:%s, set timeout for %.3fs, execute time for %.3fs', $this->id, $this->lockExpire / 1000, $executeTime);
+            if ($this->timeoutException)
+            {
+                throw new LockFailException($message);
+            }
+            else
+            {
+                Log::warning($message);
+            }
         }
         if (!$this->__unlock())
         {
-            Log::warning(sprintf('Unlock failed, id:%s', $this->id));
+            $message = sprintf('Unlock failed, id:%s', $this->id);
+            if ($this->unlockException)
+            {
+                throw new LockFailException($message);
+            }
+            else
+            {
+                Log::warning($message);
+            }
 
             return false;
         }
