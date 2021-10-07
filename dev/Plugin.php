@@ -8,21 +8,21 @@ use FilesystemIterator;
 use Imi\Cli\ImiCommand;
 use function implode;
 use function method_exists;
-use Swoole\Event;
-use Swoole\Runtime;
+use function realpath;
 use Symfony\Component\Process\Process;
+use function usleep;
 
 class Plugin
 {
+    public const MAX_RUNNING = 4;
+
     public static function dev(): void
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         $output = ImiCommand::getOutput();
-        $isSwoole = \extension_loaded('swoole');
-        if ($isSwoole)
-        {
-            Runtime::enableCoroutine();
-        }
+        /** @var Process[] $readyProcesses */
+        $readyProcesses = [];
+        $running = 0;
         foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())
@@ -30,49 +30,60 @@ class Plugin
                 continue;
             }
             $fileName = $dir->getPathname() . '/composer.json';
-            if (is_file($fileName))
+            if (!is_file($fileName))
             {
-                $function = function () use ($output, $dir) {
-                    $output->writeln("[Update <info>{$dir->getBasename()}</info>]");
-                    $cmd = [
-                        \PHP_BINARY,
-                        realpath($_SERVER['SCRIPT_FILENAME']),
-                        'update',
-                        '--no-interaction',
-                        '--prefer-dist',
-                        '--no-progress',
-                    ];
-                    // 兼容 symfony process < 3.3
-                    if (method_exists(Process::class, 'fromShellCommandline'))
-                    {
-                        $p = new Process($cmd, $dir->getPathname(), null, null, 0);
-                    }
-                    else
-                    {
-                        $p = new Process([], $dir->getPathname(), null, null, 0);
-                        /* @phpstan-ignore-next-line */
-                        $p->setCommandLine(implode(' ', $cmd));
-                    }
-                    $p->run(function ($type, $buffer) {
+                continue;
+            }
+            $process = self::createProcess($dir);
+            $readyProcesses[$dir->getBasename()] = $process;
+        }
+
+        while (\count($readyProcesses))
+        {
+            foreach ($readyProcesses as $name => $process)
+            {
+                if (!$process->isStarted() && self::MAX_RUNNING > $running)
+                {
+                    ++$running;
+                    $output->writeln("[Update <info>{$name}</info>]");
+                    $process->start(function ($type, $buffer) {
                         echo $buffer;
                     });
-
-                    $result = $p->isSuccessful() ? '<info>success</info>' : "<error>fail({$p->getExitCode()})</error>";
-                    $output->writeln("[Update <info>{$dir->getBasename()}</info>]: {$result}");
-                };
-                if ($isSwoole)
-                {
-                    go($function);
                 }
-                else
+                elseif ($process->isStarted() && !$process->isRunning())
                 {
-                    $function();
+                    --$running;
+                    $result = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
+                    $output->writeln("[Update <info>{$name}</info>]: {$result}");
+                    unset($readyProcesses[$name]);
                 }
             }
+            usleep(1000);
         }
-        if ($isSwoole)
+    }
+
+    protected static function createProcess(\SplFileInfo $dir): Process
+    {
+        $cmd = [
+            \PHP_BINARY,
+            realpath($_SERVER['SCRIPT_FILENAME']),
+            'update',
+            '--no-interaction',
+            '--prefer-dist',
+            '--no-progress',
+        ];
+        // 兼容 symfony process < 3.3
+        if (method_exists(Process::class, 'fromShellCommandline'))
         {
-            Event::wait();
+            $p = new Process($cmd, $dir->getPathname(), null, null, 0);
         }
+        else
+        {
+            $p = new Process([], $dir->getPathname(), null, null, 0);
+            /* @phpstan-ignore-next-line */
+            $p->setCommandLine(implode(' ', $cmd));
+        }
+
+        return $p;
     }
 }
