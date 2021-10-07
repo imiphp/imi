@@ -52,6 +52,7 @@ class Lock
         {
             self::init();
         }
+
         return self::$options;
     }
 

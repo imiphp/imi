@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Handler;
 
+use Imi\Log\Log;
 use Imi\RequestContext;
+use function microtime;
+use function sprintf;
 
 abstract class BaseLock implements ILockHandler
 {
@@ -32,6 +35,11 @@ abstract class BaseLock implements ILockHandler
      * 获得锁的协程ID.
      */
     private string $lockCoId = '';
+
+    /**
+     * 执行时间.
+     */
+    protected float $beginTime = 0;
 
     public function __construct(string $id, array $options = [])
     {
@@ -71,6 +79,7 @@ abstract class BaseLock implements ILockHandler
         }
         $this->isLocked = true;
         $this->lockCoId = RequestContext::getCurrentFlag();
+        $this->beginTime = microtime(true);
         if (null === $taskCallable)
         {
             return true;
@@ -111,6 +120,7 @@ abstract class BaseLock implements ILockHandler
         }
         $this->isLocked = true;
         $this->lockCoId = RequestContext::getCurrentFlag();
+        $this->beginTime = microtime(true);
         if (null !== $taskCallable)
         {
             try
@@ -135,8 +145,15 @@ abstract class BaseLock implements ILockHandler
         {
             return false;
         }
+        $executeTime = microtime(true) - $this->beginTime;
+        if ($executeTime * 1000 > $this->lockExpire)
+        {
+            Log::warning(sprintf('Lock timeout, id:%s, set timeout for %.3fs, execute time for %.3fs', $this->id, $this->lockExpire / 1000, $executeTime));
+        }
         if (!$this->__unlock())
         {
+            Log::warning(sprintf('Unlock failed, id:%s', $this->id));
+
             return false;
         }
         $this->isLocked = false;

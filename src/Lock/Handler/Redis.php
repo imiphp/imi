@@ -127,7 +127,7 @@ SCRIPT
     protected function __unlock(): bool
     {
         return ImiRedis::use(function (RedisHandler $redis): bool {
-            return false !== $redis->evalEx(<<<SCRIPT
+            $result = $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = ARGV[1]
 local db      = tonumber(ARGV[2])
@@ -145,6 +145,8 @@ SCRIPT
                 $this->guid,
                 $this->db,
             ], 1);
+
+            return false !== $result && $result > 0;
         }, $this->poolName, true);
     }
 }

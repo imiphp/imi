@@ -10,6 +10,7 @@ use Imi\Bean\ReflectionContainer;
 use Imi\Config;
 use Imi\Lock\Annotation\Lockable;
 use Imi\Lock\Exception\LockFailException;
+use Imi\Lock\Handler\ILockHandler;
 use Imi\Lock\Lock;
 use Imi\Util\ClassObject;
 use Imi\Util\ObjectArrayHelper;
@@ -64,6 +65,7 @@ trait TLockableParser
         $options['lockExpire'] = null !== $lockable->lockExpire ? $lockable->lockExpire : ($options['lockExpire'] ?? 3000);
 
         // Lock 对象
+        /** @var ILockHandler $locker */
         $locker = App::getBean($type, $this->getLockerId($class, $method, $args, $lockable), $options);
 
         // afterLock 处理
