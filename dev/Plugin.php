@@ -14,14 +14,15 @@ use function usleep;
 
 class Plugin
 {
+    const MAX_RUNNING = 4;
+
     public static function dev(): void
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         $output = ImiCommand::getOutput();
-        $maxCount = 4;
-        $running = 0;
         /** @var Process[] $readyProcesses */
         $readyProcesses = [];
+        $running = 0;
         foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())
@@ -41,7 +42,7 @@ class Plugin
         {
             foreach ($readyProcesses as $name => $process)
             {
-                if (!$process->isStarted() && $maxCount > $running)
+                if (!$process->isStarted() && self::MAX_RUNNING > $running)
                 {
                     ++$running;
                     $output->writeln("[Update <info>{$name}</info>]");
