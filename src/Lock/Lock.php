@@ -48,6 +48,10 @@ class Lock
      */
     public static function getOptions(): array
     {
+        if (!self::$inited)
+        {
+            self::init();
+        }
         return self::$options;
     }
 
