@@ -14,7 +14,7 @@ use function usleep;
 
 class Plugin
 {
-    const MAX_RUNNING = 4;
+    public const MAX_RUNNING = 4;
 
     public static function dev(): void
     {
