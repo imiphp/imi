@@ -100,10 +100,8 @@ local db      = tonumber(ARGV[2])
 if db then
     redis.call('select', db)
 end
-local lockSet = redis.call('setnx', key, content)
-if lockSet == 1 then
-    redis.call('pexpire', key, ttl)
-else
+local lockSet = redis.call('set', key, content, 'NX', 'PX', ttl)
+if lockSet == 0 then
     local value = redis.call('get', key)
     if(value == content) then
         lockSet = 1;
