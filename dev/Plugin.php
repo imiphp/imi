@@ -91,13 +91,13 @@ class Plugin
 
     protected static function createProcess(array $cmd): Process
     {
-        // 兼容 symfony process < 3.3
         if (method_exists(Process::class, 'fromShellCommandline'))
         {
             $process = new Process($cmd);
         }
         else
         {
+            // 兼容 symfony process < 3.3
             $process = new Process([]);
             /* @phpstan-ignore-next-line */
             $process->setCommandLine(implode(' ', $cmd));
@@ -130,7 +130,7 @@ class Plugin
                 elseif ($process->isStarted() && !$process->isRunning())
                 {
                     --$running;
-                    $result    = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
+                    $result = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
                     $output->writeln("[{$title}]: {$result}");
                     unset($processes[$name]);
                 }
