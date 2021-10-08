@@ -23,7 +23,9 @@ use Imi\Util\Text;
 class ModelGenerate extends BaseCommand
 {
     /**
-     * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
+     * Postgresql 模型生成.
+     *
+     * 如果设置了`include`或`exclude`，则按照相应规则过滤表。
      *
      * @CommandAction("pgModel")
      *

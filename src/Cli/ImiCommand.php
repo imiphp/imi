@@ -107,7 +107,18 @@ class ImiCommand extends Command
         $commandAction = AnnotationManager::getMethodAnnotations($this->className, $this->methodName, CommandAction::class)[0] ?? null;
         if (null !== $commandAction)
         {
-            $this->setDescription($commandAction->description ?? '');
+            if (null === $commandAction->description)
+            {
+                $methodRef = new \ReflectionMethod($this->className, $this->methodName);
+                $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+                $docblock = $factory->create($methodRef->getDocComment());
+                $description = $docblock->getSummary();
+            }
+            else
+            {
+                $description = $commandAction->description;
+            }
+            $this->setDescription($description);
         }
         /** @var Argument $argumentAnnotation */
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
