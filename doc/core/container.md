@@ -150,6 +150,10 @@ namespace Test;
  * 
  * 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
  * @Bean(name="MyTest", instanceType=\Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion=false)
+ * 
+ * 下面是限制生效的环境，支持一个或多个
+ * @Bean(name="MyTest", env="swoole")
+ * @Bean(name="MyTest", env={"swoole", "workerman"})
  */
 class ABCDEFG
 {

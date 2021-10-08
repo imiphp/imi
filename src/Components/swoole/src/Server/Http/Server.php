@@ -28,7 +28,7 @@ use Swoole\Http\Server as HttpServer;
 /**
  * Http 服务器类.
  *
- * @Bean("HttpServer")
+ * @Bean(name="HttpServer", env="swoole")
  */
 class Server extends Base implements ISwooleHttpServer
 {

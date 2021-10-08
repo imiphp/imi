@@ -14,7 +14,7 @@ use Imi\Server\ServerManager;
 use Imi\Util\Imi;
 
 /**
- * @Bean("hotUpdate")
+ * @Bean(name="hotUpdate", env="roadrunner")
  */
 class HotUpdateProcess
 {

@@ -16,7 +16,7 @@ use Swoole\Timer;
 /**
  * 当单个请求超过最大执行时间，触发超时处理.
  *
- * @Bean("ExecuteTimeoutMiddleware")
+ * @Bean(name="ExecuteTimeoutMiddleware", env="swoole")
  */
 class ExecuteTimeoutMiddleware implements MiddlewareInterface
 {

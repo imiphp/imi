@@ -18,7 +18,7 @@ use Imi\Util\Imi;
 use Swoole\Timer;
 
 /**
- * @Bean("hotUpdate")
+ * @Bean(name="hotUpdate", env="swoole")
  * @Process(name="hotUpdate", unique=true)
  */
 class HotUpdateProcess extends BaseProcess

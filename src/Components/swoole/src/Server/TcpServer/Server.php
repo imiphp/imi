@@ -19,7 +19,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 /**
  * TCP 服务器类.
  *
- * @Bean("TcpServer")
+ * @Bean(name="TcpServer", env="swoole")
  */
 class Server extends Base implements ISwooleTcpServer
 {

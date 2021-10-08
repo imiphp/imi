@@ -9,7 +9,7 @@ use Imi\RequestContext;
 use Imi\Server\ConnectionContext\StoreHandler\Local;
 
 /**
- * @Bean("ConnectionContextAmqp")
+ * @Bean(name="ConnectionContextAmqp", env="swoole")
  */
 class Amqp extends Local
 {

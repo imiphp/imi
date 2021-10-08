@@ -29,7 +29,7 @@ use Swoole\WebSocket\Server as WebSocketServer;
 /**
  * WebSocket 服务器类.
  *
- * @Bean("WebSocketServer")
+ * @Bean(name="WebSocketServer", env="swoole")
  */
 class Server extends Base implements ISwooleWebSocketServer
 {

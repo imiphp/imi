@@ -20,7 +20,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Swoole\Coroutine;
 
 /**
- * @Bean("HandShakeMiddleware")
+ * @Bean(name="HandShakeMiddleware", env="swoole")
  */
 class HandShakeMiddleware implements MiddlewareInterface
 {

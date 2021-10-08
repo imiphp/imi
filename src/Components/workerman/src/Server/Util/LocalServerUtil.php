@@ -14,7 +14,7 @@ use Imi\Workerman\Server\Contract\IWorkermanServerUtil;
 use Workerman\Connection\TcpConnection;
 
 /**
- * @Bean("LocalServerUtil")
+ * @Bean(name="LocalServerUtil", env="workerman")
  */
 class LocalServerUtil implements IWorkermanServerUtil
 {

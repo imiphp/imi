@@ -16,7 +16,7 @@ use Imi\Swoole\Server\Event\Param\PacketEventParam;
 /**
  * UDP 服务器类.
  *
- * @Bean("UdpServer")
+ * @Bean(name="UdpServer", env="swoole")
  */
 class Server extends Base implements ISwooleUdpServer
 {

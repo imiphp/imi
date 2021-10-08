@@ -16,7 +16,7 @@ use Swoole\Timer;
 /**
  * 连接上下文存储处理器-MemoryTable.
  *
- * @Bean("ConnectionContextMemoryTable")
+ * @Bean(name="ConnectionContextMemoryTable", env="swoole")
  */
 class MemoryTable implements IHandler
 {

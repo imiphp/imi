@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\Grpc\Error\GrpcErrorHandler;
 
 /**
- * @Bean("GrpcServer")
+ * @Bean(name="GrpcServer", env="swoole")
  * gRPC 服务器类.
  */
 class Server extends \Imi\Swoole\Server\Http\Server

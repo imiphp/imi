@@ -7,6 +7,7 @@ namespace Imi\Bean\Parser;
 use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\Aop\Annotation\Inject;
 use Imi\Aop\Annotation\RequestInject;
+use Imi\App;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionContainer;
 use Imi\Server\Annotation\ServerInject;
@@ -15,6 +16,13 @@ use Yurun\Doctrine\Common\Annotations\PhpParser;
 
 class BeanParser extends BaseParser
 {
+    private string $appType;
+
+    public function __construct()
+    {
+        $this->appType = App::getApp()->getType();
+    }
+
     /**
      * 处理方法.
      *
@@ -28,7 +36,11 @@ class BeanParser extends BaseParser
         if ($annotation instanceof \Imi\Bean\Annotation\Bean)
         {
             $beanName = $annotation->name ?? $className;
-            BeanManager::add($className, $beanName, $annotation->instanceType, $annotation->recursion);
+            $env = $annotation->env;
+            if (null === $env || $this->appType === $env || (\is_array($env) && \in_array($this->appType, $env)))
+            {
+                BeanManager::add($className, $beanName, $annotation->instanceType, $annotation->recursion, $env);
+            }
         }
         elseif ($annotation instanceof BaseInjectValue)
         {

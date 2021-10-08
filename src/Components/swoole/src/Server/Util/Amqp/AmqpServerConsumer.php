@@ -22,7 +22,7 @@ use Imi\Worker;
 if (class_exists(\Imi\AMQP\Main::class))
 {
     /**
-     * @Bean("AmqpServerConsumer")
+     * @Bean(name="AmqpServerConsumer", env="swoole")
      */
     class AmqpServerConsumer extends BaseConsumer
     {

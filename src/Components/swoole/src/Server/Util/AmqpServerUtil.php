@@ -20,7 +20,7 @@ use Imi\Worker;
 if (class_exists(\Imi\AMQP\Main::class))
 {
     /**
-     * @Bean("AmqpServerUtil")
+     * @Bean(name="AmqpServerUtil", env="swoole")
      */
     class AmqpServerUtil extends LocalServerUtil
     {

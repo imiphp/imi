@@ -14,7 +14,7 @@ use Imi\Server\ServerManager;
 use Imi\Worker;
 
 /**
- * @Bean("RedisServerUtil")
+ * @Bean(name="RedisServerUtil", env="swoole")
  */
 class RedisServerUtil extends LocalServerUtil
 {

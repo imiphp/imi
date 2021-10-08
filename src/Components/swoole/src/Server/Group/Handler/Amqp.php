@@ -9,7 +9,7 @@ use Imi\RequestContext;
 use Imi\Server\Group\Handler\Local;
 
 /**
- * @Bean("GroupAmqp")
+ * @Bean(name="GroupAmqp", env="swoole")
  */
 class Amqp extends Local
 {

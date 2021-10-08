@@ -29,14 +29,17 @@ class BeanManager
 
     /**
      * 增加映射关系.
+     *
+     * @param string|array|null $env
      */
-    public static function add(string $className, string $beanName, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON, bool $recursion = true): void
+    public static function add(string $className, string $beanName, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON, bool $recursion = true, $env = null): void
     {
         self::$map[$className]['class'] = self::$map[$beanName]['class'] = [
             'beanName'     => $beanName,
             'className'    => $className,
             'instanceType' => $instanceType,
             'recursion'    => $recursion,
+            'env'          => $env,
         ];
     }
 

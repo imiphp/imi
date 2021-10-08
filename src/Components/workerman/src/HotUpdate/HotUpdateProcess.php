@@ -16,7 +16,7 @@ use Imi\Workerman\Process\BaseProcess;
 use Workerman\Worker;
 
 /**
- * @Bean("hotUpdate")
+ * @Bean(name="hotUpdate", env="workerman")
  * @Process(name="hotUpdate")
  */
 class HotUpdateProcess extends BaseProcess
