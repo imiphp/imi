@@ -66,7 +66,8 @@ class FpmRequest extends Request
      */
     protected function initUri(): void
     {
-        if ('on' === ($_SERVER['HTTPS'] ?? null))
+        $https = $_SERVER['HTTPS'] ?? null;
+        if ('on' === $https || '1' === $https || 'https' === ($_SERVER['REQUEST_SCHEME'] ?? null))
         {
             $url = 'https://';
         }
@@ -75,7 +76,19 @@ class FpmRequest extends Request
             $url = 'http://';
         }
 
-        $this->uri = new Uri($url . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        if (isset($_SERVER['PATH_INFO']))
+        {
+            $path = $_SERVER['PATH_INFO'];
+            if (isset($_SERVER['QUERY_STRING']))
+            {
+                $path .= '?' . $_SERVER['QUERY_STRING'];
+            }
+        }
+        else
+        {
+            $path = $_SERVER['REQUEST_URI'];
+        }
+        $this->uri = new Uri($url . $_SERVER['HTTP_HOST'] . $path);
     }
 
     /**
