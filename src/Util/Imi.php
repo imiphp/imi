@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use function getenv;
 use Imi\App;
 use Imi\Bean\Annotation;
 use Imi\Bean\BeanManager;
@@ -13,6 +14,8 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
+use function shell_exec;
+use function str_contains;
 
 /**
  * 框架里杂七杂八的各种工具方法.
@@ -49,7 +52,7 @@ class Imi
      */
     public static function checkClassMethodRule(string $rule, string $className, string $methodName): bool
     {
-        list($classRule, $methodRule) = explode('::', $rule, 2);
+        [$classRule, $methodRule] = explode('::', $rule, 2);
 
         return static::checkRuleMatch($classRule, $className) && static::checkRuleMatch($methodRule, $methodName);
     }
@@ -59,7 +62,7 @@ class Imi
      */
     public static function checkClassRule(string $rule, string $className): bool
     {
-        list($classRule) = explode('::', $rule, 2);
+        [$classRule] = explode('::', $rule, 2);
 
         return static::checkRuleMatch($classRule, $className);
     }
@@ -609,7 +612,9 @@ class Imi
      */
     public static function isWSL(): bool
     {
-        return is_file('/mnt/c/Windows/explorer.exe');
+        return is_file('/proc/sys/fs/binfmt_misc/WSLInterop')
+            || (getenv('WSLEMV') || getenv('WSL_INTEROP') || getenv('WSL_DISTRO_NAME'))
+            || str_contains(shell_exec('uname -a') ?: '', 'WSL');
     }
 
     /**
