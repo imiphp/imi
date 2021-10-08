@@ -9,6 +9,7 @@ use Imi\Cli\ImiCommand;
 use function implode;
 use function method_exists;
 use function realpath;
+use function sprintf;
 use function str_replace;
 use Symfony\Component\Process\Process;
 use function usleep;
@@ -20,10 +21,8 @@ class Plugin
     public static function dev(): void
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
-        $output = ImiCommand::getOutput();
         /** @var Process[] $readyProcesses */
         $readyProcesses = [];
-        $running = 0;
         foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())
@@ -39,28 +38,7 @@ class Plugin
             $readyProcesses[$dir->getBasename()] = $process;
         }
 
-        while (\count($readyProcesses))
-        {
-            foreach ($readyProcesses as $name => $process)
-            {
-                if (!$process->isStarted() && self::MAX_RUNNING > $running)
-                {
-                    ++$running;
-                    $output->writeln("[Update <info>{$name}</info>]");
-                    $process->start(function ($type, $buffer) {
-                        echo $buffer;
-                    });
-                }
-                elseif ($process->isStarted() && !$process->isRunning())
-                {
-                    --$running;
-                    $result = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
-                    $output->writeln("[Update <info>{$name}</info>]: {$result}");
-                    unset($readyProcesses[$name]);
-                }
-            }
-            usleep(1000);
-        }
+        self::parallel($readyProcesses, self::MAX_RUNNING, 'Update <info>%s</info>');
     }
 
     protected static function createUpdateProcess(\SplFileInfo $dir): Process
@@ -91,9 +69,10 @@ class Plugin
             'imi' => 'Imi',
         ] + $COMPONENTS_NS;
 
+        $readyProcesses = [];
         foreach ($COMPONENTS_NS as $name => $ns)
         {
-            $output->writeln("[Scan <info>{$name}</info>]: {$ns}");
+            //$output->writeln("[Scan <info>{$name}</info>]: {$ns}");
             $cmd = [
                 \PHP_BINARY,
                 __DIR__ . '/../src/Cli/bin/imi-cli',
@@ -101,10 +80,13 @@ class Plugin
                 '--app-namespace=' . str_replace('\\', '\\\\', $ns),
             ];
             $process = self::createProcess($cmd);
-            $process->run(function ($type, $buffer) {
-                echo $buffer;
-            });
+            $readyProcesses[$name] = $process;
+//            $process->run(function ($type, $buffer) {
+//                echo $buffer;
+//            });
         }
+
+        self::parallel($readyProcesses, self::MAX_RUNNING, 'Scan <info>%s</info>');
     }
 
     protected static function createProcess(array $cmd): Process
@@ -123,5 +105,37 @@ class Plugin
         $process->setTimeout(0);
 
         return $process;
+    }
+
+    /**
+     * @param Process[] $processes
+     */
+    protected static function parallel(array $processes, int $max, string $titleTemp)
+    {
+        $output = ImiCommand::getOutput();
+        $running = 0;
+        while (\count($processes))
+        {
+            foreach ($processes as $name => $process)
+            {
+                $title = sprintf($titleTemp, $name);
+                if (!$process->isStarted() && $max > $running)
+                {
+                    ++$running;
+                    $output->writeln("[{$title}]");
+                    $process->start(function ($type, $buffer) {
+                        echo $buffer;
+                    });
+                }
+                elseif ($process->isStarted() && !$process->isRunning())
+                {
+                    --$running;
+                    $result    = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
+                    $output->writeln("[{$title}]: {$result}");
+                    unset($processes[$name]);
+                }
+            }
+            usleep(1000);
+        }
     }
 }
