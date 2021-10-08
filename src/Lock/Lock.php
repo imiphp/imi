@@ -44,6 +44,19 @@ class Lock
     }
 
     /**
+     * @return LockConfigOption[]
+     */
+    public static function getOptions(): array
+    {
+        if (!self::$inited)
+        {
+            self::init();
+        }
+
+        return self::$options;
+    }
+
+    /**
      * 获取锁对象
      */
     public static function getInstance(?string $lockConfigId = null, ?string $lockId = null): ILockHandler

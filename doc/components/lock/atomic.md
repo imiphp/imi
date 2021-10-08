@@ -48,6 +48,20 @@ public $atomicName;
  */
 public $quantity = 1;
 
+/**
+ * 执行超时抛出异常
+ *
+ * @var bool
+ */
+public $timeoutException = false;
+
+/**
+ * 解锁失败抛出异常
+ *
+ * @var bool
+ */
+public $unlockException = false;
+
 ```
 
 ## 配置示例

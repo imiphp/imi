@@ -100,10 +100,8 @@ local db      = tonumber(ARGV[2])
 if db then
     redis.call('select', db)
 end
-local lockSet = redis.call('setnx', key, content)
-if lockSet == 1 then
-    redis.call('pexpire', key, ttl)
-else
+local lockSet = redis.call('set', key, content, 'NX', 'PX', ttl)
+if lockSet == 0 then
     local value = redis.call('get', key)
     if(value == content) then
         lockSet = 1;
@@ -127,7 +125,7 @@ SCRIPT
     protected function __unlock(): bool
     {
         return ImiRedis::use(function (RedisHandler $redis): bool {
-            return false !== $redis->evalEx(<<<SCRIPT
+            $result = $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = ARGV[1]
 local db      = tonumber(ARGV[2])
@@ -145,6 +143,8 @@ SCRIPT
                 $this->guid,
                 $this->db,
             ], 1);
+
+            return $result > 0;
         }, $this->poolName, true);
     }
 }

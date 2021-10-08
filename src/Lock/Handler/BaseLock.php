@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Handler;
 
+use Imi\Lock\Exception\LockFailException;
+use Imi\Log\Log;
 use Imi\RequestContext;
+use function microtime;
+use function sprintf;
 
 abstract class BaseLock implements ILockHandler
 {
@@ -32,6 +36,21 @@ abstract class BaseLock implements ILockHandler
      * 获得锁的协程ID.
      */
     private string $lockCoId = '';
+
+    /**
+     * 执行时间.
+     */
+    protected float $beginTime = 0;
+
+    /**
+     * 执行超时抛出异常.
+     */
+    protected bool $timeoutException = false;
+
+    /**
+     * 解锁失败抛出异常.
+     */
+    protected bool $unlockException = false;
 
     public function __construct(string $id, array $options = [])
     {
@@ -71,6 +90,7 @@ abstract class BaseLock implements ILockHandler
         }
         $this->isLocked = true;
         $this->lockCoId = RequestContext::getCurrentFlag();
+        $this->beginTime = microtime(true);
         if (null === $taskCallable)
         {
             return true;
@@ -111,6 +131,7 @@ abstract class BaseLock implements ILockHandler
         }
         $this->isLocked = true;
         $this->lockCoId = RequestContext::getCurrentFlag();
+        $this->beginTime = microtime(true);
         if (null !== $taskCallable)
         {
             try
@@ -135,8 +156,31 @@ abstract class BaseLock implements ILockHandler
         {
             return false;
         }
+        $executeTime = microtime(true) - $this->beginTime;
+        if ($executeTime * 1000 > $this->lockExpire)
+        {
+            $message = sprintf('Lock execute timeout, id:%s, set timeout for %.3fs, execute time for %.3fs', $this->id, $this->lockExpire / 1000, $executeTime);
+            if ($this->timeoutException)
+            {
+                throw new LockFailException($message);
+            }
+            else
+            {
+                Log::warning($message);
+            }
+        }
         if (!$this->__unlock())
         {
+            $message = sprintf('Unlock failed, id:%s', $this->id);
+            if ($this->unlockException)
+            {
+                throw new LockFailException($message);
+            }
+            else
+            {
+                Log::warning($message);
+            }
+
             return false;
         }
         $this->isLocked = false;
