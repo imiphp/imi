@@ -10,7 +10,6 @@ use function implode;
 use function method_exists;
 use function realpath;
 use function sprintf;
-use function str_replace;
 use Symfony\Component\Process\Process;
 use function usleep;
 
@@ -63,30 +62,19 @@ class Plugin
 
         $output = ImiCommand::getOutput();
 
-        global $COMPONENTS_NS;
+        $cmd = [
+            \PHP_BINARY,
+            __DIR__ . '/../src/Cli/bin/imi-cli',
+            'imi/buildRuntime',
+            '--app-namespace=Imi\\\\Dev',
+        ];
+        $process = self::createProcess($cmd);
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
 
-        $COMPONENTS_NS = [
-            'imi' => 'Imi',
-        ] + $COMPONENTS_NS;
-
-        $readyProcesses = [];
-        foreach ($COMPONENTS_NS as $name => $ns)
-        {
-            //$output->writeln("[Scan <info>{$name}</info>]: {$ns}");
-            $cmd = [
-                \PHP_BINARY,
-                __DIR__ . '/../src/Cli/bin/imi-cli',
-                'imi/buildRuntime',
-                '--app-namespace=' . str_replace('\\', '\\\\', $ns),
-            ];
-            $process = self::createProcess($cmd);
-            $readyProcesses[$name] = $process;
-//            $process->run(function ($type, $buffer) {
-//                echo $buffer;
-//            });
-        }
-
-        self::parallel($readyProcesses, self::MAX_RUNNING, 'Scan <info>%s</info>');
+        $result = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
+        $output->writeln("[Runtime Scan]: {$result}");
     }
 
     protected static function createProcess(array $cmd): Process
