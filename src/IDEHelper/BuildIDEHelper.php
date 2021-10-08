@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\IDEHelper;
 
+use Imi\App;
+use Imi\Config;
 use function file_put_contents;
 use Imi\Bean\BeanManager;
 use Imi\Event\EventParam;
@@ -20,6 +22,9 @@ class BuildIDEHelper implements IEventListener
      */
     public function handle(EventParam $e): void
     {
+        if (!(Config::get('@app.imi.ideHelper') ?? App::isDebug())) {
+            return;
+        }
         $this->buildBean();
         $this->save();
         Log::info('buildIdeHelper');
