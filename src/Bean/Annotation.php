@@ -99,6 +99,7 @@ class Annotation
                 $ignoredPaths[] = File::path($path, '.git');
                 $ignoredPaths[] = File::path($path, 'config');
                 $ignoredPaths[] = File::path($path, 'vendor');
+                $ignoredPaths[] = File::path($path, 'Components');
             }
         }
         foreach (Config::getAliases() as $alias)

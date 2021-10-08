@@ -49,7 +49,7 @@ class Imi
      */
     public static function checkClassMethodRule(string $rule, string $className, string $methodName): bool
     {
-        list($classRule, $methodRule) = explode('::', $rule, 2);
+        [$classRule, $methodRule] = explode('::', $rule, 2);
 
         return static::checkRuleMatch($classRule, $className) && static::checkRuleMatch($methodRule, $methodName);
     }
@@ -59,7 +59,7 @@ class Imi
      */
     public static function checkClassRule(string $rule, string $className): bool
     {
-        list($classRule) = explode('::', $rule, 2);
+        [$classRule] = explode('::', $rule, 2);
 
         return static::checkRuleMatch($classRule, $className);
     }

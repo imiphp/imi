@@ -9,6 +9,7 @@ use Imi\Cli\ImiCommand;
 use function implode;
 use function method_exists;
 use function realpath;
+use function str_replace;
 use Symfony\Component\Process\Process;
 use function usleep;
 
@@ -34,7 +35,7 @@ class Plugin
             {
                 continue;
             }
-            $process = self::createProcess($dir);
+            $process = self::createUpdateProcess($dir);
             $readyProcesses[$dir->getBasename()] = $process;
         }
 
@@ -62,7 +63,7 @@ class Plugin
         }
     }
 
-    protected static function createProcess(\SplFileInfo $dir): Process
+    protected static function createUpdateProcess(\SplFileInfo $dir): Process
     {
         $cmd = [
             \PHP_BINARY,
@@ -72,18 +73,55 @@ class Plugin
             '--prefer-dist',
             '--no-progress',
         ];
+        $p = self::createProcess($cmd);
+        $p->setWorkingDirectory($dir->getPathname());
+
+        return $p;
+    }
+
+    public static function IDEHelper()
+    {
+        require_once __DIR__ . '/../vendor/autoload.php';
+
+        $output = ImiCommand::getOutput();
+
+        global $COMPONENTS_NS;
+
+        $COMPONENTS_NS = [
+            'imi' => 'Imi',
+        ] + $COMPONENTS_NS;
+
+        foreach ($COMPONENTS_NS as $name => $ns)
+        {
+            $output->writeln("[Scan <info>{$name}</info>]: {$ns}");
+            $cmd = [
+                \PHP_BINARY,
+                __DIR__ . '/../src/Cli/bin/imi-cli',
+                'imi/buildRuntime',
+                '--app-namespace=' . str_replace('\\', '\\\\', $ns),
+            ];
+            $process = self::createProcess($cmd);
+            $process->run(function ($type, $buffer) {
+                echo $buffer;
+            });
+        }
+    }
+
+    protected static function createProcess(array $cmd): Process
+    {
         // 兼容 symfony process < 3.3
         if (method_exists(Process::class, 'fromShellCommandline'))
         {
-            $p = new Process($cmd, $dir->getPathname(), null, null, 0);
+            $process = new Process($cmd);
         }
         else
         {
-            $p = new Process([], $dir->getPathname(), null, null, 0);
+            $process = new Process([]);
             /* @phpstan-ignore-next-line */
-            $p->setCommandLine(implode(' ', $cmd));
+            $process->setCommandLine(implode(' ', $cmd));
         }
+        $process->setTimeout(0);
 
-        return $p;
+        return $process;
     }
 }
