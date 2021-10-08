@@ -20,7 +20,7 @@ use Composer\Autoload\ClassLoader;
         if (is_file($fileName))
         {
             /** @var ClassLoader $loader */
-            $loader = require_once $fileName;
+            $loader = require $fileName;
 
             // 预解析组件命名空间
             $name = $dir->getBasename();
