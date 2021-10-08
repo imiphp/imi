@@ -149,7 +149,7 @@ class ValidatorHelper
      */
     public static function email($email): bool
     {
-        return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', (string) $email) > 0;
+        return false !== \filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     /**
