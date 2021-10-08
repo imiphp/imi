@@ -45,7 +45,7 @@ trait TLockableParser
                     $lockable->type = $config->class;
                 }
 
-                $lockable->options = array_merge($config->options, $lockable->options ?? []);
+                $lockable->options = array_merge($config->options, $lockable->options);
             }
         }
 

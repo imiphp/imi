@@ -144,7 +144,7 @@ SCRIPT
                 $this->db,
             ], 1);
 
-            return false !== $result && $result > 0;
+            return $result > 0;
         }, $this->poolName, true);
     }
 }
