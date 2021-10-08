@@ -15,6 +15,7 @@ use Imi\Util\Composer;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use ReflectionClass;
+use function sprintf;
 
 /**
  * 扫描类.
@@ -37,7 +38,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
-            Log::info('scanImi ' . $time . 's');
+            Log::info(sprintf('scanImi %.3fs', $time));
         }
     }
 
@@ -102,7 +103,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
-            Log::info('scanVendor ' . $time . 's');
+            Log::info(sprintf('scanVendor %.3fs', $time));
         }
     }
 
@@ -119,7 +120,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
-            Log::info('scanApp ' . $time . 's');
+            Log::info(sprintf('scanApp %.3fs', $time));
         }
     }
 

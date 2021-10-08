@@ -68,6 +68,8 @@ return [
             // 其它自定义
             'aaa' => XXX::class,
         ],
+        // ide 助手文件生成
+        'ideHelper' => null, // 是否生成IDE助手文件，如果为`null`则依据`App::isDebug()`决定
     ],
 ];
 ```

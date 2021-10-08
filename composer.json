@@ -55,6 +55,7 @@
             "@composer install-components"
         ],
         "install-components": "Imi\\Dev\\Plugin::dev",
+        "generate-ide-helper": "Imi\\Dev\\Plugin::IDEHelper",
         "test": "@php tests/phpunit -c ./tests/phpunit.xml",
         "install-test": "@php --ri swoole && composer install && cd ../ && composer test",
         "test-swoole": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/swoole/tests/phpunit.xml",
