@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Validate;
 
+use function filter_var;
 use Imi\Enum\BaseEnum;
 
 /**
@@ -28,23 +29,7 @@ class ValidatorHelper
      */
     public static function decimal($value, ?float $min = null, ?float $max = null, ?int $accuracy = null): bool
     {
-        // 最小值
-        if (null !== $min && $value < $min)
-        {
-            return false;
-        }
-        // 最大值
-        if (null !== $max && $value > $max)
-        {
-            return false;
-        }
-        // 小数精度
-        if (null !== $accuracy)
-        {
-            return preg_match('/^-?\d+\.\d{1,' . $accuracy . '}$/', (string) $value) > 0;
-        }
-
-        return is_numeric($value) && false !== strpos((string) $value, '.');
+        return static::number($value, $min, $max, $accuracy) && str_contains((string) $value, '.');
     }
 
     /**
@@ -54,6 +39,11 @@ class ValidatorHelper
      */
     public static function int($value, ?int $min = null, ?int $max = null): bool
     {
+        // 整数验证
+        if ((string) (int) $value !== (string) $value)
+        {
+            return false;
+        }
         // 最小值
         if (null !== $min && $value < $min)
         {
@@ -64,8 +54,8 @@ class ValidatorHelper
         {
             return false;
         }
-        // 整数验证
-        return (string) (int) $value === (string) $value;
+
+        return true;
     }
 
     /**
@@ -77,6 +67,10 @@ class ValidatorHelper
      */
     public static function number($value, $min = null, $max = null, ?int $accuracy = null): bool
     {
+        if (!is_numeric($value))
+        {
+            return false;
+        }
         // 最小值
         if (null !== $min && $value < $min)
         {
@@ -90,17 +84,18 @@ class ValidatorHelper
         // 小数精度
         if (null !== $accuracy)
         {
-            return preg_match('/^-?\d+(\.\d{1,' . $accuracy . '})?$/', (string) $value) > 0;
+            $value = (string) $value;
+
+            return \strlen($value) - strrpos($value, '.') - 1 <= $accuracy;
         }
 
-        return is_numeric($value);
+        return true;
     }
 
     /**
      * 判断文本长度，以字节为单位.
      *
      * @param mixed $value
-     * @param int   $max
      */
     public static function length($value, int $min, ?int $max = null): bool
     {
@@ -151,7 +146,7 @@ class ValidatorHelper
      */
     public static function email($email): bool
     {
-        return false !== \filter_var($email, FILTER_VALIDATE_EMAIL);
+        return false !== filter_var($email, \FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -241,7 +236,7 @@ class ValidatorHelper
      */
     public static function ipv4($str): bool
     {
-        return false !== \filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4);
     }
 
     /**
@@ -251,7 +246,7 @@ class ValidatorHelper
      */
     public static function ipv6($str): bool
     {
-        return false !== \filter_var($str, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+        return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6);
     }
 
     /**

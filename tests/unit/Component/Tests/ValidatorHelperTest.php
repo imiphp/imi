@@ -27,10 +27,14 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertFalse(ValidatorHelper::decimal('1'));
         Assert::assertTrue(ValidatorHelper::decimal('1.1'));
 
+        Assert::assertFalse(ValidatorHelper::decimal(1.0)); // x.0 不是有效地浮点数，强转字符串将变为整数
+        Assert::assertTrue(ValidatorHelper::decimal('1.0'));
+
         Assert::assertFalse(ValidatorHelper::decimal(1.25, 2));
         Assert::assertFalse(ValidatorHelper::decimal(1.25, null, 1.24));
         Assert::assertTrue(ValidatorHelper::decimal(1.25, 1, 1.25));
 
+        Assert::assertTrue(ValidatorHelper::decimal(1.1, null, null, 1));
         Assert::assertFalse(ValidatorHelper::decimal(1.25, null, null, 1));
         Assert::assertTrue(ValidatorHelper::decimal(1.25, null, null, 2));
         Assert::assertTrue(ValidatorHelper::decimal(1.25, null, null, 3));
@@ -38,6 +42,7 @@ class ValidatorHelperTest extends BaseTest
 
     public function testInt(): void
     {
+        Assert::assertFalse(ValidatorHelper::int('abc'));
         Assert::assertFalse(ValidatorHelper::int(1.1));
         Assert::assertTrue(ValidatorHelper::int(1));
 
@@ -59,9 +64,13 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertFalse(ValidatorHelper::number(1.25, null, 1.24));
         Assert::assertTrue(ValidatorHelper::number(1.25, 1, 1.25));
 
+        Assert::assertFalse(ValidatorHelper::number(1.1, null, null, 0));
+        Assert::assertTrue(ValidatorHelper::number(1.0, null, null, 0));
+        Assert::assertTrue(ValidatorHelper::number(1.1, null, null, 1));
         Assert::assertFalse(ValidatorHelper::number(1.25, null, null, 1));
         Assert::assertTrue(ValidatorHelper::number(1.25, null, null, 2));
         Assert::assertTrue(ValidatorHelper::number(1.25, null, null, 3));
+        Assert::assertFalse(ValidatorHelper::number(99999.2555, null, null, 3));
     }
 
     public function testLength(): void
