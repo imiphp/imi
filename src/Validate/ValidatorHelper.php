@@ -206,7 +206,7 @@ class ValidatorHelper
      */
     public static function url($str): bool
     {
-        return preg_match('/^([a-z]*:\/\/)?(localhost|(([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?))\.?\/?/i', (string) $str) > 0;
+        return false !== filter_var($str, \FILTER_VALIDATE_URL);
     }
 
     /**
