@@ -110,7 +110,7 @@ class Plugin
     /**
      * @param Process[] $processes
      */
-    protected static function parallel(array $processes, int $max, string $titleTemp)
+    protected static function parallel(array $processes, int $max, string $titleTemp): void
     {
         $output = ImiCommand::getOutput();
         $running = 0;
