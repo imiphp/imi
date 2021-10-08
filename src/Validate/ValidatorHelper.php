@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Validate;
 
+use Imi\Enum\BaseEnum;
+
 /**
  * 验证器工具类.
  */
@@ -408,7 +410,8 @@ class ValidatorHelper
     /**
      * 值在枚举值范围内.
      *
-     * @param mixed $value
+     * @param mixed                  $value
+     * @param class-string<BaseEnum> $enumClass
      */
     public static function inEnum($value, string $enumClass): bool
     {
@@ -418,7 +421,8 @@ class ValidatorHelper
     /**
      * 值不在枚举值范围内.
      *
-     * @param mixed $value
+     * @param mixed                  $value
+     * @param class-string<BaseEnum> $enumClass
      */
     public static function notInEnum($value, string $enumClass): bool
     {
