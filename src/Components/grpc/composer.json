@@ -7,8 +7,7 @@
         "ext-swoole": ">=4.4.0",
         "imiphp/imi-rpc": "^1.2.0",
         "yurunsoft/yurun-http": "^4.0.0",
-        "google/protobuf": "^3.10.0",
-        "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0"
+        "google/protobuf": "^3.10.0"
     },
     "require-dev": {},
     "autoload": {
