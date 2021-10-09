@@ -132,7 +132,7 @@ jobs:
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
       - name: install swoole
-        run: .github/macos/install-swoole.sh 4.7.0
+        run: .github/macos/install-swoole.sh 4.7.1
       - name: prepare
         run: |
           composer update --prefer-dist --no-progress

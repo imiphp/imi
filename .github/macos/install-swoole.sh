@@ -13,7 +13,7 @@ phpize
 ./configure --enable-openssl \
     --enable-http2 \
     --enable-mysqlnd \
-    --with-openssl-dir=$(brew --prefix openssl)
+    --with-openssl-dir=$(brew --prefix openssl@1.1)
 make -j
 make install
 
