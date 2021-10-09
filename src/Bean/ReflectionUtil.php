@@ -118,4 +118,46 @@ class ReflectionUtil
             throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
         }
     }
+
+    public static function allowsType(ReflectionType $type, string $checkType, ?string $className = null): bool
+    {
+        if ('null' === $checkType)
+        {
+            return $type->allowsNull();
+        }
+        if ($type instanceof ReflectionNamedType)
+        {
+            $typeStr = $type->getName();
+            if (!$type->isBuiltin())
+            {
+                if ('self' === $typeStr)
+                {
+                    if (null !== $className)
+                    {
+                        $typeStr = $className;
+                    }
+                }
+                else
+                {
+                    $typeStr = $typeStr;
+                }
+            }
+
+            return $typeStr === $checkType || is_subclass_of($checkType, $typeStr);
+        }
+        if ($type instanceof ReflectionUnionType)
+        {
+            foreach ($type->getTypes() as $subType)
+            {
+                $typeStr = ltrim(self::getTypeCode($subType, $className), '\\');
+                if ($typeStr === $checkType || is_subclass_of($checkType, $typeStr))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+    }
 }
