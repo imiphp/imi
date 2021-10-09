@@ -11,6 +11,7 @@ return [
         'Imi\Swoole\Test\Component\Db',
         'Imi\Swoole\Test\Component\Lock',
         'Imi\Swoole\Test\Component\Tests',
+        'Imi\Swoole\Test\Component\Async',
     ],
     'ignoreNamespace'   => [
     ],

@@ -36,6 +36,7 @@ class SwooleApp extends CliApp
     protected array $appConfig = [
         'RequestContext' => CoroutineContextManager::class,
         'Timer'          => SwooleTimer::class,
+        'Async'          => \Imi\Swoole\Async\SwooleHandler::class,
         'beans'          => [
             'ServerUtil' => \Imi\Swoole\Server\Util\LocalServerUtil::class,
         ],
