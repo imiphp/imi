@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Validate;
 
+use function filter_var;
+use Imi\Enum\BaseEnum;
+
 /**
  * 验证器工具类.
  */
@@ -26,23 +29,7 @@ class ValidatorHelper
      */
     public static function decimal($value, ?float $min = null, ?float $max = null, ?int $accuracy = null): bool
     {
-        // 最小值
-        if (null !== $min && $value < $min)
-        {
-            return false;
-        }
-        // 最大值
-        if (null !== $max && $value > $max)
-        {
-            return false;
-        }
-        // 小数精度
-        if (null !== $accuracy)
-        {
-            return preg_match('/^-?\d+\.\d{1,' . $accuracy . '}$/', (string) $value) > 0;
-        }
-
-        return is_numeric($value) && false !== strpos((string) $value, '.');
+        return static::number($value, $min, $max, $accuracy) && str_contains((string) $value, '.');
     }
 
     /**
@@ -52,6 +39,11 @@ class ValidatorHelper
      */
     public static function int($value, ?int $min = null, ?int $max = null): bool
     {
+        // 整数验证
+        if ((string) (int) $value !== (string) $value)
+        {
+            return false;
+        }
         // 最小值
         if (null !== $min && $value < $min)
         {
@@ -62,8 +54,8 @@ class ValidatorHelper
         {
             return false;
         }
-        // 整数验证
-        return (string) (int) $value === (string) $value;
+
+        return true;
     }
 
     /**
@@ -75,6 +67,10 @@ class ValidatorHelper
      */
     public static function number($value, $min = null, $max = null, ?int $accuracy = null): bool
     {
+        if (!is_numeric($value))
+        {
+            return false;
+        }
         // 最小值
         if (null !== $min && $value < $min)
         {
@@ -88,17 +84,18 @@ class ValidatorHelper
         // 小数精度
         if (null !== $accuracy)
         {
-            return preg_match('/^-?\d+(\.\d{1,' . $accuracy . '})?$/', (string) $value) > 0;
+            $value = (string) $value;
+
+            return \strlen($value) - strrpos($value, '.') - 1 <= $accuracy;
         }
 
-        return is_numeric($value);
+        return true;
     }
 
     /**
      * 判断文本长度，以字节为单位.
      *
      * @param mixed $value
-     * @param int   $max
      */
     public static function length($value, int $min, ?int $max = null): bool
     {
@@ -149,7 +146,7 @@ class ValidatorHelper
      */
     public static function email($email): bool
     {
-        return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', (string) $email) > 0;
+        return false !== filter_var($email, \FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -209,7 +206,7 @@ class ValidatorHelper
      */
     public static function url($str): bool
     {
-        return preg_match('/^([a-z]*:\/\/)?(localhost|(([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?))\.?\/?/i', (string) $str) > 0;
+        return false !== filter_var($str, \FILTER_VALIDATE_URL);
     }
 
     /**
@@ -239,7 +236,7 @@ class ValidatorHelper
      */
     public static function ipv4($str): bool
     {
-        return preg_match('/\A((([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\Z/', (string) $str) > 0;
+        return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4);
     }
 
     /**
@@ -249,36 +246,7 @@ class ValidatorHelper
      */
     public static function ipv6($str): bool
     {
-        return preg_match('/\A
-(?:
-(?:
-(?:[a-f0-9]{1,4}:){6}
-|
-::(?:[a-f0-9]{1,4}:){5}
-|
-(?:[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){4}
-|
-(?:(?:[a-f0-9]{1,4}:){0,1}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){3}
-|
-(?:(?:[a-f0-9]{1,4}:){0,2}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){2}
-|
-(?:(?:[a-f0-9]{1,4}:){0,3}[a-f0-9]{1,4})?::[a-f0-9]{1,4}:
-|
-(?:(?:[a-f0-9]{1,4}:){0,4}[a-f0-9]{1,4})?::
-)
-(?:
-[a-f0-9]{1,4}:[a-f0-9]{1,4}
-|
-(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}
-(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
-)
-|
-(?:
-(?:(?:[a-f0-9]{1,4}:){0,5}[a-f0-9]{1,4})?::[a-f0-9]{1,4}
-|
-(?:(?:[a-f0-9]{1,4}:){0,6}[a-f0-9]{1,4})?::
-)
-)\Z/ix', (string) $str) > 0;
+        return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6);
     }
 
     /**
@@ -437,7 +405,8 @@ class ValidatorHelper
     /**
      * 值在枚举值范围内.
      *
-     * @param mixed $value
+     * @param mixed                  $value
+     * @param class-string<BaseEnum> $enumClass
      */
     public static function inEnum($value, string $enumClass): bool
     {
@@ -447,7 +416,8 @@ class ValidatorHelper
     /**
      * 值不在枚举值范围内.
      *
-     * @param mixed $value
+     * @param mixed                  $value
+     * @param class-string<BaseEnum> $enumClass
      */
     public static function notInEnum($value, string $enumClass): bool
     {
