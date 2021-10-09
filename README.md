@@ -16,7 +16,7 @@
 
 ## 介绍
 
-imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman 多种容器环境下。
+imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。
 
 imi 拥有丰富的功能组件，v2.0 版本内置了 2 个分布式长连接服务的解决方案。
 
