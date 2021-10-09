@@ -14,7 +14,7 @@
         "psr/http-server-middleware": "~1.0",
         "psr/simple-cache": "~1.0",
         "vlucas/phpdotenv": "~5.3",
-        "phpdocumentor/reflection-docblock": "^4.3"
+        "phpdocumentor/reflection-docblock": "^4.3|^5.2"
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
