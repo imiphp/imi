@@ -18,6 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property mixed         $typeValue 多态类型字段值
  * @property string|null   $order     排序规则字符串；例：age desc, id desc
  * @property string[]|null $fields    为查询出来的模型指定字段
+ * @property int|null      $limit     限制返回记录数量
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicOneToMany extends RelationBase
@@ -30,7 +31,7 @@ class PolymorphicOneToMany extends RelationBase
     /**
      * @param mixed $typeValue
      */
-    public function __construct(?array $__data = null, string $model = '', string $type = '', $typeValue = null, ?string $order = null, ?array $fields = null)
+    public function __construct(?array $__data = null, string $model = '', string $type = '', $typeValue = null, ?string $order = null, ?array $fields = null, ?int $limit = null)
     {
         parent::__construct(...\func_get_args());
     }

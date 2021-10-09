@@ -16,6 +16,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string        $model  关联的模型类；可以是包含命名空间的完整类名；可以同命名空间下的类名
  * @property string|null   $order  排序规则字符串；例：age desc, id desc
  * @property string[]|null $fields 为查询出来的模型指定字段
+ * @property int|null      $limit  限制返回记录数量
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class OneToMany extends RelationBase
@@ -25,7 +26,7 @@ class OneToMany extends RelationBase
      */
     protected ?string $defaultFieldName = 'model';
 
-    public function __construct(?array $__data = null, string $model = '', ?string $order = null, ?array $fields = null)
+    public function __construct(?array $__data = null, string $model = '', ?string $order = null, ?array $fields = null, ?int $limit = null)
     {
         parent::__construct(...\func_get_args());
     }

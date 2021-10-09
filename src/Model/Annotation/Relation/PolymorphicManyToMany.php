@@ -13,8 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  *
- * @property string $type      右表多态类型字段名
- * @property mixed  $typeValue 右表多态类型字段值
+ * @property string   $type      右表多态类型字段名
+ * @property mixed    $typeValue 右表多态类型字段值
+ * @property int|null $limit     限制返回记录数量
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicManyToMany extends ManyToMany
@@ -22,7 +23,7 @@ class PolymorphicManyToMany extends ManyToMany
     /**
      * @param mixed $typeValue
      */
-    public function __construct(?array $__data = null, string $model = '', string $middle = '', string $rightMany = '', ?string $order = null, ?array $fields = null, string $type = '', $typeValue = null)
+    public function __construct(?array $__data = null, string $model = '', string $middle = '', string $rightMany = '', ?string $order = null, ?array $fields = null, string $type = '', $typeValue = null, ?int $limit = null)
     {
         parent::__construct(...\func_get_args());
     }

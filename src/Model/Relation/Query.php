@@ -186,6 +186,10 @@ class Query
             {
                 $query->orderRaw($annotation->order);
             }
+            if (null !== $annotation->limit)
+            {
+                $query->limit($annotation->limit);
+            }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
                 'propertyName' => $propertyName,
@@ -236,6 +240,10 @@ class Query
             if ($annotation->order)
             {
                 $query->orderRaw($annotation->order);
+            }
+            if (null !== $annotation->limit)
+            {
+                $query->limit($annotation->limit);
             }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
@@ -352,6 +360,10 @@ class Query
             {
                 $query->orderRaw($annotation->order);
             }
+            if (null !== $annotation->limit)
+            {
+                $query->limit($annotation->limit);
+            }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
                 'propertyName' => $propertyName,
@@ -467,6 +479,10 @@ class Query
                     {
                         $query->orderRaw($annotationItem->order);
                     }
+                    if (null !== $annotationItem->limit)
+                    {
+                        $query->limit($annotationItem->limit);
+                    }
                     Event::trigger($eventName . '.BEFORE', [
                         'model'        => $model,
                         'propertyName' => $propertyName,
@@ -520,6 +536,11 @@ class Query
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                         ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                         ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField);
+
+            if (null !== $annotation->limit)
+            {
+                $query->limit($annotation->limit);
+            }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
                 'propertyName' => $propertyName,
