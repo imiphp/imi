@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Db\Query\Where;
 
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Log\Log;
 
 abstract class BaseWhere
 {
@@ -15,7 +16,7 @@ abstract class BaseWhere
 
     public function toString(IQuery $query): string
     {
-        trigger_error(sprintf('%s object can not be used as string', static::class), \E_USER_ERROR);
+        Log::warning(sprintf('%s object can not be used as string', static::class));
 
         return '';
     }

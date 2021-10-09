@@ -88,7 +88,7 @@ class Pool
                         $workerId = $this->workerIdMap[$pid] ?? null;
                         if (null === $workerId)
                         {
-                            trigger_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), \E_USER_WARNING);
+                            Log::warning(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid));
                             continue;
                         }
                         Event::del($this->workers[$workerId]->pipe);
@@ -172,7 +172,7 @@ class Pool
             }
             else
             {
-                trigger_error(sprintf('%s: Can not found worker by workerId %s', __CLASS__, $workerId), \E_USER_WARNING);
+                Log::warning(sprintf('%s: Can not found worker by workerId %s', __CLASS__, $workerId));
                 continue;
             }
         }
@@ -226,14 +226,14 @@ class Pool
                 $content = $worker->read();
                 if (false === $content)
                 {
-                    trigger_error('%s: Read pipe message content failed', \E_USER_WARNING);
+                    Log::warning('%s: Read pipe message content failed');
 
                     return;
                 }
                 $data = json_decode($content, true);
                 if (false === $data)
                 {
-                    trigger_error('%s: Decode pipe message content failed', \E_USER_WARNING);
+                    Log::warning('%s: Decode pipe message content failed');
 
                     return;
                 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\SuperGlobals;
 
+use Imi\Log\Log;
 use Imi\RequestContext;
 
 class Server implements \ArrayAccess, \JsonSerializable
@@ -59,7 +60,7 @@ class Server implements \ArrayAccess, \JsonSerializable
      */
     public function offsetUnset($offset): void
     {
-        trigger_error('imi does not support to unset values from $_SERVER', \E_USER_WARNING);
+        Log::warning('imi does not support to unset values from $_SERVER');
     }
 
     /**
