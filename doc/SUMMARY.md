@@ -172,6 +172,7 @@
 * [进程池-Swoole](components/process-pool/swoole.md)
 * [进程池-imi](components/process-pool/imi.md)
 * [定时器](components/timer/index.md)
+* [异步执行](components/async/index.md)
 * [雪花算法发号器](components/snowflake.md)
 * [imi 组件列表一览](components/list.md)
   * [MQTT](components/mqtt/server.md)
