@@ -32,7 +32,11 @@ class SwooleResult implements IAsyncResult
         {
             throw new AsyncTimeoutException();
         }
+        if ($result['exception'])
+        {
+            throw $result['result'];
+        }
 
-        return $result;
+        return $result['result'];
     }
 }

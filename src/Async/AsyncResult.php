@@ -13,12 +13,15 @@ class AsyncResult implements IAsyncResult
      */
     private $result;
 
+    private bool $isException;
+
     /**
      * @param mixed $result
      */
-    public function __construct($result = null)
+    public function __construct($result = null, bool $isException = false)
     {
         $this->result = $result;
+        $this->isException = $isException;
     }
 
     /**
@@ -31,6 +34,10 @@ class AsyncResult implements IAsyncResult
     public function get(?float $timeout = null)
     {
         $result = $this->result;
+        if ($this->isException)
+        {
+            throw $result;
+        }
         if ($result instanceof IAsyncResult)
         {
             $result = $this->result->get($timeout);

@@ -31,4 +31,12 @@ class AsyncTester
     {
         return $a + $b;
     }
+
+    /**
+     * @Async
+     */
+    public function testException(): IAsyncResult
+    {
+        throw new \RuntimeException('gg');
+    }
 }

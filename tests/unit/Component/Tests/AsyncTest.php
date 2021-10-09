@@ -22,8 +22,19 @@ class AsyncTest extends BaseTest
         if (\PHP_VERSION_ID >= 80000)
         {
             /** @var AsyncTesterPHP8 $asyncTesterPHP8 */
+            // @phpstan-ignore-next-line
             $asyncTesterPHP8 = App::getBean('AsyncTesterPHP8');
+            // @phpstan-ignore-next-line
             $this->assertEquals(3, $asyncTesterPHP8->test1(1, 2)->get());
         }
+    }
+
+    public function testException(): void
+    {
+        /** @var AsyncTester $asyncTester */
+        $asyncTester = App::getBean('AsyncTester');
+
+        $this->expectException(\RuntimeException::class);
+        $asyncTester->testException()->get();
     }
 }

@@ -15,6 +15,13 @@ class SyncHandler implements IAsyncHandler
      */
     public function exec(callable $callable): IAsyncResult
     {
-        return new AsyncResult($callable());
+        try
+        {
+            return new AsyncResult($callable());
+        }
+        catch (\Throwable $th)
+        {
+            return new AsyncResult($th, true);
+        }
     }
 }
