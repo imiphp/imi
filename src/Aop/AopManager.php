@@ -84,7 +84,7 @@ class AopManager
 
     public static function isDynamicRule(string $class, string $methodRule): bool
     {
-        return false !== strpos($class, '*') || false !== strpos($methodRule, '*');
+        return str_contains($class, '*') || str_contains($methodRule, '*');
     }
 
     public static function addBefore(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = []): AopItem

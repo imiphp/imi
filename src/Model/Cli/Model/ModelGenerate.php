@@ -201,7 +201,7 @@ class ModelGenerate extends BaseCommand
             if ('' === $ddlEncode)
             {
                 // 未指定编码方式，判断存在注释时，base64 编码
-                if (false !== strpos($ddl, '/*'))
+                if (str_contains($ddl, '/*'))
                 {
                     $ddl = base64_encode($ddl);
                     $ddlDecode = 'base64_decode';
@@ -311,7 +311,7 @@ class ModelGenerate extends BaseCommand
                 'defaultValue'      => $this->parseFieldDefaultValue($typeName, $field['Default']),
                 'isPrimaryKey'      => $isPk,
                 'primaryKeyIndex'   => $isPk ? $idCount : -1,
-                'isAutoIncrement'   => false !== strpos($field['Extra'], 'auto_increment'),
+                'isAutoIncrement'   => str_contains($field['Extra'], 'auto_increment'),
                 'comment'           => $field['Comment'],
                 'typeDefinition'    => $config['relation'][$table]['fields'][$field['Field']]['typeDefinition'] ?? true,
             ];

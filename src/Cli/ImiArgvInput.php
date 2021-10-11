@@ -337,7 +337,7 @@ class ImiArgvInput extends Input
         {
             if ($token && '-' === $token[0])
             {
-                if (false !== strpos($token, '=') || !isset($this->tokens[$i + 1]))
+                if (str_contains($token, '=') || !isset($this->tokens[$i + 1]))
                 {
                     continue;
                 }

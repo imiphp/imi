@@ -254,7 +254,7 @@ class Validator implements IValidator
     protected function buildMessage($data, Condition $annotation): string
     {
         $message = $annotation->message;
-        if (false !== strpos($message, '{:value}'))
+        if (str_contains($message, '{:value}'))
         {
             $message = str_replace('{:value}', (string) ObjectArrayHelper::get($data, $annotation->name), $message);
         }

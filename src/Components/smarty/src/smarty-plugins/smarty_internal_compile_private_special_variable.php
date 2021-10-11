@@ -143,7 +143,7 @@ CODE;
                         $compiler->trigger_template_error('(secure mode) constants not permitted');
                         break;
                     }
-                    if (false === strpos($_index[1], '$') && false === strpos($_index[1], '\''))
+                    if (!str_contains($_index[1], '$') && !str_contains($_index[1], '\''))
                     {
                         return "@constant('{$_index[1]}')";
                     }

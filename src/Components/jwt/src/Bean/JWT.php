@@ -46,8 +46,7 @@ class JWT
         if (null === $this->default)
         {
             // 如果没有设置默认配置，默认使用第一个配置
-            reset($this->list);
-            $this->default = key($this->list);
+            $this->default = array_key_first($this->list);
         }
     }
 

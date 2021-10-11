@@ -28,10 +28,8 @@ class ClassObject
         {
             $object = \get_class($object);
         }
-        $index = strpos($object, 'class@anonymous');
 
-        // @phpstan-ignore-next-line
-        return false !== $index && $index >= 0;
+        return str_contains($object, 'class@anonymous');
     }
 
     /**

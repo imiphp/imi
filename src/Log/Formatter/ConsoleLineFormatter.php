@@ -58,7 +58,7 @@ class ConsoleLineFormatter extends LineFormatter
 
         foreach ($vars['extra'] as $var => $val)
         {
-            if (false !== strpos($output, '%extra.' . $var . '%'))
+            if (str_contains($output, '%extra.' . $var . '%'))
             {
                 $output = str_replace('%extra.' . $var . '%', $this->stringify($val), $output);
                 unset($vars['extra'][$var]);
@@ -67,7 +67,7 @@ class ConsoleLineFormatter extends LineFormatter
 
         foreach ($vars['context'] as $var => $val)
         {
-            if (false !== strpos($output, '%context.' . $var . '%'))
+            if (str_contains($output, '%context.' . $var . '%'))
             {
                 $output = str_replace('%context.' . $var . '%', $this->stringify($val), $output);
                 unset($vars['context'][$var]);
@@ -91,7 +91,7 @@ class ConsoleLineFormatter extends LineFormatter
 
         foreach ($vars as $var => $val)
         {
-            if (false !== strpos($output, '%' . $var . '%'))
+            if (str_contains($output, '%' . $var . '%'))
             {
                 $replace = $this->stringify($val);
                 switch ($var)
@@ -116,7 +116,7 @@ class ConsoleLineFormatter extends LineFormatter
         }
 
         // remove leftover %extra.xxx% and %context.xxx% if any
-        if (false !== strpos($output, '%'))
+        if (str_contains($output, '%'))
         {
             $output = preg_replace('/%(?:extra|context)\..+?%/', '', $output);
         }

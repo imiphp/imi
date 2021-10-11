@@ -42,11 +42,11 @@ class RouteCallable
             foreach ($params as $name => $value)
             {
                 $search = '{$' . $name . '}';
-                if (false !== strpos($className, $search))
+                if (str_contains($className, $search))
                 {
                     $className = str_replace($search, $value, $className);
                 }
-                if (false !== strpos($methodName, $search))
+                if (str_contains($methodName, $search))
                 {
                     $methodName = str_replace($search, $value, $methodName);
                 }

@@ -190,7 +190,7 @@ class HttpRoute
                                     $params = array_merge($resultParams, $domainParams);
                                 }
 
-                                return new RouteResult(spl_object_id($item), clone $item, $params);
+                                return new RouteResult(spl_object_id($item), $item, $params);
                             }
                         }
                     }
@@ -283,7 +283,7 @@ class HttpRoute
         else
         {
             $fields = [];
-            if (false === strpos($rule, '/'))
+            if (!str_contains($rule, '/'))
             {
                 $parsedRule = $rule;
             }

@@ -20,7 +20,14 @@ class Text
     {
         if ($caseSensitive)
         {
-            return 0 === strpos($string, $compare);
+            if (\PHP_VERSION_ID >= 80000)
+            {
+                return str_starts_with($string, $compare);
+            }
+            else
+            {
+                return 0 === strpos($string, $compare);
+            }
         }
         else
         {
@@ -35,7 +42,14 @@ class Text
     {
         if ($caseSensitive)
         {
-            return $compare === strrchr($string, $compare);
+            if (\PHP_VERSION_ID >= 80000)
+            {
+                return str_ends_with($string, $compare);
+            }
+            else
+            {
+                return $compare === strrchr($string, $compare);
+            }
         }
         else
         {

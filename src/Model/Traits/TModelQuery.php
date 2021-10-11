@@ -66,8 +66,8 @@ trait TModelQuery
             return true;
         }
 
-        $k = key($field);
-        $v = current($field);
+        $k = array_key_first($field);
+        $v = $field[$k] ?? null;
 
         if (is_numeric($k))
         {

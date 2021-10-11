@@ -109,10 +109,11 @@ class ActionMiddleware implements MiddlewareInterface
      */
     private function prepareActionParams(Request $request, RouteResult $routeResult): array
     {
-        if (isset($this->actionMethodCaches[$routeResult->id]))
+        $routeResultId = $routeResult->id;
+        if (isset($this->actionMethodCaches[$routeResultId]))
         {
-            $actionMethodCache = $this->actionMethodCaches[$routeResult->id];
-            $extractDataAnnotationCache = $this->extractDataAnnotationCaches[$routeResult->id];
+            $actionMethodCache = $this->actionMethodCaches[$routeResultId];
+            $extractDataAnnotationCache = $this->extractDataAnnotationCaches[$routeResultId];
         }
         else
         {
@@ -154,7 +155,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
             if (!isset($params) || !$params)
             {
-                return $this->actionMethodCaches[$routeResult->id] = $this->extractDataAnnotationCaches[$routeResult->id] = [];
+                return $this->actionMethodCaches[$routeResultId] = $this->extractDataAnnotationCaches[$routeResultId] = [];
             }
             $actionMethodCache = [];
             /** @var \ReflectionParameter[] $params */
@@ -169,8 +170,8 @@ class ActionMiddleware implements MiddlewareInterface
                     $param->getType()
                 );
             }
-            $this->actionMethodCaches[$routeResult->id] = $actionMethodCache;
-            $this->extractDataAnnotationCaches[$routeResult->id] = $extractDataAnnotationCache;
+            $this->actionMethodCaches[$routeResultId] = $actionMethodCache;
+            $this->extractDataAnnotationCaches[$routeResultId] = $extractDataAnnotationCache;
         }
         if (!$actionMethodCache)
         {

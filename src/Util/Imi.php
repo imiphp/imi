@@ -718,7 +718,7 @@ class Imi
         $fileName = '/proc/1/cgroup';
         if (is_file($fileName))
         {
-            return false !== strpos(file_get_contents($fileName), ':/docker/');
+            return str_contains(file_get_contents($fileName), ':/docker/');
         }
 
         return false;
