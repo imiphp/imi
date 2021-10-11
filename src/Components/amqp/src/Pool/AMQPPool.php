@@ -116,7 +116,7 @@ class AMQPPool
      */
     public static function release($client)
     {
-        $resource = RequestContext::get('poolResources.' . spl_object_hash($client));
+        $resource = RequestContext::get('poolResources.' . spl_object_id($client));
         if (null !== $resource)
         {
             PoolManager::releaseResource($resource);

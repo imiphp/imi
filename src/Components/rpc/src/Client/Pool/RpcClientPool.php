@@ -54,7 +54,7 @@ class RpcClientPool
      */
     public static function release(IRpcClient $client): void
     {
-        $resource = RequestContext::get('poolResources.' . spl_object_hash($client));
+        $resource = RequestContext::get('poolResources.' . spl_object_id($client));
         if (null !== $resource)
         {
             PoolManager::releaseResource($resource);

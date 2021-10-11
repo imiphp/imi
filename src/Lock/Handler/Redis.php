@@ -56,7 +56,7 @@ class Redis extends BaseLock
             $this->poolName = RedisManager::getDefaultPoolName();
         }
         $this->key = $this->keyPrefix . $id;
-        $this->guid = md5(uniqid('', true) . spl_object_hash($this));
+        $this->guid = md5(uniqid('', true) . spl_object_id($this));
     }
 
     /**

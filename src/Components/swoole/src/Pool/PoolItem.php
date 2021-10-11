@@ -13,7 +13,7 @@ class PoolItem extends \Imi\Pool\PoolItem
 {
     public function __destruct()
     {
-        $id = spl_object_hash($this);
+        $id = (string) spl_object_id($this);
         if (ChannelContainer::hasChannel($id))
         {
             ChannelContainer::removeChannel($id);
@@ -25,7 +25,7 @@ class PoolItem extends \Imi\Pool\PoolItem
      */
     public function lock(float $timeout = 0): bool
     {
-        if ($this->isFree || ChannelContainer::pop(spl_object_hash($this), $timeout))
+        if ($this->isFree || ChannelContainer::pop((string) spl_object_id($this), $timeout))
         {
             ++$this->usageCount;
             $this->isFree = false;
@@ -43,7 +43,7 @@ class PoolItem extends \Imi\Pool\PoolItem
     public function release(): void
     {
         parent::release();
-        $id = spl_object_hash($this);
+        $id = (string) spl_object_id($this);
         if (ChannelContainer::hasChannel($id))
         {
             ChannelContainer::push($id, true);

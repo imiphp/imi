@@ -243,7 +243,7 @@ class PoolManager
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
         $instance = $resource->getInstance();
-        $poolResources[spl_object_hash($instance)] = $resource;
+        $poolResources[spl_object_id($instance)] = $resource;
         $requestContext['poolResources'] = $poolResources;
     }
 
@@ -255,7 +255,7 @@ class PoolManager
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
         $instance = $resource->getInstance();
-        $key = spl_object_hash($instance);
+        $key = spl_object_id($instance);
         if (isset($poolResources[$key]))
         {
             unset($poolResources[$key]);

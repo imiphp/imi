@@ -15,7 +15,7 @@ class SingletonTest extends BaseTest
     {
         $a = Db::getInstance(self::CONNECTION_NAME);
         $b = Db::getInstance(self::CONNECTION_NAME);
-        $this->assertEquals(spl_object_hash($a), spl_object_hash($b));
+        $this->assertEquals(spl_object_id($a), spl_object_id($b));
         $this->assertEquals([1], $a->query('select 1')->fetch(\PDO::FETCH_NUM));
     }
 
@@ -23,7 +23,7 @@ class SingletonTest extends BaseTest
     {
         $a = Db::getInstance(self::CONNECTION_NAME);
         $b = Db::getNewInstance(self::CONNECTION_NAME);
-        $this->assertNotEquals(spl_object_hash($a), spl_object_hash($b));
+        $this->assertNotEquals(spl_object_id($a), spl_object_id($b));
         $this->assertEquals([2], $b->query('select 2')->fetch(\PDO::FETCH_NUM));
     }
 }

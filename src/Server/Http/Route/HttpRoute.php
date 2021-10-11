@@ -75,7 +75,7 @@ class HttpRoute
             ]);
         }
         [$view, $viewOption] = ViewParser::getInstance()->getByCallable($callable);
-        $this->rules[$url][spl_object_hash($annotation)] = new RouteItem($annotation, $callable, $view, $viewOption);
+        $this->rules[$url][spl_object_id($annotation)] = new RouteItem($annotation, $callable, $view, $viewOption);
     }
 
     /**
@@ -95,7 +95,7 @@ class HttpRoute
         {
             $routeItem->wsConfig = $options['wsConfig'];
         }
-        $this->rules[$annotation->url][spl_object_hash($annotation)] = $routeItem;
+        $this->rules[$annotation->url][spl_object_id($annotation)] = $routeItem;
     }
 
     /**
@@ -111,7 +111,7 @@ class HttpRoute
      */
     public function existsRule(RouteAnnotation $rule): bool
     {
-        return isset($this->rules[$rule->url][spl_object_hash($rule)]);
+        return isset($this->rules[$rule->url][spl_object_id($rule)]);
     }
 
     /**

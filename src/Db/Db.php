@@ -136,7 +136,7 @@ class Db
      */
     public static function release(IDb $db): void
     {
-        $resource = RequestContext::get('poolResources')[spl_object_hash($db)] ?? null;
+        $resource = RequestContext::get('poolResources')[spl_object_id($db)] ?? null;
         if (null !== $resource)
         {
             PoolManager::releaseResource($resource);

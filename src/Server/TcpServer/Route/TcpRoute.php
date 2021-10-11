@@ -53,7 +53,7 @@ class TcpRoute implements IRoute
         {
             $routeItem->middlewares = $options['middlewares'];
         }
-        $this->rules[spl_object_hash($annotation)] = $routeItem;
+        $this->rules[spl_object_id($annotation)] = $routeItem;
     }
 
     /**
@@ -69,7 +69,7 @@ class TcpRoute implements IRoute
      */
     public function existsRule(TcpRouteAnnotation $rule): bool
     {
-        return isset($this->rules[spl_object_hash($rule)]);
+        return isset($this->rules[spl_object_id($rule)]);
     }
 
     /**

@@ -70,7 +70,7 @@ class WSRoute implements IRoute
         {
             $routeItem->middlewares = $options['middlewares'];
         }
-        $this->rules[spl_object_hash($annotation)] = $routeItem;
+        $this->rules[spl_object_id($annotation)] = $routeItem;
     }
 
     /**
@@ -86,7 +86,7 @@ class WSRoute implements IRoute
      */
     public function existsRule(WSRouteAnnotation $rule): bool
     {
-        return isset($this->rules[spl_object_hash($rule)]);
+        return isset($this->rules[spl_object_id($rule)]);
     }
 
     /**
