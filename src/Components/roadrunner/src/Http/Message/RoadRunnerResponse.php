@@ -76,17 +76,12 @@ class RoadRunnerResponse extends Response
     {
         if ($this->changedCookieNames)
         {
-            $response = $this;
             foreach ($this->changedCookieNames as $name => $_)
             {
-                $response->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($this->getCookie($name)));
+                $this->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($this->getCookie($name)));
             }
-            $this->worker->respond($response);
         }
-        else
-        {
-            $this->worker->respond($this);
-        }
+        $this->worker->respond($this);
 
         return $this;
     }

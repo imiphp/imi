@@ -329,7 +329,7 @@ class Server extends BaseServer
      */
     public function getClientAddress($clientId): IPEndPoint
     {
-        return new IPEndPoint($_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT']);
+        return new IPEndPoint($_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT'] ?? 0);
     }
 
     public function getWorker(): \Spiral\RoadRunner\Worker
