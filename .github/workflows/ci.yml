@@ -249,9 +249,17 @@ jobs:
         run: |
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
-          src/Components/roadrunner/vendor/bin/rr get-binary
-          ./rr -v
           tests/db/install-db.sh
+
+      - name: Install RoadRunner
+        uses: nick-invision/retry@v2
+        with:
+          max_attempts: 3
+          timeout_seconds: 60
+          command: |
+            src/Components/roadrunner/vendor/bin/rr get-binary
+            ./rr -v
+
       - name: Test
         run: composer test
       - name: Test swoole
@@ -329,6 +337,7 @@ jobs:
         uses: nick-invision/retry@v2
         with:
           max_attempts: 3
+          timeout_seconds: 60
           command: |
             src\Components\roadrunner\vendor\bin\rr get-binary
             .\rr -v
