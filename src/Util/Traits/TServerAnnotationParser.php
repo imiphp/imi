@@ -6,7 +6,6 @@ namespace Imi\Util\Traits;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Config;
-use Imi\Util\Text;
 
 /**
  * 注解处理器按服务器名获取.
@@ -47,7 +46,7 @@ trait TServerAnnotationParser
                 $class = $option->getClass();
                 foreach ($namespaces as $namespace)
                 {
-                    if (Text::startwith($class, $namespace))
+                    if (str_starts_with($class, $namespace))
                     {
                         $result[$class] = $option;
                         continue 2;

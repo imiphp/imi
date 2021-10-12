@@ -12,7 +12,6 @@ use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Util\Imi;
-use Imi\Util\Text;
 use function substr;
 
 class App
@@ -217,8 +216,8 @@ class App
             $backtrace = $backtrace[1] ?? null;
             if (!(
                 (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
-                || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
-                || (isset($backtrace['function']) && Text::startwith($backtrace['function'], 'Imi\\'))
+                || (isset($backtrace['class']) && str_starts_with($backtrace['class'], 'Imi\\'))
+                || (isset($backtrace['function']) && str_starts_with($backtrace['function'], 'Imi\\'))
             ))
             {
                 throw new \RuntimeException('Cannot write to read-only application context');
@@ -248,8 +247,8 @@ class App
             $backtrace = $backtrace[1] ?? null;
             if (!(
                 (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
-                || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
-                || (isset($backtrace['function']) && Text::startwith($backtrace['function'], 'Imi\\'))
+                || (isset($backtrace['class']) && str_starts_with($backtrace['class'], 'Imi\\'))
+                || (isset($backtrace['function']) && str_starts_with($backtrace['function'], 'Imi\\'))
             ))
             {
                 throw new \RuntimeException('Cannot write to read-only application context');

@@ -8,7 +8,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Config;
 use Imi\Event\Event;
-use Imi\Util\Text;
 
 /**
  * 控制器注解处理器.
@@ -55,7 +54,7 @@ class RpcControllerParser extends BaseParser
             $class = $option->getClass();
             foreach ($namespaces as $namespace)
             {
-                if (Text::startwith($class, $namespace))
+                if (str_starts_with($class, $namespace))
                 {
                     $result[$class] = $option;
                     continue 2;

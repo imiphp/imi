@@ -22,7 +22,6 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Util\ArrayList;
 use Imi\Util\ClassObject;
 use Imi\Util\Imi;
-use Imi\Util\Text;
 
 class Query
 {
@@ -678,7 +677,7 @@ class Query
                         $tmpRow[$keysMap[$key]] = $value;
                     }
                 }
-                elseif (Text::startwith($key, $table))
+                elseif (str_starts_with($key, $table))
                 {
                     $keysMap[$key] = $realKey = substr($key, $tableLength);
                     $tmpRow[$realKey] = $value;
