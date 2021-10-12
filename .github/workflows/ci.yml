@@ -257,7 +257,7 @@ jobs:
           max_attempts: 3
           timeout_seconds: 60
           command: |
-            src/Components/roadrunner/vendor/bin/rr get-binary
+            src/Components/roadrunner/vendor/bin/rr get-binary << no
             ./rr -v
 
       - name: Test
@@ -339,6 +339,7 @@ jobs:
           max_attempts: 3
           timeout_seconds: 60
           command: |
+            $ConfirmPreference="Low"
             src\Components\roadrunner\vendor\bin\rr get-binary
             .\rr -v
 
