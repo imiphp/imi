@@ -19,6 +19,11 @@ class RoadRunnerResponse extends Response
 
     protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker;
 
+    /**
+     * 是否可写.
+     */
+    protected bool $isWritable = true;
+
     public function __construct(?\Spiral\RoadRunner\Http\PSR7Worker $worker = null)
     {
         parent::__construct();
@@ -30,7 +35,7 @@ class RoadRunnerResponse extends Response
      */
     public function isHeaderWritable(): bool
     {
-        return !connection_aborted() && !headers_sent();
+        return $this->isWritable;
     }
 
     /**
@@ -38,7 +43,7 @@ class RoadRunnerResponse extends Response
      */
     public function isBodyWritable(): bool
     {
-        return !connection_aborted();
+        return $this->isWritable;
     }
 
     /**
@@ -74,19 +79,23 @@ class RoadRunnerResponse extends Response
      */
     public function send(): self
     {
-        if ($this->changedCookieNames)
+        if ($this->isWritable)
         {
-            foreach ($this->changedCookieNames as $name => $_)
+            if ($this->changedCookieNames)
             {
-                $this->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($this->getCookie($name)));
+                foreach ($this->changedCookieNames as $name => $_)
+                {
+                    $this->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($this->getCookie($name)));
+                }
             }
+            $this->worker->respond($this);
+            $this->isWritable = false;
         }
-        $this->worker->respond($this);
 
         return $this;
     }
 
-    public function cookieArrayToHeader(array $cookie): string
+    protected function cookieArrayToHeader(array $cookie): string
     {
         $header = rawurlencode($cookie['key']) . '=' . rawurlencode($cookie['value']);
         if ($cookie['expire'] > 0)
@@ -126,28 +135,33 @@ class RoadRunnerResponse extends Response
      */
     public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): self
     {
-        if (null === $outputFileName)
+        if ($this->isWritable)
         {
-            $outputFileName = basename($filename);
-        }
-        $this->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($outputFileName));
-
-        if (null === $contentType)
-        {
-            $outputFileNameExt = pathinfo($outputFileName, \PATHINFO_EXTENSION);
-            $contentType = MediaType::getContentType($outputFileNameExt);
-            if (MediaType::APPLICATION_OCTET_STREAM === $contentType)
+            if (null === $outputFileName)
             {
-                $fileNameExt = pathinfo($filename, \PATHINFO_EXTENSION);
-                if ($fileNameExt !== $outputFileNameExt)
+                $outputFileName = basename($filename);
+            }
+            $this->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($outputFileName));
+
+            if (null === $contentType)
+            {
+                $outputFileNameExt = pathinfo($outputFileName, \PATHINFO_EXTENSION);
+                $contentType = MediaType::getContentType($outputFileNameExt);
+                if (MediaType::APPLICATION_OCTET_STREAM === $contentType)
                 {
-                    $contentType = MediaType::getContentType($fileNameExt);
+                    $fileNameExt = pathinfo($filename, \PATHINFO_EXTENSION);
+                    if ($fileNameExt !== $outputFileNameExt)
+                    {
+                        $contentType = MediaType::getContentType($fileNameExt);
+                    }
                 }
             }
-        }
-        $this->setHeader('Content-Type', $contentType);
+            $this->setHeader('Content-Type', $contentType);
+            $this->setBody(new FileStream($filename, StreamMode::READONLY));
 
-        $this->setBody(new FileStream($filename, StreamMode::READONLY));
+            $this->worker->respond($this);
+            $this->isWritable = false;
+        }
 
         return $this;
     }
