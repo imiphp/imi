@@ -24,6 +24,8 @@ interface IQueueDriver
 
     /**
      * 从队列弹出一个消息.
+     *
+     * @param float $timeout 超时时间，单位：秒。值小于等于0时立即返回结果
      */
     public function pop(float $timeout = 0): ?IMessage;
 
