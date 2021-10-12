@@ -329,9 +329,9 @@ jobs:
         uses: nick-invision/retry@v2
         with:
           max_attempts: 3
-        run: |
-          src\Components\roadrunner\vendor\bin\rr get-binary
-          .\rr -v
+          command: |
+            src\Components\roadrunner\vendor\bin\rr get-binary
+            .\rr -v
 
       - name: Test
         run: composer test
