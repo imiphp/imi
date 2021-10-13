@@ -26,7 +26,7 @@ import './loadpage/index.js';
 import './donate.js';
 
 /* 视频页面 */
-import './video.js';
+//import './video.js';
 
 /* 案例页面 */
 import './cases.js';
