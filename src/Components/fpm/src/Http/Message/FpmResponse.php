@@ -12,11 +12,6 @@ use Imi\Util\Stream\StreamMode;
 class FpmResponse extends Response
 {
     /**
-     * 被更改过的 Cookie 名称数组.
-     */
-    protected array $changedCookieNames = [];
-
-    /**
      * {@inheritDoc}
      */
     public function isHeaderWritable(): bool
@@ -30,29 +25,6 @@ class FpmResponse extends Response
     public function isBodyWritable(): bool
     {
         return !connection_aborted();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
-    {
-        /** @var self $self */
-        $self = parent::withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
-        $self->changedCookieNames[$key] = true;
-
-        return $self;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
-    {
-        parent::setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
-        $this->changedCookieNames[$key] = true;
-
-        return $this;
     }
 
     /**
@@ -79,11 +51,11 @@ class FpmResponse extends Response
             }
         }
         // cookie
-        if ($this->changedCookieNames)
+        $cookieParams = $this->getCookieParams();
+        if ($cookieParams)
         {
-            foreach ($this->changedCookieNames as $name => $_)
+            foreach ($cookieParams as $name => $cookie)
             {
-                $cookie = $this->getCookie($name);
                 setcookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
             }
         }

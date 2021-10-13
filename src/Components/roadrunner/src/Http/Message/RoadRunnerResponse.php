@@ -12,11 +12,6 @@ use Imi\Util\Stream\StreamMode;
 
 class RoadRunnerResponse extends Response
 {
-    /**
-     * 被更改过的 Cookie 名称数组.
-     */
-    protected array $changedCookieNames = [];
-
     protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker;
 
     /**
@@ -49,38 +44,16 @@ class RoadRunnerResponse extends Response
     /**
      * {@inheritDoc}
      */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
-    {
-        /** @var self $self */
-        $self = parent::withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
-        $self->changedCookieNames[$key] = true;
-
-        return $self;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
-    {
-        parent::setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
-        $this->changedCookieNames[$key] = true;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function send(): self
     {
         if ($this->isWritable)
         {
-            if ($this->changedCookieNames)
+            $cookieParams = $this->getCookieParams();
+            if ($cookieParams)
             {
-                foreach ($this->changedCookieNames as $name => $_)
+                foreach ($cookieParams as $name => $cookie)
                 {
-                    $this->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($this->getCookie($name)));
+                    $this->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($cookie));
                 }
             }
             $this->worker->respond($this);
