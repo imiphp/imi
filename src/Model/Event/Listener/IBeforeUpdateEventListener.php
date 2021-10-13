@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeUpdateEventParam;
  */
 interface IBeforeUpdateEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeUpdateEventParam $e): void;
 }

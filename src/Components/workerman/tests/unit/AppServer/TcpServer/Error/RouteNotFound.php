@@ -15,9 +15,7 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 class RouteNotFound implements ITcpRouteNotFoundHandler
 {
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IReceiveData $data, IReceiveHandler $handler)
     {

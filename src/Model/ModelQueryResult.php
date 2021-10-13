@@ -21,11 +21,7 @@ class ModelQueryResult extends Result
     protected bool $isSetSerializedFields = false;
 
     /**
-     * 返回一行数据，数组或对象，失败返回null.
-     *
-     * @param string|null $className 实体类名，为null则返回数组
-     *
-     * @return mixed|null
+     * {@inheritDoc}
      */
     public function get(?string $className = null)
     {
@@ -79,9 +75,7 @@ class ModelQueryResult extends Result
     }
 
     /**
-     * 返回数组.
-     *
-     * @param string|null $className 实体类名，为null则数组每个成员为数组
+     * {@inheritDoc}
      */
     public function getArray(?string $className = null): array
     {

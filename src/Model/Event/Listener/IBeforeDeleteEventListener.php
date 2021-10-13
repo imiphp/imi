@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeDeleteEventParam;
  */
 interface IBeforeDeleteEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeDeleteEventParam $e): void;
 }

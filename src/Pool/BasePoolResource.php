@@ -23,7 +23,7 @@ abstract class BasePoolResource implements IPoolResource
     }
 
     /**
-     * 获取池子实例.
+     * {@inheritDoc}
      */
     public function getPool(): IPool
     {

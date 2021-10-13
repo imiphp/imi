@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\InitEventParam;
  */
 interface IInitEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(InitEventParam $e): void;
 }

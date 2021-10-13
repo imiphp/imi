@@ -16,9 +16,7 @@ use Imi\Server\UdpServer\Message\IPacketData;
 class ActionMiddleware implements IMiddleware
 {
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {

@@ -15,9 +15,7 @@ use Imi\Server\WebSocket\Message\IFrame;
 class RouteNotFound implements IWSRouteNotFoundHandler
 {
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IFrame $frame, IMessageHandler $handler)
     {

@@ -11,7 +11,7 @@ use Imi\Async\Contract\IAsyncResult;
 class SyncHandler implements IAsyncHandler
 {
     /**
-     * 执行.
+     * {@inheritDoc}
      */
     public function exec(callable $callable): IAsyncResult
     {

@@ -27,7 +27,7 @@ use Imi\Model\Enum\RedisStorageMode;
 class RedisEntity extends Base
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'poolName';
 

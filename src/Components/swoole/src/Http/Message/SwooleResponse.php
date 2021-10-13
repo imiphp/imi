@@ -29,7 +29,7 @@ class SwooleResponse extends Response
     }
 
     /**
-     * 响应头是否可写.
+     * {@inheritDoc}
      */
     public function isHeaderWritable(): bool
     {
@@ -37,7 +37,7 @@ class SwooleResponse extends Response
     }
 
     /**
-     * 响应主体是否可写.
+     * {@inheritDoc}
      */
     public function isBodyWritable(): bool
     {
@@ -88,9 +88,7 @@ class SwooleResponse extends Response
     }
 
     /**
-     * 发送所有响应数据.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function send(): self
     {
@@ -104,15 +102,7 @@ class SwooleResponse extends Response
     }
 
     /**
-     * 发送文件，一般用于文件下载.
-     *
-     * @param string      $filename       要发送的文件名称，文件不存在或没有访问权限sendfile会失败
-     * @param string|null $contentType    Content-Type 响应头，不填则自动识别
-     * @param string|null $outputFileName 下载文件名，不填则自动识别，如：123.zip
-     * @param int         $offset         上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
-     * @param int         $length         发送数据的尺寸，默认为整个文件的尺寸
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): self
     {

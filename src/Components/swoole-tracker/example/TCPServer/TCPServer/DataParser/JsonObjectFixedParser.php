@@ -7,9 +7,7 @@ namespace Imi\SwooleTracker\Example\TCPServer\TCPServer\DataParser;
 class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
 {
     /**
-     * 编码为存储格式.
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function encode($data): string
     {
@@ -19,9 +17,7 @@ class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
     }
 
     /**
-     * 解码为php变量.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function decode(string $data)
     {

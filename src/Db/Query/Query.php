@@ -11,7 +11,6 @@ use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
-use Imi\Db\Query\Interfaces\IField;
 use Imi\Db\Query\Interfaces\IHaving;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
@@ -124,7 +123,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 获取所有操作的记录.
+     * {@inheritDoc}
      */
     public function getOption(): QueryOption
     {
@@ -132,11 +131,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置操作记录.
-     *
-     * @param QueryOption $option
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setOption($option): self
     {
@@ -147,7 +142,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 获取数据库操作对象
+     * {@inheritDoc}
      */
     public function getDb(): IDb
     {
@@ -155,13 +150,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置表名.
-     *
-     * @param string      $table    表名
-     * @param string|null $alias    别名
-     * @param string|null $database 数据库名
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function table(string $table, string $alias = null, string $database = null): self
     {
@@ -175,9 +164,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置表名，使用SQL原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function tableRaw(string $raw, ?string $alias = null): self
     {
@@ -190,13 +177,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置表名，table()的别名.
-     *
-     * @param string      $table    表名
-     * @param string      $alias    别名
-     * @param string|null $database 数据库名
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function from(string $table, string $alias = null, string $database = null): self
     {
@@ -204,9 +185,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置表名，使用SQL原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function fromRaw(string $raw): self
     {
@@ -214,11 +193,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 distinct.
-     *
-     * @param bool $isDistinct 是否设置distinct
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function distinct(bool $isDistinct = true): self
     {
@@ -228,11 +203,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 指定查询字段.
-     *
-     * @param string|array|IField $fields 查询字段
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function field(...$fields): self
     {
@@ -250,9 +221,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 指定查询字段，使用SQL原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function fieldRaw(string $raw, ?string $alias = null): self
     {
@@ -269,11 +238,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where 条件，一般用于 =、>、<、like 等.
-     *
-     * @param mixed $value
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -283,9 +248,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where 条件，用原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -299,9 +262,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where 条件，传入回调，回调中的条件加括号.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -311,9 +272,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where 条件，使用 IBaseWhere 结构.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -323,21 +282,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where 条件，支持语法如下：.
-     *
-     * [
-     *      'id'	=>	1,
-     *      'or'	=>	[
-     *          'id'	=>	2,
-     *      ],
-     *      'title'	    =>	['like', '%test%'],
-     *      'age'	    =>	['>', 18],
-     *      'age'  =>  ['between', 19, 29]
-     * ]
-     *
-     * SQL: id = 1 or (id = 2) and title like '%test%' and age > 18 and age between 19 and 29
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -413,12 +358,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * where between $begin end $end.
-     *
-     * @param mixed $begin
-     * @param mixed $end
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -426,12 +366,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * or where between $begin end $end.
-     *
-     * @param mixed $begin
-     * @param mixed $end
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereBetween(string $fieldName, $begin, $end): self
     {
@@ -439,12 +374,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * where not between $begin end $end.
-     *
-     * @param mixed $begin
-     * @param mixed $end
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -452,12 +382,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * or where not between $begin end $end.
-     *
-     * @param mixed $begin
-     * @param mixed $end
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereNotBetween(string $fieldName, $begin, $end): self
     {
@@ -465,11 +390,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where or 条件.
-     *
-     * @param mixed $value
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhere(string $fieldName, string $operation, $value): self
     {
@@ -477,9 +398,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where or 条件，用原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereRaw(string $where): self
     {
@@ -487,9 +406,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where or 条件，传入回调，回调中的条件加括号.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereBrackets(callable $callback): self
     {
@@ -497,9 +414,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where or 条件，使用 IBaseWhere 结构.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereStruct(IBaseWhere $where): self
     {
@@ -507,9 +422,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 where or 条件，支持语法参考 whereEx 方法.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereEx(array $condition): self
     {
@@ -517,9 +430,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * where field in (list).
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -527,9 +438,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * or where field in (list).
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereIn(string $fieldName, array $list): self
     {
@@ -537,9 +446,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * where field not in (list).
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereNotIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -547,9 +454,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * or where field not in (list).
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereNotIn(string $fieldName, array $list): self
     {
@@ -557,9 +462,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * where field is null.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -567,9 +470,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * or where field is null.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereIsNull(string $fieldName): self
     {
@@ -577,9 +478,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * where field is not null.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -587,9 +486,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * or where field is not null.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orWhereIsNotNull(string $fieldName): self
     {
@@ -597,17 +494,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * join.
-     *
-     * @param string     $table      表名
-     * @param string     $left       在 join b on a.id=b.id 中的 a.id
-     * @param string     $operation  在 join b on a.id=b.id 中的 =
-     * @param string     $right      在 join b on a.id=b.id 中的 b.id
-     * @param string     $tableAlias 表别名
-     * @param IBaseWhere $where      where条件
-     * @param string     $type       join类型，默认inner
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
     {
@@ -617,9 +504,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * join，使用SQL原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function joinRaw(string $raw): self
     {
@@ -632,16 +517,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * left join.
-     *
-     * @param string     $table      表名
-     * @param string     $left       在 join b on a.id=b.id 中的 a.id
-     * @param string     $operation  在 join b on a.id=b.id 中的 =
-     * @param string     $right      在 join b on a.id=b.id 中的 b.id
-     * @param string     $tableAlias 表别名
-     * @param IBaseWhere $where      where条件
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
     {
@@ -649,16 +525,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * right join.
-     *
-     * @param string     $table      表名
-     * @param string     $left       在 join b on a.id=b.id 中的 a.id
-     * @param string     $operation  在 join b on a.id=b.id 中的 =
-     * @param string     $right      在 join b on a.id=b.id 中的 b.id
-     * @param string     $tableAlias 表别名
-     * @param IBaseWhere $where      where条件
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
     {
@@ -666,16 +533,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * cross join.
-     *
-     * @param string     $table      表名
-     * @param string     $left       在 join b on a.id=b.id 中的 a.id
-     * @param string     $operation  在 join b on a.id=b.id 中的 =
-     * @param string     $right      在 join b on a.id=b.id 中的 b.id
-     * @param string     $tableAlias 表别名
-     * @param IBaseWhere $where      where条件
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
     {
@@ -683,9 +541,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 排序.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function order(string $field, string $direction = 'asc'): self
     {
@@ -695,14 +551,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 排序
-     * 支持的写法：
-     * 1. id desc, age asc
-     * 2. ['id'=>'desc', 'age'] // 缺省asc.
-     *
-     * @param string|array $raw
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function orderRaw($raw): self
     {
@@ -736,10 +585,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置分页
-     * 传入当前页码和每页显示数量，自动计算offset和limit.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function page(?int $page, ?int $count): self
     {
@@ -752,9 +598,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置记录从第几个开始取出.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function offset(?int $offset): self
     {
@@ -764,9 +608,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置查询几条记录.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function limit(?int $limit): self
     {
@@ -776,11 +618,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * group by.
-     *
-     * @param string ...$groups
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function group(string ...$groups): self
     {
@@ -796,9 +634,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * group by，使用SQL原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function groupRaw(string $raw): self
     {
@@ -811,11 +647,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 having 条件.
-     *
-     * @param mixed $value
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -825,9 +657,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 having 条件，用原生语句.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -841,9 +671,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 having 条件，传入回调，回调中的条件加括号.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -853,9 +681,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置 having 条件，使用 IHaving 结构.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND): self
     {
@@ -865,12 +691,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 绑定预处理参数.
-     *
-     * @param string|int $name
-     * @param mixed      $value
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self
     {
@@ -880,9 +701,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 批量绑定预处理参数.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function bindValues(array $values): self
     {
@@ -896,7 +715,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 获取绑定预处理参数关系.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {
@@ -904,7 +723,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 分页查询.
+     * {@inheritDoc}
      */
     public function paginate(int $page, int $count, array $options = []): IPaginateResult
     {
@@ -924,7 +743,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 统计数量.
+     * {@inheritDoc}
      */
     public function count(string $field = '*'): int
     {
@@ -932,9 +751,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 求和.
-     *
-     * @return int|float
+     * {@inheritDoc}
      */
     public function sum(string $field)
     {
@@ -942,9 +759,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 平均值
-     *
-     * @return int|float
+     * {@inheritDoc}
      */
     public function avg(string $field)
     {
@@ -952,9 +767,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 最大值
-     *
-     * @return int|float
+     * {@inheritDoc}
      */
     public function max(string $field)
     {
@@ -962,9 +775,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 最小值
-     *
-     * @return int|float
+     * {@inheritDoc}
      */
     public function min(string $field)
     {
@@ -972,9 +783,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 聚合函数.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function aggregate(string $functionName, string $fieldName)
     {
@@ -989,7 +798,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 执行SQL语句.
+     * {@inheritDoc}
      */
     public function execute(string $sql): IResult
     {
@@ -1018,7 +827,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 获取自动起名的参数名称.
+     * {@inheritDoc}
      */
     public function getAutoParamName(): string
     {
@@ -1033,11 +842,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置update/insert/replace数据.
-     *
-     * @param array|\Imi\Db\Query\Interfaces\IQuery $data
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setData($data): self
     {
@@ -1047,11 +852,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置update/insert/replace的字段.
-     *
-     * @param mixed $value
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setField(string $fieldName, $value): self
     {
@@ -1061,9 +862,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置update/insert/replace的字段，值为表达式，原样代入.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setFieldExp(string $fieldName, string $exp): self
     {
@@ -1073,9 +872,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置递增字段.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
@@ -1085,9 +882,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置递减字段.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
@@ -1097,7 +892,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 当前主库连接是否在事务中.
+     * {@inheritDoc}
      */
     protected function isInTransaction(): bool
     {
@@ -1105,11 +900,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 查询器别名.
-     *
-     * @param callable|null $callable
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function alias(string $name, $callable = null): self
     {
@@ -1128,11 +919,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 加锁
-     *
-     * @param int|string|bool|null $value
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function lock($value): self
     {
@@ -1142,9 +929,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 设置结果集类名.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setResultClass(string $resultClass)
     {
@@ -1154,7 +939,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 获取结果集类名.
+     * {@inheritDoc}
      */
     public function getResultClass(): string
     {

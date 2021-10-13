@@ -87,7 +87,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 池子中最多资源数.
+     * {@inheritDoc}
      */
     public function getMaxResources(): int
     {
@@ -95,7 +95,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 池子中最少资源数.
+     * {@inheritDoc}
      */
     public function getMinResources(): int
     {
@@ -103,7 +103,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取资源回收时间间隔，单位：秒.
+     * {@inheritDoc}
      */
     public function getGCInterval(): ?int
     {
@@ -111,7 +111,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取资源最大存活时间，单位：秒.
+     * {@inheritDoc}
      */
     public function getMaxActiveTime(): ?int
     {
@@ -119,7 +119,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取等待资源最大超时时间，单位：毫秒.
+     * {@inheritDoc}
      */
     public function getWaitTimeout(): int
     {
@@ -127,11 +127,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 池子中最多资源数.
-     *
-     * @param int $maxResources 池子中最多资源数
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setMaxResources(int $maxResources): self
     {
@@ -141,11 +137,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 池子中最少资源数.
-     *
-     * @param int $minResources 池子中最少资源数
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setMinResources(int $minResources): self
     {
@@ -155,11 +147,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 资源回收时间间隔，单位：秒.
-     *
-     * @param int|null $gcInterval 获取资源回收时间间隔，单位：秒
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setGcInterval(?int $gcInterval): self
     {
@@ -169,11 +157,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 资源最大存活时间，单位：秒.
-     *
-     * @param int|null $maxActiveTime 获取资源最大存活时间，单位：秒
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setMaxActiveTime(?int $maxActiveTime): self
     {
@@ -183,11 +167,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 等待资源最大超时时间.
-     *
-     * @param int $waitTimeout 等待资源最大超时时间
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setWaitTimeout(int $waitTimeout): self
     {
@@ -197,7 +177,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取资源配置模式.
+     * {@inheritDoc}
      */
     public function getResourceConfigMode(): int
     {
@@ -205,9 +185,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 设置资源配置模式.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setResourceConfigMode(int $resourceConfigMode): self
     {
@@ -217,7 +195,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Get 每次获取资源最长使用时间.
+     * {@inheritDoc}
      */
     public function getMaxUsedTime(): ?float
     {
@@ -225,11 +203,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 每次获取资源最长使用时间.
-     *
-     * @param float|null $maxUsedTime 为 null 则不限制
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setMaxUsedTime(?float $maxUsedTime): self
     {
@@ -239,7 +213,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Get 资源创建后最大空闲回收时间.
+     * {@inheritDoc}
      */
     public function getMaxIdleTime(): ?float
     {
@@ -247,9 +221,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 资源创建后最大空闲回收时间.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setMaxIdleTime(?float $maxIdleTime): self
     {
@@ -259,7 +231,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒.
+     * {@inheritDoc}
      */
     public function getRequestResourceCheckInterval(): float
     {
@@ -267,9 +239,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 设置当前请求上下文资源检查状态间隔，单位：支持小数的秒.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setRequestResourceCheckInterval(float $value): self
     {
@@ -279,7 +249,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取心跳时间间隔，单位：秒.
+     * {@inheritDoc}
      */
     public function getHeartbeatInterval(): ?float
     {
@@ -287,11 +257,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 心跳时间间隔，单位：秒.
-     *
-     * @param float|null $heartbeatInterval 心跳时间间隔，单位：秒
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setHeartbeatInterval(?float $heartbeatInterval): self
     {
@@ -301,7 +267,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 当获取资源时，是否检查状态
+     * {@inheritDoc}
      */
     public function isCheckStateWhenGetResource(): bool
     {
@@ -309,9 +275,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 设置获取资源时，是否检查状态
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setCheckStateWhenGetResource(bool $checkStateWhenGetResource): self
     {

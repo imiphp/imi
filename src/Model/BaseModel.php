@@ -170,10 +170,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $model;
     }
 
-    // 实现接口的方法们：
-
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      */
     public function offsetExists($offset): bool
     {
@@ -183,7 +181,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      *
      * @return mixed
      */
@@ -217,8 +215,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @param mixed $offset
-     * @param mixed $value
+     * @param int|string $offset
+     * @param mixed      $value
      */
     public function offsetSet($offset, $value): void
     {
@@ -265,7 +263,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      */
     public function offsetUnset($offset): void
     {
@@ -300,20 +298,23 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function __isset(string $name)
     {
         return isset($this[$name]);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function __unset(string $name): void
     {
         unset($this[$name]);
     }
 
     /**
-     * 将当前对象作为数组返回.
+     * {@inheritDoc}
      */
     public function toArray(): array
     {
@@ -446,7 +447,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @return mixed
+     * @return mixed|false
      */
     public function &current()
     {
@@ -456,31 +457,40 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @return mixed
+     * @return int|string|null
      */
     public function key()
     {
         return current($this->__fieldNames);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function next(): void
     {
         next($this->__fieldNames);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function rewind(): void
     {
         reset($this->__fieldNames);
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function valid()
     {
         return false !== current($this->__fieldNames);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -505,7 +515,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return self::$__camelCache[$name] ??= Text::toCamelName($name);
     }
 
-    /**
     /**
      * 处理导出属性.
      *

@@ -285,6 +285,14 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Server\Http\M
     /**
      * {@inheritDoc}
      */
+    public function getServerParam(string $name, $default = null)
+    {
+        return self::__getProxyInstance()->getServerParam(...\func_get_args());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCookieParams()
     {
         return self::__getProxyInstance()->getCookieParams(...\func_get_args());

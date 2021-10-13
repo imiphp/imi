@@ -24,7 +24,7 @@ class CoroutineContextManager implements IContextManager
     private array $contexts = [];
 
     /**
-     * 创建上下文.
+     * {@inheritDoc}
      */
     public function create(string $flag, array $data = []): ArrayObject
     {
@@ -59,7 +59,7 @@ class CoroutineContextManager implements IContextManager
     }
 
     /**
-     * 销毁上下文.
+     * {@inheritDoc}
      */
     public function destroy(string $flag): bool
     {
@@ -81,7 +81,7 @@ class CoroutineContextManager implements IContextManager
     }
 
     /**
-     * 获取上下文.
+     * {@inheritDoc}
      */
     public function get(string $flag, bool $autoCreate = false): ArrayObject
     {
@@ -113,7 +113,7 @@ class CoroutineContextManager implements IContextManager
     }
 
     /**
-     * 上下文是否存在.
+     * {@inheritDoc}
      */
     public function exists(string $flag): bool
     {
@@ -128,7 +128,7 @@ class CoroutineContextManager implements IContextManager
     }
 
     /**
-     * 获取当前上下文标识.
+     * {@inheritDoc}
      */
     public function getCurrentFlag(): string
     {

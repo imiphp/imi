@@ -7,9 +7,7 @@ namespace Imi\Util\Format;
 class PhpSerialize implements IFormat
 {
     /**
-     * 编码为存储格式.
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function encode($data): string
     {
@@ -17,9 +15,7 @@ class PhpSerialize implements IFormat
     }
 
     /**
-     * 解码为php变量.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function decode(string $data)
     {

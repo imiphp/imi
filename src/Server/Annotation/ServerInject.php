@@ -24,7 +24,7 @@ use Imi\RequestContext;
 class ServerInject extends BaseInjectValue
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'name';
 

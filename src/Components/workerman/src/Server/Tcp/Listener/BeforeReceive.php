@@ -18,7 +18,7 @@ use Imi\Server\TcpServer\Message\ReceiveData;
 class BeforeReceive implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

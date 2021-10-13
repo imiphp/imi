@@ -16,7 +16,7 @@ use Imi\Server\UdpServer\Middleware\IMiddleware;
 class Test implements IMiddleware
 {
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {

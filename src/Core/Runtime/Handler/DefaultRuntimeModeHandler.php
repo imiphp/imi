@@ -13,7 +13,7 @@ use Imi\Core\Runtime\Contract\IRuntimeModeHandler;
 class DefaultRuntimeModeHandler implements IRuntimeModeHandler
 {
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     public function init(): void
     {

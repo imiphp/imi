@@ -15,7 +15,7 @@ use Imi\Swoole\Task\TaskInfo;
 class MainServer implements ITaskEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(TaskEventParam $e): void
     {

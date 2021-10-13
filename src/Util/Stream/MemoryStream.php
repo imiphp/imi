@@ -31,19 +31,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Reads all data from the stream into a string, from the beginning to end.
-     *
-     * This method MUST attempt to seek to the beginning of the stream before
-     * reading data and read the stream until the end is reached.
-     *
-     * Warning: This could attempt to load a large amount of data into memory.
-     *
-     * This method MUST NOT raise an exception in order to conform with PHP's
-     * string casting operations.
-     *
-     * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function __toString()
     {
@@ -51,7 +39,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Closes the stream and any underlying resources.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -60,11 +48,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Separates any underlying resources from the stream.
-     *
-     * After the stream has been detached, the stream is in an unusable state.
-     *
-     * @return resource|null Underlying PHP stream, if any
+     * {@inheritDoc}
      */
     public function detach()
     {
@@ -72,9 +56,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Get the size of the stream if known.
-     *
-     * @return int|null returns the size in bytes if known, or null if unknown
+     * {@inheritDoc}
      */
     public function getSize()
     {
@@ -82,11 +64,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns the current position of the file read/write pointer.
-     *
-     * @return int Position of the file pointer
-     *
-     * @throws \RuntimeException on error
+     * {@inheritDoc}
      */
     public function tell()
     {
@@ -94,9 +72,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns true if the stream is at the end of the stream.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function eof()
     {
@@ -104,9 +80,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns whether or not the stream is seekable.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function isSeekable()
     {
@@ -114,20 +88,9 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Seek to a position in the stream.
-     *
-     * @see http://www.php.net/manual/en/function.fseek.php
-     *
-     * @param int $offset Stream offset
-     * @param int $whence Specifies how the cursor position will be calculated
-     *                    based on the seek offset. Valid values are identical to the built-in
-     *                    PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
-     *                    offset bytes SEEK_CUR: Set position to current location plus offset
-     *                    SEEK_END: Set position to end-of-stream plus offset.
+     * {@inheritDoc}
      *
      * @return void
-     *
-     * @throws \RuntimeException on failure
      */
     public function seek($offset, $whence = \SEEK_SET)
     {
@@ -150,15 +113,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Seek to the beginning of the stream.
-     *
-     * If the stream is not seekable, this method will raise an exception;
-     * otherwise, it will perform a seek(0).
-     *
-     * @see seek()
-     * @see http://www.php.net/manual/en/function.fseek.php
-     *
-     * @throws \RuntimeException on failure
+     * {@inheritDoc}
      */
     public function rewind(): void
     {
@@ -166,9 +121,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns whether or not the stream is writable.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function isWritable()
     {
@@ -176,13 +129,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Write data to the stream.
-     *
-     * @param string $string the string that is to be written
-     *
-     * @return int returns the number of bytes written to the stream
-     *
-     * @throws \RuntimeException on failure
+     * {@inheritDoc}
      */
     public function write($string)
     {
@@ -197,9 +144,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns whether or not the stream is readable.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function isReadable()
     {
@@ -207,16 +152,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Read data from the stream.
-     *
-     * @param int $length Read up to $length bytes from the object and return
-     *                    them. Fewer than $length bytes may be returned if underlying stream
-     *                    call returns fewer bytes.
-     *
-     * @return string returns the data read from the stream, or an empty string
-     *                if no bytes are available
-     *
-     * @throws \RuntimeException if an error occurs
+     * {@inheritDoc}
      */
     public function read($length)
     {
@@ -228,12 +164,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns the remaining contents in a string.
-     *
-     * @return string
-     *
-     * @throws \RuntimeException if unable to read or an error occurs while
-     *                           reading
+     * {@inheritDoc}
      */
     public function getContents()
     {
@@ -251,18 +182,7 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Get stream metadata as an associative array or retrieve a specific key.
-     *
-     * The keys returned are identical to the keys returned from PHP's
-     * stream_get_meta_data() function.
-     *
-     * @see http://php.net/manual/en/function.stream-get-meta-data.php
-     *
-     * @param string $key specific metadata to retrieve
-     *
-     * @return array|mixed|null Returns an associative array if no key is
-     *                          provided. Returns a specific key value if a key is provided and the
-     *                          value is found, or null if the key is not found.
+     * {@inheritDoc}
      */
     public function getMetadata($key = null)
     {

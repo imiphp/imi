@@ -16,7 +16,7 @@ use Imi\Event\Event;
 class FpmRuntimeModeHandler implements IRuntimeModeHandler
 {
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     public function init(): void
     {

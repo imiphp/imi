@@ -22,9 +22,7 @@ class WSRouteNotFoundHandler implements IWSRouteNotFoundHandler
     protected ?string $handler = null;
 
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IFrame $frame, IMessageHandler $handler)
     {

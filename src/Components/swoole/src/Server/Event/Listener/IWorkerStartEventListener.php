@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
  */
 interface IWorkerStartEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(WorkerStartEventParam $e): void;
 }

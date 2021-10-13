@@ -41,7 +41,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 读取数据.
+     * {@inheritDoc}
      */
     public function read(string $key): array
     {
@@ -49,7 +49,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 保存数据.
+     * {@inheritDoc}
      */
     public function save(string $key, array $data): void
     {
@@ -57,7 +57,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 销毁数据.
+     * {@inheritDoc}
      */
     public function destroy(string $key): void
     {
@@ -65,7 +65,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 延迟销毁数据.
+     * {@inheritDoc}
      */
     public function delayDestroy(string $key, int $ttl): void
     {
@@ -73,7 +73,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 数据是否存在.
+     * {@inheritDoc}
      */
     public function exists(string $key): bool
     {
@@ -81,9 +81,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 加锁
-     *
-     * @param callable $callable
+     * {@inheritDoc}
      */
     public function lock(string $key, ?callable $callable = null): bool
     {
@@ -91,7 +89,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 解锁
+     * {@inheritDoc}
      */
     public function unlock(): bool
     {
@@ -99,9 +97,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 绑定一个标记到当前连接.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function bind(string $flag, $clientId): void
     {
@@ -109,9 +105,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 绑定一个标记到当前连接，如果已绑定返回false.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function bindNx(string $flag, $clientId): bool
     {
@@ -119,10 +113,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 取消绑定.
-     *
-     * @param int|string $clientId
-     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
+     * {@inheritDoc}
      */
     public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
@@ -130,7 +121,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 使用标记获取连接编号.
+     * {@inheritDoc}
      */
     public function getClientIdByFlag(string $flag): array
     {
@@ -138,9 +129,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 使用标记获取连接编号.
-     *
-     * @param string[] $flags
+     * {@inheritDoc}
      */
     public function getClientIdsByFlags(array $flags): array
     {
@@ -148,9 +137,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 使用连接编号获取标记.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function getFlagByClientId($clientId): ?string
     {
@@ -158,11 +145,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 使用连接编号获取标记.
-     *
-     * @param int[]|string[] $clientIds
-     *
-     * @return string[]
+     * {@inheritDoc}
      */
     public function getFlagsByClientIds(array $clientIds): array
     {
@@ -170,7 +153,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 使用标记获取旧的连接编号.
+     * {@inheritDoc}
      */
     public function getOldClientIdByFlag(string $flag): ?int
     {

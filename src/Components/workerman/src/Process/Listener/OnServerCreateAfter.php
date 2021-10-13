@@ -18,7 +18,7 @@ use Imi\Workerman\Server\Contract\IWorkermanServer;
 class OnServerCreateAfter implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

@@ -17,9 +17,7 @@ use Imi\Bean\Annotation\Parser;
 class Tool extends Command
 {
     /**
-     * 注解别名.
-     *
-     * @var string|string[]
+     * {@inheritDoc}
      */
     protected $__alias = Command::class;
 }

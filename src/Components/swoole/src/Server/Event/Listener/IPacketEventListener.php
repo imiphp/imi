@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\PacketEventParam;
  */
 interface IPacketEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(PacketEventParam $e): void;
 }

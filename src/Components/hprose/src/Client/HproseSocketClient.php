@@ -25,9 +25,7 @@ class HproseSocketClient implements IRpcClient
     protected array $options;
 
     /**
-     * 构造方法.
-     *
-     * @param array $options 配置
+     * {@inheritDoc}
      */
     public function __construct(array $options)
     {
@@ -35,7 +33,7 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
-     * 打开
+     * {@inheritDoc}
      */
     public function open(): bool
     {
@@ -48,7 +46,7 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -56,7 +54,7 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
-     * 是否已连接.
+     * {@inheritDoc}
      */
     public function isConnected(): bool
     {
@@ -64,7 +62,7 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
-     * 获取实例对象
+     * {@inheritDoc}
      */
     public function getInstance(): Client
     {
@@ -72,9 +70,7 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
-     * 获取服务对象
-     *
-     * @param string|null $name 服务名
+     * {@inheritDoc}
      */
     public function getService(?string $name = null): IService
     {
@@ -82,7 +78,7 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
-     * 获取配置.
+     * {@inheritDoc}
      */
     public function getOptions(): array
     {

@@ -9,6 +9,9 @@ use Imi\Db\Query\QueryOption;
 
 class SelectBuilder extends BaseBuilder
 {
+    /**
+     * {@inheritDoc}
+     */
     public function build(...$args): string
     {
         parent::build(...$args);

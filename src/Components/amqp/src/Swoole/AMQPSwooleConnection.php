@@ -83,7 +83,7 @@ class AMQPSwooleConnection extends AbstractConnection
     }
 
     /**
-     * Connects to the AMQP server.
+     * {@inheritDoc}
      *
      * @return void
      */
@@ -94,13 +94,7 @@ class AMQPSwooleConnection extends AbstractConnection
     }
 
     /**
-     * Requests a connection close.
-     *
-     * @param int    $reply_code
-     * @param string $reply_text
-     * @param array  $method_sig
-     *
-     * @return mixed|null
+     * {@inheritDoc}
      */
     public function close($reply_code = 0, $reply_text = '', $method_sig = [0, 0])
     {

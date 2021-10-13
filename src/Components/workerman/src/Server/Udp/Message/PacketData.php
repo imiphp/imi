@@ -13,6 +13,9 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
      */
     protected UdpConnection $connection;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct(UdpConnection $connection, string $data)
     {
         parent::__construct($connection->getRemoteIp(), $connection->getRemotePort(), $data);
@@ -20,7 +23,7 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
     }
 
     /**
-     * 获取连接对象
+     * {@inheritDoc}
      */
     public function getConnection(): UdpConnection
     {

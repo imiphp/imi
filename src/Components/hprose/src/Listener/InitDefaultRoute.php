@@ -17,7 +17,7 @@ use Imi\Rpc\Route\Annotation\RpcRoute;
 class InitDefaultRoute implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

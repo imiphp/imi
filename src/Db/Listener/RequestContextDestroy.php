@@ -13,7 +13,7 @@ use Imi\RequestContext;
 class RequestContextDestroy implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

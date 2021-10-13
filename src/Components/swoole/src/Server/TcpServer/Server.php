@@ -34,9 +34,7 @@ class Server extends Base implements ISwooleTcpServer
     private bool $syncConnect = true;
 
     /**
-     * 构造方法.
-     *
-     * @param bool $isSubServer 是否为子服务器
+     * {@inheritDoc}
      */
     public function __construct(string $name, array $config, bool $isSubServer = false)
     {
@@ -45,7 +43,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {
@@ -53,7 +51,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 创建 swoole 服务器对象
+     * {@inheritDoc}
      */
     protected function createServer(): void
     {
@@ -62,7 +60,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 从主服务器监听端口，作为子服务器.
+     * {@inheritDoc}
      */
     protected function createSubServer(): void
     {
@@ -79,7 +77,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 获取服务器初始化需要的配置.
+     * {@inheritDoc}
      */
     protected function getServerInitConfig(): array
     {
@@ -92,7 +90,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 绑定服务器事件.
+     * {@inheritDoc}
      */
     protected function __bindEvents(): void
     {
@@ -193,7 +191,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 是否为 https 服务
+     * {@inheritDoc}
      */
     public function isSSL(): bool
     {
@@ -201,7 +199,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 是否为长连接服务
+     * {@inheritDoc}
      */
     public function isLongConnection(): bool
     {
@@ -209,9 +207,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 向客户端发送消息.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function send($clientId, string $data): bool
     {
@@ -219,7 +215,7 @@ class Server extends Base implements ISwooleTcpServer
     }
 
     /**
-     * 是否同步连接.
+     * {@inheritDoc}
      */
     public function isSyncConnect(): bool
     {

@@ -26,7 +26,7 @@ class HproseService implements IService
     }
 
     /**
-     * 获取服务名称.
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -34,12 +34,7 @@ class HproseService implements IService
     }
 
     /**
-     * 调用服务
-     *
-     * @param string $method 方法名
-     * @param array  $args   参数
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function call(string $method, array $args = [])
     {
@@ -60,7 +55,7 @@ class HproseService implements IService
     }
 
     /**
-     * 获取客户端对象
+     * {@inheritDoc}
      */
     public function getClient(): IRpcClient
     {

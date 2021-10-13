@@ -25,7 +25,7 @@ use Imi\Bean\Annotation\Parser;
 class Argument extends Base
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'name';
 

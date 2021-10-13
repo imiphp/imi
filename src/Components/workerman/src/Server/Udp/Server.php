@@ -20,7 +20,7 @@ use Workerman\Connection\UdpConnection;
 class Server extends Base implements IUdpServer
 {
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {
@@ -28,7 +28,7 @@ class Server extends Base implements IUdpServer
     }
 
     /**
-     * 是否为长连接服务
+     * {@inheritDoc}
      */
     public function isLongConnection(): bool
     {
@@ -36,7 +36,7 @@ class Server extends Base implements IUdpServer
     }
 
     /**
-     * 绑定服务器事件.
+     * {@inheritDoc}
      */
     protected function bindEvents(): void
     {
@@ -64,7 +64,7 @@ class Server extends Base implements IUdpServer
     }
 
     /**
-     * 获取实例化 Worker 用的协议.
+     * {@inheritDoc}
      */
     protected function getWorkerScheme(): string
     {
@@ -72,7 +72,7 @@ class Server extends Base implements IUdpServer
     }
 
     /**
-     * 向客户端发送消息.
+     * {@inheritDoc}
      */
     public function sendTo(string $ip, int $port, string $data): bool
     {

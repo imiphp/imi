@@ -24,7 +24,7 @@ use Imi\Bean\Annotation\Parser;
 class PolymorphicOneToMany extends RelationBase
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'model';
 

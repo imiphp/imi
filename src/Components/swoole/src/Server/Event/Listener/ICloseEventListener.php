@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\CloseEventParam;
  */
 interface ICloseEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(CloseEventParam $e): void;
 }

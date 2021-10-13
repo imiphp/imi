@@ -41,8 +41,7 @@ class Json implements IHandler
     protected int $depth = 512;
 
     /**
-     * @param JsonView|null $viewOption
-     * @param mixed         $data
+     * {@inheritDoc}
      */
     public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
     {

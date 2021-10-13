@@ -14,6 +14,9 @@ use Imi\Event\IEventListener;
  */
 class SuperGlobals implements IEventListener
 {
+    /**
+     * {@inheritDoc}
+     */
     public function handle(EventParam $e): void
     {
         /** @var \Imi\Server\Http\SuperGlobals\Listener\SuperGlobals $superGlobals */

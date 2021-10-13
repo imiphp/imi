@@ -31,7 +31,7 @@ abstract class BaseConsumer implements IConsumer
     }
 
     /**
-     * 初始化配置.
+     * {@inheritDoc}
      */
     protected function initConfig(): void
     {
@@ -40,7 +40,7 @@ abstract class BaseConsumer implements IConsumer
     }
 
     /**
-     * 运行消费循环.
+     * {@inheritDoc}
      */
     public function run(): void
     {
@@ -74,7 +74,7 @@ abstract class BaseConsumer implements IConsumer
     }
 
     /**
-     * 停止消费循环.
+     * {@inheritDoc}
      */
     public function stop(): void
     {
@@ -82,7 +82,7 @@ abstract class BaseConsumer implements IConsumer
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {

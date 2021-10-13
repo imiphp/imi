@@ -46,7 +46,7 @@ abstract class BaseServer implements IServer
     }
 
     /**
-     * 获取服务器名称.
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -54,7 +54,7 @@ abstract class BaseServer implements IServer
     }
 
     /**
-     * 获取配置信息.
+     * {@inheritDoc}
      */
     public function getConfig(): array
     {
@@ -62,7 +62,7 @@ abstract class BaseServer implements IServer
     }
 
     /**
-     * 获取容器对象
+     * {@inheritDoc}
      */
     public function getContainer(): Container
     {
@@ -70,8 +70,6 @@ abstract class BaseServer implements IServer
     }
 
     /**
-     * 获取Bean对象
-     *
      * {@inheritDoc}
      */
     public function getBean(string $name, ...$params)
@@ -80,11 +78,7 @@ abstract class BaseServer implements IServer
     }
 
     /**
-     * 调用服务器方法.
-     *
-     * @param mixed ...$args
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function callServerMethod(string $methodName, ...$args)
     {

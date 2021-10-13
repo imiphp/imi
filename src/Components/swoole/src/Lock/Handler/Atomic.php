@@ -32,7 +32,7 @@ class Atomic extends BaseLock
     private ?int $timeoutTimerId = null;
 
     /**
-     * 加锁，会阻塞进程.
+     * {@inheritDoc}
      */
     protected function __lock(): bool
     {
@@ -46,7 +46,7 @@ class Atomic extends BaseLock
     }
 
     /**
-     * 尝试获取锁
+     * {@inheritDoc}
      */
     protected function __tryLock(): bool
     {
@@ -60,7 +60,7 @@ class Atomic extends BaseLock
     }
 
     /**
-     * 解锁
+     * {@inheritDoc}
      */
     protected function __unlock(): bool
     {

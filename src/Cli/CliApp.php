@@ -22,7 +22,7 @@ class CliApp extends BaseApp
     protected EventDispatcher $cliEventDispatcher;
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $namespace)
     {
@@ -63,7 +63,7 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 加载运行时.
+     * {@inheritDoc}
      */
     public function loadRuntime(): int
     {
@@ -99,7 +99,7 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     public function init(): void
     {
@@ -120,7 +120,7 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 获取应用类型.
+     * {@inheritDoc}
      */
     public function getType(): string
     {
@@ -128,7 +128,7 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 运行应用.
+     * {@inheritDoc}
      */
     public function run(): void
     {
@@ -151,7 +151,7 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 初始化日志.
+     * {@inheritDoc}
      */
     protected function initLogger(): void
     {

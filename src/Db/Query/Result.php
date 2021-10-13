@@ -62,7 +62,7 @@ class Result implements IResult
     }
 
     /**
-     * SQL是否执行成功
+     * {@inheritDoc}
      */
     public function isSuccess(): bool
     {
@@ -70,9 +70,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取最后插入的ID.
-     *
-     * @return int|string
+     * {@inheritDoc}
      */
     public function getLastInsertId()
     {
@@ -85,7 +83,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取影响行数.
+     * {@inheritDoc}
      */
     public function getAffectedRows(): int
     {
@@ -98,11 +96,7 @@ class Result implements IResult
     }
 
     /**
-     * 返回一行数据，数组或对象，失败返回null.
-     *
-     * @param string|null $className 实体类名，为null则返回数组
-     *
-     * @return mixed|null
+     * {@inheritDoc}
      */
     public function get(?string $className = null)
     {
@@ -150,9 +144,7 @@ class Result implements IResult
     }
 
     /**
-     * 返回数组.
-     *
-     * @param string|null $className 实体类名，为null则数组每个成员为数组
+     * {@inheritDoc}
      */
     public function getArray(?string $className = null): array
     {
@@ -198,9 +190,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取一列数据.
-     *
-     * @param string|int $column
+     * {@inheritDoc}
      */
     public function getColumn($column = 0): array
     {
@@ -227,11 +217,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取标量结果.
-     *
-     * @param int|string $columnKey
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getScalar($columnKey = 0)
     {
@@ -258,7 +244,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取记录行数.
+     * {@inheritDoc}
      */
     public function getRowCount(): int
     {
@@ -271,7 +257,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取执行的SQL语句.
+     * {@inheritDoc}
      */
     public function getSql(): string
     {
@@ -279,7 +265,7 @@ class Result implements IResult
     }
 
     /**
-     * 获取结果集对象
+     * {@inheritDoc}
      */
     public function getStatement(): IStatement
     {

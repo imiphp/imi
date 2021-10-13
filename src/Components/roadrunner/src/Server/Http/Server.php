@@ -33,7 +33,7 @@ class Server extends BaseServer
     protected \Spiral\RoadRunner\Http\PSR7Worker $psr7Worker;
 
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {
@@ -41,7 +41,7 @@ class Server extends BaseServer
     }
 
     /**
-     * 是否为长连接服务
+     * {@inheritDoc}
      */
     public function isLongConnection(): bool
     {
@@ -49,7 +49,7 @@ class Server extends BaseServer
     }
 
     /**
-     * 是否支持 SSL.
+     * {@inheritDoc}
      */
     public function isSSL(): bool
     {
@@ -57,7 +57,7 @@ class Server extends BaseServer
     }
 
     /**
-     * 开启服务
+     * {@inheritDoc}
      */
     public function start(): void
     {
@@ -231,7 +231,7 @@ class Server extends BaseServer
     }
 
     /**
-     * 终止服务
+     * {@inheritDoc}
      */
     public function shutdown(): void
     {
@@ -281,7 +281,7 @@ class Server extends BaseServer
     }
 
     /**
-     * 重载服务
+     * {@inheritDoc}
      */
     public function reload(): void
     {
@@ -323,9 +323,7 @@ class Server extends BaseServer
     }
 
     /**
-     * 获取客户端地址
-     *
-     * @param string|int $clientId
+     * {@inheritDoc}
      */
     public function getClientAddress($clientId): IPEndPoint
     {

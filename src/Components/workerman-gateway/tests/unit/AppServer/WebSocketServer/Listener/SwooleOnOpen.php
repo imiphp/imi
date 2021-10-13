@@ -17,7 +17,7 @@ if (\extension_loaded('swoole'))
     class SwooleOnOpen implements IOpenEventListener
     {
         /**
-         * 事件处理方法.
+         * {@inheritDoc}
          */
         public function handle(OpenEventParam $e): void
         {

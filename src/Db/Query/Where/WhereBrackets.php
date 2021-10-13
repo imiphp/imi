@@ -33,7 +33,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     }
 
     /**
-     * 回调.
+     * {@inheritDoc}
      */
     public function getCallback(): callable
     {
@@ -41,7 +41,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     }
 
     /**
-     * 逻辑运算符.
+     * {@inheritDoc}
      */
     public function getLogicalOperator(): string
     {
@@ -49,7 +49,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     }
 
     /**
-     * 回调.
+     * {@inheritDoc}
      */
     public function setCallback(callable $callback): void
     {
@@ -57,7 +57,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     }
 
     /**
-     * 逻辑运算符.
+     * {@inheritDoc}
      */
     public function setLogicalOperator(string $logicalOperator): void
     {
@@ -65,7 +65,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     }
 
     /**
-     * 获取无逻辑的字符串.
+     * {@inheritDoc}
      */
     public function toStringWithoutLogic(IQuery $query): string
     {
@@ -111,7 +111,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

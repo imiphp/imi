@@ -19,7 +19,7 @@ use Workerman\Connection\TcpConnection;
 class Server extends Base implements ITcpServer
 {
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {
@@ -27,7 +27,7 @@ class Server extends Base implements ITcpServer
     }
 
     /**
-     * 是否为长连接服务
+     * {@inheritDoc}
      */
     public function isLongConnection(): bool
     {
@@ -35,7 +35,7 @@ class Server extends Base implements ITcpServer
     }
 
     /**
-     * 绑定服务器事件.
+     * {@inheritDoc}
      */
     protected function bindEvents(): void
     {
@@ -65,7 +65,7 @@ class Server extends Base implements ITcpServer
     }
 
     /**
-     * 获取实例化 Worker 用的协议.
+     * {@inheritDoc}
      */
     protected function getWorkerScheme(): string
     {
@@ -73,9 +73,7 @@ class Server extends Base implements ITcpServer
     }
 
     /**
-     * 向客户端发送消息.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function send($clientId, string $data): bool
     {

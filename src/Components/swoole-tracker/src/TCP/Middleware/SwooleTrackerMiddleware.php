@@ -34,7 +34,7 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
     }
 
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {

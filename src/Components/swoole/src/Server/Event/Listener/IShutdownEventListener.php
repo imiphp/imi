@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\ShutdownEventParam;
  */
 interface IShutdownEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ShutdownEventParam $e): void;
 }

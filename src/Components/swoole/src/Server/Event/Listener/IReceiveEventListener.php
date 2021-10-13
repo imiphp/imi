@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
  */
 interface IReceiveEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ReceiveEventParam $e): void;
 }

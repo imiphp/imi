@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\ManagerStopEventParam;
  */
 interface IManagerStopEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ManagerStopEventParam $e): void;
 }

@@ -13,9 +13,7 @@ use Imi\Cron\Contract\ICronTask;
 class CronRandomWorker implements ICronTask
 {
     /**
-     * 执行任务
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function run(string $id, $data): void
     {

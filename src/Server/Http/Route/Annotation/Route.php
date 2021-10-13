@@ -31,7 +31,7 @@ use Imi\Bean\Annotation\Parser;
 class Route extends Base
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'url';
 

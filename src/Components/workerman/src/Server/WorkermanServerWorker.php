@@ -9,7 +9,7 @@ use Workerman\Worker;
 class WorkermanServerWorker extends Worker
 {
     /**
-     * Construct.
+     * {@inheritDoc}
      */
     public function __construct(string $socket_name = '', array $context_option = [])
     {

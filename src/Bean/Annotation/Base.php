@@ -64,7 +64,7 @@ abstract class Base extends LazyArrayObject
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      *
      * @return mixed
      */

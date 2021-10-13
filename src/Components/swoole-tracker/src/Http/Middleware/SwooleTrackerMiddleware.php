@@ -23,6 +23,9 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements MiddlewareInterf
      */
     protected int $successStatusCode = StatusCode::OK;
 
+    /**
+     * {@inheritDoc}
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // @phpstan-ignore-next-line

@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\AfterBatchUpdateEventParam;
  */
 interface IAfterBatchUpdateEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterBatchUpdateEventParam $e): void;
 }

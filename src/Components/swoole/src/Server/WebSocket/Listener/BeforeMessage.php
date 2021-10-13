@@ -19,7 +19,7 @@ use Imi\Swoole\SwooleWorker;
 class BeforeMessage implements IMessageEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(MessageEventParam $e): void
     {

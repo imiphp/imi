@@ -9,8 +9,8 @@ use Imi\Server\Session\Session as ImiSession;
 class Session implements \ArrayAccess, \JsonSerializable
 {
     /**
-     * @param mixed $offset
-     * @param mixed $value
+     * @param int|string $offset
+     * @param mixed      $value
      */
     public function offsetSet($offset, $value): void
     {
@@ -18,7 +18,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      */
     public function offsetExists($offset): bool
     {
@@ -26,7 +26,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      */
     public function offsetUnset($offset): void
     {
@@ -34,7 +34,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      *
      * @return mixed
      */
@@ -49,7 +49,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
     public function jsonSerialize()
     {

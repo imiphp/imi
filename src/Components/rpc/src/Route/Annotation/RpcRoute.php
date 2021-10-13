@@ -21,9 +21,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcRoute;
 abstract class RpcRoute extends Base implements IRpcRoute
 {
     /**
-     * 只传一个参数时的参数名.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'name';
 
@@ -36,7 +34,7 @@ abstract class RpcRoute extends Base implements IRpcRoute
     }
 
     /**
-     * 获取 RPC 类型.
+     * {@inheritDoc}
      */
     public function getRpcType(): string
     {

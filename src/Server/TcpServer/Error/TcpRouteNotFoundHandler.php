@@ -24,9 +24,7 @@ class TcpRouteNotFoundHandler implements ITcpRouteNotFoundHandler
     protected ?string $handler = null;
 
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IReceiveData $data, IReceiveHandler $handler)
     {

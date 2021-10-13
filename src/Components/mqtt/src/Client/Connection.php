@@ -73,7 +73,7 @@ class Connection extends DefaultConnection
     private ?string $sslCapath;
 
     /**
-     * Constructs an instance of this class.
+     * {@inheritDoc}
      */
     public function __construct(
         string $host,

@@ -9,6 +9,15 @@ use Psr\Http\Message\ServerRequestInterface;
 interface IServerRequest extends ServerRequestInterface, IRequest
 {
     /**
+     * 获取服务器参数.
+     *
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function getServerParam(string $name, $default = null);
+
+    /**
      * 获取cookie值
      *
      * @param mixed $default

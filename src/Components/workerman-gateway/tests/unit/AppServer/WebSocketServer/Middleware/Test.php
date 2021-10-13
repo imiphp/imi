@@ -16,7 +16,7 @@ use Imi\Server\WebSocket\Middleware\IMiddleware;
 class Test implements IMiddleware
 {
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {

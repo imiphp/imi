@@ -50,8 +50,7 @@ class Html implements IHandler
     }
 
     /**
-     * @param HtmlView|null $viewOption
-     * @param mixed         $data
+     * {@inheritDoc}
      */
     public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
     {

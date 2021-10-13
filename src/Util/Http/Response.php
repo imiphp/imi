@@ -43,12 +43,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * Gets the response status code.
-     *
-     * The status code is a 3-digit integer result code of the server's attempt
-     * to understand and satisfy the request.
-     *
-     * @return int status code
+     * {@inheritDoc}
      */
     public function getStatusCode()
     {
@@ -56,27 +51,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * Return an instance with the specified status code and, optionally, reason phrase.
-     *
-     * If no reason phrase is specified, implementations MAY choose to default
-     * to the RFC 7231 or IANA recommended reason phrase for the response's
-     * status code.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * updated status and reason phrase.
-     *
-     * @see http://tools.ietf.org/html/rfc7231#section-6
-     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @param int    $code         the 3-digit integer result code to set
-     * @param string $reasonPhrase the reason phrase to use with the
-     *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification
-     *
-     * @return static
-     *
-     * @throws \InvalidArgumentException for invalid status code arguments
+     * {@inheritDoc}
      */
     public function withStatus($code, $reasonPhrase = '')
     {
@@ -95,23 +70,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * Return an instance with the specified status code and, optionally, reason phrase.
-     *
-     * If no reason phrase is specified, implementations MAY choose to default
-     * to the RFC 7231 or IANA recommended reason phrase for the response's
-     * status code.
-     *
-     * @see http://tools.ietf.org/html/rfc7231#section-6
-     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @param int    $code         the 3-digit integer result code to set
-     * @param string $reasonPhrase the reason phrase to use with the
-     *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification
-     *
-     * @return static
-     *
-     * @throws \InvalidArgumentException for invalid status code arguments
+     * {@inheritDoc}
      */
     public function setStatus(int $code, string $reasonPhrase = ''): self
     {
@@ -129,18 +88,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * Gets the response reason phrase associated with the status code.
-     *
-     * Because a reason phrase is not a required element in a response
-     * status line, the reason phrase value MAY be null. Implementations MAY
-     * choose to return the default RFC 7231 recommended reason phrase (or those
-     * listed in the IANA HTTP Status Code Registry) for the response's
-     * status code.
-     *
-     * @see http://tools.ietf.org/html/rfc7231#section-6
-     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @return string reason phrase; must return an empty string if none present
+     * {@inheritDoc}
      */
     public function getReasonPhrase()
     {
@@ -148,9 +96,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 设置cookie.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
@@ -169,9 +115,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 设置cookie.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
@@ -189,12 +133,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * Retrieve cookies.
-     *
-     * Retrieves cookies sent by the client to the server.
-     *
-     * The data MUST be compatible with the structure of the $_COOKIE
-     * superglobal.
+     * {@inheritDoc}
      */
     public function getCookieParams(): array
     {
@@ -202,11 +141,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 获取cookie值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getCookie(string $name, $default = null)
     {
@@ -214,7 +149,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 获取 Trailer 列表.
+     * {@inheritDoc}
      */
     public function getTrailers(): array
     {
@@ -222,7 +157,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * Trailer 是否存在.
+     * {@inheritDoc}
      */
     public function hasTrailer(string $name): bool
     {
@@ -230,7 +165,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 获取 Trailer 值
+     * {@inheritDoc}
      */
     public function getTrailer(string $name): ?string
     {
@@ -238,9 +173,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 设置 Trailer.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function withTrailer(string $name, string $value): self
     {
@@ -251,9 +184,7 @@ class Response extends AbstractMessage implements IResponse
     }
 
     /**
-     * 设置 Trailer.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setTrailer(string $name, string $value): self
     {

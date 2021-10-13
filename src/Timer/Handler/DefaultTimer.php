@@ -15,7 +15,7 @@ use Imi\Timer\Contract\ITimer;
 class DefaultTimer implements ITimer
 {
     /**
-     * 定时器，无限执行.
+     * {@inheritDoc}
      */
     public function tick(int $ms, callable $callback): int
     {
@@ -25,7 +25,7 @@ class DefaultTimer implements ITimer
     }
 
     /**
-     * 定时器，只执行一次
+     * {@inheritDoc}
      */
     public function after(int $ms, callable $callback): int
     {
@@ -35,14 +35,14 @@ class DefaultTimer implements ITimer
     }
 
     /**
-     * 删除定时器.
+     * {@inheritDoc}
      */
     public function del(int $id): void
     {
     }
 
     /**
-     * 清空所有定时器.
+     * {@inheritDoc}
      */
     public function clear(): void
     {

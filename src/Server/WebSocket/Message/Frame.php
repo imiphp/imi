@@ -59,9 +59,7 @@ class Frame implements IFrame
     }
 
     /**
-     * 获取客户端的socket id.
-     *
-     * @return int|string
+     * {@inheritDoc}
      */
     public function getClientId()
     {
@@ -69,7 +67,7 @@ class Frame implements IFrame
     }
 
     /**
-     * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
+     * {@inheritDoc}
      */
     public function getData(): string
     {
@@ -77,9 +75,7 @@ class Frame implements IFrame
     }
 
     /**
-     * 获取格式化后的数据，一般是数组或对象
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getFormatData()
     {
@@ -87,9 +83,7 @@ class Frame implements IFrame
     }
 
     /**
-     * WebSocket的OpCode类型，可以参考WebSocket协议标准文档
-     * WEBSOCKET_OPCODE_TEXT = 0x1 ，文本数据
-     * WEBSOCKET_OPCODE_BINARY = 0x2 ，二进制数据.
+     * {@inheritDoc}
      */
     public function getOpcode(): int
     {
@@ -97,7 +91,7 @@ class Frame implements IFrame
     }
 
     /**
-     * 表示数据帧是否完整.
+     * {@inheritDoc}
      */
     public function isFinish(): bool
     {
@@ -105,7 +99,7 @@ class Frame implements IFrame
     }
 
     /**
-     * 获取客户端地址
+     * {@inheritDoc}
      */
     public function getClientAddress(): IPEndPoint
     {

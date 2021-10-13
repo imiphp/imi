@@ -15,7 +15,7 @@ use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 class OnPipeMessage implements IPipeMessageEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(PipeMessageEventParam $e): void
     {

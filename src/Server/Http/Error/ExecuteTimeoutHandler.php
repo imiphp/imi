@@ -19,7 +19,7 @@ use Imi\Util\Stream\MemoryStream;
 class ExecuteTimeoutHandler implements IExecuteTimeoutHandler
 {
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IHttpRequest $request, IHttpResponse $response)
     {

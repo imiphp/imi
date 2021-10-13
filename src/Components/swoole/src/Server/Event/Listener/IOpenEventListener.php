@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\OpenEventParam;
  */
 interface IOpenEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(OpenEventParam $e): void;
 }

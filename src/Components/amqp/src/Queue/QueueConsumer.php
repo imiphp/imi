@@ -58,14 +58,14 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     }
 
     /**
-     * 初始化配置.
+     * {@inheritDoc}
      */
     protected function initConfig(): void
     {
     }
 
     /**
-     * 重新打开
+     * {@inheritDoc}
      */
     public function reopen(): void
     {
@@ -81,7 +81,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     }
 
     /**
-     * 弹出消息.
+     * {@inheritDoc}
      */
     public function pop(float $timeout): ?Message
     {
@@ -110,7 +110,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     }
 
     /**
-     * 绑定消费者.
+     * {@inheritDoc}
      */
     protected function bindConsumer(): void
     {
@@ -130,9 +130,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     }
 
     /**
-     * 消费任务
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     protected function consume(IMessage $message)
     {

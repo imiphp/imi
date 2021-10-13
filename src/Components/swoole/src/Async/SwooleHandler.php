@@ -11,7 +11,7 @@ use Swoole\Coroutine\Channel;
 class SwooleHandler implements IAsyncHandler
 {
     /**
-     * 执行.
+     * {@inheritDoc}
      */
     public function exec(callable $callable): IAsyncResult
     {

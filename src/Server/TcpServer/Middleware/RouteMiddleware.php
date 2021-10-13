@@ -28,9 +28,7 @@ class RouteMiddleware implements IMiddleware
     protected ITcpRouteNotFoundHandler $notFoundHandler;
 
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {

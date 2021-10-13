@@ -60,7 +60,7 @@ class Redis extends BaseLock
     }
 
     /**
-     * 加锁，会挂起协程.
+     * {@inheritDoc}
      */
     protected function __lock(): bool
     {
@@ -87,7 +87,7 @@ class Redis extends BaseLock
     }
 
     /**
-     * 尝试获取锁
+     * {@inheritDoc}
      */
     protected function __tryLock(): bool
     {
@@ -120,7 +120,7 @@ SCRIPT
     }
 
     /**
-     * 解锁
+     * {@inheritDoc}
      */
     protected function __unlock(): bool
     {

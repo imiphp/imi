@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\ConnectEventParam;
  */
 interface IConnectEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ConnectEventParam $e): void;
 }

@@ -37,7 +37,7 @@ class Message implements IMessage
     protected float $workingTimeout = 0;
 
     /**
-     * 获取消息 ID.
+     * {@inheritDoc}
      */
     public function getMessageId(): string
     {
@@ -45,7 +45,7 @@ class Message implements IMessage
     }
 
     /**
-     * 设置消息 ID.
+     * {@inheritDoc}
      */
     public function setMessageId(string $messageId): void
     {
@@ -53,7 +53,7 @@ class Message implements IMessage
     }
 
     /**
-     * 获取消息内容.
+     * {@inheritDoc}
      */
     public function getMessage(): string
     {
@@ -61,7 +61,7 @@ class Message implements IMessage
     }
 
     /**
-     * 设置消息内容.
+     * {@inheritDoc}
      */
     public function setMessage(string $message): void
     {
@@ -69,7 +69,7 @@ class Message implements IMessage
     }
 
     /**
-     * 获取工作超时时间，单位：秒.
+     * {@inheritDoc}
      */
     public function getWorkingTimeout(): float
     {
@@ -77,17 +77,15 @@ class Message implements IMessage
     }
 
     /**
-     * 设置工作超时时间，单位：秒.
-     *
-     * @param float $workingTimeout
+     * {@inheritDoc}
      */
-    public function setWorkingTimeout($workingTimeout): void
+    public function setWorkingTimeout(float $workingTimeout): void
     {
         $this->workingTimeout = (float) $workingTimeout;
     }
 
     /**
-     * 获取已重试次数.
+     * {@inheritDoc}
      */
     public function getRetryCount(): int
     {
@@ -95,17 +93,15 @@ class Message implements IMessage
     }
 
     /**
-     * 获取重试次数.
-     *
-     * @param int $retryCount
+     * {@inheritDoc}
      */
-    public function setRetryCount($retryCount): void
+    public function setRetryCount(int $retryCount): void
     {
         $this->retryCount = (int) $retryCount;
     }
 
     /**
-     * 获取最大重试次数.
+     * {@inheritDoc}
      */
     public function getMaxRetryCount(): int
     {
@@ -113,17 +109,15 @@ class Message implements IMessage
     }
 
     /**
-     * 获取最大重试次数.
-     *
-     * @param int $maxRetryCount
+     * {@inheritDoc}
      */
-    public function setMaxRetryCount($maxRetryCount): void
+    public function setMaxRetryCount(int $maxRetryCount): void
     {
         $this->maxRetryCount = (int) $maxRetryCount;
     }
 
     /**
-     * 将当前对象作为数组返回.
+     * {@inheritDoc}
      */
     public function toArray(): array
     {
@@ -137,7 +131,7 @@ class Message implements IMessage
     }
 
     /**
-     * 从数组加载数据.
+     * {@inheritDoc}
      */
     public function loadFromArray(array $data): void
     {

@@ -65,7 +65,7 @@ class Message implements IMessage
     }
 
     /**
-     * Get 配置属性.
+     * {@inheritDoc}
      */
     public function getProperties(): array
     {
@@ -73,11 +73,7 @@ class Message implements IMessage
     }
 
     /**
-     * Set 配置属性.
-     *
-     * @param array $properties 配置属性
-     *
-     * @return self
+     * {@inheritDoc}
      */
     public function setProperties(array $properties)
     {
@@ -87,7 +83,7 @@ class Message implements IMessage
     }
 
     /**
-     * Get 路由键.
+     * {@inheritDoc}
      */
     public function getRoutingKey(): string
     {
@@ -95,9 +91,7 @@ class Message implements IMessage
     }
 
     /**
-     * Set 路由键.
-     *
-     * @param string $routingKey 路由键
+     * {@inheritDoc}
      */
     public function setRoutingKey(string $routingKey): self
     {
@@ -107,7 +101,7 @@ class Message implements IMessage
     }
 
     /**
-     * Get 当mandatory标志位设置为true时，如果exchange根据自身类型和消息routeKey无法找到一个符合条件的queue，那么会调用basic.return方法将消息返还给生产者；当mandatory设为false时，出现上述情形broker会直接将消息扔掉。
+     * {@inheritDoc}
      */
     public function getMandatory(): bool
     {
@@ -115,7 +109,7 @@ class Message implements IMessage
     }
 
     /**
-     * Set 当mandatory标志位设置为true时，如果exchange根据自身类型和消息routeKey无法找到一个符合条件的queue，那么会调用basic.return方法将消息返还给生产者；当mandatory设为false时，出现上述情形broker会直接将消息扔掉。
+     * {@inheritDoc}
      */
     public function setMandatory(bool $mandatory): self
     {
@@ -125,7 +119,7 @@ class Message implements IMessage
     }
 
     /**
-     * Get 当immediate标志位设置为true时，如果exchange在将消息route到queue(s)时发现对应的queue上没有消费者，那么这条消息不会放入队列中。当与消息routeKey关联的所有queue(一个或多个)都没有消费者时，该消息会通过basic.return方法返还给生产者。
+     * {@inheritDoc}
      */
     public function getImmediate(): bool
     {
@@ -133,7 +127,7 @@ class Message implements IMessage
     }
 
     /**
-     * Set 当immediate标志位设置为true时，如果exchange在将消息route到queue(s)时发现对应的queue上没有消费者，那么这条消息不会放入队列中。当与消息routeKey关联的所有queue(一个或多个)都没有消费者时，该消息会通过basic.return方法返还给生产者。
+     * {@inheritDoc}
      */
     public function setImmediate(bool $immediate): self
     {
@@ -143,7 +137,7 @@ class Message implements IMessage
     }
 
     /**
-     * Get ticket.
+     * {@inheritDoc}
      */
     public function getTicket(): ?int
     {
@@ -151,9 +145,7 @@ class Message implements IMessage
     }
 
     /**
-     * Set ticket.
-     *
-     * @param int|null $ticket ticket
+     * {@inheritDoc}
      */
     public function setTicket(?int $ticket): self
     {
@@ -163,9 +155,7 @@ class Message implements IMessage
     }
 
     /**
-     * 设置主体数据.
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function setBodyData($data): self
     {
@@ -175,9 +165,7 @@ class Message implements IMessage
     }
 
     /**
-     * 获取主体数据.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getBodyData()
     {
@@ -185,7 +173,7 @@ class Message implements IMessage
     }
 
     /**
-     * 获取主体内容.
+     * {@inheritDoc}
      */
     public function getBody(): string
     {
@@ -203,9 +191,7 @@ class Message implements IMessage
     }
 
     /**
-     * 设置主体内容.
-     *
-     * @return static
+     * {@inheritDoc}
      */
     public function setBody(string $body): self
     {
@@ -225,7 +211,7 @@ class Message implements IMessage
     }
 
     /**
-     * 设置 AMQP 消息.
+     * {@inheritDoc}
      */
     public function setAMQPMessage(AMQPMessage $amqpMessage): void
     {
@@ -234,9 +220,7 @@ class Message implements IMessage
     }
 
     /**
-     * 获取 AMQP 消息.
-     *
-     * @return \PhpAmqpLib\Message\AMQPMessage
+     * {@inheritDoc}
      */
     public function getAMQPMessage(): ?AMQPMessage
     {

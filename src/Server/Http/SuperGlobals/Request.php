@@ -10,8 +10,8 @@ use Imi\RequestContext;
 class Request implements \ArrayAccess, \JsonSerializable
 {
     /**
-     * @param mixed $offset
-     * @param mixed $value
+     * @param int|string $offset
+     * @param mixed      $value
      */
     public function offsetSet($offset, $value): void
     {
@@ -19,7 +19,7 @@ class Request implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      */
     public function offsetExists($offset): bool
     {
@@ -30,7 +30,7 @@ class Request implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      */
     public function offsetUnset($offset): void
     {
@@ -38,7 +38,7 @@ class Request implements \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param mixed $offset
+     * @param int|string $offset
      *
      * @return mixed
      */
@@ -55,6 +55,9 @@ class Request implements \ArrayAccess, \JsonSerializable
         return $this->jsonSerialize();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function jsonSerialize()
     {
         /** @var \Imi\Server\Http\Message\Request $request */

@@ -25,7 +25,7 @@ class DbResource extends BasePoolResource
     }
 
     /**
-     * 打开
+     * {@inheritDoc}
      */
     public function open(): bool
     {
@@ -39,7 +39,7 @@ class DbResource extends BasePoolResource
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -47,9 +47,7 @@ class DbResource extends BasePoolResource
     }
 
     /**
-     * 获取对象实例.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getInstance()
     {
@@ -57,7 +55,7 @@ class DbResource extends BasePoolResource
     }
 
     /**
-     * 重置资源，当资源被使用后重置一些默认的设置.
+     * {@inheritDoc}
      */
     public function reset(): void
     {
@@ -70,7 +68,7 @@ class DbResource extends BasePoolResource
     }
 
     /**
-     * 检查资源是否可用.
+     * {@inheritDoc}
      */
     public function checkState(): bool
     {

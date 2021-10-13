@@ -34,7 +34,7 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Handle the request and return a response.
+     * {@inheritDoc}
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

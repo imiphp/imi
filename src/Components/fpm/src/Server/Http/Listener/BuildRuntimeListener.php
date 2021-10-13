@@ -16,7 +16,7 @@ use Imi\Server\ServerManager;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

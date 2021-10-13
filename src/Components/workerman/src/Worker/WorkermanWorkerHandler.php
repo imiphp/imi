@@ -41,8 +41,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     }
 
     /**
-     * 获取当前 worker 进程的 ID
-     * 注意，不是进程ID.
+     * {@inheritDoc}
      */
     public function getWorkerId(): ?int
     {
@@ -50,7 +49,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     }
 
     /**
-     * 获取 Worker 进程数量.
+     * {@inheritDoc}
      */
     public function getWorkerNum(): int
     {
@@ -58,7 +57,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     }
 
     /**
-     * 是否初始化完毕.
+     * {@inheritDoc}
      */
     public function isInited(): bool
     {
@@ -66,7 +65,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     }
 
     /**
-     * 初始化完毕.
+     * {@inheritDoc}
      */
     public function inited(): void
     {
@@ -74,7 +73,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     }
 
     /**
-     * 获取服务器 master 进程 PID.
+     * {@inheritDoc}
      */
     public function getMasterPid(): int
     {

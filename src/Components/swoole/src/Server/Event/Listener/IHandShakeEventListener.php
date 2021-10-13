@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
  */
 interface IHandShakeEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(HandShakeEventParam $e): void;
 }

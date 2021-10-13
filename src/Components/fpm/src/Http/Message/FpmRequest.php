@@ -17,7 +17,7 @@ class FpmRequest extends Request
     protected IPEndPoint $clientAddress;
 
     /**
-     * 获取客户端地址
+     * {@inheritDoc}
      */
     public function getClientAddress(): IPEndPoint
     {
@@ -30,7 +30,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化协议版本.
+     * {@inheritDoc}
      */
     protected function initProtocolVersion(): void
     {
@@ -38,7 +38,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化 headers.
+     * {@inheritDoc}
      */
     protected function initHeaders(): void
     {
@@ -54,7 +54,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化 body.
+     * {@inheritDoc}
      */
     protected function initBody(): void
     {
@@ -62,7 +62,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化 uri.
+     * {@inheritDoc}
      */
     protected function initUri(): void
     {
@@ -92,7 +92,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化 method.
+     * {@inheritDoc}
      */
     protected function initMethod(): void
     {
@@ -100,7 +100,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化 server.
+     * {@inheritDoc}
      */
     protected function initServer(): void
     {
@@ -108,7 +108,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化请求参数.
+     * {@inheritDoc}
      */
     protected function initRequestParams(): void
     {
@@ -126,7 +126,7 @@ class FpmRequest extends Request
     }
 
     /**
-     * 初始化上传文件.
+     * {@inheritDoc}
      */
     protected function initUploadedFiles(): void
     {

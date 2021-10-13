@@ -15,9 +15,7 @@ use Imi\Server\UdpServer\Message\IPacketData;
 class RouteNotFound implements IUdpRouteNotFoundHandler
 {
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IPacketData $data, IPacketHandler $handler)
     {

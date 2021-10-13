@@ -47,9 +47,9 @@ class SmartyEngine implements IEngine
     protected int $cacheLifetime = 0;
 
     /**
-     * @param mixed $data
+     * {@inheritDoc}
      */
-    public function render(IHttpResponse $response, string $fileName, $data = []): IHttpResponse
+    public function render(IHttpResponse $response, string $fileName, array $data = []): IHttpResponse
     {
         $smarty = $this->newSmartyInstance();
         $smarty->assign($data);

@@ -63,9 +63,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     protected bool $isSubServer = false;
 
     /**
-     * 构造方法.
-     *
-     * @param bool $isSubServer 是否为子服务器
+     * {@inheritDoc}
      */
     public function __construct(string $name, array $config, bool $isSubServer = false)
     {
@@ -108,7 +106,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 获取 swoole 服务器对象
+     * {@inheritDoc}
      */
     public function getSwooleServer(): Server
     {
@@ -116,7 +114,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 获取 swoole 监听端口.
+     * {@inheritDoc}
      */
     public function getSwoolePort(): Port
     {
@@ -124,7 +122,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 是否为子服务器.
+     * {@inheritDoc}
      */
     public function isSubServer(): bool
     {
@@ -132,7 +130,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 开启服务
+     * {@inheritDoc}
      */
     public function start(): void
     {
@@ -144,7 +142,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 终止服务
+     * {@inheritDoc}
      */
     public function shutdown(): void
     {
@@ -152,7 +150,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 重载服务
+     * {@inheritDoc}
      */
     public function reload(): void
     {
@@ -160,11 +158,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 调用服务器方法.
-     *
-     * @param mixed ...$args
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function callServerMethod(string $methodName, ...$args)
     {
@@ -371,9 +365,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
-     * 获取客户端地址
-     *
-     * @param string|int $clientId
+     * {@inheritDoc}
      */
     public function getClientAddress($clientId): IPEndPoint
     {

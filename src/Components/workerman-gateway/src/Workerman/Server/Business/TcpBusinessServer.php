@@ -14,7 +14,6 @@ use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
 use ReflectionClass;
-use Workerman\Worker;
 
 /**
  * @Bean("WorkermanGatewayTcpBusinessServer")
@@ -22,12 +21,12 @@ use Workerman\Worker;
 class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 {
     /**
-     * Workerman Worker 类名.
+     * {@inheritDoc}
      */
     protected string $workerClass = BusinessWorker::class;
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $name, array $config)
     {
@@ -38,7 +37,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     }
 
     /**
-     * 绑定服务器事件.
+     * {@inheritDoc}
      */
     protected function bindEvents(): void
     {
@@ -52,7 +51,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     }
 
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {
@@ -114,9 +113,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     }
 
     /**
-     * 向客户端发送消息.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function send($clientId, string $data): bool
     {
@@ -124,9 +121,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     }
 
     /**
-     * 获取客户端地址
-     *
-     * @param string|int $clientId
+     * {@inheritDoc}
      */
     public function getClientAddress($clientId): IPEndPoint
     {

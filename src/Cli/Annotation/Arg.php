@@ -17,9 +17,7 @@ use Imi\Bean\Annotation\Parser;
 class Arg extends Option
 {
     /**
-     * 注解别名.
-     *
-     * @var string|string[]
+     * {@inheritDoc}
      */
     protected $__alias = Option::class;
 }

@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeParseDataEventParam;
  */
 interface IBeforeParseDataEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeParseDataEventParam $e): void;
 }

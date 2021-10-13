@@ -30,9 +30,7 @@ class TestMessage2 extends Message
     }
 
     /**
-     * 设置主体数据.
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function setBodyData($data): self
     {
@@ -45,9 +43,7 @@ class TestMessage2 extends Message
     }
 
     /**
-     * 获取主体数据.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getBodyData()
     {

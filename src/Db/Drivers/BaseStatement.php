@@ -10,7 +10,7 @@ use Imi\Db\Statement\StatementManager;
 abstract class BaseStatement implements IStatement
 {
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {

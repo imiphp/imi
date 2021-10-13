@@ -18,13 +18,13 @@ use Imi\Util\Imi;
 class RoadRunnerApp extends BaseApp
 {
     /**
-     * 应用模式的配置.
+     * {@inheritDoc}
      */
     protected array $appConfig = [
     ];
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $namespace)
     {
@@ -34,6 +34,9 @@ class RoadRunnerApp extends BaseApp
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function __loadConfig(): void
     {
         parent::__loadConfig();
@@ -52,7 +55,7 @@ class RoadRunnerApp extends BaseApp
     }
 
     /**
-     * 加载运行时.
+     * {@inheritDoc}
      */
     public function loadRuntime(): int
     {
@@ -81,7 +84,7 @@ class RoadRunnerApp extends BaseApp
     }
 
     /**
-     * 运行应用.
+     * {@inheritDoc}
      */
     public function run(): void
     {
@@ -95,7 +98,7 @@ class RoadRunnerApp extends BaseApp
     }
 
     /**
-     * 获取应用类型.
+     * {@inheritDoc}
      */
     public function getType(): string
     {
@@ -103,7 +106,7 @@ class RoadRunnerApp extends BaseApp
     }
 
     /**
-     * 加载入口.
+     * {@inheritDoc}
      */
     public function loadMain(): void
     {

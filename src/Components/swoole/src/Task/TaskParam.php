@@ -22,9 +22,7 @@ class TaskParam implements ITaskParam
     }
 
     /**
-     * 获取数据.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getData()
     {

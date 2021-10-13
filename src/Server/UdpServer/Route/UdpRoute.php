@@ -24,9 +24,7 @@ class UdpRoute implements IRoute
     protected array $rules = [];
 
     /**
-     * 路由解析处理.
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function parse($data): ?RouteResult
     {

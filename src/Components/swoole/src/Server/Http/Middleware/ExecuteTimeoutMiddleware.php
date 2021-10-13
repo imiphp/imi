@@ -33,7 +33,7 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
     protected string $handler = \Imi\Server\Http\Error\ExecuteTimeoutHandler::class;
 
     /**
-     * 处理方法.
+     * {@inheritDoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

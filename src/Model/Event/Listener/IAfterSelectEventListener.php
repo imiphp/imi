@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\AfterSelectEventParam;
  */
 interface IAfterSelectEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterSelectEventParam $e): void;
 }

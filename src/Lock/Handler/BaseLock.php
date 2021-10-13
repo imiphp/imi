@@ -65,7 +65,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 获取锁的唯一ID.
+     * {@inheritDoc}
      */
     public function getId(): string
     {
@@ -73,10 +73,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 加锁，会挂起协程.
-     *
-     * @param callable|null $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
-     * @param callable|null $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
+     * {@inheritDoc}
      */
     public function lock(?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
     {
@@ -115,9 +112,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 尝试获取锁
-     *
-     * @param callable|null $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * {@inheritDoc}
      */
     public function tryLock(?callable $taskCallable = null): bool
     {
@@ -148,7 +143,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 解锁
+     * {@inheritDoc}
      */
     public function unlock(): bool
     {
@@ -190,7 +185,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 获取当前是否已获得锁状态
+     * {@inheritDoc}
      */
     public function isLocked(): bool
     {
@@ -198,7 +193,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 解锁并释放所有资源.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -232,7 +227,7 @@ abstract class BaseLock implements ILockHandler
     abstract protected function __unlock(): bool;
 
     /**
-     * Get 等待锁超时时间，单位：毫秒，0为不限制.
+     * {@inheritDoc}
      */
     public function getWaitTimeout(): int
     {
@@ -240,7 +235,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * Get 锁超时时间，单位：毫秒.
+     * {@inheritDoc}
      */
     public function getLockExpire(): int
     {
@@ -248,7 +243,7 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 获取获得锁的标志.
+     * {@inheritDoc}
      */
     public function getLockFlag(): string
     {

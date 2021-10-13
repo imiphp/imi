@@ -16,6 +16,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class HttpNotFoundHandler implements IHttpNotFoundHandler
 {
+    /**
+     * {@inheritDoc}
+     */
     public function handle(RequestHandlerInterface $requesthandler, IHttpRequest $request, IHttpResponse $response): IHttpResponse
     {
         return $response->withBody(new MemoryStream('gg'));

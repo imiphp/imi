@@ -14,6 +14,9 @@ use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
  */
 class SuperGlobals implements IWorkerStartEventListener
 {
+    /**
+     * {@inheritDoc}
+     */
     public function handle(WorkerStartEventParam $e): void
     {
         /** @var \Imi\Server\Http\SuperGlobals\Listener\SuperGlobals $superGlobals */

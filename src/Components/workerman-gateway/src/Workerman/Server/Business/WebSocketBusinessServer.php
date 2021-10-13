@@ -17,7 +17,6 @@ use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 use ReflectionClass;
-use Workerman\Worker;
 
 /**
  * @Bean("WorkermanGatewayWebSocketBusinessServer")
@@ -25,12 +24,12 @@ use Workerman\Worker;
 class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
 {
     /**
-     * Workerman Worker 类名.
+     * {@inheritDoc}
      */
     protected string $workerClass = BusinessWorker::class;
 
     /**
-     * 绑定服务器事件.
+     * {@inheritDoc}
      */
     protected function bindEvents(): void
     {
@@ -46,7 +45,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     }
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $name, array $config)
     {
@@ -57,7 +56,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     }
 
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {
@@ -141,9 +140,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     }
 
     /**
-     * 向客户端推送消息.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function push($clientId, string $data, int $opcode = 1): bool
     {
@@ -151,9 +148,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     }
 
     /**
-     * 获取客户端地址
-     *
-     * @param string|int $clientId
+     * {@inheritDoc}
      */
     public function getClientAddress($clientId): IPEndPoint
     {

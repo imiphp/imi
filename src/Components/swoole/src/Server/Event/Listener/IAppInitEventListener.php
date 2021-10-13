@@ -11,8 +11,5 @@ use Imi\Event\EventParam;
  */
 interface IAppInitEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(EventParam $e): void;
 }

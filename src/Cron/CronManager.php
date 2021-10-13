@@ -66,7 +66,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 使用注解增加定时任务
+     * {@inheritDoc}
      */
     public function addCronByAnnotation(Cron $cron, string $pointClass): void
     {
@@ -82,10 +82,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 增加定时任务
-     *
-     * @param callable|string $task
-     * @param mixed           $data
+     * {@inheritDoc}
      */
     public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void
     {
@@ -105,7 +102,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 移除定时任务
+     * {@inheritDoc}
      */
     public function removeCron(string $id): void
     {
@@ -120,7 +117,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 清空定时任务
+     * {@inheritDoc}
      */
     public function clear(): void
     {
@@ -128,9 +125,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * Get 真实的任务对象列表.
-     *
-     * @return \Imi\Cron\CronTask[]
+     * {@inheritDoc}
      */
     public function getRealTasks(): array
     {
@@ -138,11 +133,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 获取任务对象
-     *
-     * @param string $id
-     *
-     * @return \Imi\Cron\CronTask|null
+     * {@inheritDoc}
      */
     public function getTask($id): ?CronTask
     {
@@ -150,7 +141,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * socket 文件路径.
+     * {@inheritDoc}
      */
     public function getSocketFile(): string
     {
@@ -158,7 +149,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 使用类名获取定时任务类型.
+     * {@inheritDoc}
      */
     public function getCronTypeByClass(string $class): ?string
     {
@@ -166,9 +157,7 @@ class CronManager implements ICronManager
     }
 
     /**
-     * 获取任务回调.
-     *
-     * @return string|callable
+     * {@inheritDoc}
      */
     public function getTaskCallable(string $cronId, string $class, ?string &$cronType)
     {

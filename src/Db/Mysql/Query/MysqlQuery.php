@@ -18,7 +18,7 @@ use Imi\Util\Text;
 class MysqlQuery extends Query
 {
     /**
-     * 查询记录.
+     * {@inheritDoc}
      */
     public function select(): IResult
     {
@@ -78,9 +78,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 插入记录.
-     *
-     * @param array|object|null $data
+     * {@inheritDoc}
      */
     public function insert($data = null): IResult
     {
@@ -140,10 +138,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 批量插入数据
-     * 以第 0 个成员作为字段标准.
-     *
-     * @param array|object|null $data
+     * {@inheritDoc}
      */
     public function batchInsert($data = null): IResult
     {
@@ -154,9 +149,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 更新记录.
-     *
-     * @param array|object|null $data
+     * {@inheritDoc}
      */
     public function update($data = null): IResult
     {
@@ -218,9 +211,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 替换数据（Replace）.
-     *
-     * @param array|object|null $data
+     * {@inheritDoc}
      */
     public function replace($data = null): IResult
     {
@@ -282,7 +273,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 删除记录.
+     * {@inheritDoc}
      */
     public function delete(): IResult
     {
@@ -339,7 +330,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 字段安全引用.
+     * {@inheritDoc}
      */
     public function fieldQuote(string $name): string
     {
@@ -349,7 +340,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 把输入的关键字文本转为数组.
+     * {@inheritDoc}
      */
     public function parseKeywordText(string $string): array
     {
@@ -394,7 +385,7 @@ class MysqlQuery extends Query
     }
 
     /**
-     * 从数组拼装为有分隔标识符的关键字.
+     * {@inheritDoc}
      */
     public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string
     {

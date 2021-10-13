@@ -19,7 +19,7 @@ class AfterClose implements ICloseEventListener
     use TConnectionContextRelease;
 
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(CloseEventParam $e): void
     {

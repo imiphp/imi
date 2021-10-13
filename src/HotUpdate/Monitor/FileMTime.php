@@ -25,7 +25,7 @@ class FileMTime extends BaseMonitor
     private string $excludeRule = '';
 
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     protected function init(): void
     {
@@ -56,7 +56,7 @@ class FileMTime extends BaseMonitor
     }
 
     /**
-     * 处理初始化文件.
+     * {@inheritDoc}
      */
     protected function parseInitFile(string $fileName): void
     {
@@ -70,7 +70,7 @@ class FileMTime extends BaseMonitor
     }
 
     /**
-     * 检测文件是否有更改.
+     * {@inheritDoc}
      */
     public function isChanged(): bool
     {
@@ -125,7 +125,7 @@ class FileMTime extends BaseMonitor
     }
 
     /**
-     * 获取变更的文件们.
+     * {@inheritDoc}
      */
     public function getChangedFiles(): array
     {
@@ -133,7 +133,7 @@ class FileMTime extends BaseMonitor
     }
 
     /**
-     * 处理检查文件是否更改，返回是否更改.
+     * {@inheritDoc}
      */
     protected function parseCheckFile(string $fileName): bool
     {

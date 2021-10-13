@@ -11,8 +11,5 @@ use Imi\Queue\Event\Param\ConsumerBeforePopParam;
  */
 interface IConsumerBeforePopListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ConsumerBeforePopParam $e): void;
 }

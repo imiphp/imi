@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\AfterUpdateEventParam;
  */
 interface IAfterUpdateEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterUpdateEventParam $e): void;
 }

@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SwooleApp extends CliApp
 {
     /**
-     * 应用模式的配置.
+     * {@inheritDoc}
      */
     protected array $appConfig = [
         'RequestContext' => CoroutineContextManager::class,
@@ -43,7 +43,7 @@ class SwooleApp extends CliApp
     ];
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $namespace)
     {
@@ -57,7 +57,7 @@ class SwooleApp extends CliApp
     }
 
     /**
-     * 获取应用类型.
+     * {@inheritDoc}
      */
     public function getType(): string
     {
@@ -65,7 +65,7 @@ class SwooleApp extends CliApp
     }
 
     /**
-     * 运行应用.
+     * {@inheritDoc}
      */
     public function run(): void
     {
@@ -86,6 +86,9 @@ class SwooleApp extends CliApp
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function __loadConfig(): void
     {
         parent::__loadConfig();
@@ -116,7 +119,7 @@ class SwooleApp extends CliApp
     }
 
     /**
-     * 加载运行时.
+     * {@inheritDoc}
      */
     public function loadRuntime(): int
     {
@@ -171,7 +174,7 @@ class SwooleApp extends CliApp
     }
 
     /**
-     * 加载入口.
+     * {@inheritDoc}
      */
     public function loadMain(): void
     {
@@ -188,7 +191,7 @@ class SwooleApp extends CliApp
     }
 
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     public function init(): void
     {

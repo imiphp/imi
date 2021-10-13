@@ -15,7 +15,7 @@ use Imi\Event\IEventListener;
 class OnOpen implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

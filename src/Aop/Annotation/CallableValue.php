@@ -19,7 +19,7 @@ use Imi\Bean\Annotation\Inherit;
 class CallableValue extends BaseInjectValue
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'callable';
 
@@ -29,9 +29,7 @@ class CallableValue extends BaseInjectValue
     }
 
     /**
-     * 获取注入值的真实值
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getRealValue()
     {

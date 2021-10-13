@@ -16,7 +16,7 @@ use Imi\Server\TcpServer\Middleware\IMiddleware;
 class Test implements IMiddleware
 {
     /**
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {

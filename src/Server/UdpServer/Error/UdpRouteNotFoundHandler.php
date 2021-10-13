@@ -22,9 +22,7 @@ class UdpRouteNotFoundHandler implements IUdpRouteNotFoundHandler
     protected ?string $handler = null;
 
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IPacketData $data, IPacketHandler $handler)
     {

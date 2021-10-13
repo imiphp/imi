@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeBatchDeleteEventParam;
  */
 interface IBeforeBatchDeleteEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeBatchDeleteEventParam $e): void;
 }

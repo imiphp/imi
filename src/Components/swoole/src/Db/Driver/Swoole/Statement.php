@@ -67,7 +67,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 获取数据库操作对象
+     * {@inheritDoc}
      */
     public function getDb(): IMysqlDb
     {
@@ -75,11 +75,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 绑定一列到一个 PHP 变量.
-     *
-     * @param mixed $column
-     * @param mixed $param
-     * @param mixed $driverData
+     * {@inheritDoc}
      */
     public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool
     {
@@ -89,11 +85,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 绑定一个参数到指定的变量名.
-     *
-     * @param mixed $parameter
-     * @param mixed $variable
-     * @param mixed $driverOptions
+     * {@inheritDoc}
      */
     public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool
     {
@@ -103,10 +95,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 把一个值绑定到一个参数.
-     *
-     * @param mixed $parameter
-     * @param mixed $value
+     * {@inheritDoc}
      */
     public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
     {
@@ -116,7 +105,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 关闭游标，使语句能再次被执行。
+     * {@inheritDoc}
      */
     public function closeCursor(): bool
     {
@@ -124,7 +113,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 返回结果集中的列数.
+     * {@inheritDoc}
      */
     public function columnCount(): int
     {
@@ -132,9 +121,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 返回错误码
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function errorCode()
     {
@@ -142,7 +129,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 返回错误信息.
+     * {@inheritDoc}
      */
     public function errorInfo(): string
     {
@@ -150,7 +137,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 获取SQL语句.
+     * {@inheritDoc}
      */
     public function getSql(): string
     {
@@ -158,9 +145,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 执行一条预处理语句.
-     *
-     * @param array $inputParameters
+     * {@inheritDoc}
      */
     public function execute(array $inputParameters = null): bool
     {
@@ -230,9 +215,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 从结果集中获取下一行.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
     {
@@ -246,9 +229,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 返回一个包含结果集中所有行的数组.
-     *
-     * @param mixed $fetchArgument
+     * {@inheritDoc}
      */
     public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
     {
@@ -256,11 +237,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 从结果集中的下一行返回单独的一列，不存在返回null.
-     *
-     * @param int|string $columnKey
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function fetchColumn($columnKey = 0)
     {
@@ -282,9 +259,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 获取下一行并作为一个对象返回。
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
@@ -308,11 +283,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 检索一个语句属性.
-     *
-     * @param mixed $attribute
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getAttribute($attribute)
     {
@@ -320,10 +291,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 设置属性.
-     *
-     * @param mixed $attribute
-     * @param mixed $value
+     * {@inheritDoc}
      */
     public function setAttribute($attribute, $value): bool
     {
@@ -331,7 +299,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 在一个多行集语句句柄中推进到下一个行集.
+     * {@inheritDoc}
      */
     public function nextRowset(): bool
     {
@@ -355,7 +323,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 返回最后插入行的ID或序列值
+     * {@inheritDoc}
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -363,7 +331,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 返回受上一个 SQL 语句影响的行数.
+     * {@inheritDoc}
      */
     public function rowCount(): int
     {
@@ -371,9 +339,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * 获取原对象实例.
-     *
-     * @return object
+     * {@inheritDoc}
      */
     public function getInstance()
     {
@@ -381,7 +347,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * @return mixed
+     * @return mixed|false
      */
     public function current()
     {
@@ -389,25 +355,31 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     }
 
     /**
-     * @return mixed
+     * @return int|string|null
      */
     public function key()
     {
         return key($this->result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function next(): void
     {
         next($this->result);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function rewind(): void
     {
         reset($this->result);
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function valid()
     {

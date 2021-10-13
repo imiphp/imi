@@ -38,9 +38,7 @@ abstract class BaseBuilder implements IBuilder
     }
 
     /**
-     * 生成SQL语句.
-     *
-     * @param mixed $args
+     * {@inheritDoc}
      */
     public function build(...$args): string
     {

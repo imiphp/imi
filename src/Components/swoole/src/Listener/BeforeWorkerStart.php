@@ -19,7 +19,7 @@ use Imi\Util\Process\ProcessType;
 class BeforeWorkerStart implements IWorkerStartEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(WorkerStartEventParam $e): void
     {

@@ -26,7 +26,7 @@ class Server extends BaseRpcServer
     private bool $isHookHproseOn = false;
 
     /**
-     * 创建 swoole 服务器对象
+     * {@inheritDoc}
      */
     protected function createServer(): void
     {
@@ -37,12 +37,12 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 从主服务器监听端口，作为子服务器.
+     * {@inheritDoc}
      */
     protected function createSubServer(): void
     {
         $config = $this->getServerInitConfig();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         $this->swooleServer = ServerManager::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $this->swoolePort->set([]);
@@ -85,7 +85,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取服务器初始化需要的配置.
+     * {@inheritDoc}
      */
     protected function getServerInitConfig(): array
     {
@@ -112,11 +112,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 事件监听.
-     *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
-     * @param int    $priority 优先级，越大越先执行
+     * {@inheritDoc}
      */
     public function on($name, $callback, int $priority = 0): void
     {
@@ -135,7 +131,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 绑定服务器事件.
+     * {@inheritDoc}
      */
     protected function __bindEvents(): void
     {
@@ -201,7 +197,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取 RPC 类型.
+     * {@inheritDoc}
      */
     public function getRpcType(): string
     {
@@ -209,7 +205,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取控制器注解类.
+     * {@inheritDoc}
      */
     public function getControllerAnnotation(): string
     {
@@ -217,7 +213,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取动作注解类.
+     * {@inheritDoc}
      */
     public function getActionAnnotation(): string
     {
@@ -225,7 +221,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取路由注解类.
+     * {@inheritDoc}
      */
     public function getRouteAnnotation(): string
     {
@@ -233,7 +229,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取路由处理类.
+     * {@inheritDoc}
      */
     public function getRouteClass(): string
     {
@@ -241,7 +237,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 是否为长连接服务
+     * {@inheritDoc}
      */
     public function isLongConnection(): bool
     {
@@ -249,7 +245,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 是否支持 SSL.
+     * {@inheritDoc}
      */
     public function isSSL(): bool
     {
@@ -257,7 +253,7 @@ class Server extends BaseRpcServer
     }
 
     /**
-     * 获取协议名称.
+     * {@inheritDoc}
      */
     public function getProtocol(): string
     {

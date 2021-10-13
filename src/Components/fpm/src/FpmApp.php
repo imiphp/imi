@@ -19,7 +19,7 @@ use Imi\Util\Imi;
 class FpmApp extends BaseApp
 {
     /**
-     * 应用模式的配置.
+     * {@inheritDoc}
      */
     protected array $appConfig = [
         'annotation_manager_annotations'               => false,
@@ -28,6 +28,9 @@ class FpmApp extends BaseApp
         'annotation_manager_annotation_relation_cache' => true,
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected function __loadConfig(): void
     {
         parent::__loadConfig();
@@ -45,7 +48,7 @@ class FpmApp extends BaseApp
     }
 
     /**
-     * 初始化运行时.
+     * {@inheritDoc}
      */
     protected function initRuntime(): void
     {
@@ -53,7 +56,7 @@ class FpmApp extends BaseApp
     }
 
     /**
-     * 加载运行时.
+     * {@inheritDoc}
      */
     public function loadRuntime(): int
     {
@@ -83,7 +86,7 @@ class FpmApp extends BaseApp
     }
 
     /**
-     * 运行应用.
+     * {@inheritDoc}
      */
     public function run(): void
     {
@@ -100,7 +103,7 @@ class FpmApp extends BaseApp
     }
 
     /**
-     * 获取应用类型.
+     * {@inheritDoc}
      */
     public function getType(): string
     {

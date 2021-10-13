@@ -24,7 +24,7 @@ class RpcClientResource extends BasePoolResource
     }
 
     /**
-     * 打开
+     * {@inheritDoc}
      */
     public function open(): bool
     {
@@ -34,7 +34,7 @@ class RpcClientResource extends BasePoolResource
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -42,7 +42,7 @@ class RpcClientResource extends BasePoolResource
     }
 
     /**
-     * 获取对象实例.
+     * {@inheritDoc}
      */
     public function getInstance(): IRpcClient
     {
@@ -50,14 +50,14 @@ class RpcClientResource extends BasePoolResource
     }
 
     /**
-     * 重置资源，当资源被使用后重置一些默认的设置.
+     * {@inheritDoc}
      */
     public function reset(): void
     {
     }
 
     /**
-     * 检查资源是否可用.
+     * {@inheritDoc}
      */
     public function checkState(): bool
     {

@@ -27,7 +27,7 @@ class File extends Base
     }
 
     /**
-     * 销毁session数据.
+     * {@inheritDoc}
      */
     public function destroy(string $sessionId): void
     {
@@ -39,9 +39,7 @@ class File extends Base
     }
 
     /**
-     * 垃圾回收.
-     *
-     * @param int $maxLifeTime 最大存活时间，单位：秒
+     * {@inheritDoc}
      */
     public function gc(int $maxLifeTime): void
     {
@@ -59,7 +57,7 @@ class File extends Base
     }
 
     /**
-     * 读取session.
+     * {@inheritDoc}
      */
     public function read(string $sessionId): string
     {
@@ -75,7 +73,7 @@ class File extends Base
     }
 
     /**
-     * 写入session.
+     * {@inheritDoc}
      */
     public function write(string $sessionId, string $sessionData, int $maxLifeTime): void
     {
@@ -83,7 +81,7 @@ class File extends Base
     }
 
     /**
-     * 获取文件存储的完整文件名.
+     * {@inheritDoc}
      */
     public function getFileName(string $sessionId): string
     {

@@ -46,7 +46,7 @@ class Field implements IField
     }
 
     /**
-     * 获取数据库名.
+     * {@inheritDoc}
      */
     public function getDatabase(): ?string
     {
@@ -54,7 +54,7 @@ class Field implements IField
     }
 
     /**
-     * 获取表名.
+     * {@inheritDoc}
      */
     public function getTable(): ?string
     {
@@ -62,7 +62,7 @@ class Field implements IField
     }
 
     /**
-     * 获取字段名.
+     * {@inheritDoc}
      */
     public function getField(): ?string
     {
@@ -70,7 +70,7 @@ class Field implements IField
     }
 
     /**
-     * 获取别名.
+     * {@inheritDoc}
      */
     public function getAlias(): ?string
     {
@@ -78,7 +78,7 @@ class Field implements IField
     }
 
     /**
-     * 设置数据库名.
+     * {@inheritDoc}
      */
     public function setDatabase(?string $database = null): void
     {
@@ -86,7 +86,7 @@ class Field implements IField
     }
 
     /**
-     * 设置表名.
+     * {@inheritDoc}
      */
     public function setTable(?string $table = null): void
     {
@@ -94,7 +94,7 @@ class Field implements IField
     }
 
     /**
-     * 设置字段名.
+     * {@inheritDoc}
      */
     public function setField(?string $field = null): void
     {
@@ -102,7 +102,7 @@ class Field implements IField
     }
 
     /**
-     * 设置别名.
+     * {@inheritDoc}
      */
     public function setAlias(?string $alias = null): void
     {
@@ -110,12 +110,7 @@ class Field implements IField
     }
 
     /**
-     * 设置值，可以根据传入的值自动处理
-     * name——field
-     * parent.name——table.field
-     * parent.parent.name——database.table.field
-     * name alias——field alias
-     * name as alias—— field as alias.
+     * {@inheritDoc}
      */
     public function setValue(string $value, IQuery $query): void
     {
@@ -146,6 +141,9 @@ class Field implements IField
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(IQuery $query): string
     {
         if ($this->isRaw)
@@ -168,7 +166,7 @@ class Field implements IField
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

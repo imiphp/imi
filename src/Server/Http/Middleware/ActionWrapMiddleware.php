@@ -23,7 +23,7 @@ class ActionWrapMiddleware implements MiddlewareInterface
     protected string $actionMiddleware = ActionMiddleware::class;
 
     /**
-     * 处理方法.
+     * {@inheritDoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

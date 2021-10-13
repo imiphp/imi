@@ -31,7 +31,7 @@ class RpcClientSyncPool extends BaseSyncPool
     }
 
     /**
-     * 创建资源.
+     * {@inheritDoc}
      */
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {

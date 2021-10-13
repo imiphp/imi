@@ -53,7 +53,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 获取队列名称.
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -61,7 +61,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 推送消息到队列，返回消息ID.
+     * {@inheritDoc}
      */
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
@@ -82,7 +82,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 从队列弹出一个消息.
+     * {@inheritDoc}
      */
     public function pop(float $timeout = 0): ?IMessage
     {
@@ -100,7 +100,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 删除一个消息.
+     * {@inheritDoc}
      */
     public function delete(IMessage $message): bool
     {
@@ -108,9 +108,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 清空队列.
-     *
-     * @param int|int[]|null $queueType 清空哪个队列，默认为全部
+     * {@inheritDoc}
      */
     public function clear($queueType = null): void
     {
@@ -118,7 +116,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将消息标记为成功
+     * {@inheritDoc}
      */
     public function success(IMessage $message): int
     {
@@ -133,7 +131,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将消息标记为失败.
+     * {@inheritDoc}
      */
     public function fail(IMessage $message, bool $requeue = false): int
     {
@@ -141,7 +139,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 获取队列状态
+     * {@inheritDoc}
      */
     public function status(): QueueStatus
     {
@@ -149,9 +147,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将失败消息恢复到队列.
-     *
-     * 返回恢复数量
+     * {@inheritDoc}
      */
     public function restoreFailMessages(): int
     {
@@ -159,9 +155,7 @@ class KafkaQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将超时消息恢复到队列.
-     *
-     * 返回恢复数量
+     * {@inheritDoc}
      */
     public function restoreTimeoutMessages(): int
     {

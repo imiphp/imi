@@ -45,9 +45,7 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 获取客户端的socket id.
-     *
-     * @return int|string
+     * {@inheritDoc}
      */
     public function getClientId()
     {
@@ -55,7 +53,7 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
+     * {@inheritDoc}
      */
     public function getData(): string
     {
@@ -63,9 +61,7 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 获取格式化后的数据，一般是数组或对象
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getFormatData()
     {
@@ -73,7 +69,7 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 获取客户端地址
+     * {@inheritDoc}
      */
     public function getClientAddress(): IPEndPoint
     {

@@ -17,13 +17,16 @@ class Raw implements IBase
         $this->setRawSQL($raw);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(IQuery $query): string
     {
         return $this->rawSQL;
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

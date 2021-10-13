@@ -19,7 +19,7 @@ use Imi\Swoole\SwooleWorker;
 class BeforePacket implements IPacketEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(PacketEventParam $e): void
     {

@@ -20,6 +20,9 @@ class LazyArrayObject extends ArrayObject implements JsonSerializable
         parent::__construct($input, $flags, $iteratorClass);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function jsonSerialize()
     {
         return $this->getArrayCopy();

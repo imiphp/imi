@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeSelectEventParam;
  */
 interface IBeforeSelectEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeSelectEventParam $e): void;
 }

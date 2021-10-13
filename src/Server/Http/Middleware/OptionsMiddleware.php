@@ -6,7 +6,6 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -57,9 +56,7 @@ class OptionsMiddleware implements MiddlewareInterface
     protected bool $optionsBreak = false;
 
     /**
-     * 处理方法.
-     *
-     * @param IHttpRequest $request
+     * {@inheritDoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

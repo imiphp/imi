@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeFindEventParam;
  */
 interface IBeforeFindEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeFindEventParam $e): void;
 }

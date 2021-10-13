@@ -20,8 +20,7 @@ use Imi\Util\Http\Consts\ResponseHeader;
 class Xml implements IHandler
 {
     /**
-     * @param XmlView|null $viewOption
-     * @param mixed        $data
+     * {@inheritDoc}
      */
     public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
     {

@@ -17,7 +17,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 class OnCloseByFlagResponse implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

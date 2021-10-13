@@ -39,7 +39,7 @@ class Inotify extends BaseMonitor
     private string $excludeRule = '';
 
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     protected function init(): void
     {
@@ -86,7 +86,7 @@ class Inotify extends BaseMonitor
     }
 
     /**
-     * 检测文件是否有更改.
+     * {@inheritDoc}
      */
     public function isChanged(): bool
     {
@@ -122,7 +122,7 @@ class Inotify extends BaseMonitor
     }
 
     /**
-     * 获取变更的文件们.
+     * {@inheritDoc}
      */
     public function getChangedFiles(): array
     {

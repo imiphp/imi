@@ -17,7 +17,7 @@ use Imi\Server\ServerManager;
 class GroupRestore implements IConnectionContextRestoreListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(ConnectionContextRestoreParam $e): void
     {

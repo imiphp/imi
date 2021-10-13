@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeSaveEventParam;
  */
 interface IBeforeSaveEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeSaveEventParam $e): void;
 }

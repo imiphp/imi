@@ -37,7 +37,7 @@ abstract class Base implements ISessionHandler
     }
 
     /**
-     * 生成SessionId.
+     * {@inheritDoc}
      */
     public function createSessionId(): string
     {
@@ -45,7 +45,7 @@ abstract class Base implements ISessionHandler
     }
 
     /**
-     * 编码为存储格式.
+     * {@inheritDoc}
      */
     public function encode(array $data): string
     {
@@ -53,7 +53,7 @@ abstract class Base implements ISessionHandler
     }
 
     /**
-     * 解码为php数组.
+     * {@inheritDoc}
      */
     public function decode(string $data): array
     {

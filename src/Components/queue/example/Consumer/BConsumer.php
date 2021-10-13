@@ -16,7 +16,7 @@ use Imi\Queue\Service\BaseQueueConsumer;
 class BConsumer extends BaseQueueConsumer
 {
     /**
-     * 处理消费.
+     * {@inheritDoc}
      */
     protected function consume(IMessage $message, IQueueDriver $queue): void
     {

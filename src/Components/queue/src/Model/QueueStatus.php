@@ -79,6 +79,9 @@ class QueueStatus implements JsonSerializable
         return $this->delay;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function jsonSerialize()
     {
         $data = [];

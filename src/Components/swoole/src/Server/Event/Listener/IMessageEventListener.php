@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\MessageEventParam;
  */
 interface IMessageEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(MessageEventParam $e): void;
 }

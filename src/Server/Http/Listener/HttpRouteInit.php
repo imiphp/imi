@@ -29,7 +29,7 @@ class HttpRouteInit implements IEventListener
     use TMiddleware;
 
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

@@ -11,8 +11,5 @@ use Imi\Server\ConnectionContext\Event\Param\ConnectionContextRestoreParam;
  */
 interface IConnectionContextRestoreListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ConnectionContextRestoreParam $e): void;
 }

@@ -26,9 +26,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
     class WorkerTask implements ICoTask
     {
         /**
-         * 执行任务
-         *
-         * @return mixed
+         * {@inheritDoc}
          */
         public function run(ITaskParam $param)
         {

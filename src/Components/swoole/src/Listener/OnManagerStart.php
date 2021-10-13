@@ -19,7 +19,7 @@ use Imi\Util\Process\ProcessType;
 class OnManagerStart implements IManagerStartEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(ManagerStartEventParam $e): void
     {

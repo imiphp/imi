@@ -83,9 +83,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 // @phpstan-ignore-next-line
                 $this->coPool = $pool = new CoPool($co, $co, new class() implements ICoTask {
                     /**
-                     * 执行任务
-                     *
-                     * @return mixed
+                     * {@inheritDoc}
                      */
                     public function run(ITaskParam $param)
                     {

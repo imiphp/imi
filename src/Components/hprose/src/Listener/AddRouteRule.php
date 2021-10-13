@@ -17,7 +17,7 @@ use Imi\Util\Text;
 class AddRouteRule implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

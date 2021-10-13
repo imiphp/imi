@@ -20,7 +20,7 @@ use Imi\Workerman\Server\Util\LocalServerUtil;
 class OnSendRawToGroupRequest implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

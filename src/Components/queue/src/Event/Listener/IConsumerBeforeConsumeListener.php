@@ -11,8 +11,5 @@ use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
  */
 interface IConsumerBeforeConsumeListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ConsumerBeforeConsumeParam $e): void;
 }

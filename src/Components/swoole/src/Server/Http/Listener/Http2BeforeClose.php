@@ -12,7 +12,7 @@ use Imi\Swoole\SwooleWorker;
 class Http2BeforeClose implements ICloseEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(CloseEventParam $e): void
     {

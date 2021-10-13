@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\BeforeBatchUpdateEventParam;
  */
 interface IBeforeBatchUpdateEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(BeforeBatchUpdateEventParam $e): void;
 }

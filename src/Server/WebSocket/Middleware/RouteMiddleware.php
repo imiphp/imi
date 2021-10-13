@@ -28,9 +28,7 @@ class RouteMiddleware implements IMiddleware
     protected IWSRouteNotFoundHandler $notFoundHandler;
 
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {

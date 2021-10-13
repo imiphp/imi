@@ -34,7 +34,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         protected CoPool $pool;
 
         /**
-         * 获取服务器初始化需要的配置.
+         * {@inheritDoc}
          */
         protected function getServerInitConfig(): array
         {
@@ -47,7 +47,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 构造方法.
+         * {@inheritDoc}
          */
         public function __construct(string $name, array $config)
         {
@@ -97,9 +97,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 向客户端发送消息.
-         *
-         * @param int|string $clientId
+         * {@inheritDoc}
          */
         public function send($clientId, string $data): bool
         {
@@ -107,9 +105,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 获取客户端地址
-         *
-         * @param string|int $clientId
+         * {@inheritDoc}
          */
         public function getClientAddress($clientId): IPEndPoint
         {

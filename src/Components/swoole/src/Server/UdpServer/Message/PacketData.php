@@ -18,7 +18,7 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
     }
 
     /**
-     * 获取客户端信息.
+     * {@inheritDoc}
      */
     public function getClientInfo(): array
     {

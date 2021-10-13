@@ -51,9 +51,11 @@ interface IResult
     /**
      * 获取标量结果.
      *
+     * @param int|string $columnKey
+     *
      * @return mixed
      */
-    public function getScalar();
+    public function getScalar($columnKey = 0);
 
     /**
      * 获取记录行数.

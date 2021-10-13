@@ -10,7 +10,7 @@ use Imi\Util\Format\Json;
 class JsonAMQPMessage extends Message
 {
     /**
-     * 格式处理.
+     * {@inheritDoc}
      */
     protected ?string $format = Json::class;
 }

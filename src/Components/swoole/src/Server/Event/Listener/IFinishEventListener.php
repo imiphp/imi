@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\FinishEventParam;
  */
 interface IFinishEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(FinishEventParam $e): void;
 }

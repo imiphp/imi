@@ -15,7 +15,7 @@ use Imi\Swoole\Process\ProcessManager;
 class AfterServersCreate implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

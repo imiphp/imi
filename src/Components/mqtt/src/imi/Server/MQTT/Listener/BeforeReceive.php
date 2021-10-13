@@ -36,7 +36,7 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
     ];
 
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(ReceiveEventParam $e): void
     {

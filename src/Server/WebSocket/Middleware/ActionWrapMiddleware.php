@@ -21,9 +21,7 @@ class ActionWrapMiddleware implements IMiddleware
     protected string $actionMiddleware = ActionMiddleware::class;
 
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {

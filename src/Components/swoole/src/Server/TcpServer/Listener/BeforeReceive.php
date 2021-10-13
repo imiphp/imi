@@ -19,7 +19,7 @@ use Imi\Swoole\SwooleWorker;
 class BeforeReceive implements IReceiveEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(ReceiveEventParam $e): void
     {

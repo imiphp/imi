@@ -29,7 +29,7 @@ class Database implements IDatabase
     }
 
     /**
-     * 获取数据库名.
+     * {@inheritDoc}
      */
     public function getDatabase(): ?string
     {
@@ -37,7 +37,7 @@ class Database implements IDatabase
     }
 
     /**
-     * 获取别名.
+     * {@inheritDoc}
      */
     public function getAlias(): ?string
     {
@@ -45,7 +45,7 @@ class Database implements IDatabase
     }
 
     /**
-     * 设置数据库名.
+     * {@inheritDoc}
      */
     public function setDatabase(?string $database = null): void
     {
@@ -53,7 +53,7 @@ class Database implements IDatabase
     }
 
     /**
-     * 设置别名.
+     * {@inheritDoc}
      */
     public function setAlias(?string $alias = null): void
     {
@@ -61,10 +61,7 @@ class Database implements IDatabase
     }
 
     /**
-     * 设置值，可以根据传入的值自动处理
-     * name——database
-     * name alias——database alias
-     * name as alias——database as alias.
+     * {@inheritDoc}
      */
     public function setValue(string $value, IQuery $query): void
     {
@@ -80,6 +77,9 @@ class Database implements IDatabase
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(IQuery $query): string
     {
         if ($this->isRaw)
@@ -100,7 +100,7 @@ class Database implements IDatabase
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

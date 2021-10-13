@@ -35,7 +35,7 @@ class Table implements ITable
     }
 
     /**
-     * 获取数据库名.
+     * {@inheritDoc}
      */
     public function getDatabase(): ?string
     {
@@ -43,7 +43,7 @@ class Table implements ITable
     }
 
     /**
-     * 获取表名.
+     * {@inheritDoc}
      */
     public function getTable(): ?string
     {
@@ -51,7 +51,7 @@ class Table implements ITable
     }
 
     /**
-     * 获取别名.
+     * {@inheritDoc}
      */
     public function getAlias(): ?string
     {
@@ -59,7 +59,7 @@ class Table implements ITable
     }
 
     /**
-     * 设置数据库名.
+     * {@inheritDoc}
      */
     public function setDatabase(?string $database = null): void
     {
@@ -67,7 +67,7 @@ class Table implements ITable
     }
 
     /**
-     * 设置表名.
+     * {@inheritDoc}
      */
     public function setTable(?string $table = null): void
     {
@@ -75,7 +75,7 @@ class Table implements ITable
     }
 
     /**
-     * 设置别名.
+     * {@inheritDoc}
      */
     public function setAlias(?string $alias = null): void
     {
@@ -83,11 +83,7 @@ class Table implements ITable
     }
 
     /**
-     * 设置值，可以根据传入的值自动处理
-     * name——table
-     * parent.name——database.table
-     * name alias——table alias
-     * name as alias—— table as alias.
+     * {@inheritDoc}
      */
     public function setValue(string $value, IQuery $query): void
     {
@@ -109,6 +105,9 @@ class Table implements ITable
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(IQuery $query): string
     {
         if ($this->isRaw)
@@ -130,7 +129,7 @@ class Table implements ITable
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

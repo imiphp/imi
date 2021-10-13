@@ -14,7 +14,7 @@ use Imi\Server\Grpc\Error\GrpcErrorHandler;
 class Server extends \Imi\Swoole\Server\Http\Server
 {
     /**
-     * 创建 swoole 服务器对象
+     * {@inheritDoc}
      */
     protected function createServer(): void
     {
@@ -24,7 +24,7 @@ class Server extends \Imi\Swoole\Server\Http\Server
     }
 
     /**
-     * 从主服务器监听端口，作为子服务器.
+     * {@inheritDoc}
      */
     protected function createSubServer(): void
     {

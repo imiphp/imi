@@ -22,7 +22,7 @@ abstract class BaseSyncPool extends BasePool
     }
 
     /**
-     * 初始化队列.
+     * {@inheritDoc}
      */
     protected function initQueue(): void
     {
@@ -30,7 +30,7 @@ abstract class BaseSyncPool extends BasePool
     }
 
     /**
-     * 获取资源.
+     * {@inheritDoc}
      */
     public function getResource(): IPoolResource
     {
@@ -64,9 +64,7 @@ abstract class BaseSyncPool extends BasePool
     }
 
     /**
-     * 尝试获取资源，获取到则返回资源，没有获取到返回false.
-     *
-     * @return IPoolResource|bool
+     * {@inheritDoc}
      */
     public function tryGetResource()
     {
@@ -99,7 +97,7 @@ abstract class BaseSyncPool extends BasePool
     }
 
     /**
-     * 建立队列.
+     * {@inheritDoc}
      */
     protected function buildQueue(): void
     {
@@ -117,7 +115,7 @@ abstract class BaseSyncPool extends BasePool
     }
 
     /**
-     * 把资源加入队列.
+     * {@inheritDoc}
      */
     protected function push(IPoolResource $resource): void
     {
@@ -129,7 +127,7 @@ abstract class BaseSyncPool extends BasePool
     }
 
     /**
-     * 获取当前池子中空闲资源总数.
+     * {@inheritDoc}
      */
     public function getFree(): int
     {

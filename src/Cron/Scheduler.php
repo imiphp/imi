@@ -57,14 +57,14 @@ class Scheduler implements IScheduler
     private array $firstRunMap = [];
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
     }
 
     /**
-     * 遍历可运行的任务列表.
+     * {@inheritDoc}
      */
     public function schedule(): \Generator
     {
@@ -105,9 +105,7 @@ class Scheduler implements IScheduler
     }
 
     /**
-     * 执行任务
-     *
-     * @param \Imi\Cron\CronTask $task
+     * {@inheritDoc}
      */
     public function runTask(CronTask $task): void
     {
@@ -131,7 +129,7 @@ class Scheduler implements IScheduler
     }
 
     /**
-     * 完成任务
+     * {@inheritDoc}
      */
     public function completeTask(Result $result): void
     {

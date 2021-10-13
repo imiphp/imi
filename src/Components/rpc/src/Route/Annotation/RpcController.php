@@ -22,9 +22,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcController;
 class RpcController extends Base implements IRpcController
 {
     /**
-     * 只传一个参数时的参数名.
-     *
-     * @var string
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'prefix';
 

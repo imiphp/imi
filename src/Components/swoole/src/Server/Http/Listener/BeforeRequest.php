@@ -32,7 +32,7 @@ class BeforeRequest implements IRequestEventListener
     }
 
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(RequestEventParam $e): void
     {

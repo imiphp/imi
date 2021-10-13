@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
  */
 interface IWorkerStopEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(WorkerStopEventParam $e): void;
 }

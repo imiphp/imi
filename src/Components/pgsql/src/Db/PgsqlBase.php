@@ -11,7 +11,7 @@ use Imi\Pgsql\Db\Query\PgsqlQuery;
 abstract class PgsqlBase extends Base
 {
     /**
-     * 创建查询构建器.
+     * {@inheritDoc}
      */
     public function createQuery(?string $modelClass = null): IQuery
     {

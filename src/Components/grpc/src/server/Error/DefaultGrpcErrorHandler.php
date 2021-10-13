@@ -29,6 +29,7 @@ class DefaultGrpcErrorHandler implements IErrorHandler
         {
             $response = $response->withTrailer('grpc-message', $this->getGrpcMessage($throwable));
         }
+        /** @var \Imi\Server\Http\Message\Response $response */
         $response->send();
 
         return false;

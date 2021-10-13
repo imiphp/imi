@@ -15,7 +15,7 @@ use Imi\Pool\PoolManager;
 class ClearListener implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

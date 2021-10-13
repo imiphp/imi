@@ -28,8 +28,7 @@ class JsonErrorHandler implements IErrorHandler
     }
 
     /**
-     * 捕获错误
-     * 返回值为 true 则取消继续抛出异常.
+     * {@inheritDoc}
      */
     public function handle(\Throwable $throwable): bool
     {

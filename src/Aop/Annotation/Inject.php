@@ -22,7 +22,7 @@ use Imi\Bean\Annotation\Inherit;
 class Inject extends BaseInjectValue
 {
     /**
-     * 只传一个参数时的参数名.
+     * {@inheritDoc}
      */
     protected ?string $defaultFieldName = 'name';
 
@@ -32,9 +32,7 @@ class Inject extends BaseInjectValue
     }
 
     /**
-     * 获取注入值的真实值
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getRealValue()
     {

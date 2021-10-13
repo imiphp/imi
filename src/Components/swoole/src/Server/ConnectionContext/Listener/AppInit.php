@@ -19,7 +19,7 @@ use Imi\Util\Imi;
 class AppInit implements IAppInitEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

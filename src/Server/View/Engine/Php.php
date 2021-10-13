@@ -12,9 +12,9 @@ use Imi\Server\Http\Message\Contract\IHttpResponse;
 class Php implements IEngine
 {
     /**
-     * @param mixed $data
+     * {@inheritDoc}
      */
-    public function render(IHttpResponse $response, string $fileName, $data = []): IHttpResponse
+    public function render(IHttpResponse $response, string $fileName, array $data = []): IHttpResponse
     {
         if (!is_file($fileName))
         {

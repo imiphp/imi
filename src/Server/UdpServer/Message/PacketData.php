@@ -35,7 +35,7 @@ class PacketData implements IPacketData
     }
 
     /**
-     * 数据内容.
+     * {@inheritDoc}
      */
     public function getData(): string
     {
@@ -43,9 +43,7 @@ class PacketData implements IPacketData
     }
 
     /**
-     * 获取格式化后的数据，一般是数组或对象
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getFormatData()
     {
@@ -53,7 +51,7 @@ class PacketData implements IPacketData
     }
 
     /**
-     * 获取客户端地址
+     * {@inheritDoc}
      */
     public function getClientAddress(): IPEndPoint
     {

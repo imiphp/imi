@@ -16,14 +16,14 @@ use Imi\Server\Group\Handler\IGroupHandler;
 class GatewayGroupHandler implements IGroupHandler
 {
     /**
-     * 启动时执行.
+     * {@inheritDoc}
      */
     public function startup(): void
     {
     }
 
     /**
-     * 组是否存在.
+     * {@inheritDoc}
      */
     public function hasGroup(string $groupName): bool
     {
@@ -31,14 +31,14 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 创建组，返回组对象
+     * {@inheritDoc}
      */
     public function createGroup(string $groupName, int $maxClients = -1): void
     {
     }
 
     /**
-     * 关闭组.
+     * {@inheritDoc}
      */
     public function closeGroup(string $groupName): void
     {
@@ -46,9 +46,7 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 加入组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function joinGroup(string $groupName, $clientId): bool
     {
@@ -58,9 +56,7 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 离开组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function leaveGroup(string $groupName, $clientId): bool
     {
@@ -70,9 +66,7 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 连接是否存在于组里.
-     *
-     * @param int|string $clientId
+     * {@inheritDoc}
      */
     public function isInGroup(string $groupName, $clientId): bool
     {
@@ -80,9 +74,7 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 获取所有连接ID.
-     *
-     * @return int[]|string[]
+     * {@inheritDoc}
      */
     public function getClientIds(string $groupName): array
     {
@@ -90,7 +82,7 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 获取组中的连接总数.
+     * {@inheritDoc}
      */
     public function count(string $groupName): int
     {
@@ -98,7 +90,7 @@ class GatewayGroupHandler implements IGroupHandler
     }
 
     /**
-     * 清空分组.
+     * {@inheritDoc}
      */
     public function clear(): void
     {

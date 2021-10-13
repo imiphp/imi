@@ -23,6 +23,9 @@ class HttpNotFoundHandler implements IHttpNotFoundHandler
      */
     protected string $handler = '';
 
+    /**
+     * {@inheritDoc}
+     */
     public function handle(RequestHandlerInterface $requesthandler, IHttpRequest $request, IHttpResponse $response): IHttpResponse
     {
         if ('' === $this->handler)

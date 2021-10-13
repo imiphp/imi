@@ -19,7 +19,7 @@ use Imi\Swoole\SwooleWorker;
 class BeforeConnect implements IConnectEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(ConnectEventParam $e): void
     {

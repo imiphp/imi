@@ -29,7 +29,7 @@ class Order implements IOrder
     }
 
     /**
-     * 获取字段名.
+     * {@inheritDoc}
      */
     public function getFieldName(): string
     {
@@ -37,7 +37,7 @@ class Order implements IOrder
     }
 
     /**
-     * 获取排序方向：asc/desc.
+     * {@inheritDoc}
      */
     public function getDirection(): string
     {
@@ -45,7 +45,7 @@ class Order implements IOrder
     }
 
     /**
-     * 设置字段名.
+     * {@inheritDoc}
      */
     public function setFieldName(string $fieldName): void
     {
@@ -53,13 +53,16 @@ class Order implements IOrder
     }
 
     /**
-     * 设置排序方向：asc/desc.
+     * {@inheritDoc}
      */
     public function setDirection(string $direction): void
     {
         $this->direction = $direction;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(IQuery $query): string
     {
         if ($this->isRaw)
@@ -71,7 +74,7 @@ class Order implements IOrder
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

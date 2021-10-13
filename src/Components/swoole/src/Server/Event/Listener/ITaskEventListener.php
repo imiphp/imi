@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\TaskEventParam;
  */
 interface ITaskEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(TaskEventParam $e): void;
 }

@@ -14,6 +14,9 @@ class ErrorHandler implements IErrorHandler
 {
     protected string $handler = JsonErrorHandler::class;
 
+    /**
+     * {@inheritDoc}
+     */
     public function handle(\Throwable $throwable): bool
     {
         return RequestContext::getServerBean($this->handler)->handle($throwable);

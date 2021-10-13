@@ -19,11 +19,7 @@ use Workerman\Connection\TcpConnection;
 class LocalServerUtil implements IWorkermanServerUtil
 {
     /**
-     * 发送消息给 Worker 进程，使用框架内置格式.
-     *
-     * 返回成功发送消息数量
-     *
-     * @param int|int[]|null $workerId
+     * {@inheritDoc}
      */
     public function sendMessage(string $action, array $data = [], $workerId = null, ?string $serverName = null): int
     {
@@ -31,11 +27,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送消息给 Worker 进程.
-     *
-     * 返回成功发送消息数量
-     *
-     * @param int|int[]|null $workerId
+     * {@inheritDoc}
      */
     public function sendMessageRaw(array $data, $workerId = null, ?string $serverName = null): int
     {
@@ -43,14 +35,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给指定客户端，支持一个或多个（数组）.
-     *
-     * 数据将会通过处理器编码
-     *
-     * @param mixed                          $data
-     * @param int|int[]|string|string[]|null $clientId     为 null 时，则发送给当前连接
-     * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -66,14 +51,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给指定标记的客户端，支持一个或多个（数组）.
-     *
-     * 数据将会通过处理器编码
-     *
-     * @param mixed                $data
-     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
-     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -90,11 +68,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给指定客户端，支持一个或多个（数组）.
-     *
-     * @param int|int[]|string|string[]|null $clientId     为 null 时，则发送给当前连接
-     * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -127,11 +101,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给指定标记的客户端，支持一个或多个（数组）.
-     *
-     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
-     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -176,13 +146,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给所有客户端.
-     *
-     * 数据将会通过处理器编码
-     *
-     * @param mixed       $data
-     * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -198,12 +162,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给所有客户端.
-     *
-     * 数据原样发送
-     *
-     * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendRawToAll(string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -231,14 +190,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给分组中的所有客户端，支持一个或多个（数组）.
-     *
-     * 数据将会通过处理器编码
-     *
-     * @param string|string[] $groupName
-     * @param mixed           $data
-     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -254,13 +206,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 发送数据给分组中的所有客户端，支持一个或多个（数组）.
-     *
-     * 数据原样发送
-     *
-     * @param string|string[] $groupName
-     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -289,10 +235,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 关闭一个或多个连接.
-     *
-     * @param int|int[]|string|string[]|null $clientId
-     * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -331,10 +274,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 关闭一个或多个指定标记的连接.
-     *
-     * @param string|string[]|null $flag
-     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * {@inheritDoc}
      */
     public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -370,9 +310,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 连接是否存在.
-     *
-     * @param string|int|null $clientId
+     * {@inheritDoc}
      */
     public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
@@ -391,7 +329,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 指定标记的连接是否存在.
+     * {@inheritDoc}
      */
     public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
@@ -420,7 +358,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     }
 
     /**
-     * 获取服务器.
+     * {@inheritDoc}
      */
     public function getServer(?string $serverName = null): ?IWorkermanServer
     {

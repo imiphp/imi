@@ -25,7 +25,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
     }
 
     /**
-     * Get 类名.
+     * {@inheritDoc}
      */
     public function getClass(): string
     {
@@ -33,7 +33,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
     }
 
     /**
-     * Get 注解.
+     * {@inheritDoc}
      */
     public function getAnnotation(): Base
     {

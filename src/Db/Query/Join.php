@@ -62,7 +62,7 @@ class Join implements IJoin
     }
 
     /**
-     * 表名.
+     * {@inheritDoc}
      */
     public function getTable(IQuery $query): ?string
     {
@@ -70,7 +70,7 @@ class Join implements IJoin
     }
 
     /**
-     * 在 join b on a.id=b.id 中的 a.id.
+     * {@inheritDoc}
      */
     public function getLeft(): ?string
     {
@@ -78,7 +78,7 @@ class Join implements IJoin
     }
 
     /**
-     * 在 join b on a.id=b.id 中的 =.
+     * {@inheritDoc}
      */
     public function getOperation(): ?string
     {
@@ -86,7 +86,7 @@ class Join implements IJoin
     }
 
     /**
-     * join b on a.id=b.id 中的 b.id.
+     * {@inheritDoc}
      */
     public function getRight(): ?string
     {
@@ -94,7 +94,7 @@ class Join implements IJoin
     }
 
     /**
-     * 表别名.
+     * {@inheritDoc}
      */
     public function getTableAlias(): ?string
     {
@@ -102,7 +102,7 @@ class Join implements IJoin
     }
 
     /**
-     * where条件.
+     * {@inheritDoc}
      */
     public function getWhere(): ?IBaseWhere
     {
@@ -110,7 +110,7 @@ class Join implements IJoin
     }
 
     /**
-     * join类型，默认inner.
+     * {@inheritDoc}
      */
     public function getType(): string
     {
@@ -118,7 +118,7 @@ class Join implements IJoin
     }
 
     /**
-     * 设置表名.
+     * {@inheritDoc}
      */
     public function setTable(string $table, IQuery $query): void
     {
@@ -127,7 +127,7 @@ class Join implements IJoin
     }
 
     /**
-     * 设置在 join b on a.id=b.id 中的 a.id.
+     * {@inheritDoc}
      */
     public function setLeft(?string $left): void
     {
@@ -135,7 +135,7 @@ class Join implements IJoin
     }
 
     /**
-     * 设置在 join b on a.id=b.id 中的 =.
+     * {@inheritDoc}
      */
     public function setOperation(?string $operation): void
     {
@@ -143,7 +143,7 @@ class Join implements IJoin
     }
 
     /**
-     * 设置join b on a.id=b.id 中的 b.id.
+     * {@inheritDoc}
      */
     public function setRight(?string $right): void
     {
@@ -151,7 +151,7 @@ class Join implements IJoin
     }
 
     /**
-     * 设置表别名.
+     * {@inheritDoc}
      */
     public function setTableAlias(?string $tableAlias): void
     {
@@ -159,7 +159,7 @@ class Join implements IJoin
     }
 
     /**
-     * 设置where条件.
+     * {@inheritDoc}
      */
     public function setWhere(?IBaseWhere $where): void
     {
@@ -167,13 +167,16 @@ class Join implements IJoin
     }
 
     /**
-     * 设置join类型.
+     * {@inheritDoc}
      */
     public function setType(string $type): void
     {
         $this->type = $type;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function toString(IQuery $query): string
     {
         if ($this->isRaw)
@@ -190,7 +193,7 @@ class Join implements IJoin
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

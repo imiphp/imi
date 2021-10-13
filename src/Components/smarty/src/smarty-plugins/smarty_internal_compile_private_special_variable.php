@@ -72,7 +72,7 @@ Imi\RequestContext::get('request')->getCookieParams()
 CODE;
                     break;
                 case 'get':
-                    /* @phpstan-ignore-next-line */
+                    // @phpstan-ignore-next-line
                     if (isset($compiler->smarty->security_policy) && !$compiler->smarty->security_policy->allow_rsuper_globals)
                     {
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
@@ -83,7 +83,7 @@ Imi\RequestContext::get('request')->get()
 CODE;
                     break;
                 case 'post':
-                    /* @phpstan-ignore-next-line */
+                    // @phpstan-ignore-next-line
                     if (isset($compiler->smarty->security_policy) && !$compiler->smarty->security_policy->allow_rsuper_globals)
                     {
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
@@ -94,7 +94,7 @@ Imi\RequestContext::get('request')->post()
 CODE;
                     break;
                 case 'server':
-                    /* @phpstan-ignore-next-line */
+                    // @phpstan-ignore-next-line
                     if (isset($compiler->smarty->security_policy) && !$compiler->smarty->security_policy->allow_rsuper_globals)
                     {
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
@@ -105,7 +105,7 @@ Imi\RequestContext::get('request')->getServerParams()
 CODE;
                     break;
                 case 'session':
-                    /* @phpstan-ignore-next-line */
+                    // @phpstan-ignore-next-line
                     if (isset($compiler->smarty->security_policy) && !$compiler->smarty->security_policy->allow_rsuper_globals)
                     {
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
@@ -116,7 +116,7 @@ Imi\Server\Session\Session::get()
 CODE;
                     break;
                 case 'request':
-                    /* @phpstan-ignore-next-line */
+                    // @phpstan-ignore-next-line
                     if (isset($compiler->smarty->security_policy) && !$compiler->smarty->security_policy->allow_rsuper_globals)
                     {
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');

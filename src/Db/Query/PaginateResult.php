@@ -56,7 +56,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * SQL是否执行成功
+     * {@inheritDoc}
      */
     public function isSuccess(): bool
     {
@@ -64,9 +64,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取最后插入的ID.
-     *
-     * @return int|string
+     * {@inheritDoc}
      */
     public function getLastInsertId()
     {
@@ -74,7 +72,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取影响行数.
+     * {@inheritDoc}
      */
     public function getAffectedRows(): int
     {
@@ -82,11 +80,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 返回一行数据，数组或对象
-     *
-     * @param string|null $className 实体类名，为null则返回数组
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function get(?string $className = null)
     {
@@ -94,9 +88,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 返回数组.
-     *
-     * @param string|null $className 实体类名，为null则数组每个成员为数组
+     * {@inheritDoc}
      */
     public function getArray(?string $className = null): array
     {
@@ -104,7 +96,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取一列.
+     * {@inheritDoc}
      */
     public function getColumn($column = 0): array
     {
@@ -112,17 +104,15 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取标量结果.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function getScalar()
+    public function getScalar($columnKey = 0)
     {
-        return $this->result->getScalar();
+        return $this->result->getScalar($columnKey);
     }
 
     /**
-     * 获取记录行数.
+     * {@inheritDoc}
      */
     public function getRowCount(): int
     {
@@ -130,7 +120,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取执行的SQL语句.
+     * {@inheritDoc}
      */
     public function getSql(): string
     {
@@ -138,7 +128,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取结果集对象
+     * {@inheritDoc}
      */
     public function getStatement(): IStatement
     {
@@ -146,7 +136,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取数组数据.
+     * {@inheritDoc}
      */
     public function getList(): array
     {
@@ -154,7 +144,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取记录总数.
+     * {@inheritDoc}
      */
     public function getTotal(): ?int
     {
@@ -162,7 +152,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取查询几条记录.
+     * {@inheritDoc}
      */
     public function getLimit(): int
     {
@@ -170,7 +160,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取总页数.
+     * {@inheritDoc}
      */
     public function getPageCount(): ?int
     {
@@ -178,7 +168,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 将当前对象作为数组返回.
+     * {@inheritDoc}
      */
     public function toArray(): array
     {
@@ -205,9 +195,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * json 序列化.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function jsonSerialize()
     {

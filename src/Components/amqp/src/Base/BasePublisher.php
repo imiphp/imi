@@ -27,7 +27,7 @@ abstract class BasePublisher implements IPublisher
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -66,7 +66,7 @@ abstract class BasePublisher implements IPublisher
     }
 
     /**
-     * 发布消息.
+     * {@inheritDoc}
      */
     public function publish(IMessage $message): bool
     {

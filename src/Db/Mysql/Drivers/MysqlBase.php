@@ -11,7 +11,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 abstract class MysqlBase extends Base
 {
     /**
-     * 创建查询构建器.
+     * {@inheritDoc}
      */
     public function createQuery(?string $modelClass = null): IQuery
     {

@@ -38,7 +38,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     protected string $workerClass = WorkermanServerWorker::class;
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $name, array $config)
     {
@@ -81,7 +81,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     }
 
     /**
-     * 是否支持 SSL.
+     * {@inheritDoc}
      */
     public function isSSL(): bool
     {
@@ -89,7 +89,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     }
 
     /**
-     * 获取 Workerman Worker 对象
+     * {@inheritDoc}
      */
     public function getWorker(): Worker
     {
@@ -97,14 +97,14 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     }
 
     /**
-     * 开启服务
+     * {@inheritDoc}
      */
     public function start(): void
     {
     }
 
     /**
-     * 终止服务
+     * {@inheritDoc}
      */
     public function shutdown(): void
     {
@@ -112,7 +112,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     }
 
     /**
-     * 重载服务
+     * {@inheritDoc}
      */
     public function reload(): void
     {
@@ -359,9 +359,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     }
 
     /**
-     * 获取客户端地址
-     *
-     * @param string|int $clientId
+     * {@inheritDoc}
      */
     public function getClientAddress($clientId): IPEndPoint
     {

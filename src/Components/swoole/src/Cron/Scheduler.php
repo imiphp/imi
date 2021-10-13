@@ -82,9 +82,7 @@ class Scheduler implements IScheduler
             // @phpstan-ignore-next-line
             new class() implements ICoTask {
                 /**
-                 * 执行任务
-                 *
-                 * @return mixed
+                 * {@inheritDoc}
                  */
                 public function run(ITaskParam $param)
                 {
@@ -144,7 +142,7 @@ class Scheduler implements IScheduler
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -152,7 +150,7 @@ class Scheduler implements IScheduler
     }
 
     /**
-     * 遍历可运行的任务列表.
+     * {@inheritDoc}
      */
     public function schedule(): \Generator
     {
@@ -193,7 +191,7 @@ class Scheduler implements IScheduler
     }
 
     /**
-     * 执行任务
+     * {@inheritDoc}
      */
     public function runTask(CronTask $task): void
     {
@@ -209,7 +207,7 @@ class Scheduler implements IScheduler
     }
 
     /**
-     * 完成任务
+     * {@inheritDoc}
      */
     public function completeTask(Result $result): void
     {

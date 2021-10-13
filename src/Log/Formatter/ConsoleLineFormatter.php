@@ -38,9 +38,7 @@ class ConsoleLineFormatter extends LineFormatter
     ];
 
     /**
-     * @param string|null $format                The format of the message
-     * @param string|null $dateFormat            The format of the timestamp: one supported by DateTime::format
-     * @param bool        $allowInlineLineBreaks Whether to allow inline line breaks in log entries
+     * {@inheritDoc}
      */
     public function __construct(?string $format = null, ?string $dateFormat = 'Y-m-d H:i:s', bool $allowInlineLineBreaks = true, bool $ignoreEmptyContextAndExtra = true)
     {

@@ -101,6 +101,9 @@ class ImiCommand extends Command
         parent::__construct($finalCommandName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function configure(): void
     {
         /** @var CommandAction $commandAction */
@@ -150,18 +153,7 @@ class ImiCommand extends Command
     }
 
     /**
-     * Runs the command.
-     *
-     * The code to execute is either defined directly with the
-     * setCode() method or by overriding the execute() method
-     * in a sub-class.
-     *
-     * @return int The command exit code
-     *
-     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
-     *
-     * @see setCode()
-     * @see execute()
+     * {@inheritDoc}
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
@@ -179,18 +171,7 @@ class ImiCommand extends Command
     }
 
     /**
-     * Executes the current command.
-     *
-     * This method is not abstract because you can use this class
-     * as a concrete class. In this case, instead of defining the
-     * execute() method, you set the code to execute by passing
-     * a Closure to the setCode() method.
-     *
-     * @return int 0 if everything went fine, or an exit code
-     *
-     * @throws \LogicException When this abstract method is not implemented
-     *
-     * @see setCode()
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

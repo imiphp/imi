@@ -32,7 +32,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化协议版本.
+         * {@inheritDoc}
          */
         protected function initProtocolVersion(): void
         {
@@ -40,7 +40,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化 headers.
+         * {@inheritDoc}
          */
         protected function initHeaders(): void
         {
@@ -56,7 +56,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化 body.
+         * {@inheritDoc}
          */
         protected function initBody(): void
         {
@@ -64,7 +64,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化 uri.
+         * {@inheritDoc}
          */
         protected function initUri(): void
         {
@@ -73,7 +73,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化 method.
+         * {@inheritDoc}
          */
         protected function initMethod(): void
         {
@@ -81,7 +81,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化 server.
+         * {@inheritDoc}
          */
         protected function initServer(): void
         {
@@ -89,7 +89,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 初始化请求参数.
+         * {@inheritDoc}
          */
         protected function initRequestParams(): void
         {
@@ -119,7 +119,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         }
 
         /**
-         * 获取客户端地址
+         * {@inheritDoc}
          */
         public function getClientAddress(): IPEndPoint
         {

@@ -22,7 +22,7 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
 class WorkermanApp extends CliApp
 {
     /**
-     * 应用模式的配置.
+     * {@inheritDoc}
      */
     protected array $appConfig = [
         'Timer' => WorkermanTimer::class,
@@ -32,7 +32,7 @@ class WorkermanApp extends CliApp
     ];
 
     /**
-     * 构造方法.
+     * {@inheritDoc}
      */
     public function __construct(string $namespace)
     {
@@ -46,13 +46,16 @@ class WorkermanApp extends CliApp
     }
 
     /**
-     * 获取应用类型.
+     * {@inheritDoc}
      */
     public function getType(): string
     {
         return 'workerman';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function __loadConfig(): void
     {
         parent::__loadConfig();
@@ -73,7 +76,7 @@ class WorkermanApp extends CliApp
     }
 
     /**
-     * 加载运行时.
+     * {@inheritDoc}
      */
     public function loadRuntime(): int
     {
@@ -152,7 +155,7 @@ class WorkermanApp extends CliApp
     }
 
     /**
-     * 加载入口.
+     * {@inheritDoc}
      */
     public function loadMain(): void
     {

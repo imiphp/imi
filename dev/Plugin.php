@@ -87,7 +87,7 @@ class Plugin
         {
             // 兼容 symfony process < 3.3
             $process = new Process([]);
-            /* @phpstan-ignore-next-line */
+            // @phpstan-ignore-next-line
             $process->setCommandLine(implode(' ', $cmd));
         }
         $process->setTimeout(0);

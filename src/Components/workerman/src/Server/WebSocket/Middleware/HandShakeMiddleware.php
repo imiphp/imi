@@ -19,7 +19,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class HandShakeMiddleware implements MiddlewareInterface
 {
     /**
-     * 处理方法.
+     * {@inheritDoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

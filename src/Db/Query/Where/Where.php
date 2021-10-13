@@ -47,7 +47,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 字段名.
+     * {@inheritDoc}
      */
     public function getFieldName(): ?string
     {
@@ -55,7 +55,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 比较符.
+     * {@inheritDoc}
      */
     public function getOperation(): ?string
     {
@@ -63,9 +63,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 值
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getValue()
     {
@@ -73,7 +71,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 逻辑运算符.
+     * {@inheritDoc}
      */
     public function getLogicalOperator(): string
     {
@@ -81,7 +79,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 字段名.
+     * {@inheritDoc}
      */
     public function setFieldName(?string $fieldName): void
     {
@@ -89,7 +87,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 比较符.
+     * {@inheritDoc}
      */
     public function setOperation(?string $operation): void
     {
@@ -97,9 +95,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 值
-     *
-     * @param mixed $value
+     * {@inheritDoc}
      */
     public function setValue($value): void
     {
@@ -107,7 +103,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 逻辑运算符.
+     * {@inheritDoc}
      */
     public function setLogicalOperator(string $logicalOperator): void
     {
@@ -115,7 +111,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 获取无逻辑的字符串.
+     * {@inheritDoc}
      */
     public function toStringWithoutLogic(IQuery $query): string
     {
@@ -161,7 +157,7 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 获取绑定的数据们.
+     * {@inheritDoc}
      */
     public function getBinds(): array
     {

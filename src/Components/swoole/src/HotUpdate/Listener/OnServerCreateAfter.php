@@ -19,7 +19,7 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 class OnServerCreateAfter implements IEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {

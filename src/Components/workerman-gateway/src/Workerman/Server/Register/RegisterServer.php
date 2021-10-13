@@ -13,12 +13,12 @@ use Imi\Bean\Annotation\Bean;
 class RegisterServer extends \Imi\Workerman\Server\Tcp\Server
 {
     /**
-     * Workerman Worker 类名.
+     * {@inheritDoc}
      */
     protected string $workerClass = Register::class;
 
     /**
-     * 获取实例化 Worker 用的协议.
+     * {@inheritDoc}
      */
     protected function getWorkerScheme(): string
     {

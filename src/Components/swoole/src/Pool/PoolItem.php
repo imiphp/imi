@@ -21,7 +21,7 @@ class PoolItem extends \Imi\Pool\PoolItem
     }
 
     /**
-     * 锁定.
+     * {@inheritDoc}
      */
     public function lock(float $timeout = 0): bool
     {
@@ -38,7 +38,7 @@ class PoolItem extends \Imi\Pool\PoolItem
     }
 
     /**
-     * 释放.
+     * {@inheritDoc}
      */
     public function release(): void
     {

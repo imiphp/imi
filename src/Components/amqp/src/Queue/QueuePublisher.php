@@ -40,7 +40,7 @@ class QueuePublisher extends BasePublisher
     }
 
     /**
-     * 初始化配置.
+     * {@inheritDoc}
      */
     protected function initConfig(): void
     {

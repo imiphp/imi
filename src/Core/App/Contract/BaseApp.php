@@ -64,7 +64,7 @@ abstract class BaseApp implements IApp
     }
 
     /**
-     * 加载配置.
+     * {@inheritDoc}
      */
     public function loadConfig(): void
     {
@@ -82,7 +82,7 @@ abstract class BaseApp implements IApp
     }
 
     /**
-     * 加载入口.
+     * {@inheritDoc}
      */
     public function loadMain(): void
     {
@@ -110,7 +110,7 @@ abstract class BaseApp implements IApp
     }
 
     /**
-     * 初始化.
+     * {@inheritDoc}
      */
     public function init(): void
     {

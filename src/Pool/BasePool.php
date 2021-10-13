@@ -82,7 +82,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取池子名称.
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -90,9 +90,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取池子配置.
-     *
-     * @return \Imi\Pool\Interfaces\IPoolConfig
+     * {@inheritDoc}
      */
     public function getConfig(): Interfaces\IPoolConfig
     {
@@ -100,7 +98,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 打开池子.
+     * {@inheritDoc}
      */
     public function open(): void
     {
@@ -111,7 +109,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 关闭池子，释放所有资源.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -127,7 +125,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 释放资源占用.
+     * {@inheritDoc}
      */
     public function release(IPoolResource $resource): void
     {
@@ -142,7 +140,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 从连接池移除资源.
+     * {@inheritDoc}
      */
     public function removeResource(IPoolResource $resource, bool $buildQueue = false): void
     {
@@ -159,7 +157,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 资源回收.
+     * {@inheritDoc}
      */
     public function gc(): void
     {
@@ -196,7 +194,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 填充最少资源数量.
+     * {@inheritDoc}
      */
     public function fillMinResources(): void
     {
@@ -255,9 +253,7 @@ abstract class BasePool implements IPool
     abstract protected function push(IPoolResource $resource): void;
 
     /**
-     * 获得资源配置.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getResourceConfig()
     {
@@ -265,7 +261,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取当前池子中资源总数.
+     * {@inheritDoc}
      */
     public function getCount(): int
     {
@@ -273,7 +269,7 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取当前池子中正在使用的资源总数.
+     * {@inheritDoc}
      */
     public function getUsed(): int
     {

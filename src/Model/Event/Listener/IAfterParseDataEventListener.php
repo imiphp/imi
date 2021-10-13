@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\AfterParseDataEventParam;
  */
 interface IAfterParseDataEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterParseDataEventParam $e): void;
 }

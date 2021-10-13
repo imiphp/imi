@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\AfterSaveEventParam;
  */
 interface IAfterSaveEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterSaveEventParam $e): void;
 }

@@ -89,9 +89,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置验证器中的数据.
-     *
-     * @param array|object $data
+     * {@inheritDoc}
      */
     public function setData(&$data): void
     {
@@ -99,9 +97,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获取验证器中的数据.
-     *
-     * @return array|object
+     * {@inheritDoc}
      */
     public function getData()
     {
@@ -109,9 +105,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置校验规则.
-     *
-     * @param \Imi\Validate\Annotation\Condition[] $rules
+     * {@inheritDoc}
      */
     public function setRules(array $rules): void
     {
@@ -119,9 +113,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获得所有校验规则.
-     *
-     * @return \Imi\Validate\Annotation\Condition[]
+     * {@inheritDoc}
      */
     public function getRules(): array
     {
@@ -129,9 +121,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获得所有注解校验规则.
-     *
-     * @return \Imi\Validate\Annotation\Condition[]
+     * {@inheritDoc}
      */
     public function getAnnotationRules(): array
     {
@@ -159,8 +149,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证，返回是否通过
-     * 当遇到不通过时结束验证流程.
+     * {@inheritDoc}
      */
     public function validate(): bool
     {
@@ -168,7 +157,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证所有，返回是否通过.
+     * {@inheritDoc}
      */
     public function validateAll(): bool
     {
@@ -176,7 +165,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获取第一条失败信息.
+     * {@inheritDoc}
      */
     public function getMessage(): ?string
     {
@@ -184,7 +173,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获取所有验证结果.
+     * {@inheritDoc}
      */
     public function getResults(): array
     {

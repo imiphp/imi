@@ -12,7 +12,7 @@ use Imi\Util\MemoryTable\IMemoryTableOption;
 class ConnectionContextOption implements IMemoryTableOption
 {
     /**
-     * 获取配置.
+     * {@inheritDoc}
      */
     public function getOption(?array $option = null): array
     {

@@ -12,8 +12,5 @@ use Imi\Model\Event\Param\AfterQueryEventParam;
  */
 interface IAfterQueryEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterQueryEventParam $e): void;
 }

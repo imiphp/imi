@@ -11,8 +11,5 @@ use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
  */
 interface IWorkerExitEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(WorkerExitEventParam $e): void;
 }

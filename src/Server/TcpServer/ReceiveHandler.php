@@ -32,9 +32,7 @@ class ReceiveHandler implements IReceiveHandler
     }
 
     /**
-     * 返回值为响应内容，为null则无任何响应.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(IReceiveData $data)
     {

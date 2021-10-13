@@ -19,7 +19,7 @@ use function Yurun\Swoole\Coroutine\goWait;
 class WorkerStart implements IWorkerStartEventListener
 {
     /**
-     * 事件处理方法.
+     * {@inheritDoc}
      */
     public function handle(WorkerStartEventParam $e): void
     {

@@ -15,10 +15,7 @@ class PgModel extends Model
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
 
     /**
-     * 返回一个查询器.
-     *
-     * @param string|null $poolName  连接池名，为null则取默认
-     * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
+     * {@inheritDoc}
      */
     public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
     {

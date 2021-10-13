@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AMQPApp\AMQP\QueueTest;
 
-use Imi\AMQP\Queue\QueueAMQPMessage;
 use Imi\Bean\Annotation\Bean;
 use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Driver\IQueueDriver;
@@ -17,9 +16,7 @@ use Imi\Redis\Redis;
 class QueueTestConsumer extends BaseQueueConsumer
 {
     /**
-     * 处理消费.
-     *
-     * @param QueueAMQPMessage $message
+     * {@inheritDoc}
      */
     protected function consume(IMessage $message, IQueueDriver $queue): void
     {

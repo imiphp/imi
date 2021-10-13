@@ -56,7 +56,7 @@ class ActionMiddleware implements MiddlewareInterface
     private array $extractDataAnnotationCaches = [];
 
     /**
-     * 处理方法.
+     * {@inheritDoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

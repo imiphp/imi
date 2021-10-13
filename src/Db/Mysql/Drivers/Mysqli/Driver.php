@@ -78,7 +78,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 是否已连接.
+     * {@inheritDoc}
      */
     public function isConnected(): bool
     {
@@ -86,7 +86,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * ping 检查是否已连接.
+     * {@inheritDoc}
      */
     public function ping(): bool
     {
@@ -96,7 +96,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 打开
+     * {@inheritDoc}
      */
     public function open(): bool
     {
@@ -109,7 +109,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 关闭.
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -128,7 +128,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 获取原对象实例.
+     * {@inheritDoc}
      */
     public function getInstance(): mysqli
     {
@@ -136,7 +136,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 启动一个事务
+     * {@inheritDoc}
      */
     public function beginTransaction(): bool
     {
@@ -151,7 +151,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 提交一个事务
+     * {@inheritDoc}
      */
     public function commit(): bool
     {
@@ -159,8 +159,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 回滚事务
-     * 支持设置回滚事务层数，如果不设置则为全部回滚.
+     * {@inheritDoc}
      */
     public function rollBack(?int $levels = null): bool
     {
@@ -182,7 +181,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 获取事务层数.
+     * {@inheritDoc}
      */
     public function getTransactionLevels(): int
     {
@@ -190,7 +189,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 检查是否在一个事务内.
+     * {@inheritDoc}
      */
     public function inTransaction(): bool
     {
@@ -198,9 +197,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 返回错误码
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function errorCode()
     {
@@ -215,7 +212,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 返回错误信息.
+     * {@inheritDoc}
      */
     public function errorInfo(): string
     {
@@ -230,7 +227,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 获取最后一条执行的SQL语句.
+     * {@inheritDoc}
      */
     public function lastSql(): string
     {
@@ -238,7 +235,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 执行一条 SQL 语句，并返回受影响的行数.
+     * {@inheritDoc}
      */
     public function exec(string $sql): int
     {
@@ -249,7 +246,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 批量执行 SQL，返回查询结果.
+     * {@inheritDoc}
      */
     public function batchExec(string $sql): array
     {
@@ -287,11 +284,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 取回一个数据库连接的属性.
-     *
-     * @param mixed $attribute
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function getAttribute($attribute)
     {
@@ -299,10 +292,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 设置属性.
-     *
-     * @param mixed $attribute
-     * @param mixed $value
+     * {@inheritDoc}
      */
     public function setAttribute($attribute, $value): bool
     {
@@ -310,7 +300,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 返回最后插入行的ID或序列值
+     * {@inheritDoc}
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -318,7 +308,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 返回受上一个 SQL 语句影响的行数.
+     * {@inheritDoc}
      */
     public function rowCount(): int
     {
@@ -326,7 +316,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 准备执行语句并返回一个语句对象
+     * {@inheritDoc}
      */
     public function prepare(string $sql, array $driverOptions = []): IMysqlStatement
     {
@@ -354,7 +344,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
+     * {@inheritDoc}
      */
     public function query(string $sql): IMysqlStatement
     {
@@ -369,7 +359,7 @@ class Driver extends MysqlBase implements IMysqlDb
     }
 
     /**
-     * Get 事务管理.
+     * {@inheritDoc}
      */
     public function getTransaction(): Transaction
     {

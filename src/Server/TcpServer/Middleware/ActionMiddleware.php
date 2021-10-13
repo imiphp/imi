@@ -16,9 +16,7 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 class ActionMiddleware implements IMiddleware
 {
     /**
-     * 处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {

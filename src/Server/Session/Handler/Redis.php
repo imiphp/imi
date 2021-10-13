@@ -14,7 +14,7 @@ use Imi\Redis\Redis as ImiRedis;
 class Redis extends Base
 {
     /**
-     * Redis连接池名称.
+     * {@inheritDoc}
      */
     protected string $poolName = '';
 
@@ -33,7 +33,7 @@ class Redis extends Base
     }
 
     /**
-     * 销毁session数据.
+     * {@inheritDoc}
      */
     public function destroy(string $sessionId): void
     {
@@ -43,9 +43,7 @@ class Redis extends Base
     }
 
     /**
-     * 垃圾回收.
-     *
-     * @param int $maxLifeTime 最大存活时间，单位：秒
+     * {@inheritDoc}
      */
     public function gc(int $maxLifeTime): void
     {
@@ -53,7 +51,7 @@ class Redis extends Base
     }
 
     /**
-     * 读取session.
+     * {@inheritDoc}
      */
     public function read(string $sessionId): string
     {
@@ -63,7 +61,7 @@ class Redis extends Base
     }
 
     /**
-     * 写入session.
+     * {@inheritDoc}
      */
     public function write(string $sessionId, string $sessionData, int $maxLifeTime): void
     {
@@ -73,7 +71,7 @@ class Redis extends Base
     }
 
     /**
-     * 获取在Redis中存储的key.
+     * {@inheritDoc}
      */
     public function getKey(string $sessionId): string
     {

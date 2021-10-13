@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Bean;
 class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
 {
     /**
-     * Workerman Worker 类名.
+     * {@inheritDoc}
      */
     protected string $workerClass = Gateway::class;
 }

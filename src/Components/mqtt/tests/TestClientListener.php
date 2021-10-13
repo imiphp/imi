@@ -38,7 +38,7 @@ class TestClientListener implements IMQTTClientListener
     private $pingResult;
 
     /**
-     * 连接确认.
+     * {@inheritDoc}
      */
     public function connectACK(\Imi\MQTT\Client\MQTTClient $client, ConnectResponsePacket $packet): void
     {
@@ -46,7 +46,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 发布.
+     * {@inheritDoc}
      */
     public function publish(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishRequestPacket $packet): void
     {
@@ -54,7 +54,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 发布确认.
+     * {@inheritDoc}
      */
     public function publishAck(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishAckPacket $packet): void
     {
@@ -62,7 +62,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 发布已收到（保证交付部分1）.
+     * {@inheritDoc}
      */
     public function publishReceived(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReceivedPacket $packet): void
     {
@@ -70,7 +70,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 发布释放（确保交付的第2部分）.
+     * {@inheritDoc}
      */
     public function publishRelease(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReleasePacket $packet): void
     {
@@ -78,7 +78,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 发布完成（保证交付的第3部分）.
+     * {@inheritDoc}
      */
     public function publishComplete(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishCompletePacket $packet): void
     {
@@ -86,7 +86,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 订阅确认.
+     * {@inheritDoc}
      */
     public function subscribeACK(\Imi\MQTT\Client\MQTTClient $client, SubscribeResponsePacket $packet): void
     {
@@ -94,7 +94,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * 取消订阅确认.
+     * {@inheritDoc}
      */
     public function unsubscribeACK(\Imi\MQTT\Client\MQTTClient $client, UnsubscribeResponsePacket $packet): void
     {
@@ -103,7 +103,7 @@ class TestClientListener implements IMQTTClientListener
     }
 
     /**
-     * Ping 响应.
+     * {@inheritDoc}
      */
     public function ping(\Imi\MQTT\Client\MQTTClient $client, PingResponsePacket $packet): void
     {

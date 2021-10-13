@@ -6,10 +6,7 @@ namespace Imi\Server\Session\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
-use Imi\Server\Http\Message\Request;
-use Imi\Server\Http\Message\Response;
 use Imi\Server\Session\SessionManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,10 +26,9 @@ class HttpSessionMiddleware implements MiddlewareInterface
     protected $sessionIdHandler = null;
 
     /**
-     * Process an incoming server request and return a response, optionally delegating
-     * response creation to a handler.
+     * {@inheritDoc}
      *
-     * @param IHttpRequest $request
+     * @param \Imi\Server\Http\Message\Contract\IHttpRequest $request
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

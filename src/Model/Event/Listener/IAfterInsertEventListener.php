@@ -11,8 +11,5 @@ use Imi\Model\Event\Param\AfterInsertEventParam;
  */
 interface IAfterInsertEventListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(AfterInsertEventParam $e): void;
 }

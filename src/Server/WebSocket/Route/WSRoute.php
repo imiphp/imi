@@ -34,9 +34,7 @@ class WSRoute implements IRoute
     protected HttpRoute $httpRoute;
 
     /**
-     * 路由解析处理.
-     *
-     * @param mixed $data
+     * {@inheritDoc}
      */
     public function parse($data): ?RouteResult
     {

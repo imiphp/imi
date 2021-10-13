@@ -14,9 +14,7 @@ use Imi\Swoole\Task\TaskParam;
 class TestTask implements ITaskHandler
 {
     /**
-     * 任务处理方法.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
     {
@@ -26,10 +24,7 @@ class TestTask implements ITaskHandler
     }
 
     /**
-     * 任务结束时触发.
-     *
-     * @param \swoole_server $server
-     * @param mixed          $data
+     * {@inheritDoc}
      */
     public function finish(\Swoole\Server $server, int $taskId, $data): void
     {

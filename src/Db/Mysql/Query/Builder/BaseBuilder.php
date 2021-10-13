@@ -9,7 +9,7 @@ use Imi\Db\Query\Field;
 abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
 {
     /**
-     * fields.
+     * {@inheritDoc}
      */
     protected function parseField(array $fields): string
     {

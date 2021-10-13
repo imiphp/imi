@@ -11,8 +11,5 @@ use Imi\Queue\Event\Param\ConsumerAfterPopParam;
  */
 interface IConsumerAfterPopListener
 {
-    /**
-     * 事件处理方法.
-     */
     public function handle(ConsumerAfterPopParam $e): void;
 }

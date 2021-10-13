@@ -293,7 +293,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 获取队列名称.
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -301,7 +301,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 推送消息到队列，返回消息ID.
+     * {@inheritDoc}
      */
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
@@ -327,9 +327,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 从队列弹出一个消息.
-     *
-     * @param float $timeout 超时时间，单位：秒。值小于等于0时立即返回结果
+     * {@inheritDoc}
      */
     public function pop(float $timeout = 0): ?IMessage
     {
@@ -391,7 +389,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 删除一个消息.
+     * {@inheritDoc}
      */
     public function delete(IMessage $message): bool
     {
@@ -401,9 +399,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 清空队列.
-     *
-     * @param int|int[]|null $queueType 清空哪个队列，默认为全部
+     * {@inheritDoc}
      */
     public function clear($queueType = null): void
     {
@@ -446,7 +442,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将消息标记为成功
+     * {@inheritDoc}
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
      */
@@ -458,7 +454,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将消息标记为失败.
+     * {@inheritDoc}
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
      */
@@ -486,7 +482,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 获取队列状态
+     * {@inheritDoc}
      */
     public function status(): QueueStatus
     {
@@ -574,9 +570,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将失败消息恢复到队列.
-     *
-     * 返回恢复数量
+     * {@inheritDoc}
      */
     public function restoreFailMessages(): int
     {
@@ -596,9 +590,7 @@ class AMQPQueueDriver implements IQueueDriver
     }
 
     /**
-     * 将超时消息恢复到队列.
-     *
-     * 返回恢复数量
+     * {@inheritDoc}
      */
     public function restoreTimeoutMessages(): int
     {
