@@ -311,6 +311,10 @@ a.pure-button-primary {
     background-color: rgb(255, 255, 255);
 }
 
+.content-wrapper-height{
+    top: 100px;
+}
+
 .content {
     padding: 1em 1em 2em;
 }
@@ -399,8 +403,17 @@ a.pure-button-primary {
     }
 }
 
+#anli_list {
+	width: 70%;
+	margin:0 auto;
+}
+
 /** 自适应手机端 **/
 @media screen and (max-width: 30em) {
+    .content-wrapper-height{
+		top: 50px;
+	}
+	
     .splash {
         height: 90% !important;
     }
@@ -454,6 +467,15 @@ a.pure-button-primary {
     .pure-img-responsive {
         height: auto !important;
     }	
+	
+    #anli_list {
+	    width: 90%;
+    }
+    .l-box .cases, .l-box .videos {	
+	    height: 220px;
+		margin: 0;
+	}
+	
 }
 
 /** 按钮 **/

@@ -62,7 +62,7 @@
 
 
 .m-modal__header {
-  padding: 20px 20px 10px;
+  padding: 10px;
 }
 
 .m-modal__title {
@@ -109,7 +109,7 @@ button {
 }
 
 .m-modal__body {
-  padding: 30px 20px;
+  padding: 10px;
   color: #606266;
   font-size: 14px;
   word-break: break-all;
