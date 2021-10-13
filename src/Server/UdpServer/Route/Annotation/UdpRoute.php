@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property array $condition 条件
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class UdpRoute extends Base
+class UdpRoute extends Base implements \Stringable
 {
     /**
      * {@inheritDoc}

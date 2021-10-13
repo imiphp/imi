@@ -9,7 +9,7 @@ use Psr\Http\Message\UriInterface;
 use function sprintf;
 use function str_replace;
 
-class Uri implements UriInterface
+class Uri implements UriInterface, \Stringable
 {
     /**
      * 协议，如：http.

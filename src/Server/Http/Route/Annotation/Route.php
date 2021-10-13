@@ -28,7 +28,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|string[] $responseMime         返回的mime类型；只有当请求头Accept中包含，才可以返回；支持字符串和字符串数组
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class Route extends Base
+class Route extends Base implements \Stringable
 {
     /**
      * {@inheritDoc}

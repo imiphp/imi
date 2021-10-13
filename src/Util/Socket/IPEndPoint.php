@@ -7,7 +7,7 @@ namespace Imi\Util\Socket;
 /**
  * IP 端点.
  */
-class IPEndPoint
+class IPEndPoint implements \Stringable
 {
     /**
      * 地址

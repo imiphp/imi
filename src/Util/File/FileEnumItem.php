@@ -6,7 +6,7 @@ namespace Imi\Util\File;
 
 use Imi\Util\File;
 
-class FileEnumItem
+class FileEnumItem implements \Stringable
 {
     /**
      * 路径.

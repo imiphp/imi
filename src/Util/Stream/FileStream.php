@@ -7,7 +7,7 @@ namespace Imi\Util\Stream;
 use Imi\Util\Uri;
 use Psr\Http\Message\StreamInterface;
 
-class FileStream implements StreamInterface
+class FileStream implements StreamInterface, \Stringable
 {
     /**
      * 文件Uri.

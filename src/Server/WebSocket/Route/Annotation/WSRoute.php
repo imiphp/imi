@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $route     http 路由；如果设置，则只有握手指定 http 路由，才可以触发该 WebSocket 路由
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class WSRoute extends Base
+class WSRoute extends Base implements \Stringable
 {
     /**
      * {@inheritDoc}

@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property array $condition 条件
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class TcpRoute extends Base
+class TcpRoute extends Base implements \Stringable
 {
     /**
      * {@inheritDoc}

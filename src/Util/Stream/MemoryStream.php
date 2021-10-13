@@ -7,7 +7,7 @@ namespace Imi\Util\Stream;
 use Imi\Util\Text;
 use Psr\Http\Message\StreamInterface;
 
-class MemoryStream implements StreamInterface
+class MemoryStream implements StreamInterface, \Stringable
 {
     /**
      * 内容.
