@@ -1,0 +1,38 @@
+{
+  "name": "IMIPHP",
+  "version": "0.0.1",
+  "description": "IMIPHP官网",
+  "main": "webpack.config.js",
+  "scripts": {
+    "watch": "webpack --watch",
+    "p": "webpack --p"
+  },
+  "author": "lovefc",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/preset-env": "^7.13.12",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.0",
+    "file-loader": "^6.2.0",
+    "glob-all": "^3.2.1",
+    "html-webpack-plugin": "^5.3.1",
+    "html-withimg-loader": "^0.1.16",
+    "jquery": "^3.6.0",
+    "mini-css-extract-plugin": "^2.3.0",
+    "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "purgecss-webpack-plugin": "^4.0.3",
+    "sass": "^1.41.0",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "axios": "^0.22.0",
+    "npm": "^7.22.0",
+    "run": "^1.4.0"
+  }
+}
