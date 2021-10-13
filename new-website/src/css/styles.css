@@ -408,6 +408,12 @@ a.pure-button-primary {
 	margin:0 auto;
 }
 
+.donate-list {
+	width:70%;
+	margin:0 auto;
+	border: 1px solid rgb(214 210 206);
+}
+
 /** 自适应手机端 **/
 @media screen and (max-width: 30em) {
     .content-wrapper-height{
@@ -452,10 +458,12 @@ a.pure-button-primary {
     .liuyan {
         display: none;
     }
-
+	
+    /*
     .qudao {
         display: none;
     }
+	*/
 
     .home-menu .left {
         font-size: 15px;
@@ -471,6 +479,9 @@ a.pure-button-primary {
     #anli_list {
 	    width: 90%;
     }
+    .donate-list {
+	    width:98%;
+    }	
     .l-box .cases, .l-box .videos {	
 	    height: 220px;
 		margin: 0;
