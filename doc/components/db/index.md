@@ -439,21 +439,21 @@ Db::transContext(function(IDb $db){
 
 `@Transaction(autoCommit="自动提交事务true/false，默认为true")`
 
-事务类型：
+**事务类型：**
 
-事务嵌套（默认）
-
-`@Transaction(type=TransactionType::NESTING)`
-
-该方法必须在事务中被调用
-
-`@Transaction(type=TransactionType::REQUIREMENT)`
-
-如果当前不在事务中则开启事务
+* 如果当前不在事务中则开启事务（默认）
 
 `@Transaction(type=TransactionType::AUTO)`
 
-部分回滚：
+* 事务嵌套
+
+`@Transaction(type=TransactionType::NESTING)`
+
+* 该方法必须在事务中被调用
+
+`@Transaction(type=TransactionType::REQUIREMENT)`
+
+**部分回滚：**
 
 `@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1")`
 
