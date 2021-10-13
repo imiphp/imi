@@ -83,7 +83,6 @@ class FileMTime extends BaseMonitor
         }, $files);
         $changedFiles = &$this->changedFiles;
         $changedFiles = [];
-        $excludePaths = &$this->excludePaths;
         $includePaths = $this->includePaths;
         $excludeRule = $this->excludeRule;
         // 包含的路径中检测

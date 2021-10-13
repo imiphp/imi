@@ -62,7 +62,7 @@ class Inotify extends BaseMonitor
         {
             foreach ($includePaths as $path)
             {
-                if (is_file($path) && !is_dir($path))
+                if (!file_exists($path))
                 {
                     continue;
                 }
@@ -112,8 +112,14 @@ class Inotify extends BaseMonitor
                     continue;
                 }
                 $filePath = File::path($key, $item['name']);
-                $filePathIsDir = is_dir($filePath);
-                if (!$filePathIsDir && ('' === $excludeRule || preg_match($excludeRule, $filePath)))
+                if (is_dir($filePath))
+                {
+                    if (!isset($paths[$filePath]))
+                    {
+                        $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
+                    }
+                }
+                elseif ('' === $excludeRule || preg_match($excludeRule, $filePath))
                 {
                     $changedFiles[] = $filePath;
                 }
