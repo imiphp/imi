@@ -78,8 +78,10 @@ class Message implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @param float $workingTimeout
      */
-    public function setWorkingTimeout(float $workingTimeout): void
+    public function setWorkingTimeout($workingTimeout): void
     {
         $this->workingTimeout = (float) $workingTimeout;
     }
@@ -94,8 +96,10 @@ class Message implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @param int $retryCount
      */
-    public function setRetryCount(int $retryCount): void
+    public function setRetryCount($retryCount): void
     {
         $this->retryCount = (int) $retryCount;
     }
@@ -110,8 +114,10 @@ class Message implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @param int $maxRetryCount
      */
-    public function setMaxRetryCount(int $maxRetryCount): void
+    public function setMaxRetryCount($maxRetryCount): void
     {
         $this->maxRetryCount = (int) $maxRetryCount;
     }
