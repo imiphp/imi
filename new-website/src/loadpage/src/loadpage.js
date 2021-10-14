@@ -4,7 +4,7 @@
  * blog：https://lovefc.cn
  * github: https://github.com/lovefc/loadpage
  * gitee: https://gitee.com/lovefc/loadpage
- * time: 2021/09/28 17:41
+ * time: 2021/10/14 19:58
  */
 
 ; (function (exports) {
@@ -123,14 +123,22 @@ class loadpage {
 			this.closeLoading2 = `function ${this.closePageLoading}`;
 		}
 		let dom_load = `
+			if(document.readyState == "loading"){
+				document.documentElement.style.display="none";
+			}				
 			document.addEventListener('DOMContentLoaded',function(){
+				document.documentElement.style.display="block";
 	            setTimeout(${this.closeLoading2}("${this.loadID}","${this.animateName}",${this.delayTime}),${this.delayTime});
             });		
 	    `;
 		let all_load = `
+			if(document.readyState == "loading"){
+				document.documentElement.style.display="none";
+			}		
             document.onreadystatechange = runLoading; 
 			function runLoading(){
 				if(document.readyState == "complete"){
+					document.documentElement.style.display="block";
 					setTimeout(${this.closeLoading2}("${this.loadID}","${this.animateName}",${this.delayTime}),${this.delayTime});
 				}
 			}
