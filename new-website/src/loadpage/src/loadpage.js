@@ -2,30 +2,90 @@
  * 页面加载器
  * author: lovefc
  * blog：https://lovefc.cn
- * github: https://github.com/lovefc
- * gitee: https://gitee.com/lovefc
+ * github: https://github.com/lovefc/loadpage
+ * gitee: https://gitee.com/lovefc/loadpage
  * time: 2021/09/28 17:41
  */
 
+; (function (exports) {
+	let doc = exports.document,
+		a = {},
+		expose = +new Date(),
+		rExtractUri = /((?:http|https|file):\/\/.*?\/[^:]+)(?::\d+)?:\d+/,
+		isLtIE8 = ('' + doc.querySelector).indexOf('[native code]') === -1;
+	exports.getCurrAbsPath = function () {
+		// FF,Chrome
+		if (doc.currentScript) {
+			return doc.currentScript.src;
+		}
+		let stack;
+		try {
+			a.b();
+		}
+		catch (e) {
+			stack = e.fileName || e.sourceURL || e.stack || e.stacktrace;
+		}
+		// IE10
+		if (stack) {
+			let absPath = rExtractUri.exec(stack)[1];
+			if (absPath) {
+				return absPath;
+			}
+		}
+		// IE5-9
+		for (var scripts = doc.scripts,
+			i = scripts.length - 1,
+			script; script = scripts[i--];) {
+			if (script.className !== expose && script.readyState === 'interactive') {
+				script.className = expose;
+				return isLtIE8 ? script.getAttribute('src', 4) : script.src;
+			}
+		}
+	};
+}(window));
+
+let srcPath = getCurrAbsPath();
+
+const NowSrcPath = srcPath.substring(0, srcPath.lastIndexOf("/"));
+
 class loadpage {
 	constructor(options) {
+
 		let that = this;
-		this.loadCss = './css/style.css'; // 要加载的css
-		this.animateCss = './css/animate.css'; // 要加载动画css
+			
+		this.srcPath = NowSrcPath;
+
+		this.themeCss = ''; // 要加载的css
+
+		this.defaultCss = NowSrcPath + '/css/default.css'; // 要加载的默认css
+
 		this.animateName = 'fadeOut'; // 要执行的动画名称
-		this.delayTime = 1000; // 延迟时间 
+
+		this.delayTime = 3000; // 延迟时间 
+
 		this.loadMode = 'all'; // 加载方式,part(局部,也就是dom渲染完),all(等待图片等资源)
+
 		this.divHtml = `
-            <div class="loader"><div class="inner one"></div><div class="inner two"></div><div class="inner three"></div></div>		
+            <div class="fc_load_inner"><div class="fc_inner one"></div><div class="fc_inner two"></div><div class="fc_inner three"></div></div>		
 		`;
+		this.loadID = 'fc_loader';
 		for (let key in options) {
 			if (key in that) {
 				that[key] = options[key];
 			}
-		}	
+		}
+		
+        this.addLoadIngDiv(this.loadID);
+		
+		if (loadpage.isSystem() === 'win') {
+			this.loadStyle(this.defaultCss, 'head');
+			if(this.themeCss){
+			    this.loadStyle(this.themeCss, 'head');
+			}			
+		}
 	}
 	static isSystem() {
-        if ("undefined" != typeof __webpack_modules__){
+		if ("undefined" != typeof __webpack_modules__) {
 			return 'webpack';
 		} else if (typeof window === 'object') {
 			return 'win';
@@ -34,91 +94,53 @@ class loadpage {
 		}
 	}
 	loading() {
-		this.openLoading();
 		this.addHeadJs();
 	}
-	addHeadCss() {
-		let head = document.getElementsByTagName('head')[0];
-		let style = document.createElement('style');
-		let css = `
-            .fc_loadpage{
-                width:100% !important;
-                height:calc(100%) !important;
-				background-image: radial-gradient(circle farthest-corner at center, #FFF 0%, #F8F8F8 100%);
-				opacity:1 !important;
-				filter:alpha(opacity=100) !important;
-				overflow:visible !important;
-				position:fixed !important;
-				top:0 !important;
-				left:0 !important;
-				bottom:0 !important;
-				right:0 !important;
-				z-index:9998;
-			}	
-		`;
-		if (style.styleSheet) {
-			style.styleSheet.cssText = css;
-		} else {
-			style.appendChild(document.createTextNode(css));
-		}
-		head.appendChild(style);
-	}
-	openLoading() {
-		this.addHeadCss();
-		if (loadpage.isSystem()==='win') {
-			this.loadStyle(this.loadCss, 'head');
-			this.loadStyle(this.animateCss,'head');
-		}
-		this.addLoadIngDiv();
-	}
 	closeLoading() {
-		this.closePageLoading(this.animateName,this.delayTime);
+		this.closePageLoading(this.loadID, this.animateName, this.delayTime);
 	}
-	closePageLoading(animateName,delayTime) {
-		let box = document.getElementById("fc_loader");
-		let a_time = Math.round(delayTime/1000);
-	    let animation = `${animateName} ${a_time}s`;
-	    box.style.animation=animation;
-		setTimeout(function(){
+	closePageLoading(loadID, animateName, delayTime) {
+		let box = document.getElementById(loadID);		
+		if(!box){
+			return false;
+		}
+		let a_time = Math.round(delayTime / 1000);
+		let animation = `${animateName} ${a_time}s`;
+		box.style.animation = animation;
+		setTimeout(function () {
 			if (box) {
 				box.remove();
 			}
-		},(delayTime));
+		}, (delayTime));
 	}
 	addHeadJs() {
 		let head = document.getElementsByTagName('head')[0];
 		let script = document.createElement('script');
 		script.type = 'text/javascript';
-		if(loadpage.isSystem() === 'webpack'){
-		    this.closeLoading2 = `${this.closePageLoading}`;
-		}else{
+		if (loadpage.isSystem() === 'webpack') {
+			this.closeLoading2 = `${this.closePageLoading}`;
+		} else {
 			this.closeLoading2 = `function ${this.closePageLoading}`;
 		}
 		let dom_load = `
 			document.addEventListener('DOMContentLoaded',function(){
-	            setTimeout(${this.closeLoading2}("${this.animateName}",${this.delayTime}),${this.delayTime});
+	            setTimeout(${this.closeLoading2}("${this.loadID}","${this.animateName}",${this.delayTime}),${this.delayTime});
             });		
 	    `;
 		let all_load = `
             document.onreadystatechange = runLoading; 
 			function runLoading(){
 				if(document.readyState == "complete"){
-					setTimeout(${this.closeLoading2}("${this.animateName}",${this.delayTime}),${this.delayTime});
+					setTimeout(${this.closeLoading2}("${this.loadID}","${this.animateName}",${this.delayTime}),${this.delayTime});
 				}
 			}
 		`;
 		let load = all_load;
-		if(this.loadMode === 'part'){
+		if (this.loadMode === 'part') {
 			load = dom_load;
 		}
 		script.text = load;
 		head.appendChild(script);
-	}
-	completeLoading() {
-		if (document.readyState == "complete") {
-			let box = document.getElementById("fc_loader");
-			box.remove();
-		}
 	}
 	loadStyle(url, tagname) {
 		let link = document.createElement('link');
@@ -155,12 +177,12 @@ class loadpage {
 				allsuspects[i].parentNode.removeChild(allsuspects[i]);
 		}
 	}
-	addLoadIngDiv() {
+	addLoadIngDiv(loadid) {
 		let parent = document.body;
 		let div = document.createElement("div");
 		let divhtml = this.divHtml;
 		let html = `
-		    <div class="fc_loadpage" id="fc_loader">${divhtml}</div>
+		    <div id="${loadid}">${divhtml}</div>
 		`;
 		div.innerHTML = html;
 		parent.appendChild(div);
@@ -189,6 +211,6 @@ class loadpage {
 		glob.loadpage = factory();
 	}
 })(function () {
-	'use strice';	
+	'use strice';
 	return loadpage;
 });
