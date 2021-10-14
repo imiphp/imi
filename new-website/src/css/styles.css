@@ -106,7 +106,7 @@ a {
 }
 
 /* 捐赠表格样式 */
-th {
+.donate-list th {
     border-bottom: #EEE 1px solid;
     background-color: #FFF;
     text-align: center;
@@ -114,11 +114,11 @@ th {
     height: 8vh;
 }
 
-td {
+.donate-list td {
     border-bottom: #EEE 1px solid;
     background-color: #FFF;
     text-align: center;
-    height: 5vh;
+    height: 8vh;
     font-size: 14px;
     color: #888;
 }
@@ -414,6 +414,38 @@ a.pure-button-primary {
 	border: 1px solid rgb(214 210 206);
 }
 
+
+.code_table {
+    margin: 0 auto;
+}
+
+.code_table th {
+    border-bottom: #EEE 1px solid;
+    background-color: #FFF;
+    text-align: center;
+    color: #000;
+    height: 8vh;
+	width:50%;
+}
+
+.code_table td {
+    border-bottom: #EEE 1px solid;
+    background-color: #FFF;
+    text-align: unset;
+    height: 5vh;
+    font-size: 14px;
+    color: #888;
+	width:50%;
+}
+:not(pre)>code,
+:not(pre)>kbd,
+:not(pre)>samp {
+    font-size: 12px;
+    font-family: Consolas, monospace, serif;
+    color: #D05;
+    white-space: nowrap;
+}
+
 /** 自适应手机端 **/
 @media screen and (max-width: 30em) {
     .content-wrapper-height{
@@ -486,7 +518,20 @@ a.pure-button-primary {
 	    height: 220px;
 		margin: 0;
 	}
-	
+    .code_table th {
+        height: 10vh;
+		font-size:10px;
+		width:40%;
+    }	
+    .code_table td {
+        height: 10vh;
+		font-size:10px;
+		width:60%;
+    }		
+    :not(pre)>code {
+       font-size: 10px;
+       white-space: unset;
+    }	
 }
 
 /** 按钮 **/
@@ -567,19 +612,6 @@ a:hover {
     font-size: 100%;
     color: #888;
     line-height: 50px !important;
-}
-
-.code_table {
-    margin: 0 auto;
-}
-
-:not(pre)>code,
-:not(pre)>kbd,
-:not(pre)>samp {
-    font-size: 12px;
-    font-family: Consolas, monospace, serif;
-    color: #D05;
-    white-space: nowrap;
 }
 
 .leave_out {
