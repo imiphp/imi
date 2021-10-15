@@ -9,6 +9,7 @@ use Imi\Config;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Worker;
+use Swoole\Process;
 
 class Imi
 {
@@ -99,7 +100,7 @@ class Imi
         $pid = (int) file_get_contents($fileName);
         if ($pid > 0)
         {
-            \Swoole\Process::kill($pid);
+            Process::kill($pid);
         }
         else
         {
@@ -120,7 +121,7 @@ class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
-            \Swoole\Process::kill((int) $pid, \SIGUSR1);
+            Process::kill((int) $pid, \SIGUSR1);
         }
         else
         {
@@ -131,9 +132,7 @@ class Imi
     public static function reloadProcess()
     {
         foreach (ProcessManager::getProcessListWithManager() as $item) {
-            /** @var \Swoole\Process $process */
-            $process = $item['process'];
-            \Swoole\Process::kill($process->pid, \SIGTERM);
+            Process::kill($item->getProcess()->pid, \SIGTERM);
         }
     }
 }
