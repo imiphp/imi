@@ -19,9 +19,6 @@ import $ from './js/jquery-vendor.js';
 /* 弹窗插件 */
 import './alert.js';
 
-/* 加载插件 */
-import './loadpage/index.js';
-
 /* 案例页面 */
 import './cases.js';
 

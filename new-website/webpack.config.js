@@ -11,6 +11,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const glob = require('glob-all');
 const PurifyCssPlugin = require('purgecss-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 
@@ -117,7 +118,10 @@ module.exports = {
             isBrowser: false,
             isDevelopment: process.env.NODE_ENV !== 'production',
             nodeModules: process.env.NODE_ENV !== 'production'? path.resolve(__dirname, '../node_modules') : false				
-        }),			
+        }),	
+        new CopyWebpackPlugin({
+		   patterns:[{from: 'src/loadpage', to: 'assgin/loadpage'}]
+		}),		
     ],
     optimization: {
         minimize: true,
