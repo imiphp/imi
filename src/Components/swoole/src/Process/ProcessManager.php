@@ -154,7 +154,9 @@ class ProcessManager
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
                     }
                     // 写出进程信息
-                    self::writeProcessInfo(self::buildUniqueId($name, $alias), $swooleProcess->id ?? 0, $swooleProcess->pid);
+                    if (null !== $swooleProcess->id && null !== $swooleProcess->pid) {
+                        self::writeProcessInfo(self::buildUniqueId($name, $alias), $swooleProcess->id, $swooleProcess->pid);
+                    }
                     // 进程开始事件
                     Event::trigger('IMI.PROCESS.BEGIN', [
                         'name'      => $name,
@@ -331,6 +333,10 @@ class ProcessManager
 
     public static function writeProcessInfo(string $id, int $wid, int $pid): void
     {
+        if (empty(self::$processInfoTable))
+        {
+            return;
+        }
         self::$processInfoTable->set($id, [
             'wid' => $wid,
             'pid' => $pid,
@@ -342,6 +348,10 @@ class ProcessManager
      */
     public static function readProcessInfo(string $id): ?array
     {
+        if (empty(self::$processInfoTable))
+        {
+            return null;
+        }
         $result = self::$processInfoTable->get($id) ?: null;
 
         return $result;

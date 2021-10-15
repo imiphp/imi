@@ -44,6 +44,10 @@ class ProcessInfo
     public function getPid(): int
     {
         $info = ProcessManager::readProcessInfo($this->uniqueId);
+        if (null === $info)
+        {
+            return 0;
+        }
 
         return $info['pid'];
     }
