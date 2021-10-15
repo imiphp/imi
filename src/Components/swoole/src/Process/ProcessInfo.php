@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Swoole\Process;
 
 use Swoole\Process;
 
-class ProcessItem
+class ProcessInfo
 {
-    protected int $id;
+    protected string $uniqueId;
 
     protected string $name;
 
@@ -16,33 +18,31 @@ class ProcessItem
 
     public function __construct(string $name, ?string $alias, Process $process)
     {
-        $this->id = $process->id;
         $this->name = $name;
         $this->alias = $alias;
         $this->process = $process;
+        $this->uniqueId = ProcessManager::buildUniqueId($name, $alias);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAlias(): ?string
     {
         return $this->alias;
     }
 
-    /**
-     * @return Process
-     */
     public function getProcess(): Process
     {
         return $this->process;
+    }
+
+    public function getPid(): int
+    {
+        $info = ProcessManager::readProcessInfo($this->uniqueId);
+
+        return $info['pid'];
     }
 }

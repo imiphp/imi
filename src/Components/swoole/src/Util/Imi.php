@@ -131,8 +131,18 @@ class Imi
 
     public static function reloadProcess()
     {
-        foreach (ProcessManager::getProcessListWithManager() as $item) {
-            Process::kill($item->getProcess()->pid, \SIGTERM);
+        foreach (ProcessManager::getProcessListWithManager() as $item)
+        {
+            if ('hotUpdate' === $item->getName())
+            {
+                continue;
+            }
+            $pid = $item->getPid();
+            if (empty($pid))
+            {
+                continue;
+            }
+            Process::kill($pid, \SIGTERM);
         }
     }
 }

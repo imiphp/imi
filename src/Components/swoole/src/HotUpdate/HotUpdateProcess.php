@@ -13,7 +13,6 @@ use Imi\Log\Log;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
-use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
 use Imi\Util\Imi;
 use Swoole\Timer;

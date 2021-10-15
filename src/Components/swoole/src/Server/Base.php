@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Server\Group\TServerGroup;
+use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\FinishEventParam;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
@@ -138,6 +139,7 @@ abstract class Base extends BaseServer implements ISwooleServer
         {
             throw new \RuntimeException('Subserver cannot start, please start the main server');
         }
+        ProcessManager::initProcessInfoTable();
         $this->swooleServer->start();
     }
 

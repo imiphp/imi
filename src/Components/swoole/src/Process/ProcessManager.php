@@ -7,10 +7,12 @@ namespace Imi\Swoole\Process;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
+use function hash;
 use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -18,6 +20,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
 use Swoole\Process;
+use Swoole\Table;
 
 /**
  * 进程管理类.
@@ -39,11 +42,13 @@ class ProcessManager
     private static array $managerProcesses = [];
 
     /**
-     * 挂载在管理进程下的进程列表
+     * 挂载在管理进程下的进程列表.
      *
-     * @var ProcessItem[]
+     * @var ProcessInfo[]
      */
-    private static array $managerProcessesList = [];
+    private static array $managerProcessSet = [];
+
+    private static Table $processInfoTable;
 
     private function __construct()
     {
@@ -119,7 +124,7 @@ class ProcessManager
             $processName = $name;
             if ($alias)
             {
-                $processName .= '#' . $processName;
+                $processName .= '#' . $alias;
             }
             SwooleImi::setProcessName('process', [
                 'processName'   => $processName,
@@ -127,7 +132,7 @@ class ProcessManager
             // 随机数播种
             mt_srand();
             $exitCode = 0;
-            $callable = function () use ($swooleProcess, $args, $name, $processOption, &$exitCode) {
+            $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode) {
                 if ($inCoroutine = Coroutine::isIn())
                 {
                     Coroutine::defer(function () use ($name, $swooleProcess) {
@@ -144,12 +149,15 @@ class ProcessManager
                     {
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
                     }
+                    // 写出进程信息
+                    self::writeProcessInfo(self::buildUniqueId($name, $alias), $swooleProcess->id, $swooleProcess->pid);
                     // 进程开始事件
                     Event::trigger('IMI.PROCESS.BEGIN', [
                         'name'      => $name,
                         'process'   => $swooleProcess,
                     ]);
                     // 执行任务
+                    /** @var IProcess $processInstance */
                     $processInstance = App::getBean($processOption['className'], $args);
                     $processInstance->run($swooleProcess);
                     if ($processOption['options']['unique'])
@@ -296,9 +304,42 @@ class ProcessManager
         $swooleServer = $server->getSwooleServer();
         $swooleServer->addProcess($process);
         static::$managerProcesses[$name][$alias] = $process;
-        static::$managerProcessesList[] = new ProcessItem($name, $alias, $process);
+        static::$managerProcessSet[]             = new ProcessInfo($name, $alias, $process);
 
         return $process;
+    }
+
+    public static function buildUniqueId(string $name, ?string $alias): string
+    {
+        return hash('md5', "{$name}|{$alias}");
+    }
+
+    public static function initProcessInfoTable()
+    {
+        $count = \count(static::$managerProcessSet);
+        $table = new Table($count * 2);
+        $table->column('wid', Table::TYPE_INT);
+        $table->column('pid', Table::TYPE_INT);
+        $table->create();
+        self::$processInfoTable = $table;
+    }
+
+    public static function writeProcessInfo(string $id, int $wid, int $pid): void
+    {
+        self::$processInfoTable->set($id, [
+            'wid' => $wid,
+            'pid' => $pid,
+        ]);
+    }
+
+    /**
+     * @return array{wid: int, pid: int}|null
+     */
+    public static function readProcessInfo(string $id): ?array
+    {
+        $result = self::$processInfoTable->get($id) ?: null;
+
+        return $result;
     }
 
     /**
@@ -310,11 +351,11 @@ class ProcessManager
     }
 
     /**
-     * 获取挂载在管理进程下的进程列表
+     * 获取挂载在管理进程下的进程列表.
      */
     public static function getProcessListWithManager(): array
     {
-        return static::$managerProcessesList;
+        return static::$managerProcessSet;
     }
 
     /**
