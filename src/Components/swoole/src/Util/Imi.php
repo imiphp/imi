@@ -129,7 +129,7 @@ class Imi
         }
     }
 
-    public static function reloadProcess()
+    public static function reloadProcess(): void
     {
         $rules = App::getBean('hotUpdate')->getProcess();
         if (false === $rules)
