@@ -207,7 +207,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, "8.0"]
         swoole: [v4.8.0]
     env:
       MYSQL_SERVER_PASSWORD: "root"
@@ -311,7 +311,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, "8.0"]
 
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
