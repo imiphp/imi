@@ -16,7 +16,7 @@ use Imi\Pgsql\Db\PgsqlBase;
 use Imi\Pgsql\Db\Util\SqlUtil;
 use Swoole\Coroutine\PostgreSQL;
 
-if (\Imi\Util\Imi::checkAppType('swoole'))
+if (\extension_loaded('swoole_postgresql'))
 {
     /**
      * Swoole Coroutine PostgreSQL 驱动.
