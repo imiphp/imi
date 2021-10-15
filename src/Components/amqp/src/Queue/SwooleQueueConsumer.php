@@ -13,127 +13,130 @@ use Imi\AMQP\Contract\IQueueConsumer;
 use Imi\AMQP\Message;
 use Swoole\Coroutine\Channel;
 
-class SwooleQueueConsumer extends BaseConsumer implements IQueueConsumer
+if (\Imi\Util\Imi::checkAppType('swoole'))
 {
-    /**
-     * 结果通道.
-     */
-    private Channel $resultChannel;
-
-    /**
-     * 本地缓存的队列长度.
-     */
-    protected int $queueLength;
-
-    public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, string $poolName = null)
+    class SwooleQueueConsumer extends BaseConsumer implements IQueueConsumer
     {
-        parent::__construct();
+        /**
+         * 结果通道.
+         */
+        private Channel $resultChannel;
 
-        $this->queueLength = $queueLength;
-        $this->poolName = $poolName;
+        /**
+         * 本地缓存的队列长度.
+         */
+        protected int $queueLength;
 
-        $list = [];
-        foreach ($exchanges as $exchange)
+        public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, string $poolName = null)
         {
-            $list[] = new Exchange($exchange);
-        }
-        $this->exchanges = $list;
+            parent::__construct();
 
-        $list = [];
-        foreach ($queues as $queue)
-        {
-            $list[] = new Queue($queue);
-        }
-        $this->queues = $list;
+            $this->queueLength = $queueLength;
+            $this->poolName = $poolName;
 
-        $list = [];
-        foreach ($consumers as $consumer)
-        {
-            $list[] = new Consumer($consumer);
-        }
-        $this->consumers = $list;
+            $list = [];
+            foreach ($exchanges as $exchange)
+            {
+                $list[] = new Exchange($exchange);
+            }
+            $this->exchanges = $list;
 
-        $this->resultChannel = new Channel();
-        $this->reopen();
-    }
+            $list = [];
+            foreach ($queues as $queue)
+            {
+                $list[] = new Queue($queue);
+            }
+            $this->queues = $list;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function initConfig(): void
-    {
-    }
+            $list = [];
+            foreach ($consumers as $consumer)
+            {
+                $list[] = new Consumer($consumer);
+            }
+            $this->consumers = $list;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function reopen(): void
-    {
-        if ($this->channel)
-        {
-            $this->stop();
-        }
-        $this->connection = $this->getConnection();
-        if ($this->connection->isConnected())
-        {
-            $this->channel = $this->connection->channel();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function pop(float $timeout): ?Message
-    {
-        if (!$this->channel || !$this->channel->is_consuming())
-        {
+            $this->resultChannel = new Channel();
             $this->reopen();
-            $this->channel->basic_qos(0, $this->queueLength, false);
-            $this->declareConsumer();
-            $this->bindConsumer();
         }
-        try
+
+        /**
+         * {@inheritDoc}
+         */
+        protected function initConfig(): void
         {
-            $this->channel->wait(null, false, $timeout);
-            if ($this->resultChannel->isEmpty())
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public function reopen(): void
+        {
+            if ($this->channel)
             {
-                return null;
+                $this->stop();
             }
-
-            return $this->resultChannel->pop(0.001) ?: null;
-        }
-        catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
-        {
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function bindConsumer(): void
-    {
-        foreach ($this->consumers as $consumer)
-        {
-            foreach ((array) $consumer->queue as $queueName)
+            $this->connection = $this->getConnection();
+            if ($this->connection->isConnected())
             {
-                $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
-                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
-                    /** @var \Imi\AMQP\Message $messageInstance */
-                    $messageInstance = new $messageClass();
-                    $messageInstance->setAMQPMessage($message);
-                    $this->consume($messageInstance);
-                });
+                $this->channel = $this->connection->channel();
             }
         }
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function consume(IMessage $message)
-    {
-        $this->resultChannel->push($message);
+        /**
+         * {@inheritDoc}
+         */
+        public function pop(float $timeout): ?Message
+        {
+            if (!$this->channel || !$this->channel->is_consuming())
+            {
+                $this->reopen();
+                $this->channel->basic_qos(0, $this->queueLength, false);
+                $this->declareConsumer();
+                $this->bindConsumer();
+            }
+            try
+            {
+                $this->channel->wait(null, false, $timeout);
+                if ($this->resultChannel->isEmpty())
+                {
+                    return null;
+                }
+
+                return $this->resultChannel->pop(0.001) ?: null;
+            }
+            catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
+            {
+            }
+
+            return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        protected function bindConsumer(): void
+        {
+            foreach ($this->consumers as $consumer)
+            {
+                foreach ((array) $consumer->queue as $queueName)
+                {
+                    $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
+                    $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
+                        /** @var \Imi\AMQP\Message $messageInstance */
+                        $messageInstance = new $messageClass();
+                        $messageInstance->setAMQPMessage($message);
+                        $this->consume($messageInstance);
+                    });
+                }
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        protected function consume(IMessage $message)
+        {
+            $this->resultChannel->push($message);
+        }
     }
 }

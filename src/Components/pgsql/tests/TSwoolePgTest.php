@@ -10,7 +10,7 @@ trait TSwoolePgTest
     {
         if (!\extension_loaded('swoole_postgresql'))
         {
-            $this->markTestSkipped('IMI_TEST_AMQP_SERVER_UTIL=0');
+            $this->markTestSkipped();
         }
     }
 }
