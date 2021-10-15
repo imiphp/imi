@@ -73,7 +73,7 @@ class SwooleWorkerHandler implements ISwooleWorker
         {
             /** @var ISwooleServer $server */
             $server = ServerManager::getServer('main', ISwooleServer::class);
-            $this->workerNum = $server->getSwooleServer()->setting['worker_num'];
+            $this->workerNum = (int) $server->getSwooleServer()->setting['worker_num'];
         }
 
         return $this->workerNum;
@@ -123,7 +123,7 @@ class SwooleWorkerHandler implements ISwooleWorker
         {
             /** @var ISwooleServer $server */
             $server = ServerManager::getServer('main', ISwooleServer::class);
-            $this->taskWorkerNum = $server->getSwooleServer()->setting['task_worker_num'];
+            $this->taskWorkerNum = (int) $server->getSwooleServer()->setting['task_worker_num'];
         }
 
         return $this->taskWorkerNum;
