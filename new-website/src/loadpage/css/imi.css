@@ -1,0 +1,37 @@
+.loader {
+  position: fixed;
+  top: calc(50% - 32px);
+  left: calc(50% - 32px);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  perspective: 800px;
+}
+.twink {
+  -webkit-animation: bgcolor 1s infinite, yh 1s infinite
+}
+@keyframes bgcolor {
+  0% { 
+     background-color: #ffd194;
+  }
+  100% {
+	  background-color: #70e1f5;
+   }
+}
+@-webkit-keyframes yh{
+  10% {
+    transform: rotate(10deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(10deg);
+  }
+  40% {
+    transform: rotate(-10deg);
+  }
+  50%,100% {
+    transform: rotate(0deg);
+  }
+}
