@@ -44,7 +44,7 @@ class ProcessManager
     /**
      * 挂载在管理进程下的进程列表.
      *
-     * @var ProcessInfo[]
+     * @var \Imi\Swoole\Process\Process[]
      */
     private static array $managerProcessSet = [];
 
@@ -86,9 +86,9 @@ class ProcessManager
     /**
      * 创建进程
      * 本方法无法在控制器中使用
-     * 返回 ProcessInfo 对象实例.
+     * 返回 Process 对象实例.
      */
-    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ProcessInfo
+    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): Process
     {
         $processOption = self::get($name);
         if (null === $processOption)
@@ -107,13 +107,12 @@ class ProcessManager
         {
             $pipeType = $processOption['options']['pipeType'];
         }
-        $hotUpdate = $processOption['options']['hotUpdate'] ?? false;
 
-        $process = new Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
-        $item = (new ProcessInfo($name, $alias, $process));
-        $item->setHotUpdate($hotUpdate);
+        $process = new \Imi\Swoole\Process\Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
+        $process->setName($name);
+        $process->setAlias($alias);
 
-        return $item;
+        return $process;
     }
 
     /**
@@ -154,7 +153,8 @@ class ProcessManager
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
                     }
                     // 写出进程信息
-                    if (null !== $swooleProcess->id && null !== $swooleProcess->pid) {
+                    if (null !== $swooleProcess->id && null !== $swooleProcess->pid)
+                    {
                         self::writeProcessInfo(self::buildUniqueId($name, $alias), $swooleProcess->id, $swooleProcess->pid);
                     }
                     // 进程开始事件
@@ -304,14 +304,13 @@ class ProcessManager
      */
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
-        $item = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
+        $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
         /** @var ISwooleServer $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
         $swooleServer = $server->getSwooleServer();
-        $process = $item->getProcess();
         $swooleServer->addProcess($process);
         static::$managerProcesses[$name][$alias] = $process;
-        static::$managerProcessSet[] = $item;
+        static::$managerProcessSet[] = $process;
 
         return $process;
     }
@@ -368,7 +367,7 @@ class ProcessManager
     /**
      * 获取挂载在管理进程下的进程列表.
      */
-    public static function getProcessListWithManager(): array
+    public static function getProcessSetWithManager(): array
     {
         return static::$managerProcessSet;
     }

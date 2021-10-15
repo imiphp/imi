@@ -6,6 +6,10 @@ namespace Imi\Swoole\Process;
 
 class Process extends \Swoole\Process
 {
+    protected string $name;
+
+    protected ?string $alias;
+
     /**
      * 发送消息.
      *
@@ -34,5 +38,37 @@ class Process extends \Swoole\Process
         {
             exit($exitCode);
         }
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(?string $alias): void
+    {
+        $this->alias = $alias;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getPid()
+    {
+        $info = ProcessManager::readProcessInfo(ProcessManager::buildUniqueId($this->name, $this->alias));
+
+        if (null === $info)
+        {
+            return 0;
+        }
+
+        return $info['pid'];
     }
 }

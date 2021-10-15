@@ -136,7 +136,7 @@ class Imi
         {
             return;
         }
-        foreach (ProcessManager::getProcessListWithManager() as $item)
+        foreach (ProcessManager::getProcessSetWithManager() as $item)
         {
             if ('hotUpdate' === $item->getName())
             {
