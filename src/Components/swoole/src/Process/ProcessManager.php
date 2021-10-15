@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
+use function hash;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
@@ -12,7 +13,6 @@ use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
-use function hash;
 use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -37,7 +37,7 @@ class ProcessManager
     /**
      * 挂载在管理进程下的进程列表.
      *
-     * @var \Swoole\Process[]
+     * @var Process[]
      */
     private static array $managerProcesses = [];
 
@@ -86,9 +86,9 @@ class ProcessManager
     /**
      * 创建进程
      * 本方法无法在控制器中使用
-     * 返回\Swoole\Process对象实例.
+     * 返回 ProcessInfo 对象实例.
      */
-    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): Process
+    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ProcessInfo
     {
         $processOption = self::get($name);
         if (null === $processOption)
@@ -107,9 +107,13 @@ class ProcessManager
         {
             $pipeType = $processOption['options']['pipeType'];
         }
-        $process = new \Swoole\Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
+        $hotUpdate = $processOption['options']['hotUpdate'] ?? false;
 
-        return $process;
+        $process = new Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
+        $item = (new ProcessInfo($name, $alias, $process));
+        $item->setHotUpdate($hotUpdate);
+
+        return $item;
     }
 
     /**
@@ -298,13 +302,14 @@ class ProcessManager
      */
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
-        $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
+        $item = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
         /** @var ISwooleServer $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
         $swooleServer = $server->getSwooleServer();
+        $process = $item->getProcess();
         $swooleServer->addProcess($process);
         static::$managerProcesses[$name][$alias] = $process;
-        static::$managerProcessSet[]             = new ProcessInfo($name, $alias, $process);
+        static::$managerProcessSet[] = $item;
 
         return $process;
     }

@@ -19,7 +19,7 @@ use Swoole\Timer;
 
 /**
  * @Bean(name="hotUpdate", env="swoole")
- * @Process(name="hotUpdate", unique=true)
+ * @Process(name="hotUpdate", unique=true, hotUpdate=false)
  */
 class HotUpdateProcess extends BaseProcess
 {

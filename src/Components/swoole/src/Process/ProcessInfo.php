@@ -16,6 +16,8 @@ class ProcessInfo
 
     protected Process $process;
 
+    protected bool $hotUpdate = false;
+
     public function __construct(string $name, ?string $alias, Process $process)
     {
         $this->name = $name;
@@ -44,5 +46,15 @@ class ProcessInfo
         $info = ProcessManager::readProcessInfo($this->uniqueId);
 
         return $info['pid'];
+    }
+
+    public function isHotUpdate(): bool
+    {
+        return $this->hotUpdate;
+    }
+
+    public function setHotUpdate(bool $hotUpdate): void
+    {
+        $this->hotUpdate = $hotUpdate;
     }
 }

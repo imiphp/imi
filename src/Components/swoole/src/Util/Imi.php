@@ -133,7 +133,7 @@ class Imi
     {
         foreach (ProcessManager::getProcessListWithManager() as $item)
         {
-            if ('hotUpdate' === $item->getName())
+            if (!$item->isHotUpdate())
             {
                 continue;
             }

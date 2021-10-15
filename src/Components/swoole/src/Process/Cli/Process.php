@@ -33,7 +33,7 @@ class Process extends BaseCommand
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType) {
             $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
-            $process->start();
+            $process->getProcess()->start();
             $result = \Swoole\Process::wait(true);
             $this->output->writeln('Process exit! pid:' . $result['pid'] . ', code:' . $result['code'] . ', signal:' . $result['signal']);
             exit($result['code']);
