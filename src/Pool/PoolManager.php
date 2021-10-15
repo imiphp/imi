@@ -39,8 +39,12 @@ class PoolManager
         {
             foreach (Config::get($alias . '.pools', []) as $poolName => $poolConfig)
             {
+                if (!isset($poolConfig['pool']))
+                {
+                    continue;
+                }
                 $poolPool = $poolConfig['pool'];
-                self::addName($poolName, $poolPool['class'], new PoolConfig($poolPool['config']), $poolConfig['resource']);
+                self::addName($poolName, $poolPool['class'], new PoolConfig($poolPool['config'] ?? []), $poolConfig['resource']);
             }
         }
         self::$inited = true;

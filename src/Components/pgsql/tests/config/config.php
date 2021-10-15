@@ -90,7 +90,7 @@ return [
                 'database'    => 'db_imi_test',
             ],
         ],
-        'swoole'    => [
+        'swoole'    => extension_loaded('swoole_postgresql') ? [
             'pool'    => [
                 // 协程池类名
                 'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
@@ -110,7 +110,7 @@ return [
                 'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
             ],
-        ],
+        ] : [],
     ],
     // db 配置
     'db' => [
