@@ -111,7 +111,7 @@ services:
       args:
         SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
         ROADRUNNER_DOCKER_VERSION: ${ROADRUNNER_DOCKER_VERSION}
-        POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
+        POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/composer:/root/.composer/cache/files:rw"
@@ -127,7 +127,7 @@ services:
       args:
         SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
         ROADRUNNER_DOCKER_VERSION: ${ROADRUNNER_DOCKER_VERSION}
-        POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
+        POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/composer:/root/.composer/cache/files:rw"

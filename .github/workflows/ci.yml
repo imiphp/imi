@@ -4,17 +4,22 @@ on: [push, pull_request]
 
 jobs:
   ci-php8-jit:
-    name: Linux Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }} With JIT
+    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With JIT
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        swoole: [4.8-php8.0, 4.7-php8.0]
+        swoole: 
+          - version: 4.8-php8.0
+            postgresql_version: ""
+          - version: 4.7-php8.0
+            postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
         roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       PHP_JIT: yes
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
       MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
@@ -25,7 +30,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         uses: ./.github/actions/ci-prepare
         with:
@@ -65,7 +70,7 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php:
-    name: Linux Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
+    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -134,16 +139,19 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php-unix:
-    name: Linux Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
+    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        swoole: [ 4.7-php8.0 ]
+        swoole: 
+          - version: 4.7-php8.0
+            postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
         roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
       MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
@@ -154,7 +162,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         uses: ./.github/actions/ci-prepare
         with:
