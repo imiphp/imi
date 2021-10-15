@@ -53,7 +53,7 @@
   margin-top: 15vh;
   animation: dialog-fade-in .3s;
   border-radius: 15px;
-  min-width:320px;
+  min-width:360px;
 }
 
 .m-modal__container img{
@@ -109,7 +109,7 @@ button {
 }
 
 .m-modal__body {
-  padding: 10px;
+  padding: 20px;
   color: #606266;
   font-size: 14px;
   word-break: break-all;

@@ -5,19 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Cache-Control" content="max-age=72000" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>imi框架官网 - 基于Swoole的PHP协程开发框架|PHP框架|Swoole框架</title>
+    <title>imi框架官网 - PHP长连接微服务分布式开发框架|PHP框架|Swoole框架|Workerman框架|RoadRunner框架</title>
     <meta name="keywords" content="imi,imi框架,php框架,swoole,swoole框架,php协程框架,php异步框架" />
     <meta name="description"
-        content="imi是基于Swoole的PHP协程开发框架，高性能，功能强大，开发方便！支持 Http、Http2、WebSocket、TCP、UDP、MQTT 应用开发。由 Swoole 提供强力驱动，Swoole 拥有常驻内存、协程非阻塞 IO 等特性。" />
+        content="imi是长连接分布式微服务 PHP 开发框架，多容器、分布式、高性能、次世代！支持 Http、Http2、WebSocket、TCP、UDP、MQTT 应用开发。它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。" />
     <script type="application/ld+json">
         {
             "@context": "http://schema.org",
             "mainEntityOfPage": "https://www.imiphp.com/",
             "@type": "WebPage",
-            "headline": "imi框架官网 - 基于Swoole的PHP协程开发框架|PHP框架|Swoole框架",
+            "headline": "imi框架官网 - PHP长连接微服务分布式开发框架|PHP框架|Swoole框架|Workerman框架|RoadRunner框架",
             "datePublished": "2021-09-08T09:19:46",
-            "dateModified": "2021-09-10T12:09:41",
-            "description": "imi是基于Swoole的PHP协程开发框架，高性能，功能强大，开发方便！支持 Http、Http2、WebSocket、TCP、UDP、MQTT 应用开发。由 Swoole 提供强力驱动，Swoole 拥有常驻内存、协程非阻塞 IO 等特性",
+            "dateModified": "2021-10-13T17:14:00",
+            "description": "imi是长连接分布式微服务 PHP 开发框架，多容器、分布式、高性能、次世代！支持 Http、Http2、WebSocket、TCP、UDP、MQTT 应用开发。它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。",
             "image": "", // 显示图标,后续添加
             "author": {
                 "@type": "Person",
@@ -25,7 +25,7 @@
             },
             "publisher": {
                 "@type": "Organization",
-                "name": "IMIPHP框架官网"
+                "name": "imi框架"
             }
         }
     </script>
@@ -35,17 +35,19 @@
 
     <div class="header">
         <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-            <div class="navigate">
-                <a class="pure-menu-heading" href="./index.html">imi</a>
-                <a class="pure-menu-heading left donation juanzeng" href="#"><img src="../images/juanzeng.svg"
-                        style="width:30px;"></a>
-                <a target="_blank" class="pure-menu-heading left" href="https://doc.imiphp.com/v2.0/">文档</a>
+            <div class="navigate wrap">
+                <a class="pure-menu-heading" href="./" title="imi框架"><img src="../images/logo.svg" alt="imi框架Logo" style="height: 46px"></a>
+                <div class="right">
+                    <a target="_blank" class="pure-menu-heading" href="https://doc.imiphp.com/v2.0/" title="imi开发文档">开发文档</a>
+                    <a class="pure-menu-heading donation juanzeng" href="javascript:;" title="imi捐赠"><img src="../images/juanzeng.svg"
+                        style="width:30px;" /></a>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="splash-container">
-        <div class="splash">
+        <div class="splash wrap">
             <!--<p class="splash-head">imi</p>-->
             <h3 class="splash-head">PHP长连接微服务分布式开发框架</h2>
                 <p class="splash-head"><img src="../images/logo.svg" alt="imi 框架 Logo" class="logo"></p>
@@ -53,7 +55,7 @@
                     多容器、分布式、高性能、次世代
                 </p>
                 <p class="splash-subhead">
-                    支持运行在 PHP-FPM、Swoole、Workerman 多种容器环境下
+                    imi 实现了上层应用与底层容器解耦的能力，PHP 多容器的时代已经到来！
                 </p>
                 <p class="splash-subhead">
                     现已被用于文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端、数据迁移服务（虎扑）等项目中。
@@ -67,8 +69,12 @@
                 </div>
                 </p>
 
+                <p class="imi_contact_gray">
+                    支持的容器：PHP-FPM、Swoole、Workerman、RoadRunner
+                </p>
+
                 <p class="imi_contact">
-                    当前版本：v2.0 QQ群:<a style="color: #448aff;" target="_blank"
+                    当前版本：v2.0 | QQ群:<a style="color: #448aff;" target="_blank"
                         href="https://shang.qq.com/wpa/qunwpa?idkey=d798f9763a255582caeec0608ab1eaf2b42a6230afea7a45a2cf462822484bd6"
                         rel="nofollow">17916227</a><br />
                     <a style="color: #448aff;" target="_blank" href="https://space.bilibili.com/768718/channel/seriesdetail?sid=274078"
@@ -83,18 +89,16 @@
     </div>
 
     <div class="content-wrapper">
-        <div class="content">
+        <div class="content wrap">
             <h2 class="content-head is-center">功能特点</h2>
-            <div class="pure-g" style="width:70%;margin:0 auto;">
+            <div class="pure-g gongneng">
                 <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-
                     <h3 class="content-subhead">
-                        <i class="fa fa-th-large"></i>
-                        常驻内存
+                        <i class="fa fa-envira"></i>
+                        多容器支持
                     </h3>
                     <p>
-
-                        基于 Swoole 和 Workerman，能够避免重复加载带来的性能损耗，提升性能
+                        imi 可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 多种容器环境下
                     </p>
                 </div>
                 <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
@@ -103,8 +107,16 @@
                         协程异步
                     </h3>
                     <p>
-
                         Swoole 协程提高对数据库查询、接口请求等 I/O 密集型场景并发处理能力
+                    </p>
+                </div>
+                <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+                    <h3 class="content-subhead">
+                        <i class="fa fa-cubes"></i>
+                        分布式
+                    </h3>
+                    <p>
+                        imi 支持了基于<strong>消息队列</strong>和<strong>网关</strong>的长连接分布式解决方案
                     </p>
                 </div>
                 <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
@@ -113,30 +125,69 @@
                         毫秒级热更新重启
                     </h3>
                     <p>
-
                         imi 拥有与传统 PHP 框架一样的开发效率，保存即看效果，开发体验与 fpm 无差别
-                    </p>
-                </div>
-                <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                    <h3 class="content-subhead">
-                        <i class="fa fa-check-square-o"></i>
-                        无缝兼容环境
-                    </h3>
-                    <p>
-                        imi 可以运行在 PHP-FPM、Swoole、Workerman 多种容器环境下。
                     </p>
                 </div>
             </div>
         </div>
 
-        <div style="width:90%;margin:0 auto;box-sizing: border-box;">
-		    <a href="case.html"><h2 class="content-head is-center">成功案例</h2></a>
-		    <a id="lunbo" href="case.html"></a>
+        <div class="wrap">
+		    <a href="case.html"><h2 class="content-head is-center">成功案例 &gt;&gt;</h2></a>
+            <div id="lunbo">
+                <div class="ribbon l-box-lrg pure-g">
+                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
+                        <img class="pure-img-responsive" src="../images/anli/tengyue.jpg">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+                        <h2 class="content-head content-head-ribbon"><a href="https://www.teny.tech/" target="_blank">腾悦物联</a></h2>
+                        <p>基于imi开发的高性能高并发分布式（千万级设备）的能源销售管理平台，提供多场景充电桩、售电柜、换电柜、智能电池等设备接入，开放API第三方应用五分钟即可完成新能源物联网售电设备接入</p>
+                    </div>
+                </div>
+                <div class="ribbon l-box-lrg pure-g">
+                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
+                        <img class="pure-img-responsive" src="../images/anli/adorecipe.jpg">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+                        <h2 class="content-head content-head-ribbon"><a href="https://adorecipe.com/" target="_blank">Adorecipe鸡尾酒资源库</a></h2>
+                        <p>本项目是基于imi 2.0的高性能 MVC 实战项目（一人完成开发），搭配 nginx 实现前端静态资源的访问及缓存，View 层很任性地采用了原生模板渲染。项目中大量使用了 imi提供的缓存注解，优化数据查询的性能，点赞等场景使用了 imi 提供的锁机制保证并发场景下的数据一致性。强推大家使用 imi 开发此类项目！</p>
+                    </div>
+                </div>
+                <div class="ribbon l-box-lrg pure-g">
+                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
+                        <img class="pure-img-responsive" src="../images/anli/hupu.jpg">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+                        <h2 class="content-head content-head-ribbon"><a href="https://blog.csdn.net/qq_32783703/article/details/113576741" target="_blank">虎扑-上亿数据迁移服务</a></h2>
+                        <p>随着数据规模的越来越大，mysql已经不能适用大数据多维度的查询，需要用ES等一类的搜索引擎，进行多维度的分词查询，MYSQL现阶段使用按天分表存储，不能满足跨天的长时间查询。</p>
+                        <p>
+                            如何以最快的速度完成数据迁移，将数据库中的数据迁移到ES中，是需要评估的一个重要技术点。
+                        </p>
+                        <p>
+                            在高IO密集的场景下，单次请求需要80毫秒，imi运用Swoole协程，不断在用户态和内核态之间进行切换，充分利用计算机CPU，从而能快速完成海量数据迁移。
+                        </p>
+                        <p>
+                            根据普罗米修斯的监控统计，在 两台 2C 4G的机器上，imi以每秒钟同步1000~1500条的同步速度，完成了上亿级别的数据迁移。
+                        </p>
+                        <p>
+                            博文地址：<a href="https://blog.csdn.net/qq_32783703/article/details/113576741" target="_blank">https://blog.csdn.net/qq_32783703/article/details/113576741</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="ribbon l-box-lrg pure-g">
+                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
+                        <img class="pure-img-responsive" src="../images/anli/kangedan.jpg">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+                        <h2 class="content-head content-head-ribbon"><a href="http://www.kangedan.com/" target="_blank">看个蛋影视搜索 - 全网影视资源搜索平台</a></h2>
+                        <p>从最早的建站初心是为了自己方便！放到网络的以来，当流量越来越大的时候是要考虑升级配置还是重构项目，前几天 git 上看到imiphp，索性就拿来实践一下，也是简单就重构出了所有页面，模版引擎引入了 TP 的 think-template，整个重构也就一天不到，所以 imiphp 确实很容易上手！加油！</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="content">
             <h2 class="content-head is-center">快速创建 imi 项目</h2>
-            <div class="pure-g" style="width:80%;margin:0 auto;">
+            <div class="pure-g wrap">
                 <div class="pure-u-1 pure-u-md-1-1 pure-u-lg-1-1">
                     <h3 class="content-subhead">
                     </h3>

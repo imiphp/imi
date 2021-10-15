@@ -108,19 +108,6 @@ module.exports = {
         new htmlWebpackPlugin({
             chunks: ['assgin/main'],
             inject: 'body',
-            filename: 'video.html',
-            template: 'src/page/video.html',
-            favicon: 'src/page/favicon.ico',
-            showErrors: false,
-			minify: false,
-			hash: true,
-            isBrowser: false,
-            isDevelopment: process.env.NODE_ENV !== 'production',
-            nodeModules: process.env.NODE_ENV !== 'production'? path.resolve(__dirname, '../node_modules') : false				
-        }),	
-        new htmlWebpackPlugin({
-            chunks: ['assgin/main'],
-            inject: 'body',
             filename: 'case.html',
             template: 'src/page/case.html',
             favicon: 'src/page/favicon.ico',

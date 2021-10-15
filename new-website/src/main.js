@@ -22,12 +22,6 @@ import './alert.js';
 /* 加载插件 */
 import './loadpage/index.js';
 
-/* 捐赠页面 */
-import './donate.js';
-
-/* 视频页面 */
-//import './video.js';
-
 /* 案例页面 */
 import './cases.js';
 

@@ -1,7 +1,7 @@
 {
-  "name": "IMIPHP",
+  "name": "imiphp",
   "version": "0.0.1",
-  "description": "IMIPHP官网",
+  "description": "imi官网",
   "main": "webpack.config.js",
   "scripts": {
     "watch": "webpack --watch",

@@ -98,11 +98,17 @@ h4,
 h5,
 h6,
 label {
-    color: #34495e;
+    color: #333;
 }
 
 a {
     text-decoration: none !important;
+}
+
+.wrap {
+    width: 1280px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 /* 捐赠表格样式 */
@@ -123,7 +129,7 @@ a {
     color: #888;
 }
 
-td>a {
+a {
     color: #448aff;
 }
 
@@ -140,9 +146,8 @@ td>a {
     color: #34495e;
 }
 
-.l-box .videos {
+.l-box {
     margin: auto;
-	width: 100%;
 	height:260px;
 	overflow: hidden;
 }
@@ -154,7 +159,7 @@ td>a {
 	overflow: hidden;
 }
 
-.cases img, .videos img {
+.cases img {
 	height: 119px;
 }
 
@@ -196,9 +201,13 @@ a.pure-button-primary {
 
 /* 顶部菜单 */
 .home-menu {
-    text-align: center;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.10);
     background-color: rgb(255, 255, 255);
+}
+
+.navigate {
+    line-height: 48px;
+    height: 48px;
 }
 
 .pure-menu.pure-menu-fixed {
@@ -210,6 +219,14 @@ a.pure-button-primary {
     color: #000;
     font-weight: 400;
     font-size: 120%;
+    text-transform: none;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 0.625em;
+}
+
+.home-menu .pure-menu-heading img {
+    display: block;
 }
 
 .home-menu .pure-menu-selected a {
@@ -227,8 +244,23 @@ a.pure-button-primary {
     color: #AECFE5;
 }
 
+.home-menu .right {
+    font-size: 16px;
+    float: right;
+    display: inline-block;
+}
+
+.home-menu .right > a {
+    font-size: inherit;
+}
+
 .pure-menu-link {
     color: #000 !important;
+}
+
+.imi_contact_gray {
+    color: #3c4858;
+    opacity: 0.8;
 }
 
 /** 首页背景 **/
@@ -260,7 +292,6 @@ a.pure-button-primary {
 }
 
 .splash {
-    width: 80%;
     height: 80%;
     margin: auto;
     position: absolute;
@@ -269,7 +300,8 @@ a.pure-button-primary {
     bottom: 0;
     right: 0;
     text-align: center;
-    text-transform: uppercase;
+    color: #333;
+    box-sizing: border-box;
 }
 
 .splash-head {
@@ -278,7 +310,7 @@ a.pure-button-primary {
     /* color: white; */
     /* border: 3px solid white; */
     padding: 1em;
-    font-weight: 100;
+    /* font-weight: 100; */
     border-radius: 5px;
     line-height: 1em;
 }
@@ -286,7 +318,6 @@ a.pure-button-primary {
 .splash-head2 {
     font-size: 25px;
     font-weight: bold;
-    font-weight: 100;
     border-radius: 4px;
     line-height: 1.2em;
 }
@@ -309,6 +340,7 @@ a.pure-button-primary {
     min-height: 12%;
     z-index: 2;
     background-color: rgb(255, 255, 255);
+    padding-bottom: 72px;
 }
 
 .content-wrapper-height{
@@ -317,11 +349,11 @@ a.pure-button-primary {
 
 .content {
     padding: 1em 1em 2em;
+    box-sizing: border-box;
 }
 
 .content-head {
     font-weight: 400;
-    text-transform: uppercase;
     letter-spacing: 0.1em;
     margin: 2em 0 1em;
 }
@@ -352,9 +384,25 @@ a.pure-button-primary {
     -ms-overflow-style: none;
     /* IE 10+ */
     overflow-x: hidden;
+}
+
+.donate-list .pure-u-1 {
     overflow-y: auto;
 }
 
+.gongneng > .pure-u-1{
+    box-sizing: border-box;
+}
+
+.jz-alipay{
+    color: #1E9FFF;
+}
+.jz-weixin{
+    color: #5FB878;
+}
+.jz-qq{
+    color: #E81010;
+}
 
 /** 自适应pc端 **/
 @media (min-width: 48em) {
@@ -364,7 +412,6 @@ a.pure-button-primary {
 
     .home-menu {
         text-align: left;
-        padding: 0.1em;
     }
 
     .home-menu ul {
@@ -372,8 +419,7 @@ a.pure-button-primary {
     }
 
     .splash {
-        width: 50%;
-        height: 85%;
+        height: 90%;
     }
 
     .splash-head {
@@ -383,18 +429,6 @@ a.pure-button-primary {
     .l-box-lrg {
         border: none;
     }
-
-    .home-menu .navigate {
-        width: 1024px;
-        margin: 15px auto;
-    }
-
-    .home-menu .left {
-        font-size: 16px;
-        float: right;
-        right: 0px;
-    }
-
 }
 
 @media (min-width: 78em) {
@@ -424,7 +458,7 @@ a.pure-button-primary {
     background-color: #FFF;
     text-align: center;
     color: #000;
-    height: 8vh;
+    height: 6vh;
 	width:50%;
 }
 
@@ -448,12 +482,17 @@ a.pure-button-primary {
 
 /** 自适应手机端 **/
 @media screen and (max-width: 30em) {
+    .wrap {
+        width: 100%;
+    }
+
     .content-wrapper-height{
 		top: 50px;
 	}
 	
     .splash {
         height: 90% !important;
+        padding: 0 2em;
     }
 
     .splash-head {
@@ -467,12 +506,11 @@ a.pure-button-primary {
     }
 
     .repo {
-        display: grid;
         margin-top: 1vh;
     }
 
     .repo>a.repo-button {
-        margin: 1px !important;
+        margin: 4px !important;
     }
 
     .logo {
@@ -487,23 +525,14 @@ a.pure-button-primary {
         margin-top: 1vh;
     }
 
-    .liuyan {
+    .donate-list th:nth-child(2), .donate-list td:nth-child(2) {
         display: none;
     }
 	
-    /*
-    .qudao {
-        display: none;
-    }
-	*/
-
     .home-menu .left {
         font-size: 15px;
     }
 
-    .home-menu .juanzeng {
-        display: none;
-    }
     .pure-img-responsive {
         height: auto !important;
     }	
@@ -514,7 +543,7 @@ a.pure-button-primary {
     .donate-list {
 	    width:98%;
     }	
-    .l-box .cases, .l-box .videos {	
+    .l-box .cases {	
 	    height: 220px;
 		margin: 0;
 	}
@@ -531,12 +560,22 @@ a.pure-button-primary {
     :not(pre)>code {
        font-size: 10px;
        white-space: unset;
-    }	
+    }
+    
+    .l-box {
+        height: initial;
+        padding: 1em;
+    }
+
+    .l-box .cases {
+        height: initial;
+    }
 }
 
 /** 按钮 **/
 .repo>a.repo-button:hover {
     text-decoration: none;
+    background-color: rgba(255,255,255,0.888);
 }
 
 .repo img {
@@ -549,15 +588,18 @@ a.pure-button-primary {
     display: inline-block;
     height: 48px;
     line-height: 48px;
-    padding: 0 10px;
+    padding: 0 16px;
     white-space: nowrap;
     text-align: center;
     font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
-    color: #555;
+    color: #333;
     margin-right: 10px;
     border: 1px solid #F8F8F8;
+    background-color: rgba(255,255,255,0.625);
+    box-sizing: border-box;
+    max-width: 124px;
 }
 
 .repo>a {
@@ -612,6 +654,27 @@ a:hover {
     font-size: 100%;
     color: #888;
     line-height: 50px !important;
+}
+
+.code_table {
+    margin: 0 auto;
+}
+
+.code_table th {
+    width: 16em;
+}
+
+.code_table td {
+    text-align: left;
+}
+
+:not(pre)>code,
+:not(pre)>kbd,
+:not(pre)>samp {
+    font-size: 12px;
+    font-family: Consolas, monospace, serif;
+    color: #D05;
+    white-space: nowrap;
 }
 
 .leave_out {
