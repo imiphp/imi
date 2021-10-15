@@ -136,17 +136,22 @@ class Imi
         {
             return;
         }
-        foreach (ProcessManager::getProcessSetWithManager() as $item)
+        foreach (ProcessManager::getProcessSetWithManager() as $id => $item)
         {
-            if ('hotUpdate' === $item->getName())
+            if ('hotUpdate' === $item['name'])
             {
                 continue;
             }
-            if (true !== $rules && !\in_array($item->getName(), $rules))
+            if (true !== $rules && !\in_array($item['name'], $rules))
             {
                 continue;
             }
-            $pid = $item->getPid();
+            $info = ProcessManager::readProcessInfo($id);
+            if (empty($info))
+            {
+                continue;
+            }
+            $pid = $info['pid'] ?? 0;
             if (empty($pid))
             {
                 continue;

@@ -19,6 +19,7 @@ use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
+use Swoole\Process;
 use Swoole\Table;
 
 /**
@@ -43,7 +44,7 @@ class ProcessManager
     /**
      * 挂载在管理进程下的进程列表.
      *
-     * @var Process[]
+     * @var array<string, array{name: string, alias: string, process: Process}>
      */
     private static array $managerProcessSet = [];
 
@@ -107,11 +108,7 @@ class ProcessManager
             $pipeType = $processOption['options']['pipeType'];
         }
 
-        $process = new Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
-        $process->setName($name);
-        $process->setAlias($alias);
-
-        return $process;
+        return new Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
     }
 
     /**
@@ -309,7 +306,11 @@ class ProcessManager
         $swooleServer = $server->getSwooleServer();
         $swooleServer->addProcess($process);
         static::$managerProcesses[$name][$alias] = $process;
-        static::$managerProcessSet[] = $process;
+        static::$managerProcessSet[self::buildUniqueId($name, $alias)] = [
+            'name'    => $name,
+            'alias'   => $alias,
+            'process' => $process,
+        ];
 
         return $process;
     }
@@ -365,6 +366,8 @@ class ProcessManager
 
     /**
      * 获取挂载在管理进程下的进程列表.
+     *
+     * @return array<string, array{name: string, alias: string, process: Process}>
      */
     public static function getProcessSetWithManager(): array
     {
