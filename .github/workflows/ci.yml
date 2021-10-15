@@ -4,18 +4,18 @@ on: [push, pull_request]
 
 jobs:
   ci-php8-jit:
+    name: Linux Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }} With JIT
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        swoole: [4.7-php8.0]
-        mysql: [8.0]
+        swoole: [4.8-php8.0, 4.7-php8.0]
         roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       PHP_JIT: yes
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
@@ -65,18 +65,18 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php:
+    name: Linux Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
-        swoole: [4.7-php7.4, 4.7-php8.0]
-        mysql: [5.7, 8.0]
+        swoole: [4.8-php7.4, 4.8-php8.0, 4.7-php7.4, 4.7-php8.0]
         roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
@@ -126,17 +126,17 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php-unix:
+    name: Linux Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         swoole: [ 4.7-php8.0 ]
-        mysql: [ 8.0 ]
         roadrunner: [2.4.2]
     env:
       ENV_SERVICE: swoole
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
@@ -186,12 +186,13 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-macos:
+    name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-stable
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4]
-        swoole: [v4.7.1]
+        php: [7.4, 8.0]
+        swoole: [v4.8.0]
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -289,7 +290,12 @@ jobs:
         run: php .github/print-logs.php
 
   ci-windows:
+    name: Windows PHP-${{ matrix.php }} RoadRunner-stable
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4, 8.0]
 
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
@@ -313,7 +319,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
           tools: pecl
           extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event
