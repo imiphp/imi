@@ -66,12 +66,6 @@ public $pipeType = 2;
  * @var bool
  */
 public $co = true;
-
-/**
- * 是否允许热更新
- * @var bool
- */
-public $hotUpdate = true;
 ```
 
 ### 创建进程

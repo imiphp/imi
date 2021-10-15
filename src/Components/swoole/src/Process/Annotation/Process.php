@@ -19,7 +19,6 @@ use Imi\Bean\Annotation\Parser;
  * @property int    $pipeType            管道类型；启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0
  * @property bool   $unique              该进程是否只允许存在一个实例
  * @property bool   $co                  自动开启协程
- * @property bool   $hotUpdate           是否允许热重启
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Process extends Base
@@ -35,8 +34,7 @@ class Process extends Base
         bool $redirectStdinStdout = false,
         int $pipeType = 2,
         bool $unique = false,
-        bool $co = true,
-        bool $hotUpdate = true
+        bool $co = true
     ) {
         parent::__construct(...\func_get_args());
     }

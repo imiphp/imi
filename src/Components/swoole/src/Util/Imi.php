@@ -131,9 +131,18 @@ class Imi
 
     public static function reloadProcess()
     {
+        $rules = App::getBean('hotUpdate')->getProcess();
+        if (false === $rules)
+        {
+            return;
+        }
         foreach (ProcessManager::getProcessListWithManager() as $item)
         {
-            if (!$item->isHotUpdate())
+            if ('hotUpdate' === $item->getName())
+            {
+                continue;
+            }
+            if (true !== $rules && !\in_array($item->getName(), $rules))
             {
                 continue;
             }

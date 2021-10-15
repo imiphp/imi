@@ -19,7 +19,7 @@ use Swoole\Timer;
 
 /**
  * @Bean(name="hotUpdate", env="swoole")
- * @Process(name="hotUpdate", unique=true, hotUpdate=false)
+ * @Process(name="hotUpdate", unique=true)
  */
 class HotUpdateProcess extends BaseProcess
 {
@@ -47,6 +47,13 @@ class HotUpdateProcess extends BaseProcess
      * 默认监视路径.
      */
     protected ?array $defaultPath = null;
+
+    /**
+     * 允许热更新的进程，true：全部进程，false：不允许重启，array: 指定进程允许重启.
+     *
+     * @var string[]|bool
+     */
+    protected $process = false;
 
     /**
      * 是否开启热更新，默认开启.
@@ -337,5 +344,13 @@ class HotUpdateProcess extends BaseProcess
         {
             $this->initBuildRuntime();
         }
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function getProcess()
+    {
+        return $this->process;
     }
 }
