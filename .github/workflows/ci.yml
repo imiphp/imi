@@ -214,7 +214,7 @@ jobs:
       PHP_VERSION: ${{ matrix.php }}
       IMI_TEST_AMQP_SERVER_UTIL: 0
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
-      GITHUB_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -269,13 +269,9 @@ jobs:
           tests/db/install-db.sh
 
       - name: Install RoadRunner
-        uses: nick-invision/retry@v2
-        with:
-          max_attempts: 3
-          timeout_seconds: 60
-          command: |
-            echo no | src/Components/roadrunner/vendor/bin/rr get-binary
-            ./rr -v
+        run: |
+          echo no | src/Components/roadrunner/vendor/bin/rr get-binary
+          ./rr -v
 
       - name: Test
         run: composer test
@@ -315,6 +311,7 @@ jobs:
 
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
@@ -356,13 +353,9 @@ jobs:
           php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
 
       - name: Install RoadRunner
-        uses: nick-invision/retry@v2
-        with:
-          max_attempts: 3
-          timeout_seconds: 60
-          command: |
-            echo no | src\Components\roadrunner\vendor\bin\rr get-binary
-            .\rr -v
+        run: |
+          echo no | src\Components\roadrunner\vendor\bin\rr get-binary
+          .\rr -v
 
       - name: Test
         run: composer test
