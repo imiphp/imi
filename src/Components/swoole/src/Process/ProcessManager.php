@@ -19,7 +19,6 @@ use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
-use Swoole\Process;
 use Swoole\Table;
 
 /**
@@ -44,7 +43,7 @@ class ProcessManager
     /**
      * 挂载在管理进程下的进程列表.
      *
-     * @var \Imi\Swoole\Process\Process[]
+     * @var Process[]
      */
     private static array $managerProcessSet = [];
 
@@ -108,7 +107,7 @@ class ProcessManager
             $pipeType = $processOption['options']['pipeType'];
         }
 
-        $process = new \Imi\Swoole\Process\Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
+        $process = new Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
         $process->setName($name);
         $process->setAlias($alias);
 

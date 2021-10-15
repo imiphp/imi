@@ -60,7 +60,7 @@ class Process extends \Swoole\Process
         $this->name = $name;
     }
 
-    public function getPid()
+    public function getPid(): int
     {
         $info = ProcessManager::readProcessInfo(ProcessManager::buildUniqueId($this->name, $this->alias));
 
