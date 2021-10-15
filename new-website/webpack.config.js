@@ -17,7 +17,7 @@ module.exports = {
 
     mode: 'development', //production
     entry: {
-        'assgin/main': './src/main.js',
+        'assets/main': './src/main.js',
     },
     output: {
         path: __dirname + '/dist',
@@ -40,11 +40,11 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|jpe?g|gif|ico|svg)$/i,
                 loader: require.resolve('file-loader'),
                 options: {
                     name: '[name].[ext]',
-                    outputPath: 'assgin/images/',
+                    outputPath: 'assets/images/',
                     esModule: false
                 }
             },
@@ -63,7 +63,7 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     limit: 100000,
-                    outputPath: 'assgin/css/fonts/',
+                    outputPath: 'assets/css/fonts/',
                     name: '[name].[hash:7].[ext]'
                 }
             }
@@ -78,10 +78,10 @@ module.exports = {
         }),	 	
         */
         new MiniCssExtractPlugin({
-            filename: "assgin/css/main.css",
+            filename: "assets/css/main.css",
         }),
         new htmlWebpackPlugin({
-            chunks: ['assgin/main'],
+            chunks: ['assets/main'],
             inject: 'body',
             filename: 'index.html',
             template: 'src/page/index.html',
@@ -94,7 +94,7 @@ module.exports = {
             nodeModules: process.env.NODE_ENV !== 'production' ? path.resolve(__dirname, '../node_modules') : false
         }),
         new htmlWebpackPlugin({
-            chunks: ['assgin/main'],
+            chunks: ['assets/main'],
             inject: 'body',
             filename: 'donate.html',
             template: 'src/page/donate.html',
@@ -107,7 +107,7 @@ module.exports = {
             nodeModules: process.env.NODE_ENV !== 'production' ? path.resolve(__dirname, '../node_modules') : false
         }),
         new htmlWebpackPlugin({
-            chunks: ['assgin/main'],
+            chunks: ['assets/main'],
             inject: 'body',
             filename: 'case.html',
             template: 'src/page/case.html',
@@ -119,8 +119,21 @@ module.exports = {
             isDevelopment: process.env.NODE_ENV !== 'production',
             nodeModules: process.env.NODE_ENV !== 'production' ? path.resolve(__dirname, '../node_modules') : false
         }),
+        new htmlWebpackPlugin({
+            chunks: ['assets/main'],
+            inject: 'body',
+            filename: 'course.html',
+            template: 'src/page/course.html',
+            favicon: 'src/page/favicon.ico',
+            showErrors: false,
+            minify: false,
+            hash: true,
+            isBrowser: false,
+            isDevelopment: process.env.NODE_ENV !== 'production',
+            nodeModules: process.env.NODE_ENV !== 'production' ? path.resolve(__dirname, '../node_modules') : false
+        }),
         new CopyWebpackPlugin({
-            patterns: [{ from: 'src/loadpage', to: 'assgin/loadpage' }]
+            patterns: [{ from: 'src/loadpage', to: 'assets/loadpage' }]
         }),
     ],
     optimization: {

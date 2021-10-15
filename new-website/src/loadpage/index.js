@@ -6,7 +6,7 @@
  */
 
 let div_str = `
-   <div class="loader twink" style="width: 70px;height: 70px;text-align: center;"><img src="assgin/images/logo.svg" alt="imi 框架 Logo" class="logo" style="width:70px;"></div>
+   <div class="loader twink" style="width: 70px;height: 70px;text-align: center;"><img src="assets/images/logo.svg" alt="imi 框架 Logo" class="logo" style="width:70px;"></div>
 `;
 
-new loadpage({ delayTime: 2000, divHtml: div_str, themeCss: 'assgin/loadpage/css/imi.css',loadMode:'all'}).loading();
+new loadpage({ delayTime: 2000, divHtml: div_str, themeCss: 'assets/loadpage/css/imi.css',loadMode:'all'}).loading();

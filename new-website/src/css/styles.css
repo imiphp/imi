@@ -216,13 +216,17 @@ a.pure-button-primary {
 }
 
 .home-menu .pure-menu-heading {
-    color: #000;
+    color: #333;
     font-weight: 400;
     font-size: 120%;
     text-transform: none;
     box-sizing: border-box;
     padding: 0;
-    margin: 0 0.625em;
+    padding: 0 0.625em;
+}
+
+.home-menu .pure-menu-heading:hover {
+    color:#1E9FFF;
 }
 
 .home-menu .pure-menu-heading img {
@@ -256,6 +260,10 @@ a.pure-button-primary {
 
 .pure-menu-link {
     color: #000 !important;
+}
+
+.imi_contact {
+    line-height: 36px;
 }
 
 .imi_contact_gray {
@@ -599,10 +607,42 @@ a.pure-button-primary {
     border: 1px solid #F8F8F8;
     background-color: rgba(255,255,255,0.625);
     box-sizing: border-box;
-    max-width: 124px;
 }
 
 .repo>a {
+    display: inline-block;
+}
+
+.course-list>a.course-button:hover {
+    text-decoration: none;
+    border-color: #448aff;
+}
+
+.course-list img {
+    width: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.course-list>a.course-button {
+    display: inline-block;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 16px;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #333;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #C9C9C9;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.course-list>a {
     display: inline-block;
 }
 

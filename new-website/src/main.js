@@ -24,3 +24,6 @@ import './cases.js';
 
 /* 首页 */
 import './index.js';
+
+/* 课程 */
+import './course.js';
