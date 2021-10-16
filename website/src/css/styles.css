@@ -201,13 +201,20 @@ a.pure-button-primary {
 
 /* 顶部菜单 */
 .home-menu {
+    background-color: rgba(255, 255, 255, 0.618);
+    backdrop-filter: blur(4px);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.10);
-    background-color: rgb(255, 255, 255);
+    line-height: 48px;
+    height: 48px;
 }
 
 .navigate {
-    line-height: 48px;
-    height: 48px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
 }
 
 .pure-menu.pure-menu-fixed {
@@ -231,6 +238,14 @@ a.pure-button-primary {
 
 .home-menu .pure-menu-heading img {
     display: block;
+}
+
+.logo-full, .logo-min{
+    height: 48px;
+}
+
+.logo-min {
+    display: none !important;
 }
 
 .home-menu .pure-menu-selected a {
@@ -519,6 +534,14 @@ a.pure-button-primary {
 
     .repo>a.repo-button {
         margin: 4px !important;
+    }
+
+    .logo-full {
+        display: none !important;
+    }
+
+    .logo-min {
+        display: block !important;
     }
 
     .logo {
