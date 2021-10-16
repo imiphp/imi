@@ -144,6 +144,15 @@ abstract class DbBaseTest extends TestCase
                 'v'         => 2,
             ],
         ], $stmt->fetchAll());
+
+        // 两个冒号
+        $stmt = $db->prepare('select \'1\'::INTEGER as a');
+        Assert::assertTrue($stmt->execute());
+        Assert::assertEquals([
+            [
+                'a' => 1,
+            ],
+        ], $stmt->fetchAll());
     }
 
     public function testTransactionCommit(): void
