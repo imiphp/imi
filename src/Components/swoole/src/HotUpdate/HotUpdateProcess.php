@@ -49,6 +49,13 @@ class HotUpdateProcess extends BaseProcess
     protected ?array $defaultPath = null;
 
     /**
+     * 允许热更新的进程，true：全部进程，false：不允许重启，array: 指定进程允许重启.
+     *
+     * @var string[]|bool
+     */
+    protected $process = false;
+
+    /**
      * 是否开启热更新，默认开启.
      */
     protected bool $status = true;
@@ -273,6 +280,7 @@ class HotUpdateProcess extends BaseProcess
             // 执行重新加载
             Log::info('Reloading server...');
             SwooleImiUtil::reloadServer();
+            SwooleImiUtil::reloadProcess();
         }
         catch (\Throwable $th)
         {
@@ -336,5 +344,13 @@ class HotUpdateProcess extends BaseProcess
         {
             $this->initBuildRuntime();
         }
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function getProcess()
+    {
+        return $this->process;
     }
 }

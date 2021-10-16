@@ -63,8 +63,7 @@ public $pipeType = 2;
 
 /**
  * 自动开启协程
- *
- * @var boolean
+ * @var bool
  */
 public $co = true;
 ```
@@ -178,10 +177,8 @@ $process = ProcessManager::getProcessWithManager('processName');
 
 ### 设置异步信号监听
 
-相比 Swoole 的监听，此方法支持触发多次事件
-
 ```php
-\Imi\Swoole\Util\Process::signal(SIGTERM, function($signo) {
+\Imi\Swoole\Process\Process::signal(SIGTERM, function($signo) {
      echo "shutdown.";
 });
 ```

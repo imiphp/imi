@@ -28,8 +28,14 @@ class Process extends Base
      */
     protected ?string $defaultFieldName = 'name';
 
-    public function __construct(?array $__data = null, string $name = '', bool $redirectStdinStdout = false, int $pipeType = 2, bool $unique = false, bool $co = true)
-    {
+    public function __construct(
+        ?array $__data = null,
+        string $name = '',
+        bool $redirectStdinStdout = false,
+        int $pipeType = 2,
+        bool $unique = false,
+        bool $co = true
+    ) {
         parent::__construct(...\func_get_args());
     }
 }

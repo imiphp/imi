@@ -6,8 +6,10 @@ namespace Imi\Swoole\Util;
 
 use Imi\App;
 use Imi\Config;
+use Imi\Swoole\Process\ProcessManager;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Worker;
+use Swoole\Process;
 
 class Imi
 {
@@ -98,7 +100,7 @@ class Imi
         $pid = (int) file_get_contents($fileName);
         if ($pid > 0)
         {
-            \Swoole\Process::kill($pid);
+            Process::kill($pid);
         }
         else
         {
@@ -119,11 +121,42 @@ class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
-            \Swoole\Process::kill((int) $pid, \SIGUSR1);
+            Process::kill((int) $pid, \SIGUSR1);
         }
         else
         {
             throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
+        }
+    }
+
+    public static function reloadProcess(): void
+    {
+        $rules = App::getBean('hotUpdate')->getProcess();
+        if (false === $rules)
+        {
+            return;
+        }
+        foreach (ProcessManager::getProcessSetWithManager() as $id => $item)
+        {
+            if ('hotUpdate' === $item['name'])
+            {
+                continue;
+            }
+            if (true !== $rules && !\in_array($item['name'], $rules))
+            {
+                continue;
+            }
+            $info = ProcessManager::readProcessInfo($id);
+            if (empty($info))
+            {
+                continue;
+            }
+            $pid = $info['pid'] ?? 0;
+            if (empty($pid))
+            {
+                continue;
+            }
+            Process::kill($pid, \SIGTERM);
         }
     }
 }
