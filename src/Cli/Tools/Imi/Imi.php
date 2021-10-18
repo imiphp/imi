@@ -84,7 +84,8 @@ class Imi extends BaseCommand
             }
         }
 
-        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo(ImiUtil::getModeRuntimePath($runtimeMode, 'runtime')))
+        $runtimeFileName = ImiUtil::getModeRuntimePath($runtimeMode, 'runtime');
+        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo($runtimeFileName))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
@@ -94,7 +95,7 @@ class Imi extends BaseCommand
             Scanner::scanVendor();
             Scanner::scanApp();
         }
-        ImiUtil::buildRuntime();
+        ImiUtil::buildRuntime($runtimeFileName);
         Log::info('Build app runtime complete');
     }
 
