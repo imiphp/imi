@@ -18,6 +18,8 @@ RUN set -eux \
     && docker-php-ext-enable inotify \
     && pecl install event \
     && docker-php-ext-enable --ini-name z-event.ini event \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
     && bash /tmp/script/swoole_postgresql.sh ${POSTGRESQL_VERSION} \
     && bash /tmp/script/hprose.sh \
     && echo "zend_extension=opcache.so" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
