@@ -18,6 +18,7 @@ return [
                 // 'saveFileNameCallback'    =>    function($savePath, $key){
                 //     return '';
                 // },
+                'keyAsFileName' => false, // 使用键名作为文件名，如果设置了 $saveFileNameCallback 则 $keyAsFileName 无效
             ],
         ],
     ],

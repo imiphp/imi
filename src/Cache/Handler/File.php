@@ -27,6 +27,13 @@ class File extends Base
     protected $saveFileNameCallback;
 
     /**
+     * 使用键名作为文件名.
+     *
+     * 如果设置了 $saveFileNameCallback 则 $keyAsFileName 无效
+     */
+    protected bool $keyAsFileName = false;
+
+    /**
      * {@inheritDoc}
      */
     public function get($key, $default = null)
@@ -272,6 +279,10 @@ class File extends Base
         {
             // 使用回调处理
             return ($this->saveFileNameCallback)($this->savePath, $key);
+        }
+        elseif ($this->keyAsFileName)
+        {
+            return FileUtil::path($this->savePath, $key);
         }
         else
         {

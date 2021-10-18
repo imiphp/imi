@@ -255,6 +255,13 @@ return [
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
+        'file3'  => [
+            'handlerClass'  => \Imi\Cache\Handler\File::class,
+            'option'        => [
+                'savePath'              => dirname(__DIR__) . '/.runtime/cache/',
+                'formatHandlerClass'    => \Imi\Util\Format\Json::class,
+            ],
+        ],
         'redis' => [
             'handlerClass'  => \Imi\Cache\Handler\Redis::class,
             'option'        => [
