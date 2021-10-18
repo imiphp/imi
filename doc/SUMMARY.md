@@ -157,6 +157,7 @@
   * [File](components/cache/file.md)
   * [Redis](components/cache/redis.md)
   * [RedisHash](components/cache/redisHash.md)
+  * [Apcu](components/cache/apcu.md)
 * [日志](components/log/index.md)
 * [验证器](components/validation/index.md)
 * [门面 (Facade)](components/facade/index.md)
