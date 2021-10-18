@@ -61,7 +61,7 @@
         ],
         "install-components": "Imi\\Dev\\Plugin::dev",
         "generate-ide-helper": "Imi\\Dev\\Plugin::IDEHelper",
-        "test": "@php tests/phpunit -c ./tests/phpunit.xml",
+        "test": "@php -dapc.enable_cli=1 tests/phpunit -c ./tests/phpunit.xml",
         "install-test": "@php --ri swoole && composer install && cd ../ && composer test",
         "test-swoole": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/swoole/tests/phpunit.xml",
         "test-workerman": "@php tests/phpunit -c src/Components/workerman/tests/phpunit.xml",
@@ -109,7 +109,8 @@
             "list": [
                 "redis",
                 "inotify",
-                "swoole_postgresql"
+                "swoole_postgresql",
+                "apcu"
             ]
         }
     }

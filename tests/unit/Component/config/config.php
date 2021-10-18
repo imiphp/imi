@@ -270,6 +270,11 @@ return [
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
+        'apcu' => [
+            'handlerClass'  => \Imi\Cache\Handler\Apcu::class,
+            'option'        => [
+            ],
+        ],
     ],
     // atmoic 配置
     'atomics'    => [
