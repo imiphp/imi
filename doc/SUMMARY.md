@@ -241,7 +241,7 @@
 ## 进阶开发
 
 * [断点调试](adv/debug.md)
-* [性能优化](adv/performance.md)
+* [生产环境性能优化](adv/performance.md)
 * [帮助 imi 变得更好](adv/devp.md)
 
 ## 运行环境
