@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$rootPath = dirname(__DIR__) . \DIRECTORY_SEPARATOR;
+$rootPath = \dirname(__DIR__) . \DIRECTORY_SEPARATOR;
 
 return [
     // 项目根命名空间
@@ -15,9 +15,9 @@ return [
         'main' => [],
     ],
     'ignorePaths'   => [
-        dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'bin',
-        dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
-        dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'Tests',
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'bin',
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'Tests',
     ],
     // 日志配置
     'logger' => [
@@ -56,7 +56,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,
@@ -102,7 +102,7 @@ return [
             'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
         'SessionFile'    => [
-            'savePath'    => dirname(__DIR__) . '/.session/',
+            'savePath'    => \dirname(__DIR__) . '/.session/',
         ],
         'SessionConfig'    => [
         ],
@@ -118,7 +118,7 @@ return [
             ],
         ],
         'HtmlView'    => [
-            'templatePath'    => dirname(__DIR__) . '/template/',
+            'templatePath'    => \dirname(__DIR__) . '/template/',
             // 支持的模版文件扩展名，优先级按先后顺序
             'fileSuffixs'        => [
                 'tpl',

@@ -14,7 +14,7 @@ return [
             'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
         'SessionFile'    => [
-            'savePath'    => dirname(__DIR__, 2) . '/.runtime/.session2',
+            'savePath'    => \dirname(__DIR__, 2) . '/.runtime/.session2',
         ],
         'SessionConfig'    => [
         ],
@@ -29,7 +29,7 @@ return [
             ],
         ],
         'HtmlView'    => [
-            'templatePath'    => dirname(__DIR__) . '/template/',
+            'templatePath'    => \dirname(__DIR__) . '/template/',
             // 支持的模版文件扩展名，优先级按先后顺序
             'fileSuffixs'        => [
                 'tpl',

@@ -32,7 +32,7 @@ return [
     ],
 
     'ignorePaths'   => [
-        dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
     ],
 
     // 日志配置
@@ -43,7 +43,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,

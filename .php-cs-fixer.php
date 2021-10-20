@@ -24,6 +24,7 @@ return (new PhpCsFixer\Config())
         ],
         'fopen_flags'                  => false,
         'protected_to_private'         => false,
+        'native_function_invocation'   => true,
         'native_constant_invocation'   => true,
         'combine_nested_dirname'       => true,
         'single_quote'                 => true,

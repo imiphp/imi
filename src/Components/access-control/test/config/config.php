@@ -68,7 +68,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__, 2) . '/log.log',
+                            'filename' => \dirname(__DIR__, 2) . '/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$rootPath = dirname(__DIR__) . '/';
+$rootPath = \dirname(__DIR__) . '/';
 
 return [
     'hotUpdate'    => [

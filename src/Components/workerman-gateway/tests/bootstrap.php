@@ -5,8 +5,8 @@ declare(strict_types=1);
 use Imi\Cli\ImiCommand;
 use function Imi\ttyExec;
 
-require dirname(__DIR__, 4) . '/vendor/autoload.php';
-require dirname(__DIR__) . '/vendor/autoload.php';
+require \dirname(__DIR__, 4) . '/vendor/autoload.php';
+require \dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * 开启服务器.

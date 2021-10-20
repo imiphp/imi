@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Imi\Util\Imi;
 
-$rootPath = dirname(__DIR__) . '/';
+$rootPath = \dirname(__DIR__) . '/';
 
 return [
     'hotUpdate'    => [

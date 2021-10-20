@@ -47,7 +47,7 @@ go(function () {
  */
 function sendData(Client $client, $data)
 {
-    $data = pack('N', strlen($data)) . $data;
+    $data = pack('N', \strlen($data)) . $data;
 
     return $client->send($data);
 }

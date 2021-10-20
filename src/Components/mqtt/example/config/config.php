@@ -45,8 +45,8 @@ return [
             'sockType'      => \SWOOLE_SOCK_TCP | \SWOOLE_SSL, // SSL 需要设置一下 sockType
             'configs'       => [
                 // 配置证书
-                'ssl_cert_file'     => dirname(__DIR__) . '/ssl/server.crt',
-                'ssl_key_file'      => dirname(__DIR__) . '/ssl/server.key',
+                'ssl_cert_file'     => \dirname(__DIR__) . '/ssl/server.crt',
+                'ssl_key_file'      => \dirname(__DIR__) . '/ssl/server.key',
             ],
             'controller'    => \MQTTApp\MQTTServer\Controller\MQTTController::class,
         ],
@@ -113,7 +113,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/.runtime/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/.runtime/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,

@@ -45,7 +45,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,
@@ -89,8 +89,8 @@ return [
             'port'      => 13006,
             'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
             'configs'   => [
-                'ssl_cert_file'     => dirname(__DIR__, 7) . '/tests/ssl/server.crt',
-                'ssl_key_file'      => dirname(__DIR__, 7) . '/tests/ssl/server.key',
+                'ssl_cert_file'     => \dirname(__DIR__, 7) . '/tests/ssl/server.crt',
+                'ssl_key_file'      => \dirname(__DIR__, 7) . '/tests/ssl/server.key',
             ],
         ],
         'Http2Test'   => [
@@ -101,8 +101,8 @@ return [
             'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
             'configs'   => [
                 'open_http2_protocol'   => true,
-                'ssl_cert_file'         => dirname(__DIR__, 7) . '/tests/ssl/server.crt',
-                'ssl_key_file'          => dirname(__DIR__, 7) . '/tests/ssl/server.key',
+                'ssl_cert_file'         => \dirname(__DIR__, 7) . '/tests/ssl/server.crt',
+                'ssl_key_file'          => \dirname(__DIR__, 7) . '/tests/ssl/server.key',
             ],
         ],
     ],

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$imiPath = dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'src' . \DIRECTORY_SEPARATOR;
+$imiPath = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'src' . \DIRECTORY_SEPARATOR;
 
 return [
     'beanScan' => [

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-require dirname(__DIR__, 4) . '/vendor/autoload.php';
-require dirname(__DIR__) . '/vendor/autoload.php';
+require \dirname(__DIR__, 4) . '/vendor/autoload.php';
+require \dirname(__DIR__) . '/vendor/autoload.php';
 
 function checkHttpServerStatus(): bool
 {
@@ -28,8 +28,8 @@ function startServer(): void
 {
     $servers = [
         'HttpServer'    => [
-            'start'         => dirname(__DIR__) . '/example/bin/start.sh',
-            'stop'          => dirname(__DIR__) . '/example/bin/stop.sh',
+            'start'         => \dirname(__DIR__) . '/example/bin/start.sh',
+            'stop'          => \dirname(__DIR__) . '/example/bin/stop.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
     ];

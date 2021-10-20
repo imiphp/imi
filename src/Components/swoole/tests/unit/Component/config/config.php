@@ -41,7 +41,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,
@@ -224,14 +224,14 @@ return [
         'file1'  => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
-                'savePath'              => dirname(__DIR__) . '/.runtime/cache/',
+                'savePath'              => \dirname(__DIR__) . '/.runtime/cache/',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
         'file2'  => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
-                'savePath'    => dirname(__DIR__) . '/.runtime/cache/',
+                'savePath'    => \dirname(__DIR__) . '/.runtime/cache/',
                 // 保存文件名处理回调，一般可以不写
                 'saveFileNameCallback'    => function (string $savePath, string $key) {
                     return \Imi\Util\File::path($savePath, sha1($key));

@@ -8,7 +8,7 @@ use Composer\Autoload\ClassLoader;
     global $COMPONENTS_NS;
     $COMPONENTS_NS = [];
 
-    $componentsDir = dirname(__DIR__) . '/src/Components';
+    $componentsDir = \dirname(__DIR__) . '/src/Components';
     foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
     {
         /** @var SplFileInfo $dir */

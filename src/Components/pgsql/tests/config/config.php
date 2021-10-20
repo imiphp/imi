@@ -28,7 +28,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,
@@ -90,7 +90,7 @@ return [
                 'database'    => 'db_imi_test',
             ],
         ],
-        'swoole'    => extension_loaded('swoole_postgresql') ? [
+        'swoole'    => \extension_loaded('swoole_postgresql') ? [
             'pool'    => [
                 // 协程池类名
                 'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,

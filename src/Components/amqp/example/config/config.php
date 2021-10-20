@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Imi\Util\Imi;
 
-defined('AMQP_SERVER_HOST') || define('AMQP_SERVER_HOST', imiGetEnv('AMQP_SERVER_HOST', '127.0.0.1'));
+\defined('AMQP_SERVER_HOST') || \define('AMQP_SERVER_HOST', imiGetEnv('AMQP_SERVER_HOST', '127.0.0.1'));
 
 return [
     // 项目根命名空间
@@ -133,7 +133,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/.runtime/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/.runtime/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,

@@ -26,7 +26,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
-        $_index = preg_split("/\]\[/", substr($parameter, 1, strlen($parameter) - 2));
+        $_index = preg_split("/\]\[/", substr($parameter, 1, \strlen($parameter) - 2));
         $variable = strtolower($compiler->getId($_index[0]));
         // @phpstan-ignore-next-line
         if (false === $variable)

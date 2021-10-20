@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$dir = dirname(__DIR__);
+$dir = \dirname(__DIR__);
 
 $cmd = "rm -rf {$dir}/vendor/imiphp && mkdir -p {$dir}/vendor/imiphp";
 echo '[cmd] ', $cmd, \PHP_EOL;
@@ -23,7 +23,7 @@ if (isset($json['require']))
         }
 
         $path = "{$dir}/vendor/{$key}";
-        $componentDir = dirname($dir) . '/' . substr($key, 11);
+        $componentDir = \dirname($dir) . '/' . substr($key, 11);
         $cmd = "rm -rf {$path} && ln -s -f {$componentDir} {$path}";
         echo '[cmd] ', $cmd, \PHP_EOL;
         echo shell_exec($cmd), \PHP_EOL;

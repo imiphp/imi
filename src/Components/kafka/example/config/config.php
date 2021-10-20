@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Imi\Util\Imi;
 
-defined('KAFKA_BOOTSTRAP_SERVERS') || define('KAFKA_BOOTSTRAP_SERVERS', imiGetEnv('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
+\defined('KAFKA_BOOTSTRAP_SERVERS') || \define('KAFKA_BOOTSTRAP_SERVERS', imiGetEnv('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
 
 return [
     // 项目根命名空间
@@ -129,7 +129,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/.runtime/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/.runtime/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,

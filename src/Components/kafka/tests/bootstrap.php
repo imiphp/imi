@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use function Yurun\Swoole\Coroutine\batch;
 
-require dirname(__DIR__, 4) . '/vendor/autoload.php';
-require dirname(__DIR__) . '/vendor/autoload.php';
+require \dirname(__DIR__, 4) . '/vendor/autoload.php';
+require \dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * @return bool
@@ -33,7 +33,7 @@ function checkHttpServerStatus()
  */
 function startServer()
 {
-    $dirname = dirname(__DIR__);
+    $dirname = \dirname(__DIR__);
     $mode = getenv('AMQP_TEST_MODE');
     if (!$mode)
     {

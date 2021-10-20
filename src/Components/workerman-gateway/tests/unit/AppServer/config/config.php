@@ -18,7 +18,7 @@ return [
     // 组件命名空间
     'components'    => [
         'Workerman'        => 'Imi\Workerman',
-        'Swoole'           => defined('SWOOLE_VERSION') ? 'Imi\Swoole' : '',
+        'Swoole'           => \defined('SWOOLE_VERSION') ? 'Imi\Swoole' : '',
         'WorkermanGateway' => 'Imi\WorkermanGateway',
     ],
 
@@ -42,7 +42,7 @@ return [
                     [
                         'class'     => \Monolog\Handler\RotatingFileHandler::class,
                         'construct' => [
-                            'filename' => dirname(__DIR__) . '/logs/log.log',
+                            'filename' => \dirname(__DIR__) . '/logs/log.log',
                         ],
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,
@@ -59,7 +59,7 @@ return [
     ],
 
     // 主服务器配置
-    'mainServer'    => defined('SWOOLE_VERSION') ? [
+    'mainServer'    => \defined('SWOOLE_VERSION') ? [
         'namespace'    => 'Imi\WorkermanGateway\Test\AppServer\WebSocketServer',
         'type'         => \Imi\WorkermanGateway\Swoole\Server\Type::BUSINESS_WEBSOCKET,
         // 'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
@@ -78,7 +78,7 @@ return [
     ] : [],
 
     // 子服务器（端口监听）配置
-    'subServers'        => defined('SWOOLE_VERSION') ? [
+    'subServers'        => \defined('SWOOLE_VERSION') ? [
         'http'     => [
             'namespace' => 'Imi\WorkermanGateway\Test\AppServer\ApiServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,

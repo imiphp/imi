@@ -12,9 +12,9 @@
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
         </testsuite>
-        <testsuite name="Performance">
+        <!-- <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
-        </testsuite>
+        </testsuite> -->
     </testsuites>
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />

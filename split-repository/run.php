@@ -195,7 +195,7 @@ setlocale(\LC_CTYPE, 'en_US.UTF-8');
 
 chdir(__DIR__);
 
-$mainRepoPath = dirname(__DIR__) . '/';
+$mainRepoPath = \dirname(__DIR__) . '/';
 
 loadConfig();
 
@@ -228,13 +228,13 @@ foreach ($storeRepoMap as $name => $urls)
     $noBranch = !$branch;
     if ($branch)
     {
-        if (!in_array('* ' . $branch, $branches))
+        if (!\in_array('* ' . $branch, $branches))
         {
-            if (in_array('  remotes/origin/' . $branch, $branches))
+            if (\in_array('  remotes/origin/' . $branch, $branches))
             {
                 execCMD('git checkout -b ' . escapeshellarg($branch) . ' ' . escapeshellarg('remotes/origin/' . $branch));
             }
-            elseif (in_array('  ' . $branch, $branches))
+            elseif (\in_array('  ' . $branch, $branches))
             {
                 execCMD('git checkout ' . escapeshellarg($branch));
             }
@@ -245,14 +245,14 @@ foreach ($storeRepoMap as $name => $urls)
         }
     }
 
-    $len = count($urls);
+    $len = \count($urls);
     for ($i = 1; $i < $len; ++$i)
     {
         execCMD('git remote remove r' . $i . ' ' . escapeshellarg($urls[$i]), '删除远端' . $i);
         execCMD('git remote add r' . $i . ' ' . escapeshellarg($urls[$i]), '增加远端' . $i);
     }
     $path = $name . '/';
-    $pathLen = strlen($path);
+    $pathLen = \strlen($path);
     foreach ($commits as $commit)
     {
         chdir($mainRepoPath);
@@ -273,7 +273,7 @@ foreach ($storeRepoMap as $name => $urls)
                 {
                     // 同目录下重命名
                     $from = str_replace('{', '', $matches2[1]);
-                    $to = dirname($from) . '/' . substr($matches2[2], 0, -1);
+                    $to = \dirname($from) . '/' . substr($matches2[2], 0, -1);
                 }
                 else
                 {
@@ -295,7 +295,7 @@ foreach ($storeRepoMap as $name => $urls)
                     $originFileName = $mainRepoPath . $to;
                     if (is_file($originFileName))
                     {
-                        $dir = dirname($repoFilePath);
+                        $dir = \dirname($repoFilePath);
                         if (!is_dir($dir))
                         {
                             mkdir($dir, 0777, true);
@@ -318,7 +318,7 @@ foreach ($storeRepoMap as $name => $urls)
                     $originFileName = $mainRepoPath . $fileName;
                     if (is_file($originFileName))
                     {
-                        $dir = dirname($repoFilePath);
+                        $dir = \dirname($repoFilePath);
                         if (!is_dir($dir))
                         {
                             mkdir($dir, 0777, true);
