@@ -179,7 +179,7 @@ use function str_contains;
  * @method mixed xclaim($str_key, $str_group, $str_consumer, $i_min_idle, array $arr_ids, array $arr_opts = null)
  * @method mixed xdel($str_key, array $arr_ids)
  * @method mixed xgroup($str_operation, $str_key = null, $str_arg1 = null, $str_arg2 = null, $str_arg3 = null)
- * @method mixed xinfo($str_cmd, $str_key = null, $str_group = null)
+ * @method mixed xinfo($str_cmd, $str_key = null, $str_group = null, $count = null)
  * @method mixed xlen($key)
  * @method mixed xpending($str_key, $str_group, $str_start = null, $str_end = null, $i_count = null, $str_consumer = null)
  * @method mixed xrange($str_key, $str_start, $str_end, $i_count = null)
