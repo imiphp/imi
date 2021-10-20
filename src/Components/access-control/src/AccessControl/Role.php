@@ -122,7 +122,7 @@ class Role
         $record = App::getBean('ACRoleService')->create($name, $code, $description);
         if ($record)
         {
-            return new static($record->code);
+            return new static($record->code, 'code');
         }
         else
         {
