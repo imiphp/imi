@@ -24,8 +24,10 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi-cli generate/model "命名空间"
+vendor/bin/imi-xxx generate/model "命名空间"
 ```
+
+> (`xxx` 根据运行模式不同而不同)
 
 ### 相关配置
 
@@ -120,7 +122,7 @@ imi 支持两种自定义模型生成目标的配置方式。
 示例：
 
 ```shell
-HttpDemo/bin/imi-cli generate/pgModel "命名空间"
+vendor/bin/imi-cli generate/pgModel "命名空间"
 ```
 
 ### 相关配置

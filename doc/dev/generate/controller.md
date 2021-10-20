@@ -14,7 +14,9 @@
 
 示例：
 ```bash
-HttpDemo/bin/imi-cli generate/httpController 控制器名 "命名空间"
+vendor/bin/imi-xxx generate/httpController 控制器名 "命名空间"
 
-HttpDemo/bin/imi-cli generate/httpController 控制器名 "命名空间" --rest
+vendor/bin/imi-xxx generate/httpController 控制器名 "命名空间" --rest
 ```
+
+> (`xxx` 根据运行模式不同而不同)

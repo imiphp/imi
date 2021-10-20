@@ -20,7 +20,7 @@
 
 **解决方案：** 尝试删除 `.runtime` 目录中的 `imi-runtime` 和 `runtime` 目录
 
-你也可以使用命令来删除：`vendor/bin/imi-cli imi/clearRuntime && vendor/bin/imi-cli imi/clearImiRuntime`
+你也可以使用命令来删除：`vendor/bin/imi-xxx imi/clearRuntime && vendor/bin/imi-xxx imi/clearImiRuntime` (`xxx` 根据运行模式不同而不同)
 
 ## PHP Warning:  exec() has been disabled for security reasons
 

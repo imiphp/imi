@@ -10,8 +10,8 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi-cli process/start 进程名称
+vendor/bin/imi-cli process/start 进程名称
 
 # 跟上进程需要获取的参数
-HttpDemo/bin/imi-cli process/start 进程名称 --a 1 --b 2
+vendor/bin/imi-cli process/start 进程名称 --a 1 --b 2
 ```

@@ -14,10 +14,10 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi-swoole process/start 进程名称
+vendor/bin/imi-swoole process/start 进程名称
 
 # 跟上进程需要获取的参数
-HttpDemo/bin/imi-swoole process/start 进程名称 --a 1 --b 2
+vendor/bin/imi-swoole process/start 进程名称 --a 1 --b 2
 ```
 
 ## 运行进程
@@ -32,7 +32,7 @@ HttpDemo/bin/imi-swoole process/start 进程名称 --a 1 --b 2
 示例：
 
 ```shell
-HttpDemo/bin/imi-swoole process/run 进程名称
+vendor/bin/imi-swoole process/run 进程名称
 ```
 
 ## 启动进程池

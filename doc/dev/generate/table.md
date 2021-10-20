@@ -19,8 +19,10 @@
 示例：
 
 ```shell
-HttpDemo/bin/imi-cli generate/table
+vendor/bin/imi-xxx generate/table
 ```
+
+> (`xxx` 根据运行模式不同而不同)
 
 ## 事件监听
 
