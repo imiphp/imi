@@ -12,7 +12,7 @@ use Imi\Queue\Contract\IRedisStreamMessage;
 class RedisStreamMessage extends Message implements IRedisStreamMessage
 {
     /**
-     * 获取数组消息.
+     * {@inheritDoc}
      */
     public function getArrayMessage(): array
     {
