@@ -45,6 +45,8 @@ class PaginateResult implements IPaginateResult
      */
     protected array $options = [];
 
+    protected ?array $data = null;
+
     public function __construct(IResult $result, int $page, int $limit, ?int $total, ?int $pageCount, array $options)
     {
         $this->result = $result;
@@ -92,6 +94,11 @@ class PaginateResult implements IPaginateResult
      */
     public function getArray(?string $className = null): array
     {
+        if (null === $className)
+        {
+            return $this->getList();
+        }
+
         return $this->result->getArray($className);
     }
 
@@ -140,7 +147,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getList(): array
     {
-        return $this->result->getArray();
+        return $this->data ??= $this->result->getArray();
     }
 
     /**
@@ -178,9 +185,9 @@ class PaginateResult implements IPaginateResult
             $options = $this->options;
             $arrayData = [
                 // 数据列表
-                $options['field_list'] ?? 'list'              => $this->result->getArray(),
+                $options['field_list'] ?? 'list'   => $this->getList(),
                 // 每页记录数
-                $options['field_limit'] ?? 'limit'            => $this->limit,
+                $options['field_limit'] ?? 'limit' => $this->limit,
             ];
             if (null !== $this->total)
             {
