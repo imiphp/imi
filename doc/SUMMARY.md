@@ -194,6 +194,7 @@
 ## 消息队列
 
 * [Redis](components/mq/redis.md)
+* [Redis Stream](components/mq/redisStream.md)
 * [RabbitMQ(AMQP)](components/mq/amqp.md)
 * [Kafka](components/mq/kafka.md)
 
