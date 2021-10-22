@@ -202,19 +202,21 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-macos:
-    name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-stable
+    name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
         php: [7.4, "8.0"]
         swoole: [v4.8.0]
+        roadrunner: [2.4.*]
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
       IMI_TEST_AMQP_SERVER_UTIL: 0
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -270,7 +272,7 @@ jobs:
 
       - name: Install RoadRunner
         run: |
-          echo no | src/Components/roadrunner/vendor/bin/rr get-binary
+          echo no | src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_DOCKER_VERSION
           ./rr -v
 
       - name: Test
@@ -302,16 +304,18 @@ jobs:
         run: php .github/print-logs.php
 
   ci-windows:
-    name: Windows PHP-${{ matrix.php }} RoadRunner-stable
+    name: Windows PHP-${{ matrix.php }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         php: [7.4, "8.0"]
+        roadrunner: [2.4.*]
 
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
 
     steps:
       - uses: actions/checkout@v2
@@ -354,7 +358,7 @@ jobs:
 
       - name: Install RoadRunner
         run: |
-          echo no | src\Components\roadrunner\vendor\bin\rr get-binary
+          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $ROADRUNNER_DOCKER_VERSION
           .\rr -v
 
       - name: Test
