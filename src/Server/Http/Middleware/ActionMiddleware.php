@@ -25,7 +25,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * @Bean("ActionMiddleware")
+ * @Bean(name="ActionMiddleware", recursion=false)
  */
 class ActionMiddleware implements MiddlewareInterface
 {

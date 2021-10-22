@@ -13,7 +13,7 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\Route\TcpRoute;
 
 /**
- * @Bean("TCPRouteMiddleware")
+ * @Bean(name="TCPRouteMiddleware", recursion=false)
  */
 class RouteMiddleware implements IMiddleware
 {

@@ -12,7 +12,7 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Random;
 
 /**
- * @Bean("SessionManager")
+ * @Bean(name="SessionManager", recursion=false)
  */
 class SessionManager
 {

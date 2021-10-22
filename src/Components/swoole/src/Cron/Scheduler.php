@@ -22,7 +22,7 @@ use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 
 /**
- * @Bean("CronScheduler")
+ * @Bean(name="CronScheduler", recursion=false)
  *
  * 定时任务调度器
  */

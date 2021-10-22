@@ -13,7 +13,7 @@ use Imi\Server\UdpServer\Message\IPacketData;
 use Imi\Server\UdpServer\Route\UdpRoute;
 
 /**
- * @Bean("UDPRouteMiddleware")
+ * @Bean(name="UDPRouteMiddleware", recursion=false)
  */
 class RouteMiddleware implements IMiddleware
 {

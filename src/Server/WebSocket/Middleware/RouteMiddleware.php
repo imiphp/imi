@@ -13,7 +13,7 @@ use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\Route\WSRoute;
 
 /**
- * @Bean("WebSocketRouteMiddleware")
+ * @Bean(name="WebSocketRouteMiddleware", recursion=false)
  */
 class RouteMiddleware implements IMiddleware
 {

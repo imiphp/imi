@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\Annotation\ServerInject;
 
 /**
- * @Bean("SessionConfig")
+ * @Bean(name="SessionConfig", recursion=false)
  */
 class SessionConfig
 {

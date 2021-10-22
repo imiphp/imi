@@ -22,7 +22,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * @Bean("GrpcActionMiddleware")
+ * @Bean(name="GrpcActionMiddleware", recursion=false)
  */
 class ActionMiddleware implements MiddlewareInterface
 {

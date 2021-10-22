@@ -17,7 +17,7 @@ use Imi\Util\Text;
 use Imi\Util\Uri;
 
 /**
- * @Bean("WSRoute")
+ * @Bean(name="WSRoute", recursion=false)
  */
 class WSRoute implements IRoute
 {
