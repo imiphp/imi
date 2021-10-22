@@ -172,6 +172,10 @@
                     document.title = '<?php echo $pageTitle; ?>';
                     var currentCatalog = <?php echo json_encode($currentCatalog); ?>;
                     var rootPath = location.pathname.substr(0, location.pathname.indexOf(currentCatalog.url));
+                    if('' === rootPath)
+                    {
+                        rootPath = location.pathname;
+                    }
                     var catalogList = <?php echo json_encode($data['catalogList']); ?>;
                     for(var i = 0; i < catalogList.length; ++i)
                     {
