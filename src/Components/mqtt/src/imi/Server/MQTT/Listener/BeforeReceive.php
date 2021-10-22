@@ -56,15 +56,14 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
             throw new \RuntimeException('MQTT server config "controller" not found');
         }
 
+        // 上下文创建
+        $requestContext = RequestContext::getContext();
+        $requestContext['server'] = $server;
+        $requestContext['clientId'] = $clientId;
+
         // 数据
         $data = new ReceiveData($clientId, $e->reactorId, $e->data);
-
-        // 上下文创建
-        RequestContext::muiltiSet([
-            'server'      => $e->getTarget(),
-            'clientId'    => $clientId,
-            'receiveData' => $data,
-        ]);
+        $requestContext['receiveData'] = $data;
 
         /** @var \Imi\Server\MQTT\BaseMQTTController $controllerInstance */
         $controllerInstance = $server->getBean($controller);
