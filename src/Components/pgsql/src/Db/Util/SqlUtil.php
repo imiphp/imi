@@ -30,10 +30,10 @@ class SqlUtil
 
         $i = 0;
 
-        return preg_replace_callback('/([^:]:([a-zA-Z0-9_]+)|\?)/', function (array $match) use (&$map, &$i): string {
-            $map[] = $match[2] ?? $match[0];
+        return preg_replace_callback('/([^:])(:([a-zA-Z0-9_]+)|\?)/', function (array $match) use (&$map, &$i): string {
+            $map[] = $match[3] ?? $match[1];
 
-            return '$' . (++$i);
+            return $match[1] . '$' . (++$i);
         }, $sql);
     }
 
