@@ -358,7 +358,7 @@ jobs:
 
       - name: Install RoadRunner
         run: |
-          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $ROADRUNNER_DOCKER_VERSION
+          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $env:ROADRUNNER_DOCKER_VERSION
           .\rr -v
 
       - name: Test
