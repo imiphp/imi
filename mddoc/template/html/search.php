@@ -7,14 +7,19 @@ function initSearchDatas()
     {
         if(void 0 !== searchDatas[i].url)
         {
-            searchDatas[i] = parseCatalogItem(searchDatas[i]);
+            searchDatas[i].url = rootPath + searchDatas[i].url;
         }
     }
     doSearch($('#search-keyword').val());
 }
 
+function filterRegex(r)
+{
+    return r.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
+}
+
 String.prototype.indexOf2 = function(f){
-    var rt = this.match(eval('/' + f + '/i'));
+    var rt = this.match(eval('/' + filterRegex(f) + '/i'));
     return (rt == null) ? -1 : rt.index;
 }
 
@@ -45,14 +50,42 @@ function searchArticle(keyword)
         }
         result = [];
         tSearchDatas.forEach(function(item, index){
-            if(item.content.indexOf2(kw) > -1 || item.title.indexOf2(kw) > -1)
+            var titleIndex = item.title.indexOf2(kw);
+            var contentIndex = item.content.indexOf2(kw);
+            if(titleIndex > -1 || contentIndex > -1)
             {
-                result.push(item);
+                var newItem = JSON.parse(JSON.stringify(item));
+                if(titleIndex > -1)
+                {
+                    newItem.searchedTitle = lightKeyword(newItem.title, kw);
+                }
+                else
+                {
+                    newItem.searchedTitle = newItem.title;
+                }
+                if(contentIndex > -1)
+                {
+                    var start = contentIndex < 11 ? 0 : contentIndex - 10;
+                    var end = start === 0 ? 70 : contentIndex + kw.length + 60;
+
+                    newItem.searchedContent = lightKeyword(newItem.content.substring(start, end), kw);
+                }
+                else
+                {
+                    newItem.searchedContent = newItem.content.substring(0, 60);
+                }
+                newItem.searchedContent = '...' + newItem.searchedContent + '...';
+                result.push(newItem);
             }
         });
         tSearchDatas = result;
     });
     return result;
+}
+
+function lightKeyword(content, keyword)
+{
+    return content.replace(new RegExp('(' + filterRegex(keyword) + ')', 'ig'), '<strong>$1</strong>')
 }
 
 var searchTimer = null;

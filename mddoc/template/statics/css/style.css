@@ -1,3 +1,21 @@
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: #5FB878;
+    -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #5FB878;
+}
 .clear{
     clear:both;
 }
@@ -10,27 +28,64 @@
 .pull-right {
     float: right !important;
 }
+#mask {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.382);
+    display: none;
+}
 #navbar{
     background-color: #393D49;
-    height:60px;
-    padding: 0 10px;
+    background: -webkit-gradient(left top, right top, color-stop(0%, #70e1f5), color-stop(100%, #FFD194));
+    background: -webkit-linear-gradient(left, #70e1f5 0%, #FFD194 100%);
+    background: -o-linear-gradient(left, #70e1f5 0%, #FFD194 100%);
+    background: -ms-linear-gradient(left, #70e1f5 0%, #FFD194 100%);
+    background: -webkit-gradient(linear, left top, right top, from(#70e1f5), to(#FFD194));
+    background: linear-gradient(200deg,#70e1f5,#ffd194);
+    height:48px;
     position: fixed;
     right: 0;
     left: 0;
     z-index: 1000;
 }
+#navbar .bg-blur {
+    background-color: rgba(255, 255, 255, 0.618);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.10);
+    line-height: 48px;
+    height: 48px;
+    position: relative;
+}
+#navbar .navbar-body{
+    top: 0;
+    position: absolute;
+    width: 100%;
+    padding: 0 1em;
+}
 #navbar .layui-nav{
     border-radius: 0;
 }
+.layui-nav .layui-nav-item {
+    line-height: 48px;
+}
 #navbar .logo{
     float: left;
-    font-size: 1.625rem;
-    color: #fff;
-    line-height: 60px;
+    font-size: 1.5rem;
+    color: #333;
+    line-height: 48px;
+}
+#navbar .logo > img {
+    height: 48px;
+}
+.layui-nav .layui-nav-item a, .layui-nav .layui-nav-item a:hover, .layui-nav .layui-this a{
+    color: #333;
 }
 #leftbar{
-	width:260px;
-	top: 60px;
+	width:300px;
+	top: 48px;
 	border-radius: 0;
     transition: left 0.5s ease;
     -webkit-transition: left 0.5s ease;
@@ -40,6 +95,12 @@
     overflow-x: visible;
     border-right:1px solid #eee;
     background-color:#fafafa;
+}
+#leftbar .layui-tab-content{
+    padding:12px 2px 0 0;
+    overflow-y: auto;
+    position: relative;
+    box-sizing: border-box;
 }
 #leftbar .copyright {
     color: #fff;
@@ -81,15 +142,15 @@
     display:none;
 }
 .left-show-hide:hover{
-    color:#fff;
+    color:#333;
 }
 .left-show-hide > .layui-icon{
     font-size:14px;
 }
 #body {
-    padding-left: 260px;
+    padding-left: 300px;
     width: 100%;
-    padding-top: 60px;
+    padding-top: 48px;
     position: absolute;
     transition: left 0.5s ease;
     -webkit-transition: left 0.5s ease;
@@ -105,8 +166,8 @@
 }
 #navMenuLeft, #navMenuRight{
     display:none;
-    color:#fff;
-    line-height: 60px;
+    color:#333;
+    line-height: 48px;
 }
 #navMenuLeft{
     float:left;
@@ -134,10 +195,27 @@
 .inputBox .layui-input:focus + .input-icon{
     color:#000
 }
+#treeSearch > li{
+    padding: 0 4px 10px 6px;
+    border-bottom: 1px solid #e6e6e6;
+    line-height: 24px;
+    word-break: break-word;
+    margin-bottom: 0;
+}
+#treeSearch h3 {
+    font-weight: bold;
+    line-height: 48px;
+}
+#treeSearch strong {
+    color: #FF5722;
+}
 @media screen and (max-width: 768px)
 {
+    #mask {
+        display: block;
+    }
 	#leftbar{
-		left:-260px !important;
+		left:-300px !important;
 	}
 	#leftbar.show-item{
 		left:0 !important;
@@ -151,7 +229,7 @@
         display: inline-block;
     }
     #navbar .layui-nav{
-        top: 0px;
+        top: -180px; /* 要根据导航栏项目数量调整 */
         position: absolute;
         width: 100%;
         left: 0;
@@ -161,6 +239,13 @@
         -ms-transition: top 0.5s ease;
         -o-transition: top 0.5s ease;
         z-index:999;
+        background-color: #fff;
+    }
+    #navbar .navbar-body{
+        padding: 0;
+    }
+    #navbar .bg-blur{
+        z-index: 1000;
     }
     #navMenuLeft, #navMenuRight{
         display:block;
@@ -168,13 +253,13 @@
 	#body{
 		padding-left:0
     }
-    #navbar > .layui-nav.show-item{
-        top:60px;
+    #navbar .navbar-body > .layui-nav.show-item{
+        top:48px;
     }
-    #navbar > .layui-nav > .navRight{
+    #navbar .navbar-body > .layui-nav > .navRight{
         width: 100%;
     }
-    #navbar > .layui-nav > .navRight .layui-nav-item{
+    #navbar .navbar-body > .layui-nav > .navRight .layui-nav-item{
         width: 100%;
         text-align: left;
     }

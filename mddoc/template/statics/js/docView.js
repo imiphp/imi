@@ -1,4 +1,4 @@
-var curMenu = null, zTree_Menu = null;
+var curMenu = null, menuTree = null;
 var ajaxSetting = {
 	edit: {
 		drag: {
@@ -39,13 +39,14 @@ function switchNode(event, treeId, treeNode)
 {
 	if ('pushState' in history)
 	{
-		getChapter(treeNode.url);
 		history.pushState('', '', treeNode.url);
+		getChapter(treeNode.url);
 	}
 	else
 	{
 		location = treeNode.url;
 	}
+	menuTree.expandNode(treeNode, true)
 	event.preventDefault()
 }
 
@@ -64,11 +65,16 @@ function getChapter(url)
 		method: 'GET',
 		url: url,
 		success: function(result){
-			var resultElement = $(result);
-			$('#article-content').html(resultElement.find('#article-content').html());
-			onContentChange();
-			// 有时切换文档不在最上面
-			$('#content_body').scrollTop(0)
+			try {
+				var resultElement = $(result);
+				$('#article-content').html(resultElement.find('#article-content').html());
+				onContentChange();
+				// 有时切换文档不在最上面
+				$('#content_body').scrollTop(0)
+			}
+			catch(err) {
+				layer.alert('文档加载失败', {icon:2});
+			}
 		},
 		error: function(){
 			location = url;
@@ -100,14 +106,17 @@ function initTree(data)
 	}
 	var treeObj = $("#treeDirectory");
 	$.fn.zTree.init(treeObj, ajaxSetting, data);
-	zTree_Menu = $.fn.zTree.getZTreeObj("treeDirectory");
-	zTree_Menu.selectNode(zTree_Menu.getNodeByParam('id', currentCatalog.id, null));
+	menuTree = $.fn.zTree.getZTreeObj("treeDirectory");
+	menuTree.selectNode(menuTree.getNodeByParam('id', currentCatalog.id, null));
 }
 
 function onClick(event, treeId, treeNode)
 {
 	// 未修改内容，直接切换
 	switchNode(event, treeId, treeNode);
+	setTimeout(function(){
+		closeMenuLeft();
+	}, 600);
 }
 
 function parseLeftHeight()

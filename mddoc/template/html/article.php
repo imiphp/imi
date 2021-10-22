@@ -28,36 +28,60 @@
 <body>
     <!-- top-begin -->
     <div id="navbar">
-        <ul class="layui-nav" lay-filter="">
-            <div class="navRight">
-                <li class="layui-nav-item layui-this" lay-unselect>
-                    <a href="/v2.0/" target="_blank" style="padding-right: 40px;">v2.0 <span class="layui-badge">新</span></a>
-                </li>
-                <li class="layui-nav-item" lay-unselect>
-                    <a href="/v1/" target="_blank">v1.x</a>
-                </li>
-                <li class="layui-nav-item" lay-unselect>
-                    <a id="btn-about" href="javascript:;">关于</a>
-                </li>
+        <div class="bg-blur"></div>
+        <div class="navbar-body">
+            <ul class="layui-nav" lay-filter="">
+                <div class="navRight">
+                    <li class="layui-nav-item layui-this" lay-unselect>
+                        <a href="/v2.0/" target="_blank" style="padding-right: 40px;">v2.0 <span class="layui-badge">新</span></a>
+                    </li>
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="/v1/" target="_blank">v1.x</a>
+                    </li>
+                    <li class="layui-nav-item" lay-unselect>
+                        <a id="btn-about" href="javascript:;">关于</a>
+                    </li>
+                </div>
+            </ul>
+            <div class="nav-menu">
+                <a href="<?php echo $this->path(''); ?>" class="logo"><img src="<?php echo $this->path('statics/images/logo.png'); ?>"/></a>
+                <a href="javascript:;" id="navMenuLeft"><i class="layui-icon layui-icon-spread-left"></i></a>
+                <a href="javascript:;" id="navMenuRight"><i class="layui-icon">&#xe61a;</i></a>
             </div>
-        </ul>
-        <div class="nav-menu">
-            <a href="<?php echo $this->path(''); ?>" class="logo"><?php echo $this->config['name']; ?></a>
-            <a href="javascript:;" id="navMenuLeft"><i class="layui-icon">&#xe658;</i></a>
-            <a href="javascript:;" id="navMenuRight"><i class="layui-icon">&#xe61a;</i></a>
+            <div class="clear"></div>
         </div>
-        <div class="clear"></div>
     </div>
     <script>
+    function showMask()
+    {
+        $('#mask').show();
+    }
+    function hideMask()
+    {
+        $('#mask').hide();
+    }
+    function clickMask()
+    {
+        closeMenuLeft();
+        closeMenuRight();
+    }
     function openMenuLeft()
     {
         $('#leftbar').addClass('show-item');
         $('#navMenuLeft').addClass('active');
+        var ico = $('#navMenuLeft .layui-icon');
+        ico.removeClass('layui-icon-spread-left');
+        ico.addClass('layui-icon-shrink-right');
+        showMask();
     }
     function closeMenuLeft()
     {
         $('#leftbar').removeClass('show-item');
         $('#navMenuLeft').removeClass('active');
+        var ico = $('#navMenuLeft .layui-icon');
+        ico.removeClass('layui-icon-shrink-right');
+        ico.addClass('layui-icon-spread-left');
+        hideMask();
     }
     $('#navMenuLeft').click(function(){
         var isShow = $('#leftbar').hasClass('show-item');
@@ -73,16 +97,18 @@
     });
     function openMenuRight()
     {
-        $('#navbar > .layui-nav').addClass('show-item')
+        $('#navbar > .navbar-body > .layui-nav').addClass('show-item')
         $('#navMenuRight').addClass('active').find('i').html('&#xe619;');
+        showMask();
     }
     function closeMenuRight()
     {
-        $('#navbar > .layui-nav').removeClass('show-item')
+        $('#navbar > .navbar-body > .layui-nav').removeClass('show-item')
         $('#navMenuRight').removeClass('active').find('i').html('&#xe61a;');
+        hideMask();
     }
     $('#navMenuRight').click(function(){
-        var isShow = $('#navbar > .layui-nav').hasClass('show-item');
+        var isShow = $('#navbar > .navbar-body > .layui-nav').hasClass('show-item');
         if(isShow)
         {
             closeMenuRight();
@@ -103,7 +129,7 @@
                 <li class="layui-this"><i class="layui-icon">&#xe705;</i> 目录</li>
                 <li><i class="layui-icon">&#xe615;</i> 搜索</li>
             </ul>
-            <div class="layui-tab-content" style="padding:0;overflow-y: auto;position: relative;padding-top: 12px;box-sizing: border-box;">
+            <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     <ul id="treeDirectory" class="ztree showIcon"></ul>
                 </div>
@@ -115,7 +141,7 @@
                                 <i class="layui-icon input-icon">&#xe615;</i>
                             </div>
                         </div>
-                        <ul id="treeSearch" class="ztree">
+                        <ul id="treeSearch">
                         </ul>
                         <div class="searchResultNone">
                             <i class="layui-icon">&#xe615;</i>
@@ -124,13 +150,16 @@
                     </div>
                 </div>
             </div>
-            <div class="copyright noScroll">mddoc</div>
+            <div class="copyright noScroll">imiphp</div>
         </div>
     </div>
     <script id="searchListTemplate" type="text/html">
         {{#  layui.each(d, function(index, item){ }}
         <li>
-            <a href="{{ item.url }}"><span>{{ item.title }}</span></a>
+            <a href="{{ item.url }}">
+                <h3>{{ item.searchedTitle }}</h3>
+                <p>{{ item.searchedContent }}</p>
+            </a>
         </li>
         {{#  }) }}
     </script>
@@ -140,25 +169,22 @@
         <div id="content_body" name="content_body" style="width:100%;height:100%;border:none;overflow: auto;">
             <div id="article-content" class="markdown-body">
                 <script>
-                    function parseCatalogItem(item)
-                    {
-                        item.url = new Array(<?php echo substr_count($currentCatalog['url'], '/'); ?> + 1).join('../') + item.url;
-                        return item;
-                    }
                     document.title = '<?php echo $pageTitle; ?>';
-                    var currentCatalog = parseCatalogItem(<?php echo json_encode($currentCatalog); ?>);
+                    var currentCatalog = <?php echo json_encode($currentCatalog); ?>;
+                    var rootPath = location.pathname.substr(0, location.pathname.indexOf(currentCatalog.url));
                     var catalogList = <?php echo json_encode($data['catalogList']); ?>;
                     for(var i = 0; i < catalogList.length; ++i)
                     {
                         if(void 0 !== catalogList[i].url)
                         {
-                            catalogList[i] = parseCatalogItem(catalogList[i]);
+                            catalogList[i].url = rootPath + catalogList[i].url;
                         }
                     }
                     initTree(catalogList);
                 </script>
                 <?php echo $articleContent; ?>
             </div>
+            <div id="mask" style="display:none" onclick="clickMask()"></div>
         </div>
     </div>
 
@@ -206,6 +232,6 @@
         })
     </script>
     <script src="<?php echo $this->path('statics/js/mddoc-search.js'); ?>"></script>
-    <script src="https://s13.cnzz.com/z_stat.php?id=1273991018&web_id=1273991018" language="JavaScript"></script>
+    <div style="display:none"><script src="https://s13.cnzz.com/z_stat.php?id=1273991018&web_id=1273991018" language="JavaScript"></script></div>
 </body>
 </html>

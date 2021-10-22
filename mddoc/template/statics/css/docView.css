@@ -42,13 +42,13 @@
 }
 
 .ztree li {
-	line-height: 30px;
+	line-height: 32px;
 	padding-left: 1em
 }
 
 .ztree li a {
 	width: 100%;
-	height: 30px;
+	height: 32px;
 	padding-top: 0;
 	padding-right: 0;
 	color: #666;
@@ -63,11 +63,25 @@
 	position: absolute;
 	left: 0;
 	user-select: none;
-	height: 30px;
+	height: 32px;
 }
 
-.ztree li a.curSelectedNode::before, .ztree li a:hover::before {
-	background: #E7E7E7;
+.ztree li a.curSelectedNode::before {
+	background: #f1f0f0;
+}
+
+.ztree li a.curSelectedNode::after {
+	content: ' ';
+    display: block;
+    width: 4px;
+    float: right;
+    background-color: #5FB878;
+    height: 32px;
+    position: relative;
+}
+
+.ztree li a:hover::before {
+	font-weight: bold;
 }
 
 .ztree li a>span {
@@ -80,7 +94,7 @@
 
 .ztree li a:hover {
 	text-decoration: none;
-	background-color: #E7E7E7;
+	color:#5FB878;
 }
 
 .ztree li a span.button.switch {
@@ -96,13 +110,14 @@
 }
 
 .ztree li a.curSelectedNode {
-	background-color: #e5e5e5;
 	border: 0;
-	height: 30px;
+	height: 32px;
+	font-weight: bold;
+	color: #5FB878;
 }
 
 .ztree li span {
-	line-height: 30px;
+	line-height: 32px;
 }
 
 .ztree li span.button {
@@ -143,7 +158,7 @@
 }
 
 .ztree li a.tmpTargetNode_inner::before {
-	height: 30px;
+	height: 32px;
 	background-color: #5FB878;
 	border: 1px solid #009688;
 	opacity: 1;
@@ -272,10 +287,13 @@ span.tmpzTreeMove_arrow {
 
 .markdown-body a {
 	background: transparent;
+	color: #01AAED;
+	text-decoration: none;
 }
 
 .markdown-body a:active, .markdown-body a:hover {
 	outline: 0;
+	text-decoration: underline;
 }
 
 .markdown-body strong {
@@ -299,7 +317,7 @@ span.tmpzTreeMove_arrow {
 }
 
 .markdown-body code, .markdown-body kbd {
-	font-family: "Meiryo UI", "YaHei Consolas Hybrid", Consolas, "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, monospace;
+	font-family: "Meiryo UI", "YaHei Consolas Hybrid", Consolas, "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, "Liberation Mono", Menlo, Courier;
 	font-size: 1em;
 }
 
@@ -330,15 +348,6 @@ span.tmpzTreeMove_arrow {
 
 .markdown-body input {
 	font: 13px/1.4 Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
-.markdown-body a {
-	color: #4183c4;
-	text-decoration: none;
-}
-
-.markdown-body a:hover, .markdown-body a:active {
-	text-decoration: underline;
 }
 
 .markdown-body hr {
@@ -407,11 +416,6 @@ span.tmpzTreeMove_arrow {
 
 .markdown-body dd {
 	margin-left: 0;
-}
-
-.markdown-body code {
-	font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-	font-size: 12px;
 }
 
 .markdown-body .octicon {
@@ -538,15 +542,6 @@ span.tmpzTreeMove_arrow {
 	margin-bottom: 16px;
 }
 
-/*
-  .markdown-body hr {
-	height: 4px;
-	padding: 0;
-	margin: 16px 0;
-	background-color: #e7e7e7;
-	border: 0 none;
-  }*/
-
 .markdown-body ul, .markdown-body ol {
 	padding-left: 2em;
 }
@@ -591,6 +586,7 @@ span.tmpzTreeMove_arrow {
 	font-size: 85%;
 	background-color: rgba(0, 0, 0, 0.04);
 	border-radius: 3px;
+	color: #FF5722;
 }
 
 .markdown-body code:before, .markdown-body code:after {
@@ -761,4 +757,11 @@ span.tmpzTreeMove_arrow {
 
 .syntaxhighlighter textarea{
 	height:100%;
+}
+.layui-elem-quote{
+	border-color: #5FB878;
+}
+li{
+	list-style: inherit;
+	margin-bottom: 12px;
 }
