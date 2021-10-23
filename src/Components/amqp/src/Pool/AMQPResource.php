@@ -71,13 +71,16 @@ class AMQPResource extends BasePoolResource
             {
                 continue;
             }
-            try
+            if ($channel instanceof \PhpAmqpLib\Channel\AMQPChannel)
             {
-                $channel->close();
-            }
-            catch (\Throwable $e)
-            {
-                /* Ignore closing errors */
+                try
+                {
+                    $channel->close();
+                }
+                catch (\Throwable $e)
+                {
+                    /* Ignore closing errors */
+                }
             }
             unset($this->connection->channels[$key]);
         }
