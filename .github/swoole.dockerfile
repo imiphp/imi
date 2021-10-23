@@ -1,12 +1,9 @@
 ARG SWOOLE_DOCKER_VERSION
-ARG ROADRUNNER_DOCKER_VERSION
 
-FROM spiralscout/roadrunner:${ROADRUNNER_DOCKER_VERSION} AS roadrunner
 FROM phpswoole/swoole:${SWOOLE_DOCKER_VERSION}
 
 ARG POSTGRESQL_VERSION=""
 
-COPY --from=roadrunner /usr/bin/rr /usr/local/bin
 COPY script/ /tmp/script
 
 RUN set -eux \

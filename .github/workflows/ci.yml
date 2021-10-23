@@ -14,7 +14,7 @@ jobs:
             postgresql_version: "v4.8.0"
           - version: 4.7-php8.0
             postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
-        roadrunner: [2.4.2]
+        roadrunner: [2.5.*]
     env:
       ENV_SERVICE: swoole
       PHP_JIT: yes
@@ -84,7 +84,7 @@ jobs:
             postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
           - version: 4.7-php8.0
             postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
-        roadrunner: [2.4.2]
+        roadrunner: [2.5.*]
     env:
       ENV_SERVICE: swoole
       POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
@@ -147,7 +147,7 @@ jobs:
         swoole: 
           - version: 4.7-php8.0
             postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
-        roadrunner: [2.4.2]
+        roadrunner: [2.5.*]
     env:
       ENV_SERVICE: swoole
       POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
@@ -209,7 +209,7 @@ jobs:
       matrix:
         php: [7.4, "8.0"]
         swoole: [v4.8.0]
-        roadrunner: [2.4.*]
+        roadrunner: [2.5.*]
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -310,7 +310,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4, "8.0"]
-        roadrunner: [2.4.*]
+        roadrunner: [2.5.*]
 
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
