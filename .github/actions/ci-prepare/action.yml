@@ -19,7 +19,6 @@ runs:
         docker exec ${{ inputs.env }} php --ri swoole
         docker exec ${{ inputs.env }} php -r "echo 'opcache config: '; print_r(opcache_get_status(false));"
         docker exec ${{ inputs.env }} composer -V
-        docker exec ${{ inputs.env }} rr -v
     - name: Prepare
       shell: bash
       run: |
@@ -28,3 +27,8 @@ runs:
         .github/prepare-kafka.sh
         docker exec ${{ inputs.env }} bash tests/db/install-db.sh
         docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+    - name: Install RoadRunner
+      shell: bash
+      run: |
+        docker exec ${{ inputs.env }} /root/.composer/vendor/bin/rr get-binary -f $ROADRUNNER_DOCKER_VERSION -l /usr/local/bin
+        docker exec ${{ inputs.env }} rr -v
