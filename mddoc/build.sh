@@ -12,6 +12,6 @@ if [ -d './output' ]; then
   rm -r ./output
 fi
 
-php ./vendor/bin/build.php -markdownPath ../doc -htmlPath ./output
+php ./vendor/bin/build.php -markdownPath ../doc -htmlPath ./output -templatePath ./template
 
 echo "open file ($PWD/output/index.html) preview"

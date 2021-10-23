@@ -317,7 +317,7 @@ span.tmpzTreeMove_arrow {
 }
 
 .markdown-body code, .markdown-body kbd {
-	font-family: "Meiryo UI", "YaHei Consolas Hybrid", Consolas, "Malgun Gothic", "Segoe UI", "Trebuchet MS", Helvetica, monospace, "Liberation Mono", Menlo, Courier;
+	font-family: inherit;
 	font-size: 1em;
 }
 
@@ -579,12 +579,10 @@ span.tmpzTreeMove_arrow {
 }
 
 .markdown-body code {
-	padding: 0;
-	padding-top: 0.2em;
-	padding-bottom: 0.2em;
+	padding: 0.2em;
 	margin: 0;
 	font-size: 85%;
-	background-color: rgba(0, 0, 0, 0.04);
+	background-color: #fafafa;
 	border-radius: 3px;
 	color: #FF5722;
 }
@@ -753,6 +751,7 @@ span.tmpzTreeMove_arrow {
 
 .syntaxhighlighter{
 	margin: 1.625em 0 !important;
+	background-color: #fafafa !important;
 }
 
 .syntaxhighlighter textarea{
@@ -760,8 +759,44 @@ span.tmpzTreeMove_arrow {
 }
 .layui-elem-quote{
 	border-color: #5FB878;
+	background-color: #fafafa;
+}
+.layui-elem-quote > p:last-child{
+	margin-bottom: 0;
 }
 li{
 	list-style: inherit;
 	margin-bottom: 12px;
+}
+
+.syntaxhighlighter .gutter {
+    color: #237893!important;
+}
+
+.syntaxhighlighter .plain, .syntaxhighlighter .plain a {
+    color: #333!important
+}
+
+.syntaxhighlighter .comments, .syntaxhighlighter .comments a {
+	color:gray!important;
+}
+
+.syntaxhighlighter .string, .syntaxhighlighter .string a {
+    color: #10893E!important
+}
+
+.syntaxhighlighter .keyword {
+    color: #ff7800!important
+}
+
+.syntaxhighlighter .variable {
+    color: #1E9FFF!important
+}
+
+.syntaxhighlighter .functions {
+    color: #FF5722!important
+}
+
+.syntaxhighlighter .constants {
+    color: #5200FF!important
 }
