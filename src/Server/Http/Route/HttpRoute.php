@@ -146,57 +146,50 @@ class HttpRoute
     public function parse(Request $request): ?RouteResult
     {
         $pathInfo = $request->getUri()->getPath();
-        $thisRules = &$this->rules;
+        $thisRules = $this->rules;
         if (isset($thisRules[$pathInfo]))
         {
             $rules = [$pathInfo => $thisRules[$pathInfo]];
+            $recheck = true;
         }
         else
         {
-            $rules = [];
+            $rules = $thisRules;
+            $recheck = false;
         }
         $ignoreCase = $this->ignoreCase;
-        for ($i = 0; $i < 2; ++$i)
+        checkRoutes:
+        /** @var \Imi\Server\Http\Route\RouteItem[] $items */
+        foreach ($rules as $urlRule => $items)
         {
-            if ($rules)
+            $result = $this->checkUrl($urlRule, $pathInfo);
+            $resultResult = $result->result;
+            if ($resultResult || $result->resultIgnoreCase)
             {
-                /** @var \Imi\Server\Http\Route\RouteItem[] $items */
-                foreach ($rules as $urlRule => $items)
+                foreach ($items as $item)
                 {
-                    $result = $this->checkUrl($urlRule, $pathInfo);
-                    $resultResult = $result->result;
                     $resultParams = $result->params;
-                    if ($resultResult || $result->resultIgnoreCase)
-                    {
-                        foreach ($items as $item)
-                        {
-                            $itemAnnotation = $item->annotation;
-                            if (
-                            ($resultResult || ($ignoreCase || $itemAnnotation->ignoreCase)) &&
-                            $this->checkMethod($request, $itemAnnotation->method) &&
-                            $this->checkDomain($request, $itemAnnotation->domain, $domainParams) &&
-                            $this->checkParamsGet($request, $itemAnnotation->paramsGet) &&
-                            $this->checkParamsPost($request, $itemAnnotation->paramsPost) &&
-                            $this->checkParamsBody($request, $itemAnnotation->paramsBody, $itemAnnotation->paramsBodyMultiLevel) &&
-                            $this->checkHeader($request, $itemAnnotation->header) &&
-                            $this->checkRequestMime($request, $itemAnnotation->requestMime)
-                        ) {
-                                if ([] === $domainParams)
-                                {
-                                    $params = $resultParams;
-                                }
-                                else
-                                {
-                                    $params = array_merge($resultParams, $domainParams);
-                                }
-
-                                return new RouteResult(spl_object_id($item), $item, $params);
-                            }
-                        }
+                    $itemAnnotation = $item->annotation;
+                    if (
+                    ($resultResult || ($ignoreCase || $itemAnnotation->ignoreCase)) &&
+                    $this->checkMethod($request, $itemAnnotation->method) &&
+                    $this->checkDomain($request, $itemAnnotation->domain, $resultParams) &&
+                    $this->checkParamsGet($request, $itemAnnotation->paramsGet) &&
+                    $this->checkParamsPost($request, $itemAnnotation->paramsPost) &&
+                    $this->checkParamsBody($request, $itemAnnotation->paramsBody, $itemAnnotation->paramsBodyMultiLevel) &&
+                    $this->checkHeader($request, $itemAnnotation->header) &&
+                    $this->checkRequestMime($request, $itemAnnotation->requestMime)
+                ) {
+                        return new RouteResult(spl_object_id($item), $item, $resultParams);
                     }
                 }
             }
+        }
+        if ($recheck)
+        {
             $rules = $thisRules;
+            $recheck = false;
+            goto checkRoutes;
         }
 
         return null;
@@ -229,27 +222,35 @@ class HttpRoute
             {
                 $matchResult = $rule === $pathInfo;
             }
-            $result = new UrlCheckResult($matchResult, $params);
-            if (!$matchResult)
+            if ($matchResult)
             {
-                if ($isRegular)
+                $resultIgnoreCase = true;
+            }
+            elseif ($isRegular)
+            {
+                // 正则加i忽略大小写
+                if (preg_match_all($rule . 'i', $pathInfo, $matches) > 0)
                 {
-                    // 正则加i忽略大小写
-                    if (preg_match_all($rule . 'i', $pathInfo, $matches) > 0)
+                    foreach ($fields as $i => $fieldName)
                     {
-                        foreach ($fields as $i => $fieldName)
-                        {
-                            $params[$fieldName] = $matches[$i + 1][0];
-                        }
-                        $result->resultIgnoreCase = true;
-                        $result->params = $params;
+                        $params[$fieldName] = $matches[$i + 1][0];
                     }
+                    $resultIgnoreCase = true;
                 }
-                elseif (0 === strcasecmp($rule, $pathInfo))
+                else
                 {
-                    $result->resultIgnoreCase = true;
+                    $resultIgnoreCase = false;
                 }
             }
+            elseif (0 === strcasecmp($rule, $pathInfo))
+            {
+                $resultIgnoreCase = true;
+            }
+            else
+            {
+                $resultIgnoreCase = false;
+            }
+            $result = new UrlCheckResult($matchResult, $params, $resultIgnoreCase);
             // 最大缓存数量处理
             if ($urlCheckCacheCount >= $this->urlCacheNumber)
             {
@@ -356,9 +357,8 @@ class HttpRoute
      *
      * @param mixed $domain
      */
-    private function checkDomain(Request $request, $domain, ?array &$params): bool
+    private function checkDomain(Request $request, $domain, array &$params): bool
     {
-        $params = [];
         if (null === $domain)
         {
             return true;
@@ -376,7 +376,6 @@ class HttpRoute
                 // 域名匹配不区分大小写
                 if (preg_match_all($rule . 'i', $uriDomain, $matches) > 0)
                 {
-                    $params = [];
                     foreach ($fields as $i => $fieldName)
                     {
                         $params[$fieldName] = $matches[$i + 1][0];

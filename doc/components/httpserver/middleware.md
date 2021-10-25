@@ -115,22 +115,6 @@ class Index extends HttpController
 
 如上代码，`index()`方法中的`@Middleware`是设置单个。`test()`方法中的是设置多个中间件。具体请看`imi-demo`项目代码。
 
-### 配置路由使用
-
-任何类型的路由配置都是加`middlewares`节来实现指定局部中间件。
-
-```php
-[
-    'route'	=>	[
-        'url'	=>	'/callback2',
-    ],
-    'callback'	=>	new RouteCallable('\Test', 'abc'),
-    'middlewares'	=>	[
-        \ImiDemo\HttpDemo\Middlewares\PoweredBy::class,
-    ],
-],
-```
-
 ### 中间件分组
 
 服务器 config.php：

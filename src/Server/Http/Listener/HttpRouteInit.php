@@ -7,7 +7,6 @@ namespace Imi\Server\Http\Listener;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
 use Imi\RequestContext;
 use Imi\Server\Http\Parser\ControllerParser;
 use Imi\Server\Http\Route\Annotation\Action;
@@ -34,7 +33,6 @@ class HttpRouteInit implements IEventListener
     public function handle(EventParam $e): void
     {
         $this->parseAnnotations();
-        $this->parseConfigs();
     }
 
     /**
@@ -134,43 +132,6 @@ class HttpRouteInit implements IEventListener
             if (0 === Worker::getWorkerId())
             {
                 $route->checkDuplicateRoutes();
-            }
-            unset($context['server']);
-        }
-    }
-
-    /**
-     * 处理配置文件路由.
-     */
-    protected function parseConfigs(): void
-    {
-        $context = RequestContext::getContext();
-        foreach (ServerManager::getServers() as $server)
-        {
-            if (Protocol::HTTP !== $server->getProtocol())
-            {
-                continue;
-            }
-            $context['server'] = $server;
-            $route = $server->getBean('HttpRoute');
-            $main = Helper::getMain($server->getConfig()['namespace']);
-            if ($main)
-            {
-                foreach ($main->getConfig()['route'] ?? [] as $routeOption)
-                {
-                    $routeAnnotation = new Route($routeOption['route'] ?? []);
-                    if (isset($routeOption['callback']))
-                    {
-                        $callable = $routeOption['callback'];
-                    }
-                    else
-                    {
-                        $callable = new RouteCallable($server->getName(), $routeOption['controller'], $routeOption['method']);
-                    }
-                    $route->addRuleAnnotation($routeAnnotation, $callable, [
-                        'middlewares' => $routeOption['middlewares'] ?? [],
-                    ]);
-                }
             }
             unset($context['server']);
         }

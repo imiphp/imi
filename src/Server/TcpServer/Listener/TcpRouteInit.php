@@ -7,7 +7,6 @@ namespace Imi\Server\TcpServer\Listener;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
 use Imi\RequestContext;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
@@ -32,7 +31,6 @@ class TcpRouteInit implements IEventListener
     public function handle(EventParam $e): void
     {
         $this->parseAnnotations($e);
-        $this->parseConfigs();
     }
 
     /**
@@ -91,39 +89,6 @@ class TcpRouteInit implements IEventListener
             if (0 === Worker::getWorkerId())
             {
                 $route->checkDuplicateRoutes();
-            }
-            unset($context['server']);
-        }
-    }
-
-    /**
-     * 处理配置文件路由.
-     */
-    private function parseConfigs(): void
-    {
-        $context = RequestContext::getContext();
-        foreach (ServerManager::getServers(ITcpServer::class) as $server)
-        {
-            $context['server'] = $server;
-            $route = $server->getBean('TcpRoute');
-            $main = Helper::getMain($server->getConfig()['namespace']);
-            if ($main)
-            {
-                foreach ($main->getConfig()['route'] ?? [] as $routeOption)
-                {
-                    $routeAnnotation = new TcpRoute($routeOption['route'] ?? []);
-                    if (isset($routeOption['callback']))
-                    {
-                        $callable = $routeOption['callback'];
-                    }
-                    else
-                    {
-                        $callable = new RouteCallable($server->getName(), $routeOption['controller'], $routeOption['method']);
-                    }
-                    $route->addRuleAnnotation($routeAnnotation, $callable, [
-                        'middlewares' => $routeOption['middlewares'],
-                    ]);
-                }
             }
             unset($context['server']);
         }
