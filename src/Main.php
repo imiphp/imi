@@ -28,6 +28,22 @@ class Main extends BaseMain
         Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Enum\Listener\LoadRuntimeListener::class, 19940000);
         Event::on('IMI.BUILD_RUNTIME', \Imi\Enum\Listener\BuildRuntimeListener::class, 19940000);
 
-        Event::on('IMI.LOAD_RUNTIME', BuildIDEHelper::class, ImiPriority::MIN);
+        if (!(Config::get('@app.imi.ideHelper') ?? App::isDebug()))
+        {
+            Event::on('IMI.LOAD_RUNTIME', BuildIDEHelper::class, ImiPriority::MIN);
+        }
+    }
+
+    /**
+     * 获取配置.
+     */
+    public function getConfig(): array
+    {
+        if (null === $this->config)
+        {
+            return $this->config = Config::get('@imi');
+        }
+
+        return $this->config;
     }
 }

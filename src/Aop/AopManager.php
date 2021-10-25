@@ -251,7 +251,7 @@ class AopManager
             }
         }
 
-        return self::$parsedCache[$class]['before'][$method] = iterator_to_array($result);
+        return self::$parsedCache[$class]['before'][$method] = $result->isEmpty() ? [] : iterator_to_array($result);
     }
 
     /**
@@ -323,7 +323,7 @@ class AopManager
             }
         }
 
-        return self::$parsedCache[$class]['after'][$method] = iterator_to_array($result);
+        return self::$parsedCache[$class]['after'][$method] = $result->isEmpty() ? [] : iterator_to_array($result);
     }
 
     /**
@@ -395,7 +395,7 @@ class AopManager
             }
         }
 
-        return self::$parsedCache[$class]['around'][$method] = iterator_to_array($result);
+        return self::$parsedCache[$class]['around'][$method] = $result->isEmpty() ? [] : iterator_to_array($result);
     }
 
     /**
@@ -467,7 +467,7 @@ class AopManager
             }
         }
 
-        return self::$parsedCache[$class]['afterReturning'][$method] = iterator_to_array($result);
+        return self::$parsedCache[$class]['afterReturning'][$method] = $result->isEmpty() ? [] : iterator_to_array($result);
     }
 
     /**
@@ -539,6 +539,6 @@ class AopManager
             }
         }
 
-        return self::$parsedCache[$class]['afterThrowing'][$method] = iterator_to_array($result);
+        return self::$parsedCache[$class]['afterThrowing'][$method] = $result->isEmpty() ? [] : iterator_to_array($result);
     }
 }

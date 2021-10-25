@@ -9,6 +9,7 @@ return [
         'Imi\Config',
         'Imi\Bean',
         'Imi\Aop',
+        'Imi\Async',
         'Imi\Annotation',
         'Imi\Cache',
         'Imi\Server',

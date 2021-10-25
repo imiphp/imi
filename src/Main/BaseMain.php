@@ -29,7 +29,7 @@ abstract class BaseMain implements IMain
     /**
      * 模块配置.
      */
-    protected array $config;
+    protected ?array $config = null;
 
     public function __construct(string $moduleName)
     {
@@ -77,7 +77,7 @@ abstract class BaseMain implements IMain
      */
     public function getConfig(): array
     {
-        if (!isset($this->config))
+        if (null === $this->config)
         {
             $fileName = $this->getPath() . '/config/config.php';
             if (is_file($fileName))
