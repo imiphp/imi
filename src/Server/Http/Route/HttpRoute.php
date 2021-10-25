@@ -66,7 +66,7 @@ class HttpRoute
      * @param mixed                                   $callable   回调
      * @param \Imi\Server\Http\Route\Annotation\Route $annotation 路由定义注解，可选
      */
-    public function addRule(string $url, $callable, RouteAnnotation $annotation = null): void
+    public function addRule(string $url, $callable, RouteAnnotation $annotation = null, array $options = []): void
     {
         if (null === $annotation)
         {
@@ -75,7 +75,7 @@ class HttpRoute
             ]);
         }
         [$view, $viewOption] = ViewParser::getInstance()->getByCallable($callable);
-        $this->rules[$url][spl_object_id($annotation)] = new RouteItem($annotation, $callable, $view, $viewOption);
+        $this->rules[$url][spl_object_id($annotation)] = new RouteItem($annotation, $callable, $view, $viewOption, $options);
     }
 
     /**

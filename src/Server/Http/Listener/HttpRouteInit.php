@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
+use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Parser\ControllerParser;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Middleware;
@@ -114,10 +115,20 @@ class HttpRouteInit implements IEventListener
                                 }
                             }
                         }
+                        $extractData = [];
+                        /** @var ExtractData $item */
+                        foreach (AnnotationManager::getMethodAnnotations($className, $methodName, ExtractData::class) as $item)
+                        {
+                            $extractData[$item->to] = [
+                                'name'    => $item->name,
+                                'default' => $item->default,
+                            ];
+                        }
                         $routeCallable = new RouteCallable($server->getName(), $className, $methodName);
                         $options = [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
+                            'extractData'   => $extractData,
                         ];
                         $route->addRuleAnnotation($routeItem, $routeCallable, $options);
                         if (($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && '/' !== substr($routeItem->url, 0, -1))

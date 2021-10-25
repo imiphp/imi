@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Middleware;
 
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Route\RouteResult;
@@ -47,13 +45,6 @@ class ActionMiddleware implements MiddlewareInterface
      * @var ActionMethodItem[][]
      */
     private array $actionMethodCaches = [];
-
-    /**
-     * ExtractData 集合注解缓存.
-     *
-     * @var ExtractData[][]
-     */
-    private array $extractDataAnnotationCaches = [];
 
     /**
      * {@inheritDoc}
@@ -113,12 +104,10 @@ class ActionMiddleware implements MiddlewareInterface
         if (isset($this->actionMethodCaches[$routeResultId]))
         {
             $actionMethodCache = $this->actionMethodCaches[$routeResultId];
-            $extractDataAnnotationCache = $this->extractDataAnnotationCaches[$routeResultId];
         }
         else
         {
             $callable = $routeResult->callable;
-            $extractDataAnnotationCache = [];
             // 根据动作回调类型获取反射
             if (\is_array($callable))
             {
@@ -141,12 +130,6 @@ class ActionMiddleware implements MiddlewareInterface
                     $ref = ReflectionContainer::getMethodReflection($class, $method);
                     $params = $actionMethodParams[$class][$method] = $ref->getParameters();
                 }
-
-                /** @var ExtractData $extractData */
-                foreach (AnnotationManager::getMethodAnnotations($class, $method, ExtractData::class) as $extractData)
-                {
-                    $extractDataAnnotationCache[$extractData->to] = $extractData;
-                }
             }
             elseif (!$callable instanceof \Closure)
             {
@@ -155,7 +138,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
             if (!isset($params) || !$params)
             {
-                return $this->actionMethodCaches[$routeResultId] = $this->extractDataAnnotationCaches[$routeResultId] = [];
+                return $this->actionMethodCaches[$routeResultId] = [];
             }
             $actionMethodCache = [];
             /** @var \ReflectionParameter[] $params */
@@ -171,7 +154,6 @@ class ActionMiddleware implements MiddlewareInterface
                 );
             }
             $this->actionMethodCaches[$routeResultId] = $actionMethodCache;
-            $this->extractDataAnnotationCaches[$routeResultId] = $extractDataAnnotationCache;
         }
         if (!$actionMethodCache)
         {
@@ -191,7 +173,7 @@ class ActionMiddleware implements MiddlewareInterface
             $parsedBodyIsArray = \is_array($parsedBody);
         }
 
-        if ($extractDataAnnotationCache)
+        if ($extractData = $routeResult->routeItem->options['extractData'] ?? [])
         {
             $allData = [
                 '$get'      => $get,
@@ -213,11 +195,10 @@ class ActionMiddleware implements MiddlewareInterface
         foreach ($actionMethodCache as $actionMethodCacheItem)
         {
             $paramName = $actionMethodCacheItem->getName();
-            if (isset($extractDataAnnotationCache[$paramName]))
+            if (isset($extractData[$paramName]))
             {
-                /** @var ExtractData $extractData */
-                $extractData = $extractDataAnnotationCache[$paramName];
-                $value = ObjectArrayHelper::get($allData, $extractData->name, $extractData->default);
+                $item = $extractData[$paramName];
+                $value = ObjectArrayHelper::get($allData, $item['name'], $item['default']);
             }
             elseif (isset($routeResult->params[$paramName]))
             {
