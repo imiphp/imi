@@ -173,16 +173,15 @@ class BeanFactory
     {
         $class = $ref->getName();
         $methodsTpl = static::getMethodsTpl($ref);
-        $construct = '';
         $constructMethod = $ref->getConstructor();
         if (null !== $constructMethod)
         {
             $paramsTpls = static::getMethodParamTpls($constructMethod);
-            $constructDefine = $paramsTpls['define'];
-            $construct = "parent::__construct({$paramsTpls['call']});";
             if (static::hasAop($ref, '__construct'))
             {
-                $aopConstruct = <<<TPL
+                $constructMethod = <<<TPL
+    public function __construct({$paramsTpls['define']})
+    {
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
         \$__result__ = \Imi\Bean\BeanProxy::call(
@@ -196,31 +195,17 @@ class BeanFactory
             },
             \$__args__
         );
-
+    }
 TPL;
             }
             else
             {
-                $aopConstruct = $construct;
+                $constructMethod = '';
             }
         }
         else
         {
-            $constructDefine = '...$args';
-            $aopConstruct = '';
-        }
-        if ('' === $aopConstruct)
-        {
             $constructMethod = '';
-        }
-        else
-        {
-            $constructMethod = <<<TPL
-    public function __construct({$constructDefine})
-    {
-        {$aopConstruct}
-    }
-TPL;
         }
         // partial 处理
         $traits = PartialManager::getClassPartials($class);
