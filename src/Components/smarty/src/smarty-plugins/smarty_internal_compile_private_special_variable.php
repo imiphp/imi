@@ -67,7 +67,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
                         break;
                     }
-                    $compiled_ref = <<<CODE
+                    $compiled_ref = <<<'CODE'
 Imi\RequestContext::get('request')->getCookieParams()
 CODE;
                     break;
@@ -78,7 +78,7 @@ CODE;
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
                         break;
                     }
-                    $compiled_ref = <<<CODE
+                    $compiled_ref = <<<'CODE'
 Imi\RequestContext::get('request')->get()
 CODE;
                     break;
@@ -89,7 +89,7 @@ CODE;
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
                         break;
                     }
-                    $compiled_ref = <<<CODE
+                    $compiled_ref = <<<'CODE'
 Imi\RequestContext::get('request')->post()
 CODE;
                     break;
@@ -100,7 +100,7 @@ CODE;
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
                         break;
                     }
-                    $compiled_ref = <<<CODE
+                    $compiled_ref = <<<'CODE'
 Imi\RequestContext::get('request')->getServerParams()
 CODE;
                     break;
@@ -111,7 +111,7 @@ CODE;
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
                         break;
                     }
-                    $compiled_ref = <<<CODE
+                    $compiled_ref = <<<'CODE'
 Imi\Server\Session\Session::get()
 CODE;
                     break;
@@ -122,7 +122,7 @@ CODE;
                         $compiler->trigger_template_error('(secure mode) super globals not permitted');
                         break;
                     }
-                    $compiled_ref = <<<CODE
+                    $compiled_ref = <<<'CODE'
 Imi\RequestContext::get('request')->request()
 CODE;
                     break;

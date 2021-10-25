@@ -82,7 +82,7 @@ class ModelGenerate extends BaseCommand
             $database = $query->execute('select current_database()')->getScalar();
         }
         // 表
-        $list = $db->query(<<<SQL
+        $list = $db->query(<<<'SQL'
 SELECT A.oid,
 	A.relname AS "name",
 	b.description AS "comment",
@@ -200,7 +200,7 @@ SQL)->fetchAll();
                 'tableComment'  => Text::isEmpty($item['comment']) ? $table : $item['comment'],
                 'lengthCheck'   => $lengthCheck,
             ];
-            $fields = $query->execute(<<<SQL
+            $fields = $query->execute(<<<'SQL'
 select *, pg_get_expr ( adbin, adrelid ) as adsrc, array_position(conkey, pg_attribute.attnum) AS ordinal_position
 from pg_attribute
 join pg_type on pg_type.oid = pg_attribute.atttypid

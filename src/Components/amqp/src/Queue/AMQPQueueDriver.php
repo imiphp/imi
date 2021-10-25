@@ -635,7 +635,7 @@ class AMQPQueueDriver implements IQueueDriver
     protected function parseTimeoutMessages(int $count = 100): void
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 -- 查询消息ID
 local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
 local messageIdCount = table.getn(messages)
@@ -680,7 +680,7 @@ LUA
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
 
-        return $redis->evalEx(<<<LUA
+        return $redis->evalEx(<<<'LUA'
 local deletedKey = KEYS[1];
 local messageId = ARGV[1];
 local deleteRecord = ARGV[2];

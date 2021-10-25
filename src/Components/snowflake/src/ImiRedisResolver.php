@@ -21,7 +21,7 @@ class ImiRedisResolver implements SequenceResolver
      */
     protected ?string $redisPool = null;
 
-    public const SEQUENCE_LUA = <<<LUA
+    public const SEQUENCE_LUA = <<<'LUA'
 if(redis.call('exists',KEYS[1])<1 and redis.call('psetex',KEYS[1],ARGV[2],ARGV[1]))
 then
     return 0

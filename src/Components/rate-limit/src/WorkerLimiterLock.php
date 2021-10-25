@@ -26,7 +26,7 @@ abstract class WorkerLimiterLock
 
         return PoolManager::use($poolName ?? RedisManager::getDefaultPoolName(), function ($resource, RedisHandler $redis) use ($args, $numKeys) {
             $redis->clearLastError();
-            $result = $redis->evalEx(<<<SCRIPT
+            $result = $redis->evalEx(<<<'SCRIPT'
 local name = KEYS[1]
 local max = ARGV[1]
 local now = ARGV[2]
@@ -85,7 +85,7 @@ SCRIPT
 
         return PoolManager::use($poolName ?? RedisManager::getDefaultPoolName(), function ($resource, RedisHandler $redis) use ($args, $numKeys) {
             $redis->clearLastError();
-            $result = $redis->evalEx(<<<SCRIPT
+            $result = $redis->evalEx(<<<'SCRIPT'
 local name = KEYS[1]
 local id = ARGV[1]
 local timeoutKey = name .. ':timeout'

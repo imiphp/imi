@@ -92,7 +92,7 @@ class Redis extends BaseLock
     protected function __tryLock(): bool
     {
         return ImiRedis::use(function (RedisHandler $redis): bool {
-            return 1 == $redis->evalEx(<<<SCRIPT
+            return 1 == $redis->evalEx(<<<'SCRIPT'
 local key     = KEYS[1]
 local content = ARGV[1]
 local ttl     = ARGV[3]
@@ -125,7 +125,7 @@ SCRIPT
     protected function __unlock(): bool
     {
         return ImiRedis::use(function (RedisHandler $redis): bool {
-            $result = $redis->evalEx(<<<SCRIPT
+            $result = $redis->evalEx(<<<'SCRIPT'
 local key     = KEYS[1]
 local content = ARGV[1]
 local db      = tonumber(ARGV[2])

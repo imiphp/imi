@@ -93,7 +93,7 @@ class RedisHash extends Base
      */
     public function getMultiple($keys, $default = null)
     {
-        static $script = <<<SCRIPT
+        static $script = <<<'SCRIPT'
 local key = KEYS[1]
 local result = {}
 for i = 1, #ARGV do
@@ -147,7 +147,7 @@ SCRIPT;
      */
     public function setMultiple($values, $ttl = null)
     {
-        static $script = <<<SCRIPT
+        static $script = <<<'SCRIPT'
 local key = KEYS[1]
 local halfLen = #ARGV / 2
 for i = 1, halfLen do
@@ -195,7 +195,7 @@ SCRIPT;
      */
     public function deleteMultiple($keys)
     {
-        static $script = <<<SCRIPT
+        static $script = <<<'SCRIPT'
 local key = KEYS[1]
 for i = 1, #ARGV do
     redis.call('hdel', key, ARGV[i])

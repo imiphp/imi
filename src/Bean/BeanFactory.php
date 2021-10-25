@@ -209,6 +209,19 @@ TPL;
             $constructDefine = '...$args';
             $aopConstruct = '';
         }
+        if ('' === $aopConstruct)
+        {
+            $constructMethod = '';
+        }
+        else
+        {
+            $constructMethod = <<<TPL
+    public function __construct({$constructDefine})
+    {
+        {$aopConstruct}
+    }
+TPL;
+        }
         // partial 处理
         $traits = PartialManager::getClassPartials($class);
         if ($traits)
@@ -228,10 +241,7 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 {
     {$traitsTpl}
 
-    public function __construct({$constructDefine})
-    {
-        {$aopConstruct}
-    }
+    {$constructMethod}
 
     public function __clone()
     {

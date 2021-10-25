@@ -78,7 +78,7 @@ class RedisQueueDriver implements IQueueDriver
                 $args[] = $k;
                 $args[] = $v;
             }
-            $result = $redis->evalEx(<<<LUA
+            $result = $redis->evalEx(<<<'LUA'
 local queueKey = KEYS[1]
 local messageKeyPrefix = KEYS[2]
 local messageIdKey = KEYS[3]
@@ -117,7 +117,7 @@ LUA
                 $args[] = $k;
                 $args[] = $v;
             }
-            $result = $redis->evalEx(<<<LUA
+            $result = $redis->evalEx(<<<'LUA'
 local queueKey = KEYS[1]
 local messageKeyPrefix = KEYS[2]
 local messageIdKey = KEYS[3]
@@ -183,7 +183,7 @@ LUA
             $this->parseDelayMessages();
             $this->parseTimeoutMessages();
             $redis = RedisManager::getInstance($this->poolName);
-            $result = $redis->evalEx(<<<LUA
+            $result = $redis->evalEx(<<<'LUA'
 -- 从列表弹出
 local messageId = redis.call('lpop', KEYS[1])
 if false == messageId then
@@ -249,7 +249,7 @@ LUA
     public function delete(IMessage $message): bool
     {
         $redis = RedisManager::getInstance($this->poolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 local messageId = ARGV[1]
 -- 删除消息
 redis.call('del', KEYS[3] .. messageId)
@@ -310,7 +310,7 @@ LUA
     public function success(IMessage $message): int
     {
         $redis = RedisManager::getInstance($this->poolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 -- 从工作队列删除
 redis.call('zrem', KEYS[1], ARGV[1])
 -- 从超时队列删除
@@ -349,14 +349,14 @@ LUA
         $redis = RedisManager::getInstance($this->poolName);
         if ($requeue)
         {
-            $operation = <<<LUA
+            $operation = <<<'LUA'
 -- 加入队列
 redis.call('rpush', KEYS[2], ARGV[1]);
 LUA;
         }
         else
         {
-            $operation = <<<LUA
+            $operation = <<<'LUA'
 -- 加入失败队列
 redis.call('rpush', KEYS[2], ARGV[1])
 LUA;
@@ -421,7 +421,7 @@ LUA
     public function restoreFailMessages(): int
     {
         $redis = RedisManager::getInstance($this->poolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 local result = 0
 while(redis.call('Rpoplpush', KEYS[2], KEYS[1]))
 do
@@ -455,7 +455,7 @@ LUA
     public function restoreTimeoutMessages(): int
     {
         $redis = RedisManager::getInstance($this->poolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 local result = 0
 while(redis.call('Rpoplpush', KEYS[2], KEYS[1]))
 do
@@ -491,7 +491,7 @@ LUA
     protected function parseDelayMessages(int $count = 100): int
     {
         $redis = RedisManager::getInstance($this->poolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 -- 查询消息ID
 local messageIds = redis.call('zrevrangebyscore', KEYS[2], ARGV[1], 0, 'limit', 0, ARGV[2])
 local messageIdCount = table.getn(messageIds)
@@ -534,7 +534,7 @@ LUA
     protected function parseTimeoutMessages(int $count = 100): int
     {
         $redis = RedisManager::getInstance($this->poolName);
-        $result = $redis->evalEx(<<<LUA
+        $result = $redis->evalEx(<<<'LUA'
 -- 查询消息ID
 local messageIds = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
 local messageIdCount = table.getn(messageIds)

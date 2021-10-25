@@ -36,7 +36,7 @@ class RedisTest extends BaseTest
     public function testEvalEx(): void
     {
         $value = PoolManager::use('redis_test', function (IPoolResource $resource, RedisHandler $redis) {
-            return $redis->evalEx(<<<SCRIPT
+            return $redis->evalEx(<<<'SCRIPT'
 local key = KEYS[1]
 local value = ARGV[1]
 redis.call('set', key, value)
@@ -49,7 +49,7 @@ SCRIPT
 
     public function testEvalEx2(): void
     {
-        $value = Redis::evalEx(<<<SCRIPT
+        $value = Redis::evalEx(<<<'SCRIPT'
 local key = KEYS[1]
 local value = ARGV[1]
 redis.call('set', key, value)
