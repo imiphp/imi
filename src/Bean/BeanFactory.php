@@ -222,6 +222,8 @@ TPL;
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
         $tpl = <<<TPL
+declare(strict_types=1);
+
 class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 {
     {$traitsTpl}
