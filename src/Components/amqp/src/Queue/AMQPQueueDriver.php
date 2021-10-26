@@ -645,8 +645,7 @@ class AMQPQueueDriver implements IQueueDriver
         -- 从工作队列删除
         redis.call('zrem', KEYS[1], unpack(messages))
         return messages
-        LUA
-        , [
+        LUA, [
             $this->getRedisQueueKey(QueueType::WORKING),
             microtime(true),
             $count,
@@ -690,8 +689,7 @@ class AMQPQueueDriver implements IQueueDriver
         else
             return redis.call('sismember', deletedKey, messageId);
         end
-        LUA
-        , [
+        LUA, [
             $this->getRedisQueueKey('deleted'),
             $messageId,
             $delete,

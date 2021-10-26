@@ -101,8 +101,7 @@ class RedisQueueDriver implements IQueueDriver
             -- 加入延时队列
             redis.call('zadd', queueKey, delayTo, messageId);
             return messageId
-            LUA
-            , $args, 3);
+            LUA, $args, 3);
         }
         else
         {
@@ -139,8 +138,7 @@ class RedisQueueDriver implements IQueueDriver
             -- 加入队列
             redis.call('rpush', queueKey, messageId);
             return messageId
-            LUA
-            , $args, 3);
+            LUA, $args, 3);
         }
         if (false === $result)
         {
@@ -202,8 +200,7 @@ class RedisQueueDriver implements IQueueDriver
             end
             redis.call('zadd', KEYS[2], ARGV[1] + score, messageId)
             return hashResult
-            LUA
-            , [
+            LUA, [
                 $this->getQueueKey(QueueType::READY),
                 $this->getQueueKey(QueueType::WORKING),
                 $this->getMessageKeyPrefix(),
@@ -260,8 +257,7 @@ class RedisQueueDriver implements IQueueDriver
             end
         end
         return true
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::DELAY),
             $this->getMessageKeyPrefix(),
@@ -318,8 +314,7 @@ class RedisQueueDriver implements IQueueDriver
         -- 删除消息
         redis.call('del', KEYS[2] .. ARGV[1])
         return true
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::WORKING),
             $this->getMessageKeyPrefix(),
             $this->getQueueKey(QueueType::TIMEOUT),
@@ -366,8 +361,7 @@ class RedisQueueDriver implements IQueueDriver
         redis.call('zrem', KEYS[1], ARGV[1])
         {$operation}
         return true
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::WORKING),
             $requeue ? $this->getQueueKey(QueueType::READY) : $this->getQueueKey(QueueType::FAIL),
             $message->getMessageId(),
@@ -428,8 +422,7 @@ class RedisQueueDriver implements IQueueDriver
             result = result + 1
         end
         return result
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::FAIL),
         ], 2);
@@ -462,8 +455,7 @@ class RedisQueueDriver implements IQueueDriver
             result = result + 1
         end
         return result
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::TIMEOUT),
         ], 2);
@@ -503,8 +495,7 @@ class RedisQueueDriver implements IQueueDriver
         -- 从延时队列删除
         redis.call('zrem', KEYS[2], unpack(messageIds))
         return messageIdCount
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::DELAY),
             microtime(true),
@@ -546,8 +537,7 @@ class RedisQueueDriver implements IQueueDriver
         -- 从工作队列删除
         redis.call('zrem', KEYS[1], unpack(messageIds))
         return messageIdCount
-        LUA
-        , [
+        LUA, [
             $this->getQueueKey(QueueType::WORKING),
             $this->getQueueKey(QueueType::TIMEOUT),
             microtime(true),

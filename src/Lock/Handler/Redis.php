@@ -109,8 +109,7 @@ class Redis extends BaseLock
                 end
             end
             return lockSet
-            SCRIPT
-            , [
+            SCRIPT, [
                 $this->key,
                 $this->guid,
                 $this->db,
@@ -137,8 +136,7 @@ class Redis extends BaseLock
                 return redis.call('del', key);
             end
             return 0
-            SCRIPT
-            , [
+            SCRIPT, [
                 $this->key,
                 $this->guid,
                 $this->db,

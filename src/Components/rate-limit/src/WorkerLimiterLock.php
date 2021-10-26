@@ -61,8 +61,7 @@ abstract class WorkerLimiterLock
                 return false
             end
             return id
-            SCRIPT
-            , $args, $numKeys);
+            SCRIPT, $args, $numKeys);
             if (!$result && '' !== ($error = $redis->getLastError()))
             {
                 throw new \RuntimeException($error);
@@ -96,8 +95,7 @@ abstract class WorkerLimiterLock
                 return redis.call('decr', name) >= 0
             end
             return false
-            SCRIPT
-            , $args, $numKeys);
+            SCRIPT, $args, $numKeys);
             if (!$result && '' !== ($error = $redis->getLastError()))
             {
                 throw new \RuntimeException($error);
