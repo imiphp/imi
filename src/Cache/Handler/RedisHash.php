@@ -94,13 +94,13 @@ class RedisHash extends Base
     public function getMultiple($keys, $default = null)
     {
         static $script = <<<'SCRIPT'
-local key = KEYS[1]
-local result = {}
-for i = 1, #ARGV do
-    table.insert(result, redis.call('hget', key, ARGV[i]))
-end
-return result
-SCRIPT;
+        local key = KEYS[1]
+        local result = {}
+        for i = 1, #ARGV do
+            table.insert(result, redis.call('hget', key, ARGV[i]))
+        end
+        return result
+        SCRIPT;
         $this->checkArrayOrTraversable($keys);
 
         $keysMembers = [];
@@ -148,13 +148,13 @@ SCRIPT;
     public function setMultiple($values, $ttl = null)
     {
         static $script = <<<'SCRIPT'
-local key = KEYS[1]
-local halfLen = #ARGV / 2
-for i = 1, halfLen do
-    redis.call('hset', key, ARGV[i], ARGV[halfLen + i])
-end
-return true
-SCRIPT;
+        local key = KEYS[1]
+        local halfLen = #ARGV / 2
+        for i = 1, halfLen do
+            redis.call('hset', key, ARGV[i], ARGV[halfLen + i])
+        end
+        return true
+        SCRIPT;
         $this->checkArrayOrTraversable($values);
 
         if ($values instanceof \Traversable)
@@ -196,12 +196,12 @@ SCRIPT;
     public function deleteMultiple($keys)
     {
         static $script = <<<'SCRIPT'
-local key = KEYS[1]
-for i = 1, #ARGV do
-    redis.call('hdel', key, ARGV[i])
-end
-return true
-SCRIPT;
+        local key = KEYS[1]
+        for i = 1, #ARGV do
+            redis.call('hdel', key, ARGV[i])
+        end
+        return true
+        SCRIPT;
 
         $this->checkArrayOrTraversable($keys);
 

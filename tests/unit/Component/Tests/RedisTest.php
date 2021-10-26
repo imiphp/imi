@@ -37,11 +37,11 @@ class RedisTest extends BaseTest
     {
         $value = PoolManager::use('redis_test', function (IPoolResource $resource, RedisHandler $redis) {
             return $redis->evalEx(<<<'SCRIPT'
-local key = KEYS[1]
-local value = ARGV[1]
-redis.call('set', key, value)
-return redis.call('get', key)
-SCRIPT
+            local key = KEYS[1]
+            local value = ARGV[1]
+            redis.call('set', key, value)
+            return redis.call('get', key)
+            SCRIPT
 , ['imi:test:a', 'imi very 6'], 1);
         });
         Assert::assertEquals('imi very 6', $value);
@@ -50,11 +50,11 @@ SCRIPT
     public function testEvalEx2(): void
     {
         $value = Redis::evalEx(<<<'SCRIPT'
-local key = KEYS[1]
-local value = ARGV[1]
-redis.call('set', key, value)
-return redis.call('get', key)
-SCRIPT
+        local key = KEYS[1]
+        local value = ARGV[1]
+        redis.call('set', key, value)
+        return redis.call('get', key)
+        SCRIPT
 , ['imi:test:a', 'imi very 6'], 1);
         Assert::assertEquals('imi very 6', $value);
     }

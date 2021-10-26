@@ -676,37 +676,37 @@ abstract class Model extends BaseModel
         }
         $class = str_replace('\\', '__', $extendsClass . '\\' . md5($tableName . '\\' . $poolName));
         Imi::eval(<<<PHP
-class {$class} extends \\{$extendsClass}
-{
-    public static function __getMeta(\$object = null): \Imi\Model\Meta
-    {
-        if (\$object)
+        class {$class} extends \\{$extendsClass}
         {
-            \$class = \Imi\Bean\BeanFactory::getObjectClass(\$object);
-        }
-        else
-        {
-            \$class = static::__getRealClassName();
-        }
-        \$__metas = &self::\$__metas;
-        if (!isset(\$__metas[\$class]))
-        {
-            \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
-        }
-        else
-        {
-            \$meta = \$__metas[\$class];
-        }
-        if (static::class === \$class || is_subclass_of(\$class, static::class))
-        {
-            {$setTableName}
-            {$setPoolName}
-        }
+            public static function __getMeta(\$object = null): \Imi\Model\Meta
+            {
+                if (\$object)
+                {
+                    \$class = \Imi\Bean\BeanFactory::getObjectClass(\$object);
+                }
+                else
+                {
+                    \$class = static::__getRealClassName();
+                }
+                \$__metas = &self::\$__metas;
+                if (!isset(\$__metas[\$class]))
+                {
+                    \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
+                }
+                else
+                {
+                    \$meta = \$__metas[\$class];
+                }
+                if (static::class === \$class || is_subclass_of(\$class, static::class))
+                {
+                    {$setTableName}
+                    {$setPoolName}
+                }
 
-        return \$meta;
-    }
-}
-PHP);
+                return \$meta;
+            }
+        }
+        PHP);
 
         return $forks[static::class][$tableName][$poolName] = $class;
     }

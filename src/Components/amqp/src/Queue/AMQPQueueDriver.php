@@ -636,16 +636,16 @@ class AMQPQueueDriver implements IQueueDriver
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
         $result = $redis->evalEx(<<<'LUA'
--- 查询消息ID
-local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
-local messageIdCount = table.getn(messages)
-if 0 == messageIdCount then
-    return 0
-end
--- 从工作队列删除
-redis.call('zrem', KEYS[1], unpack(messages))
-return messages
-LUA
+        -- 查询消息ID
+        local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
+        local messageIdCount = table.getn(messages)
+        if 0 == messageIdCount then
+            return 0
+        end
+        -- 从工作队列删除
+        redis.call('zrem', KEYS[1], unpack(messages))
+        return messages
+        LUA
         , [
             $this->getRedisQueueKey(QueueType::WORKING),
             microtime(true),
@@ -681,16 +681,16 @@ LUA
         $redis = RedisManager::getInstance($this->redisPoolName);
 
         return $redis->evalEx(<<<'LUA'
-local deletedKey = KEYS[1];
-local messageId = ARGV[1];
-local deleteRecord = ARGV[2];
-if(deleteRecord)
-then
-    return redis.call('srem', deletedKey, messageId);
-else
-    return redis.call('sismember', deletedKey, messageId);
-end
-LUA
+        local deletedKey = KEYS[1];
+        local messageId = ARGV[1];
+        local deleteRecord = ARGV[2];
+        if(deleteRecord)
+        then
+            return redis.call('srem', deletedKey, messageId);
+        else
+            return redis.call('sismember', deletedKey, messageId);
+        end
+        LUA
         , [
             $this->getRedisQueueKey('deleted'),
             $messageId,

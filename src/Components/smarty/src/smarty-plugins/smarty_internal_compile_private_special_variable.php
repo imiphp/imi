@@ -68,8 +68,8 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                         break;
                     }
                     $compiled_ref = <<<'CODE'
-Imi\RequestContext::get('request')->getCookieParams()
-CODE;
+                    Imi\RequestContext::get('request')->getCookieParams()
+                    CODE;
                     break;
                 case 'get':
                     // @phpstan-ignore-next-line
@@ -79,8 +79,8 @@ CODE;
                         break;
                     }
                     $compiled_ref = <<<'CODE'
-Imi\RequestContext::get('request')->get()
-CODE;
+                    Imi\RequestContext::get('request')->get()
+                    CODE;
                     break;
                 case 'post':
                     // @phpstan-ignore-next-line
@@ -90,8 +90,8 @@ CODE;
                         break;
                     }
                     $compiled_ref = <<<'CODE'
-Imi\RequestContext::get('request')->post()
-CODE;
+                    Imi\RequestContext::get('request')->post()
+                    CODE;
                     break;
                 case 'server':
                     // @phpstan-ignore-next-line
@@ -101,8 +101,8 @@ CODE;
                         break;
                     }
                     $compiled_ref = <<<'CODE'
-Imi\RequestContext::get('request')->getServerParams()
-CODE;
+                    Imi\RequestContext::get('request')->getServerParams()
+                    CODE;
                     break;
                 case 'session':
                     // @phpstan-ignore-next-line
@@ -112,8 +112,8 @@ CODE;
                         break;
                     }
                     $compiled_ref = <<<'CODE'
-Imi\Server\Session\Session::get()
-CODE;
+                    Imi\Server\Session\Session::get()
+                    CODE;
                     break;
                 case 'request':
                     // @phpstan-ignore-next-line
@@ -123,8 +123,8 @@ CODE;
                         break;
                     }
                     $compiled_ref = <<<'CODE'
-Imi\RequestContext::get('request')->request()
-CODE;
+                    Imi\RequestContext::get('request')->request()
+                    CODE;
                     break;
                 case 'env':
                     break;

@@ -90,8 +90,8 @@ function startServer(): void
                 $keyword = 'WorkerMan: master process';
             }
             ttyExec(<<<CMD
-kill `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`
-CMD);
+            kill `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`
+            CMD);
             echo 'WorkermanServers stoped!', \PHP_EOL, \PHP_EOL;
         });
     }
