@@ -76,7 +76,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $this->__meta = $meta = static::__getMeta();
         $this->__fieldNames = $meta->getSerializableFieldNames();
-        $this->__realClass = $meta->getClassName();
+        $this->__realClass = $meta->getRealModelClass();
         if (!$this instanceof IBean)
         {
             $this->__init($data);

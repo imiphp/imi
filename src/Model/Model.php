@@ -14,6 +14,7 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Update;
+use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
 
 /**
@@ -22,6 +23,11 @@ use Imi\Util\LazyArrayObject;
 abstract class Model extends BaseModel
 {
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
+
+    /**
+     * 动态模型集合.
+     */
+    protected static array $forks = [];
 
     public function __init(array $data = []): void
     {
@@ -57,7 +63,7 @@ abstract class Model extends BaseModel
     {
         $meta = static::__getMeta(static::__getRealClassName());
 
-        return Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->from($meta->getTableName());
+        return Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->table($meta->getTableName(), null, $meta->getDatabaseName());
     }
 
     /**
@@ -637,6 +643,72 @@ abstract class Model extends BaseModel
         }
 
         return $query->$functionName($fieldName);
+    }
+
+    /**
+     * Fork 模型.
+     *
+     * @return class-string<static>
+     */
+    public static function fork(?string $tableName = null, ?string $poolName = null)
+    {
+        $forks = &self::$forks;
+        if (isset($forks[static::class][$tableName][$poolName]))
+        {
+            return $forks[static::class][$tableName][$poolName];
+        }
+        $extendsClass = static::class;
+        if (null === $tableName)
+        {
+            $setTableName = '';
+        }
+        else
+        {
+            $setTableName = '$meta->setTableName(\'' . addcslashes($tableName, '\'\\') . '\');';
+        }
+        if (null === $poolName)
+        {
+            $setPoolName = '';
+        }
+        else
+        {
+            $setPoolName = '$meta->setDbPoolName(\'' . addcslashes($poolName, '\'\\') . '\');';
+        }
+        $class = str_replace('\\', '__', $extendsClass . '\\' . md5($tableName . '\\' . $poolName));
+        Imi::eval(<<<PHP
+class {$class} extends \\{$extendsClass}
+{
+    public static function __getMeta(\$object = null): \Imi\Model\Meta
+    {
+        if (\$object)
+        {
+            \$class = \Imi\Bean\BeanFactory::getObjectClass(\$object);
+        }
+        else
+        {
+            \$class = static::__getRealClassName();
+        }
+        \$__metas = &self::\$__metas;
+        if (!isset(\$__metas[\$class]))
+        {
+            \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
+        }
+        else
+        {
+            \$meta = \$__metas[\$class];
+        }
+        if (static::class === \$class || is_subclass_of(\$class, static::class))
+        {
+            {$setTableName}
+            {$setPoolName}
+        }
+
+        return \$meta;
+    }
+}
+PHP);
+
+        return $forks[static::class][$tableName][$poolName] = $class;
     }
 
     /**

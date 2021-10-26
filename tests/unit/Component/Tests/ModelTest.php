@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests;
 
+use Imi\Db\Db;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
@@ -484,5 +486,23 @@ class ModelTest extends BaseTest
             'json_data' => [4, 5, 6],
         ], $record->convertToArray());
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+    }
+
+    public function testFork()
+    {
+        $article2 = Article::fork('tb_article2', 'mysqli');
+        $this->assertEquals($article2, Article::fork('tb_article2', 'mysqli'));
+
+        $record = $article2::newInstance();
+        $record->title = __CLASS__;
+        $record->content = __FUNCTION__;
+        $record->save();
+        $this->assertGreaterThan(0, $record->id);
+
+        $record = $article2::find($record->id);
+        $this->assertNotNull($record);
+
+        $result = Db::query()->from('tb_article2')->where('id', '=', $record->id)->select()->get();
+        $this->assertEquals($record->toArray(), $result);
     }
 }
