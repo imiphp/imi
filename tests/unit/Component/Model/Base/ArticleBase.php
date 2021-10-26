@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
+use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -14,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_article 基类.
  *
  * @Entity
- * @Table(name="tb_article", id={"id"})
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.name", default="tb_article"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.poolName"))
  * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
  * @property int|null    $id
@@ -124,7 +125,7 @@ abstract class ArticleBase extends Model
      *
      * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      */
-    protected ?string $time = 'CURRENT_TIMESTAMP';
+    protected ?string $time = null;
 
     /**
      * 获取 time.

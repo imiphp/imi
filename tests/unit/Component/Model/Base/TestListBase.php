@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
+use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -14,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_test_list 基类.
  *
  * @Entity
- * @Table(name="tb_test_list", id={"id"})
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestList.name", default="tb_test_list"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestList.poolName"))
  * @DDL(sql="CREATE TABLE `tb_test_list` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `list` varchar(255) NOT NULL DEFAULT '',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null    $id

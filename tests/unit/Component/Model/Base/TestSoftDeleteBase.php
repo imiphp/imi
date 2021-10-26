@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
+use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -14,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_test_soft_delete 基类.
  *
  * @Entity
- * @Table(name="tb_test_soft_delete", id={"id"})
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestSoftDelete.name", default="tb_test_soft_delete"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestSoftDelete.poolName"))
  * @DDL(sql="CREATE TABLE `tb_test_soft_delete` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `delete_time` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null    $id

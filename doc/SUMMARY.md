@@ -134,6 +134,7 @@
 * [ORM](components/orm/index.md)
   * [使用说明](components/orm/index.md)
   * [数据库表模型](components/orm/RDModel.md)
+    * [模型配置](components/orm/config.md)
     * [使用方法](components/orm/RDModel.md)
     * [模型生成](dev/generate/model.md)
     * [表生成](dev/generate/table.md)
