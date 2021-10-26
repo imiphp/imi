@@ -188,10 +188,10 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
-            $ddl = $this->getDDL($query, $table);
+            $ddl = $this->getDDL($query, $table, $database);
             if ($withRecords)
             {
-                $dataList = $query->from($table)->select()->getArray();
+                $dataList = $query->table($table, null, $database)->select()->getArray();
                 $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
             }
             if ($sqlSingleLine)
@@ -446,9 +446,9 @@ class ModelGenerate extends BaseCommand
     /**
      * 获取创建表的 DDL.
      */
-    public function getDDL(IQuery $query, string $table): string
+    public function getDDL(IQuery $query, string $table, string $database): string
     {
-        $result = $query->execute('show create table `' . $table . '`');
+        $result = $query->execute('show create table `' . $database . '`.`' . $table . '`');
         $sql = $result->get()['Create Table'] ?? '';
         $sql = preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
 
