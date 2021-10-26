@@ -189,7 +189,7 @@ abstract class Query implements IQuery
      */
     public function fromRaw(string $raw): self
     {
-        return $this->fromRaw($raw);
+        return $this->tableRaw($raw);
     }
 
     /**
