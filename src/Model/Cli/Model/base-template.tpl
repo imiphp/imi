@@ -56,7 +56,7 @@ abstract class <?php echo $className; ?>Base extends Model
      * @return <?php echo $field['phpType']; ?>
 
      */
-    public function get<?php echo ucfirst($field['varName']); ?>()<?php if ($field['typeDefinition'] && $field['phpDefinitionType']) { ?>: <?php echo $field['phpDefinitionType']; ?><?php } ?>
+    public function <?php if ($field['ref']){?>&<?php } ?>get<?php echo ucfirst($field['varName']); ?>()<?php if ($field['typeDefinition'] && $field['phpDefinitionType']) { ?>: <?php echo $field['phpDefinitionType']; ?><?php } ?>
 
     {
         return $this-><?php echo $field['varName']; ?>;
