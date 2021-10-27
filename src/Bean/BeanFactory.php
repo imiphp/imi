@@ -198,6 +198,15 @@ class BeanFactory
                     }
                 TPL;
             }
+            elseif ($constructMethod->isProtected())
+            {
+                $constructMethod = <<<TPL
+                public function __construct({$paramsTpls['define']})
+                {
+                    parent::__construct({$paramsTpls['call']});
+                }
+                TPL;
+            }
             else
             {
                 $constructMethod = '';
