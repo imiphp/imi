@@ -12,7 +12,6 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\InitEventParam;
-use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
@@ -539,19 +538,6 @@ abstract class Model extends BaseModel
         }
 
         return $list;
-    }
-
-    /**
-     * 初始化关联属性.
-     *
-     * @param string ...$names
-     */
-    public function initRelations(string ...$names): void
-    {
-        foreach ($names as $name)
-        {
-            Query::initRelations($this, $name);
-        }
     }
 
     /**
