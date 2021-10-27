@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
+use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -13,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * test 基类.
  *
  * @Entity
- * @Table(name="tb_test_json", id={"id"})
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestJson.name", default="tb_test_json"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestJson.poolName"))
  *
  * @property int|null                             $id
  * @property \Imi\Util\LazyArrayObject|array|null $jsonData json数据

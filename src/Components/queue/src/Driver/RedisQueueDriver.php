@@ -79,30 +79,29 @@ class RedisQueueDriver implements IQueueDriver
                 $args[] = $v;
             }
             $result = $redis->evalEx(<<<'LUA'
-local queueKey = KEYS[1]
-local messageKeyPrefix = KEYS[2]
-local messageIdKey = KEYS[3]
-local delayTo = ARGV[1]
-local date = ARGV[2]
--- 创建消息id
-local messageId = redis.call('hIncrby', messageIdKey, date, 1);
-if messageId > 0 then
-    messageId = date .. messageId
-else
-    return false
-end
--- 创建消息
-local messageKey = messageKeyPrefix .. messageId;
-local ARGVLength = table.getn(ARGV)
-for i=3,ARGVLength,2 do
-    redis.call('hset', messageKey, ARGV[i], ARGV[i + 1])
-end
-redis.call('hset', messageKey, 'messageId', messageId)
--- 加入延时队列
-redis.call('zadd', queueKey, delayTo, messageId);
-return messageId
-LUA
-            , $args, 3);
+            local queueKey = KEYS[1]
+            local messageKeyPrefix = KEYS[2]
+            local messageIdKey = KEYS[3]
+            local delayTo = ARGV[1]
+            local date = ARGV[2]
+            -- 创建消息id
+            local messageId = redis.call('hIncrby', messageIdKey, date, 1);
+            if messageId > 0 then
+                messageId = date .. messageId
+            else
+                return false
+            end
+            -- 创建消息
+            local messageKey = messageKeyPrefix .. messageId;
+            local ARGVLength = table.getn(ARGV)
+            for i=3,ARGVLength,2 do
+                redis.call('hset', messageKey, ARGV[i], ARGV[i + 1])
+            end
+            redis.call('hset', messageKey, 'messageId', messageId)
+            -- 加入延时队列
+            redis.call('zadd', queueKey, delayTo, messageId);
+            return messageId
+            LUA, $args, 3);
         }
         else
         {
@@ -118,29 +117,28 @@ LUA
                 $args[] = $v;
             }
             $result = $redis->evalEx(<<<'LUA'
-local queueKey = KEYS[1]
-local messageKeyPrefix = KEYS[2]
-local messageIdKey = KEYS[3]
-local date = ARGV[1]
--- 创建消息id
-local messageId = redis.call('hIncrby', messageIdKey, date, 1);
-if messageId > 0 then
-    messageId = date .. messageId
-else
-    return false
-end
--- 创建消息
-local messageKey = messageKeyPrefix .. messageId;
-local ARGVLength = table.getn(ARGV)
-for i=2,ARGVLength,2 do
-    redis.call('hset', messageKey, ARGV[i], ARGV[i + 1])
-end
-redis.call('hset', messageKey, 'messageId', messageId)
--- 加入队列
-redis.call('rpush', queueKey, messageId);
-return messageId
-LUA
-            , $args, 3);
+            local queueKey = KEYS[1]
+            local messageKeyPrefix = KEYS[2]
+            local messageIdKey = KEYS[3]
+            local date = ARGV[1]
+            -- 创建消息id
+            local messageId = redis.call('hIncrby', messageIdKey, date, 1);
+            if messageId > 0 then
+                messageId = date .. messageId
+            else
+                return false
+            end
+            -- 创建消息
+            local messageKey = messageKeyPrefix .. messageId;
+            local ARGVLength = table.getn(ARGV)
+            for i=2,ARGVLength,2 do
+                redis.call('hset', messageKey, ARGV[i], ARGV[i + 1])
+            end
+            redis.call('hset', messageKey, 'messageId', messageId)
+            -- 加入队列
+            redis.call('rpush', queueKey, messageId);
+            return messageId
+            LUA, $args, 3);
         }
         if (false === $result)
         {
@@ -184,26 +182,25 @@ LUA
             $this->parseTimeoutMessages();
             $redis = RedisManager::getInstance($this->poolName);
             $result = $redis->evalEx(<<<'LUA'
--- 从列表弹出
-local messageId = redis.call('lpop', KEYS[1])
-if false == messageId then
-    return -1
-end
--- 获取消息内容
-local hashResult = redis.call('hgetall', KEYS[3] .. messageId)
-local message = {}
-for i=1,#hashResult,2 do
-    message[hashResult[i]] = hashResult[i + 1]
-end
--- 加入工作队列
-local score = tonumber(message.workingTimeout)
-if nil == score or score <= 0 then
-    score = -1
-end
-redis.call('zadd', KEYS[2], ARGV[1] + score, messageId)
-return hashResult
-LUA
-            , [
+            -- 从列表弹出
+            local messageId = redis.call('lpop', KEYS[1])
+            if false == messageId then
+                return -1
+            end
+            -- 获取消息内容
+            local hashResult = redis.call('hgetall', KEYS[3] .. messageId)
+            local message = {}
+            for i=1,#hashResult,2 do
+                message[hashResult[i]] = hashResult[i + 1]
+            end
+            -- 加入工作队列
+            local score = tonumber(message.workingTimeout)
+            if nil == score or score <= 0 then
+                score = -1
+            end
+            redis.call('zadd', KEYS[2], ARGV[1] + score, messageId)
+            return hashResult
+            LUA, [
                 $this->getQueueKey(QueueType::READY),
                 $this->getQueueKey(QueueType::WORKING),
                 $this->getMessageKeyPrefix(),
@@ -250,18 +247,17 @@ LUA
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<'LUA'
-local messageId = ARGV[1]
--- 删除消息
-redis.call('del', KEYS[3] .. messageId)
--- 从队列删除
-if redis.call('lrem', KEYS[1], 1, messageId) <= 0 then
-    if redis.call('zrem', KEYS[2], messageId) <= 0 then
-        return false
-    end
-end
-return true
-LUA
-        , [
+        local messageId = ARGV[1]
+        -- 删除消息
+        redis.call('del', KEYS[3] .. messageId)
+        -- 从队列删除
+        if redis.call('lrem', KEYS[1], 1, messageId) <= 0 then
+            if redis.call('zrem', KEYS[2], messageId) <= 0 then
+                return false
+            end
+        end
+        return true
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::DELAY),
             $this->getMessageKeyPrefix(),
@@ -311,15 +307,14 @@ LUA
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<'LUA'
--- 从工作队列删除
-redis.call('zrem', KEYS[1], ARGV[1])
--- 从超时队列删除
-redis.call('del', KEYS[3])
--- 删除消息
-redis.call('del', KEYS[2] .. ARGV[1])
-return true
-LUA
-        , [
+        -- 从工作队列删除
+        redis.call('zrem', KEYS[1], ARGV[1])
+        -- 从超时队列删除
+        redis.call('del', KEYS[3])
+        -- 删除消息
+        redis.call('del', KEYS[2] .. ARGV[1])
+        return true
+        LUA, [
             $this->getQueueKey(QueueType::WORKING),
             $this->getMessageKeyPrefix(),
             $this->getQueueKey(QueueType::TIMEOUT),
@@ -350,24 +345,23 @@ LUA
         if ($requeue)
         {
             $operation = <<<'LUA'
--- 加入队列
-redis.call('rpush', KEYS[2], ARGV[1]);
-LUA;
+            -- 加入队列
+            redis.call('rpush', KEYS[2], ARGV[1]);
+            LUA;
         }
         else
         {
             $operation = <<<'LUA'
--- 加入失败队列
-redis.call('rpush', KEYS[2], ARGV[1])
-LUA;
+            -- 加入失败队列
+            redis.call('rpush', KEYS[2], ARGV[1])
+            LUA;
         }
         $result = $redis->evalEx(<<<LUA
--- 从工作队列删除
-redis.call('zrem', KEYS[1], ARGV[1])
-{$operation}
-return true
-LUA
-        , [
+        -- 从工作队列删除
+        redis.call('zrem', KEYS[1], ARGV[1])
+        {$operation}
+        return true
+        LUA, [
             $this->getQueueKey(QueueType::WORKING),
             $requeue ? $this->getQueueKey(QueueType::READY) : $this->getQueueKey(QueueType::FAIL),
             $message->getMessageId(),
@@ -422,14 +416,13 @@ LUA
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<'LUA'
-local result = 0
-while(redis.call('Rpoplpush', KEYS[2], KEYS[1]))
-do
-    result = result + 1
-end
-return result
-LUA
-        , [
+        local result = 0
+        while(redis.call('Rpoplpush', KEYS[2], KEYS[1]))
+        do
+            result = result + 1
+        end
+        return result
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::FAIL),
         ], 2);
@@ -456,14 +449,13 @@ LUA
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<'LUA'
-local result = 0
-while(redis.call('Rpoplpush', KEYS[2], KEYS[1]))
-do
-    result = result + 1
-end
-return result
-LUA
-        , [
+        local result = 0
+        while(redis.call('Rpoplpush', KEYS[2], KEYS[1]))
+        do
+            result = result + 1
+        end
+        return result
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::TIMEOUT),
         ], 2);
@@ -492,19 +484,18 @@ LUA
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<'LUA'
--- 查询消息ID
-local messageIds = redis.call('zrevrangebyscore', KEYS[2], ARGV[1], 0, 'limit', 0, ARGV[2])
-local messageIdCount = table.getn(messageIds)
-if 0 == messageIdCount then
-    return 0
-end
--- 加入队列
-redis.call('rpush', KEYS[1], unpack(messageIds))
--- 从延时队列删除
-redis.call('zrem', KEYS[2], unpack(messageIds))
-return messageIdCount
-LUA
-        , [
+        -- 查询消息ID
+        local messageIds = redis.call('zrevrangebyscore', KEYS[2], ARGV[1], 0, 'limit', 0, ARGV[2])
+        local messageIdCount = table.getn(messageIds)
+        if 0 == messageIdCount then
+            return 0
+        end
+        -- 加入队列
+        redis.call('rpush', KEYS[1], unpack(messageIds))
+        -- 从延时队列删除
+        redis.call('zrem', KEYS[2], unpack(messageIds))
+        return messageIdCount
+        LUA, [
             $this->getQueueKey(QueueType::READY),
             $this->getQueueKey(QueueType::DELAY),
             microtime(true),
@@ -535,19 +526,18 @@ LUA
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<'LUA'
--- 查询消息ID
-local messageIds = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
-local messageIdCount = table.getn(messageIds)
-if 0 == messageIdCount then
-    return 0
-end
--- 加入超时队列
-redis.call('rpush', KEYS[2], unpack(messageIds))
--- 从工作队列删除
-redis.call('zrem', KEYS[1], unpack(messageIds))
-return messageIdCount
-LUA
-        , [
+        -- 查询消息ID
+        local messageIds = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
+        local messageIdCount = table.getn(messageIds)
+        if 0 == messageIdCount then
+            return 0
+        end
+        -- 加入超时队列
+        redis.call('rpush', KEYS[2], unpack(messageIds))
+        -- 从工作队列删除
+        redis.call('zrem', KEYS[1], unpack(messageIds))
+        return messageIdCount
+        LUA, [
             $this->getQueueKey(QueueType::WORKING),
             $this->getQueueKey(QueueType::TIMEOUT),
             microtime(true),

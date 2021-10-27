@@ -83,17 +83,17 @@ class ModelGenerate extends BaseCommand
         }
         // 表
         $list = $db->query(<<<'SQL'
-SELECT A.oid,
-	A.relname AS "name",
-	b.description AS "comment",
-	A.relkind
-FROM
-	pg_class A
-LEFT OUTER JOIN pg_description b ON b.objsubid = 0
-	AND A.oid = b.objoid
-WHERE
-	A.relnamespace = ( SELECT oid FROM pg_namespace WHERE nspname = 'public' ) AND A.relkind IN ( 'r', 'v' )
-SQL)->fetchAll();
+        SELECT A.oid,
+        	A.relname AS "name",
+        	b.description AS "comment",
+        	A.relkind
+        FROM
+        	pg_class A
+        LEFT OUTER JOIN pg_description b ON b.objsubid = 0
+        	AND A.oid = b.objoid
+        WHERE
+        	A.relnamespace = ( SELECT oid FROM pg_namespace WHERE nspname = 'public' ) AND A.relkind IN ( 'r', 'v' )
+        SQL)->fetchAll();
         // model保存路径
         if (null === $basePath)
         {
@@ -200,17 +200,17 @@ SQL)->fetchAll();
                 'tableComment'  => Text::isEmpty($item['comment']) ? $table : $item['comment'],
                 'lengthCheck'   => $lengthCheck,
             ];
-            $fields = $query->execute(<<<'SQL'
-select *, pg_get_expr ( adbin, adrelid ) as adsrc, array_position(conkey, pg_attribute.attnum) AS ordinal_position
-from pg_attribute
-join pg_type on pg_type.oid = pg_attribute.atttypid
-left join pg_description on pg_attribute.attrelid = pg_description.objoid AND pg_attribute.attnum = pg_description.objsubid
-left join pg_attrdef on pg_attrdef.adrelid = pg_attribute.attrelid and pg_attrdef.adnum = pg_attribute.attnum
-left join pg_constraint on pg_constraint.conrelid = pg_attribute.attrelid and contype = 'p'
-where attnum > 0 and pg_attribute.attrelid = (select oid from pg_class where relname = '{$table}' limit 1)
-order by attnum
-;
-SQL)->getArray();
+            $fields = $query->execute(<<<SQL
+            select *, pg_get_expr ( adbin, adrelid ) as adsrc, array_position(conkey, pg_attribute.attnum) AS ordinal_position
+            from pg_attribute
+            join pg_type on pg_type.oid = pg_attribute.atttypid
+            left join pg_description on pg_attribute.attrelid = pg_description.objoid AND pg_attribute.attnum = pg_description.objsubid
+            left join pg_attrdef on pg_attrdef.adrelid = pg_attribute.attrelid and pg_attrdef.adnum = pg_attribute.attnum
+            left join pg_constraint on pg_constraint.conrelid = pg_attribute.attrelid and contype = 'p'
+            where attnum > 0 and pg_attribute.attrelid = (select oid from pg_class where relname = '{$table}' limit 1)
+            order by attnum
+            ;
+            SQL)->getArray();
             $this->parseFields($fields, $data, 'v' === $item['relkind'], $table, $configData);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');

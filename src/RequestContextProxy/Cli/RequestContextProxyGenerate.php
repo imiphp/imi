@@ -174,16 +174,16 @@ class RequestContextProxyGenerate
                     $static = '';
                 }
                 $methodCodes .= <<<TPL
-    /**
-     * {@inheritDoc}
-     */
-    public {$static}function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
-    {
-        {$code}
-    }
+                    /**
+                     * {@inheritDoc}
+                     */
+                    public {$static}function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
+                    {
+                        {$code}
+                    }
 
 
-TPL;
+                TPL;
             }
         }
         // @phpstan-ignore-next-line

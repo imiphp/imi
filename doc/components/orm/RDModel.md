@@ -642,3 +642,33 @@ $member->__getSerializedFields(); // 获取，默认为 null 则使用默认规�
 $member->__setSerializedFields(['username', 'password']); // 手动干预，序列化后只有username、password字段
 $member->__setSerializedFields(null); // 设为默认
 ```
+
+### Fork 模型
+
+Fork 模型特性，支持在运行阶段创建一个新的模型类，这个类从原模型继承。
+
+并且支持指定新模型类使用的：数据库名、数据表名、连接池名。
+
+方法定义：
+
+```php
+/**
+ * Fork 模型.
+ *
+ * @return class-string<static>
+ */
+public static function fork(?string $tableName = null, ?string $poolName = null)
+```
+
+例子：
+
+```php
+$newClassName = TestModel::fork(); // 不修改任何参数，返回新的类名（这个用法没有实际意义）
+
+$newClassName = TestModel::fork('tb_test2'); // 指定表名
+$newClassName = TestModel::fork('db2.tb_test2'); // 指定数据库名和表名
+
+$newClassName = TestModel::fork(null, 'pool2'); // 指定连接池名
+
+$newClassName = TestModel::fork('tb_test2', 'pool2'); // 同时指定
+```

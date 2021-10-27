@@ -120,14 +120,14 @@ class Server extends BaseCommand
     public function outImi(): void
     {
         $this->output->write('<comment>' . <<<'STR'
- _               _
-(_)  _ __ ___   (_)
-| | | '_ ` _ \  | |
-| | | | | | | | | |
-|_| |_| |_| |_| |_|
+         _               _
+        (_)  _ __ ___   (_)
+        | | | '_ ` _ \  | |
+        | | | | | | | | | |
+        |_| |_| |_| |_| |_|
 
-</comment>
-STR
+        </comment>
+        STR
         );
     }
 

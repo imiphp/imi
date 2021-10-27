@@ -26,6 +26,11 @@ class Meta
     private string $className = '';
 
     /**
+     * 数据库名.
+     */
+    private ?string $databaseName = null;
+
+    /**
      * 表名.
      */
     private ?string $tableName = null;
@@ -124,23 +129,43 @@ class Meta
      */
     private array $sqlColumns;
 
-    public function __construct(string $modelClass)
+    /**
+     * 是否为继承父类的模型.
+     */
+    private bool $inherit = false;
+
+    /**
+     * 真实的模型类名.
+     */
+    private string $realModelClass = '';
+
+    public function __construct(string $modelClass, bool $inherit = false)
     {
+        $this->inherit = $inherit;
+        if ($inherit)
+        {
+            $realModelClass = get_parent_class($modelClass);
+        }
+        else
+        {
+            $realModelClass = $modelClass;
+        }
+        $this->realModelClass = $realModelClass;
         $this->className = $modelClass;
         /** @var \Imi\Model\Annotation\Table|null $table */
-        $table = AnnotationManager::getClassAnnotations($modelClass, Table::class)[0] ?? null;
+        $table = AnnotationManager::getClassAnnotations($realModelClass, Table::class)[0] ?? null;
         /** @var \Imi\Model\Annotation\Entity|null $entity */
-        $entity = AnnotationManager::getClassAnnotations($modelClass, Entity::class)[0] ?? null;
-        $this->jsonEncode = AnnotationManager::getClassAnnotations($modelClass, JsonEncode::class)[0] ?? null;
+        $entity = AnnotationManager::getClassAnnotations($realModelClass, Entity::class)[0] ?? null;
+        $this->jsonEncode = AnnotationManager::getClassAnnotations($realModelClass, JsonEncode::class)[0] ?? null;
         if ($table)
         {
-            $this->tableName = $table->name;
             $this->dbPoolName = $table->dbPoolName;
             $this->id = (array) $table->id;
+            $this->setTableName($table->name);
         }
         $this->firstId = $this->id[0] ?? null;
         $fields = $dbFields = [];
-        foreach (AnnotationManager::getPropertiesAnnotations($modelClass, Column::class) as $name => $columns)
+        foreach (AnnotationManager::getPropertiesAnnotations($realModelClass, Column::class) as $name => $columns)
         {
             /** @var Column $column */
             $column = $columns[0];
@@ -153,10 +178,10 @@ class Meta
             }
             $fields[$name] = $column;
         }
-        $this->relation = ModelRelationManager::hasRelation($modelClass);
+        $this->relation = ModelRelationManager::hasRelation($realModelClass);
         if ($this->relation)
         {
-            foreach (ModelRelationManager::getRelationFieldNames($modelClass) as $name)
+            foreach (ModelRelationManager::getRelationFieldNames($realModelClass) as $name)
             {
                 if (!isset($fields[$name]))
                 {
@@ -189,11 +214,19 @@ class Meta
                 break;
             }
         }
-        $this->serializables = ModelManager::getSerializables($modelClass);
-        $this->serializableSets = AnnotationManager::getPropertiesAnnotations($modelClass, Serializable::class);
-        $this->extractPropertys = ModelManager::getExtractPropertys($modelClass);
-        $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($modelClass, JsonNotNull::class);
-        $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($modelClass, Sql::class);
+        $this->serializables = ModelManager::getSerializables($realModelClass);
+        $this->serializableSets = AnnotationManager::getPropertiesAnnotations($realModelClass, Serializable::class);
+        $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
+        $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
+        $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
+    }
+
+    /**
+     * Get 数据库名.
+     */
+    public function getDatabaseName(): ?string
+    {
+        return $this->databaseName;
     }
 
     /**
@@ -202,6 +235,23 @@ class Meta
     public function getTableName(): ?string
     {
         return $this->tableName;
+    }
+
+    /**
+     * 获取完整表名.
+     */
+    public function getFullTableName(): ?string
+    {
+        if (null === $this->tableName)
+        {
+            return null;
+        }
+        if (null === $this->databaseName)
+        {
+            return $this->tableName;
+        }
+
+        return $this->databaseName . '.' . $this->tableName;
     }
 
     /**
@@ -332,17 +382,15 @@ class Meta
      *
      * @return \Imi\Model\Annotation\Sql[][]
      */
-    public function getSqlColumns()
+    public function getSqlColumns(): array
     {
         return $this->sqlColumns;
     }
 
     /**
      * Get 数据库字段名和 Column 注解映射.
-     *
-     * @return array
      */
-    public function getDbFields()
+    public function getDbFields(): array
     {
         return $this->dbFields;
     }
@@ -352,8 +400,61 @@ class Meta
      *
      * @return string[]
      */
-    public function getSerializableFieldNames()
+    public function getSerializableFieldNames(): array
     {
         return $this->serializableFieldNames;
+    }
+
+    /**
+     * Get 是否为继承父类的模型.
+     */
+    public function getInherit(): bool
+    {
+        return $this->inherit;
+    }
+
+    /**
+     * Get 真实的模型类名.
+     */
+    public function getRealModelClass(): string
+    {
+        return $this->realModelClass;
+    }
+
+    /**
+     * Set 表名.
+     */
+    public function setTableName(?string $tableName): self
+    {
+        if (null === $tableName)
+        {
+            $this->databaseName = $this->tableName = null;
+        }
+        else
+        {
+            $list = explode('.', $tableName, 2);
+            if (isset($list[1]))
+            {
+                $this->databaseName = $list[0];
+                $this->tableName = $list[1];
+            }
+            else
+            {
+                $this->databaseName = null;
+                $this->tableName = $tableName;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set 数据库连接池名称.
+     */
+    public function setDbPoolName(?string $dbPoolName): self
+    {
+        $this->dbPoolName = $dbPoolName;
+
+        return $this;
     }
 }

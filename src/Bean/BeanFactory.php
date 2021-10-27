@@ -180,23 +180,23 @@ class BeanFactory
             if (static::hasAop($ref, '__construct'))
             {
                 $constructMethod = <<<TPL
-    public function __construct({$paramsTpls['define']})
-    {
-        \$__args__ = func_get_args();
-        {$paramsTpls['set_args']}
-        \$__result__ = \Imi\Bean\BeanProxy::call(
-            \$this,
-            parent::class,
-            '__construct',
-            function({$paramsTpls['define']}){
-                \$__args__ = func_get_args();
-                {$paramsTpls['set_args']}
-                return parent::__construct(...\$__args__);
-            },
-            \$__args__
-        );
-    }
-TPL;
+                    public function __construct({$paramsTpls['define']})
+                    {
+                        \$__args__ = func_get_args();
+                        {$paramsTpls['set_args']}
+                        \$__result__ = \Imi\Bean\BeanProxy::call(
+                            \$this,
+                            parent::class,
+                            '__construct',
+                            function({$paramsTpls['define']}){
+                                \$__args__ = func_get_args();
+                                {$paramsTpls['set_args']}
+                                return parent::__construct(...\$__args__);
+                            },
+                            \$__args__
+                        );
+                    }
+                TPL;
             }
             else
             {
@@ -222,22 +222,22 @@ TPL;
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
         $tpl = <<<TPL
-declare(strict_types=1);
+        declare(strict_types=1);
 
-class {$newClassName} extends {$class} implements \Imi\Bean\IBean
-{
-    {$traitsTpl}
+        class {$newClassName} extends {$class} implements \Imi\Bean\IBean
+        {
+            {$traitsTpl}
 
-    {$constructMethod}
+            {$constructMethod}
 
-    public function __clone()
-    {
-        \Imi\Bean\BeanProxy::injectProps(\$this, parent::class, true);
-        {$parentClone}
-    }
-{$methodsTpl}
-}
-TPL;
+            public function __clone()
+            {
+                \Imi\Bean\BeanProxy::injectProps(\$this, parent::class, true);
+                {$parentClone}
+            }
+        {$methodsTpl}
+        }
+        TPL;
 
         return $tpl;
     }
@@ -260,26 +260,26 @@ TPL;
             $returnsReference = $method->returnsReference() ? '&' : '';
             $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType(), $method->getDeclaringClass()->getName()) ? '' : 'return $__result__;';
             $tpl .= <<<TPL
-    public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
-    {
-        \$__args__ = func_get_args();
-        {$paramsTpls['set_args']}
-        \$__result__ = \Imi\Bean\BeanProxy::call(
-            \$this,
-            parent::class,
-            '{$methodName}',
-            function({$paramsTpls['define']}){
-                \$__args__ = func_get_args();
-                {$paramsTpls['set_args']}
-                return parent::{$methodName}(...\$__args__);
-            },
-            \$__args__
-        );
-        {$paramsTpls['set_args_back']}
-        {$returnContent}
-    }
+                public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
+                {
+                    \$__args__ = func_get_args();
+                    {$paramsTpls['set_args']}
+                    \$__result__ = \Imi\Bean\BeanProxy::call(
+                        \$this,
+                        parent::class,
+                        '{$methodName}',
+                        function({$paramsTpls['define']}){
+                            \$__args__ = func_get_args();
+                            {$paramsTpls['set_args']}
+                            return parent::{$methodName}(...\$__args__);
+                        },
+                        \$__args__
+                    );
+                    {$paramsTpls['set_args_back']}
+                    {$returnContent}
+                }
 
-TPL;
+            TPL;
         }
 
         return $tpl;

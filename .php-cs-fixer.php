@@ -37,6 +37,9 @@ return (new PhpCsFixer\Config())
         'single_line_comment_style'  => false,
         'phpdoc_to_comment'          => false,
         'declare_strict_types'       => true,
+        'heredoc_indentation'        => [
+            'indentation' => 'same_as_start',
+        ],
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

@@ -12,18 +12,18 @@ use Imi\Model\Annotation\Table;
 use Imi\Model\Model as Model;
 
 /**
- * tb_article 基类.
+ * tb_article2 基类.
  *
  * @Entity
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.name", default="tb_article"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.poolName"))
- * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article2.name", default="tb_article2"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article2.poolName"))
+ * @DDL(sql="CREATE TABLE `tb_article2` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
  * @property int|null    $id
  * @property string|null $title
  * @property string|null $content
  * @property string|null $time
  */
-abstract class ArticleBase extends Model
+abstract class Article2Base extends Model
 {
     /**
      * id.

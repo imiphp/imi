@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
+use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -13,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_member 基类.
  *
  * @Entity
- * @Table(name="tb_member", id={"id"})
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Member.name", default="tb_member"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Member.poolName"))
  *
  * @property int|null    $id
  * @property string|null $username 用户名

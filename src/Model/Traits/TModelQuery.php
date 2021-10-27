@@ -18,9 +18,16 @@ trait TModelQuery
     public function __init(): void
     {
         parent::__init();
-        if ($this->modelClass && $tableName = $this->modelClass::__getMeta()->getTableName())
+        $modelClass = $this->modelClass;
+        if ($modelClass)
         {
-            $this->table($tableName);
+            /** @var \Imi\Model\Meta $meta */
+            $meta = $modelClass::__getMeta();
+            $tableName = $meta->getTableName();
+            if (null !== $tableName)
+            {
+                $this->table($tableName, null, $meta->getDatabaseName());
+            }
         }
         $this->setResultClass(ModelQueryResult::class);
     }

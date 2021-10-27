@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>\Base;
 
+use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -18,7 +19,7 @@ use <?php echo $baseClassName; ?> as Model;
 else
 { ?>@Entity(false)<?php } ?>
 
- * @Table(name="<?php echo $table['name']; ?>"<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?><?php if ($poolName) { ?>, dbPoolName="<?php echo $poolName; ?>"<?php } ?>)
+ * @Table(name=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.name", default="<?php echo $table['name']; ?>")<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.poolName"<?php if (null !== $poolName) {?>, default="<?php echo $poolName; ?>"<?php }?>))
  *
 <?php foreach ($fields as $field) { ?>
  * @property <?php echo $field['phpType']; ?> $<?php echo $field['varName']; ?> <?php echo '' === $field['comment'] ? '' : $field['comment']; ?>

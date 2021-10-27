@@ -220,13 +220,15 @@ class Query
         $struct = new ManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
-        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
+        $middleModel = $struct->getMiddleModel();
+        $middleTable = $middleModel::__getMeta()->getFullTableName();
+        $rightModel = $struct->getRightModel();
+        $rightTable = $rightModel::__getMeta()->getFullTableName();
 
-        $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+        $fields = static::parseManyToManyQueryFields($middleModel, $rightModel);
 
-        $model->$propertyName = new ArrayList($struct->getMiddleModel());
-        $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
+        $model->$propertyName = new ArrayList($middleModel);
+        $model->{$annotation->rightMany} = new ArrayList($rightModel);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         if (null !== $model->$leftField)
@@ -256,10 +258,10 @@ class Query
             if (null !== $list)
             {
                 // 关联数据
-                static::appendMany($model->$propertyName, $list, $middleTable, $struct->getMiddleModel());
+                static::appendMany($model->$propertyName, $list, $middleTable, $middleModel);
 
                 // 右侧表数据
-                static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $struct->getRightModel());
+                static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $rightModel);
             }
         }
         Event::trigger($eventName . '.AFTER', [
@@ -459,8 +461,8 @@ class Query
                 $struct = new PolymorphicManyToMany($className, $propertyName, $annotationItem);
                 $leftField = $struct->getLeftField();
                 $rightField = $struct->getRightField();
-                $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
-                $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
+                $middleTable = $struct->getMiddleModel()::__getMeta()->getFullTableName();
+                $rightTable = $struct->getRightModel()::__getMeta()->getFullTableName();
 
                 $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
 
@@ -519,8 +521,8 @@ class Query
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
-        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
+        $middleTable = $struct->getMiddleModel()::__getMeta()->getFullTableName();
+        $rightTable = $struct->getRightModel()::__getMeta()->getFullTableName();
 
         $fields = static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
 
@@ -616,10 +618,10 @@ class Query
 
         /** @var \Imi\Model\Meta $middleModelMeta */
         $middleModelMeta = $middleModel::__getMeta();
-        $middleTable = $middleModelMeta->getTableName();
+        $middleTable = $middleModelMeta->getFullTableName();
         /** @var \Imi\Model\Meta $rightModelMeta */
         $rightModelMeta = $rightModel::__getMeta();
-        $rightTable = $rightModelMeta->getTableName();
+        $rightTable = $rightModelMeta->getFullTableName();
 
         foreach ($middleModelMeta->getDbFields() as $name => $_)
         {
