@@ -429,7 +429,7 @@ abstract class Query
                 }
                 else
                 {
-                    $modelClass = $className . '\\' . $annotationItem->model;
+                    $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
                 }
                 if (null === $model->$rightField)
                 {
