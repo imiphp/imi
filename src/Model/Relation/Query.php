@@ -566,6 +566,10 @@ abstract class Query
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                         ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                         ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField);
+            if ($annotation->order)
+            {
+                $query->orderRaw($annotation->order);
+            }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
                 'propertyName' => $propertyName,
