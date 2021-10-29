@@ -26,7 +26,7 @@ class CronWorkerProcess extends BaseProcess
         try
         {
             $exitCode = 0;
-            $data = json_decode($input->getParameterOption('--data'), true);
+            $data = json_decode($input->getParameterOption('--data'), true, 512, \JSON_THROW_ON_ERROR);
             $class = $input->getParameterOption('--class');
             /** @var \Imi\Cron\Contract\ICronTask $handler */
             $handler = App::getBean($class);

@@ -150,7 +150,7 @@ class WSRoute implements IRoute
     {
         $callable = $routeItem->callable;
         $annotation = $routeItem->annotation;
-        $route = (Text::isEmpty($annotation->route) ? '' : ('url=' . $annotation->route . ', ')) . 'condition=' . json_encode($annotation->condition, \JSON_UNESCAPED_UNICODE);
+        $route = (Text::isEmpty($annotation->route) ? '' : ('url=' . $annotation->route . ', ')) . 'condition=' . json_encode($annotation->condition, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
         if ($callable instanceof RouteCallable)
         {
             $logString = sprintf('WebSocket Route %s duplicated (%s::%s)', $route, $callable->className, $callable->methodName);

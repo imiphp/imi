@@ -22,7 +22,7 @@ class JsonArrayParser implements IParser
      *
      * @var int
      */
-    protected $options = 0;
+    protected $options = \JSON_THROW_ON_ERROR;
 
     /**
      * 设置最大深度。 必须大于0。

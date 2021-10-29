@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $dir = \dirname(__DIR__);
 
-$json = json_decode(file_get_contents($dir . '/composer.json'), true);
+$json = json_decode(file_get_contents($dir . '/composer.json'), true, 512, \JSON_THROW_ON_ERROR);
 
 $bakFile = $dir . '/composer.json.bak';
 if (is_file($bakFile))

@@ -24,7 +24,7 @@ class JsonView extends BaseViewOption
      */
     protected ?string $defaultFieldName = 'options';
 
-    public function __construct(?array $__data = null, int $options = 0, int $depth = 512)
+    public function __construct(?array $__data = null, int $options = \JSON_THROW_ON_ERROR, int $depth = 512)
     {
         parent::__construct(...\func_get_args());
     }

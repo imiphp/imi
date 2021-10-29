@@ -33,7 +33,7 @@ class Json implements IHandler
      * JSON_UNESCAPED_UNICODE
      * JSON_PARTIAL_OUTPUT_ON_ERROR。
      */
-    protected int $options = 0;
+    protected int $options = \JSON_THROW_ON_ERROR;
 
     /**
      * 设置最大深度。 必须大于0。

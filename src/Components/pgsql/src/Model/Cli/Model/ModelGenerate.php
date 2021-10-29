@@ -55,11 +55,11 @@ class ModelGenerate extends BaseCommand
             case 'model':
                 break;
             default:
-                $override = (bool) json_decode($override);
+                $override = (bool) json_decode($override, false, 512, \JSON_THROW_ON_ERROR);
         }
         if (\in_array($config, ['true', 'false'], true))
         {
-            $config = (bool) json_decode($config);
+            $config = (bool) json_decode($config, false, 512, \JSON_THROW_ON_ERROR);
         }
         if (true === $config)
         {

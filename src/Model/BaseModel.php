@@ -115,7 +115,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                     switch ($fieldAnnotation->type)
                     {
                         case 'json':
-                            $value = json_decode($v, true);
+                            $value = json_decode($v, true, 512, \JSON_THROW_ON_ERROR);
                             if (\is_array($value))
                             {
                                 $v = new LazyArrayObject($value);
@@ -427,7 +427,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $data = iterator_to_array($this);
         }
 
-        return json_decode(json_encode($data), true);
+        return json_decode(json_encode($data, \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
     }
 
     /**

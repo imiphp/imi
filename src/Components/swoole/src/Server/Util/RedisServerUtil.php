@@ -50,7 +50,7 @@ class RedisServerUtil extends LocalServerUtil
     {
         $data['action'] = $action;
         $data['workerId'] = Worker::getWorkerId();
-        $message = json_encode($data);
+        $message = json_encode($data, \JSON_THROW_ON_ERROR);
 
         return $this->sendMessageRaw($message, $workerId);
     }
@@ -77,7 +77,7 @@ class RedisServerUtil extends LocalServerUtil
                 {
                     $redis->subscribe([$this->channel], function (\Redis $redis, string $channel, string $msg) {
                         go(function () use ($msg) {
-                            $data = json_decode($msg, true);
+                            $data = json_decode($msg, true, 512, \JSON_THROW_ON_ERROR);
                             if (!isset($data['action'], $data['serverName']))
                             {
                                 return;

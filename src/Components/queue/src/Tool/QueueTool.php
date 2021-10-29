@@ -25,7 +25,7 @@ class QueueTool extends BaseCommand
      */
     public function status(string $queue)
     {
-        fwrite(\STDOUT, json_encode(Queue::getQueue($queue)->status(), \JSON_PRETTY_PRINT) . \PHP_EOL);
+        fwrite(\STDOUT, json_encode(Queue::getQueue($queue)->status(), \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR) . \PHP_EOL);
     }
 
     /**

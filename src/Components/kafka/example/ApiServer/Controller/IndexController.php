@@ -42,7 +42,7 @@ class IndexController extends HttpController
         $producer = KafkaPool::getInstance();
         $producer->send('queue-imi-1', json_encode([
             'memberId' => $memberId,
-        ]));
+        ], \JSON_THROW_ON_ERROR));
 
         $queueTestMessage = new QueueTestMessage();
         $queueTestMessage->setMemberId($memberId);

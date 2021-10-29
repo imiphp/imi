@@ -74,7 +74,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             try
             {
-                $data = json_decode($message->getBody(), true);
+                $data = json_decode($message->getBody(), true, 512, \JSON_THROW_ON_ERROR);
                 $serverName = $data['serverName'];
                 RequestContext::set('server', $server = ServerManager::getServer($serverName));
                 switch ($data['action'] ?? null)
