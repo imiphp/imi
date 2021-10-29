@@ -16,7 +16,7 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.name", default="tb_role"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.poolName"))
- * @DDL(sql="CREATE TABLE `tb_role` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
+ * @DDL(sql="CREATE TABLE `tb_role` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; insert into `tb_role` values(1,'a'); insert into `tb_role` values(2,'b'); insert into `tb_role` values(3,'c'); insert into `tb_role` values(4,'d'); insert into `tb_role` values(5,'e'); ", decode="")
  *
  * @property int|null    $id
  * @property string|null $name
