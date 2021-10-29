@@ -47,7 +47,14 @@ class DbExecuteListener implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        Log::info(sprintf('[%ss] %s', round($e->time, 3), $e->sql));
+        if ($e->throwable)
+        {
+            Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), $e->sql));
+        }
+        else
+        {
+            Log::info(sprintf('[%ss] %s', round($e->time, 3), $e->sql));
+        }
     }
 }
 ```
@@ -85,7 +92,14 @@ class DbPrepareListener implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        Log::info(sprintf('[prepare] %s', $e->sql));
+        if ($e->throwable)
+        {
+            Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), $e->sql));
+        }
+        else
+        {
+            Log::info(sprintf('[prepare] %s', $e->sql));
+        }
     }
 }
 ```

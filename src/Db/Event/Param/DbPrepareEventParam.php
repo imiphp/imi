@@ -12,10 +12,15 @@ class DbPrepareEventParam extends EventParam
     /**
      * 数据库 Statement.
      */
-    public IStatement $statement;
+    public ?IStatement $statement = null;
 
     /**
      * sql 语句.
      */
     public string $sql = '';
+
+    /**
+     * 执行过程中是否有抛出异常.
+     */
+    public ?\Throwable $throwable = null;
 }
