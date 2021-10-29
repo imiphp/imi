@@ -23,7 +23,7 @@ use Imi\Bean\Annotation\Parser;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class ManyToMany extends RelationBase
 {
-    public function __construct(?array $__data = null, string $model = '', string $middle = '', string $rightMany = '', ?string $order = null, ?array $fields = null, ?int $limit = null)
+    public function __construct(?array $__data = null, string $model = '', string $middle = '', string $rightMany = '', ?string $order = null, ?array $fields = null, ?int $limit = null, bool $with = false)
     {
         parent::__construct(...\func_get_args());
     }

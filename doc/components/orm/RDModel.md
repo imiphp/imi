@@ -672,3 +672,12 @@ $newClassName = TestModel::fork(null, 'pool2'); // 指定连接池名
 
 $newClassName = TestModel::fork('tb_test2', 'pool2'); // 同时指定
 ```
+
+### 关联模型预加载
+
+```php
+$list = TestModel::query()
+                ->with('关联字段名') // 单个
+                ->with(['字段名1', '字段名2']) // 多个
+                ->where('id', '=', 1)->select()->getArray();
+```

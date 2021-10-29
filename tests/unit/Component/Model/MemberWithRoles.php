@@ -18,6 +18,8 @@ use Imi\Model\Annotation\Relation\ManyToMany;
  *
  * @property MemberRoleRelation[]|null $roleRelations
  * @property Role[]|null               $roles
+ * @property MemberRoleRelation[]|null $roleRelationsWith
+ * @property Role[]|null               $rolesWith
  */
 class MemberWithRoles extends Member
 {
@@ -82,6 +84,71 @@ class MemberWithRoles extends Member
     public function setRoles($roles)
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @ManyToMany(model="Role", middle="MemberRoleRelation", rightMany="rolesWith", with=true)
+     * @JoinToMiddle(field="id", middleField="member_id")
+     * @JoinFromMiddle(middleField="role_id", field="id")
+     * @AutoSave
+     *
+     * @var MemberRoleRelation[]|null
+     */
+    protected $roleRelationsWith = null;
+
+    /**
+     * Get the value of roleRelation.
+     *
+     * @return MemberRoleRelation[]|null
+     */
+    public function getRoleRelationsWith()
+    {
+        return $this->roleRelationsWith;
+    }
+
+    /**
+     * Set the value of roleRelation.
+     *
+     * @param MemberRoleRelation[]|null $roleRelationsWith
+     *
+     * @return self
+     */
+    public function setRoleRelationsWith($roleRelationsWith)
+    {
+        $this->roleRelationsWith = $roleRelationsWith;
+
+        return $this;
+    }
+
+    /**
+     * @Column(virtual=true)
+     *
+     * @var Role[]|null
+     */
+    protected $rolesWith;
+
+    /**
+     * Get the value of rolesWith.
+     *
+     * @return Role[]|null
+     */
+    public function getRolesWith()
+    {
+        return $this->rolesWith;
+    }
+
+    /**
+     * Set the value of rolesWith.
+     *
+     * @param Role[]|null $rolesWith
+     *
+     * @return self
+     */
+    public function setRolesWith($rolesWith)
+    {
+        $this->rolesWith = $rolesWith;
 
         return $this;
     }

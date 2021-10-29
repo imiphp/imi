@@ -101,10 +101,9 @@ class ModelQueryResult extends Result
         {
             $list = [];
             $hasRelation = ModelRelationManager::hasRelation($className);
-            $withFields = $this->withFields;
             foreach ($this->statementRecords as $item)
             {
-                $object = $className::createFromRecord($item, !$withFields);
+                $object = $className::createFromRecord($item, false);
                 if ($this->isSetSerializedFields)
                 {
                     if (!isset($serializedFields))
@@ -121,9 +120,9 @@ class ModelQueryResult extends Result
                 }
                 $list[] = $object;
             }
-            if ($hasRelation && $withFields)
+            if ($hasRelation)
             {
-                ModelRelationManager::initModels($list, $withFields, $className);
+                ModelRelationManager::initModels($list, $this->withFields, $className);
                 foreach ($list as $object)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [

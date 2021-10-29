@@ -19,6 +19,7 @@ use Imi\Test\Component\Model\Base\ArticleBase;
  * @Entity(camel=false)
  *
  * @property ArticleEx|null $ex
+ * @property ArticleEx|null $exWith
  */
 class Article extends ArticleBase
 {
@@ -46,6 +47,33 @@ class Article extends ArticleBase
     public function setEx(?ArticleEx $ex)
     {
         $this->ex = $ex;
+
+        return $this;
+    }
+
+    /**
+     * @OneToOne(model="ArticleEx", with=true)
+     * @JoinFrom("id")
+     * @JoinTo("article_id")
+     */
+    protected ?ArticleEx $exWith = null;
+
+    /**
+     * Get the value of ex.
+     */
+    public function getExWith(): ?ArticleEx
+    {
+        return $this->exWith;
+    }
+
+    /**
+     * Set the value of ex.
+     *
+     * @return self
+     */
+    public function setExWith(?ArticleEx $exWith)
+    {
+        $this->exWith = $exWith;
 
         return $this;
     }

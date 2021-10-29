@@ -15,6 +15,7 @@ use Imi\Model\Annotation\Relation\OneToMany;
  * @Inherit
  *
  * @property Article[]|null $articles
+ * @property Article[]|null $articlesWith
  */
 class MemberWithArticles extends Member
 {
@@ -47,6 +48,39 @@ class MemberWithArticles extends Member
     public function setArticles($articles)
     {
         $this->articles = $articles;
+
+        return $this;
+    }
+
+    /**
+     * @OneToMany(model="Article", with=true)
+     * @JoinFrom("id")
+     * @JoinTo("member_id")
+     *
+     * @var Article[]|null
+     */
+    protected $articlesWith = null;
+
+    /**
+     * Get the value of articles.
+     *
+     * @return Article[]|null
+     */
+    public function getArticlesWith()
+    {
+        return $this->articlesWith;
+    }
+
+    /**
+     * Set the value of articles.
+     *
+     * @param Article[]|null $articlesWith
+     *
+     * @return self
+     */
+    public function setArticlesWith($articlesWith)
+    {
+        $this->articlesWith = $articlesWith;
 
         return $this;
     }

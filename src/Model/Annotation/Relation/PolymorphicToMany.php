@@ -36,7 +36,7 @@ class PolymorphicToMany extends RelationBase
     /**
      * @param mixed $typeValue
      */
-    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', $typeValue = null, string $middle = '', ?string $order = null, ?array $fields = null, ?int $limit = null, string $middleLeftField = '', string $middleRightField = '')
+    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', $typeValue = null, string $middle = '', ?string $order = null, ?array $fields = null, ?int $limit = null, string $middleLeftField = '', string $middleRightField = '', bool $with = false)
     {
         parent::__construct(...\func_get_args());
     }

@@ -26,7 +26,7 @@ class OneToMany extends RelationBase
      */
     protected ?string $defaultFieldName = 'model';
 
-    public function __construct(?array $__data = null, string $model = '', ?string $order = null, ?array $fields = null, ?int $limit = null)
+    public function __construct(?array $__data = null, string $model = '', ?string $order = null, ?array $fields = null, ?int $limit = null, bool $with = false)
     {
         parent::__construct(...\func_get_args());
     }

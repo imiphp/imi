@@ -160,6 +160,11 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals($articles[1]->convertToArray(), $list1[1]->articles[0]->convertToArray());
         $this->assertEquals($articles[0]->convertToArray(), $list2[0]->articles[0]->convertToArray());
         $this->assertEquals($articles[1]->convertToArray(), $list2[1]->articles[0]->convertToArray());
+        // 注解 with
+        $this->assertEquals($articles[0]->convertToArray(), $list1[0]->articlesWith[0]->convertToArray());
+        $this->assertEquals($articles[1]->convertToArray(), $list1[1]->articlesWith[0]->convertToArray());
+        $this->assertEquals($articles[0]->convertToArray(), $list2[0]->articlesWith[0]->convertToArray());
+        $this->assertEquals($articles[1]->convertToArray(), $list2[1]->articlesWith[0]->convertToArray());
     }
 
     /**
@@ -216,6 +221,19 @@ class ModelRelationTest extends BaseTest
             $role = $record->roles[$i];
             $this->assertEquals($roleId, $role->id);
         }
+        // 注解 with
+        $this->assertCount(2, $record->roleRelationsWith);
+        $this->assertCount(2, $record->rolesWith);
+        foreach ([1, 2] as $i => $roleId)
+        {
+            $relation = $record->roleRelationsWith[$i];
+            $this->assertEquals($memberIds[0], $relation->memberId);
+            $this->assertEquals($roleId, $relation->roleId);
+
+            $role = $record->rolesWith[$i];
+            $this->assertEquals($roleId, $role->id);
+        }
+
         $record = $records[1];
         $this->assertCount(3, $record->roleRelations);
         $this->assertCount(3, $record->roles);
@@ -226,6 +244,18 @@ class ModelRelationTest extends BaseTest
             $this->assertEquals($roleId, $relation->roleId);
 
             $role = $record->roles[$i];
+            $this->assertEquals($roleId, $role->id);
+        }
+        // 注解 with
+        $this->assertCount(3, $record->roleRelationsWith);
+        $this->assertCount(3, $record->rolesWith);
+        foreach ([3, 4, 5] as $i => $roleId)
+        {
+            $relation = $record->roleRelationsWith[$i];
+            $this->assertEquals($memberIds[1], $relation->memberId);
+            $this->assertEquals($roleId, $relation->roleId);
+
+            $role = $record->rolesWith[$i];
             $this->assertEquals($roleId, $role->id);
         }
     }
@@ -432,7 +462,7 @@ class ModelRelationTest extends BaseTest
         $this->assertCount(0, $record->getOneToManyResult());
 
         // with
-        $list = Polymorphic::query()->with('oneToOneResult')->whereIn('id', [$record1->id, $record2->id, $record3->id])->select()->getArray();
+        $list = Polymorphic::query()->with('oneToManyResult')->whereIn('id', [$record1->id, $record2->id, $record3->id])->select()->getArray();
         $this->assertCount(3, $list);
         $record = $list[0];
         $this->assertNotNull($record);

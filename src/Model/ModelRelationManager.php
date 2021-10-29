@@ -69,7 +69,9 @@ class ModelRelationManager
                 {
                     continue;
                 }
-                if (null !== $fields && \in_array($propertyName, $fields))
+                /** @var RelationBase $firstAnnotation */
+                $firstAnnotation = $annotations[0];
+                if ($firstAnnotation->with || ($fields && \in_array($propertyName, $fields)))
                 {
                     Query::init($model, $propertyName, $annotations, true, $refData);
                 }
@@ -79,7 +81,7 @@ class ModelRelationManager
                 }
             }
         }
-        if (null !== $fields)
+        if ($refData)
         {
             foreach ($refData as $propertyName => $item)
             {
@@ -249,7 +251,7 @@ class ModelRelationManager
                 elseif ($annotation instanceof PolymorphicOneToMany)
                 {
                     $rightField = $item['rightField'];
-                    $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
+                    $query = $item['modelClass']::query()->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
                     if ($annotation->fields)
                     {
@@ -278,10 +280,9 @@ class ModelRelationManager
                         /** @var PolymorphicToOne $subAnnotation */
                         $subAnnotation = $subItem['annotation'];
                         $leftField = $subItem['leftField'];
-                        $modelClass = $subItem['modelClass'];
                         $models = $subItem['models'];
                         /** @var IQuery $query */
-                        $query = $modelClass::query()->where($leftField, 'in', $subItem['ids']);
+                        $query = $subItem['modelClass']::query()->where($leftField, 'in', $subItem['ids']);
                         if ($subAnnotation->fields)
                         {
                             $query->field(...$subAnnotation->fields);
