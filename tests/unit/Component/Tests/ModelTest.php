@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
-use Imi\Test\Component\Model\Article;
+use Imi\Test\Component\Model\Article2;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
@@ -490,19 +490,27 @@ class ModelTest extends BaseTest
 
     public function testFork()
     {
-        $article2 = Article::fork('tb_article2', 'mysqli');
-        $this->assertEquals($article2, Article::fork('tb_article2', 'mysqli'));
+        $article2 = Article2::fork('tb_article', 'mysqli');
+        $this->assertEquals($article2, Article2::fork('tb_article', 'mysqli'));
 
+        /** @var Article2 $record */
         $record = $article2::newInstance();
+        $record->memberId = 1024;
         $record->title = __CLASS__;
         $record->content = __FUNCTION__;
         $record->save();
         $this->assertGreaterThan(0, $record->id);
 
+        /** @var Article2 $record */
         $record = $article2::find($record->id);
         $this->assertNotNull($record);
 
-        $result = Db::query()->from('tb_article2')->where('id', '=', $record->id)->select()->get();
-        $this->assertEquals($record->toArray(), $result);
+        $result = Db::query()->from('tb_article')->where('id', '=', $record->id)->select()->get();
+        $this->assertNotEmpty($result);
+        $this->assertIsArray($result);
+        foreach ($result as $k => $v)
+        {
+            $this->assertEquals($record[$k], $v);
+        }
     }
 }

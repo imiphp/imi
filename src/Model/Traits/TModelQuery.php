@@ -15,6 +15,11 @@ trait TModelQuery
      */
     protected bool $isSetSerializedFields = false;
 
+    /**
+     * 关联查询预加载字段.
+     */
+    protected ?array $withFields = null;
+
     public function __init(): void
     {
         parent::__init();
@@ -121,7 +126,23 @@ trait TModelQuery
         {
             $result->setIsSetSerializedFields(true);
         }
+        if ($this->withFields)
+        {
+            $result->setWithFields($this->withFields);
+        }
 
         return $result;
+    }
+
+    /**
+     * 关联查询预加载.
+     *
+     * @param string|array|null $field
+     */
+    public function with($field): self
+    {
+        $this->withFields = null === $field ? null : (array) $field;
+
+        return $this;
     }
 }

@@ -25,7 +25,14 @@ class DbPrepareListener implements IEventListener
     {
         if (false !== App::get('DB_LOG'))
         {
-            Log::info(sprintf('[prepare] %s', $e->sql));
+            if ($e->throwable)
+            {
+                Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), $e->sql));
+            }
+            else
+            {
+                Log::info(sprintf('[prepare] %s', $e->sql));
+            }
         }
     }
 }

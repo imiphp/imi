@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Model;
 
-use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Model;
 
 /**
@@ -17,7 +17,7 @@ class PgModel extends Model
     /**
      * {@inheritDoc}
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
     {
         return parent::query($poolName, $queryType, $queryClass);
     }

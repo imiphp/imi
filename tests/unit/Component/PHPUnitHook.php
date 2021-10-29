@@ -21,9 +21,16 @@ class PHPUnitHook implements BeforeFirstTestHook
             PoolManager::use('maindb', function (IPoolResource $resource, IDb $db) {
                 $truncateList = [
                     'tb_article',
+                    'tb_article2',
+                    'tb_article_ex',
                     'tb_member',
+                    'tb_member_role_relation',
                     'tb_update_time',
                     'tb_performance',
+                    'tb_polymorphic',
+                    'tb_test_json',
+                    'tb_test_list',
+                    'tb_test_soft_delete',
                 ];
                 foreach ($truncateList as $table)
                 {

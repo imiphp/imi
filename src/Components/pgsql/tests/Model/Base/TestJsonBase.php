@@ -66,7 +66,7 @@ abstract class TestJsonBase extends Model
      *
      * @return \Imi\Util\LazyArrayObject|array|null
      */
-    public function getJsonData()
+    public function &getJsonData()
     {
         return $this->jsonData;
     }

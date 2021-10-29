@@ -317,6 +317,7 @@ return [
                     ],
                     'withRecords'   => [
                         'tb_tree',
+                        'tb_role',
                     ],
                 ],
             ],

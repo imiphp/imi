@@ -10,6 +10,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
+use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Relation\Update;
@@ -28,9 +29,9 @@ abstract class Model extends BaseModel
      */
     protected static array $forks = [];
 
-    public function __init(array $data = []): void
+    public function __init(array $data = [], bool $queryRelation = true): void
     {
-        if ($this->__meta->hasRelation())
+        if ($queryRelation && $this->__meta->hasRelation())
         {
             $this->one(ModelEvents::AFTER_INIT, function (InitEventParam $e) {
                 ModelRelationManager::initModel($this);
@@ -45,7 +46,7 @@ abstract class Model extends BaseModel
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
     {
         $meta = static::__getMeta(static::__getRealClassName());
 
@@ -204,7 +205,7 @@ abstract class Model extends BaseModel
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__realClass . ':insert:' . md5(implode(',', $keys)))->insert($data);
+        $result = $query->alias($this->__className . ':insert:' . md5(implode(',', $keys)))->insert($data);
         if ($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
         {
             $this[$autoIncrementField] = $result->getLastInsertId();
@@ -276,7 +277,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
-        $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
+        $result = $query->alias($this->__className . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
             // @phpstan-ignore-next-line
             if ($conditionId)
             {
@@ -405,7 +406,7 @@ abstract class Model extends BaseModel
             {
                 $keys[] = $k;
             }
-            $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
+            $result = $query->alias($this->__className . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
                 // 主键条件加入
                 $id = $meta->getId();
                 if ($id)
@@ -466,7 +467,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
-        $result = $query->alias($this->__realClass . ':delete', function (IQuery $query) use ($id) {
+        $result = $query->alias($this->__className . ':delete', function (IQuery $query) use ($id) {
             // 主键条件加入
             foreach ($id as $idName)
             {
@@ -644,6 +645,7 @@ abstract class Model extends BaseModel
             return $forks[static::class][$tableName][$poolName];
         }
         $extendsClass = static::class;
+        $namespace = Imi::getClassNamespace($extendsClass);
         if (null === $tableName)
         {
             $setTableName = '';
@@ -662,39 +664,54 @@ abstract class Model extends BaseModel
         }
         $class = str_replace('\\', '__', $extendsClass . '\\' . md5($tableName . '\\' . $poolName));
         Imi::eval(<<<PHP
-        class {$class} extends \\{$extendsClass}
-        {
-            public static function __getMeta(\$object = null): \Imi\Model\Meta
+        namespace {$namespace} {
+            class {$class} extends \\{$extendsClass}
             {
-                if (\$object)
+                public static function __getMeta(\$object = null): \Imi\Model\Meta
                 {
-                    \$class = \Imi\Bean\BeanFactory::getObjectClass(\$object);
-                }
-                else
-                {
-                    \$class = static::__getRealClassName();
-                }
-                \$__metas = &self::\$__metas;
-                if (!isset(\$__metas[\$class]))
-                {
-                    \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
-                }
-                else
-                {
-                    \$meta = \$__metas[\$class];
-                }
-                if (static::class === \$class || is_subclass_of(\$class, static::class))
-                {
-                    {$setTableName}
-                    {$setPoolName}
-                }
+                    if (\$object)
+                    {
+                        \$class = \Imi\Bean\BeanFactory::getObjectClass(\$object);
+                    }
+                    else
+                    {
+                        \$class = static::__getRealClassName();
+                    }
+                    \$__metas = &self::\$__metas;
+                    if (!isset(\$__metas[\$class]))
+                    {
+                        \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
+                    }
+                    else
+                    {
+                        \$meta = \$__metas[\$class];
+                    }
+                    if (static::class === \$class || is_subclass_of(\$class, static::class))
+                    {
+                        {$setTableName}
+                        {$setPoolName}
+                    }
 
-                return \$meta;
+                    return \$meta;
+                }
             }
         }
         PHP);
 
-        return $forks[static::class][$tableName][$poolName] = $class;
+        return $forks[static::class][$tableName][$poolName] = $namespace . '\\' . $class;
+    }
+
+    /**
+     * 从记录创建模型对象
+     *
+     * @return static
+     */
+    public static function createFromRecord(array $data, bool $queryRelation = true): self
+    {
+        $model = static::newInstance($data, $queryRelation);
+        $model->__recordExists = true;
+
+        return $model;
     }
 
     /**
