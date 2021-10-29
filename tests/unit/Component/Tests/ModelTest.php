@@ -87,7 +87,7 @@ class ModelTest extends BaseTest
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
         $id = $result->getLastInsertId();
-        $this->assertGreaterThan(1, $id);
+        $this->assertGreaterThan(0, $id);
         $this->assertEquals($id, $member->id);
 
         return [
@@ -102,7 +102,7 @@ class ModelTest extends BaseTest
         $member->password = '2';
         $result = $member->insert();
         $id = $result->getLastInsertId();
-        $this->assertGreaterThan(1, $id);
+        $this->assertGreaterThan(0, $id);
 
         $member->username = '3';
         $member->password = '4';
@@ -127,7 +127,7 @@ class ModelTest extends BaseTest
         $result = $member->save();
         $id = $result->getLastInsertId();
         $this->assertEquals(1, $result->getAffectedRows());
-        $this->assertGreaterThan(1, $id);
+        $this->assertGreaterThan(0, $id);
         $this->assertEquals($id, $member->id);
 
         $member->username = '3';
