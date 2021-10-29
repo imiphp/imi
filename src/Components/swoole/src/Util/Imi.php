@@ -118,7 +118,7 @@ class Imi
         {
             throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
         }
-        $pid = json_decode(file_get_contents($fileName), true, 512, \JSON_THROW_ON_ERROR);
+        $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
             Process::kill((int) $pid, \SIGUSR1);

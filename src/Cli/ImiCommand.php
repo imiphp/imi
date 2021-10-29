@@ -307,7 +307,7 @@ class ImiCommand extends Command
             case ArgType::BOOLEAN:
                 if (\is_string($value))
                 {
-                    $value = (bool) json_decode($value, false, 512, \JSON_THROW_ON_ERROR);
+                    $value = (bool) json_decode($value, false);
                 }
                 break;
             case ArgType::ARRAY:
