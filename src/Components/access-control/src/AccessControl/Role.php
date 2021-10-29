@@ -16,7 +16,7 @@ class Role
     /**
      * 角色代码
      */
-    private int $roleCode;
+    private string $roleCode;
 
     /**
      * 角色记录.
