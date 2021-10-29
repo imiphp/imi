@@ -21,17 +21,17 @@ class Join implements IJoin
     /**
      * 在 join b on a.id=b.id 中的 a.id.
      */
-    protected string $left = '';
+    protected ?string $left = null;
 
     /**
      * 在 join b on a.id=b.id 中的 =.
      */
-    protected string $operation = '';
+    protected ?string $operation = null;
 
     /**
      * join b on a.id=b.id 中的 b.id.
      */
-    protected string $right = '';
+    protected ?string $right = null;
 
     /**
      * where条件.
@@ -183,7 +183,7 @@ class Join implements IJoin
         {
             return $this->rawSQL;
         }
-        $result = $this->type . ' join ' . $this->table->toString($query) . ' on ' . $query->fieldQuote($this->left) . $this->operation . $query->fieldQuote($this->right);
+        $result = $this->type . ' join ' . $this->table->toString($query) . ' on ' . $query->fieldQuote($this->left ?? '') . $this->operation . $query->fieldQuote($this->right ?? '');
         if ($this->where instanceof IBaseWhere)
         {
             $result .= ' ' . $this->where->toString($query);

@@ -90,7 +90,7 @@ class Database implements IDatabase
             }
             else
             {
-                return '(' . $this->rawSQL . ') as ' . $query->fieldQuote($this->alias);
+                return '(' . $this->rawSQL . ') as ' . $query->fieldQuote($this->alias ?? '');
             }
         }
 
