@@ -16,6 +16,8 @@ use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
 use function shell_exec;
 use function str_contains;
+use function strrpos;
+use function substr;
 
 /**
  * 框架里杂七杂八的各种工具方法.
@@ -183,7 +185,13 @@ class Imi
      */
     public static function getClassNamespace(string $className): string
     {
-        return implode('\\', \array_slice(explode('\\', $className), 0, -1));
+        $pos = strrpos($className, '\\');
+        if (false === $pos)
+        {
+            return '';
+        }
+
+        return substr($className, 0, $pos);
     }
 
     /**
@@ -191,7 +199,13 @@ class Imi
      */
     public static function getClassShortName(string $className): string
     {
-        return implode('', \array_slice(explode('\\', $className), -1));
+        $pos = strrpos($className, '\\');
+        if (false === $pos)
+        {
+            return $className;
+        }
+
+        return substr($className, $pos + 1);
     }
 
     /**
