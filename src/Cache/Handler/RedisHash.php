@@ -110,36 +110,30 @@ class RedisHash extends Base
             $keysMembers[$key][] = $member;
         }
 
-        $list = Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers) {
+        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers, $default) {
             $result = [];
             foreach ($keysMembers as $key => $members)
             {
+                array_walk($members, [$redis, '_serialize']);
                 $evalResult = $redis->evalEx($script, array_merge(
                     [$key],
                     $members
                 ), 1);
-                $result = array_merge($result, $evalResult);
+                foreach ($evalResult as $v)
+                {
+                    if (false === $v)
+                    {
+                        $result[$key] = $default;
+                    }
+                    else
+                    {
+                        $result[$key] = $this->decode($redis->_unserialize($v));
+                    }
+                }
             }
 
             return $result;
         }, $this->poolName, true);
-        $result = [];
-        if ($list)
-        {
-            foreach ($list as $i => $v)
-            {
-                if (false === $v)
-                {
-                    $result[$keys[$i]] = $default;
-                }
-                else
-                {
-                    $result[$keys[$i]] = $this->decode($v);
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -177,6 +171,8 @@ class RedisHash extends Base
         $result = Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $setValues) {
             foreach ($setValues as $key => $item)
             {
+                array_walk($item['member'], [$redis, '_serialize']);
+                array_walk($item['value'], [$redis, '_serialize']);
                 $result = false !== $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), 1);
                 if (!$result)
                 {
@@ -215,6 +211,7 @@ class RedisHash extends Base
         return (bool) Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers) {
             foreach ($keysMembers as $key => $members)
             {
+                array_walk($members, [$redis, '_serialize']);
                 $result = $redis->evalEx($script, array_merge(
                     [$key],
                     $members
