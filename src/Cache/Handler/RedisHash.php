@@ -156,7 +156,7 @@ SCRIPT;
             {
                 $evalResult = $redis->evalEx($script, array_merge(
                     [$key],
-                    array_map([$redis, '_serialize'], $members),
+                    array_map([$redis, '_serialize'], $members)
                 ), 1);
                 foreach ($evalResult as $v)
                 {
@@ -268,7 +268,7 @@ SCRIPT;
             {
                 $result = $redis->evalEx($script, array_merge(
                     [$key],
-                    array_map([$redis, '_serialize'], $members),
+                    array_map([$redis, '_serialize'], $members)
                 ), 1);
                 if (!$result)
                 {
