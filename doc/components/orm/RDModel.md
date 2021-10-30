@@ -239,7 +239,7 @@ abstract class ArticleBase extends Model
 
 不使用 Unicode 编码转换中文：`@JsonEncode(JSON_UNESCAPED_UNICODE)`
 
-完整参数：`@JsonEncode(flags=\JSON_THROW_ON_ERROR, depth=512)`
+完整参数：`@JsonEncode(flags=\JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, depth=512)`
 
 ### @Column
 

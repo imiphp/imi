@@ -72,7 +72,7 @@ return [
 	'beans'		=>	[
 		'JsonView'	=>	[
 			// json_encode 的参数值配置
-			'options'	=>	\JSON_THROW_ON_ERROR,
+			'options'	=>	\JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
 			'depth'		=>	512,
 		]
 	]
