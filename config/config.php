@@ -34,6 +34,7 @@ return [
     ],
     'ignorePaths'   => [
         $imiPath . 'functions',
+        $imiPath . 'Components' . \DIRECTORY_SEPARATOR . '*' . \DIRECTORY_SEPARATOR . 'vendor',
         $imiPath . 'Cli' . \DIRECTORY_SEPARATOR . 'bootstrap',
     ],
 ];
