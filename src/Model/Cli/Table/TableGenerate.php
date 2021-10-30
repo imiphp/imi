@@ -40,7 +40,7 @@ class TableGenerate extends BaseCommand
     public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, $override): void
     {
         Event::trigger('IMI.GENERATE_MODEL.BEFORE');
-        $override = (bool) json_decode((string) $override);
+        $override = (bool) json_decode((string) $override, false);
         $query = Db::query($poolName);
         // 数据库
         if (null === $database)

@@ -45,7 +45,7 @@ class QueueTestMessage
     {
         return json_encode([
             'memberId' => $this->memberId,
-        ]);
+        ], \JSON_THROW_ON_ERROR);
     }
 
     public static function fromMessage(string $message): self

@@ -103,7 +103,7 @@ class Scheduler implements IScheduler
                                 'data'      => $task->getData(),
                                 'task'      => \is_callable($taskClass) ? null : $taskClass,
                                 'type'      => $type,
-                            ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
+                            ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
                             break;
                         case CronTaskType::ALL_WORKER:
                             /** @var ISwooleServer $server */
@@ -116,7 +116,7 @@ class Scheduler implements IScheduler
                                 'data'      => $task->getData(),
                                 'task'      => \is_callable($taskClass) ? null : $taskClass,
                                 'type'      => $type,
-                            ]);
+                            ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
                             for ($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
                             {
                                 $swooleServer->sendMessage($message, $i);

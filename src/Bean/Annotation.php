@@ -179,7 +179,7 @@ class Annotation
             }
             else
             {
-                $value = json_encode($v, \JSON_UNESCAPED_UNICODE);
+                $value = json_encode($v, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
                 if (\is_array($v))
                 {
                     $value = '{' . substr($value, 1, -1) . '}';

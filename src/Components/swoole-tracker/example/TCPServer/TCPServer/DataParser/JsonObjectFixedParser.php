@@ -11,7 +11,7 @@ class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
      */
     public function encode($data): string
     {
-        $content = json_encode($data);
+        $content = json_encode($data, \JSON_THROW_ON_ERROR);
 
         return pack('N', \strlen($content)) . $content;
     }

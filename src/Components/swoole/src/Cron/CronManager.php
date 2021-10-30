@@ -206,7 +206,7 @@ class CronManager implements ICronManager
                     $task = function (string $id, $data) use ($class) {
                         ProcessManager::run('CronWorkerProcess', [
                             'id'         => $id,
-                            'data'       => json_encode($data),
+                            'data'       => json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE),
                             'class'      => $class,
                             'cron-sock'  => $this->getSocketFile(),
                         ], null, null, $this->stdOutput);
@@ -234,7 +234,7 @@ class CronManager implements ICronManager
             $task = function (string $id, $data) use ($process) {
                 ProcessManager::run($process->name, [
                     'id'         => $id,
-                    'data'       => json_encode($data),
+                    'data'       => json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE),
                     'cron-sock'  => $this->getSocketFile(),
                 ], null, null, $this->stdOutput);
             };

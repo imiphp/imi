@@ -304,7 +304,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             ]))
             {
                 $content = $this->body->getContents();
-                $parsedBody = json_decode($content, !Config::get('@currentServer.jsonBodyIsObject', false));
+                $parsedBody = json_decode($content, !Config::get('@currentServer.jsonBodyIsObject', false), 512, \JSON_THROW_ON_ERROR);
                 if ($parsedBody)
                 {
                     $this->post = $parsedBody;

@@ -97,7 +97,7 @@ function loadConfig(): array
     $content = getenv('SPLIT_CONFIG');
     if ($content)
     {
-        $content = json_decode($content, true);
+        $content = json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
     }
     else
     {
@@ -117,7 +117,7 @@ function saveConfig(): void
     $secrets = new Secrets($client);
     $publicKey = $secrets->publicKey(...$repository);
 
-    $value = base64_encode(sodium_crypto_box_seal(json_encode($GLOBALS['config']), base64_decode($publicKey['key'])));
+    $value = base64_encode(sodium_crypto_box_seal(json_encode($GLOBALS['config'], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE), base64_decode($publicKey['key'])));
 
     $client->repository()->secrets()->update($repository[0], $repository[1], 'SPLIT_CONFIG', [
         'encrypted_value' => $value,

@@ -230,13 +230,7 @@ class Pool
 
                     return;
                 }
-                $data = json_decode($content, true);
-                if (false === $data)
-                {
-                    Log::warning('%s: Decode pipe message content failed');
-
-                    return;
-                }
+                $data = json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
                 $this->trigger('Message', [
                     'pool'      => $this,
                     'worker'    => $worker,

@@ -25,7 +25,7 @@ class JsonEncode extends Base
      */
     protected ?string $defaultFieldName = 'flags';
 
-    public function __construct(?array $__data = null, int $flags = 0, int $depth = 512)
+    public function __construct(?array $__data = null, int $flags = \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, int $depth = 512)
     {
         parent::__construct(...\func_get_args());
     }

@@ -50,7 +50,7 @@ class RedisServerUtil extends LocalServerUtil
     {
         $data['action'] = $action;
         $data['workerId'] = Worker::getWorkerId();
-        $message = json_encode($data);
+        $message = json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
 
         return $this->sendMessageRaw($message, $workerId);
     }

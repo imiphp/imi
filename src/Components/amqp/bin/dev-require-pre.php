@@ -7,7 +7,7 @@ $dir = \dirname(__DIR__);
 $cmd = "rm -rf {$dir}/vendor/imiphp && mkdir -p {$dir}/vendor/imiphp";
 echo '[cmd] ', $cmd, \PHP_EOL;
 echo shell_exec($cmd), \PHP_EOL;
-$json = json_decode(file_get_contents($dir . '/composer.json'), true);
+$json = json_decode(file_get_contents($dir . '/composer.json'), true, 512, \JSON_THROW_ON_ERROR);
 $bakFile = $dir . '/composer.json.bak';
 if (!is_file($bakFile))
 {
@@ -36,12 +36,12 @@ if (isset($json['require']))
             copy($requirePackageComposerPath, $bakFile);
         }
 
-        $composerJson = json_decode(file_get_contents($requirePackageComposerPath), true);
+        $composerJson = json_decode(file_get_contents($requirePackageComposerPath), true, 512, \JSON_THROW_ON_ERROR);
         $version = explode('.', $matches[1]);
         array_pop($version);
         $version[] = '9999';
         $composerJson['version'] = implode('.', $version);
-        file_put_contents($requirePackageComposerPath, json_encode($composerJson, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE));
+        file_put_contents($requirePackageComposerPath, json_encode($composerJson, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
 
         $json['repositories'][$key] = [
             'type'    => 'path',
@@ -52,5 +52,5 @@ if (isset($json['require']))
         ];
     }
 
-    file_put_contents($dir . '/composer.json', json_encode($json, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE));
+    file_put_contents($dir . '/composer.json', json_encode($json, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
 }

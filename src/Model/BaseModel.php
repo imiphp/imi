@@ -427,7 +427,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $data = iterator_to_array($this);
         }
 
-        return json_decode(json_encode($data), true);
+        return json_decode(json_encode($data, \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
     }
 
     /**
