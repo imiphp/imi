@@ -374,7 +374,7 @@ class AMQPQueueDriver implements IQueueDriver
                 {
                     $score = -1;
                 }
-                $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, $message->toArray());
+                $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray()));
 
                 return $message;
             }
@@ -395,7 +395,7 @@ class AMQPQueueDriver implements IQueueDriver
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
 
-        return $redis->sAdd($this->getRedisQueueKey('deleted'), '') > 0;
+        return $redis->sAdd($this->getRedisQueueKey('deleted'), $message->getMessageId()) > 0;
     }
 
     /**
@@ -666,7 +666,7 @@ class AMQPQueueDriver implements IQueueDriver
         foreach ($result ?: [] as $message)
         {
             $amqpMessage = new \Imi\AMQP\Message();
-            $amqpMessage->setBody($message);
+            $amqpMessage->setBody($redis->_unserialize($message));
             $amqpMessage->setRoutingKey(self::ROUTING_TIMEOUT);
             $this->timeoutPublisher->publish($amqpMessage);
         }
@@ -691,7 +691,7 @@ class AMQPQueueDriver implements IQueueDriver
         end
         LUA, [
             $this->getRedisQueueKey('deleted'),
-            $messageId,
+            $redis->_serialize($messageId),
             $delete,
         ], 1) > 0;
     }
