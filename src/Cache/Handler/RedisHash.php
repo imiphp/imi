@@ -149,33 +149,31 @@ SCRIPT;
             $keysMembers[$key][] = $member;
         }
 
-        $list = Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers) {
+        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers, $default, $keys) {
             $result = [];
+            $i = 0;
             foreach ($keysMembers as $key => $members)
             {
                 $evalResult = $redis->evalEx($script, array_merge(
                     [$key],
-                    $members
+                    array_map([$redis, '_serialize'], $members),
                 ), 1);
-                $result = array_merge($result, $evalResult);
+                foreach ($evalResult as $v)
+                {
+                    if (false === $v)
+                    {
+                        $result[$keys[$i]] = $default;
+                    }
+                    else
+                    {
+                        $result[$keys[$i]] = $this->decode($redis->_unserialize($v));
+                    }
+                    ++$i;
+                }
             }
 
             return $result;
         }, $this->poolName, true);
-        $result = [];
-        foreach ($list as $i => $v)
-        {
-            if (false === $v)
-            {
-                $result[$keys[$i]] = $default;
-            }
-            else
-            {
-                $result[$keys[$i]] = $this->decode($v);
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -222,7 +220,7 @@ SCRIPT;
         $result = Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $setValues) {
             foreach ($setValues as $key => $item)
             {
-                $result = false !== $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), 1);
+                $result = false !== $redis->evalEx($script, array_merge([$key], array_map([$redis, '_serialize'], $item['member']), array_map([$redis, '_serialize'], $item['value'])), 1);
                 if (!$result)
                 {
                     return $result;
@@ -270,7 +268,7 @@ SCRIPT;
             {
                 $result = $redis->evalEx($script, array_merge(
                     [$key],
-                    $members
+                    array_map([$redis, '_serialize'], $members),
                 ), 1);
                 if (!$result)
                 {
