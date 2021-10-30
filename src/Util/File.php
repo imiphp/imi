@@ -70,7 +70,7 @@ class File
     /**
      * 枚举文件，支持自定义中断进入下一级目录.
      *
-     * @return \Generator|false
+     * @return \Generator|iterable<FileEnumItem>|false
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
@@ -95,10 +95,7 @@ class File
                 }
                 if ($item->getContinue() && is_dir($fullPath))
                 {
-                    foreach (static::enumFile($fullPath, $pattern, $extensionNames) as $fileItem)
-                    {
-                        yield $fileItem;
-                    }
+                    yield from static::enumFile($fullPath, $pattern, $extensionNames);
                 }
             }
         }
