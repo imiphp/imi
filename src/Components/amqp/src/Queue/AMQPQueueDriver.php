@@ -439,7 +439,7 @@ class AMQPQueueDriver implements IQueueDriver
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
 
-        return $redis->sAdd($this->getRedisQueueKey('deleted'), '') > 0;
+        return $redis->sAdd($this->getRedisQueueKey('deleted'), $message->getMessageId()) > 0;
     }
 
     /**
