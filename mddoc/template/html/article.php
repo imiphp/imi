@@ -170,13 +170,13 @@
             <div id="article-content" class="markdown-body">
                 <script>
                     document.title = '<?php echo $pageTitle; ?>';
-                    var currentCatalog = <?php echo json_encode($currentCatalog, \JSON_THROW_ON_ERROR); ?>;
+                    var currentCatalog = <?php echo json_encode($currentCatalog, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE); ?>;
                     var rootPath = location.pathname.substr(0, location.pathname.indexOf(currentCatalog.url));
                     if('' === rootPath)
                     {
                         rootPath = location.pathname;
                     }
-                    var catalogList = <?php echo json_encode($data['catalogList'], \JSON_THROW_ON_ERROR); ?>;
+                    var catalogList = <?php echo json_encode($data['catalogList'], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE); ?>;
                     for(var i = 0; i < catalogList.length; ++i)
                     {
                         if(void 0 !== catalogList[i].url)

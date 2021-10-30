@@ -11,7 +11,7 @@ class Json implements IFormat
      */
     public function encode($data): string
     {
-        return json_encode($data, \JSON_THROW_ON_ERROR);
+        return json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
     }
 
     /**

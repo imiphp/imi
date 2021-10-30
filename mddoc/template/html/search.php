@@ -1,4 +1,4 @@
-var originSearchDatas = <?php echo json_encode($searchDatas, \JSON_THROW_ON_ERROR); ?>;
+var originSearchDatas = <?php echo json_encode($searchDatas, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE); ?>;
 var searchDatas = [];
 function initSearchDatas()
 {

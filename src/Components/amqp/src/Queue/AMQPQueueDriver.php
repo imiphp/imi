@@ -308,7 +308,7 @@ class AMQPQueueDriver implements IQueueDriver
         $redis = RedisManager::getInstance($this->redisPoolName);
         $message->setMessageId($messageId = (string) $redis->incr($this->getRedisMessageIdKey()));
         $amqpMessage = new \Imi\AMQP\Message();
-        $amqpMessage->setBody(json_encode($message->toArray(), \JSON_THROW_ON_ERROR));
+        $amqpMessage->setBody(json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
         if ($delay > 0)
         {
             $amqpMessage->setRoutingKey(self::ROUTING_DELAY);
@@ -374,7 +374,7 @@ class AMQPQueueDriver implements IQueueDriver
                 {
                     $score = -1;
                 }
-                $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray()));
+                $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
 
                 return $message;
             }

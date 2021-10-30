@@ -41,7 +41,7 @@ if (isset($json['require']))
         array_pop($version);
         $version[] = '9999';
         $composerJson['version'] = implode('.', $version);
-        file_put_contents($requirePackageComposerPath, json_encode($composerJson, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR));
+        file_put_contents($requirePackageComposerPath, json_encode($composerJson, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
 
         $json['repositories'][$key] = [
             'type'    => 'path',
@@ -52,5 +52,5 @@ if (isset($json['require']))
         ];
     }
 
-    file_put_contents($dir . '/composer.json', json_encode($json, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR));
+    file_put_contents($dir . '/composer.json', json_encode($json, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
 }

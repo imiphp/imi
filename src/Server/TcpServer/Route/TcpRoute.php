@@ -131,7 +131,7 @@ class TcpRoute implements IRoute
     private function logDuplicated(RouteItem $routeItem): void
     {
         $callable = $routeItem->callable;
-        $route = 'condition=' . json_encode($routeItem->annotation->condition, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR);
+        $route = 'condition=' . json_encode($routeItem->annotation->condition, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
         if ($callable instanceof RouteCallable)
         {
             $logString = sprintf('TCP Route %s duplicated (%s::%s)', $route, $callable->className, $callable->methodName);
