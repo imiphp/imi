@@ -74,6 +74,31 @@ class File
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
+        if (\extension_loaded('swoole') && \Swoole\Coroutine::getuid() > -1)
+        {
+            $channel = new \Swoole\Coroutine\Channel(16);
+            go(function () use ($channel, $dirPath, $pattern, $extensionNames) {
+                static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames);
+                $channel->close();
+            });
+            while (false !== ($result = $channel->pop()))
+            {
+                yield $result;
+            }
+        }
+        else
+        {
+            yield from self::enumFileSync($dirPath, $pattern, $extensionNames);
+        }
+    }
+
+    /**
+     * 同步枚举文件，支持自定义中断进入下一级目录.
+     *
+     * @return \Generator|iterable<FileEnumItem>|false
+     */
+    public static function enumFileSync(string $dirPath, ?string $pattern = null, array $extensionNames = [])
+    {
         if (!is_dir($dirPath))
         {
             return false;
@@ -95,11 +120,46 @@ class File
                 }
                 if ($item->getContinue() && is_dir($fullPath))
                 {
-                    yield from static::enumFile($fullPath, $pattern, $extensionNames);
+                    yield from static::enumFileSync($fullPath, $pattern, $extensionNames);
                 }
             }
         }
         closedir($dh);
+    }
+
+    /**
+     * Swoole 环境下枚举文件，将结果 push 到 Channel，支持自定义中断进入下一级目录.
+     */
+    public static function enumFileSwoole(\Swoole\Coroutine\Channel $channel, string $dirPath, ?string $pattern = null, array $extensionNames = []): bool
+    {
+        if (!is_dir($dirPath))
+        {
+            return false;
+        }
+        $dh = opendir($dirPath);
+        while ($file = readdir($dh))
+        {
+            if ('.' !== $file && '..' !== $file)
+            {
+                $item = new FileEnumItem($dirPath, $file);
+                $fullPath = $item->getFullPath();
+                if (null !== $pattern && !preg_match($pattern, $fullPath))
+                {
+                    continue;
+                }
+                if (!$extensionNames || \in_array(pathinfo($fullPath, \PATHINFO_EXTENSION), $extensionNames))
+                {
+                    $channel->push($item);
+                }
+                if ($item->getContinue() && is_dir($fullPath))
+                {
+                    static::enumFileSwoole($channel, $fullPath, $pattern, $extensionNames);
+                }
+            }
+        }
+        closedir($dh);
+
+        return true;
     }
 
     /**
