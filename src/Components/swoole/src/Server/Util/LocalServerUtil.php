@@ -18,6 +18,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Worker;
+use Swoole\Coroutine;
 
 /**
  * @Bean(name="LocalServerUtil", env="swoole")
@@ -60,7 +61,7 @@ class LocalServerUtil implements ISwooleServerUtil
         {
             if ($tmpWorkerId === $currentWorkerId)
             {
-                go(function () use ($server, $currentWorkerId, $message) {
+                Coroutine::create(function () use ($server, $currentWorkerId, $message) {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $server,
                         'workerId'  => $currentWorkerId,

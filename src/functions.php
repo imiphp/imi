@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace
 {
     use Imi\RequestContext;
+    use Swoole\Coroutine;
 
     /**
      * 启动一个协程，自动创建和销毁上下文.
@@ -15,7 +16,7 @@ namespace
     {
         $newCallable = imiCallable($callable);
 
-        return go(function (...$args) use ($newCallable) {
+        return Coroutine::create(function (...$args) use ($newCallable) {
             $newCallable(...$args);
         }, ...$args);
     }
@@ -36,7 +37,7 @@ namespace
         if ($withGo)
         {
             return function (...$args) use ($resultCallable) {
-                return go(function (...$args) use ($resultCallable) {
+                return Coroutine::create(function (...$args) use ($resultCallable) {
                     return $resultCallable(...$args);
                 }, ...$args);
             };

@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\Component\Tests;
 use Imi\App;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
+use Swoole\Coroutine;
 
 /**
  * @testdox Lock Annotation
@@ -25,7 +26,7 @@ class LockAnnotationTest extends BaseTest
             {
                 $throwables[] = null;
                 $index = $i;
-                go(function () use (&$throwables, $index, $test, $channel) {
+                Coroutine::create(function () use (&$throwables, $index, $test, $channel) {
                     try
                     {
                         $test->test();

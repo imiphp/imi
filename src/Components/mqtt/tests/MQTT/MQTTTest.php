@@ -6,6 +6,7 @@ namespace Imi\MQTT\Test;
 
 use BinSoul\Net\Mqtt\Packet;
 use Imi\MQTT\Client\MQTTClient;
+use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
 
 class MQTTTest extends BaseTest
@@ -41,7 +42,7 @@ class MQTTTest extends BaseTest
         $listener = new TestClientListener();
         $initChannel = new Channel(1);
         $client = new MQTTClient($config, $listener);
-        go(function () use ($initChannel, $client) {
+        Coroutine::create(function () use ($initChannel, $client) {
             $this->assertTrue($client->connect());
             $initChannel->push(1);
             $client->wait();

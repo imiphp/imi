@@ -9,6 +9,7 @@ use Imi\App;
 use Imi\Kafka\Contract\IConsumer;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
+use Swoole\Coroutine;
 
 /**
  * @Process(name="TestProcess")
@@ -30,7 +31,7 @@ class SwooleTestProcess extends BaseProcess
 
     private function runConsumer(IConsumer $consumer): void
     {
-        go(function () use ($consumer) {
+        Coroutine::create(function () use ($consumer) {
             try
             {
                 $consumer->run();

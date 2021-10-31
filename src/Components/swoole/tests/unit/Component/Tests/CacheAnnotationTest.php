@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\Component\Tests;
 use Imi\App;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
+use Swoole\Coroutine;
 
 /**
  * @testdox Cache Annotation
@@ -71,7 +72,7 @@ class CacheAnnotationTest extends BaseTest
             {
                 $throwables[] = null;
                 $index = $i;
-                go(function () use (&$throwables, $index, $test, $id, $channel) {
+                Coroutine::create(function () use (&$throwables, $index, $test, $id, $channel) {
                     try
                     {
                         $result2 = $test->testCacheableLock($id);

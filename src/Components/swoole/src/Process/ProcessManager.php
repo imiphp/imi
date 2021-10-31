@@ -290,7 +290,7 @@ class ProcessManager
      */
     public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): void
     {
-        go(function () use ($name, $args, $redirectStdinStdout, $pipeType) {
+        Coroutine::create(function () use ($name, $args, $redirectStdinStdout, $pipeType) {
             static::run($name, $args, $redirectStdinStdout, $pipeType);
         });
     }

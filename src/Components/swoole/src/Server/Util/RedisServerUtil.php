@@ -12,6 +12,7 @@ use Imi\Redis\RedisManager;
 use Imi\RequestContext;
 use Imi\Server\ServerManager;
 use Imi\Worker;
+use Swoole\Coroutine;
 
 /**
  * @Bean(name="RedisServerUtil", env="swoole")
@@ -69,14 +70,14 @@ class RedisServerUtil extends LocalServerUtil
 
     public function startSubscribe(): void
     {
-        go(function () {
+        Coroutine::create(function () {
             $redis = RedisManager::getInstance($this->redisName);
             while ($this->subscribeEnable)
             {
                 try
                 {
                     $redis->subscribe([$this->channel], function (\Redis $redis, string $channel, string $msg) {
-                        go(function () use ($msg) {
+                        Coroutine::create(function () use ($msg) {
                             $data = json_decode($msg, true);
                             if (!isset($data['action'], $data['serverName']))
                             {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\Util\File\FileEnumItem;
+use Swoole\Coroutine;
 
 /**
  * 文件相关工具类.
@@ -77,7 +78,7 @@ class File
         if (\extension_loaded('swoole') && \Swoole\Coroutine::getuid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
-            go(function () use ($channel, $dirPath, $pattern, $extensionNames) {
+            Coroutine::create(function () use ($channel, $dirPath, $pattern, $extensionNames) {
                 static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames);
                 $channel->close();
             });
@@ -130,7 +131,7 @@ class File
     /**
      * Swoole 环境下枚举文件，将结果 push 到 Channel，支持自定义中断进入下一级目录.
      */
-    public static function enumFileSwoole(\Swoole\Coroutine\Channel $channel, string $dirPath, ?string $pattern = null, array $extensionNames = []): bool
+    public static function enumFileSwoole(Coroutine\Channel $channel, string $dirPath, ?string $pattern = null, array $extensionNames = []): bool
     {
         if (!is_dir($dirPath))
         {
