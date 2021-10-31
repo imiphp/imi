@@ -86,13 +86,14 @@ class Annotation
      */
     private function loadModuleAnnotations(string $namespace, bool $isApp = false): void
     {
+        $appConfig = Config::get('@app');
         // 默认过滤的命名空间
-        $ignoredNamespaces = Config::get('app.overrideDefaultIgnoreNamespace', false) ? [] : [
+        $ignoredNamespaces = ($appConfig['overrideDefaultIgnoreNamespace'] ?? false) ? [] : [
             $namespace . '\\config',
             $namespace . '\\vendor',
         ];
         $ignoredPaths = [Imi::getRuntimePath()];
-        if (!Config::get('app.overrideDefaultIgnorePaths', false))
+        if (!($appConfig['overrideDefaultIgnorePaths'] ?? false))
         {
             foreach (Imi::getNamespacePaths($namespace) as $path)
             {
@@ -103,17 +104,16 @@ class Annotation
         }
         foreach (Config::getAliases() as $alias)
         {
-            $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
-            $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.ignorePaths', []));
+            $config = Config::get($alias);
+            $ignoredNamespaces = array_merge($ignoredNamespaces, $config['ignoreNamespace'] ?? []);
+            $ignoredPaths = array_merge($ignoredPaths, $config['ignorePaths'] ?? []);
             if ('@app' === $alias && !$isApp)
             {
                 continue;
             }
-            $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.appIgnorePaths', []));
+            $ignoredPaths = array_merge($ignoredPaths, $config['appIgnorePaths'] ?? []);
         }
-        $ignoredPaths = array_map(function ($item) {
-            return Imi::parseRule($item);
-        }, $ignoredPaths);
+        $ignoredPaths = array_map([Imi::class, 'parseRule'], $ignoredPaths);
         if ($ignoredPaths)
         {
             $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . ')))/';

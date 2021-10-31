@@ -50,9 +50,7 @@ class Inotify extends BaseMonitor
         $this->handler = $handler = inotify_init();
         stream_set_blocking($handler, false);
 
-        $excludePaths = array_map(function ($item) {
-            return Imi::parseRule($item);
-        }, $this->excludePaths);
+        $excludePaths = array_map([Imi::class, 'parseRule'], $this->excludePaths);
 
         $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
         $paths = &$this->paths;

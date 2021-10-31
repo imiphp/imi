@@ -31,9 +31,7 @@ class FileMTime extends BaseMonitor
     {
         $includePaths = &$this->includePaths;
 
-        $excludePaths = array_map(function ($item) {
-            return Imi::parseRule($item);
-        }, $this->excludePaths);
+        $excludePaths = array_map([Imi::class, 'parseRule'], $this->excludePaths);
 
         $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
 

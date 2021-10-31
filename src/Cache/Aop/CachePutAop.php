@@ -48,6 +48,7 @@ class CachePutAop
 
         // 方法参数
         $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
+        $cacheDefault = null;
 
         foreach ($cachePuts as $cachePut)
         {
@@ -55,7 +56,7 @@ class CachePutAop
             $name = $cachePut->name;
             if (null === $name)
             {
-                $name = Config::get('@currentServer.cache.default');
+                $name = ($cacheDefault ??= Config::get('@currentServer.cache.default'));
                 if (null === $name)
                 {
                     throw new \RuntimeException('Config "@currentServer.cache.default" not found');
