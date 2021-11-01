@@ -14,7 +14,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforeWorkerStart implements IWorkerStartEventListener
 {
@@ -25,6 +25,8 @@ class BeforeWorkerStart implements IWorkerStartEventListener
     {
         // 随机数播种
         mt_srand();
+
+        App::getApp()->loadConfig();
 
         ImiUtil::loadRuntimeInfo(ImiUtil::getCurrentModeRuntimePath('runtime'));
 

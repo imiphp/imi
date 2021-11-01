@@ -11,7 +11,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 /**
- * @Listener("IMI.WORKERMAN.SERVER.WORKER_START")
+ * @Listener(eventName="IMI.WORKERMAN.SERVER.WORKER_START", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class OnWorkerStart implements IEventListener
 {
@@ -20,6 +20,7 @@ class OnWorkerStart implements IEventListener
      */
     public function handle(EventParam $e): void
     {
+        App::getApp()->loadConfig();
         foreach (Config::get('@app.db.connections', []) as $name => $_)
         {
             App::set('__db.' . $name, null);
