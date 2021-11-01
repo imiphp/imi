@@ -56,7 +56,7 @@ return function () {
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)
                 {
-                    $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? \dirname($_SERVER['SCRIPT_NAME'], 2));
+                    $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)));
                     $config = include File::path($appPath, 'config/config.php');
                     if (!isset($config['namespace']))
                     {
