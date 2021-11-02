@@ -71,7 +71,7 @@ class ModelRelationManager
                 }
                 /** @var RelationBase $firstAnnotation */
                 $firstAnnotation = $annotations[0];
-                if ($firstAnnotation->with || ($fields && \in_array($propertyName, $fields)))
+                if ($firstAnnotation->with || ($fields && (isset($fields[$propertyName]) || \in_array($propertyName, $fields))))
                 {
                     Query::init($model, $propertyName, $annotations, true, $refData);
                 }
@@ -114,6 +114,10 @@ class ModelRelationManager
                     {
                         $query->limit($annotation->limit);
                     }
+                    if (isset($fields[$propertyName]))
+                    {
+                        $fields[$propertyName]($query);
+                    }
                     $list = $query->select()
                                   ->getArray();
                     if ($list)
@@ -147,6 +151,10 @@ class ModelRelationManager
                     {
                         $query->field(...$annotation->fields);
                     }
+                    if (isset($fields[$propertyName]))
+                    {
+                        $fields[$propertyName]($query);
+                    }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
                         foreach ($models[$resultModel[$rightField]] as $model)
@@ -171,6 +179,10 @@ class ModelRelationManager
                     if (null !== $annotation->limit)
                     {
                         $query->limit($annotation->limit);
+                    }
+                    if (isset($fields[$propertyName]))
+                    {
+                        $fields[$propertyName]($query);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -207,6 +219,10 @@ class ModelRelationManager
                     {
                         $query->limit($annotation->limit);
                     }
+                    if (isset($fields[$propertyName]))
+                    {
+                        $fields[$propertyName]($query);
+                    }
                     $list = $query->select()
                                   ->getArray();
                     if ($list)
@@ -240,6 +256,10 @@ class ModelRelationManager
                     {
                         $query->field(...$annotation->fields);
                     }
+                    if (isset($fields[$propertyName]))
+                    {
+                        $fields[$propertyName]($query);
+                    }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
                         foreach ($models[$resultModel[$rightField]] as $model)
@@ -265,6 +285,10 @@ class ModelRelationManager
                     {
                         $query->limit($annotation->limit);
                     }
+                    if (isset($fields[$propertyName]))
+                    {
+                        $fields[$propertyName]($query);
+                    }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
                         foreach ($models[$resultModel[$rightField]] as $model)
@@ -286,6 +310,10 @@ class ModelRelationManager
                         if ($subAnnotation->fields)
                         {
                             $query->field(...$subAnnotation->fields);
+                        }
+                        if (isset($fields[$propertyName]))
+                        {
+                            $fields[$propertyName]($query);
                         }
                         foreach ($query->select()->getArray() as $resultModel)
                         {
@@ -325,8 +353,12 @@ class ModelRelationManager
                         {
                             $query->limit($annotation->limit);
                         }
+                        if (isset($fields[$propertyName]))
+                        {
+                            $fields[$propertyName]($query);
+                        }
                         $list = $query->select()
-                                  ->getArray();
+                                      ->getArray();
                         if ($list)
                         {
                             $appendList = [];

@@ -679,5 +679,10 @@ $newClassName = TestModel::fork('tb_test2', 'pool2'); // 同时指定
 $list = TestModel::query()
                 ->with('关联字段名') // 单个
                 ->with(['字段名1', '字段名2']) // 多个
+                ->with([
+                    '字段名1' => function(\Imi\Db\Query\Interfaces\IQuery $query) {
+                        $query->field('a', 'b'); // 比如在这你可以限定字段
+                    },
+                ]) // 回调
                 ->where('id', '=', 1)->select()->getArray();
 ```
