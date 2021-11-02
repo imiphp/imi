@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Db\Query\Interfaces;
 
 use Imi\Db\Interfaces\IDb;
+use Imi\Db\Query\QueryOption;
 
 /**
  * 查询器接口.
@@ -14,14 +15,14 @@ interface IQuery
     /**
      * 获取所有操作的记录.
      *
-     * @return mixed
+     * @return QueryOption
      */
     public function getOption();
 
     /**
      * 设置操作记录.
      *
-     * @param mixed $option
+     * @param QueryOption $option
      *
      * @return static
      */
