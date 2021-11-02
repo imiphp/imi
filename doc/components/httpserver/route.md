@@ -26,8 +26,6 @@ return [
 return [
     'beans' => [
         'HttpRoute' => [
-            // url匹配缓存数量，默认1024
-            'urlCacheNumber' => 1024,
             // 全局忽略 URL 路由大小写
             'ignoreCase'     => false,
             // 全局支持智能尾部斜杠，无论是否存在都匹配
@@ -168,7 +166,7 @@ public Route $annotation;
 /**
  * 回调.
  *
- * @var callable|\Imi\Server\Route\RouteCallable
+ * @var callable
  */
 public $callable;
 

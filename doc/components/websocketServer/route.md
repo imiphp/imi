@@ -76,7 +76,7 @@ public $annotation;
 /**
  * 回调
  *
- * @var callable|\Imi\Server\Route\RouteCallable
+ * @var callable
  */
 public $callable;
 

@@ -141,12 +141,8 @@ class Request extends AbstractMessage implements IRequest
      */
     public function setUri(UriInterface $uri, bool $preserveHost = false): self
     {
-        if (!$this->uriInited)
-        {
-            $this->initUri();
-            $this->uriInited = true;
-        }
         $this->uri = $uri;
+        $this->uriInited = true;
         if (!$preserveHost)
         {
             $this->headers = [];

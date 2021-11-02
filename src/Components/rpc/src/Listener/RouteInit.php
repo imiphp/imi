@@ -11,8 +11,8 @@ use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Rpc\Contract\IRpcServer;
 use Imi\Rpc\Route\Annotation\Parser\RpcControllerParser;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\ServerManager;
+use Imi\Util\DelayServerBeanCallable;
 
 /**
  * RPC 服务器路由初始化.
@@ -69,7 +69,7 @@ class RouteInit implements IEventListener
 
                     foreach ($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($classAnnotation, $routeItem, new RouteCallable($server->getName(), $className, $methodName), [
+                        $route->addRuleAnnotation($classAnnotation, $routeItem, new DelayServerBeanCallable($server, $className, $methodName, [$server]), [
                             'serverName'    => $name,
                         ]);
                     }

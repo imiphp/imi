@@ -48,7 +48,7 @@ class Server extends Base implements IUdpServer
                 $requestContext = RequestContext::getContext();
                 $requestContext['server'] = $this;
                 $requestContext['connection'] = $connection;
-                $packetData = $requestContext['connection'] = new PacketData($connection, $data);
+                $packetData = $requestContext['packetData'] = new PacketData($connection, $data);
                 Event::trigger('IMI.WORKERMAN.SERVER.UDP.MESSAGE', [
                     'server'     => $this,
                     'connection' => $connection,

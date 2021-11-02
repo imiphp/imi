@@ -7,10 +7,10 @@ namespace Imi\Server\View\Parser;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\IBean;
 use Imi\Bean\Parser\BaseParser;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\View\Annotation\BaseViewOption;
 use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Text;
@@ -38,27 +38,29 @@ class ViewParser extends BaseParser
      * 获取对应动作的视图注解.
      *
      * 返回：[View, BaseViewOption]
-     *
-     * @param callable $callable
      */
-    public function getByCallable($callable): array
+    public function getByCallable(callable $callable): array
     {
-        if ($callable instanceof RouteCallable)
+        if (\is_array($callable))
         {
-            $callable = $callable->getCallable();
+            [$object, $methodName] = $callable;
+            if ($object instanceof IBean)
+            {
+                $className = get_parent_class($object);
+            }
+            else
+            {
+                $className = \get_class($object);
+            }
         }
-        if (!\is_array($callable))
+        elseif ($callable instanceof DelayServerBeanCallable)
         {
-            return [new View(), null];
-        }
-        list($object, $methodName) = $callable;
-        if ($object instanceof IBean)
-        {
-            $className = get_parent_class($object);
+            $className = $callable->getBeanName();
+            $methodName = $callable->getMethodName();
         }
         else
         {
-            $className = \get_class($object);
+            return [new View(), null];
         }
         $viewCache = &$this->viewCache;
         if (!isset($viewCache[$className][$methodName]))

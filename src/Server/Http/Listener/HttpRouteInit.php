@@ -15,10 +15,10 @@ use Imi\Server\Http\Route\Annotation\Middleware;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Protocol;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
 use Imi\Server\ServerManager;
 use Imi\Server\WebSocket\Route\Annotation\WSConfig;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Worker;
 
 /**
@@ -43,6 +43,7 @@ class HttpRouteInit implements IEventListener
     {
         $controllerParser = ControllerParser::getInstance();
         $context = RequestContext::getContext();
+        $originServer = $context['server'] ?? null;
         foreach (ServerManager::getServers() as $name => $server)
         {
             if (!\in_array($server->getProtocol(), [Protocol::HTTP, Protocol::WEBSOCKET]))
@@ -124,7 +125,7 @@ class HttpRouteInit implements IEventListener
                                 'default' => $item->default,
                             ];
                         }
-                        $routeCallable = new RouteCallable($server->getName(), $className, $methodName);
+                        $routeCallable = new DelayServerBeanCallable($server, $className, $methodName, [$server]);
                         $options = [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
@@ -145,6 +146,10 @@ class HttpRouteInit implements IEventListener
                 $route->checkDuplicateRoutes();
             }
             unset($context['server']);
+        }
+        if ($originServer)
+        {
+            $context['server'] = $originServer;
         }
     }
 }

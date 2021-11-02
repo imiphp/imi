@@ -16,7 +16,7 @@ class RouteItem
     /**
      * 回调.
      *
-     * @var callable|\Imi\Server\Route\RouteCallable
+     * @var callable
      */
     public $callable;
 
@@ -30,10 +30,7 @@ class RouteItem
      */
     public array $options = [];
 
-    /**
-     * @param callable|\Imi\Server\Route\RouteCallable $callable
-     */
-    public function __construct(WSRoute $annotation, $callable, array $options = [])
+    public function __construct(WSRoute $annotation, callable $callable, array $options = [])
     {
         $this->annotation = $annotation;
         $this->callable = $callable;
