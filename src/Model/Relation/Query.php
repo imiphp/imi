@@ -6,11 +6,11 @@ namespace Imi\Model\Relation;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
-use Imi\Db\Db;
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSelect;
+use Imi\Model\BaseModel;
 use Imi\Model\Model;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
@@ -283,8 +283,7 @@ class Query
         {
             if (null === $refData)
             {
-                $query = Db::query($className::__getMeta()->getDbPoolName())
-                            ->table($rightTable)
+                $query = $rightModel::query($className::__getMeta()->getDbPoolName())
                             ->field(...$fields)
                             ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                             ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
@@ -311,7 +310,7 @@ class Query
                     static::appendMany($model->$propertyName, $list, $middleTable, $middleModel);
 
                     // 右侧表数据
-                    static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $rightModel);
+                    $model->{$annotation->rightMany}->append(...$list);
                 }
             }
             else
@@ -642,8 +641,7 @@ class Query
                 {
                     if (null === $refData)
                     {
-                        $query = Db::query($className::__getMeta()->getDbPoolName())
-                                    ->table($rightTable)
+                        $query = $rightModel::query($className::__getMeta()->getDbPoolName())
                                     ->field(...$fields)
                                     ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
                                     ->where($middleTable . '.' . $annotationItem->type, '=', $typeValue)
@@ -668,7 +666,7 @@ class Query
                         if ($list)
                         {
                             // 关联数据
-                            static::appendMany($model->$propertyName, $list, $rightTable, $rightModel);
+                            $model->$propertyName->append(...$list);
                         }
                     }
                     else
@@ -745,8 +743,7 @@ class Query
         {
             if (null === $refData)
             {
-                $query = Db::query($className::__getMeta()->getDbPoolName())
-                            ->table($rightTable)
+                $query = $rightModel::query($className::__getMeta()->getDbPoolName())
                             ->field(...$fields)
                             ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                             ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
@@ -767,14 +764,14 @@ class Query
                     'query'        => $query,
                 ]);
                 $list = $query->select()
-                                ->getArray();
+                              ->getArray();
                 if ($list)
                 {
                     // 关联数据
                     static::appendMany($model->$propertyName, $list, $middleTable, $middleModel);
 
                     // 右侧表数据
-                    static::appendMany($model->{$annotation->rightMany}, $list, $rightTable, $rightModel);
+                    $model->{$annotation->rightMany}->append(...$list);
                 }
             }
             else
@@ -852,7 +849,6 @@ class Query
             $fields[] = $field = new Field();
             $field->setTable($rightTable);
             $field->setField($name);
-            $field->setAlias($rightTable . '_' . $name);
         }
         foreach ($rightModelMeta->getSqlColumns() as $name => $sqlAnnotations)
         {
@@ -861,7 +857,6 @@ class Query
             $fields[] = $field = new Field();
             $field->useRaw();
             $field->setRawSQL($sqlAnnotation->sql);
-            $field->setAlias($rightTable . '_' . $name);
         }
 
         return $fields;
@@ -877,6 +872,10 @@ class Query
         foreach ($dataList as $row)
         {
             $tmpRow = [];
+            if ($row instanceof BaseModel)
+            {
+                $row = $row->__getOriginData();
+            }
             foreach ($row as $key => $value)
             {
                 if (isset($keysMap[$key]))

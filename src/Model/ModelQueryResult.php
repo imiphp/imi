@@ -23,7 +23,12 @@ class ModelQueryResult extends Result
     /**
      * 关联查询预加载字段.
      */
-    protected ?array $withFields = null;
+    protected ?array $with = null;
+
+    /**
+     * 关联查询预加载字段.
+     */
+    protected ?array $withField = null;
 
     /**
      * {@inheritDoc}
@@ -104,7 +109,11 @@ class ModelQueryResult extends Result
             foreach ($this->statementRecords as $item)
             {
                 $object = $className::createFromRecord($item, false);
-                if ($this->isSetSerializedFields)
+                if ($this->withField)
+                {
+                    $object->__setSerializedFields($this->withField);
+                }
+                elseif ($this->isSetSerializedFields)
                 {
                     if (!isset($serializedFields))
                     {
@@ -122,7 +131,7 @@ class ModelQueryResult extends Result
             }
             if ($hasRelation)
             {
-                ModelRelationManager::initModels($list, $this->withFields, $className);
+                ModelRelationManager::initModels($list, $this->with, $className);
                 foreach ($list as $object)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [
@@ -168,17 +177,35 @@ class ModelQueryResult extends Result
     /**
      * Get 关联查询预加载字段.
      */
-    public function getWithFields(): array
+    public function getWith(): ?array
     {
-        return $this->withFields;
+        return $this->with;
     }
 
     /**
      * Set 关联查询预加载字段.
      */
-    public function setWithFields(?array $withFields): self
+    public function setWith(?array $with): self
     {
-        $this->withFields = $withFields;
+        $this->with = $with;
+
+        return $this;
+    }
+
+    /**
+     * Get 关联查询预加载字段.
+     */
+    public function getWithField(): ?array
+    {
+        return $this->withField;
+    }
+
+    /**
+     * Set 关联查询预加载字段.
+     */
+    public function setWithField(?array $withField): self
+    {
+        $this->withField = $withField;
 
         return $this;
     }

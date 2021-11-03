@@ -6,7 +6,6 @@ namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
-use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Model\Annotation\Relation\ManyToMany;
 use Imi\Model\Annotation\Relation\OneToMany;
@@ -100,8 +99,9 @@ class ModelRelationManager
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
-                    $query = Db::query($modelClass::__getMeta()->getDbPoolName())
-                                ->table($rightTable)
+                    // $rightModel可能要换，TODO
+                    $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
+                                ->field(...$queryFields)
                                 ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
                                 ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                                 ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
@@ -116,15 +116,6 @@ class ModelRelationManager
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
-                        $hasFields = (bool) $query->getOption()->field;
-                    }
-                    else
-                    {
-                        $hasFields = false;
-                    }
-                    if (!$hasFields)
-                    {
-                        $query->field(...$queryFields);
                     }
                     $list = $query->select()
                                   ->getArray();
@@ -145,7 +136,7 @@ class ModelRelationManager
                                 Query::appendMany($model->$propertyName, $tmpList, $middleTable, $middleModel);
 
                                 // 右侧表数据
-                                Query::appendMany($model->$rightMany, $tmpList, $rightTable, $rightModel);
+                                $model->$rightMany->append(...$tmpList);
                             }
                         }
                     }
@@ -155,18 +146,13 @@ class ModelRelationManager
                     $rightField = $item['rightField'];
                     $query = ($item['modelClass'])::query()->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
+                    if ($annotation->fields)
+                    {
+                        $query->field(...$annotation->fields);
+                    }
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
-                        $hasFields = (bool) $query->getOption()->field;
-                    }
-                    else
-                    {
-                        $hasFields = false;
-                    }
-                    if (!$hasFields && $annotation->fields)
-                    {
-                        $query->field(...$annotation->fields);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -181,6 +167,10 @@ class ModelRelationManager
                     $rightField = $item['rightField'];
                     $query = ($item['modelClass'])::query()->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
+                    if ($annotation->fields)
+                    {
+                        $query->field(...$annotation->fields);
+                    }
                     if ($annotation->order)
                     {
                         $query->orderRaw($annotation->order);
@@ -192,15 +182,6 @@ class ModelRelationManager
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
-                        $hasFields = (bool) $query->getOption()->field;
-                    }
-                    else
-                    {
-                        $hasFields = false;
-                    }
-                    if (!$hasFields && $annotation->fields)
-                    {
-                        $query->field(...$annotation->fields);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -224,8 +205,8 @@ class ModelRelationManager
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
-                    $query = Db::query($modelClass::__getMeta()->getDbPoolName())
-                                ->table($rightTable)
+                    $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
+                                ->field(...$queryFields)
                                 ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
                                 ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
                     if ($annotation->order)
@@ -239,15 +220,6 @@ class ModelRelationManager
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
-                        $hasFields = (bool) $query->getOption()->field;
-                    }
-                    else
-                    {
-                        $hasFields = false;
-                    }
-                    if (!$hasFields)
-                    {
-                        $query->field(...$queryFields);
                     }
                     $list = $query->select()
                                   ->getArray();
@@ -268,7 +240,7 @@ class ModelRelationManager
                                 Query::appendMany($model->$propertyName, $tmpList, $middleTable, $middleModel);
 
                                 // 右侧表数据
-                                Query::appendMany($model->$rightMany, $tmpList, $rightTable, $rightModel);
+                                $model->$rightMany->append(...$tmpList);
                             }
                         }
                     }
@@ -278,18 +250,13 @@ class ModelRelationManager
                     $rightField = $item['rightField'];
                     $query = ($item['modelClass'])::query()->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
+                    if ($annotation->fields)
+                    {
+                        $query->field(...$annotation->fields);
+                    }
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
-                        $hasFields = (bool) $query->getOption()->field;
-                    }
-                    else
-                    {
-                        $hasFields = false;
-                    }
-                    if (!$hasFields && $annotation->fields)
-                    {
-                        $query->field(...$annotation->fields);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -304,6 +271,10 @@ class ModelRelationManager
                     $rightField = $item['rightField'];
                     $query = $item['modelClass']::query()->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
+                    if ($annotation->fields)
+                    {
+                        $query->field(...$annotation->fields);
+                    }
                     if ($annotation->order)
                     {
                         $query->orderRaw($annotation->order);
@@ -315,15 +286,6 @@ class ModelRelationManager
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
-                        $hasFields = (bool) $query->getOption()->field;
-                    }
-                    else
-                    {
-                        $hasFields = false;
-                    }
-                    if (!$hasFields && $annotation->fields)
-                    {
-                        $query->field(...$annotation->fields);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -343,18 +305,13 @@ class ModelRelationManager
                         $models = $subItem['models'];
                         /** @var IQuery $query */
                         $query = $subItem['modelClass']::query()->where($leftField, 'in', $subItem['ids']);
+                        if ($subAnnotation->fields)
+                        {
+                            $query->field(...$subAnnotation->fields);
+                        }
                         if (isset($fields[$propertyName]))
                         {
                             $fields[$propertyName]($query);
-                            $hasFields = (bool) $query->getOption()->field;
-                        }
-                        else
-                        {
-                            $hasFields = false;
-                        }
-                        if (!$hasFields && $subAnnotation->fields)
-                        {
-                            $query->field(...$subAnnotation->fields);
                         }
                         foreach ($query->select()->getArray() as $resultModel)
                         {
@@ -380,8 +337,8 @@ class ModelRelationManager
                         $queryFields = $subItem['fields'];
 
                         $ids = $subItem['ids'];
-                        $query = Db::query($modelClass::__getMeta()->getDbPoolName())
-                                    ->table($rightTable)
+                        $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
+                                    ->field(...$queryFields)
                                     ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
                                     ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                                     ->where($middleTable . '.' . $middleRightField, 'in', $ids);
@@ -396,15 +353,6 @@ class ModelRelationManager
                         if (isset($fields[$propertyName]))
                         {
                             $fields[$propertyName]($query);
-                            $hasFields = (bool) $query->getOption()->field;
-                        }
-                        else
-                        {
-                            $hasFields = false;
-                        }
-                        if (!$hasFields)
-                        {
-                            $query->field(...$queryFields);
                         }
                         $list = $query->select()
                                       ->getArray();
@@ -421,7 +369,7 @@ class ModelRelationManager
                                 $tmpList = $appendList[$leftValue];
                                 foreach ($models[$leftValue] as $model)
                                 {
-                                    Query::appendMany($model->$propertyName, $tmpList, $rightTable, $rightModel);
+                                    $model->$propertyName->append(...$tmpList);
                                 }
                             }
                         }

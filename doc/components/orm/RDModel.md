@@ -681,7 +681,7 @@ $list = TestModel::query()
                 ->with(['字段名1', '字段名2']) // 多个
                 ->with([
                     '字段名1' => function(\Imi\Db\Query\Interfaces\IQuery $query) {
-                        $query->field('a', 'b'); // 比如在这你可以限定字段
+                        $query->withField('a', 'b'); // 限定查询结果模型的可序列化字段
                     },
                 ]) // 回调
                 ->where('id', '=', 1)->select()->getArray();
