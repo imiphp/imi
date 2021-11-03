@@ -43,7 +43,7 @@ abstract class Operation
     /**
      * 转为树形.
      */
-    public function listToTree(array $list): array
+    public static function listToTree(array $list): array
     {
         return App::getBean('ACOperationService')->listToTree($list);
     }
