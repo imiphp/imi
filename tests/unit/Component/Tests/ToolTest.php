@@ -9,8 +9,8 @@ use function explode;
 use Imi\Test\BaseTest;
 use Imi\Util\File;
 use Imi\Util\Imi;
-use Symfony\Component\Process\Process;
 use function str_replace;
+use Symfony\Component\Process\Process;
 use function trim;
 
 /**
@@ -59,6 +59,7 @@ class ToolTest extends BaseTest
 
     /**
      * @dataProvider boolProvider
+     *
      * @param array|string $suffix
      */
     public function testBool($suffix, array $results): void
@@ -102,6 +103,7 @@ class ToolTest extends BaseTest
 
     /**
      * @dataProvider argumentProvider
+     *
      * @param array|string $suffix
      */
     public function testArgument($suffix, array $results): void
@@ -148,6 +150,7 @@ class ToolTest extends BaseTest
 
     /**
      * @dataProvider negatableProvider
+     *
      * @param array|string $suffix
      */
     public function testNegatable($suffix, array $results): void
