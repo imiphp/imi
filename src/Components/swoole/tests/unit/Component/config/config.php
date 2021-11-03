@@ -224,14 +224,14 @@ return [
         'file1'  => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
-                'savePath'              => \dirname(__DIR__) . '/.runtime/cache/',
+                'savePath'              => sys_get_temp_dir() . '/imi-cache/',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
         'file2'  => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
-                'savePath'    => \dirname(__DIR__) . '/.runtime/cache/',
+                'savePath'    => sys_get_temp_dir() . '/imi-cache/',
                 // 保存文件名处理回调，一般可以不写
                 'saveFileNameCallback'    => function (string $savePath, string $key) {
                     return \Imi\Util\File::path($savePath, sha1($key));
