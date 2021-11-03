@@ -10,6 +10,7 @@ use Imi\Test\BaseTest;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Symfony\Component\Process\Process;
+use function str_replace;
 use function trim;
 
 /**
@@ -87,7 +88,10 @@ class ToolTest extends BaseTest
         {
             $assertContent[] = 'bool(' . var_export($result, true) . ')';
         }
-        $this->assertEquals($assertContent, \array_slice(explode(\PHP_EOL, trim($output)), -\count($results)));
+        $this->assertEquals(
+            $assertContent,
+            \array_slice(explode("\n", str_replace("\r\n", "\n", trim($output))), -\count($results))
+        );
     }
 
     public function argumentProvider(): \Generator
@@ -128,7 +132,10 @@ class ToolTest extends BaseTest
         {
             $assertContent[] = 'string(' . \strlen($result) . ') ' . json_encode($result, \JSON_UNESCAPED_UNICODE);
         }
-        $this->assertEquals($assertContent, \array_slice(explode(\PHP_EOL, trim($output)), -\count($results)));
+        $this->assertEquals(
+            $assertContent,
+            \array_slice(explode("\n", str_replace("\r\n", "\n", trim($output))), -\count($results))
+        );
     }
 
     public function negatableProvider(): \Generator
@@ -157,7 +164,7 @@ class ToolTest extends BaseTest
         {
             $cmd = array_merge($cmd, $suffix);
         }
-        elseif (!empty($suffix))
+        elseif ('' !== $suffix)
         {
             $cmd[] = $suffix;
         }
@@ -171,6 +178,9 @@ class ToolTest extends BaseTest
         {
             $assertContent[] = 'bool(' . var_export($result, true) . ')';
         }
-        $this->assertEquals($assertContent, \array_slice(explode(\PHP_EOL, trim($output)), -\count($results)));
+        $this->assertEquals(
+            $assertContent,
+            \array_slice(explode("\n", str_replace("\r\n", "\n", trim($output))), -\count($results))
+        );
     }
 }
