@@ -473,16 +473,49 @@ $result = $testModel->delete();
 
 imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
 
-查询结果返回模型对象：
+**查询结果返回模型对象：**
 
 ```php
 $query = TestModel::query();
 ```
 
-查询结果返回数组：
+> `query()` 方法返回的类是 `Imi\Model\Contract\IModelQuery`，它继承了 `Imi\Db\Query\Interfaces\IQuery`，并且有扩展特性
+
+**查询结果返回数组：**
 
 ```php
 $query = TestModel::dbQuery();
+```
+
+> `dbQuery()` 方法返回的类是 `Imi\Db\Query\Interfaces\IQuery`，与 `Imi\Db\Db::query()` 返回完全一致
+
+**IModelQuery 扩展特性：**
+
+#### 关联模型预加载
+
+```php
+$list = TestModel::query()
+                ->with('关联字段名') // 单个
+                ->with(['字段名1', '字段名2']) // 多个
+                ->with([
+                    '字段名1' => function(\Imi\Db\Query\Interfaces\IQuery $query) {
+                        $query->withField('a', 'b'); // 限定查询结果模型的可序列化字段
+                    },
+                ]) // 回调
+                ->where('id', '=', 1)->select()->getArray();
+```
+
+#### 指定查询出的模型可序列化的字段
+
+```php
+$list1 = TestModel::query()->withField('id', 'name')->select()->getArray();
+
+// 上面的代码同下面的效果
+$list2 = TestModel::query()->select()->getArray();
+foreach ($list2 as $row)
+{
+    $list2->__setSerializedFields(['id', 'name']);
+}
 ```
 
 ### 查询记录
@@ -671,18 +704,4 @@ $newClassName = TestModel::fork('db2.tb_test2'); // 指定数据库名和表名
 $newClassName = TestModel::fork(null, 'pool2'); // 指定连接池名
 
 $newClassName = TestModel::fork('tb_test2', 'pool2'); // 同时指定
-```
-
-### 关联模型预加载
-
-```php
-$list = TestModel::query()
-                ->with('关联字段名') // 单个
-                ->with(['字段名1', '字段名2']) // 多个
-                ->with([
-                    '字段名1' => function(\Imi\Db\Query\Interfaces\IQuery $query) {
-                        $query->withField('a', 'b'); // 限定查询结果模型的可序列化字段
-                    },
-                ]) // 回调
-                ->where('id', '=', 1)->select()->getArray();
 ```
