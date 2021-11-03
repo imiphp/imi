@@ -14,6 +14,7 @@ use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\View\View;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\Http\Response;
 use Imi\Util\Stream\MemoryStream;
 use Psr\Http\Message\ResponseInterface;
@@ -133,31 +134,46 @@ class ActionMiddleware implements MiddlewareInterface
      */
     private function prepareActionParams(Request $request, RouteResult $routeResult): array
     {
+        $callable = $routeResult->callable;
         // 根据动作回调类型获取反射
-        if (\is_array($routeResult->callable))
+        if ($callable instanceof DelayServerBeanCallable)
         {
-            if (\is_string($routeResult->callable[0]))
-            {
-                $class = $routeResult->callable[0];
-            }
-            else
-            {
-                $class = BeanFactory::getObjectClass($routeResult->callable[0]);
-            }
-            $method = $routeResult->callable[1];
+            $class = $callable->getBeanName();
+            $method = $callable->getMethodName();
             if (isset($this->actionMethodParams[$class][$method]))
             {
                 $params = $this->actionMethodParams[$class][$method];
             }
             else
             {
-                $ref = new \ReflectionMethod($routeResult->callable[0], $routeResult->callable[1]);
+                $ref = new \ReflectionMethod($class, $method);
                 $params = $this->actionMethodParams[$class][$method] = $ref->getParameters();
             }
         }
-        elseif (!$routeResult->callable instanceof \Closure)
+        elseif (\is_array($callable))
         {
-            $ref = new \ReflectionFunction($routeResult->callable);
+            if (\is_string($callable[0]))
+            {
+                $class = $callable[0];
+            }
+            else
+            {
+                $class = BeanFactory::getObjectClass($callable[0]);
+            }
+            $method = $callable[1];
+            if (isset($this->actionMethodParams[$class][$method]))
+            {
+                $params = $this->actionMethodParams[$class][$method];
+            }
+            else
+            {
+                $ref = new \ReflectionMethod($class, $method);
+                $params = $this->actionMethodParams[$class][$method] = $ref->getParameters();
+            }
+        }
+        elseif ($callable instanceof \Closure || \is_string($callable))
+        {
+            $ref = new \ReflectionFunction($callable);
             $params = $ref->getParameters();
         }
         else
