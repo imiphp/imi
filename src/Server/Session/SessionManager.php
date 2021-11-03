@@ -78,7 +78,7 @@ class SessionManager
             throw new \RuntimeException('Session can not repeated start');
         }
         $this->handler = $handler = RequestContext::getServerBean($this->handlerClass);
-        $this->isNewSession = $isNewSession = null === $sessionId;
+        $this->isNewSession = $isNewSession = (null === $sessionId || '' === $sessionId);
         if ($isNewSession)
         {
             $this->id = $handler->createSessionId();
