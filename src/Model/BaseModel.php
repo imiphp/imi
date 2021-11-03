@@ -77,6 +77,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected $__serializedFields = null;
 
+    /**
+     * 原始数据.
+     */
+    protected array $__originData = [];
+
     public function __construct(array $data = [])
     {
         $this->__meta = $meta = static::__getMeta();
@@ -97,6 +102,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             'data'  => $data,
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
 
+        $this->__originData = $data;
         if ($data)
         {
             $fieldAnnotations = $this->__meta->getFields();
@@ -183,7 +189,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
 
-        return method_exists($this, $methodName) && null !== $this->$methodName();
+        return isset($this->__originData[$offset]) || (method_exists($this, $methodName) && null !== $this->$methodName());
     }
 
     /**
@@ -211,6 +217,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 $result = $this->$methodName();
             }
+        }
+        elseif (isset($this->__originData[$offset]))
+        {
+            $result = $this->__originData[$offset];
         }
         else
         {
@@ -250,6 +260,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $methodName = 'set' . ucfirst($camelName);
         if (!method_exists($this, $methodName))
         {
+            $this->__originData[$offset] = $value;
+
             return;
         }
         $this->$methodName($value);
@@ -277,13 +289,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             unset($this->__fieldNames[$offset]);
         }
-        else
+        elseif (false !== ($index = array_search($offset, $this->__fieldNames)))
         {
-            $index = array_search($offset, $this->__fieldNames);
-            if (false !== $index)
-            {
-                unset($this->__fieldNames[$index]);
-            }
+            unset($this->__fieldNames[$index]);
+        }
+        elseif (isset($this->__originData[$offset]))
+        {
+            unset($this->__originData[$offset]);
         }
     }
 
@@ -585,5 +597,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $this->__serializedFields = $serializedFields;
 
         return $this;
+    }
+
+    public function __getOriginData(): array
+    {
+        return $this->__originData;
     }
 }
