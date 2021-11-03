@@ -57,6 +57,10 @@ abstract class Base implements ISessionHandler
      */
     public function decode(string $data): array
     {
+        if ('' === $data)
+        {
+            return [];
+        }
         $result = $this->formatHandler->decode($data);
         if (!\is_array($result))
         {
