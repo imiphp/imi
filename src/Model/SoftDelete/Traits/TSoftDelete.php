@@ -9,6 +9,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Event\Event;
+use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\BeforeDeleteEventParam;
 use Imi\Model\Model;
@@ -56,9 +57,9 @@ trait TSoftDelete
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
     {
-        /** @var IQuery $query */
+        /** @var IModelQuery $query */
         $query = parent::query($poolName, $queryType, $queryClass);
         $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
 

@@ -16,9 +16,10 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.name", default="tb_article"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.poolName"))
- * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
+ * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT '0',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
  * @property int|null    $id
+ * @property int|null    $memberId
  * @property string|null $title
  * @property string|null $content
  * @property string|null $time
@@ -50,6 +51,35 @@ abstract class ArticleBase extends Model
     public function setId($id)
     {
         $this->id = null === $id ? null : (int) $id;
+
+        return $this;
+    }
+
+    /**
+     * member_id.
+     *
+     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     */
+    protected ?int $memberId = 0;
+
+    /**
+     * 获取 memberId.
+     */
+    public function getMemberId(): ?int
+    {
+        return $this->memberId;
+    }
+
+    /**
+     * 赋值 memberId.
+     *
+     * @param int|null $memberId member_id
+     *
+     * @return static
+     */
+    public function setMemberId($memberId)
+    {
+        $this->memberId = null === $memberId ? null : (int) $memberId;
 
         return $this;
     }

@@ -314,6 +314,7 @@ class ModelGenerate extends BaseCommand
                 'isAutoIncrement'   => str_contains($field['Extra'], 'auto_increment'),
                 'comment'           => $field['Comment'],
                 'typeDefinition'    => $config['relation'][$table]['fields'][$field['Field']]['typeDefinition'] ?? true,
+                'ref'               => 'json' === $typeName,
             ];
             if ($isPk)
             {

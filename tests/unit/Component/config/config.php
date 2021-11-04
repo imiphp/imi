@@ -314,9 +314,11 @@ return [
                 'Imi\Test\Component\Model' => [
                     'tables'    => [
                         'tb_tree',
+                        'tb_role',
                     ],
                     'withRecords'   => [
                         'tb_tree',
+                        'tb_role',
                     ],
                 ],
             ],

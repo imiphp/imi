@@ -40,23 +40,34 @@ class DbQueryLog
      */
     public function aopExecute(AroundJoinPoint $joinPoint)
     {
-        $beginTime = microtime(true);
-        $result = $joinPoint->proceed();
-        $endTime = microtime(true);
         [$sql] = $joinPoint->getArgs();
         $bindValues = [];
         $db = $joinPoint->getTarget();
-        Event::trigger('IMI.DB.EXECUTE', [
-            'db'         => $db,
-            'sql'        => $sql,
-            'beginTime'  => $beginTime,
-            'endTime'    => $endTime,
-            'time'       => $endTime - $beginTime,
-            'bindValues' => $bindValues,
-            'result'     => $result,
-        ], $db, DbExecuteEventParam::class);
+        $beginTime = microtime(true);
+        try
+        {
+            $result = $joinPoint->proceed();
 
-        return $result;
+            return $result;
+        }
+        catch (\Throwable $th)
+        {
+            throw $th;
+        }
+        finally
+        {
+            $endTime = microtime(true);
+            Event::trigger('IMI.DB.EXECUTE', [
+                'db'         => $db,
+                'sql'        => $sql,
+                'beginTime'  => $beginTime,
+                'endTime'    => $endTime,
+                'time'       => $endTime - $beginTime,
+                'bindValues' => $bindValues,
+                'result'     => $result ?? null,
+                'throwable'  => $th ?? null,
+            ], $db, DbExecuteEventParam::class);
+        }
     }
 
     /**
@@ -64,14 +75,25 @@ class DbQueryLog
      */
     public function aopPrepare(AroundJoinPoint $joinPoint)
     {
-        $result = $joinPoint->proceed();
         [$sql] = $joinPoint->getArgs();
-        Event::trigger('IMI.DB.PREPARE', [
-            'statement' => $result,
-            'sql'       => $sql,
-        ], $joinPoint->getTarget(), DbPrepareEventParam::class);
+        try
+        {
+            $result = $joinPoint->proceed();
 
-        return $result;
+            return $result;
+        }
+        catch (\Throwable $th)
+        {
+            throw $th;
+        }
+        finally
+        {
+            Event::trigger('IMI.DB.PREPARE', [
+                'statement'  => $result ?? null,
+                'sql'        => $sql,
+                'throwable'  => $th ?? null,
+            ], $joinPoint->getTarget(), DbPrepareEventParam::class);
+        }
     }
 
     /**
@@ -84,22 +106,33 @@ class DbQueryLog
         $sql = $statement->getSql();
         $args = $joinPoint->getArgs();
         $bindValues = $args[0] ?? null;
-        $beginTime = microtime(true);
-        $result = $joinPoint->proceed();
-        $endTime = microtime(true);
         $db = $statement->getDb();
-        Event::trigger('IMI.DB.EXECUTE', [
-            'db'         => $db,
-            'statement'  => $statement,
-            'sql'        => $sql,
-            'beginTime'  => $beginTime,
-            'endTime'    => $endTime,
-            'time'       => $endTime - $beginTime,
-            'bindValues' => $bindValues,
-            'result'     => $result,
-        ], $db, DbExecuteEventParam::class);
+        $beginTime = microtime(true);
+        try
+        {
+            $result = $joinPoint->proceed();
 
-        return $result;
+            return $result;
+        }
+        catch (\Throwable $th)
+        {
+            throw $th;
+        }
+        finally
+        {
+            $endTime = microtime(true);
+            Event::trigger('IMI.DB.EXECUTE', [
+                'db'         => $db,
+                'statement'  => $statement,
+                'sql'        => $sql,
+                'beginTime'  => $beginTime,
+                'endTime'    => $endTime,
+                'time'       => $endTime - $beginTime,
+                'bindValues' => $bindValues,
+                'result'     => $result ?? null,
+                'throwable'  => $th ?? null,
+            ], $db, DbExecuteEventParam::class);
+        }
     }
 
     /**

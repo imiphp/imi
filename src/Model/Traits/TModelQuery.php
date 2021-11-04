@@ -15,6 +15,16 @@ trait TModelQuery
      */
     protected bool $isSetSerializedFields = false;
 
+    /**
+     * 关联查询预加载字段.
+     */
+    protected ?array $with = null;
+
+    /**
+     * 指定查询出的模型可序列化的字段.
+     */
+    protected ?array $withField = null;
+
     public function __init(): void
     {
         parent::__init();
@@ -121,7 +131,41 @@ trait TModelQuery
         {
             $result->setIsSetSerializedFields(true);
         }
+        if ($this->with)
+        {
+            $result->setWith($this->with);
+        }
+        if ($this->withField)
+        {
+            $result->setWithField($this->withField);
+        }
 
         return $result;
+    }
+
+    /**
+     * 关联查询预加载.
+     *
+     * @param string|array|null $field
+     */
+    public function with($field): self
+    {
+        $this->with = null === $field ? null : (array) $field;
+
+        return $this;
+    }
+
+    /**
+     * 指定查询出的模型可序列化的字段.
+     *
+     * @param string $fields
+     *
+     * @return static
+     */
+    public function withField(...$fields): self
+    {
+        $this->withField = $fields;
+
+        return $this;
     }
 }

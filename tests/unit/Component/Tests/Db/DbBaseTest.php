@@ -50,44 +50,80 @@ abstract class DbBaseTest extends BaseTest
         ], $result);
     }
 
-    public function testQuery(): void
+    public function testInsert(): array
     {
+        $data = [
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+        ];
+        $query = Db::query($this->poolName);
+
+        $result = $query->from('tb_article')->insert($data);
+        $id = (int) $result->getLastInsertId();
+        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $record);
+
+        return [
+            'id' => $id,
+        ];
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testQuery(array $args): void
+    {
+        ['id' => $id] = $args;
         $db = Db::getInstance($this->poolName);
-        $stmt = $db->query('select * from tb_article where id = 1');
+        $stmt = $db->query('select * from tb_article where id = ' . (int) $id);
         Assert::assertInstanceOf(\Imi\Db\Interfaces\IStatement::class, $stmt);
         Assert::assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
     }
 
-    public function testPreparePositional(): void
+    /**
+     * @depends testInsert
+     */
+    public function testPreparePositional(array $args): void
     {
+        ['id' => $id] = $args;
         $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = ?');
-        $stmt->bindValue(1, 1);
+        $stmt->bindValue(1, $id);
         Assert::assertTrue($stmt->execute());
         Assert::assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
 
         $stmt = $db->prepare('select * from tb_article where id = ?');
-        Assert::assertTrue($stmt->execute([1]));
+        Assert::assertTrue($stmt->execute([$id]));
         Assert::assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
 
@@ -102,53 +138,60 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testPrepareNamed(): void
+    /**
+     * @depends testInsert
+     */
+    public function testPrepareNamed(array $args): void
     {
+        ['id' => $id] = $args;
         $db = Db::getInstance($this->poolName);
 
         // 有冒号
         $stmt = $db->prepare('select tb_article.*, :v as v from tb_article where id = :id');
-        $stmt->bindValue(':id', 1);
+        $stmt->bindValue(':id', $id);
         $stmt->bindValue(':v', 2);
         Assert::assertTrue($stmt->execute());
         Assert::assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
                 'v'         => 2,
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
 
         // 无冒号
         $stmt = $db->prepare('select tb_article.*, :v as v from tb_article where id = :id');
-        $stmt->bindValue('id', 1);
+        $stmt->bindValue('id', $id);
         $stmt->bindValue('v', 2);
         Assert::assertTrue($stmt->execute());
         Assert::assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
                 'v'         => 2,
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
 
         // execute
         $stmt = $db->prepare('select tb_article.*, :v as v from tb_article where id = :id');
         Assert::assertTrue($stmt->execute([
-            'id' => 1,
+            'id' => $id,
             ':v' => 2,
         ]));
         Assert::assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
                 'v'         => 2,
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
     }
@@ -174,6 +217,7 @@ abstract class DbBaseTest extends BaseTest
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
     }
@@ -216,6 +260,7 @@ abstract class DbBaseTest extends BaseTest
                 'title'     => 'title',
                 'content'   => 'content',
                 'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
             ],
         ], $stmt->fetchAll());
     }

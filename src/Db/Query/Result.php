@@ -161,28 +161,26 @@ class Result implements IResult
         {
             return $this->statementRecords;
         }
+        elseif (is_subclass_of($className, Model::class))
+        {
+            $list = [];
+            foreach ($this->statementRecords as $item)
+            {
+                $object = $className::createFromRecord($item);
+                $object->trigger(ModelEvents::AFTER_QUERY, [
+                    'model' => $object,
+                ], $object, AfterQueryEventParam::class);
+                $list[] = $object;
+            }
+
+            return $list;
+        }
         else
         {
             $list = [];
-            $isModelClass = is_subclass_of($className, Model::class);
-            $supportIEvent = is_subclass_of($className, IEvent::class);
             foreach ($this->statementRecords as $item)
             {
-                if ($isModelClass)
-                {
-                    $object = $className::createFromRecord($item);
-                }
-                else
-                {
-                    $object = $item;
-                }
-                if ($supportIEvent)
-                {
-                    $object->trigger(ModelEvents::AFTER_QUERY, [
-                        'model'      => $object,
-                    ], $object, AfterQueryEventParam::class);
-                }
-                $list[] = $object;
+                $list[] = new $className($item);
             }
 
             return $list;

@@ -24,7 +24,7 @@ class OneToOne extends RelationBase
      */
     protected ?string $defaultFieldName = 'model';
 
-    public function __construct(?array $__data = null, string $model = '', ?array $fields = null)
+    public function __construct(?array $__data = null, string $model = '', ?array $fields = null, bool $with = false)
     {
         parent::__construct(...\func_get_args());
     }

@@ -51,4 +51,9 @@ class DbExecuteEventParam extends EventParam
      * @var mixed
      */
     public $result;
+
+    /**
+     * 执行过程中是否有抛出异常.
+     */
+    public ?\Throwable $throwable = null;
 }

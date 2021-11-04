@@ -57,23 +57,40 @@ class PolymorphicManyToMany
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
-        $joinToMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
-        if (!$joinToMiddle instanceof JoinToMiddle)
+        if ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
-            throw new \RuntimeException(sprintf('%s->%s has no @JoinToMiddle', $className, $propertyName));
-        }
+            $joinToMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
+            if (!$joinToMiddle instanceof JoinToMiddle)
+            {
+                throw new \RuntimeException(sprintf('%s->%s has no @JoinToMiddle', $className, $propertyName));
+            }
 
-        $joinFromMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
-        if (!$joinFromMiddle instanceof JoinFromMiddle)
+            $joinFromMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
+            if (!$joinFromMiddle instanceof JoinFromMiddle)
+            {
+                throw new \RuntimeException(sprintf('%s->%s has no @JoinFromMiddle', $className, $propertyName));
+            }
+
+            $this->leftField = $joinToMiddle->field;
+            $this->middleLeftField = $joinToMiddle->middleField;
+
+            $this->rightField = $joinFromMiddle->field;
+            $this->middleRightField = $joinFromMiddle->middleField;
+        }
+        else
         {
-            throw new \RuntimeException(sprintf('%s->%s has no @JoinFromMiddle', $className, $propertyName));
+            /** @var JoinToMiddle|null $joinToMiddle */
+            $joinToMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
+
+            /** @var JoinFromMiddle|null $joinFromMiddle */
+            $joinFromMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
+
+            $this->leftField = '' === $annotation->field ? $joinToMiddle->field : $annotation->field;
+            $this->middleLeftField = '' === $annotation->middleLeftField ? $joinToMiddle->middleField : $annotation->middleLeftField;
+
+            $this->rightField = '' === $annotation->modelField ? $joinFromMiddle->field : $annotation->modelField;
+            $this->middleRightField = '' === $annotation->middleRightField ? $joinFromMiddle->middleField : $annotation->middleRightField;
         }
-
-        $this->leftField = $joinToMiddle->field;
-        $this->middleLeftField = $joinToMiddle->middleField;
-
-        $this->rightField = $joinFromMiddle->field;
-        $this->middleRightField = $joinFromMiddle->middleField;
 
         if (class_exists($annotation->middle))
         {

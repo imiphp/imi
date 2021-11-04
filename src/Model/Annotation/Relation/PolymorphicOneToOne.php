@@ -29,7 +29,7 @@ class PolymorphicOneToOne extends RelationBase
     /**
      * @param mixed $typeValue
      */
-    public function __construct(?array $__data = null, string $model = '', string $type = '', $typeValue = null, ?array $fields = null)
+    public function __construct(?array $__data = null, string $model = '', string $type = '', $typeValue = null, ?array $fields = null, bool $with = false)
     {
         parent::__construct(...\func_get_args());
     }

@@ -91,7 +91,7 @@ class ClassObjectTest extends BaseTest
      */
     public function testGetSubClasses(): void
     {
-        $this->assertEquals([\Imi\Test\Component\Model\Article2::class], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\Article2Base::class));
+        $this->assertEquals([\Imi\Test\Component\Model\Unused::class], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\UnusedBase::class));
         $this->assertEquals([], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\ArticleBase::class, [
             \Imi\Test\Component\Model\Member::class,
         ]));

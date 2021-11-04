@@ -304,6 +304,7 @@ class ModelGenerate extends BaseCommand
                 'isAutoIncrement'   => '' !== $field['attidentity'],
                 'comment'           => $field['description'] ?? '',
                 'typeDefinition'    => $config['relation'][$table]['fields'][$field['attname']]['typeDefinition'] ?? true,
+                'ref'               => \in_array($type, ['json', 'jsonb']),
             ];
             if ($isPk)
             {

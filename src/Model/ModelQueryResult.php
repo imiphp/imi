@@ -21,6 +21,16 @@ class ModelQueryResult extends Result
     protected bool $isSetSerializedFields = false;
 
     /**
+     * 关联查询预加载字段.
+     */
+    protected ?array $with = null;
+
+    /**
+     * 关联查询预加载字段.
+     */
+    protected ?array $withField = null;
+
+    /**
      * {@inheritDoc}
      */
     public function get(?string $className = null)
@@ -92,36 +102,52 @@ class ModelQueryResult extends Result
         {
             return $this->statementRecords;
         }
-        else
+        elseif (is_subclass_of($className, Model::class))
         {
             $list = [];
-            $isModelClass = is_subclass_of($className, Model::class);
-            $supportIEvent = is_subclass_of($className, IEvent::class);
+            $hasRelation = ModelRelationManager::hasRelation($className);
             foreach ($this->statementRecords as $item)
             {
-                if ($isModelClass)
+                $object = $className::createFromRecord($item, false);
+                if ($this->withField)
                 {
-                    $object = $className::createFromRecord($item);
-                    if ($this->isSetSerializedFields)
+                    $object->__setSerializedFields($this->withField);
+                }
+                elseif ($this->isSetSerializedFields)
+                {
+                    if (!isset($serializedFields))
                     {
-                        if (!isset($serializedFields))
-                        {
-                            $serializedFields = array_keys($item);
-                        }
-                        $object->__setSerializedFields($serializedFields);
+                        $serializedFields = array_keys($item);
                     }
+                    $object->__setSerializedFields($serializedFields);
                 }
-                else
-                {
-                    $object = $item;
-                }
-                if ($supportIEvent)
+                if (!$hasRelation)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [
-                        'model'      => $object,
+                        'model' => $object,
                     ], $object, AfterQueryEventParam::class);
                 }
                 $list[] = $object;
+            }
+            if ($hasRelation)
+            {
+                ModelRelationManager::initModels($list, $this->with, $className);
+                foreach ($list as $object)
+                {
+                    $object->trigger(ModelEvents::AFTER_QUERY, [
+                        'model' => $object,
+                    ], $object, AfterQueryEventParam::class);
+                }
+            }
+
+            return $list;
+        }
+        else
+        {
+            $list = [];
+            foreach ($this->statementRecords as $item)
+            {
+                $list[] = new $className($item);
             }
 
             return $list;
@@ -144,6 +170,42 @@ class ModelQueryResult extends Result
     public function setIsSetSerializedFields(bool $isSetSerializedFields): self
     {
         $this->isSetSerializedFields = $isSetSerializedFields;
+
+        return $this;
+    }
+
+    /**
+     * Get 关联查询预加载字段.
+     */
+    public function getWith(): ?array
+    {
+        return $this->with;
+    }
+
+    /**
+     * Set 关联查询预加载字段.
+     */
+    public function setWith(?array $with): self
+    {
+        $this->with = $with;
+
+        return $this;
+    }
+
+    /**
+     * Get 关联查询预加载字段.
+     */
+    public function getWithField(): ?array
+    {
+        return $this->withField;
+    }
+
+    /**
+     * Set 关联查询预加载字段.
+     */
+    public function setWithField(?array $withField): self
+    {
+        $this->withField = $withField;
 
         return $this;
     }

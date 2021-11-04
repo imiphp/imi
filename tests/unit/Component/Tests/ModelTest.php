@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
-use Imi\Test\Component\Model\Article;
+use Imi\Test\Component\Model\Article2;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
@@ -78,7 +78,7 @@ class ModelTest extends BaseTest
         ]], Member::convertListToArray([$member], false));
     }
 
-    public function testInsert(): void
+    public function testInsert(): array
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -87,8 +87,12 @@ class ModelTest extends BaseTest
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
         $id = $result->getLastInsertId();
-        $this->assertEquals(1, $id);
+        $this->assertGreaterThan(0, $id);
         $this->assertEquals($id, $member->id);
+
+        return [
+            'id' => $member->id,
+        ];
     }
 
     public function testUpdate(): void
@@ -98,7 +102,7 @@ class ModelTest extends BaseTest
         $member->password = '2';
         $result = $member->insert();
         $id = $result->getLastInsertId();
-        $this->assertEquals(2, $id);
+        $this->assertGreaterThan(0, $id);
 
         $member->username = '3';
         $member->password = '4';
@@ -123,7 +127,7 @@ class ModelTest extends BaseTest
         $result = $member->save();
         $id = $result->getLastInsertId();
         $this->assertEquals(1, $result->getAffectedRows());
-        $this->assertEquals(3, $id);
+        $this->assertGreaterThan(0, $id);
         $this->assertEquals($id, $member->id);
 
         $member->username = '3';
@@ -160,47 +164,55 @@ class ModelTest extends BaseTest
         $this->assertEquals(1, $result->getAffectedRows());
     }
 
-    public function testFind(): void
+    /**
+     * @depends testInsert
+     */
+    public function testFind(array $args): void
     {
-        $member = Member::find(1);
+        ['id' => $id] = $args;
+        $member = Member::find($id);
         $this->assertEquals([
-            'id'        => 1,
+            'id'        => $id,
             'username'  => '1',
             'password'  => '2',
             'notInJson' => null,
         ], $member->convertToArray(false));
 
         $member = Member::find([
-            'id'    => 1,
+            'id'    => $id,
         ]);
         $this->assertEquals([
-            'id'        => 1,
+            'id'        => $id,
             'username'  => '1',
             'password'  => '2',
             'notInJson' => null,
         ], $member->convertToArray(false));
     }
 
-    public function testSelect(): void
+    /**
+     * @depends testInsert
+     */
+    public function testSelect(array $args): void
     {
+        ['id' => $id] = $args;
         $list = Member::select([
-            'id'    => 1,
+            'id'    => $id,
         ]);
         $this->assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'username'  => '1',
             ],
         ], Member::convertListToArray($list));
         $this->assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'username'  => '1',
             ],
         ], Member::convertListToArray($list, true));
         $this->assertEquals([
             [
-                'id'        => '1',
+                'id'        => $id,
                 'username'  => '1',
                 'password'  => '2',
                 'notInJson' => null,
@@ -208,21 +220,29 @@ class ModelTest extends BaseTest
         ], Member::convertListToArray($list, false));
     }
 
-    public function testDbQuery(): void
+    /**
+     * @depends testInsert
+     */
+    public function testDbQuery(array $args): void
     {
-        $list = Member::dbQuery()->field('id', 'username')->where('id', '=', 1)->select()->getArray();
+        ['id' => $id] = $args;
+        $list = Member::dbQuery()->field('id', 'username')->where('id', '=', $id)->select()->getArray();
         $this->assertEquals([
             [
-                'id'        => 1,
+                'id'        => $id,
                 'username'  => '1',
             ],
         ], $list);
     }
 
-    public function testQuerySetField(): void
+    /**
+     * @depends testInsert
+     */
+    public function testQuerySetField(array $args): void
     {
+        ['id' => $id] = $args;
         /** @var Member $member */
-        $member = Member::query()->field('username')->where('id', '=', 1)->select()->get();
+        $member = Member::query()->field('username')->where('id', '=', $id)->select()->get();
         $this->assertEquals([
             'username'  => '1',
         ], $member->toArray());
@@ -490,19 +510,27 @@ class ModelTest extends BaseTest
 
     public function testFork()
     {
-        $article2 = Article::fork('tb_article2', 'mysqli');
-        $this->assertEquals($article2, Article::fork('tb_article2', 'mysqli'));
+        $article2 = Article2::fork('tb_article', 'mysqli');
+        $this->assertEquals($article2, Article2::fork('tb_article', 'mysqli'));
 
+        /** @var Article2 $record */
         $record = $article2::newInstance();
+        $record->memberId = 1024;
         $record->title = __CLASS__;
         $record->content = __FUNCTION__;
         $record->save();
         $this->assertGreaterThan(0, $record->id);
 
+        /** @var Article2 $record */
         $record = $article2::find($record->id);
         $this->assertNotNull($record);
 
-        $result = Db::query()->from('tb_article2')->where('id', '=', $record->id)->select()->get();
-        $this->assertEquals($record->toArray(), $result);
+        $result = Db::query()->from('tb_article')->where('id', '=', $record->id)->select()->get();
+        $this->assertNotEmpty($result);
+        $this->assertIsArray($result);
+        foreach ($result as $k => $v)
+        {
+            $this->assertEquals($record[$k], $v);
+        }
     }
 }
