@@ -436,7 +436,7 @@ class Imi
      */
     public static function getRuntimePath(string ...$path): string
     {
-        if ('' === static::$runtimePath)
+        if ('' === self::$runtimePath)
         {
             $parentPath = Config::get('@app.runtimePath');
             if (null === $parentPath)
@@ -458,10 +458,10 @@ class Imi
                 $parentPath = File::path($resultNamespacePath, '.runtime');
             }
             File::createDir($parentPath);
-            static::$runtimePath = $parentPath;
+            self::$runtimePath = $parentPath;
         }
 
-        return File::path(static::$runtimePath, ...$path);
+        return File::path(self::$runtimePath, ...$path);
     }
 
     /**
@@ -576,25 +576,24 @@ class Imi
      */
     public static function eval(string $code, ?string $fileName = null, bool $deleteFile = true)
     {
-        $tmpPath = &static::$tmpPath;
-        if ('' === $tmpPath)
+        if ('' === self::$tmpPath)
         {
             if (is_dir('/run/shm'))
             {
-                $tmpPath = '/run/shm';
+                self::$tmpPath = '/run/shm';
             }
             elseif (is_dir('/tmp'))
             {
-                $tmpPath = '/tmp';
+                self::$tmpPath = '/tmp';
             }
             else
             {
-                $tmpPath = sys_get_temp_dir();
+                self::$tmpPath = sys_get_temp_dir();
             }
         }
         if (null === $fileName)
         {
-            $fileName = $tmpPath . '/' . 'imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
+            $fileName = self::$tmpPath . '/' . 'imi-' . getmypid() . '-' . (++self::$evalAtomic) . '.php';
         }
 
         if (false === file_put_contents($fileName, '<?php ' . $code))
