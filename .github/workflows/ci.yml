@@ -57,7 +57,8 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: pecl
-          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event
+          extensions: >
+            apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event, swoole-4.8.1
         env:
           fail-fast: true
       - name: Get composer cache directory
@@ -72,6 +73,7 @@ jobs:
         run: |
           php -v
           php -m
+          php --ri swoole
           php -r "echo 'opcache config: '; print_r(opcache_get_status(false));"
           composer -V
           composer update --no-interaction --prefer-dist --no-progress
@@ -81,18 +83,30 @@ jobs:
           rr -v
       - name: Test
         run: composer test
+      - name: Test swoole
+        run: composer test-swoole
       - name: Test workerman
         run: composer test-workerman
-      - name: Test workerman-gateway
-        run: composer test-workerman-gateway
+#      - name: Test workerman-gateway
+#        run: composer test-workerman-gateway
       - name: Test roadrunner
         run: composer test-roadrunner
       - name: Test fpm
         run: composer test-fpm
       - name: Test jwt
         run: composer test-jwt
+      - name: Test queue
+        run: composer test-queue
+      - name: Test amqp
+        run: composer test-amqp
+      - name: Test kafka
+        run: composer test-kafka
+      - name: Test grpc
+        run: composer test-grpc
       - name: Test snowflake
         run: composer test-snowflake
+      - name: Test mqtt
+        run: composer test-mqtt
       - name: Test smarty
         run: composer test-smarty
       - name: Print logs
