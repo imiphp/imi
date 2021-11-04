@@ -74,18 +74,18 @@ class QueueService
                 throw new QueueException('The queue name is null, and you have not configured the default parameter');
             }
         }
-        $configs = &$this->configs;
-        if (isset($configs[$name]))
+
+        if (isset($this->configs[$name]))
         {
-            return $configs[$name];
+            return $this->configs[$name];
         }
-        $list = &$this->list;
-        if (!isset($list[$name]))
+
+        if (!isset($this->list[$name]))
         {
             throw new QueueException(sprintf('Queue %s not found', $name));
         }
 
-        return $configs[$name] = new QueueConfig($name, $list[$name]);
+        return $this->configs[$name] = new QueueConfig($name, $this->list[$name]);
     }
 
     /**
@@ -98,12 +98,12 @@ class QueueService
         {
             $name = $config->getName();
         }
-        $queueInstances = &$this->queueInstances;
-        if (isset($queueInstances[$name]))
+
+        if (isset($this->queueInstances[$name]))
         {
-            return $queueInstances[$name];
+            return $this->queueInstances[$name];
         }
 
-        return $queueInstances[$name] = App::getBean($config->getDriver(), $name, $config->getConfig());
+        return $this->queueInstances[$name] = App::getBean($config->getDriver(), $name, $config->getConfig());
     }
 }

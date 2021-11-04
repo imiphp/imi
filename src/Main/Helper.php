@@ -48,7 +48,7 @@ class Helper
                 }
                 else
                 {
-                    return static::newInstance($namespace, $componentName);
+                    return self::newInstance($namespace, $componentName);
                 }
             }
         }

@@ -7,6 +7,7 @@ namespace Imi\Model\Relation\Struct;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Relation\JoinFromMiddle;
 use Imi\Model\Annotation\Relation\JoinToMiddle;
+use Imi\Model\Model;
 use Imi\Util\Imi;
 
 class PolymorphicManyToMany
@@ -120,6 +121,8 @@ class PolymorphicManyToMany
 
     /**
      * Get 右侧模型类.
+     *
+     * @return class-string<Model>
      */
     public function getRightModel(): string
     {
@@ -144,6 +147,8 @@ class PolymorphicManyToMany
 
     /**
      * Get 中间表模型类.
+     *
+     * @return class-string<Model>
      */
     public function getMiddleModel(): string
     {

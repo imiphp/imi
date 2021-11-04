@@ -51,8 +51,10 @@ class MemoryTableManager
                 self::addName($name, $item);
             }
         }
+        /** @phpstan-ignore-next-line */
         foreach (self::$tables as $name => $option)
         {
+            /** @var array|string|null $option */
             if (\is_string($option))
             {
                 if (!is_subclass_of($option, IMemoryTableOption::class))
@@ -130,7 +132,7 @@ class MemoryTableManager
         foreach ($columnAnnotationsSet as $annotations)
         {
             $columnAnnotation = $annotations[0];
-            list($type, $size) = self::parseColumnTypeAndSize($columnAnnotation);
+            [$type, $size] = self::parseColumnTypeAndSize($columnAnnotation);
             $columns[] = [
                 'name' => $columnAnnotation->name,
                 'type' => $type,

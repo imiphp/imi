@@ -26,14 +26,14 @@ class RequestContext
      */
     public static function getInstance(): IContextManager
     {
-        if (!isset(static::$contextManager))
+        if (!isset(self::$contextManager))
         {
             $contextClass = Config::get('@app.imi.RequestContext', DefaultContextManager::class);
 
-            return static::$contextManager = new $contextClass();
+            return self::$contextManager = new $contextClass();
         }
 
-        return static::$contextManager;
+        return self::$contextManager;
     }
 
     /**
