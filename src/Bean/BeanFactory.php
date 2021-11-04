@@ -61,7 +61,7 @@ class BeanFactory
      */
     public static function newInstanceNoInit(string $class, ...$args)
     {
-        $classNameMap = &static::$classNameMap;
+        $classNameMap = &self::$classNameMap;
         if (isset($classNameMap[$class]))
         {
             $className = $classNameMap[$class];
@@ -163,7 +163,7 @@ class BeanFactory
      */
     private static function getNewClassName(string $className): string
     {
-        return $className . '__Bean__' . (++static::$counter);
+        return $className . '__Bean__' . (++self::$counter);
     }
 
     /**

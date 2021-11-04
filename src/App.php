@@ -70,11 +70,12 @@ class App
     /**
      * 框架服务运行入口.
      *
-     * @param string $namespace 应用命名空间
+     * @param string             $namespace 应用命名空间
+     * @param class-string<IApp> $app
      */
     public static function run(string $namespace, string $app): void
     {
-        /** @var \Imi\Core\App\Contract\IApp $appInstance */
+        /** @var IApp $appInstance */
         $appInstance = self::$app = new $app($namespace);
         self::initFramework($namespace);
         // 加载配置
@@ -113,16 +114,16 @@ class App
     {
         \define('IMI_PATH', __DIR__);
         // 项目命名空间
-        static::$namespace = $namespace;
+        self::$namespace = $namespace;
         // 容器类
-        static::$container = new Container();
+        self::$container = new Container();
         // 注解管理器初始化
         AnnotationManager::init();
         if (!self::has(AppContexts::APP_PATH))
         {
             self::set(AppContexts::APP_PATH, Imi::getNamespacePath($namespace), true);
         }
-        static::$isInited = true;
+        self::$isInited = true;
         Event::trigger('IMI.INITED');
     }
 
@@ -131,7 +132,7 @@ class App
      */
     public static function getNamespace(): string
     {
-        return static::$namespace;
+        return self::$namespace;
     }
 
     /**
@@ -139,7 +140,7 @@ class App
      */
     public static function getContainer(): Container
     {
-        return static::$container;
+        return self::$container;
     }
 
     /**
@@ -154,7 +155,7 @@ class App
      */
     public static function getBean(string $name, ...$params)
     {
-        return static::$container->get($name, ...$params);
+        return self::$container->get($name, ...$params);
     }
 
     /**
@@ -164,7 +165,7 @@ class App
      */
     public static function getSingleton(string $name, ...$params): object
     {
-        return static::$container->getSingleton($name, ...$params);
+        return self::$container->getSingleton($name, ...$params);
     }
 
     /**
@@ -172,7 +173,7 @@ class App
      */
     public static function isDebug(): bool
     {
-        return static::$isDebug;
+        return self::$isDebug;
     }
 
     /**
@@ -180,7 +181,7 @@ class App
      */
     public static function setDebug(bool $isDebug): void
     {
-        static::$isDebug = $isDebug;
+        self::$isDebug = $isDebug;
     }
 
     /**
@@ -188,7 +189,7 @@ class App
      */
     public static function isInited(): bool
     {
-        return static::$isInited;
+        return self::$isInited;
     }
 
     /**
@@ -200,7 +201,7 @@ class App
      */
     public static function get(string $name, $default = null)
     {
-        return static::$context[$name] ?? $default;
+        return self::$context[$name] ?? $default;
     }
 
     /**
@@ -210,7 +211,7 @@ class App
      */
     public static function set(string $name, $value, bool $readonly = false): void
     {
-        if (isset(static::$contextReadonly[$name]))
+        if (isset(self::$contextReadonly[$name]))
         {
             $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT | \DEBUG_BACKTRACE_IGNORE_ARGS, 2);
             $backtrace = $backtrace[1] ?? null;
@@ -225,9 +226,9 @@ class App
         }
         elseif ($readonly)
         {
-            static::$contextReadonly[$name] = true;
+            self::$contextReadonly[$name] = true;
         }
-        static::$context[$name] = $value;
+        self::$context[$name] = $value;
     }
 
     /**
@@ -237,11 +238,11 @@ class App
      */
     public static function setNx(string $name, $value, bool $readonly = false): bool
     {
-        if (\array_key_exists($name, static::$context))
+        if (\array_key_exists($name, self::$context))
         {
             return false;
         }
-        if (isset(static::$contextReadonly[$name]))
+        if (isset(self::$contextReadonly[$name]))
         {
             $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT | \DEBUG_BACKTRACE_IGNORE_ARGS, 2);
             $backtrace = $backtrace[1] ?? null;
@@ -256,9 +257,9 @@ class App
         }
         elseif ($readonly)
         {
-            static::$contextReadonly[$name] = true;
+            self::$contextReadonly[$name] = true;
         }
-        static::$context[$name] = $value;
+        self::$context[$name] = $value;
 
         return true;
     }
@@ -268,7 +269,7 @@ class App
      */
     public static function has(string $name): bool
     {
-        return \array_key_exists($name, static::$context);
+        return \array_key_exists($name, self::$context);
     }
 
     /**
@@ -276,12 +277,12 @@ class App
      */
     public static function getImiVersion(): string
     {
-        if (null !== static::$imiVersion)
+        if (null !== self::$imiVersion)
         {
-            return static::$imiVersion;
+            return self::$imiVersion;
         }
 
-        return static::$imiVersion = InstalledVersions::getPrettyVersion('imiphp/imi');
+        return self::$imiVersion = InstalledVersions::getPrettyVersion('imiphp/imi');
     }
 
     /**
@@ -289,12 +290,12 @@ class App
      */
     public static function getImiVersionReference(bool $isShort = false): string
     {
-        if (null === static::$imiVersionReference)
+        if (null === self::$imiVersionReference)
         {
-            static::$imiVersionReference = InstalledVersions::getReference('imiphp/imi') ?? '';
+            self::$imiVersionReference = InstalledVersions::getReference('imiphp/imi') ?? '';
         }
 
-        return $isShort ? substr(static::$imiVersionReference, 0, 7) : static::$imiVersionReference;
+        return $isShort ? substr(self::$imiVersionReference, 0, 7) : self::$imiVersionReference;
     }
 
     /**
@@ -313,6 +314,6 @@ class App
      */
     public static function getApp(): IApp
     {
-        return static::$app;
+        return self::$app;
     }
 }
