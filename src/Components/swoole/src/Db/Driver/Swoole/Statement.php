@@ -349,6 +349,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * @return mixed|false
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->result);
@@ -357,6 +358,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * @return int|string|null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->result);
@@ -381,6 +383,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return false !== $this->current();

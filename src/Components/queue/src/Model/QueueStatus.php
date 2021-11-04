@@ -82,6 +82,7 @@ class QueueStatus implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $data = [];

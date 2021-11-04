@@ -204,6 +204,7 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();
