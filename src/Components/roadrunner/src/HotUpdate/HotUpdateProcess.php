@@ -97,6 +97,7 @@ class HotUpdateProcess
         $monitor = App::getBean($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
         $this->initBuildRuntime();
+        /** @phpstan-ignore-next-line */
         while (true)
         {
             // 检测间隔延时
@@ -198,7 +199,7 @@ class HotUpdateProcess
         try
         {
             $status = proc_get_status($this->buildRuntimeHandler);
-            if (!($status['running'] ?? false))
+            if (false !== $status && !$status['running'])
             {
                 $this->initBuildRuntime();
             }
@@ -216,7 +217,7 @@ class HotUpdateProcess
             while (true)
             {
                 $status = proc_get_status($this->buildRuntimeHandler);
-                if (!($status['running'] ?? false))
+                if (false !== $status && !$status['running'])
                 {
                     break;
                 }
@@ -267,7 +268,7 @@ class HotUpdateProcess
             $buildRuntimeHandler = $this->buildRuntimeHandler;
             $buildRuntimePipes = $this->buildRuntimePipes;
             $status = proc_get_status($buildRuntimeHandler);
-            if ($status['running'] ?? false)
+            if (false !== $status && !$status['running'])
             {
                 $writeContent = "n\n";
                 fwrite($buildRuntimePipes[0], $writeContent);
@@ -296,7 +297,7 @@ class HotUpdateProcess
             return;
         }
         $status = proc_get_status($this->buildRuntimeHandler);
-        if (!($status['running'] ?? false))
+        if (false !== $status && !$status['running'])
         {
             $this->initBuildRuntime();
         }

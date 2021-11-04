@@ -28,15 +28,15 @@ class AtomicManager
      */
     public static function init(): void
     {
-        if (static::$isInited)
+        if (self::$isInited)
         {
             throw new \RuntimeException('AtomicManager can not repeated init');
         }
-        foreach (static::$atomics as $name => $value)
+        foreach (self::$atomics as $name => $value)
         {
-            static::$atomics[$name] = new \Swoole\Atomic((int) $value);
+            self::$atomics[$name] = new \Swoole\Atomic((int) $value);
         }
-        static::$isInited = true;
+        self::$isInited = true;
     }
 
     /**
@@ -44,11 +44,11 @@ class AtomicManager
      */
     public static function addName(string $name, int $initValue = 0): void
     {
-        if (static::$isInited)
+        if (self::$isInited)
         {
             throw new \RuntimeException('AddName failed, AtomicManager was inited');
         }
-        static::$atomics[$name] = $initValue;
+        self::$atomics[$name] = $initValue;
     }
 
     /**
@@ -58,7 +58,7 @@ class AtomicManager
      */
     public static function setNames(array $names): void
     {
-        if (static::$isInited)
+        if (self::$isInited)
         {
             throw new \RuntimeException('AddName failed, AtomicManager was inited');
         }
@@ -66,11 +66,11 @@ class AtomicManager
         {
             if (is_numeric($key))
             {
-                static::$atomics[$value] = 0;
+                self::$atomics[$value] = 0;
             }
             else
             {
-                static::$atomics[$key] = $value;
+                self::$atomics[$key] = $value;
             }
         }
     }
@@ -80,7 +80,7 @@ class AtomicManager
      */
     public static function getNames(): array
     {
-        return array_keys(static::$atomics);
+        return array_keys(self::$atomics);
     }
 
     /**
@@ -88,16 +88,16 @@ class AtomicManager
      */
     public static function getInstance(string $name): \Swoole\Atomic
     {
-        if (!static::$isInited)
+        if (!self::$isInited)
         {
             throw new \RuntimeException('GetInstance failed, AtomicManager is not initialized');
         }
-        if (!isset(static::$atomics[$name]))
+        if (!isset(self::$atomics[$name]))
         {
             throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
 
-        return static::$atomics[$name];
+        return self::$atomics[$name];
     }
 
     /**

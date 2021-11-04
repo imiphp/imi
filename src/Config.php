@@ -30,13 +30,13 @@ class Config
         $nameSplit = explode('.', $name);
 
         $first = array_shift($nameSplit);
-        if (isset(static::$configs[$first]))
+        if (isset(self::$configs[$first]))
         {
-            $configData = static::$configs[$first];
+            $configData = self::$configs[$first];
         }
         else
         {
-            static::$configs[$first] = $configData = new ArrayData([]);
+            self::$configs[$first] = $configData = new ArrayData([]);
         }
 
         if ($nameSplit)
@@ -79,7 +79,7 @@ class Config
      */
     public static function setConfig(string $name, array $config): void
     {
-        static::$configs[$name] = new ArrayData($config);
+        self::$configs[$name] = new ArrayData($config);
     }
 
     /**
@@ -87,7 +87,7 @@ class Config
      */
     public static function removeConfig(string $name): bool
     {
-        $configs = &static::$configs;
+        $configs = &self::$configs;
         if (isset($configs[$name]))
         {
             unset($configs[$name]);
@@ -125,7 +125,7 @@ class Config
         if ($names)
         {
             $first = array_shift($names);
-            $configs = &static::$configs;
+            $configs = &self::$configs;
             if (isset($configs[$first]))
             {
                 return $configs[$first]->setVal($names, $value);
@@ -186,7 +186,7 @@ class Config
             {
                 $isCurrentServer = false;
             }
-            $configs = &static::$configs;
+            $configs = &self::$configs;
             if (isset($configs[$first]))
             {
                 // @phpstan-ignore-next-line
@@ -246,7 +246,7 @@ class Config
         if ($names)
         {
             $first = array_shift($names);
-            $configs = &static::$configs;
+            $configs = &self::$configs;
             if (isset($configs[$first]))
             {
                 return null !== $configs[$first]->get($names, null);
@@ -267,7 +267,7 @@ class Config
      */
     public static function getAliases(): array
     {
-        return array_keys(static::$configs);
+        return array_keys(self::$configs);
     }
 
     /**
@@ -275,6 +275,6 @@ class Config
      */
     public static function clear(): void
     {
-        static::$configs = [];
+        self::$configs = [];
     }
 }

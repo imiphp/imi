@@ -40,7 +40,7 @@ class MemoryTableManager
             self::addName($memoryTableAnnotation->name, [
                 'size'                  => $memoryTableAnnotation->size,
                 'conflictProportion'    => $memoryTableAnnotation->conflictProportion,
-                'columns'               => self::getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [],
+                'columns'               => self::getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)),
             ]);
         }
         // 初始化配置中的内存表
@@ -51,7 +51,7 @@ class MemoryTableManager
                 self::addName($name, $item);
             }
         }
-        foreach (static::$tables as $name => $option)
+        foreach (self::$tables as $name => $option)
         {
             if (\is_string($option))
             {
@@ -79,7 +79,7 @@ class MemoryTableManager
                 {
                     throw new \RuntimeException('MemoryTableManager create table failed');
                 }
-                static::$tables[$name]['instance'] = $table;
+                self::$tables[$name]['instance'] = $table;
             }
             else
             {
@@ -146,11 +146,11 @@ class MemoryTableManager
      */
     public static function addName(string $name, array $option): void
     {
-        if (static::$inited)
+        if (self::$inited)
         {
             throw new \RuntimeException('AddName failed, MemoryTableManager was inited');
         }
-        static::$tables[$name] = $option;
+        self::$tables[$name] = $option;
     }
 
     /**
@@ -160,7 +160,7 @@ class MemoryTableManager
      */
     public static function setNames(array $names): void
     {
-        if (static::$inited)
+        if (self::$inited)
         {
             throw new \RuntimeException('AddName failed, MemoryTableManager was inited');
         }
@@ -168,11 +168,11 @@ class MemoryTableManager
         {
             if (is_numeric($key))
             {
-                static::$tables[$value] = 0;
+                self::$tables[$value] = 0;
             }
             else
             {
-                static::$tables[$key] = $value;
+                self::$tables[$key] = $value;
             }
         }
     }
@@ -182,7 +182,7 @@ class MemoryTableManager
      */
     public static function getNames(): array
     {
-        return array_keys(static::$tables);
+        return array_keys(self::$tables);
     }
 
     /**
@@ -192,16 +192,16 @@ class MemoryTableManager
      */
     public static function getInstance(string $name): \Swoole\Table
     {
-        if (!static::$inited)
+        if (!self::$inited)
         {
             self::init();
         }
-        if (!isset(static::$tables[$name]['instance']))
+        if (!isset(self::$tables[$name]['instance']))
         {
             throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
 
-        return static::$tables[$name]['instance'];
+        return self::$tables[$name]['instance'];
     }
 
     /**
@@ -302,12 +302,12 @@ class MemoryTableManager
      */
     public static function lock(string $name, ?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
     {
-        if (!isset(static::$tables[$name]['lockId']))
+        if (!isset(self::$tables[$name]['lockId']))
         {
             throw new \RuntimeException(sprintf('MemoryTable %s has no [lockId] option', $name));
         }
 
-        return Lock::lock(static::$tables[$name]['lockId'], $taskCallable, $afterLockCallable);
+        return Lock::lock(self::$tables[$name]['lockId'], $taskCallable, $afterLockCallable);
     }
 
     /**
@@ -317,12 +317,12 @@ class MemoryTableManager
      */
     public static function unlock(string $name): bool
     {
-        if (!isset(static::$tables[$name]['lockId']))
+        if (!isset(self::$tables[$name]['lockId']))
         {
             throw new \RuntimeException(sprintf('MemoryTable %s has no [lockId] option', $name));
         }
 
-        return Lock::unlock(static::$tables[$name]['lockId']);
+        return Lock::unlock(self::$tables[$name]['lockId']);
     }
 
     /**
@@ -330,6 +330,6 @@ class MemoryTableManager
      */
     public static function isInited(): bool
     {
-        return static::$inited;
+        return self::$inited;
     }
 }

@@ -34,11 +34,10 @@ class CronLock
     public function lock(CronTask $task): bool
     {
         $id = $task->getId();
-        $locks = &$this->locks;
-        if (isset($locks[$id]))
+        if (isset($this->locks[$id]))
         {
             /** @var \Imi\Lock\Handler\ILockHandler $lock */
-            $lock = $locks[$id];
+            $lock = $this->locks[$id];
         }
         else
         {
@@ -56,7 +55,7 @@ class CronLock
                     throw new \InvalidArgumentException(sprintf('Invalid unique type %s', $task->getUnique()));
             }
             /** @var \Imi\Lock\Handler\ILockHandler $lock */
-            $lock = $locks[$id] = App::getBean('RedisLock', $id, [
+            $lock = $this->locks[$id] = App::getBean('RedisLock', $id, [
                 'poolName'      => $task->getRedisPool(),
                 'waitTimeout'   => (int) ($task->getLockWaitTimeout() * 1000),
                 'lockExpire'    => (int) ($task->getMaxExecutionTime() * 1000),

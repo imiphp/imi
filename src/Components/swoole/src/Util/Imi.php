@@ -151,12 +151,11 @@ class Imi
             {
                 continue;
             }
-            $pid = $info['pid'] ?? 0;
-            if (empty($pid))
+            if (empty($info['pid']))
             {
                 continue;
             }
-            Process::kill($pid, \SIGTERM);
+            Process::kill($info['pid'], \SIGTERM);
         }
     }
 }
