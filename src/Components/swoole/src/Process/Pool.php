@@ -224,7 +224,7 @@ class Pool
         {
             Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
                 $content = $worker->read();
-                if (false === $content)
+                if (false === $content || '' === $content)
                 {
                     Log::warning('%s: Read pipe message content failed');
 
