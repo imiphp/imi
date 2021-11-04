@@ -11,6 +11,11 @@ use Yurun\Util\HttpRequest;
  */
 class ServerUtilTest extends BaseTest
 {
+    protected function closeAll(): void
+    {
+        (new HttpRequest())->get($this->host . 'serverUtil/closeAll');
+    }
+
     public function testGetServer(): void
     {
         $this->go(function () {
@@ -43,6 +48,7 @@ class ServerUtilTest extends BaseTest
     public function testSend(): void
     {
         $this->go(function () {
+            $this->closeAll();
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -149,6 +155,7 @@ class ServerUtilTest extends BaseTest
     public function testSendToGroup(): void
     {
         $this->go(function () {
+            $this->closeAll();
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -234,6 +241,7 @@ class ServerUtilTest extends BaseTest
     public function testExists(): void
     {
         $this->go(function () {
+            $this->closeAll();
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;
@@ -303,6 +311,7 @@ class ServerUtilTest extends BaseTest
     public function testClose(): void
     {
         $this->go(function () {
+            $this->closeAll();
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;

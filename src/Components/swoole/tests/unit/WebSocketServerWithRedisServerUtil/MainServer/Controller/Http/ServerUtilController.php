@@ -132,4 +132,12 @@ class ServerUtilController extends HttpController
             'flag'       => Server::closeByFlag($flag),
         ];
     }
+
+    /**
+     * @Action
+     */
+    public function closeAll(): void
+    {
+        Server::close(Server::getConnections());
+    }
 }
