@@ -81,7 +81,10 @@ class CacheAnnotationTest extends BaseTest
                     }
                     catch (\Throwable $th)
                     {
-                        $throwables[$index] = $th;
+                        if (!str_ends_with($th->getMessage(), 'No such file or directory'))
+                        {
+                            $throwables[$index] = $th;
+                        }
                     }
                     finally
                     {
