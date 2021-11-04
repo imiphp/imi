@@ -10,7 +10,6 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcController;
 use Imi\Rpc\Route\Annotation\Contract\IRpcRoute;
 use Imi\Rpc\Route\Annotation\RpcController;
 use Imi\Rpc\Route\IRoute;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\ServerManager;
 use Imi\Util\Text;
 
@@ -37,7 +36,6 @@ class Route implements IRoute
     public function addRuleAnnotation(IRpcController $controllerAnnotation, IRpcRoute $routeAnnotation, $callable, array $options = []): void
     {
         // callable
-        $callable = $this->parseCallable($callable);
         $isObject = \is_array($callable) && isset($callable[0]) && $callable[0] instanceof IRpcController;
         if ($isObject)
         {
@@ -85,22 +83,5 @@ class Route implements IRoute
         return new HproseRoute([
             'name'      => $methodName,
         ]);
-    }
-
-    /**
-     * 处理回调.
-     *
-     * @param callable|RouteCallable $callable
-     */
-    private function parseCallable($callable): callable
-    {
-        if ($callable instanceof RouteCallable)
-        {
-            return $callable->getCallable();
-        }
-        else
-        {
-            return $callable;
-        }
     }
 }

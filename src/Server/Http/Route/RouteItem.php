@@ -19,7 +19,7 @@ class RouteItem
     /**
      * 回调.
      *
-     * @var callable|\Imi\Server\Route\RouteCallable
+     * @var callable
      */
     public $callable;
 
@@ -50,10 +50,7 @@ class RouteItem
      */
     public ?BaseViewOption $viewOption = null;
 
-    /**
-     * @param callable|\Imi\Server\Route\RouteCallable $callable
-     */
-    public function __construct(Route $annotation, $callable, View $view, ?BaseViewOption $viewOption = null, array $options = [])
+    public function __construct(Route $annotation, callable $callable, View $view, ?BaseViewOption $viewOption = null, array $options = [])
     {
         $this->annotation = $annotation;
         $this->callable = $callable;

@@ -8,7 +8,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
 use Imi\Server\ServerManager;
 use Imi\Server\TcpServer\Contract\ITcpServer;
@@ -16,6 +15,7 @@ use Imi\Server\TcpServer\Parser\TcpControllerParser;
 use Imi\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Server\TcpServer\Route\Annotation\TcpMiddleware;
 use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Worker;
 
 /**
@@ -80,7 +80,7 @@ class TcpRouteInit implements IEventListener
 
                     foreach ($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($routeItem, new RouteCallable($server->getName(), $className, $methodName), [
+                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName, [$server]), [
                             'middlewares' => $middlewares,
                         ]);
                     }

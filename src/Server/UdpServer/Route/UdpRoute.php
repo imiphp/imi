@@ -7,8 +7,8 @@ namespace Imi\Server\UdpServer\Route;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\UdpServer\Route\Annotation\UdpRoute as UdpRouteAnnotation;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\ObjectArrayHelper;
 
 /**
@@ -132,9 +132,9 @@ class UdpRoute implements IRoute
     {
         $callable = $routeItem->callable;
         $route = 'condition=' . json_encode($routeItem->annotation->condition, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
-        if ($callable instanceof RouteCallable)
+        if ($callable instanceof DelayServerBeanCallable)
         {
-            $logString = sprintf('UDP Route %s duplicated (%s::%s)', $route, $callable->className, $callable->methodName);
+            $logString = sprintf('UDP Route %s duplicated (%s::%s)', $route, $callable->getBeanName(), $callable->getMethodName());
         }
         elseif (\is_array($callable))
         {

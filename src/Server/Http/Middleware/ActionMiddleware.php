@@ -15,6 +15,7 @@ use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\Http\Struct\ActionMethodItem;
 use Imi\Server\Session\Session;
 use Imi\Server\View\View;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\ObjectArrayHelper;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -130,6 +131,11 @@ class ActionMiddleware implements MiddlewareInterface
                     $ref = ReflectionContainer::getMethodReflection($class, $method);
                     $params = $actionMethodParams[$class][$method] = $ref->getParameters();
                 }
+            }
+            elseif ($callable instanceof DelayServerBeanCallable)
+            {
+                $ref = ReflectionContainer::getMethodReflection($callable->getBeanName(), $callable->getMethodName());
+                $params = $ref->getParameters();
             }
             elseif (!$callable instanceof \Closure)
             {

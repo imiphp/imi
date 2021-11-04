@@ -10,8 +10,10 @@ use Imi\ConnectionContext;
 use Imi\Log\Log;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Route\HttpRoute;
-use Imi\Server\Route\RouteCallable;
+use Imi\Server\Http\Route\Router;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute as WSRouteAnnotation;
+use Imi\Util\DelayServerBeanCallable;
+use Imi\Util\Http\ServerRequest;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
 use Imi\Util\Uri;
@@ -38,16 +40,17 @@ class WSRoute implements IRoute
      */
     public function parse($data): ?RouteResult
     {
-        $uri = new Uri(ConnectionContext::get('uri'));
-        $path = $uri->getPath();
-        $httpRoute = $this->httpRoute;
+        $router = $this->httpRoute->getRouter();
+        /** @var \Psr\Http\Message\ServerRequestInterface|null $request */
+        $request = null;
         foreach ($this->rules as $item)
         {
             $itemAnnotation = $item->annotation;
 
-            if ($this->checkCondition($data, $itemAnnotation)
             // http 路由匹配
-            && (!$itemAnnotation->route || $httpRoute->checkUrl($itemAnnotation->route, $path)->result))
+            if (
+                $this->checkCondition($data, $itemAnnotation)
+                && (!$itemAnnotation->route || Router::FOUND === ($router->dispatchRoutes($request ??= ((new ServerRequest())->setUri(new Uri(ConnectionContext::get('uri')))), [[$itemAnnotation->route, null, null, true, [], false, []]], true)[0] ?? null)))
             {
                 return new RouteResult($item);
             }
@@ -151,9 +154,9 @@ class WSRoute implements IRoute
         $callable = $routeItem->callable;
         $annotation = $routeItem->annotation;
         $route = (Text::isEmpty($annotation->route) ? '' : ('url=' . $annotation->route . ', ')) . 'condition=' . json_encode($annotation->condition, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
-        if ($callable instanceof RouteCallable)
+        if ($callable instanceof DelayServerBeanCallable)
         {
-            $logString = sprintf('WebSocket Route %s duplicated (%s::%s)', $route, $callable->className, $callable->methodName);
+            $logString = sprintf('WebSocket Route %s duplicated (%s::%s)', $route, $callable->getBeanName(), $callable->getMethodName());
         }
         elseif (\is_array($callable))
         {

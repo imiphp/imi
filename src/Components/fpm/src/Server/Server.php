@@ -70,6 +70,14 @@ class Server extends BaseServer
     {
         try
         {
+            $request = new FpmRequest();
+            $response = new FpmResponse();
+            RequestContext::muiltiSet([
+                'server'   => $this,
+                'request'  => $request,
+                'response' => $response,
+            ]);
+
             // 初始化路由
             /** @var HttpRoute $route */
             $route = $this->getBean('HttpRoute');
@@ -78,13 +86,6 @@ class Server extends BaseServer
                 (new HttpRouteInit())->handle(new EventParam(''));
             }
 
-            $request = new FpmRequest();
-            $response = new FpmResponse();
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'request'  => $request,
-                'response' => $response,
-            ]);
             /** @var \Imi\Server\Http\Dispatcher $dispatcher */
             $dispatcher = $this->getBean('HttpDispatcher');
             $dispatcher->dispatch($request);

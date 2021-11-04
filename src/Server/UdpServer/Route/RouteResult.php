@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Server\UdpServer\Route;
 
-use Imi\Server\Route\RouteCallable;
-
 class RouteResult
 {
     /**
@@ -31,14 +29,6 @@ class RouteResult
     {
         $this->routeItem = $routeItem;
         $this->params = $params;
-        $callable = $routeItem->callable;
-        if ($callable instanceof RouteCallable)
-        {
-            $this->callable = $callable->getCallable($params);
-        }
-        else
-        {
-            $this->callable = $callable;
-        }
+        $this->callable = $routeItem->callable;
     }
 }

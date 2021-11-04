@@ -9,13 +9,13 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
 use Imi\Server\ServerManager;
 use Imi\Server\UdpServer\Parser\UdpControllerParser;
 use Imi\Server\UdpServer\Route\Annotation\UdpAction;
 use Imi\Server\UdpServer\Route\Annotation\UdpMiddleware;
 use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
+use Imi\Util\DelayServerBeanCallable;
 use Imi\Worker;
 
 /**
@@ -84,7 +84,7 @@ class UdpRouteInit implements IEventListener
 
                     foreach ($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($routeItem, new RouteCallable($server->getName(), $className, $methodName), [
+                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName, [$server]), [
                             'middlewares' => $middlewares,
                         ]);
                     }
