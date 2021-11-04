@@ -11,11 +11,6 @@ use Yurun\Util\HttpRequest;
  */
 class ServerUtilTest extends BaseTest
 {
-    protected function closeAll(): void
-    {
-        (new HttpRequest())->get($this->host . 'serverUtil/closeAll');
-    }
-
     public function testGetServer(): void
     {
         $this->go(function () {
@@ -148,9 +143,7 @@ class ServerUtilTest extends BaseTest
                     $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
                 }
             }
-        }, function () {
-            $this->closeAll();
-        }, 3);
+        }, null, 3);
     }
 
     public function testSendToGroup(): void
@@ -235,9 +228,7 @@ class ServerUtilTest extends BaseTest
             }
             $client1->close();
             $client2->close();
-        }, function () {
-            $this->closeAll();
-        }, 3);
+        }, null, 3);
     }
 
     public function testExists(): void
@@ -306,9 +297,7 @@ class ServerUtilTest extends BaseTest
             ], $response->json(true));
             $client1->close();
             $client2->close();
-        }, function () {
-            $this->closeAll();
-        }, 3);
+        }, null, 3);
     }
 
     public function testClose(): void
@@ -379,8 +368,6 @@ class ServerUtilTest extends BaseTest
             ], $response->json(true));
             $this->assertEquals('', $client1->recv(1));
             $this->assertEquals('', $client2->recv(1));
-        }, function () {
-            $this->closeAll();
-        }, 3);
+        }, null, 3);
     }
 }
