@@ -243,4 +243,22 @@ trait TGatewayServerUtil
     {
         return (bool) Gateway::isUidOnline($flag);
     }
+
+    /**
+     * 获取连接数组.
+     *
+     * 有可能返回的是当前进程管理的连接
+     */
+    public function getConnections(?string $serverName = null): array
+    {
+        return Gateway::getAllClientIdList();
+    }
+
+    /**
+     * 获取当前连接数量.
+     */
+    public function getConnectionCount(?string $serverName = null): int
+    {
+        return Gateway::getAllClientCount();
+    }
 }

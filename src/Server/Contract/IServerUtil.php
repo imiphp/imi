@@ -124,6 +124,18 @@ interface IServerUtil
     public function flagExists(?string $flag, ?string $serverName = null, bool $toAllWorkers = true): bool;
 
     /**
+     * 获取连接数组.
+     *
+     * 有可能返回的是当前进程管理的连接
+     */
+    public function getConnections(?string $serverName = null): array;
+
+    /**
+     * 获取当前连接数量.
+     */
+    public function getConnectionCount(?string $serverName = null): int;
+
+    /**
      * 获取服务器.
      *
      * @return \Imi\Server\Contract\IServer|null

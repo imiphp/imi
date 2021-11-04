@@ -406,6 +406,22 @@ var_dump(Server::exists(123));
 var_dump(Server::flagExists('user-123'));
 ```
 
+### getConnections
+
+获取连接数组。有可能返回的是当前进程管理的连接。
+
+```php
+$clientIds = Server::getConnections();
+```
+
+### getConnectionCount
+
+获取当前连接数量
+
+```php
+$count = Server::getConnectionCount();
+```
+
 ### 其它
 
 > 连接上下文的使用：<https://doc.imiphp.com/v2.0/components/websocketServer/session.html>
