@@ -13,7 +13,7 @@ use Imi\Server\UdpServer\Message\IPacketData;
 /**
  * Packet事件前置处理.
  *
- * @Listener(eventName="IMI.WORKERMAN.SERVER.UDP.MESSAGE",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @Listener(eventName="IMI.WORKERMAN.SERVER.UDP.MESSAGE", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforePacket implements IEventListener
 {

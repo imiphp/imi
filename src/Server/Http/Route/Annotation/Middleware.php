@@ -11,7 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * 中间件注解.
  *
  * @Annotation
- * @Target({"CLASS","METHOD"})
+ * @Target({"CLASS", "METHOD"})
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *
  * @property string|string[]|null $middlewares 中间件类或数组

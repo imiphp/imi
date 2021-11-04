@@ -12,7 +12,7 @@ use Imi\Swoole\Server\Event\Param\OpenEventParam;
 if (\extension_loaded('swoole'))
 {
     /**
-     * @ClassEventListener(className="Imi\WorkermanGateway\Swoole\Server\Business\WebSocketBusinessServer",eventName="open")
+     * @ClassEventListener(className="Imi\WorkermanGateway\Swoole\Server\Business\WebSocketBusinessServer", eventName="open")
      */
     class SwooleOnOpen implements IOpenEventListener
     {

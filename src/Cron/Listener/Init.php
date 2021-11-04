@@ -12,7 +12,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 /**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class Init implements IEventListener
 {

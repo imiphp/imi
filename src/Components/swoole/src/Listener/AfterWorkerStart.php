@@ -19,7 +19,7 @@ use Imi\Util\Imi;
 use Imi\Worker;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START", priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class AfterWorkerStart implements IWorkerStartEventListener
 {

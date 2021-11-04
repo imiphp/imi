@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\ClassEventListener;
 /**
  * Close事件后置处理.
  *
- * @ClassEventListener(className="Imi\Server\MQTT\Server",eventName="close",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @ClassEventListener(className="Imi\Server\MQTT\Server", eventName="close", priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class AfterClose extends \Imi\Swoole\Server\TcpServer\Listener\AfterClose
 {

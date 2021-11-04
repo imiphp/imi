@@ -11,7 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * 视图注解.
  *
  * @Annotation
- * @Target({"CLASS","METHOD"})
+ * @Target({"CLASS", "METHOD"})
  * @Parser("Imi\Server\View\Parser\ViewParser")
  *
  * @property string              $renderType 渲染类型

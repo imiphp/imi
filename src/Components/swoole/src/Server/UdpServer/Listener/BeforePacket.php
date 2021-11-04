@@ -14,7 +14,7 @@ use Imi\Swoole\SwooleWorker;
 /**
  * Packet事件前置处理.
  *
- * @ClassEventListener(className="Imi\Swoole\Server\UdpServer\Server",eventName="packet",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @ClassEventListener(className="Imi\Swoole\Server\UdpServer\Server", eventName="packet", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforePacket implements IPacketEventListener
 {

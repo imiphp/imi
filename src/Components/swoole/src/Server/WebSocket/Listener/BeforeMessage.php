@@ -14,7 +14,7 @@ use Imi\Swoole\SwooleWorker;
 /**
  * Message事件前置处理.
  *
- * @ClassEventListener(className="Imi\Swoole\Server\WebSocket\Server",eventName="message",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @ClassEventListener(className="Imi\Swoole\Server\WebSocket\Server", eventName="message", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforeMessage implements IMessageEventListener
 {

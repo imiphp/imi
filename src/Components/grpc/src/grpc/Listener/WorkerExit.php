@@ -14,8 +14,8 @@ use Imi\Rpc\Client\Pool\RpcClientSyncPool;
 use Imi\Swoole\Util\Coroutine;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.EXIT",priority=Imi\Util\ImiPriority::IMI_MIN)
- * @Listener("IMI.PROCESS.END",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.EXIT", priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener("IMI.PROCESS.END", priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class WorkerExit implements IEventListener
 {

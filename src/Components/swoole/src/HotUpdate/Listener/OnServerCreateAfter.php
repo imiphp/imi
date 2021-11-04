@@ -14,7 +14,7 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
  * @Listener(eventName="IMI.SERVERS.CREATE.AFTER")
- * @Listener(eventName="IMI.CO_SERVER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @Listener(eventName="IMI.CO_SERVER.START", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class OnServerCreateAfter implements IEventListener
 {
