@@ -93,6 +93,9 @@ return [
                 'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
                 'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'options'   => [
+                    \Redis::OPT_READ_TIMEOUT => -1,
+                ],
             ],
         ],
     ],

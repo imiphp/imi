@@ -45,6 +45,8 @@
 ]
 ```
 
+使用 `RedisServerUtil` 请在 redis 连接池的 `resource.options` 中加入：`\Redis::OPT_READ_TIMEOUT => -1`，防止 `read error on connection to xxx` 错误刷屏
+
 #### SwooleGatewayServerUtil
 
 在 Swoole 模式下使用 Workerman 网关

@@ -25,7 +25,7 @@ return [
             ],
         ],
         'ConnectionContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Redis::class,
+            'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Local::class,
             'ttl'           => 600,
         ],
         'WSRouteNotFoundHandler'    => [
