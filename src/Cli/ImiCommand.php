@@ -90,13 +90,15 @@ class ImiCommand extends Command
         $this->methodName = $methodName;
         $this->dynamicOptions = $dynamicOptions;
 
+        $actionName = '' === $actionName ? $methodName : $actionName;
+
         if (null === $commandName)
         {
-            $finalCommandName = $actionName ?? $methodName;
+            $finalCommandName = $actionName;
         }
         else
         {
-            $finalCommandName = $commandName . '/' . ($actionName ?? $methodName);
+            $finalCommandName = $commandName . '/' . $actionName;
         }
         parent::__construct($finalCommandName);
     }

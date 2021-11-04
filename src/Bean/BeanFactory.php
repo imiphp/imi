@@ -61,10 +61,9 @@ class BeanFactory
      */
     public static function newInstanceNoInit(string $class, ...$args)
     {
-        $classNameMap = &self::$classNameMap;
-        if (isset($classNameMap[$class]))
+        if (isset(self::$classNameMap[$class]))
         {
-            $className = $classNameMap[$class];
+            $className = self::$classNameMap[$class];
         }
         else
         {
@@ -85,11 +84,11 @@ class BeanFactory
             else
             {
                 $ref = ReflectionContainer::getClassReflection($class);
-                $className = static::getNewClassName($ref->getShortName());
+                $className = self::getNewClassName($ref->getShortName());
                 $tpl = static::getTpl($ref, $className);
                 Imi::eval($tpl);
             }
-            $classNameMap[$class] = $className;
+            self::$classNameMap[$class] = $className;
         }
 
         /** @var class-string<T> $className */

@@ -73,6 +73,14 @@ class Role
     }
 
     /**
+     * @return string
+     */
+    public function getRoleCode(): string
+    {
+        return $this->roleCode;
+    }
+
+    /**
      * 处理操作的本地数据更新.
      */
     private function updateOperations(): void
