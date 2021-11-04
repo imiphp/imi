@@ -45,6 +45,8 @@
 ]
 ```
 
+使用 `RedisServerUtil` 请在 redis 连接池的 `resource.options` 中加入：`\Redis::OPT_READ_TIMEOUT => -1`，防止 `read error on connection to xxx` 错误刷屏
+
 #### SwooleGatewayServerUtil
 
 在 Swoole 模式下使用 Workerman 网关
@@ -404,6 +406,22 @@ var_dump(Server::exists(123));
 
 ```php
 var_dump(Server::flagExists('user-123'));
+```
+
+### getConnections
+
+获取连接数组。有可能返回的是当前进程管理的连接。
+
+```php
+$clientIds = Server::getConnections();
+```
+
+### getConnectionCount
+
+获取当前连接数量
+
+```php
+$count = Server::getConnectionCount();
 ```
 
 ### 其它

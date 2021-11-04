@@ -633,6 +633,22 @@ class LocalServerUtil implements ISwooleServerUtil
     /**
      * {@inheritDoc}
      */
+    public function getConnections(?string $serverName = null): array
+    {
+        return iterator_to_array($this->getServer($serverName)->getSwoolePort()->connections);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConnectionCount(?string $serverName = null): int
+    {
+        return iterator_count($this->getServer($serverName)->getSwoolePort()->connections);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getServer(?string $serverName = null): ?ISwooleServer
     {
         if (null === $serverName)

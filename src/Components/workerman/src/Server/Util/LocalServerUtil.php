@@ -360,6 +360,22 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
+    public function getConnections(?string $serverName = null): array
+    {
+        return $this->getServer($serverName)->getWorker()->connections;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConnectionCount(?string $serverName = null): int
+    {
+        return \count($this->getServer($serverName)->getWorker()->connections);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getServer(?string $serverName = null): ?IWorkermanServer
     {
         if (null === $serverName)

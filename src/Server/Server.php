@@ -176,6 +176,24 @@ class Server
     }
 
     /**
+     * 获取连接数组.
+     *
+     * 有可能返回的是当前进程管理的连接
+     */
+    public static function getConnections(?string $serverName = null): array
+    {
+        return static::getInstance($serverName)->getConnections();
+    }
+
+    /**
+     * 获取当前连接数量.
+     */
+    public function getConnectionCount(?string $serverName = null): int
+    {
+        return static::getInstance($serverName)->getConnectionCount();
+    }
+
+    /**
      * 获取服务器.
      */
     public static function getServer(?string $serverName = null): ?IServer
