@@ -84,7 +84,7 @@ class ServerUtilTest extends BaseTest
             $group = uniqid('', true);
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'login',
-                'username'  => 'testSend',
+                'username'  => ($flag = 'testSend' . time()),
                 'group'     => $group,
             ])));
             $recv = $client->recv();
@@ -106,7 +106,7 @@ class ServerUtilTest extends BaseTest
 
                 $response = $http->post($this->host . 'serverUtil/send', [
                     'clientIds'  => $clientIds,
-                    'flag'       => 'testSend',
+                    'flag'       => $flag,
                 ], 'json');
                 $this->assertEquals([
                     'send1'         => 0,
@@ -276,7 +276,7 @@ class ServerUtilTest extends BaseTest
             $group = uniqid('', true);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
-                'username'  => 'testExists',
+                'username'  => ($flag = 'testExists' . time()),
                 'group'     => $group,
             ])));
             $recv = $client2->recv();
@@ -290,7 +290,7 @@ class ServerUtilTest extends BaseTest
                 $data = $response->json(true);
             }
             while (1 !== ($data['workerId'] ?? null));
-            $response = $http3->post($this->host . 'serverUtil/exists', ['clientId' => $recvData1['clientId'], 'flag' => 'testExists']);
+            $response = $http3->post($this->host . 'serverUtil/exists', ['clientId' => $recvData1['clientId'], 'flag' => $flag]);
             $this->assertEquals([
                 'clientId'   => true,
                 'flag'       => true,
@@ -345,7 +345,7 @@ class ServerUtilTest extends BaseTest
             $group = uniqid('', true);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
-                'username'  => 'testClose',
+                'username'  => ($flag = 'testClose' . time()),
                 'group'     => $group,
             ])));
             $recv = $client2->recv();
@@ -361,7 +361,7 @@ class ServerUtilTest extends BaseTest
             }
             while (1 !== ($data['workerId'] ?? null));
             // @phpstan-ignore-next-line
-            $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
+            $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => $flag]);
             $this->assertEquals([
                 'clientId'   => 1,
                 'flag'       => 1,
