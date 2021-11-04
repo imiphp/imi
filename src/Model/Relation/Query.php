@@ -722,7 +722,6 @@ class Query
      */
     public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation, ?array &$refData = null): void
     {
-        /** @var class-string<Model> $className */
         $className = BeanFactory::getObjectClass($model);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
