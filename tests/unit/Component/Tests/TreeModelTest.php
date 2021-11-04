@@ -75,7 +75,7 @@ class TreeModelTest extends BaseTest
 
         $tree = Tree::find(4);
         $this->assertEquals($this->data[3], $tree->toArray());
-        $this->assertEquals($this->data[0], $tree->getParent()->toArray() ?? null);
+        $this->assertEquals($this->data[0], $tree->getParent()->toArray());
     }
 
     /**

@@ -11,7 +11,7 @@ use Imi\Test\Component\Async\AsyncTesterPHP8;
 
 class AsyncTest extends BaseTest
 {
-    public function test()
+    public function test(): void
     {
         /** @var AsyncTester $asyncTester */
         $asyncTester = App::getBean('AsyncTester');

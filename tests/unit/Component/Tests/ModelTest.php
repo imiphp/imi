@@ -508,7 +508,7 @@ class ModelTest extends BaseTest
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
     }
 
-    public function testFork()
+    public function testFork(): void
     {
         $article2 = Article2::fork('tb_article', 'mysqli');
         $this->assertEquals($article2, Article2::fork('tb_article', 'mysqli'));
