@@ -48,7 +48,6 @@ class ServerUtilTest extends BaseTest
     public function testSend(): void
     {
         $this->go(function () {
-            $this->closeAll();
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -149,13 +148,14 @@ class ServerUtilTest extends BaseTest
                     $this->assertEquals($dataStr, $recvResult, $i . '-' . $client->getErrorCode() . '-' . $client->getErrorMessage());
                 }
             }
-        }, null, 3);
+        }, function () {
+            $this->closeAll();
+        }, 3);
     }
 
     public function testSendToGroup(): void
     {
         $this->go(function () {
-            $this->closeAll();
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -235,13 +235,14 @@ class ServerUtilTest extends BaseTest
             }
             $client1->close();
             $client2->close();
-        }, null, 3);
+        }, function () {
+            $this->closeAll();
+        }, 3);
     }
 
     public function testExists(): void
     {
         $this->go(function () {
-            $this->closeAll();
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;
@@ -305,13 +306,14 @@ class ServerUtilTest extends BaseTest
             ], $response->json(true));
             $client1->close();
             $client2->close();
-        }, null, 3);
+        }, function () {
+            $this->closeAll();
+        }, 3);
     }
 
     public function testClose(): void
     {
         $this->go(function () {
-            $this->closeAll();
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;
@@ -377,6 +379,8 @@ class ServerUtilTest extends BaseTest
             ], $response->json(true));
             $this->assertEquals('', $client1->recv(1));
             $this->assertEquals('', $client2->recv(1));
-        }, null, 3);
+        }, function () {
+            $this->closeAll();
+        }, 3);
     }
 }
