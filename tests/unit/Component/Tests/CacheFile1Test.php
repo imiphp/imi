@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Util\File;
-use Imi\Util\Imi;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -18,7 +17,7 @@ class CacheFile1Test extends BaseCacheTest
     public function testSetAndGet(): void
     {
         parent::testSetAndGet();
-        $path = File::path(Imi::getNamespacePath('Imi\Test\Component\.runtime\cache'), md5('imi'));
+        $path = File::path(sys_get_temp_dir() . '/imi-cache/', md5('imi'));
         Assert::assertTrue(is_file($path));
     }
 }
