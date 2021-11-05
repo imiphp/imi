@@ -576,24 +576,25 @@ class Imi
      */
     public static function eval(string $code, ?string $fileName = null, bool $deleteFile = true)
     {
-        if ('' === self::$tmpPath)
+        $tmpPath = &self::$tmpPath;
+        if ('' === $tmpPath)
         {
             if (is_dir('/run/shm'))
             {
-                self::$tmpPath = '/run/shm';
+                $tmpPath = '/run/shm';
             }
             elseif (is_dir('/tmp'))
             {
-                self::$tmpPath = '/tmp';
+                $tmpPath = '/tmp';
             }
             else
             {
-                self::$tmpPath = sys_get_temp_dir();
+                $tmpPath = sys_get_temp_dir();
             }
         }
         if (null === $fileName)
         {
-            $fileName = self::$tmpPath . '/' . 'imi-' . getmypid() . '-' . (++self::$evalAtomic) . '.php';
+            $fileName = $tmpPath . '/' . 'imi-' . getmypid() . '-' . (++self::$evalAtomic) . '.php';
         }
 
         if (false === file_put_contents($fileName, '<?php ' . $code))

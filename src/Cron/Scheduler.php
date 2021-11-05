@@ -70,7 +70,9 @@ class Scheduler implements IScheduler
     {
         $now = time();
         $runningTasks = &$this->runningTasks;
+        $nextTickTimeMap = &$this->nextTickTimeMap;
         $cronCalculator = $this->cronCalculator;
+        $firstRunMap = &$this->firstRunMap;
         foreach ($this->cronManager->getRealTasks() as $task)
         {
             $id = $task->getId();
@@ -85,17 +87,17 @@ class Scheduler implements IScheduler
                     unset($runningTasks[$id]);
                 }
             }
-            $this->nextTickTimeMap[$id] ??= $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
-            $firstRun = !isset($this->firstRunMap[$id]) && $task->getForce();
-            if ($firstRun || $now >= $this->nextTickTimeMap[$id])
+            $nextTickTimeMap[$id] ??= $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
+            $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
+            if ($firstRun || $now >= $nextTickTimeMap[$id])
             {
                 if ($firstRun)
                 {
-                    $this->firstRunMap[$id] = true;
+                    $firstRunMap[$id] = true;
                 }
                 else
                 {
-                    unset($this->nextTickTimeMap[$id]);
+                    unset($nextTickTimeMap[$id]);
                 }
                 yield $task;
             }

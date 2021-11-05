@@ -13,7 +13,7 @@ use Imi\Test\Component\Model\Base\TestListBase;
  *
  * @Inherit
  *
- * @property array $list
+ * @property array|null $list
  */
 class TestList extends TestListBase
 {
@@ -22,16 +22,16 @@ class TestList extends TestListBase
      *
      * @Column(name="list", type="list", listSeparator=",", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      *
-     * @var array
+     * @var array|null
      */
-    protected $list;
+    protected $list; // @phpstan-ignore-line
 
     /**
      * 获取 list.
      *
      * @phpstan-ignore-next-line
      *
-     * @return array
+     * @return array|null
      */
     public function getList()
     {
@@ -43,7 +43,7 @@ class TestList extends TestListBase
      *
      * @phpstan-ignore-next-line
      *
-     * @param array $list list
+     * @param array|null $list list
      *
      * @return static
      */

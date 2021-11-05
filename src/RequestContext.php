@@ -167,8 +167,8 @@ class RequestContext
      *
      * @template T
      *
-     * @param class-string<T>|string $name
-     * @param mixed                  ...$params
+     * @param class-string<T> $name
+     * @param mixed           ...$params
      *
      * @return T
      */

@@ -147,6 +147,7 @@ class AMQPPool
      */
     public static function getDefaultPoolName()
     {
+        // @phpstan-ignore-next-line
         return App::getBean('AMQP')->getDefaultPoolName();
     }
 }

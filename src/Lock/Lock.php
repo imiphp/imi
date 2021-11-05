@@ -69,18 +69,20 @@ class Lock
         {
             $lockConfigId = static::getDefaultId();
         }
-        if (null === $lockId && isset(self::$instances[$lockConfigId]))
+        $instances = &self::$instances;
+        if (null === $lockId && isset($instances[$lockConfigId]))
         {
-            return self::$instances[$lockConfigId];
+            return $instances[$lockConfigId];
         }
-        if (!isset(self::$options[$lockConfigId]))
+        $options = &self::$options;
+        if (!isset($options[$lockConfigId]))
         {
             throw new \RuntimeException(sprintf('Lock %s does not exists', $lockConfigId));
         }
-        $option = self::$options[$lockConfigId];
+        $option = $options[$lockConfigId];
         if (null === $lockId)
         {
-            return self::$instances[$lockConfigId] = App::getBean($option->class, $lockConfigId, $option->options);
+            return $instances[$lockConfigId] = App::getBean($option->class, $lockConfigId, $option->options);
         }
         else
         {
@@ -101,7 +103,7 @@ class Lock
      */
     public static function add(string $id, array $option): void
     {
-        static::$options[$id] = new LockConfigOption($option);
+        self::$options[$id] = new LockConfigOption($option);
     }
 
     /**

@@ -36,8 +36,8 @@ class BeanFactory
      *
      * @template T
      *
-     * @param class-string<T>|string $class
-     * @param mixed                  ...$args
+     * @param class-string<T> $class
+     * @param mixed           ...$args
      *
      * @return T
      */
@@ -54,16 +54,17 @@ class BeanFactory
      *
      * @template T
      *
-     * @param class-string<T>|string $class
-     * @param mixed                  ...$args
+     * @param class-string<T> $class
+     * @param mixed           ...$args
      *
      * @return T
      */
     public static function newInstanceNoInit(string $class, ...$args)
     {
-        if (isset(self::$classNameMap[$class]))
+        $classNameMap = &self::$classNameMap;
+        if (isset($classNameMap[$class]))
         {
-            $className = self::$classNameMap[$class];
+            $className = $classNameMap[$class];
         }
         else
         {
@@ -88,7 +89,7 @@ class BeanFactory
                 $tpl = static::getTpl($ref, $className);
                 Imi::eval($tpl);
             }
-            self::$classNameMap[$class] = $className;
+            $classNameMap[$class] = $className;
         }
 
         /** @var class-string<T> $className */
@@ -100,7 +101,7 @@ class BeanFactory
      *
      * @template T
      *
-     * @param class-string<T>|string $class
+     * @param class-string<T> $class
      *
      * @return T
      */
@@ -117,7 +118,7 @@ class BeanFactory
      *
      * @template T
      *
-     * @param class-string<T>|string $class
+     * @param class-string<T> $class
      *
      * @return T
      */

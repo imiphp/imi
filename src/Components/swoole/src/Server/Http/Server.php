@@ -131,8 +131,10 @@ class Server extends Base implements ISwooleHttpServer
                 }
                 catch (\Throwable $th)
                 {
+                    // @phpstan-ignore-next-line
                     if (true !== $this->getBean('HttpErrorHandler')->handle($th))
                     {
+                        // @phpstan-ignore-next-line
                         App::getBean('ErrorLog')->onException($th);
                     }
                 }
@@ -158,6 +160,7 @@ class Server extends Base implements ISwooleHttpServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });

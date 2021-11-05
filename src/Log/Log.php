@@ -15,6 +15,7 @@ class Log
 
     public static function get(?string $channelName): Logger
     {
+        // @phpstan-ignore-next-line
         return App::getBean('Logger')->getLogger($channelName);
     }
 
@@ -125,6 +126,7 @@ class Log
      */
     protected static function getTrace(?array &$topTraces): array
     {
+        // @phpstan-ignore-next-line
         $limit = App::getBean('ErrorLog')->getBacktraceLimit();
         $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
         $result = array_splice($backtrace, 3);

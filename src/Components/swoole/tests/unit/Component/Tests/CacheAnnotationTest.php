@@ -20,6 +20,7 @@ class CacheAnnotationTest extends BaseTest
     public function testCacheableTTL(): void
     {
         $this->go(function () {
+            /** @var \Imi\Swoole\Test\Component\Cache\Classes\TestCacheAnnotation $test */
             $test = App::getBean('TestCacheAnnotation');
             $id = 1;
             $result = $test->testCacheableTTL($id);
@@ -46,6 +47,7 @@ class CacheAnnotationTest extends BaseTest
     public function testCacheableLock(): void
     {
         $this->go(function () {
+            /** @var \Imi\Swoole\Test\Component\Cache\Classes\TestCacheAnnotation $test */
             $test = App::getBean('TestCacheAnnotation');
             $id = 1;
             $result = $test->testCacheableLock($id);
@@ -118,6 +120,7 @@ class CacheAnnotationTest extends BaseTest
 
     public function testCacheEvict(): void
     {
+        /** @var \Imi\Swoole\Test\Component\Cache\Classes\TestCacheAnnotation $test */
         $test = App::getBean('TestCacheAnnotation');
         $id = 2;
         $result = $test->testCacheable($id);
@@ -133,6 +136,7 @@ class CacheAnnotationTest extends BaseTest
 
     public function testCachePut(): void
     {
+        /** @var \Imi\Swoole\Test\Component\Cache\Classes\TestCacheAnnotation $test */
         $test = App::getBean('TestCacheAnnotation');
         $id = 3;
         $result = $test->testCachePut($id);

@@ -37,7 +37,7 @@ class ReflectionContainer
      */
     public static function getClassReflection(string $className): ReflectionClass
     {
-        return self::$classReflectionMap[$className] ?? (self::$classReflectionMap[$className] = new ReflectionClass($className));
+        return self::$classReflectionMap[$className] ??= new ReflectionClass($className);
     }
 
     /**
@@ -45,7 +45,7 @@ class ReflectionContainer
      */
     public static function getMethodReflection(string $className, string $methodName): ReflectionMethod
     {
-        return self::$methodReflectionMap[$className][$methodName] ?? (self::$methodReflectionMap[$className][$methodName] = static::getClassReflection($className)->getMethod($methodName));
+        return self::$methodReflectionMap[$className][$methodName] ??= static::getClassReflection($className)->getMethod($methodName);
     }
 
     /**
@@ -53,6 +53,6 @@ class ReflectionContainer
      */
     public static function getPropertyReflection(string $className, string $propertyName): ReflectionProperty
     {
-        return self::$propertyReflectionMap[$className][$propertyName] ?? (self::$propertyReflectionMap[$className][$propertyName] = static::getClassReflection($className)->getProperty($propertyName));
+        return self::$propertyReflectionMap[$className][$propertyName] ??= static::getClassReflection($className)->getProperty($propertyName);
     }
 }

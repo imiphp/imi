@@ -58,6 +58,7 @@ class Server extends Base implements IUdpServer
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };

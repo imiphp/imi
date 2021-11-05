@@ -131,6 +131,8 @@ class Imi
 
     public static function reloadProcess(): void
     {
+        /** @var string[]|bool $rules */
+        // @phpstan-ignore-next-line
         $rules = App::getBean('hotUpdate')->getProcess();
         if (false === $rules)
         {

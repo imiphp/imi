@@ -21,6 +21,7 @@ trait TConnectionContextRelease
 
         $server = RequestContext::getServer();
         // 当前连接离开所有组
+        // @phpstan-ignore-next-line
         $server->getBean('ClientIdMap')->leaveAll($clientId);
 
         ConnectionContext::set('__groups', $groups, $clientId);

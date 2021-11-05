@@ -125,4 +125,9 @@ class CronProcess extends BaseProcess
         $this->running = false;
         $this->scheduler->close();
     }
+
+    public function getUnixWorker(): Worker
+    {
+        return $this->unixWorker;
+    }
 }

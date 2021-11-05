@@ -92,8 +92,10 @@ class Server extends BaseServer
         }
         catch (\Throwable $th)
         {
+            // @phpstan-ignore-next-line
             if (true !== $this->getBean('HttpErrorHandler')->handle($th))
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($th);
             }
         }

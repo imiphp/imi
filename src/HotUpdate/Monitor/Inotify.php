@@ -53,6 +53,7 @@ class Inotify extends BaseMonitor
         $excludePaths = array_map([Imi::class, 'parseRule'], $this->excludePaths);
 
         $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
+        $paths = &$this->paths;
         $mask = &$this->mask;
         $includePaths = $this->includePaths;
         if ($includePaths)
@@ -63,7 +64,7 @@ class Inotify extends BaseMonitor
                 {
                     continue;
                 }
-                $this->paths[$path] ??= inotify_add_watch($handler, $path, $mask);
+                $paths[$path] ??= inotify_add_watch($handler, $path, $mask);
                 foreach (File::enumFile($path) as $file)
                 {
                     $fullPath = $file->getFullPath();
@@ -76,7 +77,7 @@ class Inotify extends BaseMonitor
                         $file->setContinue(false);
                         continue;
                     }
-                    $this->paths[$fullPath] ??= inotify_add_watch($handler, $fullPath, $mask);
+                    $paths[$fullPath] ??= inotify_add_watch($handler, $fullPath, $mask);
                 }
             }
         }

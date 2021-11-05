@@ -126,7 +126,8 @@ class Validator implements IValidator
     public function getAnnotationRules(): array
     {
         $className = static::__getRealClassName();
-        if (!isset(self::$annotationRules[$className]))
+        $selfAnnotationRules = &self::$annotationRules;
+        if (!isset($selfAnnotationRules[$className]))
         {
             $annotationRules = AnnotationManager::getClassAnnotations($className);
 
@@ -141,10 +142,10 @@ class Validator implements IValidator
                 }
             }
 
-            return self::$annotationRules[$className] = $annotationRules;
+            return $selfAnnotationRules[$className] = $annotationRules;
         }
 
-        return self::$annotationRules[$className];
+        return $selfAnnotationRules[$className];
     }
 
     /**

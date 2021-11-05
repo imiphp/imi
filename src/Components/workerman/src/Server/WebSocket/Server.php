@@ -103,6 +103,7 @@ class Server extends Base implements IWebSocketServer
             catch (\Throwable $th)
             {
                 $connection->close();
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($th);
             }
             finally
@@ -129,6 +130,7 @@ class Server extends Base implements IWebSocketServer
             }
             catch (\Throwable $th)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($th);
             }
         };

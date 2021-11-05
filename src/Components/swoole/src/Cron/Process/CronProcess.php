@@ -77,6 +77,7 @@ class CronProcess extends BaseProcess
         $this->running = true;
         $running = &$this->running;
         $this->startSchedule();
+        // @phpstan-ignore-next-line
         while ($running)
         {
             $arrRead = [$socket];

@@ -173,6 +173,7 @@ class ProcessManager
                 }
                 catch (\Throwable $th)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($th);
                     $exitCode = 255;
                 }

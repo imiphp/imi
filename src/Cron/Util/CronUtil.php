@@ -25,6 +25,7 @@ class CronUtil
     public static function reportCronResult(string $id, bool $success, string $message): void
     {
         $client = new Client([
+            // @phpstan-ignore-next-line
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
         ]);
         if ($client->connect())
@@ -47,6 +48,7 @@ class CronUtil
     public static function addCron(Cron $cron, $task): void
     {
         $client = new Client([
+            // @phpstan-ignore-next-line
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
         ]);
         if ($client->connect())
@@ -69,6 +71,7 @@ class CronUtil
     public static function removeCron(string $id): void
     {
         $client = new Client([
+            // @phpstan-ignore-next-line
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
         ]);
         if ($client->connect())
@@ -90,6 +93,7 @@ class CronUtil
     public static function clear(): void
     {
         $client = new Client([
+            // @phpstan-ignore-next-line
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
         ]);
         if ($client->connect())

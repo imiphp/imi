@@ -126,6 +126,7 @@ class KafkaPool
      */
     public static function getDefaultPoolName(): string
     {
+        // @phpstan-ignore-next-line
         return App::getBean('Kafka')->getDefaultPoolName();
     }
 

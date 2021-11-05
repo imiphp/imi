@@ -81,7 +81,7 @@ class ModelManager
         $objectClass = BeanFactory::getObjectClass($object);
 
         return self::$annotation[$objectClass][$annotationClass]
-            ?? (self::$annotation[$objectClass][$annotationClass] = AnnotationManager::getClassAnnotations($objectClass, $annotationClass)[0] ?? null);
+            ??= (AnnotationManager::getClassAnnotations($objectClass, $annotationClass)[0] ?? null);
     }
 
     /**
@@ -92,12 +92,8 @@ class ModelManager
     public static function getPropertyAnnotation($object, string $propertyName, string $annotationClass): ?Base
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        if (!isset(self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass]))
-        {
-            self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass] = AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null;
-        }
 
-        return self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass];
+        return self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass] ??= (AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null);
     }
 
     /**
@@ -108,15 +104,18 @@ class ModelManager
     public static function getTable($object): string
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        if (!isset(self::$table[$objectClass]))
+        $staticTable = &self::$table;
+        if (isset($staticTable[$objectClass]))
+        {
+            return $staticTable[$objectClass];
+        }
+        else
         {
             /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
-            self::$table[$objectClass] = $tableAnnotation ? $tableAnnotation->name : null;
+            return $staticTable[$objectClass] = $tableAnnotation ? $tableAnnotation->name : null;
         }
-
-        return self::$table[$objectClass];
     }
 
     /**
@@ -127,15 +126,18 @@ class ModelManager
     public static function getDbPoolName($object): string
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        if (!isset(self::$dbPoolName[$objectClass]))
+        $staticDbPoolName = &self::$dbPoolName;
+        if (isset($staticDbPoolName[$objectClass]))
+        {
+            return $staticDbPoolName[$objectClass];
+        }
+        else
         {
             /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
-            self::$dbPoolName[$objectClass] = $tableAnnotation ? $tableAnnotation->dbPoolName : null;
+            return $staticDbPoolName[$objectClass] = $tableAnnotation ? $tableAnnotation->dbPoolName : null;
         }
-
-        return self::$dbPoolName[$objectClass];
     }
 
     /**
@@ -149,15 +151,18 @@ class ModelManager
     public static function getId($object)
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        if (!isset(self::$id[$objectClass]))
+        $staticId = &self::$id;
+        if (isset($staticId[$objectClass]))
+        {
+            return $staticId[$objectClass];
+        }
+        else
         {
             /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
-            self::$id[$objectClass] = $tableAnnotation ? $tableAnnotation->id : null;
+            return $staticId[$objectClass] = $tableAnnotation ? $tableAnnotation->id : null;
         }
-
-        return self::$id[$objectClass];
     }
 
     /**
@@ -182,7 +187,12 @@ class ModelManager
     public static function getFields($object): array
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        if (!isset(self::$fields[$objectClass]))
+        $staticFields = &self::$fields;
+        if (isset($staticFields[$objectClass]))
+        {
+            return $staticFields[$objectClass];
+        }
+        else
         {
             $annotationsSet = AnnotationManager::getPropertiesAnnotations($objectClass, Column::class);
             $fields = [];
@@ -192,10 +202,8 @@ class ModelManager
                 $fields[$annotation->name ?? $propertyName] = $annotation;
             }
 
-            self::$fields[$objectClass] = $fields;
+            return $staticFields[$objectClass] = $fields;
         }
-
-        return self::$fields[$objectClass];
     }
 
     /**
@@ -218,15 +226,18 @@ class ModelManager
     public static function isCamel($object): bool
     {
         $class = BeanFactory::getObjectClass($object);
-        if (!isset(self::$isCamelCache[$class]))
+        $staticIsCamelCache = &self::$isCamelCache;
+        if (isset($staticIsCamelCache[$class]))
+        {
+            return $staticIsCamelCache[$class];
+        }
+        else
         {
             /** @var Entity|null $entity */
             $entity = static::getAnnotation($object, Entity::class);
 
-            self::$isCamelCache[$class] = $entity ? $entity->camel : true;
+            return $staticIsCamelCache[$class] = $entity ? $entity->camel : true;
         }
-
-        return self::$isCamelCache[$class];
     }
 
     /**
@@ -237,17 +248,20 @@ class ModelManager
     public static function getKeyRule($object): KeyRule
     {
         $class = BeanFactory::getObjectClass($object);
-        if (!isset(self::$keyRules[$class]))
+        $staticKeyRules = &self::$keyRules;
+        if (isset($staticKeyRules[$class]))
+        {
+            return $staticKeyRules[$class];
+        }
+        else
         {
             /** @var RedisEntity|null $redisEntity */
             $redisEntity = static::getAnnotation($object, RedisEntity::class);
             $key = $redisEntity ? $redisEntity->key : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
-            self::$keyRules[$class] = new KeyRule($key, $matches[1]);
+            return $staticKeyRules[$class] = new KeyRule($key, $matches[1]);
         }
-
-        return self::$keyRules[$class];
     }
 
     /**
@@ -258,17 +272,20 @@ class ModelManager
     public static function getMemberRule($object): KeyRule
     {
         $class = BeanFactory::getObjectClass($object);
-        if (!isset(self::$memberRules[$class]))
+        $staticMemberRules = &self::$memberRules;
+        if (isset($staticMemberRules[$class]))
+        {
+            return $staticMemberRules[$class];
+        }
+        else
         {
             /** @var RedisEntity|null $redisEntity */
             $redisEntity = static::getAnnotation($object, RedisEntity::class);
             $key = $redisEntity ? $redisEntity->member : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
-            self::$memberRules[$class] = new KeyRule($key, $matches[1]);
+            return $staticMemberRules[$class] = new KeyRule($key, $matches[1]);
         }
-
-        return self::$memberRules[$class];
     }
 
     /**
@@ -303,11 +320,14 @@ class ModelManager
     public static function getExtractPropertys($object): array
     {
         $class = BeanFactory::getObjectClass($object);
-        if (!isset(self::$extractPropertys[$class]))
+        $staticExtractPropertys = &self::$extractPropertys;
+        if (isset($staticExtractPropertys[$class]))
         {
-            self::$extractPropertys[$class] = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($object), ExtractProperty::class);
+            return $staticExtractPropertys[$class];
         }
-
-        return self::$extractPropertys[$class];
+        else
+        {
+            return $staticExtractPropertys[$class] = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($object), ExtractProperty::class);
+        }
     }
 }

@@ -135,7 +135,7 @@ class Server extends BaseRpcServer
      */
     protected function __bindEvents(): void
     {
-        $server = $this->swoolePort ?? $this->swooleServer;
+        $server = $this->swoolePort;
 
         $this->isHookHproseOn = true;
         $this->hproseService->socketHandle($this);
@@ -152,6 +152,7 @@ class Server extends BaseRpcServer
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         });
@@ -168,6 +169,7 @@ class Server extends BaseRpcServer
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         });
@@ -183,6 +185,7 @@ class Server extends BaseRpcServer
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         });

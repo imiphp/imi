@@ -35,7 +35,8 @@ class InjectTest extends BaseTest
 
     public function testArg(): void
     {
+        /** @var \Imi\Test\Component\Inject\Classes\TestArg $test */
         $test = App::getBean('TestArg');
-        $test->test('123');
+        $test->test(123);
     }
 }

@@ -461,9 +461,10 @@ class ModelRelationManager
     public static function getRelationFieldNames($object): array
     {
         $class = BeanFactory::getObjectClass($object);
-        if (isset(self::$relationFieldsNames[$class]))
+        $staticRelationFieldsNames = &self::$relationFieldsNames;
+        if (isset($staticRelationFieldsNames[$class]))
         {
-            return self::$relationFieldsNames[$class];
+            return $staticRelationFieldsNames[$class];
         }
         else
         {
@@ -479,7 +480,7 @@ class ModelRelationManager
                 }
             }
 
-            return self::$relationFieldsNames[$class] = $result;
+            return $staticRelationFieldsNames[$class] = $result;
         }
     }
 }

@@ -28,6 +28,7 @@ class OnServerCreateAfter implements IEventListener
         {
             return;
         }
+        // @phpstan-ignore-next-line
         foreach (App::getBean('AutoRunProcessManager')->getProcesses() as $k => $process)
         {
             if (\is_array($process))

@@ -232,7 +232,7 @@ class DocTool extends BaseCommand
                         ]);
                     }
 
-                    $comment = $refMethod->getDocComment() === false ? $refMethod->getDocComment() : '';
+                    $comment = false === $refMethod->getDocComment() ? $refMethod->getDocComment() : '';
                     $methodContext = new Context([
                         'comment'   => $comment,
                         'filename'  => $refMethod->getFileName(),

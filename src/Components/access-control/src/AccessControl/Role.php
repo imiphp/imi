@@ -72,9 +72,6 @@ class Role
         }
     }
 
-    /**
-     * @return string
-     */
     public function getRoleCode(): string
     {
         return $this->roleCode;
@@ -108,6 +105,7 @@ class Role
      */
     public static function create(string $name, ?string $code = null, string $description = '')
     {
+        // @phpstan-ignore-next-line
         $record = App::getBean('ACRoleService')->create($name, $code, $description);
         if ($record)
         {

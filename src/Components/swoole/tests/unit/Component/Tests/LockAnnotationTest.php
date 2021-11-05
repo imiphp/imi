@@ -16,6 +16,7 @@ class LockAnnotationTest extends BaseTest
 {
     public function test(): void
     {
+        /** @var \Imi\Swoole\Test\Component\Lock\Classes\TestLockAnnotation $test */
         $test = App::getBean('TestLockAnnotation');
         $time = microtime(true);
         $throwables = [];
@@ -71,6 +72,7 @@ class LockAnnotationTest extends BaseTest
 
     public function testAfterLock(): void
     {
+        /** @var \Imi\Swoole\Test\Component\Lock\Classes\TestLockAnnotation $test */
         $test = App::getBean('TestLockAnnotation');
         Assert::assertEquals(2, $test->index());
         Assert::assertEquals(3, $test->index2());

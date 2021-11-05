@@ -101,6 +101,7 @@ class App
         // 初始化
         $appInstance->init();
         // 注册错误日志
+        // @phpstan-ignore-next-line
         self::getBean('ErrorLog')->register();
         Event::trigger('IMI.APP_RUN');
         // 运行
@@ -148,8 +149,8 @@ class App
      *
      * @template T
      *
-     * @param class-string<T>|string $name
-     * @param mixed                  ...$params
+     * @param class-string<T> $name
+     * @param mixed           ...$params
      *
      * @return T
      */

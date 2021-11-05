@@ -12,6 +12,10 @@ parameters:
 
     excludePaths:
         - */vendor/*
+        - src/Components/grpc/example/grpc
+        - src/Components/smarty/src/smarty-plugins
+        - src/Config/DotEnv/EntryParser.php
+        - src/Config/DotEnv/Parser.php
 
     bootstrapFiles:
         - vendor/autoload.php
@@ -23,7 +27,9 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
-        - '#Template type \w+? of method Imi\\[^:]+::\S+\(\) is not referenced in a parameter.#'
+        - '#is never read, only written#'
+        - '#expects class-string<\S+>, string given#'
+        - '#Unable to resolve the template type T in call to method#'
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
         - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
         - '#Unsafe usage of new static\(\).+#'

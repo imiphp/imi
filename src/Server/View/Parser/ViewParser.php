@@ -62,7 +62,8 @@ class ViewParser extends BaseParser
         {
             return [new View(), null];
         }
-        if (!isset($this->viewCache[$className][$methodName]))
+        $viewCache = &$this->viewCache;
+        if (!isset($viewCache[$className][$methodName]))
         {
             $isClassView = false;
             /** @var View|null $view */
@@ -123,9 +124,9 @@ class ViewParser extends BaseParser
                 }
             }
 
-            $this->viewCache[$className][$methodName] = [$view, $viewOption];
+            $viewCache[$className][$methodName] = [$view, $viewOption];
         }
 
-        return $this->viewCache[$className][$methodName];
+        return $viewCache[$className][$methodName];
     }
 }

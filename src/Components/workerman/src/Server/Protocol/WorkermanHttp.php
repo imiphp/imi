@@ -228,7 +228,7 @@ class WorkermanHttp
             unset($connection->__header);
         }
 
-        if (isset($response->file))
+        if ($response->file)
         {
             $file = $response->file['file'];
             $offset = $response->file['offset'];
