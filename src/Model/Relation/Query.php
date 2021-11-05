@@ -129,7 +129,7 @@ class Query
             }
             if ($annotation->withFields)
             {
-                $query->withField(...$annotation->fields);
+                $query->withField(...$annotation->withFields);
             }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
@@ -209,7 +209,7 @@ class Query
                 }
                 if ($annotation->withFields)
                 {
-                    $query->withField(...$annotation->fields);
+                    $query->withField(...$annotation->withFields);
                 }
                 if ($annotation->order)
                 {
@@ -304,7 +304,7 @@ class Query
                             ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
                 if ($annotation->withFields)
                 {
-                    $query->withField(...$annotation->fields);
+                    $query->withField(...$annotation->withFields);
                 }
                 if ($annotation->order)
                 {
@@ -408,7 +408,7 @@ class Query
                 }
                 if ($annotation->withFields)
                 {
-                    $query->withField(...$annotation->fields);
+                    $query->withField(...$annotation->withFields);
                 }
                 Event::trigger($eventName . '.BEFORE', [
                     'model'        => $model,
@@ -489,7 +489,7 @@ class Query
                 }
                 if ($annotation->withFields)
                 {
-                    $query->withField(...$annotation->fields);
+                    $query->withField(...$annotation->withFields);
                 }
                 if ($annotation->order)
                 {
@@ -586,7 +586,7 @@ class Query
                         }
                         if ($annotationItem->withFields)
                         {
-                            $query->withField(...$annotationItem->fields);
+                            $query->withField(...$annotationItem->withFields);
                         }
                         Event::trigger($eventName . '.BEFORE', [
                             'model'        => $model,
@@ -686,7 +686,7 @@ class Query
                                     ->where($middleTable . '.' . $middleRightField, '=', $leftValue);
                         if ($annotationItem->withFields)
                         {
-                            $query->withField(...$annotationItem->fields);
+                            $query->withField(...$annotationItem->withFields);
                         }
                         if ($annotationItem->order)
                         {
@@ -799,7 +799,7 @@ class Query
                             ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
                 if ($annotation->withFields)
                 {
-                    $query->withField(...$annotation->fields);
+                    $query->withField(...$annotation->withFields);
                 }
                 if ($annotation->order)
                 {
