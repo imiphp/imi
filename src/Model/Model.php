@@ -533,10 +533,7 @@ abstract class Model extends BaseModel
      */
     public static function queryRelationsList(array $list, string ...$names): array
     {
-        foreach ($list as $row)
-        {
-            $row->queryRelations(...$names);
-        }
+        ModelRelationManager::initModels($list, $names);
 
         return $list;
     }
