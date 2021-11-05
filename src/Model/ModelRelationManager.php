@@ -107,7 +107,7 @@ class ModelRelationManager
                                 ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
                     if ($annotation->withFields)
                     {
-                        $query->withField($annotation->withFields);
+                        $query->withField(...$annotation->withFields);
                     }
                     if ($annotation->order)
                     {
@@ -156,7 +156,7 @@ class ModelRelationManager
                     }
                     if ($annotation->withFields)
                     {
-                        $query->withField($annotation->withFields);
+                        $query->withField(...$annotation->withFields);
                     }
                     if (isset($fields[$propertyName]))
                     {
@@ -181,7 +181,7 @@ class ModelRelationManager
                     }
                     if ($annotation->withFields)
                     {
-                        $query->withField($annotation->withFields);
+                        $query->withField(...$annotation->withFields);
                     }
                     if ($annotation->order)
                     {
@@ -223,7 +223,7 @@ class ModelRelationManager
                                 ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
                     if ($annotation->withFields)
                     {
-                        $query->withField($annotation->withFields);
+                        $query->withField(...$annotation->withFields);
                     }
                     if ($annotation->order)
                     {
@@ -272,7 +272,7 @@ class ModelRelationManager
                     }
                     if ($annotation->withFields)
                     {
-                        $query->withField($annotation->withFields);
+                        $query->withField(...$annotation->withFields);
                     }
                     if (isset($fields[$propertyName]))
                     {
@@ -297,7 +297,7 @@ class ModelRelationManager
                     }
                     if ($annotation->withFields)
                     {
-                        $query->withField($annotation->withFields);
+                        $query->withField(...$annotation->withFields);
                     }
                     if ($annotation->order)
                     {
@@ -335,7 +335,7 @@ class ModelRelationManager
                         }
                         if ($annotation->withFields)
                         {
-                            $query->withField($annotation->withFields);
+                            $query->withField(...$annotation->withFields);
                         }
                         if (isset($fields[$propertyName]))
                         {
@@ -372,7 +372,7 @@ class ModelRelationManager
                                     ->where($middleTable . '.' . $middleRightField, 'in', $ids);
                         if ($annotation->withFields)
                         {
-                            $query->withField($annotation->withFields);
+                            $query->withField(...$annotation->withFields);
                         }
                         if ($annotation->order)
                         {
