@@ -4,28 +4,29 @@ on: [push, pull_request]
 
 jobs:
   ci-php-81:
-    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
+    name: Linux PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         php: [8.1]
+        swoole: [420cf8ee91a9bc44a540c70446264b1657b22399]
         roadrunner: [2.5.*]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REDIS_SERVER_HOST: 127.0.0.1
       MYSQL_SERVER_HOST: 127.0.0.1
       MYSQL_SERVER_PASSWORD: "root"
-      PGSQL_SERVER_HOST: postgres
+      PGSQL_SERVER_HOST: 127.0.0.1
       PGSQL_SERVER_PASSWORD: "root"
-      AMQP_SERVER_HOST: "rabbitmq"
+      AMQP_SERVER_HOST: 127.0.0.1
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Depend
         run: |
-          sudo apt install libevent-dev libcurl4-openssl-dev libc-ares-dev
+          sudo apt install libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev
       - name: Setup PHP
         uses: shivammathur/setup-php@verbose
         with:
@@ -34,7 +35,7 @@ jobs:
           extensions: >
             :xdebug
             apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event,
-            swoole-swoole/swoole-src@master
+            swoole-swoole/swoole-src@${{ matrix.swoole }}
         env:
           fail-fast: true
           SWOOLE_CONFIGURE_OPTS: |
@@ -45,6 +46,7 @@ jobs:
             --enable-swoole-json
             --enable-swoole-curl
             --enable-cares
+            --enable-swoole-pgsql
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -53,41 +55,49 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-      - name: Prepare
+      - name: Env
         run: |
-          docker-compose -f ./.github/docker-compose1.yml up -d
-          echo -e "\n127.0.0.1 kafka1\n" >> /etc/hosts
-          nc -zv 127.0.0.1 6379 5432 3306
-          nc -zv 127.0.0.1 9092 15672 5672 25672
-          nc -zv 127.0.0.1 2181 9092
-          nc -zv kafka1 9092
           php -v
           php -m
           php --ri swoole
-          php -r "echo 'opcache config: '; print_r(opcache_get_status(false));"
+          php -r "echo 'opcache config: '; print_r(opcache_get_status(false)); echo PHP_EOL;"
           composer -V
+      - name: Service
+        run: |
+          docker-compose -f ./.github/docker-compose1.yml up -d
+          echo -e "\n127.0.0.1 mysql postgres rabbitmq kafka1\n" | sudo tee -a /etc/hosts
+          nc -zv 127.0.0.1 6379 5432 3306
+          nc -zv 127.0.0.1 9092 15672 5672 25672
+          nc -zv 127.0.0.1 2181 9092
+          nc -zv mysql 3306
+          nc -zv postgres 5432
+          nc -zv rabbitmq 9092 15672 5672 25672
+          nc -zv kafka1 9092
+      - name: Prepare
+        run: |
+          docker-compose -f ./.github/docker-compose1.yml exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           composer update --no-interaction --prefer-dist --no-progress
           bash tests/db/install-db.sh
           src/Components/roadrunner/vendor/bin/rr get-binary -f ${{ matrix.roadrunner }} -l /usr/local/bin
           rr -v
-#      - name: Test
-#        run: composer test
-#      - name: Test swoole
-#        run: composer test-swoole
-#      - name: Test workerman
-#        run: composer test-workerman
-#      - name: Test workerman-gateway
-#        run: composer test-workerman-gateway
-#      - name: Test roadrunner
-#        run: composer test-roadrunner
-#      - name: Test fpm
-#        run: composer test-fpm
-#      - name: Test jwt
-#        run: composer test-jwt
-#      - name: Test queue
-#        run: composer test-queue
-#      - name: Test amqp
-#        run: composer test-amqp
+      - name: Test
+        run: composer test
+      - name: Test swoole
+        run: composer test-swoole
+      - name: Test workerman
+        run: composer test-workerman
+      - name: Test workerman-gateway
+        run: composer test-workerman-gateway
+      - name: Test roadrunner
+        run: composer test-roadrunner
+      - name: Test fpm
+        run: composer test-fpm
+      - name: Test jwt
+        run: composer test-jwt
+      - name: Test queue
+        run: composer test-queue
+      - name: Test amqp
+        run: composer test-amqp
       - name: Test kafka
         run: composer test-kafka
       - name: Test grpc
@@ -98,6 +108,8 @@ jobs:
         run: composer test-mqtt
       - name: Test smarty
         run: composer test-smarty
+      - name: Test pgsql
+        run: composer test-pgsql
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php

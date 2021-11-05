@@ -2,6 +2,7 @@ version: "3.4"
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: db_imi_test
@@ -16,6 +17,7 @@ services:
       start_period: 5s
   postgres:
     image: postgres
+    container_name: postgres
     environment:
       POSTGRES_USER: root
       POSTGRES_DB: db_imi_test
@@ -23,19 +25,21 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -d db_imi_test" ]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 5s
   redis:
     image: redis:6
+    container_name: redis
     volumes:
       - ./redis.conf:/etc/redis.conf
     ports:
       - "6379:6379"
   rabbitmq:
     image: rabbitmq:3.8-management
+    container_name: rabbitmq
     environment:
       RABBITMQ_DEFAULT_VHOST: "/"
       RABBITMQ_DEFAULT_USER: "guest"
