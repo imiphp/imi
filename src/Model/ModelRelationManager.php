@@ -52,7 +52,7 @@ class ModelRelationManager
      *
      * @param Model[] $models
      */
-    public static function initModels(array $models, ?array $fields = null, ?string $modelClass = null): void
+    public static function initModels(array $models, ?array $fields = null, ?string $modelClass = null, bool $force = false): void
     {
         if (null === $modelClass)
         {
@@ -72,11 +72,11 @@ class ModelRelationManager
                 $firstAnnotation = $annotations[0];
                 if ($firstAnnotation->with || ($fields && (isset($fields[$propertyName]) || \in_array($propertyName, $fields))))
                 {
-                    Query::init($model, $propertyName, $annotations, true, $refData);
+                    Query::init($model, $propertyName, $annotations, $force, $refData);
                 }
                 else
                 {
-                    Query::init($model, $propertyName, $annotations);
+                    Query::init($model, $propertyName, $annotations, $force);
                 }
             }
         }
