@@ -19,7 +19,7 @@ jobs:
       PGSQL_SERVER_HOST: postgres
       PGSQL_SERVER_PASSWORD: "root"
       AMQP_SERVER_HOST: "rabbitmq"
-      KAFKA_BOOTSTRAP_SERVERS: "127.0.0.1:9092"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -56,6 +56,11 @@ jobs:
       - name: Prepare
         run: |
           docker-compose -f ./.github/docker-compose1.yml up -d
+          echo -e "\n127.0.0.1 kafka1\n" >> /etc/hosts
+          nc -zv 127.0.0.1 6379 5432 3306
+          nc -zv 127.0.0.1 9092 15672 5672 25672
+          nc -zv 127.0.0.1 2181 9092
+          nc -zv kafka1 9092
           php -v
           php -m
           php --ri swoole
