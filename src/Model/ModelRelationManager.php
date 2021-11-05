@@ -54,7 +54,7 @@ class ModelRelationManager
      */
     public static function initModels(array $models, ?array $fields = null, ?string $modelClass = null): void
     {
-        if (null !== $modelClass)
+        if (null === $modelClass)
         {
             $modelClass = BeanFactory::getObjectClass(reset($models));
         }
