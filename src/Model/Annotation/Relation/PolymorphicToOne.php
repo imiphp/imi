@@ -18,8 +18,9 @@ use Imi\Bean\Annotation\Parser;
  * @property string        $field      当前模型用于关联的字段
  * @property string        $type       多态类型字段名
  * @property mixed         $typeValue  多态类型字段值
- * @property string[]|null $fields     为查询出来的模型指定字段
+ * @property string[]|null $fields     查询时指定字段
  * @property bool          $with       关联预加载查询
+ * @property string[]|null $withFields 设置结果模型的序列化字段
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicToOne extends RelationBase
@@ -32,7 +33,7 @@ class PolymorphicToOne extends RelationBase
     /**
      * @param mixed $typeValue
      */
-    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', $typeValue = null, ?array $fields = null, bool $with = false)
+    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', $typeValue = null, ?array $fields = null, bool $with = false, ?array $withFields = null)
     {
         parent::__construct(...\func_get_args());
     }

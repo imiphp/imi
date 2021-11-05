@@ -7,10 +7,10 @@ namespace Imi\Model\Relation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Field;
-use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\BaseModel;
+use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Model;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
@@ -121,11 +121,15 @@ class Query
         }
         elseif (null === $refData)
         {
-            /** @var IQuery $query */
+            /** @var IModelQuery $query */
             $query = $modelClass::query()->where($rightField, '=', $leftValue);
             if ($annotation->fields)
             {
                 $query->field(...$annotation->fields);
+            }
+            if ($annotation->withFields)
+            {
+                $query->withField(...$annotation->fields);
             }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
@@ -197,11 +201,15 @@ class Query
         {
             if (null === $refData)
             {
-                /** @var IQuery $query */
+                /** @var IModelQuery $query */
                 $query = $modelClass::query()->where($rightField, '=', $leftValue);
                 if ($annotation->fields)
                 {
                     $query->field(...$annotation->fields);
+                }
+                if ($annotation->withFields)
+                {
+                    $query->withField(...$annotation->fields);
                 }
                 if ($annotation->order)
                 {
@@ -272,7 +280,14 @@ class Query
         $rightModel = $struct->getRightModel();
         $rightTable = $rightModel::__getMeta()->getFullTableName();
 
-        $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+        if ($annotation->fields)
+        {
+            $fields = $annotation->fields;
+        }
+        else
+        {
+            $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+        }
 
         $model->$propertyName = new ArrayList($middleModel);
         $model->{$annotation->rightMany} = new ArrayList($rightModel);
@@ -287,6 +302,10 @@ class Query
                             ->field(...$fields)
                             ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                             ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
+                if ($annotation->withFields)
+                {
+                    $query->withField(...$annotation->fields);
+                }
                 if ($annotation->order)
                 {
                     $query->orderRaw($annotation->order);
@@ -381,11 +400,15 @@ class Query
         {
             if (null === $refData)
             {
-                /** @var IQuery $query */
+                /** @var IModelQuery $query */
                 $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
                 if ($annotation->fields)
                 {
                     $query->field(...$annotation->fields);
+                }
+                if ($annotation->withFields)
+                {
+                    $query->withField(...$annotation->fields);
                 }
                 Event::trigger($eventName . '.BEFORE', [
                     'model'        => $model,
@@ -458,11 +481,15 @@ class Query
         {
             if (null === $refData)
             {
-                /** @var IQuery $query */
+                /** @var IModelQuery $query */
                 $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
                 if ($annotation->fields)
                 {
                     $query->field(...$annotation->fields);
+                }
+                if ($annotation->withFields)
+                {
+                    $query->withField(...$annotation->fields);
                 }
                 if ($annotation->order)
                 {
@@ -551,11 +578,15 @@ class Query
                 {
                     if (null === $refData)
                     {
-                        /** @var IQuery $query */
+                        /** @var IModelQuery $query */
                         $query = $modelClass::query()->where($leftField, '=', $rightValue);
                         if ($annotationItem->fields)
                         {
                             $query->field(...$annotationItem->fields);
+                        }
+                        if ($annotationItem->withFields)
+                        {
+                            $query->withField(...$annotationItem->fields);
                         }
                         Event::trigger($eventName . '.BEFORE', [
                             'model'        => $model,
@@ -632,7 +663,14 @@ class Query
                 $middleLeftField = $struct->getMiddleLeftField();
                 $middleRightField = $struct->getMiddleRightField();
 
-                $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+                if ($annotationItem->fields)
+                {
+                    $fields = $annotationItem->fields;
+                }
+                else
+                {
+                    $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+                }
 
                 $model->$propertyName = new ArrayList($struct->getRightModel());
 
@@ -646,6 +684,10 @@ class Query
                                     ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
                                     ->where($middleTable . '.' . $annotationItem->type, '=', $typeValue)
                                     ->where($middleTable . '.' . $middleRightField, '=', $leftValue);
+                        if ($annotationItem->withFields)
+                        {
+                            $query->withField(...$annotationItem->fields);
+                        }
                         if ($annotationItem->order)
                         {
                             $query->orderRaw($annotationItem->order);
@@ -731,7 +773,14 @@ class Query
         $middleTable = $struct->getMiddleModel()::__getMeta()->getFullTableName();
         $rightTable = $struct->getRightModel()::__getMeta()->getFullTableName();
 
-        $fields = self::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+        if ($annotation->fields)
+        {
+            $fields = $annotation->fields;
+        }
+        else
+        {
+            $fields = self::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+        }
 
         $model->$propertyName = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
@@ -748,6 +797,10 @@ class Query
                             ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                             ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                             ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
+                if ($annotation->withFields)
+                {
+                    $query->withField(...$annotation->fields);
+                }
                 if ($annotation->order)
                 {
                     $query->orderRaw($annotation->order);

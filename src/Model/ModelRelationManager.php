@@ -6,7 +6,6 @@ namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
-use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Model\Annotation\Relation\ManyToMany;
 use Imi\Model\Annotation\Relation\OneToMany;
 use Imi\Model\Annotation\Relation\OneToOne;
@@ -16,6 +15,7 @@ use Imi\Model\Annotation\Relation\PolymorphicOneToOne;
 use Imi\Model\Annotation\Relation\PolymorphicToMany;
 use Imi\Model\Annotation\Relation\PolymorphicToOne;
 use Imi\Model\Annotation\Relation\RelationBase;
+use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Relation\Delete;
 use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Query;
@@ -54,7 +54,7 @@ class ModelRelationManager
      */
     public static function initModels(array $models, ?array $fields = null, ?string $modelClass = null): void
     {
-        if (null !== $modelClass)
+        if (null === $modelClass)
         {
             $modelClass = BeanFactory::getObjectClass(reset($models));
         }
@@ -99,12 +99,16 @@ class ModelRelationManager
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
-                    // $rightModel可能要换，TODO
+                    /** @var IModelQuery $query */
                     $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
                                 ->field(...$queryFields)
                                 ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
                                 ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                                 ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
+                    if ($annotation->withFields)
+                    {
+                        $query->withField(...$annotation->withFields);
+                    }
                     if ($annotation->order)
                     {
                         $query->orderRaw($annotation->order);
@@ -150,6 +154,10 @@ class ModelRelationManager
                     {
                         $query->field(...$annotation->fields);
                     }
+                    if ($annotation->withFields)
+                    {
+                        $query->withField(...$annotation->withFields);
+                    }
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
@@ -170,6 +178,10 @@ class ModelRelationManager
                     if ($annotation->fields)
                     {
                         $query->field(...$annotation->fields);
+                    }
+                    if ($annotation->withFields)
+                    {
+                        $query->withField(...$annotation->withFields);
                     }
                     if ($annotation->order)
                     {
@@ -209,6 +221,10 @@ class ModelRelationManager
                                 ->field(...$queryFields)
                                 ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
                                 ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
+                    if ($annotation->withFields)
+                    {
+                        $query->withField(...$annotation->withFields);
+                    }
                     if ($annotation->order)
                     {
                         $query->orderRaw($annotation->order);
@@ -254,6 +270,10 @@ class ModelRelationManager
                     {
                         $query->field(...$annotation->fields);
                     }
+                    if ($annotation->withFields)
+                    {
+                        $query->withField(...$annotation->withFields);
+                    }
                     if (isset($fields[$propertyName]))
                     {
                         $fields[$propertyName]($query);
@@ -274,6 +294,10 @@ class ModelRelationManager
                     if ($annotation->fields)
                     {
                         $query->field(...$annotation->fields);
+                    }
+                    if ($annotation->withFields)
+                    {
+                        $query->withField(...$annotation->withFields);
                     }
                     if ($annotation->order)
                     {
@@ -303,11 +327,15 @@ class ModelRelationManager
                         $subAnnotation = $subItem['annotation'];
                         $leftField = $subItem['leftField'];
                         $models = $subItem['models'];
-                        /** @var IQuery $query */
+                        /** @var IModelQuery $query */
                         $query = $subItem['modelClass']::query()->where($leftField, 'in', $subItem['ids']);
                         if ($subAnnotation->fields)
                         {
                             $query->field(...$subAnnotation->fields);
+                        }
+                        if ($annotation->withFields)
+                        {
+                            $query->withField(...$annotation->withFields);
                         }
                         if (isset($fields[$propertyName]))
                         {
@@ -342,6 +370,10 @@ class ModelRelationManager
                                     ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
                                     ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
                                     ->where($middleTable . '.' . $middleRightField, 'in', $ids);
+                        if ($annotation->withFields)
+                        {
+                            $query->withField(...$annotation->withFields);
+                        }
                         if ($annotation->order)
                         {
                             $query->orderRaw($annotation->order);

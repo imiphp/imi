@@ -12,7 +12,8 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Parser("Imi\Bean\Parser\NullParser")
  *
- * @property bool $with 是否默认使用预加载特性
+ * @property bool          $with       关联预加载查询
+ * @property string[]|null $withFields 设置结果模型的序列化字段
  */
 abstract class RelationBase extends Base
 {

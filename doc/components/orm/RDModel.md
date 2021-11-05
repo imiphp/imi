@@ -505,7 +505,11 @@ $list = TestModel::query()
                 ->where('id', '=', 1)->select()->getArray();
 ```
 
+> 使用预加载后，模型关联的前后置事件都不会触发
+
 ### 指定查询出的模型可序列化的字段
+
+> 必须使用驼峰命名
 
 ```php
 $list1 = TestModel::query()->withField('id', 'name')->select()->getArray();
