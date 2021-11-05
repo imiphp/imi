@@ -272,7 +272,14 @@ class Query
         $rightModel = $struct->getRightModel();
         $rightTable = $rightModel::__getMeta()->getFullTableName();
 
-        $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+        if ($annotation->fields)
+        {
+            $fields = $annotation->fields;
+        }
+        else
+        {
+            $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+        }
 
         $model->$propertyName = new ArrayList($middleModel);
         $model->{$annotation->rightMany} = new ArrayList($rightModel);
@@ -632,7 +639,14 @@ class Query
                 $middleLeftField = $struct->getMiddleLeftField();
                 $middleRightField = $struct->getMiddleRightField();
 
-                $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+                if ($annotationItem->fields)
+                {
+                    $fields = $annotationItem->fields;
+                }
+                else
+                {
+                    $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
+                }
 
                 $model->$propertyName = new ArrayList($struct->getRightModel());
 
@@ -731,7 +745,14 @@ class Query
         $middleTable = $struct->getMiddleModel()::__getMeta()->getFullTableName();
         $rightTable = $struct->getRightModel()::__getMeta()->getFullTableName();
 
-        $fields = self::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+        if ($annotation->fields)
+        {
+            $fields = $annotation->fields;
+        }
+        else
+        {
+            $fields = self::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
+        }
 
         $model->$propertyName = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
