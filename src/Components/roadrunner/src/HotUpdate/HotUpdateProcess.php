@@ -268,7 +268,7 @@ class HotUpdateProcess
             $buildRuntimeHandler = $this->buildRuntimeHandler;
             $buildRuntimePipes = $this->buildRuntimePipes;
             $status = proc_get_status($buildRuntimeHandler);
-            if (false !== $status && ($status['running'] ?? false))
+            if (false !== $status && $status['running'])
             {
                 $writeContent = "n\n";
                 fwrite($buildRuntimePipes[0], $writeContent);
