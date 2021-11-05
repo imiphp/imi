@@ -19,7 +19,7 @@ jobs:
       PGSQL_SERVER_HOST: postgres
       PGSQL_SERVER_PASSWORD: "root"
       AMQP_SERVER_HOST: "rabbitmq"
-      KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
+      KAFKA_BOOTSTRAP_SERVERS: "127.0.0.1:9092"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -65,26 +65,26 @@ jobs:
           bash tests/db/install-db.sh
           src/Components/roadrunner/vendor/bin/rr get-binary -f ${{ matrix.roadrunner }} -l /usr/local/bin
           rr -v
-      - name: Test
-        run: composer test
-      - name: Test swoole
-        run: composer test-swoole
-      - name: Test workerman
-        run: composer test-workerman
-      - name: Test workerman-gateway
-        run: composer test-workerman-gateway
-      - name: Test roadrunner
-        run: composer test-roadrunner
-      - name: Test fpm
-        run: composer test-fpm
-      - name: Test jwt
-        run: composer test-jwt
-      - name: Test queue
-        run: composer test-queue
-      - name: Test amqp
-        run: composer test-amqp
-#      - name: Test kafka
-#        run: composer test-kafka
+#      - name: Test
+#        run: composer test
+#      - name: Test swoole
+#        run: composer test-swoole
+#      - name: Test workerman
+#        run: composer test-workerman
+#      - name: Test workerman-gateway
+#        run: composer test-workerman-gateway
+#      - name: Test roadrunner
+#        run: composer test-roadrunner
+#      - name: Test fpm
+#        run: composer test-fpm
+#      - name: Test jwt
+#        run: composer test-jwt
+#      - name: Test queue
+#        run: composer test-queue
+#      - name: Test amqp
+#        run: composer test-amqp
+      - name: Test kafka
+        run: composer test-kafka
       - name: Test grpc
         run: composer test-grpc
       - name: Test snowflake
