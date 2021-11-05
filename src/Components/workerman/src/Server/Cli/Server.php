@@ -169,12 +169,12 @@ class Server extends BaseCommand
             $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
             foreach (net_get_interfaces() ?: [] as $name => $item)
             {
-                $ip = $item['unicast'][1]['address'];
-                if ('127.0.0.1' === $ip)
+                $ip = $item['unicast'][1]['address'] ?? null;
+                if (null === $ip || '127.0.0.1' === $ip)
                 {
                     continue;
                 }
-                if ('Windows' === \PHP_OS_FAMILY)
+                if ('Windows' === \PHP_OS_FAMILY && isset($item['description']))
                 {
                     $name = $item['description'];
                 }
