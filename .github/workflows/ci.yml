@@ -11,76 +11,15 @@ jobs:
       matrix:
         php: [8.1]
         roadrunner: [2.5.*]
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: "root"
-          MYSQL_DATABASE: db_imi_test
-          TZ: "Asia/Shanghai"
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: root
-          POSTGRES_DB: db_imi_test
-          POSTGRES_PASSWORD: root
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis:6
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      rabbitmq:
-        image: rabbitmq:3.8-management
-        env:
-          RABBITMQ_DEFAULT_VHOST: "/"
-          RABBITMQ_DEFAULT_USER: "guest"
-          RABBITMQ_DEFAULT_PASS: "guest"
-        ports:
-          - 4369:4369
-          - 15672:15672
-          - 5672:5672
-          - 25672:25672
-      zookeeper:
-        image: zookeeper:3.4
-        ports:
-          - 2181:2181
-      kafka:
-        image: wurstmeister/kafka:2.13-2.7.0
-        env:
-          KAFKA_BROKER_ID: 1
-          KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-          KAFKA_ADVERTISED_PORT: 9092
-          KAFKA_HOST_NAME: 127.0.0.1
-          KAFKA_PORT: 9092
-          KAFKA_ZOOKEEPER_CONNECT: 127.0.0.1:2181
-          HOSTNAME_COMMAND: hostname -i
-          KAFKA_LISTENERS: PLAINTEXT://127.0.0.1:9092
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
-          KAFKA_NUM_PARTITIONS: 3
-          KAFKA_CREATE_TOPICS_SEPARATOR: "$$'\n'"
-          KAFKA_CREATE_TOPICS: |
-            queue-imi-1:3:1
-            QueueTest1:3:1
-            imi-kafka-queue-test:3:1
-        ports:
-          - 9092:9092
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REDIS_SERVER_HOST: 127.0.0.1
+      MYSQL_SERVER_HOST: 127.0.0.1
+      MYSQL_SERVER_PASSWORD: "root"
+      PGSQL_SERVER_HOST: postgres
+      PGSQL_SERVER_PASSWORD: "root"
+      AMQP_SERVER_HOST: "rabbitmq"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -95,7 +34,7 @@ jobs:
           extensions: >
             :xdebug
             apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event,
-            swoole-swoole-src@boost_context_api_name
+            swoole-swoole/swoole-src@master
         env:
           fail-fast: true
           SWOOLE_CONFIGURE_OPTS: |
@@ -116,6 +55,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
       - name: Prepare
         run: |
+          docker-compose -f ./.github/docker-compose1.yml up -d
           php -v
           php -m
           php --ri swoole
@@ -131,8 +71,8 @@ jobs:
         run: composer test-swoole
       - name: Test workerman
         run: composer test-workerman
-#      - name: Test workerman-gateway
-#        run: composer test-workerman-gateway
+      - name: Test workerman-gateway
+        run: composer test-workerman-gateway
       - name: Test roadrunner
         run: composer test-roadrunner
       - name: Test fpm
@@ -143,8 +83,8 @@ jobs:
         run: composer test-queue
       - name: Test amqp
         run: composer test-amqp
-      - name: Test kafka
-        run: composer test-kafka
+#      - name: Test kafka
+#        run: composer test-kafka
       - name: Test grpc
         run: composer test-grpc
       - name: Test snowflake
