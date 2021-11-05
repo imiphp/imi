@@ -28,6 +28,7 @@ trait TBeanRealClass
                 $realClassNames[static::class] = $ref->getName();
             }
         }
+
         return $realClassNames[static::class];
     }
 }
