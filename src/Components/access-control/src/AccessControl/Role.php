@@ -72,6 +72,11 @@ class Role
         }
     }
 
+    public function getRoleCode(): string
+    {
+        return $this->roleCode;
+    }
+
     /**
      * 处理操作的本地数据更新.
      */
@@ -100,6 +105,7 @@ class Role
      */
     public static function create(string $name, ?string $code = null, string $description = '')
     {
+        // @phpstan-ignore-next-line
         $record = App::getBean('ACRoleService')->create($name, $code, $description);
         if ($record)
         {

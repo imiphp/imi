@@ -131,6 +131,8 @@ class Imi
 
     public static function reloadProcess(): void
     {
+        /** @var string[]|bool $rules */
+        // @phpstan-ignore-next-line
         $rules = App::getBean('hotUpdate')->getProcess();
         if (false === $rules)
         {
@@ -151,12 +153,11 @@ class Imi
             {
                 continue;
             }
-            $pid = $info['pid'] ?? 0;
-            if (empty($pid))
+            if (empty($info['pid']))
             {
                 continue;
             }
-            Process::kill($pid, \SIGTERM);
+            Process::kill($info['pid'], \SIGTERM);
         }
     }
 }

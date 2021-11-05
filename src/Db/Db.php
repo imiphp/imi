@@ -34,7 +34,7 @@ class Db
      */
     public static function getNewInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
-        $poolName = static::parsePoolName($poolName, $queryType);
+        $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
         {
             return PoolManager::getResource($poolName)->getInstance();
@@ -63,7 +63,7 @@ class Db
      */
     public static function getInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
-        $poolName = static::parsePoolName($poolName, $queryType);
+        $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
         {
             return PoolManager::getRequestContextResource($poolName)->getInstance();
@@ -190,7 +190,7 @@ class Db
         $poolName = Config::get('@currentServer.db.defaultPool');
         if (null !== $poolName)
         {
-            $poolName = static::parsePoolName($poolName, $queryType);
+            $poolName = self::parsePoolName($poolName, $queryType);
         }
 
         return $poolName;
@@ -205,7 +205,7 @@ class Db
      */
     public static function use(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
-        $poolName = static::parsePoolName($poolName, $queryType);
+        $poolName = self::parsePoolName($poolName, $queryType);
 
         if (PoolManager::exists($poolName))
         {
@@ -228,7 +228,7 @@ class Db
      */
     public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
-        $poolName = static::parsePoolName($poolName, $queryType);
+        $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
         {
             return PoolManager::use($poolName, function (IPoolResource $resource, IDb $db) use ($callable) {

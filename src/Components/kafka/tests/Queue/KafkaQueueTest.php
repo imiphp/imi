@@ -11,6 +11,7 @@ class KafkaQueueTest extends BaseQueueTest
 {
     protected function getDriver(): IQueueDriver
     {
+        // @phpstan-ignore-next-line
         return App::getBean('KafkaQueueDriver', 'imi-kafka-queue-test', [
             'poolName' => 'kafka',
             'groupId'  => 'queue-test',

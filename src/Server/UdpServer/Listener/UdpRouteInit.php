@@ -60,7 +60,7 @@ class UdpRouteInit implements IEventListener
                 // 类中间件
                 $classMiddlewares = [];
                 /** @var UdpMiddleware $middleware */
-                foreach (AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) ?? [] as $middleware)
+                foreach (AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
@@ -75,7 +75,7 @@ class UdpRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var UdpMiddleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, UdpMiddleware::class) ?? [] as $middleware)
+                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, UdpMiddleware::class) as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }

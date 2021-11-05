@@ -28,7 +28,7 @@ trait TTreeModel
      */
     private static function __getIdField(): string
     {
-        $treeModel = static::__getTreeModel();
+        $treeModel = self::__getTreeModel();
         if ($treeModel->idField)
         {
             return $treeModel->idField;
@@ -48,8 +48,8 @@ trait TTreeModel
         {
             $query = static::query();
         }
-        $treeModel = static::__getTreeModel();
-        $idField = static::__getIdField();
+        $treeModel = self::__getTreeModel();
+        $idField = self::__getIdField();
 
         return ArrayUtil::toTreeAssoc($query->select()->getArray(), $idField, $treeModel->parentField, $treeModel->childrenField);
     }
@@ -65,7 +65,7 @@ trait TTreeModel
      */
     public function getChildrenIds($parentId = null, bool $includeParentId = false, int $limitLevel = -1): array
     {
-        $idField = static::__getIdField();
+        $idField = self::__getIdField();
         if (\is_array($parentId))
         {
             $ids = $parentId;
@@ -88,7 +88,7 @@ trait TTreeModel
             $idsList2 = [];
         }
         $level = 1;
-        $parentField = static::__getTreeModel()->parentField;
+        $parentField = self::__getTreeModel()->parentField;
         while (true)
         {
             $i = null;
@@ -122,9 +122,9 @@ trait TTreeModel
      */
     public function getChildIds($parentId = null): array
     {
-        $idField = static::__getIdField();
+        $idField = self::__getIdField();
 
-        return static::query()->field($idField)->where(static::__getTreeModel()->parentField, '=', $parentId ?? $this[$idField])->select()->getColumn();
+        return static::query()->field($idField)->where(self::__getTreeModel()->parentField, '=', $parentId ?? $this[$idField])->select()->getColumn();
     }
 
     /**
@@ -142,7 +142,7 @@ trait TTreeModel
             return [];
         }
 
-        return static::query()->whereIn(static::__getIdField(), $ids)->select()->getArray();
+        return static::query()->whereIn(self::__getIdField(), $ids)->select()->getArray();
     }
 
     /**
@@ -152,7 +152,7 @@ trait TTreeModel
      */
     public function getParent(): ?self
     {
-        return static::find($this[static::__getTreeModel()->parentField]);
+        return static::find($this[self::__getTreeModel()->parentField]);
     }
 
     /**
@@ -164,7 +164,7 @@ trait TTreeModel
     {
         $parents = [];
         $treeItem = $this;
-        $parentField = static::__getTreeModel()->parentField;
+        $parentField = self::__getTreeModel()->parentField;
         while (true)
         {
             $treeItem = static::find($treeItem[$parentField]);

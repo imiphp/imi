@@ -91,7 +91,7 @@ class Inotify extends BaseMonitor
         $changedFiles = &$this->changedFiles;
         $changedFiles = [];
         $paths = &$this->paths;
-        $handler = &$this->handler;
+        $handler = $this->handler;
         $mask = &$this->mask;
         $excludeRule = $this->excludeRule;
         while (true)

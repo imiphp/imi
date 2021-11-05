@@ -131,6 +131,7 @@ class Server extends Base implements ISwooleWebSocketServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -157,6 +158,7 @@ class Server extends Base implements ISwooleWebSocketServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -183,6 +185,7 @@ class Server extends Base implements ISwooleWebSocketServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -214,8 +217,10 @@ class Server extends Base implements ISwooleWebSocketServer
                 }
                 catch (\Throwable $th)
                 {
+                    // @phpstan-ignore-next-line
                     if (true !== $this->getBean('HttpErrorHandler')->handle($th))
                     {
+                        // @phpstan-ignore-next-line
                         App::getBean('ErrorLog')->onException($th);
                     }
                 }

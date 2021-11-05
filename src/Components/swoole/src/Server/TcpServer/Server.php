@@ -113,6 +113,7 @@ class Server extends Base implements ISwooleTcpServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
                 finally
@@ -156,6 +157,7 @@ class Server extends Base implements ISwooleTcpServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -179,6 +181,7 @@ class Server extends Base implements ISwooleTcpServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });

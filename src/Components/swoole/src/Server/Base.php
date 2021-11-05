@@ -197,6 +197,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                     }
                     catch (\Throwable $ex)
                     {
+                        // @phpstan-ignore-next-line
                         App::getBean('ErrorLog')->onException($ex);
                         exit(255);
                     }
@@ -212,6 +213,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -230,6 +232,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                     SwooleEvent::exit();
                 }
@@ -249,6 +252,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -263,6 +267,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -276,6 +281,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                     exit(255);
                 }
@@ -290,6 +296,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -311,6 +318,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                     }
                     catch (\Throwable $ex)
                     {
+                        // @phpstan-ignore-next-line
                         App::getBean('ErrorLog')->onException($ex);
                     }
                 });
@@ -327,6 +335,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -342,6 +351,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
@@ -359,6 +369,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 catch (\Throwable $ex)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });

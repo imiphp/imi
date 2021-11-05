@@ -263,7 +263,7 @@ class ModelRelationTest extends BaseTest
     /**
      * @depends testOneToOne
      */
-    public function testPolymorphicToOne(array $args)
+    public function testPolymorphicToOne(array $args): void
     {
         ['memberIds' => $memberIds, 'articleIds' => $articleIds] = $args;
         $record1 = Polymorphic::newInstance();
@@ -319,7 +319,7 @@ class ModelRelationTest extends BaseTest
     /**
      * @depends testOneToOne
      */
-    public function testPolymorphicOneToOne(array $args)
+    public function testPolymorphicOneToOne(array $args): void
     {
         ['memberIds' => $memberIds, 'articleIds' => $articleIds] = $args;
         $article1 = Article::newInstance();

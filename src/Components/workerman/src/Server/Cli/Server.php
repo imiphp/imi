@@ -90,6 +90,7 @@ class Server extends BaseCommand
                 $server->getWorker()->count = $workerNum;
             }
         }
+        // @phpstan-ignore-next-line
         ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');

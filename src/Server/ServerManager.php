@@ -30,11 +30,11 @@ class ServerManager
     {
         if (null === $class)
         {
-            return static::$servers;
+            return self::$servers;
         }
         else
         {
-            $servers = static::$servers;
+            $servers = self::$servers;
             foreach ($servers as $name => $server)
             {
                 if (!$server instanceof $class)
@@ -52,7 +52,7 @@ class ServerManager
      */
     public static function getServer(string $name, ?string $class = null): ?IServer
     {
-        $server = static::$servers[$name] ?? null;
+        $server = self::$servers[$name] ?? null;
         if (null === $class || $server instanceof $class)
         {
             return $server;
@@ -75,7 +75,7 @@ class ServerManager
             'args'   => $args,
         ]);
         // 主服务器实例对象
-        $server = static::$servers[$name] = App::getBean($config['type'], $name, $config, ...$args);
+        $server = self::$servers[$name] = App::getBean($config['type'], $name, $config, ...$args);
         // 创建服务器对象后置操作
         Event::trigger('IMI.SERVER.CREATE.AFTER', [
             'name'   => $name,

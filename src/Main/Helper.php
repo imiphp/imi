@@ -26,7 +26,7 @@ class Helper
     {
         if (null !== $namespace)
         {
-            $mains = &static::$mains;
+            $mains = &self::$mains;
             if (null === $componentName)
             {
                 // 获取
@@ -48,14 +48,14 @@ class Helper
                 }
                 else
                 {
-                    return static::newInstance($namespace, $componentName);
+                    return self::newInstance($namespace, $componentName);
                 }
             }
         }
         elseif (null !== $componentName)
         {
-            $mains = &static::$mains;
-            $nameMap = &static::$nameMap;
+            $mains = &self::$mains;
+            $nameMap = &self::$nameMap;
             if (!isset($nameMap[$componentName], $mains[$nameMap[$componentName]]))
             {
                 return null;
@@ -76,7 +76,7 @@ class Helper
      */
     public static function getMains(): array
     {
-        return static::$mains;
+        return self::$mains;
     }
 
     /**
@@ -86,7 +86,7 @@ class Helper
      */
     public static function getAppMains(): array
     {
-        $mains = static::$mains;
+        $mains = self::$mains;
         unset($mains['Imi']);
 
         return $mains;
@@ -97,8 +97,8 @@ class Helper
         $className = $namespace . '\Main';
         if (class_exists($className))
         {
-            static::$mains[$namespace] = $instance = new $className($componentName);
-            static::$nameMap[$componentName] = $namespace;
+            self::$mains[$namespace] = $instance = new $className($componentName);
+            self::$nameMap[$componentName] = $namespace;
 
             return $instance;
         }

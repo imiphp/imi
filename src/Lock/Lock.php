@@ -69,12 +69,12 @@ class Lock
         {
             $lockConfigId = static::getDefaultId();
         }
-        $instances = &static::$instances;
+        $instances = &self::$instances;
         if (null === $lockId && isset($instances[$lockConfigId]))
         {
             return $instances[$lockConfigId];
         }
-        $options = &static::$options;
+        $options = &self::$options;
         if (!isset($options[$lockConfigId]))
         {
             throw new \RuntimeException(sprintf('Lock %s does not exists', $lockConfigId));
@@ -103,7 +103,7 @@ class Lock
      */
     public static function add(string $id, array $option): void
     {
-        static::$options[$id] = new LockConfigOption($option);
+        self::$options[$id] = new LockConfigOption($option);
     }
 
     /**

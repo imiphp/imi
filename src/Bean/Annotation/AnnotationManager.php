@@ -36,7 +36,7 @@ class AnnotationManager
 
     public static function init(): void
     {
-        static::$annotationRelation = new AnnotationRelation();
+        self::$annotationRelation = new AnnotationRelation();
     }
 
     public static function getRemoveWhenset(): bool
@@ -75,7 +75,7 @@ class AnnotationManager
      */
     public static function setAnnotations(array $annotations): void
     {
-        static::$annotations = $annotations;
+        self::$annotations = $annotations;
     }
 
     /**
@@ -83,7 +83,7 @@ class AnnotationManager
      */
     public static function getAnnotations(): array
     {
-        return static::$annotations;
+        return self::$annotations;
     }
 
     /**
@@ -91,7 +91,7 @@ class AnnotationManager
      */
     public static function setAnnotationRelation(AnnotationRelation $data): void
     {
-        static::$annotationRelation = $data;
+        self::$annotationRelation = $data;
     }
 
     /**
@@ -99,7 +99,7 @@ class AnnotationManager
      */
     public static function getAnnotationRelation(): AnnotationRelation
     {
-        return static::$annotationRelation;
+        return self::$annotationRelation;
     }
 
     /**
@@ -109,14 +109,14 @@ class AnnotationManager
      */
     public static function addClassAnnotations(string $className, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
-        elseif (isset(static::$annotationsCache[$className]))
+        elseif (isset(self::$annotationsCache[$className]))
         {
-            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
+            $staticAnnotations[$className] = $classAnnotation = unserialize(self::$annotationsCache[$className]);
         }
         else
         {
@@ -125,7 +125,7 @@ class AnnotationManager
         $classAnnotation->addClassAnnotations($annotations);
         foreach ($annotations as $annotation)
         {
-            static::$annotationRelation->addClassRelation(new ClassAnnotationRelation($className, $annotation));
+            self::$annotationRelation->addClassRelation(new ClassAnnotationRelation($className, $annotation));
         }
     }
 
@@ -136,10 +136,10 @@ class AnnotationManager
      */
     public static function setClassAnnotations(string $className, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
-            static::$annotationRelation->removeClassRelation($className);
+            self::$annotationRelation->removeClassRelation($className);
             if (self::$removeWhenset)
             {
                 $staticAnnotations[$className]->clearClassAnnotations();
@@ -155,14 +155,14 @@ class AnnotationManager
      */
     public static function addMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
-        elseif (isset(static::$annotationsCache[$className]))
+        elseif (isset(self::$annotationsCache[$className]))
         {
-            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
+            $staticAnnotations[$className] = $classAnnotation = unserialize(self::$annotationsCache[$className]);
         }
         else
         {
@@ -171,7 +171,7 @@ class AnnotationManager
         $classAnnotation->addMethodAnnotations($methodName, $annotations);
         foreach ($annotations as $annotation)
         {
-            static::$annotationRelation->addMethodRelation(new MethodAnnotationRelation($className, $methodName, $annotation));
+            self::$annotationRelation->addMethodRelation(new MethodAnnotationRelation($className, $methodName, $annotation));
         }
     }
 
@@ -182,13 +182,13 @@ class AnnotationManager
      */
     public static function setMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $staticAnnotations[$className]->clearMethodAnnotations($methodName);
             if (self::$removeWhenset)
             {
-                static::$annotationRelation->removeMethodRelation($className, $methodName);
+                self::$annotationRelation->removeMethodRelation($className, $methodName);
             }
         }
         static::addMethodAnnotations($className, $methodName, ...$annotations);
@@ -201,14 +201,14 @@ class AnnotationManager
      */
     public static function addPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
-        elseif (isset(static::$annotationsCache[$className]))
+        elseif (isset(self::$annotationsCache[$className]))
         {
-            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
+            $staticAnnotations[$className] = $classAnnotation = unserialize(self::$annotationsCache[$className]);
         }
         else
         {
@@ -217,7 +217,7 @@ class AnnotationManager
         $classAnnotation->addPropertyAnnotations($propertyName, $annotations);
         foreach ($annotations as $annotation)
         {
-            static::$annotationRelation->addPropertyRelation(new PropertyAnnotationRelation($className, $propertyName, $annotation));
+            self::$annotationRelation->addPropertyRelation(new PropertyAnnotationRelation($className, $propertyName, $annotation));
         }
     }
 
@@ -228,13 +228,13 @@ class AnnotationManager
      */
     public static function setPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $staticAnnotations[$className]->clearPropertyAnnotations($propertyName);
             if (self::$removeWhenset)
             {
-                static::$annotationRelation->removePropertyRelation($className, $propertyName);
+                self::$annotationRelation->removePropertyRelation($className, $propertyName);
             }
         }
         static::addPropertyAnnotations($className, $propertyName, ...$annotations);
@@ -247,14 +247,14 @@ class AnnotationManager
      */
     public static function addConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
-        elseif (isset(static::$annotationsCache[$className]))
+        elseif (isset(self::$annotationsCache[$className]))
         {
-            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
+            $staticAnnotations[$className] = $classAnnotation = unserialize(self::$annotationsCache[$className]);
         }
         else
         {
@@ -263,7 +263,7 @@ class AnnotationManager
         $classAnnotation->addConstantAnnotations($constantName, $annotations);
         foreach ($annotations as $annotation)
         {
-            static::$annotationRelation->addConstantRelation(new ConstantAnnotationRelation($className, $constantName, $annotation));
+            self::$annotationRelation->addConstantRelation(new ConstantAnnotationRelation($className, $constantName, $annotation));
         }
     }
 
@@ -274,13 +274,13 @@ class AnnotationManager
      */
     public static function setConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $staticAnnotations[$className]->clearConstantAnnotations($constantName);
             if (self::$removeWhenset)
             {
-                static::$annotationRelation->removeConstantRelation($className, $constantName);
+                self::$annotationRelation->removeConstantRelation($className, $constantName);
             }
         }
         static::addConstantAnnotations($className, $constantName, ...$annotations);
@@ -296,7 +296,7 @@ class AnnotationManager
      */
     public static function getAnnotationPoints(string $annotationClassName, ?string $where = null): array
     {
-        return static::$annotationRelation->getAll($annotationClassName, $where);
+        return self::$annotationRelation->getAll($annotationClassName, $where);
     }
 
     /**
@@ -305,12 +305,12 @@ class AnnotationManager
      */
     public static function getClassAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -351,12 +351,12 @@ class AnnotationManager
      */
     public static function getMethodAnnotations(string $className, string $methodName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -397,12 +397,12 @@ class AnnotationManager
      */
     public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -443,12 +443,12 @@ class AnnotationManager
      */
     public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -488,12 +488,12 @@ class AnnotationManager
      */
     public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -538,12 +538,12 @@ class AnnotationManager
      */
     public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -588,12 +588,12 @@ class AnnotationManager
      */
     public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
         {
-            if (isset(static::$annotationsCache[$className]))
+            if (isset(self::$annotationsCache[$className]))
             {
-                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
             }
             elseif ($autoAnalysis)
             {
@@ -636,22 +636,22 @@ class AnnotationManager
      */
     public static function clearClassAllAnnotations(string $className): void
     {
-        $staticAnnotations = &static::$annotations;
+        $staticAnnotations = &self::$annotations;
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
-            static::$annotationRelation->removeClassRelation($className);
+            self::$annotationRelation->removeClassRelation($className);
             if ($list = $classAnnotation->getMethodAnnotations())
             {
-                static::$annotationRelation->removeMethodRelation($className, array_keys($list));
+                self::$annotationRelation->removeMethodRelation($className, array_keys($list));
             }
             if ($list = $classAnnotation->getPropertyAnnotations())
             {
-                static::$annotationRelation->removePropertyRelation($className, array_keys($list));
+                self::$annotationRelation->removePropertyRelation($className, array_keys($list));
             }
             if ($list = $classAnnotation->getConstantAnnotations())
             {
-                static::$annotationRelation->removeConstantRelation($className, array_keys($list));
+                self::$annotationRelation->removeConstantRelation($className, array_keys($list));
             }
             unset($staticAnnotations[$className]);
         }

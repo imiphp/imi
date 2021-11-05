@@ -22,6 +22,7 @@ class Server
      */
     public static function getInstance(?string $serverName = null): IServerUtil
     {
+        // @phpstan-ignore-next-line
         return self::getServer($serverName)->getBean('ServerUtil');
     }
 

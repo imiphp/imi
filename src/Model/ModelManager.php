@@ -79,15 +79,9 @@ class ModelManager
     public static function getAnnotation($object, string $annotationClass): ?Base
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        $staticAnnotation = &static::$annotation;
-        if (isset($staticAnnotation[$objectClass][$annotationClass]))
-        {
-            return $staticAnnotation[$objectClass][$annotationClass];
-        }
-        else
-        {
-            return $staticAnnotation[$objectClass][$annotationClass] = AnnotationManager::getClassAnnotations($objectClass, $annotationClass)[0] ?? null;
-        }
+
+        return self::$annotation[$objectClass][$annotationClass]
+            ??= (AnnotationManager::getClassAnnotations($objectClass, $annotationClass)[0] ?? null);
     }
 
     /**
@@ -98,15 +92,8 @@ class ModelManager
     public static function getPropertyAnnotation($object, string $propertyName, string $annotationClass): ?Base
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        $staticPropertyAnnotation = &static::$propertyAnnotation;
-        if (isset($staticPropertyAnnotation[$objectClass][$propertyName][$annotationClass]))
-        {
-            return $staticPropertyAnnotation[$objectClass][$propertyName][$annotationClass];
-        }
-        else
-        {
-            return $staticPropertyAnnotation[$objectClass][$propertyName][$annotationClass] = AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null;
-        }
+
+        return self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass] ??= (AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null);
     }
 
     /**
@@ -117,7 +104,7 @@ class ModelManager
     public static function getTable($object): string
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        $staticTable = &static::$table;
+        $staticTable = &self::$table;
         if (isset($staticTable[$objectClass]))
         {
             return $staticTable[$objectClass];
@@ -139,7 +126,7 @@ class ModelManager
     public static function getDbPoolName($object): string
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        $staticDbPoolName = &static::$dbPoolName;
+        $staticDbPoolName = &self::$dbPoolName;
         if (isset($staticDbPoolName[$objectClass]))
         {
             return $staticDbPoolName[$objectClass];
@@ -164,7 +151,7 @@ class ModelManager
     public static function getId($object)
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        $staticId = &static::$id;
+        $staticId = &self::$id;
         if (isset($staticId[$objectClass]))
         {
             return $staticId[$objectClass];
@@ -200,7 +187,7 @@ class ModelManager
     public static function getFields($object): array
     {
         $objectClass = BeanFactory::getObjectClass($object);
-        $staticFields = &static::$fields;
+        $staticFields = &self::$fields;
         if (isset($staticFields[$objectClass]))
         {
             return $staticFields[$objectClass];
@@ -239,7 +226,7 @@ class ModelManager
     public static function isCamel($object): bool
     {
         $class = BeanFactory::getObjectClass($object);
-        $staticIsCamelCache = &static::$isCamelCache;
+        $staticIsCamelCache = &self::$isCamelCache;
         if (isset($staticIsCamelCache[$class]))
         {
             return $staticIsCamelCache[$class];
@@ -261,7 +248,7 @@ class ModelManager
     public static function getKeyRule($object): KeyRule
     {
         $class = BeanFactory::getObjectClass($object);
-        $staticKeyRules = &static::$keyRules;
+        $staticKeyRules = &self::$keyRules;
         if (isset($staticKeyRules[$class]))
         {
             return $staticKeyRules[$class];
@@ -285,7 +272,7 @@ class ModelManager
     public static function getMemberRule($object): KeyRule
     {
         $class = BeanFactory::getObjectClass($object);
-        $staticMemberRules = &static::$memberRules;
+        $staticMemberRules = &self::$memberRules;
         if (isset($staticMemberRules[$class]))
         {
             return $staticMemberRules[$class];
@@ -333,7 +320,7 @@ class ModelManager
     public static function getExtractPropertys($object): array
     {
         $class = BeanFactory::getObjectClass($object);
-        $staticExtractPropertys = &static::$extractPropertys;
+        $staticExtractPropertys = &self::$extractPropertys;
         if (isset($staticExtractPropertys[$class]))
         {
             return $staticExtractPropertys[$class];

@@ -142,6 +142,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -164,6 +165,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -186,6 +188,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -208,6 +211,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -232,6 +236,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -251,6 +256,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -330,6 +336,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };
@@ -353,6 +360,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             catch (\Throwable $ex)
             {
+                // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
         };

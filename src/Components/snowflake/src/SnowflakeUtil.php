@@ -22,9 +22,9 @@ class SnowflakeUtil
      */
     public static function getInstance(string $name): SnowflakeClass
     {
-        if (isset(static::$instances[$name]))
+        if (isset(self::$instances[$name]))
         {
-            return static::$instances[$name];
+            return self::$instances[$name];
         }
         /** @var \Imi\Snowflake\Bean\Snowflake $snowflake */
         $snowflake = App::getBean('Snowflake');
@@ -34,7 +34,7 @@ class SnowflakeUtil
             throw new \RuntimeException(sprintf('Get snowflake options %s failed', $name));
         }
 
-        return static::$instances[$name] = static::newInstance($options['datacenterId'] ?? null, $options['workerId'] ?? null, $options['startTimeStamp'] ?? null, $options['redisPool'] ?? null);
+        return self::$instances[$name] = static::newInstance($options['datacenterId'] ?? null, $options['workerId'] ?? null, $options['startTimeStamp'] ?? null, $options['redisPool'] ?? null);
     }
 
     /**

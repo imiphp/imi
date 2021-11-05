@@ -24,7 +24,7 @@ class StatementManager
      */
     public static function set(IStatement $statement, bool $using): void
     {
-        static::$statements[$statement->getDb()->hashCode()][$statement->getSql()] = [
+        self::$statements[$statement->getDb()->hashCode()][$statement->getSql()] = [
             'statement'     => $statement,
             'using'         => $using,
         ];
@@ -42,11 +42,11 @@ class StatementManager
     {
         $hashCode = $statement->getDb()->hashCode();
         $sql = $statement->getSql();
-        if (isset(static::$statements[$hashCode][$sql]))
+        if (isset(self::$statements[$hashCode][$sql]))
         {
             return false;
         }
-        static::$statements[$hashCode][$sql] = [
+        self::$statements[$hashCode][$sql] = [
             'statement'     => $statement,
             'using'         => $using,
         ];
@@ -71,11 +71,11 @@ class StatementManager
     public static function get(IDb $db, string $sql)
     {
         $hashCode = $db->hashCode();
-        $statement = &static::$statements[$hashCode][$sql] ?? null;
-        if (null === $statement)
+        if (!isset(self::$statements[$hashCode][$sql]))
         {
-            return $statement;
+            return null;
         }
+        $statement = &self::$statements[$hashCode][$sql];
         if ($statement['using'])
         {
             return false;
@@ -95,7 +95,7 @@ class StatementManager
         $db = $statement->getDb();
         $sql = $statement->getSql();
         $hashCode = $db->hashCode();
-        $staticStatements = &static::$statements;
+        $staticStatements = &self::$statements;
         if (isset($staticStatements[$hashCode][$sql]))
         {
             $statementItem = &$staticStatements[$hashCode][$sql];
@@ -123,7 +123,7 @@ class StatementManager
     {
         $context = RequestContext::getContext();
         $statementCaches = $context['statementCaches'] ?? [];
-        $statements = static::$statements[$db->hashCode()] ?? [];
+        $statements = self::$statements[$db->hashCode()] ?? [];
         if ($statements)
         {
             foreach ($statements as &$item)
@@ -148,7 +148,7 @@ class StatementManager
      */
     public static function select(IDb $db): array
     {
-        return static::$statements[$db->hashCode()] ?? [];
+        return self::$statements[$db->hashCode()] ?? [];
     }
 
     /**
@@ -160,7 +160,7 @@ class StatementManager
         $sql = $statement->getSql();
         static::unUsing($statement);
         $hashCode = $db->hashCode();
-        $staticStatements = &static::$statements;
+        $staticStatements = &self::$statements;
         if (isset($staticStatements[$hashCode][$sql]))
         {
             unset($staticStatements[$hashCode][$sql]);
@@ -174,7 +174,7 @@ class StatementManager
     {
         $requestContext = RequestContext::getContext();
         $statementCaches = $requestContext['statementCaches'] ?? [];
-        $staticStatements = &static::$statements;
+        $staticStatements = &self::$statements;
         $statements = $staticStatements[$db->hashCode()] ?? [];
         if ($statements)
         {
@@ -195,7 +195,7 @@ class StatementManager
      */
     public static function getAll(): array
     {
-        return static::$statements;
+        return self::$statements;
     }
 
     /**
@@ -203,7 +203,7 @@ class StatementManager
      */
     public static function clearAll(): void
     {
-        static::$statements = [];
+        self::$statements = [];
         RequestContext::set('statementCaches', []);
     }
 }

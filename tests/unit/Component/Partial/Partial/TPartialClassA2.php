@@ -27,6 +27,7 @@ namespace Imi\Test\Component\Partial\Classes
     {
         class PartialClassA
         {
+            // @phpstan-ignore-next-line
             private int $test3Value;
 
             public function test3(): int

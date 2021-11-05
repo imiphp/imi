@@ -56,7 +56,7 @@ class TcpRouteInit implements IEventListener
                 }
                 $classMiddlewares = [];
                 /** @var TcpMiddleware $middleware */
-                foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
+                foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
@@ -71,7 +71,7 @@ class TcpRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var TcpMiddleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
+                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }

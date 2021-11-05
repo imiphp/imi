@@ -98,6 +98,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 }
                 catch (\Throwable $th)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($th);
                 }
             });

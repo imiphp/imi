@@ -60,7 +60,7 @@ class WSRouteInit implements IEventListener
                 // 类中间件
                 $classMiddlewares = [];
                 /** @var WSMiddleware $middleware */
-                foreach (AnnotationManager::getClassAnnotations($className, WSMiddleware::class) ?? [] as $middleware)
+                foreach (AnnotationManager::getClassAnnotations($className, WSMiddleware::class) as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
@@ -75,7 +75,7 @@ class WSRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var WSMiddleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, WSMiddleware::class) ?? [] as $middleware)
+                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, WSMiddleware::class) as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }

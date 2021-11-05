@@ -24,6 +24,7 @@ abstract class DbBaseTest extends BaseTest
 
     public function testInject(): void
     {
+        /** @var \Imi\Test\Component\Db\Classes\TestInjectDb $test */
         $test = App::getBean('TestInjectDb');
         $test->test();
     }

@@ -11,6 +11,7 @@ class AMQPQueueTest extends BaseQueueTest
 {
     protected function getDriver(): IQueueDriver
     {
+        // @phpstan-ignore-next-line
         return App::getBean('AMQPQueueDriver', 'imi-amqp-queue-test', [
             'poolName'          => 'rabbit',
             'redisPoolName'     => 'redis',

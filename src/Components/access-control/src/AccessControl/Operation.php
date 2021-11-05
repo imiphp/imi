@@ -13,6 +13,7 @@ abstract class Operation
      */
     public static function create(string $name, ?string $code = null, int $parentId = 0, int $index = 0, string $description = ''): \Imi\AC\Model\Operation
     {
+        // @phpstan-ignore-next-line
         return App::getBean('ACOperationService')->create($name, $code, $parentId, $index, $description);
     }
 
@@ -21,6 +22,7 @@ abstract class Operation
      */
     public static function update(int $id, string $name, ?string $code, int $parentId = 0, int $index = 0, string $description = ''): bool
     {
+        // @phpstan-ignore-next-line
         return App::getBean('ACOperationService')->update($id, $name, $code, $parentId, $index, $description);
     }
 
@@ -29,6 +31,7 @@ abstract class Operation
      */
     public static function delete(int $id): bool
     {
+        // @phpstan-ignore-next-line
         return App::getBean('ACOperationService')->delete($id);
     }
 
@@ -37,6 +40,7 @@ abstract class Operation
      */
     public static function selectList(): array
     {
+        // @phpstan-ignore-next-line
         return App::getBean('ACOperationService')->selectList();
     }
 
@@ -45,6 +49,7 @@ abstract class Operation
      */
     public static function listToTree(array $list): array
     {
+        // @phpstan-ignore-next-line
         return App::getBean('ACOperationService')->listToTree($list);
     }
 }

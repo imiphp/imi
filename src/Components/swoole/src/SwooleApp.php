@@ -197,6 +197,7 @@ class SwooleApp extends CliApp
     {
         parent::init();
         register_shutdown_function(function () {
+            // @phpstan-ignore-next-line
             App::getBean('Logger')->clear();
         });
         foreach (Config::getAliases() as $alias)
@@ -207,6 +208,7 @@ class SwooleApp extends CliApp
         AtomicManager::init();
         if (BeanManager::get('SwooleWorkerHandler'))
         {
+            // @phpstan-ignore-next-line
             Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
         }
         $initCallback = function () {

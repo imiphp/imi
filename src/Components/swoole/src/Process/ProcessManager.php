@@ -144,7 +144,7 @@ class ProcessManager
                 }
                 try
                 {
-                    if ($processOption['options']['unique'] && !static::lockProcess($name))
+                    if ($processOption['options']['unique'] && !self::lockProcess($name))
                     {
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
                     }
@@ -164,7 +164,7 @@ class ProcessManager
                     $processInstance->run($swooleProcess);
                     if ($processOption['options']['unique'])
                     {
-                        static::unlockProcess($name);
+                        self::unlockProcess($name);
                     }
                 }
                 catch (ExitException $e)
@@ -173,6 +173,7 @@ class ProcessManager
                 }
                 catch (\Throwable $th)
                 {
+                    // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($th);
                     $exitCode = 255;
                 }
@@ -218,7 +219,7 @@ class ProcessManager
         {
             return false;
         }
-        $fileName = static::getLockFileName($name);
+        $fileName = self::getLockFileName($name);
         if (!is_file($fileName))
         {
             return false;
@@ -305,8 +306,8 @@ class ProcessManager
         $server = ServerManager::getServer('main', ISwooleServer::class);
         $swooleServer = $server->getSwooleServer();
         $swooleServer->addProcess($process);
-        static::$managerProcesses[$name][$alias] = $process;
-        static::$managerProcessSet[self::buildUniqueId($name, $alias)] = [
+        self::$managerProcesses[$name][$alias] = $process;
+        self::$managerProcessSet[self::buildUniqueId($name, $alias)] = [
             'name'    => $name,
             'alias'   => $alias,
             'process' => $process,
@@ -322,7 +323,7 @@ class ProcessManager
 
     public static function initProcessInfoTable(): void
     {
-        $count = \count(static::$managerProcessSet);
+        $count = \count(self::$managerProcessSet);
         $table = new Table($count * 2);
         $table->column('wid', Table::TYPE_INT);
         $table->column('pid', Table::TYPE_INT);
@@ -361,7 +362,7 @@ class ProcessManager
      */
     public static function getProcessWithManager(string $name, ?string $alias = null): ?Process
     {
-        return static::$managerProcesses[$name][$alias] ?? null;
+        return self::$managerProcesses[$name][$alias] ?? null;
     }
 
     /**
@@ -371,7 +372,7 @@ class ProcessManager
      */
     public static function getProcessSetWithManager(): array
     {
-        return static::$managerProcessSet;
+        return self::$managerProcessSet;
     }
 
     /**
@@ -379,7 +380,7 @@ class ProcessManager
      */
     private static function lockProcess(string $name): bool
     {
-        $fileName = static::getLockFileName($name);
+        $fileName = self::getLockFileName($name);
         $fp = fopen($fileName, 'w+');
         if (false === $fp)
         {
@@ -391,7 +392,7 @@ class ProcessManager
 
             return false;
         }
-        static::$lockMap[$name] = [
+        self::$lockMap[$name] = [
             'fileName'  => $fileName,
             'fp'        => $fp,
         ];
@@ -404,7 +405,7 @@ class ProcessManager
      */
     private static function unlockProcess(string $name): bool
     {
-        $lockMap = &static::$lockMap;
+        $lockMap = &self::$lockMap;
         if (!isset($lockMap[$name]))
         {
             return false;

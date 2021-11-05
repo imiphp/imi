@@ -11,6 +11,7 @@ class RedisQueueTest extends BaseQueueTest
 {
     protected function getDriver(): IQueueDriver
     {
+        // @phpstan-ignore-next-line
         return App::getBean('RedisQueueDriver', 'imi-queue-test');
     }
 }

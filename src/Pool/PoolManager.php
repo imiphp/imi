@@ -132,7 +132,7 @@ class PoolManager
     {
         $resource = static::getInstance($name)->getResource();
 
-        static::pushResourceToRequestContext($resource);
+        self::pushResourceToRequestContext($resource);
 
         static::$lastGetResourceTime[$name] = microtime(true);
 
@@ -174,7 +174,7 @@ class PoolManager
         $resource = static::getInstance($name)->tryGetResource();
         if ($resource)
         {
-            static::pushResourceToRequestContext($resource);
+            self::pushResourceToRequestContext($resource);
         }
 
         return $resource;
@@ -186,7 +186,7 @@ class PoolManager
     public static function releaseResource(IPoolResource $resource): void
     {
         $resource->getPool()->release($resource);
-        static::removeResourceFromRequestContext($resource);
+        self::removeResourceFromRequestContext($resource);
     }
 
     /**

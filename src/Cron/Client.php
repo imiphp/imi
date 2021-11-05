@@ -146,4 +146,9 @@ class Client
             return false;
         }
     }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 }

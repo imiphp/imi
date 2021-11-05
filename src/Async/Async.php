@@ -22,14 +22,14 @@ class Async
      */
     public static function getInstance(): IAsyncHandler
     {
-        if (!isset(static::$handler))
+        if (!isset(self::$handler))
         {
             $handlerClass = Config::get('@app.imi.Async', SyncHandler::class);
 
-            return static::$handler = new $handlerClass();
+            return self::$handler = new $handlerClass();
         }
 
-        return static::$handler;
+        return self::$handler;
     }
 
     /**
@@ -37,6 +37,6 @@ class Async
      */
     public static function exec(callable $callable): IAsyncResult
     {
-        return static::getInstance()->exec($callable);
+        return self::getInstance()->exec($callable);
     }
 }

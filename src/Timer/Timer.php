@@ -23,14 +23,14 @@ class Timer
      */
     public static function getInstance(): ITimer
     {
-        if (!isset(static::$timer))
+        if (!isset(self::$timer))
         {
             $timerClass = Config::get('@app.imi.Timer', \Imi\Timer\Handler\DefaultTimer::class);
 
-            return static::$timer = new $timerClass();
+            return self::$timer = new $timerClass();
         }
 
-        return static::$timer;
+        return self::$timer;
     }
 
     /**

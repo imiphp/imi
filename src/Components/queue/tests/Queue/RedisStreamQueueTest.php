@@ -12,6 +12,7 @@ class RedisStreamQueueTest extends BaseQueueTest
 {
     protected function getDriver(): IQueueDriver
     {
+        // @phpstan-ignore-next-line
         return App::getBean('RedisStreamQueueDriver', 'imi-queue-stream-test', [
             'workingTimeout' => 1,
         ]);

@@ -17,6 +17,7 @@ class AopTest extends BaseTest
      */
     public function testBefore(): void
     {
+        /** @var \Imi\Test\Component\Aop\Classes\TestBeforeClass $test */
         $test = App::getBean('TestBeforeClass');
         $result = $test->test(1);
         $this->assertEquals(2, $result);
@@ -27,6 +28,7 @@ class AopTest extends BaseTest
      */
     public function testAfter(): void
     {
+        /** @var \Imi\Test\Component\Aop\Classes\TestAfterClass $test */
         $test = App::getBean('TestAfterClass');
         $result = $test->test(1);
         $this->assertEquals(1, $result);
@@ -37,6 +39,7 @@ class AopTest extends BaseTest
      */
     public function testAround(): void
     {
+        /** @var \Imi\Test\Component\Aop\Classes\TestAroundClass $test */
         $test = App::getBean('TestAroundClass');
         $result = $test->test(1);
         $this->assertEquals(4, $result);
@@ -47,6 +50,7 @@ class AopTest extends BaseTest
      */
     public function testAfterReturning(): void
     {
+        /** @var \Imi\Test\Component\Aop\Classes\TestAfterReturningClass $test */
         $test = App::getBean('TestAfterReturningClass');
         $result = $test->test(1);
         $this->assertEquals(2, $result);
@@ -57,6 +61,7 @@ class AopTest extends BaseTest
      */
     public function testAfterThrowing(): void
     {
+        /** @var \Imi\Test\Component\Aop\Classes\TestAfterThrowingClass $test */
         $test = App::getBean('TestAfterThrowingClass');
 
         $throwable = null;

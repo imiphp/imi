@@ -19,6 +19,7 @@ class RedisTest extends BaseTest
 {
     public function testInject(): void
     {
+        /** @var \Imi\Test\Component\Redis\Classes\TestInjectRedis $test */
         $test = App::getBean('TestInjectRedis');
         $test->test();
     }

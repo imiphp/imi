@@ -107,6 +107,7 @@ abstract class BaseConsumer implements IConsumer
                     }
                     catch (\Throwable $th)
                     {
+                        // @phpstan-ignore-next-line
                         App::getBean('ErrorLog')->onException($th);
                     }
                 });

@@ -109,6 +109,7 @@ class Group
         $groupName = $this->groupName;
         if ($this->getHandler()->joinGroup($groupName, $clientId))
         {
+            // @phpstan-ignore-next-line
             $this->server->getBean('ClientIdMap')->joinGroup($clientId, $this);
             ConnectionContext::use(function (array $contextData) use ($groupName): array {
                 $contextData['__groups'][] = $groupName;
@@ -133,6 +134,7 @@ class Group
         $groupName = $this->groupName;
         if ($this->getHandler()->leaveGroup($groupName, $clientId))
         {
+            // @phpstan-ignore-next-line
             $this->server->getBean('ClientIdMap')->leaveGroup($clientId, $this);
             ConnectionContext::use(function (array $contextData) use ($groupName) {
                 if (isset($contextData['__groups']))

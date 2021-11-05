@@ -158,7 +158,7 @@ abstract class Model extends BaseModel
     public static function select($where = null): array
     {
         $realClassName = static::__getRealClassName();
-        $query = static::parseWhere(static::query(), $where);
+        $query = self::parseWhere(static::query(), $where);
 
         // 查询前
         Event::trigger($realClassName . ':' . ModelEvents::BEFORE_SELECT, [
@@ -184,7 +184,7 @@ abstract class Model extends BaseModel
     {
         if (null === $data)
         {
-            $data = static::parseSaveData(iterator_to_array($this), 'insert', $this);
+            $data = self::parseSaveData(iterator_to_array($this), 'insert', $this);
         }
         elseif (!$data instanceof \ArrayAccess)
         {
@@ -239,7 +239,7 @@ abstract class Model extends BaseModel
         $meta = $this->__meta;
         if (null === $data)
         {
-            $data = static::parseSaveData(iterator_to_array($this), 'update', $this);
+            $data = self::parseSaveData(iterator_to_array($this), 'update', $this);
         }
         elseif (!$data instanceof \ArrayAccess)
         {
@@ -318,7 +318,7 @@ abstract class Model extends BaseModel
         if (Update::hasUpdateRelation($class))
         {
             $query = static::dbQuery();
-            $query = static::parseWhere($query, $where);
+            $query = self::parseWhere($query, $where);
 
             $list = $query->select()->getArray();
 
@@ -337,9 +337,9 @@ abstract class Model extends BaseModel
         else
         {
             $query = static::query();
-            $query = static::parseWhere($query, $where);
+            $query = self::parseWhere($query, $where);
 
-            $updateData = static::parseSaveData($data, 'update');
+            $updateData = self::parseSaveData($data, 'update');
 
             // 更新前
             Event::trigger($class . ':' . ModelEvents::BEFORE_BATCH_UPDATE, [
@@ -366,7 +366,7 @@ abstract class Model extends BaseModel
     {
         $meta = $this->__meta;
         $query = static::query();
-        $data = static::parseSaveData(iterator_to_array($this), 'save', $this);
+        $data = self::parseSaveData(iterator_to_array($this), 'save', $this);
 
         // 保存前
         $this->trigger(ModelEvents::BEFORE_SAVE, [
@@ -550,7 +550,7 @@ abstract class Model extends BaseModel
     {
         $realClassName = static::__getRealClassName();
         $query = static::query();
-        $query = static::parseWhere($query, $where);
+        $query = self::parseWhere($query, $where);
 
         // 删除前
         Event::trigger($realClassName . ':' . ModelEvents::BEFORE_BATCH_DELETE, [

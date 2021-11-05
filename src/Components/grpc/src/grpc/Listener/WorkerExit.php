@@ -28,7 +28,7 @@ class WorkerExit implements IEventListener
         {
             $pool = PoolManager::getInstance($name);
             $inCo = Coroutine::isIn();
-            if (($pool instanceof RpcClientSyncPool || $pool instanceof RpcClientCoroutinePool) && (GrpcClient::class === $pool->getResourceConfig()[0]['clientClass'] ?? null))
+            if (($pool instanceof RpcClientSyncPool || $pool instanceof RpcClientCoroutinePool) && (GrpcClient::class === ($pool->getResourceConfig()[0]['clientClass'] ?? null)))
             {
                 if ($inCo)
                 {
