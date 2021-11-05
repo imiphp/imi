@@ -165,7 +165,7 @@ class Server extends BaseCommand
         $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
         foreach (swoole_get_local_ip() as $name => $ip)
         {
-            $this->output->writeln('<info>ip@' . $name . '</info>: ' . $ip);
+            $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
         }
 
         $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');

@@ -58,10 +58,6 @@ class Server extends BaseCommand
         $serverConfigs = Config::get('@app.workermanServer');
         if (null === $name)
         {
-            if ('Windows' === \PHP_OS)
-            {
-                throw new \RuntimeException('You are using Windows system, please add option --name {serverName}');
-            }
             foreach ($serverConfigs as $serverName => $config)
             {
                 if (!($config['autorun'] ?? true))
@@ -167,6 +163,24 @@ class Server extends BaseCommand
             $this->output->writeln('<info>Virtual machine:</info> WSL');
         }
         $this->output->writeln('<info>Disk:</info> Free ' . round(@disk_free_space('.') / (1024 * 1024 * 1024), 3) . ' GB / Total ' . round(@disk_total_space('.') / (1024 * 1024 * 1024), 3) . ' GB');
+
+        if (\function_exists('net_get_interfaces'))
+        {
+            $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
+            foreach (net_get_interfaces() ?: [] as $name => $item)
+            {
+                $ip = $item['unicast'][1]['address'];
+                if ('127.0.0.1' === $ip)
+                {
+                    continue;
+                }
+                if ('Windows' === \PHP_OS_FAMILY)
+                {
+                    $name = $item['description'];
+                }
+                $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
+            }
+        }
 
         $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
         $this->output->writeln('<info>Version:</info> v' . \PHP_VERSION);
