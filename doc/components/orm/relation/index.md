@@ -18,13 +18,13 @@
 
 `@OneToOne(model="模型类名")`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@OneToOne(model="模型类名", fields={"字段1", "字段2"})`
+`@OneToOne(model="模型类名", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@OneToOne(model="模型类名", fields={"字段1", "字段2"}, with=true)`
+`@OneToOne(model="模型类名", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @OneToMany
 
@@ -36,13 +36,13 @@
 
 `@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", limit=null)`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
+`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"}, with=true)`
+`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @ManyToMany
 
@@ -52,13 +52,13 @@
 
 `@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", limit=null)`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
+`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"}, with=true)`
+`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @PolymorphicOneToOne
 
@@ -68,13 +68,13 @@
 
 `@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值")`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"字段1", "字段2"})`
+`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"字段1", "字段2"}, with=true)`
+`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @PolymorphicOneToMany
 
@@ -84,13 +84,13 @@
 
 `@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", limit=null)`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
+`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"}, with=true)`
+`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @PolymorphicManyToMany
 
@@ -100,13 +100,13 @@
 
 `@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", limit=null)`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
+`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"}, with=true)`
+`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @PolymorphicToOne
 
@@ -118,13 +118,13 @@
 
 `@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值")`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"字段1", "字段2"})`
+`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"})`
 
 预加载，减少查询次数：
 
-`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"字段1", "字段2"}, with=true)`
+`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
 
 ### @PolymorphicToMany
 
@@ -136,13 +136,13 @@
 
 `@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", limit=null, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段")`
 
-为查询出来的模型指定字段：
+查询时指定字段：
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"}, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段")`
+`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段")`
 
 预加载，减少查询次数：
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"}, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段", with=true)`
+`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段", with=true, withFields={"指定序列化字段"})`
 
 ### @JoinFrom
 

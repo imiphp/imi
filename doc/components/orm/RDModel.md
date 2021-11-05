@@ -507,6 +507,8 @@ $list = TestModel::query()
 
 ### 指定查询出的模型可序列化的字段
 
+> 必须使用驼峰命名
+
 ```php
 $list1 = TestModel::query()->withField('id', 'name')->select()->getArray();
 
