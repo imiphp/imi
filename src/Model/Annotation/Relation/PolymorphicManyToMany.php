@@ -16,6 +16,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string   $type      右表多态类型字段名
  * @property mixed    $typeValue 右表多态类型字段值
  * @property int|null $limit     限制返回记录数量
+ * @property bool     $with      关联预加载查询
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicManyToMany extends ManyToMany

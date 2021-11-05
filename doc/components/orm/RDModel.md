@@ -491,7 +491,7 @@ $query = TestModel::dbQuery();
 
 **IModelQuery 扩展特性：**
 
-#### 关联模型预加载
+### 关联模型预加载
 
 ```php
 $list = TestModel::query()
@@ -505,7 +505,7 @@ $list = TestModel::query()
                 ->where('id', '=', 1)->select()->getArray();
 ```
 
-#### 指定查询出的模型可序列化的字段
+### 指定查询出的模型可序列化的字段
 
 ```php
 $list1 = TestModel::query()->withField('id', 'name')->select()->getArray();

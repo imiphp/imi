@@ -24,6 +24,7 @@ use Imi\Bean\Annotation\Parser;
  * @property int|null      $limit            限制返回记录数量
  * @property string        $middleLeftField  中间表与模型类的关联字段
  * @property string        $middleRightField 中间表与当前类的关联字段
+ * @property bool          $with             关联预加载查询
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicToMany extends RelationBase
