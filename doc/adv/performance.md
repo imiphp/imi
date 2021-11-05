@@ -28,7 +28,7 @@ imi 为性能做了以下努力：
 ]
 ```
 
-当然你也可以在项目入口文件中，设置 imi 为非 debug 模式：
+当然你也可以在项目 Main 文件中，设置 imi 为非 debug 模式：
 
 ```php
 \Imi\App::setDebug(false);

@@ -31,7 +31,7 @@ imi v2.0 版本开始，支持运行在 PHP-FPM 环境中。
 ]
 ```
 
-当然你也可以在项目入口文件中，设置 imi 为非 debug 模式：
+当然你也可以在项目 Main 文件中，设置 imi 为非 debug 模式：
 
 ```php
 \Imi\App::setDebug(false);
