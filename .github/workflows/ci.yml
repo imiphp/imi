@@ -66,6 +66,15 @@ jobs:
         run: |
           docker-compose -f ./.github/docker-compose1.yml up -d
           echo -e "\n127.0.0.1 mysql postgres rabbitmq kafka1\n" | sudo tee -a /etc/hosts
+      - name: Wait
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 3
+          max_attempts: 10
+          retry_on: error
+          command: docker exec postgres pg_isready -d db_imi_test
+      - name: Prepare
+        run: |
           nc -zv 127.0.0.1 6379 5432 3306
           nc -zv 127.0.0.1 9092 15672 5672 25672
           nc -zv 127.0.0.1 2181 9092
@@ -73,8 +82,6 @@ jobs:
           nc -zv postgres 5432
           nc -zv rabbitmq 9092 15672 5672 25672
           nc -zv kafka1 9092
-      - name: Prepare
-        run: |
           docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           composer update --no-interaction --prefer-dist --no-progress
           bash tests/db/install-db.sh
