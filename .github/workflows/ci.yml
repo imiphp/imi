@@ -66,11 +66,12 @@ jobs:
         run: |
           docker-compose -f ./.github/docker-compose1.yml up -d
           echo -e "\n127.0.0.1 mysql postgres rabbitmq kafka1\n" | sudo tee -a /etc/hosts
-      - name: Wait
+      - name: Wait Service
         uses: nick-invision/retry@v2
         with:
-          timeout_seconds: 3
-          max_attempts: 10
+          timeout_seconds: 60
+          retry_wait_seconds: 2
+          max_attempts: 30
           retry_on: error
           command: docker exec postgres pg_isready -d db_imi_test
       - name: Prepare
