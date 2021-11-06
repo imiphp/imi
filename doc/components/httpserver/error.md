@@ -48,51 +48,59 @@ namespace Imi\Server\Http\Error;
 
 use Imi\App;
 use Imi\RequestContext;
+use Imi\Server\View\Annotation\View;
 use Imi\Util\Format\Json;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
+use Imi\Server\Http\Error\IErrorHandler;
 
 class JsonErrorHandler implements IErrorHandler
 {
-	/**
-	 * debug 为 false时也显示错误信息
-	 * @var boolean
-	 */
-	protected $releaseShow = false;
+    /**
+     * debug 为 false时也显示错误信息.
+     */
+    protected bool $releaseShow = false;
 
-	/**
-	 * 取消继续抛出异常
-	 * @var boolean
-	 */
-	protected $cancelThrow = true;
+    /**
+     * 取消继续抛出异常.
+     */
+    protected bool $cancelThrow = false;
 
-	public function handle(\Throwable $throwable): bool
-	{
-		if($this->releaseShow || App::isDebug())
-		{
-			$data = [
-				'message'	=>	$throwable->getMessage(),
-				'code'		=>	$throwable->getCode(),
-				'file'		=>	$throwable->getFile(),
-				'line'		=>	$throwable->getLine(),
-				'trace'		=>	explode(PHP_EOL, $throwable->getTraceAsString()),
-			];
-		}
-		else
-		{
-			$data = [
-				'success'	=>	false,
-				'message'	=>	'error',
-			];
-		}
+    protected View $viewAnnotation;
+
+    public function __construct()
+    {
+        $this->viewAnnotation = new View();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function handle(\Throwable $throwable): bool
+    {
+        if ($this->releaseShow || App::isDebug())
+        {
+            $data = [
+                'message'   => $throwable->getMessage(),
+                'code'      => $throwable->getCode(),
+                'file'      => $throwable->getFile(),
+                'line'      => $throwable->getLine(),
+                'trace'     => explode(\PHP_EOL, $throwable->getTraceAsString()),
+            ];
+        }
+        else
+        {
+            $data = [
+                'success' => false,
+                'message' => 'error',
+            ];
+        }
+        $requestContext = RequestContext::getContext();
         /** @var \Imi\Server\View\Handler\Json $jsonView */
-        $jsonView = RequestContext::getServerBean('JsonView');
-        $jsonView->handle($data, [], RequestContext::get('response'))->send();
+        $jsonView = $requestContext['server']->getBean('JsonView');
+        $jsonView->handle($this->viewAnnotation, null, $data, $requestContext['response'] ?? null)->send();
 
-		// 如有需要，可以手动记录下日志：
-		\Imi\App::getBean('ErrorLog')->onException($throwable);
-
-		return $this->cancelThrow; // 返回 true 就是取消继续抛出异常，也就不会输出和保存日志，慎用
-	}
+        return $this->cancelThrow;
+    }
 }
 ```
