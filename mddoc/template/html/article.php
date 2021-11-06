@@ -137,7 +137,7 @@
                     <div class="searchBox">
                         <div id="searchForm">
                             <div class="inputBox">
-                                <input type="text" id="search-keyword" name="keyword" placeholder="搜索关键词" class="layui-input"/>
+                                <input type="text" id="search-keyword" autocomplete="off" name="keyword" placeholder="搜索关键词" class="layui-input"/>
                                 <i class="layui-icon input-icon">&#xe615;</i>
                             </div>
                         </div>
