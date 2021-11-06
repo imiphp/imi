@@ -35,7 +35,7 @@ jobs:
           extensions: >
             :xdebug
             apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event,
-            swoole-swoole/swoole-src@${{ matrix.swoole }}
+            swoole-Yurunsoft/swoole-src@php-8.1
         env:
           fail-fast: true
           SWOOLE_CONFIGURE_OPTS: |
