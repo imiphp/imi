@@ -122,7 +122,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 * [腾悦物联](https://www.teny.tech/)
 
-![腾悦物联](https://www.imiphp.com/images/anli/tengyue.jpg "腾悦物联")
+![腾悦物联](https://www.imiphp.com/assets/images/tengyue.jpg "腾悦物联")
 
 **项目介绍：** 基于imi开发的高性能高并发分布式（千万级设备）的能源销售管理平台，提供多场景充电桩、售电柜、换电柜、智能电池等设备接入，开放API第三方应用五分钟即可完成新能源物联网售电设备接入
 
@@ -130,7 +130,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 * [Adorecipe鸡尾酒资源库](https://adorecipe.com)
 
-![Adorecipe鸡尾酒资源库](https://www.imiphp.com/images/anli/adorecipe.jpg "Adorecipe鸡尾酒资源库")
+![Adorecipe鸡尾酒资源库](https://www.imiphp.com/assets/images/adorecipe.jpg "Adorecipe鸡尾酒资源库")
 
 **项目介绍：** 本项目是基于imi 2.0的高性能 MVC 实战项目（一人完成开发），搭配 nginx 实现前端静态资源的访问及缓存，View 层很任性地采用了原生模板渲染。项目中大量使用了 imi 提供的缓存注解，优化数据查询的性能，点赞等场景使用了 imi 提供的锁机制保证并发场景下的数据一致性。强推大家使用 imi 开发此类项目！
 
@@ -138,7 +138,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 * [看个蛋影视搜索 - 全网影视资源搜索平台](http://www.kangedan.com/)
 
-![看个蛋影视搜索](https://www.imiphp.com/images/anli/kangedan.jpg "看个蛋影视搜索")
+![看个蛋影视搜索](https://www.imiphp.com/assets/images/kangedan.jpg "看个蛋影视搜索")
 
 **项目介绍：** 从最早的建站初心是为了自己方便！放到网络的以来，当流量越来越大的时候是要考虑升级配置还是重构项目，前几天 git 上看到 imiphp，索性就拿来实践一下，也是简单就重构出了所有页面，模版引擎引入了 TP 的 think-template，整个重构也就一天不到，所以 imiphp 确实很容易上手！加油！
 
@@ -146,7 +146,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 * [虎扑 - 上亿数据迁移服务]
 
-![虎扑](https://www.imiphp.com/images/anli/hupu.jpg "虎扑")
+![虎扑](https://www.imiphp.com/assets/images/hupu.jpg "虎扑")
 
 **项目介绍：** 随着数据规模的越来越大，mysql已经不能适用大数据多维度的查询，需要用ES等一类的搜索引擎，进行多维度的分词查询，MYSQL现阶段使用按天分表存储，不能满足跨天的长时间查询。
 
