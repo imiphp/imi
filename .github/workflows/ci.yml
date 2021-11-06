@@ -21,7 +21,6 @@ jobs:
       PGSQL_SERVER_PASSWORD: "root"
       AMQP_SERVER_HOST: 127.0.0.1
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
-      COMPOSE_INTERACTIVE_NO_CLI: 1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -76,7 +75,7 @@ jobs:
           nc -zv kafka1 9092
       - name: Prepare
         run: |
-          docker-compose -f ./.github/docker-compose1.yml exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           composer update --no-interaction --prefer-dist --no-progress
           bash tests/db/install-db.sh
           src/Components/roadrunner/vendor/bin/rr get-binary -f ${{ matrix.roadrunner }} -l /usr/local/bin
