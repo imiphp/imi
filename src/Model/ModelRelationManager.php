@@ -74,13 +74,13 @@ class ModelRelationManager
                 {
                     Query::init($model, $propertyName, $annotations, true, $refData);
                 }
-                elseif ($firstAnnotation->with)
-                {
-                    Query::init($model, $propertyName, $annotations, $force, $refData);
-                }
                 elseif ($fields && \in_array($propertyName, $fields))
                 {
                     Query::init($model, $propertyName, $annotations, true);
+                }
+                elseif ($firstAnnotation->with)
+                {
+                    Query::init($model, $propertyName, $annotations, $force, $refData);
                 }
                 else
                 {
