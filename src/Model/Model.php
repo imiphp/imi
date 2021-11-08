@@ -531,7 +531,7 @@ abstract class Model extends BaseModel
      *
      * @param string ...$names
      */
-    public static function queryRelationsList(array $list, string ...$names): array
+    public static function queryRelationsList(iterable $list, string ...$names): iterable
     {
         ModelRelationManager::initModels($list, $names, null, null, true);
 

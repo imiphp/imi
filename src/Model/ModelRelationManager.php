@@ -52,7 +52,7 @@ class ModelRelationManager
      *
      * @param Model[] $models
      */
-    public static function initModels(array $models, ?array $fields = null, ?array $withFields, ?string $modelClass = null, bool $force = false): void
+    public static function initModels(iterable $models, ?array $fields = null, ?array $withFields, ?string $modelClass = null, bool $force = false): void
     {
         if (null === $modelClass)
         {
