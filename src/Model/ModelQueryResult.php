@@ -131,7 +131,7 @@ class ModelQueryResult extends Result
             }
             if ($hasRelation)
             {
-                ModelRelationManager::initModels($list, $this->with, $className);
+                ModelRelationManager::initModels($list, null, $this->with, $className);
                 foreach ($list as $object)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [
