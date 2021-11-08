@@ -6,7 +6,9 @@ namespace Imi\Test\Component\Model;
 
 use Imi\Bean\Annotation\Inherit;
 use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\JsonNotNull;
 use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\JoinFrom;
 use Imi\Model\Annotation\Relation\JoinTo;
 use Imi\Model\Annotation\Relation\OneToOne;
@@ -20,6 +22,7 @@ use Imi\Test\Component\Model\Base\ArticleBase;
  *
  * @property ArticleEx|null $ex
  * @property ArticleEx|null $exWith
+ * @property ArticleEx|null $queryRelationsList
  */
 class Article extends ArticleBase
 {
@@ -74,6 +77,41 @@ class Article extends ArticleBase
     public function setExWith(?ArticleEx $exWith)
     {
         $this->exWith = $exWith;
+
+        return $this;
+    }
+
+    /**
+     * @OneToOne(model="ArticleEx")
+     * @JoinFrom("id")
+     * @JoinTo("article_id")
+     * @AutoSelect(false)
+     * @JsonNotNull
+     *
+     * @var Article|null
+     */
+    protected $queryRelationsList;
+
+    /**
+     * Get the value of queryRelationsList.
+     *
+     * @return Article|null
+     */
+    public function getQueryRelationsList()
+    {
+        return $this->queryRelationsList;
+    }
+
+    /**
+     * Set the value of queryRelationsList.
+     *
+     * @param Article|null $queryRelationsList
+     *
+     * @return self
+     */
+    public function setQueryRelationsList($queryRelationsList)
+    {
+        $this->queryRelationsList = $queryRelationsList;
 
         return $this;
     }

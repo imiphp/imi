@@ -52,7 +52,7 @@ class ModelRelationManager
      *
      * @param Model[] $models
      */
-    public static function initModels(iterable $models, ?array $fields = null, ?array $withFields, ?string $modelClass = null, bool $force = false): void
+    public static function initModels(iterable $models, ?array $fields = null, ?array $withFields = null, ?string $modelClass = null): void
     {
         if (null === $modelClass)
         {
@@ -60,16 +60,11 @@ class ModelRelationManager
         }
         $refData = [];
 
+        /** @var RelationBase[] $annotations */
         foreach (AnnotationManager::getPropertiesAnnotations($modelClass, RelationBase::class) as $propertyName => $annotations)
         {
             foreach ($models as $model)
             {
-                if (null !== $model[$propertyName])
-                {
-                    continue;
-                }
-                /** @var RelationBase $firstAnnotation */
-                $firstAnnotation = $annotations[0];
                 if ($withFields && (isset($withFields[$propertyName]) || \in_array($propertyName, $withFields)))
                 {
                     Query::init($model, $propertyName, $annotations, true, $refData);
@@ -78,13 +73,20 @@ class ModelRelationManager
                 {
                     Query::init($model, $propertyName, $annotations, true);
                 }
-                elseif ($firstAnnotation->with)
-                {
-                    Query::init($model, $propertyName, $annotations, $force, $refData);
-                }
                 else
                 {
-                    Query::init($model, $propertyName, $annotations, $force);
+                    if (null !== $model[$propertyName])
+                    {
+                        continue;
+                    }
+                    if ($annotations[0]->with)
+                    {
+                        Query::init($model, $propertyName, $annotations, false, $refData);
+                    }
+                    else
+                    {
+                        Query::init($model, $propertyName, $annotations, false);
+                    }
                 }
             }
         }

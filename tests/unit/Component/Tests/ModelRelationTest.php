@@ -616,4 +616,76 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals(3, $r[0]->id);
         $this->assertEquals(4, $r[1]->id);
     }
+
+    /**
+     * @depends testInitData
+     */
+    public function testQueryRelations(array $args): void
+    {
+        ['memberIds' => $memberIds] = $args;
+
+        // 插入
+        $articleIds = [];
+        $article1 = Article::newInstance();
+        $article1->title = 'relation_title_1';
+        $article1->content = 'relation_content_1';
+        $article1->memberId = $memberIds[0];
+        $article1->ex->data = [
+            'id' => 1,
+        ];
+        $article1->insert();
+        $this->assertGreaterThan(0, $article1->id);
+        $articleIds[] = $article1->id;
+
+        $article2 = Article::newInstance();
+        $article2->title = 'relation_title_2';
+        $article2->content = 'relation_content_2';
+        $article2->memberId = $memberIds[1];
+        $article2->ex->data = [
+            'id' => 2,
+        ];
+        $article2->insert();
+        $this->assertGreaterThan(0, $article2->id);
+        $articleIds[] = $article2->id;
+
+        $article3 = Article::newInstance();
+        $article3->title = 'relation_title_2';
+        $article3->content = 'relation_content_2';
+        $article3->memberId = $memberIds[1];
+        $article3->ex->data = [
+            'id' => 2,
+        ];
+        $article3->insert();
+        $this->assertGreaterThan(0, $article3->id);
+
+        // 查询
+        $record1 = Article::find($article1->id);
+        $record1->queryRelations('queryRelationsList');
+        $this->assertNotNull($record1);
+        $this->assertEquals($article1->id, $record1->id);
+        $this->assertEquals($article1->memberId, $record1->memberId);
+        $this->assertEquals($article1->title, $record1->title);
+        $this->assertEquals($article1->content, $record1->content);
+        $this->assertEquals([
+            'id' => 1,
+        ], // @phpstan-ignore-next-line
+        $record1->queryRelationsList->data->toArray());
+
+        $record2 = Article::find($article2->id);
+        $record2->queryRelations('queryRelationsList');
+        $this->assertNotNull($record2);
+        $this->assertEquals($record2->id, $record2->id);
+        $this->assertEquals($record2->memberId, $record2->memberId);
+        $this->assertEquals($record2->title, $record2->title);
+        $this->assertEquals($article2->content, $record2->content);
+        $this->assertEquals([
+            'id' => 2,
+        ], // @phpstan-ignore-next-line
+        $record2->queryRelationsList->data->toArray());
+
+        // 查询列表
+        $list = Article::query()->whereIn('id', $articleIds)->select()->getArray();
+        Article::queryRelationsList($list, 'queryRelationsList');
+        $this->assertEquals(Article::convertListToArray([$record1, $record2]), Article::convertListToArray($list));
+    }
 }
