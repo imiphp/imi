@@ -498,7 +498,7 @@ $list = TestModel::query()
                 ->with('关联字段名') // 单个
                 ->with(['字段名1', '字段名2']) // 多个
                 ->with([
-                    '字段名1' => function(\Imi\Db\Query\Interfaces\IQuery $query) {
+                    '字段名1' => function(\Imi\Model\Contract\IModelQuery $query) {
                         $query->withField('a', 'b'); // 限定查询结果模型的可序列化字段
                     },
                 ]) // 回调
