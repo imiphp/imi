@@ -91,28 +91,37 @@ jobs:
       - name: Test
         run: composer test
       - name: Test swoole
+        timeout-minutes: 5
         run: composer test-swoole
       - name: Test workerman
+        timeout-minutes: 5
         run: composer test-workerman
       - name: Test workerman-gateway
+        timeout-minutes: 5
         run: composer test-workerman-gateway
       - name: Test roadrunner
+        timeout-minutes: 5
         run: composer test-roadrunner
       - name: Test fpm
         run: composer test-fpm
       - name: Test jwt
         run: composer test-jwt
       - name: Test queue
+        timeout-minutes: 5
         run: composer test-queue
       - name: Test amqp
+        timeout-minutes: 5
         run: composer test-amqp
       - name: Test kafka
+        timeout-minutes: 5
         run: composer test-kafka
       - name: Test grpc
+        timeout-minutes: 5
         run: composer test-grpc
       - name: Test snowflake
         run: composer test-snowflake
       - name: Test mqtt
+        timeout-minutes: 5
         run: composer test-mqtt
       - name: Test smarty
         run: composer test-smarty
