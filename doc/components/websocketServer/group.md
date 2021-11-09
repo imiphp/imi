@@ -24,7 +24,7 @@ imi 支持对 WebSocket 的连接（clientId）进行逻辑分组，你可以方
             'redisDb' => null, // redis中第几个库，为null或不配置则使用连接池中的设置
             'heartbeatTimespan' => 5, // 心跳时间，单位：秒.
             'heartbeatTtl' => 8, // 心跳数据过期时间，单位：秒.
-            'key' => null, // 该服务的分组键，默认为 imi:命名空间:connect_group
+            'key' => '', // 该服务的分组键，默认为 imi:命名空间:connect_group
         ],
         // 分组本地驱动，仅支持当前 Worker 进程
         'GroupLocal' => [
