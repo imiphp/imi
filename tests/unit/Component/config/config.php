@@ -78,8 +78,6 @@ return [
             'b' => 'bbb',
         ],
         'ErrorLog'          => [
-            'level'          => \E_ALL,
-            'catchLevel'     => \E_ALL | \E_STRICT,
             'exceptionLevel' => \E_ALL & ~\E_DEPRECATED,
         ],
         'DbQueryLog' => [
