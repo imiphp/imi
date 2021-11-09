@@ -27,7 +27,7 @@ abstract class Model extends BaseModel
     /**
      * 动态模型集合.
      */
-    protected static array $forks = [];
+    protected static array $__forks = [];
 
     public function __init(array $data = [], bool $queryRelation = true): void
     {
@@ -636,7 +636,7 @@ abstract class Model extends BaseModel
      */
     public static function fork(?string $tableName = null, ?string $poolName = null)
     {
-        $forks = &self::$forks;
+        $forks = &self::$__forks;
         if (isset($forks[static::class][$tableName][$poolName]))
         {
             return $forks[static::class][$tableName][$poolName];

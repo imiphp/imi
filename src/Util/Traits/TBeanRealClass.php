@@ -12,26 +12,26 @@ trait TBeanRealClass
     /**
      * 真实类名集合.
      */
-    public static array $realClassNames = [];
+    public static array $__realClassNames = [];
 
     /**
      * 获取当前Bean类真实类名.
      */
     protected static function __getRealClassName(): string
     {
-        if (!isset(TBeanRealClass::$realClassNames[static::class]))
+        if (!isset(TBeanRealClass::$__realClassNames[static::class]))
         {
             $ref = ReflectionContainer::getClassReflection(static::class);
             if ($ref->implementsInterface(IBean::class))
             {
-                TBeanRealClass::$realClassNames[static::class] = $ref->getParentClass()->getName();
+                TBeanRealClass::$__realClassNames[static::class] = $ref->getParentClass()->getName();
             }
             else
             {
-                TBeanRealClass::$realClassNames[static::class] = $ref->getName();
+                TBeanRealClass::$__realClassNames[static::class] = $ref->getName();
             }
         }
 
-        return TBeanRealClass::$realClassNames[static::class];
+        return TBeanRealClass::$__realClassNames[static::class];
     }
 }
