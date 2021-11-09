@@ -26,11 +26,11 @@ if (version_compare('7.3.0', \PHP_VERSION, '>'))
     exit(1);
 }
 
-foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $file)
+foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $file)
 {
     if (file_exists($file))
     {
-        define('PHPUNIT_COMPOSER_INSTALL', $file);
+        \define('PHPUNIT_COMPOSER_INSTALL', $file);
 
         break;
     }
@@ -38,7 +38,7 @@ foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', 
 
 unset($file);
 
-if (!defined('PHPUNIT_COMPOSER_INSTALL'))
+if (!\defined('PHPUNIT_COMPOSER_INSTALL'))
 {
     fwrite(
         \STDERR,
