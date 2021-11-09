@@ -92,15 +92,19 @@ jobs:
         run: composer test
       - name: Test swoole
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-swoole
       - name: Test workerman
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-workerman
       - name: Test workerman-gateway
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-workerman-gateway
       - name: Test roadrunner
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-roadrunner
       - name: Test fpm
         run: composer test-fpm
@@ -108,20 +112,25 @@ jobs:
         run: composer test-jwt
       - name: Test queue
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-queue
       - name: Test amqp
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-amqp
       - name: Test kafka
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-kafka
       - name: Test grpc
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-grpc
       - name: Test snowflake
         run: composer test-snowflake
       - name: Test mqtt
         timeout-minutes: 5
+        continue-on-error: true
         run: composer test-mqtt
       - name: Test smarty
         run: composer test-smarty
