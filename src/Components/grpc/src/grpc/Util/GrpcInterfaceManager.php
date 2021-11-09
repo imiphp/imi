@@ -72,9 +72,17 @@ class GrpcInterfaceManager
             }
             $requestClass = ReflectionUtil::getTypeCode($type, $refClass->getName());
 
-            $docblock = $this->docBlockFactory->create($method->getDocComment());
-            // @phpstan-ignore-next-line
-            $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
+            $docComment = $method->getDocComment();
+            if (false === $docComment)
+            {
+                $responseClass = '';
+            }
+            else
+            {
+                $docblock = $this->docBlockFactory->create($docComment);
+                // @phpstan-ignore-next-line
+                $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
+            }
 
             $data[$method->getName()] = [
                 'request'   => $requestClass,

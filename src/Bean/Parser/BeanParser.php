@@ -59,9 +59,16 @@ class BeanParser extends BaseParser
                             }
                         }
                         $comment = $propRef->getDocComment();
-                        $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-                        $docblock = $factory->create($comment);
-                        $tag = $docblock->getTagsByName('var')[0] ?? null;
+                        if (false === $comment)
+                        {
+                            $tag = null;
+                        }
+                        else
+                        {
+                            $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+                            $docblock = $factory->create($comment);
+                            $tag = $docblock->getTagsByName('var')[0] ?? null;
+                        }
                         if ($tag)
                         {
                             $name = trim($tag->__toString(), '\\ \t\n\r\0\x0B');
