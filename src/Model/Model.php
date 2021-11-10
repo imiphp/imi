@@ -505,16 +505,6 @@ abstract class Model extends BaseModel
     {
         ModelRelationManager::queryModelRelations($this, ...$names);
 
-        // 提取属性支持
-        $propertyAnnotations = $this->__meta->getExtractPropertys();
-        foreach ($names as $name)
-        {
-            if (isset($propertyAnnotations[$name]))
-            {
-                $this->__parseExtractProperty($name, $propertyAnnotations[$name]);
-            }
-        }
-
         // 关联字段加入序列化
         if ($this->__serializedFields)
         {
@@ -534,6 +524,22 @@ abstract class Model extends BaseModel
     public static function queryRelationsList(iterable $list, string ...$names): iterable
     {
         ModelRelationManager::initModels($list, $names);
+
+        if ($list)
+        {
+            /** @var self $model */
+            $model = $list[0];
+            $__serializedFields = $model->__serializedFields;
+            // 关联字段加入序列化
+            if ($__serializedFields)
+            {
+                $__serializedFields = array_merge($__serializedFields, $names);
+            }
+            else
+            {
+                $__serializedFields = array_merge($model->__fieldNames, $names);
+            }
+        }
 
         return $list;
     }
