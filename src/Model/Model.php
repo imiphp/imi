@@ -266,9 +266,9 @@ abstract class Model extends BaseModel
         {
             foreach ($id as $idName)
             {
-                if (isset($this->$idName))
+                if (isset($this[$idName]))
                 {
-                    $bindValues[':c_' . $idName] = $this->$idName;
+                    $bindValues[':c_' . $idName] = $this[$idName];
                     $keys[] = $conditionId[] = $idName;
                 }
             }
@@ -413,7 +413,7 @@ abstract class Model extends BaseModel
                 {
                     foreach ($id as $idName)
                     {
-                        if (isset($this->$idName))
+                        if (isset($this[$idName]))
                         {
                             $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
                         }
@@ -457,9 +457,9 @@ abstract class Model extends BaseModel
         {
             foreach ($id as $idName)
             {
-                if (isset($this->$idName))
+                if (isset($this[$idName]))
                 {
-                    $bindValues[$idName] = $this->$idName;
+                    $bindValues[$idName] = $this[$idName];
                 }
             }
         }
@@ -471,7 +471,7 @@ abstract class Model extends BaseModel
             // 主键条件加入
             foreach ($id as $idName)
             {
-                if (isset($this->$idName))
+                if (isset($this[$idName]))
                 {
                     $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
                 }

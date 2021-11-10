@@ -32,7 +32,7 @@ class Update
      */
     public static function parse(Model $model, string $propertyName, array $annotations): void
     {
-        if (!$model->$propertyName)
+        if (!$model[$propertyName])
         {
             return;
         }
@@ -113,8 +113,8 @@ class Update
             'struct'       => $struct,
         ]);
 
-        $modelField = $model->$propertyName;
-        $modelField->$rightField = $model->$leftField;
+        $modelField = $model[$propertyName];
+        $modelField[$rightField] = $model[$leftField];
         $modelField->update();
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
@@ -162,7 +162,7 @@ class Update
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $modelLeftValue = $model->$leftField;
+        $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
             // 删除无关联数据
@@ -176,13 +176,13 @@ class Update
             $oldIds = $rightModel::query()->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
             $updateIds = [];
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                if (null !== $row->$pk)
+                if (null !== $row[$pk])
                 {
-                    $updateIds[] = $row->$pk;
+                    $updateIds[] = $row[$pk];
                 }
-                $row->$rightField = $modelLeftValue;
+                $row[$rightField] = $modelLeftValue;
                 $row->save();
             }
 
@@ -199,9 +199,9 @@ class Update
         else
         {
             // 直接更新
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                $row->$rightField = $modelLeftValue;
+                $row[$rightField] = $modelLeftValue;
                 $row->save();
             }
         }
@@ -252,20 +252,20 @@ class Update
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $modelLeftValue = $model->$leftField;
+        $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
             // 删除无关联数据
             $oldRightIds = $middleModel::query()->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
             $updateIds = [];
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                if (null !== $row->$middleRightField)
+                if (null !== $row[$middleRightField])
                 {
-                    $updateIds[] = $row->$middleRightField;
+                    $updateIds[] = $row[$middleRightField];
                 }
-                $row->$middleLeftField = $modelLeftValue;
+                $row[$middleLeftField] = $modelLeftValue;
                 $row->save();
             }
 
@@ -282,9 +282,9 @@ class Update
         else
         {
             // 直接更新
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                $row->$middleLeftField = $modelLeftValue;
+                $row[$middleLeftField] = $modelLeftValue;
                 $row->save();
             }
         }
@@ -375,7 +375,7 @@ class Update
                     'annotation'   => $annotationItem,
                 ]);
 
-                $model->$propertyName->update();
+                $model[$propertyName]->update();
 
                 Event::trigger($eventName . '.AFTER', [
                     'model'        => $model,
@@ -406,8 +406,8 @@ class Update
             'struct'       => $struct,
         ]);
 
-        $modelField = $model->$propertyName;
-        $modelField->$rightField = $model->$leftField;
+        $modelField = $model[$propertyName];
+        $modelField[$rightField] = $model[$leftField];
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->update();
         Event::trigger($eventName . '.AFTER', [
@@ -456,7 +456,7 @@ class Update
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $modelLeftValue = $model->$leftField;
+        $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
             // 删除无关联数据
@@ -470,13 +470,13 @@ class Update
             $oldIds = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
             $updateIds = [];
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                if (null !== $row->$pk)
+                if (null !== $row[$pk])
                 {
-                    $updateIds[] = $row->$pk;
+                    $updateIds[] = $row[$pk];
                 }
-                $row->$rightField = $modelLeftValue;
+                $row[$rightField] = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
@@ -494,9 +494,9 @@ class Update
         else
         {
             // 直接更新
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                $row->$rightField = $modelLeftValue;
+                $row[$rightField] = $modelLeftValue;
                 $row->save();
             }
         }
@@ -547,20 +547,20 @@ class Update
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $modelLeftValue = $model->$leftField;
+        $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
             // 删除无关联数据
             $oldRightIds = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
             $updateIds = [];
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                if (null !== $row->$middleRightField)
+                if (null !== $row[$middleRightField])
                 {
-                    $updateIds[] = $row->$middleRightField;
+                    $updateIds[] = $row[$middleRightField];
                 }
-                $row->$middleLeftField = $modelLeftValue;
+                $row[$middleLeftField] = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
@@ -578,9 +578,9 @@ class Update
         else
         {
             // 直接更新
-            foreach ($model->$propertyName as $row)
+            foreach ($model[$propertyName] as $row)
             {
-                $row->$middleLeftField = $modelLeftValue;
+                $row[$middleLeftField] = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }

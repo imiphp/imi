@@ -147,10 +147,10 @@ class ModelRelationManager
                             foreach ($models[$leftValue] as $model)
                             {
                                 // 关联数据
-                                Query::appendMany($model->$propertyName, $tmpList, $middleTable, $middleModel);
+                                Query::appendMany($model[$propertyName], $tmpList, $middleTable, $middleModel);
 
                                 // 右侧表数据
-                                $model->$rightMany->append(...$tmpList);
+                                $model[$rightMany]->append(...$tmpList);
                             }
                         }
                     }
@@ -263,10 +263,10 @@ class ModelRelationManager
                             foreach ($models[$leftValue] as $model)
                             {
                                 // 关联数据
-                                Query::appendMany($model->$propertyName, $tmpList, $middleTable, $middleModel);
+                                Query::appendMany($model[$propertyName], $tmpList, $middleTable, $middleModel);
 
                                 // 右侧表数据
-                                $model->$rightMany->append(...$tmpList);
+                                $model[$rightMany]->append(...$tmpList);
                             }
                         }
                     }
@@ -411,7 +411,7 @@ class ModelRelationManager
                                 $tmpList = $appendList[$leftValue];
                                 foreach ($models[$leftValue] as $model)
                                 {
-                                    $model->$propertyName->append(...$tmpList);
+                                    $model[$propertyName]->append(...$tmpList);
                                 }
                             }
                         }

@@ -30,7 +30,7 @@ class Insert
      */
     public static function parse(Model $model, string $propertyName, array $annotations): void
     {
-        if (!$model->$propertyName)
+        if (!$model[$propertyName])
         {
             return;
         }
@@ -111,8 +111,8 @@ class Insert
             'struct'       => $struct,
         ]);
 
-        $modelField = $model->$propertyName;
-        $modelField->$rightField = $model->$leftField;
+        $modelField = $model[$propertyName];
+        $modelField[$rightField] = $model[$leftField];
         $modelField->insert();
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
@@ -142,15 +142,15 @@ class Insert
             'struct'       => $struct,
         ]);
 
-        foreach ($model->$propertyName as $index => $row)
+        foreach ($model[$propertyName] as $index => $row)
         {
             if (!$row instanceof $rightModel)
             {
                 /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
-                $model->$propertyName[$index] = $row;
+                $model[$propertyName][$index] = $row;
             }
-            $row[$rightField] = $model->$leftField;
+            $row[$rightField] = $model[$leftField];
             $row->insert();
         }
         Event::trigger($eventName . '.AFTER', [
@@ -181,15 +181,15 @@ class Insert
             'struct'       => $struct,
         ]);
 
-        foreach ($model->$propertyName as $index => $row)
+        foreach ($model[$propertyName] as $index => $row)
         {
             if (!$row instanceof $middleModel)
             {
                 /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
-                $model->$propertyName[$index] = $row;
+                $model[$propertyName][$index] = $row;
             }
-            $row[$middleLeftField] = $model->$leftField;
+            $row[$middleLeftField] = $model[$leftField];
             $row->insert();
         }
         Event::trigger($eventName . '.AFTER', [
@@ -223,9 +223,9 @@ class Insert
                 $modelField = $annotationItem->modelField;
                 $field = $annotationItem->field;
 
-                $rightModel = $model->$propertyName;
-                $rightModel->$modelField = $model->$field;
-                $model->$propertyName->insert();
+                $rightModel = $model[$propertyName];
+                $rightModel[$modelField] = $model[$field];
+                $model[$propertyName]->insert();
 
                 Event::trigger($eventName . '.AFTER', [
                     'model'        => $model,
@@ -256,8 +256,8 @@ class Insert
             'struct'       => $struct,
         ]);
 
-        $modelField = $model->$propertyName;
-        $modelField->$rightField = $model->$leftField;
+        $modelField = $model[$propertyName];
+        $modelField[$rightField] = $model[$leftField];
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->insert();
         Event::trigger($eventName . '.AFTER', [
@@ -288,15 +288,15 @@ class Insert
             'struct'       => $struct,
         ]);
 
-        foreach ($model->$propertyName as $index => $row)
+        foreach ($model[$propertyName] as $index => $row)
         {
             if (!$row instanceof $rightModel)
             {
                 /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
-                $model->$propertyName[$index] = $row;
+                $model[$propertyName][$index] = $row;
             }
-            $row[$rightField] = $model->$leftField;
+            $row[$rightField] = $model[$leftField];
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }
@@ -328,15 +328,15 @@ class Insert
             'struct'       => $struct,
         ]);
 
-        foreach ($model->$propertyName as $index => $row)
+        foreach ($model[$propertyName] as $index => $row)
         {
             if (!$row instanceof $middleModel)
             {
                 /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
-                $model->$propertyName[$index] = $row;
+                $model[$propertyName][$index] = $row;
             }
-            $row[$middleLeftField] = $model->$leftField;
+            $row[$middleLeftField] = $model[$leftField];
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }
