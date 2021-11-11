@@ -7,6 +7,7 @@ namespace Imi\Bean;
 use FilesystemIterator;
 use Imi\App;
 use Imi\Config;
+use Imi\Core\Component\ComponentManager;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Main\Helper;
@@ -87,7 +88,6 @@ class Scanner
                             $realNamespace = rtrim($namespace, '\\');
                             $componentName = basename($pathName);
                             $components[$componentName] = $realNamespace;
-                            Helper::getMain($realNamespace, $componentName);
                             break;
                         }
                     }
@@ -137,7 +137,10 @@ class Scanner
             if (!$loader->isLoaded($namespace))
             {
                 $namespaces[] = $namespace;
-                Helper::getMain($namespace, $name);
+            }
+            if (!ComponentManager::has($name))
+            {
+                ComponentManager::addComponent($name, $namespace);
             }
         }
         $annotation->initByNamespace($namespaces);
