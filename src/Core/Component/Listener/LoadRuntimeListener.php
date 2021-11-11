@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Core\Component\Listener;
 
-use Imi\Bean\Annotation;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\BeanManager;
-use Imi\Bean\PartialManager;
 use Imi\Config;
 use Imi\Core\Component\ComponentManager;
 use Imi\Event\EventParam;

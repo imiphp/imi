@@ -138,9 +138,9 @@ class Scanner
             {
                 $namespaces[] = $namespace;
             }
-            if(!ComponentManager::has($name))
+            if (!ComponentManager::has($name))
             {
-                ComponentManager::addComponent($name,$namespace);
+                ComponentManager::addComponent($name, $namespace);
             }
         }
         $annotation->initByNamespace($namespaces);
