@@ -21,6 +21,6 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        ComponentManager::setComponents($e->getData()['data']['component'] ?? []);
+        ComponentManager::setComponents($e->getData()['data']['component']['components'] ?? []);
     }
 }

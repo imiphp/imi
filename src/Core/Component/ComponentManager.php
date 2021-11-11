@@ -28,6 +28,10 @@ class ComponentManager
     public static function setComponents(array $components): void
     {
         self::$components = $components;
+        foreach ($components as $name => $namespace)
+        {
+            Helper::getMain($namespace, $name);
+        }
     }
 
     public static function has(string $name): bool
