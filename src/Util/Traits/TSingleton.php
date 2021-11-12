@@ -12,12 +12,12 @@ trait TSingleton
     /**
      * 实例对象
      */
-    protected static ?object $instance = null;
+    protected static ?object $__instance = null;
 
     /**
      * 实例对象数组.
      */
-    protected static array $instances = [];
+    protected static array $__instances = [];
 
     private function __construct()
     {
@@ -35,7 +35,7 @@ trait TSingleton
         if (static::isChildClassSingleton())
         {
             $className = static::class;
-            $instances = &static::$instances;
+            $instances = &static::$__instances;
             if (isset($instances[$className]))
             {
                 return $instances[$className];
@@ -47,13 +47,13 @@ trait TSingleton
         }
         else
         {
-            if (null === static::$instance)
+            if (null === static::$__instance)
             {
-                static::$instance = new static(...$args);
+                static::$__instance = new static(...$args);
             }
 
             // @phpstan-ignore-next-line
-            return static::$instance;
+            return static::$__instance;
         }
     }
 

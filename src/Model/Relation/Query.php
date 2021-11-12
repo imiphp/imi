@@ -114,7 +114,7 @@ class Query
         $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        $leftValue = $model->$leftField;
+        $leftValue = $model[$leftField];
         if (null === $leftValue)
         {
             $rightModel = $modelClass::newInstance();
@@ -165,7 +165,7 @@ class Query
             return;
         }
 
-        $model->$propertyName = $rightModel;
+        $model[$propertyName] = $rightModel;
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
@@ -195,8 +195,8 @@ class Query
         $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        $model->$propertyName = new ArrayList($modelClass);
-        $leftValue = $model->$leftField;
+        $model[$propertyName] = new ArrayList($modelClass);
+        $leftValue = $model[$leftField];
         if (null !== $leftValue)
         {
             if (null === $refData)
@@ -229,7 +229,7 @@ class Query
                 $list = $query->select()->getArray();
                 if ($list)
                 {
-                    $model->$propertyName->append(...$list);
+                    $model[$propertyName]->append(...$list);
                 }
             }
             else
@@ -289,11 +289,11 @@ class Query
             $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
         }
 
-        $model->$propertyName = new ArrayList($middleModel);
+        $model[$propertyName] = new ArrayList($middleModel);
         $model->{$annotation->rightMany} = new ArrayList($rightModel);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
-        $leftValue = $model->$leftField;
+        $leftValue = $model[$leftField];
         if (null !== $leftValue)
         {
             if (null === $refData)
@@ -326,7 +326,7 @@ class Query
                 if ($list)
                 {
                     // 关联数据
-                    static::appendMany($model->$propertyName, $list, $middleTable, $middleModel);
+                    static::appendMany($model[$propertyName], $list, $middleTable, $middleModel);
 
                     // 右侧表数据
                     $model->{$annotation->rightMany}->append(...$list);
@@ -391,7 +391,7 @@ class Query
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $leftValue = $model->$leftField;
+        $leftValue = $model[$leftField];
         if (null === $leftValue)
         {
             $rightModel = $modelClass::newInstance();
@@ -445,7 +445,7 @@ class Query
             }
         }
 
-        $model->$propertyName = $rightModel;
+        $model[$propertyName] = $rightModel;
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
@@ -475,8 +475,8 @@ class Query
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName = $modelPropery = new ArrayList($modelClass);
-        $leftValue = $model->$leftField;
+        $model[$propertyName] = $modelPropery = new ArrayList($modelClass);
+        $leftValue = $model[$leftField];
         if (null !== $leftValue)
         {
             if (null === $refData)
@@ -569,7 +569,7 @@ class Query
                 {
                     $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
                 }
-                $rightValue = $model->$rightField;
+                $rightValue = $model[$rightField];
                 if (null === $rightValue)
                 {
                     $leftModel = $modelClass::newInstance();
@@ -627,7 +627,7 @@ class Query
                         return;
                     }
                 }
-                $model->$propertyName = $leftModel;
+                $model[$propertyName] = $leftModel;
                 break;
             }
         }
@@ -672,9 +672,9 @@ class Query
                     $fields = self::parseManyToManyQueryFields($middleModel, $rightModel);
                 }
 
-                $model->$propertyName = new ArrayList($struct->getRightModel());
+                $model[$propertyName] = new ArrayList($struct->getRightModel());
 
-                $leftValue = $model->$leftField;
+                $leftValue = $model[$leftField];
                 if (null !== $leftValue)
                 {
                     if (null === $refData)
@@ -708,7 +708,7 @@ class Query
                         if ($list)
                         {
                             // 关联数据
-                            $model->$propertyName->append(...$list);
+                            $model[$propertyName]->append(...$list);
                         }
                     }
                     else
@@ -782,12 +782,12 @@ class Query
             $fields = self::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel());
         }
 
-        $model->$propertyName = new ArrayList($struct->getMiddleModel());
+        $model[$propertyName] = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
         $middleModel = $struct->getMiddleModel();
         $rightModel = $struct->getRightModel();
 
-        $leftValue = $model->$leftField;
+        $leftValue = $model[$leftField];
         if (null !== $leftValue)
         {
             if (null === $refData)
@@ -821,7 +821,7 @@ class Query
                 if ($list)
                 {
                     // 关联数据
-                    static::appendMany($model->$propertyName, $list, $middleTable, $middleModel);
+                    static::appendMany($model[$propertyName], $list, $middleTable, $middleModel);
 
                     // 右侧表数据
                     $model->{$annotation->rightMany}->append(...$list);

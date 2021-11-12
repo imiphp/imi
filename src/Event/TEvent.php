@@ -13,26 +13,26 @@ trait TEvent
      *
      * @var \Imi\Event\EventItem[][]
      */
-    private array $events = [];
+    private array $__events = [];
 
     /**
      * 事件队列，按执行顺序排.
      *
      * @var \SplPriorityQueue[]
      */
-    private array $eventQueue = [];
+    private array $__eventQueue = [];
 
     /**
      * 事件更改记录.
      */
-    private array $eventChangeRecords = [];
+    private array $__eventChangeRecords = [];
 
     /**
      * 排序后的事件对象
      *
      * @var \Imi\Event\EventItem[][]
      */
-    private array $sortedEventQueue = [];
+    private array $__sortedEventQueue = [];
 
     /**
      * 事件监听.
@@ -57,15 +57,15 @@ trait TEvent
             {
                 $callbackClass = null;
             }
-            $this->events[$eventName][] = $item = new EventItem($callback, $priority);
+            $this->__events[$eventName][] = $item = new EventItem($callback, $priority);
             if (null !== $callbackClass)
             {
                 $item->callbackClass = $callbackClass;
             }
-            if (isset($this->eventQueue[$eventName]))
+            if (isset($this->__eventQueue[$eventName]))
             {
-                $this->eventQueue[$eventName]->insert($item, $priority);
-                $this->eventChangeRecords[$eventName] ??= 2;
+                $this->__eventQueue[$eventName]->insert($item, $priority);
+                $this->__eventChangeRecords[$eventName] ??= 2;
             }
         }
     }
@@ -93,15 +93,15 @@ trait TEvent
             {
                 $callbackClass = null;
             }
-            $this->events[$eventName][] = $item = new EventItem($callback, $priority, true);
+            $this->__events[$eventName][] = $item = new EventItem($callback, $priority, true);
             if (null !== $callbackClass)
             {
                 $item->callbackClass = $callbackClass;
             }
-            if (isset($this->eventQueue[$eventName]))
+            if (isset($this->__eventQueue[$eventName]))
             {
-                $this->eventQueue[$eventName]->insert($item, $priority);
-                $this->eventChangeRecords[$eventName] ??= 2;
+                $this->__eventQueue[$eventName]->insert($item, $priority);
+                $this->__eventChangeRecords[$eventName] ??= 2;
             }
         }
     }
@@ -114,8 +114,8 @@ trait TEvent
      */
     public function off($name, $callback = null): void
     {
-        $events = &$this->events;
-        $eventChangeRecords = &$this->eventChangeRecords;
+        $events = &$this->__events;
+        $eventChangeRecords = &$this->__eventChangeRecords;
         foreach ((array) $name as $eventName)
         {
             if (isset($events[$eventName]))
@@ -152,14 +152,14 @@ trait TEvent
     public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
         // 获取回调列表
-        if (!isset($this->eventQueue[$name]))
+        if (!isset($this->__eventQueue[$name]))
         {
             $options = ClassEventManager::getByObjectEvent($this, $name);
-            if (!$options && empty($this->events[$name]))
+            if (!$options && empty($this->__events[$name]))
             {
                 return;
             }
-            $eventsMap = &$this->events[$name];
+            $eventsMap = &$this->__events[$name];
             if ($options)
             {
                 foreach ($options as $className => $option)
@@ -170,11 +170,11 @@ trait TEvent
             }
             $this->rebuildEventQueue($name);
         }
-        elseif (empty($this->events[$name]))
+        elseif (empty($this->__events[$name]))
         {
             return;
         }
-        elseif (isset($this->eventChangeRecords[$name]))
+        elseif (isset($this->__eventChangeRecords[$name]))
         {
             $this->rebuildEventQueue($name);
         }
@@ -184,7 +184,7 @@ trait TEvent
         try
         {
             /** @var EventItem $option */
-            foreach ($this->sortedEventQueue[$name] as $option)
+            foreach ($this->__sortedEventQueue[$name] as $option)
             {
                 // 仅触发一次
                 if ($option->oneTime)
@@ -205,7 +205,7 @@ trait TEvent
             // 仅触发一次的处理
             if ($oneTimeCallbacks)
             {
-                $eventsMap = &$this->events[$name];
+                $eventsMap = &$this->__events[$name];
                 foreach ($eventsMap as $eventsKey => $item)
                 {
                     foreach ($oneTimeCallbacks as $oneTimeCallbacksKey => $oneTimeItem)
@@ -217,7 +217,7 @@ trait TEvent
                         }
                     }
                 }
-                $this->eventChangeRecords[$name] = 1;
+                $this->__eventChangeRecords[$name] = 1;
             }
         }
     }
@@ -227,10 +227,10 @@ trait TEvent
      */
     private function rebuildEventQueue(string $name): void
     {
-        if (1 === ($this->eventChangeRecords[$name] ?? 1))
+        if (1 === ($this->__eventChangeRecords[$name] ?? 1))
         {
-            $this->eventQueue[$name] = $queue = new \SplPriorityQueue();
-            $events = $this->events[$name] ?? [];
+            $this->__eventQueue[$name] = $queue = new \SplPriorityQueue();
+            $events = $this->__events[$name] ?? [];
             if ($events)
             {
                 foreach ($events as $item)
@@ -242,9 +242,9 @@ trait TEvent
         }
         else
         {
-            $clonedQueue = clone $this->eventQueue[$name];
+            $clonedQueue = clone $this->__eventQueue[$name];
         }
-        $this->sortedEventQueue[$name] = iterator_to_array($clonedQueue);
-        $this->eventChangeRecords[$name] = null;
+        $this->__sortedEventQueue[$name] = iterator_to_array($clonedQueue);
+        $this->__eventChangeRecords[$name] = null;
     }
 }

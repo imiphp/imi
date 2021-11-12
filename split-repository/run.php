@@ -269,16 +269,16 @@ foreach ($storeRepoMap as $name => $urls)
             if (preg_match('/(.+)\s+=>\s+(.+)/', $matches[1], $matches2))
             {
                 // 重命名
-                if ('}' === $matches2[2][-1])
-                {
-                    // 同目录下重命名
-                    $from = str_replace('{', '', $matches2[1]);
-                    $to = \dirname($from) . '/' . substr($matches2[2], 0, -1);
-                }
-                else
+                if (false === strpos($matches2[2], '}'))
                 {
                     $from = $matches2[1];
                     $to = $matches2[2];
+                }
+                else
+                {
+                    // 同目录下重命名
+                    $from = str_replace('{', '', $matches2[1]);
+                    $to = str_replace('}', '', \dirname($from) . '/' . $matches2[2]);
                 }
                 if ($path === substr($from, 0, $pathLen))
                 {

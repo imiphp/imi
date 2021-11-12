@@ -6,7 +6,6 @@ namespace Imi\Model;
 
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Result;
-use Imi\Event\IEvent;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
 
@@ -57,12 +56,62 @@ class ModelQueryResult extends Result
         {
             if (is_subclass_of($className, Model::class))
             {
-                /** @var Model $object */
-                $object = $className::createFromRecord($record);
-                if ($this->isSetSerializedFields)
+                $with = $this->with;
+                $withField = $this->withField;
+                if ($with)
                 {
-                    $object->__setSerializedFields(array_keys($record));
+                    $hasRelation = ModelRelationManager::hasRelation($className);
+                    if ($withField)
+                    {
+                        $serializedFields = $withField;
+                    }
+                    else
+                    {
+                        $serializedFields = [];
+                        foreach ($with as $k => $v)
+                        {
+                            if (\is_string($k))
+                            {
+                                $serializedFields[] = $k;
+                            }
+                            else
+                            {
+                                $serializedFields[] = $v;
+                            }
+                        }
+                        if ($this->isSetSerializedFields)
+                        {
+                            $serializedFields = array_merge($serializedFields, array_keys($record));
+                        }
+                        else
+                        {
+                            $serializedFields = array_merge($serializedFields, $className::__getMeta()->getSerializableFieldNames());
+                        }
+                    }
+                    /** @var Model $object */
+                    $object = $className::createFromRecord($record, false);
+                    $object->__setSerializedFields($serializedFields);
+                    if ($hasRelation)
+                    {
+                        ModelRelationManager::initModels([$object], null, $with, $className);
+                    }
                 }
+                else
+                {
+                    /** @var Model $object */
+                    $object = $className::createFromRecord($record);
+                    if ($withField)
+                    {
+                        $object->__setSerializedFields($withField);
+                    }
+                    elseif ($this->isSetSerializedFields)
+                    {
+                        $object->__setSerializedFields(array_keys($record));
+                    }
+                }
+                $object->trigger(ModelEvents::AFTER_QUERY, [
+                    'model'      => $object,
+                ], $object, AfterQueryEventParam::class);
             }
             else
             {
@@ -71,13 +120,6 @@ class ModelQueryResult extends Result
                 {
                     $object->$k = $v;
                 }
-            }
-            /** @var IEvent $object */
-            if (is_subclass_of($object, IEvent::class))
-            {
-                $object->trigger(ModelEvents::AFTER_QUERY, [
-                    'model'      => $object,
-                ], $object, AfterQueryEventParam::class);
             }
 
             return $object;
@@ -94,31 +136,67 @@ class ModelQueryResult extends Result
             throw new \RuntimeException('Result is not success!');
         }
 
+        $statementRecords = $this->statementRecords;
+        if (!$statementRecords)
+        {
+            return [];
+        }
         if (null === $className)
         {
             $className = $this->modelClass;
         }
         if (null === $className)
         {
-            return $this->statementRecords;
+            return $statementRecords;
         }
         elseif (is_subclass_of($className, Model::class))
         {
             $list = [];
             $hasRelation = ModelRelationManager::hasRelation($className);
-            foreach ($this->statementRecords as $item)
+            $withField = $this->withField;
+            $with = $this->with;
+            if ($withField)
             {
-                $object = $className::createFromRecord($item, false);
-                if ($this->withField)
+                $serializedFields = $withField;
+            }
+            else
+            {
+                $serializedFields = [];
+                if ($with)
                 {
-                    $object->__setSerializedFields($this->withField);
-                }
-                elseif ($this->isSetSerializedFields)
-                {
-                    if (!isset($serializedFields))
+                    foreach ($with as $k => $v)
                     {
-                        $serializedFields = array_keys($item);
+                        if (\is_string($k))
+                        {
+                            $serializedFields[] = $k;
+                        }
+                        else
+                        {
+                            $serializedFields[] = $v;
+                        }
                     }
+                }
+                if ($this->isSetSerializedFields)
+                {
+                    if ($serializedFields)
+                    {
+                        $serializedFields = array_merge($serializedFields, array_keys($statementRecords[0]));
+                    }
+                    else
+                    {
+                        $serializedFields = array_keys($statementRecords[0]);
+                    }
+                }
+                elseif ($serializedFields)
+                {
+                    $serializedFields = array_merge($serializedFields, $className::__getMeta()->getSerializableFieldNames());
+                }
+            }
+            foreach ($statementRecords as $item)
+            {
+                $list[] = $object = $className::createFromRecord($item, false);
+                if ($serializedFields)
+                {
                     $object->__setSerializedFields($serializedFields);
                 }
                 if (!$hasRelation)
@@ -127,11 +205,10 @@ class ModelQueryResult extends Result
                         'model' => $object,
                     ], $object, AfterQueryEventParam::class);
                 }
-                $list[] = $object;
             }
             if ($hasRelation)
             {
-                ModelRelationManager::initModels($list, null, $this->with, $className);
+                ModelRelationManager::initModels($list, null, $with, $className);
                 foreach ($list as $object)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [

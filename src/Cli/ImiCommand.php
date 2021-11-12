@@ -115,9 +115,17 @@ class ImiCommand extends Command
             if (null === $commandAction->description)
             {
                 $methodRef = new \ReflectionMethod($this->className, $this->methodName);
-                $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-                $docblock = $factory->create($methodRef->getDocComment());
-                $description = $docblock->getSummary();
+                $docComment = $methodRef->getDocComment();
+                if (false === $docComment)
+                {
+                    $description = '';
+                }
+                else
+                {
+                    $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+                    $docblock = $factory->create($docComment);
+                    $description = $docblock->getSummary();
+                }
             }
             else
             {

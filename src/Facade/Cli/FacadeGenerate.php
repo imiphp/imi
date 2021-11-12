@@ -73,7 +73,8 @@ class FacadeGenerate extends BaseCommand
             {
                 continue;
             }
-            if (preg_match('/@return\s+([^\s]+)/', $method->getDocComment(), $matches) > 0)
+            $docComment = $method->getDocComment();
+            if (false !== $docComment && preg_match('/@return\s+([^\s]+)/', $docComment, $matches) > 0)
             {
                 $returnType = $matches[1];
             }

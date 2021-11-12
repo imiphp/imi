@@ -63,7 +63,7 @@
         "generate-ide-helper": "Imi\\Dev\\Plugin::IDEHelper",
         "test": "@php -dapc.enable_cli=1 tests/phpunit -c ./tests/phpunit.xml",
         "install-test": "@php --ri swoole && composer install && cd ../ && composer test",
-        "test-swoole": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/swoole/tests/phpunit.xml",
+        "test-swoole": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/swoole/tests/phpunit.xml",
         "test-workerman": "@php tests/phpunit -c src/Components/workerman/tests/phpunit.xml",
         "test-workerman-gateway-w": "@php tests/phpunit -c src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman",
         "test-workerman-gateway-s": "@php tests/phpunit -c src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole",
@@ -74,20 +74,20 @@
         "test-roadrunner": "@php tests/phpunit -c src/Components/roadrunner/tests/phpunit.xml",
         "test-fpm": "@php tests/phpunit -c src/Components/fpm/tests/phpunit.xml",
         "test-jwt": "@php tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
-        "test-queue": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
+        "test-queue": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
         "test-amqp": [
-            "AMQP_TEST_MODE=swoole php src/Components/swoole/tests/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
-            "AMQP_TEST_MODE=workerman php src/Components/swoole/tests/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml"
+            "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
+            "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml"
         ],
         "test-kafka": [
-            "AMQP_TEST_MODE=swoole php src/Components/swoole/tests/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
-            "AMQP_TEST_MODE=workerman php src/Components/swoole/tests/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
+            "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
+            "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
         ],
-        "test-grpc": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
+        "test-grpc": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
         "test-snowflake": "@php tests/phpunit -c src/Components/snowflake/tests/phpunit.xml",
-        "test-mqtt": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
+        "test-mqtt": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
         "test-smarty": "@php tests/phpunit -c src/Components/smarty/tests/phpunit.xml",
-        "test-pgsql": "@php src/Components/swoole/tests/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
+        "test-pgsql": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",

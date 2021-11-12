@@ -507,6 +507,15 @@ $list = TestModel::query()
 
 > 使用预加载后，模型关联的前后置事件都不会触发
 
+---
+
+> 和 `withField()` 一起用时，`with()` 中查询的关联字段可以手动获取。但如果要在 JSON 序列化时返回，需要在 `withField()` 中指定该关联字段
+
+```php
+$list = TestModel::query()->with(['a'])->withField('b')->select()->getArray(); // JSON 序列化时，只返回字段 b，而没有 a
+$list = TestModel::query()->with(['a'])->withField('a', 'b')->select()->getArray(); // JSON 序列化时，返回字段中有a、b
+```
+
 ### 指定查询出的模型可序列化的字段
 
 > 必须使用驼峰命名

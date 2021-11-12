@@ -9,11 +9,11 @@ trait THashCode
     /**
      * hashCode.
      */
-    protected ?string $hashCode = null;
+    protected ?string $__hashCode = null;
 
     public function hashCode(): string
     {
-        $hashCode = &$this->hashCode;
+        $hashCode = &$this->__hashCode;
         if (null === $hashCode)
         {
             $hashCode = spl_object_hash($this);

@@ -29,7 +29,7 @@ class Delete
      */
     public static function parse(Model $model, string $propertyName, array $annotations): void
     {
-        if (!$model->$propertyName)
+        if (!$model[$propertyName])
         {
             return;
         }
@@ -93,8 +93,8 @@ class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $modelField = $model->$propertyName;
-        $modelField->$rightField = $model->$leftField;
+        $modelField = $model[$propertyName];
+        $modelField[$rightField] = $model[$leftField];
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
         Event::trigger($eventName . '.BEFORE', [
             'model'        => $model,
@@ -131,7 +131,7 @@ class Delete
             'struct'       => $struct,
         ]);
         $rightModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $rightField) {
-            $query->where($rightField, '=', $model->$leftField);
+            $query->where($rightField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
@@ -161,7 +161,7 @@ class Delete
             'struct'       => $struct,
         ]);
         $middleModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $middleLeftField) {
-            $query->where($middleLeftField, '=', $model->$leftField);
+            $query->where($middleLeftField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
@@ -191,7 +191,7 @@ class Delete
                     'annotation'   => $annotationItem,
                 ]);
 
-                $model->$propertyName->delete();
+                $model[$propertyName]->delete();
 
                 Event::trigger($eventName . '.AFTER', [
                     'model'        => $model,
@@ -222,8 +222,8 @@ class Delete
             'struct'       => $struct,
         ]);
 
-        $modelField = $model->$propertyName;
-        $modelField->$rightField = $model->$leftField;
+        $modelField = $model[$propertyName];
+        $modelField[$rightField] = $model[$leftField];
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->delete();
         Event::trigger($eventName . '.AFTER', [
@@ -255,7 +255,7 @@ class Delete
         ]);
 
         $rightModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $rightField, $annotation) {
-            $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+            $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
@@ -286,7 +286,7 @@ class Delete
         ]);
 
         $middleModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $middleLeftField, $annotation) {
-            $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField);
+            $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,

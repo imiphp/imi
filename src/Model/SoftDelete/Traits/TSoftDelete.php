@@ -103,11 +103,11 @@ trait TSoftDelete
         {
             foreach ($id as $idName)
             {
-                $query->where($idName, '=', $this->$idName);
+                $query->where($idName, '=', $this[$idName]);
             }
         }
         $fieldName = $softDeleteAnnotation->field;
-        $fieldVlaue = $this->$fieldName = $this->__generateSoftDeleteValue();
+        $fieldVlaue = $this[$fieldName] = $this->__generateSoftDeleteValue();
         $result = $query->update([
             $fieldName => $fieldVlaue,
         ]);
@@ -244,7 +244,7 @@ trait TSoftDelete
         {
             foreach ($id as $idName)
             {
-                $query->where($idName, '=', $this->$idName);
+                $query->where($idName, '=', $this[$idName]);
             }
         }
         $result = $query->update([

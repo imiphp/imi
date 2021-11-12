@@ -125,6 +125,7 @@ class DocTool extends BaseCommand
             ]);
             $analysis->addAnnotation($infoAnnotation, $context);
         }
+        $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
         // 遍历 imi 控制器类
         foreach ($controllerClasses as $controllerClass)
         {
@@ -163,10 +164,18 @@ class DocTool extends BaseCommand
                         $requestPath = $controllerAnnotation->prefix . $requestPath;
                     }
 
-                    $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-                    $docblock = $factory->create($refMethod->getDocComment());
-                    /** @var \phpDocumentor\Reflection\DocBlock\Tags\Param[] $docParams */
-                    $docParams = $docblock->getTagsByName('param');
+                    $comment = $refMethod->getDocComment();
+                    if (false === $comment)
+                    {
+                        $comment = '';
+                        $docParams = [];
+                    }
+                    else
+                    {
+                        $docblock = $factory->create($comment);
+                        /** @var \phpDocumentor\Reflection\DocBlock\Tags\Param[] $docParams */
+                        $docParams = $docblock->getTagsByName('param');
+                    }
 
                     // method
                     $requestMethods = (array) ($route->method ?? 'GET');
@@ -232,7 +241,6 @@ class DocTool extends BaseCommand
                         ]);
                     }
 
-                    $comment = false === $refMethod->getDocComment() ? $refMethod->getDocComment() : '';
                     $methodContext = new Context([
                         'comment'   => $comment,
                         'filename'  => $refMethod->getFileName(),

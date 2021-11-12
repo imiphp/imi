@@ -27,7 +27,7 @@ abstract class Model extends BaseModel
     /**
      * 动态模型集合.
      */
-    protected static array $forks = [];
+    protected static array $__forks = [];
 
     public function __init(array $data = [], bool $queryRelation = true): void
     {
@@ -266,9 +266,9 @@ abstract class Model extends BaseModel
         {
             foreach ($id as $idName)
             {
-                if (isset($this->$idName))
+                if (isset($this[$idName]))
                 {
-                    $bindValues[':c_' . $idName] = $this->$idName;
+                    $bindValues[':c_' . $idName] = $this[$idName];
                     $keys[] = $conditionId[] = $idName;
                 }
             }
@@ -413,7 +413,7 @@ abstract class Model extends BaseModel
                 {
                     foreach ($id as $idName)
                     {
-                        if (isset($this->$idName))
+                        if (isset($this[$idName]))
                         {
                             $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
                         }
@@ -457,9 +457,9 @@ abstract class Model extends BaseModel
         {
             foreach ($id as $idName)
             {
-                if (isset($this->$idName))
+                if (isset($this[$idName]))
                 {
-                    $bindValues[$idName] = $this->$idName;
+                    $bindValues[$idName] = $this[$idName];
                 }
             }
         }
@@ -471,7 +471,7 @@ abstract class Model extends BaseModel
             // 主键条件加入
             foreach ($id as $idName)
             {
-                if (isset($this->$idName))
+                if (isset($this[$idName]))
                 {
                     $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
                 }
@@ -505,16 +505,6 @@ abstract class Model extends BaseModel
     {
         ModelRelationManager::queryModelRelations($this, ...$names);
 
-        // 提取属性支持
-        $propertyAnnotations = $this->__meta->getExtractPropertys();
-        foreach ($names as $name)
-        {
-            if (isset($propertyAnnotations[$name]))
-            {
-                $this->__parseExtractProperty($name, $propertyAnnotations[$name]);
-            }
-        }
-
         // 关联字段加入序列化
         if ($this->__serializedFields)
         {
@@ -534,6 +524,22 @@ abstract class Model extends BaseModel
     public static function queryRelationsList(iterable $list, string ...$names): iterable
     {
         ModelRelationManager::initModels($list, $names);
+
+        if ($list)
+        {
+            /** @var self $model */
+            $model = $list[0];
+            $__serializedFields = $model->__serializedFields;
+            // 关联字段加入序列化
+            if ($__serializedFields)
+            {
+                $__serializedFields = array_merge($__serializedFields, $names);
+            }
+            else
+            {
+                $__serializedFields = array_merge($model->__fieldNames, $names);
+            }
+        }
 
         return $list;
     }
@@ -636,7 +642,7 @@ abstract class Model extends BaseModel
      */
     public static function fork(?string $tableName = null, ?string $poolName = null)
     {
-        $forks = &self::$forks;
+        $forks = &self::$__forks;
         if (isset($forks[static::class][$tableName][$poolName]))
         {
             return $forks[static::class][$tableName][$poolName];
