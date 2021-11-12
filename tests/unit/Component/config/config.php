@@ -78,7 +78,7 @@ return [
             'b' => 'bbb',
         ],
         'ErrorLog'          => [
-            'exceptionLevel' => \E_ALL & ~\E_DEPRECATED,
+            'exceptionLevel' => \E_ALL,
         ],
         'DbQueryLog' => [
             'enable' => true,
