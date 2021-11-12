@@ -82,9 +82,9 @@ class SqlUtil
             }
         }
         $leftSql = substr($sql, $begin, $i + 1 - $begin);
-        if ('' !== $leftSql)
+        if ('' !== trim($leftSql))
         {
-            throw new DbException(sprintf('Invalid sql: %s', trim($leftSql)));
+            throw new DbException(sprintf('Invalid sql: %s', $leftSql));
         }
 
         return $result;
