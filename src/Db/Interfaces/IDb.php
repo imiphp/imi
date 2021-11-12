@@ -136,4 +136,11 @@ interface IDb extends IHashCode
      * 创建查询构建器.
      */
     public function createQuery(?string $modelClass = null): IQuery;
+
+    /**
+     * 获取数据库种类
+     *
+     * @return string
+     */
+    public function getDbType(): string;
 }

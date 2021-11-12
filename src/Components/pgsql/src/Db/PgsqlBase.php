@@ -17,4 +17,12 @@ abstract class PgsqlBase extends Base
     {
         return PgsqlQuery::newInstance($this, $modelClass, null, null);
     }
+
+    /**
+     * 获取数据库种类.
+     */
+    public function getDbType(): string
+    {
+        return 'PostgreSQL';
+    }
 }
