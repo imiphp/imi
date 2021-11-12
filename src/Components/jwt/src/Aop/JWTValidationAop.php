@@ -74,6 +74,10 @@ class JWTValidationAop
             /** @var \Imi\Server\Http\Message\Request $request */
             $request = RequestContext::get('request');
             $authorization = $request->getHeaderLine(RequestHeader::AUTHORIZATION);
+            if (!str_contains($authorization, ' '))
+            {
+                throw new InvalidAuthorizationException('Invalid Authorization');
+            }
             [$bearer, $jwtStr] = explode(' ', $authorization, 2);
             if ('Bearer' !== $bearer)
             {
