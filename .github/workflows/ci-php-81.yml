@@ -124,76 +124,76 @@ jobs:
         if: failure()
         run: php .github/print-logs.php
 
-  windows:
-    name: Windows PHP-${{ matrix.php }} RoadRunner-${{ matrix.roadrunner }}
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php: [8.1]
-        roadrunner: [2.5.*]
-
-    env:
-      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup MySQL
-        uses: shogo82148/actions-setup-mysql@v1
-        with:
-          mysql-version: "8.0"
-          root-password: root
-
-      - name: Setup Redis-server
-        run: |
-          nuget install redis-64 -excludeversion
-          redis-64\tools\redis-server.exe --service-install
-          redis-64\tools\redis-server.exe --service-start
-          '@ECHO Redis Started'
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@verbose
-        with:
-          php-version: ${{ matrix.php }}
-          ini-values: session.save_path=C:\temp
-          tools: pecl
-          extensions: bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, event
-        env:
-          fail-fast: true
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-
-      - name: Prepare
-        run: |
-          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-          composer update --prefer-dist --no-progress
-          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
-
-      - name: Install RoadRunner
-        run: |
-          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $env:ROADRUNNER_DOCKER_VERSION
-          .\rr -v
-
-      - name: Test
-        run: composer test
-      - name: Test fpm
-        run: composer test-fpm
-      - name: Test workerman
-        run: composer test-workerman
-      - name: Test workerman-gateway
-        run: composer test-workerman-gateway-w
-      - name: Test roadrunner
-        run: composer test-roadrunner
-      - name: Print logs
-        if: failure()
-        run: php .github\print-logs.php
+#  windows:
+#    name: Windows PHP-${{ matrix.php }} RoadRunner-${{ matrix.roadrunner }}
+#    runs-on: windows-latest
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        php: [8.1]
+#        roadrunner: [2.5.*]
+#
+#    env:
+#      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
+#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Setup MySQL
+#        uses: shogo82148/actions-setup-mysql@v1
+#        with:
+#          mysql-version: "8.0"
+#          root-password: root
+#
+#      - name: Setup Redis-server
+#        run: |
+#          nuget install redis-64 -excludeversion
+#          redis-64\tools\redis-server.exe --service-install
+#          redis-64\tools\redis-server.exe --service-start
+#          '@ECHO Redis Started'
+#
+#      - name: Setup PHP
+#        uses: shivammathur/setup-php@verbose
+#        with:
+#          php-version: ${{ matrix.php }}
+#          ini-values: session.save_path=C:\temp
+#          tools: pecl
+#          extensions: bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, event
+#        env:
+#          fail-fast: true
+#
+#      - name: Get composer cache directory
+#        id: composer-cache
+#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+#      - name: Cache dependencies
+#        uses: actions/cache@v2
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+#
+#      - name: Prepare
+#        run: |
+#          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+#          composer update --prefer-dist --no-progress
+#          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
+#
+#      - name: Install RoadRunner
+#        run: |
+#          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $env:ROADRUNNER_DOCKER_VERSION
+#          .\rr -v
+#
+#      - name: Test
+#        run: composer test
+#      - name: Test fpm
+#        run: composer test-fpm
+#      - name: Test workerman
+#        run: composer test-workerman
+#      - name: Test workerman-gateway
+#        run: composer test-workerman-gateway-w
+#      - name: Test roadrunner
+#        run: composer test-roadrunner
+#      - name: Print logs
+#        if: failure()
+#        run: php .github\print-logs.php
