@@ -1,4 +1,4 @@
-name: php-81
+name: ci-php-81
 
 on: [push, pull_request]
 
@@ -160,7 +160,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
           tools: pecl
-          extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event
+          extensions: bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, event
         env:
           fail-fast: true
 
