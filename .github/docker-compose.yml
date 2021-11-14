@@ -12,7 +12,7 @@ services:
     image: mysql:${MYSQL_DOCKER_VERSION}
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "db_imi_test"
       TZ: "Asia/Shanghai"

@@ -14,19 +14,23 @@ jobs:
         roadrunner: [2.5.*]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: 127.0.0.1
       MYSQL_SERVER_HOST: 127.0.0.1
-      MYSQL_SERVER_PASSWORD: "root"
       PGSQL_SERVER_HOST: 127.0.0.1
-      PGSQL_SERVER_PASSWORD: "root"
       AMQP_SERVER_HOST: 127.0.0.1
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
+      MYSQL_ROOT_PASSWORD: root
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Depend
         run: |
           sudo apt install libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev
+      - name: Service
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }} mysql postgres redis rabbitmq kafka1
+          echo -e "\n127.0.0.1 kafka1\n" | sudo tee -a /etc/hosts
       - name: Setup PHP
         uses: shivammathur/setup-php@verbose
         with:
@@ -62,10 +66,6 @@ jobs:
           php --ri swoole
           php -r "echo 'opcache config: '; print_r(opcache_get_status(false)); echo PHP_EOL;"
           composer -V
-      - name: Service
-        run: |
-          docker-compose -f ./.github/docker-env.yml up -d
-          echo -e "\n127.0.0.1 mysql postgres rabbitmq kafka1\n" | sudo tee -a /etc/hosts
       - name: Wait Service
         uses: nick-invision/retry@v2
         with:
@@ -73,9 +73,12 @@ jobs:
           retry_wait_seconds: 2
           max_attempts: 30
           retry_on: error
-          command: docker exec postgres pg_isready -d db_imi_test
+          command: |
+            docker exec mysql mysqladmin -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} ping
+            docker exec postgres pg_isready -d db_imi_test
       - name: Prepare
         run: |
+          docker exec mysql mysql -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} -e "grant all privileges on *.* to root@'%' with grant option"
           docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           composer update --no-interaction --prefer-dist --no-progress
           bash tests/db/install-db.sh
