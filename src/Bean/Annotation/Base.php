@@ -68,6 +68,7 @@ abstract class Base extends LazyArrayObject
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         $value = parent::offsetGet($offset);

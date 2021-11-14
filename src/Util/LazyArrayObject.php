@@ -23,6 +23,7 @@ class LazyArrayObject extends ArrayObject implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->getArrayCopy();

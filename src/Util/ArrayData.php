@@ -285,6 +285,7 @@ class ArrayData implements \ArrayAccess, \Countable
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         return $this->get($offset);

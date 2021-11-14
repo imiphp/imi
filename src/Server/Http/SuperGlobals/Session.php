@@ -12,6 +12,7 @@ class Session implements \ArrayAccess, \JsonSerializable
      * @param int|string $offset
      * @param mixed      $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         ImiSession::set($offset, $value);
@@ -20,6 +21,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     /**
      * @param int|string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return null !== ImiSession::get($offset);
@@ -28,6 +30,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     /**
      * @param int|string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         ImiSession::delete($offset);
@@ -38,6 +41,7 @@ class Session implements \ArrayAccess, \JsonSerializable
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return ImiSession::get($offset);
@@ -51,6 +55,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return ImiSession::get();

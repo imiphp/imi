@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole: 
+        swoole:
           - version: 4.8-php8.0
             postgresql_version: "v4.8.0"
           - version: 4.7-php8.0
@@ -75,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole: 
+        swoole:
           - version: 4.8-php7.4
             postgresql_version: "v4.8.0"
           - version: 4.8-php8.0
@@ -144,7 +144,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole: 
+        swoole:
           - version: 4.7-php8.0
             postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
         roadrunner: [2.5.*]
@@ -309,7 +309,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0"]
+        php: [7.4, 8.0]
         roadrunner: [2.5.*]
 
     env:
@@ -334,12 +334,14 @@ jobs:
           '@ECHO Redis Started'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@verbose
         with:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
           tools: pecl
           extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event
+        env:
+          fail-fast: true
 
       - name: Get composer cache directory
         id: composer-cache

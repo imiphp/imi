@@ -38,6 +38,14 @@ class PHPUnitHook implements BeforeFirstTestHook
                 }
             });
         }, 1);
-        App::run('Imi\Test\Component', TestApp::class);
+        try
+        {
+            App::run('Imi\Test\Component', TestApp::class);
+        }
+        catch (\Throwable $exception)
+        {
+            var_dump((string) $exception); // 方便错误调试查看
+            throw $exception;
+        }
     }
 }

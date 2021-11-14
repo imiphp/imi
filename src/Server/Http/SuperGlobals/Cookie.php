@@ -13,6 +13,7 @@ class Cookie implements \ArrayAccess, \JsonSerializable
      * @param int|string $offset
      * @param mixed      $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         Log::warning('imi does not support to assign values to $_COOKIE');
@@ -21,6 +22,7 @@ class Cookie implements \ArrayAccess, \JsonSerializable
     /**
      * @param int|string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -32,6 +34,7 @@ class Cookie implements \ArrayAccess, \JsonSerializable
     /**
      * @param int|string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         Log::warning('imi does not support to unset values from $_COOKIE');
@@ -42,6 +45,7 @@ class Cookie implements \ArrayAccess, \JsonSerializable
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -58,6 +62,7 @@ class Cookie implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         /** @var \Imi\Server\Http\Message\Request $request */

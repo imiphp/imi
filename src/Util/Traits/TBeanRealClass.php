@@ -6,32 +6,29 @@ namespace Imi\Util\Traits;
 
 use Imi\Bean\IBean;
 use Imi\Bean\ReflectionContainer;
+use Imi\Util\StaticValueStorage;
 
 trait TBeanRealClass
 {
-    /**
-     * 真实类名集合.
-     */
-    public static array $__realClassNames = [];
-
     /**
      * 获取当前Bean类真实类名.
      */
     protected static function __getRealClassName(): string
     {
-        if (!isset(TBeanRealClass::$__realClassNames[static::class]))
+        $realClassNames = &StaticValueStorage::$realClassNames;
+        if (!isset($realClassNames[static::class]))
         {
             $ref = ReflectionContainer::getClassReflection(static::class);
             if ($ref->implementsInterface(IBean::class))
             {
-                TBeanRealClass::$__realClassNames[static::class] = $ref->getParentClass()->getName();
+                $realClassNames[static::class] = $ref->getParentClass()->getName();
             }
             else
             {
-                TBeanRealClass::$__realClassNames[static::class] = $ref->getName();
+                $realClassNames[static::class] = $ref->getName();
             }
         }
 
-        return TBeanRealClass::$__realClassNames[static::class];
+        return $realClassNames[static::class];
     }
 }

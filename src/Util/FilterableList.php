@@ -52,6 +52,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         $list = &$this->list;
@@ -98,6 +99,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->list);
@@ -106,6 +108,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->list);
@@ -124,6 +127,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     /**
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return null !== key($this->list);
@@ -142,6 +146,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();

@@ -185,6 +185,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @param int|string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
@@ -197,6 +198,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
@@ -234,6 +236,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * @param int|string $offset
      * @param mixed      $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         $meta = $this->__meta;
@@ -283,6 +286,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @param int|string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         if (isset($this->__fieldNames[$offset]))
@@ -467,6 +471,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @return mixed|false
      */
+    #[\ReturnTypeWillChange]
     public function &current()
     {
         $value = $this[current($this->__fieldNames)];
@@ -477,6 +482,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @return int|string|null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return current($this->__fieldNames);
@@ -501,6 +507,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return false !== current($this->__fieldNames);
@@ -509,6 +516,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();

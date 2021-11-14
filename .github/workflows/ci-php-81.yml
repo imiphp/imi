@@ -1,0 +1,128 @@
+name: ci-php-81
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+    name: Linux PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.1]
+        swoole: [2ec7a2b39f7ec163847a233629c52f577fe9a443]
+        roadrunner: [2.5.*]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MYSQL_DOCKER_VERSION: '8.0'
+      REDIS_SERVER_HOST: 127.0.0.1
+      MYSQL_SERVER_HOST: 127.0.0.1
+      PGSQL_SERVER_HOST: 127.0.0.1
+      AMQP_SERVER_HOST: 127.0.0.1
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
+      MYSQL_ROOT_PASSWORD: root
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Depend
+        run: |
+          sudo apt install libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev
+      - name: Service
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }} mysql postgres redis rabbitmq kafka1
+          echo -e "\n127.0.0.1 kafka1\n" | sudo tee -a /etc/hosts
+      - name: Setup PHP
+        uses: shivammathur/setup-php@verbose
+        with:
+          php-version: ${{ matrix.php }}
+          tools: pecl
+          extensions: >
+            :xdebug
+            apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event,
+            swoole-swoole/swoole-src@${{ matrix.swoole }}
+        env:
+          fail-fast: true
+          SWOOLE_CONFIGURE_OPTS: |
+            --enable-openssl
+            --enable-http2
+            --enable-mysqlnd
+            --enable-sockets
+            --enable-swoole-json
+            --enable-swoole-curl
+            --enable-cares
+            --enable-swoole-pgsql
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+      - name: Env
+        run: |
+          php -v
+          php -m
+          php --ri swoole
+          php -r "echo 'opcache config: '; print_r(opcache_get_status(false)); echo PHP_EOL;"
+          composer -V
+      - name: Wait Service
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 60
+          retry_wait_seconds: 2
+          max_attempts: 30
+          retry_on: error
+          command: |
+            docker exec mysql mysqladmin -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} ping
+            docker exec postgres pg_isready -d db_imi_test
+      - name: Prepare
+        run: |
+          docker exec mysql mysql -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} -e "grant all privileges on *.* to root@'%' with grant option"
+          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+          composer update --no-interaction --prefer-dist --no-progress
+          bash tests/db/install-db.sh
+          src/Components/roadrunner/vendor/bin/rr get-binary -f ${{ matrix.roadrunner }} -l /usr/local/bin
+          rr -v
+      - name: Test
+        run: composer test
+      - name: Test swoole
+        timeout-minutes: 5
+        run: composer test-swoole
+      - name: Test workerman
+        timeout-minutes: 5
+        run: composer test-workerman
+      - name: Test workerman-gateway
+        timeout-minutes: 5
+        run: composer test-workerman-gateway
+      - name: Test roadrunner
+        timeout-minutes: 5
+        run: composer test-roadrunner
+      - name: Test fpm
+        run: composer test-fpm
+      - name: Test jwt
+        run: composer test-jwt
+      - name: Test queue
+        timeout-minutes: 5
+        run: composer test-queue
+      - name: Test amqp
+        timeout-minutes: 5
+        run: composer test-amqp
+      - name: Test kafka
+        timeout-minutes: 5
+        run: composer test-kafka
+      - name: Test grpc
+        timeout-minutes: 5
+        run: composer test-grpc
+      - name: Test snowflake
+        run: composer test-snowflake
+      - name: Test mqtt
+        timeout-minutes: 5
+        run: composer test-mqtt
+      - name: Test smarty
+        run: composer test-smarty
+      - name: Test pgsql
+        run: composer test-pgsql
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php

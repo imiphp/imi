@@ -62,7 +62,7 @@ return [
             'resource'    => [
                 'dbClass'     => 'PdoPgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
+                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
                 'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
@@ -84,7 +84,7 @@ return [
             'resource'    => [
                 'dbClass'     => 'PdoPgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
+                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
                 'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
@@ -105,7 +105,7 @@ return [
             'resource'    => [
                 'dbClass'     => 'SwoolePgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
+                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
                 'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
@@ -120,7 +120,7 @@ return [
             'maindb' => [
                 'dbClass'     => 'PdoPgsqlDriver',
                 'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('PGSQL_SERVER_PORT', 5432),
+                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
                 'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
                 'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
