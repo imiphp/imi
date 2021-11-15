@@ -33,7 +33,7 @@ $processPool->on('WorkerExit', function(\Imi\Swoole\Process\Pool\WorkerEventPara
 $processPool->on('WorkerStop', function(\Imi\Swoole\Process\Pool\WorkerEventParam $e){
 
 });
-// 工作进程停止事件-可选
+// 工作进程接收到消息事件-可选
 $processPool->on('Message', function(\Imi\Swoole\Process\Pool\MessageEventParam $e){
     $data = $e->getData();
      // $data['a'] 约定是操作名，其它成员为参数
