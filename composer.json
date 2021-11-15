@@ -17,6 +17,7 @@
         "symfony/console": "^5.1",
         "symfony/event-dispatcher": "^5.1",
         "symfony/polyfill-php80": "^1.23",
+        "symfony/polyfill-php81": "^1.23",
         "symfony/process": "^5.1",
         "vlucas/phpdotenv": "~5.3",
         "yurunsoft/doctrine-annotations": "^1.73.0"
