@@ -29,6 +29,12 @@
         "friendsofphp/php-cs-fixer": "^3.0.2",
         "phpstan/phpstan": "^1.0.2"
     },
+    "replace": {
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*"
+    },
     "autoload": {
         "psr-4": {
             "Imi\\": "src/"
