@@ -66,14 +66,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     protected Meta $__meta;
 
     /**
-     * 类名.
-     */
-    protected string $__className = '';
-
-    /**
      * 真实类名.
      */
-    protected string $__realClass = '';
+    protected ?string $__realClass = null;
 
     /**
      * 记录是否存在.
@@ -96,8 +91,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $this->__meta = $meta = static::__getMeta();
         $this->__fieldNames = $meta->getSerializableFieldNames();
-        $this->__className = $meta->getClassName();
-        $this->__realClass = $meta->getRealModelClass();
         if (!$this instanceof IBean)
         {
             $this->__init($data);
@@ -115,8 +108,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $this->__originData = $data;
         if ($data)
         {
-            $fieldAnnotations = $this->__meta->getFields();
-            $dbFieldAnnotations = $this->__meta->getDbFields();
+            $meta = $this->__meta;
+            $fieldAnnotations = $meta->getFields();
+            $dbFieldAnnotations = $meta->getDbFields();
             foreach ($data as $k => $v)
             {
                 if (isset($fieldAnnotations[$k]))
@@ -212,7 +206,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function &offsetGet($offset)
     {
         $methodName = (self::$__getterCache[$offset] ??= ('get' . ucfirst($this->__getCamelName($offset))));
-        $realClass = $this->__realClass;
+        $realClass = ($this->__realClass ??= $this->__meta->getRealModelClass());
         if (method_exists($this, $methodName))
         {
             $__methodReference = &self::$__methodReference;
@@ -354,7 +348,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         if (null === $serializedFields)
         {
             $meta = $this->__meta;
-            $realClass = $this->__realClass;
+            $realClass = ($this->__realClass ??= $meta->getRealModelClass());
             if ($meta->hasRelation())
             {
                 $relationFieldNames = ModelRelationManager::getRelationFieldNames($this);

@@ -205,7 +205,7 @@ abstract class Model extends BaseModel
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__className . ':insert:' . md5(implode(',', $keys)))->insert($data);
+        $result = $query->alias($this->__meta->getClassName() . ':insert:' . md5(implode(',', $keys)))->insert($data);
         if ($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
         {
             $this[$autoIncrementField] = $result->getLastInsertId();
@@ -277,7 +277,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
-        $result = $query->alias($this->__className . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
+        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
             // @phpstan-ignore-next-line
             if ($conditionId)
             {
@@ -406,7 +406,7 @@ abstract class Model extends BaseModel
             {
                 $keys[] = $k;
             }
-            $result = $query->alias($this->__className . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
+            $result = $query->alias($this->__meta->getClassName() . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
                 // 主键条件加入
                 $id = $meta->getId();
                 if ($id)
@@ -467,7 +467,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
-        $result = $query->alias($this->__className . ':delete', function (IQuery $query) use ($id) {
+        $result = $query->alias($this->__meta->getClassName() . ':delete', function (IQuery $query) use ($id) {
             // 主键条件加入
             foreach ($id as $idName)
             {
