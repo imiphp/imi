@@ -119,8 +119,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 }
                 elseif (isset($dbFieldAnnotations[$k]))
                 {
-                    $fieldAnnotation = $dbFieldAnnotations[$k]['column'];
-                    $k = $dbFieldAnnotations[$k]['propertyName'];
+                    $item = $dbFieldAnnotations[$k];
+                    $fieldAnnotation = $item['column'];
+                    $k = $item['propertyName'];
                 }
                 else
                 {
