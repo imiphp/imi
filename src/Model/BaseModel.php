@@ -27,11 +27,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     use TEvent;
 
     /**
-     * 序列化后的所有字段属性名列表.
-     */
-    protected array $__fieldNames = [];
-
-    /**
      * 驼峰缓存.
      */
     protected static array $__camelCache = [];
@@ -47,6 +42,21 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * @var \Imi\Model\Meta[]
      */
     protected static array $__metas = [];
+
+    /**
+     * getter 方法名缓存.
+     */
+    protected static array $__getterCache = [];
+
+    /**
+     * setter 方法名缓存.
+     */
+    protected static array $__setterCache = [];
+
+    /**
+     * 序列化后的所有字段属性名列表.
+     */
+    protected array $__fieldNames = [];
 
     /**
      * 当前对象 meta 缓存.
@@ -188,7 +198,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
-        $methodName = 'get' . ucfirst($this->__getCamelName($offset));
+        $methodName = (self::$__getterCache[$offset] ??= ('get' . ucfirst($this->__getCamelName($offset))));
 
         return isset($this->__originData[$offset]) || (method_exists($this, $methodName) && null !== $this->$methodName());
     }
@@ -201,7 +211,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
-        $methodName = 'get' . ucfirst($this->__getCamelName($offset));
+        $methodName = (self::$__getterCache[$offset] ??= ('get' . ucfirst($this->__getCamelName($offset))));
         $realClass = $this->__realClass;
         if (method_exists($this, $methodName))
         {
@@ -241,13 +251,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $meta = $this->__meta;
         $fields = $meta->getFields();
-        $camelName = $this->__getCamelName($offset);
         // 数据库bit类型字段处理
         if (isset($fields[$offset]))
         {
             $column = $fields[$offset];
         }
-        elseif (isset($fields[$camelName]))
+        elseif (isset($fields[$camelName = $this->__getCamelName($offset)]))
         {
             $column = $fields[$camelName];
         }
@@ -260,7 +269,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $value = (1 == $value || \chr(1) === $value);
         }
 
-        $methodName = 'set' . ucfirst($camelName);
+        $methodName = (self::$__setterCache[$offset] ??= ('set' . ucfirst(isset($camelName) ? $camelName : $this->__getCamelName($offset))));
         if (!method_exists($this, $methodName))
         {
             $this->__originData[$offset] = $value;
