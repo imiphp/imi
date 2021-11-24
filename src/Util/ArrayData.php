@@ -25,12 +25,19 @@ class ArrayData implements \ArrayAccess, \Countable
      * @param string|array $name
      * @param mixed        $value
      */
-    public function set($name, $value = null): bool
+    public function set($name, $value = null, bool $merge = true): bool
     {
         if (\is_array($name))
         {
-            // 如果传入数组就合并当前数据
-            $this->__data = ArrayUtil::recursiveMerge($this->__data, $name);
+            if ($merge)
+            {
+                // 如果传入数组就合并当前数据
+                $this->__data = ArrayUtil::recursiveMerge($this->__data, $name);
+            }
+            else
+            {
+                $this->__data = $name;
+            }
         }
         else
         {

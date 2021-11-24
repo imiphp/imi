@@ -25,5 +25,16 @@ var_dump($data->get()['a.id']); // 123
 $data->setVal('a.id', 456);
 var_dump($data['a.id']); // 456
 
+// 第 3 个参数不合并，设置过后，a.b.c.name 将不存在
+$data->set([
+    'a' => [
+        'b' => [
+            'c' => [
+                'noname' => true,
+            ],
+        ],
+    ],
+], null, false);
+
 $data->clear(); // 全部清除
 ```

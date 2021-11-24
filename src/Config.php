@@ -50,7 +50,7 @@ class Config
         }
         else
         {
-            $configData->set($config);
+            $configData->set($config, null, false);
             if ($configData->exists('configs'))
             {
                 static::load($name, $configData->get('configs', []));

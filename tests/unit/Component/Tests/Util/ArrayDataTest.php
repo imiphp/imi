@@ -77,6 +77,24 @@ class ArrayDataTest extends BaseTest
             'b' => 1,
         ], $data->get('a'));
 
+        $data->set([
+            'a' => [
+                'c' => 2,
+            ],
+        ], null, false);
+        $this->assertTrue(isset($data->a));
+        $this->assertTrue(isset($data['a']));
+        $this->assertTrue($data->exists('a'));
+        $this->assertFalse(isset($data->a->b));
+        $this->assertFalse(isset($data['a.b']));
+        $this->assertFalse($data->exists('a.b'));
+        $this->assertEquals(2, $data->a['c']);
+        $this->assertEquals($data->a['c'], $data['a.c']);
+        $this->assertEquals($data->a['c'], $data->get('a.c'));
+        $this->assertEquals([
+            'c' => 2,
+        ], $data->get('a'));
+
         $data->setVal('x.y', 1);
         $this->assertEquals(1, $data->x['y']);
         $this->assertEquals($data->x['y'], $data['x.y']);
