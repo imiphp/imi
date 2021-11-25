@@ -99,16 +99,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __init(array $data = []): void
     {
-        // 初始化前
-        $this->trigger(ModelEvents::BEFORE_INIT, [
-            'model' => $this,
-            'data'  => $data,
-        ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        $meta = $this->__meta;
+        $isBean = $meta->isBean();
+        if ($isBean)
+        {
+            // 初始化前
+            $this->trigger(ModelEvents::BEFORE_INIT, [
+                'model' => $this,
+                'data'  => $data,
+            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        }
 
         $this->__originData = $data;
         if ($data)
         {
-            $meta = $this->__meta;
             $fieldAnnotations = $meta->getFields();
             $dbFieldAnnotations = $meta->getDbFields();
             foreach ($data as $k => $v)
@@ -154,11 +158,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             }
         }
 
-        // 初始化后
-        $this->trigger(ModelEvents::AFTER_INIT, [
-            'model' => $this,
-            'data'  => $data,
-        ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        if ($isBean)
+        {
+            // 初始化后
+            $this->trigger(ModelEvents::AFTER_INIT, [
+                'model' => $this,
+                'data'  => $data,
+            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        }
     }
 
     /**

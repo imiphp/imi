@@ -203,13 +203,16 @@ abstract class Model extends BaseModel
         }
         $query = static::query();
         $meta = $this->__meta;
-
-        // 插入前
-        $this->trigger(ModelEvents::BEFORE_INSERT, [
-            'model' => $this,
-            'data'  => $data,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
+        $isBean = $meta->isBean();
+        if ($isBean)
+        {
+            // 插入前
+            $this->trigger(ModelEvents::BEFORE_INSERT, [
+                'model' => $this,
+                'data'  => $data,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
+        }
 
         $keys = [];
         foreach ($data as $k => $v)
@@ -222,12 +225,15 @@ abstract class Model extends BaseModel
             $this[$autoIncrementField] = $result->getLastInsertId();
         }
 
-        // 插入后
-        $this->trigger(ModelEvents::AFTER_INSERT, [
-            'model'  => $this,
-            'data'   => $data,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
+        if ($isBean)
+        {
+            // 插入后
+            $this->trigger(ModelEvents::AFTER_INSERT, [
+                'model'  => $this,
+                'data'   => $data,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {
@@ -256,13 +262,17 @@ abstract class Model extends BaseModel
         {
             $data = new LazyArrayObject($data);
         }
+        $isBean = $meta->isBean();
 
-        // 更新前
-        $this->trigger(ModelEvents::BEFORE_UPDATE, [
-            'model' => $this,
-            'data'  => $data,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
+        if ($isBean)
+        {
+            // 更新前
+            $this->trigger(ModelEvents::BEFORE_UPDATE, [
+                'model' => $this,
+                'data'  => $data,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
+        }
 
         $keys = [];
         foreach ($data as $k => $v)
@@ -301,12 +311,15 @@ abstract class Model extends BaseModel
             $query->limit(1);
         })->bindValues($bindValues)->update($data);
 
-        // 更新后
-        $this->trigger(ModelEvents::AFTER_UPDATE, [
-            'model'  => $this,
-            'data'   => $data,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
+        if ($isBean)
+        {
+            // 更新后
+            $this->trigger(ModelEvents::AFTER_UPDATE, [
+                'model'  => $this,
+                'data'   => $data,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {
@@ -378,13 +391,17 @@ abstract class Model extends BaseModel
         $meta = $this->__meta;
         $query = static::query();
         $data = self::parseSaveData(iterator_to_array($this), 'save', $this);
+        $isBean = $meta->isBean();
 
-        // 保存前
-        $this->trigger(ModelEvents::BEFORE_SAVE, [
-            'model' => $this,
-            'data'  => $data,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+        if ($isBean)
+        {
+            // 保存前
+            $this->trigger(ModelEvents::BEFORE_SAVE, [
+                'model' => $this,
+                'data'  => $data,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+        }
 
         $recordExists = $this->__recordExists;
 
@@ -438,12 +455,15 @@ abstract class Model extends BaseModel
             $this->__recordExists = true;
         }
 
-        // 保存后
-        $this->trigger(ModelEvents::AFTER_SAVE, [
-            'model'  => $this,
-            'data'   => $data,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterSaveEventParam::class);
+        if ($isBean)
+        {
+            // 保存后
+            $this->trigger(ModelEvents::AFTER_SAVE, [
+                'model'  => $this,
+                'data'   => $data,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterSaveEventParam::class);
+        }
 
         return $result;
     }
@@ -454,15 +474,19 @@ abstract class Model extends BaseModel
     public function delete(): IResult
     {
         $query = static::query();
+        $meta = $this->__meta;
+        $isBean = $meta->isBean();
 
-        // 删除前
-        $this->trigger(ModelEvents::BEFORE_DELETE, [
-            'model' => $this,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+        if ($isBean)
+        {
+            // 删除前
+            $this->trigger(ModelEvents::BEFORE_DELETE, [
+                'model' => $this,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+        }
 
         $bindValues = [];
-        $meta = $this->__meta;
         $id = $meta->getId();
         if ($id)
         {
@@ -490,11 +514,14 @@ abstract class Model extends BaseModel
             $query->limit(1);
         })->bindValues($bindValues)->delete();
 
-        // 删除后
-        $this->trigger(ModelEvents::AFTER_DELETE, [
-            'model'  => $this,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+        if ($isBean)
+        {
+            // 删除后
+            $this->trigger(ModelEvents::AFTER_DELETE, [
+                'model'  => $this,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {

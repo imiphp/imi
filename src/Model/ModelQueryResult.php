@@ -61,9 +61,11 @@ class ModelQueryResult extends Result
         {
             $with = $this->with;
             $withField = $this->withField;
+            /** @var Meta $meta */
+            $meta = $className::__getMeta();
             if ($with)
             {
-                $hasRelation = $className::__getMeta()->hasRelation();
+                $hasRelation = $meta->hasRelation();
                 if ($withField)
                 {
                     $serializedFields = $withField;
@@ -112,9 +114,12 @@ class ModelQueryResult extends Result
                     $object->__setSerializedFields(array_keys($record));
                 }
             }
-            $object->trigger(ModelEvents::AFTER_QUERY, [
-                'model'      => $object,
-            ], $object, AfterQueryEventParam::class);
+            if ($meta->isBean())
+            {
+                $object->trigger(ModelEvents::AFTER_QUERY, [
+                    'model'      => $object,
+                ], $object, AfterQueryEventParam::class);
+            }
         }
         else
         {
@@ -159,7 +164,10 @@ class ModelQueryResult extends Result
         if ($isModel || is_subclass_of($className, Model::class))
         {
             $list = [];
-            $hasRelation = $className::__getMeta()->hasRelation();
+            /** @var Meta $meta */
+            $meta = $className::__getMeta();
+            $hasRelation = $meta->hasRelation();
+            $isBean = $meta->isBean();
             $withField = $this->withField;
             $with = $this->with;
             if ($withField)
@@ -206,7 +214,7 @@ class ModelQueryResult extends Result
                 {
                     $object->__setSerializedFields($serializedFields);
                 }
-                if (!$hasRelation)
+                if ($isBean && !$hasRelation)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [
                         'model' => $object,
@@ -216,11 +224,14 @@ class ModelQueryResult extends Result
             if ($hasRelation)
             {
                 ModelRelationManager::initModels($list, null, $with, $className);
-                foreach ($list as $object)
+                if ($isBean)
                 {
-                    $object->trigger(ModelEvents::AFTER_QUERY, [
-                        'model' => $object,
-                    ], $object, AfterQueryEventParam::class);
+                    foreach ($list as $object)
+                    {
+                        $object->trigger(ModelEvents::AFTER_QUERY, [
+                            'model' => $object,
+                        ], $object, AfterQueryEventParam::class);
+                    }
                 }
             }
 
