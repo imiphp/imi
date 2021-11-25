@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Util\Traits;
 
 use Imi\Bean\IBean;
-use Imi\Bean\ReflectionContainer;
 use Imi\Util\StaticValueStorage;
 
 trait TBeanRealClass
@@ -18,14 +17,13 @@ trait TBeanRealClass
         $realClassNames = &StaticValueStorage::$realClassNames;
         if (!isset($realClassNames[static::class]))
         {
-            $ref = ReflectionContainer::getClassReflection(static::class);
-            if ($ref->implementsInterface(IBean::class))
+            if (is_subclass_of(static::class, IBean::class))
             {
-                $realClassNames[static::class] = $ref->getParentClass()->getName();
+                $realClassNames[static::class] = get_parent_class(static::class);
             }
             else
             {
-                $realClassNames[static::class] = $ref->getName();
+                $realClassNames[static::class] = static::class;
             }
         }
 
