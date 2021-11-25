@@ -34,15 +34,14 @@ trait TSingleton
     {
         if (static::isChildClassSingleton())
         {
-            $className = static::class;
             $instances = &static::$__instances;
-            if (isset($instances[$className]))
+            if (isset($instances[static::class]))
             {
-                return $instances[$className];
+                return $instances[static::class];
             }
             else
             {
-                return $instances[$className] = new static(...$args);
+                return $instances[static::class] = new static(...$args);
             }
         }
         else
