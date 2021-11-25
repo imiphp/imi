@@ -14,7 +14,7 @@ use Imi\Model\Model as Model;
 /**
  * tb_role 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.name", default="tb_role"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.poolName"))
  * @DDL(sql="CREATE TABLE `tb_role` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; insert into `tb_role` values(1,'a'); insert into `tb_role` values(2,'b'); insert into `tb_role` values(3,'c'); insert into `tb_role` values(4,'d'); insert into `tb_role` values(5,'e'); ", decode="")
  *

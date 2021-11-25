@@ -14,7 +14,7 @@ use Imi\Model\Model as Model;
 /**
  * tb_tree 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.name", default="tb_tree"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.poolName"))
  * @DDL(sql="CREATE TABLE `tb_tree` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL,   `name` varchar(32) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT; insert into `tb_tree` values(1,0,'a'); insert into `tb_tree` values(2,0,'b'); insert into `tb_tree` values(3,0,'c'); insert into `tb_tree` values(4,1,'a-1'); insert into `tb_tree` values(5,1,'a-2'); insert into `tb_tree` values(6,4,'a-1-1'); insert into `tb_tree` values(7,4,'a-1-2'); insert into `tb_tree` values(8,2,'b-1'); insert into `tb_tree` values(9,2,'b-2'); ", decode="")
  *

@@ -14,7 +14,7 @@ use Imi\Model\Model as Model;
 /**
  * test 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestJson.name", default="tb_test_json"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestJson.poolName"))
  * @DDL(sql="CREATE TABLE `tb_test_json` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `json_data` json NOT NULL COMMENT 'json数据',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='test'", decode="")
  *

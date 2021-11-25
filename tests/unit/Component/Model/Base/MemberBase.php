@@ -14,7 +14,7 @@ use Imi\Model\Model as Model;
 /**
  * tb_member 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Member.name", default="tb_member"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Member.poolName"))
  * @DDL(sql="CREATE TABLE `tb_member` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `username` varchar(32) NOT NULL COMMENT '用户名',   `password` varchar(255) NOT NULL COMMENT '密码',   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *

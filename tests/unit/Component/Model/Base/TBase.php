@@ -14,7 +14,7 @@ use Imi\Model\Model as Model;
 /**
  * t 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\T.name", default="t"), dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\T.poolName"))
  * @DDL(sql="CREATE TABLE `t` (   `c1` varchar(20) DEFAULT NULL,   `c2` text CHARACTER SET latin1 COLLATE latin1_general_cs ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
