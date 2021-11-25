@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\App;
+use Imi\Bean\IBean;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
@@ -28,6 +29,16 @@ abstract class Model extends BaseModel
      * 动态模型集合.
      */
     protected static array $__forks = [];
+
+    public function __construct(array $data = [], bool $queryRelation = true)
+    {
+        $this->__meta = $meta = static::__getMeta();
+        $this->__fieldNames = $meta->getSerializableFieldNames();
+        if (!$this instanceof IBean)
+        {
+            $this->__init($data, $queryRelation);
+        }
+    }
 
     public function __init(array $data = [], bool $queryRelation = true): void
     {
@@ -647,8 +658,7 @@ abstract class Model extends BaseModel
         {
             return $forks[static::class][$tableName][$poolName];
         }
-        $extendsClass = static::class;
-        $namespace = Imi::getClassNamespace($extendsClass);
+        $namespace = Imi::getClassNamespace(static::class);
         if (null === $tableName)
         {
             $setTableName = '';
@@ -665,7 +675,8 @@ abstract class Model extends BaseModel
         {
             $setPoolName = '$meta->setDbPoolName(\'' . addcslashes($poolName, '\'\\') . '\');';
         }
-        $class = str_replace('\\', '__', $extendsClass . '\\' . md5($tableName . '\\' . $poolName));
+        $class = str_replace('\\', '__', static::class . '\\' . md5($tableName . '\\' . $poolName));
+        $extendsClass = static::class;
         Imi::eval(<<<PHP
         namespace {$namespace} {
             class {$class} extends \\{$extendsClass}
@@ -681,13 +692,13 @@ abstract class Model extends BaseModel
                         \$class = static::__getRealClassName();
                     }
                     \$__metas = &self::\$__metas;
-                    if (!isset(\$__metas[\$class]))
+                    if (isset(\$__metas[\$class]))
                     {
-                        \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
+                        \$meta = \$__metas[\$class];
                     }
                     else
                     {
-                        \$meta = \$__metas[\$class];
+                        \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
                     }
                     if (static::class === \$class || is_subclass_of(\$class, static::class))
                     {

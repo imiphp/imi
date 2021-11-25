@@ -185,6 +185,10 @@ class Test extends Model
 
 `@Entity(false)`
 
+将模型设为非 bean 类：
+
+`@Entity(camel=true, bean=false)`
+
 ### @Table
 
 写在类上，定义数据表

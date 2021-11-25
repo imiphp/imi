@@ -170,8 +170,15 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public static function newInstance(...$args): object
     {
-        // @phpstan-ignore-next-line
-        return BeanFactory::newInstance(static::class, ...$args);
+        if (static::__getMeta()->isBean())
+        {
+            // @phpstan-ignore-next-line
+            return BeanFactory::newInstance(static::class, ...$args);
+        }
+        else
+        {
+            return new static(...$args);
+        }
     }
 
     /**

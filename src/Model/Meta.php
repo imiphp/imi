@@ -139,6 +139,11 @@ class Meta
      */
     private string $realModelClass = '';
 
+    /**
+     * 模型对象是否作为 bean 类使用.
+     */
+    private bool $bean = false;
+
     public function __construct(string $modelClass, bool $inherit = false)
     {
         $this->inherit = $inherit;
@@ -219,6 +224,7 @@ class Meta
         $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
+        $this->bean = $entity->bean;
     }
 
     /**
@@ -456,5 +462,13 @@ class Meta
         $this->dbPoolName = $dbPoolName;
 
         return $this;
+    }
+
+    /**
+     * 模型对象是否作为 bean 类使用.
+     */
+    public function isBean(): bool
+    {
+        return $this->bean;
     }
 }

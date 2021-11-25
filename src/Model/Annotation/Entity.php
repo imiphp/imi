@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property bool $camel 序列化时使用驼峰命名
+ * @property bool $bean  模型对象是否作为 bean 类使用
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Entity extends Base
@@ -24,7 +25,7 @@ class Entity extends Base
      */
     protected ?string $defaultFieldName = 'camel';
 
-    public function __construct(?array $__data = null, bool $camel = true)
+    public function __construct(?array $__data = null, bool $camel = true, bool $bean = true)
     {
         parent::__construct(...\func_get_args());
     }
