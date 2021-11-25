@@ -165,10 +165,10 @@ class Meta
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
-            $this->id = (array) $table->id;
+            $this->id = $id = (array) $table->id;
             $this->setTableName($table->name);
         }
-        $this->firstId = $this->id[0] ?? null;
+        $this->firstId = $id[0] ?? null;
         $fields = $dbFields = [];
         foreach (AnnotationManager::getPropertiesAnnotations($realModelClass, Column::class) as $name => $columns)
         {
@@ -183,8 +183,8 @@ class Meta
             }
             $fields[$name] = $column;
         }
-        $this->relation = ModelRelationManager::hasRelation($realModelClass);
-        if ($this->relation)
+        $this->relation = $relation = ModelRelationManager::hasRelation($realModelClass);
+        if ($relation)
         {
             foreach (ModelRelationManager::getRelationFieldNames($realModelClass) as $name)
             {
