@@ -23,6 +23,7 @@ jobs:
       MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -92,6 +93,7 @@ jobs:
       MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -155,6 +157,7 @@ jobs:
       MYSQL_DOCKER_VERSION: '8.0'
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
