@@ -105,7 +105,7 @@ services:
       MYSQL_SERVER_PASSWORD: ""
       AMQP_SERVER_HOST: "rabbitmq"
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
-      GITHUB_TOKEN: ${{ GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${ GITHUB_TOKEN }
     build:
       context: .
       dockerfile: swoole.dockerfile
