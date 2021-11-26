@@ -56,6 +56,7 @@ return [
     'beans'	=>	[
         // 中间件
         'HttpDispatcher'	=>	[
+            'middleware' => true, // 默认启用中间件，一旦设为 false，无论是全局还是局部中间件都不生效，可以提升性能
             'middlewares'	=>	[
                 // 中间件
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,

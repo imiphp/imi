@@ -12,10 +12,7 @@ return [
     ],
     'beans'    => [
         'HttpDispatcher'    => [
-            'middlewares'    => [
-                \Imi\Swoole\Test\HttpServer\Middleware\RequestLogMiddleware::class,
-                \Imi\Server\Http\Middleware\RouteMiddleware::class,
-            ],
+            'middleware' => false,
         ],
     ],
 ];
