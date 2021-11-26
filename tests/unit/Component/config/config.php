@@ -301,24 +301,25 @@ return [
     'yurun2'   => imiGetEnv('yurun'),
     'tools'    => [
         'generate/model'    => [
-            'relation' => [
-                'tb_test_list' => [
-                    'fields' => [
-                        'list' => [
-                            'typeDefinition' => false,
-                        ],
-                    ],
-                ],
-            ],
             'namespace' => [
                 'Imi\Test\Component\Model' => [
                     'tables'    => [
-                        'tb_tree',
-                        'tb_role',
-                    ],
-                    'withRecords'   => [
-                        'tb_tree',
-                        'tb_role',
+                        'tb_tree' => [
+                            'withRecords' => true,
+                        ],
+                        'tb_role' => [
+                            'withRecords' => true,
+                        ],
+                        'tb_test_list' => [
+                            'fields' => [
+                                'list' => [
+                                    'typeDefinition' => false,
+                                ],
+                            ],
+                        ],
+                        'tb_article2' => [
+                            'bean' => false,
+                        ],
                     ],
                 ],
             ],

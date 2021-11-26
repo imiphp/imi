@@ -16,10 +16,7 @@ use <?php echo $baseClassName; ?> as Model;
 /**
  * <?php echo $tableComment; ?> 基类.
  *
- * <?php if (true === $entity) { ?>@Entity<?php }
-else
-{ ?>@Entity(false)<?php } ?>
-
+ * @Entity(camel=<?php echo var_export($entity, true); ?>, bean=<?php echo var_export($bean, true); ?>)
  * @Table(name=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.name", default="<?php echo $table['name']; ?>")<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.poolName"<?php if (null !== $poolName) {?>, default="<?php echo $poolName; ?>"<?php }?>))
  * @DDL(sql="<?php echo str_replace('"', '""', $ddl); ?>", decode="<?php echo $ddlDecode; ?>")
  *

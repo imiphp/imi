@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\App;
+use Imi\Bean\IBean;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
@@ -28,6 +29,16 @@ abstract class Model extends BaseModel
      * 动态模型集合.
      */
     protected static array $__forks = [];
+
+    public function __construct(array $data = [], bool $queryRelation = true)
+    {
+        $this->__meta = $meta = static::__getMeta();
+        $this->__fieldNames = $meta->getSerializableFieldNames();
+        if (!$this instanceof IBean)
+        {
+            $this->__init($data, $queryRelation);
+        }
+    }
 
     public function __init(array $data = [], bool $queryRelation = true): void
     {
@@ -192,31 +203,37 @@ abstract class Model extends BaseModel
         }
         $query = static::query();
         $meta = $this->__meta;
-
-        // 插入前
-        $this->trigger(ModelEvents::BEFORE_INSERT, [
-            'model' => $this,
-            'data'  => $data,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
+        $isBean = $meta->isBean();
+        if ($isBean)
+        {
+            // 插入前
+            $this->trigger(ModelEvents::BEFORE_INSERT, [
+                'model' => $this,
+                'data'  => $data,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
+        }
 
         $keys = [];
         foreach ($data as $k => $v)
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__className . ':insert:' . md5(implode(',', $keys)))->insert($data);
+        $result = $query->alias($this->__meta->getClassName() . ':insert:' . md5(implode(',', $keys)))->insert($data);
         if ($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
         {
             $this[$autoIncrementField] = $result->getLastInsertId();
         }
 
-        // 插入后
-        $this->trigger(ModelEvents::AFTER_INSERT, [
-            'model'  => $this,
-            'data'   => $data,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
+        if ($isBean)
+        {
+            // 插入后
+            $this->trigger(ModelEvents::AFTER_INSERT, [
+                'model'  => $this,
+                'data'   => $data,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {
@@ -245,13 +262,17 @@ abstract class Model extends BaseModel
         {
             $data = new LazyArrayObject($data);
         }
+        $isBean = $meta->isBean();
 
-        // 更新前
-        $this->trigger(ModelEvents::BEFORE_UPDATE, [
-            'model' => $this,
-            'data'  => $data,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
+        if ($isBean)
+        {
+            // 更新前
+            $this->trigger(ModelEvents::BEFORE_UPDATE, [
+                'model' => $this,
+                'data'  => $data,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
+        }
 
         $keys = [];
         foreach ($data as $k => $v)
@@ -277,7 +298,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
-        $result = $query->alias($this->__className . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
+        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
             // @phpstan-ignore-next-line
             if ($conditionId)
             {
@@ -290,12 +311,15 @@ abstract class Model extends BaseModel
             $query->limit(1);
         })->bindValues($bindValues)->update($data);
 
-        // 更新后
-        $this->trigger(ModelEvents::AFTER_UPDATE, [
-            'model'  => $this,
-            'data'   => $data,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
+        if ($isBean)
+        {
+            // 更新后
+            $this->trigger(ModelEvents::AFTER_UPDATE, [
+                'model'  => $this,
+                'data'   => $data,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {
@@ -367,13 +391,17 @@ abstract class Model extends BaseModel
         $meta = $this->__meta;
         $query = static::query();
         $data = self::parseSaveData(iterator_to_array($this), 'save', $this);
+        $isBean = $meta->isBean();
 
-        // 保存前
-        $this->trigger(ModelEvents::BEFORE_SAVE, [
-            'model' => $this,
-            'data'  => $data,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+        if ($isBean)
+        {
+            // 保存前
+            $this->trigger(ModelEvents::BEFORE_SAVE, [
+                'model' => $this,
+                'data'  => $data,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+        }
 
         $recordExists = $this->__recordExists;
 
@@ -406,7 +434,7 @@ abstract class Model extends BaseModel
             {
                 $keys[] = $k;
             }
-            $result = $query->alias($this->__className . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
+            $result = $query->alias($this->__meta->getClassName() . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
                 // 主键条件加入
                 $id = $meta->getId();
                 if ($id)
@@ -427,12 +455,15 @@ abstract class Model extends BaseModel
             $this->__recordExists = true;
         }
 
-        // 保存后
-        $this->trigger(ModelEvents::AFTER_SAVE, [
-            'model'  => $this,
-            'data'   => $data,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterSaveEventParam::class);
+        if ($isBean)
+        {
+            // 保存后
+            $this->trigger(ModelEvents::AFTER_SAVE, [
+                'model'  => $this,
+                'data'   => $data,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterSaveEventParam::class);
+        }
 
         return $result;
     }
@@ -443,15 +474,19 @@ abstract class Model extends BaseModel
     public function delete(): IResult
     {
         $query = static::query();
+        $meta = $this->__meta;
+        $isBean = $meta->isBean();
 
-        // 删除前
-        $this->trigger(ModelEvents::BEFORE_DELETE, [
-            'model' => $this,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+        if ($isBean)
+        {
+            // 删除前
+            $this->trigger(ModelEvents::BEFORE_DELETE, [
+                'model' => $this,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+        }
 
         $bindValues = [];
-        $meta = $this->__meta;
         $id = $meta->getId();
         if ($id)
         {
@@ -467,7 +502,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
-        $result = $query->alias($this->__className . ':delete', function (IQuery $query) use ($id) {
+        $result = $query->alias($this->__meta->getClassName() . ':delete', function (IQuery $query) use ($id) {
             // 主键条件加入
             foreach ($id as $idName)
             {
@@ -479,11 +514,14 @@ abstract class Model extends BaseModel
             $query->limit(1);
         })->bindValues($bindValues)->delete();
 
-        // 删除后
-        $this->trigger(ModelEvents::AFTER_DELETE, [
-            'model'  => $this,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+        if ($isBean)
+        {
+            // 删除后
+            $this->trigger(ModelEvents::AFTER_DELETE, [
+                'model'  => $this,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {
@@ -647,8 +685,7 @@ abstract class Model extends BaseModel
         {
             return $forks[static::class][$tableName][$poolName];
         }
-        $extendsClass = static::class;
-        $namespace = Imi::getClassNamespace($extendsClass);
+        $namespace = Imi::getClassNamespace(static::class);
         if (null === $tableName)
         {
             $setTableName = '';
@@ -665,7 +702,8 @@ abstract class Model extends BaseModel
         {
             $setPoolName = '$meta->setDbPoolName(\'' . addcslashes($poolName, '\'\\') . '\');';
         }
-        $class = str_replace('\\', '__', $extendsClass . '\\' . md5($tableName . '\\' . $poolName));
+        $class = str_replace('\\', '__', static::class . '\\' . md5($tableName . '\\' . $poolName));
+        $extendsClass = static::class;
         Imi::eval(<<<PHP
         namespace {$namespace} {
             class {$class} extends \\{$extendsClass}
@@ -681,13 +719,13 @@ abstract class Model extends BaseModel
                         \$class = static::__getRealClassName();
                     }
                     \$__metas = &self::\$__metas;
-                    if (!isset(\$__metas[\$class]))
+                    if (isset(\$__metas[\$class]))
                     {
-                        \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
+                        \$meta = \$__metas[\$class];
                     }
                     else
                     {
-                        \$meta = \$__metas[\$class];
+                        \$meta = \$__metas[\$class] = new \Imi\Model\Meta(\$class, true);
                     }
                     if (static::class === \$class || is_subclass_of(\$class, static::class))
                     {

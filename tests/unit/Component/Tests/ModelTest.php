@@ -533,4 +533,19 @@ class ModelTest extends BaseTest
             $this->assertEquals($record[$k], $v);
         }
     }
+
+    public function testNotBean(): void
+    {
+        $record = Article2::newInstance();
+        $this->assertEquals(Article2::class, \get_class($record));
+        $record->memberId = 1024;
+        $record->title = __CLASS__;
+        $record->content = __FUNCTION__;
+        $record->save();
+        $this->assertGreaterThan(0, $record->id);
+
+        $record = Article2::find($record->id);
+        $this->assertNotNull($record);
+        $this->assertEquals(Article2::class, \get_class($record));
+    }
 }

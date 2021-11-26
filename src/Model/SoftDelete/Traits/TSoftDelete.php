@@ -90,14 +90,18 @@ trait TSoftDelete
         $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
         /** @var IQuery $query */
         $query = static::dbQuery();
-
-        // 删除前
-        $this->trigger(ModelEvents::BEFORE_DELETE, [
-            'model' => $this,
-            'query' => $query,
-        ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
-
         $meta = $this->__meta;
+        $isBean = $meta->isBean();
+
+        if ($isBean)
+        {
+            // 删除前
+            $this->trigger(ModelEvents::BEFORE_DELETE, [
+                'model' => $this,
+                'query' => $query,
+            ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+        }
+
         $id = $meta->getId();
         if ($id)
         {
@@ -112,11 +116,14 @@ trait TSoftDelete
             $fieldName => $fieldVlaue,
         ]);
 
-        // 删除后
-        $this->trigger(ModelEvents::AFTER_DELETE, [
-            'model'  => $this,
-            'result' => $result,
-        ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+        if ($isBean)
+        {
+            // 删除后
+            $this->trigger(ModelEvents::AFTER_DELETE, [
+                'model'  => $this,
+                'result' => $result,
+            ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+        }
 
         if ($meta->hasRelation())
         {

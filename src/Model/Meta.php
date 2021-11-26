@@ -139,6 +139,11 @@ class Meta
      */
     private string $realModelClass = '';
 
+    /**
+     * 模型对象是否作为 bean 类使用.
+     */
+    private bool $bean = false;
+
     public function __construct(string $modelClass, bool $inherit = false)
     {
         $this->inherit = $inherit;
@@ -160,10 +165,10 @@ class Meta
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
-            $this->id = (array) $table->id;
+            $this->id = $id = (array) $table->id;
             $this->setTableName($table->name);
         }
-        $this->firstId = $this->id[0] ?? null;
+        $this->firstId = $id[0] ?? null;
         $fields = $dbFields = [];
         foreach (AnnotationManager::getPropertiesAnnotations($realModelClass, Column::class) as $name => $columns)
         {
@@ -178,8 +183,8 @@ class Meta
             }
             $fields[$name] = $column;
         }
-        $this->relation = ModelRelationManager::hasRelation($realModelClass);
-        if ($this->relation)
+        $this->relation = $relation = ModelRelationManager::hasRelation($realModelClass);
+        if ($relation)
         {
             foreach (ModelRelationManager::getRelationFieldNames($realModelClass) as $name)
             {
@@ -219,6 +224,7 @@ class Meta
         $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
+        $this->bean = $entity->bean;
     }
 
     /**
@@ -456,5 +462,13 @@ class Meta
         $this->dbPoolName = $dbPoolName;
 
         return $this;
+    }
+
+    /**
+     * 模型对象是否作为 bean 类使用.
+     */
+    public function isBean(): bool
+    {
+        return $this->bean;
     }
 }

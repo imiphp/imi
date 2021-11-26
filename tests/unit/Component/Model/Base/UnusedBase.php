@@ -14,7 +14,7 @@ use Imi\Model\Model as Model;
 /**
  * tb_unused 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Unused.name", default="tb_unused"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Unused.poolName"))
  * @DDL(sql="CREATE TABLE `tb_unused` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
