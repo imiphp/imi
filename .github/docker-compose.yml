@@ -105,6 +105,7 @@ services:
       MYSQL_SERVER_PASSWORD: ""
       AMQP_SERVER_HOST: "rabbitmq"
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
+      GITHUB_TOKEN: ${{ GITHUB_TOKEN }}
     build:
       context: .
       dockerfile: swoole.dockerfile
@@ -126,7 +127,6 @@ services:
       dockerfile: swoole.dockerfile
       args:
         SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
-        ROADRUNNER_DOCKER_VERSION: ${ROADRUNNER_DOCKER_VERSION}
         POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"

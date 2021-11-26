@@ -9,7 +9,6 @@ jobs:
       SWOOLE_DOCKER_VERSION: 4.7-php7.4
       POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
       ENV_SERVICE: swoole-only
-      ROADRUNNER_DOCKER_VERSION: 2.4.2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
