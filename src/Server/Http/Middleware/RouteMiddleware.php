@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Error\IHttpNotFoundHandler;
+use Imi\Server\Http\RequestHandler;
 use Imi\Server\Http\Route\HttpRoute;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,6 +36,18 @@ class RouteMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $context = RequestContext::getContext();
+        $response = $this->dispatch($request, $context['response'], $handler);
+        if (null === $response)
+        {
+            return $handler->handle($request);
+        }
+
+        return $context['response'] = $response;
+    }
+
+    public function dispatch(ServerRequestInterface $request, ResponseInterface $response, ?RequestHandlerInterface $handler = null): ?ResponseInterface
+    {
+        $context = RequestContext::getContext();
         // 路由解析
         // @phpstan-ignore-next-line
         $result = $this->route->parse($request);
@@ -42,15 +55,13 @@ class RouteMiddleware implements MiddlewareInterface
         {
             // 未匹配到路由
             // @phpstan-ignore-next-line
-            $response = $this->notFoundHandler->handle($handler, $request, $context['response']);
-            $context['response'] = $response;
+            return $this->notFoundHandler->handle($handler ?? new RequestHandler([]), $request, $response);
         }
         else
         {
             $context['routeResult'] = $result;
-            $response = $handler->handle($request);
-        }
 
-        return $response;
+            return null;
+        }
     }
 }

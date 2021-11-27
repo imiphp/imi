@@ -55,8 +55,20 @@ class ActionMiddleware implements MiddlewareInterface
         // 获取Response对象
         $response = $handler->handle($request);
         // 获取路由结果
+        RequestContext::set('response', $response);
+        $result = $this->dispatch($request, $response, $handler);
+        if (null === $result)
+        {
+            return $response;
+        }
+
+        return $result;
+    }
+
+    public function dispatch(ServerRequestInterface $request, ResponseInterface $response, ?RequestHandlerInterface $handler = null): ?ResponseInterface
+    {
         $context = RequestContext::getContext();
-        $context['response'] = $response;
+        // 获取路由结果
         if (null === ($result = $context['routeResult']))
         {
             throw new \RuntimeException('RequestContent not found routeResult');
