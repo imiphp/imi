@@ -61,14 +61,13 @@ class Dispatcher
             $context = RequestContext::getContext();
             $response = $context['response'];
             $result = $this->routeMiddleware->dispatch($request, $response);
-            if (null !== $result)
+            if ($result)
             {
-                $response = $context['response'] = $result;
+                $response = $result;
             }
-            $result = $this->actionMiddleware->dispatch($request, $response);
-            if (null !== $result)
+            elseif ($result = $this->actionMiddleware->dispatch($request, $response))
             {
-                $response = $context['response'] = $result;
+                $response = $result;
             }
         }
         $response->send();
