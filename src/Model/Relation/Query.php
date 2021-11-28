@@ -138,7 +138,7 @@ class Query
                 'struct'       => $struct,
                 'query'        => $query,
             ]);
-            $rightModel = $query->select()->get();
+            $rightModel = $query->limit(1)->select()->get();
         }
         else
         {
@@ -417,7 +417,7 @@ class Query
                     'struct'       => $struct,
                     'query'        => $query,
                 ]);
-                $rightModel = $query->select()->get();
+                $rightModel = $query->limit(1)->select()->get();
             }
             else
             {
@@ -594,7 +594,7 @@ class Query
                             'annotation'   => $annotationItem,
                             'query'        => $query,
                         ]);
-                        $leftModel = $query->select()->get();
+                        $leftModel = $query->limit(1)->select()->get();
                     }
                     else
                     {
