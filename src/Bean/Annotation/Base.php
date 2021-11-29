@@ -61,7 +61,7 @@ abstract class Base extends LazyArrayObject
                 $data[$defaultFieldName] = $__data['value'];
                 unset($data['value']);
             }
-            elseif ($i >= 1 && array_is_list($__data))
+            elseif (isset($params[1]) && array_is_list($__data))
             {
                 $data[$params[1]->name] = $__data[0];
             }
