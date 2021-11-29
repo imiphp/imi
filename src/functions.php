@@ -64,6 +64,15 @@ namespace
             return $default;
         }
 
+        if ('false' === $result)
+        {
+            $result = false;
+        }
+        elseif ('true' === $result)
+        {
+            $result = true;
+        }
+
         return $result;
     }
 }
