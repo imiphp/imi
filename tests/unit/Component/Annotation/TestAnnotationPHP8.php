@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Enum\Annotation\EnumItem;
 use Imi\Server\Http\Route\Annotation\Route;
 
-#[Bean(name: 'TestAnnotationPHP8')]
+#[Bean(['TestAnnotationPHP8'])]
 class TestAnnotationPHP8
 {
     #[EnumItem(text: 'test')]

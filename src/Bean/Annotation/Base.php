@@ -53,11 +53,18 @@ abstract class Base extends LazyArrayObject
             }
         }
         $defaultFieldName = $this->defaultFieldName;
-        if ($__data && null !== $defaultFieldName && 'value' !== $defaultFieldName && \array_key_exists('value', $__data) && 1 === \count($__data))
+        if ($__data && null !== $defaultFieldName && 'value' !== $defaultFieldName && 1 === \count($__data))
         {
-            // 只传一个参数处理
-            $data[$defaultFieldName] = $__data['value'];
-            unset($data['value']);
+            if (\array_key_exists('value', $__data))
+            {
+                // 只传一个参数处理
+                $data[$defaultFieldName] = $__data['value'];
+                unset($data['value']);
+            }
+            elseif ($i >= 1 && array_is_list($__data))
+            {
+                $data[$params[1]->name] = $__data[0];
+            }
         }
 
         parent::__construct($data);

@@ -75,6 +75,7 @@ namespace ImiApp\Test;
 
 use ImiApp\Annotation\MyAnnotation;
 
+#[Bean(['Test'])]
 class Test
 {
     /**
