@@ -60,7 +60,7 @@ class JsonErrorHandler implements IErrorHandler
         $request = $jsonView->handle($this->viewAnnotation, null, $data, $requestContext['response'] ?? null);
         if (null !== $this->httpCode)
         {
-            $request = $request->withStatus($this->httpCode);
+            $request->setStatus($this->httpCode);
         }
         $request->send();
 
