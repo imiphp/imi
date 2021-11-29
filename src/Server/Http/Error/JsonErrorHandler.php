@@ -20,6 +20,11 @@ class JsonErrorHandler implements IErrorHandler
      */
     protected bool $cancelThrow = false;
 
+    /**
+     * 异常时响应的 Http Code.
+     */
+    protected ?int $httpCode = null;
+
     protected View $viewAnnotation;
 
     public function __construct()
@@ -52,7 +57,12 @@ class JsonErrorHandler implements IErrorHandler
         $requestContext = RequestContext::getContext();
         /** @var \Imi\Server\View\Handler\Json $jsonView */
         $jsonView = $requestContext['server']->getBean('JsonView');
-        $jsonView->handle($this->viewAnnotation, null, $data, $requestContext['response'] ?? null)->send();
+        $request = $jsonView->handle($this->viewAnnotation, null, $data, $requestContext['response'] ?? null);
+        if (null !== $this->httpCode)
+        {
+            $request->setStatus($this->httpCode);
+        }
+        $request->send();
 
         return $this->cancelThrow;
     }
