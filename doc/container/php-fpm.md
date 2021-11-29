@@ -19,7 +19,7 @@ imi v2.0 版本开始，支持运行在 PHP-FPM 环境中。
 
 ### 移除不必要的组件
 
-移除没有用到的组件，比如 Swool、Workerman 等
+移除没有用到的组件，比如 Swoole、Workerman 等
 
 ### 项目设为非 debug 模式
 
