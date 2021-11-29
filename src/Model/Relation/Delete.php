@@ -180,7 +180,7 @@ class Delete
     {
         foreach ($annotations as $annotationItem)
         {
-            if ($model->{$annotationItem->type} == $annotationItem->typeValue)
+            if ($model[$annotationItem->type] == $annotationItem->typeValue)
             {
                 $className = BeanFactory::getObjectClass($model);
                 $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;

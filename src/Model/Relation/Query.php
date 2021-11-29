@@ -290,7 +290,7 @@ class Query
         }
 
         $model[$propertyName] = new ArrayList($middleModel);
-        $model->{$annotation->rightMany} = new ArrayList($rightModel);
+        $model[$annotation->rightMany] = new ArrayList($rightModel);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         $leftValue = $model[$leftField];
@@ -329,7 +329,7 @@ class Query
                     static::appendMany($model[$propertyName], $list, $middleTable, $middleModel);
 
                     // 右侧表数据
-                    $model->{$annotation->rightMany}->append(...$list);
+                    $model[$annotation->rightMany]->append(...$list);
                 }
             }
             else
@@ -557,7 +557,7 @@ class Query
         foreach ($annotations as $annotationItem)
         {
             $typeValue = $annotationItem->typeValue;
-            if ($model->{$annotationItem->type} == $typeValue)
+            if ($model[$annotationItem->type] == $typeValue)
             {
                 $leftField = $annotationItem->modelField;
                 $rightField = $annotationItem->field;
@@ -651,7 +651,7 @@ class Query
         foreach ($annotations as $annotationItem)
         {
             $typeValue = $annotationItem->typeValue;
-            if ($model->{$annotationItem->type} == $typeValue)
+            if ($model[$annotationItem->type] == $typeValue)
             {
                 $struct = new PolymorphicManyToMany($className, $propertyName, $annotationItem);
                 $leftField = $struct->getLeftField();
@@ -783,7 +783,7 @@ class Query
         }
 
         $model[$propertyName] = new ArrayList($struct->getMiddleModel());
-        $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
+        $model[$annotation->rightMany] = new ArrayList($struct->getRightModel());
         $middleModel = $struct->getMiddleModel();
         $rightModel = $struct->getRightModel();
 
@@ -824,7 +824,7 @@ class Query
                     static::appendMany($model[$propertyName], $list, $middleTable, $middleModel);
 
                     // 右侧表数据
-                    $model->{$annotation->rightMany}->append(...$list);
+                    $model[$annotation->rightMany]->append(...$list);
                 }
             }
             else
