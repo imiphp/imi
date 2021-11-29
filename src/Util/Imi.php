@@ -579,17 +579,21 @@ class Imi
         $tmpPath = &self::$tmpPath;
         if ('' === $tmpPath)
         {
-            if (is_dir('/run/shm'))
+            if (is_dir('/run/shm') && is_writable('/run/shm'))
             {
                 $tmpPath = '/run/shm';
             }
-            elseif (is_dir('/tmp'))
+            elseif (is_dir('/tmp') && is_writable('/tmp'))
             {
                 $tmpPath = '/tmp';
             }
             else
             {
                 $tmpPath = sys_get_temp_dir();
+                if (!is_writable($tmpPath))
+                {
+                    $tmpPath = self::getCurrentModeRuntimePath('tmp');
+                }
             }
         }
         if (null === $fileName)
