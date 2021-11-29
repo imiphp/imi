@@ -25,10 +25,6 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 https://wiki.swoole.com/
 
-https://my.oschina.net/yurun/blog/1831238
-
-https://my.oschina.net/yurun/blog/3034196
-
 ### 核心组件
 
 * Http、Http2、WebSocket、TCP、UDP、MQTT 服务器
