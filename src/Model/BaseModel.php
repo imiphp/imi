@@ -211,9 +211,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             return true;
         }
-        if (isset(self::$__getterCache[$offset]))
+        $class = $this->__meta->getRealModelClass();
+        if (isset(self::$__getterCache[$class][$offset]))
         {
-            $methodName = self::$__getterCache[$offset];
+            $methodName = self::$__getterCache[$class][$offset];
             if (false === $methodName)
             {
                 return false;
@@ -224,11 +225,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $methodName = 'get' . ucfirst($this->__getCamelName($offset));
             if (method_exists($this, $methodName))
             {
-                self::$__getterCache[$offset] = $methodName;
+                self::$__getterCache[$class][$offset] = $methodName;
             }
             else
             {
-                self::$__getterCache[$offset] = false;
+                self::$__getterCache[$class][$offset] = false;
 
                 return false;
             }
@@ -246,9 +247,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function &offsetGet($offset)
     {
         $getterExists = true;
-        if (isset(self::$__getterCache[$offset]))
+        $class = $this->__meta->getRealModelClass();
+        if (isset(self::$__getterCache[$class][$offset]))
         {
-            $methodName = self::$__getterCache[$offset];
+            $methodName = self::$__getterCache[$class][$offset];
             if (false === $methodName)
             {
                 $getterExists = false;
@@ -259,11 +261,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $methodName = 'get' . ucfirst($this->__getCamelName($offset));
             if (method_exists($this, $methodName))
             {
-                self::$__getterCache[$offset] = $methodName;
+                self::$__getterCache[$class][$offset] = $methodName;
             }
             else
             {
-                self::$__getterCache[$offset] = false;
+                self::$__getterCache[$class][$offset] = false;
                 $getterExists = false;
             }
         }
@@ -324,9 +326,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $value = (1 == $value || \chr(1) === $value);
         }
 
-        if (isset(self::$__setterCache[$offset]))
+        $class = $meta->getRealModelClass();
+        if (isset(self::$__setterCache[$class][$offset]))
         {
-            $methodName = self::$__setterCache[$offset];
+            $methodName = self::$__setterCache[$class][$offset];
             if (false === $methodName)
             {
                 $this->__originData[$offset] = $value;
@@ -339,11 +342,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $methodName = 'set' . ucfirst($this->__getCamelName($offset));
             if (method_exists($this, $methodName))
             {
-                self::$__setterCache[$offset] = $methodName;
+                self::$__setterCache[$class][$offset] = $methodName;
             }
             else
             {
-                self::$__setterCache[$offset] = false;
+                self::$__setterCache[$class][$offset] = false;
                 $this->__originData[$offset] = $value;
 
                 return;
