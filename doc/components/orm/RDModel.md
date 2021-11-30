@@ -73,7 +73,7 @@ class Test extends Model
      * Get iD
      *
      * @return  int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -85,7 +85,7 @@ class Test extends Model
      * @param  int  $id  ID
      *
      * @return  self
-     */ 
+     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -97,7 +97,7 @@ class Test extends Model
      * Get aaa
      *
      * @return  string
-     */ 
+     */
     public function getA()
     {
         return $this->a;
@@ -109,7 +109,7 @@ class Test extends Model
      * @param  string  $a  aaa
      *
      * @return  self
-     */ 
+     */
     public function setA(string $a)
     {
         $this->a = $a;
@@ -121,7 +121,7 @@ class Test extends Model
      * Get bbb
      *
      * @return  string
-     */ 
+     */
     public function getB()
     {
         return $this->b;
@@ -133,7 +133,7 @@ class Test extends Model
      * @param  string  $b  bbb
      *
      * @return  self
-     */ 
+     */
     public function setB(string $b)
     {
         $this->b = $b;
@@ -145,7 +145,7 @@ class Test extends Model
      * Get ccc
      *
      * @return  string
-     */ 
+     */
     public function getC()
     {
         return $this->c;
@@ -157,7 +157,7 @@ class Test extends Model
      * @param  string  $c  ccc
      *
      * @return  self
-     */ 
+     */
     public function setC(string $c)
     {
         $this->c = $c;
@@ -229,10 +229,10 @@ class Test extends Model
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
- * @property int $id 
- * @property string $title 
- * @property string $content 
- * @property string $time 
+ * @property int $id
+ * @property string $title
+ * @property string $content
+ * @property string $time
  */
 abstract class ArticleBase extends Model
 {

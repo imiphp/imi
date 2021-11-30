@@ -38,7 +38,7 @@ class TestRedisModel extends RedisModel
      * 获取 id
      *
      * @return int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -48,7 +48,7 @@ class TestRedisModel extends RedisModel
      * 赋值 id
      * @param int $id id
      * @return static
-     */ 
+     */
     public function setId($id)
     {
     	$this->id = $id;
@@ -66,7 +66,7 @@ class TestRedisModel extends RedisModel
 	 * 获取 name
 	 *
 	 * @return string
-	 */ 
+	 */
 	public function getName()
 	{
 		return $this->name;
@@ -76,7 +76,7 @@ class TestRedisModel extends RedisModel
 	 * 赋值 name
 	 * @param string $name name
 	 * @return static
-	 */ 
+	 */
 	public function setName($name)
 	{
 		$this->name = $name;
@@ -94,7 +94,7 @@ class TestRedisModel extends RedisModel
 	 * 获取 age
 	 *
 	 * @return string
-	 */ 
+	 */
 	public function getAge()
 	{
 		return $this->age;
@@ -104,7 +104,7 @@ class TestRedisModel extends RedisModel
 	 * 赋值 age
 	 * @param string $age age
 	 * @return static
-	 */ 
+	 */
 	public function setAge($age)
 	{
 		$this->age = $age;

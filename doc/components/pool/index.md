@@ -56,8 +56,8 @@ $result = \Imi\Pool\PoolManager::use($poolName, function($resource, \Swoole\Coro
 
 `$poolName`-池子名称
 
-- 第二个参数为回调，接收两个参数，第一个资源本身，第二个为资源里面的实例。比如上面的是Redis  
-- 回调的返回值也会成为use方法的返回值  
+- 第二个参数为回调，接收两个参数，第一个资源本身，第二个为资源里面的实例。比如上面的是Redis
+- 回调的返回值也会成为use方法的返回值
 
 ## 手动释放连接
 
