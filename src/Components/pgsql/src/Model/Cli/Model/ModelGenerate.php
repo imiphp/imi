@@ -84,15 +84,15 @@ class ModelGenerate extends BaseCommand
         // 表
         $list = $db->query(<<<'SQL'
         SELECT A.oid,
-        	A.relname AS "name",
-        	b.description AS "comment",
-        	A.relkind
+            A.relname AS "name",
+            b.description AS "comment",
+            A.relkind
         FROM
-        	pg_class A
+            pg_class A
         LEFT OUTER JOIN pg_description b ON b.objsubid = 0
-        	AND A.oid = b.objoid
+            AND A.oid = b.objoid
         WHERE
-        	A.relnamespace = ( SELECT oid FROM pg_namespace WHERE nspname = 'public' ) AND A.relkind IN ( 'r', 'v' )
+            A.relnamespace = ( SELECT oid FROM pg_namespace WHERE nspname = 'public' ) AND A.relkind IN ( 'r', 'v' )
         SQL)->fetchAll();
         // model保存路径
         if (null === $basePath)
