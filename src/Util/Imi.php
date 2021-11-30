@@ -593,6 +593,10 @@ class Imi
                 if (!is_writable($tmpPath))
                 {
                     $tmpPath = self::getCurrentModeRuntimePath('tmp');
+                    if (!is_dir($tmpPath))
+                    {
+                        mkdir($tmpPath, 0755, true);
+                    }
                 }
             }
         }
