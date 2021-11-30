@@ -30,7 +30,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
- * 
+ *
  * // 下面是IDE提示注释
  * @property string $name 随便定义的属性
  * @property int $age 随便定义的属性
@@ -133,7 +133,7 @@ class TransactionAop
 
         // 返回返回值，如有必要你也可以自己决定其他返回值
         return $result;
-	}
+    }
 }
 ```
 

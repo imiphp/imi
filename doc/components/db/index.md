@@ -554,12 +554,12 @@ Db::query()->where('field1->uid', '=', 1);
 ```php
 // select * from `tb_test` where (`id` = 1 or (`id` = 2 ) and `title` like '%test%' and `age` > 18 and (`id` = 2 or (`id` = 3 ) ) )
 Db::query()->from('tb_test')->whereEx([
-    'id'	=>	1,
-    'or'	=>	[
-        'id'	=>	2,
+    'id'    =>  1,
+    'or'    =>  [
+        'id'    =>  2,
     ],
-    'title'	=>	['like', '%test%'],
-    'age'	=>	['>', 18],
+    'title' =>  ['like', '%test%'],
+    'age'   =>  ['>', 18],
     'and'   =>  [
         'id'    =>  2,
         'or'    =>  [
@@ -804,7 +804,7 @@ Db::query()->table('tb_test')->aggregate('test', 'id');
 ```php
 // insert into tb_test(name, age) values('yurun', 666)
 $result = Db::query()->table('tb_test')->insert([
-    'name'	=>	'yurun',
+    'name'  =>	'yurun',
     'age'	=>	666,
 ]);
 

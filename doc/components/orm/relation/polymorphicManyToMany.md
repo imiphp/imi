@@ -61,14 +61,14 @@ mysql> desc tb_taggables;
 class Article extends Model
 {
     // 省略其它……
-	
+
     /**
-	 * 标签关联
-	 * 
+     * 标签关联
+     *
      * @PolymorphicManyToMany(model="Tags", middle="Taggables", rightMany="tags", type="taggable_type", typeValue=1)
      * @JoinToMiddle(field="id", middleField="taggable_id")
      * @JoinFromMiddle(middleField="tag_id", field="id")
-     * 
+     *
      * @AutoInsert
      * @AutoUpdate(orphanRemoval=true)
      * @AutoSave
@@ -76,28 +76,28 @@ class Article extends Model
      *
      * @var \Imi\Util\ArrayList
      */
-	protected $taggables;
+    protected $taggables;
 
-	/**
-	 * Get 标签关联
-	 *
-	 * @return  \Imi\Util\ArrayList
-	 */ 
-	public function getTaggables()
-	{
-		return $this->taggables;
-	}
+    /**
+     * Get 标签关联
+     *
+     * @return  \Imi\Util\ArrayList
+     */
+    public function getTaggables()
+    {
+        return $this->taggables;
+    }
 
-	/**
-	 * Set 标签关联
-	 *
-	 * @param  \Imi\Util\ArrayList  $taggables  标签关联
-	 *
-	 * @return  self
-	 */ 
-	public function setTaggables(\Imi\Util\ArrayList $taggables)
-	{
-		$this->taggables = $taggables;
+    /**
+     * Set 标签关联
+     *
+     * @param  \Imi\Util\ArrayList  $taggables  标签关联
+     *
+     * @return  self
+     */
+    public function setTaggables(\Imi\Util\ArrayList $taggables)
+    {
+    	$this->taggables = $taggables;
 
 		return $this;
 	}
@@ -113,7 +113,7 @@ class Article extends Model
 	 * Get 关联标签
 	 *
 	 * @return  \Imi\Util\ArrayList
-	 */ 
+	 */
 	public function getTags()
 	{
 		return $this->tags;
@@ -125,7 +125,7 @@ class Article extends Model
 	 * @param  \Imi\Util\ArrayList  $tags  关联标签
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setTags($tags)
 	{
 		$this->tags = $tags;
@@ -151,11 +151,11 @@ class Tags extends Model
 
 	/**
      * 拥有本标签的文章列表
-     * 
+     *
      * @PolymorphicToMany(model=ImiDemo\HttpDemo\MainServer\Model\Article::class, modelField="id", type="taggable_type", typeValue=1, field="taggable_id", middle="Taggables")
      * @JoinToMiddle(field="id", middleField="taggable_id")
      * @JoinFromMiddle(middleField="tag_id", field="id")
-	 * 
+	 *
      * @AutoSelect(false)
      *
      * @var \Imi\Util\ArrayList
@@ -166,7 +166,7 @@ class Tags extends Model
      * Get 拥有本标签的模型列表
      *
      * @return  \Imi\Util\ArrayList
-     */ 
+     */
     public function getArticles()
     {
         return $this->articles;
@@ -178,21 +178,21 @@ class Tags extends Model
      * @param  \Imi\Util\ArrayList  $articles  拥有本标签的模型列表
      *
      * @return  self
-     */ 
+     */
     public function setArticles(\Imi\Util\ArrayList $articles)
     {
         $this->articles = $articles;
 
         return $this;
 	}
-	
+
 	/**
      * 拥有本标签的书籍列表
-     * 
+     *
      * @PolymorphicToMany(model=ImiDemo\HttpDemo\MainServer\Model\Book::class, modelField="id", type="taggable_type", typeValue=2, field="taggable_id", middle="Taggables")
      * @JoinToMiddle(field="id", middleField="taggable_id")
      * @JoinFromMiddle(middleField="tag_id", field="id")
-	 * 
+	 *
      * @AutoSelect(false)
      *
      * @var \Imi\Util\ArrayList
@@ -203,7 +203,7 @@ class Tags extends Model
      * Get 拥有本标签的书籍列表
      *
      * @return  \Imi\Util\ArrayList
-     */ 
+     */
     public function getBooks()
     {
         return $this->books;
@@ -215,14 +215,14 @@ class Tags extends Model
      * @param  \Imi\Util\ArrayList  $books  拥有本标签的书籍列表
      *
      * @return  self
-     */ 
+     */
     public function setBooks(\Imi\Util\ArrayList $books)
     {
         $this->books = $books;
 
         return $this;
 	}
-	
+
 }
 ```
 

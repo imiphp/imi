@@ -128,13 +128,13 @@ interface IQuery
      * 设置 where 条件，支持语法如下：.
      *
      * [
-     *      'id'	=>	1,
-     *      'or'	=>	[
-     *          'id'	=>	2,
+     *      'id'    => 1,
+     *      'or'    => [
+     *          'id' => 2,
      *      ],
-     *      'title'	    =>	['like', '%test%'],
-     *      'age'	    =>	['>', 18],
-     *      'age'  =>  ['between', 19, 29]
+     *      'title' => ['like', '%test%'],
+     *      'age'   => ['>', 18],
+     *      'age'   => ['between', 19, 29]
      * ]
      *
      * SQL: id = 1 or (id = 2) and title like '%test%' and age > 18 and age between 19 and 29

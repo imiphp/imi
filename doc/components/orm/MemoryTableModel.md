@@ -22,32 +22,32 @@ use Imi\Model\Annotation\MemoryTable;
  */
 class MTest extends MemoryTableModel
 {
-	/**
-	 * @Column(name="str",type="string",length=128)
-	 * @var string
-	 */
-	protected $str;
+    /**
+     * @Column(name="str",type="string",length=128)
+     * @var string
+     */
+    protected $str;
 
-	/**
-	 * @Column(name="int",type="int")
-	 * @var int
-	 */
-	protected $int;
+    /**
+     * @Column(name="int",type="int")
+     * @var int
+     */
+    protected $int;
 
-	/**
-	 * @Column(name="float",type="float")
-	 * @var float
-	 */
-	protected $float;
+    /**
+     * @Column(name="float",type="float")
+     * @var float
+     */
+    protected $float;
 
-	/**
-	 * Get the value of str
-	 *
-	 * @return  string
-	 */ 
-	public function getStr()
-	{
-		return $this->str;
+    /**
+     * Get the value of str
+     *
+     * @return  string
+     */
+    public function getStr()
+    {
+        return $this->str;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class MTest extends MemoryTableModel
 	 * @param  string  $str
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setStr(string $str)
 	{
 		$this->str = $str;
@@ -68,7 +68,7 @@ class MTest extends MemoryTableModel
 	 * Get the value of int
 	 *
 	 * @return  int
-	 */ 
+	 */
 	public function getInt()
 	{
 		return $this->int;
@@ -80,7 +80,7 @@ class MTest extends MemoryTableModel
 	 * @param  int  $int
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setInt(int $int)
 	{
 		$this->int = $int;
@@ -92,7 +92,7 @@ class MTest extends MemoryTableModel
 	 * Get the value of float
 	 *
 	 * @return  float
-	 */ 
+	 */
 	public function getFloat()
 	{
 		return $this->float;
@@ -104,7 +104,7 @@ class MTest extends MemoryTableModel
 	 * @param  float  $float
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setFloat(float $float)
 	{
 		$this->float = $float;

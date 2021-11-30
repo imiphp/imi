@@ -21,15 +21,15 @@ use Imi\Bean\Annotation\Listener;
  */
 class Init implements IEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(EventParam $e)
-	{
-		// ...
-	}
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(EventParam $e)
+    {
+        // ...
+    }
 }
 ```
 
@@ -50,12 +50,12 @@ class Init implements IEventListener
 use Imi\Event\Event;
 
 Event::on('事件名', function(){
-	// 事件回调
+    // 事件回调
 });
 
 $priority = 0;
 Event::on('事件名', function(){
-	// 事件回调
+    // 事件回调
 }, $priority);
 
 // 监听只触发一次

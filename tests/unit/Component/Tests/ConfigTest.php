@@ -40,8 +40,8 @@ class ConfigTest extends BaseTest
                 'b' => 123,
             ],
             // 配置文件
-            'configs'	 => [
-                'test'		 => \dirname(__DIR__) . '/config/test.php',
+            'configs' => [
+                'test' => \dirname(__DIR__) . '/config/test.php',
             ],
         ]);
         Assert::assertEquals(123, Config::get('test.a.b'));

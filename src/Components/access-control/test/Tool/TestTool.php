@@ -33,12 +33,12 @@ class TestTool
         // $role = Role::create('test-' . mt_rand(), 'test-' . mt_rand(), 'des-' . mt_rand());
         // if($role)
         // {
-        // 	var_dump($role->getRoleInfo()->toArray());
+        //  var_dump($role->getRoleInfo()->toArray());
         // }
         // $role = Role::create('test-' . mt_rand());
         // if($role)
         // {
-        // 	var_dump($role->getRoleInfo()->toArray());
+        //  var_dump($role->getRoleInfo()->toArray());
         // }
 
         // $role = new Role('test');

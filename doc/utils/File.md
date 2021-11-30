@@ -14,7 +14,7 @@
 // 枚举当前目录及所有子目录中的文件，不包含.和..
 foreach(File::enum(__DIR__) as $fileName)
 {
-	echo (string)$fileName, PHP_EOL;
+    echo (string)$fileName, PHP_EOL;
 }
 ```
 
@@ -26,7 +26,7 @@ foreach(File::enum(__DIR__) as $fileName)
 // 枚举当前目录及所有子目录中的PHP文件
 foreach(File::enumPHPFile(__DIR__) as $fileName)
 {
-	echo (string)$fileName, PHP_EOL;
+    echo (string)$fileName, PHP_EOL;
 }
 ```
 
