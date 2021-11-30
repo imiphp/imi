@@ -35,7 +35,7 @@
 [
     'components'    =>  [
         // 引入RPC组件以及本组件
-        'Rpc'    	=>  'Imi\Rpc',
+        'Rpc'       =>  'Imi\Rpc',
         'Hprose'    =>  'Imi\Hprose',
     ],
 ]
@@ -46,8 +46,8 @@
 ```php
 [
     // 主服务器配置
-	'mainServer'	=>	[
-		'namespace'	=>	'XXX\MainServer', // 你的命名空间
+    'mainServer' => [
+        'namespace'    =>	'XXX\MainServer', // 你的命名空间
 		'type'		=>	'Hprose', // 必须设为 Hprose
 		'port'		=>	8080,
 	],

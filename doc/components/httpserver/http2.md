@@ -27,13 +27,13 @@ imi v1.0.20 新增支持开发 Http2 服务。
 
 ```php
 // 主服务器配置
-'mainServer'	=>	[
+'mainServer'    =>	[
     // 指定服务器命名空间
-    'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
+    'namespace'	=>  'ImiDemo\HttpDemo\MainServer',
     // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-    'type'		=>	\Imi\Swoole\Server\Type::HTTP,
+    'type'      =>  \Imi\Swoole\Server\Type::HTTP,
     // 监听的IP地址，可选
-    'host'		=>	'0.0.0.0',
+    'host'      =>  '0.0.0.0',
     // 监听的端口
     'port'		=>	8080,
     // 参考 swoole mode，可选

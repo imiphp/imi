@@ -304,14 +304,14 @@ return \Imi\Server\Http\Message\Proxy\ResponseProxy::withStatus(404);
 ```php
 public function action()
 {
-	$this->response = $this->response->withStatus(404);
+    $this->response = $this->response->withStatus(404);
 }
 ```
 2. 操作后返回
 ```php
 public function action()
 {
-	return $this->response->withStatus(404);
+    return $this->response->withStatus(404);
 }
 ```
 

@@ -14,9 +14,9 @@ Redis 连接池配置方式已经在连接池里讲过，这里就不重复了�
 
 <?php
 return [
-    'redis'	=>	[
-        'defaultPool'	=>	'alias1', // 默认连接池
-        'quickFromRequestContext'	=>	true, // 从当前上下文中获取公用连接
+    'redis'    => [
+        'defaultPool'             => 'alias1', // 默认连接池
+        'quickFromRequestContext' => true, // 从当前上下文中获取公用连接
     ],
     'pools' => [
         // 连接池名称

@@ -22,32 +22,32 @@ use Imi\Model\Annotation\MemoryTable;
  */
 class MTest extends MemoryTableModel
 {
-	/**
-	 * @Column(name="str",type="string",length=128)
-	 * @var string
-	 */
-	protected $str;
+    /**
+     * @Column(name="str",type="string",length=128)
+     * @var string
+     */
+    protected $str;
 
-	/**
-	 * @Column(name="int",type="int")
-	 * @var int
-	 */
-	protected $int;
+    /**
+     * @Column(name="int",type="int")
+     * @var int
+     */
+    protected $int;
 
-	/**
-	 * @Column(name="float",type="float")
-	 * @var float
-	 */
-	protected $float;
+    /**
+     * @Column(name="float",type="float")
+     * @var float
+     */
+    protected $float;
 
-	/**
-	 * Get the value of str
-	 *
-	 * @return  string
-	 */ 
-	public function getStr()
-	{
-		return $this->str;
+    /**
+     * Get the value of str
+     *
+     * @return  string
+     */ 
+    public function getStr()
+    {
+        return $this->str;
 	}
 
 	/**

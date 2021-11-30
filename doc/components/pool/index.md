@@ -50,7 +50,7 @@
 
 ```php
 $result = \Imi\Pool\PoolManager::use($poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
-	return $redis->get($key);
+    return $redis->get($key);
 });
 ```
 

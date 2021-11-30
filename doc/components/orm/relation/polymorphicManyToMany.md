@@ -61,10 +61,10 @@ mysql> desc tb_taggables;
 class Article extends Model
 {
     // 省略其它……
-	
+    
     /**
-	 * 标签关联
-	 * 
+     * 标签关联
+     * 
      * @PolymorphicManyToMany(model="Tags", middle="Taggables", rightMany="tags", type="taggable_type", typeValue=1)
      * @JoinToMiddle(field="id", middleField="taggable_id")
      * @JoinFromMiddle(middleField="tag_id", field="id")
@@ -76,28 +76,28 @@ class Article extends Model
      *
      * @var \Imi\Util\ArrayList
      */
-	protected $taggables;
+    protected $taggables;
 
-	/**
-	 * Get 标签关联
-	 *
-	 * @return  \Imi\Util\ArrayList
-	 */ 
-	public function getTaggables()
-	{
-		return $this->taggables;
-	}
+    /**
+     * Get 标签关联
+     *
+     * @return  \Imi\Util\ArrayList
+     */ 
+    public function getTaggables()
+    {
+        return $this->taggables;
+    }
 
-	/**
-	 * Set 标签关联
-	 *
-	 * @param  \Imi\Util\ArrayList  $taggables  标签关联
-	 *
-	 * @return  self
-	 */ 
-	public function setTaggables(\Imi\Util\ArrayList $taggables)
-	{
-		$this->taggables = $taggables;
+    /**
+     * Set 标签关联
+     *
+     * @param  \Imi\Util\ArrayList  $taggables  标签关联
+     *
+     * @return  self
+     */ 
+    public function setTaggables(\Imi\Util\ArrayList $taggables)
+    {
+    	$this->taggables = $taggables;
 
 		return $this;
 	}

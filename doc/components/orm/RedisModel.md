@@ -32,26 +32,26 @@ class TestRedisModel extends RedisModel
 	 * @Column(name="id")
 	 * @var int
 	 */
-	protected $id;
+    protected $id;
 
-	/**
-	 * 获取 id
-	 *
-	 * @return int
-	 */ 
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * 获取 id
+     *
+     * @return int
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * 赋值 id
-	 * @param int $id id
-	 * @return static
-	 */ 
-	public function setId($id)
-	{
-		$this->id = $id;
+    /**
+     * 赋值 id
+     * @param int $id id
+     * @return static
+     */ 
+    public function setId($id)
+    {
+    	$this->id = $id;
 		return $this;
 	}
 
