@@ -10,8 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         php: [8.1]
-        swoole: [2ec7a2b39f7ec163847a233629c52f577fe9a443]
+        swoole: [v4.8.3]
         roadrunner: [2.5.*]
+        jit: [yes, no]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       MYSQL_DOCKER_VERSION: '8.0'
@@ -61,6 +62,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
       - name: Env
         run: |
+          bash /imi/.github/script/php-jit.sh
           php -v
           php -m
           php --ri swoole

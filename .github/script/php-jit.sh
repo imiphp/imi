@@ -2,9 +2,11 @@
 
 set -ex
 
-if [ -n "${PHP_JIT}" ]; then
+if [ "${PHP_JIT}" == 'yes' ]; then
   echo "opcache.enable=1
 opcache.enable_cli=1
+opcache.jit => 1205
+opcache.jit_buffer_size => 64m
 opcache.validate_timestamps=0
 opcache.enable_file_override=1
 opcache.huge_code_pages=1
