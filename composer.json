@@ -82,14 +82,10 @@
         "test-fpm": "@php tests/phpunit -c src/Components/fpm/tests/phpunit.xml",
         "test-jwt": "@php tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
         "test-queue": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
-        "test-amqp": [
-            "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
-            "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml"
-        ],
-        "test-kafka": [
-            "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
-            "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
-        ],
+        "test-amqp-swoole": "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
+        "test-amqp-workerman": "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
+        "test-kafka-swoole": "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
+        "test-kafka-workerman": "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
         "test-grpc": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
         "test-snowflake": "@php tests/phpunit -c src/Components/snowflake/tests/phpunit.xml",
         "test-mqtt": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
@@ -102,8 +98,10 @@
             "@composer test-fpm",
             "@composer test-jwt",
             "@composer test-queue",
-            "@composer test-amqp",
-            "@composer test-kafka",
+            "@composer test-amqp-workerman",
+            "@composer test-amqp-swoole",
+            "@composer test-kafka-swoole",
+            "@composer test-kafka-workerman",
             "@composer test-grpc",
             "@composer test-snowflake",
             "@composer test-mqtt",
