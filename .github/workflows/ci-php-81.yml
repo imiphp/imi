@@ -61,6 +61,8 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
       - name: Env
+        env:
+          PHP_JIT: ${{ matrix.jit }}
         run: |
           bash .github/script/php-jit.sh
           php -v
