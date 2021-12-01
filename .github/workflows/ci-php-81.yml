@@ -23,6 +23,10 @@ jobs:
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
       MYSQL_ROOT_PASSWORD: root
     steps:
+      - name: Set PHP JIT
+        id: php-jit
+        if: ${{ matrix.jit == 'yes' }}
+        run: echo "::set-output name=ini::'opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M'"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Depend
@@ -37,6 +41,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: pecl
+          ini-values: ${{ steps.php-jit.outputs.ini }}
           extensions: >
             :xdebug
             apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event,
@@ -64,7 +69,6 @@ jobs:
         env:
           PHP_JIT: ${{ matrix.jit }}
         run: |
-          bash .github/script/php-jit.sh
           php -v
           php -m
           php --ri swoole
