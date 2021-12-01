@@ -23,10 +23,6 @@ jobs:
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
       MYSQL_ROOT_PASSWORD: root
     steps:
-      - name: Set PHP JIT
-        id: php-jit
-        if: ${{ matrix.jit == 'yes' }}
-        run: echo "::set-output name=ini::'opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M'"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Depend
@@ -36,6 +32,10 @@ jobs:
         run: |
           docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }} mysql postgres redis rabbitmq kafka1
           echo -e "\n127.0.0.1 kafka1\n" | sudo tee -a /etc/hosts
+      - name: Set PHP JIT
+        id: php-jit
+        if: ${{ matrix.jit == 'yes' }}
+        run: echo "::set-output name=ini::opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=128M"
       - name: Setup PHP
         uses: shivammathur/setup-php@verbose
         with:
