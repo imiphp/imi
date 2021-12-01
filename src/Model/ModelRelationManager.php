@@ -129,7 +129,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     $list = $query->select()
                                   ->getArray();
@@ -170,7 +170,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -203,7 +203,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -245,7 +245,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     $list = $query->select()
                                   ->getArray();
@@ -286,7 +286,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -319,7 +319,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -349,7 +349,7 @@ class ModelRelationManager
                         }
                         if (isset($withFields[$propertyName]))
                         {
-                            $withFields[$propertyName]($query);
+                            $withFields[$propertyName]($query, $annotation);
                         }
                         foreach ($query->select()->getArray() as $resultModel)
                         {
@@ -394,7 +394,7 @@ class ModelRelationManager
                         }
                         if (isset($withFields[$propertyName]))
                         {
-                            $withFields[$propertyName]($query);
+                            $withFields[$propertyName]($query, $annotation);
                         }
                         $list = $query->select()
                                       ->getArray();

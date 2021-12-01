@@ -504,7 +504,9 @@ $list = TestModel::query()
                 ->with('关联字段名') // 单个
                 ->with(['字段名1', '字段名2']) // 多个
                 ->with([
-                    '字段名1' => function(\Imi\Model\Contract\IModelQuery $query) {
+                    // 回调第一个参数是：模型查询构建器
+                    // 第二个参数是当前关联查询对应的注解对象，如果不确定什么类型可以写 RelationBase，如果确定类型也可以写具体类型，比如：\Imi\Model\Annotation\Relation\OneToOne
+                    '字段名1' => function(\Imi\Model\Contract\IModelQuery $query, \Imi\Model\Annotation\Relation\RelationBase $annotation) {
                         $query->withField('a', 'b'); // 限定查询结果模型的可序列化字段
                     },
                 ]) // 回调
