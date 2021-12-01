@@ -69,11 +69,19 @@ jobs:
         env:
           PHP_JIT: ${{ matrix.jit }}
         run: |
+          echo "::group::PHP Info"
           php -v
           php -m
+          echo "::endgroup::"
+          echo "::group::Swoole Info"
           php --ri swoole
+          echo "::endgroup::"
+          echo "::group::JIT Info"
           php -r "echo 'opcache config: '; print_r(opcache_get_status(false)); echo PHP_EOL;"
+          echo "::endgroup::"
+          echo "::group::Composer Info"
           composer -V
+          echo "::endgroup::"
       - name: Wait Service
         uses: nick-invision/retry@v2
         with:
