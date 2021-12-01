@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   linux:
-    name: Linux PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
+    name: Linux PHP-${{ matrix.php }} JIT-${{ matrix.jit }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -62,7 +62,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
       - name: Env
         run: |
-          bash /imi/.github/script/php-jit.sh
+          bash .github/script/php-jit.sh
           php -v
           php -m
           php --ri swoole
