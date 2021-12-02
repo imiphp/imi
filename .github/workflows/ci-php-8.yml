@@ -167,6 +167,7 @@ jobs:
         timeout-minutes: 5
         run: composer test-kafka-swoole
       - name: Test grpc
+        if: ${{ matrix.jit == 'no' }}
         timeout-minutes: 5
         run: composer test-grpc
       - name: Test snowflake

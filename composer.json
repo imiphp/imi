@@ -83,13 +83,13 @@
         "test-jwt": "@php tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
         "test-queue": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
         "test-amqp-swoole": "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
-        "test-amqp-workerman": "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
+        "test-amqp-workerman": "AMQP_TEST_MODE=workerman php tests/phpunit -c src/Components/amqp/tests/phpunit.xml",
         "test-amqp": [
             "@composer test-amqp-workerman",
             "@composer test-amqp-swoole"
         ],
         "test-kafka-swoole": "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
-        "test-kafka-workerman": "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
+        "test-kafka-workerman": "AMQP_TEST_MODE=workerman php tests/phpunit -c src/Components/kafka/tests/phpunit.xml",
         "test-kafka": [
             "@composer test-kafka-workerman",
             "@composer test-kafka-swoole"
