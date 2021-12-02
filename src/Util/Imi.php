@@ -795,18 +795,18 @@ class Imi
         }
     }
 
-    public static function getOpcacheInfo(): ?string
+    public static function getOpcacheInfo(): string
     {
-        if (\extension_loaded('Zend OPcache') && \function_exists('\opcache_get_status'))
+        if (\function_exists('\opcache_get_status'))
         {
             $status = opcache_get_status(false);
             $enabled = $status && $status['opcache_enabled'];
-            $jit = isset($status['jit']) ? (', JIT ' . ini_get('opcache.jit')) : '';
+            $jit = $status && isset($status['jit']) ? (', JIT ' . ini_get('opcache.jit')) : '';
             $opcacheStatus = ($enabled ? 'On' : 'Off') . $jit;
         }
         else
         {
-            $opcacheStatus = null;
+            $opcacheStatus = 'Not';
         }
 
         return $opcacheStatus;
