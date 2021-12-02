@@ -1,4 +1,4 @@
-name: ci-php-81
+name: ci-php-8
 
 on: [push, pull_request]
 
