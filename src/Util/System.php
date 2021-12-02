@@ -1,19 +1,19 @@
 <?php
 
-namespace Imi\Util;
+declare(strict_types=1);
 
-use function function_exists;
+namespace Imi\Util;
 
 class System
 {
     /**
-     * 获取本地 IP 列表
+     * 获取本地 IP 列表.
      */
     public static function netLocalIp(): array
     {
         $output = [];
 
-        if (function_exists('\net_get_interfaces'))
+        if (\function_exists('\net_get_interfaces'))
         {
             foreach (net_get_interfaces() ?: [] as $name => $item)
             {
@@ -29,7 +29,7 @@ class System
                 $output[$name] = $ip;
             }
         }
-        else if(function_exists('\swoole_get_local_ip'))
+        elseif (\function_exists('\swoole_get_local_ip'))
         {
             $output = swoole_get_local_ip();
         }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use function count;
-use function function_exists;
 use function getenv;
 use Imi\App;
 use Imi\Bean\Annotation;
@@ -771,24 +769,28 @@ class Imi
     }
 
     /**
-     * 格式化可读字节单位
+     * 格式化可读字节单位.
      */
     public static function formatByte(float $byte, int $dec = 2, bool $unit = true): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        $count = count($units) - 1;
-        $pos  = 0;
+        $count = \count($units) - 1;
+        $pos = 0;
 
-        while ($byte >= 1024 && $pos < $count) {
+        while ($byte >= 1024 && $pos < $count)
+        {
             $byte /= 1024;
-            $pos++;
+            ++$pos;
         }
 
         $result = sprintf("%.{$dec}f", round($byte, $dec));
 
-        if ($unit) {
+        if ($unit)
+        {
             return "{$result} {$units[$pos]}";
-        } else {
+        }
+        else
+        {
             return $result;
         }
     }
@@ -796,7 +798,8 @@ class Imi
     public static function getOpcacheInfo(): ?string
     {
         $opcacheStatus = null;
-        if (function_exists('\opcache_get_status')) {
+        if (\function_exists('\opcache_get_status'))
+        {
             $status = opcache_get_status(false);
             $enabled = $status && $status['opcache_enabled'];
             $jit = isset($status['jit']) ? (', JIT ' . ini_get('opcache.jit')) : '';

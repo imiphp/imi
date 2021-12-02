@@ -164,7 +164,8 @@ class Server extends BaseCommand
         $this->output->writeln('<info>Disk:</info> Free ' . Imi::formatByte(@disk_free_space('.'), 3) . ' / Total ' . Imi::formatByte(@disk_total_space('.'), 3));
 
         $netIp = System::netLocalIp();
-        if (!empty($netIp)) {
+        if (!empty($netIp))
+        {
             $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
             foreach ($netIp as $name => $ip)
             {
