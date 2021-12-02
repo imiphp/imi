@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use function count;
 use function getenv;
 use Imi\App;
 use Imi\Bean\Annotation;
@@ -15,6 +16,8 @@ use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
 use function php_uname;
+use function round;
+use function sprintf;
 use function str_contains;
 use function strrpos;
 use function substr;
@@ -764,5 +767,28 @@ class Imi
     public static function checkAppType(string $appType): bool
     {
         return App::isInited() && $appType === App::getApp()->getType();
+    }
+
+    /**
+     * 格式化字节单位
+     */
+    public static function formatByte(float $byte, int $dec = 2, bool $unit = true): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        $count = count($units) - 1;
+        $pos  = 0;
+
+        while ($byte >= 1024 && $pos < $count) {
+            $byte /= 1024;
+            $pos++;
+        }
+
+        $result = sprintf("%.{$dec}f", round($byte, $dec));
+
+        if ($unit) {
+            return "{$result} {$units[$pos]}";
+        } else {
+            return $result;
+        }
     }
 }

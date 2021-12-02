@@ -161,7 +161,7 @@ class Server extends BaseCommand
             $this->output->writeln('<info>Virtual machine:</info> WSL');
         }
         $this->output->writeln('<info>CPU:</info> ' . swoole_cpu_num() . ' Cores');
-        $this->output->writeln('<info>Disk:</info> Free ' . round(@disk_free_space('.') / (1024 * 1024 * 1024), 3) . ' GB / Total ' . round(@disk_total_space('.') / (1024 * 1024 * 1024), 3) . ' GB');
+        $this->output->writeln('<info>Disk:</info> Free ' . Imi::formatByte(@disk_free_space('.'), 3) . ' / Total ' . Imi::formatByte(@disk_total_space('.'), 3));
 
         $netIp = System::netLocalIp();
         if (!empty($netIp)) {
