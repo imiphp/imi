@@ -14,7 +14,7 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
-use function shell_exec;
+use function php_uname;
 use function str_contains;
 use function strrpos;
 use function substr;
@@ -636,7 +636,7 @@ class Imi
     {
         return is_file('/proc/sys/fs/binfmt_misc/WSLInterop')
             || (getenv('WSLEMV') || getenv('WSL_INTEROP') || getenv('WSL_DISTRO_NAME'))
-            || str_contains(shell_exec('uname -a') ?: '', 'WSL');
+            || str_contains(php_uname(), 'WSL');
     }
 
     /**
@@ -644,7 +644,19 @@ class Imi
      */
     public static function getLinuxVersion(): string
     {
-        if (preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', shell_exec('cat /etc/*-release'), $matches) <= 0)
+        $files = glob('/etc/*-release');
+        if (false === $files)
+        {
+            return '';
+        }
+        foreach ($files as $file)
+        {
+            if (preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', file_get_contents($file), $matches))
+            {
+                break;
+            }
+        }
+        if (empty($matches))
         {
             return '';
         }
