@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   linux:
-    name: Linux PHP-${{ matrix.php }} JIT-${{ matrix.jit }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
+    name: Linux PHP-${{ matrix.php }} JIT-${{ matrix.jit }} Swoole-${{ matrix.swoole }} RR-${{ matrix.roadrunner }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
