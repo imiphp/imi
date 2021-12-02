@@ -177,6 +177,7 @@ class Server extends BaseCommand
         $this->output->writeln('<info>Swoole:</info> v' . \SWOOLE_VERSION);
         $this->output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
         $this->output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
+        $this->output->writeln('<info>Opcache:</info> ' . Imi::getOpcacheInfo() ?? 'Not');
 
         $this->output->writeln('');
     }
