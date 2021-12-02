@@ -16,6 +16,7 @@ use Imi\Event\Event;
 use Imi\Pool\PoolManager;
 use Imi\Server\ServerManager;
 use Imi\Util\Imi;
+use Imi\Util\System;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Server as WorkermanServerUtil;
@@ -165,20 +166,11 @@ class Server extends BaseCommand
         }
         $this->output->writeln('<info>Disk:</info> Free ' . round(@disk_free_space('.') / (1024 * 1024 * 1024), 3) . ' GB / Total ' . round(@disk_total_space('.') / (1024 * 1024 * 1024), 3) . ' GB');
 
-        if (\function_exists('net_get_interfaces'))
-        {
+        $netIp = System::netLocalIp();
+        if (!empty($netIp)) {
             $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
-            foreach (net_get_interfaces() ?: [] as $name => $item)
+            foreach ($netIp as $name => $ip)
             {
-                $ip = $item['unicast'][1]['address'] ?? null;
-                if (null === $ip || '127.0.0.1' === $ip)
-                {
-                    continue;
-                }
-                if ('Windows' === \PHP_OS_FAMILY && isset($item['description']))
-                {
-                    $name = $item['description'];
-                }
                 $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
             }
         }

@@ -19,6 +19,7 @@ use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
 use Imi\Util\Imi;
+use Imi\Util\System;
 
 /**
  * @Command("swoole")
@@ -162,10 +163,13 @@ class Server extends BaseCommand
         $this->output->writeln('<info>CPU:</info> ' . swoole_cpu_num() . ' Cores');
         $this->output->writeln('<info>Disk:</info> Free ' . round(@disk_free_space('.') / (1024 * 1024 * 1024), 3) . ' GB / Total ' . round(@disk_total_space('.') / (1024 * 1024 * 1024), 3) . ' GB');
 
-        $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
-        foreach (swoole_get_local_ip() as $name => $ip)
-        {
-            $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
+        $netIp = System::netLocalIp();
+        if (!empty($netIp)) {
+            $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
+            foreach ($netIp as $name => $ip)
+            {
+                $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
+            }
         }
 
         $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
