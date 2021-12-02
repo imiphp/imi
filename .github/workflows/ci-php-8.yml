@@ -111,12 +111,20 @@ jobs:
             docker exec postgres pg_isready -d db_imi_test
       - name: Prepare
         run: |
+          echo "::group::Prepare Test Data"
           docker exec mysql mysql -uroot -p${{ env.MYSQL_ROOT_PASSWORD }} -e "grant all privileges on *.* to root@'%' with grant option"
           docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+          echo "::endgroup::"
+          echo "::group::Composer"
           composer update --no-interaction --prefer-dist --no-progress
+          echo "::endgroup::"
+          echo "::group::Prepare Test Data"
           bash tests/db/install-db.sh
+          echo "::endgroup::"
+          echo "::group::RoadRunner"
           src/Components/roadrunner/vendor/bin/rr get-binary -f ${{ matrix.roadrunner }} -l /usr/local/bin
           rr -v
+          echo "::endgroup::"
       - name: Test
         run: composer test
       - name: Test swoole
