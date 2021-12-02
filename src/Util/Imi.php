@@ -797,13 +797,16 @@ class Imi
 
     public static function getOpcacheInfo(): ?string
     {
-        $opcacheStatus = null;
-        if (\function_exists('\opcache_get_status'))
+        if (\extension_loaded('Zend OPcache') && \function_exists('\opcache_get_status'))
         {
             $status = opcache_get_status(false);
             $enabled = $status && $status['opcache_enabled'];
             $jit = isset($status['jit']) ? (', JIT ' . ini_get('opcache.jit')) : '';
             $opcacheStatus = ($enabled ? 'On' : 'Off') . $jit;
+        }
+        else
+        {
+            $opcacheStatus = null;
         }
 
         return $opcacheStatus;
