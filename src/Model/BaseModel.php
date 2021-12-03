@@ -10,6 +10,7 @@ use Imi\Bean\IBean;
 use Imi\Bean\ReflectionContainer;
 use Imi\Event\IEvent;
 use Imi\Event\TEvent;
+use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
@@ -211,7 +212,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             return true;
         }
-        $class = $this->__meta->getRealModelClass();
+        $meta = $this->__meta;
+        /** @var Column|null $column */
+        $column = $meta->getFields()[$offset] ?? null;
+        if ($column && '' !== $column->reference)
+        {
+            return $this->offsetExists($column->reference);
+        }
+        $class = $meta->getRealModelClass();
         if (isset(self::$__getterCache[$class][$offset]))
         {
             $methodName = self::$__getterCache[$class][$offset];
@@ -246,8 +254,15 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
+        $meta = $this->__meta;
+        /** @var Column|null $column */
+        $column = $meta->getFields()[$offset] ?? null;
+        if ($column && '' !== $column->reference)
+        {
+            return $this[$column->reference];
+        }
         $getterExists = true;
-        $class = ($this->__realClass ??= $this->__meta->getRealModelClass());
+        $class = ($this->__realClass ??= $meta->getRealModelClass());
         if (isset(self::$__getterCache[$class][$offset]))
         {
             $methodName = self::$__getterCache[$class][$offset];
@@ -307,20 +322,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $meta = $this->__meta;
         $fields = $meta->getFields();
-        // 数据库bit类型字段处理
-        if (isset($fields[$offset]))
+        /** @var Column|null $column */
+        $column = $fields[$offset] ?? null;
+        if ($column && '' !== $column->reference)
         {
-            $column = $fields[$offset];
+            $this[$column->reference] = $value;
+
+            return;
         }
-        elseif (isset($fields[$camelName = $this->__getCamelName($offset)]))
+        // 数据库bit类型字段处理
+        if (!$column && isset($fields[$camelName = $this->__getCamelName($offset)]))
         {
             $column = $fields[$camelName];
         }
-        else
-        {
-            $column = null;
-        }
-        if (null !== $column && 'bit' === $column->type)
+        if ($column && 'bit' === $column->type)
         {
             $value = (1 == $value || \chr(1) === $value);
         }
@@ -374,6 +389,15 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
+        $meta = $this->__meta;
+        /** @var Column|null $column */
+        $column = $fields[$offset] ?? null;
+        if ($column && '' !== $column->reference)
+        {
+            unset($this[$column->reference]);
+
+            return;
+        }
         if (isset($this->__fieldNames[$offset]))
         {
             unset($this->__fieldNames[$offset]);
