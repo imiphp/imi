@@ -36,4 +36,18 @@ class System
 
         return $output;
     }
+
+    public static function getCpuCoresNum(): int
+    {
+        if (PHP_OS_FAMILY == 'Windows')
+        {
+            return (int) getenv("NUMBER_OF_PROCESSORS");
+        }
+        else if (is_file('/proc/cpuinfo'))
+        {
+            return substr_count(file_get_contents("/proc/cpuinfo"),"processor");
+        }
+
+        return 0;
+    }
 }

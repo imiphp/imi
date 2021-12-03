@@ -220,7 +220,7 @@ class CliApp extends BaseApp
         {
             $output->writeln('<info>Virtual machine:</info> WSL');
         }
-        $output->writeln('<info>CPU:</info> ' . swoole_cpu_num() . ' Cores');
+        $output->writeln('<info>CPU:</info> ' . System::getCpuCoresNum() . ' Cores');
         $output->writeln('<info>Disk:</info> Free ' . Imi::formatByte(@disk_free_space('.'), 3) . ' / Total ' . Imi::formatByte(@disk_total_space('.'), 3));
 
         if ($netIp = System::netLocalIp())
