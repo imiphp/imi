@@ -129,7 +129,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     $list = $query->select()
                                   ->getArray();
@@ -170,7 +170,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -203,7 +203,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -245,7 +245,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     $list = $query->select()
                                   ->getArray();
@@ -286,7 +286,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -319,7 +319,7 @@ class ModelRelationManager
                     }
                     if (isset($withFields[$propertyName]))
                     {
-                        $withFields[$propertyName]($query);
+                        $withFields[$propertyName]($query, $annotation);
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
@@ -343,13 +343,13 @@ class ModelRelationManager
                         {
                             $query->field(...$subAnnotation->fields);
                         }
-                        if ($annotation->withFields)
+                        if ($subAnnotation->withFields)
                         {
-                            $query->withField(...$annotation->withFields);
+                            $query->withField(...$subAnnotation->withFields);
                         }
                         if (isset($withFields[$propertyName]))
                         {
-                            $withFields[$propertyName]($query);
+                            $withFields[$propertyName]($query, $subAnnotation);
                         }
                         foreach ($query->select()->getArray() as $resultModel)
                         {
@@ -364,6 +364,8 @@ class ModelRelationManager
                 {
                     foreach ($item['list'] as $subItem)
                     {
+                        /** @var PolymorphicToMany $subAnnotation */
+                        $subAnnotation = $subItem['annotation'];
                         $rightTable = $subItem['rightTable'];
                         $middleTable = $subItem['middleTable'];
                         $middleLeftField = $subItem['middleLeftField'];
@@ -378,23 +380,23 @@ class ModelRelationManager
                         $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
                                     ->field(...$queryFields)
                                     ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
-                                    ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
+                                    ->where($middleTable . '.' . $subAnnotation->type, '=', $subAnnotation->typeValue)
                                     ->where($middleTable . '.' . $middleRightField, 'in', $ids);
-                        if ($annotation->withFields)
+                        if ($subAnnotation->withFields)
                         {
-                            $query->withField(...$annotation->withFields);
+                            $query->withField(...$subAnnotation->withFields);
                         }
-                        if ($annotation->order)
+                        if ($subAnnotation->order)
                         {
-                            $query->orderRaw($annotation->order);
+                            $query->orderRaw($subAnnotation->order);
                         }
-                        if (null !== $annotation->limit)
+                        if (null !== $subAnnotation->limit)
                         {
-                            $query->limit($annotation->limit);
+                            $query->limit($subAnnotation->limit);
                         }
                         if (isset($withFields[$propertyName]))
                         {
-                            $withFields[$propertyName]($query);
+                            $withFields[$propertyName]($query, $subAnnotation);
                         }
                         $list = $query->select()
                                       ->getArray();
