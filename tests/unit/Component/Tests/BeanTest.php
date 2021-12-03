@@ -6,10 +6,13 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\App;
 use Imi\Bean\Exception\ContainerException;
+use Imi\Bean\ReflectionUtil;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Bean\BeanA;
 use Imi\Test\Component\Bean\BeanB;
 use Imi\Test\Component\Bean\BeanC;
+use ReflectionFunction;
+use ReflectionMethod;
 
 /**
  * @testdox Bean
@@ -24,5 +27,126 @@ class BeanTest extends BaseTest
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('BeanNotFound not found');
         App::getBean('BeanNotFound');
+    }
+
+    public function testGetTypeComments(): void
+    {
+        $f = function (): ?int {
+            return 0;
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertEquals('int|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+        $f = function (): \stdClass {
+            return new \stdClass();
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertEquals('\stdClass', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+        $f = function (): ?\stdClass {
+            return new \stdClass();
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertEquals('\stdClass|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+        $mf = new ReflectionMethod($this, 'test1');
+        $this->assertEquals('\Imi\Test\Component\Tests\BeanTest', ReflectionUtil::getTypeComments($mf->getReturnType(), self::class));
+
+        if ($this->assertTrue((bool) version_compare(\PHP_VERSION, '8.0', '>=')))
+        {
+            $f = function (): mixed {
+            };
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('mixed', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = function (): int|string {
+                return 0;
+            };
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('int|string', ReflectionUtil::getTypeComments($rf->getReturnType()));
+        }
+    }
+
+    public function testGetTypeCode(): void
+    {
+        $f = function (): ?int {
+            return 0;
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertEquals('?int', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+        $f = function (): \stdClass {
+            return new \stdClass();
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertEquals('\stdClass', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+        $f = function (): ?\stdClass {
+            return new \stdClass();
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertEquals('?\stdClass', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+        $mf = new ReflectionMethod($this, 'test1');
+        $this->assertEquals('\Imi\Test\Component\Tests\BeanTest', ReflectionUtil::getTypeCode($mf->getReturnType(), self::class));
+
+        if ($this->assertTrue((bool) version_compare(\PHP_VERSION, '8.0', '>=')))
+        {
+            $f = function (): mixed {
+            };
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('mixed', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $f = function (): int|string {
+                return 0;
+            };
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('int|string', ReflectionUtil::getTypeCode($rf->getReturnType()));
+        }
+    }
+
+    public function testAllowsType(): void
+    {
+        $f = function (): ?int {
+            return 0;
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
+
+        $f = function (): \stdClass {
+            return new \stdClass();
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
+
+        $f = function (): ?\stdClass {
+            return new \stdClass();
+        };
+        $rf = new ReflectionFunction($f);
+        $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
+
+        $mf = new ReflectionMethod($this, 'test1');
+        var_dump($mf->getReturnType()->getName());
+        $this->assertTrue(ReflectionUtil::allowsType($mf->getReturnType(), self::class, self::class));
+        $this->assertFalse(ReflectionUtil::allowsType($mf->getReturnType(), self::class));
+
+        if ($this->assertTrue((bool) version_compare(\PHP_VERSION, '8.0', '>=')))
+        {
+            $f = function (): mixed {
+            };
+            $rf = new ReflectionFunction($f);
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'mixed'));
+
+            $f = function (): int|string {
+                return 0;
+            };
+            $rf = new ReflectionFunction($f);
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int|string'));
+        }
+    }
+
+    private function test1(): self
+    {
+        return $this;
     }
 }
