@@ -137,10 +137,6 @@ class ReflectionUtil
                         $typeStr = $className;
                     }
                 }
-                else
-                {
-                    $typeStr = $typeStr;
-                }
             }
 
             return $typeStr === $checkType || is_subclass_of($checkType, $typeStr);
