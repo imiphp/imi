@@ -11,6 +11,7 @@ use Imi\Test\BaseTest;
 use Imi\Test\Component\Bean\BeanA;
 use Imi\Test\Component\Bean\BeanB;
 use Imi\Test\Component\Bean\BeanC;
+use Imi\Util\Imi;
 use ReflectionFunction;
 use ReflectionMethod;
 
@@ -97,9 +98,11 @@ class BeanTest extends BaseTest
             $rf = new ReflectionFunction($f);
             $this->assertEquals('mixed', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-            $f = function (): int|string {
+            $f = Imi::eval(<<<CODE
+            return function (): int|string {
                 return 0;
             };
+            CODE);
             $rf = new ReflectionFunction($f);
             $this->assertEquals('int|string', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
@@ -126,7 +129,6 @@ class BeanTest extends BaseTest
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
 
         $mf = new ReflectionMethod($this, 'test1');
-        var_dump($mf->getReturnType()->getName());
         $this->assertTrue(ReflectionUtil::allowsType($mf->getReturnType(), self::class, self::class));
         $this->assertFalse(ReflectionUtil::allowsType($mf->getReturnType(), self::class));
 
@@ -137,9 +139,11 @@ class BeanTest extends BaseTest
             $rf = new ReflectionFunction($f);
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'mixed'));
 
-            $f = function (): int|string {
+            $f = Imi::eval(<<<CODE
+            return function (): int|string {
                 return 0;
             };
+            CODE);
             $rf = new ReflectionFunction($f);
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int|string'));
         }
