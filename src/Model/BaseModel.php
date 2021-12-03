@@ -390,6 +390,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function offsetUnset($offset): void
     {
         $meta = $this->__meta;
+        $fields = $meta->getFields();
         /** @var Column|null $column */
         $column = $fields[$offset] ?? null;
         if ($column && '' !== $column->reference)
