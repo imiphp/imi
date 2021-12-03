@@ -178,7 +178,7 @@ class CliApp extends BaseApp
         }
     }
 
-    public static function printImi()
+    public static function printImi(): void
     {
         $output = ImiCommand::getOutput();
         $output->write('<comment>' . <<<'STR'
@@ -193,7 +193,7 @@ class CliApp extends BaseApp
         );
     }
 
-    public static function printEnvInfo(string $serverName, string $serverVer)
+    public static function printEnvInfo(string $serverName, string $serverVer): void
     {
         $output = ImiCommand::getOutput();
         $output->writeln('<fg=yellow;options=bold>[System]</>');
