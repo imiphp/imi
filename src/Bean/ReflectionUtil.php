@@ -38,7 +38,7 @@ class ReflectionUtil
                     $typeStr = '\\' . $typeStr;
                 }
             }
-            if ($type->allowsNull())
+            if ($type->allowsNull() && 'mixed' !== $typeStr)
             {
                 return $typeStr . '|null';
             }
@@ -54,7 +54,7 @@ class ReflectionUtil
             {
                 $result[] = self::getTypeCode($subType, $className);
             }
-            if ($type->allowsNull())
+            if ($type->allowsNull() && !\in_array('mixed', $result))
             {
                 $result[] = 'null';
             }
@@ -90,7 +90,7 @@ class ReflectionUtil
                     $typeStr = '\\' . $typeStr;
                 }
             }
-            if ($type->allowsNull())
+            if ($type->allowsNull() && 'mixed' !== $typeStr)
             {
                 return '?' . $typeStr;
             }
@@ -106,7 +106,7 @@ class ReflectionUtil
             {
                 $result[] = self::getTypeCode($subType, $className);
             }
-            if ($type->allowsNull())
+            if ($type->allowsNull() && !\in_array('mixed', $result))
             {
                 $result[] = 'null';
             }
