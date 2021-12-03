@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Validate\Annotation;
 
 use Imi\Bean\Annotation;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 比较验证
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  *
  * @property mixed  $value     被比较值
  * @property string $operation 比较符，使用顺序：name代表的值->比较符->被比较值；允许使用：==、!=、===、!==、<、<=、>、>=

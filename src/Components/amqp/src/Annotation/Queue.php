@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\AMQP\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 队列.
  *
  * @Annotation
  * @Target({"CLASS"})
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string                           $name       队列名称
  * @property string                           $routingKey 路由键

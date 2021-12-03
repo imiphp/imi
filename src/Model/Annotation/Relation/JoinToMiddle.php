@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Model\Annotation\Relation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 多对多，左侧关联到中间表模型.
  *
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $field       字段名
  * @property string|null $middleField 中间表模型字段

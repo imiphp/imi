@@ -7,6 +7,7 @@ namespace Imi\Bean;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Inherit;
 use Imi\Bean\Parser\BaseParser;
+use Imi\Bean\Parser\NullParser;
 use Imi\Config;
 use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
@@ -162,12 +163,11 @@ class AnnotationParser
                 {
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
-                $inheritAnnotations = [];
                 foreach (AnnotationManager::getClassAnnotations($parentClassName) as $annotation)
                 {
                     if (null === $inheritAnnotationClasses)
                     {
-                        $inheritAnnotations[] = $annotation;
+                        $annotations[] = $annotation;
                     }
                     else
                     {
@@ -175,7 +175,7 @@ class AnnotationParser
                         {
                             if ($annotation instanceof $inheritAnnotationClass)
                             {
-                                $inheritAnnotations[] = $annotation;
+                                $annotations[] = $annotation;
                                 break;
                             }
                         }
@@ -183,13 +183,8 @@ class AnnotationParser
                 }
             }
         }
-        // 是注解类的情况下，Parser类不需要指定@Parser()处理器
-        elseif ($ref->isSubclassOf('Imi\Bean\Annotation\Base') && 'Imi\Bean\Annotation\Parser' !== $className)
-        {
-            throw new \RuntimeException(sprintf('Annotation %s has no @Parser()', $className));
-        }
 
-        AnnotationManager::setClassAnnotations($className, ...$annotations, ...$inheritAnnotations ?? []);
+        AnnotationManager::setClassAnnotations($className, ...$annotations);
     }
 
     /**
@@ -262,12 +257,11 @@ class AnnotationParser
                 {
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
-                $inheritAnnotations = [];
                 foreach (AnnotationManager::getMethodAnnotations($parentClassName, $methodName) as $annotation)
                 {
                     if (null === $inheritAnnotationClasses)
                     {
-                        $inheritAnnotations[] = $annotation;
+                        $annotations[] = $annotation;
                     }
                     else
                     {
@@ -275,7 +269,7 @@ class AnnotationParser
                         {
                             if ($annotation instanceof $inheritAnnotationClass)
                             {
-                                $inheritAnnotations[] = $annotation;
+                                $annotations[] = $annotation;
                                 break;
                             }
                         }
@@ -284,7 +278,7 @@ class AnnotationParser
             }
         }
 
-        AnnotationManager::setMethodAnnotations($className, $methodName, ...$annotations, ...$inheritAnnotations ?? []);
+        AnnotationManager::setMethodAnnotations($className, $methodName, ...$annotations);
     }
 
     /**
@@ -357,12 +351,11 @@ class AnnotationParser
                 {
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
-                $inheritAnnotations = [];
                 foreach (AnnotationManager::getPropertyAnnotations($parentClassName, $propertyName) as $annotation)
                 {
                     if (null === $inheritAnnotationClasses)
                     {
-                        $inheritAnnotations[] = $annotation;
+                        $annotations[] = $annotation;
                     }
                     else
                     {
@@ -370,7 +363,7 @@ class AnnotationParser
                         {
                             if ($annotation instanceof $inheritAnnotationClass)
                             {
-                                $inheritAnnotations[] = $annotation;
+                                $annotations[] = $annotation;
                                 break;
                             }
                         }
@@ -379,7 +372,7 @@ class AnnotationParser
             }
         }
 
-        AnnotationManager::setPropertyAnnotations($className, $propertyName, ...$annotations, ...$inheritAnnotations ?? []);
+        AnnotationManager::setPropertyAnnotations($className, $propertyName, ...$annotations);
     }
 
     /**
@@ -454,12 +447,11 @@ class AnnotationParser
                 {
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
-                $inheritAnnotations = [];
                 foreach (AnnotationManager::getConstantAnnotations($parentClassName, $constName) as $annotation)
                 {
                     if (null === $inheritAnnotationClasses)
                     {
-                        $inheritAnnotations[] = $annotation;
+                        $annotations[] = $annotation;
                     }
                     else
                     {
@@ -467,7 +459,7 @@ class AnnotationParser
                         {
                             if ($annotation instanceof $inheritAnnotationClass)
                             {
-                                $inheritAnnotations[] = $annotation;
+                                $annotations[] = $annotation;
                                 break;
                             }
                         }
@@ -476,7 +468,7 @@ class AnnotationParser
             }
         }
 
-        AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations, ...$inheritAnnotations ?? []);
+        AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations);
     }
 
     /**
@@ -511,7 +503,7 @@ class AnnotationParser
         }
         if (!$hasParser)
         {
-            throw new \RuntimeException(sprintf('Annotation %s has no @Parser()', $className));
+            $parsers[$className] = NullParser::class;
         }
     }
 

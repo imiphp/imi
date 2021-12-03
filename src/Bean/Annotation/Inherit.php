@@ -9,7 +9,6 @@ namespace Imi\Bean\Annotation;
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY", "CONST"})
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|string[]|null $annotation 允许的注解类，为 null 则不限制，支持字符串或数组
  */

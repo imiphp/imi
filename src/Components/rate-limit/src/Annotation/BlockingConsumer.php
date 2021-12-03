@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\RateLimit\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 阻塞等待消费.
@@ -14,7 +13,6 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("\Imi\Bean\Parser\NullParser")
  *
  * @property int|null $timeout 超时时间，单位：秒；为 null 不限制
  */

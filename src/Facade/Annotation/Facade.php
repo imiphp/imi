@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Facade\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 门面定义.
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string $class   类名，支持 Bean 名
  * @property bool   $request 为 true 时，使用当前请求上下文的 Bean 对象

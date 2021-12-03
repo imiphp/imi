@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Model\Tree\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 提取字段中的属性到当前模型.
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $idField       主键字段名；默认为null，则自动获取
  * @property string      $parentField   父级ID字段名

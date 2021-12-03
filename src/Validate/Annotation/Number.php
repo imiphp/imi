@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Validate\Annotation;
 
 use Imi\Bean\Annotation;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 数值验证，允许整数和小数.
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  *
  * @property int|float|null $min      最小值，为null不限制
  * @property int|float|null $max      最大值，为null不限制

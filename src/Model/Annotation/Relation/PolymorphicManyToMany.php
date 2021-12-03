@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Model\Annotation\Relation;
 
-use Imi\Bean\Annotation\Parser;
-
 /**
  * 多态多对多关联.
  *
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string        $type       右表多态类型字段名
  * @property mixed         $typeValue  右表多态类型字段值
