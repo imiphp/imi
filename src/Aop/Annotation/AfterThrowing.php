@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Aop\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 在异常时通知.
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property array $allow 允许捕获的异常类列表
  * @property array $deny  不允许捕获的异常类列表

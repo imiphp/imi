@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Validate\Annotation;
 
 use Imi\Bean\Annotation;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 必选参数.
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Required extends Condition

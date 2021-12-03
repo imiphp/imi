@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\JWT\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * JWT 验证注解.
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null       $name       JWT 配置名称
  * @property string|false|null $id         验证 ID；为 null 则使用配置中的值验证；为 false 则不验证

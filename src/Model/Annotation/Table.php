@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Model\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 表注解.
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null       $name       表名
  * @property string|null       $dbPoolName 数据库连接池名称

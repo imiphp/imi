@@ -6,7 +6,6 @@ namespace Imi\Validate\Annotation;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 自动验证
@@ -16,7 +15,6 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target({"CLASS", "METHOD"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class AutoValidation extends Base

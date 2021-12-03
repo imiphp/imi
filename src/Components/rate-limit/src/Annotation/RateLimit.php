@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\RateLimit\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 限流器注解.
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("\Imi\Bean\Parser\NullParser")
  *
  * @property string        $name     限流器名称
  * @property int           $capacity 总容量

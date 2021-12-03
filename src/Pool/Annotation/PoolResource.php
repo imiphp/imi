@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Pool\Annotation;
 
 use Imi\Aop\Annotation\RequestInject;
-use Imi\Bean\Annotation\Parser;
 use Imi\Pool\PoolManager;
 
 /**
@@ -13,7 +12,6 @@ use Imi\Pool\PoolManager;
  *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PoolResource extends RequestInject

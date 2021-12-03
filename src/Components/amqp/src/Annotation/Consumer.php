@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\AMQP\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 消费者.
  *
  * @Annotation
  * @Target({"CLASS"})
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string          $tag        消费者标签
  * @property string|array    $queue      队列名称

@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Model\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 列字段注解.
  *
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $name            字段名
  * @property string|null $type            字段类型

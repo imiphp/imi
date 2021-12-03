@@ -6,14 +6,12 @@ namespace Imi\Aop\Annotation;
 
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 切入点.
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property int   $type  切入点类型，PointCutType::XXX
  * @property array $allow 允许的切入点

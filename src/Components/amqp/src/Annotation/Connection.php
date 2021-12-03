@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\AMQP\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 连接.
  *
  * @Annotation
  * @Target({"CLASS"})
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $poolName          连接池名称
  * @property string      $host              主机

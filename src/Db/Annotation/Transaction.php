@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Db\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 事务注解.
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $dbPoolName     数据库连接池名，为null或默认都为默认连接池
  * @property string      $type           事务类型；默认为嵌套

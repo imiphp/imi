@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Model\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 use Imi\Model\Enum\RedisStorageMode;
 
 /**
@@ -13,7 +12,6 @@ use Imi\Model\Enum\RedisStorageMode;
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $poolName  redis 连接池名称
  * @property int|null    $db        第几个库，不传为null时使用连接池默认配置

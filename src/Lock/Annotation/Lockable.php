@@ -6,14 +6,12 @@ namespace Imi\Lock\Annotation;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 锁注解.
  *
  * @Annotation
  * @Target({"METHOD", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null   $id               锁ID；支持{id}、{data.name}形式，代入参数；如果为null，则使用类名+方法名+全部参数，序列化后hash
  * @property string|null   $type             锁类型，如：RedisLock；为null则使用默认锁类型（@currentServer.lock.defaultType）

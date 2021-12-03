@@ -6,7 +6,6 @@ namespace Imi\Validate\Annotation;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 use Imi\Config;
 
 /**
@@ -15,7 +14,6 @@ use Imi\Config;
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  *
  * @property string|null $name          参数名称；属性注解可省略
  * @property bool        $optional      非必验证，只有当值存在才验证

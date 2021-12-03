@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Cron\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 定时任务注解.
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|null $id               任务唯一ID
  * @property string|null $type             任务类型；\Imi\Cron\Consts\CronTaskType 类常量

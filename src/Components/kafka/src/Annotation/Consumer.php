@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Kafka\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 消费者.
  *
  * @Annotation
  * @Target({"CLASS"})
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string|string[] $topic    主题名称
  * @property string|null     $groupId  分组ID

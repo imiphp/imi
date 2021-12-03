@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Imi\Model\Annotation;
 
 use Imi\Bean\Annotation\Base;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 创建表语句注解.
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\NullParser")
  *
  * @property string $sql    表结构 SQL；CREATE TABLE 语句
  * @property string $decode SQL 解码函数
