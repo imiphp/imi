@@ -10,13 +10,12 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
+use Imi\Cli\CliApp;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\Pool\PoolManager;
 use Imi\Server\ServerManager;
-use Imi\Util\Imi;
-use Imi\Util\System;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Server as WorkermanServerUtil;
@@ -37,7 +36,6 @@ class Server extends BaseCommand
      */
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
-        $this->outImi();
         $this->outStartupInfo();
         PoolManager::clearPools();
         CacheManager::clearPools();
@@ -120,69 +118,11 @@ class Server extends BaseCommand
     }
 
     /**
-     * 输出 imi 图标.
-     */
-    public function outImi(): void
-    {
-        $this->output->write('<comment>' . <<<'STR'
-         _               _
-        (_)  _ __ ___   (_)
-        | | | '_ ` _ \  | |
-        | | | | | | | | | |
-        |_| |_| |_| |_| |_|
-
-        </comment>
-        STR
-        );
-    }
-
-    /**
      * 输出启动信息.
      */
     public function outStartupInfo(): void
     {
-        $this->output->writeln('<fg=yellow;options=bold>[System]</>');
-        $system = (\defined('PHP_OS_FAMILY') && 'Unknown' !== \PHP_OS_FAMILY) ? \PHP_OS_FAMILY : \PHP_OS;
-        switch ($system)
-        {
-            case 'Linux':
-                $system .= ' - ' . Imi::getLinuxVersion();
-                break;
-            case 'Darwin':
-                $system .= ' - ' . Imi::getDarwinVersion();
-                break;
-            case 'CYGWIN':
-                $system .= ' - ' . Imi::getCygwinVersion();
-                break;
-        }
-        $this->output->writeln('<info>System:</info> ' . $system);
-        if (Imi::isDockerEnvironment())
-        {
-            $this->output->writeln('<info>Virtual machine:</info> Docker');
-        }
-        elseif (Imi::isWSL())
-        {
-            $this->output->writeln('<info>Virtual machine:</info> WSL');
-        }
-        $this->output->writeln('<info>Disk:</info> Free ' . Imi::formatByte(@disk_free_space('.'), 3) . ' / Total ' . Imi::formatByte(@disk_total_space('.'), 3));
-
-        $netIp = System::netLocalIp();
-        if (!empty($netIp))
-        {
-            $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
-            foreach ($netIp as $name => $ip)
-            {
-                $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
-            }
-        }
-
-        $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
-        $this->output->writeln('<info>Version:</info> v' . \PHP_VERSION);
-        $this->output->writeln('<info>Workerman:</info> v' . Worker::VERSION);
-        $this->output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
-        $this->output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
-        $this->output->writeln('<info>Opcache:</info> ' . Imi::getOpcacheInfo());
-
-        $this->output->writeln('');
+        CliApp::printImi();
+        CliApp::printEnvInfo('Workerman', Worker::VERSION);
     }
 }
