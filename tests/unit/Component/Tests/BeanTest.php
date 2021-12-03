@@ -32,6 +32,7 @@ class BeanTest extends BaseTest
 
     public function testGetTypeComments(): void
     {
+        // @phpstan-ignore-next-line
         $f = function (): ?int {
             return 0;
         };
@@ -44,6 +45,7 @@ class BeanTest extends BaseTest
         $rf = new ReflectionFunction($f);
         $this->assertEquals('\stdClass', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
+        // @phpstan-ignore-next-line
         $f = function (): ?\stdClass {
             return new \stdClass();
         };
@@ -53,8 +55,10 @@ class BeanTest extends BaseTest
         $mf = new ReflectionMethod($this, 'test1');
         $this->assertEquals('\Imi\Test\Component\Tests\BeanTest', ReflectionUtil::getTypeComments($mf->getReturnType(), self::class));
 
-        if ($this->assertTrue((bool) version_compare(\PHP_VERSION, '8.0', '>=')))
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.0', '>='))
         {
+            // @phpstan-ignore-next-line
             $f = function (): mixed {
             };
             $rf = new ReflectionFunction($f);
@@ -72,6 +76,7 @@ class BeanTest extends BaseTest
 
     public function testGetTypeCode(): void
     {
+        // @phpstan-ignore-next-line
         $f = function (): ?int {
             return 0;
         };
@@ -84,6 +89,7 @@ class BeanTest extends BaseTest
         $rf = new ReflectionFunction($f);
         $this->assertEquals('\stdClass', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
+        // @phpstan-ignore-next-line
         $f = function (): ?\stdClass {
             return new \stdClass();
         };
@@ -93,8 +99,10 @@ class BeanTest extends BaseTest
         $mf = new ReflectionMethod($this, 'test1');
         $this->assertEquals('\Imi\Test\Component\Tests\BeanTest', ReflectionUtil::getTypeCode($mf->getReturnType(), self::class));
 
-        if ($this->assertTrue((bool) version_compare(\PHP_VERSION, '8.0', '>=')))
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.0', '>='))
         {
+            // @phpstan-ignore-next-line
             $f = function (): mixed {
             };
             $rf = new ReflectionFunction($f);
@@ -112,6 +120,7 @@ class BeanTest extends BaseTest
 
     public function testAllowsType(): void
     {
+        // @phpstan-ignore-next-line
         $f = function (): ?int {
             return 0;
         };
@@ -124,6 +133,7 @@ class BeanTest extends BaseTest
         $rf = new ReflectionFunction($f);
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
 
+        // @phpstan-ignore-next-line
         $f = function (): ?\stdClass {
             return new \stdClass();
         };
@@ -134,8 +144,10 @@ class BeanTest extends BaseTest
         $this->assertTrue(ReflectionUtil::allowsType($mf->getReturnType(), self::class, self::class));
         $this->assertFalse(ReflectionUtil::allowsType($mf->getReturnType(), self::class));
 
-        if ($this->assertTrue((bool) version_compare(\PHP_VERSION, '8.0', '>=')))
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.0', '>='))
         {
+            // @phpstan-ignore-next-line
             $f = function (): mixed {
             };
             $rf = new ReflectionFunction($f);
@@ -151,6 +163,7 @@ class BeanTest extends BaseTest
         }
     }
 
+    // @phpstan-ignore-next-line
     private function test1(): self
     {
         return $this;
