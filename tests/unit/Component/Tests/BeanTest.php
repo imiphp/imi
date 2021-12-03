@@ -70,7 +70,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('int|string', ReflectionUtil::getTypeComments($rf->getReturnType()));
+            $this->assertEquals('string|int', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
     }
 
@@ -114,7 +114,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('int|string', ReflectionUtil::getTypeCode($rf->getReturnType()));
+            $this->assertEquals('string|int', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
     }
 
@@ -159,7 +159,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int|string'));
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'string|int'));
         }
     }
 
