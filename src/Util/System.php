@@ -39,13 +39,13 @@ class System
 
     public static function getCpuCoresNum(): int
     {
-        if (PHP_OS_FAMILY == 'Windows')
+        if (\PHP_OS_FAMILY == 'Windows')
         {
-            return (int) getenv("NUMBER_OF_PROCESSORS");
+            return (int) getenv('NUMBER_OF_PROCESSORS');
         }
-        else if (is_file('/proc/cpuinfo'))
+        elseif (is_file('/proc/cpuinfo'))
         {
-            return substr_count(file_get_contents("/proc/cpuinfo"),"processor");
+            return substr_count(file_get_contents('/proc/cpuinfo'), 'processor');
         }
 
         return 0;
