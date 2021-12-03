@@ -60,9 +60,11 @@ class BeanTest extends BaseTest
             $rf = new ReflectionFunction($f);
             $this->assertEquals('mixed', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-            $f = function (): int|string {
+            $f = Imi::eval(<<<CODE
+            return function (): int|string {
                 return 0;
             };
+            CODE);
             $rf = new ReflectionFunction($f);
             $this->assertEquals('int|string', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
