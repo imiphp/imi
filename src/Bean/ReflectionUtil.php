@@ -121,9 +121,18 @@ class ReflectionUtil
 
     public static function allowsType(ReflectionType $type, string $checkType, ?string $className = null): bool
     {
-        if ('null' === $checkType)
+        if ('' === $checkType)
+        {
+            return false;
+        }
+        if ('null' === $checkType || '?' === $checkType[0])
         {
             return $type->allowsNull();
+        }
+        $checkTypes = explode('|', $checkType);
+        if ('?' === $checkTypes[0][0])
+        {
+            $checkTypes[0][0] = substr($checkTypes[0][0], 1);
         }
         if ($type instanceof ReflectionNamedType)
         {
@@ -139,14 +148,14 @@ class ReflectionUtil
                 }
             }
 
-            return $typeStr === $checkType || is_subclass_of($checkType, $typeStr);
+            return $typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr);
         }
         if ($type instanceof ReflectionUnionType)
         {
             foreach ($type->getTypes() as $subType)
             {
                 $typeStr = ltrim(self::getTypeCode($subType, $className), '\\');
-                if ($typeStr === $checkType || is_subclass_of($checkType, $typeStr))
+                if ($typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr))
                 {
                     return true;
                 }
