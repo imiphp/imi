@@ -15,10 +15,6 @@ use Imi\Util\System;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use function date_default_timezone_get;
-use function disk_free_space;
-use function disk_total_space;
-use function swoole_cpu_num;
 
 class CliApp extends BaseApp
 {
