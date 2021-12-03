@@ -247,7 +247,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function &offsetGet($offset)
     {
         $getterExists = true;
-        $class = $this->__meta->getRealModelClass();
+        $class = ($this->__realClass ??= $this->__meta->getRealModelClass());
         if (isset(self::$__getterCache[$class][$offset]))
         {
             $methodName = self::$__getterCache[$class][$offset];
@@ -271,14 +271,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         if ($getterExists)
         {
-            $realClass = ($this->__realClass ??= $this->__meta->getRealModelClass());
             $__methodReference = &self::$__methodReference;
-            if (!isset($__methodReference[$realClass][$methodName]))
+            if (!isset($__methodReference[$class][$methodName]))
             {
                 $refMethod = ReflectionContainer::getMethodReflection(static::class, $methodName);
-                $__methodReference[$realClass][$methodName] = $refMethod->returnsReference();
+                $__methodReference[$class][$methodName] = $refMethod->returnsReference();
             }
-            if ($__methodReference[$realClass][$methodName])
+            if ($__methodReference[$class][$methodName])
             {
                 return $this->$methodName();
             }
@@ -326,7 +325,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $value = (1 == $value || \chr(1) === $value);
         }
 
-        $class = $meta->getRealModelClass();
+        $class = ($this->__realClass ??= $this->__meta->getRealModelClass());
         if (isset(self::$__setterCache[$class][$offset]))
         {
             $methodName = self::$__setterCache[$class][$offset];
