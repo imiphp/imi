@@ -45,7 +45,7 @@ class System
         }
         elseif (is_file('/proc/cpuinfo'))
         {
-            return substr_count(file_get_contents('/proc/cpuinfo'), 'processor');
+            return substr_count(file_get_contents("/proc/cpuinfo"),"\nprocessor") + 1;
         }
 
         return 0;
