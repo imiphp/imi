@@ -14,7 +14,9 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
-use function shell_exec;
+use function php_uname;
+use function round;
+use function sprintf;
 use function str_contains;
 use function strrpos;
 use function substr;
@@ -636,7 +638,7 @@ class Imi
     {
         return is_file('/proc/sys/fs/binfmt_misc/WSLInterop')
             || (getenv('WSLEMV') || getenv('WSL_INTEROP') || getenv('WSL_DISTRO_NAME'))
-            || str_contains(shell_exec('uname -a') ?: '', 'WSL');
+            || str_contains(php_uname(), 'WSL');
     }
 
     /**
@@ -644,7 +646,19 @@ class Imi
      */
     public static function getLinuxVersion(): string
     {
-        if (preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', shell_exec('cat /etc/*-release'), $matches) <= 0)
+        $files = glob('/etc/*-release');
+        if (false === $files)
+        {
+            return '';
+        }
+        foreach ($files as $file)
+        {
+            if (preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', file_get_contents($file), $matches))
+            {
+                break;
+            }
+        }
+        if (empty($matches))
         {
             return '';
         }
@@ -752,5 +766,49 @@ class Imi
     public static function checkAppType(string $appType): bool
     {
         return App::isInited() && $appType === App::getApp()->getType();
+    }
+
+    /**
+     * 格式化可读字节单位.
+     */
+    public static function formatByte(float $byte, int $dec = 2, bool $unit = true): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        $count = \count($units) - 1;
+        $pos = 0;
+
+        while ($byte >= 1024 && $pos < $count)
+        {
+            $byte /= 1024;
+            ++$pos;
+        }
+
+        $result = sprintf("%.{$dec}f", round($byte, $dec));
+
+        if ($unit)
+        {
+            return "{$result} {$units[$pos]}";
+        }
+        else
+        {
+            return $result;
+        }
+    }
+
+    public static function getOpcacheInfo(): string
+    {
+        if (\function_exists('\opcache_get_status'))
+        {
+            $status = opcache_get_status(false);
+            $enabled = $status && $status['opcache_enabled'];
+            $jit = $status && isset($status['jit']) ? (', JIT ' . ini_get('opcache.jit')) : '';
+            $opcacheStatus = ($enabled ? 'On' : 'Off') . $jit;
+        }
+        else
+        {
+            $opcacheStatus = 'Not';
+        }
+
+        return $opcacheStatus;
     }
 }

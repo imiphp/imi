@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Cli;
 
-use Imi\App;
 use Imi\Cache\CacheManager;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
+use Imi\Cli\CliApp;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\Tools\Imi\Imi as ToolImi;
 use Imi\Config;
@@ -18,7 +18,6 @@ use Imi\Pool\PoolManager;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
-use Imi\Util\Imi;
 
 /**
  * @Command("swoole")
@@ -37,7 +36,6 @@ class Server extends BaseCommand
     public function start(?int $workerNum, $d): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($d) {
-            $this->outImi();
             $this->outStartupInfo();
             PoolManager::clearPools();
             CacheManager::clearPools();
@@ -115,65 +113,11 @@ class Server extends BaseCommand
     }
 
     /**
-     * 输出 imi 图标.
-     */
-    public function outImi(): void
-    {
-        $this->output->write('<comment>' . <<<'STR'
-         _               _
-        (_)  _ __ ___   (_)
-        | | | '_ ` _ \  | |
-        | | | | | | | | | |
-        |_| |_| |_| |_| |_|
-
-        </comment>
-        STR
-        );
-    }
-
-    /**
      * 输出启动信息.
      */
     public function outStartupInfo(): void
     {
-        $this->output->writeln('<fg=yellow;options=bold>[System]</>');
-        $system = (\defined('PHP_OS_FAMILY') && 'Unknown' !== \PHP_OS_FAMILY) ? \PHP_OS_FAMILY : \PHP_OS;
-        switch ($system)
-        {
-            case 'Linux':
-                $system .= ' - ' . Imi::getLinuxVersion();
-                break;
-            case 'Darwin':
-                $system .= ' - ' . Imi::getDarwinVersion();
-                break;
-            case 'CYGWIN':
-                $system .= ' - ' . Imi::getCygwinVersion();
-                break;
-        }
-        $this->output->writeln('<info>System:</info> ' . $system);
-        if (Imi::isDockerEnvironment())
-        {
-            $this->output->writeln('<info>Virtual machine:</info> Docker');
-        }
-        elseif (Imi::isWSL())
-        {
-            $this->output->writeln('<info>Virtual machine:</info> WSL');
-        }
-        $this->output->writeln('<info>CPU:</info> ' . swoole_cpu_num() . ' Cores');
-        $this->output->writeln('<info>Disk:</info> Free ' . round(@disk_free_space('.') / (1024 * 1024 * 1024), 3) . ' GB / Total ' . round(@disk_total_space('.') / (1024 * 1024 * 1024), 3) . ' GB');
-
-        $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
-        foreach (swoole_get_local_ip() as $name => $ip)
-        {
-            $this->output->writeln('<info>' . $name . '</info>: ' . $ip);
-        }
-
-        $this->output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
-        $this->output->writeln('<info>Version:</info> v' . \PHP_VERSION);
-        $this->output->writeln('<info>Swoole:</info> v' . \SWOOLE_VERSION);
-        $this->output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
-        $this->output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
-
-        $this->output->writeln('');
+        CliApp::printImi();
+        CliApp::printEnvInfo('Swoole', \SWOOLE_VERSION);
     }
 }
