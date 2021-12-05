@@ -77,12 +77,12 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.1', '>='))
         {
             $f = Imi::eval(<<<CODE
-            return function (): Iterator&Countable {
+            return function (): IteratorAggregate&Countable {
                 return new \ArrayObject();
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('\Iterator&\Countable', ReflectionUtil::getTypeComments($rf->getReturnType()));
+            $this->assertEquals('\IteratorAggregate&\Countable', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
             $f = Imi::eval(<<<CODE
             return function (): never {
@@ -141,12 +141,12 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.1', '>='))
         {
             $f = Imi::eval(<<<CODE
-            return function (): Iterator&Countable {
+            return function (): IteratorAggregate&Countable {
                 return new \ArrayObject();
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('\Iterator&\Countable', ReflectionUtil::getTypeCode($rf->getReturnType()));
+            $this->assertEquals('\IteratorAggregate&\Countable', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
             $f = Imi::eval(<<<CODE
             return function (): never {
@@ -208,13 +208,13 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.1', '>='))
         {
             $f = Imi::eval(<<<CODE
-            return function (): Iterator&Countable {
+            return function (): IteratorAggregate&Countable {
                 return new \ArrayObject();
             };
             CODE);
             $rf = new ReflectionFunction($f);
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'ArrayObject'));
-            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Iterator'));
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'IteratorAggregate'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Countable'));
 
             $f = Imi::eval(<<<CODE
