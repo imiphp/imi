@@ -82,7 +82,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('Iterator&Countable', ReflectionUtil::getTypeComments($rf->getReturnType()));
+            $this->assertEquals('\Iterator&\Countable', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
             $f = Imi::eval(<<<CODE
             return function (): never {
@@ -146,7 +146,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('Iterator&Countable', ReflectionUtil::getTypeCode($rf->getReturnType()));
+            $this->assertEquals('\Iterator&\Countable', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
             $f = Imi::eval(<<<CODE
             return function (): never {
