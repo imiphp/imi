@@ -248,6 +248,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * @return mixed|false
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         // @phpstan-ignore-next-line
@@ -257,6 +258,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * @return int|string|null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         // @phpstan-ignore-next-line
@@ -284,6 +286,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return false !== $this->current();
