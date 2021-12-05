@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Bean;
 
 use InvalidArgumentException;
+use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionType;
 use ReflectionUnionType;
@@ -52,7 +53,7 @@ class ReflectionUtil
             $result = [];
             foreach ($type->getTypes() as $subType)
             {
-                $result[] = self::getTypeCode($subType, $className);
+                $result[] = self::getTypeComments($subType, $className);
             }
             if ($type->allowsNull() && !\in_array('mixed', $result))
             {
@@ -60,6 +61,16 @@ class ReflectionUtil
             }
 
             return implode('|', $result);
+        }
+        elseif ($type instanceof ReflectionIntersectionType)
+        {
+            $result = [];
+            foreach ($type->getTypes() as $subType)
+            {
+                $result[] = self::getTypeComments($subType, $className);
+            }
+
+            return implode('&', $result);
         }
         else
         {
@@ -113,6 +124,16 @@ class ReflectionUtil
 
             return implode('|', $result);
         }
+        elseif ($type instanceof ReflectionIntersectionType)
+        {
+            $result = [];
+            foreach ($type->getTypes() as $subType)
+            {
+                $result[] = self::getTypeCode($subType, $className);
+            }
+
+            return implode('&', $result);
+        }
         else
         {
             throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
@@ -162,6 +183,18 @@ class ReflectionUtil
             }
 
             return false;
+        }
+        elseif ($type instanceof ReflectionIntersectionType)
+        {
+            foreach ($type->getTypes() as $subType)
+            {
+                if (!self::allowsType($subType, $checkType, $className))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
         throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
     }
