@@ -213,7 +213,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'Iterator&Countable'));
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'ArrayObject'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Iterator'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Countable'));
 
