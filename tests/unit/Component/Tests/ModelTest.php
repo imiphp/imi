@@ -8,6 +8,7 @@ use Imi\Db\Db;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article2;
 use Imi\Test\Component\Model\Member;
+use Imi\Test\Component\Model\MemberReferenceProperty;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestJson;
@@ -547,5 +548,17 @@ class ModelTest extends BaseTest
         $record = Article2::find($record->id);
         $this->assertNotNull($record);
         $this->assertEquals(Article2::class, \get_class($record));
+    }
+
+    public function testReferenceProperty(): void
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $member->insert();
+
+        $record = MemberReferenceProperty::find($member->id);
+        $this->assertEquals($member->id, $record->id);
+        $this->assertEquals($member->id, $record->id2);
     }
 }
