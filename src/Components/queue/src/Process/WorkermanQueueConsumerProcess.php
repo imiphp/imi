@@ -52,6 +52,7 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
             if (!isset($name))
             {
                 Log::warning('@app.beans.imiQueue.list is empty');
+                // @phpstan-ignore-next-line
                 while (true)
                 {
                     sleep(86400);
