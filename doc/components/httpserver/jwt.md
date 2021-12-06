@@ -118,7 +118,6 @@ use \Imi\JWT\Facade\JWT;
 /** @var \Lcobucci\JWT\Token $token */
 $token = JWT::parseToken($jwt); // 仅验证是否合法
 // $token = JWT::parseToken($jwt, 'a'); // 指定配置名称
-$data = $token->getClaim('data'); // 获取往token里丢的数据，PHP <= 7.3
 $data = $token->claims()->get('data'); // 获取往token里丢的数据，PHP >= 7.4
 
 // 验证有效期、id、issuer、audience、subject
