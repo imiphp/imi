@@ -6,6 +6,7 @@ namespace Imi\Queue\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
+use Imi\Log\Log;
 use Imi\Queue\Service\QueueService;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
@@ -83,6 +84,14 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     }
                 });
                 $processPool->start();
+            }
+            if (!isset($name))
+            {
+                Log::warning('@app.beans.imiQueue.list is empty');
+                while (true)
+                {
+                    sleep(86400);
+                }
             }
             Event::wait();
         }

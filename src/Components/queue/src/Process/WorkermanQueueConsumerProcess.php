@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Queue\Process;
 
 use Imi\Aop\Annotation\Inject;
+use Imi\Log\Log;
 use Imi\Queue\Service\QueueService;
 use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
@@ -48,6 +49,14 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
             }
 
             WorkermanServerWorker::runAll();
+            if (!isset($name))
+            {
+                Log::warning('@app.beans.imiQueue.list is empty');
+                while (true)
+                {
+                    sleep(86400);
+                }
+            }
         }
     }
 }
