@@ -561,4 +561,22 @@ class ModelTest extends BaseTest
         $this->assertEquals($member->id, $record->id);
         $this->assertEquals($member->id, $record->id2);
     }
+
+    public function testCustomFields(): void
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $member->insert();
+
+        /** @var Member|null $member1 */
+        $member1 = Member::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->get();
+        $this->assertNotNull($member1);
+        $this->assertEquals($member->toArray(), $member1->toArray());
+
+        /** @var Member|null $member1 */
+        $list = Member::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->getArray();
+        $this->assertNotNull($member1);
+        $this->assertEquals([$member->toArray()], Member::convertListToArray($list));
+    }
 }
