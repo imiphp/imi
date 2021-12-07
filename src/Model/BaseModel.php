@@ -230,7 +230,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $methodName = 'get' . ucfirst($this->__getCamelName($offset));
+            $methodName = 'get' . ucfirst($this->__getCamelName((string) $offset));
             if (method_exists($this, $methodName))
             {
                 self::$__getterCache[$class][$offset] = $methodName;
@@ -273,7 +273,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $methodName = 'get' . ucfirst($this->__getCamelName($offset));
+            $methodName = 'get' . ucfirst($this->__getCamelName((string) $offset));
             if (method_exists($this, $methodName))
             {
                 self::$__getterCache[$class][$offset] = $methodName;
@@ -331,7 +331,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             return;
         }
         // 数据库bit类型字段处理
-        if (!$column && isset($fields[$camelName = $this->__getCamelName($offset)]))
+        if (!$column && isset($fields[$camelName = $this->__getCamelName((string) $offset)]))
         {
             $column = $fields[$camelName];
         }
@@ -353,7 +353,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $methodName = 'set' . ucfirst($this->__getCamelName($offset));
+            $methodName = 'set' . ucfirst($this->__getCamelName((string) $offset));
             if (method_exists($this, $methodName))
             {
                 self::$__setterCache[$class][$offset] = $methodName;
@@ -376,7 +376,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             if (
                 (($name = $offset) && isset($extractProperties[$name]))
                 || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
-                || (($name = $this->__getCamelName($offset)) && isset($extractProperties[$name]))
+                || (($name = $this->__getCamelName((string) $offset)) && isset($extractProperties[$name]))
             ) {
                 $this->__parseExtractProperty($name, $extractProperties[$name]);
             }
