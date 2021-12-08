@@ -569,14 +569,17 @@ class ModelTest extends BaseTest
         $member->password = '2';
         $member->insert();
 
-        /** @var Member|null $member1 */
-        $member1 = Member::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->get();
-        $this->assertNotNull($member1);
-        $this->assertEquals($member->toArray(), $member1->toArray());
+        $memberArray = $member->toArray();
+        $memberArray['id2'] = $memberArray['id'];
 
-        /** @var Member|null $member1 */
-        $list = Member::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->getArray();
+        /** @var MemberReferenceProperty|null $member1 */
+        $member1 = MemberReferenceProperty::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->get();
         $this->assertNotNull($member1);
-        $this->assertEquals([$member->toArray()], Member::convertListToArray($list));
+        $this->assertEquals($memberArray, $member1->toArray());
+
+        /** @var MemberReferenceProperty|null $member1 */
+        $list = MemberReferenceProperty::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->getArray();
+        $this->assertNotNull($member1);
+        $this->assertEquals([$memberArray], Member::convertListToArray($list));
     }
 }
