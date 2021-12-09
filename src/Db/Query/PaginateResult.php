@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use Imi\Config;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IResult;
@@ -183,18 +184,19 @@ class PaginateResult implements IPaginateResult
         if (null === $arrayData)
         {
             $options = $this->options;
+            $fields = Config::get('@app.db.paginate.fields', []);
             $arrayData = [
                 // 数据列表
-                $options['field_list'] ?? 'list'   => $this->getList(),
+                $options['field_list'] ?? ($fields['list'] ?? 'list')   => $this->getList(),
                 // 每页记录数
-                $options['field_limit'] ?? 'limit' => $this->limit,
+                $options['field_limit'] ?? ($fields['limit'] ?? 'limit') => $this->limit,
             ];
             if (null !== $this->total)
             {
                 // 记录总数
-                $arrayData[$options['field_total'] ?? 'total'] = $this->total;
+                $arrayData[$options['field_total'] ?? ($fields['total'] ?? 'total')] = $this->total;
                 // 总页数
-                $arrayData[$options['field_page_count'] ?? 'page_count'] = $this->pageCount;
+                $arrayData[$options['field_page_count'] ?? ($fields['pageCount'] ?? 'page_count')] = $this->pageCount;
             }
         }
 

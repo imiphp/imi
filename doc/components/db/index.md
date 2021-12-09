@@ -713,12 +713,19 @@ Db::query()->limit(1);
 
 ### 分页查询带扩展字段
 
-查询总记录数、总页数：
+**查询总记录数、总页数：**
 
 ```php
 $page = 1;
 $count = 10;
 $data = Db::query()->from('xxxtable')->paginate($page, $count);
+// 指定转数组后的字段名
+$data = TDb::query()->from('xxxtable')->paginate($page, $count, [
+    'field_list' => 'list',
+    'field_limit' => 'limit',
+    'field_total' => 'total',
+    'field_page_count' => 'page_count',
+]);
 
 $data->getList(); // 列表数据
 $data->getTotal(); // 总记录数
@@ -736,7 +743,7 @@ var_dump(json_encode($data)); // 支持序列化
 ]
 ```
 
-不查询总记录数、总页数：
+**不查询总记录数、总页数：**
 
 ```php
 $page = 1;
@@ -750,6 +757,19 @@ var_dump(json_encode($data)); // 支持序列化
 [
     'list'          => [],
     'limit'         => 10,
+]
+```
+
+**全局设置转数组后的字段名：**
+
+配置`@app.db.paginate.fields`:
+
+```php
+[
+    'list' => 'list',
+    'limit' => 'limit',
+    'total' => 'total',
+    'pageCount' => 'page_count',
 ]
 ```
 
