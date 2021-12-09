@@ -38,8 +38,10 @@ class TestSoftDelete extends TestSoftDeleteBase
 
 | 属性名称 | 说明 |
 | ------------ | ------------ 
-| field | 软删除字段名，默认为`delete_time` |
+| field | 软删除字段名，默认值见下方说明 |
 | default | 软删除字段的默认值，代表非删除状态，默认为`0` |
+
+`field` 不设置时，默认从配置 `@app.model.softDelete.fields.deleteTime` 读取，如果没有配置，默认是：`delete_time`(imi >= v2.0.16)
 
 ## 使用
 
