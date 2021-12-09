@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
 use Imi\Util\Imi;
 
 return [
@@ -78,7 +79,7 @@ return [
             ],
             // 数组资源配置
             'resource' => [
-                'host'    => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'host'    => env('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'    => 6379,
                 // 是否自动序列化变量
                 'serialize'    => false,
@@ -103,7 +104,7 @@ return [
         'defaultPool'   => 'redis',
         'connections'   => [
             'redis' => [
-                'host'    => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'host'    => env('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'    => 6379,
                 // 是否自动序列化变量
                 'serialize'    => false,

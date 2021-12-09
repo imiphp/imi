@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\Tests;
 
+use function Imi\env;
+
 abstract class BaseTest extends \Imi\Swoole\Test\BaseTest
 {
     /**
@@ -15,7 +17,7 @@ abstract class BaseTest extends \Imi\Swoole\Test\BaseTest
 
     protected function setUp(): void
     {
-        if (!imiGetEnv('IMI_TEST_AMQP_SERVER_UTIL', true))
+        if (!env('IMI_TEST_AMQP_SERVER_UTIL', true))
         {
             $this->markTestSkipped('IMI_TEST_AMQP_SERVER_UTIL=0');
         }

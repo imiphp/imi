@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 require \dirname(__DIR__, 4) . '/vendor/autoload.php';
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -18,7 +20,7 @@ function startServer(): void
         {
             sleep(1);
             $context = stream_context_create(['http' => ['timeout' => 1]]);
-            if ('imi' === @file_get_contents(imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
+            if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
                 $serverStarted = true;
                 break;
@@ -36,7 +38,7 @@ function startServer(): void
         {
             sleep(1);
             $context = stream_context_create(['http' => ['timeout' => 1]]);
-            if ('imi' === @file_get_contents(imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13006/'), false, $context))
+            if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13006/'), false, $context))
             {
                 $serverStarted = true;
                 break;

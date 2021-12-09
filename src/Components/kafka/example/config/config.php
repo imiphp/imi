@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
 use Imi\Util\Imi;
 
-\defined('KAFKA_BOOTSTRAP_SERVERS') || \define('KAFKA_BOOTSTRAP_SERVERS', imiGetEnv('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
+\defined('KAFKA_BOOTSTRAP_SERVERS') || \define('KAFKA_BOOTSTRAP_SERVERS', env('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
 
 return [
     // 项目根命名空间
@@ -69,7 +70,7 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'      => 6379,
                 'password'  => null,
             ],
@@ -95,7 +96,7 @@ return [
         'defaultPool'   => 'redis',
         'connections'   => [
             'redis' => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'      => 6379,
                 'password'  => null,
             ],

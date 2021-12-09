@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\Tests;
 
+use function Imi\env;
 use PHPUnit\Framework\Assert;
 use Yurun\Util\HttpRequest;
 
@@ -15,7 +16,7 @@ class CustomSessionIdTest extends BaseTest
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->host = imiGetEnv('HTTP_SESSION_TEST_SERVER_HOST', 'http://127.0.0.1:13005/');
+        $this->host = env('HTTP_SESSION_TEST_SERVER_HOST', 'http://127.0.0.1:13005/');
     }
 
     public function testSetGetDelete(): void

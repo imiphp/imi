@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     'components'    => [
         // 引入本组件
@@ -61,10 +63,10 @@ return [
             // 连接池资源配置
             'resource'    => [
                 'dbClass'     => 'PdoPgsqlDriver',
-                'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
-                'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('PGSQL_SERVER_PORT', 5432),
+                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
             ],
         ],
@@ -83,10 +85,10 @@ return [
             // 连接池资源配置
             'resource'    => [
                 'dbClass'     => 'PdoPgsqlDriver',
-                'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
-                'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('PGSQL_SERVER_PORT', 5432),
+                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
             ],
         ],
@@ -104,10 +106,10 @@ return [
             // 连接池资源配置
             'resource'    => [
                 'dbClass'     => 'SwoolePgsqlDriver',
-                'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
-                'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('PGSQL_SERVER_PORT', 5432),
+                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
             ],
         ] : [],
@@ -119,10 +121,10 @@ return [
         'connections' => [
             'maindb' => [
                 'dbClass'     => 'PdoPgsqlDriver',
-                'host'        => imiGetEnv('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => (int) imiGetEnv('PGSQL_SERVER_PORT', 5432),
-                'username'    => imiGetEnv('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('PGSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('PGSQL_SERVER_PORT', 5432),
+                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
             ],
         ],
