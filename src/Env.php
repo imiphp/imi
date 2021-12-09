@@ -26,6 +26,7 @@ class Env
         {
             return $default;
         }
+        // @phpstan-ignore-next-line
         if (\is_array($result))
         {
             return $result;
@@ -76,6 +77,7 @@ class Env
                 if (\JSON_ERROR_NONE !== json_last_error())
                 {
                     $value = explode(',', $result);
+                    // @phpstan-ignore-next-line
                     if (false === $value)
                     {
                         return $result;
@@ -204,7 +206,7 @@ class Env
         return $value;
     }
 
-    public static function list(string $varname = null, $default = null, bool $localOnly = false, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
+    public static function list(string $varname = null, ?array $default = null, bool $localOnly = false, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
     {
         $result = getenv($varname, $localOnly);
         if (false === $result)
@@ -215,6 +217,7 @@ class Env
         {
             return null;
         }
+        // @phpstan-ignore-next-line
         if ('' === $result || false === ($value = explode($separator, $result, $limit)))
         {
             throw new InvalidArgumentException(sprintf('Invalid list value %s', $result));
