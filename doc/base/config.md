@@ -218,24 +218,87 @@ return [
 
 在 `.env` 中的配置方式，支持两种写法。
 
-写法一：直接注入配置，和`Config::set()`写法类似，支持`@app`等写法。
+**写法一：**直接注入配置，和`Config::set()`写法类似，支持`@app`等写法。
 
-写法二：传统方式，如设定一个`ABC=123`，在配置文件中：
+**写法二：**传统方式，如设定一个`ABC=123`，在配置文件中：
 
 ```php
+use function Imi\env;
+
+use Imi\Env;
+
 return [
-    'abc2'   =>  getenv('ABC'), // PHP 内置
-    'abc1'   =>  imiGetEnv('ABC', 'default'), // imi 框架封装，支持第二个参数为默认值
+    'abc1'   =>  env('ABC', 'default'), // imi 框架封装，支持第二个参数为默认值
+    'abc2'   =>  Env::get('ABC', 'default'), // imi 框架封装，支持第二个参数为默认值
+    'abc3'   =>  getenv('ABC'), // PHP 内置
 ];
 ```
 
-如下，是设置连接池的uri例子：
+**更多写法：**
+
+- env:
+
+```env
+A=123
+B=0
+C=1,2,3
+D=[4, 5, 6]
+E=imi
+BOOL_TRUE=true
+BOOL_FALSE=false
+NULL_VALUE=null
+EMPTY_VALUE=
+```
+
+- php:
+
+```php
+use Imi\Env;
+use function Imi\env;
+
+// Imi\env() 同 Imi\env::get()
+env('A'); // 123
+env('E'); // imi
+env('A', 'default'); // '123'
+env('A', 0); // 123
+env('A', 3.14); // 123.0
+env('A', false); // '123'
+env('B', false); // false
+env('BOOL_TRUE', false); // true
+env('BOOL_FALSE', false); // false
+env('C', []); // ['1', '2', '3']
+env('D', []); // ['4', '5', '6']
+env('NULL_VALUE'); // null
+env('NULL_VALUE', 666); // null
+
+Env::str('A'); // '123'
+Env::int('A'); // 123
+Env::int('E'); // 抛出异常
+Env::int('NULL_VALUE'); // null
+Env::float('A'); // 123.0
+Env::float('E'); // 抛出异常
+Env::float('NULL_VALUE'); // null
+Env::bool('A'); // 抛出异常
+Env::bool('B'); // false
+Env::bool('bool_TRUE'); // true
+Env::bool('bool_FALSE'); // false
+Env::bool('E'); // 抛出异常
+Env::bool('NULL_VALUE'); // null
+Env::json('D'); // ['4', '5', '6']
+Env::json('NULL_VALUE'); // null
+Env::json('EMPTY_VALUE'); // 抛出异常
+Env::list('C'); // ['1', '2', '3']
+Env::list('NULL_VALUE'); // null
+Env::list('EMPTY_VALUE'); // 抛出异常
+```
+
+**如下，是设置连接池的uri例子：**
 
 ```env
 @app.pools.maindb.async.resource = "tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60"
 ```
 
-数组的支持：
+**数组的支持：**
 
 ```env
 @app.a.0.id = 1

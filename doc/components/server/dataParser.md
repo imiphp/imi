@@ -12,7 +12,7 @@
     'mainServer' => [
         'namespace'    => 'Imi\Swoole\Test\TCPServer\MainServer',
         'type'         => Imi\Swoole\Server\Type::TCP_SERVER,
-        'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        'host'         => \Imi\env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13003,
         'configs'      => [
             'worker_num'    => 1,
@@ -55,7 +55,7 @@ return [
         'tcp' => [
             'namespace'   => 'Imi\Workerman\Test\AppServer\TcpServer',
             'type'        => Imi\Workerman\Server\Type::TCP,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'        => \Imi\env('SERVER_HOST', '127.0.0.1'),
             'port'        => 13003,
             'shareWorker' => 'http',
             'configs'     => [

@@ -53,6 +53,14 @@ getenv() 函数的封装，支持默认值
 
 定义：`imiGetEnv($varname = null, $default = null, $localOnly = false);`
 
+> 将在 imi v3.0.0 废弃，请使用 `Imi\env()`
+
+### Imi\env
+
+getenv() 函数的封装，支持默认值
+
+定义：`env($varname = null, $default = null, $localOnly = false);`
+
 ### Imi\cmd
 
 处理命令行，执行后不会有 sh 进程
