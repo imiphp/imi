@@ -17,7 +17,7 @@ class RoadRunner
      */
     public static function getBinaryPath(): ?string
     {
-        $path = env('IMI_ROADRUNNER_BINARY');
+        $path = env('IMI_ROADRUNNER_BINARY', false);
         if (false !== $path && '' !== $path && is_file($path))
         {
             return $path;
