@@ -21,11 +21,8 @@ class Env
      */
     public static function get(?string $varname = null, $default = null)
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
@@ -95,11 +92,8 @@ class Env
 
     public static function str(string $varname, ?string $default = null): ?string
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
@@ -113,11 +107,8 @@ class Env
 
     public static function int(string $varname, ?int $default = 0): ?int
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
@@ -136,11 +127,8 @@ class Env
 
     public static function float(string $varname, ?float $default = 0): ?float
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
@@ -164,11 +152,8 @@ class Env
 
     public static function bool(string $varname, ?bool $default = null): ?bool
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
@@ -196,11 +181,8 @@ class Env
      */
     public static function json(string $varname = null, $default = null, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR)
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
@@ -226,11 +208,8 @@ class Env
 
     public static function list(string $varname = null, ?array $default = null, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
     {
-        if (\array_key_exists($varname, $_ENV))
-        {
-            $result = $_ENV[$varname];
-        }
-        else
+        $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
+        if (false === $result)
         {
             return $default;
         }
