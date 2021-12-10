@@ -231,6 +231,7 @@ return [
     'abc1'   =>  env('ABC', 'default'), // imi 框架封装，支持第二个参数为默认值
     'abc2'   =>  Env::get('ABC', 'default'), // imi 框架封装，支持第二个参数为默认值
     'abc3'   =>  getenv('ABC'), // PHP 内置
+    'abc3'   =>  $_ENV['ABC'] ?? null, // PHP 内置
 ];
 ```
 

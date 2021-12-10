@@ -50,7 +50,7 @@ namespace
     }
 
     /**
-     * getenv() 函数的封装，支持默认值
+     * 获取环境变量值
      *
      * @deprecated 3.0
      *
@@ -58,9 +58,9 @@ namespace
      *
      * @return mixed
      */
-    function imiGetEnv(?string $varname = null, $default = null, bool $localOnly = false)
+    function imiGetEnv(?string $varname = null, $default = null)
     {
-        return Env::get($varname, $default, $localOnly);
+        return Env::get($varname, $default);
     }
 }
 
@@ -116,14 +116,14 @@ namespace Imi
     }
 
     /**
-     * getenv() 函数的封装，支持默认值
+     * 获取环境变量值
      *
      * @param mixed $default
      *
      * @return mixed
      */
-    function env(?string $varname = null, $default = null, bool $localOnly = false)
+    function env(?string $varname = null, $default = null)
     {
-        return Env::get($varname, $default, $localOnly);
+        return Env::get($varname, $default);
     }
 }

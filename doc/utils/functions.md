@@ -49,7 +49,7 @@ test($callable);
 
 ### imiGetEnv
 
-getenv() 函数的封装，支持默认值
+获取环境变量值
 
 定义：`imiGetEnv($varname = null, $default = null, $localOnly = false);`
 
@@ -57,7 +57,7 @@ getenv() 函数的封装，支持默认值
 
 ### Imi\env
 
-getenv() 函数的封装，支持默认值
+获取环境变量值
 
 定义：`env($varname = null, $default = null, $localOnly = false);`
 

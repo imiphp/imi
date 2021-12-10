@@ -19,10 +19,13 @@ class Env
      *
      * @return mixed
      */
-    public static function get(?string $varname = null, $default = null, bool $localOnly = false)
+    public static function get(?string $varname = null, $default = null)
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }
@@ -90,10 +93,13 @@ class Env
         return $result;
     }
 
-    public static function str(string $varname, ?string $default = null, bool $localOnly = false): ?string
+    public static function str(string $varname, ?string $default = null): ?string
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }
@@ -105,10 +111,13 @@ class Env
         return $result;
     }
 
-    public static function int(string $varname, ?int $default = 0, bool $localOnly = false): ?int
+    public static function int(string $varname, ?int $default = 0): ?int
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }
@@ -125,10 +134,13 @@ class Env
         return (int) $result;
     }
 
-    public static function float(string $varname, ?float $default = 0, bool $localOnly = false): ?float
+    public static function float(string $varname, ?float $default = 0): ?float
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }
@@ -145,15 +157,18 @@ class Env
         return (float) $result;
     }
 
-    public static function double(string $varname, ?float $default = 0, bool $localOnly = false): ?float
+    public static function double(string $varname, ?float $default = 0): ?float
     {
-        return self::float($varname, $default, $localOnly);
+        return self::float($varname, $default);
     }
 
-    public static function bool(string $varname, ?bool $default = null, bool $localOnly = false): ?bool
+    public static function bool(string $varname, ?bool $default = null): ?bool
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }
@@ -179,10 +194,13 @@ class Env
      *
      * @return array|object|null
      */
-    public static function json(string $varname = null, $default = null, bool $localOnly = false, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR)
+    public static function json(string $varname = null, $default = null, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR)
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }
@@ -206,10 +224,13 @@ class Env
         return $value;
     }
 
-    public static function list(string $varname = null, ?array $default = null, bool $localOnly = false, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
+    public static function list(string $varname = null, ?array $default = null, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
+        if (\array_key_exists($varname, $_ENV))
+        {
+            $result = $_ENV[$varname];
+        }
+        else
         {
             return $default;
         }

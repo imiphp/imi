@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\RoadRunner\Util;
 
+use function Imi\env;
+
 class RoadRunner
 {
     private function __construct()
@@ -15,7 +17,7 @@ class RoadRunner
      */
     public static function getBinaryPath(): ?string
     {
-        $path = getenv('IMI_ROADRUNNER_BINARY');
+        $path = env('IMI_ROADRUNNER_BINARY');
         if (false !== $path && '' !== $path && is_file($path))
         {
             return $path;

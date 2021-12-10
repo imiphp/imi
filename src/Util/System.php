@@ -41,7 +41,7 @@ class System
     {
         if (\PHP_OS_FAMILY == 'Windows')
         {
-            return (int) getenv('NUMBER_OF_PROCESSORS');
+            return (int) ($_ENV['NUMBER_OF_PROCESSORS'] ?? null);
         }
         elseif (is_file('/proc/cpuinfo'))
         {
