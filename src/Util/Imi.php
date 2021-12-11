@@ -10,11 +10,10 @@ use Imi\Bean\BeanManager;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
+use function Imi\env;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
-
-use function Imi\env;
 use function php_uname;
 use function round;
 use function sprintf;
