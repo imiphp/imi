@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Workerman\Test\AppServer',
@@ -63,7 +65,7 @@ return [
         'http' => [
             'namespace' => 'Imi\Workerman\Test\AppServer\ApiServer',
             'type'      => Imi\Workerman\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13000,
             'configs'   => [
             ],
@@ -71,7 +73,7 @@ return [
         'websocket' => [
             'namespace'   => 'Imi\Workerman\Test\AppServer\WebSocketServer',
             'type'        => Imi\Workerman\Server\Type::WEBSOCKET,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'        => env('SERVER_HOST', '127.0.0.1'),
             'port'        => 13002,
             'shareWorker' => 'http',
             'configs'     => [
@@ -80,7 +82,7 @@ return [
         'tcp' => [
             'namespace'   => 'Imi\Workerman\Test\AppServer\TcpServer',
             'type'        => Imi\Workerman\Server\Type::TCP,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'        => env('SERVER_HOST', '127.0.0.1'),
             'port'        => 13003,
             'shareWorker' => 'http',
             'configs'     => [
@@ -92,7 +94,7 @@ return [
         'udp' => [
             'namespace'   => 'Imi\Workerman\Test\AppServer\UdpServer',
             'type'        => Imi\Workerman\Server\Type::UDP,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'        => env('SERVER_HOST', '127.0.0.1'),
             'port'        => 13004,
             'shareWorker' => 'http',
             'configs'     => [
@@ -111,10 +113,10 @@ return [
         'defaultPool'    => 'maindb',
         'connections'    => [
             'maindb'         => [
-                'host'              => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'              => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'          => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'          => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'              => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'              => env('MYSQL_SERVER_PORT', 3306),
+                'username'          => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'          => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'          => 'mysql',
                 'charset'           => 'utf8mb4',
                 'heartbeatInterval' => 30,
@@ -128,9 +130,9 @@ return [
         'defaultPool'   => 'redis',
         'connections'   => [
             'redis' => [
-                'host'              => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'              => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'          => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'              => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'              => env('REDIS_SERVER_PORT', 6379),
+                'password'          => env('REDIS_SERVER_PASSWORD'),
                 'heartbeatInterval' => 30,
             ],
         ],

@@ -49,9 +49,17 @@ test($callable);
 
 ### imiGetEnv
 
-getenv() 函数的封装，支持默认值
+获取环境变量值
 
 定义：`imiGetEnv($varname = null, $default = null, $localOnly = false);`
+
+> 将在 imi v3.0.0 废弃，请使用 `Imi\env()`
+
+### Imi\env
+
+获取环境变量值
+
+定义：`env($varname = null, $default = null, $localOnly = false);`
 
 ### Imi\cmd
 

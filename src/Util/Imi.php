@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use function getenv;
 use Imi\App;
 use Imi\Bean\Annotation;
 use Imi\Bean\BeanManager;
@@ -637,7 +636,7 @@ class Imi
     public static function isWSL(): bool
     {
         return is_file('/proc/sys/fs/binfmt_misc/WSLInterop')
-            || (getenv('WSLEMV') || getenv('WSL_INTEROP') || getenv('WSL_DISTRO_NAME'))
+            || (($_ENV['WSLEMV'] ?? false) || ($_ENV['WSL_INTEROP'] ?? false) || ($_ENV['WSL_DISTRO_NAME'] ?? false))
             || str_contains(php_uname(), 'WSL');
     }
 

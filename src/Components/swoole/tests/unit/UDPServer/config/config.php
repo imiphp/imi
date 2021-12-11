@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Swoole\Test\UDPServer',
@@ -61,7 +63,7 @@ return [
     'mainServer'    => [
         'namespace'    => 'Imi\Swoole\Test\UDPServer\MainServer',
         'type'         => Imi\Swoole\Server\Type::UDP_SERVER,
-        'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13004,
         'configs'      => [
             'worker_num'    => 1,
@@ -85,9 +87,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => env('REDIS_SERVER_PORT', 6379),
+                'password'  => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
     ],

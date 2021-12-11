@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\SwooleTracker\Example\WebSocketServer',
@@ -48,9 +50,9 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => env('REDIS_SERVER_PORT', 6379),
+                    'password'  => env('REDIS_SERVER_PASSWORD'),
                 ],
             ],
             'async'    => [
@@ -62,9 +64,9 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => env('REDIS_SERVER_PORT', 6379),
+                    'password'  => env('REDIS_SERVER_PASSWORD'),
                 ],
             ],
         ],

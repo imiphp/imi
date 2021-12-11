@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
 use Imi\Grpc\Client\GrpcClient;
 
 return [
@@ -57,7 +58,7 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'      => 6379,
                 'password'  => null,
             ],

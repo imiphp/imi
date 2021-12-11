@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil',
@@ -67,7 +69,7 @@ return [
     'mainServer'    => [
         'namespace'    => 'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer',
         'type'         => Imi\Swoole\Server\Type::WEBSOCKET,
-        'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13008,
         'mode'         => \SWOOLE_BASE,
         'configs'      => [
@@ -90,9 +92,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => env('REDIS_SERVER_PORT', 6379),
+                'password'  => env('REDIS_SERVER_PASSWORD'),
                 'options'   => [
                     \Redis::OPT_READ_TIMEOUT => -1,
                 ],

@@ -59,7 +59,7 @@ function getCommitsFromLast(?string $lastCommit): array
 
 function getRepository(): string
 {
-    $content = getenv('GITHUB_REPOSITORY');
+    $content = $_ENV['GITHUB_REPOSITORY'] ?? null;
     if (!$content)
     {
         throw new \InvalidArgumentException(sprintf('Invalid GITHUB_REPOSITORY %s', $content));
@@ -70,7 +70,7 @@ function getRepository(): string
 
 function getAccessToken(): string
 {
-    $content = getenv('IMI_ACCESS_TOKEN');
+    $content = $_ENV['IMI_ACCESS_TOKEN'] ?? null;
     if (!$content)
     {
         throw new \InvalidArgumentException(sprintf('Invalid IMI_ACCESS_TOKEN %s', $content));
@@ -81,7 +81,7 @@ function getAccessToken(): string
 
 function getBranch(): string
 {
-    $content = getenv('GITHUB_REF');
+    $content = $_ENV['GITHUB_REF'] ?? null;
     if (!$content)
     {
         throw new \InvalidArgumentException(sprintf('Invalid GITHUB_REF %s', $content));
@@ -94,7 +94,7 @@ function getBranch(): string
 
 function loadConfig(): array
 {
-    $content = getenv('SPLIT_CONFIG');
+    $content = $_ENV['SPLIT_CONFIG'] ?? null;
     if ($content)
     {
         $content = json_decode($content, true, 512, \JSON_THROW_ON_ERROR);

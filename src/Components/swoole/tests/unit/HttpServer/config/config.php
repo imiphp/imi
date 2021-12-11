@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Swoole\Test\HttpServer',
@@ -65,7 +67,7 @@ return [
     'mainServer'    => [
         'namespace'    => 'Imi\Swoole\Test\HttpServer\ApiServer',
         'type'         => Imi\Swoole\Server\Type::HTTP,
-        'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13000,
         'mode'         => \SWOOLE_BASE,
         'configs'      => [
@@ -79,13 +81,13 @@ return [
         'SessionTest'   => [
             'namespace' => 'Imi\Swoole\Test\HttpServer\SessionTestServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13005,
         ],
         'HttpsTest'     => [
             'namespace' => 'Imi\Swoole\Test\HttpServer\HttpsTestServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13006,
             'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
             'configs'   => [
@@ -96,7 +98,7 @@ return [
         'Http2Test'   => [
             'namespace' => 'Imi\Swoole\Test\HttpServer\Http2TestServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13007,
             'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
             'configs'   => [
@@ -119,10 +121,10 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('MYSQL_SERVER_PORT', 3306),
+                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'mysql',
                 'charset'     => 'utf8mb4',
             ],
@@ -136,9 +138,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => env('REDIS_SERVER_PORT', 6379),
+                'password'  => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
     ],

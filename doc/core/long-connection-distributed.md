@@ -198,7 +198,7 @@ Demo: `composer create-project imiphp/project-websocket:~2.0`
         'http' => [
             'namespace' => 'Imi\WorkermanGateway\Test\AppServer\ApiServer',
             'type'      => Imi\Workerman\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => \Imi\env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13000,
             'configs'   => [
                 'registerAddress' => '127.0.0.1:13004',

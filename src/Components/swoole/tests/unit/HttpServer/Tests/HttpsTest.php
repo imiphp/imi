@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\Tests;
 
+use function Imi\env;
 use Imi\Util\Http\Consts\StatusCode;
 use Yurun\Util\HttpRequest;
 
@@ -15,7 +16,7 @@ class HttpsTest extends BaseTest
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        $this->host = imiGetEnv('HTTP_HTTPS_TEST_SERVER_HOST', 'https://127.0.0.1:13006/');
+        $this->host = env('HTTP_HTTPS_TEST_SERVER_HOST', 'https://127.0.0.1:13006/');
     }
 
     /**

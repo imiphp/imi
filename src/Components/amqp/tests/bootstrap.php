@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
 use function Yurun\Swoole\Coroutine\batch;
 
 require \dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -34,7 +35,7 @@ function checkHttpServerStatus()
 function startServer()
 {
     $dirname = \dirname(__DIR__);
-    $mode = getenv('AMQP_TEST_MODE');
+    $mode = env('AMQP_TEST_MODE');
     if (!$mode)
     {
         throw new InvalidArgumentException('Invalid env AMQP_TEST_MODE');
@@ -81,8 +82,8 @@ function startServer()
 
 (function () {
     $redis = new \Redis();
-    $host = getenv('REDIS_SERVER_HOST') ?: '127.0.0.1';
-    $port = (int) (getenv('REDIS_SERVER_PORT') ?: 6379);
+    $host = env('REDIS_SERVER_HOST', '127.0.0.1');
+    $port = env('REDIS_SERVER_PORT', 6379);
     if (!(str_contains($host, '/') ? $redis->connect($host) : $redis->connect($host, $port)))
     {
         exit('Redis connect failed');

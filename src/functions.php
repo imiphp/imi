@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace
 {
+    use Imi\Env;
     use Imi\RequestContext;
     use Swoole\Coroutine;
 
@@ -49,31 +50,17 @@ namespace
     }
 
     /**
-     * getenv() 函数的封装，支持默认值
+     * 获取环境变量值
      *
-     * @param string $varname
-     * @param mixed  $default
+     * @deprecated 3.0
+     *
+     * @param mixed $default
      *
      * @return mixed
      */
-    function imiGetEnv(?string $varname = null, $default = null, bool $localOnly = false)
+    function imiGetEnv(?string $varname = null, $default = null)
     {
-        $result = getenv($varname, $localOnly);
-        if (false === $result)
-        {
-            return $default;
-        }
-
-        if ('false' === $result)
-        {
-            $result = false;
-        }
-        elseif ('true' === $result)
-        {
-            $result = true;
-        }
-
-        return $result;
+        return Env::get($varname, $default);
     }
 }
 
@@ -126,5 +113,17 @@ namespace Imi
         }
 
         return $process->getExitCode();
+    }
+
+    /**
+     * 获取环境变量值
+     *
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    function env(?string $varname = null, $default = null)
+    {
+        return Env::get($varname, $default);
     }
 }

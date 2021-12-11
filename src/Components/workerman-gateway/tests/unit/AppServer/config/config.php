@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\WorkermanGateway\Test\AppServer',
@@ -62,7 +64,7 @@ return [
     'mainServer'    => \defined('SWOOLE_VERSION') ? [
         'namespace'    => 'Imi\WorkermanGateway\Test\AppServer\WebSocketServer',
         'type'         => \Imi\WorkermanGateway\Swoole\Server\Type::BUSINESS_WEBSOCKET,
-        // 'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        // 'host'         => env('SERVER_HOST', '127.0.0.1'),
         // 'port'         => 13002,
         'mode'         => \SWOOLE_BASE,
         'configs'      => [
@@ -82,7 +84,7 @@ return [
         'http'     => [
             'namespace' => 'Imi\WorkermanGateway\Test\AppServer\ApiServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13000,
         ],
     ] : [],
@@ -92,7 +94,7 @@ return [
         'http' => [
             'namespace' => 'Imi\WorkermanGateway\Test\AppServer\ApiServer',
             'type'      => Imi\Workerman\Server\Type::HTTP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'      => env('SERVER_HOST', '127.0.0.1'),
             'port'      => 13000,
             'configs'   => [
                 'registerAddress' => '127.0.0.1:13004',
@@ -101,7 +103,7 @@ return [
         'register' => [
             'namespace'   => 'Imi\WorkermanGateway\Test\AppServer\Register',
             'type'        => Imi\WorkermanGateway\Workerman\Server\Type::REGISTER,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'host'        => env('SERVER_HOST', '127.0.0.1'),
             'port'        => 13004,
             'configs'     => [
             ],
@@ -139,9 +141,9 @@ return [
         'defaultPool'   => 'redis',
         'connections'   => [
             'redis' => [
-                'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'        => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('REDIS_SERVER_PORT', 6379),
+                'password'    => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
     ],

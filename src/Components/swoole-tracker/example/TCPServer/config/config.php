@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\SwooleTracker\Example\TCPServer',
@@ -113,7 +115,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => 6379,
                     'password'  => null,
                 ],
@@ -127,7 +129,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => 6379,
                     'password'  => null,
                 ],

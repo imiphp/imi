@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     'configs'    => [
     ],
@@ -82,10 +84,10 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('MYSQL_SERVER_PORT', 3306),
+                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
             ],
@@ -104,10 +106,10 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('MYSQL_SERVER_PORT', 3306),
+                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
             ],
@@ -126,10 +128,10 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('MYSQL_SERVER_PORT', 3306),
+                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
                 'dbClass'     => \Imi\Swoole\Db\Driver\Swoole\Driver::class,
@@ -149,10 +151,10 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('MYSQL_SERVER_PORT', 3306),
+                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
                 'dbClass'     => 'MysqliDriver',
@@ -167,9 +169,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => env('REDIS_SERVER_PORT', 6379),
+                'password'  => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
         'redis_cache'    => [
@@ -181,9 +183,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'        => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('REDIS_SERVER_PORT', 6379),
+                'password'    => env('REDIS_SERVER_PASSWORD'),
                 'serialize'   => false,
                 'db'          => 1,
             ],
@@ -197,9 +199,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'        => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('REDIS_SERVER_PORT', 6379),
+                'password'    => env('REDIS_SERVER_PASSWORD'),
                 'serialize'   => false,
                 'db'          => 1,
             ],

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 // 注释项代表可省略的，使用默认值
 return [
     // 项目根命名空间
@@ -40,7 +42,7 @@ return [
             ],
             'resource'    => [
                 'dbClass'     => 'PdoMysqlDriver',
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'username'    => 'root',
                 'password'    => 'root',
                 'database'    => 'db_imi_access_control',

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Swoole\Test\TCPServer',
@@ -61,7 +63,7 @@ return [
     'mainServer'    => [
         'namespace'    => 'Imi\Swoole\Test\TCPServer\MainServer',
         'type'         => Imi\Swoole\Server\Type::TCP_SERVER,
-        'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13003,
         'configs'      => [
             'worker_num'    => 1,
@@ -87,9 +89,9 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'host'      => env('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => env('REDIS_SERVER_PORT', 6379),
+                'password'  => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
     ],

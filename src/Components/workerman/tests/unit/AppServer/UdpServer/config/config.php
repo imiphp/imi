@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Imi\env;
+
 return [
     'configs'    => [
     ],
@@ -29,10 +31,10 @@ return [
         'connections' => [
             'tradition' => [
                 'dbClass'  => 'PdoMysqlDriver',
-                'host'     => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'     => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username' => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password' => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'host'     => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'     => env('MYSQL_SERVER_PORT', 3306),
+                'username' => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password' => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database' => 'db_imi_test',
                 'charset'  => 'utf8mb4',
             ],
