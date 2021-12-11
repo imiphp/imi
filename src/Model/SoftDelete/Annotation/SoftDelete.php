@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model\SoftDelete\Annotation;
 
 use Imi\Bean\Annotation\Base;
+use Imi\Config;
 
 /**
  * 软删除.
@@ -26,8 +27,12 @@ class SoftDelete extends Base
     /**
      * @param mixed $default
      */
-    public function __construct(?array $__data = null, string $field = 'delete_time', $default = 0)
+    public function __construct(?array $__data = null, string $field = '', $default = 0)
     {
         parent::__construct(...\func_get_args());
+        if ('' === $field)
+        {
+            $this->field = Config::get('@app.model.softDelete.fields.deleteTime', 'delete_time');
+        }
     }
 }
