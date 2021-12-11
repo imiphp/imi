@@ -13,6 +13,8 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
+
+use function Imi\env;
 use function php_uname;
 use function round;
 use function sprintf;
@@ -636,7 +638,7 @@ class Imi
     public static function isWSL(): bool
     {
         return is_file('/proc/sys/fs/binfmt_misc/WSLInterop')
-            || (($_ENV['WSLEMV'] ?? false) || ($_ENV['WSL_INTEROP'] ?? false) || ($_ENV['WSL_DISTRO_NAME'] ?? false))
+            || (env('WSLEMV', false) || env('WSL_INTEROP', false) || env('WSL_DISTRO_NAME', false))
             || str_contains(php_uname(), 'WSL');
     }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use function Imi\env;
+
 class System
 {
     /**
@@ -41,7 +43,7 @@ class System
     {
         if (\PHP_OS_FAMILY == 'Windows')
         {
-            return (int) ($_ENV['NUMBER_OF_PROCESSORS'] ?? null);
+            return env(NUMBER_OF_PROCESSORS, 0);
         }
         elseif (is_file('/proc/cpuinfo'))
         {
