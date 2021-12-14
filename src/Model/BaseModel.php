@@ -142,6 +142,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                             {
                                 $v = new LazyArrayObject($value);
                             }
+                            elseif (\JSON_ERROR_NONE === json_last_error())
+                            {
+                                $v = $value;
+                            }
                             break;
                         case 'list':
                             if ('' === $v)
