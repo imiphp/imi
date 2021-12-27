@@ -168,7 +168,7 @@ class CronTask
     /**
      * Get 用于锁的 `Redis` 连接池名.
      */
-    public function getRedisPool(): string
+    public function getRedisPool(): ?string
     {
         return $this->redisPool;
     }
