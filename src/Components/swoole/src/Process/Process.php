@@ -22,7 +22,7 @@ trait TProcess
     /**
      * @param int|null $exitCode
      */
-    public function exit($exitCode = null)
+    public function exit($exitCode = 0): void
     {
         if ($this->pid > 0)
         {
@@ -44,6 +44,7 @@ if (\SWOOLE_VERSION_ID >= 50000)
             exit as private __exit;
         }
 
+        // @phpstan-ignore-next-line
         public function exit(int $exitCode = 0): void
         {
             $this->__exit($exitCode);
