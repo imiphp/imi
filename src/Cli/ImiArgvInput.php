@@ -330,7 +330,7 @@ class ImiArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function getFirstArgument()
+    public function getFirstArgument(): ?string
     {
         $isOption = false;
         foreach ($this->tokens as $i => $token)
@@ -372,7 +372,7 @@ class ImiArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function hasParameterOption($values, bool $onlyParams = false)
+    public function hasParameterOption($values, bool $onlyParams = false): bool
     {
         $values = (array) $values;
 

@@ -165,7 +165,7 @@ class ImiCommand extends Command
     /**
      * {@inheritDoc}
      */
-    public function run(InputInterface $input, OutputInterface $output)
+    public function run(InputInterface $input, OutputInterface $output): int
     {
         if ($input instanceof ImiArgvInput)
         {
