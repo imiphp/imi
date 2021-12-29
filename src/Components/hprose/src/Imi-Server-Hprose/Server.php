@@ -31,7 +31,7 @@ class Server extends BaseRpcServer
     protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \swoole_server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \Swoole\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
         $this->hproseService = new \Hprose\Swoole\Socket\Service();
         $this->parseConfig($config);
     }
@@ -141,7 +141,7 @@ class Server extends BaseRpcServer
         $this->hproseService->socketHandle($this);
         $this->isHookHproseOn = false;
 
-        $server->on('connect', function (\swoole_server $server, $fd, $reactorId) {
+        $server->on('connect', function (\Swoole\Server $server, $fd, $reactorId) {
             try
             {
                 $this->trigger('connect', [
@@ -157,7 +157,7 @@ class Server extends BaseRpcServer
             }
         });
 
-        $server->on('receive', function (\swoole_server $server, $fd, $reactorId, $data) {
+        $server->on('receive', function (\Swoole\Server $server, $fd, $reactorId, $data) {
             try
             {
                 $this->trigger('receive', [
@@ -174,7 +174,7 @@ class Server extends BaseRpcServer
             }
         });
 
-        $server->on('close', function (\swoole_server $server, $fd, $reactorId) {
+        $server->on('close', function (\Swoole\Server $server, $fd, $reactorId) {
             try
             {
                 $this->trigger('close', [

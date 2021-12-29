@@ -211,7 +211,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4, "8.0"]
-        swoole: [v4.8.0]
+        swoole: [v4.8.5]
         roadrunner: [2.5.*]
     env:
       MYSQL_SERVER_PASSWORD: "root"
@@ -312,7 +312,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, '8.0', 8.1]
         roadrunner: [2.5.*]
 
     env:
@@ -342,7 +342,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
           tools: pecl
-          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql, sockets, event
+          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
         env:
           fail-fast: true
 
