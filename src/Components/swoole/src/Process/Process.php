@@ -38,18 +38,7 @@ trait TProcess
 // @phpstan-ignore-next-line
 if (\SWOOLE_VERSION_ID >= 50000)
 {
-    class Process extends \Swoole\Process
-    {
-        use TProcess {
-            exit as private __exit;
-        }
-
-        // @phpstan-ignore-next-line
-        public function exit(int $exitCode = 0): void
-        {
-            $this->__exit($exitCode);
-        }
-    }
+    include __DIR__ . '/Process.swoole-5';
 }
 else
 {
