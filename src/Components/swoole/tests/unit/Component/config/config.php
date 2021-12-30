@@ -15,8 +15,8 @@ return [
         'Imi\Swoole\Test\Component\Tests',
         'Imi\Swoole\Test\Component\Async',
     ],
-    'ignoreNamespace'   => [
-    ],
+    // 'ignoreNamespace'   => [
+    // ],
 
     // 组件命名空间
     'components'    => [

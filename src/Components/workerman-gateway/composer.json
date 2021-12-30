@@ -8,7 +8,8 @@
         "yurunsoft/workerman-gateway-sdk": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": ">=8"
+        "phpunit/phpunit": ">=8",
+        "wrench/wrench": "~2.0"
     },
     "autoload": {
         "psr-4": {
@@ -17,7 +18,19 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Imi\\WorkermanGateway\\Test\\": "tests/unit/"
-        }
+            "Imi\\WorkermanGateway\\Test\\": "tests/unit/",
+            "Imi\\WorkermanGateway\\Dev\\": "dev/"
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../../../src/Components/swoole/vendor/autoload.php",
+            "../../../src/Components/workerman/vendor/autoload.php"
+        ]
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::postUpdate"
     }
 }

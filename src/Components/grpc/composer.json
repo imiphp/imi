@@ -5,11 +5,12 @@
     "description": "在 imi 框架中集成 gRPC 服务开发、客户端调用及连接池",
     "require": {
         "ext-swoole": ">=4.4.0",
-        "imiphp/imi-rpc": "2.*",
+        "imiphp/imi-rpc": "~2.0.0",
         "yurunsoft/yurun-http": "^4.0.0",
         "google/protobuf": "^3.10.0"
     },
-    "require-dev": {},
+    "require-dev": {
+    },
     "autoload": {
         "psr-4": {
             "Imi\\Grpc\\": "src/grpc",
@@ -23,7 +24,11 @@
             "GPBMetadata\\": "example/grpc/GPBMetadata",
             "Imi\\Grpc\\Test\\": "tests/Grpc",
             "Imi\\Grpc\\Dev\\": "dev/"
-        }
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../../../src/Components/swoole/vendor/autoload.php"
+        ]
     },
     "scripts": {
         "pre-install-cmd": "Imi\\Grpc\\Dev\\Dev::preUpdate",

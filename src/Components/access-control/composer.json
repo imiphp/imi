@@ -12,5 +12,10 @@
             "Imi\\AC\\": "src/",
             "Imi\\AC\\Test\\": "test/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

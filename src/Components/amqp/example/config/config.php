@@ -32,6 +32,8 @@ return [
         'AMQP'      => 'Imi\AMQP',
     ],
 
+    'overrideDefaultIgnorePaths' => true,
+
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'AMQPApp\ApiServer',

@@ -6,7 +6,8 @@
     "require": {},
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "^4.7"
+        "swoole/ide-helper": "^4.7",
+        "phpunit/phpunit": ">=9"
     },
     "autoload": {
         "psr-4": {
@@ -16,10 +17,21 @@
     "autoload-dev": {
         "psr-4": {
             "QueueApp\\": "example/",
-            "Imi\\Queue\\Test\\": "tests/"
-        }
+            "Imi\\Queue\\Test\\": "tests/",
+            "Imi\\Queue\\Dev\\": "dev/"
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../../../src/Components/swoole/vendor/autoload.php",
+            "../../../src/Components/workerman/vendor/autoload.php"
+        ]
     },
-    "scripts": {},
+    "scripts": {
+        "pre-install-cmd": "Imi\\Queue\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Queue\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Queue\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Queue\\Dev\\Dev::postUpdate"
+    },
     "extra": {
         "ide-helper": {
             "list": [

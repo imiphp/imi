@@ -18,6 +18,7 @@ parameters:
         - src/Config/DotEnv/Parser.php
 
     bootstrapFiles:
+        - dev/include.php
         - vendor/autoload.php
         - split-repository/vendor/autoload.php
 

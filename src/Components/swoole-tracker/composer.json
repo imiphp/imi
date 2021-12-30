@@ -16,6 +16,9 @@
     "autoload-dev": {
         "psr-4": {
             "Imi\\SwooleTracker\\Example\\": "example/"
-        }
+        },
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\AMQP\Dev;
+namespace Imi\Pgsql\Dev;
 
 use Composer\Package\Link;
 use Composer\Script\Event;

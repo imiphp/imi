@@ -15,6 +15,9 @@
     "autoload-dev": {
         "psr-4": {
             "Imi\\Fpm\\Test\\": "tests/"
-        }
+        },
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

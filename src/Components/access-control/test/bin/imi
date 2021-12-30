@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-$vendor = dirname(__DIR__, 5) . '/vendor/';
+$vendor = dirname(__DIR__, 2) . '/vendor/';
 $loader = require_once $vendor . 'autoload.php';
 
 \Imi\App::setDebug(true);

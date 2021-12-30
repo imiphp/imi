@@ -11,5 +11,10 @@
         "psr-4": {
             "Imi\\SharedMemory\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

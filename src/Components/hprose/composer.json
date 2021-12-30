@@ -6,7 +6,7 @@
     "require": {
         "hprose/hprose": "^2.0",
         "hprose/hprose-swoole": "^2.0.12",
-        "imiphp/imi-rpc": "2.*"
+        "imiphp/imi-rpc": "~2.0.0"
     },
     "require-dev": {},
     "autoload": {
@@ -18,7 +18,10 @@
     "autoload-dev": {
         "psr-4": {
             "Imi\\Hprose\\Dev\\": "dev/"
-        }
+        },
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     },
     "scripts": {
         "pre-install-cmd": "Imi\\Hprose\\Dev\\Dev::preUpdate",
