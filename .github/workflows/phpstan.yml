@@ -23,6 +23,90 @@ jobs:
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
-      - name: Analyse
+      - name: Analyse core
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G
+
+      - name: Analyse access-control
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/access-control/vendor/autoload.php src/Components/access-control
+
+      - name: Analyse amqp
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/amqp/vendor/autoload.php src/Components/amqp
+
+      - name: Analyse apidoc
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/apidoc/vendor/autoload.php src/Components/apidoc
+
+      - name: Analyse fpm
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/fpm/vendor/autoload.php src/Components/fpm
+
+      - name: Analyse grpc
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/grpc/vendor/autoload.php src/Components/grpc
+
+      - name: Analyse hprose
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/hprose/vendor/autoload.php src/Components/hprose
+
+      - name: Analyse jwt
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/jwt/vendor/autoload.php src/Components/jwt
+
+      - name: Analyse kafka
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/kafka/vendor/autoload.php src/Components/kafka
+
+      - name: Analyse mqtt
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/mqtt/vendor/autoload.php src/Components/mqtt
+
+      - name: Analyse pgsql
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/pgsql/vendor/autoload.php src/Components/pgsql
+
+      - name: Analyse queue
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/queue/vendor/autoload.php src/Components/queue
+
+      - name: Analyse rate-limit
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/rate-limit/vendor/autoload.php src/Components/rate-limit
+
+      - name: Analyse roadrunner
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/roadrunner/vendor/autoload.php src/Components/roadrunner
+
+      - name: Analyse rpc
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/rpc/vendor/autoload.php src/Components/rpc
+
+      - name: Analyse shared-memory
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/shared-memory/vendor/autoload.php src/Components/shared-memory
+
+      - name: Analyse smarty
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/smarty/vendor/autoload.php src/Components/smarty
+
+      - name: Analyse snowflake
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/snowflake/vendor/autoload.php src/Components/snowflake
+
+      - name: Analyse swoole
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/swoole/vendor/autoload.php src/Components/swoole
+
+      - name: Analyse swoole-tracker
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/swoole-tracker/vendor/autoload.php src/Components/swoole-tracker
+
+      - name: Analyse workerman
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/workerman/vendor/autoload.php src/Components/workerman
+
+      - name: Analyse workerman-gateway
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/workerman-gateway/vendor/autoload.php src/Components/workerman-gateway

@@ -4,21 +4,15 @@ parameters:
     phpVersion: 80000
 
     paths:
-        - src
-        - tests
-        - config
-        - dev
-        - split-repository
+        - src/Components
 
     excludePaths:
         - */vendor/*
-        - src/Components
-        - src/Config/DotEnv/EntryParser.php
-        - src/Config/DotEnv/Parser.php
+        - src/Components/grpc/example/grpc
+        - src/Components/smarty/src/smarty-plugins
 
     bootstrapFiles:
         - vendor/autoload.php
-        - split-repository/vendor/autoload.php
 
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
@@ -34,9 +28,20 @@ parameters:
         - '#Unsafe usage of new static\(\).+#'
         - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
         - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
+        - '#Property GPBMetadata\\Grpc::\$\S+ has no typehint specified.#'
+        - '#Property Grpc\\[^:]+::\$\S+ has no typehint specified.#'
+        - '#Method GPBMetadata\\Grpc::initOnce\(\) has no return typehint specified.#'
         - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
         - '#Constant IMI_PATH not found.#'
         -
             message: '#Method \S+ has no return typehint specified.#'
             paths:
                 - tests/unit/**Test.php
+        -
+            message: '#class .+ not found#'
+            paths:
+                - src/Components/jwt/*
+        -
+            message: '#Lcobucci#'
+            paths:
+                - src/Components/jwt/*

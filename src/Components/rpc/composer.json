@@ -4,8 +4,7 @@
     "license": "MIT",
     "description": "在 imi 框架中开发 RPC 服务的基础组件",
     "require": {
-        "php": ">=7.1.0",
-        "ext-swoole": ">=4.4"
+        "imiphp/imi-swoole": "~2.0.0"
     },
     "require-dev": {},
     "autoload": {
@@ -15,7 +14,8 @@
     },
     "autoload-dev": {
         "files": [
-            "../../../vendor/autoload.php"
+            "../../../vendor/autoload.php",
+            "../../../dev/try-include-swoole.php"
         ]
     }
 }
