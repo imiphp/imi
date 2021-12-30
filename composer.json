@@ -72,8 +72,8 @@
         "install-test": "@php --ri swoole && composer install && cd ../ && composer test",
         "test-swoole": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/swoole/tests/phpunit.xml",
         "test-workerman": "@php src/Components/workerman/vendor/bin/phpunit -c src/Components/workerman/tests/phpunit.xml",
-        "test-workerman-gateway-w": "@php src/Components/workerman-gateway/vendor/bin//phpunit -c src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman",
-        "test-workerman-gateway-s": "@php src/Components/workerman-gateway/vendor/bin//phpunit -c src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole",
+        "test-workerman-gateway-w": "@php src/Components/workerman-gateway/vendor/bin/phpunit -c src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman",
+        "test-workerman-gateway-s": "@php src/Components/workerman-gateway/vendor/bin/phpunit -c src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole",
         "test-workerman-gateway": [
             "@composer test-workerman-gateway-w",
             "@composer test-workerman-gateway-s"
