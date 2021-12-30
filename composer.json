@@ -81,20 +81,20 @@
         "test-roadrunner": "@php src/Components/roadrunner/vendor/bin/phpunit -c src/Components/roadrunner/tests/phpunit.xml",
         "test-fpm": "@php src/Components/fpm/vendor/bin/phpunit -c src/Components/fpm/tests/phpunit.xml",
         "test-jwt": "@php src/Components/jwt/vendor/bin/phpunit -c src/Components/jwt/tests/phpunit.xml",
-        "test-queue": "@php src/Components/queue/vendor/bin/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
+        "test-queue": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/queue/tests/phpunit.xml",
         "test-amqp": [
             "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml",
             "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml"
         ],
         "test-kafka": [
-            "AMQP_TEST_MODE=swoole php src/Components/kafka/vendor/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
-            "AMQP_TEST_MODE=workerman php src/Components/kafka/vendor/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
+            "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
+            "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
         ],
-        "test-grpc": "@php src/Components/grpc/vendor/bin/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
+        "test-grpc": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
         "test-snowflake": "@php src/Components/snowflake/vendor/bin/phpunit -c src/Components/snowflake/tests/phpunit.xml",
-        "test-mqtt": "@php src/Components/mqtt/vendor/bin/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
+        "test-mqtt": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
         "test-smarty": "@php src/Components/smarty/vendor/bin/phpunit -c src/Components/smarty/tests/phpunit.xml",
-        "test-pgsql": "@php src/Components/pgsql/vendor/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
+        "test-pgsql": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",
