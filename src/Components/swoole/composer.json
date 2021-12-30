@@ -22,8 +22,8 @@
             "Imi\\Swoole\\Dev\\": "dev/"
         },
         "files": [
-            "../../../vendor/autoload.php"
-            "../../../src/Components/amqp/vendor/autoload.php"
+            "../../../vendor/autoload.php",
+            "../amqp/vendor/autoload.php"
         ]
     },
     "scripts": {

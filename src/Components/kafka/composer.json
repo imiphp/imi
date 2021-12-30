@@ -24,8 +24,8 @@
         },
         "files": [
             "../../../vendor/autoload.php",
-            "../../../src/Components/swoole/vendor/autoload.php",
-            "../../../src/Components/workerman/vendor/autoload.php"
+            "../swoole/vendor/autoload.php",
+            "../workerman/vendor/autoload.php"
         ]
     },
     "scripts": {

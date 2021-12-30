@@ -20,7 +20,7 @@
         },
         "files": [
             "../../../vendor/autoload.php",
-            "../../../src/Components/swoole/vendor/autoload.php"
+            "../swoole/vendor/autoload.php"
         ]
     },
     "scripts": {
