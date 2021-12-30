@@ -50,10 +50,17 @@ class Scanner
     {
         $time = microtime(true);
         $components = [];
+        $fileNameMap = [];
         foreach (Composer::getClassLoaders() as $classLoader)
         {
             $ref = new ReflectionClass($classLoader);
-            $vendorPath = \dirname($ref->getFileName(), 2);
+            $fileName = $ref->getFileName();
+            if (isset($fileNameMap[$fileName]))
+            {
+                continue;
+            }
+            $fileNameMap[$fileName] = true;
+            $vendorPath = \dirname($fileName, 2);
             // 遍历第一层
             foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)
             {
@@ -94,7 +101,7 @@ class Scanner
                 }
             }
         }
-        $components = array_merge($components, Config::get('@app.components', []));
+        $components = array_unique(array_merge(Config::get('@app.components', []), $components));
         if ($components)
         {
             self::scanComponents($components);
@@ -162,7 +169,7 @@ class Scanner
                 }
             }
         }
-        if ($nextComponents)
+        if ($nextComponents && ($nextComponents = array_diff($nextComponents, $components)))
         {
             self::scanComponents($nextComponents);
         }
