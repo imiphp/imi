@@ -120,46 +120,4 @@ class Log
     {
         self::get($channelName)->debug($message, $context);
     }
-
-    /**
-     * 获取代码调用跟踪.
-     */
-    protected static function getTrace(?array &$topTraces): array
-    {
-        // @phpstan-ignore-next-line
-        $limit = App::getBean('ErrorLog')->getBacktraceLimit();
-        $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
-        $result = array_splice($backtrace, 3);
-        $topTraces = $backtrace;
-
-        return $result;
-    }
-
-    /**
-     * 获取错误文件位置.
-     */
-    protected static function getErrorFile(?array $topThreeTraces = null): array
-    {
-        $backtrace = $topThreeTraces ?? debug_backtrace(0, 3);
-        $secondItem = $backtrace[2] ?? null;
-
-        return [$secondItem['file'] ?? '', $secondItem['line'] ?? 0];
-    }
-
-    /**
-     * 处理context.
-     */
-    protected static function parseContext(array $context): array
-    {
-        $topThreeTraces = null;
-        $context['trace'] ??= static::getTrace($topThreeTraces);
-        if (!isset($context['errorFile']))
-        {
-            list($file, $line) = static::getErrorFile($topThreeTraces);
-            $context['errorFile'] = $file;
-            $context['errorLine'] = $line;
-        }
-
-        return $context;
-    }
 }

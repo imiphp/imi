@@ -135,38 +135,4 @@ class ErrorLog
             Log::error($throwable);
         }
     }
-
-    /**
-     * 获取代码调用跟踪.
-     */
-    protected function getTrace(): array
-    {
-        $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $this->getBacktraceLimit());
-        $index = null;
-        $realClassName = static::__getRealClassName();
-        foreach ($backtrace as $i => $item)
-        {
-            if ($realClassName === $item['class'])
-            {
-                $index = $i + 2;
-                break;
-            }
-        }
-        if (null === $index)
-        {
-            return [];
-        }
-
-        return array_splice($backtrace, $index);
-    }
-
-    public function getBacktraceLimit(): int
-    {
-        if (0 === $this->backtraceLimit)
-        {
-            return 0;
-        }
-
-        return max($this->backtraceLimit, 6);
-    }
 }
