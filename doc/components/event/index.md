@@ -35,7 +35,7 @@ class Init implements IEventListener
 
 首先需要定义一个类，类名和位置无所谓。
 
-类必须实现`IEventListener`接口和`public function handle(EventParam $e)`方法。
+类必须实现`IEventListener`接口和`public function handle(EventParam $e): void`方法。
 
 然后在类上写`@Listener`注解。注解有两个参数：
 
@@ -117,7 +117,7 @@ class BeforeRequest implements IRequestEventListener
 	 * @param RequestEventParam $e
 	 * @return void
 	 */
-	public function handle(RequestEventParam $e)
+	public function handle(RequestEventParam $e): void
 	{
 		// ...
 	}

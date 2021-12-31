@@ -75,7 +75,7 @@ class TestMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData()['data'];
         var_dump($data['time']); // 接收到了上面发送来的 time
@@ -148,7 +148,7 @@ class TestRequestMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData()['data'];
         $datetime = date('Y-m-d H:i:s', $data['time']);
@@ -189,7 +189,7 @@ class TestResponseMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData()['data'];
         if(ChannelContainer::hasChannel($data['messageId']))

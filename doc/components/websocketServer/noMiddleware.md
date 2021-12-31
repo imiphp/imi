@@ -25,7 +25,7 @@ class OnMessage implements IMessageEventListener
 	 * @param MessageEventParam $e
 	 * @return void
 	 */
-	public function handle(MessageEventParam $e)
+	public function handle(MessageEventParam $e): void
 	{
 		// 如果服务器名不是主服务器就返回
 		if('main' !== $e->getTarget()->getName())

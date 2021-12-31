@@ -27,7 +27,7 @@ class BeforePacket implements IPacketEventListener
 	 * @param PacketEventParam $e
 	 * @return void
 	 */
-	public function handle(PacketEventParam $e)
+	public function handle(PacketEventParam $e): void
 	{
 		// 如果服务器名不是主服务器就返回
 		if('main' !== $e->getTarget()->getName())

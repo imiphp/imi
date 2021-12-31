@@ -69,7 +69,7 @@ class BeforeInsert implements IBeforeInsertEventListener
      * @param BeforeInsertEventParam $e
      * @return void
      */
-    public function handle(BeforeInsertEventParam $e)
+    public function handle(BeforeInsertEventParam $e): void
     {
         $e->data->data = json_encode($e->data->data);
         $e->data->ip = inet_pton($e->data->ip);
@@ -120,7 +120,7 @@ class BeforeBatchUpdate implements IBeforeBatchUpdateEventListener
      * @param BeforeBatchUpdateEventParam $e
      * @return void
      */
-    public function handle(BeforeBatchUpdateEventParam $e)
+    public function handle(BeforeBatchUpdateEventParam $e): void
     {
         // $e->data->name = '123'; // 在更新前可以对数据赋值
     }
