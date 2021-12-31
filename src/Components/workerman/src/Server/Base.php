@@ -108,7 +108,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      */
     public function shutdown(): void
     {
-        Worker::stopAll();
+        $this->workerClass::stopAll();
     }
 
     /**
@@ -116,7 +116,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      */
     public function reload(): void
     {
-        Worker::reloadAllWorkers();
+        $this->workerClass::reloadAllWorkers();
     }
 
     /**

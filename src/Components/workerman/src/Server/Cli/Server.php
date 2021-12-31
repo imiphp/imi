@@ -19,6 +19,7 @@ use Imi\Server\ServerManager;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Server as WorkermanServerUtil;
+use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Worker;
 
 /**
@@ -49,7 +50,7 @@ class Server extends BaseCommand
         unset($argv);
 
         // 守护进程
-        Worker::$daemonize = $d;
+        WorkermanServerWorker::$daemonize = $d;
 
         Event::trigger('IMI.WORKERMAN.SERVER.BEFORE_START');
         // 创建服务器对象们前置操作
@@ -95,7 +96,7 @@ class Server extends BaseCommand
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
         WorkermanServerUtil::initWorkermanWorker($name);
         Event::trigger('IMI.APP.INIT', [], $this);
-        Worker::runAll();
+        WorkermanServerWorker::runAll();
     }
 
     /**
@@ -114,7 +115,7 @@ class Server extends BaseCommand
         ];
         unset($argv);
 
-        Worker::runAll();
+        WorkermanServerWorker::runAll();
     }
 
     /**
@@ -123,6 +124,6 @@ class Server extends BaseCommand
     public function outStartupInfo(): void
     {
         CliApp::printImi();
-        CliApp::printEnvInfo('Workerman', Worker::VERSION);
+        CliApp::printEnvInfo('Workerman', WorkermanServerWorker::VERSION);
     }
 }

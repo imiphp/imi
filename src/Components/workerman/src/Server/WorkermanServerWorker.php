@@ -96,4 +96,16 @@ class WorkermanServerWorker extends Worker
         // @phpstan-ignore-next-line
         static::$_outputDecorated = null;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected static function displayUI()
+    {
+        // BUG: https://github.com/walkor/workerman/pull/708
+        // 此处为修复低版本 bug
+        $tmpArgv = $GLOBALS['argv'];
+        parent::displayUI();
+        $GLOBALS['argv'] = $tmpArgv;
+    }
 }
