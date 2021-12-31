@@ -20,7 +20,10 @@
             "ApiDocApp\\": "example/",
             "Imi\\ApiDoc\\Test\\": "tests/",
             "Imi\\Server\\ApiDoc\\": "src/imi/Server/ApiDoc/"
-        }
+        },
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     },
     "scripts": {},
     "extra": {

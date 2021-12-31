@@ -92,7 +92,7 @@ return [
                 'database'    => 'db_imi_test',
             ],
         ],
-        'swoole'    => \extension_loaded('swoole_postgresql') ? [
+        'swoole'    => class_exists(\Swoole\Coroutine\PostgreSQL::class, false) ? [
             'pool'    => [
                 // 协程池类名
                 'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,

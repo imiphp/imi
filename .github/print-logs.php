@@ -102,22 +102,14 @@ else
 }
 
 echo '[WorkermanGateway]', \PHP_EOL;
-$fileName = \dirname(__DIR__) . '/src/Components/workerman-gateway/tests/unit/AppServer/logs/cli.log';
+$fileName = \dirname(__DIR__) . '/src/Components/workerman-gateway/tests/unit/AppServer/logs/log-' . $date . '.log';
 if (is_file($fileName))
 {
     echo file_get_contents($fileName), \PHP_EOL;
 }
 else
 {
-    $fileName = \dirname(__DIR__) . '/src/Components/workerman-gateway/tests/unit/AppServer/logs/log-' . $date . '.log';
-    if (is_file($fileName))
-    {
-        echo file_get_contents($fileName), \PHP_EOL;
-    }
-    else
-    {
-        echo 'Not found!', \PHP_EOL;
-    }
+    echo 'Not found!', \PHP_EOL;
 }
 
 echo '[RoadRunner]', \PHP_EOL;

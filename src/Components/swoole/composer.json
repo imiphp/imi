@@ -18,8 +18,19 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Imi\\Swoole\\Test\\": "tests/unit/"
-        }
+            "Imi\\Swoole\\Test\\": "tests/unit/",
+            "Imi\\Swoole\\Dev\\": "dev/"
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../amqp/vendor/autoload.php"
+        ]
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Swoole\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Swoole\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Swoole\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Swoole\\Dev\\Dev::postUpdate"
     },
     "bin": [
         "bin/imi-swoole",

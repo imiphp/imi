@@ -11,5 +11,10 @@
         "psr-4": {
             "Imi\\RateLimit\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

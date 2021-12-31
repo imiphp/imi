@@ -18,6 +18,9 @@
     "autoload-dev": {
         "psr-4": {
             "Imi\\RoadRunner\\Test\\": "tests/unit/"
-        }
+        },
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

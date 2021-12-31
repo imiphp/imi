@@ -6,7 +6,6 @@ use function Imi\env;
 use function Imi\ttyExec;
 use function Yurun\Swoole\Coroutine\batch;
 
-require \dirname(__DIR__, 4) . '/vendor/autoload.php';
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
 /**

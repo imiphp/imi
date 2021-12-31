@@ -4,12 +4,19 @@
     "license": "MIT",
     "description": "imi 框架跨进程变量共享组件",
     "require": {
-        "yurunsoft/swoole-shared-memory": "~1.0"
+        "yurunsoft/swoole-shared-memory": "~1.0",
+        "imiphp/imi-swoole": "~2.0.0"
     },
     "require-dev": {},
     "autoload": {
         "psr-4": {
             "Imi\\SharedMemory\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "../../../vendor/autoload.php",
+            "../../../dev/try-include-swoole.php"
+        ]
     }
 }

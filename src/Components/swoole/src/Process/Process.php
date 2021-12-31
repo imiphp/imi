@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
-class Process extends \Swoole\Process
+trait TProcess
 {
     /**
      * 发送消息.
@@ -21,18 +21,29 @@ class Process extends \Swoole\Process
 
     /**
      * @param int|null $exitCode
-     *
-     * @return mixed
      */
-    public function exit($exitCode = null)
+    public function exit($exitCode = 0): void
     {
         if ($this->pid > 0)
         {
-            return parent::exit($exitCode);
+            parent::exit($exitCode);
         }
         else
         {
             exit($exitCode);
         }
+    }
+}
+
+// @phpstan-ignore-next-line
+if (\SWOOLE_VERSION_ID >= 50000)
+{
+    include __DIR__ . '/Process.swoole-5';
+}
+else
+{
+    class Process extends \Swoole\Process
+    {
+        use TProcess;
     }
 }

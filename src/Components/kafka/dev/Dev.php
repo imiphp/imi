@@ -13,12 +13,13 @@ class Dev
     // @phpstan-ignore-next-line
     public static function preUpdate(Event $event): void
     {
+        $dir = \dirname(__DIR__);
         // @phpstan-ignore-next-line
         $package = $event->getComposer()->getPackage();
         $requires = $package->getRequires();
         foreach ($requires as $name => &$require)
         {
-            if ('imiphp/' !== substr($name, 0, 7))
+            if ('imiphp/' !== substr($name, 0, 7) || !is_dir(\dirname($dir) . '/' . substr($name, 11)))
             {
                 continue;
             }
@@ -26,6 +27,18 @@ class Dev
             $require = new Link($require->getSource(), $require->getTarget(), new Constraint('>', '0'), $require->getDescription());
         }
         $package->setRequires($requires);
+
+        $requires = $package->getDevRequires();
+        foreach ($requires as $name => &$require)
+        {
+            if ('imiphp/' !== substr($name, 0, 7) || !is_dir(\dirname($dir) . '/' . substr($name, 11)))
+            {
+                continue;
+            }
+            // @phpstan-ignore-next-line
+            $require = new Link($require->getSource(), $require->getTarget(), new Constraint('>', '0'), $require->getDescription());
+        }
+        $package->setDevRequires($requires);
     }
 
     // @phpstan-ignore-next-line
@@ -35,15 +48,15 @@ class Dev
 
         // @phpstan-ignore-next-line
         $package = $event->getComposer()->getPackage();
-        $requires = $package->getRequires();
+        $requires = array_merge($package->getRequires(), $package->getDevRequires());
         foreach ($requires as $name => $require)
         {
-            if ('imiphp/' !== substr($name, 0, 7))
+            $componentDir = \dirname($dir) . '/' . substr($name, 11);
+            if ('imiphp/' !== substr($name, 0, 7) || !is_dir($componentDir))
             {
                 continue;
             }
 
-            $componentDir = \dirname($dir) . '/' . substr($name, 11);
             $path = "{$dir}/vendor/{$name}";
             $cmd = "rm -rf {$path} && ln -s -f {$componentDir} {$path}";
             echo '[cmd] ', $cmd, \PHP_EOL;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Util;
 
-class Coroutine extends \Swoole\Coroutine
+trait TCoroutine
 {
     private function __construct()
     {
@@ -28,5 +28,18 @@ class Coroutine extends \Swoole\Coroutine
     public static function create(callable $callable, ...$params)
     {
         return imigo($callable, ...$params);
+    }
+}
+
+// @phpstan-ignore-next-line
+if (\SWOOLE_VERSION_ID >= 50000)
+{
+    include __DIR__ . '/Coroutine.swoole-5';
+}
+else
+{
+    class Coroutine extends \Swoole\Coroutine
+    {
+        use TCoroutine;
     }
 }

@@ -4,7 +4,6 @@
     "license": "MIT",
     "description": "imi 框架的权限控制组件",
     "require": {
-        "php": ">=7.4.0"
     },
     "require-dev": {},
     "autoload": {
@@ -12,5 +11,10 @@
             "Imi\\AC\\": "src/",
             "Imi\\AC\\Test\\": "test/"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "../../../vendor/autoload.php"
+        ]
     }
 }

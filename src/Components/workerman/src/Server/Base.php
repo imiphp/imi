@@ -313,7 +313,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     Client::on('imi.process.message.' . $workerId, $callback);
                 }
 
-                if (isset($config['configs']['registerAddress']))
+                if (isset($config['configs']['registerAddress']) && class_exists(Gateway::class))
                 {
                     Gateway::$registerAddress = $config['configs']['registerAddress'];
                 }

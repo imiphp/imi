@@ -19,10 +19,20 @@
     "autoload-dev": {
         "psr-4": {
             "MQTTApp\\": "example/",
-            "Imi\\MQTT\\Test\\": "tests/"
-        }
+            "Imi\\MQTT\\Test\\": "tests/",
+            "Imi\\MQTT\\Dev\\": "dev/"
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../../../dev/try-include-swoole.php"
+        ]
     },
-    "scripts": {},
+    "scripts": {
+        "pre-install-cmd": "Imi\\MQTT\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\MQTT\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\MQTT\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\MQTT\\Dev\\Dev::postUpdate"
+    },
     "extra": {
         "ide-helper": {
             "list": [
