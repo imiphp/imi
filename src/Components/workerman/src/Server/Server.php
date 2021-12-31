@@ -24,11 +24,11 @@ class Server extends \Imi\Server\Server
         $config = Config::get('@app.workerman.worker', []);
         foreach ($config as $key => $value)
         {
-            Worker::$$key = $value;
+            WorkermanServerWorker::$$key = $value;
         }
-        if ('' === Worker::$pidFile)
+        if ('' === WorkermanServerWorker::$pidFile)
         {
-            Worker::$pidFile = Imi::getRuntimePath(null === $serverName ? 'workerman-server.pid' : ('workerman-server-' . $serverName . '.pid'));
+            WorkermanServerWorker::$pidFile = Imi::getRuntimePath(null === $serverName ? 'workerman-server.pid' : ('workerman-server-' . $serverName . '.pid'));
         }
     }
 
