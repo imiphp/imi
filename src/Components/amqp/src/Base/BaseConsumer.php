@@ -78,7 +78,7 @@ abstract class BaseConsumer implements IConsumer
                         $messageInstance->setAMQPMessage($message);
                         if (Imi::checkAppType('swoole'))
                         {
-                            $result = goWait(fn() => $this->consume($messageInstance));
+                            $result = goWait(fn () => $this->consume($messageInstance));
                         }
                         else
                         {

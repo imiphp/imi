@@ -267,7 +267,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), fn(IPoolResource $resource, RedisHandler $redis) => $redis->$name(...$arguments));
+            return PoolManager::use(RedisManager::getDefaultPoolName(), fn (IPoolResource $resource, RedisHandler $redis) => $redis->$name(...$arguments));
         }
     }
 
@@ -287,7 +287,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use($poolName, fn(IPoolResource $resource, RedisHandler $redis) => $callable($redis));
+            return PoolManager::use($poolName, fn (IPoolResource $resource, RedisHandler $redis) => $callable($redis));
         }
     }
 

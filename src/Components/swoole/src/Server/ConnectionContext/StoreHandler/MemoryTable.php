@@ -197,7 +197,7 @@ class MemoryTable implements IHandler
      */
     public function bindNx(string $flag, $clientId): bool
     {
-        $result = $this->useRedis(fn(RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
+        $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
         if ($result)
         {
             $this->lock((string) $clientId, function () use ($flag, $clientId) {
@@ -237,7 +237,7 @@ class MemoryTable implements IHandler
      */
     public function getClientIdByFlag(string $flag): array
     {
-        return (array) $this->useRedis(fn(RedisHandler $redis) => $redis->hGet($this->key . ':binder', $flag) ?: null);
+        return (array) $this->useRedis(fn (RedisHandler $redis) => $redis->hGet($this->key . ':binder', $flag) ?: null);
     }
 
     /**
@@ -245,8 +245,8 @@ class MemoryTable implements IHandler
      */
     public function getClientIdsByFlags(array $flags): array
     {
-        $result = $this->useRedis(fn(RedisHandler $redis) => $redis->hMget($this->key . ':binder', $flags));
-        foreach ($result as $k => $v)
+        $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hMget($this->key . ':binder', $flags));
+        foreach ($result as $k                             => $v)
         {
             $result[$k] = [$v];
         }
@@ -281,7 +281,7 @@ class MemoryTable implements IHandler
      */
     public function getOldClientIdByFlag(string $flag): ?int
     {
-        return $this->useRedis(fn(RedisHandler $redis) => $redis->get($this->key . ':binder:old:' . $flag) ?: null);
+        return $this->useRedis(fn (RedisHandler $redis) => $redis->get($this->key . ':binder:old:' . $flag) ?: null);
     }
 
     /**

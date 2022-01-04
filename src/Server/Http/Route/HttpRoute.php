@@ -237,7 +237,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($params, fn(string $name) => $request->get($name));
+        return Imi::checkCompareRules($params, fn (string $name) => $request->get($name));
     }
 
     /**
@@ -253,7 +253,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($params, fn(string $name) => $request->post($name));
+        return Imi::checkCompareRules($params, fn (string $name) => $request->post($name));
     }
 
     /**
@@ -303,7 +303,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($header, fn(string $name) => $request->getHeaderLine($name));
+        return Imi::checkCompareRules($header, fn (string $name) => $request->getHeaderLine($name));
     }
 
     /**

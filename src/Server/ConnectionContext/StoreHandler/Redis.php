@@ -260,7 +260,7 @@ class Redis implements IHandler
      */
     public function exists(string $key): bool
     {
-        return $this->useRedis(fn(RedisHandler $redis) => $redis->hExists($this->getStoreKey(), $key));
+        return $this->useRedis(fn (RedisHandler $redis) => $redis->hExists($this->getStoreKey(), $key));
     }
 
     /**
@@ -342,7 +342,7 @@ class Redis implements IHandler
      */
     public function bindNx(string $flag, $clientId): bool
     {
-        $result = $this->useRedis(fn(RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
+        $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
         if ($result)
         {
             $this->lock((string) $clientId, function () use ($flag, $clientId) {
@@ -382,7 +382,7 @@ class Redis implements IHandler
      */
     public function getClientIdByFlag(string $flag): array
     {
-        return (array) $this->useRedis(fn(RedisHandler $redis) => $redis->hGet($this->key . ':binder', $flag) ?: null);
+        return (array) $this->useRedis(fn (RedisHandler $redis) => $redis->hGet($this->key . ':binder', $flag) ?: null);
     }
 
     /**
@@ -390,8 +390,8 @@ class Redis implements IHandler
      */
     public function getClientIdsByFlags(array $flags): array
     {
-        $result = $this->useRedis(fn(RedisHandler $redis) => $redis->hMget($this->key . ':binder', $flags));
-        foreach ($result as $k => $v)
+        $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hMget($this->key . ':binder', $flags));
+        foreach ($result as $k                             => $v)
         {
             $result[$k] = [$v];
         }
@@ -426,6 +426,6 @@ class Redis implements IHandler
      */
     public function getOldClientIdByFlag(string $flag): ?int
     {
-        return $this->useRedis(fn(RedisHandler $redis) => $redis->get($this->key . ':binder:old:' . $flag) ?: null);
+        return $this->useRedis(fn (RedisHandler $redis) => $redis->get($this->key . ':binder:old:' . $flag) ?: null);
     }
 }

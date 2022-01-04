@@ -1,4 +1,4 @@
-name: Static Code Analysis
+name: Rector
 
 on: [push, pull_request]
 
@@ -28,85 +28,106 @@ jobs:
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run
 
       - name: Analyse access-control
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/access-control/ --config=src/Components/access-control/rector.php
 
       - name: Analyse amqp
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/amqp/ --config=src/Components/amqp/rector.php
 
       - name: Analyse apidoc
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/apidoc/ --config=src/Components/apidoc/rector.php
 
       - name: Analyse fpm
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/fpm/ --config=src/Components/fpm/rector.php
 
       - name: Analyse grpc
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/grpc/ --config=src/Components/grpc/rector.php
 
       - name: Analyse hprose
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/hprose/ --config=src/Components/hprose/rector.php
 
       - name: Analyse jwt
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/jwt/ --config=src/Components/jwt/rector.php
 
       - name: Analyse kafka
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/kafka/ --config=src/Components/kafka/rector.php
 
       - name: Analyse mqtt
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/mqtt/ --config=src/Components/mqtt/rector.php
 
       - name: Analyse pgsql
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/pgsql/ --config=src/Components/pgsql/rector.php
 
       - name: Analyse queue
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/queue/ --config=src/Components/queue/rector.php
 
       - name: Analyse rate-limit
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/rate-limit/ --config=src/Components/rate-limit/rector.php
 
       - name: Analyse roadrunner
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/roadrunner/ --config=src/Components/roadrunner/rector.php
 
       - name: Analyse rpc
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/rpc/ --config=src/Components/rpc/rector.php
 
       - name: Analyse shared-memory
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/shared-memory/ --config=src/Components/shared-memory/rector.php
 
       - name: Analyse smarty
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/smarty/ --config=src/Components/smarty/rector.php
 
       - name: Analyse snowflake
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/snowflake/ --config=src/Components/snowflake/rector.php
 
       - name: Analyse swoole
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/swoole/ --config=src/Components/swoole/rector.php
 
       - name: Analyse swoole-tracker
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/swoole-tracker/ --config=src/Components/swoole-tracker/rector.php
 
       - name: Analyse workerman
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/workerman/ --config=src/Components/workerman/rector.php
 
       - name: Analyse workerman-gateway
+        if: ${{ true }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/workerman-gateway/ --config=src/Components/workerman-gateway/rector.php

@@ -343,14 +343,14 @@ abstract class Query implements IQuery
                 else
                 {
                     // 逻辑运算符
-                    $result[] = new WhereBrackets(fn() => $func($value), $key);
+                    $result[] = new WhereBrackets(fn () => $func($value), $key);
                 }
             }
 
             return $result;
         };
 
-        return $this->whereBrackets(fn() => $func($condition), $logicalOperator);
+        return $this->whereBrackets(fn () => $func($condition), $logicalOperator);
     }
 
     /**
