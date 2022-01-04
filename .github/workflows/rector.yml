@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-20.04
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
