@@ -263,7 +263,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null)
     {
         $row = current($this->result);
         if (false === $row)
@@ -271,7 +271,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             return null;
         }
         next($this->result);
-        if ('stdClass' === $className)
+        if (\stdClass::class === $className)
         {
             return (object) $row;
         }
