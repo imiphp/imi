@@ -70,6 +70,7 @@ jobs:
       - name: Test smarty
         run: docker exec ${ENV_SERVICE} composer test-smarty
       - name: Test pgsql
+        if: ${{ matrix.swoole.postgresql_version != '4.8-php8.1' }}
         run: docker exec ${ENV_SERVICE} composer test-pgsql
       - name: Print logs
         if: failure()
@@ -145,7 +146,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0", 8.1]
+        php: [7.4, "8.0"]
         swoole: [v4.8.5]
         roadrunner: [2.5.*]
     env:
