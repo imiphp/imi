@@ -646,6 +646,7 @@ class Imi
      */
     public static function getLinuxVersion(): string
     {
+        $matches = [];
         $files = glob('/etc/*-release');
         if (false === $files)
         {

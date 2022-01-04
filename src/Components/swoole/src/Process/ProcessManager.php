@@ -324,8 +324,11 @@ class ProcessManager
     public static function initProcessInfoTable(): void
     {
         $count = \count(self::$managerProcessSet);
+        // @phpstan-ignore-next-line
         $table = new Table($count * 2);
+        // @phpstan-ignore-next-line
         $table->column('wid', Table::TYPE_INT);
+        // @phpstan-ignore-next-line
         $table->column('pid', Table::TYPE_INT);
         $table->create();
         self::$processInfoTable = $table;
@@ -352,6 +355,7 @@ class ProcessManager
         {
             return null;
         }
+        // @phpstan-ignore-next-line
         $result = self::$processInfoTable->get($id) ?: null;
 
         return $result;

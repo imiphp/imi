@@ -20,10 +20,8 @@ class Pool
 
     /**
      * 工作进程数量.
-     *
-     * @var int
      */
-    private $workerNum;
+    private int $workerNum;
 
     /**
      * 工作进程列表
@@ -31,28 +29,24 @@ class Pool
      *
      * @var \Swoole\Process[]
      */
-    private $workers = [];
+    private array $workers = [];
 
     /**
      * 以进程 PID 为 key 的映射.
      *
      * @var int[]
      */
-    private $workerIdMap = [];
+    private array $workerIdMap = [];
 
     /**
      * 是否工作.
-     *
-     * @var bool
      */
-    private $working = false;
+    private bool $working = false;
 
     /**
      * 主进程 PID.
-     *
-     * @var int
      */
-    private $masterPID;
+    private int $masterPID;
 
     /**
      * @param int $workerNum
@@ -88,7 +82,7 @@ class Pool
                         $workerId = $this->workerIdMap[$pid] ?? null;
                         if (null === $workerId)
                         {
-                            Log::warning(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid));
+                            Log::warning(sprintf('%s: Can not found workerId by pid %s', self::class, $pid));
                             continue;
                         }
                         Event::del($this->workers[$workerId]->pipe);
@@ -172,7 +166,7 @@ class Pool
             }
             else
             {
-                Log::warning(sprintf('%s: Can not found worker by workerId %s', __CLASS__, $workerId));
+                Log::warning(sprintf('%s: Can not found worker by workerId %s', self::class, $workerId));
                 continue;
             }
         }

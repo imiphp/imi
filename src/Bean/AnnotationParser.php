@@ -487,7 +487,7 @@ class AnnotationParser
         {
             return;
         }
-        if (!$ref->isSubclassOf('Imi\Bean\Annotation\Base'))
+        if (!$ref->isSubclassOf(\Imi\Bean\Annotation\Base::class))
         {
             return;
         }

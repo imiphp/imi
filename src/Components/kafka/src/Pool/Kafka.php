@@ -14,7 +14,7 @@ class Kafka
     /**
      * 默认连接池名.
      */
-    protected ?string $defaultPoolName;
+    protected ?string $defaultPoolName = null;
 
     /**
      * Get 默认连接池名.

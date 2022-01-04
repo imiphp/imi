@@ -11,7 +11,7 @@ use Imi\Util\File;
 return function () {
     $path = null;
 
-    if (!class_exists('Imi\App'))
+    if (!class_exists(\Imi\App::class))
     {
         (function () use (&$path) {
             foreach ([

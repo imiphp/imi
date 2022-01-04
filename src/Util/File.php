@@ -188,7 +188,7 @@ class File
             $dsds = '//';
         }
         $result = implode($ds, $args);
-        while (false !== ($offset = strpos($result, $dsds, $offset)))
+        while (false !== ($offset = strpos($result, (string) $dsds, $offset)))
         {
             $result = substr_replace($result, $ds, $offset, 2);
         }

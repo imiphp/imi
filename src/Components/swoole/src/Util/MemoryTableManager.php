@@ -228,6 +228,7 @@ class MemoryTableManager
     {
         if (null === $field)
         {
+            // @phpstan-ignore-next-line
             return static::getInstance($name)->get($key);
         }
         else

@@ -6,7 +6,6 @@ namespace Imi\Log\Formatter;
 
 use Imi\Log\LogLevel;
 use Monolog\Formatter\LineFormatter;
-use Monolog\Formatter\NormalizerFormatter;
 
 class ConsoleLineFormatter extends LineFormatter
 {
@@ -50,7 +49,7 @@ class ConsoleLineFormatter extends LineFormatter
      */
     public function format(array $record): string
     {
-        $vars = NormalizerFormatter::format($record);
+        $vars = $this->normalize($record);
 
         $output = $this->format;
 

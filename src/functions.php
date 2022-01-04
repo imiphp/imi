@@ -37,11 +37,7 @@ namespace
         };
         if ($withGo)
         {
-            return function (...$args) use ($resultCallable) {
-                return Coroutine::create(function (...$args) use ($resultCallable) {
-                    return $resultCallable(...$args);
-                }, ...$args);
-            };
+            return fn(...$args) => Coroutine::create(fn(...$args) => $resultCallable(...$args), ...$args);
         }
         else
         {

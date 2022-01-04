@@ -40,12 +40,12 @@ class Connection extends DefaultConnection
     /**
      * 证书文件.
      */
-    private ?string $sslCertFile;
+    private ?string $sslCertFile = null;
 
     /**
      * 证书密钥文件.
      */
-    private ?string $sslKeyFile;
+    private ?string $sslKeyFile = null;
 
     /**
      * 验证服务器端证书。
@@ -60,17 +60,17 @@ class Connection extends DefaultConnection
     /**
      * 服务器主机名称.
      */
-    private ?string $sslHostName;
+    private ?string $sslHostName = null;
 
     /**
      * CA 证书.
      */
-    private ?string $sslCafile;
+    private ?string $sslCafile = null;
 
     /**
      * 证书目录.
      */
-    private ?string $sslCapath;
+    private ?string $sslCapath = null;
 
     /**
      * {@inheritDoc}

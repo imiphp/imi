@@ -99,7 +99,7 @@ interface IStatement extends \Iterator
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null);
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null);
 
     /**
      * 检索一个语句属性.

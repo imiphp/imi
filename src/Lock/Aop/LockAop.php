@@ -40,8 +40,6 @@ class LockAop
         /** @var Lockable|null $lockable */
         $lockable = AnnotationManager::getMethodAnnotations($class, $method, Lockable::class)[0] ?? null;
 
-        return $this->parseLockable($target, $method, $joinPoint->getArgs(), $lockable, function () use ($joinPoint) {
-            return $joinPoint->proceed();
-        });
+        return $this->parseLockable($target, $method, $joinPoint->getArgs(), $lockable, fn() => $joinPoint->proceed());
     }
 }

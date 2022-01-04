@@ -43,15 +43,11 @@ class WorkerLimitAspect
         $blockingConsumer = AnnotationManager::getMethodAnnotations($className, $method, BlockingConsumer::class)[0] ?? null;
         if (null === $blockingConsumer)
         {
-            $result = WorkerLimiter::call(function () use ($joinPoint) {
-                return $joinPoint->proceed();
-            }, $workerLimit->name, $workerLimit->max, $workerLimit->timeout, $workerLimit->callback, $workerLimit->poolName);
+            $result = WorkerLimiter::call(fn() => $joinPoint->proceed(), $workerLimit->name, $workerLimit->max, $workerLimit->timeout, $workerLimit->callback, $workerLimit->poolName);
         }
         else
         {
-            $result = WorkerLimiter::callBlock(function () use ($joinPoint) {
-                return $joinPoint->proceed();
-            }, $workerLimit->name, $workerLimit->max, $workerLimit->timeout, $blockingConsumer->timeout, $workerLimit->callback, $workerLimit->poolName);
+            $result = WorkerLimiter::callBlock(fn() => $joinPoint->proceed(), $workerLimit->name, $workerLimit->max, $workerLimit->timeout, $blockingConsumer->timeout, $workerLimit->callback, $workerLimit->poolName);
         }
 
         return $result;

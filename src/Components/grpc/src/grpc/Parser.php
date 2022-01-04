@@ -57,7 +57,7 @@ abstract class Parser
         }
         if (\is_array($deserialize))
         {
-            list($className, $deserializeFunc) = $deserialize;
+            [$className, $deserializeFunc] = $deserialize;
             /** @var \Google\Protobuf\Internal\Message $obj */
             $obj = new $className();
             if ($deserializeFunc && method_exists($obj, $deserializeFunc))

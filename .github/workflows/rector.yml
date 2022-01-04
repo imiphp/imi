@@ -1,0 +1,112 @@
+name: Static Code Analysis
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    env:
+      SWOOLE_DOCKER_VERSION: 4.7-php7.4
+      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
+      ENV_SERVICE: swoole-only
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Prepare
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} php -v
+          docker exec ${ENV_SERVICE} php -m
+          docker exec ${ENV_SERVICE} php --ri swoole
+          docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
+          docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
+
+      - name: Analyse core
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run
+
+      - name: Analyse access-control
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/access-control/ --config=src/Components/access-control/rector.php
+
+      - name: Analyse amqp
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/amqp/ --config=src/Components/amqp/rector.php
+
+      - name: Analyse apidoc
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/apidoc/ --config=src/Components/apidoc/rector.php
+
+      - name: Analyse fpm
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/fpm/ --config=src/Components/fpm/rector.php
+
+      - name: Analyse grpc
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/grpc/ --config=src/Components/grpc/rector.php
+
+      - name: Analyse hprose
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/hprose/ --config=src/Components/hprose/rector.php
+
+      - name: Analyse jwt
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/jwt/ --config=src/Components/jwt/rector.php
+
+      - name: Analyse kafka
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/kafka/ --config=src/Components/kafka/rector.php
+
+      - name: Analyse mqtt
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/mqtt/ --config=src/Components/mqtt/rector.php
+
+      - name: Analyse pgsql
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/pgsql/ --config=src/Components/pgsql/rector.php
+
+      - name: Analyse queue
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/queue/ --config=src/Components/queue/rector.php
+
+      - name: Analyse rate-limit
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/rate-limit/ --config=src/Components/rate-limit/rector.php
+
+      - name: Analyse roadrunner
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/roadrunner/ --config=src/Components/roadrunner/rector.php
+
+      - name: Analyse rpc
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/rpc/ --config=src/Components/rpc/rector.php
+
+      - name: Analyse shared-memory
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/shared-memory/ --config=src/Components/shared-memory/rector.php
+
+      - name: Analyse smarty
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/smarty/ --config=src/Components/smarty/rector.php
+
+      - name: Analyse snowflake
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/snowflake/ --config=src/Components/snowflake/rector.php
+
+      - name: Analyse swoole
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/swoole/ --config=src/Components/swoole/rector.php
+
+      - name: Analyse swoole-tracker
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/swoole-tracker/ --config=src/Components/swoole-tracker/rector.php
+
+      - name: Analyse workerman
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/workerman/ --config=src/Components/workerman/rector.php
+
+      - name: Analyse workerman-gateway
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --working-dir=src/Components/workerman-gateway/ --config=src/Components/workerman-gateway/rector.php
