@@ -11,7 +11,7 @@ jobs:
       matrix:
         swoole:
           - version: 4.8-php8.1
-            postgresql_version: "v4.8.0"
+            postgresql_version: ""
           - version: 4.8-php8.0
             postgresql_version: "v4.8.0"
           - version: 4.8-php7.4
