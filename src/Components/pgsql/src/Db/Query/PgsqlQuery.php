@@ -324,9 +324,8 @@ class PgsqlQuery extends Query
                 ];
             }
         }
-        $result = $this->execute($sql);
 
-        return $result;
+        return $this->execute($sql);
     }
 
     /**

@@ -121,9 +121,8 @@ class RequestContext
     {
         $instance = static::getInstance();
         $context = $instance->get($instance->getCurrentFlag(), true);
-        $result = $callback($context);
 
-        return $result;
+        return $callback($context);
     }
 
     /**

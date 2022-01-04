@@ -43,9 +43,8 @@ class KafkaPool
             }
 
             $producerConfig = self::createProducerConfig($config);
-            $producer = new Producer($producerConfig);
 
-            return $producer;
+            return new Producer($producerConfig);
         }
     }
 
@@ -84,9 +83,8 @@ class KafkaPool
                 $connection = new Producer($producerConfig);
                 App::set($requestContextKey, $connection);
             }
-            $requestContext[$requestContextKey] = $connection;
 
-            return $connection;
+            return $requestContext[$requestContextKey] = $connection;
         }
     }
 

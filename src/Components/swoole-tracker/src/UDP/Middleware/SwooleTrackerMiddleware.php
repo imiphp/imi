@@ -44,9 +44,8 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
         try
         {
             $success = $code = null;
-            $result = $handler->handle($data);
 
-            return $result;
+            return $handler->handle($data);
         }
         catch (\Throwable $th)
         {

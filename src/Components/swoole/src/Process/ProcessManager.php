@@ -356,9 +356,7 @@ class ProcessManager
             return null;
         }
         // @phpstan-ignore-next-line
-        $result = self::$processInfoTable->get($id) ?: null;
-
-        return $result;
+        return self::$processInfoTable->get($id) ?: null;
     }
 
     /**

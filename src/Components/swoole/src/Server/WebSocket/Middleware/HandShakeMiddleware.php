@@ -106,8 +106,6 @@ class HandShakeMiddleware implements MiddlewareInterface
             $response = $response->setHeader($key, $val);
         }
 
-        $response = $response->setStatus(StatusCode::SWITCHING_PROTOCOLS);
-
-        return $response;
+        return $response->setStatus(StatusCode::SWITCHING_PROTOCOLS);
     }
 }

@@ -230,7 +230,7 @@ class BeanFactory
 
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
-        $tpl = <<<TPL
+        return <<<TPL
         declare(strict_types=1);
 
         class {$newClassName} extends {$class} implements \Imi\Bean\IBean
@@ -247,8 +247,6 @@ class BeanFactory
         {$methodsTpl}
         }
         TPL;
-
-        return $tpl;
     }
 
     /**

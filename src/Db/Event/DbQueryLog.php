@@ -46,9 +46,7 @@ class DbQueryLog
         $beginTime = microtime(true);
         try
         {
-            $result = $joinPoint->proceed();
-
-            return $result;
+            return $joinPoint->proceed();
         }
         catch (\Throwable $th)
         {
@@ -78,9 +76,7 @@ class DbQueryLog
         [$sql] = $joinPoint->getArgs();
         try
         {
-            $result = $joinPoint->proceed();
-
-            return $result;
+            return $joinPoint->proceed();
         }
         catch (\Throwable $th)
         {
@@ -110,9 +106,7 @@ class DbQueryLog
         $beginTime = microtime(true);
         try
         {
-            $result = $joinPoint->proceed();
-
-            return $result;
+            return $joinPoint->proceed();
         }
         catch (\Throwable $th)
         {

@@ -113,9 +113,8 @@ class Db
             {
                 self::heartbeat($db);
             }
-            $requestContext[$requestContextKey] = $db;
 
-            return $db;
+            return $requestContext[$requestContextKey] = $db;
         }
     }
 
