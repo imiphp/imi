@@ -1,4 +1,4 @@
-name: ci-php-81
+name: ci-php-8.1-swoole-5.0
 
 on: [push, pull_request]
 
