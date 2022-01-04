@@ -3,76 +3,7 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  ci-php8-jit:
-    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With JIT
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole:
-          - version: 4.8-php8.1
-            postgresql_version: "v4.8.0"
-          - version: 4.8-php8.0
-            postgresql_version: "v4.8.0"
-          - version: 4.7-php8.0
-            postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
-        roadrunner: [2.5.*]
-    env:
-      ENV_SERVICE: swoole
-      PHP_JIT: yes
-      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
-      MYSQL_DOCKER_VERSION: '8.0'
-      REDIS_SERVER_HOST: redis
-      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('**/composer.json') }}
-      - name: Prepare
-        uses: ./.github/actions/ci-prepare
-        with:
-          env: ${{ env.ENV_SERVICE }}
-      - name: Test
-        run: docker exec ${ENV_SERVICE} composer test
-      - name: Test swoole
-        run: docker exec ${ENV_SERVICE} composer test-swoole
-      - name: Test workerman
-        run: docker exec ${ENV_SERVICE} composer test-workerman
-      - name: Test workerman-gateway
-        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
-      - name: Test roadrunner
-        run: docker exec ${ENV_SERVICE} composer test-roadrunner
-      - name: Test fpm
-        run: docker exec ${ENV_SERVICE} composer test-fpm
-      - name: Test jwt
-        run: docker exec ${ENV_SERVICE} composer test-jwt
-      - name: Test queue
-        run: docker exec ${ENV_SERVICE} composer test-queue
-      - name: Test amqp
-        run: docker exec ${ENV_SERVICE} composer test-amqp
-      - name: Test kafka
-        run: docker exec ${ENV_SERVICE} composer test-kafka
-      - name: Test grpc
-        run: docker exec ${ENV_SERVICE} composer test-grpc
-      - name: Test snowflake
-        run: docker exec ${ENV_SERVICE} composer test-snowflake
-      - name: Test mqtt
-        run: docker exec ${ENV_SERVICE} composer test-mqtt
-      - name: Test smarty
-        run: docker exec ${ENV_SERVICE} composer test-smarty
-      - name: Test pgsql
-        run: docker exec ${ENV_SERVICE} composer test-pgsql
-      - name: Print logs
-        if: failure()
-        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
-
-  ci-php:
+  ci:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-20.04
     strategy:
@@ -144,7 +75,7 @@ jobs:
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
-  ci-php-unix:
+  ci-unix:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
     runs-on: ubuntu-20.04
     strategy:

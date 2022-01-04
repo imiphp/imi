@@ -13,7 +13,6 @@ runs:
       shell: bash
       run: |
         docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }}
-        docker exec ${{ inputs.env }} bash /imi/.github/script/php-jit.sh
         docker exec ${{ inputs.env }} php -v
         docker exec ${{ inputs.env }} php -m
         docker exec ${{ inputs.env }} php --ri swoole

@@ -98,7 +98,6 @@ services:
       - kafka1
       - postgres
     environment:
-      PHP_JIT: ${PHP_JIT}
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: ${REDIS_SERVER_HOST}
       PGSQL_SERVER_HOST: postgres
