@@ -887,27 +887,24 @@ abstract class Model extends BaseModel
                 }
                 $value = null;
             }
-            if (null === $value && !$column->nullable)
+            if (null === $value && !$column->nullable && 'json' !== $columnType)
             {
                 continue;
             }
             switch ($columnType)
             {
                 case 'json':
-                    if (null !== $value)
+                    if (!isset($jsonEncode))
                     {
-                        if (!isset($jsonEncode))
-                        {
-                            $jsonEncode = $meta->getJsonEncode() ?? false;
-                        }
-                        if ($jsonEncode)
-                        {
-                            $value = json_encode($value, $jsonEncode->flags, $jsonEncode->depth);
-                        }
-                        else
-                        {
-                            $value = json_encode($value, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
-                        }
+                        $jsonEncode = $meta->getJsonEncode() ?? false;
+                    }
+                    if ($jsonEncode)
+                    {
+                        $value = json_encode($value, $jsonEncode->flags, $jsonEncode->depth);
+                    }
+                    else
+                    {
+                        $value = json_encode($value, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
                     }
                     break;
                 case 'list':
