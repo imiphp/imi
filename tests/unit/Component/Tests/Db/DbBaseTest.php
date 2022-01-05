@@ -88,7 +88,7 @@ abstract class DbBaseTest extends BaseTest
     {
         ['id' => $id] = $args;
         $db = Db::getInstance($this->poolName);
-        $stmt = $db->query('select * from tb_article where id = ' . (int) $id);
+        $stmt = $db->query('select * from tb_article where id = ' . $id);
         Assert::assertInstanceOf(\Imi\Db\Interfaces\IStatement::class, $stmt);
         Assert::assertEquals([
             [
@@ -339,7 +339,7 @@ abstract class DbBaseTest extends BaseTest
     public function testSelect(array $args): void
     {
         ['id' => $id] = $args;
-        $result = Db::select('select * from tb_article where id = ' . (int) $id, [], $this->poolName);
+        $result = Db::select('select * from tb_article where id = ' . $id, [], $this->poolName);
         Assert::assertEquals([
             [
                 'id'        => $id,
@@ -368,7 +368,7 @@ abstract class DbBaseTest extends BaseTest
     public function testPrepare(array $args): void
     {
         ['id' => $id] = $args;
-        $stmt = Db::prepare('select * from tb_article where id = ' . (int) $id, $this->poolName);
+        $stmt = Db::prepare('select * from tb_article where id = ' . $id, $this->poolName);
         $this->assertTrue($stmt->execute());
         Assert::assertEquals([
             [
