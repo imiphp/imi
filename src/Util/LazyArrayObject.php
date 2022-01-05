@@ -15,7 +15,7 @@ class LazyArrayObject extends ArrayObject implements JsonSerializable
     /**
      * @param mixed $input
      */
-    public function __construct($input = [], int $flags = self::ARRAY_AS_PROPS, string $iteratorClass = 'ArrayIterator')
+    public function __construct($input = [], int $flags = self::ARRAY_AS_PROPS, string $iteratorClass = \ArrayIterator::class)
     {
         parent::__construct($input, $flags, $iteratorClass);
     }

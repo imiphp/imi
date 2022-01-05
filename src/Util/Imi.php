@@ -176,10 +176,7 @@ class Imi
      */
     public static function parseDotRule(string $rule): array
     {
-        $result = preg_split('#(?<!\\\)\.#', $rule);
-        $result = str_replace('\.', '.', $result);
-
-        return $result;
+        return str_replace('\.', '.', preg_split('#(?<!\\\)\.#', $rule));
     }
 
     /**
@@ -646,6 +643,7 @@ class Imi
      */
     public static function getLinuxVersion(): string
     {
+        $matches = [];
         $files = glob('/etc/*-release');
         if (false === $files)
         {

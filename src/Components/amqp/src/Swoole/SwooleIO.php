@@ -36,15 +36,9 @@ class SwooleIO extends AbstractIO
      */
     protected $ssl = false;
 
-    /**
-     * @var \Swoole\Coroutine\Client|null
-     */
-    private $sock;
+    private ?\Swoole\Coroutine\Client $sock = null;
 
-    /**
-     * @var string
-     */
-    private $buffer = '';
+    private string $buffer = '';
 
     /**
      * @param string        $host

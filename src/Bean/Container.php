@@ -42,6 +42,7 @@ class Container implements ContainerInterface
      */
     public function get(string $id)
     {
+        $object = null;
         // 实现传递实例化参数
         $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
@@ -146,6 +147,7 @@ class Container implements ContainerInterface
      */
     public function getSingleton(string $id): object
     {
+        $object = null;
         // 实现传递实例化参数
         $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例

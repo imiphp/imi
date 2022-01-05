@@ -192,7 +192,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null)
     {
         return $this->statement->fetchObject($className, $ctorArgs);
     }

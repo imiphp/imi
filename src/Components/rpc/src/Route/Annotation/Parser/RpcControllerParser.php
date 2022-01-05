@@ -56,8 +56,7 @@ class RpcControllerParser extends BaseParser
                 }
             }
         }
-        $this->cache[$serverName] = $result;
 
-        return $result;
+        return $this->cache[$serverName] = $result;
     }
 }

@@ -17,7 +17,7 @@ class HproseSocketClient implements IRpcClient
     /**
      * Client.
      */
-    protected ?Client $client;
+    protected ?Client $client = null;
 
     /**
      * 配置.

@@ -28,9 +28,8 @@ class File
             return [];
         }
         $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
-        $files = new \RecursiveIteratorIterator($iterator);
 
-        return $files;
+        return new \RecursiveIteratorIterator($iterator);
     }
 
     /**
@@ -45,9 +44,8 @@ class File
             return new \ArrayIterator();
         }
         $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
-        $files = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
 
-        return $files;
+        return new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
     }
 
     /**
@@ -63,9 +61,8 @@ class File
         }
         $directory = new \RecursiveDirectoryIterator($dirPath);
         $iterator = new \RecursiveIteratorIterator($directory);
-        $regex = new \RegexIterator($iterator, $pattern, \RecursiveRegexIterator::GET_MATCH);
 
-        return $regex;
+        return new \RegexIterator($iterator, $pattern, \RecursiveRegexIterator::GET_MATCH);
     }
 
     /**
@@ -188,7 +185,7 @@ class File
             $dsds = '//';
         }
         $result = implode($ds, $args);
-        while (false !== ($offset = strpos($result, $dsds, $offset)))
+        while (false !== ($offset = strpos($result, (string) $dsds, $offset)))
         {
             $result = substr_replace($result, $ds, $offset, 2);
         }

@@ -247,7 +247,8 @@ class Validator implements IValidator
         {
             $message = str_replace('{:value}', (string) ObjectArrayHelper::get($data, $annotation->name), $message);
         }
-        $message = preg_replace_callback('/\{([^\}]+)\}/', function (array $matches) use ($data, $annotation): string {
+
+        return preg_replace_callback('/\{([^\}]+)\}/', function (array $matches) use ($data, $annotation): string {
             $name = $matches[1];
             if (isset($name[0]) && ':' === $name[0])
             {
@@ -272,8 +273,6 @@ class Validator implements IValidator
 
             return '';
         }, $message);
-
-        return $message;
     }
 
     /**

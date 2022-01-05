@@ -64,8 +64,8 @@ class WorkermanServerWorker extends Worker
             'worker_exit_info' => [],
         ];
         static::$_availableEventLoops = [
-            'event'    => '\Workerman\Events\Event',
-            'libevent' => '\Workerman\Events\Libevent',
+            'event'    => \Workerman\Events\Event::class,
+            'libevent' => \Workerman\Events\Libevent::class,
         ];
         static::$_builtinTransports = [
             'tcp'   => 'tcp',

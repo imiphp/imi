@@ -146,6 +146,7 @@ class Meta
 
     public function __construct(string $modelClass, bool $inherit = false)
     {
+        $id = [];
         $this->inherit = $inherit;
         if ($inherit)
         {

@@ -91,31 +91,29 @@ class Redis extends BaseLock
      */
     protected function __tryLock(): bool
     {
-        return ImiRedis::use(function (RedisHandler $redis): bool {
-            return 1 == $redis->evalEx(<<<'SCRIPT'
-            local key     = KEYS[1]
-            local content = ARGV[1]
-            local ttl     = ARGV[3]
-            local db      = tonumber(ARGV[2])
-            if db then
-                redis.call('select', db)
+        return ImiRedis::use(fn (RedisHandler $redis): bool => 1 == $redis->evalEx(<<<'SCRIPT'
+        local key     = KEYS[1]
+        local content = ARGV[1]
+        local ttl     = ARGV[3]
+        local db      = tonumber(ARGV[2])
+        if db then
+            redis.call('select', db)
+        end
+        local lockSet = redis.call('set', key, content, 'NX', 'PX', ttl)
+        if lockSet == 0 then
+            local value = redis.call('get', key)
+            if(value == content) then
+                lockSet = 1;
+                redis.call('pexpire', key, ttl)
             end
-            local lockSet = redis.call('set', key, content, 'NX', 'PX', ttl)
-            if lockSet == 0 then
-                local value = redis.call('get', key)
-                if(value == content) then
-                    lockSet = 1;
-                    redis.call('pexpire', key, ttl)
-                end
-            end
-            return lockSet
-            SCRIPT, [
-                $this->key,
-                $this->guid,
-                $this->db,
-                $this->lockExpire,
-            ], 1);
-        }, $this->poolName, true);
+        end
+        return lockSet
+        SCRIPT, [
+            $this->key,
+            $this->guid,
+            $this->db,
+            $this->lockExpire,
+        ], 1), $this->poolName, true);
     }
 
     /**

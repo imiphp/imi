@@ -37,14 +37,13 @@ class RouteMiddleware implements IMiddleware
         if (null === $result || !\is_callable($result->callable))
         {
             // 未匹配到路由
-            $result = $this->notFoundHandler->handle($data, $handler);
+            return $this->notFoundHandler->handle($data, $handler);
         }
         else
         {
             RequestContext::set('routeResult', $result);
-            $result = $handler->handle($data);
-        }
 
-        return $result;
+            return $handler->handle($data);
+        }
     }
 }

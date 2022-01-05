@@ -99,9 +99,8 @@ class AMQPSwooleConnection extends AbstractConnection
     public function close($reply_code = 0, $reply_text = '', $method_sig = [0, 0])
     {
         $this->stopHeartbeat();
-        $result = parent::close($reply_code, $reply_text, $method_sig);
 
-        return $result;
+        return parent::close($reply_code, $reply_text, $method_sig);
     }
 
     protected function startHeartbeat(): void

@@ -113,9 +113,8 @@ class Db
             {
                 self::heartbeat($db);
             }
-            $requestContext[$requestContextKey] = $db;
 
-            return $db;
+            return $requestContext[$requestContextKey] = $db;
         }
     }
 
@@ -209,9 +208,7 @@ class Db
 
         if (PoolManager::exists($poolName))
         {
-            return PoolManager::use($poolName, function (IPoolResource $resource, IDb $db) use ($callable) {
-                return $callable($db);
-            });
+            return PoolManager::use($poolName, fn (IPoolResource $resource, IDb $db) => $callable($db));
         }
         else
         {
@@ -231,9 +228,7 @@ class Db
         $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
         {
-            return PoolManager::use($poolName, function (IPoolResource $resource, IDb $db) use ($callable) {
-                return static::trans($db, $callable);
-            });
+            return PoolManager::use($poolName, fn (IPoolResource $resource, IDb $db) => static::trans($db, $callable));
         }
         else
         {

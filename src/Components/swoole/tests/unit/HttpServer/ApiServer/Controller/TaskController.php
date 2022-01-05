@@ -32,14 +32,13 @@ class TaskController extends HttpController
             ])),
             new TaskInfo(new TestTask(), new TaskParam($data)),
         ];
-        $result = [
+
+        return [
             'post'      => TaskManager::post($taskInfo),
             'nPost'     => TaskManager::nPost('Test1', $data),
             'nPostWait' => TaskManager::nPostWait('Test1', $data, 10),
             'postWait'  => TaskManager::postWait($taskInfo, 10),
             'postCo'    => TaskManager::postCo($tasks, 10),
         ];
-
-        return $result;
     }
 }

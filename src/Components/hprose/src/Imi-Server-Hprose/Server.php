@@ -90,10 +90,10 @@ class Server extends BaseRpcServer
     protected function getServerInitConfig(): array
     {
         return [
-            'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
-            'port'      => isset($this->config['port']) ? $this->config['port'] : 8080,
+            'host'      => $this->config['host'] ?? '0.0.0.0',
+            'port'      => $this->config['port'] ?? 8080,
             'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_TCP | $this->config['sockType']) : \SWOOLE_SOCK_TCP,
-            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : \SWOOLE_PROCESS,
+            'mode'      => $this->config['mode'] ?? \SWOOLE_PROCESS,
         ];
     }
 

@@ -15,7 +15,7 @@ class ReplaceBuilder extends BaseBuilder
         $params = &$this->params;
         /** @var QueryOption $option */
         $option = $query->getOption();
-        list($data) = $args;
+        [$data] = $args;
         if (null === $data)
         {
             $data = $option->saveData;

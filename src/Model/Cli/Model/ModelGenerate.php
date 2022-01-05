@@ -462,8 +462,7 @@ class ModelGenerate extends BaseCommand
     {
         $result = $query->execute('show create table `' . $database . '`.`' . $table . '`');
         $sql = $result->get()['Create Table'] ?? '';
-        $sql = preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
 
-        return $sql;
+        return preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
     }
 }

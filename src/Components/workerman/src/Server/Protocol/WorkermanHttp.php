@@ -28,7 +28,7 @@ class WorkermanHttp
     /**
      * Request class name.
      */
-    protected static string $_requestClass = 'Workerman\Protocols\Http\Request';
+    protected static string $_requestClass = \Workerman\Protocols\Http\Request::class;
 
     /**
      * Session name.

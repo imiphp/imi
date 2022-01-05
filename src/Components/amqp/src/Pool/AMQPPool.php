@@ -101,9 +101,8 @@ class AMQPPool
                 }
                 App::set($requestContextKey, $connection);
             }
-            $requestContext[$requestContextKey] = $connection;
 
-            return $connection;
+            return $requestContext[$requestContextKey] = $connection;
         }
     }
 

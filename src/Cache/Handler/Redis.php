@@ -34,9 +34,7 @@ class Redis extends Base
     public function get($key, $default = null)
     {
         $this->checkKey($key);
-        $result = ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($key) {
-            return $redis->get($this->parseKey($key));
-        }, $this->poolName, true);
+        $result = ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->get($this->parseKey($key)), $this->poolName, true);
         if (false === $result)
         {
             return $default;
@@ -59,9 +57,7 @@ class Redis extends Base
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
 
-        return (bool) ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($key, $value, $ttl) {
-            return $redis->set($this->parseKey($key), $this->encode($value), $ttl);
-        }, $this->poolName, true);
+        return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->set($this->parseKey($key), $this->encode($value), $ttl), $this->poolName, true);
     }
 
     /**
@@ -71,9 +67,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
 
-        return (bool) ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($key) {
-            return $redis->del($this->parseKey($key)) > 0;
-        }, $this->poolName, true);
+        return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->del($this->parseKey($key)) > 0, $this->poolName, true);
     }
 
     /**
@@ -81,9 +75,7 @@ class Redis extends Base
      */
     public function clear()
     {
-        return (bool) ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) {
-            return $redis->flushDB();
-        }, $this->poolName, true);
+        return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->flushDB(), $this->poolName, true);
     }
 
     /**
@@ -182,9 +174,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
 
-        return (bool) ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($key) {
-            return $redis->exists($this->parseKey($key));
-        }, $this->poolName, true);
+        return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->exists($this->parseKey($key)), $this->poolName, true);
     }
 
     /**

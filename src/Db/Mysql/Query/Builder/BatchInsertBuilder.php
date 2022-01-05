@@ -16,7 +16,7 @@ class BatchInsertBuilder extends BaseBuilder
         $params = &$this->params;
         /** @var QueryOption $option */
         $option = $query->getOption();
-        list($list) = $args;
+        [$list] = $args;
         if (null === $list)
         {
             $list = $option->saveData;

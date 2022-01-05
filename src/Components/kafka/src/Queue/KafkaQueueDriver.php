@@ -29,7 +29,7 @@ class KafkaQueueDriver implements IQueueDriver
     /**
      * Kafka 连接池名称.
      */
-    protected ?string $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 队列名称.
