@@ -201,13 +201,6 @@ return [
 用于直接执行 SQL
 
 ```php
-// 获取新的数据库连接实例
-$db = Db::getNewInstance();
-// 读库
-$db = Db::getNewInstance($poolName, QueryType::READ);
-// 写库
-$db = Db::getNewInstance($poolName, QueryType::WRITE);
-
 // 获取数据库连接实例，每个RequestContext中共用一个
 $db = Db::getInstance();
 // 读库
@@ -215,8 +208,34 @@ $db = Db::getInstance($poolName, QueryType::READ);
 // 写库
 $db = Db::getInstance($poolName, QueryType::WRITE);
 
-// 释放连接，回归连接池
+// ---
+
+// 执行 SQL 并返回受影响的行数
+// public static function exec(string $sql, array $bindValues = [], ?string $poolName = null, int $queryType = QueryType::WRITE): int
+$rows = Db::exec('update tb_xxx set age=111 where id=?', [123]);
+
+// 执行 SQL 返回结果
+// public static function select(string $sql, array $bindValues = [], ?string $poolName = null, int $queryType = QueryType::WRITE): ?IResult
+$result = Db::select('select * from tb_xxx id=?', [123]);
+var_dump($result->getArray()); // 更多用法参考文档
+
+// 预处理
+$stmt = Db::prepare('select * from tb_xxx id=?');
+$stmt->execute([123]);
+var_dump($stmt->fetchAll()); // 更多用法参考文档
+
+// ---
+
+// 获取新的数据库连接实例
+$db = Db::getNewInstance();
+// 读库
+$db = Db::getNewInstance($poolName, QueryType::READ);
+// 写库
+$db = Db::getNewInstance($poolName, QueryType::WRITE);
+// 释放连接，回归连接池，配合 getNewInstance() 使用
 Db::release($db);
+
+// ---
 
 $returnValue = Db::use(function(IDb $db){
     // 操作 $db

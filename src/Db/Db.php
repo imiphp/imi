@@ -8,8 +8,11 @@ use Imi\App;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
+use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\QueryType;
+use Imi\Db\Query\Result;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
@@ -274,5 +277,58 @@ class Db
             }
             throw $th;
         }
+    }
+
+    /**
+     * 执行 SQL 并返回受影响的行数.
+     */
+    public static function exec(string $sql, array $bindValues = [], ?string $poolName = null, int $queryType = QueryType::WRITE): int
+    {
+        if ($bindValues)
+        {
+            $stmt = self::getInstance($poolName, $queryType)->prepare($sql);
+            if ($stmt->execute($bindValues))
+            {
+                return $stmt->rowCount();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return self::getInstance($poolName, $queryType)->exec($sql);
+        }
+    }
+
+    /**
+     * 执行 SQL 返回结果.
+     */
+    public static function select(string $sql, array $bindValues = [], ?string $poolName = null, int $queryType = QueryType::WRITE): ?IResult
+    {
+        $db = self::getInstance($poolName, $queryType);
+        if ($bindValues)
+        {
+            $stmt = $db->prepare($sql);
+            if (!$stmt->execute($bindValues))
+            {
+                return new Result(false);
+            }
+        }
+        else
+        {
+            $stmt = $db->query($sql);
+        }
+
+        return new Result($stmt);
+    }
+
+    /**
+     * 准备执行语句并返回一个语句对象
+     */
+    public static function prepare(string $sql, ?string $poolName = null, int $queryType = QueryType::WRITE): IStatement
+    {
+        return self::getInstance($poolName, $queryType)->prepare($sql);
     }
 }
