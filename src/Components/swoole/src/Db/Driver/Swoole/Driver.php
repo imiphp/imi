@@ -8,7 +8,6 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
-use Imi\Db\Mysql\Contract\IMysqlDb;
 use Imi\Db\Mysql\Contract\IMysqlStatement;
 use Imi\Db\Mysql\Drivers\MysqlBase;
 use Imi\Db\Mysql\Util\SqlUtil;
@@ -21,7 +20,7 @@ use Swoole\Coroutine\MySQL;
  *
  * @Bean("SwooleMysqlDriver")
  */
-class Driver extends MysqlBase implements IMysqlDb
+class Driver extends MysqlBase
 {
     /**
      * 连接对象
@@ -86,8 +85,20 @@ class Driver extends MysqlBase implements IMysqlDb
     public function ping(): bool
     {
         $instance = $this->instance;
+        if (!$instance)
+        {
+            return false;
+        }
+        if ($instance->query('select 1'))
+        {
+            return true;
+        }
+        if ($this->checkCodeIsOffline($instance->errno))
+        {
+            $this->close();
+        }
 
-        return $instance && $instance->query('select 1');
+        return false;
     }
 
     /**
@@ -95,7 +106,7 @@ class Driver extends MysqlBase implements IMysqlDb
      */
     public function open(): bool
     {
-        $this->instance = $instance = new MySQL();
+        $instance = new MySQL();
         $option = $this->option;
         $serverConfig = [
             'host'          => $option['host'] ?? '127.0.0.1',
@@ -115,6 +126,7 @@ class Driver extends MysqlBase implements IMysqlDb
         $result = $instance->connect($serverConfig);
         if ($result)
         {
+            $this->instance = $instance;
             $this->execInitSqls();
         }
 
@@ -136,12 +148,13 @@ class Driver extends MysqlBase implements IMysqlDb
             $this->instance->close();
             $this->instance = null;
         }
+        $this->transaction->init();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): MySQL
+    public function getInstance(): ?MySQL
     {
         return $this->instance;
     }
@@ -153,6 +166,11 @@ class Driver extends MysqlBase implements IMysqlDb
     {
         if (!$this->inTransaction() && !$this->instance->begin())
         {
+            if ($this->checkCodeIsOffline($this->instance->errno))
+            {
+                $this->close();
+            }
+
             return false;
         }
         $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
@@ -166,7 +184,17 @@ class Driver extends MysqlBase implements IMysqlDb
      */
     public function commit(): bool
     {
-        return $this->instance->commit() && $this->transaction->commit();
+        if (!$this->instance->commit())
+        {
+            if ($this->checkCodeIsOffline($this->instance->errno))
+            {
+                $this->close();
+            }
+
+            return false;
+        }
+
+        return $this->transaction->commit();
     }
 
     /**
@@ -186,6 +214,10 @@ class Driver extends MysqlBase implements IMysqlDb
         if ($result)
         {
             $this->transaction->rollBack($levels);
+        }
+        elseif ($this->checkCodeIsOffline($this->instance->errno))
+        {
+            $this->close();
         }
 
         return $result;
@@ -253,7 +285,12 @@ class Driver extends MysqlBase implements IMysqlDb
         $this->lastStmt = null;
         $this->lastSql = $sql;
         $instance = $this->instance;
-        $instance->query($sql);
+        if (false === $instance->query($sql) && $this->checkCodeIsOffline($this->instance->errno))
+        {
+            $this->close();
+
+            return 0;
+        }
 
         return $instance->affected_rows;
     }
@@ -321,7 +358,13 @@ class Driver extends MysqlBase implements IMysqlDb
             $this->lastStmt = $lastStmt = $this->instance->prepare($parsedSql);
             if (false === $lastStmt)
             {
-                throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->checkCodeIsOffline($errorCode))
+                {
+                    $this->close();
+                }
+                throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
             $stmt = App::getBean(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && !isset($stmtCache))
@@ -342,7 +385,13 @@ class Driver extends MysqlBase implements IMysqlDb
         $this->lastStmt = $lastStmt = $this->instance->query($sql);
         if (false === $lastStmt)
         {
-            throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+            $errorCode = $this->errorCode();
+            $errorInfo = $this->errorInfo();
+            if ($this->checkCodeIsOffline($errorCode))
+            {
+                $this->close();
+            }
+            throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
 
         return App::getBean(Statement::class, $this, $lastStmt, $sql);

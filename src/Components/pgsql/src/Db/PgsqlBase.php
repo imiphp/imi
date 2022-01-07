@@ -6,9 +6,10 @@ namespace Imi\Pgsql\Db;
 
 use Imi\Db\Drivers\Base;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Query\PgsqlQuery;
 
-abstract class PgsqlBase extends Base
+abstract class PgsqlBase extends Base implements IPgsqlDb
 {
     /**
      * {@inheritDoc}
@@ -19,10 +20,20 @@ abstract class PgsqlBase extends Base
     }
 
     /**
-     * 获取数据库种类.
+     * {@inheritDoc}
      */
     public function getDbType(): string
     {
         return 'PostgreSQL';
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see http://www.postgres.cn/docs/13/errcodes-appendix.html
+     */
+    public function checkCodeIsOffline(string $code): bool
+    {
+        return '57P01' === $code;
     }
 }
