@@ -128,28 +128,45 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function execute(array $inputParameters = null): bool
     {
-        $statement = $this->statement;
-        $statement->closeCursor();
-        if ($inputParameters)
+        try
         {
-            foreach ($inputParameters as $k => $v)
+            $statement = $this->statement;
+            $statement->closeCursor();
+            if ($inputParameters)
             {
-                if (is_numeric($k))
+                foreach ($inputParameters as $k => $v)
                 {
-                    $statement->bindValue($k + 1, $v, $this->getDataTypeByValue($v));
-                }
-                else
-                {
-                    $statement->bindValue($k, $v, $this->getDataTypeByValue($v));
+                    if (is_numeric($k))
+                    {
+                        $statement->bindValue($k + 1, $v, $this->getDataTypeByValue($v));
+                    }
+                    else
+                    {
+                        $statement->bindValue($k, $v, $this->getDataTypeByValue($v));
+                    }
                 }
             }
+            $result = $statement->execute();
+            if (!$result)
+            {
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->db->checkCodeIsOffline($this->db->errorInfo()[0] ?? ''))
+                {
+                    $this->db->close();
+                }
+                throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
+            }
+            $this->updateLastInsertId();
         }
-        $result = $statement->execute();
-        if (!$result)
+        catch (\PDOException $e)
         {
-            throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+            if ($this->db->checkCodeIsOffline($e->errorInfo[0]))
+            {
+                $this->db->close();
+            }
+            throw $e;
         }
-        $this->updateLastInsertId();
 
         return $result;
     }

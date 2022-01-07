@@ -10,7 +10,6 @@ use Imi\Config;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
-use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBase;
 use Imi\Pgsql\Db\Util\SqlUtil;
@@ -23,7 +22,7 @@ if (class_exists(PostgreSQL::class, false))
      *
      * @Bean("SwoolePgsqlDriver")
      */
-    class Driver extends PgsqlBase implements IPgsqlDb
+    class Driver extends PgsqlBase
     {
         /**
          * 连接对象
@@ -89,8 +88,20 @@ if (class_exists(PostgreSQL::class, false))
         public function ping(): bool
         {
             $instance = $this->instance;
+            if (!$instance)
+            {
+                return false;
+            }
+            if ($instance->query('select 1'))
+            {
+                return true;
+            }
+            if ($this->checkCodeIsOffline($instance->errno))
+            {
+                $this->close();
+            }
 
-            return $instance && $instance->query('select 1');
+            return false;
         }
 
         /**
@@ -157,7 +168,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function getInstance(): PostgreSQL
+        public function getInstance(): ?PostgreSQL
         {
             return $this->instance;
         }
@@ -169,6 +180,11 @@ if (class_exists(PostgreSQL::class, false))
         {
             if (!$this->inTransaction() && !$this->instance->query('begin'))
             {
+                if ($this->checkCodeIsOffline($this->instance->errCode))
+                {
+                    $this->close();
+                }
+
                 return false;
             }
             $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
@@ -182,7 +198,17 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function commit(): bool
         {
-            return $this->instance->query('commit') && $this->transaction->commit();
+            if (!$this->instance->query('commit'))
+            {
+                if ($this->checkCodeIsOffline($this->instance->errCode))
+                {
+                    $this->close();
+                }
+
+                return false;
+            }
+
+            return $this->transaction->commit();
         }
 
         /**
@@ -202,6 +228,10 @@ if (class_exists(PostgreSQL::class, false))
             if ($result)
             {
                 $this->transaction->rollBack($levels);
+            }
+            elseif ($this->checkCodeIsOffline($this->instance->errCode))
+            {
+                $this->close();
             }
 
             return (bool) $result;
@@ -254,9 +284,15 @@ if (class_exists(PostgreSQL::class, false))
         {
             $this->lastSql = $sql;
             $instance = $this->instance;
-            $this->lastQueryResult = $instance->query($sql);
+            $this->lastQueryResult = $lastQueryResult = $instance->query($sql);
+            if (false === $lastQueryResult && $this->checkCodeIsOffline($this->instance->errCode))
+            {
+                $this->close();
 
-            return $instance->affectedRows($this->lastQueryResult);
+                return 0;
+            }
+
+            return $instance->affectedRows($lastQueryResult);
         }
 
         /**
@@ -333,7 +369,13 @@ if (class_exists(PostgreSQL::class, false))
                 $this->lastQueryResult = $queryResult = $this->instance->prepare($statementName, $parsedSql);
                 if (false === $queryResult)
                 {
-                    throw new DbException('SQL prepare error: ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
                 $stmt = App::getBean(Statement::class, $this, null, $sql, $statementName, $sqlParamsMap);
                 if ($this->isCacheStatement && !isset($stmtCache))
@@ -354,7 +396,13 @@ if (class_exists(PostgreSQL::class, false))
             $this->lastQueryResult = $queryResult = $this->instance->query($sql);
             if (false === $queryResult)
             {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->checkCodeIsOffline($errorCode))
+                {
+                    $this->close();
+                }
+                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
 
             return App::getBean(Statement::class, $this, $queryResult, $sql);

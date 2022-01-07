@@ -183,7 +183,13 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         $result = $statement->execute();
         if (!$result)
         {
-            throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+            $errorCode = $this->errorCode();
+            $errorInfo = $this->errorInfo();
+            if ($this->db->checkCodeIsOffline($errorCode))
+            {
+                $this->db->close();
+            }
+            throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
         }
         $this->result = $statement->get_result();
 

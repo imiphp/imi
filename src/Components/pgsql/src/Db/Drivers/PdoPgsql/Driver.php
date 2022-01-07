@@ -10,7 +10,6 @@ use Imi\Config;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
-use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBase;
 use Imi\Pgsql\Db\Util\SqlUtil;
@@ -21,7 +20,7 @@ use PDO;
  *
  * @Bean("PdoPgsqlDriver")
  */
-class Driver extends PgsqlBase implements IPgsqlDb
+class Driver extends PgsqlBase
 {
     /**
      * 连接对象
@@ -104,14 +103,30 @@ class Driver extends PgsqlBase implements IPgsqlDb
      */
     public function ping(): bool
     {
+        $instance = $this->instance;
+        if (!$instance)
+        {
+            return false;
+        }
         try
         {
-            $instance = $this->instance;
+            if ($instance->query('select 1'))
+            {
+                return true;
+            }
+            if ($this->checkCodeIsOffline($instance->errorInfo()[0] ?? ''))
+            {
+                $this->close();
+            }
 
-            return $instance && false !== $instance->query('select 1');
+            return false;
         }
-        catch (\Throwable $e)
+        catch (\PDOException $e)
         {
+            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            {
+                $this->close();
+            }
         }
 
         return false;
@@ -146,7 +161,7 @@ class Driver extends PgsqlBase implements IPgsqlDb
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): PDO
+    public function getInstance(): ?PDO
     {
         return $this->instance;
     }
@@ -156,12 +171,28 @@ class Driver extends PgsqlBase implements IPgsqlDb
      */
     public function beginTransaction(): bool
     {
-        if (!$this->inTransaction() && !$this->instance->beginTransaction())
+        try
         {
-            return false;
+            if (!$this->inTransaction() && !$this->instance->beginTransaction())
+            {
+                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                {
+                    $this->close();
+                }
+
+                return false;
+            }
+            $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
+            $this->transaction->beginTransaction();
         }
-        $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
-        $this->transaction->beginTransaction();
+        catch (\PDOException $e)
+        {
+            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            {
+                $this->close();
+            }
+            throw $e;
+        }
 
         return true;
     }
@@ -171,7 +202,28 @@ class Driver extends PgsqlBase implements IPgsqlDb
      */
     public function commit(): bool
     {
-        return $this->instance->commit() && $this->transaction->commit();
+        try
+        {
+            if (!$this->instance->commit())
+            {
+                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                {
+                    $this->close();
+                }
+
+                return false;
+            }
+        }
+        catch (\PDOException $e)
+        {
+            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            {
+                $this->close();
+            }
+            throw $e;
+        }
+
+        return $this->transaction->commit();
     }
 
     /**
@@ -181,7 +233,18 @@ class Driver extends PgsqlBase implements IPgsqlDb
     {
         if (null === $levels)
         {
-            $result = $this->instance->rollback();
+            try
+            {
+                $result = $this->instance->rollback();
+            }
+            catch (\PDOException $e)
+            {
+                if ($this->checkCodeIsOffline($e->errorInfo[0]))
+                {
+                    $this->close();
+                }
+                throw $e;
+            }
         }
         else
         {
@@ -191,6 +254,10 @@ class Driver extends PgsqlBase implements IPgsqlDb
         if ($result)
         {
             $this->transaction->rollBack($levels);
+        }
+        elseif ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+        {
+            $this->close();
         }
 
         return $result;
@@ -262,11 +329,29 @@ class Driver extends PgsqlBase implements IPgsqlDb
     public function exec(string $sql): int
     {
         $this->lastSql = $sql;
+        $this->lastStmt = null;
 
-        $result = $this->instance->exec($sql);
-        if (false === $result)
+        try
         {
-            throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+            $result = $this->instance->exec($sql);
+            if (false === $result)
+            {
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                {
+                    $this->close();
+                }
+                throw new DbException('SQL exec error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+            }
+        }
+        catch (\PDOException $e)
+        {
+            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            {
+                $this->close();
+            }
+            throw $e;
         }
 
         return $result;
@@ -331,17 +416,34 @@ class Driver extends PgsqlBase implements IPgsqlDb
         }
         else
         {
-            $this->lastSql = $sql;
-            $lastStmt = $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
-            // @phpstan-ignore-next-line
-            if (false === $lastStmt)
+            try
             {
-                throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                $this->lastSql = $sql;
+                $lastStmt = $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
+                // @phpstan-ignore-next-line
+                if (false === $lastStmt)
+                {
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                $stmt = App::getBean(Statement::class, $this, $lastStmt);
+                if ($this->isCacheStatement && !isset($stmtCache))
+                {
+                    StatementManager::setNX($stmt, true);
+                }
             }
-            $stmt = App::getBean(Statement::class, $this, $lastStmt);
-            if ($this->isCacheStatement && !isset($stmtCache))
+            catch (\PDOException $e)
             {
-                StatementManager::setNX($stmt, true);
+                if ($this->checkCodeIsOffline($e->errorInfo[0]))
+                {
+                    $this->close();
+                }
+                throw $e;
             }
         }
 
@@ -353,11 +455,28 @@ class Driver extends PgsqlBase implements IPgsqlDb
      */
     public function query(string $sql): IPgsqlStatement
     {
-        $this->lastSql = $sql;
-        $this->lastStmt = $lastStmt = $this->instance->query($sql);
-        if (false === $lastStmt)
+        try
         {
-            throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+            $this->lastSql = $sql;
+            $this->lastStmt = $lastStmt = $this->instance->query($sql);
+            if (false === $lastStmt)
+            {
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                {
+                    $this->close();
+                }
+                throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+            }
+        }
+        catch (\PDOException $e)
+        {
+            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            {
+                $this->close();
+            }
+            throw $e;
         }
 
         return App::getBean(Statement::class, $this, $lastStmt);

@@ -169,7 +169,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             $this->queryResult = $queryResult = $pgDb->query($this->lastSql);
             if (false === $queryResult)
             {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql() . \PHP_EOL);
             }
         }
         else
@@ -208,7 +208,13 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             $this->queryResult = $queryResult = $pgDb->execute($this->statementName, $bindValues);
             if (false === $queryResult)
             {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->db->checkCodeIsOffline($errorCode))
+                {
+                    $this->close();
+                }
+                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
         }
         $this->result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC) ?: [];

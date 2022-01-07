@@ -155,7 +155,14 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
             $result = $this->db->getInstance()->query($this->lastSql);
             if (false === $result)
             {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+                $dbInstance = $this->db->getInstance();
+                $errorCode = $dbInstance->errorCode();
+                $errorInfo = $dbInstance->errorInfo();
+                if ($dbInstance->checkCodeIsOffline($errorCode))
+                {
+                    $this->db->close();
+                }
+                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
         }
         else
@@ -206,7 +213,13 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
             }
             elseif (false === $result)
             {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->db->getInstance()->checkCodeIsOffline($errorCode))
+                {
+                    $this->db->close();
+                }
+                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
         }
         $this->result = (true === $result ? [] : $result);
