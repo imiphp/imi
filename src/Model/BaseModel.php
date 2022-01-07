@@ -209,7 +209,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @param int|string $offset
      */
-    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         if (isset($this->__originData[$offset]))
@@ -321,7 +320,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * @param int|string $offset
      * @param mixed      $value
      */
-    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         $meta = $this->__meta;
@@ -621,8 +619,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return false !== current($this->__fieldNames);
     }

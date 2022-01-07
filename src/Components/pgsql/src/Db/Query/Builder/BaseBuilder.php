@@ -45,10 +45,8 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
 
     /**
      * limit.
-     *
-     * @return string
      */
-    protected function parseLimit(?int $offset, ?int $limit)
+    protected function parseLimit(?int $offset, ?int $limit): string
     {
         if (null === $limit)
         {

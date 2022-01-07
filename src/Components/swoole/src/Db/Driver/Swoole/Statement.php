@@ -396,8 +396,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return false !== $this->current();
     }

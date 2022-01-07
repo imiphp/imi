@@ -13,12 +13,8 @@ class TextCRLF
 {
     /**
      * Check the integrity of the package.
-     *
-     * @param string $buffer
-     *
-     * @return int
      */
-    public static function input($buffer, ConnectionInterface $connection)
+    public static function input(string $buffer, ConnectionInterface $connection): int
     {
         // Judge whether the package length exceeds the limit.
         if (isset($connection->maxPackageSize) && \strlen($buffer) >= $connection->maxPackageSize)
@@ -40,12 +36,8 @@ class TextCRLF
 
     /**
      * Encode.
-     *
-     * @param string $buffer
-     *
-     * @return string
      */
-    public static function encode($buffer)
+    public static function encode(string $buffer): string
     {
         // Add "\r\n"
         return $buffer . "\r\n";
@@ -53,12 +45,8 @@ class TextCRLF
 
     /**
      * Decode.
-     *
-     * @param string $buffer
-     *
-     * @return string
      */
-    public static function decode($buffer)
+    public static function decode(string $buffer): string
     {
         // Remove "\r\n"
         return rtrim($buffer, "\r\n");

@@ -183,8 +183,6 @@ class JWTConfig
 
     /**
      * Get token id.
-     *
-     * @return string
      */
     public function getId(): ?string
     {

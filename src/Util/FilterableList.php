@@ -124,11 +124,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         reset($this->list);
     }
 
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return null !== key($this->list);
     }

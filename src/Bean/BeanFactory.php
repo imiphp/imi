@@ -22,10 +22,8 @@ class BeanFactory
 
     /**
      * 是否启用 bean 文件缓存.
-     *
-     * @var bool
      */
-    public static $enableFileCache = false;
+    public static bool $enableFileCache = false;
 
     private function __construct()
     {

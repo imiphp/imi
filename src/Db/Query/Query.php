@@ -80,10 +80,8 @@ abstract class Query implements IQuery
 
     /**
      * 查询结果集类名.
-     *
-     * @var string
      */
-    protected $resultClass = Result::class;
+    protected string $resultClass = Result::class;
 
     /**
      * 别名 Sql 数据集合.

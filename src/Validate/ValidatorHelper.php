@@ -461,10 +461,6 @@ class ValidatorHelper
         };
         /**
          * 18位身份证校验码有效性检查.
-         *
-         * @param string $idcard
-         *
-         * @return bool
          */
         $idcard_checksum18 = function () use (&$id_card, $idcard_verify_number): bool {
             if (18 !== \strlen($id_card))
@@ -478,10 +474,6 @@ class ValidatorHelper
         };
         /**
          * 将15位身份证升级到18位.
-         *
-         * @param string $idcard
-         *
-         * @return string
          */
         $idcard_15to18 = function () use (&$id_card, $idcard_verify_number): string {
             if (15 !== \strlen($id_card))

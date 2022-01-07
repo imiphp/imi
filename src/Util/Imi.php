@@ -423,8 +423,6 @@ class Imi
 
     /**
      * 运行时目录路径.
-     *
-     * @return string
      */
     private static string $runtimePath = '';
 

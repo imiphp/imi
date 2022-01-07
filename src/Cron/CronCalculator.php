@@ -17,10 +17,8 @@ class CronCalculator
      * 获取下一次执行时间.
      *
      * @param \Imi\Cron\CronRule[] $cronRules
-     *
-     * @return int
      */
-    public function getNextTickTime(int $lastTime, array $cronRules)
+    public function getNextTickTime(int $lastTime, array $cronRules): int
     {
         $times = [];
         foreach ($cronRules as $cronRule)

@@ -19,17 +19,13 @@ class JsonObjectParser implements IParser
      * JSON_PRESERVE_ZERO_FRACTION
      * JSON_UNESCAPED_UNICODE
      * JSON_PARTIAL_OUTPUT_ON_ERROR。
-     *
-     * @var int
      */
-    protected $options = \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE;
+    protected int $options = \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE;
 
     /**
      * 设置最大深度。 必须大于0。
-     *
-     * @var int
      */
-    protected $depth = 512;
+    protected int $depth = 512;
 
     /**
      * {@inheritDoc}

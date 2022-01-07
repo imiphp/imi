@@ -375,8 +375,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return false !== $this->current();
     }

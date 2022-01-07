@@ -42,10 +42,8 @@ abstract class BaseMiddleware
 
     /**
      * 获取本机IP.
-     *
-     * @return string
      */
-    protected function getLocalIP()
+    protected function getLocalIP(): string
     {
         $list = swoole_get_local_ip();
         if ($this->interface)

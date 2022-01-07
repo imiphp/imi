@@ -359,8 +359,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         throw new DbException('Not support valid()');
     }

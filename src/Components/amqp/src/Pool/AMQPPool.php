@@ -27,12 +27,8 @@ class AMQPPool
 
     /**
      * 获取新的连接实例.
-     *
-     * @param string $poolName 连接池名称
-     *
-     * @return \PhpAmqpLib\Connection\AbstractConnection
      */
-    public static function getNewInstance($poolName = null)
+    public static function getNewInstance(?string $poolName = null): AbstractConnection
     {
         $poolName = static::parsePoolName($poolName);
         if (PoolManager::exists($poolName))
@@ -60,12 +56,8 @@ class AMQPPool
 
     /**
      * 获取连接实例，每个RequestContext中共用一个.
-     *
-     * @param string $poolName 连接池名称
-     *
-     * @return \PhpAmqpLib\Connection\AbstractConnection|null
      */
-    public static function getInstance($poolName = null)
+    public static function getInstance(?string $poolName = null): ?AbstractConnection
     {
         $poolName = static::parsePoolName($poolName);
         if (PoolManager::exists($poolName))
@@ -108,12 +100,8 @@ class AMQPPool
 
     /**
      * 释放连接实例.
-     *
-     * @param \PhpAmqpLib\Connection\AbstractConnection $client
-     *
-     * @return void
      */
-    public static function release($client)
+    public static function release(AbstractConnection $client): void
     {
         $resource = RequestContext::get('poolResources.' . spl_object_id($client));
         if (null !== $resource)
@@ -126,10 +114,8 @@ class AMQPPool
      * 处理连接池名称.
      *
      * @param string $poolName
-     *
-     * @return string
      */
-    public static function parsePoolName($poolName = null)
+    public static function parsePoolName(?string $poolName = null): string
     {
         if (null === $poolName)
         {
@@ -141,10 +127,8 @@ class AMQPPool
 
     /**
      * 获取默认池子名称.
-     *
-     * @return string
      */
-    public static function getDefaultPoolName()
+    public static function getDefaultPoolName(): string
     {
         // @phpstan-ignore-next-line
         return App::getBean('AMQP')->getDefaultPoolName();

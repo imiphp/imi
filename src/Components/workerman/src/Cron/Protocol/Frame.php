@@ -13,12 +13,8 @@ class Frame
 {
     /**
      * Check the integrity of the package.
-     *
-     * @param string $buffer
-     *
-     * @return int
      */
-    public static function input($buffer, TcpConnection $connection)
+    public static function input(string $buffer, TcpConnection $connection): int
     {
         if (\strlen($buffer) < 4)
         {
@@ -31,24 +27,16 @@ class Frame
 
     /**
      * Decode.
-     *
-     * @param string $buffer
-     *
-     * @return string
      */
-    public static function decode($buffer)
+    public static function decode(string $buffer): string
     {
         return substr($buffer, 4);
     }
 
     /**
      * Encode.
-     *
-     * @param string $buffer
-     *
-     * @return string
      */
-    public static function encode($buffer)
+    public static function encode(string $buffer): string
     {
         return pack('N', \strlen($buffer)) . $buffer;
     }

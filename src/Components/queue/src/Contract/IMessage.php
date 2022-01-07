@@ -23,8 +23,6 @@ interface IMessage extends IArrayable
 
     /**
      * 获取消息内容.
-     *
-     * @return string
      */
     public function getMessage(): ?string;
 

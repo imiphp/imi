@@ -104,12 +104,8 @@ class KafkaPool
 
     /**
      * 处理连接池名称.
-     *
-     * @param string $poolName
-     *
-     * @return string
      */
-    public static function parsePoolName(?string $poolName = null)
+    public static function parsePoolName(?string $poolName = null): string
     {
         if (null === $poolName)
         {

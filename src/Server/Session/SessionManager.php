@@ -133,10 +133,8 @@ class SessionManager
 
     /**
      * 是否已开启session.
-     *
-     * @return bool
      */
-    public function isStart()
+    public function isStart(): bool
     {
         return $this->isStart;
     }

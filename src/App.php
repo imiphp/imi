@@ -48,8 +48,6 @@ class App
 
     /**
      * imi 版本号.
-     *
-     * @var string
      */
     private static ?string $imiVersion = null;
 

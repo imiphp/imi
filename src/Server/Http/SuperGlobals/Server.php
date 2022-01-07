@@ -23,7 +23,6 @@ class Server implements \ArrayAccess, \JsonSerializable
      * @param int|string $offset
      * @param mixed      $value
      */
-    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         $this->defaultServer[$offset] = $value;
@@ -32,7 +31,6 @@ class Server implements \ArrayAccess, \JsonSerializable
     /**
      * @param int|string $offset
      */
-    #[\ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         if (isset($this->defaultServer[$offset]))
@@ -60,7 +58,6 @@ class Server implements \ArrayAccess, \JsonSerializable
     /**
      * @param int|string $offset
      */
-    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         Log::warning('imi does not support to unset values from $_SERVER');

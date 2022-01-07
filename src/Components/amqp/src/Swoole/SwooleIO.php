@@ -16,47 +16,32 @@ class SwooleIO extends AbstractIO
 {
     public const READ_BUFFER_WAIT_INTERVAL = 100000;
 
-    /**
-     *  @var float
-     */
-    protected $read_write_timeout;
+    protected float $read_write_timeout;
 
     /**
      * @var resource|null
      */
     protected $context;
 
-    /**
-     * @var bool
-     */
-    protected $tcp_nodelay = false;
+    protected bool $tcp_nodelay = false;
 
-    /**
-     * @var bool
-     */
-    protected $ssl = false;
+    protected bool $ssl = false;
 
     private ?\Swoole\Coroutine\Client $sock = null;
 
     private string $buffer = '';
 
     /**
-     * @param string        $host
-     * @param int           $port
-     * @param float         $connection_timeout
-     * @param float         $read_write_timeout
      * @param resource|null $context
-     * @param bool          $keepalive
-     * @param int           $heartbeat
      */
     public function __construct(
-        $host,
-        $port,
-        $connection_timeout,
-        $read_write_timeout,
+        string $host,
+        int $port,
+        float $connection_timeout,
+        float $read_write_timeout,
         $context = null,
-        $keepalive = false,
-        $heartbeat = 0
+        bool $keepalive = false,
+        int $heartbeat = 0
     ) {
         if (0 !== $heartbeat && ($read_write_timeout < ($heartbeat * 2)))
         {

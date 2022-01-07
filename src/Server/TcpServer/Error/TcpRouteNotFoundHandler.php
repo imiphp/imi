@@ -18,8 +18,6 @@ class TcpRouteNotFoundHandler implements ITcpRouteNotFoundHandler
 {
     /**
      * 处理器类名，如果为null则使用默认处理.
-     *
-     * @var string
      */
     protected ?string $handler = null;
 
