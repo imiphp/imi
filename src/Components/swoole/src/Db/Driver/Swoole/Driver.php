@@ -212,7 +212,7 @@ class Driver extends MysqlBase implements IMysqlDb
      */
     public function errorCode()
     {
-        if ($this->lastStmt)
+        if ($this->lastStmt && $this->lastStmt instanceof \Swoole\Coroutine\MySQL\Statement)
         {
             return $this->lastStmt->errno;
         }
@@ -227,7 +227,7 @@ class Driver extends MysqlBase implements IMysqlDb
      */
     public function errorInfo(): string
     {
-        if ($this->lastStmt)
+        if ($this->lastStmt && $this->lastStmt instanceof \Swoole\Coroutine\MySQL\Statement)
         {
             return $this->lastStmt->error;
         }

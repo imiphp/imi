@@ -36,7 +36,12 @@ abstract class DbBaseTest extends BaseTest
         $sql = "insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')";
         $result = $db->exec($sql);
         Assert::assertEquals(1, $result);
+        Assert::assertEquals($sql, $db->lastSql());
 
+        Db::exec('TRUNCATE tb_article', [], $this->poolName);
+        $sql = "insert into tb_article(title,content,time)values('title-2', 'content-2', '2021-08-20')";
+        $result = Db::exec($sql, [], $this->poolName);
+        Assert::assertEquals(1, $result);
         Assert::assertEquals($sql, $db->lastSql());
     }
 
@@ -83,7 +88,7 @@ abstract class DbBaseTest extends BaseTest
     {
         ['id' => $id] = $args;
         $db = Db::getInstance($this->poolName);
-        $stmt = $db->query('select * from tb_article where id = ' . (int) $id);
+        $stmt = $db->query('select * from tb_article where id = ' . $id);
         Assert::assertInstanceOf(\Imi\Db\Interfaces\IStatement::class, $stmt);
         Assert::assertEquals([
             [
@@ -326,5 +331,65 @@ abstract class DbBaseTest extends BaseTest
         $this->assertEquals(0, $db->getTransactionLevels());
         $this->assertFalse($db->inTransaction());
         $this->assertTrue($r1);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testSelect(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::select('select * from tb_article where id = ' . $id, [], $this->poolName);
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
+            ],
+        ], $result->getArray());
+
+        $result = Db::select('select * from tb_article where id = ?', [$id], $this->poolName);
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
+            ],
+        ], $result->getArray());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testPrepare(array $args): void
+    {
+        ['id' => $id] = $args;
+        $stmt = Db::prepare('select * from tb_article where id = ' . $id, $this->poolName);
+        $this->assertTrue($stmt->execute());
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
+            ],
+        ], $stmt->fetchAll());
+
+        $stmt = Db::prepare('select * from tb_article where id = ?', $this->poolName);
+        $this->assertTrue($stmt->execute([$id]));
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
+            ],
+        ], $stmt->fetchAll());
     }
 }
