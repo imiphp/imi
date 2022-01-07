@@ -145,6 +145,7 @@ class Driver extends MysqlBase implements IMysqlDb
             $this->lastStmt = null;
         }
         $this->instance = null;
+        $this->transaction->init();
     }
 
     /**

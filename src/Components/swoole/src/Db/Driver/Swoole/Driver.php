@@ -136,6 +136,7 @@ class Driver extends MysqlBase implements IMysqlDb
             $this->instance->close();
             $this->instance = null;
         }
+        $this->transaction->init();
     }
 
     /**

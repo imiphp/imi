@@ -140,6 +140,7 @@ class Driver extends PgsqlBase implements IPgsqlDb
             $this->lastStmt = null;
         }
         $this->instance = null;
+        $this->transaction->init();
     }
 
     /**

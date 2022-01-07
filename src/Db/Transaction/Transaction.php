@@ -20,6 +20,12 @@ class Transaction
      */
     private int $transactionCount = 0;
 
+    public function init(): void
+    {
+        $this->transactionLevels = $this->transactionCount = 0;
+        $this->__events = $this->__eventQueue = $this->__eventChangeRecords = $this->__sortedEventQueue = [];
+    }
+
     /**
      * 启动一个事务
      */

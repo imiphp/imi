@@ -151,6 +151,7 @@ if (class_exists(PostgreSQL::class, false))
             {
                 $this->instance = null;
             }
+            $this->transaction->init();
         }
 
         /**
