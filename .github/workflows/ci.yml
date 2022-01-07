@@ -70,7 +70,6 @@ jobs:
       - name: Test smarty
         run: docker exec ${ENV_SERVICE} composer test-smarty
       - name: Test pgsql
-        if: ${{ matrix.swoole.postgresql_version != '' }}
         run: docker exec ${ENV_SERVICE} composer test-pgsql
       - name: Print logs
         if: failure()

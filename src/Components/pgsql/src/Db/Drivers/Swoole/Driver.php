@@ -96,7 +96,7 @@ if (class_exists(PostgreSQL::class, false))
             {
                 return true;
             }
-            if ($this->checkCodeIsOffline($instance->errno))
+            if ($this->checkCodeIsOffline($instance->errCode))
             {
                 $this->close();
             }

@@ -124,5 +124,4 @@ jobs:
       - name: Test pgsql
         run: composer test-pgsql
       - name: Print logs
-        if: ${{ true }}
         run: php .github/print-logs.php

@@ -214,7 +214,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                 {
                     $this->close();
                 }
-                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
         }
         $this->result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC) ?: [];
