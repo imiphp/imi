@@ -106,10 +106,8 @@ if (class_exists(PostgreSQL::class, false))
 
         /**
          * 构建DNS字符串.
-         *
-         * @return string
          */
-        protected function buildDSN()
+        protected function buildDSN(): string
         {
             $option = $this->option;
             if (isset($option['dsn']))
