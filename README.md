@@ -83,7 +83,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 #### 优秀的第三方组件
 
 * [权限控制 (phpben/imi-auth)](https://gitee.com/phpben/imi-auth)
-* [注册中心 (phpben/imi-config-center)](https://gitee.com/phpben/config-center)
+* [注册中心 (phpben/imi-config-center)](https://gitee.com/phpben/imi-config-center)
 * [模块化路由 (phpben/imi-module-route)](https://gitee.com/phpben/imi-module-route)
 * [ThinkPHP6 验证器 (phpben/imi-validate)](https://gitee.com/phpben/imi-validate)
 
