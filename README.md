@@ -59,6 +59,9 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ### 扩展组件
 
+#### 官方组件
+
+* [PostgreSQL](src/components/db/pgsql.md)
 * [MQTT](src/Components/mqtt)
 * [RPC](src/Components/rpc)
 * [gRPC](src/Components/grpc)
@@ -76,6 +79,17 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 * [Swoole Tracker](src/Components/swoole-tracker)
 
 > 这些组件都已经在 imi 主仓库中维护
+
+#### 优秀的第三方组件
+
+* [权限控制 (phpben/imi-auth)](https://gitee.com/phpben/imi-auth)
+* [注册中心 (phpben/imi-config-center)](https://gitee.com/phpben/config-center)
+* [模块化路由 (phpben/imi-module-route)](https://gitee.com/phpben/imi-module-route)
+* [ThinkPHP6 验证器 (phpben/imi-validate)](https://gitee.com/phpben/imi-validate)
+
+#### 优秀的开源项目
+
+* [后台管理框架 (phpben/imi-admin)](https://gitee.com/phpben/imi-admin)
 
 ## 开始使用
 
