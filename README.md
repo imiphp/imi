@@ -61,7 +61,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 #### 官方组件
 
-* [PostgreSQL](src/components/db/pgsql.md)
+* [PostgreSQL](doc/components/db/pgsql.md)
 * [MQTT](src/Components/mqtt)
 * [RPC](src/Components/rpc)
 * [gRPC](src/Components/grpc)
