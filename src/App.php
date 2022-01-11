@@ -120,7 +120,7 @@ class App
         AnnotationManager::init();
         if (!self::has(AppContexts::APP_PATH))
         {
-            self::set(AppContexts::APP_PATH, Imi::getNamespacePath($namespace), true);
+            self::set(AppContexts::APP_PATH, Imi::getNamespacePath($namespace, true), true);
         }
         self::$isInited = true;
         Event::trigger('IMI.INITED');

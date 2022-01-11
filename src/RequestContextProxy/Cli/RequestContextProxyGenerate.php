@@ -59,7 +59,7 @@ class RequestContextProxyGenerate
         }
         $namespace = Imi::getClassNamespace($target);
         $shortClassName = Imi::getClassShortName($target);
-        $fileName = Imi::getNamespacePath($namespace);
+        $fileName = Imi::getNamespacePath($namespace, true);
         if (null === $fileName)
         {
             throw new \RuntimeException(sprintf('Get namespace %s path failed', $namespace));

@@ -210,7 +210,7 @@ class Imi
     /**
      * 根据命名空间获取真实路径，返回null则为获取失败.
      */
-    public static function getNamespacePath(string $namespace): ?string
+    public static function getNamespacePath(string $namespace, bool $returnFirst = false): ?string
     {
         if ('\\' !== ($namespace[-1] ?? ''))
         {
@@ -228,7 +228,7 @@ class Imi
                     $len = \strlen($keyNamespace);
                     if (substr($namespace, 0, $len) === $keyNamespace)
                     {
-                        if (isset($paths[1]))
+                        if (isset($paths[1]) && !$returnFirst)
                         {
                             return null;
                         }

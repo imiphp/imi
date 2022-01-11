@@ -45,7 +45,7 @@ class ControllerGenerate extends BaseCommand
         {
             $content = $this->renderTemplate($data);
         }
-        $fileName = File::path(Imi::getNamespacePath($namespace), $name . '.php');
+        $fileName = File::path(Imi::getNamespacePath($namespace, true), $name . '.php');
         if (is_file($fileName) && !$override)
         {
             // 不覆盖

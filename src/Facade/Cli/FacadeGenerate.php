@@ -53,7 +53,7 @@ class FacadeGenerate extends BaseCommand
         }
         $namespace = Imi::getClassNamespace($facadeClass);
         $shortClassName = Imi::getClassShortName($facadeClass);
-        $fileName = Imi::getNamespacePath($namespace);
+        $fileName = Imi::getNamespacePath($namespace, true);
         if (null === $fileName)
         {
             throw new \RuntimeException(sprintf('Get namespace %s path failed', $namespace));

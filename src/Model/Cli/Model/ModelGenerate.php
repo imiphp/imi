@@ -97,7 +97,7 @@ class ModelGenerate extends BaseCommand
         // model保存路径
         if (null === $basePath)
         {
-            $modelPath = Imi::getNamespacePath($namespace);
+            $modelPath = Imi::getNamespacePath($namespace, true);
         }
         else
         {
@@ -139,7 +139,7 @@ class ModelGenerate extends BaseCommand
                 // 按表指定，下个大版本即将废弃 @deprecated 3.0
                 $configItem = $configData['relation'][$table];
                 $modelNamespace = $configItem['namespace'] ?? $namespace;
-                $path = Imi::getNamespacePath($modelNamespace);
+                $path = Imi::getNamespacePath($modelNamespace, true);
                 if (null === $path)
                 {
                     $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
@@ -164,7 +164,7 @@ class ModelGenerate extends BaseCommand
                     if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
                     {
                         $modelNamespace = $namespaceName;
-                        $path = Imi::getNamespacePath($modelNamespace);
+                        $path = Imi::getNamespacePath($modelNamespace, true);
                         if (null === $path)
                         {
                             $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
