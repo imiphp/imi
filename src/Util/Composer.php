@@ -28,16 +28,8 @@ class Composer
         {
             return self::$classLoaders;
         }
-        $classLoaders = [];
-        foreach (spl_autoload_functions() as $autoloadFunction)
-        {
-            if (\is_array($autoloadFunction) && isset($autoloadFunction[0]) && $autoloadFunction[0] instanceof ClassLoader)
-            {
-                $classLoaders[] = $autoloadFunction[0];
-            }
-        }
 
-        return self::$classLoaders = $classLoaders;
+        return self::$classLoaders = ClassLoader::getRegisteredLoaders();
     }
 
     /**
@@ -45,7 +37,7 @@ class Composer
      */
     public static function getPathNamespaces(string $path): array
     {
-        $realPath = realpath($path);
+        $realPath = File::absolute($path);
         if (!$realPath)
         {
             return [];
@@ -57,7 +49,7 @@ class Composer
             {
                 foreach ($namespacePaths as $namespacePath)
                 {
-                    if ($realPath === realpath($namespacePath))
+                    if ($realPath === File::absolute($namespacePath))
                     {
                         $result[] = $namespace;
                     }

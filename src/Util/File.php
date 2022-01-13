@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\Util\File\FileEnumItem;
+use function str_starts_with;
+use function substr;
 use Swoole\Coroutine;
 
 /**
@@ -349,6 +351,12 @@ class File
      */
     public static function absolute(string $path): string
     {
+        $isPhar = false;
+        if (str_starts_with($path, 'phar://'))
+        {
+            $path = substr($path, 7);
+            $isPhar = true;
+        }
         $path = str_replace(['/', '\\'], \DIRECTORY_SEPARATOR, $path);
         $parts = explode(\DIRECTORY_SEPARATOR, $path);
         $absolutes = [];
@@ -372,6 +380,8 @@ class File
             }
         }
 
-        return implode(\DIRECTORY_SEPARATOR, $absolutes);
+        $path = implode(\DIRECTORY_SEPARATOR, $absolutes);
+
+        return $isPhar ? ('phar://' . $path) : $path;
     }
 }

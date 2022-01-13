@@ -10,6 +10,10 @@ use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Util\File;
 
+\defined('IN_PHAR') || \define('IN_PHAR', (bool) \Phar::running(false));
+\defined('APP_ROOT') || \define('APP_ROOT', IN_PHAR ? \Phar::running() : realpath(getcwd()));
+\defined('RUNNING_ROOT') || \define('RUNNING_ROOT', realpath(getcwd()));
+
 return static function () {
     $status = 0;
     \Swoole\Coroutine\run(static function () use (&$status) {
@@ -56,6 +60,10 @@ return static function () {
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)
                 {
+                    if (IN_PHAR)
+                    {
+                        App::set(AppContexts::APP_PATH, APP_ROOT, true);
+                    }
                     $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)));
                     $config = include File::path($appPath, 'config/config.php');
                     if (!isset($config['namespace']))

@@ -15,8 +15,8 @@ use Imi\Main\IMain;
 use Imi\Util\Composer;
 use Imi\Util\File;
 use Imi\Util\Imi;
-use ReflectionClass;
 use function sprintf;
+use function var_dump;
 
 /**
  * 扫描类.
@@ -50,18 +50,10 @@ class Scanner
     {
         $time = microtime(true);
         $components = [];
-        $fileNameMap = [];
-        foreach (Composer::getClassLoaders() as $classLoader)
+        foreach (Composer::getClassLoaders() as $vendorPath => $classLoader)
         {
-            $ref = new ReflectionClass($classLoader);
-            $fileName = $ref->getFileName();
-            if (isset($fileNameMap[$fileName]))
-            {
-                continue;
-            }
-            $fileNameMap[$fileName] = true;
-            $vendorPath = \dirname($fileName, 2);
             // 遍历第一层
+            var_dump("vendorPath $vendorPath");
             foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)
             {
                 if (!$dir1->isDir())
@@ -101,6 +93,8 @@ class Scanner
                 }
             }
         }
+        var_dump('imi components');
+        var_dump($components);
         $components = array_unique(array_merge(Config::get('@app.components', []), $components));
         if ($components)
         {
@@ -154,8 +148,10 @@ class Scanner
         $nextComponents = [];
         foreach ($namespaces as $namespace)
         {
+            var_dump("scanComponents $namespace");
             foreach (Imi::getNamespacePaths($namespace) as $path)
             {
+                var_dump("path $path/config/config.php");
                 $fileName = $path . '/config/config.php';
                 if (is_file($fileName))
                 {

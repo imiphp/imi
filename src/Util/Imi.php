@@ -20,6 +20,7 @@ use function sprintf;
 use function str_contains;
 use function strrpos;
 use function substr;
+use function var_dump;
 
 /**
  * 框架里杂七杂八的各种工具方法.
@@ -438,21 +439,28 @@ class Imi
             $parentPath = Config::get('@app.runtimePath');
             if (null === $parentPath)
             {
-                $namespacePaths = self::getNamespacePaths($namespace = App::getNamespace());
-                $resultNamespacePath = null;
-                foreach ($namespacePaths as $namespacePath)
+                if (IN_PHAR)
                 {
-                    if (is_dir($namespacePath))
+                    $parentPath = File::path(RUNNING_ROOT, '.runtime');
+                }
+                else
+                {
+                    $namespacePaths = self::getNamespacePaths($namespace = App::getNamespace());
+                    $resultNamespacePath = null;
+                    foreach ($namespacePaths as $namespacePath)
                     {
-                        $resultNamespacePath = $namespacePath;
-                        break;
+                        if (is_dir($namespacePath))
+                        {
+                            $resultNamespacePath = $namespacePath;
+                            break;
+                        }
                     }
+                    if (null === $resultNamespacePath)
+                    {
+                        throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
+                    }
+                    $parentPath = File::path($resultNamespacePath, '.runtime');
                 }
-                if (null === $resultNamespacePath)
-                {
-                    throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
-                }
-                $parentPath = File::path($resultNamespacePath, '.runtime');
             }
             File::createDir($parentPath);
             self::$runtimePath = $parentPath;
@@ -499,6 +507,7 @@ class Imi
             'cacheName' => $cacheName,
             'data'      => &$data,
         ]);
+        var_dump("cache file $cacheName");
         file_put_contents(File::path($cacheName, 'runtime.cache'), serialize($data));
     }
 
