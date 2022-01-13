@@ -439,7 +439,7 @@ class ValidatorHelper
          *
          * @return int|false
          */
-        $idcard_verify_number = function () use (&$id_card) {
+        $idcard_verify_number = static function () use (&$id_card) {
             if (17 !== \strlen($id_card))
             {
                 return false;
@@ -462,7 +462,7 @@ class ValidatorHelper
         /**
          * 18位身份证校验码有效性检查.
          */
-        $idcard_checksum18 = function () use (&$id_card, $idcard_verify_number): bool {
+        $idcard_checksum18 = static function () use (&$id_card, $idcard_verify_number): bool {
             if (18 !== \strlen($id_card))
             {
                 return false;
@@ -475,7 +475,7 @@ class ValidatorHelper
         /**
          * 将15位身份证升级到18位.
          */
-        $idcard_15to18 = function () use (&$id_card, $idcard_verify_number): string {
+        $idcard_15to18 = static function () use (&$id_card, $idcard_verify_number): string {
             if (15 !== \strlen($id_card))
             {
                 return '';

@@ -30,7 +30,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
          */
         public function run(ITaskParam $param)
         {
-            goWait(function () use ($param) {
+            goWait(static function () use ($param) {
                 try
                 {
                     $result = $param->getData();

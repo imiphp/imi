@@ -33,7 +33,7 @@ class BeanProxy
         {
             // 先尝试环绕
             $aroundAspectDoList = [];
-            self::doAspect($className, $method, 'around', function (AopItem $aopItem, Around $annotation) use (&$aroundAspectDoList) {
+            self::doAspect($className, $method, 'around', static function (AopItem $aopItem, Around $annotation) use (&$aroundAspectDoList) {
                 $aroundAspectDoList[] = $aopItem->getCallback();
             });
             if (!$aroundAspectDoList)
@@ -55,7 +55,7 @@ class BeanProxy
                     }
 
                     return self::callOrigin($object, $className, $method, $args, $callback);
-                } : function (?array $inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
+                } : static function (?array $inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
                     if (null !== $inArgs)
                     {
                         $args = $inArgs;
@@ -73,7 +73,7 @@ class BeanProxy
         {
             // 异常
             $isCancelThrow = false;
-            self::doAspect($className, $method, 'afterThrowing', function (AopItem $aopItem, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
+            self::doAspect($className, $method, 'afterThrowing', static function (AopItem $aopItem, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
                 // 验证异常是否捕获
                 if ($annotation->allow || $annotation->deny)
                 {
@@ -236,19 +236,19 @@ class BeanProxy
     private static function callOrigin(object $object, string $className, string $method, array &$args, callable $callback)
     {
         // before
-        self::doAspect($className, $method, 'before', function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'before', static function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('before', $method, $args, $object);
             ($aopItem->getCallback())($joinPoint);
         });
         // 原始方法调用
         $result = $callback(...$args);
         // after
-        self::doAspect($className, $method, 'after', function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'after', static function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('after', $method, $args, $object);
             ($aopItem->getCallback())($joinPoint);
         });
         // afterReturning
-        self::doAspect($className, $method, 'afterReturning', function (AopItem $aopItem, AfterReturning $annotation) use ($object, $method, &$args, &$result) {
+        self::doAspect($className, $method, 'afterReturning', static function (AopItem $aopItem, AfterReturning $annotation) use ($object, $method, &$args, &$result) {
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object);
             $joinPoint->setReturnValue($result);
             ($aopItem->getCallback())($joinPoint);

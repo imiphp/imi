@@ -61,7 +61,7 @@ class LocalServerUtil implements ISwooleServerUtil
         {
             if ($tmpWorkerId === $currentWorkerId)
             {
-                Coroutine::create(function () use ($server, $currentWorkerId, $message) {
+                Coroutine::create(static function () use ($server, $currentWorkerId, $message) {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $server,
                         'workerId'  => $currentWorkerId,

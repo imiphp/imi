@@ -312,7 +312,7 @@ class Server extends BaseServer
         }
         $process = new Process($cmd);
         $process->start();
-        $process->waitUntil(function ($type, $buffer) {
+        $process->waitUntil(static function ($type, $buffer) {
             if (Process::ERR === $type)
             {
                 throw new \RuntimeException('Cannot reload RoadRunner: ' . $buffer);

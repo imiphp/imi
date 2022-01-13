@@ -188,7 +188,7 @@ class RequestContextProxyGenerate
             }
         }
         // @phpstan-ignore-next-line
-        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation, $interface, $methodCodes): string {
+        $content = (static function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation, $interface, $methodCodes): string {
             ob_start();
             include __DIR__ . '/template.tpl';
 

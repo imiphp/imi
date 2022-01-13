@@ -360,7 +360,7 @@ foreach ($storeRepoMap as $name => $urls)
         execCMD('git status -s', '', $result);
         if ($result)
         {
-            execCMD('git config user.name ' . escapeshellarg($committerName) . ' && git config user.email ' . escapeshellarg($committerEmail) . ' && git commit --author ' . escapeshellarg($authorName . ' <' . $authorEmail . '>') . ' --date ' . escapeshellarg($date) . ' -am ' . escapeshellarg($message), 'git commit', $result, function (array $result, int $resultCode) {
+            execCMD('git config user.name ' . escapeshellarg($committerName) . ' && git config user.email ' . escapeshellarg($committerEmail) . ' && git commit --author ' . escapeshellarg($authorName . ' <' . $authorEmail . '>') . ' --date ' . escapeshellarg($date) . ' -am ' . escapeshellarg($message), 'git commit', $result, static function (array $result, int $resultCode) {
                 return str_contains(implode(\PHP_EOL, $result), 'nothing to commit');
             });
         }

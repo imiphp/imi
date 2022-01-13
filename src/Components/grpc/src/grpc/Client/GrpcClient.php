@@ -180,7 +180,7 @@ class GrpcClient implements IRpcClient
     public function buildRequestUrl(string $package, string $service, string $name): string
     {
         // @phpstan-ignore-next-line
-        return preg_replace_callback('/\{([^\|\}]+)\|?([^\}]*)\}/', function ($match) use ($package, $service, $name) {
+        return preg_replace_callback('/\{([^\|\}]+)\|?([^\}]*)\}/', static function ($match) use ($package, $service, $name) {
             $value = ${$match[1]} ?? '';
             if ('' !== $match[2])
             {

@@ -298,7 +298,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 {
                     Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
                     // 监听进程通讯
-                    $callback = function (array $data) {
+                    $callback = static function (array $data) {
                         $action = $data['action'] ?? null;
                         if (!$action)
                         {

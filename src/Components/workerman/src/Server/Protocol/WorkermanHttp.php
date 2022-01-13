@@ -281,7 +281,7 @@ class WorkermanHttp
         }
         $offset_end = $offset + $length;
         // Read file content from disk piece by piece and send to client.
-        $do_write = function () use ($connection, $handler, $length, $offset_end) {
+        $do_write = static function () use ($connection, $handler, $length, $offset_end) {
             // Send buffer not full.
             while (false === $connection->bufferFull)
             {
@@ -316,11 +316,11 @@ class WorkermanHttp
             }
         };
         // Send buffer full.
-        $connection->onBufferFull = function ($connection) {
+        $connection->onBufferFull = static function ($connection) {
             $connection->bufferFull = true;
         };
         // Send buffer drain.
-        $connection->onBufferDrain = function ($connection) use ($do_write) {
+        $connection->onBufferDrain = static function ($connection) use ($do_write) {
             $connection->bufferFull = false;
             $do_write();
         };

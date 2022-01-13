@@ -109,7 +109,7 @@ abstract class Model extends BaseModel
                 {
                     $bindValues[':' . $k] = $v;
                 }
-                $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys) {
+                $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys) {
                     foreach ($keys as $name)
                     {
                         $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
@@ -132,7 +132,7 @@ abstract class Model extends BaseModel
                     $keys[] = $idName;
                     $bindValues[':' . $idName] = $ids[$i];
                 }
-                $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys) {
+                $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys) {
                     foreach ($keys as $name)
                     {
                         $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
@@ -298,7 +298,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
-        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
+        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), static function (IQuery $query) use ($conditionId) {
             // @phpstan-ignore-next-line
             if ($conditionId)
             {

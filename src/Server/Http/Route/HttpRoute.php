@@ -237,7 +237,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($params, fn (string $name) => $request->get($name));
+        return Imi::checkCompareRules($params, static fn (string $name) => $request->get($name));
     }
 
     /**
@@ -253,7 +253,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($params, fn (string $name) => $request->post($name));
+        return Imi::checkCompareRules($params, static fn (string $name) => $request->post($name));
     }
 
     /**
@@ -274,7 +274,7 @@ class HttpRoute
         $parsedBody = $request->getParsedBody();
         $isObject = \is_object($parsedBody);
 
-        return Imi::checkCompareRules($params, function (string $name) use ($parsedBody, $isObject, $paramsBodyMultiLevel) {
+        return Imi::checkCompareRules($params, static function (string $name) use ($parsedBody, $isObject, $paramsBodyMultiLevel) {
             if ($paramsBodyMultiLevel)
             {
                 return ObjectArrayHelper::get($parsedBody, $name);
@@ -303,7 +303,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($header, fn (string $name) => $request->getHeaderLine($name));
+        return Imi::checkCompareRules($header, static fn (string $name) => $request->getHeaderLine($name));
     }
 
     /**

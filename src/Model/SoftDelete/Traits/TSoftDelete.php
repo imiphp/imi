@@ -141,7 +141,7 @@ trait TSoftDelete
      */
     public function hardDelete(): IResult
     {
-        $this->one(ModelEvents::BEFORE_DELETE, function (BeforeDeleteEventParam $e) {
+        $this->one(ModelEvents::BEFORE_DELETE, static function (BeforeDeleteEventParam $e) {
             $e->query->getOption()->where = [];
         });
 
@@ -180,7 +180,7 @@ trait TSoftDelete
                     $bindValues[':' . $k] = $v;
                 }
                 $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
-                $query = $query->alias($realClassName . ':findDeleted:pk1:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys, $softDeleteAnnotation) {
+                $query = $query->alias($realClassName . ':findDeleted:pk1:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys, $softDeleteAnnotation) {
                     foreach ($keys as $name)
                     {
                         $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
@@ -207,7 +207,7 @@ trait TSoftDelete
                     }
                 }
                 $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
-                $query = $query->alias($realClassName . ':findDeleted:pk2:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys, $softDeleteAnnotation) {
+                $query = $query->alias($realClassName . ':findDeleted:pk2:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys, $softDeleteAnnotation) {
                     if ($keys)
                     {
                         foreach ($keys as $name)

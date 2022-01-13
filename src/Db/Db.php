@@ -211,7 +211,7 @@ class Db
 
         if (PoolManager::exists($poolName))
         {
-            return PoolManager::use($poolName, fn (IPoolResource $resource, IDb $db) => $callable($db));
+            return PoolManager::use($poolName, static fn (IPoolResource $resource, IDb $db) => $callable($db));
         }
         else
         {

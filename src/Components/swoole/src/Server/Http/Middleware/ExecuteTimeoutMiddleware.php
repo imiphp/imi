@@ -47,7 +47,7 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
             // @phpstan-ignore-next-line
             $handler->handle($request, $response);
         });
-        Coroutine::defer(function () use ($timerId) {
+        Coroutine::defer(static function () use ($timerId) {
             Timer::clear($timerId);
         });
 

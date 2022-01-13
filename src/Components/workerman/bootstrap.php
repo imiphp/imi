@@ -10,12 +10,12 @@ use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Util\File;
 
-return function () {
+return static function () {
     $path = null;
 
     if (!class_exists('Imi\App'))
     {
-        (function () use (&$path) {
+        (static function () use (&$path) {
             foreach ([
                 $_SERVER['PWD'] ?? null,
                 getcwd(),
@@ -44,7 +44,7 @@ return function () {
     Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Workerman\Process\Listener\LoadRuntimeListener::class, 19940000);
     Event::on('IMI.BUILD_RUNTIME', \Imi\Workerman\Process\Listener\BuildRuntimeListener::class, 19940000);
 
-    App::run((function () use ($path): string {
+    App::run((static function () use ($path): string {
         $input = ImiCommand::getInput();
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)

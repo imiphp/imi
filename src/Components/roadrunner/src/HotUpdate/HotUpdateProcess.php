@@ -254,7 +254,7 @@ class HotUpdateProcess
      */
     private function closeBuildRuntime(): void
     {
-        $closePipes = function (?array $buildRuntimePipes) {
+        $closePipes = static function (?array $buildRuntimePipes) {
             if (null !== $buildRuntimePipes)
             {
                 foreach ($buildRuntimePipes as $pipe)

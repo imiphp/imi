@@ -191,7 +191,7 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $rightModel::deleteBatch(function (IQuery $query) use ($pk, $deleteIds) {
+                $rightModel::deleteBatch(static function (IQuery $query) use ($pk, $deleteIds) {
                     $query->whereIn($pk, $deleteIds);
                 });
             }
@@ -274,7 +274,7 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $modelLeftValue) {
+                $middleModel::deleteBatch(static function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $modelLeftValue) {
                     $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }
@@ -486,7 +486,7 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $rightModel::deleteBatch(function (IQuery $query) use ($pk, $deleteIds) {
+                $rightModel::deleteBatch(static function (IQuery $query) use ($pk, $deleteIds) {
                     $query->whereIn($pk, $deleteIds);
                 });
             }
@@ -570,7 +570,7 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $annotation, $modelLeftValue) {
+                $middleModel::deleteBatch(static function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $annotation, $modelLeftValue) {
                     $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }

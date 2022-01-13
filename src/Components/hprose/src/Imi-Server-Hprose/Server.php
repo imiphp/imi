@@ -73,7 +73,7 @@ class Server extends BaseRpcServer
             PoolManager::destroyCurrentContext();
             RequestContext::destroy();
         };
-        $this->hproseService->onSendError = function (\Throwable $error, \stdClass $context) {
+        $this->hproseService->onSendError = static function (\Throwable $error, \stdClass $context) {
             Log::error($error->getMessage(), [
                 'trace'     => $error->getTrace(),
                 'errorFile' => $error->getFile(),

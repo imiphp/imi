@@ -121,7 +121,7 @@ class FacadeGenerate extends BaseCommand
             $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
         // @phpstan-ignore-next-line
-        $content = (function () use ($namespace, $facadeAnnotation, $methods, $shortClassName): string {
+        $content = (static function () use ($namespace, $facadeAnnotation, $methods, $shortClassName): string {
             ob_start();
             include __DIR__ . '/template.tpl';
 

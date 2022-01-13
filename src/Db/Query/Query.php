@@ -288,7 +288,7 @@ abstract class Query implements IQuery
         {
             return $this;
         }
-        $func = function (array $condition) use (&$func): array {
+        $func = static function (array $condition) use (&$func): array {
             $result = [];
             foreach ($condition as $key => $value)
             {
@@ -341,14 +341,14 @@ abstract class Query implements IQuery
                 else
                 {
                     // 逻辑运算符
-                    $result[] = new WhereBrackets(fn () => $func($value), $key);
+                    $result[] = new WhereBrackets(static fn () => $func($value), $key);
                 }
             }
 
             return $result;
         };
 
-        return $this->whereBrackets(fn () => $func($condition), $logicalOperator);
+        return $this->whereBrackets(static fn () => $func($condition), $logicalOperator);
     }
 
     /**

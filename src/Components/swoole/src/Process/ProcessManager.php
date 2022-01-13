@@ -134,7 +134,7 @@ class ProcessManager
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode) {
                 if ($inCoroutine = Coroutine::isIn())
                 {
-                    Coroutine::defer(function () use ($name, $swooleProcess) {
+                    Coroutine::defer(static function () use ($name, $swooleProcess) {
                         // 进程结束事件
                         Event::trigger('IMI.PROCESS.END', [
                             'name'      => $name,

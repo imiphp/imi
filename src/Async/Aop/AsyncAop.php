@@ -36,7 +36,7 @@ class AsyncAop
      */
     public function parseAsync(AroundJoinPoint $joinPoint)
     {
-        $result = \Imi\Async\Async::exec(fn () => $joinPoint->proceed());
+        $result = \Imi\Async\Async::exec(static fn () => $joinPoint->proceed());
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
         $methodRef = ReflectionContainer::getMethodReflection($className, $joinPoint->getMethod());
         if (!$methodRef->hasReturnType() || ReflectionUtil::allowsType($methodRef->getReturnType(), IAsyncResult::class, $className))

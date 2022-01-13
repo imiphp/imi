@@ -77,7 +77,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 // Gateway Worker
                 $client = new GatewayWorkerClient(($workermanGatewayConfig['workerName'] ?? $this->getName()) . ':' . Worker::getWorkerId(), $config);
                 // 异常处理
-                $client->onException = function (Throwable $th) {
+                $client->onException = static function (Throwable $th) {
                     /** @var ErrorLog $errorLog */
                     $errorLog = App::getBean('ErrorLog');
                     $errorLog->onException($th);

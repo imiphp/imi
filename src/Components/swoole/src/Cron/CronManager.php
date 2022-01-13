@@ -187,14 +187,14 @@ class CronManager implements ICronManager
             {
                 case CronTaskType::ALL_WORKER:
                 case CronTaskType::RANDOM_WORKER:
-                    $task = function (string $id, $data) use ($class) {
+                    $task = static function (string $id, $data) use ($class) {
                         /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);
                     };
                     break;
                 case CronTaskType::TASK:
-                    $task = function (string $id, $data) use ($class) {
+                    $task = static function (string $id, $data) use ($class) {
                         TaskManager::nPost('imiCronTask', [
                             'id'    => $id,
                             'data'  => $data,
@@ -213,8 +213,8 @@ class CronManager implements ICronManager
                     };
                     break;
                 case CronTaskType::CRON_PROCESS:
-                    return function (string $id, $data) use ($class) {
-                        goWait(function () use ($class, $id, $data) {
+                    return static function (string $id, $data) use ($class) {
+                        goWait(static function () use ($class, $id, $data) {
                             /** @var \Imi\Cron\Contract\ICronTask $handler */
                             $handler = App::getBean($class);
                             $handler->run($id, $data);
@@ -248,7 +248,7 @@ class CronManager implements ICronManager
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cronId, $class));
             }
-            $task = function (string $id, $data) use ($taskAnnotation) {
+            $task = static function (string $id, $data) use ($taskAnnotation) {
                 TaskManager::nPost($taskAnnotation->name, $data);
             };
         }

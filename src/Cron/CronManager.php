@@ -167,7 +167,7 @@ class CronManager implements ICronManager
             switch ($cronType)
             {
                 case CronTaskType::CRON_PROCESS:
-                    return function (string $id, $data) use ($class) {
+                    return static function (string $id, $data) use ($class) {
                         /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);

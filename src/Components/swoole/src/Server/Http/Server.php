@@ -142,7 +142,7 @@ class Server extends Base implements ISwooleHttpServer
         }
         else
         {
-            $this->swoolePort->on('request', function () {
+            $this->swoolePort->on('request', static function () {
             });
         }
 
@@ -167,7 +167,7 @@ class Server extends Base implements ISwooleHttpServer
         }
         else
         {
-            $this->swoolePort->on('close', function () {
+            $this->swoolePort->on('close', static function () {
             });
         }
     }

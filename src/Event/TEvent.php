@@ -48,7 +48,7 @@ trait TEvent
             if (\is_string($callback) && class_exists($callback))
             {
                 $callbackClass = $callback;
-                $callback = function ($param) use ($callback) {
+                $callback = static function ($param) use ($callback) {
                     $obj = BeanFactory::newInstance($callback);
                     $obj->handle($param);
                 };
@@ -84,7 +84,7 @@ trait TEvent
             if (\is_string($callback) && class_exists($callback))
             {
                 $callbackClass = $callback;
-                $callback = function ($param) use ($callback) {
+                $callback = static function ($param) use ($callback) {
                     $obj = BeanFactory::newInstance($callback);
                     $obj->handle($param);
                 };

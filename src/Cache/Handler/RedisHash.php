@@ -62,7 +62,7 @@ class RedisHash extends Base
     {
         $this->parseKey($key, $member);
 
-        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($key, $member) {
+        return Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($key, $member) {
             if (null === $member)
             {
                 return $redis->del($key) > 0;
@@ -163,7 +163,7 @@ class RedisHash extends Base
             $setValues[$k]['value'][] = $this->encode($v);
         }
 
-        $result = Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $setValues) {
+        $result = Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($script, $setValues) {
             foreach ($setValues as $key => $item)
             {
                 $result = false !== $redis->evalEx($script, array_merge([$key], array_map([$redis, '_serialize'], $item['member']), array_map([$redis, '_serialize'], $item['value'])), 1);
@@ -201,7 +201,7 @@ class RedisHash extends Base
             $keysMembers[$key][] = $member;
         }
 
-        return (bool) Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers) {
+        return (bool) Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers) {
             foreach ($keysMembers as $key => $members)
             {
                 $result = $redis->evalEx($script, array_merge(
@@ -225,7 +225,7 @@ class RedisHash extends Base
     {
         $this->parseKey($key, $member);
 
-        return (bool) Redis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->hExists($key, $member), $this->poolName, true);
+        return (bool) Redis::use(static fn (\Imi\Redis\RedisHandler $redis) => $redis->hExists($key, $member), $this->poolName, true);
     }
 
     /**

@@ -23,7 +23,7 @@ class ConnectionContext
         $requestContextData = RequestContext::getContext();
         if (!static::get(null, null, null, $serverName) && $clientId = ($requestContextData['clientId'] ?? null))
         {
-            static::use(function (array $contextData) use ($data, $clientId, $requestContextData): array {
+            static::use(static function (array $contextData) use ($data, $clientId, $requestContextData): array {
                 if ($contextData)
                 {
                     $contextData = array_merge($contextData, $data);
@@ -54,7 +54,7 @@ class ConnectionContext
             }
         }
         $data = static::getContext($fromClientId, $serverName);
-        static::use(function (array $contextData) use ($data, $toClientId): array {
+        static::use(static function (array $contextData) use ($data, $toClientId): array {
             $contextData = $data;
             $contextData['clientId'] = $toClientId;
 
@@ -156,7 +156,7 @@ class ConnectionContext
         }
         $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
-        $result = $store->lock($clientIdStr, function () use ($store, $name, $value, $clientIdStr) {
+        $result = $store->lock($clientIdStr, static function () use ($store, $name, $value, $clientIdStr) {
             $data = $store->read($clientIdStr);
             $data[$name] = $value;
             $store->save($clientIdStr, $data);
@@ -184,7 +184,7 @@ class ConnectionContext
         }
         $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
-        $result = $store->lock($clientIdStr, function () use ($store, $data, $clientIdStr) {
+        $result = $store->lock($clientIdStr, static function () use ($store, $data, $clientIdStr) {
             $storeData = $store->read($clientIdStr);
             foreach ($data as $name => $value)
             {
@@ -216,7 +216,7 @@ class ConnectionContext
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
-        $store->lock($clientIdStr, function () use ($callable, $store, $clientIdStr) {
+        $store->lock($clientIdStr, static function () use ($callable, $store, $clientIdStr) {
             $data = $store->read($clientIdStr);
             $result = $callable($data);
             if ($result)

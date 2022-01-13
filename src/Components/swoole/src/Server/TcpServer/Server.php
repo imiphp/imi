@@ -131,7 +131,7 @@ class Server extends Base implements ISwooleTcpServer
         }
         else
         {
-            $this->swoolePort->on('connect', function () {
+            $this->swoolePort->on('connect', static function () {
             });
         }
 
@@ -164,7 +164,7 @@ class Server extends Base implements ISwooleTcpServer
         }
         else
         {
-            $this->swoolePort->on('receive', function () {
+            $this->swoolePort->on('receive', static function () {
             });
         }
 
@@ -188,7 +188,7 @@ class Server extends Base implements ISwooleTcpServer
         }
         else
         {
-            $this->swoolePort->on('close', function () {
+            $this->swoolePort->on('close', static function () {
             });
         }
     }

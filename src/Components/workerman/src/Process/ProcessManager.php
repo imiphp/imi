@@ -78,7 +78,7 @@ class ProcessManager
         self::$processes[$processName] = $worker = new WorkermanServerWorker();
         $worker->name = $processName;
         $worker->reloadable = false;
-        $worker->onWorkerStart = function (Worker $worker) use ($args, $processName, $options) {
+        $worker->onWorkerStart = static function (Worker $worker) use ($args, $processName, $options) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $processName, true);
 

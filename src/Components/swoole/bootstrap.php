@@ -10,16 +10,16 @@ use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
 use Imi\Util\File;
 
-return function () {
+return static function () {
     $status = 0;
-    \Swoole\Coroutine\run(function () use (&$status) {
+    \Swoole\Coroutine\run(static function () use (&$status) {
         try
         {
             $path = null;
 
             if (!class_exists('Imi\App'))
             {
-                (function () use (&$path) {
+                (static function () use (&$path) {
                     foreach ([
                         $_SERVER['PWD'] ?? null,
                         getcwd(),
@@ -51,7 +51,7 @@ return function () {
             Event::on('IMI.BUILD_RUNTIME', \Imi\Swoole\Task\Listener\BuildRuntimeListener::class, 19940000);
 
             // 运行
-            App::run((function () use ($path): string {
+            App::run((static function () use ($path): string {
                 $input = ImiCommand::getInput();
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)

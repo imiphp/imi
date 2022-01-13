@@ -17,7 +17,7 @@ namespace
     {
         $newCallable = imiCallable($callable);
 
-        return Coroutine::create(function (...$args) use ($newCallable) {
+        return Coroutine::create(static function (...$args) use ($newCallable) {
             $newCallable(...$args);
         }, ...$args);
     }
@@ -30,14 +30,14 @@ namespace
     function imiCallable(callable $callable, bool $withGo = false): callable
     {
         $server = RequestContext::get('server');
-        $resultCallable = function (...$args) use ($callable, $server) {
+        $resultCallable = static function (...$args) use ($callable, $server) {
             RequestContext::set('server', $server);
 
             return $callable(...$args);
         };
         if ($withGo)
         {
-            return fn (...$args) => Coroutine::create(fn (...$args) => $resultCallable(...$args), ...$args);
+            return static fn (...$args) => Coroutine::create(static fn (...$args) => $resultCallable(...$args), ...$args);
         }
         else
         {
@@ -103,7 +103,7 @@ namespace Imi
         }
         else
         {
-            $process->run(function ($type, $buffer) {
+            $process->run(static function ($type, $buffer) {
                 echo $buffer;
             });
         }

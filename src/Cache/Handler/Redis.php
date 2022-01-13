@@ -134,7 +134,7 @@ class Redis extends Base
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        $result = ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($setValues, $ttl) {
+        $result = ImiRedis::use(static function (\Imi\Redis\RedisHandler $redis) use ($setValues, $ttl) {
             $result = $redis->mset($setValues);
             if (null !== $ttl)
             {

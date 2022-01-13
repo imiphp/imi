@@ -8,12 +8,12 @@ use Imi\App;
 use Imi\AppContexts;
 use Imi\Util\File;
 
-return function () {
+return static function () {
     $path = null;
 
     if (!class_exists(\Imi\App::class))
     {
-        (function () use (&$path) {
+        (static function () use (&$path) {
             foreach ([
                 $_SERVER['PWD'] ?? null,
                 getcwd(),
@@ -38,7 +38,7 @@ return function () {
         })();
     }
 
-    App::run((function () use ($path): string {
+    App::run((static function () use ($path): string {
         $input = ImiCommand::getInput();
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)

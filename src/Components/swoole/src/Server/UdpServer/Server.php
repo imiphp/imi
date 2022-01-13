@@ -97,7 +97,7 @@ class Server extends Base implements ISwooleUdpServer
         }
         else
         {
-            $this->swoolePort->on('packet', function () {
+            $this->swoolePort->on('packet', static function () {
             });
         }
     }

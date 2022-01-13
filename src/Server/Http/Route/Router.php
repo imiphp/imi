@@ -189,7 +189,7 @@ class Router
             }
             $pattern = '/^' . preg_replace_callback(
                 '/\{(([^\}:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
-                function (array $matches) use (&$fields): string {
+                static function (array $matches) use (&$fields): string {
                     if (isset($matches[4]))
                     {
                         // 正则

@@ -11,7 +11,7 @@ ini_set('date.timezone', 'Asia/Shanghai');
 function getRectorConfigCallback(string $path): callable
 {
     // @phpstan-ignore-next-line
-    return function (ContainerConfigurator $containerConfigurator) use ($path): void {
+    return static function (ContainerConfigurator $containerConfigurator) use ($path): void {
         // get parameters
         // @phpstan-ignore-next-line
         $parameters = $containerConfigurator->parameters();

@@ -138,7 +138,7 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('handshake', function () {
+            $this->swoolePort->on('handshake', static function () {
             });
         }
 
@@ -165,7 +165,7 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('message', function () {
+            $this->swoolePort->on('message', static function () {
             });
         }
 
@@ -192,7 +192,7 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('close', function () {
+            $this->swoolePort->on('close', static function () {
             });
         }
 
@@ -228,7 +228,7 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('request', function () {
+            $this->swoolePort->on('request', static function () {
             });
         }
     }

@@ -111,7 +111,7 @@ class Group
         {
             // @phpstan-ignore-next-line
             $this->server->getBean('ClientIdMap')->joinGroup($clientId, $this);
-            ConnectionContext::use(function (array $contextData) use ($groupName): array {
+            ConnectionContext::use(static function (array $contextData) use ($groupName): array {
                 $contextData['__groups'][] = $groupName;
 
                 return $contextData;
@@ -136,7 +136,7 @@ class Group
         {
             // @phpstan-ignore-next-line
             $this->server->getBean('ClientIdMap')->leaveGroup($clientId, $this);
-            ConnectionContext::use(function (array $contextData) use ($groupName) {
+            ConnectionContext::use(static function (array $contextData) use ($groupName) {
                 if (isset($contextData['__groups']))
                 {
                     $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $groupName);

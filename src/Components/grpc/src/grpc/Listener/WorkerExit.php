@@ -36,7 +36,7 @@ class WorkerExit implements IEventListener
                 }
                 else
                 {
-                    Coroutine::create(function () use ($pool) {
+                    Coroutine::create(static function () use ($pool) {
                         $pool->close();
                     });
                 }

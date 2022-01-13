@@ -57,7 +57,7 @@ abstract class SharedMemory
      */
     public static function use(string $objectName, callable $callable, ?string $poolName = null)
     {
-        return PoolManager::use($poolName ?? static::getDefaultPoolName(), function ($resource, Client $client) use ($objectName, $callable) {
+        return PoolManager::use($poolName ?? static::getDefaultPoolName(), static function ($resource, Client $client) use ($objectName, $callable) {
             $object = $client->getObject($objectName);
 
             return $callable($object);

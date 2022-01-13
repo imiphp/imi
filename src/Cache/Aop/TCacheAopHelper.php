@@ -30,7 +30,7 @@ trait TCacheAopHelper
         }
         else
         {
-            return preg_replace_callback('/\{([^\}]+)\}/', function (array $matches) use ($args, $cacheable): string {
+            return preg_replace_callback('/\{([^\}]+)\}/', static function (array $matches) use ($args, $cacheable): string {
                 $argName = $matches[1];
                 if (':args' === $argName)
                 {
