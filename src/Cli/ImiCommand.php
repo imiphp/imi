@@ -198,15 +198,21 @@ class ImiCommand extends Command
     protected function executeCommand(): int
     {
         Event::trigger('IMI.COMMAND.BEFORE');
-        $args = $this->getCallToolArgs();
-        $input = $this->input;
-        if ($input instanceof ImiArgvInput)
+        try
         {
-            $input->parseByCommand($this);
+            $args = $this->getCallToolArgs();
+            $input = $this->input;
+            if ($input instanceof ImiArgvInput)
+            {
+                $input->parseByCommand($this);
+            }
+            $instance = BeanFactory::newInstance($this->className, $this, $input, $this->output);
+            $instance->{$this->methodName}(...$args);
         }
-        $instance = BeanFactory::newInstance($this->className, $this, $input, $this->output);
-        $instance->{$this->methodName}(...$args);
-        Event::trigger('IMI.COMMAND.AFTER');
+        finally
+        {
+            Event::trigger('IMI.COMMAND.AFTER');
+        }
 
         return Command::SUCCESS;
     }
