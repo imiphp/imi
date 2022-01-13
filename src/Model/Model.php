@@ -13,7 +13,6 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
-use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
@@ -42,13 +41,11 @@ abstract class Model extends BaseModel
 
     public function __init(array $data = [], bool $queryRelation = true): void
     {
+        parent::__init($data);
         if ($queryRelation && $this->__meta->hasRelation())
         {
-            $this->one(ModelEvents::AFTER_INIT, function (InitEventParam $e) {
-                ModelRelationManager::initModel($this);
-            }, \Imi\Util\ImiPriority::IMI_MAX);
+            ModelRelationManager::initModel($this);
         }
-        parent::__init($data);
     }
 
     /**
