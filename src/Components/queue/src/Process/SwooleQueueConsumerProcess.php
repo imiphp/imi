@@ -68,7 +68,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                         foreach ($configs as $config)
                         {
                             Coroutine::create(function () use ($config) {
-                                /* @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
+                                /** @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
                                 $this->consumers[] = $queueConsumer = App::getBean($config->getConsumer(), $config->getName());
                                 $queueConsumer->start();
                             });
