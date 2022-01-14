@@ -35,7 +35,9 @@ parameters:
         - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
         - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
         - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
-        - '#Constant IMI_PATH not found.#'
+        - '#Imi\\Swoole\\Util\\Coroutine#'
+        - '#Imi\\Swoole\\Process\\Process#'
+        - '#IMI_PATH#'
         -
             message: '#Method \S+ has no return typehint specified.#'
             paths:

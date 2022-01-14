@@ -1,5 +1,7 @@
 <?php
 
+# macro
+
 declare(strict_types=1);
 
 namespace Imi\Util;
@@ -72,7 +74,12 @@ class File
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
-        if (\extension_loaded('swoole') && \Swoole\Coroutine::getuid() > -1)
+        #if \extension_loaded('swoole')
+        if (
+            #if 0
+            \extension_loaded('swoole') &&
+            #endif
+            \Swoole\Coroutine::getCid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
             Coroutine::create(function () use ($channel, $dirPath, $pattern, $extensionNames) {
@@ -86,8 +93,13 @@ class File
         }
         else
         {
+            #endif
+
             yield from self::enumFileSync($dirPath, $pattern, $extensionNames);
+
+            #if \extension_loaded('swoole')
         }
+        #endif
     }
 
     /**

@@ -22,6 +22,7 @@ return [
         'Workerman'        => 'Imi\Workerman',
         'Swoole'           => \defined('SWOOLE_VERSION') ? 'Imi\Swoole' : '',
         'WorkermanGateway' => 'Imi\WorkermanGateway',
+        'Macro'            => 'Imi\Macro',
     ],
 
     // 日志配置

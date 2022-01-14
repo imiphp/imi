@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Imi\Swoole\Process;
+
+class Process extends \Swoole\Process
+{
+    /**
+     * 发送消息.
+     *
+     * @return mixed
+     */
+    public function sendMessage(string $action, array $data = [])
+    {
+        $data['a'] = $action;
+        $message = json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+
+        return $this->write($message);
+    }
+
+    #if version_compare(SWOOLE_VERSION, '5.0', '>=') && version_compare(PHP_VERSION, '8.0', '>=')
+    public function exit(int $exitCode = 0): void
+    #else
+    /**
+     * @param int|null $exitCode
+     *
+     * @return mixed
+     */
+    public function exit($exitCode = null)
+    #endif
+    {
+        if ($this->pid > 0)
+        {
+            parent::exit($exitCode);
+        }
+        else
+        {
+            exit($exitCode);
+        }
+    }
+}

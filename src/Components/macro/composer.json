@@ -1,0 +1,22 @@
+{
+    "name": "imiphp/imi-macro",
+    "type": "library",
+    "license": "MIT",
+    "description": "支持在 imi 框架中使用宏定义",
+    "require": {
+        "yurunsoft/macro": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\Macro\\": "src/"
+        },
+        "files": [
+            "src/bootstrap.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Macro\\Test\\": "tests/"
+        }
+    }
+}

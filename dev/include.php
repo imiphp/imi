@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
+use Imi\Macro\MacroComposerHook;
 
 (static function () {
     global $COMPONENTS_NS;
@@ -38,4 +39,5 @@ use Composer\Autoload\ClassLoader;
             }
         }
     }
+    MacroComposerHook::hookComposer();
 })();

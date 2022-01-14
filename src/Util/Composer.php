@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Composer\Autoload\ClassLoader;
+use Imi\Macro\AutoLoader;
 
 /**
  * Composer 工具类.
@@ -33,7 +34,14 @@ class Composer
         {
             if (\is_array($autoloadFunction) && isset($autoloadFunction[0]) && $autoloadFunction[0] instanceof ClassLoader)
             {
-                $classLoaders[] = $autoloadFunction[0];
+                if ($autoloadFunction[0] instanceof AutoLoader)
+                {
+                    $classLoaders[] = $autoloadFunction[0]->getComposerClassLoader();
+                }
+                else
+                {
+                    $classLoaders[] = $autoloadFunction[0];
+                }
             }
         }
 
