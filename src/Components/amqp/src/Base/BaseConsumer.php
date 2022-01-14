@@ -65,18 +65,19 @@ abstract class BaseConsumer implements IConsumer
      */
     protected function bindConsumer(): void
     {
+        $isSwoole = Imi::checkAppType('swoole');
         foreach ($this->consumers as $consumer)
         {
             foreach ((array) $consumer->queue as $queueName)
             {
                 $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
-                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
+                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass, $isSwoole) {
                     try
                     {
                         /** @var \Imi\AMQP\Message $messageInstance */
                         $messageInstance = new $messageClass();
                         $messageInstance->setAMQPMessage($message);
-                        if (Imi::checkAppType('swoole'))
+                        if ($isSwoole)
                         {
                             $result = goWait(fn () => $this->consume($messageInstance));
                         }

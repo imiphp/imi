@@ -52,12 +52,13 @@ abstract class BaseConsumer implements IConsumer
         }
         $consumer = $this->consumer = KafkaPool::createConsumer($consumerAnnotation->poolName, $consumerAnnotation->topic, $config);
         $this->running = true;
+        $isSwoole = Imi::checkAppType('swoole');
         while ($this->running)
         {
             $message = $consumer->consume();
             if ($message)
             {
-                if (Imi::checkAppType('swoole'))
+                if ($isSwoole)
                 {
                     goWait(function () use ($message, $consumer) {
                         $this->consume($message);

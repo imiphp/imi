@@ -73,6 +73,8 @@ trait TAMQP
      */
     protected ?string $poolName = null;
 
+    protected bool $isSwoole = false;
+
     /**
      * 初始化配置.
      */
@@ -83,6 +85,7 @@ trait TAMQP
         $this->exchanges = AnnotationManager::getClassAnnotations($class, Exchange::class);
         $this->publishers = AnnotationManager::getClassAnnotations($class, Publisher::class);
         $this->consumers = AnnotationManager::getClassAnnotations($class, Consumer::class);
+        $this->isSwoole = Imi::checkAppType('swoole');
     }
 
     /**
@@ -126,7 +129,7 @@ trait TAMQP
         }
         elseif (isset($connectionConfig))
         {
-            if (Imi::checkAppType('swoole') && Coroutine::isIn())
+            if ($this->isSwoole && Coroutine::isIn())
             {
                 $className = AMQPSwooleConnection::class;
             }
