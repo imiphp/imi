@@ -18,4 +18,6 @@ xz -d swoole-cli.tar.xz
 
 tar -xvf swoole-cli.tar -C /usr/local/bin
 
+chmod +x /usr/local/bin/swoole-cli
+
 cp /usr/local/bin/swoole-cli /usr/local/bin/php
