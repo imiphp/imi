@@ -197,8 +197,6 @@ jobs:
         run: composer test-workerman
       - name: Test workerman-gateway
         run: composer test-workerman-gateway
-      - name: Test fpm
-        run: composer test-fpm
       - name: Test jwt
         run: composer test-jwt
       - name: Test queue
