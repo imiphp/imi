@@ -15,6 +15,7 @@ use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
+use Imi\Util\Imi;
 
 class Delete
 {
@@ -94,7 +95,6 @@ class Delete
         $rightField = $struct->getRightField();
 
         $modelField = $model[$propertyName];
-        $modelField[$rightField] = $model[$leftField];
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
         Event::trigger($eventName . '.BEFORE', [
             'model'        => $model,
@@ -102,7 +102,14 @@ class Delete
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $modelField->delete();
+        if (null === $modelField)
+        {
+            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField]);
+        }
+        else
+        {
+            $modelField->delete();
+        }
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,
@@ -191,7 +198,22 @@ class Delete
                     'annotation'   => $annotationItem,
                 ]);
 
-                $model[$propertyName]->delete();
+                if (null === $model[$propertyName])
+                {
+                    if (class_exists($annotationItem->model))
+                    {
+                        $modelClass = $annotationItem->model;
+                    }
+                    else
+                    {
+                        $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
+                    }
+                    $modelClass::query()->where($annotationItem->modelField, '=', $model[$annotationItem->field])->delete();
+                }
+                else
+                {
+                    $model[$propertyName]->delete();
+                }
 
                 Event::trigger($eventName . '.AFTER', [
                     'model'        => $model,
@@ -223,9 +245,16 @@ class Delete
         ]);
 
         $modelField = $model[$propertyName];
-        $modelField[$rightField] = $model[$leftField];
-        $modelField->{$annotation->type} = $annotation->typeValue;
-        $modelField->delete();
+        if (null === $modelField)
+        {
+            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField]);
+        }
+        else
+        {
+            $modelField[$rightField] = $model[$leftField];
+            $modelField->{$annotation->type} = $annotation->typeValue;
+            $modelField->delete();
+        }
         Event::trigger($eventName . '.AFTER', [
             'model'        => $model,
             'propertyName' => $propertyName,

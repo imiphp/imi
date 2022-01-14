@@ -487,10 +487,6 @@ class ModelRelationManager
     {
         foreach (AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
-            if (null === $model[$propertyName])
-            {
-                continue;
-            }
             Delete::parse($model, $propertyName, $annotations);
         }
     }
