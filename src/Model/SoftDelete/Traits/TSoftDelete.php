@@ -77,7 +77,7 @@ trait TSoftDelete
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
+    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
     {
         return parent::query($poolName, $queryType, $queryClass);
     }
@@ -180,7 +180,7 @@ trait TSoftDelete
                     $bindValues[':' . $k] = $v;
                 }
                 $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
-                $query = $query->alias($realClassName . ':findDeleted:pk1:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys, $softDeleteAnnotation) {
+                $query = $query->alias($realClassName . ':findDeleted:pk1:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($keys, $softDeleteAnnotation) {
                     foreach ($keys as $name)
                     {
                         $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
@@ -207,7 +207,7 @@ trait TSoftDelete
                     }
                 }
                 $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
-                $query = $query->alias($realClassName . ':findDeleted:pk2:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys, $softDeleteAnnotation) {
+                $query = $query->alias($realClassName . ':findDeleted:pk2:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($keys, $softDeleteAnnotation) {
                     if ($keys)
                     {
                         foreach ($keys as $name)

@@ -106,7 +106,7 @@ abstract class Model extends BaseModel
                 {
                     $bindValues[':' . $k] = $v;
                 }
-                $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys) {
+                $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($keys) {
                     foreach ($keys as $name)
                     {
                         $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
@@ -129,7 +129,7 @@ abstract class Model extends BaseModel
                     $keys[] = $idName;
                     $bindValues[':' . $idName] = $ids[$i];
                 }
-                $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys) {
+                $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($keys) {
                     foreach ($keys as $name)
                     {
                         $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
@@ -166,7 +166,11 @@ abstract class Model extends BaseModel
     public static function select($where = null): array
     {
         $realClassName = static::__getRealClassName();
-        $query = self::parseWhere(static::query(), $where);
+        $query = static::query();
+        if ($where)
+        {
+            self::parseWhere($query, $where);
+        }
 
         // 查询前
         Event::trigger($realClassName . ':' . ModelEvents::BEFORE_SELECT, [
@@ -295,7 +299,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
-        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), static function (IQuery $query) use ($conditionId) {
+        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($conditionId) {
             // @phpstan-ignore-next-line
             if ($conditionId)
             {
@@ -339,7 +343,10 @@ abstract class Model extends BaseModel
         if (Update::hasUpdateRelation($class))
         {
             $query = static::dbQuery();
-            $query = self::parseWhere($query, $where);
+            if ($where)
+            {
+                self::parseWhere($query, $where);
+            }
 
             $list = $query->select()->getArray();
 
@@ -358,7 +365,10 @@ abstract class Model extends BaseModel
         else
         {
             $query = static::query();
-            $query = self::parseWhere($query, $where);
+            if ($where)
+            {
+                self::parseWhere($query, $where);
+            }
 
             $updateData = self::parseSaveData($data, 'update');
 
@@ -431,7 +441,7 @@ abstract class Model extends BaseModel
             {
                 $keys[] = $k;
             }
-            $result = $query->alias($this->__meta->getClassName() . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
+            $result = $query->alias($this->__meta->getClassName() . ':save:' . md5(implode(',', $keys)), function (IModelQuery $query) use ($meta) {
                 // 主键条件加入
                 $id = $meta->getId();
                 if ($id)
@@ -499,7 +509,7 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
-        $result = $query->alias($this->__meta->getClassName() . ':delete', function (IQuery $query) use ($id) {
+        $result = $query->alias($this->__meta->getClassName() . ':delete', function (IModelQuery $query) use ($id) {
             // 主键条件加入
             foreach ($id as $idName)
             {
@@ -588,7 +598,10 @@ abstract class Model extends BaseModel
     {
         $realClassName = static::__getRealClassName();
         $query = static::query();
-        $query = self::parseWhere($query, $where);
+        if ($where)
+        {
+            self::parseWhere($query, $where);
+        }
 
         // 删除前
         Event::trigger($realClassName . ':' . ModelEvents::BEFORE_BATCH_DELETE, [
@@ -757,12 +770,8 @@ abstract class Model extends BaseModel
      *
      * @param mixed $where
      */
-    private static function parseWhere(IQuery $query, $where): IQuery
+    private static function parseWhere(IQuery $query, $where): void
     {
-        if (null === $where)
-        {
-            return $query;
-        }
         if (\is_callable($where))
         {
             // 回调传入条件
@@ -783,8 +792,6 @@ abstract class Model extends BaseModel
                 }
             }
         }
-
-        return $query;
     }
 
     /**
