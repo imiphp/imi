@@ -168,7 +168,7 @@ jobs:
         with:
           redis-version: '6.x'
       - name: Setup swoole-cli
-        run: .github/script/install-swoole-cli.sh
+        run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
       - name: Check Version
         run: |
           php -v
