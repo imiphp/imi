@@ -10,6 +10,8 @@ jobs:
       fail-fast: false
       matrix:
         swoole:
+          - version: php8.1
+            postgresql_version: ""
           - version: 4.8-php8.1
             postgresql_version: ""
           - version: 4.8-php8.0
@@ -138,6 +140,78 @@ jobs:
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+
+  ci-swoole-cli:
+    name: Swoole-cli-${{ matrix.swoole-cli }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole-cli: [v4.8.6]
+    env:
+      MYSQL_SERVER_PASSWORD: "root"
+      IMI_TEST_AMQP_SERVER_UTIL: 0
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.0"
+          root-password: root
+          my-cnf: |
+            socket=/tmp/mysql.sock
+      - name: Setup Redis
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '6.x'
+      - name: Setup swoole-cli
+        run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
+      - name: Check Version
+        run: |
+          swoole-cli -v
+          php -v
+          php -m
+          composer -V
+          php --ri swoole
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('**/composer.json') }}
+      - name: Prepare
+        run: |
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+
+      - name: Test
+        run: composer test
+      - name: Test swoole
+        run: composer test-swoole
+      - name: Test workerman
+        run: composer test-workerman
+      - name: Test workerman-gateway
+        run: composer test-workerman-gateway
+      # - name: Test jwt
+      #   run: composer test-jwt
+      - name: Test queue
+        run: composer test-queue
+      - name: Test grpc
+        run: composer test-grpc
+      - name: Test snowflake
+        run: composer test-snowflake
+      - name: Test mqtt
+        run: composer test-mqtt
+      - name: Test smarty
+        run: composer test-smarty
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
 
   ci-macos:
     name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
