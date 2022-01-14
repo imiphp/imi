@@ -142,7 +142,7 @@ jobs:
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-swoole-cli:
-    name: Swoole-cli-${{ matrix.swoole }}
+    name: Swoole-cli-${{ matrix.swoole-cli }}
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -150,7 +150,6 @@ jobs:
         swoole-cli: [v4.8.6]
     env:
       MYSQL_SERVER_PASSWORD: "root"
-      PHP_VERSION: ${{ matrix.php }}
       IMI_TEST_AMQP_SERVER_UTIL: 0
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:

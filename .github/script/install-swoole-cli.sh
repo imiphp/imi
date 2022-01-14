@@ -16,6 +16,6 @@ curl -L -o swoole-cli.tar.xz https://github.com/swoole/swoole-src/releases/downl
 
 xz -d swoole-cli.tar.xz
 
-tar -xvf swoole-cli-$version-linux-x64.tar -C /usr/bin
+tar -xvf swoole-cli.tar -C /usr/bin
 
 cp /usr/bin/swoole-cli /usr/bin/php
