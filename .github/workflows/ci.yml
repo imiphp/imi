@@ -10,6 +10,8 @@ jobs:
       fail-fast: false
       matrix:
         swoole:
+          - version: php8.1
+            postgresql_version: ""
           - version: 4.8-php8.1
             postgresql_version: ""
           - version: 4.8-php8.0
