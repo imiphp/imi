@@ -52,7 +52,7 @@ function getLastTagInfo(string $branch): array
 
     return [
         'lastVersion' => $lastVersion,
-        'commitTime'  => $commitTime,
+        'commitTime'  => $commitTime ?? 0,
     ];
 }
 
