@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use app\Secrets;
+use Github\Api\Repository\Actions\Secrets;
 use Github\Client;
 
 require __DIR__ . '/vendor/autoload.php';
