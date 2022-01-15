@@ -4,7 +4,7 @@
     "license": "MIT",
     "description": "在 imi 框架中非常方便地接入 jwt",
     "require": {
-        "lcobucci/jwt": "^3.4.0|^4.0.0"
+        "lcobucci/jwt": "^3.4.6|^4.0.4|^4.1.5"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9"
