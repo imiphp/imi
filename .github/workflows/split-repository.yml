@@ -1,10 +1,10 @@
 name: split repository
 
-on: [push]
+on: [push, release]
 
 jobs:
   split-repository:
-    if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/2.0')
+    # if: github.repository == 'imiphp/imi' && github.ref == 'refs/heads/2.0'
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -20,11 +20,24 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
-      - name: Split
-        env:
-          IMI_ACCESS_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
-          SPLIT_CONFIG: ${{ secrets.SPLIT_CONFIG }}
+      - name: Prepare
         run: |
           cd split-repository
           composer update --no-interaction --prefer-dist --no-progress
-          php -dxdebug.overload_var_dump=1 run.php
+
+      # - name: Split
+      #   if: github.event_name == 'push'
+      #   env:
+      #     IMI_ACCESS_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
+      #     SPLIT_CONFIG: ${{ secrets.SPLIT_CONFIG }}
+      #   run: |
+      #     cd split-repository
+      #     php -dxdebug.overload_var_dump=1 split.php
+
+      - name: Release components
+        # if: github.event_name == 'release'
+        env:
+          IMI_ACCESS_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
+        run: |
+          cd split-repository
+          php -dxdebug.overload_var_dump=1 release.php
