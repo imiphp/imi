@@ -30,10 +30,6 @@ class Delete
      */
     public static function parse(Model $model, string $propertyName, array $annotations): void
     {
-        if (!$model[$propertyName])
-        {
-            return;
-        }
         $className = BeanFactory::getObjectClass($model);
         /** @var AutoDelete|null $autoDelete */
         $autoDelete = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoDelete::class)[0] ?? null;
