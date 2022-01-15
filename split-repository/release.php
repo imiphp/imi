@@ -87,8 +87,6 @@ function getAccessToken(): string
 
 function getBranch(): string
 {
-    // TODO: 去除注释
-    return '2.0';
     $content = getenv('GITHUB_REF');
     if (!$content)
     {
@@ -233,19 +231,18 @@ foreach ($storeRepoMap as $name => $urls)
         continue;
     }
     $nextVersion = getNextVersion($lastTagInfo['lastVersion']);
-    execCMD('git tag ' . $nextVersion, 'create tag');
+    execCMD('git tag ' . $nextVersion, 'create tag ' . $name);
 
     chdir($repoPath);
-    // TODO: 去除注释
-    // foreach ($urls as $i => $url)
-    // {
-    //     if (0 === $i)
-    //     {
-    //         execCMD('git push --set-upstream origin ' . escapeshellarg($branch) . ' --tags', '推送');
-    //     }
-    //     else
-    //     {
-    //         execCMD('git push --set-upstream r' . $i . ' ' . escapeshellarg($branch) . ' --tags', '推送' . $i);
-    //     }
-    // }
+    foreach ($urls as $i => $url)
+    {
+        if (0 === $i)
+        {
+            execCMD('git push --set-upstream origin ' . escapeshellarg($branch) . ' --tags', '推送');
+        }
+        else
+        {
+            execCMD('git push --set-upstream r' . $i . ' ' . escapeshellarg($branch) . ' --tags', '推送' . $i);
+        }
+    }
 }
