@@ -104,7 +104,7 @@ class Delete
         ]);
         if (null === $modelField)
         {
-            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField]);
+            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField])->limit(1)->delete();
         }
         else
         {
@@ -208,7 +208,7 @@ class Delete
                     {
                         $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
                     }
-                    $modelClass::query()->where($annotationItem->modelField, '=', $model[$annotationItem->field])->delete();
+                    $modelClass::query()->where($annotationItem->modelField, '=', $model[$annotationItem->field])->limit(1)->delete();
                 }
                 else
                 {
@@ -247,7 +247,7 @@ class Delete
         $modelField = $model[$propertyName];
         if (null === $modelField)
         {
-            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField]);
+            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField])->delete();
         }
         else
         {
