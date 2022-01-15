@@ -27,6 +27,7 @@ use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\RelatedTo;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
 
 /**
  * @Aspect
@@ -146,7 +147,15 @@ class JWTValidationAop
             {
                 $constraints[] = new RelatedTo($subject);
             }
-            $constraints[] = new LooseValidAt(new FrozenClock(new \DateTimeImmutable()));
+            if (class_exists(LooseValidAt::class))
+            {
+                $validAtClass = LooseValidAt::class;
+            }
+            else
+            {
+                $validAtClass = ValidAt::class;
+            }
+            $constraints[] = new $validAtClass(new FrozenClock(new \DateTimeImmutable()));
             if (!$configuration->validator()->validate($token, ...$constraints))
             {
                 throw new InvalidTokenException();
