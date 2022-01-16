@@ -93,9 +93,13 @@ function getBranch(): string
         throw new \InvalidArgumentException(sprintf('Invalid GITHUB_REF %s', $content));
     }
 
-    [, $branch] = explode('refs/heads/', $content);
+    [, $branch] = explode('refs/tags/v', $content);
+    if (!preg_match('/(\d+\.\d+)\.\d+/', $branch, $matches))
+    {
+        throw new \InvalidArgumentException(sprintf('Invalid GITHUB_REF %s', $content));
+    }
 
-    return $branch;
+    return $matches[1];
 }
 
 static $storeRepoMap = [
