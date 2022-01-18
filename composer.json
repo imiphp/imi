@@ -56,6 +56,7 @@
     "suggest": {
         "ext-inotify": "高性能热更新支持"
     },
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
         "sort-packages": true

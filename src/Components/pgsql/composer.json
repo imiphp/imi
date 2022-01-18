@@ -28,5 +28,7 @@
         "pre-update-cmd": "Imi\\Pgsql\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\Pgsql\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Pgsql\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

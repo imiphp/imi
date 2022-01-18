@@ -26,5 +26,7 @@
     },
     "bin": [
         "bin/imi-workerman"
-    ]
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

@@ -23,5 +23,7 @@
             "../macro/vendor/autoload.php"
         ]
     },
-    "scripts": {}
+    "scripts": {},
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

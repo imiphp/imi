@@ -34,5 +34,7 @@
         "pre-update-cmd": "Imi\\Grpc\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\Grpc\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Grpc\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

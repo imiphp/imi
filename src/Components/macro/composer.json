@@ -18,5 +18,7 @@
         "psr-4": {
             "Imi\\Macro\\Test\\": "tests/"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

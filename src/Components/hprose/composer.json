@@ -30,5 +30,7 @@
         "pre-update-cmd": "Imi\\Hprose\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\Hprose\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Hprose\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
