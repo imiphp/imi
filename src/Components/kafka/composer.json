@@ -4,7 +4,7 @@
     "license": "MIT",
     "description": "支持在 imi 框架中使用 Kafka 客户端",
     "require": {
-        "imiphp/imi-queue": "~2.0.0",
+        "imiphp/imi-queue": "~2.1.0",
         "longlang/phpkafka": "^1.1"
     },
     "require-dev": {

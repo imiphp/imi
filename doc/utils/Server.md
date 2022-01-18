@@ -426,4 +426,4 @@ $count = Server::getConnectionCount();
 
 ### 其它
 
-> 连接上下文的使用：<https://doc.imiphp.com/v2.0/components/websocketServer/session.html>
+> 连接上下文的使用：<https://doc.imiphp.com/v2.1/components/websocketServer/session.html>

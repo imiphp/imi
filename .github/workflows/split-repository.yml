@@ -3,7 +3,7 @@ name: split repository
 on:
   push:
     branches:
-      - '2.0'
+      - '2.1'
   release:
     types: [published]
 

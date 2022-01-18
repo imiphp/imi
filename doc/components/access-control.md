@@ -15,7 +15,7 @@ imi 框架的权限控制组件，不提供具体 API、管理界面，仅提供
 ```json
 {
     "require": {
-        "imiphp/imi-access-control": "~2.0.0"
+        "imiphp/imi-access-control": "~2.1.0"
     }
 }
 ```
@@ -35,7 +35,7 @@ imi 框架的权限控制组件，不提供具体 API、管理界面，仅提供
 ]
 ```
 本组件中包含几个数据表，打开本组件目录，找到`Model`目录，在数据库中建立对应的表，即可使用。
-建表这里优先推荐用`generate/table`：<https://doc.imiphp.com/v2.0/dev/generate/table.html>
+建表这里优先推荐用`generate/table`：<https://doc.imiphp.com/v2.1/dev/generate/table.html>
 
 ### 操作权限
 

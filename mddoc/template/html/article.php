@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <?php
-    $pageTitle = $currentCatalog['title'] . ' - imi 框架 v2.0 开发手册文档';
+    $pageTitle = $currentCatalog['title'] . ' - imi 框架 v2.1 开发手册文档';
     ?>
     <title><?php echo $pageTitle; ?></title>
     <!-- jQuery-->
@@ -33,7 +33,10 @@
             <ul class="layui-nav" lay-filter="">
                 <div class="navRight">
                     <li class="layui-nav-item layui-this" lay-unselect>
-                        <a href="/v2.0/" target="_blank" style="padding-right: 40px;">v2.0 <span class="layui-badge">新</span></a>
+                        <a href="/v2.1/" target="_blank" style="padding-right: 40px;">v2.1 <span class="layui-badge">新</span></a>
+                    </li>
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="/2.0/" target="_blank">v2.0</a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
                         <a href="/v1/" target="_blank">v1.x</a>
