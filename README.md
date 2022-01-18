@@ -93,15 +93,15 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ## 开始使用
 
-创建 Http Server 项目：`composer create-project imiphp/project-http:~2.0`
+创建 Http Server 项目：`composer create-project imiphp/project-http:~2.0.0`
 
-创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~2.0`
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~2.0.0`
 
-创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~2.0`
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~2.0.0`
 
-创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.0`
+创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.0.0`
 
-创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.0`
+创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.0.0`
 
 [完全开发手册](https://doc.imiphp.com/v2.0/)
 
