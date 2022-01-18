@@ -56,11 +56,18 @@ function getLastTagInfo(string $branch): array
     ];
 }
 
-function getNextVersion(string $version): string
+function getNextVersion(string $branch, string $version): string
 {
-    return preg_replace_callback('/(.*\d+\.\d+.)(\d+)/', function (array $matches) {
-        return $matches[1] . ($matches[2] + 1);
-    }, $version);
+    if ('' === $version)
+    {
+        return 'v' . $branch . '.0';
+    }
+    else
+    {
+        return preg_replace_callback('/(.*\d+\.\d+.)(\d+)/', function (array $matches) {
+            return $matches[1] . ($matches[2] + 1);
+        }, $version);
+    }
 }
 
 function getRepository(): string
@@ -237,7 +244,7 @@ foreach ($storeRepoMap as $name => $urls)
         echo 'Skip ', $name, \PHP_EOL;
         continue;
     }
-    $nextVersion = getNextVersion($lastTagInfo['lastVersion']);
+    $nextVersion = getNextVersion($branch, $lastTagInfo['lastVersion']);
     execCMD('git tag ' . $nextVersion, 'create tag ' . $name);
 
     chdir($repoPath);
