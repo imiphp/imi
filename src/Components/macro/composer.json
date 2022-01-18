@@ -4,7 +4,7 @@
     "license": "MIT",
     "description": "支持在 imi 框架中使用宏定义",
     "require": {
-        "yurunsoft/macro": "dev-master"
+        "yurunsoft/macro": "~1.0.0"
     },
     "autoload": {
         "psr-4": {

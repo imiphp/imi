@@ -5,7 +5,6 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-20.04
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -115,3 +114,8 @@ jobs:
       - name: Analyse workerman-gateway
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/workerman-gateway/ --config=src/Components/workerman-gateway/rector.php
+
+      - name: Analyse macro
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/macro/ --config=src/Components/macro/rector.php
+

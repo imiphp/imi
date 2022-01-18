@@ -39,5 +39,6 @@ use Imi\Macro\MacroComposerHook;
             }
         }
     }
+    // @phpstan-ignore-next-line
     MacroComposerHook::hookComposer();
 })();

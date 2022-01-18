@@ -34,8 +34,10 @@ class Composer
         {
             if (\is_array($autoloadFunction) && isset($autoloadFunction[0]) && $autoloadFunction[0] instanceof ClassLoader)
             {
+                // @phpstan-ignore-next-line
                 if ($autoloadFunction[0] instanceof AutoLoader)
                 {
+                    // @phpstan-ignore-next-line
                     $classLoaders[] = $autoloadFunction[0]->getComposerClassLoader();
                 }
                 else

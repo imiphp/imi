@@ -5,7 +5,6 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-20.04
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -115,3 +114,7 @@ jobs:
       - name: Analyse workerman-gateway
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/workerman-gateway/vendor/autoload.php src/Components/workerman-gateway
+
+      - name: Analyse macro
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/macro/vendor/autoload.php src/Components/macro

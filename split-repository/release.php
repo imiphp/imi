@@ -166,6 +166,9 @@ static $storeRepoMap = [
     'src/Components/roadrunner' => [
         'git@github.com:imiphp/imi-roadrunner',
     ],
+    'src/Components/macro' => [
+        'git@github.com:imiphp/imi-macro',
+    ],
 ];
 
 setlocale(\LC_CTYPE, 'en_US.UTF-8');
