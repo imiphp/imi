@@ -183,7 +183,6 @@ class Update
                     $updateIds[] = $row[$pk];
                 }
                 $row[$rightField] = $modelLeftValue;
-                $row->save();
             }
 
             $deleteIds = array_diff($oldIds, $updateIds);
@@ -194,6 +193,11 @@ class Update
                 $rightModel::deleteBatch(static function (IModelQuery $query) use ($pk, $deleteIds) {
                     $query->whereIn($pk, $deleteIds);
                 });
+            }
+
+            foreach ($model[$propertyName] as $row)
+            {
+                $row->save();
             }
         }
         else
@@ -266,7 +270,6 @@ class Update
                     $updateIds[] = $row[$middleRightField];
                 }
                 $row[$middleLeftField] = $modelLeftValue;
-                $row->save();
             }
 
             $deleteIds = array_diff($oldRightIds, $updateIds);
@@ -277,6 +280,11 @@ class Update
                 $middleModel::deleteBatch(static function (IModelQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $modelLeftValue) {
                     $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
+            }
+
+            foreach ($model[$propertyName] as $row)
+            {
+                $row->save();
             }
         }
         else
@@ -478,7 +486,6 @@ class Update
                 }
                 $row[$rightField] = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
-                $row->save();
             }
 
             $deleteIds = array_diff($oldIds, $updateIds);
@@ -489,6 +496,11 @@ class Update
                 $rightModel::deleteBatch(static function (IModelQuery $query) use ($pk, $deleteIds) {
                     $query->whereIn($pk, $deleteIds);
                 });
+            }
+
+            foreach ($model[$propertyName] as $row)
+            {
+                $row->save();
             }
         }
         else
@@ -562,7 +574,6 @@ class Update
                 }
                 $row[$middleLeftField] = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
-                $row->save();
             }
 
             $deleteIds = array_diff($oldRightIds, $updateIds);
@@ -573,6 +584,11 @@ class Update
                 $middleModel::deleteBatch(static function (IModelQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $annotation, $modelLeftValue) {
                     $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
+            }
+
+            foreach ($model[$propertyName] as $row)
+            {
+                $row->save();
             }
         }
         else
