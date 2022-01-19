@@ -12,7 +12,7 @@
 
 ## Composer 引入 `imi-swoole` 组件报错
 
-**解决方案：** 请确保你的 Swoole >= 4.7.0
+**解决方案：** 请确保你的 Swoole >= 4.8.0
 
 查看命令：`php --ri swoole`
 

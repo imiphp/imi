@@ -12,7 +12,7 @@
 
 ```yml
 # 版本也可以自行修改
-FROM phpswoole/swoole:4.7-php7.4
+FROM phpswoole/swoole:4.8-php7.4
 
 RUN apt update && apt install unzip
 

@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi-snowflake.svg)](https://packagist.org/packages/imiphp/imi-snowflake)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.7.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![IMI License](https://img.shields.io/github/license/imiphp/imi-snowflake.svg)](https://github.com/imiphp/imi-snowflake/blob/master/LICENSE)
 
 ## 介绍

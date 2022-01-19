@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi-macro.svg)](https://packagist.org/packages/imiphp/imi-macro)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.7.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![IMI License](https://img.shields.io/github/license/imiphp/imi-macro.svg)](https://github.com/imiphp/imi-macro/blob/master/LICENSE)
 
 ## 介绍
@@ -39,7 +39,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 - [PHP](https://php.net/) >= 7.4
 - [Composer](https://getcomposer.org/) >= 2.0
-- [Swoole](https://www.swoole.com/) >= 4.7.0
+- [Swoole](https://www.swoole.com/) >= 4.8.0
 
 ## 版权信息
 
