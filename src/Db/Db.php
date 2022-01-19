@@ -73,12 +73,6 @@ class Db
         }
         else
         {
-            $requestContextKey = '__db.' . $poolName;
-            $requestContext = RequestContext::getContext();
-            if (isset($requestContext[$requestContextKey]))
-            {
-                return $requestContext[$requestContextKey];
-            }
             if (null === self::$connections)
             {
                 self::$connections = Config::get('@app.db.connections');
@@ -88,8 +82,17 @@ class Db
             {
                 throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
             }
-            /** @var IDb|null $db */
-            $db = App::get($requestContextKey);
+            $requestContextKey = '__db.' . $poolName;
+            $requestContext = RequestContext::getContext();
+            if (isset($requestContext[$requestContextKey]))
+            {
+                $db = $requestContext[$requestContextKey];
+            }
+            else
+            {
+                /** @var IDb|null $db */
+                $db = App::get($requestContextKey);
+            }
             if (null === $db || !$db->isConnected())
             {
                 /** @var IDb $db */
