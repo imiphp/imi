@@ -88,7 +88,7 @@ class AnnotationLoader
                 {
                     $diffPath .= \DIRECTORY_SEPARATOR;
                 }
-                $fileNamespace = $namespace . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . basename($path, '.php'));
+                $fileNamespace = $namespace . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . File::getBaseNameBeforeFirstDot($path));
                 // 回调
                 $callback($fileNamespace, $path);
             }

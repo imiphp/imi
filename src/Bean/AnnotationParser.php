@@ -13,6 +13,7 @@ use Imi\Bean\Parser\NullParser;
 use Imi\Config;
 use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
+use Imi\Util\File;
 use Imi\Util\Imi;
 use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 use Yurun\Doctrine\Common\Annotations\FileCacheReader;
@@ -686,7 +687,7 @@ class AnnotationParser
                     continue;
                 }
                 $namespace = trim($matches[1]);
-                $className = $namespace . '\\' . basename($file, '.php');
+                $className = $namespace . '\\' . File::getBaseNameBeforeFirstDot($file);
             }
             else
             {

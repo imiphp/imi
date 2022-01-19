@@ -235,4 +235,12 @@ class FileTest extends BaseTest
             $this->assertEquals('/a/b/c/1.jpg', File::absolute('/a/b/d/e/../../c/./1.jpg'));
         }
     }
+
+    public function testGetBaseNameBeforeFirstDot(): void
+    {
+        $this->assertEquals('abc', File::getBaseNameBeforeFirstDot('abc.php'));
+        $this->assertEquals('abc', File::getBaseNameBeforeFirstDot('abc.php.bak'));
+        $this->assertEquals('abc', File::getBaseNameBeforeFirstDot(__DIR__ . \DIRECTORY_SEPARATOR . 'abc.php'));
+        $this->assertEquals('abc', File::getBaseNameBeforeFirstDot(__DIR__ . \DIRECTORY_SEPARATOR . 'abc.php.bak'));
+    }
 }

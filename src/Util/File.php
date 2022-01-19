@@ -386,4 +386,16 @@ class File
 
         return implode(\DIRECTORY_SEPARATOR, $absolutes);
     }
+
+    public static function getBaseNameBeforeFirstDot(string $path): string
+    {
+        $path = basename($path);
+        $index = strpos($path, '.');
+        if (false === $index)
+        {
+            return '';
+        }
+
+        return substr($path, 0, $index);
+    }
 }

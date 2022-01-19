@@ -65,7 +65,7 @@ class AutoLoader extends ClassLoader
         $macroFileName = $fileName . '.macro';
         if (file_exists($macroFileName))
         {
-            MacroParser::includeFile($macroFileName, $fileName, false);
+            MacroParser::includeFile($macroFileName, $macroFileName . '.php', false);
         }
         elseif (preg_match('/^\s*#\s*macro$/mUS', file_get_contents($fileName) ?: ''))
         {
