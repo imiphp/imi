@@ -9,6 +9,7 @@ use Imi\Bean\IBean;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Raw;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
@@ -28,6 +29,11 @@ abstract class Model extends BaseModel
      * 动态模型集合.
      */
     protected static array $__forks = [];
+
+    /**
+     * 设置给字段的 SQL 值集合.
+     */
+    protected array $__rawValues = [];
 
     public function __construct(array $data = [], bool $queryRelation = true)
     {
@@ -87,8 +93,7 @@ abstract class Model extends BaseModel
         {
             return null;
         }
-        $realClassName = static::__getRealClassName();
-        $query = static::query();
+        $query = static::query()->limit(1);
         if (\is_callable($ids[0]))
         {
             // 回调传入条件
@@ -100,45 +105,26 @@ abstract class Model extends BaseModel
             if (\is_array($ids[0]))
             {
                 // 键值数组where条件
-                $keys = array_keys($ids[0]);
-                $bindValues = [];
-                foreach ($ids[0] as $k => $v)
+                foreach ($ids[0] as $name => $value)
                 {
-                    $bindValues[':' . $k] = $v;
+                    $query->where($name, '=', $value);
                 }
-                $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($keys) {
-                    foreach ($keys as $name)
-                    {
-                        $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
-                    }
-                    $query->limit(1);
-                })->bindValues($bindValues);
             }
             else
             {
                 // 主键值
-                $id = static::__getMeta()->getId();
-                $keys = [];
-                $bindValues = [];
-                foreach ($id as $i => $idName)
+                foreach (static::__getMeta()->getId() as $i => $name)
                 {
                     if (!isset($ids[$i]))
                     {
                         break;
                     }
-                    $keys[] = $idName;
-                    $bindValues[':' . $idName] = $ids[$i];
+                    $query->where($name, '=', $ids[$i]);
                 }
-                $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($keys) {
-                    foreach ($keys as $name)
-                    {
-                        $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
-                    }
-                    $query->limit(1);
-                })->bindValues($bindValues);
             }
         }
 
+        $realClassName = static::__getRealClassName();
         // 查找前
         Event::trigger($realClassName . ':' . ModelEvents::BEFORE_FIND, [
             'ids'   => $ids,
@@ -215,12 +201,7 @@ abstract class Model extends BaseModel
             ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
         }
 
-        $keys = [];
-        foreach ($data as $k => $v)
-        {
-            $keys[] = $k;
-        }
-        $result = $query->alias($this->__meta->getClassName() . ':insert:' . md5(implode(',', $keys)))->insert($data);
+        $result = $query->insert($data);
         if ($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
         {
             $this[$autoIncrementField] = $result->getLastInsertId();
@@ -253,7 +234,7 @@ abstract class Model extends BaseModel
      */
     public function update($data = null): IResult
     {
-        $query = static::query();
+        $query = static::query()->limit(1);
         $meta = $this->__meta;
         if (null === $data)
         {
@@ -275,42 +256,26 @@ abstract class Model extends BaseModel
             ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
         }
 
-        $keys = [];
-        foreach ($data as $k => $v)
+        $hasIdWhere = false;
+        foreach ($meta->getId() as $idName)
         {
-            $keys[] = $k;
-        }
-        $keys[] = '#'; // 分隔符
-
-        $conditionId = $bindValues = [];
-        $id = $meta->getId();
-        if ($id)
-        {
-            foreach ($id as $idName)
+            if (isset($this[$idName]))
             {
-                if (isset($this[$idName]))
-                {
-                    $bindValues[':c_' . $idName] = $this[$idName];
-                    $keys[] = $conditionId[] = $idName;
-                }
+                $query->where($idName, '=', $this[$idName]);
+                $hasIdWhere = true;
+            }
+            elseif (isset($data[$idName]))
+            {
+                $query->where($idName, '=', $data[$idName]);
+                $hasIdWhere = true;
             }
         }
-        if (!$conditionId)
+        if (!$hasIdWhere)
         {
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
-        $result = $query->alias($this->__meta->getClassName() . ':update:' . md5(implode(',', $keys)), static function (IModelQuery $query) use ($conditionId) {
-            // @phpstan-ignore-next-line
-            if ($conditionId)
-            {
-                // 主键条件加入
-                foreach ($conditionId as $idName)
-                {
-                    $query->whereRaw($query->fieldQuote($idName) . '=:c_' . $idName);
-                }
-            }
-            $query->limit(1);
-        })->bindValues($bindValues)->update($data);
+
+        $result = $query->update($data);
 
         if ($isBean)
         {
@@ -436,25 +401,18 @@ abstract class Model extends BaseModel
         }
         else
         {
-            $keys = [];
-            foreach ($data as $k => $_)
+            foreach ($meta->getId() as $idName)
             {
-                $keys[] = $k;
-            }
-            $result = $query->alias($this->__meta->getClassName() . ':save:' . md5(implode(',', $keys)), function (IModelQuery $query) use ($meta) {
-                // 主键条件加入
-                $id = $meta->getId();
-                if ($id)
+                if (isset($this[$idName]))
                 {
-                    foreach ($id as $idName)
-                    {
-                        if (isset($this[$idName]))
-                        {
-                            $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
-                        }
-                    }
+                    $query->where($idName, '=', $this[$idName]);
                 }
-            })->replace($data);
+                elseif (isset($data[$idName]))
+                {
+                    $query->where($idName, '=', $data[$idName]);
+                }
+            }
+            $result = $query->replace($data);
             if ($result->isSuccess() && $autoIncrementField)
             {
                 $this[$autoIncrementField] = $result->getLastInsertId();
@@ -493,33 +451,25 @@ abstract class Model extends BaseModel
             ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
         }
 
-        $bindValues = [];
-        $id = $meta->getId();
-        if ($id)
+        $hasIdWhere = false;
+        foreach ($meta->getId() as $idName)
         {
-            foreach ($id as $idName)
+            if (isset($this[$idName]))
             {
-                if (isset($this[$idName]))
-                {
-                    $bindValues[$idName] = $this[$idName];
-                }
+                $query->where($idName, '=', $this[$idName]);
+                $hasIdWhere = true;
+            }
+            elseif (isset($data[$idName]))
+            {
+                $query->where($idName, '=', $data[$idName]);
+                $hasIdWhere = true;
             }
         }
-        if (!$bindValues)
+        if (!$hasIdWhere)
         {
             throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
-        $result = $query->alias($this->__meta->getClassName() . ':delete', function (IModelQuery $query) use ($id) {
-            // 主键条件加入
-            foreach ($id as $idName)
-            {
-                if (isset($this[$idName]))
-                {
-                    $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
-                }
-            }
-            $query->limit(1);
-        })->bindValues($bindValues)->delete();
+        $result = $query->delete();
 
         if ($isBean)
         {
@@ -851,7 +801,15 @@ abstract class Model extends BaseModel
         $result = new LazyArrayObject();
         $isUpdate = 'update' === $type;
         $canUpdateTime = $isUpdate || 'save' === $type;
-        $objectIsObject = \is_object($object);
+        if ($objectIsObject = \is_object($object))
+        {
+            $rawValues = $object->__rawValues;
+            $object->__rawValues = [];
+        }
+        else
+        {
+            $rawValues = null;
+        }
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
@@ -860,6 +818,19 @@ abstract class Model extends BaseModel
             if ($column->virtual)
             {
                 continue;
+            }
+            if ($rawValues)
+            {
+                if (isset($rawValues[$name]))
+                {
+                    $result[$dbFieldName] = new Raw($rawValues[$name]);
+                    continue;
+                }
+                if (isset($rawValues[$dbFieldName]))
+                {
+                    $result[$dbFieldName] = new Raw($rawValues[$dbFieldName]);
+                    continue;
+                }
             }
             $columnType = $column->type;
             // 字段自动更新时间
@@ -879,9 +850,9 @@ abstract class Model extends BaseModel
             {
                 $value = $data[$name];
             }
-            elseif (\array_key_exists($column->name, $data))
+            elseif (\array_key_exists($dbFieldName, $data))
             {
-                $value = $data[$column->name];
+                $value = $data[$dbFieldName];
             }
             else
             {
@@ -941,5 +912,23 @@ abstract class Model extends BaseModel
         ], null, \Imi\Model\Event\Param\AfterParseDataEventParam::class);
 
         return $result;
+    }
+
+    /**
+     * 设置字段的值为 sql，如果为null则清除设置.
+     */
+    public function __setRaw(string $field, ?string $sql): self
+    {
+        $this->__rawValues[$field] = $sql;
+
+        return $this;
+    }
+
+    /**
+     * 获取设置字段的 sql 值
+     */
+    public function __getRaw(string $field): ?string
+    {
+        return $this->__rawValues[$field] ?? null;
     }
 }
