@@ -259,14 +259,14 @@ abstract class Model extends BaseModel
         $hasIdWhere = false;
         foreach ($meta->getId() as $idName)
         {
-            if (isset($this[$idName]))
-            {
-                $query->where($idName, '=', $this[$idName]);
-                $hasIdWhere = true;
-            }
-            elseif (isset($data[$idName]))
+            if (isset($data[$idName]))
             {
                 $query->where($idName, '=', $data[$idName]);
+                $hasIdWhere = true;
+            }
+            elseif (isset($this[$idName]))
+            {
+                $query->where($idName, '=', $this[$idName]);
                 $hasIdWhere = true;
             }
         }
@@ -403,13 +403,13 @@ abstract class Model extends BaseModel
         {
             foreach ($meta->getId() as $idName)
             {
-                if (isset($this[$idName]))
-                {
-                    $query->where($idName, '=', $this[$idName]);
-                }
-                elseif (isset($data[$idName]))
+                if (isset($data[$idName]))
                 {
                     $query->where($idName, '=', $data[$idName]);
+                }
+                elseif (isset($this[$idName]))
+                {
+                    $query->where($idName, '=', $this[$idName]);
                 }
             }
             $result = $query->replace($data);
@@ -457,11 +457,6 @@ abstract class Model extends BaseModel
             if (isset($this[$idName]))
             {
                 $query->where($idName, '=', $this[$idName]);
-                $hasIdWhere = true;
-            }
-            elseif (isset($data[$idName]))
-            {
-                $query->where($idName, '=', $data[$idName]);
                 $hasIdWhere = true;
             }
         }
