@@ -20,16 +20,21 @@ class SwooleLogger extends MonoLogger
 
     protected bool $async = false;
 
+    protected bool $asyncLogging = false;
+
+    /**
+     * @param mixed ...$args
+     */
     public function __construct(...$args)
     {
         parent::__construct(...$args);
         if ($this->async = Config::get('@app.logger.async', false))
         {
-            $this->pushProcessor(function (array $record): array {
-                if (isset($context[self::KEY_IMI_ASYNC_DATETIME]))
+            $this->pushProcessor(static function (array $record): array {
+                if (isset($record['context'][self::KEY_IMI_ASYNC_DATETIME]))
                 {
-                    $record['datetime'] = $context[self::KEY_IMI_ASYNC_DATETIME];
-                    unset($context[self::KEY_IMI_ASYNC_DATETIME]);
+                    $record['datetime'] = $record['context'][self::KEY_IMI_ASYNC_DATETIME];
+                    unset($record['context'][self::KEY_IMI_ASYNC_DATETIME]);
                 }
 
                 return $record;
@@ -39,8 +44,8 @@ class SwooleLogger extends MonoLogger
                 $this->__logProcessor();
             });
             Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END'], function () {
+                $this->asyncLogging = false;
                 $this->logChannel->close();
-                $this->logChannel = null;
             }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
@@ -50,7 +55,7 @@ class SwooleLogger extends MonoLogger
      */
     public function addRecord(int $level, string $message, array $context = []): bool
     {
-        if ($this->async && $this->logChannel)
+        if ($this->asyncLogging)
         {
             $context[self::KEY_IMI_ASYNC_DATETIME] = new DateTimeImmutable($this->microsecondTimestamps, $this->timezone);
 
@@ -64,8 +69,8 @@ class SwooleLogger extends MonoLogger
 
     protected function __logProcessor(): void
     {
-        $channel = $this->logChannel;
-        while ($args = $channel->pop())
+        $this->asyncLogging = true;
+        while ($args = $this->logChannel->pop())
         {
             try
             {
