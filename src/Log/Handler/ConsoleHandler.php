@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi\Log\Handler;
 
 use Imi\Cli\ImiCommand;
+use Imi\Log\MonoLogger;
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,7 +19,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritDoc}
      */
-    public function __construct(?OutputInterface $output = null, $level = Logger::DEBUG, bool $bubble = true)
+    public function __construct(?OutputInterface $output = null, $level = MonoLogger::DEBUG, bool $bubble = true)
     {
         $this->output = $output ?? ImiCommand::getOutput();
         parent::__construct($level, $bubble);

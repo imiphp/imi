@@ -30,6 +30,7 @@ return [
 
     // 日志配置
     'logger' => [
+        'async'    => true,
         'channels' => [
             'imi' => [
                 'handlers' => [
