@@ -43,6 +43,7 @@ class ErrorLog
         register_shutdown_function([$this, 'onShutdown']);
         // @phpstan-ignore-next-line
         set_error_handler([$this, 'onError'], $this->catchLevel);
+        set_exception_handler([$this, 'onException']);
     }
 
     /**
