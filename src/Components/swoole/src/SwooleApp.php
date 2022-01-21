@@ -18,6 +18,7 @@ use Imi\Lock\Lock;
 use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
 use Imi\Swoole\Context\CoroutineContextManager;
+use Imi\Swoole\Log\SwooleLogger;
 use Imi\Swoole\Util\AtomicManager;
 use function Imi\ttyExec;
 use Imi\Util\Imi;
@@ -115,6 +116,11 @@ class SwooleApp extends CliApp
                     break;
                 }
             }
+        }
+
+        if (null === Config::get('@app.logger.logger'))
+        {
+            Config::set('@app.logger.logger', SwooleLogger::class);
         }
     }
 

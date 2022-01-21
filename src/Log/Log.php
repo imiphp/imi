@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Log;
 
 use Imi\App;
-use Monolog\Logger;
 
 class Log
 {
@@ -13,7 +12,7 @@ class Log
     {
     }
 
-    public static function get(?string $channelName): Logger
+    public static function get(?string $channelName): MonoLogger
     {
         // @phpstan-ignore-next-line
         return App::getBean('Logger')->getLogger($channelName);

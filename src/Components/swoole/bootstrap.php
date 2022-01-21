@@ -53,6 +53,7 @@ return static function () {
             // 运行
             App::run((static function () use ($path): string {
                 $input = ImiCommand::getInput();
+                $output = ImiCommand::getOutput();
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)
                 {
@@ -60,7 +61,7 @@ return static function () {
                     $config = include File::path($appPath, 'config/config.php');
                     if (!isset($config['namespace']))
                     {
-                        echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', \PHP_EOL;
+                        $output->writeln('Has no namespace, please add arg: --app-namespace "Your App Namespace"');
                         exit(255);
                     }
                     App::setNx(AppContexts::APP_PATH, $appPath, true);
@@ -88,6 +89,7 @@ return static function () {
                 throw $th;
             }
         }
+        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.END');
     });
     if (0 === $status)
     {
