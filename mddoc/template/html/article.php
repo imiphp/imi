@@ -36,7 +36,7 @@
                         <a href="/v2.1/" target="_blank" style="padding-right: 40px;">v2.1 <span class="layui-badge">新</span></a>
                     </li>
                     <li class="layui-nav-item layui-this" lay-unselect>
-                        <a href="/v2.0/" target="_blank" style="padding-right: 40px;">v2.0</a>
+                        <a href="/v2.0/" target="_blank">v2.0</a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
                         <a href="/v1/" target="_blank">v1.x</a>
