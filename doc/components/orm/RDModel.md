@@ -445,6 +445,7 @@ $testModel = TestModel::newInstance();
 $testModel->setA('1');
 $testModel->setB('1');
 $testModel->setC('1');
+$testModel->__setRaw('value', 'value+1'); // set value=value+1，第一个参数是字段名，第二个参数是sql
 $result = $testModel->insert();
 // $result 用法同数据库中的 insert() 返回值用法
 echo '插入的自增ID：', $testModel->getId();
