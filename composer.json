@@ -58,7 +58,10 @@
     },
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "yurunsoft/ide-helper": true
+        }
     },
     "bin": [
         "src/Cli/bin/imi-cli"
