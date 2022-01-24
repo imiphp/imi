@@ -51,16 +51,30 @@ class Scanner
         $time = microtime(true);
         $components = [];
         $fileNameMap = [];
-        foreach (Composer::getClassLoaders() as $classLoader)
+        $classLoaders = Composer::getClassLoadersWithVendorDir() ?: Composer::getClassLoaders();
+        foreach ($classLoaders as $vendorDir => $classLoader)
         {
-            $ref = new ReflectionClass($classLoader);
-            $fileName = $ref->getFileName();
-            if (isset($fileNameMap[$fileName]))
+            if (\is_string($vendorDir) && \is_dir($vendorDir))
             {
-                continue;
+                if (isset($fileNameMap[$vendorDir]))
+                {
+                    continue;
+                }
+                $fileNameMap[$vendorDir] = true;
+                $vendorPath = $vendorDir;
             }
-            $fileNameMap[$fileName] = true;
-            $vendorPath = \dirname($fileName, 2);
+            else
+            {
+                // 兼容无法直接获取 vendorDir 的情况，但无法保证多个 loader 存在的情况下获取到正确的目录
+                $ref = new ReflectionClass($classLoader);
+                $fileName = $ref->getFileName();
+                if (isset($fileNameMap[$fileName]))
+                {
+                    continue;
+                }
+                $fileNameMap[$fileName] = true;
+                $vendorPath = \dirname($fileName, 2);
+            }
             // 遍历第一层
             foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)
             {

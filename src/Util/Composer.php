@@ -6,6 +6,7 @@ namespace Imi\Util;
 
 use Composer\Autoload\ClassLoader;
 use Imi\Macro\AutoLoader;
+use function array_search;
 
 /**
  * Composer 工具类.
@@ -13,6 +14,8 @@ use Imi\Macro\AutoLoader;
 class Composer
 {
     private static ?array $classLoaders = null;
+
+    private static ?array $classLoadersWithVendorDir = null;
 
     private function __construct()
     {
@@ -48,6 +51,38 @@ class Composer
         }
 
         return self::$classLoaders = $classLoaders;
+    }
+
+    /**
+     * 获取 Composer ClassLoader 对象并携带 vendorDir
+     * 仅 composer version >= 2.0.9 下效.
+     *
+     * @return array<string, \Composer\Autoload\ClassLoader>
+     */
+    public static function getClassLoadersWithVendorDir(bool $force = false): array
+    {
+        if (!$force && null !== self::$classLoadersWithVendorDir)
+        {
+            return self::$classLoadersWithVendorDir;
+        }
+        $classLoaders = [];
+
+        // composer version >= 2.0.9
+        if (method_exists(ClassLoader::class, 'getRegisteredLoaders'))
+        {
+            $loaderObjectsVendorDirs = [];
+            foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
+                $loaderObjectsVendorDirs[\spl_object_id($loader)] = $vendorDir;
+            }
+            foreach (self::getClassLoaders($force) as $loader) {
+                $objId = \spl_object_id($loader);
+                if (isset($loaderObjectsVendorDirs[$objId])) {
+                    $classLoaders[$loaderObjectsVendorDirs[$objId]] = $loader;
+                }
+            }
+        }
+
+        return self::$classLoadersWithVendorDir = $classLoaders;
     }
 
     /**
