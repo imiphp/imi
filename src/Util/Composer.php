@@ -32,7 +32,7 @@ class Composer
         $classLoaders = [];
         foreach (spl_autoload_functions() as $autoloadFunction)
         {
-            if (\is_array($autoloadFunction) && isset($autoloadFunction[0]) && $autoloadFunction[0] instanceof ClassLoader)
+            if (\is_array($autoloadFunction) && isset($autoloadFunction[0]))
             {
                 // @phpstan-ignore-next-line
                 if ($autoloadFunction[0] instanceof AutoLoader)
@@ -40,7 +40,7 @@ class Composer
                     // @phpstan-ignore-next-line
                     $classLoaders[] = $autoloadFunction[0]->getComposerClassLoader();
                 }
-                else
+                elseif ($autoloadFunction[0] instanceof ClassLoader)
                 {
                     $classLoaders[] = $autoloadFunction[0];
                 }
