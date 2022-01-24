@@ -54,7 +54,7 @@ class Scanner
         $classLoaders = Composer::getClassLoadersWithVendorDir() ?: Composer::getClassLoaders();
         foreach ($classLoaders as $vendorDir => $classLoader)
         {
-            if (\is_string($vendorDir) && \is_dir($vendorDir))
+            if (\is_string($vendorDir) && is_dir($vendorDir))
             {
                 if (isset($fileNameMap[$vendorDir]))
                 {

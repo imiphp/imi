@@ -6,7 +6,6 @@ namespace Imi\Util;
 
 use Composer\Autoload\ClassLoader;
 use Imi\Macro\AutoLoader;
-use function array_search;
 
 /**
  * Composer 工具类.
@@ -71,12 +70,15 @@ class Composer
         if (method_exists(ClassLoader::class, 'getRegisteredLoaders'))
         {
             $loaderObjectsVendorDirs = [];
-            foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
-                $loaderObjectsVendorDirs[\spl_object_id($loader)] = $vendorDir;
+            foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader)
+            {
+                $loaderObjectsVendorDirs[spl_object_id($loader)] = $vendorDir;
             }
-            foreach (self::getClassLoaders($force) as $loader) {
-                $objId = \spl_object_id($loader);
-                if (isset($loaderObjectsVendorDirs[$objId])) {
+            foreach (self::getClassLoaders($force) as $loader)
+            {
+                $objId = spl_object_id($loader);
+                if (isset($loaderObjectsVendorDirs[$objId]))
+                {
                     $classLoaders[$loaderObjectsVendorDirs[$objId]] = $loader;
                 }
             }
