@@ -17,6 +17,10 @@ class AutoLoader
 
     protected bool $hasSwoole = false;
 
+    protected int $loadingCount = 0;
+
+    protected int $lastHookFlags = 0;
+
     public function __construct(ClassLoader $composerClassLoader)
     {
         $this->composerClassLoader = $composerClassLoader;
@@ -40,17 +44,33 @@ class AutoLoader
      */
     public function loadClass($class)
     {
+        if (str_starts_with($class, 'Yurun\Macro\\'))
+        {
+            return $this->composerClassLoader->loadClass($class);
+        }
         $fileName = $this->composerClassLoader->findFile($class);
         if (false === $fileName)
         {
             return null;
         }
-        if ($this->hasSwoole && Coroutine::getCid() >= 0)
+        if ($this->loadingCount || ($this->hasSwoole && Coroutine::getCid() >= 1))
         {
-            $flags = \Swoole\Runtime::getHookFlags();
-            \Swoole\Runtime::enableCoroutine($flags & ~(\SWOOLE_HOOK_FILE | \SWOOLE_HOOK_STDIO));
-            $this->includeFile($fileName);
-            \Swoole\Runtime::enableCoroutine($flags);
+            if (1 === (++$this->loadingCount))
+            {
+                $this->lastHookFlags = $flags = \Swoole\Runtime::getHookFlags();
+                \Swoole\Runtime::setHookFlags($flags & ~(\SWOOLE_HOOK_FILE | \SWOOLE_HOOK_STDIO));
+            }
+            try
+            {
+                $this->includeFile($fileName);
+            }
+            finally
+            {
+                if (0 === (--$this->loadingCount))
+                {
+                    \Swoole\Runtime::setHookFlags($this->lastHookFlags);
+                }
+            }
         }
         else
         {
