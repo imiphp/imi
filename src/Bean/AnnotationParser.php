@@ -113,10 +113,10 @@ class AnnotationParser
     public function parseClass(\ReflectionClass $ref): void
     {
         $annotations = $this->getReader()->getClassAnnotations($ref);
-        #if version_compare(\PHP_VERSION, '8.0', '>=')
+        #if PHP_VERSION_ID >= 80000
         if (
             #if 0
-            version_compare(\PHP_VERSION, '8.0', '>=') &&
+            \PHP_VERSION_ID >= 80000 &&
             #endif
             $phpAnnotations = $this->getPHPClassAnnotations($ref))
         {
@@ -215,7 +215,7 @@ class AnnotationParser
         $className = $ref->getName();
         $methodName = $method->getName();
         $annotations = $this->getReader()->getMethodAnnotations($method);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPMethodAnnotations($method))
+        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPMethodAnnotations($method))
         {
             if ($annotations)
             {
@@ -307,7 +307,7 @@ class AnnotationParser
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop): void
     {
         $annotations = $this->getReader()->getPropertyAnnotations($prop);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
+        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
         {
             if ($annotations)
             {
@@ -401,7 +401,7 @@ class AnnotationParser
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const): void
     {
         $annotations = $this->getReader()->getConstantAnnotations($const);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPConstantAnnotations($const))
+        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPConstantAnnotations($const))
         {
             if ($annotations)
             {
