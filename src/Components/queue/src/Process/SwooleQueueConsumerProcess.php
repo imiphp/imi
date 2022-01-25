@@ -60,7 +60,6 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 $configs = $options['configs'];
                 $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
                     Coroutine::create(function () use ($group, $configs) {
-                        \Swoole\Runtime::enableCoroutine(true);
                         Imi::setProcessName('process', [
                             'processName'   => 'QueueConsumer-' . $group,
                         ]);
