@@ -9,7 +9,7 @@ use Swoole\Coroutine;
 use function Yurun\Macro\includeFile;
 use Yurun\Macro\MacroParser;
 
-class AutoLoader extends ClassLoader
+class AutoLoader
 {
     protected ClassLoader $composerClassLoader;
 

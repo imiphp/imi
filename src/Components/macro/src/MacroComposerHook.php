@@ -20,7 +20,7 @@ class MacroComposerHook
         foreach ($autoLoaders as &$autoLoader)
         {
             $unregisterAutoloader = $autoLoader;
-            if (\is_array($autoLoader) && isset($autoLoader[0]) && $autoLoader[0] instanceof ClassLoader && !$autoLoader[0] instanceof AutoLoader)
+            if (\is_array($autoLoader) && isset($autoLoader[0]) && $autoLoader[0] instanceof ClassLoader)
             {
                 $autoLoader[0] = new AutoLoader($autoLoader[0]);
             }
