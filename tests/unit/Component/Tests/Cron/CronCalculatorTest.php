@@ -329,7 +329,7 @@ class CronCalculatorTest extends BaseTest
         $beginTime = strtotime('2018-06-21 12:34:56');
         // 每天 0 点执行一次
         $lastTime = $cronCalculator->getNextTickTime($beginTime, [
-            new CronRule(['hour' => '0', 'minute' => '0', 'second' => '0', 'delayMin' => 1, 'delayMin' => 3]),
+            new CronRule(['hour' => '0', 'minute' => '0', 'second' => '0', 'delayMin' => 1, 'delayMax' => 3]),
         ]);
         $this->assertTrue($lastTime > strtotime('2018-06-22 00:00:00'));
         $this->assertTrue($lastTime <= strtotime('2018-06-22 00:00:03'));
