@@ -177,7 +177,7 @@ class CronRandomWorker implements ICronTask
 
 注解 `@Cron`，类 `Imi\Cron\Annotation\Cron`
 
-`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="", force=false)`
+`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="", force=false, delayMin=0, delayMax=0)`
 
 ##### 属性
 
@@ -327,6 +327,14 @@ class CronRandomWorker implements ICronTask
 最大运行执行时间，单位：秒。
 
 该值与分布式锁超时时间共享，默认为 60 秒
+
+**delayMin、delayMax**
+
+最小、最大延迟执行秒数，默认为`0`。
+
+如果有一项不为`0`，该定时任务就会根据两个值之间的随机秒数（包含两个值），提前或者延后执行。
+
+这两个设置主要是防止固定时间执行任务过多，起到分流作用。
 
 #### 配置文件设定
 

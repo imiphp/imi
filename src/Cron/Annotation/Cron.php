@@ -27,6 +27,8 @@ use Imi\Bean\Annotation\Base;
  * @property string|null $redisPool        用于锁的 `Redis` 连接池名
  * @property float       $lockWaitTimeout  获取锁超时时间，单位：秒
  * @property float       $maxExecutionTime 最大运行执行时间，单位：秒；该值与分布式锁超时时间共享，默认为 60 秒
+ * @property int         $delayMin         最小延迟执行秒数
+ * @property int         $delayMax         最大延迟执行秒数
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Cron extends Base
@@ -34,7 +36,7 @@ class Cron extends Base
     /**
      * @param mixed $data
      */
-    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, $data = null, bool $force = false, string $year = '*', string $month = '*', string $day = '*', string $week = '*', string $hour = '*', string $minute = '*', string $second = '*', ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, float $maxExecutionTime = 60)
+    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, $data = null, bool $force = false, string $year = '*', string $month = '*', string $day = '*', string $week = '*', string $hour = '*', string $minute = '*', string $second = '*', ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, float $maxExecutionTime = 60, int $delayMin = 0, int $delayMax = 0)
     {
         parent::__construct(...\func_get_args());
     }

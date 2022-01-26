@@ -92,6 +92,8 @@ class CronManager implements ICronManager
             'hour'      => $cron->hour,
             'minute'    => $cron->minute,
             'second'    => $cron->second,
+            'delayMin'  => $cron->delayMin,
+            'delayMax'  => $cron->delayMax,
         ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout, $cron->force);
     }
 
