@@ -66,6 +66,7 @@ return [
         'type'         => Imi\Swoole\Server\Type::TCP_SERVER,
         'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13003,
+        'syncConnect'  => true,
         'configs'      => [
             'worker_num'    => 1,
             // EOF自动分包

@@ -67,6 +67,7 @@ return [
         'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13002,
         'mode'         => \SWOOLE_BASE,
+        'syncConnect'  => true,
         'configs'      => [
             'worker_num'    => 2,
         ],
