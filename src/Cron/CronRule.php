@@ -100,6 +100,16 @@ class CronRule
     private string $second = '*';
 
     /**
+     * 最小延迟执行秒数.
+     */
+    private int $delayMin = 0;
+
+    /**
+     * 最大延迟执行秒数.
+     */
+    private int $delayMax = 0;
+
+    /**
      * 年.
      */
     public function getYear(): string
@@ -153,5 +163,21 @@ class CronRule
     public function getSecond(): string
     {
         return $this->second;
+    }
+
+    /**
+     * 最小延迟执行秒数.
+     */
+    public function getDelayMin(): int
+    {
+        return $this->delayMin;
+    }
+
+    /**
+     * 最大延迟执行秒数.
+     */
+    public function getDelayMax(): int
+    {
+        return $this->delayMax;
     }
 }
