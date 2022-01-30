@@ -13,8 +13,6 @@ class AutoLoader
 {
     protected ClassLoader $composerClassLoader;
 
-    protected string $macroPath;
-
     protected bool $hasSwoole = false;
 
     protected int $loadingCount = 0;
