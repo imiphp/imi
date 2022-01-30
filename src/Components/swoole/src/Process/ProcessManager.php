@@ -132,10 +132,6 @@ class ProcessManager
             mt_srand();
             $exitCode = 0;
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode) {
-                if (\function_exists('opcache_reset'))
-                {
-                    opcache_reset(); // 修复未知原因的 coredump
-                }
                 if ($inCoroutine = Coroutine::isIn())
                 {
                     Coroutine::defer(static function () use ($name, $swooleProcess) {
