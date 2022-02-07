@@ -47,10 +47,111 @@ abstract class Model extends BaseModel
 
     public function __init(array $data = [], bool $queryRelation = true): void
     {
-        parent::__init($data);
-        if ($queryRelation && $this->__meta->hasRelation())
+        $meta = $this->__meta;
+        $isBean = $meta->isBean();
+        if ($isBean)
+        {
+            // 初始化前
+            $this->trigger(ModelEvents::BEFORE_INIT, [
+                'model' => $this,
+                'data'  => $data,
+            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        }
+
+        $this->__originData = $data;
+        if ($data)
+        {
+            $fieldAnnotations = $meta->getFields();
+            $dbFieldAnnotations = $meta->getDbFields();
+            foreach ($data as $k => $v)
+            {
+                if (isset($fieldAnnotations[$k]))
+                {
+                    $fieldAnnotation = $fieldAnnotations[$k];
+                }
+                elseif (isset($dbFieldAnnotations[$k]))
+                {
+                    $item = $dbFieldAnnotations[$k];
+                    $fieldAnnotation = $item['column'];
+                    $k = $item['propertyName'];
+                }
+                else
+                {
+                    $fieldAnnotation = null;
+                }
+                if ($fieldAnnotation && \is_string($v))
+                {
+                    switch ($fieldAnnotation->type)
+                    {
+                        case 'json':
+                            $fieldsJsonDecode ??= $meta->getFieldsJsonDecode();
+                            if (isset($fieldsJsonDecode[$k]))
+                            {
+                                $realJsonDecode = $fieldsJsonDecode[$k];
+                            }
+                            else
+                            {
+                                $realJsonDecode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
+                            }
+                            if ($realJsonDecode)
+                            {
+                                $value = json_decode($v, $realJsonDecode->associative, $realJsonDecode->depth, $realJsonDecode->flags);
+                            }
+                            else
+                            {
+                                $value = json_decode($v, true);
+                            }
+                            if (\JSON_ERROR_NONE === json_last_error())
+                            {
+                                if ($realJsonDecode)
+                                {
+                                    if ('' !== $realJsonDecode->wrap && (\is_array($value) || \is_object($value)))
+                                    {
+                                        $v = new ($realJsonDecode->wrap)($value);
+                                    }
+                                    else
+                                    {
+                                        $v = $value;
+                                    }
+                                }
+                                elseif (\is_array($value) || \is_object($value))
+                                {
+                                    $v = new LazyArrayObject($value);
+                                }
+                                else
+                                {
+                                    $v = $value;
+                                }
+                            }
+                            break;
+                        case 'list':
+                            if ('' === $v)
+                            {
+                                $v = [];
+                            }
+                            elseif (null !== $fieldAnnotation->listSeparator)
+                            {
+                                $v = explode($fieldAnnotation->listSeparator, $v);
+                            }
+                            break;
+                    }
+                }
+                $this[$k] = $v;
+            }
+        }
+
+        if ($queryRelation && $meta->hasRelation())
         {
             ModelRelationManager::initModel($this);
+        }
+
+        if ($isBean)
+        {
+            // 初始化后
+            $this->trigger(ModelEvents::AFTER_INIT, [
+                'model' => $this,
+                'data'  => $data,
+            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
         }
     }
 
