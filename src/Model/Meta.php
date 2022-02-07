@@ -123,6 +123,13 @@ class Meta
     private ?JsonEncode $jsonEncode = null;
 
     /**
+     * 针对字段设置的 JSON 序列化时的配置.
+     *
+     * @var JsonEncode[]
+     */
+    private array $fieldsJsonEncode = [];
+
+    /**
      * 定义 SQL 语句的字段列表.
      *
      * @var \Imi\Model\Annotation\Sql[][]
@@ -225,6 +232,7 @@ class Meta
         $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
+        $this->fieldsJsonEncode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonEncode::class);
         $this->bean = $entity->bean;
     }
 
@@ -471,5 +479,15 @@ class Meta
     public function isBean(): bool
     {
         return $this->bean;
+    }
+
+    /**
+     * Get 针对字段设置的 JSON 序列化时的配置.
+     *
+     * @return JsonEncode[]
+     */
+    public function getFieldsJsonEncode(): array
+    {
+        return $this->fieldsJsonEncode;
     }
 }

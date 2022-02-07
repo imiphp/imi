@@ -864,13 +864,18 @@ abstract class Model extends BaseModel
             switch ($columnType)
             {
                 case 'json':
-                    if (!isset($jsonEncode))
+                    $fieldsJsonEncode ??= $meta->getFieldsJsonEncode();
+                    if (isset($fieldsJsonEncode[$name]))
                     {
-                        $jsonEncode = $meta->getJsonEncode() ?? false;
+                        $realJsonEncode = $fieldsJsonEncode[$name];
                     }
-                    if ($jsonEncode)
+                    else
                     {
-                        $value = json_encode($value, $jsonEncode->flags, $jsonEncode->depth);
+                        $realJsonEncode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
+                    }
+                    if ($realJsonEncode)
+                    {
+                        $value = json_encode($value, $realJsonEncode->flags, $realJsonEncode->depth);
                     }
                     else
                     {

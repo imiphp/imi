@@ -241,7 +241,11 @@ abstract class ArticleBase extends Model
 
 ### @JsonEncode
 
-写在类上，设定 JSON 序列化时的配置
+设定 JSON 序列化时的配置
+
+写在类上可以让模型类中所有 Json 字段生效。
+
+写在属性上，可以覆盖写在类上的注解。
 
 不使用 Unicode 编码转换中文：`@JsonEncode(JSON_UNESCAPED_UNICODE)`
 
