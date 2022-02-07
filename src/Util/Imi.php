@@ -654,7 +654,7 @@ class Imi
                 break;
             }
         }
-        if (empty($matches))
+        if (!$matches)
         {
             return '';
         }

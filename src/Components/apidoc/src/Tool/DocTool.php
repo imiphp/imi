@@ -131,7 +131,7 @@ class DocTool extends BaseCommand
         {
             // 控制器注解
             /** @var Controller|null $controllerAnnotation */
-            $controllerAnnotation = AnnotationManager::getClassAnnotations($controllerClass, Controller::class)[0] ?? null;
+            $controllerAnnotation = AnnotationManager::getClassAnnotations($controllerClass, Controller::class, true, true);
             if (!$controllerAnnotation)
             {
                 continue;
@@ -155,7 +155,7 @@ class DocTool extends BaseCommand
                 {
                     // 自动增加个请求
                     /** @var Route $route */
-                    $route = AnnotationManager::getMethodAnnotations($controllerClass, $method, Route::class)[0] ?? null;
+                    $route = AnnotationManager::getMethodAnnotations($controllerClass, $method, Route::class, true, true);
 
                     // path
                     $requestPath = $route->url ?? $method;

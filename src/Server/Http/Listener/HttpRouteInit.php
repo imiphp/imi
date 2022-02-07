@@ -68,9 +68,15 @@ class HttpRouteInit implements IEventListener
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
-                foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $actionAnnotations)
+                foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $_)
                 {
-                    $routeAnnotations = AnnotationManager::getMethodAnnotations($className, $methodName, Route::class);
+                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                        Route::class,
+                        Middleware::class,
+                        ExtractData::class,
+                        WSConfig::class,
+                    ]);
+                    $routeAnnotations = $annotations[Route::class];
                     if ($routeAnnotations)
                     {
                         $routes = $routeAnnotations;
@@ -86,7 +92,7 @@ class HttpRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var Middleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, Middleware::class) as $middleware)
+                    foreach ($annotations[Middleware::class] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
@@ -118,7 +124,7 @@ class HttpRouteInit implements IEventListener
                         }
                         $extractData = [];
                         /** @var ExtractData $item */
-                        foreach (AnnotationManager::getMethodAnnotations($className, $methodName, ExtractData::class) as $item)
+                        foreach ($annotations[ExtractData::class] as $item)
                         {
                             $extractData[$item->to] = [
                                 'name'    => $item->name,
@@ -128,7 +134,7 @@ class HttpRouteInit implements IEventListener
                         $routeCallable = new DelayServerBeanCallable($server, $className, $methodName, [$server]);
                         $options = [
                             'middlewares'   => $middlewares,
-                            'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
+                            'wsConfig'      => $annotations[WSConfig::class][0] ?? null,
                             'extractData'   => $extractData,
                         ];
                         $route->addRuleAnnotation($routeItem, $routeCallable, $options);

@@ -81,7 +81,7 @@ class ModelManager
         $objectClass = BeanFactory::getObjectClass($object);
 
         return self::$annotation[$objectClass][$annotationClass]
-            ??= (AnnotationManager::getClassAnnotations($objectClass, $annotationClass)[0] ?? null);
+            ??= AnnotationManager::getClassAnnotations($objectClass, $annotationClass, true, true);
     }
 
     /**
@@ -93,7 +93,7 @@ class ModelManager
     {
         $objectClass = BeanFactory::getObjectClass($object);
 
-        return self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass] ??= (AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null);
+        return self::$propertyAnnotation[$objectClass][$propertyName][$annotationClass] ??= (AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass, true, true));
     }
 
     /**

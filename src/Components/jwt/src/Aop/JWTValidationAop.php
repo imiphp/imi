@@ -53,7 +53,7 @@ class JWTValidationAop
         $class = BeanFactory::getObjectClass($target);
         $method = $joinPoint->getMethod();
         /** @var JWTValidation|null $jwtValidation */
-        $jwtValidation = AnnotationManager::getMethodAnnotations($class, $method, JWTValidation::class)[0] ?? null;
+        $jwtValidation = AnnotationManager::getMethodAnnotations($class, $method, JWTValidation::class, true, true);
         if (!$jwtValidation)
         {
             throw new AnnotationNotFoundException(sprintf('%s::%s() must have @%s annotation', $class, $method, JWTValidation::class));

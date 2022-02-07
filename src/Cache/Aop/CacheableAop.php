@@ -46,7 +46,7 @@ class CacheableAop
 
         // Cacheable 注解
         /** @var Cacheable|null $cacheable */
-        $cacheable = AnnotationManager::getMethodAnnotations($class, $method, Cacheable::class)[0] ?? null;
+        $cacheable = AnnotationManager::getMethodAnnotations($class, $method, Cacheable::class, true, true);
 
         // 方法参数
         $args = ClassObject::convertArgsToKV($class, $method, $joinPointArgs);

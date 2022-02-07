@@ -39,12 +39,12 @@ abstract class BaseFacade
         }
         else
         {
-            $annotations = AnnotationManager::getClassAnnotations(static::class, Facade::class);
-            if (!$annotations)
+            $cacheItem = AnnotationManager::getClassAnnotations(static::class, Facade::class, true, true);
+            if (!$cacheItem)
             {
                 throw new \RuntimeException(sprintf('Class %s not found @Facade Annotation', static::class));
             }
-            $cache[static::class] = $cacheItem = $annotations[0];
+            $cache[static::class] = $cacheItem;
         }
         if ($cacheItem->request)
         {

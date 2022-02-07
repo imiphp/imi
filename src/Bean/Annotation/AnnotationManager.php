@@ -302,8 +302,12 @@ class AnnotationManager
     /**
      * 获取类注解
      * 可选，是否只获取指定类型注解.
+     *
+     * @param string|array|null $annotationClassName
+     *
+     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
      */
-    public static function getClassAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getClassAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -328,13 +332,56 @@ class AnnotationManager
         {
             return $annotations;
         }
-        else
+        elseif (\is_array($annotationClassName))
         {
             $result = [];
+            foreach ($annotationClassName as $name)
+            {
+                if ($onlyFirst)
+                {
+                    $result[$name] = null;
+                }
+                else
+                {
+                    $result[$name] = [];
+                }
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $name)
+                    {
+                        if ($onlyFirst)
+                        {
+                            $result[$name] = $annotation;
+                            break;
+                        }
+                        else
+                        {
+                            $result[$name][] = $annotation;
+                        }
+                    }
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            if ($onlyFirst)
+            {
+                $result = null;
+            }
+            else
+            {
+                $result = [];
+            }
             foreach ($annotations as $annotation)
             {
                 if ($annotation instanceof $annotationClassName)
                 {
+                    if ($onlyFirst)
+                    {
+                        return $annotation;
+                    }
                     $result[] = $annotation;
                 }
             }
@@ -347,9 +394,11 @@ class AnnotationManager
      * 获取指定方法注解
      * 可选，是否只获取指定类型注解.
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @param string|array|null $annotationClassName
+     *
+     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
      */
-    public static function getMethodAnnotations(string $className, string $methodName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getMethodAnnotations(string $className, string $methodName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -374,13 +423,56 @@ class AnnotationManager
         {
             return $annotations;
         }
-        else
+        elseif (\is_array($annotationClassName))
         {
             $result = [];
+            foreach ($annotationClassName as $name)
+            {
+                if ($onlyFirst)
+                {
+                    $result[$name] = null;
+                }
+                else
+                {
+                    $result[$name] = [];
+                }
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $name)
+                    {
+                        if ($onlyFirst)
+                        {
+                            $result[$name] = $annotation;
+                            break;
+                        }
+                        else
+                        {
+                            $result[$name][] = $annotation;
+                        }
+                    }
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            if ($onlyFirst)
+            {
+                $result = null;
+            }
+            else
+            {
+                $result = [];
+            }
             foreach ($annotations as $annotation)
             {
                 if ($annotation instanceof $annotationClassName)
                 {
+                    if ($onlyFirst)
+                    {
+                        return $annotation;
+                    }
                     $result[] = $annotation;
                 }
             }
@@ -393,9 +485,11 @@ class AnnotationManager
      * 获取指定属性注解
      * 可选，是否只获取指定类型注解.
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @param string|array|null $annotationClassName
+     *
+     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
      */
-    public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getPropertyAnnotations(string $className, string $propertyName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -420,13 +514,56 @@ class AnnotationManager
         {
             return $annotations;
         }
-        else
+        elseif (\is_array($annotationClassName))
         {
             $result = [];
+            foreach ($annotationClassName as $name)
+            {
+                if ($onlyFirst)
+                {
+                    $result[$name] = null;
+                }
+                else
+                {
+                    $result[$name] = [];
+                }
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $name)
+                    {
+                        if ($onlyFirst)
+                        {
+                            $result[$name] = $annotation;
+                            break;
+                        }
+                        else
+                        {
+                            $result[$name][] = $annotation;
+                        }
+                    }
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            if ($onlyFirst)
+            {
+                $result = null;
+            }
+            else
+            {
+                $result = [];
+            }
             foreach ($annotations as $annotation)
             {
                 if ($annotation instanceof $annotationClassName)
                 {
+                    if ($onlyFirst)
+                    {
+                        return $annotation;
+                    }
                     $result[] = $annotation;
                 }
             }
@@ -439,9 +576,11 @@ class AnnotationManager
      * 获取指定常量注解
      * 可选，是否只获取指定类型注解.
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @param string|array|null $annotationClassName
+     *
+     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
      */
-    public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getConstantAnnotations(string $className, string $constantName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -466,13 +605,56 @@ class AnnotationManager
         {
             return $annotations;
         }
-        else
+        elseif (\is_array($annotationClassName))
         {
             $result = [];
+            foreach ($annotationClassName as $name)
+            {
+                if ($onlyFirst)
+                {
+                    $result[$name] = null;
+                }
+                else
+                {
+                    $result[$name] = [];
+                }
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $name)
+                    {
+                        if ($onlyFirst)
+                        {
+                            $result[$name] = $annotation;
+                            break;
+                        }
+                        else
+                        {
+                            $result[$name][] = $annotation;
+                        }
+                    }
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            if ($onlyFirst)
+            {
+                $result = null;
+            }
+            else
+            {
+                $result = [];
+            }
             foreach ($annotations as $annotation)
             {
                 if ($annotation instanceof $annotationClassName)
                 {
+                    if ($onlyFirst)
+                    {
+                        return $annotation;
+                    }
                     $result[] = $annotation;
                 }
             }
@@ -484,9 +666,9 @@ class AnnotationManager
     /**
      * 获取一个类中所有包含指定注解的方法.
      *
-     * @param string $annotationClassName
+     * @param string|array|null $annotationClassName
      */
-    public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getMethodsAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -512,19 +694,44 @@ class AnnotationManager
             return $annotationList;
         }
         $result = [];
-        foreach ($annotationList as $methodName => $annotations)
+        if (\is_array($annotationClassName))
         {
-            $resultMethodItem = [];
-            foreach ($annotations as $annotation)
+            foreach ($annotationClassName as $name)
             {
-                if ($annotation instanceof $annotationClassName)
+                $result[$name] = [];
+                foreach ($annotationList as $methodName => $annotations)
                 {
-                    $resultMethodItem[] = $annotation;
+                    $items = [];
+                    foreach ($annotations as $annotation)
+                    {
+                        if ($annotation instanceof $name)
+                        {
+                            $items[] = $annotation;
+                        }
+                    }
+                    if ($items)
+                    {
+                        $result[$name][$methodName] = $items;
+                    }
                 }
             }
-            if ($resultMethodItem)
+        }
+        else
+        {
+            foreach ($annotationList as $methodName => $annotations)
             {
-                $result[$methodName] = $resultMethodItem;
+                $items = [];
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $annotationClassName)
+                    {
+                        $items[] = $annotation;
+                    }
+                }
+                if ($items)
+                {
+                    $result[$methodName] = $items;
+                }
             }
         }
 
@@ -534,9 +741,9 @@ class AnnotationManager
     /**
      * 获取一个类中所有包含指定注解的属性.
      *
-     * @param string $annotationClassName
+     * @param string|array|null $annotationClassName
      */
-    public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getPropertiesAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -562,19 +769,44 @@ class AnnotationManager
             return $annotationList;
         }
         $result = [];
-        foreach ($annotationList as $propertyName => $annotations)
+        if (\is_array($annotationClassName))
         {
-            $resultPropertyItem = [];
-            foreach ($annotations as $annotation)
+            foreach ($annotationClassName as $name)
             {
-                if ($annotation instanceof $annotationClassName)
+                $result[$name] = [];
+                foreach ($annotationList as $propertyName => $annotations)
                 {
-                    $resultPropertyItem[] = $annotation;
+                    $items = [];
+                    foreach ($annotations as $annotation)
+                    {
+                        if ($annotation instanceof $name)
+                        {
+                            $items[] = $annotation;
+                        }
+                    }
+                    if ($items)
+                    {
+                        $result[$name][$propertyName] = $items;
+                    }
                 }
             }
-            if ($resultPropertyItem)
+        }
+        else
+        {
+            foreach ($annotationList as $propertyName => $annotations)
             {
-                $result[$propertyName] = $resultPropertyItem;
+                $items = [];
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $annotationClassName)
+                    {
+                        $items[] = $annotation;
+                    }
+                }
+                if ($items)
+                {
+                    $result[$propertyName] = $items;
+                }
             }
         }
 
@@ -584,9 +816,9 @@ class AnnotationManager
     /**
      * 获取一个类中所有包含指定注解的常量.
      *
-     * @param string $annotationClassName
+     * @param string|array|null $annotationClassName
      */
-    public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getConstantsAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -612,19 +844,44 @@ class AnnotationManager
             return $annotationList;
         }
         $result = [];
-        foreach ($annotationList as $constantName => $annotations)
+        if (\is_array($annotationClassName))
         {
-            $resultConstantItem = [];
-            foreach ($annotations as $annotation)
+            foreach ($annotationClassName as $name)
             {
-                if ($annotation instanceof $annotationClassName)
+                $result[$name] = [];
+                foreach ($annotationList as $constantName => $annotations)
                 {
-                    $resultConstantItem[] = $annotation;
+                    $items = [];
+                    foreach ($annotations as $annotation)
+                    {
+                        if ($annotation instanceof $name)
+                        {
+                            $items[] = $annotation;
+                        }
+                    }
+                    if ($items)
+                    {
+                        $result[$name][$constantName] = $items;
+                    }
                 }
             }
-            if ($resultConstantItem)
+        }
+        else
+        {
+            foreach ($annotationList as $constantName => $annotations)
             {
-                $result[$constantName] = $resultConstantItem;
+                $items = [];
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $annotationClassName)
+                    {
+                        $items[] = $annotation;
+                    }
+                }
+                if ($items)
+                {
+                    $result[$constantName] = $items;
+                }
             }
         }
 
