@@ -99,6 +99,8 @@ class ModelManager
     /**
      * 获取当前模型类的表名.
      *
+     * @deprecated 3.0
+     *
      * @param string|object $object
      */
     public static function getTable($object): string
@@ -120,6 +122,8 @@ class ModelManager
 
     /**
      * 获取当前模型类数据库连接池名.
+     *
+     * @deprecated 3.0
      *
      * @param string|object $object
      */
@@ -143,6 +147,8 @@ class ModelManager
     /**
      * 获取当前模型主键
      * 如果是联合主键返回数组，否则为字符串.
+     *
+     * @deprecated 3.0
      *
      * @param string|object $object
      *
@@ -168,6 +174,8 @@ class ModelManager
     /**
      * 获取第一个主键.
      *
+     * @deprecated 3.0
+     *
      * @param string|object $object
      */
     public static function getFirstId($object): ?string
@@ -179,6 +187,8 @@ class ModelManager
 
     /**
      * 获取当前模型字段配置.
+     *
+     * @deprecated 3.0
      *
      * @param string|object $object
      *
@@ -209,6 +219,8 @@ class ModelManager
     /**
      * 获取当前模型字段名数组.
      *
+     * @deprecated 3.0
+     *
      * @param string|object $object
      *
      * @return string[]
@@ -220,6 +232,8 @@ class ModelManager
 
     /**
      * 模型是否为驼峰命名.
+     *
+     * @deprecated 3.0
      *
      * @param string|object $object
      */
@@ -242,6 +256,8 @@ class ModelManager
 
     /**
      * 获取键.
+     *
+     * @deprecated 3.0
      *
      * @param string|object $object
      */
@@ -267,6 +283,8 @@ class ModelManager
     /**
      * 获取Member.
      *
+     * @deprecated 3.0
+     *
      * @param string|object $object
      */
     public static function getMemberRule($object): KeyRule
@@ -291,6 +309,8 @@ class ModelManager
     /**
      * 获取当前模型类的Redis注解.
      *
+     * @deprecated 3.0
+     *
      * @param string|object $object
      */
     public static function getRedisEntity($object): ?RedisEntity
@@ -302,6 +322,8 @@ class ModelManager
     /**
      * 获取模型类的批量设置序列化注解.
      *
+     * @deprecated 3.0
+     *
      * @param string|object $object
      */
     public static function getSerializables($object): ?Serializables
@@ -312,6 +334,8 @@ class ModelManager
 
     /**
      * 获取模型类的提取属性注解.
+     *
+     * @deprecated 3.0
      *
      * @param string|object $object
      *

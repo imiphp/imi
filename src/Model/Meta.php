@@ -7,6 +7,7 @@ namespace Imi\Model;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\ExtractProperty;
 use Imi\Model\Annotation\JsonDecode;
 use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
@@ -241,9 +242,9 @@ class Meta
                 break;
             }
         }
-        $this->serializables = ModelManager::getSerializables($realModelClass);
+        $this->serializables = AnnotationManager::getClassAnnotations($realModelClass, Serializables::class)[0] ?? null;
         $this->serializableSets = AnnotationManager::getPropertiesAnnotations($realModelClass, Serializable::class);
-        $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
+        $this->extractPropertys = AnnotationManager::getPropertiesAnnotations($realModelClass, ExtractProperty::class);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
         $this->fieldsJsonEncode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonEncode::class);
