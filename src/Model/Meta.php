@@ -183,6 +183,7 @@ class Meta
         /** @var \Imi\Model\Annotation\Entity|null $entity */
         $entity = AnnotationManager::getClassAnnotations($realModelClass, Entity::class)[0] ?? null;
         $this->jsonEncode = AnnotationManager::getClassAnnotations($realModelClass, JsonEncode::class)[0] ?? null;
+        $this->jsonDecode = AnnotationManager::getClassAnnotations($realModelClass, JsonDecode::class)[0] ?? null;
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
@@ -246,6 +247,7 @@ class Meta
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
         $this->fieldsJsonEncode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonEncode::class);
+        $this->fieldsJsonDecode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonDecode::class);
         $this->bean = $entity->bean;
     }
 
