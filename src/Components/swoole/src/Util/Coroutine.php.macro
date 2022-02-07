@@ -19,7 +19,7 @@ class Coroutine extends \Swoole\Coroutine
     }
 
     #if version_compare(SWOOLE_VERSION, '5.0', '>=') && version_compare(PHP_VERSION, '8.0', '>=')
-    public static function create(callable $func, mixed ...$param): int|false
+    public static function create(callable $callable, mixed ...$params): int|false
     #else
     /**
      * 创建一个新的协程，并立即执行。
