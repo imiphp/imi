@@ -137,14 +137,44 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                     switch ($fieldAnnotation->type)
                     {
                         case 'json':
-                            $value = json_decode($v, true);
-                            if (\is_array($value))
+                            $fieldsJsonDecode ??= $meta->getFieldsJsonDecode();
+                            if (isset($fieldsJsonDecode[$k]))
                             {
-                                $v = new LazyArrayObject($value);
+                                $realJsonDecode = $fieldsJsonDecode[$k];
                             }
-                            elseif (\JSON_ERROR_NONE === json_last_error())
+                            else
                             {
-                                $v = $value;
+                                $realJsonDecode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
+                            }
+                            if ($realJsonDecode)
+                            {
+                                $value = json_decode($v, $realJsonDecode->associative, $realJsonDecode->depth, $realJsonDecode->flags);
+                            }
+                            else
+                            {
+                                $value = json_decode($v, true);
+                            }
+                            if (\JSON_ERROR_NONE === json_last_error())
+                            {
+                                if ($realJsonDecode)
+                                {
+                                    if ('' !== $realJsonDecode->wrap && (\is_array($value) || \is_object($value)))
+                                    {
+                                        $v = new ($realJsonDecode->wrap)($value);
+                                    }
+                                    else
+                                    {
+                                        $v = $value;
+                                    }
+                                }
+                                elseif (\is_array($value) || \is_object($value))
+                                {
+                                    $v = new LazyArrayObject($value);
+                                }
+                                else
+                                {
+                                    $v = $value;
+                                }
                             }
                             break;
                         case 'list':

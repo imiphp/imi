@@ -251,6 +251,22 @@ abstract class ArticleBase extends Model
 
 完整参数：`@JsonEncode(flags=\JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, depth=512)`
 
+> 参数含义同 `json_encode()`
+
+### @JsonDecode
+
+设定 JSON 反序列化时的配置
+
+写在类上可以让模型类中所有 Json 字段生效。
+
+写在属性上，可以覆盖写在类上的注解。
+
+完整参数：`@JsonDecode(associative=true, depth=512, flags=0, wrap=\Imi\Util\LazyArrayObject::class)`
+
+`$wrap` 反序列化数据的包装，如果是对象或者数组时有效
+
+> 其它参数含义同 `json_decode()`
+
 ### @Column
 
 写在属性上，定义字段列
