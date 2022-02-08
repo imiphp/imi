@@ -599,7 +599,7 @@ class Imi
         }
         if (null === $fileName)
         {
-            $fileName = $tmpPath . '/' . 'imi-' . getmypid() . '-' . (++self::$evalAtomic) . '.php';
+            $fileName = tempnam($tmpPath, 'imi.');
         }
 
         if (false === file_put_contents($fileName, '<?php ' . $code))
