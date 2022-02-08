@@ -116,4 +116,34 @@ class Text
 
         return $result;
     }
+
+    /**
+     * 移除字符串左侧的字符串.
+     */
+    public static function ltrimText(string $string, string $text): string
+    {
+        if (str_starts_with($string, $text))
+        {
+            return substr($string, \strlen($text));
+        }
+        else
+        {
+            return $string;
+        }
+    }
+
+    /**
+     * 移除字符串右侧的字符串.
+     */
+    public static function rtrimText(string $string, string $text): string
+    {
+        if (str_ends_with($string, $text))
+        {
+            return substr($string, 0, -\strlen($text));
+        }
+        else
+        {
+            return $string;
+        }
+    }
 }

@@ -78,4 +78,22 @@ class TextTest extends BaseTest
         $this->assertEquals('tb_admin_member', Text::toUnderScoreCase('tbAdminMember'));
         $this->assertEquals('tb_admin_member', Text::toUnderScoreCase('TbAdminMember'));
     }
+
+    /**
+     * testdoc ltrimText.
+     */
+    public function testLtrimText(): void
+    {
+        $this->assertEquals('test', Text::ltrimText('tb_test', 'tb_'));
+        $this->assertEquals('tb_test', Text::ltrimText('tb_test', 'atb_'));
+    }
+
+    /**
+     * testdoc rtrimText.
+     */
+    public function testRtrimText(): void
+    {
+        $this->assertEquals('test', Text::rtrimText('test_db', '_db'));
+        $this->assertEquals('test_db', Text::rtrimText('test_db', '_dba'));
+    }
 }

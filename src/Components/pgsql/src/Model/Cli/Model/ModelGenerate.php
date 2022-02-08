@@ -47,6 +47,12 @@ class ModelGenerate extends BaseCommand
      */
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $lengthCheck): void
     {
+        $db = Db::getInstance($poolName);
+        $tablePrefix = $db->getOption()['prefix'] ?? '';
+        if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
+        {
+            $prefix[] = $tablePrefix;
+        }
         $override = (string) $override;
         switch ($override)
         {
@@ -186,18 +192,27 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
+            if ($usePrefix = str_starts_with($table, $tablePrefix))
+            {
+                $tableName = Text::ltrimText($table, $tablePrefix);
+            }
+            else
+            {
+                $tableName = $table;
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
                 'className'     => $className,
                 'table'         => [
-                    'name'  => $table,
-                    'id'    => [],
+                    'name'      => $tableName,
+                    'id'        => [],
+                    'usePrefix' => $usePrefix,
                 ],
                 'fields'        => [],
                 'entity'        => $entity,
                 'poolName'      => $poolName,
-                'tableComment'  => Text::isEmpty($item['comment']) ? $table : $item['comment'],
+                'tableComment'  => Text::isEmpty($item['comment']) ? $tableName : $item['comment'],
                 'lengthCheck'   => $lengthCheck,
             ];
             $fields = $query->execute(<<<SQL

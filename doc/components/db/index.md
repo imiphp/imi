@@ -517,6 +517,9 @@ Db::query()->tableRaw('tb_test');
 
 // 如果连接配置设置了表前缀：tb_
 Db::query()->table('test')->select(); // select * from tb_test
+
+// 设置表前缀
+Db::query()->tablePrefix('')->table('test')->select(); // select * from test
 ```
 
 > `table()` 和 `tableRaw()` 也可以使用 `from()` 和 `fromRaw()` 代替。

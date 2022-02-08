@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Base;
  * @property string|null       $name       表名
  * @property string|null       $dbPoolName 数据库连接池名称
  * @property string|array|null $id         主键，支持数组方式设置联合索引
+ * @property bool              $usePrefix  是否使用表前缀
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Table extends Base
@@ -27,7 +28,7 @@ class Table extends Base
     /**
      * @param string|array|null $id
      */
-    public function __construct(?array $__data = null, ?string $name = null, ?string $dbPoolName = null, $id = null)
+    public function __construct(?array $__data = null, ?string $name = null, ?string $dbPoolName = null, $id = null, bool $usePrefix = false)
     {
         parent::__construct(...\func_get_args());
     }
