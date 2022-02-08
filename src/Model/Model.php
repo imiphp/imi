@@ -18,6 +18,7 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
+use InvalidArgumentException;
 
 /**
  * 常用的数据库模型.
@@ -90,7 +91,7 @@ abstract class Model extends BaseModel
     {
         if (!$ids)
         {
-            return null;
+            throw new InvalidArgumentException('Model::exists() must pass in parameters');
         }
         $query = static::dbQuery()->limit(1);
         if (\is_callable($ids[0]))
