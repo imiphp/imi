@@ -157,6 +157,12 @@ class ModelTest extends BaseTest
         $this->assertEquals(1, $result->getAffectedRows());
     }
 
+    public function testExists(): void
+    {
+        $this->assertTrue(Member::exists(1));
+        $this->assertFalse(Member::exists(-1));
+    }
+
     public function testFind(): void
     {
         $member = Member::find(1);
