@@ -16,7 +16,7 @@ interface IField extends ITable
      *
      * @param string $field
      */
-    public function setField(string $field = null): void;
+    public function setField(?string $field = null): void;
 
     /**
      * 设置值，可以根据传入的值自动处理
