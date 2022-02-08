@@ -265,9 +265,39 @@ abstract class ArticleBase extends Model
 
 完整参数：`@JsonDecode(associative=true, depth=512, flags=0, wrap=\Imi\Util\LazyArrayObject::class)`
 
-`$wrap` 反序列化数据的包装，如果是对象或者数组时有效
+> 除 `$wrap` 外其它参数含义同 `json_decode()`
 
-> 其它参数含义同 `json_decode()`
+**$wrap 参数说明**
+
+`$wrap` 反序列化数据的包装，如果是对象或者数组时有效。支持类名、函数名。
+
+类名：
+
+```php
+// 将此类的对象作为属性值
+class WrapClass
+{
+    /**
+     * @param mixed $data json_decode() 结果
+     */
+    public function __construct($data)
+    {
+    }
+}
+```
+
+函数名：
+
+```php
+/**
+ * @param mixed $data json_decode() 结果
+ * @return mixed
+ */
+function demoWrap($data)
+{
+    return $data; // 返回值作为属性值
+}
+```
 
 ### @Column
 

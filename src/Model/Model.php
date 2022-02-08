@@ -105,9 +105,17 @@ abstract class Model extends BaseModel
                             {
                                 if ($realJsonDecode)
                                 {
-                                    if ('' !== $realJsonDecode->wrap && (\is_array($value) || \is_object($value)))
+                                    $wrap = $realJsonDecode->wrap;
+                                    if ('' !== $wrap && (\is_array($value) || \is_object($value)))
                                     {
-                                        $v = new $realJsonDecode->wrap($value);
+                                        if (class_exists($wrap))
+                                        {
+                                            $v = new $wrap($value);
+                                        }
+                                        else
+                                        {
+                                            $v = $wrap($value);
+                                        }
                                     }
                                     else
                                     {
