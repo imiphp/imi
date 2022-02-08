@@ -85,13 +85,13 @@ abstract class Model extends BaseModel
                     {
                         case 'json':
                             $fieldsJsonDecode ??= $meta->getFieldsJsonDecode();
-                            if (isset($fieldsJsonDecode[$k]))
+                            if (isset($fieldsJsonDecode[$k][0]))
                             {
-                                $realJsonDecode = $fieldsJsonDecode[$k];
+                                $realJsonDecode = $fieldsJsonDecode[$k][0];
                             }
                             else
                             {
-                                $realJsonDecode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
+                                $realJsonDecode = ($jsonEncode ??= ($meta->getJsonDecode() ?? false));
                             }
                             if ($realJsonDecode)
                             {
@@ -966,9 +966,9 @@ abstract class Model extends BaseModel
             {
                 case 'json':
                     $fieldsJsonEncode ??= $meta->getFieldsJsonEncode();
-                    if (isset($fieldsJsonEncode[$name]))
+                    if (isset($fieldsJsonEncode[$name][0]))
                     {
-                        $realJsonEncode = $fieldsJsonEncode[$name];
+                        $realJsonEncode = $fieldsJsonEncode[$name][0];
                     }
                     else
                     {
