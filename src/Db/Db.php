@@ -73,6 +73,15 @@ class Db
         }
         else
         {
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.db.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
             $requestContextKey = '__db.' . $poolName;
             $requestContext = RequestContext::getContext();
             if (isset($requestContext[$requestContextKey]))
@@ -86,15 +95,6 @@ class Db
             }
             if (null === $db || !$db->isConnected())
             {
-                if (null === self::$connections)
-                {
-                    self::$connections = Config::get('@app.db.connections');
-                }
-                $config = self::$connections[$poolName] ?? null;
-                if (null === $config)
-                {
-                    throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
-                }
                 /** @var IDb $db */
                 $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
                 if (!$db->open())
