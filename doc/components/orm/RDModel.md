@@ -241,11 +241,63 @@ abstract class ArticleBase extends Model
 
 ### @JsonEncode
 
-写在类上，设定 JSON 序列化时的配置
+设定 JSON 序列化时的配置
+
+写在类上可以让模型类中所有 Json 字段生效。
+
+写在属性上，可以覆盖写在类上的注解。
 
 不使用 Unicode 编码转换中文：`@JsonEncode(JSON_UNESCAPED_UNICODE)`
 
-完整参数：`@JsonEncode(flags=\JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, depth=512)`
+完整参数：`@JsonEncode(flags=4194624, depth=512)`
+
+> `4194624 === \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE`
+
+> 参数含义同 `json_encode()`
+
+### @JsonDecode
+
+设定 JSON 反序列化时的配置
+
+写在类上可以让模型类中所有 Json 字段生效。
+
+写在属性上，可以覆盖写在类上的注解。
+
+完整参数：`@JsonDecode(associative=true, depth=512, flags=0, wrap=\Imi\Util\LazyArrayObject::class)`
+
+> 除 `$wrap` 外其它参数含义同 `json_decode()`
+
+**$wrap 参数说明**
+
+`$wrap` 反序列化数据的包装，如果是对象或者数组时有效。支持类名、函数名。
+
+类名：
+
+```php
+// 将此类的对象作为属性值
+class WrapClass
+{
+    /**
+     * @param mixed $data json_decode() 结果
+     */
+    public function __construct($data)
+    {
+    }
+}
+```
+
+函数名：
+
+```php
+/**
+ * @param mixed $data json_decode() 结果
+ * @return mixed
+ */
+function demoWrap($data)
+{
+    return $data; // 返回值作为属性值
+}
+```
 
 ### @Column
 

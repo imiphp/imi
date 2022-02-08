@@ -10,12 +10,12 @@ use Imi\Bean\Annotation\Base;
  * JSON 序列化时的配置.
  *
  * @Annotation
- * @Target("CLASS")
+ * @Target({"CLASS", "PROPERTY"})
  *
  * @property int $flags json_encode() 的 flags 参数
  * @property int $depth 递归层数
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY)]
 class JsonEncode extends Base
 {
     /**
