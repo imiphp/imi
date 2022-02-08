@@ -9,6 +9,7 @@ use Imi\Bean\IBean;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\QueryType;
 use Imi\Db\Query\Raw;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
@@ -78,6 +79,51 @@ abstract class Model extends BaseModel
         $meta = static::__getMeta(static::__getRealClassName());
 
         return Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->table($meta->getTableName(), null, $meta->getDatabaseName());
+    }
+
+    /**
+     * 判断记录是否存在.
+     *
+     * @param callable|mixed ...$ids
+     */
+    public static function exists(...$ids): bool
+    {
+        if (!$ids)
+        {
+            return null;
+        }
+        $query = static::dbQuery()->limit(1);
+        if (\is_callable($ids[0]))
+        {
+            // 回调传入条件
+            ($ids[0])($query);
+        }
+        else
+        {
+            // 传主键值
+            if (\is_array($ids[0]))
+            {
+                // 键值数组where条件
+                foreach ($ids[0] as $name => $value)
+                {
+                    $query->where($name, '=', $value);
+                }
+            }
+            else
+            {
+                // 主键值
+                foreach (static::__getMeta()->getId() as $i => $name)
+                {
+                    if (!isset($ids[$i]))
+                    {
+                        break;
+                    }
+                    $query->where($name, '=', $ids[$i]);
+                }
+            }
+        }
+
+        return (bool) Db::select('select exists(' . $query->buildSelectSql() . ')', $query->getBinds(), static::__getMeta(static::__getRealClassName())->getDbPoolName(), QueryType::READ)->getScalar();
     }
 
     /**

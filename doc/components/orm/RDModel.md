@@ -540,6 +540,20 @@ foreach ($list2 as $row)
 }
 ```
 
+### 判断记录是否存在
+
+```php
+// where id = 1
+$exists = TestModel::exists(1);
+// 复合主键 where a = 1 and b = 'abc'
+$exists = TestModel::exists(1, 'abc');
+// 指定多个字段条件 where a = 1 and b = 'abc'
+$exists = TestModel::exists([
+    'a' => 1,
+    'b' => 'abc',
+]);
+```
+
 ### 查询记录
 
 查询记录并返回一个模型实例。
