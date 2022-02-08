@@ -73,15 +73,6 @@ class Db
         }
         else
         {
-            if (null === self::$connections)
-            {
-                self::$connections = Config::get('@app.db.connections');
-            }
-            $config = self::$connections[$poolName] ?? null;
-            if (null === $config)
-            {
-                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
-            }
             $requestContextKey = '__db.' . $poolName;
             $requestContext = RequestContext::getContext();
             if (isset($requestContext[$requestContextKey]))
@@ -95,6 +86,15 @@ class Db
             }
             if (null === $db || !$db->isConnected())
             {
+                if (null === self::$connections)
+                {
+                    self::$connections = Config::get('@app.db.connections');
+                }
+                $config = self::$connections[$poolName] ?? null;
+                if (null === $config)
+                {
+                    throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+                }
                 /** @var IDb $db */
                 $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
                 if (!$db->open())
@@ -121,6 +121,32 @@ class Db
             }
 
             return $requestContext[$requestContextKey] = $db;
+        }
+    }
+
+    /**
+     * 获取数据库连接实例配置.
+     */
+    public static function getInstanceConfig(?string $poolName = null, int $queryType = QueryType::WRITE): array
+    {
+        $poolName = self::parsePoolName($poolName, $queryType);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getInstance($poolName)->getResourceConfig();
+        }
+        else
+        {
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.db.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
+
+            return $config;
         }
     }
 

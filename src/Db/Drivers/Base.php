@@ -22,6 +22,14 @@ abstract class Base implements IDb
     }
 
     /**
+     * 获取连接配置.
+     */
+    public function getOption(): array
+    {
+        return $this->option;
+    }
+
+    /**
      * 数据库连接后，执行初始化的 SQL.
      */
     protected function execInitSqls(): void

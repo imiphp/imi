@@ -6,59 +6,26 @@ namespace Imi\Db\Query;
 
 use Imi\Db\Query\Interfaces\IField;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Db\Query\Traits\TRaw;
 
-class Field implements IField
+class Field extends Table implements IField
 {
-    use TRaw;
-
-    /**
-     * 数据库名.
-     */
-    protected ?string $database = null;
-
-    /**
-     * 表名.
-     */
-    protected ?string $table = null;
-
     /**
      * 字段名.
      */
     protected ?string $field = null;
 
     /**
-     * 别名.
-     */
-    protected ?string $alias = null;
-
-    /**
      * JSON 关键词配置.
      */
     protected ?array $jsonKeywords = null;
 
-    public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null)
+    public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null, string $prefix = '')
     {
         $this->database = $database;
         $this->table = $table;
         $this->field = $field;
         $this->alias = $alias;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDatabase(): ?string
-    {
-        return $this->database;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTable(): ?string
-    {
-        return $this->table;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -72,41 +39,9 @@ class Field implements IField
     /**
      * {@inheritDoc}
      */
-    public function getAlias(): ?string
-    {
-        return $this->alias;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setDatabase(?string $database = null): void
-    {
-        $this->database = $database;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setTable(?string $table = null): void
-    {
-        $this->table = $table;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setField(?string $field = null): void
     {
         $this->field = $field;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAlias(?string $alias = null): void
-    {
-        $this->alias = $alias;
     }
 
     /**
@@ -138,6 +73,7 @@ class Field implements IField
             }
             $this->alias = $matches['alias'];
             $this->jsonKeywords = $matches['jsonKeywords'];
+            $this->prefix = '';
         }
     }
 
@@ -160,16 +96,8 @@ class Field implements IField
 
         return $query->parseKeywordToText([
             $this->database,
-            $this->table,
+            $this->prefix . $this->table,
             $this->field,
         ], $this->alias, $this->jsonKeywords);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return [];
     }
 }

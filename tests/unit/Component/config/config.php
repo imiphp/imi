@@ -157,6 +157,28 @@ return [
                 'dbClass'     => 'MysqliDriver',
             ],
         ],
+        'dbPrefix'    => [
+            'pool'    => [
+                // 协程池类名
+                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                // 连接池配置
+                'config'        => [
+                    'maxResources'              => 10,
+                    'minResources'              => 1,
+                    'checkStateWhenGetResource' => false,
+                ],
+            ],
+            // 连接池资源配置
+            'resource'    => [
+                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => env('MYSQL_SERVER_PORT', 3306),
+                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
+                'database'    => 'db_imi_test',
+                'charset'     => 'utf8mb4',
+                'prefix'      => 'tb_',
+            ],
+        ],
         'redis_test'    => [
             'pool'    => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,

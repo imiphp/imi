@@ -61,6 +61,7 @@ return [
                 'username' => 'root',
                 'password' => 'root',
                 'database' => 'database',
+                'prefix'   => '', // 表前缀
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -127,6 +128,7 @@ return [
                 'username' => 'root',
                 'password' => 'root',
                 'database' => 'database',
+                'prefix'   => '', // 表前缀
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -172,6 +174,7 @@ return [
                 'username' => 'root',
                 'password' => 'root',
                 'database' => 'database',
+                'prefix'   => '', // 表前缀
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -511,6 +514,9 @@ Db::query()->table('tb_test', 'test');
 Db::query()->table('tb_test', null, 'db1');
 // 传入参数原样代入到SQL中
 Db::query()->tableRaw('tb_test');
+
+// 如果连接配置设置了表前缀：tb_
+Db::query()->table('test')->select(); // select * from tb_test
 ```
 
 > `table()` 和 `tableRaw()` 也可以使用 `from()` 和 `fromRaw()` 代替。

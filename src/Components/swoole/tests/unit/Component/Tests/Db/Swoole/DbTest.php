@@ -16,5 +16,5 @@ class DbTest extends DbBaseTest
      *
      * @var string
      */
-    protected $poolName = 'swooleMysql';
+    protected ?string $poolName = 'swooleMysql';
 }

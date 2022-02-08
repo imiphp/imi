@@ -16,7 +16,7 @@ class QueryCurdTest extends QueryCurdBaseTest
      *
      * @var string
      */
-    protected $poolName = 'mysqli';
+    protected ?string $poolName = 'mysqli';
 
     /**
      * 测试 whereEx 的 SQL.

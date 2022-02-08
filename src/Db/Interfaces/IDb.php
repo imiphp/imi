@@ -141,4 +141,9 @@ interface IDb extends IHashCode
      * 获取数据库种类.
      */
     public function getDbType(): string;
+
+    /**
+     * 获取连接配置.
+     */
+    public function getOption(): array;
 }

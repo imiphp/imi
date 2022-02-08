@@ -19,7 +19,7 @@ abstract class DbBaseTest extends TestCase
      *
      * @var string
      */
-    protected $poolName;
+    protected ?string $poolName = null;
 
     public function testExec(): void
     {
