@@ -450,6 +450,11 @@ interface IQuery
     public function getBinds(): array;
 
     /**
+     * 构建查询语句.
+     */
+    public function buildSelectSql(): string;
+
+    /**
      * 查询所有记录，返回数组.
      */
     public function select(): IResult;
@@ -462,11 +467,25 @@ interface IQuery
     public function paginate(int $page, int $count, array $options = []): IPaginateResult;
 
     /**
+     * 构建插入语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildInsertSql($data = null): string;
+
+    /**
      * 插入记录.
      *
      * @param array|object|null $data
      */
     public function insert($data = null): IResult;
+
+    /**
+     * 构建批量插入语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildBatchInsertSql($data = null): string;
 
     /**
      * 批量插入数据
@@ -477,6 +496,13 @@ interface IQuery
     public function batchInsert($data = null): IResult;
 
     /**
+     * 构建更新语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildUpdateSql($data = null): string;
+
+    /**
      * 更新数据.
      *
      * @param array|object|null $data
@@ -484,11 +510,23 @@ interface IQuery
     public function update($data = null): IResult;
 
     /**
+     * 构建替换语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildReplaceSql($data = null): string;
+
+    /**
      * 替换数据（Replace）.
      *
      * @param array|object|null $data
      */
     public function replace($data = null): IResult;
+
+    /**
+     * 构建删除语句.
+     */
+    public function buildDeleteSql(): string;
 
     /**
      * 删除数据.
