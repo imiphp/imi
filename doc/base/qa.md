@@ -29,3 +29,15 @@
 ## imi 框架的组件能不能用于其他框架中
 
 目前暂时是不能的
+
+## `Imi\` 命名空间下的类报错提示不存在
+
+当项目文件放置在，共享目录等不支持文件锁的文件系统时，可以配置一个支持文件锁的目录。比如：`/tmp`。
+
+* 可以在 `.env` 文件中配置：
+
+```env
+`IMI_MACRO_LOCK_FILE_DIR=/tmp
+```
+
+* 也可以在运行命令时指定：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`
