@@ -168,6 +168,16 @@ class ModelTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testExists(array $args): void
+    {
+        ['id' => $id] = $args;
+        $this->assertTrue(Member::exists($id));
+        $this->assertFalse(Member::exists(-1));
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testFind(array $args): void
     {
         ['id' => $id] = $args;
