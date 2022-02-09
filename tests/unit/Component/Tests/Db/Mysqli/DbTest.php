@@ -16,5 +16,5 @@ class DbTest extends DbBaseTest
      *
      * @var string
      */
-    protected $poolName = 'mysqli';
+    protected ?string $poolName = 'mysqli';
 }

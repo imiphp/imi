@@ -7,6 +7,16 @@ namespace Imi\Db\Query\Interfaces;
 interface ITable extends IDatabase
 {
     /**
+     * 获取表前缀
+     */
+    public function getPrefix(): string;
+
+    /**
+     * 设置表前缀
+     */
+    public function setPrefix(string $prefix = ''): void;
+
+    /**
      * 获取表名.
      */
     public function getTable(): ?string;

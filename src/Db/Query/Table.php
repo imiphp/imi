@@ -18,6 +18,11 @@ class Table implements ITable
     protected ?string $database = null;
 
     /**
+     * 表前缀.
+     */
+    protected string $prefix = '';
+
+    /**
      * 表名.
      */
     protected ?string $table = null;
@@ -27,11 +32,12 @@ class Table implements ITable
      */
     protected ?string $alias = null;
 
-    public function __construct(?string $database = null, ?string $table = null, ?string $alias = null)
+    public function __construct(?string $database = null, ?string $table = null, ?string $alias = null, string $prefix = '')
     {
         $this->database = $database;
         $this->table = $table;
         $this->alias = $alias;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -40,6 +46,14 @@ class Table implements ITable
     public function getDatabase(): ?string
     {
         return $this->database;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
     }
 
     /**
@@ -64,6 +78,14 @@ class Table implements ITable
     public function setDatabase(?string $database = null): void
     {
         $this->database = $database;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPrefix(string $prefix = ''): void
+    {
+        $this->prefix = $prefix;
     }
 
     /**
@@ -102,6 +124,7 @@ class Table implements ITable
                 $this->table = $keywords[0];
             }
             $this->alias = $matches['alias'];
+            $this->prefix = '';
         }
     }
 
@@ -124,7 +147,7 @@ class Table implements ITable
 
         return $query->parseKeywordToText([
             $this->database,
-            $this->table,
+            $this->prefix . $this->table,
         ], $this->alias);
     }
 

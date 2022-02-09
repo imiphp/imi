@@ -20,7 +20,7 @@ abstract class DbBaseTest extends BaseTest
      *
      * @var string
      */
-    protected $poolName;
+    protected ?string $poolName;
 
     public function testInject(): void
     {

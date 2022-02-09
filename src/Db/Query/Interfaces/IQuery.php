@@ -34,6 +34,11 @@ interface IQuery
     public function getDb(): IDb;
 
     /**
+     * 设置表前缀
+     */
+    public function tablePrefix(string $prefix): self;
+
+    /**
      * 设置表名.
      *
      * @param string      $table    表名
@@ -42,7 +47,7 @@ interface IQuery
      *
      * @return static
      */
-    public function table(string $table, string $alias = null, string $database = null): self;
+    public function table(string $table, ?string $alias = null, ?string $database = null): self;
 
     /**
      * 设置表名，使用SQL原生语句.
@@ -60,7 +65,7 @@ interface IQuery
      *
      * @return static
      */
-    public function from(string $table, string $alias = null, string $database = null): self;
+    public function from(string $table, ?string $alias = null, ?string $database = null): self;
 
     /**
      * 设置表名，使用SQL原生语句.
@@ -289,7 +294,7 @@ interface IQuery
      *
      * @return static
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self;
+    public function join(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self;
 
     /**
      * join，使用SQL原生语句.
@@ -310,7 +315,7 @@ interface IQuery
      *
      * @return static
      */
-    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
+    public function leftJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * right join.
@@ -324,7 +329,7 @@ interface IQuery
      *
      * @return static
      */
-    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
+    public function rightJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * cross join.
@@ -338,7 +343,7 @@ interface IQuery
      *
      * @return static
      */
-    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
+    public function crossJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * 排序.

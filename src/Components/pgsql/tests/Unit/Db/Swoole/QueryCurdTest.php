@@ -19,7 +19,7 @@ class QueryCurdTest extends QueryCurdBaseTest
      *
      * @var string
      */
-    protected $poolName = 'maindb';
+    protected ?string $poolName = 'maindb';
 
     /**
      * 测试 whereEx 的 SQL.

@@ -51,6 +51,12 @@ class ModelGenerate extends BaseCommand
      */
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean): void
     {
+        $db = Db::getInstance($poolName);
+        $tablePrefix = $db->getOption()['prefix'] ?? '';
+        if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
+        {
+            $prefix[] = $tablePrefix;
+        }
         $override = (string) $override;
         switch ($override)
         {
@@ -195,7 +201,7 @@ class ModelGenerate extends BaseCommand
             $ddl = $this->getDDL($query, $table, $database);
             if ($withRecords)
             {
-                $dataList = $query->table($table, null, $database)->select()->getArray();
+                $dataList = $query->tablePrefix('')->table($table, null, $database)->select()->getArray();
                 $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
             }
             if ($sqlSingleLine)
@@ -215,13 +221,22 @@ class ModelGenerate extends BaseCommand
             {
                 $ddl = $ddlEncode($ddl);
             }
+            if ($usePrefix = str_starts_with($table, $tablePrefix))
+            {
+                $tableName = Text::ltrimText($table, $tablePrefix);
+            }
+            else
+            {
+                $tableName = $table;
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
                 'className'     => $className,
                 'table'         => [
-                    'name'  => $table,
-                    'id'    => [],
+                    'name'      => $tableName,
+                    'id'        => [],
+                    'usePrefix' => $usePrefix,
                 ],
                 'fields'        => [],
                 'entity'        => $entity,
@@ -229,7 +244,7 @@ class ModelGenerate extends BaseCommand
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
                 'ddlDecode'     => $ddlDecode,
-                'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
+                'tableComment'  => '' === $item['TABLE_COMMENT'] ? $tableName : $item['TABLE_COMMENT'],
                 'lengthCheck'   => $lengthCheck,
             ];
             $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();

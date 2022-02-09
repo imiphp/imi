@@ -91,7 +91,7 @@ abstract class Query implements IQuery
     public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null)
     {
         $this->db = $db;
-        $this->isInitDb = null !== $db;
+        $this->isInitDb = (bool) $db;
         $this->poolName = $poolName;
         $this->modelClass = $modelClass;
         $this->queryType = $queryType ?? QueryType::WRITE;
@@ -101,11 +101,19 @@ abstract class Query implements IQuery
     public function __init(): void
     {
         $this->dbParamInc = 0;
-        $this->option = new QueryOption();
         if (!$this->isInitQueryType)
         {
             $this->queryType = QueryType::WRITE;
         }
+        if ($db = $this->db)
+        {
+            $prefix = $db->getOption()['prefix'] ?? '';
+        }
+        else
+        {
+            $prefix = Db::getInstanceConfig($this->poolName, $this->queryType)['prefix'] ?? '';
+        }
+        $this->option = new QueryOption($prefix);
     }
 
     public function __clone()
@@ -148,9 +156,19 @@ abstract class Query implements IQuery
     }
 
     /**
+     * 设置表前缀
+     */
+    public function tablePrefix(string $prefix): self
+    {
+        $this->option->table->setPrefix($prefix);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    public function table(string $table, string $alias = null, string $database = null): self
+    public function table(string $table, ?string $alias = null, ?string $database = null): self
     {
         $optionTable = $this->option->table;
         $optionTable->useRaw(false);
@@ -177,7 +195,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function from(string $table, string $alias = null, string $database = null): self
+    public function from(string $table, ?string $alias = null, ?string $database = null): self
     {
         return $this->table($table, $alias, $database);
     }
@@ -490,7 +508,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
+    public function join(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
     {
         $this->option->join[] = new Join($this, $table, $left, $operation, $right, $tableAlias, $where, $type);
 
@@ -513,7 +531,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
+    public function leftJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'left');
     }
@@ -521,7 +539,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
+    public function rightJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'right');
     }
@@ -529,7 +547,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
+    public function crossJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'cross');
     }

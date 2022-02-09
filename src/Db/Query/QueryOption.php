@@ -82,9 +82,9 @@ class QueryOption
      */
     public $lock = null;
 
-    public function __construct()
+    public function __construct(string $tablePrefix = '')
     {
-        $this->table = new Table();
+        $this->table = new Table(null, null, null, $tablePrefix);
     }
 
     public function __clone()

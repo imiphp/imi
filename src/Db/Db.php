@@ -125,6 +125,32 @@ class Db
     }
 
     /**
+     * 获取数据库连接实例配置.
+     */
+    public static function getInstanceConfig(?string $poolName = null, int $queryType = QueryType::WRITE): array
+    {
+        $poolName = self::parsePoolName($poolName, $queryType);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getInstance($poolName)->getResourceConfig();
+        }
+        else
+        {
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.db.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
+
+            return $config;
+        }
+    }
+
+    /**
      * 心跳.
      */
     public static function heartbeat(IDb $db): void

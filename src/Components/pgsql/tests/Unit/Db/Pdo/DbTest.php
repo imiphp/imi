@@ -16,5 +16,5 @@ class DbTest extends DbBaseTest
      *
      * @var string
      */
-    protected $poolName = 'maindb';
+    protected ?string $poolName = 'maindb';
 }
