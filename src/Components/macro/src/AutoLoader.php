@@ -19,10 +19,13 @@ class AutoLoader
 
     protected int $lastHookFlags = 0;
 
+    protected string $lockFileDir = '';
+
     public function __construct(ClassLoader $composerClassLoader)
     {
         $this->composerClassLoader = $composerClassLoader;
         $this->hasSwoole = \extension_loaded('swoole');
+        $this->lockFileDir = getenv('IMI_MACRO_LOCK_FILE_DIR') ?: '';
     }
 
     /**
@@ -83,11 +86,11 @@ class AutoLoader
         $macroFileName = $fileName . '.macro';
         if (file_exists($macroFileName))
         {
-            MacroParser::includeFile($macroFileName, $macroFileName . '.php', false);
+            MacroParser::includeFile($macroFileName, $macroFileName . '.php', false, $this->lockFileDir);
         }
         elseif (preg_match('/^\s*#\s*macro$/mUS', file_get_contents($fileName) ?: ''))
         {
-            MacroParser::includeFile($fileName, $fileName . '.macro.php', false);
+            MacroParser::includeFile($fileName, $fileName . '.macro.php', false, $this->lockFileDir);
         }
         else
         {
