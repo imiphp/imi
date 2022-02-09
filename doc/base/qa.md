@@ -37,7 +37,7 @@
 * 可以在 `.env` 文件中配置：
 
 ```env
-`IMI_MACRO_LOCK_FILE_DIR=/tmp
+IMI_MACRO_LOCK_FILE_DIR=/tmp
 ```
 
 * 也可以在运行命令时指定：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`

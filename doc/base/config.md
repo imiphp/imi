@@ -21,7 +21,7 @@ IMI_MACRO_LOCK_FILE_DIR | 宏定义文件锁目录。当项目文件放置在，
 * 也可以在 `.env` 文件中配置：
 
 ```env
-`IMI_MACRO_LOCK_FILE_DIR=/tmp
+IMI_MACRO_LOCK_FILE_DIR=/tmp
 ```
 
 * 也可以在运行命令时指定：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`
