@@ -399,6 +399,9 @@ imi 中数据库查询连贯操作都来自于查询器，查询器的创建方�
 ```php
 use Imi\Db\Db;
 $query = Db::query();
+$query = Db::query('mysql2'); // 指定连接池名
+$query = Db::query('mysql2', XXXModel::class); // 指定模型名
+$query = Db::query('mysql2', XXXModel::class, \Imi\Db\Query\QueryType::READ); // 从库
 ```
 
 ### 事务
