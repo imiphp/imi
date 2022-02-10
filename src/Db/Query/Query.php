@@ -21,6 +21,18 @@ use Imi\Util\Pagination;
 
 abstract class Query implements IQuery
 {
+    public const SELECT_BUILDER_CLASS = '';
+
+    public const INSERT_BUILDER_CLASS = '';
+
+    public const BATCH_INSERT_BUILDER_CLASS = '';
+
+    public const UPDATE_BUILDER_CLASS = '';
+
+    public const REPLACE_BUILDER_CLASS = '';
+
+    public const DELETE_BUILDER_CLASS = '';
+
     /**
      * 操作记录.
      */
@@ -91,7 +103,7 @@ abstract class Query implements IQuery
     public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null)
     {
         $this->db = $db;
-        $this->isInitDb = null !== $db;
+        $this->isInitDb = (bool) $db;
         $this->poolName = $poolName;
         $this->modelClass = $modelClass;
         $this->queryType = $queryType ?? QueryType::WRITE;
@@ -101,11 +113,19 @@ abstract class Query implements IQuery
     public function __init(): void
     {
         $this->dbParamInc = 0;
-        $this->option = new QueryOption();
         if (!$this->isInitQueryType)
         {
             $this->queryType = QueryType::WRITE;
         }
+        if ($db = $this->db)
+        {
+            $prefix = $db->getOption()['prefix'] ?? '';
+        }
+        else
+        {
+            $prefix = Db::getInstanceConfig($this->poolName, $this->queryType)['prefix'] ?? '';
+        }
+        $this->option = new QueryOption($prefix);
     }
 
     public function __clone()
@@ -148,9 +168,19 @@ abstract class Query implements IQuery
     }
 
     /**
+     * 设置表前缀
+     */
+    public function tablePrefix(string $prefix): self
+    {
+        $this->option->table->setPrefix($prefix);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    public function table(string $table, string $alias = null, string $database = null): self
+    public function table(string $table, ?string $alias = null, ?string $database = null): self
     {
         $optionTable = $this->option->table;
         $optionTable->useRaw(false);
@@ -177,7 +207,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function from(string $table, string $alias = null, string $database = null): self
+    public function from(string $table, ?string $alias = null, ?string $database = null): self
     {
         return $this->table($table, $alias, $database);
     }
@@ -490,7 +520,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
+    public function join(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
     {
         $this->option->join[] = new Join($this, $table, $left, $operation, $right, $tableAlias, $where, $type);
 
@@ -513,7 +543,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
+    public function leftJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'left');
     }
@@ -521,7 +551,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
+    public function rightJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'right');
     }
@@ -529,7 +559,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
+    public function crossJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'cross');
     }
@@ -938,5 +968,369 @@ abstract class Query implements IQuery
     public function getResultClass(): string
     {
         return $this->resultClass;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildSelectSql(): string
+    {
+        $alias = $this->alias;
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
+        {
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
+        }
+        else
+        {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
+            $builderClass = static::SELECT_BUILDER_CLASS;
+            $builder = new $builderClass($this);
+            $sql = $builder->build();
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
+        }
+        if (!$this->isInitQueryType && !$this->isInTransaction())
+        {
+            $this->queryType = QueryType::READ;
+        }
+
+        return $sql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildInsertSql($data = null): string
+    {
+        $alias = $this->alias;
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
+        {
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
+            $bindValues = [];
+            $numberKey = isset($data[0]);
+            foreach ($data as $k => $v)
+            {
+                if ($numberKey)
+                {
+                    $bindValues[':' . ($k + 1)] = $v;
+                }
+                else
+                {
+                    $bindValues[':' . $k] = $v;
+                }
+            }
+            $this->bindValues($bindValues);
+        }
+        else
+        {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
+            $builderClass = static::INSERT_BUILDER_CLASS;
+            $builder = new $builderClass($this);
+            $sql = $builder->build($data);
+            if ($alias)
+            {
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    // @phpstan-ignore-next-line
+                    'binds' => $binds,
+                ];
+            }
+        }
+
+        return $sql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildBatchInsertSql($data = null): string
+    {
+        $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
+        $builder = new $builderClass($this);
+
+        return $builder->build($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildUpdateSql($data = null): string
+    {
+        $alias = $this->alias;
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
+        {
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
+            $bindValues = [];
+            foreach ($data as $k => $v)
+            {
+                $bindValues[':' . $k] = $v;
+            }
+            $this->bindValues($bindValues);
+        }
+        else
+        {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
+            $builderClass = static::UPDATE_BUILDER_CLASS;
+            $builder = new $builderClass($this);
+            $sql = $builder->build($data);
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
+        }
+
+        return $sql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildReplaceSql($data = null): string
+    {
+        $alias = $this->alias;
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
+        {
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
+            $bindValues = [];
+            foreach ($data as $k => $v)
+            {
+                $bindValues[':' . $k] = $v;
+            }
+            $this->bindValues($bindValues);
+        }
+        else
+        {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
+            $builderClass = static::REPLACE_BUILDER_CLASS;
+            $builder = new $builderClass($this);
+            $sql = $builder->build($data);
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
+        }
+
+        return $sql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildDeleteSql(): string
+    {
+        $alias = $this->alias;
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
+        {
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
+        }
+        else
+        {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
+            $builderClass = static::DELETE_BUILDER_CLASS;
+            $builder = new $builderClass($this);
+            $sql = $builder->build();
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
+        }
+
+        return $sql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function select(): IResult
+    {
+        return $this->execute($this->buildSelectSql());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function insert($data = null): IResult
+    {
+        return $this->execute($this->buildInsertSql($data));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function batchInsert($data = null): IResult
+    {
+        return $this->execute($this->buildBatchInsertSql($data));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function update($data = null): IResult
+    {
+        return $this->execute($this->buildUpdateSql($data));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function replace($data = null): IResult
+    {
+        return $this->execute($this->buildReplaceSql($data));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete(): IResult
+    {
+        return $this->execute($this->buildDeleteSql());
     }
 }

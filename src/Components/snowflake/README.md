@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi-snowflake.svg)](https://packagist.org/packages/imiphp/imi-snowflake)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.7.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![IMI License](https://img.shields.io/github/license/imiphp/imi-snowflake.svg)](https://github.com/imiphp/imi-snowflake/blob/master/LICENSE)
 
 ## 介绍
@@ -18,7 +18,7 @@ imi 框架的雪花算法生成组件
 ```json
 {
     "require": {
-        "imiphp/imi-snowflake": "~2.0.0"
+        "imiphp/imi-snowflake": "~2.1.0"
     }
 }
 ```
@@ -106,6 +106,6 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 捐赠
 
-<img src="https://cdn.jsdelivr.net/gh/imiphp/imi@2.0/res/pay.png"/>
+<img src="https://cdn.jsdelivr.net/gh/imiphp/imi@2.1/res/pay.png"/>
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……

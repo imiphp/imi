@@ -6,7 +6,7 @@
     "require": {},
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "^4.7",
+        "swoole/ide-helper": "~4.8",
         "phpunit/phpunit": ">=9"
     },
     "autoload": {
@@ -38,5 +38,7 @@
                 "redis"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

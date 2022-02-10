@@ -22,6 +22,7 @@ return [
     // 组件命名空间
     'components'    => [
         'Workerman' => 'Imi\Workerman',
+        'Macro'     => 'Imi\Macro',
     ],
 
     // 日志配置

@@ -225,7 +225,7 @@ class Insert
 
                 $rightModel = $model[$propertyName];
                 $rightModel[$modelField] = $model[$field];
-                $model[$propertyName]->insert();
+                $rightModel->insert();
 
                 Event::trigger($eventName . '.AFTER', [
                     'model'        => $model,

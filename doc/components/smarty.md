@@ -11,7 +11,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-smarty": "~2.0.0"
+        "imiphp/imi-smarty": "~2.1.0"
     }
 }
 ```

@@ -32,5 +32,7 @@
         "pre-update-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\WorkermanGateway\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

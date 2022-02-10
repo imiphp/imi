@@ -33,5 +33,7 @@
         "pre-update-cmd": "Imi\\Smarty\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\Smarty\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Smarty\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

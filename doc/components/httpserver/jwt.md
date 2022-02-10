@@ -17,7 +17,7 @@ imi v2 使用 2.0 版本
 ```json
 {
     "require": {
-        "imiphp/imi-jwt": "~2.0.0"
+        "imiphp/imi-jwt": "~2.1.0"
     }
 }
 ```

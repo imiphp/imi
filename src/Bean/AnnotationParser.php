@@ -1,5 +1,7 @@
 <?php
 
+# macro
+
 declare(strict_types=1);
 
 namespace Imi\Bean;
@@ -11,6 +13,7 @@ use Imi\Bean\Parser\NullParser;
 use Imi\Config;
 use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
+use Imi\Util\File;
 use Imi\Util\Imi;
 use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 use Yurun\Doctrine\Common\Annotations\FileCacheReader;
@@ -110,7 +113,12 @@ class AnnotationParser
     public function parseClass(\ReflectionClass $ref): void
     {
         $annotations = $this->getReader()->getClassAnnotations($ref);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPClassAnnotations($ref))
+        #if PHP_VERSION_ID >= 80000
+        if (
+            #if 0
+            \PHP_VERSION_ID >= 80000 &&
+            #endif
+            $phpAnnotations = $this->getPHPClassAnnotations($ref))
         {
             if ($annotations)
             {
@@ -121,6 +129,7 @@ class AnnotationParser
                 $annotations = $phpAnnotations;
             }
         }
+        #endif
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -206,7 +215,7 @@ class AnnotationParser
         $className = $ref->getName();
         $methodName = $method->getName();
         $annotations = $this->getReader()->getMethodAnnotations($method);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPMethodAnnotations($method))
+        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPMethodAnnotations($method))
         {
             if ($annotations)
             {
@@ -298,7 +307,7 @@ class AnnotationParser
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop): void
     {
         $annotations = $this->getReader()->getPropertyAnnotations($prop);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
+        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
         {
             if ($annotations)
             {
@@ -392,7 +401,7 @@ class AnnotationParser
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const): void
     {
         $annotations = $this->getReader()->getConstantAnnotations($const);
-        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPConstantAnnotations($const))
+        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPConstantAnnotations($const))
         {
             if ($annotations)
             {
@@ -678,7 +687,7 @@ class AnnotationParser
                     continue;
                 }
                 $namespace = trim($matches[1]);
-                $className = $namespace . '\\' . basename($file, '.php');
+                $className = $namespace . '\\' . File::getBaseNameBeforeFirstDot($file);
             }
             else
             {

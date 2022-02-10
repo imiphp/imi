@@ -2,15 +2,15 @@
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/imiphp/imi@2.0/res/logo.png" alt="imi" />
+        <img src="https://cdn.jsdelivr.net/gh/imiphp/imi@2.1/res/logo.png" alt="imi" />
     </a>
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi)
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/imiphp/imi/ci/dev)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.7.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
-[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.0/)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.1/)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE)
 [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
@@ -18,7 +18,7 @@
 
 imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。
 
-imi 拥有丰富的功能组件，v2.0 版本内置了 2 个分布式长连接服务的解决方案。
+imi 拥有丰富的功能组件，v2.1 版本内置了 2 个分布式长连接服务的解决方案。
 
 imi 框架现在已经稳定运行在：文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端、数据迁移服务（虎扑）等项目中。
 
@@ -93,24 +93,24 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ## 开始使用
 
-创建 Http Server 项目：`composer create-project imiphp/project-http:~2.0`
+创建 Http Server 项目：`composer create-project imiphp/project-http:~2.1.0`
 
-创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~2.0`
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~2.1.0`
 
-创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~2.0`
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~2.1.0`
 
-创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.0`
+创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.1.0`
 
-创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.0`
+创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.1.0`
 
-[完全开发手册](https://doc.imiphp.com/v2.0/)
+[完全开发手册](https://doc.imiphp.com/v2.1/)
 
 ## 运行环境
 
 * Linux 系统 (Swoole 不支持在 Windows 上运行)
 * [PHP](https://php.net/) >= 7.4
 * [Composer](https://getcomposer.org/) >= 2.0
-* [Swoole](https://www.swoole.com/) >= 4.7.0
+* [Swoole](https://www.swoole.com/) >= 4.8.0
 * Redis、PDO 扩展
 
 ## Docker
@@ -209,6 +209,6 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 ## 捐赠
 
-![捐赠](https://cdn.jsdelivr.net/gh/imiphp/imi@2.0/res/pay.png)
+![捐赠](https://cdn.jsdelivr.net/gh/imiphp/imi@2.1/res/pay.png)
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……

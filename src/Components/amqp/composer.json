@@ -4,12 +4,12 @@
     "license": "MIT",
     "description": "支持在 imi 框架中使用 支持 AMQP 协议的消息队列，如：RabbitMQ",
     "require": {
-        "imiphp/imi-queue": "~2.0.0",
+        "imiphp/imi-queue": "~2.1.0",
         "php-amqplib/php-amqplib": "^2.12.0|^3.0.0"
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "^4.7",
+        "swoole/ide-helper": "~4.8",
         "phpunit/phpunit": ">=9"
     },
     "autoload": {
@@ -41,5 +41,7 @@
                 "redis"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

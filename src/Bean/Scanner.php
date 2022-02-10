@@ -15,8 +15,8 @@ use Imi\Main\IMain;
 use Imi\Util\Composer;
 use Imi\Util\File;
 use Imi\Util\Imi;
+use ReflectionClass;
 use function sprintf;
-use function var_dump;
 
 /**
  * 扫描类.
@@ -50,8 +50,31 @@ class Scanner
     {
         $time = microtime(true);
         $components = [];
-        foreach (Composer::getClassLoaders() as $vendorPath => $classLoader)
+        $fileNameMap = [];
+        $classLoaders = Composer::getClassLoadersWithVendorDir() ?: Composer::getClassLoaders();
+        foreach ($classLoaders as $vendorDir => $classLoader)
         {
+            if (\is_string($vendorDir) && is_dir($vendorDir))
+            {
+                if (isset($fileNameMap[$vendorDir]))
+                {
+                    continue;
+                }
+                $fileNameMap[$vendorDir] = true;
+                $vendorPath = $vendorDir;
+            }
+            else
+            {
+                // 兼容无法直接获取 vendorDir 的情况，但无法保证多个 loader 存在的情况下获取到正确的目录
+                $ref = new ReflectionClass($classLoader);
+                $fileName = $ref->getFileName();
+                if (isset($fileNameMap[$fileName]))
+                {
+                    continue;
+                }
+                $fileNameMap[$fileName] = true;
+                $vendorPath = \dirname($fileName, 2);
+            }
             // 遍历第一层
             var_dump("vendorPath $vendorPath");
             foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)

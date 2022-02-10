@@ -25,10 +25,12 @@ return [
     // 组件命名空间
     'components'    => [
         'Swoole' => 'Imi\Swoole',
+        'Macro'  => 'Imi\Macro',
     ],
 
     // 日志配置
     'logger' => [
+        'async'    => true,
         'channels' => [
             'imi' => [
                 'handlers' => [

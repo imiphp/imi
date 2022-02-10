@@ -33,7 +33,7 @@ Swoole Tracker: https://www.swoole-cloud.com/tracker.html
 ```json
 {
     "require": {
-        "imiphp/imi-swoole-tracker": "~2.0.0"
+        "imiphp/imi-swoole-tracker": "~2.1.0"
     }
 }
 ```

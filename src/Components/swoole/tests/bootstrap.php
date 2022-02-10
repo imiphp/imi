@@ -17,10 +17,10 @@ function startServer(): void
     function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
                 $serverStarted = true;
@@ -35,10 +35,10 @@ function startServer(): void
     function checkRedisSessionServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             if ('imi' === @file_get_contents('http://127.0.0.1:13001/', false, $context))
             {
                 $serverStarted = true;
@@ -53,10 +53,10 @@ function startServer(): void
     function checkWebSocketServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             @file_get_contents('http://127.0.0.1:13002/', false, $context);
             if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
             {
@@ -136,10 +136,10 @@ function startServer(): void
     function checkWebSocketServerWithRedisServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             @file_get_contents('http://127.0.0.1:13008/', false, $context);
             if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
             {
@@ -155,10 +155,10 @@ function startServer(): void
     function checkWebSocketServerWithAmqpServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             @file_get_contents('http://127.0.0.1:13009/', false, $context);
             if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
             {
@@ -174,10 +174,10 @@ function startServer(): void
     function checkWebSocketServerWithAmqpRouteServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             @file_get_contents('http://127.0.0.1:13010/', false, $context);
             if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
             {

@@ -7,6 +7,7 @@ namespace Imi\Model;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\JsonDecode;
 use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
 use Imi\Model\Annotation\Serializable;
@@ -123,6 +124,25 @@ class Meta
     private ?JsonEncode $jsonEncode = null;
 
     /**
+     * 针对字段设置的 JSON 序列化时的配置.
+     *
+     * @var JsonEncode[]
+     */
+    private array $fieldsJsonEncode = [];
+
+    /**
+     * JSON 反序列化时的配置.
+     */
+    private ?JsonDecode $jsonDecode = null;
+
+    /**
+     * 针对字段设置的 JSON 反序列化时的配置.
+     *
+     * @var JsonDecode[]
+     */
+    private array $fieldsJsonDecode = [];
+
+    /**
      * 定义 SQL 语句的字段列表.
      *
      * @var \Imi\Model\Annotation\Sql[][]
@@ -163,6 +183,7 @@ class Meta
         /** @var \Imi\Model\Annotation\Entity|null $entity */
         $entity = AnnotationManager::getClassAnnotations($realModelClass, Entity::class)[0] ?? null;
         $this->jsonEncode = AnnotationManager::getClassAnnotations($realModelClass, JsonEncode::class)[0] ?? null;
+        $this->jsonDecode = AnnotationManager::getClassAnnotations($realModelClass, JsonDecode::class)[0] ?? null;
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
@@ -225,6 +246,8 @@ class Meta
         $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
+        $this->fieldsJsonEncode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonEncode::class);
+        $this->fieldsJsonDecode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonDecode::class);
         $this->bean = $entity->bean;
     }
 
@@ -471,5 +494,33 @@ class Meta
     public function isBean(): bool
     {
         return $this->bean;
+    }
+
+    /**
+     * Get 针对字段设置的 JSON 序列化时的配置.
+     *
+     * @return JsonEncode[]
+     */
+    public function getFieldsJsonEncode(): array
+    {
+        return $this->fieldsJsonEncode;
+    }
+
+    /**
+     * Get jSON 反序列化时的配置.
+     */
+    public function getJsonDecode(): ?JsonDecode
+    {
+        return $this->jsonDecode;
+    }
+
+    /**
+     * Get 针对字段设置的 JSON 反序列化时的配置.
+     *
+     * @return JsonDecode[]
+     */
+    public function getFieldsJsonDecode(): array
+    {
+        return $this->fieldsJsonDecode;
     }
 }

@@ -18,7 +18,7 @@ abstract class QueryCurdBaseTest extends TestCase
      *
      * @var string
      */
-    protected $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 测试 whereEx 的 SQL.

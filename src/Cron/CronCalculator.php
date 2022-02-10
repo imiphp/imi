@@ -36,7 +36,7 @@ class CronCalculator
             $hours = $this->getAllHour($cronRule->getHour(), $lastTime);
             $minutes = $this->getAllMinute($cronRule->getMinute(), $lastTime);
             $seconds = $this->getAllSecond($cronRule->getSecond(), $lastTime);
-            $time = $this->generateTime($lastTime, $years, $months, $weeks, $days, $hours, $minutes, $seconds);
+            $time = $this->generateTime($lastTime, $years, $months, $weeks, $days, $hours, $minutes, $seconds, $cronRule->getDelayMin(), $cronRule->getDelayMax());
             if (null !== $time)
             {
                 $times[] = $time;
@@ -52,7 +52,7 @@ class CronCalculator
         }
     }
 
-    private function generateTime(int $lastTime, array $years, array $months, array $weeks, array $days, array $hours, array $minutes, array $seconds): ?int
+    private function generateTime(int $lastTime, array $years, array $months, array $weeks, array $days, array $hours, array $minutes, array $seconds, int $delayMin, int $delayMax): ?int
     {
         if ($lastTime < 0)
         {
@@ -100,7 +100,7 @@ class CronCalculator
                         {
                             continue;
                         }
-                        $result = $this->parseHis($y, $m, $d, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond);
+                        $result = $this->parseHis($y, $m, $d, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond, $delayMin, $delayMax);
                     }
                     else
                     {
@@ -112,7 +112,7 @@ class CronCalculator
                         {
                             continue;
                         }
-                        $result = $this->parseHis((int) $year, (int) $month, (int) $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond);
+                        $result = $this->parseHis((int) $year, (int) $month, (int) $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond, $delayMin, $delayMax);
                     }
                     if (null !== $result)
                     {
@@ -125,7 +125,7 @@ class CronCalculator
         return null;
     }
 
-    private function parseHis(int $year, int $month, int $day, ?array $hours, ?array $minutes, ?array $seconds, int $nowYear, int $nowMonth, int $nowDay, int $nowHour, int $nowMinute, int $nowSecond): ?int
+    private function parseHis(int $year, int $month, int $day, ?array $hours, ?array $minutes, ?array $seconds, int $nowYear, int $nowMonth, int $nowDay, int $nowHour, int $nowMinute, int $nowSecond, int $delayMin, int $delayMax): ?int
     {
         foreach ($hours ?: [] as $hour)
         {
@@ -146,7 +146,13 @@ class CronCalculator
                         continue;
                     }
 
-                    return strtotime("{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}");
+                    $time = strtotime("{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}");
+                    if (0 !== $delayMin || 0 !== $delayMax)
+                    {
+                        $time += mt_rand($delayMin, $delayMax);
+                    }
+
+                    return $time;
                 }
             }
         }

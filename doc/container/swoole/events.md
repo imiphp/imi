@@ -2,9 +2,17 @@
 
 ## Swoole 环境事件
 
+### IMI.SWOOLE.MAIN_COROUTINE.END
+
+Swoole 主协程执行完毕事件，此事件在协程中
+
+事件参数：
+
+无
+
 ### IMI.SWOOLE.MAIN_COROUTINE.AFTER
 
-Swoole 主协程执行完毕后置事件
+Swoole 主协程执行完毕后置事件，此事件在非协程中
 
 事件参数：
 

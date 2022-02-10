@@ -19,5 +19,7 @@
         "files": [
             "../../../vendor/autoload.php"
         ]
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

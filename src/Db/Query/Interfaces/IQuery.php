@@ -34,6 +34,11 @@ interface IQuery
     public function getDb(): IDb;
 
     /**
+     * 设置表前缀
+     */
+    public function tablePrefix(string $prefix): self;
+
+    /**
      * 设置表名.
      *
      * @param string      $table    表名
@@ -42,7 +47,7 @@ interface IQuery
      *
      * @return static
      */
-    public function table(string $table, string $alias = null, string $database = null): self;
+    public function table(string $table, ?string $alias = null, ?string $database = null): self;
 
     /**
      * 设置表名，使用SQL原生语句.
@@ -60,7 +65,7 @@ interface IQuery
      *
      * @return static
      */
-    public function from(string $table, string $alias = null, string $database = null): self;
+    public function from(string $table, ?string $alias = null, ?string $database = null): self;
 
     /**
      * 设置表名，使用SQL原生语句.
@@ -289,7 +294,7 @@ interface IQuery
      *
      * @return static
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self;
+    public function join(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self;
 
     /**
      * join，使用SQL原生语句.
@@ -310,7 +315,7 @@ interface IQuery
      *
      * @return static
      */
-    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
+    public function leftJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * right join.
@@ -324,7 +329,7 @@ interface IQuery
      *
      * @return static
      */
-    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
+    public function rightJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * cross join.
@@ -338,7 +343,7 @@ interface IQuery
      *
      * @return static
      */
-    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
+    public function crossJoin(string $table, string $left, string $operation, string $right, ?string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * 排序.
@@ -450,6 +455,11 @@ interface IQuery
     public function getBinds(): array;
 
     /**
+     * 构建查询语句.
+     */
+    public function buildSelectSql(): string;
+
+    /**
      * 查询所有记录，返回数组.
      */
     public function select(): IResult;
@@ -462,11 +472,25 @@ interface IQuery
     public function paginate(int $page, int $count, array $options = []): IPaginateResult;
 
     /**
+     * 构建插入语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildInsertSql($data = null): string;
+
+    /**
      * 插入记录.
      *
      * @param array|object|null $data
      */
     public function insert($data = null): IResult;
+
+    /**
+     * 构建批量插入语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildBatchInsertSql($data = null): string;
 
     /**
      * 批量插入数据
@@ -477,6 +501,13 @@ interface IQuery
     public function batchInsert($data = null): IResult;
 
     /**
+     * 构建更新语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildUpdateSql($data = null): string;
+
+    /**
      * 更新数据.
      *
      * @param array|object|null $data
@@ -484,11 +515,23 @@ interface IQuery
     public function update($data = null): IResult;
 
     /**
+     * 构建替换语句.
+     *
+     * @param array|object|null $data
+     */
+    public function buildReplaceSql($data = null): string;
+
+    /**
      * 替换数据（Replace）.
      *
      * @param array|object|null $data
      */
     public function replace($data = null): IResult;
+
+    /**
+     * 构建删除语句.
+     */
+    public function buildDeleteSql(): string;
 
     /**
      * 删除数据.

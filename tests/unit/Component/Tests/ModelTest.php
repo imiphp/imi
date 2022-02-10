@@ -83,7 +83,7 @@ class ModelTest extends BaseTest
     {
         $member = Member::newInstance();
         $member->username = '1';
-        $member->password = '2';
+        $member->__setRaw('password', "CONCAT('p', 'w2')");
         $result = $member->insert();
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
@@ -100,13 +100,13 @@ class ModelTest extends BaseTest
     {
         $member = Member::newInstance();
         $member->username = '1';
-        $member->password = '2';
+        $member->__setRaw('password', "CONCAT('p', 'w2')");
         $result = $member->insert();
         $id = $result->getLastInsertId();
         $this->assertGreaterThan(0, $id);
 
         $member->username = '3';
-        $member->password = '4';
+        $member->__setRaw('password', "CONCAT('p', 'w4')");
         $result = $member->update();
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
@@ -115,7 +115,7 @@ class ModelTest extends BaseTest
         $this->assertEquals([
             'id'        => $id,
             'username'  => '3',
-            'password'  => '4',
+            'password'  => 'pw4',
             'notInJson' => null,
         ], $member->convertToArray(false));
     }
@@ -124,7 +124,7 @@ class ModelTest extends BaseTest
     {
         $member = Member::newInstance();
         $member->username = '1';
-        $member->password = '2';
+        $member->__setRaw('password', "CONCAT('p', 'w2')");
         $result = $member->save();
         $id = $result->getLastInsertId();
         $this->assertEquals(1, $result->getAffectedRows());
@@ -132,7 +132,7 @@ class ModelTest extends BaseTest
         $this->assertEquals($id, $member->id);
 
         $member->username = '3';
-        $member->password = '4';
+        $member->__setRaw('password', "CONCAT('p', 'w4')");
         $result = $member->save();
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
@@ -141,7 +141,7 @@ class ModelTest extends BaseTest
         $this->assertEquals([
             'id'        => $id,
             'username'  => '3',
-            'password'  => '4',
+            'password'  => 'pw4',
             'notInJson' => null,
         ], $member->convertToArray(false));
 
@@ -168,6 +168,16 @@ class ModelTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testExists(array $args): void
+    {
+        ['id' => $id] = $args;
+        $this->assertTrue(Member::exists($id));
+        $this->assertFalse(Member::exists(-1));
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testFind(array $args): void
     {
         ['id' => $id] = $args;
@@ -175,7 +185,7 @@ class ModelTest extends BaseTest
         $this->assertEquals([
             'id'        => $id,
             'username'  => '1',
-            'password'  => '2',
+            'password'  => 'pw2',
             'notInJson' => null,
         ], $member->convertToArray(false));
 
@@ -185,7 +195,7 @@ class ModelTest extends BaseTest
         $this->assertEquals([
             'id'        => $id,
             'username'  => '1',
-            'password'  => '2',
+            'password'  => 'pw2',
             'notInJson' => null,
         ], $member->convertToArray(false));
     }
@@ -215,7 +225,7 @@ class ModelTest extends BaseTest
             [
                 'id'        => $id,
                 'username'  => '1',
-                'password'  => '2',
+                'password'  => 'pw2',
                 'notInJson' => null,
             ],
         ], Member::convertListToArray($list, false));

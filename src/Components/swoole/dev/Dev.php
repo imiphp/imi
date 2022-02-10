@@ -7,6 +7,7 @@ namespace Imi\Swoole\Dev;
 use Composer\Package\Link;
 use Composer\Script\Event;
 use Composer\Semver\Constraint\Constraint;
+use Composer\Semver\Constraint\MultiConstraint;
 
 class Dev
 {
@@ -24,7 +25,10 @@ class Dev
                 continue;
             }
             // @phpstan-ignore-next-line
-            $require = new Link($require->getSource(), $require->getTarget(), new Constraint('>', '0'), $require->getDescription());
+            $require = new Link($require->getSource(), $require->getTarget(), new MultiConstraint([
+                new Constraint('>=', '2.1'),
+                new Constraint('<', '2.2'),
+            ]), $require->getDescription());
         }
         $package->setRequires($requires);
 
@@ -36,7 +40,10 @@ class Dev
                 continue;
             }
             // @phpstan-ignore-next-line
-            $require = new Link($require->getSource(), $require->getTarget(), new Constraint('>', '0'), $require->getDescription());
+            $require = new Link($require->getSource(), $require->getTarget(), new MultiConstraint([
+                new Constraint('>=', '2.1'),
+                new Constraint('<', '2.2'),
+            ]), $require->getDescription());
         }
         $package->setDevRequires($requires);
     }

@@ -10,7 +10,6 @@ use Imi\Config;
 use Imi\Util\ClassObject;
 use InvalidArgumentException;
 use Monolog\Handler\FormattableHandlerInterface;
-use Monolog\Logger as MonoLogger;
 
 /**
  * @Bean("Logger")
@@ -42,7 +41,8 @@ class Logger
                 throw new InvalidArgumentException(sprintf('Logger %s not found', $channelName));
             }
             $channelConfig = $channelsConfig[$channelName];
-            $logger = $this->loggers[$channelName] = new MonoLogger($channelName);
+            $loggerClass = $config['logger'] ?? MonoLogger::class;
+            $logger = $this->loggers[$channelName] = new $loggerClass($channelName);
             $handlers = [];
             $app = App::getApp();
             foreach ($channelConfig['handlers'] ?? [] as $handlerConfig)

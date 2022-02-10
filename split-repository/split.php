@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use app\Secrets;
+use Github\Api\Repository\Actions\Secrets;
 use Github\Client;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -188,6 +188,9 @@ static $storeRepoMap = [
     ],
     'src/Components/roadrunner' => [
         'git@github.com:imiphp/imi-roadrunner',
+    ],
+    'src/Components/macro' => [
+        'git@github.com:imiphp/imi-macro',
     ],
 ];
 

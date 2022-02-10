@@ -60,7 +60,6 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 $configs = $options['configs'];
                 $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
                     Coroutine::create(function () use ($group, $configs) {
-                        \Swoole\Runtime::enableCoroutine(true);
                         Imi::setProcessName('process', [
                             'processName'   => 'QueueConsumer-' . $group,
                         ]);
@@ -68,8 +67,8 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                         foreach ($configs as $config)
                         {
                             Coroutine::create(function () use ($config) {
-                                /* @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
-                                $this->consumers[] = $queueConsumer = App::getBean($config->getConsumer(), $config->getName());
+                                /** @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
+                                $queueConsumer = $this->consumers[] = App::getBean($config->getConsumer(), $config->getName());
                                 $queueConsumer->start();
                             });
                         }

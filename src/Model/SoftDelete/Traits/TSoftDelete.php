@@ -77,7 +77,7 @@ trait TSoftDelete
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IQuery
+    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
     {
         return parent::query($poolName, $queryType, $queryClass);
     }
@@ -161,7 +161,7 @@ trait TSoftDelete
         }
         $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
         $realClassName = static::__getRealClassName();
-        $query = static::originQuery();
+        $query = static::originQuery()->limit(1);
         if (\is_callable($ids[0]))
         {
             // 回调传入条件
@@ -173,51 +173,24 @@ trait TSoftDelete
             if (\is_array($ids[0]))
             {
                 // 键值数组where条件
-                $keys = array_keys($ids[0]);
-                $bindValues = [];
-                foreach ($ids[0] as $k => $v)
+                foreach ($ids[0] as $name => $value)
                 {
-                    $bindValues[':' . $k] = $v;
+                    $query->where($name, '=', $value);
                 }
-                $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
-                $query = $query->alias($realClassName . ':findDeleted:pk1:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys, $softDeleteAnnotation) {
-                    foreach ($keys as $name)
-                    {
-                        $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
-                    }
-                    $query->whereRaw($query->fieldQuote($softDeleteAnnotation->field) . '!=:' . $softDeleteAnnotation->field)->limit(1);
-                })->bindValues($bindValues);
             }
             else
             {
                 // 主键值
-                $id = static::__getMeta()->getId();
-                $keys = [];
-                $bindValues = [];
-                if ($id)
+                foreach (static::__getMeta()->getId() as $i => $name)
                 {
-                    foreach ($id as $i => $idName)
+                    if (!isset($ids[$i]))
                     {
-                        if (!isset($ids[$i]))
-                        {
-                            break;
-                        }
-                        $keys[] = $idName;
-                        $bindValues[':' . $idName] = $ids[$i];
+                        break;
                     }
+                    $query->where($name, '=', $ids[$i]);
                 }
-                $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
-                $query = $query->alias($realClassName . ':findDeleted:pk2:' . md5(implode(',', $keys)), static function (IQuery $query) use ($keys, $softDeleteAnnotation) {
-                    if ($keys)
-                    {
-                        foreach ($keys as $name)
-                        {
-                            $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
-                        }
-                    }
-                    $query->whereRaw($query->fieldQuote($softDeleteAnnotation->field) . '!=:' . $softDeleteAnnotation->field)->limit(1);
-                })->bindValues($bindValues);
             }
+            $query->where($softDeleteAnnotation->field, '!=', $softDeleteAnnotation->default);
         }
 
         // 查找前

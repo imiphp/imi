@@ -24,6 +24,7 @@ return [
     'components'    => [
         'Swoole' => 'Imi\Swoole',
         'AMQP'   => 'Imi\AMQP',
+        'Macro'  => 'Imi\Macro',
     ],
 
     // 日志配置

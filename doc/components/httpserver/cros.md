@@ -6,7 +6,7 @@ imi 框架内置了一个 `OptionsMiddleware` 中间件，用于解决使用 `ap
 
 别名：`OptionsMiddleware`
 
-中间件使用方法：<https://doc.imiphp.com/v2.0/components/httpserver/middleware.html>
+中间件使用方法：<https://doc.imiphp.com/v2.1/components/httpserver/middleware.html>
 
 ## 参数设置
 

@@ -19,7 +19,7 @@ abstract class QueryCurdBaseTest extends BaseTest
      *
      * @var string
      */
-    protected $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 测试 whereEx 的 SQL.
@@ -35,9 +35,17 @@ abstract class QueryCurdBaseTest extends BaseTest
      */
     protected $expectedTestJsonSelectSql;
 
+    protected string $fullTableArticle = 'tb_article';
+
+    protected string $tableArticle = 'tb_article';
+
+    protected string $fullTableTestJson = 'tb_test_json';
+
+    protected string $tableTestJson = 'tb_test_json';
+
     public function testInsert(): array
     {
-        Db::getInstance()->exec('truncate tb_article');
+        Db::getInstance()->exec('truncate ' . $this->fullTableArticle);
         $data = [
             'title'     => 'title-insert',
             'content'   => 'content-insert',
@@ -45,9 +53,9 @@ abstract class QueryCurdBaseTest extends BaseTest
         ];
         $query = Db::query($this->poolName);
 
-        $result = $query->from('tb_article')->insert($data);
+        $result = $query->from($this->tableArticle)->insert($data);
         $id1 = $result->getLastInsertId();
-        $record = $query->from('tb_article')->where('id', '=', $id1)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', $id1)->select()->get();
         Assert::assertEquals([
             'id'        => $id1,
             'title'     => 'title-insert',
@@ -61,10 +69,10 @@ abstract class QueryCurdBaseTest extends BaseTest
             'content'   => 'content-insert',
         ])
         ->setField('time', '2019-06-21 00:00:00')
-        ->from('tb_article')
+        ->from($this->tableArticle)
         ->insert();
         $id2 = $result->getLastInsertId();
-        $record = $query->from('tb_article')->where('id', '=', $id2)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', $id2)->select()->get();
         Assert::assertEquals([
             'id'        => $id2,
             'title'     => 'title-insert',
@@ -85,7 +93,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $record = $query->from('tb_article')->where('id', '=', $ids[0])->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', $ids[0])->select()->get();
         Assert::assertEquals([
             'id'        => $ids[0],
             'title'     => 'title-insert',
@@ -102,7 +110,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $result = $query->from('tb_article')->whereIn('id', $ids)->select();
+        $result = $query->from($this->tableArticle)->whereIn('id', $ids)->select();
         $record = $result->getArray();
         Assert::assertEquals(2, $result->getRowCount());
         Assert::assertEquals([
@@ -130,7 +138,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $record = $query->from('tb_article')->whereIn('id', $ids)->select()->getColumn();
+        $record = $query->from($this->tableArticle)->whereIn('id', $ids)->select()->getColumn();
         Assert::assertEquals($ids, $record);
     }
 
@@ -141,7 +149,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $record = $query->from('tb_article')->where('id', '=', $ids[1])->field('id')->select()->getScalar();
+        $record = $query->from($this->tableArticle)->where('id', '=', $ids[1])->field('id')->select()->getScalar();
         Assert::assertEquals($ids[1], $record);
     }
 
@@ -166,7 +174,7 @@ abstract class QueryCurdBaseTest extends BaseTest
             'page_count'    => 2,
         ];
         $query = Db::query($this->poolName);
-        $result = $query->from('tb_article')->paginate(2, 1);
+        $result = $query->from($this->tableArticle)->paginate(2, 1);
         $this->assertEquals($expectedData, $result->toArray());
         $this->assertEquals($expectedData['list'], $result->getList());
         $this->assertEquals($expectedData['total'], $result->getTotal());
@@ -196,7 +204,7 @@ abstract class QueryCurdBaseTest extends BaseTest
             'total'         => 1,
             'page_count'    => 1,
         ];
-        $result = Db::query($this->poolName)->from('tb_article')
+        $result = Db::query($this->poolName)->from($this->tableArticle)
                              ->bindValues([
                                  ':id'  => $ids[1],
                              ])
@@ -231,7 +239,7 @@ abstract class QueryCurdBaseTest extends BaseTest
             'limit'         => 2,
         ];
         $query = Db::query($this->poolName);
-        $result = $query->from('tb_article')->paginate(1, 2, [
+        $result = $query->from($this->tableArticle)->paginate(1, 2, [
             'total' => false,
         ]);
         $this->assertEquals($expectedData, $result->toArray());
@@ -264,15 +272,15 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
         ];
         $query = Db::query($this->poolName);
-        $result = $query->from('tb_article')->insert($data);
+        $result = $query->from($this->tableArticle)->insert($data);
         $id = $result->getLastInsertId();
 
-        $result = $query->from('tb_article')->where('id', '=', $id)->update([
+        $result = $query->from($this->tableArticle)->where('id', '=', $id)->update([
             'content'   => 'imi',
             'time'      => '2018-06-21 00:00:00',
         ]);
         Assert::assertEquals(1, $result->getAffectedRows());
-        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
             'id'        => $id,
             'title'     => 'title-insert',
@@ -281,12 +289,12 @@ abstract class QueryCurdBaseTest extends BaseTest
             'member_id' => 0,
         ], $record);
 
-        $result = $query->from('tb_article')->where('id', '=', $id)->setData([
+        $result = $query->from($this->tableArticle)->where('id', '=', $id)->setData([
             'content'   => 'content-insert',
             'time'      => '2019-06-21 00:00:00',
         ])->update();
         Assert::assertEquals(1, $result->getAffectedRows());
-        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
             'id'        => $id,
             'title'     => 'title-insert',
@@ -304,13 +312,13 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
         ];
         $query = Db::query($this->poolName);
-        $result = $query->from('tb_article')->insert($data);
+        $result = $query->from($this->tableArticle)->insert($data);
         $id = $result->getLastInsertId();
 
-        $result = $query->from('tb_article')->where('id', '=', $id)->delete();
+        $result = $query->from($this->tableArticle)->where('id', '=', $id)->delete();
         Assert::assertEquals(1, $result->getAffectedRows());
 
-        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', $id)->select()->get();
         Assert::assertNull($record);
     }
 
@@ -321,7 +329,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $result = $query->from('tb_article')->whereEx([
+        $result = $query->from($this->tableArticle)->whereEx([
             'id'    => $ids[0],
             'and'   => [
                 'id'    => ['in', [$ids[0]]],
@@ -339,7 +347,7 @@ abstract class QueryCurdBaseTest extends BaseTest
             'member_id' => 0,
         ], $record);
         // BUG: https://github.com/imiphp/imi/pull/25
-        Assert::assertEquals('select * from `tb_article`', Db::query($this->poolName)->from('tb_article')->whereEx([])->select()->getSql());
+        Assert::assertEquals('select * from `' . $this->fullTableArticle . '`', Db::query($this->poolName)->from($this->tableArticle)->whereEx([])->select()->getSql());
     }
 
     /**
@@ -349,7 +357,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();
         Assert::assertEquals([
             'id'        => $ids[0],
             'title'     => 'title-insert',
@@ -359,7 +367,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
 
         $query = Db::query($this->poolName);
-        $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::SHARED)->select()->get();
+        $record = $query->from($this->tableArticle)->where('id', '=', 1)->lock(MysqlLock::SHARED)->select()->get();
         Assert::assertEquals([
             'id'        => $ids[0],
             'title'     => 'title-insert',
@@ -376,7 +384,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $query = Db::query($this->poolName);
-        $record = $query->from('tb_article')->whereIsNotNull('id')->field('id')->fieldRaw('title')->fieldRaw('id + 1', 'id2')->select()->get();
+        $record = $query->from($this->tableArticle)->whereIsNotNull('id')->field('id')->fieldRaw('title')->fieldRaw('id + 1', 'id2')->select()->get();
         Assert::assertEquals([
             'id'    => $ids[0],
             'title' => 'title-insert',
@@ -389,25 +397,25 @@ abstract class QueryCurdBaseTest extends BaseTest
         $query = Db::query($this->poolName);
         $jsonStr = '{"uid": "' . ($uid = uniqid('', true)) . '", "name": "aaa", "list1": [{"id": 1}]}';
         // 插入数据
-        $insertResult = $query->from('tb_test_json')->insert([
+        $insertResult = $query->from($this->tableTestJson)->insert([
             'json_data' => $jsonStr,
         ]);
         $id = $insertResult->getLastInsertId();
         // 查询条件
-        $result = $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->select();
+        $result = $query->from($this->tableTestJson)->where('json_data->uid', '=', $uid)->select();
         $this->assertEquals([
             'id'        => $id,
             'json_data' => $jsonStr,
         ], $result->get());
         $this->assertEquals($this->expectedTestJsonSelectSql, $result->getSql());
         // 更新数据
-        $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->update([
+        $query->from($this->tableTestJson)->where('json_data->uid', '=', $uid)->update([
             'json_data->a'           => '1',
             'json_data->name'        => 'bbb',
             'json_data->list1[0].id' => '2',
             'json_data->list2'       => [1, 2, 3],
         ]);
-        $result = $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->order('json_data->uid')->select();
+        $result = $query->from($this->tableTestJson)->where('json_data->uid', '=', $uid)->order('json_data->uid')->select();
         $this->assertEquals([
             'id'        => $id,
             'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',

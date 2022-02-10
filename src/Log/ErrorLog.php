@@ -30,11 +30,6 @@ class ErrorLog
     protected int $exceptionLevel = \E_ERROR | \E_PARSE | \E_CORE_ERROR | \E_COMPILE_ERROR | \E_USER_ERROR | \E_RECOVERABLE_ERROR | \E_WARNING | \E_CORE_WARNING | \E_COMPILE_WARNING | \E_USER_WARNING;
 
     /**
-     * 回溯堆栈帧的数量限制.
-     */
-    protected int $backtraceLimit = 0;
-
-    /**
      * 注册错误监听.
      */
     public function register(): void
@@ -43,6 +38,7 @@ class ErrorLog
         register_shutdown_function([$this, 'onShutdown']);
         // @phpstan-ignore-next-line
         set_error_handler([$this, 'onError'], $this->catchLevel);
+        set_exception_handler([$this, 'onException']);
     }
 
     /**

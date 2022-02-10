@@ -118,6 +118,6 @@ class Server extends BaseCommand
     public function outStartupInfo(): void
     {
         CliApp::printImi();
-        CliApp::printEnvInfo('Swoole', \SWOOLE_VERSION);
+        CliApp::printEnvInfo('Swoole', \SWOOLE_VERSION . (\defined('SWOOLE_CLI') ? ' (swoole-cli)' : ''));
     }
 }

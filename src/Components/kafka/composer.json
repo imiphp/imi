@@ -4,12 +4,12 @@
     "license": "MIT",
     "description": "支持在 imi 框架中使用 Kafka 客户端",
     "require": {
-        "imiphp/imi-queue": "~2.0.0",
+        "imiphp/imi-queue": "~2.1.0",
         "longlang/phpkafka": "^1.1"
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "^4.7"
+        "swoole/ide-helper": "~4.8"
     },
     "autoload": {
         "psr-4": {
@@ -40,5 +40,7 @@
                 "redis"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

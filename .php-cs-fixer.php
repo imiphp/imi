@@ -54,5 +54,6 @@ return (new PhpCsFixer\Config())
             ->in(__DIR__ . '/dev')
             ->in(__DIR__ . '/split-repository')
             ->append([__FILE__])
+            ->notName('*.macro.php')
     )
 ;

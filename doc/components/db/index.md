@@ -61,6 +61,7 @@ return [
                 'username' => 'root',
                 'password' => 'root',
                 'database' => 'database',
+                'prefix'   => '', // 表前缀
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -127,6 +128,7 @@ return [
                 'username' => 'root',
                 'password' => 'root',
                 'database' => 'database',
+                'prefix'   => '', // 表前缀
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -172,6 +174,7 @@ return [
                 'username' => 'root',
                 'password' => 'root',
                 'database' => 'database',
+                'prefix'   => '', // 表前缀
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -511,6 +514,12 @@ Db::query()->table('tb_test', 'test');
 Db::query()->table('tb_test', null, 'db1');
 // 传入参数原样代入到SQL中
 Db::query()->tableRaw('tb_test');
+
+// 如果连接配置设置了表前缀：tb_
+Db::query()->table('test')->select(); // select * from tb_test
+
+// 设置表前缀
+Db::query()->tablePrefix('')->table('test')->select(); // select * from test
 ```
 
 > `table()` 和 `tableRaw()` 也可以使用 `from()` 和 `fromRaw()` 代替。
@@ -813,6 +822,18 @@ $result->getArray($className); // 数组内嵌套$className对应的类对象
 $result->getRowCount(); // 获取查询出的记录行数
 ```
 
+#### 构建查询语句
+
+构建语句，但不执行
+
+```php
+$query = Db::query()->table('tb_test');
+$sql = $query->buildSelectSql(); // 构建 SQL
+$binds = $query->getBinds(); // 获取预处理绑定的值
+```
+
+> 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
+
 #### 聚合函数
 
 ```php
@@ -857,6 +878,21 @@ $result->getLastInsertId(); // 获取最后插入的ID
 $result->getAffectedRows(); // 获取影响行数
 ```
 
+#### 构建插入语句
+
+构建语句，但不执行
+
+```php
+$query = Db::query()->table('tb_test');
+$sql = $query->buildInsertSql([
+    'name'  =>	'yurun',
+    'age'	=>	666,
+]); // 构建 SQL
+$binds = $query->getBinds(); // 获取预处理绑定的值
+```
+
+> 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
+
 ### 批量插入
 
 ```php
@@ -868,6 +904,22 @@ $result = Db::query()->from('test')->batchInsert([
 $result->isSuccess(); // SQL是否执行成功
 $result->getAffectedRows(); // 获取影响行数
 ```
+
+#### 构建批量插入语句
+
+构建语句，但不执行
+
+```php
+$query = Db::query()->table('tb_test');
+$sql = $query->buildBatchInsertSql([
+    ['name'=>'a'],
+    ['name'=>'b'],
+    ['name'=>'c'],
+]); // 构建 SQL
+$binds = $query->getBinds(); // 获取预处理绑定的值
+```
+
+> 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
 
 ### 更新记录
 
@@ -885,6 +937,25 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
 // $result使用方法同上
 ```
 
+#### 构建更新语句
+
+构建语句，但不执行
+
+```php
+$query = Db::query()->table('tb_test')->where('id', '=', 1);
+$sql = $query->buildUpdateSql([
+    'name'	=>	'yurun',
+    'age'	=>	666,
+    // JSON 类型参数
+    'field1->name'        => 'bbb', // 修改 name
+    'field1->list2'       => [1, 2, 3], // 修改 list2，支持数组、对象
+    'field1->list1[0].id' => '2', // 支持对数组中指定成员、对象属性赋值，支持无限级
+]); // 构建 SQL
+$binds = $query->getBinds(); // 获取预处理绑定的值
+```
+
+> 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
+
 ### 替换数据
 
 ```php
@@ -895,6 +966,22 @@ $result = Db::query()->table('tb_test')->replace([
     'age'	=>	666,
 ]);
 ```
+
+#### 构建替换语句
+
+构建语句，但不执行
+
+```php
+$query = Db::query()->table('tb_test');
+$sql = $query->buildReplaceSql([
+    'id'	=>	1,
+    'name'	=>	'yurun',
+    'age'	=>	666,
+]); // 构建 SQL
+$binds = $query->getBinds(); // 获取预处理绑定的值
+```
+
+> 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
 
 ### 递增/递减
 
@@ -942,6 +1029,18 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->delete();
 
 // $result使用方法同上
 ```
+
+#### 构建删除语句
+
+构建语句，但不执行
+
+```php
+$query = Db::query()->table('tb_test')->where('id', '=', 1);
+$sql = $query->buildDeleteSql(); // 构建 SQL
+$binds = $query->getBinds(); // 获取预处理绑定的值
+```
+
+> 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
 
 ### 加锁
 

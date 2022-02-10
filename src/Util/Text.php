@@ -1,5 +1,7 @@
 <?php
 
+# macro
+
 declare(strict_types=1);
 
 namespace Imi\Util;
@@ -20,14 +22,18 @@ class Text
     {
         if ($caseSensitive)
         {
+            #if \PHP_VERSION_ID < 80000
             if (\PHP_VERSION_ID >= 80000)
             {
                 return str_starts_with($string, $compare);
             }
             else
             {
+                #endif
                 return 0 === strpos($string, $compare);
+                #if \PHP_VERSION_ID < 80000
             }
+            #endif
         }
         else
         {
@@ -42,14 +48,18 @@ class Text
     {
         if ($caseSensitive)
         {
+            #if \PHP_VERSION_ID < 80000
             if (\PHP_VERSION_ID >= 80000)
             {
                 return str_ends_with($string, $compare);
             }
             else
             {
+                #endif
                 return $compare === strrchr($string, $compare);
+                #if \PHP_VERSION_ID < 80000
             }
+            #endif
         }
         else
         {
@@ -105,5 +115,35 @@ class Text
         }
 
         return $result;
+    }
+
+    /**
+     * 移除字符串左侧的字符串.
+     */
+    public static function ltrimText(string $string, string $text): string
+    {
+        if (str_starts_with($string, $text))
+        {
+            return substr($string, \strlen($text));
+        }
+        else
+        {
+            return $string;
+        }
+    }
+
+    /**
+     * 移除字符串右侧的字符串.
+     */
+    public static function rtrimText(string $string, string $text): string
+    {
+        if (str_ends_with($string, $text))
+        {
+            return substr($string, 0, -\strlen($text));
+        }
+        else
+        {
+            return $string;
+        }
     }
 }

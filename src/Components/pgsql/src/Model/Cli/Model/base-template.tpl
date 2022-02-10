@@ -19,7 +19,7 @@ use <?php echo $baseClassName; ?> as Model;
 else
 { ?>@Entity(false)<?php } ?>
 
- * @Table(name=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.name", default="<?php echo $table['name']; ?>")<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.poolName"<?php if (null !== $poolName) {?>, default="<?php echo $poolName; ?>"<?php }?>))
+ * @Table(name=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.name", default="<?php echo $table['name']; ?>"), usePrefix=<?php var_export($table['usePrefix']); ?><?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.poolName"<?php if (null !== $poolName) {?>, default="<?php echo $poolName; ?>"<?php }?>))
  *
 <?php foreach ($fields as $field) { ?>
  * @property <?php echo $field['phpType']; ?> $<?php echo $field['varName']; ?> <?php echo '' === $field['comment'] ? '' : $field['comment']; ?>
@@ -55,7 +55,7 @@ abstract class <?php echo $className; ?>Base extends Model
      * @return <?php echo $field['phpType']; ?>
 
      */
-    public function <?php if ($field['ref']){?>&<?php } ?>get<?php echo ucfirst($field['varName']); ?>()<?php if ($field['typeDefinition'] && $field['phpDefinitionType']) { ?>: <?php echo $field['phpDefinitionType']; ?><?php } ?>
+    public function <?php if ($field['ref']){?> & <?php } ?>get<?php echo ucfirst($field['varName']); ?>()<?php if ($field['typeDefinition'] && $field['phpDefinitionType']) { ?>: <?php echo $field['phpDefinitionType']; ?><?php } ?>
 
     {
         return $this-><?php echo $field['varName']; ?>;

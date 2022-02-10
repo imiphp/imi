@@ -20,7 +20,7 @@ imi 的模型类里一般不写逻辑代码，模型类的一个对象就代表�
 
 `@DDL` 定义表结构的 SQL 语句
 
-> 建议使用模型生成工具：<https://doc.imiphp.com/v2.0/dev/generate/model.html>
+> 建议使用模型生成工具：<https://doc.imiphp.com/v2.1/dev/generate/model.html>
 
 具体定义看下面代码：
 
@@ -241,11 +241,63 @@ abstract class ArticleBase extends Model
 
 ### @JsonEncode
 
-写在类上，设定 JSON 序列化时的配置
+设定 JSON 序列化时的配置
+
+写在类上可以让模型类中所有 Json 字段生效。
+
+写在属性上，可以覆盖写在类上的注解。
 
 不使用 Unicode 编码转换中文：`@JsonEncode(JSON_UNESCAPED_UNICODE)`
 
-完整参数：`@JsonEncode(flags=\JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, depth=512)`
+完整参数：`@JsonEncode(flags=4194624, depth=512)`
+
+> `4194624 === \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE`
+
+> 参数含义同 `json_encode()`
+
+### @JsonDecode
+
+设定 JSON 反序列化时的配置
+
+写在类上可以让模型类中所有 Json 字段生效。
+
+写在属性上，可以覆盖写在类上的注解。
+
+完整参数：`@JsonDecode(associative=true, depth=512, flags=0, wrap=\Imi\Util\LazyArrayObject::class)`
+
+> 除 `$wrap` 外其它参数含义同 `json_decode()`
+
+**$wrap 参数说明**
+
+`$wrap` 反序列化数据的包装，如果是对象或者数组时有效。支持类名、函数名。
+
+类名：
+
+```php
+// 将此类的对象作为属性值
+class WrapClass
+{
+    /**
+     * @param mixed $data json_decode() 结果
+     */
+    public function __construct($data)
+    {
+    }
+}
+```
+
+函数名：
+
+```php
+/**
+ * @param mixed $data json_decode() 结果
+ * @return mixed
+ */
+function demoWrap($data)
+{
+    return $data; // 返回值作为属性值
+}
+```
 
 ### @Column
 
@@ -445,6 +497,7 @@ $testModel = TestModel::newInstance();
 $testModel->setA('1');
 $testModel->setB('1');
 $testModel->setC('1');
+$testModel->__setRaw('value', 'value+1'); // set value=value+1，第一个参数是字段名，第二个参数是sql
 $result = $testModel->insert();
 // $result 用法同数据库中的 insert() 返回值用法
 echo '插入的自增ID：', $testModel->getId();
@@ -537,6 +590,20 @@ foreach ($list2 as $row)
 {
     $list2->__setSerializedFields(['id', 'name']);
 }
+```
+
+### 判断记录是否存在
+
+```php
+// where id = 1
+$exists = TestModel::exists(1);
+// 复合主键 where a = 1 and b = 'abc'
+$exists = TestModel::exists(1, 'abc');
+// 指定多个字段条件 where a = 1 and b = 'abc'
+$exists = TestModel::exists([
+    'a' => 1,
+    'b' => 'abc',
+]);
 ```
 
 ### 查询记录

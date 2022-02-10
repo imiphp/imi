@@ -21,6 +21,7 @@ return [
     // 组件命名空间
     'components'    => [
         'Swoole' => 'Imi\Swoole',
+        'Macro'  => 'Imi\Macro',
     ],
 
     // 日志配置
@@ -66,6 +67,7 @@ return [
         'host'         => env('SERVER_HOST', '127.0.0.1'),
         'port'         => 13002,
         'mode'         => \SWOOLE_BASE,
+        'syncConnect'  => true,
         'configs'      => [
             'worker_num'    => 2,
         ],

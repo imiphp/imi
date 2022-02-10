@@ -12,3 +12,4 @@ composer.lock
 /split-repository/vendor
 /.vscode
 *.pid
+*.macro.php

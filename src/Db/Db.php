@@ -73,12 +73,6 @@ class Db
         }
         else
         {
-            $requestContextKey = '__db.' . $poolName;
-            $requestContext = RequestContext::getContext();
-            if (isset($requestContext[$requestContextKey]))
-            {
-                return $requestContext[$requestContextKey];
-            }
             if (null === self::$connections)
             {
                 self::$connections = Config::get('@app.db.connections');
@@ -88,8 +82,17 @@ class Db
             {
                 throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
             }
-            /** @var IDb|null $db */
-            $db = App::get($requestContextKey);
+            $requestContextKey = '__db.' . $poolName;
+            $requestContext = RequestContext::getContext();
+            if (isset($requestContext[$requestContextKey]))
+            {
+                $db = $requestContext[$requestContextKey];
+            }
+            else
+            {
+                /** @var IDb|null $db */
+                $db = App::get($requestContextKey);
+            }
             if (null === $db || !$db->isConnected())
             {
                 /** @var IDb $db */
@@ -118,6 +121,32 @@ class Db
             }
 
             return $requestContext[$requestContextKey] = $db;
+        }
+    }
+
+    /**
+     * 获取数据库连接实例配置.
+     */
+    public static function getInstanceConfig(?string $poolName = null, int $queryType = QueryType::WRITE): array
+    {
+        $poolName = self::parsePoolName($poolName, $queryType);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getInstance($poolName)->getResourceConfig();
+        }
+        else
+        {
+            if (null === self::$connections)
+            {
+                self::$connections = Config::get('@app.db.connections');
+            }
+            $config = self::$connections[$poolName] ?? null;
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
+
+            return $config;
         }
     }
 

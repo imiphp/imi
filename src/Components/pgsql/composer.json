@@ -6,7 +6,7 @@
     "require": {
     },
     "require-dev": {
-        "swoole/ide-helper": "^4.7"
+        "swoole/ide-helper": "~4.8"
     },
     "autoload": {
         "psr-4": {
@@ -28,5 +28,7 @@
         "pre-update-cmd": "Imi\\Pgsql\\Dev\\Dev::preUpdate",
         "post-install-cmd": "Imi\\Pgsql\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Pgsql\\Dev\\Dev::postUpdate"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

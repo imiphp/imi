@@ -14,7 +14,6 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
-use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
 use Imi\Util\Traits\TBeanRealClass;
@@ -114,51 +113,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $this->__originData = $data;
         if ($data)
         {
-            $fieldAnnotations = $meta->getFields();
-            $dbFieldAnnotations = $meta->getDbFields();
             foreach ($data as $k => $v)
             {
-                if (isset($fieldAnnotations[$k]))
-                {
-                    $fieldAnnotation = $fieldAnnotations[$k];
-                }
-                elseif (isset($dbFieldAnnotations[$k]))
-                {
-                    $item = $dbFieldAnnotations[$k];
-                    $fieldAnnotation = $item['column'];
-                    $k = $item['propertyName'];
-                }
-                else
-                {
-                    $fieldAnnotation = null;
-                }
-                if ($fieldAnnotation && \is_string($v))
-                {
-                    switch ($fieldAnnotation->type)
-                    {
-                        case 'json':
-                            $value = json_decode($v, true);
-                            if (\is_array($value))
-                            {
-                                $v = new LazyArrayObject($value);
-                            }
-                            elseif (\JSON_ERROR_NONE === json_last_error())
-                            {
-                                $v = $value;
-                            }
-                            break;
-                        case 'list':
-                            if ('' === $v)
-                            {
-                                $v = [];
-                            }
-                            elseif (null !== $fieldAnnotation->listSeparator)
-                            {
-                                $v = explode($fieldAnnotation->listSeparator, $v);
-                            }
-                            break;
-                    }
-                }
                 $this[$k] = $v;
             }
         }

@@ -15,6 +15,7 @@ return [
     // 组件命名空间
     'components'    => [
         'AccessControl'       => 'Imi\AC',
+        'Macro'               => 'Imi\Macro',
     ],
     // 主服务器配置
     'mainServer'    => [
