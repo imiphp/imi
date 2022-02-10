@@ -298,7 +298,7 @@ class ModelGenerate extends BaseCommand
         $idCount = 0;
         foreach ($fields as $i => $field)
         {
-            $this->parseFieldType($field['Type'], $typeName, $length, $accuracy);
+            $this->parseFieldType($field['Type'], $typeName, $length, $accuracy, $unsigned);
             if ($isView && 0 === $i)
             {
                 $isPk = true;
@@ -326,6 +326,7 @@ class ModelGenerate extends BaseCommand
                 'comment'           => $field['Comment'],
                 'typeDefinition'    => $typeDefinitions[$field['Field']],
                 'ref'               => 'json' === $typeName,
+                'unsigned'          => $unsigned,
             ];
             if ($isPk)
             {
@@ -342,9 +343,9 @@ class ModelGenerate extends BaseCommand
      * @param int    $length
      * @param int    $accuracy
      */
-    public function parseFieldType(string $text, ?string &$typeName, ?int &$length, ?int &$accuracy): bool
+    public function parseFieldType(string $text, ?string &$typeName, ?int &$length, ?int &$accuracy, ?bool &$unsigned): bool
     {
-        if (preg_match('/([^(]+)(\((\d+)(,(\d+))?\))?/', $text, $match))
+        if (preg_match('/([^(\s]+)(\((\d+)(,(\d+))?\))?(?<unsigned> unsigned)?/', $text, $match))
         {
             $typeName = $match[1];
             $length = (int) ($match[3] ?? 0);
@@ -356,6 +357,7 @@ class ModelGenerate extends BaseCommand
             {
                 $accuracy = 0;
             }
+            $unsigned = isset($match['unsigned']);
 
             return true;
         }
@@ -364,6 +366,7 @@ class ModelGenerate extends BaseCommand
             $typeName = '';
             $length = 0;
             $accuracy = 0;
+            $unsigned = false;
 
             return false;
         }
