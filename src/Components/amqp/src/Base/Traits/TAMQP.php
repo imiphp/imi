@@ -68,7 +68,7 @@ trait TAMQP
      */
     protected array $consumers = [];
 
-    protected ?Connection $connectionAnnotation;
+    protected ?Connection $connectionAnnotation = null;
 
     /**
      * 连接池名称.

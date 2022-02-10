@@ -305,7 +305,7 @@ class AnnotationManager
      *
      * @param string|array|null $annotationClassName
      *
-     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
+     * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
     public static function getClassAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
@@ -380,6 +380,7 @@ class AnnotationManager
                 {
                     if ($onlyFirst)
                     {
+                        // @phpstan-ignore-next-line
                         return $annotation;
                     }
                     $result[] = $annotation;
@@ -396,7 +397,7 @@ class AnnotationManager
      *
      * @param string|array|null $annotationClassName
      *
-     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
+     * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
     public static function getMethodAnnotations(string $className, string $methodName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
@@ -471,6 +472,7 @@ class AnnotationManager
                 {
                     if ($onlyFirst)
                     {
+                        // @phpstan-ignore-next-line
                         return $annotation;
                     }
                     $result[] = $annotation;
@@ -487,7 +489,7 @@ class AnnotationManager
      *
      * @param string|array|null $annotationClassName
      *
-     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
+     * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
     public static function getPropertyAnnotations(string $className, string $propertyName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
@@ -562,6 +564,7 @@ class AnnotationManager
                 {
                     if ($onlyFirst)
                     {
+                        // @phpstan-ignore-next-line
                         return $annotation;
                     }
                     $result[] = $annotation;
@@ -578,7 +581,7 @@ class AnnotationManager
      *
      * @param string|array|null $annotationClassName
      *
-     * ]@return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]]
+     * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
     public static function getConstantAnnotations(string $className, string $constantName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
@@ -653,6 +656,7 @@ class AnnotationManager
                 {
                     if ($onlyFirst)
                     {
+                        // @phpstan-ignore-next-line
                         return $annotation;
                     }
                     $result[] = $annotation;

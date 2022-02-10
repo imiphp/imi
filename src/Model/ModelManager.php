@@ -74,7 +74,12 @@ class ModelManager
     /**
      * 获取当前模型类的类注解.
      *
-     * @param string|object $object
+     * @template T
+     *
+     * @param string|object   $object
+     * @param class-string<T> $annotationClass
+     *
+     * @return T|null
      */
     public static function getAnnotation($object, string $annotationClass): ?Base
     {

@@ -64,6 +64,7 @@ class HttpRouteInit implements IEventListener
                 }
                 // 类中间件
                 $classMiddlewares = [];
+                /** @var Middleware $middleware */
                 foreach (AnnotationManager::getClassAnnotations($className, Middleware::class) as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));

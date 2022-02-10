@@ -37,7 +37,6 @@ abstract class BaseRequestContextProxy
         }
         else
         {
-            /** @var RequestContextProxy[] $annotations */
             $cacheItem = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class, true, true);
             if (!$cacheItem)
             {
@@ -65,7 +64,6 @@ abstract class BaseRequestContextProxy
         }
         else
         {
-            /** @var RequestContextProxy[] $annotations */
             $cacheItem = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class, true, true);
             if (!$cacheItem)
             {

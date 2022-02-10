@@ -53,6 +53,7 @@ abstract class RedisModel extends BaseModel
             $object = static::__getRealClassName();
         }
 
+        // @phpstan-ignore-next-line
         return ModelManager::getAnnotation($object, RedisEntity::class);
     }
 
