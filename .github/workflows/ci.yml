@@ -40,49 +40,49 @@ jobs:
         with:
           env: ${{ env.ENV_SERVICE }}
       - name: Test
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test swoole
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-swoole
       - name: Test workerman
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-workerman
       - name: Test workerman-gateway
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
       - name: Test roadrunner
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-roadrunner
       - name: Test fpm
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-fpm
       - name: Test jwt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-jwt
       - name: Test queue
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-queue
       - name: Test amqp
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-amqp
       - name: Test kafka
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-kafka
       - name: Test grpc
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-grpc
       - name: Test snowflake
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-snowflake
       - name: Test mqtt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-mqtt
       - name: Test smarty
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-smarty
       - name: Test pgsql
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-pgsql
       - name: Print logs
         if: failure()
@@ -119,49 +119,49 @@ jobs:
         with:
           env: ${{ env.ENV_SERVICE }}
       - name: Test
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test swoole
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-swoole
       - name: Test workerman
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-workerman
       - name: Test workerman-gateway
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
       - name: Test roadrunner
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-roadrunner
       - name: Test fpm
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-fpm
       - name: Test jwt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-jwt
       - name: Test queue
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-queue
       - name: Test amqp
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-amqp
       - name: Test kafka
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-kafka
       - name: Test grpc
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-grpc
       - name: Test snowflake
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-snowflake
       - name: Test mqtt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-mqtt
       - name: Test smarty
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-smarty
       - name: Test pgsql
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: docker exec ${ENV_SERVICE} composer test-pgsql
       - name: Print logs
         if: failure()
@@ -217,34 +217,34 @@ jobs:
           echo "test_prepared=1" >> $GITHUB_ENV
 
       - name: Test
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test
       - name: Test swoole
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-swoole
       - name: Test workerman
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-workerman
       - name: Test workerman-gateway
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-workerman-gateway
       - name: Test jwt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-jwt
       - name: Test queue
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-queue
       - name: Test grpc
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-grpc
       - name: Test snowflake
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-snowflake
       - name: Test mqtt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-mqtt
       - name: Test smarty
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-smarty
       - name: Print logs
         if: failure()
@@ -329,40 +329,40 @@ jobs:
           echo "test_prepared=1" >> $GITHUB_ENV
 
       - name: Test
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test
       - name: Test swoole
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-swoole
       - name: Test workerman
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-workerman
       - name: Test workerman-gateway
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-workerman-gateway
       - name: Test roadrunner
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-roadrunner
       - name: Test fpm
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-fpm
       - name: Test jwt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-jwt
       - name: Test queue
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-queue
       - name: Test grpc
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-grpc
       - name: Test snowflake
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-snowflake
       - name: Test mqtt
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-mqtt
       - name: Test smarty
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-smarty
       - name: Print logs
         if: failure()
@@ -433,19 +433,19 @@ jobs:
           echo "test_prepared=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Test
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test
       - name: Test fpm
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-fpm
       - name: Test workerman
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-workerman
       - name: Test workerman-gateway
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-workerman-gateway-w
       - name: Test roadrunner
-        if: ${{ env.action_state }}
+        if: ${{ env.test_prepared }}
         run: composer test-roadrunner
       - name: Print logs
         if: failure()
