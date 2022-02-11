@@ -10,6 +10,8 @@ imi v1 使用 1.0 版本
 
 imi v2 使用 2.0 版本
 
+`imi-jwt` 基于 `lcobucci/jwt` 开发，如有更多问题请查阅文档：<https://lcobucci-jwt.readthedocs.io/en/latest/>
+
 ## Composer
 
 本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:
@@ -110,31 +112,6 @@ $tokenContent = $token->toString(); // Token 字符串
 ```
 
 ### 验证 Token
-
-手动验证：
-
-```php
-use \Imi\JWT\Facade\JWT;
-/** @var \Lcobucci\JWT\Token $token */
-$token = JWT::parseToken($jwt); // 仅验证是否合法
-// $token = JWT::parseToken($jwt, 'a'); // 指定配置名称
-$data = $token->claims()->get('data'); // 获取往token里丢的数据，PHP >= 7.4
-
-// 验证有效期、id、issuer、audience、subject
-$validationData = new \Lcobucci\JWT\ValidationData;
-$validationData->setId('');
-$validationData->setIssuer('');
-$validationData->setAudience('');
-$validationData->setSubject('');
-if($token->validate($validationData))
-{
-    // 合法
-}
-else
-{
-    // 不合法
-}
-```
 
 注解验证：
 
