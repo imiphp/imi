@@ -16,6 +16,7 @@ use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
 use Lcobucci\JWT\Validation\Constraint\IdentifiedBy;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
@@ -105,11 +106,11 @@ class JWT
             $builder = new Builder();
             $now = new \DateTimeImmutable();
             $builder->permittedFor($config->getAudience() ?? '')
-                ->relatedTo($config->getSubject() ?? '')
-                ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
-                ->issuedBy($config->getIssuer() ?? '')
-                ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
-                ->identifiedBy($config->getId() ?? '');
+                    ->relatedTo($config->getSubject() ?? '')
+                    ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
+                    ->issuedBy($config->getIssuer() ?? '')
+                    ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
+                    ->identifiedBy($config->getId() ?? '');
             $issuedAt = $config->getIssuedAt();
             if (true === $issuedAt)
             {
@@ -137,11 +138,11 @@ class JWT
 
             $now = new \DateTimeImmutable();
             $builder->permittedFor($config->getAudience() ?? '')
-                ->relatedTo($config->getSubject() ?? '')
-                ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
-                ->issuedBy($config->getIssuer() ?? '')
-                ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
-                ->identifiedBy($config->getId() ?? '');
+                    ->relatedTo($config->getSubject() ?? '')
+                    ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
+                    ->issuedBy($config->getIssuer() ?? '')
+                    ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
+                    ->identifiedBy($config->getId() ?? '');
             $issuedAt = $config->getIssuedAt();
             if (true === $issuedAt)
             {
@@ -185,15 +186,22 @@ class JWT
      */
     public function getToken($data, ?string $name = null, ?callable $beforeGetToken = null): Token
     {
-        $builder = $this->getBuilderInstance($name);
-        if ($beforeGetToken)
+        try
         {
-            $beforeGetToken($builder);
-        }
-        $config = $this->getConfig($name);
-        $builder->withClaim($config->getDataName(), $data);
+            $builder = $this->getBuilderInstance($name);
+            if ($beforeGetToken)
+            {
+                $beforeGetToken($builder);
+            }
+            $config = $this->getConfig($name);
+            $builder->withClaim($config->getDataName(), $data);
 
-        return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''));
+            return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''));
+        }
+        catch (InvalidTokenStructure $e)
+        {
+            throw new InvalidTokenException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**
@@ -206,36 +214,43 @@ class JWT
         {
             throw new InvalidTokenException();
         }
-        if (3 === $this->getJwtPackageVersion())
+        try
         {
-            $token = (new \Lcobucci\JWT\Parser())->parse($jwt);
-            $signer = $config->getSignerInstance();
-            $key = $config->getPublicKey() ?? '';
-            if (!$token->verify($signer, InMemory::plainText($key)))
+            if (3 === $this->getJwtPackageVersion())
             {
-                throw new InvalidTokenException();
+                $token = (new \Lcobucci\JWT\Parser())->parse($jwt);
+                $signer = $config->getSignerInstance();
+                $key = $config->getPublicKey() ?? '';
+                if (!$token->verify($signer, InMemory::plainText($key)))
+                {
+                    throw new InvalidTokenException();
+                }
             }
-        }
-        else
-        {
-            $parser = $this->getParserInstance($name);
-            $token = $parser->parse($jwt);
-            $signer = $config->getSignerInstance();
-            $key = $config->getPublicKey() ?? '';
-            $signedWith = new SignedWith($signer, InMemory::plainText($key));
-            try
+            else
             {
-                $signedWith->assert($token);
+                $parser = $this->getParserInstance($name);
+                $token = $parser->parse($jwt);
+                $signer = $config->getSignerInstance();
+                $key = $config->getPublicKey() ?? '';
+                $signedWith = new SignedWith($signer, InMemory::plainText($key));
+                try
+                {
+                    $signedWith->assert($token);
+                }
+                catch (\Throwable $th)
+                {
+                    throw new InvalidTokenException($th->getMessage(), $th->getCode(), $th->getPrevious());
+                }
             }
-            catch (\Throwable $th)
-            {
-                throw new InvalidTokenException($th->getMessage(), $th->getCode(), $th->getPrevious());
-            }
-        }
 
-        if ($validate)
+            if ($validate)
+            {
+                $this->validate($name, $token);
+            }
+        }
+        catch (InvalidTokenStructure $e)
         {
-            $this->validate($name, $token);
+            throw new InvalidTokenException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $token;
@@ -251,72 +266,79 @@ class JWT
         {
             throw new ConfigNotFoundException('Must option the config @app.beans.JWT.list');
         }
-        // 验证
-        if (3 === $this->getJwtPackageVersion())
+        try
         {
-            $validationData = new \Lcobucci\JWT\ValidationData();
-            $value = $config->getId();
-            if (null !== $value)
+            // 验证
+            if (3 === $this->getJwtPackageVersion())
             {
-                $validationData->setId($value);
-            }
-            $value = $config->getIssuer();
-            if (null !== $value)
-            {
-                $validationData->setIssuer($value);
-            }
-            $value = $config->getAudience();
-            if (null !== $value)
-            {
-                $validationData->setAudience($value);
-            }
-            $value = $config->getSubject();
-            if (null !== $value)
-            {
-                $validationData->setSubject($value);
-            }
-            if (!$token->validate($validationData))
-            {
-                throw new InvalidTokenException();
-            }
-        }
-        else
-        {
-            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''), InMemory::plainText($config->getPublicKey() ?? ''));
-            $constraints = [];
-            $value = $config->getId();
-            if (null !== $value)
-            {
-                $constraints[] = new IdentifiedBy($value);
-            }
-            $value = $config->getIssuer();
-            if (null !== $value)
-            {
-                $constraints[] = new IssuedBy($value);
-            }
-            $value = $config->getAudience();
-            if (null !== $value)
-            {
-                $constraints[] = new PermittedFor($value);
-            }
-            $value = $config->getSubject();
-            if (null !== $value)
-            {
-                $constraints[] = new RelatedTo($value);
-            }
-            if (class_exists(LooseValidAt::class))
-            {
-                $validAtClass = LooseValidAt::class;
+                $validationData = new \Lcobucci\JWT\ValidationData();
+                $value = $config->getId();
+                if (null !== $value)
+                {
+                    $validationData->setId($value);
+                }
+                $value = $config->getIssuer();
+                if (null !== $value)
+                {
+                    $validationData->setIssuer($value);
+                }
+                $value = $config->getAudience();
+                if (null !== $value)
+                {
+                    $validationData->setAudience($value);
+                }
+                $value = $config->getSubject();
+                if (null !== $value)
+                {
+                    $validationData->setSubject($value);
+                }
+                if (!$token->validate($validationData))
+                {
+                    throw new InvalidTokenException();
+                }
             }
             else
             {
-                $validAtClass = ValidAt::class;
+                $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''), InMemory::plainText($config->getPublicKey() ?? ''));
+                $constraints = [];
+                $value = $config->getId();
+                if (null !== $value)
+                {
+                    $constraints[] = new IdentifiedBy($value);
+                }
+                $value = $config->getIssuer();
+                if (null !== $value)
+                {
+                    $constraints[] = new IssuedBy($value);
+                }
+                $value = $config->getAudience();
+                if (null !== $value)
+                {
+                    $constraints[] = new PermittedFor($value);
+                }
+                $value = $config->getSubject();
+                if (null !== $value)
+                {
+                    $constraints[] = new RelatedTo($value);
+                }
+                if (class_exists(LooseValidAt::class))
+                {
+                    $validAtClass = LooseValidAt::class;
+                }
+                else
+                {
+                    $validAtClass = ValidAt::class;
+                }
+                $constraints[] = new $validAtClass(new FrozenClock(new \DateTimeImmutable()));
+                if (!$configuration->validator()->validate($token, ...$constraints))
+                {
+                    throw new InvalidTokenException();
+                }
             }
-            $constraints[] = new $validAtClass(new FrozenClock(new \DateTimeImmutable()));
-            if (!$configuration->validator()->validate($token, ...$constraints))
-            {
-                throw new InvalidTokenException();
-            }
+        }
+        catch (InvalidTokenStructure $e)
+        {
+            throw new InvalidTokenException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
