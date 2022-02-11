@@ -43,7 +43,7 @@ abstract class BaseApp implements IApp
 
         $appPath = App::get(AppContexts::APP_PATH);
         var_dump("__loadConfig {$appPath}");
-        $envFile = IN_PHAR ? (RUNNING_ROOT . '/.env') : ($appPath . '/.env');
+        $envFile = IMI_IN_PHAR ? (IMI_RUNNING_ROOT . '/.env') : ($appPath . '/.env');
         if (is_file($envFile))
         {
             // 加载项目目录下的 env

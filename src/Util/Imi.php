@@ -439,9 +439,9 @@ class Imi
             $parentPath = Config::get('@app.runtimePath');
             if (null === $parentPath)
             {
-                if (IN_PHAR)
+                if (IMI_IN_PHAR)
                 {
-                    $parentPath = File::path(RUNNING_ROOT, '.runtime');
+                    $parentPath = File::path(IMI_RUNNING_ROOT, '.runtime');
                 }
                 else
                 {
