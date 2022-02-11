@@ -71,7 +71,7 @@ class Pool
         ], $this, BeforeStartEventParam::class);
 
         Process::signal(\SIGCHLD, function ($sig) {
-            while (!empty($this->workers))
+            while ($this->workers)
             {
                 foreach ($this->workers as $worker)
                 {
@@ -91,7 +91,7 @@ class Pool
                         {
                             $this->startWorker($workerId);
                         }
-                        elseif (empty($this->workers))
+                        elseif (!$this->workers)
                         {
                             Event::exit();
                         }

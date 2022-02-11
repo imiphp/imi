@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\App;
+use Imi\Bean\BeanFactory;
+use Imi\Model\Annotation\RedisEntity;
 use Imi\Model\Enum\RedisStorageMode;
+use Imi\Model\Key\KeyRule;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
 use Imi\Util\Format\IFormat;
@@ -15,6 +18,16 @@ use Imi\Util\Format\IFormat;
  */
 abstract class RedisModel extends BaseModel
 {
+    /**
+     * 键规则缓存.
+     */
+    protected static array $keyRules = [];
+
+    /**
+     * member规则缓存.
+     */
+    protected static array $memberRules = [];
+
     /**
      * 默认的key.
      */
@@ -30,10 +43,24 @@ abstract class RedisModel extends BaseModel
      */
     protected ?int $__ttl = null;
 
+    /**
+     * @param string|object|null $object
+     */
+    public static function __getRedisEntity($object = null): ?RedisEntity
+    {
+        if (null === $object)
+        {
+            $object = static::__getRealClassName();
+        }
+
+        // @phpstan-ignore-next-line
+        return ModelManager::getAnnotation($object, RedisEntity::class);
+    }
+
     public function __init(array $data = []): void
     {
         parent::__init($data);
-        $this->__ttl = ModelManager::getRedisEntity($this)->ttl;
+        $this->__ttl = static::__getRedisEntity($this)->ttl;
     }
 
     /**
@@ -46,7 +73,7 @@ abstract class RedisModel extends BaseModel
     public static function find($condition): ?self
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
-        $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
+        $redisEntity = static::__getRedisEntity(static::__getRealClassName());
         $key = static::generateKey($condition);
         switch ($redisEntity->storage)
         {
@@ -99,7 +126,7 @@ abstract class RedisModel extends BaseModel
     public static function select(...$conditions): array
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
-        $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
+        $redisEntity = static::__getRedisEntity(static::__getRealClassName());
         if (null !== $redisEntity->formatter)
         {
             /** @var IFormat $formatter */
@@ -202,7 +229,7 @@ abstract class RedisModel extends BaseModel
     public function save(): bool
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
-        $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
+        $redisEntity = static::__getRedisEntity(static::__getRealClassName());
         $redis = static::__getRedis($this);
         switch ($redisEntity->storage)
         {
@@ -259,7 +286,7 @@ abstract class RedisModel extends BaseModel
     public function delete(): bool
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
-        $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
+        $redisEntity = static::__getRedisEntity(static::__getRealClassName());
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
@@ -285,7 +312,7 @@ abstract class RedisModel extends BaseModel
             return 0;
         }
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
-        $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
+        $redisEntity = static::__getRedisEntity(static::__getRealClassName());
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
@@ -324,7 +351,7 @@ abstract class RedisModel extends BaseModel
      */
     public function __getKey(): string
     {
-        $rule = ModelManager::getKeyRule($this);
+        $rule = static::__getKeyRule($this);
         $replaces = [];
         foreach ($rule->paramNames as $paramName)
         {
@@ -351,7 +378,7 @@ abstract class RedisModel extends BaseModel
         }
         else
         {
-            $rule = ModelManager::getKeyRule(static::class);
+            $rule = static::__getKeyRule();
             $replaces = [];
             foreach ($rule->paramNames as $paramName)
             {
@@ -379,7 +406,7 @@ abstract class RedisModel extends BaseModel
         }
         else
         {
-            $rule = ModelManager::getMemberRule(static::class);
+            $rule = static::__getMemberRule();
             $replaces = [];
             foreach ($rule->paramNames as $paramName)
             {
@@ -399,7 +426,7 @@ abstract class RedisModel extends BaseModel
      */
     public function __getMember(): string
     {
-        $rule = ModelManager::getMemberRule($this);
+        $rule = static::__getMemberRule($this);
         $replaces = [];
         foreach ($rule->paramNames as $paramName)
         {
@@ -420,7 +447,7 @@ abstract class RedisModel extends BaseModel
      */
     public static function __getRedis(?self $redisModel = null): RedisHandler
     {
-        $annotation = ModelManager::getRedisEntity($redisModel ?? static::class);
+        $annotation = static::__getRedisEntity($redisModel ?? static::class);
         $redis = RedisManager::getInstance($annotation->poolName);
         if (null !== $annotation->db)
         {
@@ -460,5 +487,67 @@ abstract class RedisModel extends BaseModel
         $this->__member = $member;
 
         return $this;
+    }
+
+    /**
+     * 获取键.
+     *
+     * @param string|object|null $object
+     */
+    public static function __getKeyRule($object = null): KeyRule
+    {
+        if (null === $object)
+        {
+            $class = static::__getRealClassName();
+        }
+        else
+        {
+            $class = BeanFactory::getObjectClass($object);
+        }
+        $staticKeyRules = &self::$keyRules;
+        if (isset($staticKeyRules[$class]))
+        {
+            return $staticKeyRules[$class];
+        }
+        else
+        {
+            /** @var RedisEntity|null $redisEntity */
+            $redisEntity = ModelManager::getAnnotation($class, RedisEntity::class);
+            $key = $redisEntity ? $redisEntity->key : '';
+            preg_match_all('/{([^}]+)}/', $key, $matches);
+
+            return $staticKeyRules[$class] = new KeyRule($key, $matches[1]);
+        }
+    }
+
+    /**
+     * 获取Member.
+     *
+     * @param string|object|null $object
+     */
+    public static function __getMemberRule($object = null): KeyRule
+    {
+        if (null === $object)
+        {
+            $class = static::__getRealClassName();
+        }
+        else
+        {
+            $class = BeanFactory::getObjectClass($object);
+        }
+        $staticMemberRules = &self::$memberRules;
+        if (isset($staticMemberRules[$class]))
+        {
+            return $staticMemberRules[$class];
+        }
+        else
+        {
+            /** @var RedisEntity|null $redisEntity */
+            $redisEntity = ModelManager::getAnnotation($class, RedisEntity::class);
+            $key = $redisEntity ? $redisEntity->member : '';
+            preg_match_all('/{([^}]+)}/', $key, $matches);
+
+            return $staticMemberRules[$class] = new KeyRule($key, $matches[1]);
+        }
     }
 }

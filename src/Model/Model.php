@@ -455,6 +455,8 @@ abstract class Model extends BaseModel
     /**
      * 批量更新.
      *
+     * @deprecated 3.0
+     *
      * @param mixed          $data
      * @param array|callable $where
      */
@@ -692,6 +694,8 @@ abstract class Model extends BaseModel
 
     /**
      * 批量删除.
+     *
+     * @deprecated 3.0
      *
      * @param array|callable $where
      */

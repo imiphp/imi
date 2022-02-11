@@ -25,7 +25,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
      */
     protected int $queueLength;
 
-    public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, string $poolName = null)
+    public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
     {
         parent::__construct();
 

@@ -149,7 +149,7 @@ class Imi
                 continue;
             }
             $info = ProcessManager::readProcessInfo($id);
-            if (empty($info))
+            if (!$info)
             {
                 continue;
             }

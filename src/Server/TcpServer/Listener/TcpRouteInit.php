@@ -60,10 +60,14 @@ class TcpRouteInit implements IEventListener
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
-                foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
+                foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $_)
                 {
+                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                        TcpRoute::class,
+                        TcpMiddleware::class,
+                    ]);
                     /** @var TcpRoute[] $routes */
-                    $routes = AnnotationManager::getMethodAnnotations($className, $methodName, TcpRoute::class);
+                    $routes = $annotations[TcpRoute::class];
                     if (!$routes)
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
@@ -71,7 +75,7 @@ class TcpRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var TcpMiddleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) as $middleware)
+                    foreach ($annotations[TcpMiddleware::class] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }

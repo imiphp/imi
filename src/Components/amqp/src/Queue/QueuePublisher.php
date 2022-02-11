@@ -11,7 +11,7 @@ use Imi\AMQP\Base\BasePublisher;
 
 class QueuePublisher extends BasePublisher
 {
-    public function __construct(array $exchanges, array $queues, array $publishers, string $poolName = null)
+    public function __construct(array $exchanges, array $queues, array $publishers, ?string $poolName = null)
     {
         parent::__construct();
 

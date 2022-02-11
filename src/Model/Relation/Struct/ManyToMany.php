@@ -55,13 +55,17 @@ class ManyToMany
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
-        $joinToMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
+        $annotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            JoinToMiddle::class,
+            JoinFromMiddle::class,
+        ], true, true);
+        $joinToMiddle = $annotations[JoinToMiddle::class];
         if (!$joinToMiddle instanceof JoinToMiddle)
         {
             throw new \RuntimeException(sprintf('%s->%s has no @JoinToMiddle', $className, $propertyName));
         }
 
-        $joinFromMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
+        $joinFromMiddle = $annotations[JoinFromMiddle::class];
         if (!$joinFromMiddle instanceof JoinFromMiddle)
         {
             throw new \RuntimeException(sprintf('%s->%s has no @JoinFromMiddle', $className, $propertyName));

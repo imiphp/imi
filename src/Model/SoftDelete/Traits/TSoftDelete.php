@@ -42,7 +42,8 @@ trait TSoftDelete
             $class = static::__getRealClassName();
         }
 
-        $softDeleteAnnotation = AnnotationManager::getClassAnnotations($class, SoftDelete::class)[0];
+        /** @var SoftDelete|null $softDeleteAnnotation */
+        $softDeleteAnnotation = AnnotationManager::getClassAnnotations($class, SoftDelete::class, true, true);
         if (!$softDeleteAnnotation)
         {
             throw new \RuntimeException(sprintf('@SoftDelete Annotation not found in class %s', $class));

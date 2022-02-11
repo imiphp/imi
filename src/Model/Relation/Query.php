@@ -40,7 +40,7 @@ class Query
         if (!$forceInit)
         {
             /** @var AutoSelect|null $autoSelect */
-            $autoSelect = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSelect::class)[0] ?? null;
+            $autoSelect = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSelect::class, true, true);
             if ($autoSelect && !$autoSelect->status)
             {
                 return;

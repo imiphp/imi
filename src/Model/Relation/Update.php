@@ -37,10 +37,14 @@ class Update
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            AutoUpdate::class,
+            AutoSave::class,
+        ], true, true);
         /** @var AutoUpdate|null $autoUpdate */
-        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoUpdate = $propertyAnnotations[AutoUpdate::class];
         /** @var AutoSave|null $autoSave */
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = $propertyAnnotations[AutoSave::class];
 
         if ($autoUpdate)
         {
@@ -136,10 +140,14 @@ class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
+        $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            AutoUpdate::class,
+            AutoSave::class,
+        ], true, true);
         /** @var AutoUpdate|null $autoUpdate */
-        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoUpdate = $propertyAnnotations[AutoUpdate::class];
         /** @var AutoSave|null $autoSave */
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = $propertyAnnotations[AutoSave::class];
         // 是否删除无关数据
         if ($autoUpdate)
         {
@@ -230,10 +238,14 @@ class Update
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
 
+        $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            AutoUpdate::class,
+            AutoSave::class,
+        ], true, true);
         /** @var AutoUpdate|null $autoUpdate */
-        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoUpdate = $propertyAnnotations[AutoUpdate::class];
         /** @var AutoSave|null $autoSave */
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = $propertyAnnotations[AutoSave::class];
         // 是否删除无关数据
         if ($autoUpdate)
         {
@@ -311,19 +323,23 @@ class Update
     {
         $relations = AnnotationManager::getPropertiesAnnotations($className, RelationBase::class);
 
-        if (empty($relations))
+        if (!$relations)
         {
             return false;
         }
 
         if (null === $propertyName)
         {
-            foreach ($relations as $name => $annotations)
+            foreach ($relations as $name => $_)
             {
+                $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $name, [
+                    AutoUpdate::class,
+                    AutoSave::class,
+                ], true, true);
                 /** @var AutoUpdate|null $autoUpdate */
-                $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $name, AutoUpdate::class)[0] ?? null;
+                $autoUpdate = $propertyAnnotations[AutoUpdate::class];
                 /** @var AutoSave|null $autoSave */
-                $autoSave = AnnotationManager::getPropertyAnnotations($className, $name, AutoSave::class)[0] ?? null;
+                $autoSave = $propertyAnnotations[AutoSave::class];
 
                 if ($autoUpdate)
                 {
@@ -340,10 +356,14 @@ class Update
         }
         else
         {
+            $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+                AutoUpdate::class,
+                AutoSave::class,
+            ], true, true);
             /** @var AutoUpdate|null $autoUpdate */
-            $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+            $autoUpdate = $propertyAnnotations[AutoUpdate::class];
             /** @var AutoSave|null $autoSave */
-            $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+            $autoSave = $propertyAnnotations[AutoSave::class];
 
             if ($autoUpdate)
             {
@@ -438,10 +458,14 @@ class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
+        $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            AutoUpdate::class,
+            AutoSave::class,
+        ], true, true);
         /** @var AutoUpdate|null $autoUpdate */
-        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoUpdate = $propertyAnnotations[AutoUpdate::class];
         /** @var AutoSave|null $autoSave */
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = $propertyAnnotations[AutoSave::class];
         // 是否删除无关数据
         if ($autoUpdate)
         {
@@ -533,10 +557,14 @@ class Update
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
 
+        $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            AutoUpdate::class,
+            AutoSave::class,
+        ], true, true);
         /** @var AutoUpdate|null $autoUpdate */
-        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoUpdate = $propertyAnnotations[AutoUpdate::class];
         /** @var AutoSave|null $autoSave */
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = $propertyAnnotations[AutoSave::class];
         // 是否删除无关数据
         if ($autoUpdate)
         {

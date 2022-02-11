@@ -31,3 +31,7 @@ runs:
       run: |
         docker exec ${{ inputs.env }} src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_DOCKER_VERSION -l /usr/local/bin
         docker exec ${{ inputs.env }} rr -v
+    - name: Prepared
+      shell: bash
+      run: |
+        echo "test_prepared=1" >> $GITHUB_ENV

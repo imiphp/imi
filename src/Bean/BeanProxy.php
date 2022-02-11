@@ -18,7 +18,6 @@ use Imi\Aop\JoinPoint;
 use Imi\Aop\Model\AopItem;
 use Imi\Config;
 use Imi\Util\Imi;
-use Imi\Util\Text;
 
 class BeanProxy
 {
@@ -33,7 +32,7 @@ class BeanProxy
         {
             // 先尝试环绕
             $aroundAspectDoList = [];
-            self::doAspect($className, $method, 'around', static function (AopItem $aopItem, Around $annotation) use (&$aroundAspectDoList) {
+            self::doAspect($className, $method, 'Around', static function (AopItem $aopItem, Around $annotation) use (&$aroundAspectDoList) {
                 $aroundAspectDoList[] = $aopItem->getCallback();
             });
             if (!$aroundAspectDoList)
@@ -73,7 +72,7 @@ class BeanProxy
         {
             // 异常
             $isCancelThrow = false;
-            self::doAspect($className, $method, 'afterThrowing', static function (AopItem $aopItem, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
+            self::doAspect($className, $method, 'AfterThrowing', static function (AopItem $aopItem, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
                 // 验证异常是否捕获
                 if ($annotation->allow || $annotation->deny)
                 {
@@ -236,19 +235,19 @@ class BeanProxy
     private static function callOrigin(object $object, string $className, string $method, array &$args, callable $callback)
     {
         // before
-        self::doAspect($className, $method, 'before', static function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'Before', static function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('before', $method, $args, $object);
             ($aopItem->getCallback())($joinPoint);
         });
         // 原始方法调用
         $result = $callback(...$args);
         // after
-        self::doAspect($className, $method, 'after', static function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'After', static function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('after', $method, $args, $object);
             ($aopItem->getCallback())($joinPoint);
         });
         // afterReturning
-        self::doAspect($className, $method, 'afterReturning', static function (AopItem $aopItem, AfterReturning $annotation) use ($object, $method, &$args, &$result) {
+        self::doAspect($className, $method, 'AfterReturning', static function (AopItem $aopItem, AfterReturning $annotation) use ($object, $method, &$args, &$result) {
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object);
             $joinPoint->setReturnValue($result);
             ($aopItem->getCallback())($joinPoint);
@@ -269,27 +268,27 @@ class BeanProxy
     {
         switch ($pointType)
         {
-            case 'before':
+            case 'Before':
                 $items = AopManager::getBeforeItems($className, $method);
                 break;
-            case 'after':
+            case 'After':
                 $items = AopManager::getAfterItems($className, $method);
                 break;
-            case 'around':
+            case 'Around':
                 $items = AopManager::getAroundItems($className, $method);
                 break;
-            case 'afterReturning':
+            case 'AfterReturning':
                 $items = AopManager::getAfterReturningItems($className, $method);
                 break;
-            case 'afterThrowing':
+            case 'AfterThrowing':
                 $items = AopManager::getAfterThrowingItems($className, $method);
                 break;
             default:
                 throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType));
         }
-        $class = 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType);
         if ($items)
         {
+            $class = 'Imi\Aop\Annotation\\' . $pointType;
             foreach ($items as $item)
             {
                 $point = new $class($item->getOptions()['extra'] ?? []);

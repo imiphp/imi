@@ -64,10 +64,14 @@ class WSRouteInit implements IEventListener
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
-                foreach (AnnotationManager::getMethodsAnnotations($className, WSAction::class) as $methodName => $actionAnnotations)
+                foreach (AnnotationManager::getMethodsAnnotations($className, WSAction::class) as $methodName => $_)
                 {
+                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                        WSRoute::class,
+                        WSMiddleware::class,
+                    ]);
                     /** @var \Imi\Server\WebSocket\Route\Annotation\WSRoute[] $routes */
-                    $routes = AnnotationManager::getMethodAnnotations($className, $methodName, WSRoute::class);
+                    $routes = $annotations[WSRoute::class];
                     if (!$routes)
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
@@ -75,7 +79,7 @@ class WSRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var WSMiddleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, WSMiddleware::class) as $middleware)
+                    foreach ($annotations[WSMiddleware::class] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }

@@ -7,6 +7,7 @@ namespace Imi\Model;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\ExtractProperty;
 use Imi\Model\Annotation\JsonDecode;
 use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
@@ -178,12 +179,20 @@ class Meta
         }
         $this->realModelClass = $realModelClass;
         $this->className = $modelClass;
+        $annotations = AnnotationManager::getClassAnnotations($realModelClass, [
+            Table::class,
+            Entity::class,
+            JsonEncode::class,
+            JsonDecode::class,
+            Serializables::class,
+        ], true, true);
         /** @var \Imi\Model\Annotation\Table|null $table */
-        $table = AnnotationManager::getClassAnnotations($realModelClass, Table::class)[0] ?? null;
+        $table = $annotations[Table::class];
         /** @var \Imi\Model\Annotation\Entity|null $entity */
-        $entity = AnnotationManager::getClassAnnotations($realModelClass, Entity::class)[0] ?? null;
-        $this->jsonEncode = AnnotationManager::getClassAnnotations($realModelClass, JsonEncode::class)[0] ?? null;
-        $this->jsonDecode = AnnotationManager::getClassAnnotations($realModelClass, JsonDecode::class)[0] ?? null;
+        $entity = $annotations[Entity::class];
+        $this->jsonEncode = $annotations[JsonEncode::class];
+        $this->jsonDecode = $annotations[JsonDecode::class];
+        $this->serializables = $annotations[Serializables::class];
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
@@ -192,7 +201,16 @@ class Meta
         }
         $this->firstId = $id[0] ?? null;
         $fields = $dbFields = [];
-        foreach (AnnotationManager::getPropertiesAnnotations($realModelClass, Column::class) as $name => $columns)
+        $annotations = AnnotationManager::getPropertiesAnnotations($realModelClass, [
+            Column::class,
+            Serializable::class,
+            ExtractProperty::class,
+            JsonNotNull::class,
+            Sql::class,
+            JsonEncode::class,
+            JsonDecode::class,
+        ]);
+        foreach ($annotations[Column::class] as $name => $columns)
         {
             /** @var Column $column */
             $column = $columns[0];
@@ -205,6 +223,12 @@ class Meta
             }
             $fields[$name] = $column;
         }
+        $this->serializableSets = $annotations[Serializable::class];
+        $this->extractPropertys = $annotations[ExtractProperty::class];
+        $this->propertyJsonNotNullMap = $annotations[JsonNotNull::class];
+        $this->sqlColumns = $annotations[Sql::class];
+        $this->fieldsJsonEncode = $annotations[JsonEncode::class];
+        $this->fieldsJsonDecode = $annotations[JsonDecode::class];
         $this->relation = $relation = ModelRelationManager::hasRelation($realModelClass);
         if ($relation)
         {
@@ -241,13 +265,6 @@ class Meta
                 break;
             }
         }
-        $this->serializables = ModelManager::getSerializables($realModelClass);
-        $this->serializableSets = AnnotationManager::getPropertiesAnnotations($realModelClass, Serializable::class);
-        $this->extractPropertys = ModelManager::getExtractPropertys($realModelClass);
-        $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonNotNull::class);
-        $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
-        $this->fieldsJsonEncode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonEncode::class);
-        $this->fieldsJsonDecode = AnnotationManager::getPropertiesAnnotations($realModelClass, JsonDecode::class);
         $this->bean = $entity->bean;
     }
 
