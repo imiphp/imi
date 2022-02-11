@@ -26,7 +26,7 @@ abstract class ArticleExBase extends Model
     /**
      * article_id.
      *
-     * @Column(name="article_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false)
+     * @Column(name="article_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $articleId = null;
 
@@ -55,7 +55,7 @@ abstract class ArticleExBase extends Model
     /**
      * data.
      *
-     * @Column(name="data", type="json", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="data", type="json", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
      *
      * @var \Imi\Util\LazyArrayObject|object|array|null
      */
