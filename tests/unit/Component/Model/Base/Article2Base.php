@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_article2 基类.
  *
  * @Entity(camel=true, bean=false)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article2.name", default="tb_article2"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article2.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article2.name", default="tb_article2"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article2.poolName"))
  * @DDL(sql="CREATE TABLE `tb_article2` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT '0',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
  * @property int|null    $id
