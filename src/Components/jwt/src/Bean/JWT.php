@@ -8,12 +8,19 @@ use Imi\Bean\Annotation\Bean;
 use Imi\JWT\Exception\ConfigNotFoundException;
 use Imi\JWT\Exception\InvalidTokenException;
 use Imi\JWT\Model\JWTConfig;
+use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Validation\Constraint\IdentifiedBy;
+use Lcobucci\JWT\Validation\Constraint\IssuedBy;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
+use Lcobucci\JWT\Validation\Constraint\PermittedFor;
+use Lcobucci\JWT\Validation\Constraint\RelatedTo;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
 
 /**
  * @Bean("JWT")
@@ -190,7 +197,7 @@ class JWT
     /**
      * 处理 Token.
      */
-    public function parseToken(string $jwt, ?string $name = null): Token
+    public function parseToken(string $jwt, ?string $name = null, bool $validate = false): Token
     {
         $config = $this->getConfig($name);
         if (!$config)
@@ -224,7 +231,91 @@ class JWT
             }
         }
 
+        if ($validate)
+        {
+            $this->validate($name, $token);
+        }
+
         return $token;
+    }
+
+    /**
+     * 验证 Token.
+     */
+    public function validate(?string $name = null, Token $token): void
+    {
+        $config = $this->getConfig($name);
+        if (!$config)
+        {
+            throw new ConfigNotFoundException('Must option the config @app.beans.JWT.list');
+        }
+        // 验证
+        if (3 === $this->getJwtPackageVersion())
+        {
+            $validationData = new \Lcobucci\JWT\ValidationData();
+            $value = $config->getId();
+            if (null !== $value)
+            {
+                $validationData->setId($value);
+            }
+            $value = $config->getIssuer();
+            if (null !== $value)
+            {
+                $validationData->setIssuer($value);
+            }
+            $value = $config->getAudience();
+            if (null !== $value)
+            {
+                $validationData->setAudience($value);
+            }
+            $value = $config->getSubject();
+            if (null !== $value)
+            {
+                $validationData->setSubject($value);
+            }
+            if (!$token->validate($validationData))
+            {
+                throw new InvalidTokenException();
+            }
+        }
+        else
+        {
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''), InMemory::plainText($config->getPublicKey() ?? ''));
+            $constraints = [];
+            $value = $config->getId();
+            if (null !== $value)
+            {
+                $constraints[] = new IdentifiedBy($value);
+            }
+            $value = $config->getIssuer();
+            if (null !== $value)
+            {
+                $constraints[] = new IssuedBy($value);
+            }
+            $value = $config->getAudience();
+            if (null !== $value)
+            {
+                $constraints[] = new PermittedFor($value);
+            }
+            $value = $config->getSubject();
+            if (null !== $value)
+            {
+                $constraints[] = new RelatedTo($value);
+            }
+            if (class_exists(LooseValidAt::class))
+            {
+                $validAtClass = LooseValidAt::class;
+            }
+            else
+            {
+                $validAtClass = ValidAt::class;
+            }
+            $constraints[] = new $validAtClass(new FrozenClock(new \DateTimeImmutable()));
+            if (!$configuration->validator()->validate($token, ...$constraints))
+            {
+                throw new InvalidTokenException();
+            }
+        }
     }
 
     public function getJwtPackageVersion(): int

@@ -40,6 +40,8 @@ class JWTTest extends TestCase
         {
             $this->assertEquals(json_encode($data), json_encode($token2->claims()->get($config->getDataName())));
         }
+        $this->expectException(\Imi\JWT\Exception\InvalidTokenException::class);
+        $token2 = JWT::parseToken($tokenStr, null, true); // 验证
     }
 
     /**

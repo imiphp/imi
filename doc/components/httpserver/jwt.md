@@ -113,6 +113,14 @@ $tokenContent = $token->toString(); // Token 字符串
 
 ### 验证 Token
 
+手动验证：
+
+```php
+<?php
+\Imi\JWT\Facade\JWT::validate(null, $token); // 使用默认名称验证
+\Imi\JWT\Facade\JWT::validate('a', $token); // 指定名称验证
+```
+
 注解验证：
 
 ```php
