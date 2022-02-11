@@ -930,7 +930,7 @@ abstract class Model extends BaseModel
      * @param object|array $data
      * @param static|null  $object
      */
-    private static function parseSaveData($data, string $type, self $object = null): LazyArrayObject
+    private static function parseSaveData($data, string $type, ?self $object = null): LazyArrayObject
     {
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();
