@@ -19,13 +19,24 @@ class AutoLoader
 
     protected int $lastHookFlags = 0;
 
+    /**
+     * 文件锁目录.
+     *
+     * 如果不设置就在输出文件本身加锁
+     */
     protected string $lockFileDir = '';
+
+    /**
+     * 调试模式.
+     */
+    protected bool $debug = false;
 
     public function __construct(ClassLoader $composerClassLoader)
     {
         $this->composerClassLoader = $composerClassLoader;
         $this->hasSwoole = \extension_loaded('swoole');
         $this->lockFileDir = getenv('IMI_MACRO_LOCK_FILE_DIR') ?: '';
+        $this->debug = (bool) getenv('IMI_MACRO_DEBUG');
     }
 
     /**
@@ -86,11 +97,25 @@ class AutoLoader
         $macroFileName = $fileName . '.macro';
         if (file_exists($macroFileName))
         {
-            MacroParser::includeFile($macroFileName, $macroFileName . '.php', false, $this->lockFileDir);
+            if ($this->debug)
+            {
+                MacroParser::includeFile($macroFileName, $macroFileName . '.php', false, $this->lockFileDir);
+            }
+            else
+            {
+                MacroParser::includeFile($macroFileName);
+            }
         }
         elseif (preg_match('/^\s*#\s*macro$/mUS', file_get_contents($fileName) ?: ''))
         {
-            MacroParser::includeFile($fileName, $fileName . '.macro.php', false, $this->lockFileDir);
+            if ($this->debug)
+            {
+                MacroParser::includeFile($fileName, $fileName . '.macro.php', false, $this->lockFileDir);
+            }
+            else
+            {
+                MacroParser::includeFile($fileName);
+            }
         }
         else
         {
