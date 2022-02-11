@@ -25,7 +25,7 @@ abstract class UnusedBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
      */
     protected ?int $id = null;
 

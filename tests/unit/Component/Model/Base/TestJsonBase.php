@@ -26,7 +26,7 @@ abstract class TestJsonBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
      */
     protected ?int $id = null;
 
@@ -56,7 +56,7 @@ abstract class TestJsonBase extends Model
      * json数据.
      * json_data.
      *
-     * @Column(name="json_data", type="json", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="json_data", type="json", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
      *
      * @var \Imi\Util\LazyArrayObject|object|array|null
      */

@@ -25,7 +25,7 @@ abstract class TestBase extends Model
     /**
      * a.
      *
-     * @Column(name="a", type="double", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="a", type="double", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
      */
     protected ?float $a = null;
 
