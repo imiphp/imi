@@ -14,15 +14,10 @@ imi 还支持你在项目根目录下，建立一个`.env`文件，在里面设�
 
 变量名称 | 描述 | 默认值
 -|-|-
+IMI_MACRO_DEBUG | 是否启用调试模式。调试模式会在原 PHP 文件同目录中生成一个 `*.macro.php` 文件。 | `false`
 IMI_MACRO_LOCK_FILE_DIR | 宏定义文件锁目录。当项目文件放置在，共享目录等不支持文件锁的文件系统时，可以配置一个支持文件锁的目录。比如：`/tmp` | 空字符串
 
 * 环境变量可以配置在系统中
-
-* 也可以在 `.env` 文件中配置：
-
-```env
-IMI_MACRO_LOCK_FILE_DIR=/tmp
-```
 
 * 也可以在运行命令时指定：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`
 
