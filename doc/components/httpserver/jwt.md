@@ -113,6 +113,8 @@ $tokenContent = $token->toString(); // Token 字符串
 
 ### 验证 Token
 
+验证 Token 不通过会抛出异常：`\Imi\JWT\Exception\InvalidTokenException`
+
 手动验证：
 
 ```php
