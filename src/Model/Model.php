@@ -927,10 +927,10 @@ abstract class Model extends BaseModel
     /**
      * 处理保存的数据.
      *
-     * @param object|array  $data
-     * @param object|string $object
+     * @param object|array $data
+     * @param static|null  $object
      */
-    private static function parseSaveData($data, string $type, $object = null): LazyArrayObject
+    private static function parseSaveData($data, string $type, ?self $object = null): LazyArrayObject
     {
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();
@@ -955,7 +955,7 @@ abstract class Model extends BaseModel
         }
         $result = new LazyArrayObject();
         $isUpdate = 'update' === $type;
-        $canUpdateTime = $isUpdate || 'save' === $type;
+        $isSave = 'save' === $type;
         if ($objectIsObject = \is_object($object))
         {
             $rawValues = $object->__rawValues;
@@ -989,7 +989,7 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ($canUpdateTime && $column->updateTime)
+            if ((($isUpdate || $isSave) && $column->updateTime) || ((!$isUpdate || ($isSave && $object && false === $object->__recordExists)) && $column->createTime))
             {
                 $value = static::parseDateTime($columnType);
                 if (null === $value)

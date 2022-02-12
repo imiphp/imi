@@ -27,6 +27,7 @@ use Imi\Bean\Annotation\Base;
  * @property int         $ndims           数组维度，大于0则为数组字段
  * @property string      $reference       引用字段名，作为引用字段的别名使用，拥有同等的读写能力
  * @property bool        $unsigned        字段类型是否为无符号
+ * @property bool        $createTime      save/create 模型时是否将当前时间写入该字段，save时表有自增ID主键才支持；支持 date/time/datetime/timestamp/year/int/bigint；当字段为 int 类型，写入秒级时间戳；当字段为 bigint 类型，写入毫秒级时间戳
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Column extends Base
@@ -39,7 +40,7 @@ class Column extends Base
     /**
      * @param mixed $default
      */
-    public function __construct(?array $__data = null, ?string $name = null, ?string $type = null, int $length = -1, bool $nullable = true, int $accuracy = 0, $default = null, bool $isPrimaryKey = false, int $primaryKeyIndex = -1, bool $isAutoIncrement = false, bool $virtual = false, bool $updateTime = false, ?string $listSeparator = null, int $ndims = 0, string $reference = '', bool $unsigned = false)
+    public function __construct(?array $__data = null, ?string $name = null, ?string $type = null, int $length = -1, bool $nullable = true, int $accuracy = 0, $default = null, bool $isPrimaryKey = false, int $primaryKeyIndex = -1, bool $isAutoIncrement = false, bool $virtual = false, bool $updateTime = false, ?string $listSeparator = null, int $ndims = 0, string $reference = '', bool $unsigned = false, bool $createTime = false)
     {
         parent::__construct(...\func_get_args());
     }
