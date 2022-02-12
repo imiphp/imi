@@ -35,13 +35,12 @@ function getLastCommitTime(string $suffix = ''): int
 function getLastTagInfo(string $branch): array
 {
     execCMD('git tag', '', $result);
-    $count = \count($result);
     $lastVersion = '';
-    for ($i = 1; $i < $count; ++$i)
+    foreach ($result as $tag)
     {
-        if (preg_match('/v' . $branch . '\..+/', $result[$i]) && version_compare($result[$i], $lastVersion, '>'))
+        if (preg_match('/v' . $branch . '\..+/', $tag) && version_compare($tag, $lastVersion, '>'))
         {
-            $lastVersion = $result[$i];
+            $lastVersion = $tag;
         }
     }
 
