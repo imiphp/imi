@@ -5,6 +5,7 @@
  * github: https://github.com/lovefc/loadpage
  * gitee: https://gitee.com/lovefc/loadpage
  * time: 2021/10/14 19:58
+ * uptime：2022/02/11 19:37
  */
 
 ; (function (exports) {
@@ -33,7 +34,7 @@
 			}
 		}
 		// IE5-9
-		for (var scripts = doc.scripts,
+		for (let scripts = doc.scripts,
 			i = scripts.length - 1,
 			script; script = scripts[i--];) {
 			if (script.className !== expose && script.readyState === 'interactive') {
@@ -52,7 +53,7 @@ class loadpage {
 	constructor(options) {
 
 		let that = this;
-			
+
 		this.srcPath = NowSrcPath;
 
 		this.themeCss = ''; // 要加载的css
@@ -74,14 +75,33 @@ class loadpage {
 				that[key] = options[key];
 			}
 		}
-		
-        this.addLoadIngDiv(this.loadID);
-		
+
+		this.addLoadIngDiv(this.loadID);
+
 		if (loadpage.isSystem() === 'win') {
 			this.loadStyle(this.defaultCss, 'head');
-			if(this.themeCss){
-			    this.loadStyle(this.themeCss, 'head');
-			}			
+			if (this.themeCss) {
+				this.loadStyle(this.themeCss, 'head');
+			}
+		}
+	}
+	getBrowser() {
+		let userAgent = navigator.userAgent;
+		let isOpera = userAgent.indexOf("Opera") > -1;
+		if (isOpera) {
+			return "Opera"
+		}
+		if (userAgent.indexOf("Firefox") > -1) {
+			return "FF";
+		}
+		if (userAgent.indexOf("Chrome") > -1) {
+			return "Chrome";
+		}
+		if (userAgent.indexOf("Safari") > -1) {
+			return "Safari";
+		}
+		if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+			return "IE";
 		}
 	}
 	static isSystem() {
@@ -100,8 +120,8 @@ class loadpage {
 		this.closePageLoading(this.loadID, this.animateName, this.delayTime);
 	}
 	closePageLoading(loadID, animateName, delayTime) {
-		let box = document.getElementById(loadID);		
-		if(!box){
+		let box = document.getElementById(loadID);
+		if (!box) {
 			return false;
 		}
 		let a_time = Math.round(delayTime / 1000);
@@ -117,7 +137,8 @@ class loadpage {
 		let head = document.getElementsByTagName('head')[0];
 		let script = document.createElement('script');
 		script.type = 'text/javascript';
-		if (loadpage.isSystem() === 'webpack') {
+		let browser = this.getBrowser();
+		if (loadpage.isSystem() === 'webpack' || browser === 'Safari') {
 			this.closeLoading2 = `${this.closePageLoading}`;
 		} else {
 			this.closeLoading2 = `function ${this.closePageLoading}`;
