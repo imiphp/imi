@@ -46,6 +46,16 @@ class Where extends BaseWhere implements IWhere
         $this->logicalOperator = $logicalOperator;
     }
 
+    public static function raw(string $rawSql, string $logicalOperator = LogicalOperator::AND): self
+    {
+        $where = new self();
+        $where->useRaw(true);
+        $where->setRawSQL($rawSql);
+        $where->setLogicalOperator($logicalOperator);
+
+        return $where;
+    }
+
     /**
      * {@inheritDoc}
      */
