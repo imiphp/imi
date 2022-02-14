@@ -622,7 +622,7 @@ Db::query()->where('id', '=', 1)->whereBrackets(function(){
 Db::query()->where('id', '=', 1)->whereBrackets(function(){
     // 直接返回字符串
     return [
-        new \Imi\Db\Query\Where\Where::raw('age > 10'),
+        \Imi\Db\Query\Where\Where::raw('age > 10'),
         new \Imi\Db\Query\Where\Where('age', '<', 14),
     ];
 }, 'or');
