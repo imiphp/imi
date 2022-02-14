@@ -44,4 +44,10 @@ Status::getNames();
 
 // 获取枚举类中所有值
 Status::getValues();
+
+// 验证值是否合法;true/false
+Status::validate(Status::YES);
+
+// 验证值断言，值不合法会抛出异常: \InvalidArgumentException
+Status::assert(Status::YES);
 ```
