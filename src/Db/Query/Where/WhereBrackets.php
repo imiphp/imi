@@ -77,6 +77,11 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         $callResult = ($this->callback)();
         if (\is_array($callResult))
         {
+            if (empty($callResult))
+            {
+                return '';
+            }
+
             $result = '(';
             foreach ($callResult as $i => $callResultItem)
             {
