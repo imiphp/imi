@@ -618,7 +618,14 @@ Db::query()->where('id', '=', 1)->whereBrackets(function(){
     // 直接返回字符串
     return 'age < 14';
 }, 'or');
-
+// 支持使用 sql 语句: where id = 1 or (age > 10 and age < 14)
+Db::query()->where('id', '=', 1)->whereBrackets(function(){
+    // 直接返回字符串
+    return [
+        new \Imi\Db\Query\Where\Where::raw('age > 10'),
+        new \Imi\Db\Query\Where\Where('age', '<', 14),
+    ];
+}, 'or');
 // where id = 1 or (age < 14)
 Db::query()->where('id', '=', 1)->whereBrackets(function(){
     // 直接返回字符串
