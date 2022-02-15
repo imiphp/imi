@@ -318,67 +318,69 @@ abstract class Query implements IQuery
         {
             return $this;
         }
-        $func = static function (array $condition) use (&$func): array {
-            $result = [];
-            foreach ($condition as $key => $value)
+
+        return $this->whereBrackets(fn () => $this->parseWhereEx($condition), $logicalOperator);
+    }
+
+    protected function parseWhereEx(array $condition)
+    {
+        $result = [];
+        foreach ($condition as $key => $value)
+        {
+            if (null === LogicalOperator::getText(strtolower($key)))
             {
-                if (null === LogicalOperator::getText(strtolower($key)))
+                // 条件 k => v
+                if (\is_array($value))
                 {
-                    // 条件 k => v
-                    if (\is_array($value))
+                    $operator = strtolower($value[0] ?? '');
+                    switch ($operator)
                     {
-                        $operator = strtolower($value[0] ?? '');
-                        switch ($operator)
-                        {
-                            case 'between':
-                                if (!isset($value[2]))
-                                {
-                                    throw new \RuntimeException('Between must have 3 params');
-                                }
-                                $result[] = new Where($key, 'between', [$value[1], $value[2]]);
-                                break;
-                            case 'not between':
-                                if (!isset($value[2]))
-                                {
-                                    throw new \RuntimeException('Not between must have 3 params');
-                                }
-                                $result[] = new Where($key, 'not between', [$value[1], $value[2]]);
-                                break;
-                            case 'in':
-                                if (!isset($value[1]))
-                                {
-                                    throw new \RuntimeException('In must have 3 params');
-                                }
-                                $result[] = new Where($key, 'in', $value[1]);
-                                break;
-                            case 'not in':
-                                if (!isset($value[1]))
-                                {
-                                    throw new \RuntimeException('Not in must have 3 params');
-                                }
-                                $result[] = new Where($key, 'not in', $value[1]);
-                                break;
-                            default:
-                                $result[] = new Where($key, $operator, $value[1]);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        $result[] = new Where($key, '=', $value);
+                        case 'between':
+                            if (!isset($value[2]))
+                            {
+                                throw new \RuntimeException('Between must have 3 params');
+                            }
+                            $result[] = new Where($key, 'between', [$value[1], $value[2]]);
+                            break;
+                        case 'not between':
+                            if (!isset($value[2]))
+                            {
+                                throw new \RuntimeException('Not between must have 3 params');
+                            }
+                            $result[] = new Where($key, 'not between', [$value[1], $value[2]]);
+                            break;
+                        case 'in':
+                            if (!isset($value[1]))
+                            {
+                                throw new \RuntimeException('In must have 3 params');
+                            }
+                            $result[] = new Where($key, 'in', $value[1]);
+                            break;
+                        case 'not in':
+                            if (!isset($value[1]))
+                            {
+                                throw new \RuntimeException('Not in must have 3 params');
+                            }
+                            $result[] = new Where($key, 'not in', $value[1]);
+                            break;
+                        default:
+                            $result[] = new Where($key, $operator, $value[1]);
+                            break;
                     }
                 }
                 else
                 {
-                    // 逻辑运算符
-                    $result[] = new WhereBrackets(static fn () => $func($value), $key);
+                    $result[] = new Where($key, '=', $value);
                 }
             }
+            else
+            {
+                // 逻辑运算符
+                $result[] = new WhereBrackets(fn () => $this->parseWhereEx($value), $key);
+            }
+        }
 
-            return $result;
-        };
-
-        return $this->whereBrackets(static fn () => $func($condition), $logicalOperator);
+        return $result;
     }
 
     /**
