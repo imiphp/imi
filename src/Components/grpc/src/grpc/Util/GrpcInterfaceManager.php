@@ -6,7 +6,7 @@ namespace Imi\Grpc\Util;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\ReflectionUtil;
-use phpDocumentor\Reflection\DocBlockFactory;
+use Imi\Util\DocBlock;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -19,16 +19,6 @@ class GrpcInterfaceManager
      * 接口集合.
      */
     private array $interfaces = [];
-
-    /**
-     * DocBlockFactory.
-     */
-    private DocBlockFactory $docBlockFactory;
-
-    public function __construct()
-    {
-        $this->docBlockFactory = DocBlockFactory::createInstance();
-    }
 
     /**
      * 获取请求类.
@@ -79,7 +69,7 @@ class GrpcInterfaceManager
             }
             else
             {
-                $docblock = $this->docBlockFactory->create($docComment);
+                $docblock = DocBlock::getDocBlock($docComment);
                 // @phpstan-ignore-next-line
                 $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
             }

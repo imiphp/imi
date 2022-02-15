@@ -11,6 +11,7 @@ use Imi\App;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionContainer;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Util\DocBlock;
 use Imi\Util\Imi;
 use Yurun\Doctrine\Common\Annotations\PhpParser;
 
@@ -65,8 +66,7 @@ class BeanParser extends BaseParser
                         }
                         else
                         {
-                            $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-                            $docblock = $factory->create($comment);
+                            $docblock = DocBlock::getDocBlock($comment);
                             $tag = $docblock->getTagsByName('var')[0] ?? null;
                         }
                         if ($tag)
