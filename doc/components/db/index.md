@@ -563,6 +563,9 @@ Db::query()->where('id', '=', 1);
 // id > 1
 Db::query()->where('id', '>', 1);
 
+// 使用 Raw 原样代入值，例：value = 1 + 2
+Db::query()->where('value', '=', new \Imi\Db\Query\Raw('1 + 2'));
+
 // title like '%test%'
 Db::query()->where('title', 'like', '%test%');
 
