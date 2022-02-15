@@ -15,6 +15,7 @@ use Imi\Server\Http\Route\Annotation\Middleware;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
+use Imi\Swoole\Pool\SwoolePoolManager;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
@@ -412,5 +413,31 @@ class IndexController extends HttpController
      */
     public function duplicated2(): void
     {
+    }
+
+    /**
+     * 获取连接池信息.
+     *
+     * @Action
+     * @Route
+     */
+    public function getPoolInfo(string $poolName): array
+    {
+        return [
+            'info' => SwoolePoolManager::getInfo($poolName),
+        ];
+    }
+
+    /**
+     * 获取所有连接池信息.
+     *
+     * @Action
+     * @Route
+     */
+    public function getInfos(): array
+    {
+        return [
+            'info' => SwoolePoolManager::getInfos(),
+        ];
     }
 }

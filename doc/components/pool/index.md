@@ -66,3 +66,52 @@ $result = \Imi\Pool\PoolManager::use($poolName, function($resource, \Swoole\Coro
 ## 自动释放连接
 
 调用`\Imi\Pool\PoolManager::getRequestContextResource()`方法获取，当上下文被销毁时，会自动释放资源。
+
+## 状态统计监控
+
+监控方法仅可在 Swoole 模式下的 `Worker` 和 `TaskWorker` 进程中使用，支持返回 `Worker` 和 `TaskWorker` 进程中的连接池信息。
+
+### 获取指定连接池信息
+
+```php
+use Imi\Swoole\Pool\SwoolePoolManager;
+$info = SwoolePoolManager::getInfo('连接池名');
+$info = SwoolePoolManager::getInfo('连接池名', 10); // 支持传入超时时间，单位：秒，默认为10秒
+```
+
+`SwoolePoolManager::getInfo()` 方法返回值是 `\Imi\Swoole\Pool\Model\PoolInfo` 一维数组，支持：
+
+获取连接池名: `$info->getName()`
+
+获取进程ID: `$info->getWorkerId()`
+
+获取连接数量: `$info->getCount()`
+
+获取正在使用的连接数量: `$info->getUsed()`
+
+获取空闲的连接数量: `$info->getFree()`
+
+### 获取所有连接池信息
+
+```php
+use Imi\Swoole\Pool\SwoolePoolManager;
+$infos = SwoolePoolManager::getInfos();
+$infos = SwoolePoolManager::getInfos(10); // 支持传入超时时间，单位：秒，默认为10秒
+```
+
+`SwoolePoolManager::getInfos()` 方法返回值是 `\Imi\Swoole\Pool\Model\PoolInfo` 二维数组，用法同上。
+
+第一维：按 WorkerId 区分
+
+第二维：按每个 Worker 进程中的连接池区分
+
+```php
+foreach($infos as $workerId => $poolInfos)
+{
+    echo 'WorkerId: ', $workerId, PHP_EOL;
+    foreach($poolInfos as $info)
+    {
+        var_dump($info);
+    }
+}
+```
