@@ -139,9 +139,9 @@ class Where extends BaseWhere implements IWhere
         {
             case 'between':
             case 'not between':
-                if (!\is_array($thisValues) || !isset($thisValues[0],$thisValues[1]))
+                if (!\is_array($thisValues) || !isset($thisValues[0], $thisValues[1]))
                 {
-                    throw new \RuntimeException(sprintf('where %s value must be [beginValue, endValue]', $operation));
+                    throw new \InvalidArgumentException(sprintf('where %s value must be [beginValue, endValue]', $operation));
                 }
                 $begin = $query->getAutoParamName();
                 $end = $query->getAutoParamName();
