@@ -169,7 +169,7 @@ class Where extends BaseWhere implements IWhere
                 }
                 else
                 {
-                    throw new \RuntimeException(sprintf('Invalid value type %s of where %s', \gettype($thisValues), $operation));
+                    throw new \InvalidArgumentException(sprintf('Invalid value type %s of where %s', \gettype($thisValues), $operation));
                 }
                 break;
             default:
