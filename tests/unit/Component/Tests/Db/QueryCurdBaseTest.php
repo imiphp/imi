@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests\Db;
 
 use Imi\Db\Db;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
+use Imi\Db\Query\Raw;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 
@@ -420,5 +421,18 @@ abstract class QueryCurdBaseTest extends BaseTest
             'id'        => $id,
             'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',
         ], $result->get());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testRaw(array $args): void
+    {
+        ['ids' => $ids] = $args;
+        $id = $ids[0];
+        $query = Db::query($this->poolName);
+
+        $record = $query->from($this->tableArticle)->where('id', '=', new Raw((string) $id))->select()->get();
+        Assert::assertEquals($id, $record['id']);
     }
 }
