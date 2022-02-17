@@ -308,6 +308,10 @@ class ImiCommand extends Command
      */
     private function parseArgValue($value, $option)
     {
+        if ($value === $option['default'])
+        {
+            return $value;
+        }
         switch ($option['type'])
         {
             case ArgType::STRING:
