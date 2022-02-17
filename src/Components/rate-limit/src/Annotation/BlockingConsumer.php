@@ -24,7 +24,7 @@ class BlockingConsumer extends Base
      */
     protected ?string $defaultFieldName = 'timeout';
 
-    public function __construct(?array $__data = null, ?int $timeout)
+    public function __construct(?array $__data = null, ?int $timeout = null)
     {
         parent::__construct(...\func_get_args());
     }
