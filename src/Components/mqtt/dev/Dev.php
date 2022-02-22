@@ -20,7 +20,7 @@ class Dev
         $requires = $package->getRequires();
         foreach ($requires as $name => &$require)
         {
-            if (!str_starts_with($name, 'imiphp/') || !is_dir(\dirname($dir) . '/' . substr($name, 11)))
+            if ('imiphp/' !== substr($name, 0, 7) || !is_dir(\dirname($dir) . '/' . substr($name, 11)))
             {
                 continue;
             }
@@ -35,7 +35,7 @@ class Dev
         $requires = $package->getDevRequires();
         foreach ($requires as $name => &$require)
         {
-            if (!str_starts_with($name, 'imiphp/') || !is_dir(\dirname($dir) . '/' . substr($name, 11)))
+            if ('imiphp/' !== substr($name, 0, 7) || !is_dir(\dirname($dir) . '/' . substr($name, 11)))
             {
                 continue;
             }
@@ -59,7 +59,7 @@ class Dev
         foreach ($requires as $name => $require)
         {
             $componentDir = \dirname($dir) . '/' . substr($name, 11);
-            if (!str_starts_with($name, 'imiphp/') || !is_dir($componentDir))
+            if ('imiphp/' !== substr($name, 0, 7) || !is_dir($componentDir))
             {
                 continue;
             }
