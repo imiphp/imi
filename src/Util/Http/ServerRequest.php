@@ -296,7 +296,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             }
             else
             {
-                $contentType = strtolower(preg_split('/[,\s]/S', $this->getHeaderLine(RequestHeader::CONTENT_TYPE), 1)[0] ?? '');
+                $contentType = strtolower(preg_split('/[;\s]/S', $this->getHeaderLine(RequestHeader::CONTENT_TYPE), 1)[0] ?? '');
                 // post
                 if ('POST' === $this->getMethod() && \in_array($contentType, [
                     MediaType::APPLICATION_FORM_URLENCODED,
