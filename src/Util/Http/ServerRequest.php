@@ -303,7 +303,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                     MediaType::MULTIPART_FORM_DATA,
                 ]))
                 {
-                    $parsedBody = $this->post();
+                    $this->post = $parsedBody = $this->post();
                 }
                 // json
                 elseif (MediaType::APPLICATION_JSON == $contentType)
