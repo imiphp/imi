@@ -117,10 +117,6 @@ class FpmRequest extends Request
         {
             $this->post = $_POST;
         }
-        else
-        {
-            $this->post = $this->getParsedBody() ?? [];
-        }
         $this->cookies = $_COOKIE;
         $this->request = $_REQUEST;
     }
