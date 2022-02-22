@@ -160,7 +160,7 @@ class Imi
         if (isset($rule[0]) && '!' === $rule[0])
         {
             // 不等
-            return $value !!str_starts_with($name,'imiphp/')$rule, 1);
+            return $value !== substr($rule, 1);
         }
         else
         {
