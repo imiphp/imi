@@ -13,6 +13,32 @@ use Imi\Redis\Redis;
  */
 class RedisHash extends Base
 {
+    public const GET_MULTIPLE_SCRIPT = <<<'SCRIPT'
+    local key = KEYS[1]
+    local result = {}
+    for i = 1, #ARGV do
+        table.insert(result, redis.call('hget', key, ARGV[i]))
+    end
+    return result
+    SCRIPT;
+
+    public const SET_MULTIPLE_SCRIPT = <<<'SCRIPT'
+    local key = KEYS[1]
+    local halfLen = #ARGV / 2
+    for i = 1, halfLen do
+        redis.call('hset', key, ARGV[i], ARGV[halfLen + i])
+    end
+    return true
+    SCRIPT;
+
+    public const DELETE_MULTIPLE_SCRIPT = <<<'SCRIPT'
+    local key = KEYS[1]
+    for i = 1, #ARGV do
+        redis.call('hdel', key, ARGV[i])
+    end
+    return true
+    SCRIPT;
+
     /**
      * Redis连接池名称.
      */
@@ -87,14 +113,6 @@ class RedisHash extends Base
      */
     public function getMultiple($keys, $default = null)
     {
-        static $script = <<<'SCRIPT'
-        local key = KEYS[1]
-        local result = {}
-        for i = 1, #ARGV do
-            table.insert(result, redis.call('hget', key, ARGV[i]))
-        end
-        return result
-        SCRIPT;
         $this->checkArrayOrTraversable($keys);
 
         $keysMembers = [];
@@ -104,12 +122,12 @@ class RedisHash extends Base
             $keysMembers[$key][] = $member;
         }
 
-        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers, $default, $keys) {
+        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($keysMembers, $default, $keys) {
             $result = [];
             $i = 0;
             foreach ($keysMembers as $key => $members)
             {
-                $evalResult = $redis->evalEx($script, array_merge(
+                $evalResult = $redis->evalEx(self::GET_MULTIPLE_SCRIPT, array_merge(
                     [$key],
                     array_map([$redis, '_serialize'], $members),
                 ), 1);
@@ -136,14 +154,6 @@ class RedisHash extends Base
      */
     public function setMultiple($values, $ttl = null)
     {
-        static $script = <<<'SCRIPT'
-        local key = KEYS[1]
-        local halfLen = #ARGV / 2
-        for i = 1, halfLen do
-            redis.call('hset', key, ARGV[i], ARGV[halfLen + i])
-        end
-        return true
-        SCRIPT;
         $this->checkArrayOrTraversable($values);
 
         if ($values instanceof \Traversable)
@@ -163,10 +173,10 @@ class RedisHash extends Base
             $setValues[$k]['value'][] = $this->encode($v);
         }
 
-        $result = Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($script, $setValues) {
+        $result = Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($setValues) {
             foreach ($setValues as $key => $item)
             {
-                $result = false !== $redis->evalEx($script, array_merge([$key], array_map([$redis, '_serialize'], $item['member']), array_map([$redis, '_serialize'], $item['value'])), 1);
+                $result = false !== $redis->evalEx(self::SET_MULTIPLE_SCRIPT, array_merge([$key], array_map([$redis, '_serialize'], $item['member']), array_map([$redis, '_serialize'], $item['value'])), 1);
                 if (!$result)
                 {
                     return $result;
@@ -184,14 +194,6 @@ class RedisHash extends Base
      */
     public function deleteMultiple($keys)
     {
-        static $script = <<<'SCRIPT'
-        local key = KEYS[1]
-        for i = 1, #ARGV do
-            redis.call('hdel', key, ARGV[i])
-        end
-        return true
-        SCRIPT;
-
         $this->checkArrayOrTraversable($keys);
 
         $keysMembers = [];
@@ -201,10 +203,10 @@ class RedisHash extends Base
             $keysMembers[$key][] = $member;
         }
 
-        return (bool) Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($script, $keysMembers) {
+        return (bool) Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($keysMembers) {
             foreach ($keysMembers as $key => $members)
             {
-                $result = $redis->evalEx($script, array_merge(
+                $result = $redis->evalEx(self::DELETE_MULTIPLE_SCRIPT, array_merge(
                     [$key],
                     array_map([$redis, '_serialize'], $members),
                 ), 1);

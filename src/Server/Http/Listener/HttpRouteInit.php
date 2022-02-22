@@ -112,7 +112,7 @@ class HttpRouteInit implements IEventListener
                         {
                             if ((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]))
                             {
-                                if (isset($routeItem->url[1]) && './' === substr($routeItem->url, 0, 2))
+                                if (isset($routeItem->url[1]) && str_starts_with($routeItem->url, './'))
                                 {
                                     $prefixHasSlash = '/' === ($prefix[-1] ?? '');
                                     $routeItem->url = $prefix . substr($routeItem->url, $prefixHasSlash ? 2 : 1);
@@ -139,7 +139,7 @@ class HttpRouteInit implements IEventListener
                             'extractData'   => $extractData,
                         ];
                         $route->addRuleAnnotation($routeItem, $routeCallable, $options);
-                        if (($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && '/' !== substr($routeItem->url, 0, -1))
+                        if (($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && !str_ends_with($routeItem->url, '/'))
                         {
                             $routeItem = clone $routeItem;
                             $routeItem->url .= '/';

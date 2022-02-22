@@ -47,9 +47,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             $headers = [];
             foreach ($this->data['server'] as $name => $value)
             {
-                if ('HTTP_' === substr($name, 0, 5))
+                if (str_starts_with($name, 'HTTP_'))
                 {
-                    $headers[strtolower(str_replace('_', '-', substr($name, 5)))] = $value;
+                    $headers[str_replace('_', '-', substr($name, 5))] = $value;
                 }
             }
             $this->mergeHeaders($headers);

@@ -178,7 +178,7 @@ class ClassObject
             $namespace .= '\\';
         }
 
-        return $namespace === substr($class, 0, \strlen($namespace));
+        return str_starts_with($class, $namespace);
     }
 
     /**

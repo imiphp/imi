@@ -112,8 +112,8 @@ class RequestTest extends BaseTest
                             ])
                             ->get($this->host . 'info');
         $data = $response->json(true);
-        $this->assertEquals($time, $data['headers']['time'] ?? null);
-        $this->assertEquals($hash, $data['headers']['hash'] ?? null);
+        $this->assertEquals($time, $data['headers']['TIME'] ?? null);
+        $this->assertEquals($hash, $data['headers']['HASH'] ?? null);
     }
 
     /**
