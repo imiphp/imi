@@ -204,6 +204,21 @@ class Group
         return $this->maxClients;
     }
 
+    public const CHECK_METHODS = [
+        'close',
+        'send',
+        'sendfile',
+        'sendwait',
+        'push',
+    ];
+
+    public const CLIENT_CLOSE_ERRORS = [
+        1001,
+        1002,
+        1003,
+        1004,
+    ];
+
     /**
      * 魔术方法，返回数组，clientId=>执行结果.
      *
@@ -212,22 +227,7 @@ class Group
     public function __call(string $name, array $arguments)
     {
         $server = $this->server;
-        // 要检查的方法名
-        static $checkMethods = [
-            'close',
-            'send',
-            'sendfile',
-            'sendwait',
-            'push',
-        ];
-        // 客户端关闭的错误
-        static $clientCloseErrors = [
-            1001,
-            1002,
-            1003,
-            1004,
-        ];
-        $methodIsCheck = \in_array($name, $checkMethods);
+        $methodIsCheck = \in_array($name, self::CHECK_METHODS);
         $result = [];
         /** @var ClientIdMap $clientIdMap */
         $clientIdMap = $server->getBean('ClientIdMap');
@@ -238,7 +238,7 @@ class Group
             {
                 // 执行结果
                 $result[$clientId] = $itemResult = $server->callServerMethod($name, $clientId, ...$arguments);
-                if ($methodIsCheck && false === $itemResult && \in_array($server->callServerMethod('getLastError'), $clientCloseErrors))
+                if ($methodIsCheck && false === $itemResult && \in_array($server->callServerMethod('getLastError'), self::CLIENT_CLOSE_ERRORS))
                 {
                     // 客户端关闭的错误，直接把该客户端T出全部组
                     $clientIdMap->leaveAll($clientId);

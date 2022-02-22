@@ -27,6 +27,8 @@ class MysqlQuery extends Query
 
     public const DELETE_BUILDER_CLASS = DeleteBuilder::class;
 
+    public const PARSE_KEYWORD_TEXT_PATTERN = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
+
     /**
      * {@inheritDoc}
      */
@@ -43,12 +45,11 @@ class MysqlQuery extends Query
     public function parseKeywordText(string $string): array
     {
         $split = explode('->', $string);
-        static $pattern = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
-        if (preg_match_all($pattern, str_replace('`', '', $split[0]), $matches) > 0)
+        if (preg_match_all(self::PARSE_KEYWORD_TEXT_PATTERN, str_replace('`', '', $split[0]), $matches) > 0)
         {
             if (isset($split[1]))
             {
-                if (preg_match_all($pattern, str_replace('`', '', $split[1]), $matches2) > 0)
+                if (preg_match_all(self::PARSE_KEYWORD_TEXT_PATTERN, str_replace('`', '', $split[1]), $matches2) > 0)
                 {
                     $alias = end($matches2['alias']);
                     if (!$alias)
