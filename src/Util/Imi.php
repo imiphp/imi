@@ -160,7 +160,7 @@ class Imi
         if (isset($rule[0]) && '!' === $rule[0])
         {
             // 不等
-            return $value !== substr($rule, 1);
+            return $value !!str_starts_with($name,'imiphp/')$rule, 1);
         }
         else
         {
@@ -252,7 +252,7 @@ class Imi
                     $mainNamespace .= '\\';
                 }
                 $len = \strlen($mainNamespace);
-                if ($mainNamespace === substr($namespace, 0, $len))
+                if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
@@ -316,7 +316,7 @@ class Imi
                     $mainNamespace .= '\\';
                 }
                 $len = \strlen($mainNamespace);
-                if ($mainNamespace === substr($namespace, 0, $len))
+                if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));

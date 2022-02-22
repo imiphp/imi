@@ -47,7 +47,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             $headers = [];
             foreach ($this->data['server'] as $name => $value)
             {
-                if ('HTTP_' === substr($name, 0, 5))
+                if (str_starts_with($name, 'HTTP_'))
                 {
                     $headers[str_replace('_', '-', substr($name, 5))] = $value;
                 }

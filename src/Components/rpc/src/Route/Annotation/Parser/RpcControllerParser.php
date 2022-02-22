@@ -37,7 +37,7 @@ class RpcControllerParser extends BaseParser
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
         foreach ($namespaces as &$namespace)
         {
-            if ('\\' !== substr($namespace, -1, 1))
+            if (!str_ends_with($namespace, '\\'))
             {
                 $namespace .= '\\';
             }

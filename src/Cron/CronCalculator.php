@@ -250,7 +250,7 @@ class CronCalculator
      */
     public function getAllDay(string $day, int $lastTime): array
     {
-        if ('year ' === substr($day, 0, 5))
+        if (str_starts_with($day, 'year '))
         {
             $day = substr($day, 5);
             $list = $this->getAll($day, 'day', 1, 366, 'd', $lastTime);
@@ -326,31 +326,31 @@ class CronCalculator
         {
             return false;
         }
-        if ('n' === substr($cronRule->getSecond(), -1, 1))
+        if (str_ends_with($cronRule->getSecond(), 'n'))
         {
             return $lastTime + (int) substr($cronRule->getSecond(), 0, -1);
         }
-        if ('n' === substr($cronRule->getMinute(), -1, 1))
+        if (str_ends_with($cronRule->getMinute(), 'n'))
         {
             return $lastTime + (int) substr($cronRule->getMinute(), 0, -1) * 60;
         }
-        if ('n' === substr($cronRule->getHour(), -1, 1))
+        if (str_ends_with($cronRule->getHour(), 'n'))
         {
             return $lastTime + (int) substr($cronRule->getHour(), 0, -1) * 3600;
         }
-        if ('n' === substr($cronRule->getDay(), -1, 1))
+        if (str_ends_with($cronRule->getDay(), 'n'))
         {
             return $lastTime + (int) substr($cronRule->getDay(), 0, -1) * 86400;
         }
-        if ('n' === substr($cronRule->getWeek(), -1, 1))
+        if (str_ends_with($cronRule->getWeek(), 'n'))
         {
             return $lastTime + (int) substr($cronRule->getWeek(), 0, -1) * 604800;
         }
-        if ('n' === substr($cronRule->getMonth(), -1, 1))
+        if (str_ends_with($cronRule->getMonth(), 'n'))
         {
             return strtotime('+' . substr($cronRule->getMonth(), 0, -1) . ' month', $lastTime);
         }
-        if ('n' === substr($cronRule->getYear(), -1, 1))
+        if (str_ends_with($cronRule->getYear(), 'n'))
         {
             return strtotime('+' . substr($cronRule->getYear(), 0, -1) . ' year', $lastTime);
         }
