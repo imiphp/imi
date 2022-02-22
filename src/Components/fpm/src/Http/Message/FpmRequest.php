@@ -47,7 +47,7 @@ class FpmRequest extends Request
         {
             if ('HTTP_' === substr($name, 0, 5))
             {
-                $headers[strtolower(str_replace('_', '-', substr($name, 5)))] = $value;
+                $headers[str_replace('_', '-', substr($name, 5))] = $value;
             }
         }
         $this->mergeHeaders($headers);

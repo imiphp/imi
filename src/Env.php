@@ -157,12 +157,12 @@ class Env
         {
             return $default;
         }
-        if ('null' === strtolower($result))
+        $lower = strtolower($result);
+        if ('null' === $lower)
         {
             return null;
         }
 
-        $lower = strtolower($result);
         if ('true' === $lower || 'on' === $lower || '1' === $lower)
         {
             return true;
