@@ -252,14 +252,5 @@ class SwooleApp extends CliApp
             $output->writeln('<info>Swoole Github:</info> <comment>https://github.com/swoole/swoole-src</comment>');
             exit(255);
         }
-        // 短名称检查
-        $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
-        $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
-        if (\in_array($useShortname, ['', 'off', 'false'], true))
-        {
-            $output->writeln('<error>Please enable swoole short name before using imi!</error>');
-            $output->writeln('<info>You can set <comment>swoole.use_shortname = on</comment> into your php.ini.</info>');
-            exit(255);
-        }
     }
 }
