@@ -17,6 +17,7 @@ use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Tool\ArgType;
 use Imi\Util\ClassObject;
+use Imi\Util\DocBlock;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\MediaType;
@@ -125,7 +126,6 @@ class DocTool extends BaseCommand
             ]);
             $analysis->addAnnotation($infoAnnotation, $context);
         }
-        $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
         // 遍历 imi 控制器类
         foreach ($controllerClasses as $controllerClass)
         {
@@ -172,7 +172,7 @@ class DocTool extends BaseCommand
                     }
                     else
                     {
-                        $docblock = $factory->create($comment);
+                        $docblock = DocBlock::getDocBlock($comment);
                         /** @var \phpDocumentor\Reflection\DocBlock\Tags\Param[] $docParams */
                         $docParams = $docblock->getTagsByName('param');
                     }

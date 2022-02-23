@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Event\Event;
+use Imi\Util\DocBlock;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -127,8 +128,7 @@ class ImiCommand extends Command
                 }
                 else
                 {
-                    $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-                    $docblock = $factory->create($docComment);
+                    $docblock = DocBlock::getDocBlock($docComment);
                     $description = $docblock->getSummary();
                 }
             }

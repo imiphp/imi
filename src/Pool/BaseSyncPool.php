@@ -17,10 +17,6 @@ abstract class BaseSyncPool extends BasePool
      */
     protected \SplQueue $queue;
 
-    public function __destruct()
-    {
-    }
-
     /**
      * {@inheritDoc}
      */
