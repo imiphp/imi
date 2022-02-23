@@ -953,7 +953,7 @@ abstract class Model extends BaseModel
             }
             $data = $_data;
         }
-        $result = new LazyArrayObject();
+        $result = [];
         $isUpdate = 'update' === $type;
         $isSave = 'save' === $type;
         if ($objectIsObject = \is_object($object))
@@ -1064,6 +1064,7 @@ abstract class Model extends BaseModel
             }
         }
 
+        $result = new LazyArrayObject($result);
         // 处理后
         Event::trigger($realClassName . ':' . ModelEvents::AFTER_PARSE_DATA, [
             'data'   => &$data,     // 待处理的原始数据
