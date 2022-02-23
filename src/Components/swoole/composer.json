@@ -15,7 +15,10 @@
     "autoload": {
         "psr-4": {
             "Imi\\Swoole\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
