@@ -322,7 +322,7 @@ abstract class Query implements IQuery
         return $this->whereBrackets(fn () => $this->parseWhereEx($condition), $logicalOperator);
     }
 
-    protected function parseWhereEx(array $condition):array
+    protected function parseWhereEx(array $condition): array
     {
         $result = [];
         foreach ($condition as $key => $value)
