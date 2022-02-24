@@ -120,14 +120,13 @@ abstract class BaseBuilder implements IBuilder
             }
         }
         unset($result[0]);
-        if ($result)
+        $result = implode(' ', $result);
+        if ('' !== $result)
         {
-            return ' where ' . implode(' ', $result);
+            $result = ' where ' . $result;
         }
-        else
-        {
-            return '';
-        }
+
+        return $result;
     }
 
     /**
