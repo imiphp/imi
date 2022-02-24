@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Swoole\Server\Business\Task;
 
+use GatewayWorker\Lib\Gateway;
 use GatewayWorker\Protocols\GatewayProtocol;
 use Imi\App;
 use Imi\ConnectionContext;
@@ -31,12 +32,12 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function run(ITaskParam $param)
         {
             goWait(static function () use ($param) {
+                $closeConnectionOnFail = false;
                 try
                 {
-                    $result = $param->getData();
                     /** @var ISwooleServer $server */
                     /** @var IGatewayClient $client */
-                    ['server' => $server, 'client' => $client, 'message' => $message, 'clientId' => $clientId] = $result;
+                    ['server' => $server, 'client' => $client, 'message' => $message, 'clientId' => $clientId] = $param->getData();
                     switch ($message['cmd']) {
                         case GatewayProtocol::CMD_ON_CONNECT:
                             // 连接
@@ -76,6 +77,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                             ], $server, CloseEventParam::class);
                             break;
                         case GatewayProtocol::CMD_ON_WEBSOCKET_CONNECT:
+                            $closeConnectionOnFail = true;
                             $swooleRequest = new \Swoole\Http\Request();
                             $swooleResponse = new \Swoole\Http\Response();
                             $request = new WorkermanGatewaySwooleRequest($server, $clientId, $message['body']);
@@ -100,6 +102,10 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 {
                     // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($th);
+                    if ($closeConnectionOnFail && isset($clientId))
+                    {
+                        Gateway::closeClient($clientId);
+                    }
                 }
             });
         }
