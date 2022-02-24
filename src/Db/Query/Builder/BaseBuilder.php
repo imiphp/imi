@@ -107,7 +107,7 @@ abstract class BaseBuilder implements IBuilder
         foreach ($where as $item)
         {
             $sql = $item->toStringWithoutLogic($query);
-            if (empty($sql))
+            if ('' === $sql)
             {
                 continue;
             }
