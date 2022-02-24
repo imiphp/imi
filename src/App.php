@@ -13,7 +13,6 @@ use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Util\Imi;
 use function substr;
-use function var_dump;
 
 class App
 {
@@ -121,8 +120,6 @@ class App
         AnnotationManager::init();
         if (!self::has(AppContexts::APP_PATH))
         {
-            var_dump($namespace);
-            var_dump(Imi::getNamespacePath($namespace, true));
             self::set(AppContexts::APP_PATH, Imi::getNamespacePath($namespace, true), true);
         }
         self::$isInited = true;

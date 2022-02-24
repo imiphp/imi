@@ -76,7 +76,6 @@ class Scanner
                 $vendorPath = \dirname($fileName, 2);
             }
             // 遍历第一层
-            var_dump("vendorPath $vendorPath");
             foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)
             {
                 if (!$dir1->isDir())
@@ -116,8 +115,6 @@ class Scanner
                 }
             }
         }
-        var_dump('imi components');
-        var_dump($components);
         $components = array_unique(array_merge(Config::get('@app.components', []), $components));
         if ($components)
         {
@@ -171,10 +168,8 @@ class Scanner
         $nextComponents = [];
         foreach ($namespaces as $namespace)
         {
-            var_dump("scanComponents $namespace");
             foreach (Imi::getNamespacePaths($namespace) as $path)
             {
-                var_dump("path $path/config/config.php");
                 $fileName = $path . '/config/config.php';
                 if (is_file($fileName))
                 {

@@ -20,7 +20,6 @@ use function sprintf;
 use function str_contains;
 use function strrpos;
 use function substr;
-use function var_dump;
 
 /**
  * 框架里杂七杂八的各种工具方法.
@@ -507,7 +506,6 @@ class Imi
             'cacheName' => $cacheName,
             'data'      => &$data,
         ]);
-        var_dump("cache file $cacheName");
         file_put_contents(File::path($cacheName, 'runtime.cache'), serialize($data));
     }
 
