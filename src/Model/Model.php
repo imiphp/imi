@@ -954,6 +954,7 @@ abstract class Model extends BaseModel
             $data = $_data;
         }
         $result = [];
+        $isInsert = 'insert' === $type;
         $isUpdate = 'update' === $type;
         $isSave = 'save' === $type;
         if ($objectIsObject = \is_object($object))
@@ -989,7 +990,7 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ((($isUpdate || $isSave) && $column->updateTime) || ((!$isUpdate || ($isSave && $object && false === $object->__recordExists)) && $column->createTime))
+            if (($column->updateTime && !$isInsert) || ($column->createTime && ($isInsert || ($isSave && $object && !$object->__recordExists))))
             {
                 $value = static::parseDateTime($columnType);
                 if (null === $value)
