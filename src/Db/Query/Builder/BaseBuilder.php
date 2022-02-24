@@ -122,15 +122,12 @@ abstract class BaseBuilder implements IBuilder
         unset($result[0]);
         if ($result)
         {
-            $result = implode(' ', $result);
-            $result = ' where ' . $result;
+            return ' where ' . implode(' ', $result);
         }
         else
         {
-            $result = '';
+            return '';
         }
-
-        return $result;
     }
 
     /**
