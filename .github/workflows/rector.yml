@@ -26,96 +26,120 @@ jobs:
           docker exec ${ENV_SERVICE} composer -V
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
+          echo "test_prepared=1" >> $GITHUB_ENV
 
       - name: Analyse core
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run
 
       - name: Analyse access-control
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/access-control/ --config=src/Components/access-control/rector.php
 
       - name: Analyse amqp
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/amqp/ --config=src/Components/amqp/rector.php
 
       - name: Analyse apidoc
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/apidoc/ --config=src/Components/apidoc/rector.php
 
       - name: Analyse fpm
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/fpm/ --config=src/Components/fpm/rector.php
 
       - name: Analyse grpc
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/grpc/ --config=src/Components/grpc/rector.php
 
       - name: Analyse hprose
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/hprose/ --config=src/Components/hprose/rector.php
 
       - name: Analyse jwt
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/jwt/ --config=src/Components/jwt/rector.php
 
       - name: Analyse kafka
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/kafka/ --config=src/Components/kafka/rector.php
 
       - name: Analyse mqtt
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/mqtt/ --config=src/Components/mqtt/rector.php
 
       - name: Analyse pgsql
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/pgsql/ --config=src/Components/pgsql/rector.php
 
       - name: Analyse queue
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/queue/ --config=src/Components/queue/rector.php
 
       - name: Analyse rate-limit
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/rate-limit/ --config=src/Components/rate-limit/rector.php
 
       - name: Analyse roadrunner
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/roadrunner/ --config=src/Components/roadrunner/rector.php
 
       - name: Analyse rpc
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/rpc/ --config=src/Components/rpc/rector.php
 
       - name: Analyse shared-memory
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/shared-memory/ --config=src/Components/shared-memory/rector.php
 
       - name: Analyse smarty
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/smarty/ --config=src/Components/smarty/rector.php
 
       - name: Analyse snowflake
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/snowflake/ --config=src/Components/snowflake/rector.php
 
       - name: Analyse swoole
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/swoole/ --config=src/Components/swoole/rector.php
 
       - name: Analyse swoole-tracker
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/swoole-tracker/ --config=src/Components/swoole-tracker/rector.php
 
       - name: Analyse workerman
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/workerman/ --config=src/Components/workerman/rector.php
 
       - name: Analyse workerman-gateway
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/workerman-gateway/ --config=src/Components/workerman-gateway/rector.php
 
       - name: Analyse macro
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/macro/ --config=src/Components/macro/rector.php
 

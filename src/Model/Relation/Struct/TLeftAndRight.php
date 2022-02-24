@@ -45,10 +45,14 @@ trait TLeftAndRight
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
+        $annotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            JoinFrom::class,
+            JoinTo::class,
+        ], true, true);
         /** @var JoinFrom|null $joinFrom */
-        $joinFrom = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFrom::class)[0] ?? null;
+        $joinFrom = $annotations[JoinFrom::class];
         /** @var JoinTo|null $joinTo */
-        $joinTo = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinTo::class)[0] ?? null;
+        $joinTo = $annotations[JoinTo::class];
 
         if ($joinFrom)
         {

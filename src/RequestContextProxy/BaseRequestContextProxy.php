@@ -37,13 +37,12 @@ abstract class BaseRequestContextProxy
         }
         else
         {
-            /** @var RequestContextProxy[] $annotations */
-            $annotations = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class);
-            if (!$annotations)
+            $cacheItem = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class, true, true);
+            if (!$cacheItem)
             {
                 throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', $currentClass));
             }
-            $cache[$currentClass] = $cacheItem = $annotations[0];
+            $cache[$currentClass] = $cacheItem;
         }
 
         return RequestContext::get($cacheItem->name);
@@ -65,13 +64,12 @@ abstract class BaseRequestContextProxy
         }
         else
         {
-            /** @var RequestContextProxy[] $annotations */
-            $annotations = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class);
-            if (!$annotations)
+            $cacheItem = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class, true, true);
+            if (!$cacheItem)
             {
                 throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', $currentClass));
             }
-            $cache[$currentClass] = $cacheItem = $annotations[0];
+            $cache[$currentClass] = $cacheItem;
         }
         RequestContext::set($cacheItem->name, $instance);
     }

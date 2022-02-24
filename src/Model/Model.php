@@ -455,6 +455,8 @@ abstract class Model extends BaseModel
     /**
      * 批量更新.
      *
+     * @deprecated 3.0
+     *
      * @param mixed          $data
      * @param array|callable $where
      */
@@ -693,6 +695,8 @@ abstract class Model extends BaseModel
     /**
      * 批量删除.
      *
+     * @deprecated 3.0
+     *
      * @param array|callable $where
      */
     public static function deleteBatch($where = null): IResult
@@ -923,10 +927,10 @@ abstract class Model extends BaseModel
     /**
      * 处理保存的数据.
      *
-     * @param object|array  $data
-     * @param object|string $object
+     * @param object|array $data
+     * @param static|null  $object
      */
-    private static function parseSaveData($data, string $type, $object = null): LazyArrayObject
+    private static function parseSaveData($data, string $type, ?self $object = null): LazyArrayObject
     {
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();
@@ -949,9 +953,10 @@ abstract class Model extends BaseModel
             }
             $data = $_data;
         }
-        $result = new LazyArrayObject();
+        $result = [];
+        $isInsert = 'insert' === $type;
         $isUpdate = 'update' === $type;
-        $canUpdateTime = $isUpdate || 'save' === $type;
+        $isSave = 'save' === $type;
         if ($objectIsObject = \is_object($object))
         {
             $rawValues = $object->__rawValues;
@@ -985,7 +990,7 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ($canUpdateTime && $column->updateTime)
+            if (($column->updateTime && !$isInsert) || ($column->createTime && ($isInsert || ($isSave && $object && !$object->__recordExists))))
             {
                 $value = static::parseDateTime($columnType);
                 if (null === $value)
@@ -1060,6 +1065,7 @@ abstract class Model extends BaseModel
             }
         }
 
+        $result = new LazyArrayObject($result);
         // 处理后
         Event::trigger($realClassName . ':' . ModelEvents::AFTER_PARSE_DATA, [
             'data'   => &$data,     // 待处理的原始数据

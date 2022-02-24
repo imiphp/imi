@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_role 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.name", default="tb_role"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.name", default="tb_role"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.poolName"))
  * @DDL(sql="CREATE TABLE `tb_role` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; insert into `tb_role` values(1,'a'); insert into `tb_role` values(2,'b'); insert into `tb_role` values(3,'c'); insert into `tb_role` values(4,'d'); insert into `tb_role` values(5,'e'); ", decode="")
  *
  * @property int|null    $id
@@ -26,7 +26,7 @@ abstract class RoleBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
      */
     protected ?int $id = null;
 
@@ -55,7 +55,7 @@ abstract class RoleBase extends Model
     /**
      * name.
      *
-     * @Column(name="name", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="name", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
      */
     protected ?string $name = null;
 

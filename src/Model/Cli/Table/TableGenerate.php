@@ -60,7 +60,7 @@ class TableGenerate extends BaseCommand
                 continue;
             }
             /** @var \Imi\Model\Annotation\Table|null $tableAnnotation */
-            $tableAnnotation = AnnotationManager::getClassAnnotations($class, Table::class)[0] ?? null;
+            $tableAnnotation = AnnotationManager::getClassAnnotations($class, Table::class, true, true);
             if (!$tableAnnotation)
             {
                 continue;

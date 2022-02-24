@@ -439,7 +439,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                     if (\in_array($name, $relationFieldNames))
                     {
                         /** @var AutoSelect|null $autoSelect */
-                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
+                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class, true, true);
                         if ($autoSelect && !$autoSelect->alwaysShow)
                         {
                             continue;

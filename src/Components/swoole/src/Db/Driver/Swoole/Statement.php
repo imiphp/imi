@@ -155,12 +155,13 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
             $result = $this->db->getInstance()->query($this->lastSql);
             if (false === $result)
             {
-                $dbInstance = $this->db->getInstance();
+                $db = $this->db;
+                $dbInstance = $db->getInstance();
                 $errorCode = $dbInstance->errorCode();
                 $errorInfo = $dbInstance->errorInfo();
-                if ($dbInstance->checkCodeIsOffline($errorCode))
+                if ($db->checkCodeIsOffline($errorCode))
                 {
-                    $this->db->close();
+                    $db->close();
                 }
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }

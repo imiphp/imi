@@ -66,12 +66,16 @@ class ViewParser extends BaseParser
         if (!isset($viewCache[$className][$methodName]))
         {
             $isClassView = false;
+            $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                View::class,
+                BaseViewOption::class,
+            ]);
             /** @var View|null $view */
-            $view = AnnotationManager::getMethodAnnotations($className, $methodName, View::class)[0] ?? null;
+            $view = $annotations[View::class][0] ?? null;
             if (null === $view)
             {
                 /** @var View|null $view */
-                $view = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
+                $view = AnnotationManager::getClassAnnotations($className, View::class, true, true);
                 if (null === $view)
                 {
                     $view = new View();
@@ -87,10 +91,10 @@ class ViewParser extends BaseParser
                 $view = clone $view;
             }
 
-            $viewOption = AnnotationManager::getMethodAnnotations($className, $methodName, BaseViewOption::class)[0] ?? null;
+            $viewOption = $annotations[BaseViewOption::class][0] ?? null;
             if (null === $viewOption)
             {
-                $viewOption = AnnotationManager::getClassAnnotations($className, BaseViewOption::class)[0] ?? null;
+                $viewOption = AnnotationManager::getClassAnnotations($className, BaseViewOption::class, true, true);
                 if (null === $viewOption)
                 {
                     $className = 'Imi\Server\View\Annotation\\' . Text::toPascalName($view->renderType) . 'View';
@@ -111,7 +115,7 @@ class ViewParser extends BaseParser
                 if (null === $viewOption->baseDir && !$isClassView)
                 {
                     /** @var HtmlView|null $classViewOption */
-                    $classViewOption = AnnotationManager::getClassAnnotations($className, HtmlView::class)[0] ?? null;
+                    $classViewOption = AnnotationManager::getClassAnnotations($className, HtmlView::class, true, true);
                     if ($classViewOption)
                     {
                         $viewOption->baseDir = $classViewOption->baseDir;

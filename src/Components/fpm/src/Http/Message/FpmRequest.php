@@ -45,9 +45,9 @@ class FpmRequest extends Request
         $headers = [];
         foreach ($_SERVER as $name => $value)
         {
-            if ('HTTP_' === substr($name, 0, 5))
+            if (str_starts_with($name, 'HTTP_'))
             {
-                $headers[strtolower(str_replace('_', '-', substr($name, 5)))] = $value;
+                $headers[str_replace('_', '-', substr($name, 5))] = $value;
             }
         }
         $this->mergeHeaders($headers);
@@ -116,10 +116,6 @@ class FpmRequest extends Request
         if ($_POST)
         {
             $this->post = $_POST;
-        }
-        else
-        {
-            $this->post = $this->getParsedBody() ?? [];
         }
         $this->cookies = $_COOKIE;
         $this->request = $_REQUEST;

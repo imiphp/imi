@@ -66,8 +66,12 @@ class UdpRouteInit implements IEventListener
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, UdpAction::class) as $methodName => $methodItem)
                 {
+                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                        UdpRoute::class,
+                        UdpMiddleware::class,
+                    ]);
                     /** @var UdpRoute[] $routes */
-                    $routes = AnnotationManager::getMethodAnnotations($className, $methodName, UdpRoute::class);
+                    $routes = $annotations[UdpRoute::class];
                     if (!$routes)
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
@@ -75,7 +79,7 @@ class UdpRouteInit implements IEventListener
                     // 方法中间件
                     $methodMiddlewares = [];
                     /** @var UdpMiddleware $middleware */
-                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, UdpMiddleware::class) as $middleware)
+                    foreach ($annotations[UdpMiddleware::class] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }

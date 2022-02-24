@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_polymorphic 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.name", default="tb_polymorphic"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.name", default="tb_polymorphic"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.poolName"))
  * @DDL(sql="CREATE TABLE `tb_polymorphic` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL,   `to_one` int(10) unsigned NOT NULL DEFAULT '0',   `to_many` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_one` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_many` int(10) unsigned NOT NULL DEFAULT '0',   `many_to_many` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null $id
@@ -31,7 +31,7 @@ abstract class PolymorphicBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
      */
     protected ?int $id = null;
 
@@ -60,7 +60,7 @@ abstract class PolymorphicBase extends Model
     /**
      * type.
      *
-     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $type = null;
 
@@ -89,7 +89,7 @@ abstract class PolymorphicBase extends Model
     /**
      * to_one.
      *
-     * @Column(name="to_one", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="to_one", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $toOne = 0;
 
@@ -118,7 +118,7 @@ abstract class PolymorphicBase extends Model
     /**
      * to_many.
      *
-     * @Column(name="to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $toMany = 0;
 
@@ -147,7 +147,7 @@ abstract class PolymorphicBase extends Model
     /**
      * one_to_one.
      *
-     * @Column(name="one_to_one", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="one_to_one", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $oneToOne = 0;
 
@@ -176,7 +176,7 @@ abstract class PolymorphicBase extends Model
     /**
      * one_to_many.
      *
-     * @Column(name="one_to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="one_to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $oneToMany = 0;
 
@@ -205,7 +205,7 @@ abstract class PolymorphicBase extends Model
     /**
      * many_to_many.
      *
-     * @Column(name="many_to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="many_to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $manyToMany = 0;
 

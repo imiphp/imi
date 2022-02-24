@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Event\Event;
+use Imi\Util\DocBlock;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -108,8 +109,13 @@ class ImiCommand extends Command
      */
     protected function configure(): void
     {
+        $annotations = AnnotationManager::getMethodAnnotations($this->className, $this->methodName, [
+            CommandAction::class,
+            Argument::class,
+            Option::class,
+        ]);
         /** @var CommandAction $commandAction */
-        $commandAction = AnnotationManager::getMethodAnnotations($this->className, $this->methodName, CommandAction::class)[0] ?? null;
+        $commandAction = $annotations[CommandAction::class][0] ?? null;
         if (null !== $commandAction)
         {
             if (null === $commandAction->description)
@@ -122,8 +128,7 @@ class ImiCommand extends Command
                 }
                 else
                 {
-                    $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-                    $docblock = $factory->create($docComment);
+                    $docblock = DocBlock::getDocBlock($docComment);
                     $description = $docblock->getSummary();
                 }
             }
@@ -134,7 +139,7 @@ class ImiCommand extends Command
             $this->setDescription($description);
         }
         /** @var Argument $argumentAnnotation */
-        foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
+        foreach ($annotations[Argument::class] as $argumentAnnotation)
         {
             $mode = $argumentAnnotation->required ? InputArgument::REQUIRED : InputArgument::OPTIONAL;
             if (ArgType::ARRAY === $argumentAnnotation->type || ArgType::ARRAY_EX === $argumentAnnotation->type)
@@ -144,7 +149,7 @@ class ImiCommand extends Command
             $this->addArgument($argumentAnnotation->name, $mode, $argumentAnnotation->comments, $argumentAnnotation->default);
         }
         /** @var Option $optionAnnotation */
-        foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Option::class) as $optionAnnotation)
+        foreach ($annotations[Option::class] as $optionAnnotation)
         {
             if (ArgType::BOOLEAN_NEGATABLE === $optionAnnotation->type)
             {
@@ -308,6 +313,10 @@ class ImiCommand extends Command
      */
     private function parseArgValue($value, $option)
     {
+        if ($value === $option['default'])
+        {
+            return $value;
+        }
         switch ($option['type'])
         {
             case ArgType::STRING:

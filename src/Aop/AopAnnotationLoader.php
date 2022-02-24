@@ -37,16 +37,23 @@ class AopAnnotationLoader
             foreach (AnnotationManager::getMethodsAnnotations($className, PointCut::class) as $methodName => $pointCuts)
             {
                 $callback = new DelayClassCallable($className, $methodName);
+                $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                    Before::class,
+                    After::class,
+                    Around::class,
+                    AfterReturning::class,
+                    AfterThrowing::class,
+                ], true, true);
                 /** @var Before|null $beforeAnnotation */
-                $beforeAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, Before::class)[0] ?? null;
+                $beforeAnnotation = $annotations[Before::class];
                 /** @var After|null $beforeAnnotation */
-                $afterAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, After::class)[0] ?? null;
+                $afterAnnotation = $annotations[After::class];
                 /** @var Around|null $beforeAnnotation */
-                $aroundAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, Around::class)[0] ?? null;
+                $aroundAnnotation = $annotations[Around::class];
                 /** @var AfterReturning|null $beforeAnnotation */
-                $afterReturningAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, AfterReturning::class)[0] ?? null;
+                $afterReturningAnnotation = $annotations[AfterReturning::class];
                 /** @var AfterThrowing|null $beforeAnnotation */
-                $afterThrowingAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, AfterThrowing::class)[0] ?? null;
+                $afterThrowingAnnotation = $annotations[AfterThrowing::class];
                 /** @var PointCut[] $pointCuts */
                 foreach ($pointCuts as $pointCut)
                 {

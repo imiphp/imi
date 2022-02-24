@@ -44,7 +44,7 @@ function getCommitsFromLast(?string $lastCommit): array
     }
     foreach ($result as $row)
     {
-        if ('commit ' === substr($row, 0, 7))
+        if (str_starts_with($row, 'commit '))
         {
             $hash = substr($row, 7, 40);
             if ($hash !== $lastHash)
@@ -283,7 +283,7 @@ foreach ($storeRepoMap as $name => $urls)
                     $from = str_replace('{', '', $matches2[1]);
                     $to = str_replace('}', '', \dirname($from) . '/' . $matches2[2]);
                 }
-                if ($path === substr($from, 0, $pathLen))
+                if (str_starts_with($from, $path))
                 {
                     $repoFilePath = $repoPath . substr($from, $pathLen);
                     if (is_file($repoFilePath))
@@ -292,7 +292,7 @@ foreach ($storeRepoMap as $name => $urls)
                         $needCommit = true;
                     }
                 }
-                if ($path === substr($to, 0, $pathLen))
+                if (str_starts_with($to, $path))
                 {
                     $repoFilePath = $repoPath . substr($to, $pathLen);
                     $originFileName = $mainRepoPath . $to;
@@ -315,7 +315,7 @@ foreach ($storeRepoMap as $name => $urls)
             {
                 // 文件修改
                 $fileName = $matches[1];
-                if ($path === substr($fileName, 0, $pathLen))
+                if (str_starts_with($fileName, $path))
                 {
                     $repoFilePath = $repoPath . substr($fileName, $pathLen);
                     $originFileName = $mainRepoPath . $fileName;

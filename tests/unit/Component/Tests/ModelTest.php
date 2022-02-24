@@ -7,6 +7,7 @@ namespace Imi\Test\Component\Tests;
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article2;
+use Imi\Test\Component\Model\CreateTime;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
 use Imi\Test\Component\Model\MemberWithSqlField;
@@ -345,6 +346,54 @@ class ModelTest extends BaseTest
         $this->go(function () {
             $record = UpdateTime::find(1);
             $this->assertUpdateTime($record, 'update');
+        }, null, 3);
+    }
+
+    private function assertCreateTime(CreateTime $record, string $methodName, bool $equals = true): void
+    {
+        $time = time();
+        $bigintTime = (int) (microtime(true) * 1000);
+        if (!$equals)
+        {
+            $oldArr = $record->toArray();
+        }
+        $result = $record->$methodName();
+        $this->assertTrue($result->isSuccess());
+        if ($equals)
+        {
+            $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
+            $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
+            $this->assertLessThanOrEqual(1, strtotime($record->datetime) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('datetime fail: %s', $record->datetime));
+            $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
+            $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
+            $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
+            $this->assertLessThanOrEqual(1, $record->year - strtotime(date('Y', $time)), sprintf('year fail: %s', $record->year));
+        }
+        else
+        {
+            $this->assertEquals($oldArr, $record->toArray());
+        }
+    }
+
+    public function testCreateTimeInsert(): void
+    {
+        $this->go(function () {
+            $record = CreateTime::newInstance();
+            $this->assertCreateTime($record, 'insert');
+            sleep(1);
+            $this->assertCreateTime($record, 'update', false);
+            $this->assertCreateTime($record, 'save', false);
+        }, null, 3);
+    }
+
+    public function testCreateTimeSave(): void
+    {
+        $this->go(function () {
+            $record = CreateTime::newInstance();
+            $this->assertCreateTime($record, 'save');
+            sleep(1);
+            $this->assertCreateTime($record, 'update', false);
+            $this->assertCreateTime($record, 'save', false);
         }, null, 3);
     }
 

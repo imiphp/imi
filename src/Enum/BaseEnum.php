@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Enum;
 
+use InvalidArgumentException;
+
 abstract class BaseEnum
 {
     /**
@@ -81,5 +83,32 @@ abstract class BaseEnum
     public static function getMap(): array
     {
         return EnumManager::getKVMap(static::class);
+    }
+
+    /**
+     * 验证值是否合法.
+     *
+     * @param mixed $value
+     */
+    public static function validate($value): bool
+    {
+        return \in_array($value, static::getValues());
+    }
+
+    /**
+     * 验证值断言.
+     *
+     * 值不合法会抛出异常
+     *
+     * @param mixed $value
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function assert($value): void
+    {
+        if (!static::validate($value))
+        {
+            throw new InvalidArgumentException(sprintf('Invalid value %s in enum %s', $value, static::class));
+        }
     }
 }

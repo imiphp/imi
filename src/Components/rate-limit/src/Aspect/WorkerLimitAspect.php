@@ -37,10 +37,14 @@ class WorkerLimitAspect
     {
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
+        $annotations = AnnotationManager::getMethodAnnotations($className, $method, [
+            WorkerLimit::class,
+            BlockingConsumer::class,
+        ], true, true);
         /** @var WorkerLimit|null $workerLimit */
-        $workerLimit = AnnotationManager::getMethodAnnotations($className, $method, WorkerLimit::class)[0] ?? null;
+        $workerLimit = $annotations[WorkerLimit::class];
         /** @var BlockingConsumer|null $blockingConsumer */
-        $blockingConsumer = AnnotationManager::getMethodAnnotations($className, $method, BlockingConsumer::class)[0] ?? null;
+        $blockingConsumer = $annotations[BlockingConsumer::class];
         if (null === $blockingConsumer)
         {
             return WorkerLimiter::call(static fn () => $joinPoint->proceed(), $workerLimit->name, $workerLimit->max, $workerLimit->timeout, $workerLimit->callback, $workerLimit->poolName);

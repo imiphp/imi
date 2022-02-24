@@ -34,10 +34,4 @@
 
 当项目文件放置在，共享目录等不支持文件锁的文件系统时，可以配置一个支持文件锁的目录。比如：`/tmp`。
 
-* 可以在 `.env` 文件中配置：
-
-```env
-IMI_MACRO_LOCK_FILE_DIR=/tmp
-```
-
-* 也可以在运行命令时指定：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`
+* 可以在运行命令时指定环境变量：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`

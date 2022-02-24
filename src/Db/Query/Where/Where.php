@@ -7,6 +7,7 @@ namespace Imi\Db\Query\Where;
 use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhere;
+use Imi\Db\Query\Raw;
 use Imi\Db\Query\Traits\TRaw;
 
 class Where extends BaseWhere implements IWhere
@@ -44,6 +45,16 @@ class Where extends BaseWhere implements IWhere
         $this->operation = $operation;
         $this->value = $value;
         $this->logicalOperator = $logicalOperator;
+    }
+
+    public static function raw(string $rawSql, string $logicalOperator = LogicalOperator::AND): self
+    {
+        $where = new self();
+        $where->useRaw(true);
+        $where->setRawSQL($rawSql);
+        $where->setLogicalOperator($logicalOperator);
+
+        return $where;
     }
 
     /**
@@ -128,6 +139,10 @@ class Where extends BaseWhere implements IWhere
         {
             case 'between':
             case 'not between':
+                if (!\is_array($thisValues) || !isset($thisValues[0], $thisValues[1]))
+                {
+                    throw new \InvalidArgumentException(sprintf('where %s value must be [beginValue, endValue]', $operation));
+                }
                 $begin = $query->getAutoParamName();
                 $end = $query->getAutoParamName();
                 $result .= "{$begin} and {$end}";
@@ -138,18 +153,36 @@ class Where extends BaseWhere implements IWhere
             case 'not in':
                 $result .= '(';
                 $valueNames = [];
-                foreach ($thisValues as $value)
+                if (\is_array($thisValues))
                 {
-                    $paramName = $query->getAutoParamName();
-                    $valueNames[] = $paramName;
-                    $binds[$paramName] = $value;
+                    foreach ($thisValues as $value)
+                    {
+                        $paramName = $query->getAutoParamName();
+                        $valueNames[] = $paramName;
+                        $binds[$paramName] = $value;
+                    }
+                    $result .= implode(',', $valueNames) . ')';
                 }
-                $result .= implode(',', $valueNames) . ')';
+                elseif ($thisValues instanceof Raw)
+                {
+                    $result .= $thisValues->toString($query) . ')';
+                }
+                else
+                {
+                    throw new \InvalidArgumentException(sprintf('Invalid value type %s of where %s', \gettype($thisValues), $operation));
+                }
                 break;
             default:
-                $value = $query->getAutoParamName();
-                $result .= $value;
-                $binds[$value] = $thisValues;
+                if ($thisValues instanceof Raw)
+                {
+                    $result .= $thisValues->toString($query);
+                }
+                else
+                {
+                    $value = $query->getAutoParamName();
+                    $result .= $value;
+                    $binds[$value] = $thisValues;
+                }
                 break;
         }
 

@@ -80,14 +80,7 @@ abstract class Base extends BaseServer implements ISwooleServer
             $this->swoolePort = $this->swooleServer->ports[0] ?? $this->swooleServer;
         }
 
-        if (empty($this->config['configs']))
-        {
-            $configs = [];
-        }
-        else
-        {
-            $configs = $this->config['configs'];
-        }
+        $configs = $this->config['configs'] ?? [];
 
         if ($isSubServer)
         {

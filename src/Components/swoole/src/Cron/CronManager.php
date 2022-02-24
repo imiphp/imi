@@ -228,7 +228,7 @@ class CronManager implements ICronManager
         {
             $cronType = CronTaskType::PROCESS;
             /** @var Process|null $process */
-            $process = AnnotationManager::getClassAnnotations($class, Process::class)[0] ?? null;
+            $process = AnnotationManager::getClassAnnotations($class, Process::class, true, true);
             if (!$process)
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
@@ -245,7 +245,7 @@ class CronManager implements ICronManager
         {
             $cronType = CronTaskType::TASK;
             /** @var Task|null $taskAnnotation */
-            $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class)[0] ?? null;
+            $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class, true, true);
             if (!$taskAnnotation)
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cronId, $class));

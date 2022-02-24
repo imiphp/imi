@@ -35,7 +35,7 @@ class PoolCleanAop
     public function parse(JoinPoint $joinPoint)
     {
         /** @var \Imi\Pool\Annotation\PoolClean $poolClean */
-        $poolClean = AnnotationManager::getMethodAnnotations(BeanFactory::getObjectClass($joinPoint->getTarget()), $joinPoint->getMethod(), PoolClean::class)[0];
+        $poolClean = AnnotationManager::getMethodAnnotations(BeanFactory::getObjectClass($joinPoint->getTarget()), $joinPoint->getMethod(), PoolClean::class, true, true);
         switch ($poolClean->mode)
         {
             case 'allow':

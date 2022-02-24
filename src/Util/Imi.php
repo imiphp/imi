@@ -253,7 +253,7 @@ class Imi
                     $mainNamespace .= '\\';
                 }
                 $len = \strlen($mainNamespace);
-                if ($mainNamespace === substr($namespace, 0, $len))
+                if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
@@ -317,7 +317,7 @@ class Imi
                     $mainNamespace .= '\\';
                 }
                 $len = \strlen($mainNamespace);
-                if ($mainNamespace === substr($namespace, 0, $len))
+                if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
@@ -608,7 +608,7 @@ class Imi
         }
         if (null === $fileName)
         {
-            $fileName = $tmpPath . '/' . 'imi-' . getmypid() . '-' . (++self::$evalAtomic) . '.php';
+            $fileName = tempnam($tmpPath, 'imi.');
         }
 
         if (false === file_put_contents($fileName, '<?php ' . $code))
@@ -663,7 +663,7 @@ class Imi
                 break;
             }
         }
-        if (empty($matches))
+        if (!$matches)
         {
             return '';
         }

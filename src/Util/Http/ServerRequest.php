@@ -288,48 +288,54 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 $this->initBody();
                 $this->bodyInited = true;
             }
-            $contentType = strtolower($this->getHeaderLine(RequestHeader::CONTENT_TYPE));
-            // post
-            if ('POST' === $this->getMethod() && \in_array($contentType, [
-                MediaType::APPLICATION_FORM_URLENCODED,
-                MediaType::MULTIPART_FORM_DATA,
-            ]))
-            {
-                $parsedBody = $this->post();
-            }
-            // json
-            elseif (\in_array($contentType, [
-                MediaType::APPLICATION_JSON,
-                MediaType::APPLICATION_JSON_UTF8,
-            ]))
-            {
-                $content = $this->body->getContents();
-                if ('' !== $content)
-                {
-                    $parsedBody = json_decode($content, !Config::get('@currentServer.jsonBodyIsObject', false), 512, \JSON_THROW_ON_ERROR);
-                    if ($parsedBody)
-                    {
-                        $this->post = $parsedBody;
-                    }
-                }
-            }
-            // xml
-            elseif (\in_array($contentType, [
-                MediaType::TEXT_XML,
-                MediaType::APPLICATION_ATOM_XML,
-                MediaType::APPLICATION_RSS_XML,
-                MediaType::APPLICATION_XHTML_XML,
-                MediaType::APPLICATION_XML,
-            ]))
-            {
-                $parsedBody = new \DOMDocument();
-                $parsedBody->loadXML($this->body->getContents());
-            }
-            // 其它
-            else
+            $contentType = $this->getHeaderLine(RequestHeader::CONTENT_TYPE);
+            if ('' === $contentType)
             {
                 $parsedBody = null;
                 $this->post = [];
+            }
+            else
+            {
+                $contentType = strtolower(preg_split('/[;\s]/S', $this->getHeaderLine(RequestHeader::CONTENT_TYPE), 2)[0] ?? '');
+                // post
+                if ('POST' === $this->getMethod() && \in_array($contentType, [
+                    MediaType::APPLICATION_FORM_URLENCODED,
+                    MediaType::MULTIPART_FORM_DATA,
+                ]))
+                {
+                    $this->post = $parsedBody = $this->post();
+                }
+                // json
+                elseif (MediaType::APPLICATION_JSON == $contentType)
+                {
+                    $content = $this->body->getContents();
+                    if ('' !== $content)
+                    {
+                        $parsedBody = json_decode($content, !Config::get('@currentServer.jsonBodyIsObject', false), 512, \JSON_THROW_ON_ERROR);
+                        if ($parsedBody)
+                        {
+                            $this->post = $parsedBody;
+                        }
+                    }
+                }
+                // xml
+                elseif (\in_array($contentType, [
+                    MediaType::TEXT_XML,
+                    MediaType::APPLICATION_ATOM_XML,
+                    MediaType::APPLICATION_RSS_XML,
+                    MediaType::APPLICATION_XHTML_XML,
+                    MediaType::APPLICATION_XML,
+                ]))
+                {
+                    $parsedBody = new \DOMDocument();
+                    $parsedBody->loadXML($this->body->getContents());
+                }
+                // 其它
+                else
+                {
+                    $parsedBody = null;
+                    $this->post = [];
+                }
             }
         }
 

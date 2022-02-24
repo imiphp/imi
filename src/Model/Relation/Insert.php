@@ -35,10 +35,14 @@ class Insert
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        $propertyAnnotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            AutoInsert::class,
+            AutoSave::class,
+        ], true, true);
         /** @var AutoInsert|null $autoInsert */
-        $autoInsert = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoInsert::class)[0] ?? null;
+        $autoInsert = $propertyAnnotations[AutoInsert::class];
         /** @var AutoSave|null $autoSave */
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = $propertyAnnotations[AutoSave::class];
 
         if ($autoInsert)
         {

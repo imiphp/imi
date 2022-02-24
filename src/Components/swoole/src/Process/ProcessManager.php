@@ -336,7 +336,7 @@ class ProcessManager
 
     public static function writeProcessInfo(string $id, int $wid, int $pid): void
     {
-        if (empty(self::$processInfoTable))
+        if (!isset(self::$processInfoTable))
         {
             return;
         }
@@ -351,7 +351,7 @@ class ProcessManager
      */
     public static function readProcessInfo(string $id): ?array
     {
-        if (empty(self::$processInfoTable))
+        if (!isset(self::$processInfoTable))
         {
             return null;
         }

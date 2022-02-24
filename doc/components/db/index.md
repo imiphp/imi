@@ -399,6 +399,9 @@ imi 中数据库查询连贯操作都来自于查询器，查询器的创建方�
 ```php
 use Imi\Db\Db;
 $query = Db::query();
+$query = Db::query('mysql2'); // 指定连接池名
+$query = Db::query('mysql2', XXXModel::class); // 指定模型名
+$query = Db::query('mysql2', XXXModel::class, \Imi\Db\Query\QueryType::READ); // 从库
 ```
 
 ### 事务
@@ -560,6 +563,9 @@ Db::query()->where('id', '=', 1);
 // id > 1
 Db::query()->where('id', '>', 1);
 
+// 使用 Raw 原样代入值，例：value = 1 + 2
+Db::query()->where('value', '=', new \Imi\Db\Query\Raw('1 + 2'));
+
 // title like '%test%'
 Db::query()->where('title', 'like', '%test%');
 
@@ -615,7 +621,14 @@ Db::query()->where('id', '=', 1)->whereBrackets(function(){
     // 直接返回字符串
     return 'age < 14';
 }, 'or');
-
+// 支持使用 sql 语句: where id = 1 or (age > 10 and age < 14)
+Db::query()->where('id', '=', 1)->whereBrackets(function(){
+    // 直接返回字符串
+    return [
+        \Imi\Db\Query\Where\Where::raw('age > 10'),
+        new \Imi\Db\Query\Where\Where('age', '<', 14),
+    ];
+}, 'or');
 // where id = 1 or (age < 14)
 Db::query()->where('id', '=', 1)->whereBrackets(function(){
     // 直接返回字符串

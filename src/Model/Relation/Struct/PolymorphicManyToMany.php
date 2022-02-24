@@ -57,15 +57,19 @@ class PolymorphicManyToMany
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
+        $annotations = AnnotationManager::getPropertyAnnotations($className, $propertyName, [
+            JoinToMiddle::class,
+            JoinFromMiddle::class,
+        ], true, true);
         if ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
-            $joinToMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
+            $joinToMiddle = $annotations[JoinToMiddle::class];
             if (!$joinToMiddle instanceof JoinToMiddle)
             {
                 throw new \RuntimeException(sprintf('%s->%s has no @JoinToMiddle', $className, $propertyName));
             }
 
-            $joinFromMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
+            $joinFromMiddle = $annotations[JoinFromMiddle::class];
             if (!$joinFromMiddle instanceof JoinFromMiddle)
             {
                 throw new \RuntimeException(sprintf('%s->%s has no @JoinFromMiddle', $className, $propertyName));
@@ -80,10 +84,10 @@ class PolymorphicManyToMany
         else
         {
             /** @var JoinToMiddle|null $joinToMiddle */
-            $joinToMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
+            $joinToMiddle = $annotations[JoinToMiddle::class];
 
             /** @var JoinFromMiddle|null $joinFromMiddle */
-            $joinFromMiddle = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
+            $joinFromMiddle = $annotations[JoinFromMiddle::class];
 
             $this->leftField = '' === $annotation->field ? $joinToMiddle->field : $annotation->field;
             $this->middleLeftField = '' === $annotation->middleLeftField ? $joinToMiddle->middleField : $annotation->middleLeftField;

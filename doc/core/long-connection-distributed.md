@@ -156,6 +156,8 @@ Demo: `composer create-project imiphp/project-websocket:~2.0`
         'mode'         => \SWOOLE_BASE,
         //网关配置
         'workermanGateway' => [
+            // worker 名称，在不同的 worker 实例中必须不同，一般推荐环境变量来修改
+            'workerName'           => 'websocketWorker',
             'registerAddress'      => '127.0.0.1:13004', // 注册中心地址
             'worker_coroutine_num' => swoole_cpu_num(), // 每个 Worker 进程中的工作协程数量
             // 待处理任务通道长度
@@ -185,6 +187,7 @@ Demo: `composer create-project imiphp/project-websocket:~2.0`
     // Workerman 服务器配置
     'workermanServer' => [
         // Worker 配置
+        // worker 名称 websocket，在不同的 worker 实例中必须不同，一般推荐环境变量来修改
         'websocket' => [
             'namespace'   => '服务命名空间',
             'type'        => Imi\WorkermanGateway\Workerman\Server\Type::BUSINESS_WEBSOCKET, // WebSocket 业务服务器

@@ -17,7 +17,8 @@ use Imi\Facade\BaseFacade;
  * @method static \Lcobucci\JWT\Builder getBuilderInstance(string|null $name = NULL)
  * @method static \Lcobucci\JWT\Token|\Lcobucci\JWT\UnencryptedToken getToken(mixed $data, string|null $name = NULL, callable|null $beforeGetToken = NULL)
  * @method static \Lcobucci\JWT\Parser getParserInstance(string|null $name = NULL)
- * @method static \Lcobucci\JWT\Token|\Lcobucci\JWT\UnencryptedToken parseToken(string $jwt, string|null $name = NULL)
+ * @method static \Lcobucci\JWT\Token|\Lcobucci\JWT\UnencryptedToken parseToken(string $jwt, string|null $name = NULL, bool $validate = false)
+ * @method static void validate(string|null $name = NULL, \Lcobucci\JWT\Token $token)
  * @method static int getJwtPackageVersion()
  */
 abstract class JWT extends BaseFacade

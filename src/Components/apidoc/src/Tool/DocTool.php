@@ -17,6 +17,7 @@ use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Tool\ArgType;
 use Imi\Util\ClassObject;
+use Imi\Util\DocBlock;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\MediaType;
@@ -125,13 +126,12 @@ class DocTool extends BaseCommand
             ]);
             $analysis->addAnnotation($infoAnnotation, $context);
         }
-        $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
         // 遍历 imi 控制器类
         foreach ($controllerClasses as $controllerClass)
         {
             // 控制器注解
             /** @var Controller|null $controllerAnnotation */
-            $controllerAnnotation = AnnotationManager::getClassAnnotations($controllerClass, Controller::class)[0] ?? null;
+            $controllerAnnotation = AnnotationManager::getClassAnnotations($controllerClass, Controller::class, true, true);
             if (!$controllerAnnotation)
             {
                 continue;
@@ -155,7 +155,7 @@ class DocTool extends BaseCommand
                 {
                     // 自动增加个请求
                     /** @var Route $route */
-                    $route = AnnotationManager::getMethodAnnotations($controllerClass, $method, Route::class)[0] ?? null;
+                    $route = AnnotationManager::getMethodAnnotations($controllerClass, $method, Route::class, true, true);
 
                     // path
                     $requestPath = $route->url ?? $method;
@@ -172,7 +172,7 @@ class DocTool extends BaseCommand
                     }
                     else
                     {
-                        $docblock = $factory->create($comment);
+                        $docblock = DocBlock::getDocBlock($comment);
                         /** @var \phpDocumentor\Reflection\DocBlock\Tags\Param[] $docParams */
                         $docParams = $docblock->getTagsByName('param');
                     }

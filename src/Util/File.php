@@ -231,7 +231,7 @@ class File
      */
     public static function createDir(string $dir, int $mode = 0775): bool
     {
-        if (empty($dir))
+        if ('' === $dir)
         {
             return false;
         }
@@ -257,7 +257,7 @@ class File
      */
     public static function createFile(string $file, string $content = '', int $mode = 0775): bool
     {
-        if (empty($file))
+        if ('' === $file)
         {
             return false;
         }

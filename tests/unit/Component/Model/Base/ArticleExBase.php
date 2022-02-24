@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_article_ex 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\ArticleEx.name", default="tb_article_ex"), id={"article_id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\ArticleEx.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\ArticleEx.name", default="tb_article_ex"), usePrefix=true, id={"article_id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\ArticleEx.poolName"))
  * @DDL(sql="CREATE TABLE `tb_article_ex` (   `article_id` int(10) unsigned NOT NULL,   `data` json DEFAULT NULL,   PRIMARY KEY (`article_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null                                    $articleId
@@ -26,7 +26,7 @@ abstract class ArticleExBase extends Model
     /**
      * article_id.
      *
-     * @Column(name="article_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false)
+     * @Column(name="article_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $articleId = null;
 
@@ -55,7 +55,7 @@ abstract class ArticleExBase extends Model
     /**
      * data.
      *
-     * @Column(name="data", type="json", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="data", type="json", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
      *
      * @var \Imi\Util\LazyArrayObject|object|array|null
      */

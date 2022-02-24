@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_tree 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.name", default="tb_tree"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.name", default="tb_tree"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.poolName"))
  * @DDL(sql="CREATE TABLE `tb_tree` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL,   `name` varchar(32) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT; insert into `tb_tree` values(1,0,'a'); insert into `tb_tree` values(2,0,'b'); insert into `tb_tree` values(3,0,'c'); insert into `tb_tree` values(4,1,'a-1'); insert into `tb_tree` values(5,1,'a-2'); insert into `tb_tree` values(6,4,'a-1-1'); insert into `tb_tree` values(7,4,'a-1-2'); insert into `tb_tree` values(8,2,'b-1'); insert into `tb_tree` values(9,2,'b-2'); ", decode="")
  *
  * @property int|null    $id
@@ -27,7 +27,7 @@ abstract class TreeBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
      */
     protected ?int $id = null;
 
@@ -56,7 +56,7 @@ abstract class TreeBase extends Model
     /**
      * parent_id.
      *
-     * @Column(name="parent_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="parent_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $parentId = null;
 
@@ -85,7 +85,7 @@ abstract class TreeBase extends Model
     /**
      * name.
      *
-     * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
      */
     protected ?string $name = null;
 

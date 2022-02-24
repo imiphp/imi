@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_member_role_relation 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.name", default="tb_member_role_relation"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.name", default="tb_member_role_relation"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.poolName"))
  * @DDL(sql="CREATE TABLE `tb_member_role_relation` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL DEFAULT '0',   `member_id` int(10) unsigned NOT NULL,   `role_id` int(10) unsigned NOT NULL,   PRIMARY KEY (`id`),   KEY `member_id` (`member_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null $id
@@ -28,7 +28,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
      */
     protected ?int $id = null;
 
@@ -57,7 +57,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * type.
      *
-     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $type = 0;
 
@@ -86,7 +86,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * member_id.
      *
-     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $memberId = null;
 
@@ -115,7 +115,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * role_id.
      *
-     * @Column(name="role_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="role_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
      */
     protected ?int $roleId = null;
 

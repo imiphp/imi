@@ -157,12 +157,12 @@ class Env
         {
             return $default;
         }
-        if ('null' === strtolower($result))
+        $lower = strtolower($result);
+        if ('null' === $lower)
         {
             return null;
         }
 
-        $lower = strtolower($result);
         if ('true' === $lower || 'on' === $lower || '1' === $lower)
         {
             return true;
@@ -179,7 +179,7 @@ class Env
      *
      * @return array|object|null
      */
-    public static function json(string $varname = null, $default = null, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR)
+    public static function json(?string $varname = null, $default = null, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR)
     {
         $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
         if (false === $result)
@@ -206,7 +206,7 @@ class Env
         return $value;
     }
 
-    public static function list(string $varname = null, ?array $default = null, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
+    public static function list(?string $varname = null, ?array $default = null, string $separator = ',', int $limit = \PHP_INT_MAX): ?array
     {
         $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
         if (false === $result)
