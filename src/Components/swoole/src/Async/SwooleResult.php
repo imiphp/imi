@@ -33,6 +33,12 @@ class SwooleResult implements IAsyncResult
             throw $result['result'];
         }
 
-        return $result['result'];
+        $result = $result['result'];
+        if ($result instanceof IAsyncResult)
+        {
+            return $result->get($timeout);
+        }
+
+        return $result;
     }
 }

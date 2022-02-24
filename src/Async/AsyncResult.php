@@ -36,11 +36,7 @@ class AsyncResult implements IAsyncResult
         }
         if ($result instanceof IAsyncResult)
         {
-            $result = $this->result->get($timeout);
-            if ($result instanceof IAsyncResult)
-            {
-                $result = $result->get($timeout);
-            }
+            return $result->get($timeout);
         }
 
         return $result;
