@@ -106,8 +106,13 @@ abstract class BaseBuilder implements IBuilder
         $query = $this->query;
         foreach ($where as $item)
         {
+            $sql = $item->toStringWithoutLogic($query);
+            if ('' === $sql)
+            {
+                continue;
+            }
             $result[] = $item->getLogicalOperator();
-            $result[] = $item->toStringWithoutLogic($query);
+            $result[] = $sql;
             $binds = $item->getBinds();
             if ($binds)
             {
@@ -115,13 +120,14 @@ abstract class BaseBuilder implements IBuilder
             }
         }
         unset($result[0]);
-        $result = implode(' ', $result);
-        if ('' !== $result)
+        if ($result)
         {
-            $result = ' where ' . $result;
+            return ' where ' . implode(' ', $result);
         }
-
-        return $result;
+        else
+        {
+            return '';
+        }
     }
 
     /**
