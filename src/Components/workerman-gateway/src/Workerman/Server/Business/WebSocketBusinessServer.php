@@ -89,22 +89,30 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
         $property = $refClass->getProperty('_eventOnWebSocketConnect');
         $property->setAccessible(true);
         $property->setValue($worker, function (string $clientId, array $data) {
-            $request = new WorkermanRequest($this->worker, $clientId, $data);
+            try
+            {
+                $request = new WorkermanRequest($this->worker, $clientId, $data);
 
-            RequestContext::muiltiSet([
-                'server'       => $this,
-                'clientId'     => $clientId,
-            ]);
-            ConnectionContext::muiltiSet([
-                'uri'             => (string) $request->getUri(),
-                'dataParser'      => $this->config['dataParser'] ?? JsonObjectParser::class,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
-                'server'   => $this,
-                'clientId' => $clientId,
-                'request'  => $request,
-            ], $this);
-            RequestContext::destroy();
+                RequestContext::muiltiSet([
+                    'server'       => $this,
+                    'clientId'     => $clientId,
+                ]);
+                ConnectionContext::muiltiSet([
+                    'uri'             => (string) $request->getUri(),
+                    'dataParser'      => $this->config['dataParser'] ?? JsonObjectParser::class,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                    'request'  => $request,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $th)
+            {
+                Gateway::closeClient($clientId);
+                throw $th;
+            }
         });
 
         $property = $refClass->getProperty('_eventOnClose');
