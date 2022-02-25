@@ -57,10 +57,6 @@ return static function () {
                 $namespace = $input->getParameterOption('--app-namespace', false);
                 if (false === $namespace)
                 {
-                    if (IMI_IN_PHAR)
-                    {
-                        App::set(AppContexts::APP_PATH, IMI_APP_ROOT, true);
-                    }
                     $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)));
                     $config = include File::path($appPath, 'config/config.php');
                     if (!isset($config['namespace']))
