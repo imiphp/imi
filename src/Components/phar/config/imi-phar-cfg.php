@@ -30,4 +30,11 @@ return [
 
     // 传入 symfony/finder 实例，支持多个，完全自定义扫描的内容。
     'finder' => [],
+
+    // 压缩算法，一旦启用压缩，则执行环境也必须加载对应的依赖库
+    // 可选值：
+    //   - \Phar::NONE : 不压缩
+    //   - \Phar::GZ   : 必须启用扩展 zlib
+    //   - \Phar::BZ2  : 必须启用扩展 bzip2
+    'compression' => \Phar::GZ,
 ];

@@ -76,6 +76,7 @@ class PharBuildCommand extends Command
         }
 
         $phar = new PharService(
+            $output,
             $baseDir,
             $config,
         );

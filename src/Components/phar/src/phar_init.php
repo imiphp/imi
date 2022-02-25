@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 use Imi\App;
@@ -20,6 +19,3 @@ use Imi\AppContexts;
         App::set(AppContexts::APP_PATH, IMI_APP_ROOT, true);
     }
 })();
-
-//$main = require IMI_APP_ROOT . '/vendor/imiphp/imi-swoole/bootstrap.php';
-//$main();
