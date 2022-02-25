@@ -210,6 +210,15 @@ span.tmpzTreeMove_arrow {
 	text-decoration: none;
 }
 
+.markdown-body h1 > a
+,.markdown-body h2 > a
+,.markdown-body h3 > a
+,.markdown-body h4 > a
+,.markdown-body h5 > a
+,.markdown-body h6 > a {
+	color: inherit;
+}
+
 .markdown-body a:active, .markdown-body a:hover {
 	outline: 0;
 	text-decoration: underline;
