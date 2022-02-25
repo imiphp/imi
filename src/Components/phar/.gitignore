@@ -1,0 +1,6 @@
+vendor
+composer.lock
+/ide-helper
+.runtime
+*.log
+*.pid

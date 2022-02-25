@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use Imi\Phar\PharBuildCommand;
+use Imi\Phar\PharHandler;
+use Symfony\Component\Console\Application;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+(function () {
+    $phar = new PharHandler('imi-phar');
+    $phar->check();
+
+    $app     = new Application('imi phar', '1.0.0');
+    $command = new PharBuildCommand();
+    $app->add($command);
+    $app->setDefaultCommand($command->getName(), true);
+    $app->run();
+})();
