@@ -7,7 +7,7 @@
 * [RPC](https://github.com/imiphp/imi-rpc)
 * [gRPC](/components/rpc/grpc.html)
 * [Hprose](/components/rpc/hprose.html)
-* [消息队列](/components/rpc/redis.html)
+* [消息队列](/components/mq/redis.html)
 * [AMQP](/components/mq/amqp.html)
 * [Kafka](/components/mq/kafka.html)
 * [JWT](/components/httpserver/jwt.html)
