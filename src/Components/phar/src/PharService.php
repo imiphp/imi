@@ -62,6 +62,7 @@ class PharService
         var_dump($this);
 
         $phar = new Phar($outputPhar, 0, 'imi.phar');
+        // todo 支持私钥签名
         $phar->setSignatureAlgorithm(Phar::SHA256);
 
         $phar->startBuffering();
@@ -93,11 +94,6 @@ class PharService
 
         $phar->stopBuffering();
 //        $phar->compressFiles(Phar::GZ);
-
-        //        $phar = new Phar($this->outputPhar);
-        //        $phar->buildFromDirectory(dirname(__FILE__));
-        //        $phar->setStub($phar->createDefaultStub('c.php','c.php'));
-        //        $phar->compressFiles(Phar::GZ);
     }
 
     protected function filesProvider(): \Generator
@@ -107,7 +103,9 @@ class PharService
             ->in(array_map(fn($dir) => $this->baseDir . DIRECTORY_SEPARATOR . $dir, $this->dirs))
             ->ignoreVCS(true);
 
-//        $this->setBaseFilter($finder);
+        $finder->notName(Constant::CFG_FILE_NAME);
+
+        $this->setBaseFilter($finder);
 
         if ($this->excludeDirs) {
             $finder->exclude($this->excludeDirs);
@@ -138,7 +136,7 @@ class PharService
             ->in($this->baseDir . DIRECTORY_SEPARATOR . 'vendor')
             ->ignoreVCS(true);
 
-        $finder->notName(["/LICENSE|.*\\.md|.*\\.dist|Makefile|composer\\.json|composer\\.lock/"]);
+        $finder->notName(["/LICENSE|.*\\.md|.*\\.dist|Makefile/"]);
         $finder->exclude([
             "doc",
             "test",
