@@ -34,6 +34,10 @@ class AutoLoader
     public function __construct(ClassLoader $composerClassLoader)
     {
         $this->composerClassLoader = $composerClassLoader;
+        if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
+        {
+            $this->composerClassLoader->setClassMapAuthoritative(false);
+        }
         $this->hasSwoole = \extension_loaded('swoole');
         $this->lockFileDir = getenv('IMI_MACRO_LOCK_FILE_DIR') ?: '';
         $this->outputDir = getenv('IMI_MACRO_OUTPUT_DIR') ?: '';

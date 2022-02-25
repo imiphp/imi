@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace
 {
-    \define('IMI_IN_PHAR', (bool) \Phar::running(false));
-    \define('IMI_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : realpath(getcwd()));
-    \define('IMI_RUNNING_ROOT', realpath(getcwd()));
+    \defined('IMI_IN_PHAR') || \define('IMI_IN_PHAR', (bool) \Phar::running(false));
+    \defined('IMI_APP_ROOT') || \define('IMI_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : realpath(getcwd()));
+    \defined('IMI_RUNNING_ROOT') || \define('IMI_RUNNING_ROOT', realpath(getcwd()));
 
     use Imi\Env;
     use Imi\RequestContext;
