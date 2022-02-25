@@ -413,4 +413,14 @@ class IndexController extends HttpController
     public function duplicated2(): void
     {
     }
+
+    /**
+     * 忽略大小写.
+     *
+     * @Action
+     * @Route(ignoreCase=true)
+     */
+    public function ignoreCase(): void
+    {
+    }
 }
