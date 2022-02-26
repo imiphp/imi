@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\HttpServer\Tests;
 
 use Imi\Util\Http\Consts\MediaType;
+use Imi\Util\Http\Consts\StatusCode;
 use Yurun\Util\HttpRequest;
 use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 
@@ -292,5 +293,14 @@ class RequestTest extends BaseTest
             'id2'   => 123,
             'id3'   => '123',
         ]), $response->body());
+    }
+
+    public function testIgnoreCase(): void
+    {
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'ignoreCase');
+        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
+        $response = $http->get($this->host . 'IgnoreCase');
+        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
     }
 }
