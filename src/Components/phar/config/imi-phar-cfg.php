@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // 以下输入的路径，无特殊说明都请写入当前工作目录中的相对路径
 return [
     // 构建产物

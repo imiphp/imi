@@ -9,13 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function copy;
-use function getcwd;
-use function implode;
-use function in_array;
-use function is_array;
-use function is_file;
-use function sprintf;
 
 class PharBuildCommand extends Command
 {
@@ -37,41 +30,55 @@ class PharBuildCommand extends Command
         $checkConfig = is_file($configFile);
 
         $output->writeln("project dir : <info>{$baseDir}</info>");
-        $output->writeln(sprintf("check config: <info>%s</info>", $checkConfig ? '<info>success</info>' : '<comment>fail</comment>'));
+        $output->writeln(sprintf('check config: <info>%s</info>', $checkConfig ? '<info>success</info>' : '<comment>fail</comment>'));
 
-        if ($input->getOption('init')) {
+        if ($input->getOption('init'))
+        {
             // todo 文件存在情况下需要应答确认
             copy(__DIR__ . '/../config/imi-phar-cfg.php', $configFile);
             $output->writeln("write {$configFile} ...");
             $output->writeln('configuration file initialization completed.');
+
             return self::SUCCESS;
         }
 
-        if (!$checkConfig) {
+        if (!$checkConfig)
+        {
             $output->writeln('config file does not exist, execute "vendor/bin/imi-phar --init" initialize configuration file.');
+
             return self::INVALID;
         }
 
-        try {
+        try
+        {
             $config = require $configFile;
-        } catch (\Throwable $exception) {
+        }
+        catch (\Throwable $exception)
+        {
             $output->writeln('config load fail: ' . $exception);
+
             return self::FAILURE;
         }
 
-        if (!is_array($config)) {
+        if (!\is_array($config))
+        {
             $output->writeln('config load fail: invalid config');
+
             return self::FAILURE;
         }
 
         $container = $input->getArgument('container');
-        if (empty($container)) {
+        if (empty($container))
+        {
             $output->writeln('invalid container value');
+
             return self::INVALID;
         }
 
-        if (!in_array($container, Constant::CONTAINER_SET)) {
+        if (!\in_array($container, Constant::CONTAINER_SET))
+        {
             $output->writeln('invalid container value');
+
             return self::INVALID;
         }
 

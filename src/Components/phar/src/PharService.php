@@ -1,34 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Phar;
 
 use Phar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use function array_map;
-use function dirname;
-use function file_exists;
-use function getcwd;
-use function is_dir;
-use function is_file;
-use function mkdir;
-use function realpath;
-use function str_starts_with;
-use function unlink;
-use function var_dump;
 
 class PharService
 {
     protected OutputInterface $output;
 
     protected string $outputPhar;
-    protected string $baseDir      = '';
-    protected array  $dirs         = [];
-    protected array  $files        = [];
-    protected array  $excludeDirs  = [];
+    protected string $baseDir = '';
+    protected array  $dirs = [];
+    protected array  $files = [];
+    protected array  $excludeDirs = [];
     protected array  $excludeFiles = [];
-    protected array  $finder       = [];
-    protected int    $compression  = \Phar::NONE;
+    protected array  $finder = [];
+    protected int    $compression = \Phar::NONE;
 
     /**
      * @var bool|Finder
@@ -37,32 +28,35 @@ class PharService
 
     public function __construct(OutputInterface $output, string $baseDir, array $config)
     {
-        $this->output  = $output;
+        $this->output = $output;
         $this->baseDir = $baseDir;
 
         $this->outputPhar = $config['output'] ?? 'build/imi.phar';
-        if (!str_starts_with($this->outputPhar, '/') && !str_starts_with($this->outputPhar, '\\')) {
-            $this->outputPhar = getcwd() . DIRECTORY_SEPARATOR . $this->outputPhar;
+        if (!str_starts_with($this->outputPhar, '/') && !str_starts_with($this->outputPhar, '\\'))
+        {
+            $this->outputPhar = getcwd() . \DIRECTORY_SEPARATOR . $this->outputPhar;
         }
 
-        $this->dirs         = $config['dirs'] ?? [];
-        $this->files        = $config['files'] ?? [];
-        $this->excludeDirs  = $config['excludeDirs'] ?? [];
+        $this->dirs = $config['dirs'] ?? [];
+        $this->files = $config['files'] ?? [];
+        $this->excludeDirs = $config['excludeDirs'] ?? [];
         $this->excludeFiles = $config['excludeFiles'] ?? [];
-        $this->finder       = $config['finder'] ?? [];
+        $this->finder = $config['finder'] ?? [];
 
-        $this->compression  = $config['compression'] ?? \Phar::NONE;
+        $this->compression = $config['compression'] ?? \Phar::NONE;
     }
 
     public function build(string $container)
     {
         $outputPhar = $this->outputPhar;
-        $outputDir  = dirname($outputPhar);
-        if (!is_dir($outputDir)) {
+        $outputDir = \dirname($outputPhar);
+        if (!is_dir($outputDir))
+        {
             mkdir($outputDir, 0755, true);
         }
 
-        if (file_exists($outputPhar)) {
+        if (file_exists($outputPhar))
+        {
             unlink($outputPhar);
         }
 
@@ -72,34 +66,38 @@ class PharService
 
         $phar->startBuffering();
         // filesProviderAggregate
-        if ($this->dirs) {
+        if ($this->dirs)
+        {
             $phar->buildFromIterator($this->filesProvider(), $this->baseDir);
         }
-        if (false !== $this->vendorScan) {
+        if (false !== $this->vendorScan)
+        {
             $phar->buildFromIterator($this->vendorProvider(), $this->baseDir);
         }
-        if ($this->finder) {
+        if ($this->finder)
+        {
             $phar->buildFromIterator($this->finderProvider(), $this->baseDir);
         }
         $phar->addFile(__DIR__ . '/phar_init.php', '__stub_init.php');
 
         $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$container];
         $stub = <<<PHP
-            #!/usr/bin/env php
-            <?php
-            Phar::mapPhar('imi.phar');
-            require 'phar://imi.phar/__stub_init.php';
+        #!/usr/bin/env php
+        <?php
+        Phar::mapPhar('imi.phar');
+        require 'phar://imi.phar/__stub_init.php';
 
-            \$main = require IMI_APP_ROOT . '/{$bootstrapFile}';
-            \$main();
-            __HALT_COMPILER();
-            PHP;
+        \$main = require IMI_APP_ROOT . '/{$bootstrapFile}';
+        \$main();
+        __HALT_COMPILER();
+        PHP;
 
         $phar->setStub($stub);
 
         $phar->stopBuffering();
 
-        if (\Phar::NONE !== $this->compression) {
+        if (\Phar::NONE !== $this->compression)
+        {
             $phar->compressFiles($this->compression);
         }
     }
@@ -108,29 +106,34 @@ class PharService
     {
         $finder = (new Finder())
             ->files()
-            ->in(array_map(fn($dir) => $this->baseDir . DIRECTORY_SEPARATOR . $dir, $this->dirs))
+            ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->dirs))
             ->ignoreVCS(true);
 
         $finder->notName(Constant::CFG_FILE_NAME);
 
         $this->setBaseFilter($finder);
 
-        if ($this->excludeDirs) {
+        if ($this->excludeDirs)
+        {
             $finder->exclude($this->excludeDirs);
         }
-        if ($this->excludeFiles) {
+        if ($this->excludeFiles)
+        {
             $finder->notName($this->excludeFiles);
         }
 
-        foreach ($finder as $filename => $_) {
+        foreach ($finder as $filename => $_)
+        {
             // var_dump("> {$filename}");
             yield $filename;
         }
 
-        foreach ($this->files as $file) {
-            $filename = $this->baseDir . DIRECTORY_SEPARATOR . $file;
+        foreach ($this->files as $file)
+        {
+            $filename = $this->baseDir . \DIRECTORY_SEPARATOR . $file;
             // var_dump("> {$filename}");
-            if (!is_file($filename)) {
+            if (!is_file($filename))
+            {
                 continue;
             }
             yield $filename;
@@ -139,28 +142,31 @@ class PharService
 
     protected function vendorProvider(): \Generator
     {
-        if ($this->vendorScan instanceof Finder) {
+        if ($this->vendorScan instanceof Finder)
+        {
             yield from $this->vendorScan;
+
             return;
         }
 
         $finder = (new Finder())
             ->files()
-            ->in($this->baseDir . DIRECTORY_SEPARATOR . 'vendor')
+            ->in($this->baseDir . \DIRECTORY_SEPARATOR . 'vendor')
             ->ignoreVCS(true);
 
-        $finder->notName(["/LICENSE|.*\\.md|.*\\.dist|Makefile/"]);
+        $finder->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/']);
         $finder->exclude([
-            "doc",
-            "test",
-            "test_old",
-            "tests",
-            "Tests",
-            "vendor-bin",
-            "vendor/bin",
+            'doc',
+            'test',
+            'test_old',
+            'tests',
+            'Tests',
+            'vendor-bin',
+            'vendor/bin',
         ]);
 
-        foreach ($finder as $filename => $_) {
+        foreach ($finder as $filename => $_)
+        {
             // var_dump("> {$filename}");
             yield $filename;
         }
@@ -168,8 +174,10 @@ class PharService
 
     protected function finderProvider(): \Generator
     {
-        foreach ($this->finder as $finder) {
-            if ($finder instanceof Finder) {
+        foreach ($this->finder as $finder)
+        {
+            if ($finder instanceof Finder)
+            {
                 yield from $finder;
             }
         }
