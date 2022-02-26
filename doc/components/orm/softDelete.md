@@ -64,3 +64,31 @@ public function __generateSoftDeleteValue()
     return time();
 }
 ```
+
+### 查询
+
+如果模型引入了软删除机制，使用 `XXXModel::find()`、`XXXModel::query()` 等方式查询时，自动过滤被软删除的数据。
+
+如果需要查询到被软删除的数据，请使用 `XXXModel::findDeleted()`、`XXXModel::originQuery()` 获取查询构建器。
+
+### 删除
+
+**软删除：**
+
+```php
+XXXModel::find(1)->delete();
+```
+
+**物理删除：**
+
+```php
+XXXModel::find(1)->hardDelete();
+```
+
+### 恢复记录
+
+恢复被软删除的记录：
+
+```php
+XXXModel::findDeleted(1)-restore();
+```
