@@ -28,7 +28,7 @@ let modal_1 = new mModal({
    width: "30%",
    content: "<p style=\"text-align:center;\">给项目点个star,也是一种帮助哦<br /><br />开源不求盈利，多少都是心意，生活不易，随缘随缘<br /><br /><br /><img src=\"" + pay + "\"></p>",
    cancelText: "star为敬", // 取消按钮文本
-   confirmText: "捐赠列表", // 确定按钮文本
+   confirmText: "点我查看捐赠列表", // 确定按钮文本
    showCancelButton: true, // 是否显示取消按钮
    showConfirmButton: true, // 是否显示确定按钮	  
    showClose: true, // 是否显示关闭按钮
