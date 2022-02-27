@@ -15,8 +15,6 @@ use Imi\Util\System;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use function sprintf;
-use function substr;
 
 class CliApp extends BaseApp
 {

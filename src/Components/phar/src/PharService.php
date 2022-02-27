@@ -7,12 +7,6 @@ namespace Imi\Phar;
 use Phar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use function date;
-use function file_exists;
-use function sprintf;
-use function time;
-use function var_dump;
-use function var_export;
 
 class PharService
 {
@@ -75,17 +69,21 @@ class PharService
             unlink($outputPhar);
         }
 
-        if (!file_exists($this->baseDir . DIRECTORY_SEPARATOR . '.git')) {
+        if (!file_exists($this->baseDir . \DIRECTORY_SEPARATOR . '.git'))
+        {
             $this->output->writeln('dump git info: <comment>not support</comment>');
-        } else {
+        }
+        else
+        {
             $this->output->writeln('dump git info: <info>support</info>');
             $this->gitInfo = Helper::resolveGitInfo($this->baseDir, $this->output);
-            foreach ($this->gitInfo as $key => $value) {
+            foreach ($this->gitInfo as $key => $value)
+            {
                 $this->output->writeln(sprintf('  > git %s: %s', $key, $value ?? 'null'));
             }
         }
 
-        $this->output->writeln(sprintf('build date: <info>%s</info>', date(DATE_ATOM, $this->buildTime)));
+        $this->output->writeln(sprintf('build date: <info>%s</info>', date(\DATE_ATOM, $this->buildTime)));
 
         $phar = new Phar($outputPhar, 0, 'imi.phar');
         // todo 支持私钥签名
@@ -125,7 +123,8 @@ class PharService
 
     protected function buildGitInfoCode(): string
     {
-        if (null === $this->gitInfo) {
+        if (null === $this->gitInfo)
+        {
             return '';
         }
 
@@ -146,7 +145,7 @@ class PharService
         // none
         $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$container];
 
-        $buildDate = date(DATE_ATOM, $this->buildTime);
+        $buildDate = date(\DATE_ATOM, $this->buildTime);
 
         $gitInfoCode = $this->buildGitInfoCode();
 

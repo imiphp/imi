@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Phar;
 
 use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use function file_exists;
-use function trim;
 
 class Helper
 {
     /**
-     * @param string          $path
-     * @param OutputInterface $output
      * @return array{hash: string, branch: string, tag: string}
      */
     public static function resolveGitInfo(string $path, OutputInterface $output): array
@@ -24,27 +22,36 @@ class Helper
             'tag'    => null,
         ];
 
-        try {
+        try
+        {
             $result['hash'] = self::resolveGitHash($path);
-        } catch (RuntimeException $exception) {
+        }
+        catch (RuntimeException $exception)
+        {
             $output->writeln("<comment>warning</comment>: git hash get failed, {$exception->getMessage()}");
         }
-        try {
+        try
+        {
             $result['branch'] = self::resolveGitBranch($path);
-        } catch (RuntimeException $exception) {
+        }
+        catch (RuntimeException $exception)
+        {
             $output->writeln("<comment>warning</comment>: git branch get failed, {$exception->getMessage()}");
         }
-        try {
+        try
+        {
             $result['tag'] = self::resolveGitTag($path);
-        } catch (RuntimeException $exception) {
-            $output->writeln("<comment>warning</comment>: git tag get failed, {$exception->getMessage()}",);
+        }
+        catch (RuntimeException $exception)
+        {
+            $output->writeln("<comment>warning</comment>: git tag get failed, {$exception->getMessage()}", );
         }
 
         return $result;
     }
 
     /**
-     * @link https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L2178-L2187
+     * @see https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L2178-L2187
      */
     private static function resolveGitHash(string $path): string
     {
@@ -57,7 +64,7 @@ class Helper
     }
 
     /**
-     * @link https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L2206-L2209
+     * @see https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L2206-L2209
      */
     private static function resolveGitTag(string $path): string
     {
@@ -69,24 +76,18 @@ class Helper
      *
      * @return string The trimmed output from the command
      *
-     * @link https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L2227-L2246
+     * @see https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L2227-L2246
      */
     private static function runGitCommand(string $command, string $path): string
     {
         $process = Process::fromShellCommandline($command, $path);
         $process->run();
 
-        if ($process->isSuccessful()) {
+        if ($process->isSuccessful())
+        {
             return trim($process->getOutput());
         }
 
-        throw new RuntimeException(
-            sprintf(
-                'Unable to execute git command: %s',
-                trim($process->getErrorOutput()),
-            ),
-            0,
-            new ProcessFailedException($process),
-        );
+        throw new RuntimeException(sprintf('Unable to execute git command: %s', trim($process->getErrorOutput()), ), 0, new ProcessFailedException($process), );
     }
 }
