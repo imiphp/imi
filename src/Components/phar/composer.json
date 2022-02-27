@@ -8,7 +8,8 @@
         "symfony/console": "^5.4",
         "symfony/polyfill-php80": "^1.23",
         "symfony/finder": "^5.4",
-        "composer/xdebug-handler": "^3.0"
+        "composer/xdebug-handler": "^3.0",
+        "symfony/process": "^5.4"
     },
     "autoload": {
         "psr-4": {

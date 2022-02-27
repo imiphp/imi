@@ -7,6 +7,12 @@ namespace Imi\Phar;
 use Phar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use function date;
+use function file_exists;
+use function sprintf;
+use function time;
+use function var_dump;
+use function var_export;
 
 class PharService
 {
@@ -25,6 +31,12 @@ class PharService
      * @var bool|Finder
      */
     protected $vendorScan = true;
+    /**
+     * @var array{hash: string, branch: string, tag: string}|null
+     */
+    protected ?array $gitInfo = null;
+
+    protected int $buildTime;
 
     public function __construct(OutputInterface $output, string $baseDir, array $config)
     {
@@ -43,7 +55,10 @@ class PharService
         $this->excludeFiles = $config['excludeFiles'] ?? [];
         $this->finder = $config['finder'] ?? [];
 
-        $this->compression = $config['compression'] ?? \Phar::NONE;
+        // 暂时禁止压缩 $config['compression']
+        $this->compression = \Phar::NONE;
+
+        $this->buildTime = time();
     }
 
     public function build(string $container)
@@ -60,9 +75,23 @@ class PharService
             unlink($outputPhar);
         }
 
+        if (!file_exists($this->baseDir . DIRECTORY_SEPARATOR . '.git')) {
+            $this->output->writeln('dump git info: <comment>not support</comment>');
+        } else {
+            $this->output->writeln('dump git info: <info>support</info>');
+            $this->gitInfo = Helper::resolveGitInfo($this->baseDir, $this->output);
+            foreach ($this->gitInfo as $key => $value) {
+                $this->output->writeln(sprintf('  > git %s: %s', $key, $value ?? 'null'));
+            }
+        }
+
+        $this->output->writeln(sprintf('build date: <info>%s</info>', date(DATE_ATOM, $this->buildTime)));
+
         $phar = new Phar($outputPhar, 0, 'imi.phar');
         // todo 支持私钥签名
         $phar->setSignatureAlgorithm(Phar::SHA256);
+
+        $this->output->writeln('add files...');
 
         $phar->startBuffering();
         // filesProviderAggregate
@@ -80,10 +109,55 @@ class PharService
         }
         $phar->addFile(__DIR__ . '/phar_init.php', '__stub_init.php');
 
+        $this->output->writeln('add files done');
+
+        $phar->setStub($this->buildStud($container));
+
+        $phar->stopBuffering();
+
+        $this->output->writeln('output phar file: ' . $this->outputPhar);
+
+        if (\Phar::NONE !== $this->compression)
+        {
+            $phar->compressFiles($this->compression);
+        }
+    }
+
+    protected function buildGitInfoCode(): string
+    {
+        if (null === $this->gitInfo) {
+            return '';
+        }
+
+        return sprintf(
+            <<<PHP
+            \define('IMI_PHAR_BUILD_GIT_HASH', %s);
+            \define('IMI_PHAR_BUILD_GIT_BRANCH', %s);
+            \define('IMI_PHAR_BUILD_GIT_TAG', %s);
+            PHP,
+            var_export($this->gitInfo['hash'], true),
+            var_export($this->gitInfo['branch'], true),
+            var_export($this->gitInfo['tag'], true),
+        );
+    }
+
+    protected function buildStud(string $container): string
+    {
+        // none
         $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$container];
-        $stub = <<<PHP
+
+        $buildDate = date(DATE_ATOM, $this->buildTime);
+
+        $gitInfoCode = $this->buildGitInfoCode();
+
+        return <<<PHP
         #!/usr/bin/env php
         <?php
+
+        \define('IMI_PHAR_BUILD_TIME', {$this->buildTime});
+        \define('IMI_PHAR_BUILD_DATE', '{$buildDate}');
+        {$gitInfoCode}
+
         Phar::mapPhar('imi.phar');
         require 'phar://imi.phar/__stub_init.php';
 
@@ -91,15 +165,6 @@ class PharService
         \$main();
         __HALT_COMPILER();
         PHP;
-
-        $phar->setStub($stub);
-
-        $phar->stopBuffering();
-
-        if (\Phar::NONE !== $this->compression)
-        {
-            $phar->compressFiles($this->compression);
-        }
     }
 
     protected function filesProvider(): \Generator
