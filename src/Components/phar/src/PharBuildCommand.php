@@ -82,6 +82,8 @@ class PharBuildCommand extends Command
             return self::INVALID;
         }
 
+        // todo 支持自动禁用热更新
+
         $phar = new PharService(
             $output,
             $baseDir,

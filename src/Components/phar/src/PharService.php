@@ -29,6 +29,7 @@ class PharService
      * @var array{hash: string, branch: string, tag: string}|null
      */
     protected ?array $gitInfo = null;
+    protected bool $dumpGitInfo;
 
     protected int $buildTime;
 
@@ -53,6 +54,7 @@ class PharService
         $this->compression = \Phar::NONE;
 
         $this->buildTime = time();
+        $this->dumpGitInfo = $config['dumpGitInfo'] ?? true;
     }
 
     public function build(string $container)
@@ -69,7 +71,7 @@ class PharService
             unlink($outputPhar);
         }
 
-        if (!file_exists($this->baseDir . \DIRECTORY_SEPARATOR . '.git'))
+        if (!$this->dumpGitInfo || !file_exists($this->baseDir . \DIRECTORY_SEPARATOR . '.git'))
         {
             $this->output->writeln('dump git info: <comment>not support</comment>');
         }
