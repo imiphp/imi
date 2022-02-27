@@ -320,7 +320,7 @@ class App
         }
         else
         {
-            return sprintf('%s', IMI_PHAR_BUILD_DATE);
+            return IMI_PHAR_BUILD_DATE;
         }
     }
 
