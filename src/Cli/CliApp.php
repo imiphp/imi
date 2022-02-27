@@ -15,6 +15,8 @@ use Imi\Util\System;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use function sprintf;
+use function substr;
 
 class CliApp extends BaseApp
 {
@@ -30,7 +32,16 @@ class CliApp extends BaseApp
         parent::__construct($namespace);
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
-        $this->cli = $cli = new Application('imi', App::getImiPrettyVersion());
+
+        $version = IMI_IN_PHAR
+            ? sprintf(
+                '%s, app build %s',
+                App::getImiPrettyVersion(),
+                App::getAppPharBuildVersion()
+            )
+            : App::getImiPrettyVersion();
+
+        $this->cli = $cli = new Application('imi', $version);
         $cli->setDispatcher($dispatcher);
         $cli->setCatchExceptions(false);
 
@@ -236,6 +247,7 @@ class CliApp extends BaseApp
         $output->writeln('<info>Version:</info> v' . \PHP_VERSION);
         $output->writeln("<info>{$serverName}:</info> v{$serverVer}");
         $output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
+        $output->writeln('<info>AppBuild:</info> ' . App::getAppPharBuildVersion());
         $output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
         $output->writeln('<info>Opcache:</info> ' . Imi::getOpcacheInfo());
 
