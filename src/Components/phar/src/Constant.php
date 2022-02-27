@@ -18,5 +18,11 @@ class Constant
         'roadrunner' => 'vendor/imiphp/imi-roadrunner/bootstrap.php',
     ];
 
+    public const CONTAINER_PACKAGE = [
+        'swoole'     => 'imiphp/imi-swoole',
+        'workerman'  => 'imiphp/imi-workerman',
+        'roadrunner' => 'imiphp/imi-roadrunner',
+    ];
+
     public const CFG_FILE_NAME = '.imi-phar-cfg.php';
 }

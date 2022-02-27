@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
+use Composer\InstalledVersions;
 use Phar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use function array_keys;
+use function array_map;
+use function var_dump;
+use function var_export;
 
 class PharService
 {
@@ -121,6 +126,20 @@ class PharService
         {
             $phar->compressFiles($this->compression);
         }
+    }
+
+    public function checkContainer(string $container): bool
+    {
+        $package = Constant::CONTAINER_PACKAGE[$container];
+
+        if (InstalledVersions::isInstalled($package))
+        {
+            return true;
+        }
+
+        $this->output->writeln("<error>container {$container} requires package {$package}.</error>");
+
+        return false;
     }
 
     protected function buildGitInfoCode(): string

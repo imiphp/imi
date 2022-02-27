@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use function is_dir;
+use function is_file;
 
 class PharBuildCommand extends Command
 {
@@ -49,6 +51,12 @@ class PharBuildCommand extends Command
             return self::INVALID;
         }
 
+        $projectAutoload = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        if (is_file($projectAutoload))
+        {
+            require $projectAutoload;
+        }
+
         try
         {
             $config = require $configFile;
@@ -75,13 +83,6 @@ class PharBuildCommand extends Command
             return self::INVALID;
         }
 
-        if (!\in_array($container, Constant::CONTAINER_SET))
-        {
-            $output->writeln('invalid container value');
-
-            return self::INVALID;
-        }
-
         // todo 支持自动禁用热更新
 
         $phar = new PharService(
@@ -89,6 +90,19 @@ class PharBuildCommand extends Command
             $baseDir,
             $config,
         );
+
+        if (!\in_array($container, Constant::CONTAINER_SET))
+        {
+            $output->writeln('invalid container value');
+
+            return self::INVALID;
+        }
+
+        if (!$phar->checkContainer($container))
+        {
+            return self::INVALID;
+        }
+
         $phar->build($container);
 
         return self::SUCCESS;
