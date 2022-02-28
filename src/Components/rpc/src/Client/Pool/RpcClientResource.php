@@ -61,6 +61,6 @@ class RpcClientResource extends BasePoolResource
      */
     public function checkState(): bool
     {
-        return $this->client->isConnected();
+        return $this->client->checkConnected();
     }
 }

@@ -16,20 +16,19 @@ class DefaultGrpcErrorHandler implements IErrorHandler
     {
         /** @var \Imi\Server\Http\Message\Response $response */
         $response = RequestContext::get('response');
-        $response = $response->withHeader(RequestHeader::CONTENT_TYPE, MediaType::GRPC_PROTO);
-        if (!$response->getHeaderLine(RequestHeader::TRAILER))
+        $response->setHeader(RequestHeader::CONTENT_TYPE, MediaType::GRPC_PROTO);
+        if (!$response->hasHeader(RequestHeader::TRAILER))
         {
-            $response = $response->withAddedHeader(RequestHeader::TRAILER, 'grpc-status, grpc-message');
+            $response->setHeader(RequestHeader::TRAILER, 'grpc-status, grpc-message');
         }
-        if (!$response->getTrailer('grpc-status'))
+        if (!$response->hasTrailer('grpc-status'))
         {
-            $response = $response->withTrailer('grpc-status', (string) $this->getGrpcStatus($throwable));
+            $response->setTrailer('grpc-status', (string) $this->getGrpcStatus($throwable));
         }
-        if (!$response->getTrailer('grpc-message'))
+        if (!$response->hasTrailer('grpc-message'))
         {
-            $response = $response->withTrailer('grpc-message', $this->getGrpcMessage($throwable));
+            $response->setTrailer('grpc-message', $this->getGrpcMessage($throwable));
         }
-        /** @var \Imi\Server\Http\Message\Response $response */
         $response->send();
 
         return false;
