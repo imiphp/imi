@@ -105,6 +105,14 @@ class GrpcClient implements IRpcClient
     }
 
     /**
+     * 实时检查是否已连接.
+     */
+    public function checkConnected(): bool
+    {
+        return $this->http2Client->ping();
+    }
+
+    /**
      * 获取实例对象
      */
     public function getInstance(): SwooleClient
