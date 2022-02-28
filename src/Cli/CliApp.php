@@ -245,7 +245,10 @@ class CliApp extends BaseApp
         $output->writeln('<info>Version:</info> v' . \PHP_VERSION);
         $output->writeln("<info>{$serverName}:</info> v{$serverVer}");
         $output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
-        $output->writeln('<info>AppBuild:</info> ' . App::getAppPharBuildVersion());
+        if (IMI_IN_PHAR)
+        {
+            $output->writeln('<info>AppBuild:</info> ' . App::getAppPharBuildVersion());
+        }
         $output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
         $output->writeln('<info>Opcache:</info> ' . Imi::getOpcacheInfo());
 

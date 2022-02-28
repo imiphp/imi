@@ -308,7 +308,7 @@ class App
         return empty($hash) ? $version : "{$version} ($hash)";
     }
 
-    public static function getAppPharBuildVersion(): string
+    public static function getAppPharBuildVersion(): ?string
     {
         if (IMI_PHAR_BUILD_GIT_HASH)
         {
