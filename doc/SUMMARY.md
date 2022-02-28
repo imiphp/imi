@@ -57,7 +57,7 @@
 ## Http 服务
 
 * [路由](components/httpserver/route.md)
-* [请求拦截](components/httpserver/intercept.md)
+* [请求拦截](components/httpserver/aop.md)
   * [AOP 拦截请求](components/httpserver/aop.md)
   * [中间件](components/httpserver/middleware.md)
 * [控制器](components/httpserver/controller.md)
