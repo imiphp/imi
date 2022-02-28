@@ -91,13 +91,6 @@ class PharBuildCommand extends Command
             $config,
         );
 
-        if (!\in_array($container, Constant::CONTAINER_SET))
-        {
-            $output->writeln('invalid container value');
-
-            return self::INVALID;
-        }
-
         if (!$phar->checkContainer($container))
         {
             return self::INVALID;

@@ -130,6 +130,13 @@ class PharService
 
     public function checkContainer(string $container): bool
     {
+        if (!\in_array($container, Constant::CONTAINER_SET))
+        {
+            $this->output->writeln('invalid container value');
+
+            return false;
+        }
+
         $package = Constant::CONTAINER_PACKAGE[$container];
 
         if (InstalledVersions::isInstalled($package))
@@ -169,6 +176,8 @@ class PharService
         $buildDate = date(\DATE_ATOM, $this->buildTime);
 
         $gitInfoCode = $this->buildGitInfoCode();
+
+        // todo 支持定义覆盖 bootstrap 入口
 
         return <<<PHP
         #!/usr/bin/env php
