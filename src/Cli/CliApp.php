@@ -31,6 +31,7 @@ class CliApp extends BaseApp
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
 
+        // @phpstan-ignore-next-line
         $version = IMI_IN_PHAR
             ? sprintf(
                 '%s, app build %s',
@@ -245,6 +246,7 @@ class CliApp extends BaseApp
         $output->writeln('<info>Version:</info> v' . \PHP_VERSION);
         $output->writeln("<info>{$serverName}:</info> v{$serverVer}");
         $output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
+        // @phpstan-ignore-next-line
         if (IMI_IN_PHAR)
         {
             $output->writeln('<info>AppBuild:</info> ' . App::getAppPharBuildVersion());

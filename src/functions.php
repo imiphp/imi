@@ -18,6 +18,7 @@ namespace
      * 项目路径.
      * 有可能在 phar 路径中.
      */
+    // @phpstan-ignore-next-line
     \defined('IMI_APP_ROOT') || \define('IMI_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : realpath(getcwd()));
 
     /**

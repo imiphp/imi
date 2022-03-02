@@ -438,6 +438,7 @@ class Imi
             $parentPath = Config::get('@app.runtimePath');
             if (null === $parentPath)
             {
+                // @phpstan-ignore-next-line
                 if (IMI_IN_PHAR)
                 {
                     $parentPath = File::path(IMI_RUNNING_ROOT, '.runtime');

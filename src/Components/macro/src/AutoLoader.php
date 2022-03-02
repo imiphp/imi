@@ -34,6 +34,7 @@ class AutoLoader
     public function __construct(ClassLoader $composerClassLoader)
     {
         $this->composerClassLoader = $composerClassLoader;
+        // @phpstan-ignore-next-line
         if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
         {
             $this->composerClassLoader->setClassMapAuthoritative(false);

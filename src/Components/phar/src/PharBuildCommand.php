@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
+use function is_file;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function is_dir;
-use function is_file;
 
 class PharBuildCommand extends Command
 {
@@ -51,7 +50,7 @@ class PharBuildCommand extends Command
             return self::INVALID;
         }
 
-        $projectAutoload = $baseDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        $projectAutoload = $baseDir . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
         if (is_file($projectAutoload))
         {
             require $projectAutoload;
