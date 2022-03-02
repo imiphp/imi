@@ -10,7 +10,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use function array_map;
-use function is_array;
 use function is_file;
 use function pathinfo;
 use function var_export;
@@ -84,13 +83,17 @@ class PharService
 
     public function checkConfiguration(): bool
     {
-        if ('*' !== $this->files && !is_array($this->files)) {
+        if ('*' !== $this->files && !\is_array($this->files))
+        {
             $this->output->writeln('invalid files value');
+
             return false;
         }
 
-        if ('*' !== $this->dirs && !is_array($this->dirs)) {
+        if ('*' !== $this->dirs && !\is_array($this->dirs))
+        {
             $this->output->writeln('invalid dirs value');
+
             return false;
         }
 
@@ -171,12 +174,12 @@ class PharService
 
         if (empty($container))
         {
-            $this->output->writeln("<error>invalid container value</error>");
+            $this->output->writeln('<error>invalid container value</error>');
 
             return false;
         }
 
-        if (is_file($container) && pathinfo($container, PATHINFO_EXTENSION) === 'php')
+        if (is_file($container) && 'php' === pathinfo($container, \PATHINFO_EXTENSION))
         {
             $this->hasBootstrapFile = true;
         }
@@ -269,7 +272,8 @@ class PharService
     {
         $progressBar = new ProgressBar($this->output);
 
-        foreach ($this->filesProviderAggregate() as $k => $file) {
+        foreach ($this->filesProviderAggregate() as $k => $file)
+        {
             $progressBar->advance();
             yield $k => $file;
         }
