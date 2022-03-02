@@ -24,7 +24,7 @@ namespace
     /**
      * 项目物理路径.
      */
-    \define('IMI_APP_ROOT_PHYSICS', \dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
+    \defined('IMI_APP_ROOT_PHYSICS') || \define('IMI_APP_ROOT_PHYSICS', \dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
 
     // phar build 数据占位
 
@@ -107,6 +107,7 @@ namespace
 
 namespace Imi
 {
+
     use Symfony\Component\Process\Process;
 
     /**
