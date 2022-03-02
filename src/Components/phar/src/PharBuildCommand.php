@@ -75,12 +75,6 @@ class PharBuildCommand extends Command
         }
 
         $container = $input->getArgument('container');
-        if (empty($container))
-        {
-            $output->writeln('invalid container value');
-
-            return self::INVALID;
-        }
 
         // todo 支持自动禁用热更新
 

@@ -6,6 +6,7 @@ namespace Imi\Phar;
 
 use Composer\InstalledVersions;
 use Phar;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use function array_map;
@@ -83,12 +84,12 @@ class PharService
 
     public function checkConfiguration(): bool
     {
-        if ('*' !== $this->files && is_array($this->files)) {
+        if ('*' !== $this->files && !is_array($this->files)) {
             $this->output->writeln('invalid files value');
             return false;
         }
 
-        if ('*' !== $this->dirs && is_array($this->dirs)) {
+        if ('*' !== $this->dirs && !is_array($this->dirs)) {
             $this->output->writeln('invalid dirs value');
             return false;
         }
@@ -98,7 +99,10 @@ class PharService
 
     public function build(?string $container): bool
     {
-        $this->bootstrap ??= $container;
+        if ($container)
+        {
+            $this->bootstrap = $container;
+        }
         if (!$this->checkContainer())
         {
             return false;
@@ -263,13 +267,15 @@ class PharService
 
     protected function filesProviderAggregateWrap(): \Generator
     {
-        $count = 0;
+        $progressBar = new ProgressBar($this->output);
+
         foreach ($this->filesProviderAggregate() as $k => $file) {
-            $count++;
-            yield from $k => $file;
+            $progressBar->advance();
+            yield $k => $file;
         }
 
-        // todo 提供进度条展示
+        $progressBar->finish();
+        $this->output->writeln('');
     }
 
     protected function filesProviderAggregate(): \Generator
@@ -290,14 +296,26 @@ class PharService
 
     protected function filesProvider(): \Generator
     {
-        $finder = (new Finder())
-            ->files()
-            ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->dirs))
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true);
+        if ('*' === $this->dirs)
+        {
+            $finder = (new Finder())
+                ->in($this->baseDir)
+                ->exclude(['vendor', 'vendor-bin'])
+                ->depth('> 0');
+        }
+        else
+        {
+            $finder = (new Finder())
+                ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->dirs));
+        }
+
+        $finder->files();
+        $finder->ignoreDotFiles(true);
+        $finder->ignoreVCS(true);
 
         $finder->notName(Constant::CFG_FILE_NAME);
         $finder->notName('*.macro.php');
+        $finder->notName($this->hasBootstrapFile);
 
         $this->setBaseFilter($finder);
 
@@ -312,19 +330,34 @@ class PharService
 
         foreach ($finder as $filename => $_)
         {
-            // var_dump("> {$filename}");
             yield $filename;
         }
 
-        foreach ($this->files as $file)
+        if ('*' === $this->files)
         {
-            $filename = $this->baseDir . \DIRECTORY_SEPARATOR . $file;
-            // var_dump("> {$filename}");
-            if (!is_file($filename))
+            $finder = (new Finder())
+                ->files()
+                ->in($this->baseDir)
+                ->depth('== 0')
+                ->ignoreDotFiles(true)
+                ->ignoreVCS(true);
+            if ($this->hasBootstrapFile)
             {
-                continue;
+                $finder->notName($this->hasBootstrapFile);
             }
-            yield $filename;
+            yield from $finder;
+        }
+        else
+        {
+            foreach ($this->files as $file)
+            {
+                $filename = $this->baseDir . \DIRECTORY_SEPARATOR . $file;
+                if (!is_file($filename))
+                {
+                    continue;
+                }
+                yield $filename;
+            }
         }
     }
 
