@@ -47,7 +47,7 @@
                         <a target="_blank" class="pure-menu-heading" href="https://doc.imiphp.com/v2.1/" title="imi开发文档">开发文档</a>
                         <a target="_blank" class="pure-menu-heading" href="./course.html" title="imi免费教程">免费教程</a>
                         <a class="pure-menu-heading donation juanzeng" href="javascript:;" title="imi捐赠"><img src="../images/juanzeng.svg"
-                            style="width:30px;" /></a>
+                            style="width:30px;" />捐赠</a>
                     </div>
                 </div>
             </div>
@@ -140,11 +140,29 @@
             <div id="lunbo">
                 <div class="ribbon l-box-lrg pure-g">
                     <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-                        <img class="pure-img-responsive" src="../images/anli/tengyue.jpg">
+                        <img class="pure-img-responsive" src="../images/anli/chongdian.png">
                     </div>
                     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
-                        <h2 class="content-head content-head-ribbon"><a href="https://www.teny.tech/" target="_blank">腾悦物联</a></h2>
-                        <p>基于imi开发的高性能高并发分布式（千万级设备）的能源销售管理平台，提供多场景充电桩、售电柜、换电柜、智能电池等设备接入，开放API第三方应用五分钟即可完成新能源物联网售电设备接入</p>
+                        <h2 class="content-head content-head-ribbon"><a href="https://www.teny.tech/" target="_blank">智慧充电系统（SaaS）</a></h2>
+                        <p>基于imi开发的高性能高并发分布式（千万级设备）的能源销售管理平台，提供多场景充电桩、售电柜、换电柜、智能电池等设备接入。SaaS开户即用，更有开放API第三方应用五分钟即可完成新能源物联网售电设备接入</p>
+                    </div>
+                </div>
+                <div class="ribbon l-box-lrg pure-g">
+                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
+                        <img class="pure-img-responsive" src="../images/anli/tingche.png">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+                        <h2 class="content-head content-head-ribbon"><a href="https://www.space-iot.net/" target="_blank">智慧停车系统</a></h2>
+                        <p>基于imi开发的高性能高并发分布式停车系统，提供商场停车场、小区停车场等多种场景下的停车业务</p>
+                    </div>
+                </div>
+                <div class="ribbon l-box-lrg pure-g">
+                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
+                        <img class="pure-img-responsive" src="../images/anli/zhifu.jpg">
+                    </div>
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+                        <h2 class="content-head content-head-ribbon"><a href="https://www.space-iot.net/" target="_blank">支付SaaS中台微服务</a></h2>
+                        <p>基于imi开发的支付SaaS中台微服务，为公司内部多个产品及项目，提供稳定可靠快速的支付服务。</p>
                     </div>
                 </div>
                 <div class="ribbon l-box-lrg pure-g">
@@ -154,36 +172,6 @@
                     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
                         <h2 class="content-head content-head-ribbon"><a href="https://adorecipe.com/" target="_blank">Adorecipe鸡尾酒资源库</a></h2>
                         <p>本项目是基于imi 2.0的高性能 MVC 实战项目（一人完成开发），搭配 nginx 实现前端静态资源的访问及缓存，View 层很任性地采用了原生模板渲染。项目中大量使用了 imi提供的缓存注解，优化数据查询的性能，点赞等场景使用了 imi 提供的锁机制保证并发场景下的数据一致性。强推大家使用 imi 开发此类项目！</p>
-                    </div>
-                </div>
-                <div class="ribbon l-box-lrg pure-g">
-                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-                        <img class="pure-img-responsive" src="../images/anli/hupu.jpg">
-                    </div>
-                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
-                        <h2 class="content-head content-head-ribbon"><a href="https://blog.csdn.net/qq_32783703/article/details/113576741" target="_blank">虎扑-上亿数据迁移服务</a></h2>
-                        <p>随着数据规模的越来越大，mysql已经不能适用大数据多维度的查询，需要用ES等一类的搜索引擎，进行多维度的分词查询，MYSQL现阶段使用按天分表存储，不能满足跨天的长时间查询。</p>
-                        <p>
-                            如何以最快的速度完成数据迁移，将数据库中的数据迁移到ES中，是需要评估的一个重要技术点。
-                        </p>
-                        <p>
-                            在高IO密集的场景下，单次请求需要80毫秒，imi运用Swoole协程，不断在用户态和内核态之间进行切换，充分利用计算机CPU，从而能快速完成海量数据迁移。
-                        </p>
-                        <p>
-                            根据普罗米修斯的监控统计，在 两台 2C 4G的机器上，imi以每秒钟同步1000~1500条的同步速度，完成了上亿级别的数据迁移。
-                        </p>
-                        <p>
-                            博文地址：<a href="https://blog.csdn.net/qq_32783703/article/details/113576741" target="_blank">https://blog.csdn.net/qq_32783703/article/details/113576741</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="ribbon l-box-lrg pure-g">
-                    <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-                        <img class="pure-img-responsive" src="../images/anli/kangedan.jpg">
-                    </div>
-                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
-                        <h2 class="content-head content-head-ribbon"><a href="http://www.kangedan.com/" target="_blank">看个蛋影视搜索 - 全网影视资源搜索平台</a></h2>
-                        <p>从最早的建站初心是为了自己方便！放到网络的以来，当流量越来越大的时候是要考虑升级配置还是重构项目，前几天 git 上看到imiphp，索性就拿来实践一下，也是简单就重构出了所有页面，模版引擎引入了 TP 的 think-template，整个重构也就一天不到，所以 imiphp 确实很容易上手！加油！</p>
                     </div>
                 </div>
             </div>

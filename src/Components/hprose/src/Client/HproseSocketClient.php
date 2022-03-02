@@ -62,6 +62,14 @@ class HproseSocketClient implements IRpcClient
     }
 
     /**
+     * 实时检查是否已连接.
+     */
+    public function checkConnected(): bool
+    {
+        return true;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getInstance(): Client

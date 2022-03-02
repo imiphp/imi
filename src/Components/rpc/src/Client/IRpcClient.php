@@ -29,6 +29,11 @@ interface IRpcClient
     public function isConnected(): bool;
 
     /**
+     * 实时检查是否已连接.
+     */
+    public function checkConnected(): bool;
+
+    /**
      * 获取实例对象
      *
      * @return mixed

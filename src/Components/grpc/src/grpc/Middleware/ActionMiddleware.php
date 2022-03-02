@@ -15,6 +15,9 @@ use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\View\View;
 use Imi\Util\DelayServerBeanCallable;
+use Imi\Util\Http\Consts\MediaType;
+use Imi\Util\Http\Consts\RequestHeader;
+use Imi\Util\Http\Consts\ResponseHeader;
 use Imi\Util\Http\Response;
 use Imi\Util\Stream\MemoryStream;
 use Psr\Http\Message\ResponseInterface;
@@ -121,9 +124,22 @@ class ActionMiddleware implements MiddlewareInterface
             }
         }
 
+        /** @var \Imi\Server\Http\Message\Response $finalResponse */
+        if (!$finalResponse->hasHeader(ResponseHeader::CONTENT_TYPE))
+        {
+            $finalResponse->setHeader(ResponseHeader::CONTENT_TYPE, MediaType::GRPC_PROTO);
+        }
+        if (!$finalResponse->hasHeader(RequestHeader::TRAILER))
+        {
+            $finalResponse->setHeader(RequestHeader::TRAILER, 'grpc-status, grpc-message');
+        }
         if (!$finalResponse->hasTrailer('grpc-status'))
         {
-            $finalResponse = $finalResponse->withTrailer('grpc-status', '0');
+            $finalResponse->setTrailer('grpc-status', '0');
+        }
+        if (!$finalResponse->hasTrailer('grpc-message'))
+        {
+            $finalResponse->setTrailer('grpc-message', '');
         }
 
         return $finalResponse;
@@ -180,65 +196,27 @@ class ActionMiddleware implements MiddlewareInterface
         {
             return [];
         }
-        $result = [];
         /** @var \ReflectionParameter[] $params */
-        foreach ($params as $param)
+        $param = $params[0] ?? null;
+        if (!$param)
         {
-            if ($type = $param->getType())
+            return [];
+        }
+        if ($type = $param->getType())
+        {
+            $type = ReflectionUtil::getTypeCode($type);
+            if (is_subclass_of($type, \Google\Protobuf\Internal\Message::class))
             {
-                $type = ReflectionUtil::getTypeCode($type);
-                if (is_subclass_of($type, \Google\Protobuf\Internal\Message::class))
+                $value = Parser::deserializeMessage([$type, null], (string) $request->getBody());
+                if (null === $value)
                 {
-                    $value = Parser::deserializeMessage([$type, null], (string) $request->getBody());
-                    if (null === $value)
-                    {
-                        throw new \RuntimeException(sprintf('RequestData %s deserialize failed', $type));
-                    }
-                    $result[] = $value;
+                    throw new \RuntimeException(sprintf('RequestData %s deserialize failed', $type));
                 }
-                else
-                {
-                    return [];
-                }
-            }
-            elseif (isset($routeResult->params[$param->name]))
-            {
-                // 路由解析出来的参数
-                $result[] = $routeResult->params[$param->name];
-            }
-            elseif ($request->hasPost($param->name))
-            {
-                // post
-                $result[] = $request->post($param->name);
-            }
-            elseif (null !== ($value = $request->get($param->name)))
-            {
-                // get
-                $result[] = $value;
-            }
-            else
-            {
-                $parsedBody = $request->getParsedBody();
-                if (\is_object($parsedBody) && isset($parsedBody->{$param->name}))
-                {
-                    $result[] = $parsedBody->{$param->name};
-                }
-                elseif (\is_array($parsedBody) && isset($parsedBody[$param->name]))
-                {
-                    $result[] = $parsedBody[$param->name];
-                }
-                elseif ($param->isOptional())
-                {
-                    // 方法默认值
-                    $result[] = $param->getDefaultValue();
-                }
-                else
-                {
-                    $result[] = null;
-                }
+
+                return [$value];
             }
         }
 
-        return $result;
+        return [];
     }
 }

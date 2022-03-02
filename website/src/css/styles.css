@@ -148,19 +148,18 @@ a {
 
 .l-box {
     margin: auto;
-	height:260px;
 	overflow: hidden;
 }
 
 .l-box .cases {
     margin: auto;
 	width: 100%;
-	height:260px;
 	overflow: hidden;
 }
 
 .cases img {
-	height: 119px;
+	height: 256px;
+    max-width: 100%;
 }
 
 .l-box-lrg {
@@ -237,7 +236,8 @@ a.pure-button-primary {
 }
 
 .home-menu .pure-menu-heading img {
-    display: block;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .logo-full, .logo-min{
@@ -463,6 +463,10 @@ a.pure-button-primary {
 #anli_list {
 	width: 70%;
 	margin:0 auto;
+}
+
+#anli_list .l-box {
+    margin: initial;
 }
 
 .donate-list {
