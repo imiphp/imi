@@ -12,6 +12,7 @@ use Symfony\Component\Finder\Finder;
 use function array_map;
 use function is_file;
 use function pathinfo;
+use function realpath;
 use function var_export;
 
 class PharService
@@ -319,7 +320,10 @@ class PharService
 
         $finder->notName(Constant::CFG_FILE_NAME);
         $finder->notName('*.macro.php');
-        $finder->notName($this->hasBootstrapFile);
+        if ($this->hasBootstrapFile)
+        {
+            $finder->notName($this->bootstrap);
+        }
 
         $this->setBaseFilter($finder);
 
@@ -347,7 +351,7 @@ class PharService
                 ->ignoreVCS(true);
             if ($this->hasBootstrapFile)
             {
-                $finder->notName($this->hasBootstrapFile);
+                $finder->notName($this->bootstrap);
             }
             yield from $finder;
         }
@@ -362,6 +366,10 @@ class PharService
                 }
                 yield $filename;
             }
+        }
+
+        if ($this->hasBootstrapFile) {
+            yield realpath($this->bootstrap);
         }
     }
 
