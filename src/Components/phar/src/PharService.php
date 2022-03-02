@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
+use function array_map;
 use Composer\InstalledVersions;
 use Phar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use function array_keys;
-use function array_map;
 use function var_dump;
 use function var_export;
 
@@ -112,7 +111,7 @@ class PharService
         {
             $phar->buildFromIterator($this->finderProvider(), $this->baseDir);
         }
-        $phar->addFile(__DIR__ . '/phar_init.php', '__stub_init.php');
+        $phar->addFile(\dirname(__DIR__) . '/phar_init.php', '__stub_init.php');
 
         $this->output->writeln('add files done');
 
