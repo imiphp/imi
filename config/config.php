@@ -28,7 +28,6 @@ return [
         'Imi\Cron',
         'Imi\RequestContextProxy',
         'Imi\Process',
-        'Imi\Phar',
     ],
     'ignoreNamespace'   => [
         'Imi\Components\*',
