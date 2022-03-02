@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use function is_file;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use function is_file;
 
 class PharBuildCommand extends Command
 {
@@ -89,6 +89,11 @@ class PharBuildCommand extends Command
             $baseDir,
             $config,
         );
+
+        if (!$phar->checkConfiguration())
+        {
+            return self::INVALID;
+        }
 
         if (!$phar->checkContainer($container))
         {

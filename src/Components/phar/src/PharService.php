@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use function array_map;
 use Composer\InstalledVersions;
 use Phar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use function var_dump;
+use function array_map;
+use function is_array;
 use function var_export;
 
 class PharService
@@ -18,10 +18,19 @@ class PharService
 
     protected string $outputPhar;
     protected string $baseDir = '';
-    protected array  $dirs = [];
-    protected array  $files = [];
+
+    /**
+     * @var array|string
+     */
+    protected $files = [];
+
+    /**
+     * @var array|string
+     */
+    protected $dirs = [];
     protected array  $excludeDirs = [];
     protected array  $excludeFiles = [];
+
     protected array  $finder = [];
     protected int    $compression = \Phar::NONE;
 
@@ -48,10 +57,14 @@ class PharService
             $this->outputPhar = getcwd() . \DIRECTORY_SEPARATOR . $this->outputPhar;
         }
 
-        $this->dirs = $config['dirs'] ?? [];
+        // 文件
         $this->files = $config['files'] ?? [];
-        $this->excludeDirs = $config['excludeDirs'] ?? [];
-        $this->excludeFiles = $config['excludeFiles'] ?? [];
+        // 目录
+        $this->dirs = $config['dirs']['in'] ?? [];
+        $this->excludeDirs = $config['dirs']['excludeDirs'] ?? [];
+        $this->excludeFiles = $config['dirs']['excludeFiles'] ?? [];
+
+        // 自定义 finder
         $this->finder = $config['finder'] ?? [];
 
         // 暂时禁止压缩 $config['compression']
@@ -59,6 +72,21 @@ class PharService
 
         $this->buildTime = time();
         $this->dumpGitInfo = $config['dumpGitInfo'] ?? true;
+    }
+
+    public function checkConfiguration(): bool
+    {
+        if ('*' !== $this->files && is_array($this->files)) {
+            $this->output->writeln('invalid files value');
+            return false;
+        }
+
+        if ('*' !== $this->dirs && is_array($this->dirs)) {
+            $this->output->writeln('invalid dirs value');
+            return false;
+        }
+
+        return true;
     }
 
     public function build(string $container)
@@ -92,25 +120,15 @@ class PharService
         $this->output->writeln(sprintf('build date: <info>%s</info>', date(\DATE_ATOM, $this->buildTime)));
 
         $phar = new Phar($outputPhar, 0, 'imi.phar');
-        // todo 支持私钥签名
+        // todo 支持 openssl 私钥签名
         $phar->setSignatureAlgorithm(Phar::SHA256);
 
         $this->output->writeln('add files...');
 
         $phar->startBuffering();
-        // filesProviderAggregate
-        if ($this->dirs)
-        {
-            $phar->buildFromIterator($this->filesProvider(), $this->baseDir);
-        }
-        if (false !== $this->vendorScan)
-        {
-            $phar->buildFromIterator($this->vendorProvider(), $this->baseDir);
-        }
-        if ($this->finder)
-        {
-            $phar->buildFromIterator($this->finderProvider(), $this->baseDir);
-        }
+
+        $phar->buildFromIterator($this->filesProviderAggregateWrap(), $this->baseDir);
+
         $phar->addFile(\dirname(__DIR__) . '/phar_init.php', '__stub_init.php');
 
         $this->output->writeln('add files done');
@@ -131,7 +149,7 @@ class PharService
     {
         if (!\in_array($container, Constant::CONTAINER_SET))
         {
-            $this->output->writeln('invalid container value');
+            $this->output->writeln("<error>not support container: {$container}</error>");
 
             return false;
         }
@@ -194,14 +212,43 @@ class PharService
         PHP;
     }
 
+    protected function filesProviderAggregateWrap(): \Generator
+    {
+        $count = 0;
+        foreach ($this->filesProviderAggregate() as $k => $file) {
+            $count++;
+            yield from $k => $file;
+        }
+
+        // todo 提供进度条展示
+    }
+
+    protected function filesProviderAggregate(): \Generator
+    {
+        if ($this->dirs)
+        {
+            yield from $this->filesProvider();
+        }
+        if (false !== $this->vendorScan)
+        {
+            yield from $this->vendorProvider();
+        }
+        if ($this->finder)
+        {
+            yield from $this->finderProvider();
+        }
+    }
+
     protected function filesProvider(): \Generator
     {
         $finder = (new Finder())
             ->files()
             ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->dirs))
+            ->ignoreDotFiles(true)
             ->ignoreVCS(true);
 
         $finder->notName(Constant::CFG_FILE_NAME);
+        $finder->notName('*.macro.php');
 
         $this->setBaseFilter($finder);
 
@@ -246,7 +293,7 @@ class PharService
             ->in($this->baseDir . \DIRECTORY_SEPARATOR . 'vendor')
             ->ignoreVCS(true);
 
-        $finder->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/']);
+        $finder->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/', '*.macro.php']);
         $finder->exclude([
             'doc',
             'test',
@@ -259,7 +306,6 @@ class PharService
 
         foreach ($finder as $filename => $_)
         {
-            // var_dump("> {$filename}");
             yield $filename;
         }
     }
