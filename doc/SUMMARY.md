@@ -23,6 +23,7 @@
 * [内部进程间通讯](core/processCommunication.md)
 * [Server 对象](core/server.md)
 * [长连接分布式解决方案](core/long-connection-distributed.md)
+* [内置常量列表](core/consts.md)
 
 ## 注解
 

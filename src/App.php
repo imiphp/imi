@@ -315,12 +315,12 @@ class App
             return sprintf(
                  '%s@%s',
                  IMI_PHAR_BUILD_GIT_TAG ?? substr(IMI_PHAR_BUILD_GIT_HASH ?? '', 0, 7),
-                 IMI_PHAR_BUILD_DATE
+                 IMI_PHAR_BUILD_TIME
              );
         }
         else
         {
-            return IMI_PHAR_BUILD_DATE;
+            return IMI_PHAR_BUILD_TIME;
         }
     }
 

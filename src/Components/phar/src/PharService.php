@@ -172,7 +172,7 @@ class PharService
         // none
         $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$container];
 
-        $buildDate = date(\DATE_ATOM, $this->buildTime);
+        $buildDateTime = date(\DATE_ATOM, $this->buildTime);
 
         $gitInfoCode = $this->buildGitInfoCode();
 
@@ -182,8 +182,7 @@ class PharService
         #!/usr/bin/env php
         <?php
 
-        \define('IMI_PHAR_BUILD_TIME', {$this->buildTime});
-        \define('IMI_PHAR_BUILD_DATE', '{$buildDate}');
+        \define('IMI_PHAR_BUILD_TIME', '{$buildDateTime}');
         {$gitInfoCode}
 
         Phar::mapPhar('imi.phar');
