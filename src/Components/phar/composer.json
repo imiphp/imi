@@ -6,10 +6,10 @@
     "require": {
         "php": ">=7.4",
         "composer-runtime-api": "^2.0",
-        "symfony/console": "^5.4",
-        "symfony/polyfill-php80": "^1.23",
-        "symfony/finder": "^5.4",
         "composer/xdebug-handler": "^3.0",
+        "symfony/console": "^5.4",
+        "symfony/finder": "^5.4",
+        "symfony/polyfill-php80": "^1.23",
         "symfony/process": "^5.4"
     },
     "autoload": {
@@ -40,6 +40,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
+        "sort-packages": true,
         "allow-plugins": {
         }
     }
