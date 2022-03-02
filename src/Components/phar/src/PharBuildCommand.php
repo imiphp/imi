@@ -95,12 +95,10 @@ class PharBuildCommand extends Command
             return self::INVALID;
         }
 
-        if (!$phar->checkContainer($container))
+        if (!$phar->build($container))
         {
             return self::INVALID;
         }
-
-        $phar->build($container);
 
         return self::SUCCESS;
     }

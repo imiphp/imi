@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use function array_map;
 use function is_array;
+use function is_file;
+use function pathinfo;
 use function var_export;
 
 class PharService
@@ -44,6 +46,9 @@ class PharService
     protected ?array $gitInfo = null;
     protected bool $dumpGitInfo;
 
+    protected ?string $bootstrap;
+    protected bool $hasBootstrapFile = false;
+
     protected int $buildTime;
 
     public function __construct(OutputInterface $output, string $baseDir, array $config)
@@ -72,6 +77,8 @@ class PharService
 
         $this->buildTime = time();
         $this->dumpGitInfo = $config['dumpGitInfo'] ?? true;
+
+        $this->bootstrap = $config['bootstrap'] ?? null;
     }
 
     public function checkConfiguration(): bool
@@ -89,8 +96,15 @@ class PharService
         return true;
     }
 
-    public function build(string $container)
+    public function build(?string $container): bool
     {
+        $this->bootstrap ??= $container;
+        if (!$this->checkContainer())
+        {
+            return false;
+        }
+        $this->output->writeln("bootstrap: <info>{$this->bootstrap}</info>");
+
         $outputPhar = $this->outputPhar;
         $outputDir = \dirname($outputPhar);
         if (!is_dir($outputDir))
@@ -133,7 +147,7 @@ class PharService
 
         $this->output->writeln('add files done');
 
-        $phar->setStub($this->buildStud($container));
+        $phar->setStub($this->buildStud());
 
         $phar->stopBuffering();
 
@@ -143,27 +157,47 @@ class PharService
         {
             $phar->compressFiles($this->compression);
         }
+
+        return true;
     }
 
-    public function checkContainer(string $container): bool
+    public function checkContainer(): bool
     {
-        if (!\in_array($container, Constant::CONTAINER_SET))
+        $container = $this->bootstrap;
+
+        if (empty($container))
+        {
+            $this->output->writeln("<error>invalid container value</error>");
+
+            return false;
+        }
+
+        if (is_file($container) && pathinfo($container, PATHINFO_EXTENSION) === 'php')
+        {
+            $this->hasBootstrapFile = true;
+        }
+        elseif (!\in_array($container, Constant::CONTAINER_SET))
         {
             $this->output->writeln("<error>not support container: {$container}</error>");
 
             return false;
         }
 
-        $package = Constant::CONTAINER_PACKAGE[$container];
-
-        if (InstalledVersions::isInstalled($package))
+        if ($this->hasBootstrapFile)
         {
             return true;
         }
 
-        $this->output->writeln("<error>container {$container} requires package {$package}.</error>");
+        $package = Constant::CONTAINER_PACKAGE[$container];
 
-        return false;
+        if (!InstalledVersions::isInstalled($package))
+        {
+            $this->output->writeln("<error>container {$container} requires package {$package}.</error>");
+
+            return false;
+        }
+
+        return true;
     }
 
     protected function buildGitInfoCode(): string
@@ -185,16 +219,32 @@ class PharService
         );
     }
 
-    protected function buildStud(string $container): string
+    protected function buildBootstrapCode(): string
     {
-        // none
-        $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$container];
+        if ($this->hasBootstrapFile)
+        {
+            return <<<PHP
+            require IMI_APP_ROOT . '/{$this->bootstrap}';
+            PHP;
+        }
+        else
+        {
+            $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$this->bootstrap];
 
+            return <<<PHP
+            \$main = require IMI_APP_ROOT . '/{$bootstrapFile}';
+            \$main();
+            PHP;
+        }
+    }
+
+    protected function buildStud(): string
+    {
         $buildDateTime = date(\DATE_ATOM, $this->buildTime);
 
         $gitInfoCode = $this->buildGitInfoCode();
 
-        // todo 支持定义覆盖 bootstrap 入口
+        $bootstrapCode = $this->buildBootstrapCode();
 
         return <<<PHP
         #!/usr/bin/env php
@@ -206,8 +256,7 @@ class PharService
         Phar::mapPhar('imi.phar');
         require 'phar://imi.phar/__stub_init.php';
 
-        \$main = require IMI_APP_ROOT . '/{$bootstrapFile}';
-        \$main();
+        {$bootstrapCode}
         __HALT_COMPILER();
         PHP;
     }
