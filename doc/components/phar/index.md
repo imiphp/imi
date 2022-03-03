@@ -16,7 +16,7 @@ composer require --dev imiphp/imi-phar
 cd ~/my-xxx-project
 
 # 首次运行需初始化打包配置，将在项目目录下创建默认的`imi-phar-cfg.php`配置，建议把文件添加到代码仓库
-vendor/bin/imi-phar --init
+vendor/bin/imi-phar build --init
 
 # 执行打包命令，`xxx`为要打包容器，内置`swoole、workerman、roadrunner`容器支持，更多细节查看配置说明
 vendor/bin/imi-phar build xxx
@@ -54,7 +54,7 @@ vendor/bin/imi-phar build xxx
     'dirs'         => [
         // 参与打包的目录
         // 可选值：
-        //   - '*'自动包含根目录除`vendor`以为的目录。（默认）
+        //   - '*'自动包含根目录除`vendor`以外的目录。（默认）
         //   - 空数组不包含任何目录。
         //   - 定义数组并填入目录名名（仅限于当前目录下的目录名）。
         'in' => '*',

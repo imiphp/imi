@@ -56,7 +56,7 @@ class PharBuildCommand extends Command
 
         if (!$checkConfig)
         {
-            $output->writeln('config file does not exist, execute "vendor/bin/imi-phar --init" initialize configuration file.');
+            $output->writeln('config file does not exist, execute "vendor/bin/imi-phar build --init" initialize configuration file.');
 
             return self::INVALID;
         }
