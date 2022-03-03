@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
+use function file_exists;
+use function is_file;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use function file_exists;
-use function is_file;
 
 class PharBuildCommand extends Command
 {
@@ -37,11 +37,13 @@ class PharBuildCommand extends Command
 
         if ($input->getOption('init'))
         {
-            if (file_exists($configFile)) {
+            if (file_exists($configFile))
+            {
                 $helper = $this->getHelper('question');
                 $question = new ConfirmationQuestion('The configuration file already exists, whether to overwrite it? (y or n)', false);
 
-                if (!$helper->ask($input, $output, $question)) {
+                if (!$helper->ask($input, $output, $question))
+                {
                     return Command::SUCCESS;
                 }
             }

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
+use function array_map;
 use Composer\InstalledVersions;
+use function is_file;
+use function pathinfo;
 use Phar;
+use function realpath;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use function array_map;
-use function is_file;
-use function pathinfo;
-use function realpath;
 use function var_export;
 
 class PharService
@@ -368,7 +368,8 @@ class PharService
             }
         }
 
-        if ($this->hasBootstrapFile) {
+        if ($this->hasBootstrapFile)
+        {
             yield realpath($this->bootstrap);
         }
     }

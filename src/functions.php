@@ -107,7 +107,6 @@ namespace
 
 namespace Imi
 {
-
     use Symfony\Component\Process\Process;
 
     /**
