@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Parser("Imi\Cli\Parser\ToolParser")
  *
  * @property string|null $name 命令行名称
+ * @property string      $separator 命令名分割符
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Command extends Base
@@ -24,7 +25,7 @@ class Command extends Base
      */
     protected ?string $defaultFieldName = 'name';
 
-    public function __construct(?array $__data = null, ?string $name = null)
+    public function __construct(?array $__data = null, ?string $name = null, string $separator = '/')
     {
         parent::__construct(...\func_get_args());
     }

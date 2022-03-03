@@ -21,6 +21,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImiCommand extends Command
 {
     /**
+     * 命令名称分割符
+     */
+    protected string $separator = '/';
+
+    /**
      * 命令名称.
      */
     protected ?string $commandName = null;
@@ -83,8 +88,9 @@ class ImiCommand extends Command
         return $this->methodName;
     }
 
-    public function __construct(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false)
+    public function __construct(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false, string $separator = '/')
     {
+        $this->separator = $separator;
         $this->commandName = $commandName;
         $this->actionName = $actionName;
         $this->className = $className;
@@ -99,7 +105,7 @@ class ImiCommand extends Command
         }
         else
         {
-            $finalCommandName = $commandName . '/' . $actionName;
+            $finalCommandName = $commandName . $separator . $actionName;
         }
         parent::__construct($finalCommandName);
     }
