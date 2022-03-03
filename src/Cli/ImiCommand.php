@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImiCommand extends Command
 {
     /**
-     * 命令名称分割符
+     * 命令名称分割符.
      */
     protected string $separator = '/';
 

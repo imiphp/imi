@@ -14,7 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
  *
- * @property string|null $name 命令行名称
+ * @property string|null $name      命令行名称
  * @property string      $separator 命令名分割符
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
