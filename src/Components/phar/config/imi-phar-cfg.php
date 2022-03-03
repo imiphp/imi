@@ -59,5 +59,5 @@ return [
     //   - \Phar::NONE : 不压缩
     //   - \Phar::GZ   : 必须启用扩展 zlib
     //   - \Phar::BZ2  : 必须启用扩展 bzip2
-    'compression' => \Phar::GZ,
+    'compression' => \Phar::NONE,
 ];

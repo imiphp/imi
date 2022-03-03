@@ -40,6 +40,6 @@ use Symfony\Component\Console\Application;
     $app = new Application('imi phar tool', InstalledVersions::getPrettyVersion('imiphp/imi-phar') ?: 'dev');
     $command = new PharBuildCommand();
     $app->add($command);
-    $app->setDefaultCommand($command->getName(), true);
+    $app->setDefaultCommand($command->getName());
     $app->run();
 })();

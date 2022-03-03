@@ -9,11 +9,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use function file_exists;
 use function is_file;
 
 class PharBuildCommand extends Command
 {
-    protected static $defaultName = 'phar:build';
+    protected static $defaultName = 'build';
 
     protected function configure()
     {
@@ -35,9 +37,16 @@ class PharBuildCommand extends Command
 
         if ($input->getOption('init'))
         {
-            // todo 文件存在情况下需要应答确认
+            if (file_exists($configFile)) {
+                $helper = $this->getHelper('question');
+                $question = new ConfirmationQuestion('The configuration file already exists, whether to overwrite it? (y or n)', false);
+
+                if (!$helper->ask($input, $output, $question)) {
+                    return Command::SUCCESS;
+                }
+            }
+            $output->writeln("write {$configFile} .");
             copy(__DIR__ . '/../config/imi-phar-cfg.php', $configFile);
-            $output->writeln("write {$configFile} ...");
             $output->writeln('configuration file initialization completed.');
 
             return self::SUCCESS;
