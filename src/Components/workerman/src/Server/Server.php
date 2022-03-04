@@ -26,9 +26,20 @@ class Server extends \Imi\Server\Server
         {
             WorkermanServerWorker::$$key = $value;
         }
-        if ('' === WorkermanServerWorker::$pidFile)
+        // 静态属性值设置
+        // Pid file.
+        if (empty(WorkermanServerWorker::$pidFile))
         {
-            WorkermanServerWorker::$pidFile = Imi::getRuntimePath(null === $serverName ? 'workerman-server.pid' : ('workerman-server-' . $serverName . '.pid'));
+            WorkermanServerWorker::$pidFile = Imi::getRuntimePath(null === $serverName ? 'workerman.pid' : ('workerman-server-' . $serverName . '.pid'));
+        }
+        // Log file.
+        if (empty(WorkermanServerWorker::$logFile))
+        {
+            WorkermanServerWorker::$logFile = Imi::getModeRuntimePath(null === $serverName ? 'workerman.log' : ('workerman-server-' . $serverName . '.log'));
+        }
+        if (empty(WorkermanServerWorker::$statusFile))
+        {
+            WorkermanServerWorker::$statusFile = Imi::getModeRuntimePath(null === $serverName ? 'workerman.status' : ('workerman-server-' . $serverName . '.status'));
         }
     }
 

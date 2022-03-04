@@ -71,22 +71,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             $socketName = '';
         }
 
-        // 静态属性值设置
-        // Pid file.
-        if (empty($class::$pidFile))
-        {
-            $class::$pidFile = Imi::getModeRuntimePath('workerman.pid');
-        }
-        // Log file.
-        if (empty($class::$logFile))
-        {
-            $class::$logFile = Imi::getModeRuntimePath('workerman.log');
-        }
-        if (empty($class::$statusFile))
-        {
-            $class::$statusFile = Imi::getModeRuntimePath('workerman-' . getmypid() . '.status');
-        }
-
         $worker = new $class($socketName, $config['context'] ?? []);
         $worker->name = $this->name;
         foreach ($config['configs'] ?? [] as $k => $v)
