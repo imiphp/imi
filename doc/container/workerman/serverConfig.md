@@ -33,5 +33,11 @@ return [
             ],
         ],
     ],
+    'workerman' => [
+        // 设置给 Worker 类静态属性的配置
+        'worker' => [
+            
+        ],
+    ],
 ];
 ```
