@@ -118,7 +118,7 @@ class CliApp extends BaseApp
                 $command['className'],
                 $command['methodName'],
                 $command['dynamicOptions'],
-                $command['separator']
+                $command['separator'] ?? '/'
             );
             if (!$this->cli->has($command->getName()))
             {

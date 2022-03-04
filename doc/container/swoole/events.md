@@ -370,7 +370,7 @@ class CloseEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 
@@ -471,7 +471,7 @@ class CloseEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 
@@ -481,6 +481,29 @@ class CloseEventParam extends EventParam
      * @var int
      */
     public $reactorId;
+}
+```
+
+#### disconnect
+
+用于在连接关闭时区分连接是否为 WebSocket 连接。
+
+事件参数：
+
+```php
+class DisconnectEventParam extends EventParam
+{
+    /**
+     * 服务器对象
+     * @var \Imi\Swoole\Server\Base
+     */
+    public $server;
+
+    /**
+     * 客户端连接的标识符
+     * @var int|string
+     */
+    public $clientId;
 }
 ```
 
@@ -503,7 +526,7 @@ class ConnectEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 
@@ -530,7 +553,7 @@ class ReceiveEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 
@@ -564,7 +587,7 @@ class CloseEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 
@@ -592,7 +615,7 @@ class BufferEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 }
@@ -613,7 +636,7 @@ class BufferEventParam extends EventParam
 
     /**
      * 客户端连接的标识符
-     * @var int
+     * @var int|string
      */
     public $clientId;
 }
