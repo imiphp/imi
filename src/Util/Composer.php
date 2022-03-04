@@ -92,7 +92,7 @@ class Composer
      */
     public static function getPathNamespaces(string $path): array
     {
-        $realPath = realpath($path);
+        $realPath = File::absolute($path);
         if (!$realPath)
         {
             return [];
@@ -104,7 +104,7 @@ class Composer
             {
                 foreach ($namespacePaths as $namespacePath)
                 {
-                    if ($realPath === realpath($namespacePath))
+                    if ($realPath === File::absolute($namespacePath))
                     {
                         $result[] = $namespace;
                     }

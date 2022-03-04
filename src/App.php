@@ -308,6 +308,24 @@ class App
         return empty($hash) ? $version : "{$version} ($hash)";
     }
 
+    public static function getAppPharBuildVersion(): ?string
+    {
+        // @phpstan-ignore-next-line
+        if (IMI_PHAR_BUILD_GIT_HASH)
+        {
+            return sprintf(
+                 '%s@%s',
+                 // @phpstan-ignore-next-line
+                 IMI_PHAR_BUILD_GIT_TAG ?? substr(IMI_PHAR_BUILD_GIT_HASH ?? '', 0, 7),
+                 IMI_PHAR_BUILD_TIME
+             );
+        }
+        else
+        {
+            return IMI_PHAR_BUILD_TIME;
+        }
+    }
+
     /**
      * Get app 实例对象
      */

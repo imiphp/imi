@@ -13,3 +13,4 @@ composer.lock
 /.vscode
 *.pid
 *.macro.php
+/.phpbench

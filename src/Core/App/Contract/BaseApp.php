@@ -42,10 +42,12 @@ abstract class BaseApp implements IApp
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
 
         $appPath = App::get(AppContexts::APP_PATH);
-        if (is_file($appPath . '/.env'))
+        // @phpstan-ignore-next-line
+        $envFile = IMI_IN_PHAR ? (IMI_RUNNING_ROOT . '/.env') : ($appPath . '/.env');
+        if (is_file($envFile))
         {
             // 加载项目目录下的 env
-            DotEnv::load([$appPath]);
+            DotEnv::load([\dirname($envFile)]);
         }
         $fileName = $appPath . '/config/config.php';
         if (is_file($fileName))

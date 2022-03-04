@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+use Composer\InstalledVersions;
+use Imi\Phar\PharBuildCommand;
+use Imi\Phar\PharHandler;
+use Symfony\Component\Console\Application;
+
+(function () {
+    if (!class_exists(PharHandler::class))
+    {
+        (static function () use (&$path) {
+            foreach ([
+                $_SERVER['PWD'] ?? null,
+                getcwd(),
+                \dirname(__DIR__, 3),
+                \dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
+            ] as $path)
+            {
+                if (!$path)
+                {
+                    continue;
+                }
+                $fileName = $path . '/vendor/autoload.php';
+                if (is_file($fileName))
+                {
+                    require $fileName;
+
+                    return;
+                }
+            }
+            echo 'No file vendor/autoload.php', \PHP_EOL;
+            exit(255);
+        })();
+    }
+
+    $phar = new PharHandler('imi-phar');
+    $phar->check();
+
+    $app = new Application('imi phar tool', InstalledVersions::getPrettyVersion('imiphp/imi-phar') ?: 'dev');
+    $command = new PharBuildCommand();
+    $app->add($command);
+    $app->setDefaultCommand($command->getName());
+    $app->run();
+})();

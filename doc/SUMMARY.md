@@ -23,6 +23,7 @@
 * [内部进程间通讯](core/processCommunication.md)
 * [Server 对象](core/server.md)
 * [长连接分布式解决方案](core/long-connection-distributed.md)
+* [内置常量列表](core/consts.md)
 
 ## 注解
 
@@ -177,6 +178,7 @@
 * [异步执行](components/async/index.md)
 * [雪花算法发号器](components/snowflake.md)
 * [宏定义](components/macro.md)
+* [Phar打包器](components/phar/index.md)
 * [imi 组件列表一览](components/list.md)
   * [MQTT](components/mqtt/server.md)
   * [gRPC](components/rpc/grpc.md)

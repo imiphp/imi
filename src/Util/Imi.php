@@ -438,21 +438,29 @@ class Imi
             $parentPath = Config::get('@app.runtimePath');
             if (null === $parentPath)
             {
-                $namespacePaths = self::getNamespacePaths($namespace = App::getNamespace());
-                $resultNamespacePath = null;
-                foreach ($namespacePaths as $namespacePath)
+                // @phpstan-ignore-next-line
+                if (IMI_IN_PHAR)
                 {
-                    if (is_dir($namespacePath))
+                    $parentPath = File::path(IMI_RUNNING_ROOT, '.runtime');
+                }
+                else
+                {
+                    $namespacePaths = self::getNamespacePaths($namespace = App::getNamespace());
+                    $resultNamespacePath = null;
+                    foreach ($namespacePaths as $namespacePath)
                     {
-                        $resultNamespacePath = $namespacePath;
-                        break;
+                        if (is_dir($namespacePath))
+                        {
+                            $resultNamespacePath = $namespacePath;
+                            break;
+                        }
                     }
+                    if (null === $resultNamespacePath)
+                    {
+                        throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
+                    }
+                    $parentPath = File::path($resultNamespacePath, '.runtime');
                 }
-                if (null === $resultNamespacePath)
-                {
-                    throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
-                }
-                $parentPath = File::path($resultNamespacePath, '.runtime');
             }
             File::createDir($parentPath);
             self::$runtimePath = $parentPath;

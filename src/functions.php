@@ -4,6 +4,51 @@ declare(strict_types=1);
 
 namespace
 {
+    /**
+     * 是否运行在 phar 模式.
+     */
+    \defined('IMI_IN_PHAR') || \define('IMI_IN_PHAR', (bool) \Phar::running(false));
+
+    /**
+     * 工作路径.
+     */
+    \defined('IMI_RUNNING_ROOT') || \define('IMI_RUNNING_ROOT', realpath(getcwd()));
+
+    /**
+     * 项目路径.
+     * 有可能在 phar 路径中.
+     */
+    // @phpstan-ignore-next-line
+    \defined('IMI_APP_ROOT') || \define('IMI_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : realpath(getcwd()));
+
+    /**
+     * 项目物理路径.
+     */
+    \defined('IMI_APP_ROOT_PHYSICS') || \define('IMI_APP_ROOT_PHYSICS', \dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
+
+    // phar build 数据占位
+
+    /**
+     * phar 构建时间的时间.
+     *
+     * 格式：2022-01-01T00:00:00+08:00
+     */
+    \defined('IMI_PHAR_BUILD_TIME') || \define('IMI_PHAR_BUILD_TIME', null);
+
+    /**
+     * phar 构建时的 Git commit hash.
+     */
+    \defined('IMI_PHAR_BUILD_GIT_HASH') || \define('IMI_PHAR_BUILD_GIT_HASH', null);
+    /**
+     * phar 构建时的 Git 分支.
+     */
+    \defined('IMI_PHAR_BUILD_GIT_BRANCH') || \define('IMI_PHAR_BUILD_GIT_BRANCH', null);
+
+    /**
+     * phar 构件时的 Git Tag.
+     */
+    \defined('IMI_PHAR_BUILD_GIT_TAG') || \define('IMI_PHAR_BUILD_GIT_TAG', null);
+
     use Imi\Env;
     use Imi\RequestContext;
     use Swoole\Coroutine;
