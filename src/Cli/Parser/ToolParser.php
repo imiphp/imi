@@ -30,7 +30,7 @@ class ToolParser extends BaseParser
             $func = static function () use (&$data, $annotation, $className, $targetName) {
                 /** @var Command $commandAnnotation */
                 $commandAnnotation = $data[$className]['Command'];
-                CliManager::addCommand($commandAnnotation->name, $annotation->name, $className, $targetName, $annotation->dynamicOptions);
+                CliManager::addCommand($commandAnnotation->name, $annotation->name, $className, $targetName, $annotation->dynamicOptions, $commandAnnotation->separator);
                 $data[$className]['CommandAction'][$targetName] = $annotation;
                 Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className . '::' . $targetName);
             };

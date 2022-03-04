@@ -122,7 +122,14 @@ class CliApp extends BaseApp
     {
         foreach (CliManager::getCommands() as $command)
         {
-            $command = new ImiCommand($command['commandName'], $command['actionName'], $command['className'], $command['methodName'], $command['dynamicOptions']);
+            $command = new ImiCommand(
+                $command['commandName'],
+                $command['actionName'],
+                $command['className'],
+                $command['methodName'],
+                $command['dynamicOptions'],
+                $command['separator'] ?? '/'
+            );
             if (!$this->cli->has($command->getName()))
             {
                 $this->cli->add($command);

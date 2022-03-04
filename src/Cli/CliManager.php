@@ -34,7 +34,7 @@ class CliManager
     /**
      * 增加命令行定义.
      */
-    public static function addCommand(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false): void
+    public static function addCommand(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false, string $separator = '/'): void
     {
         if (isset(self::$commandActionMap[$commandName][$actionName]))
         {
@@ -46,6 +46,7 @@ class CliManager
             'className'      => $className,
             'methodName'     => $methodName,
             'dynamicOptions' => $dynamicOptions,
+            'separator'      => $separator,
         ];
         self::$commandActionMap[$commandName][$actionName] = true;
     }

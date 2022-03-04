@@ -12,6 +12,7 @@ imi 的命令行工具使用注解来定义
 |-|-
 | name | 工具名称 |
 | description | 操作描述 |
+| separator | 定义命令名称分割符，默认：`/` |
 
 ### @CommandAction
 
@@ -57,6 +58,7 @@ namespace ImiApp\Tool;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
+use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Contract\BaseCommand;
 
 /**

@@ -17,6 +17,7 @@ use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleWebSocketServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
+use Imi\Swoole\Server\Event\Param\DisconnectEventParam;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
 use Imi\Swoole\Server\Event\Param\MessageEventParam;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
@@ -268,6 +269,32 @@ class Server extends Base implements ISwooleWebSocketServer
         else
         {
             $this->swoolePort->on('request', static function () {
+            });
+        }
+
+        if ($event = ($events['disconnect'] ?? true))
+        {
+            $this->swoolePort->on('disconnect', \is_callable($event) ? $event : function (WebSocketServer $server, int $fd) {
+                try
+                {
+                    RequestContext::muiltiSet([
+                        'server'        => $this,
+                    ]);
+                    $this->trigger('disconnect', [
+                        'server'        => $this,
+                        'clientId'      => $fd,
+                    ], $this, DisconnectEventParam::class);
+                }
+                catch (\Throwable $ex)
+                {
+                    // @phpstan-ignore-next-line
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
+        else
+        {
+            $this->swoolePort->on('disconnect', static function () {
             });
         }
     }
