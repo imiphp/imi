@@ -175,6 +175,9 @@ static $storeRepoMap = [
     'src/Components/macro' => [
         'git@github.com:imiphp/imi-macro',
     ],
+    'src/Components/phar' => [
+        'git@github.com:imiphp/imi-phar',
+    ],
 ];
 
 setlocale(\LC_CTYPE, 'en_US.UTF-8');

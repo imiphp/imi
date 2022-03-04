@@ -1,6 +1,8 @@
 # Phar 支持
 
-`imi 2.1` 已经实验性支持了 Phar 模式运行。
+`imi v2.1.3` 已经实验性支持了 Phar 模式运行。
+
+打包为 Phar 文件后，可以单文件部署非常方便，再配合 swoole-cli 可谓是如虎添翼。
 
 ## 安装
 
@@ -90,7 +92,7 @@ vendor/bin/imi-phar build xxx
     'bootstrap' => null,
 
     // 压缩算法，一旦启用压缩，则执行环境也必须加载对应的依赖库
-    // 由于兼容性问题，该选项暂时屏蔽
+    // 由于 PHP 内核 BUG，该选项暂时屏蔽
     // 可选值：
     //   - \Phar::NONE : 不压缩
     //   - \Phar::GZ   : 必须启用扩展 zlib
@@ -104,6 +106,7 @@ vendor/bin/imi-phar build xxx
 支持在配置文件中支持声明`finder`实例数组。
 
 例子，禁用内置文件扫描器，提供一个忽略`png`与`pdf`的文件扫描器：
+
 ```php
 return [
 [
