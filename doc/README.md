@@ -12,6 +12,10 @@
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=5wXf4Zq "点击加群")，如有问题，负责的宇润全程手把手解决。
 
+微信群：
+
+<img src="../../res/wechat.png" alt="imi" width="256px" />
+
 官方网站：https://www.imiphp.com/
 
 Github：https://github.com/imiphp/imi

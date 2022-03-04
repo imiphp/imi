@@ -10,6 +10,10 @@ imi 拥有丰富的功能组件，v2.x 版本内置了 2 个分布式长连接�
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=5wXf4Zq "点击加群")，如有问题，负责的宇润全程手把手解决。
 
+微信群：
+
+<img src="../../res/wechat.png" alt="imi" width="256px" />
+
 ## 官方视频教程（完全免费）
 
 imi 2.0 基础视频教程(免费连载中):
