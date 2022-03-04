@@ -26,6 +26,10 @@ imi 框架现在已经稳定运行在：文旅电商平台、物联网充电云�
 
 imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
+微信群：
+
+<img src="res/wechat.png" alt="imi" width="256px" />
+
 ## 官方视频教程（完全免费）
 
 imi 2.0 基础视频教程(免费连载中):

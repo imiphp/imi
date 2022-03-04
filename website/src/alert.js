@@ -8,6 +8,7 @@ import './css/modal.css';
 import './js/modal.js';
 
 import pay from './images/pay.png';
+import wechat from './images/wechat.png';
 
 
 let kaifa = `
@@ -51,11 +52,28 @@ let modal_2 = new mModal({
    showClose: true, // 是否显示关闭按钮
 });
 
+let modalWechat = new mModal({
+   title: "",
+   width: "30%",
+   content: "<p style=\"text-align:center;\"><img src=\"" + wechat + "\"></p>",
+   confirmText: "确定", // 确定按钮文本
+   showCancelButton: false, // 是否显示取消按钮
+   showConfirmButton: true, // 是否显示确定按钮	  
+   showClose: true, // 是否显示关闭按钮
+
+   confirm: function () {
+      modalWechat.close();
+   },
+});
+
 $(function () {
    $(".donation").on("click", function () {
       modal_1.renderDom();
    });
    $(".developer").on("click", function () {
       modal_2.renderDom();
+   });
+   $(".btn-wechat").on("click", function () {
+      modalWechat.renderDom();
    });
 });
