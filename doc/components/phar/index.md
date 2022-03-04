@@ -129,4 +129,79 @@ return [
 
 ## 默认过滤器
 
-- 任何以点开头的文件都会被忽略，如果想包含所有`files`指定或者自行实现`finder`实例。
+#### 过滤规则
+- 任何以点开头的文件都会被忽略，如果想这类型的文件，请使用`files`选项指定或自行提供`finder`实例。
+- `vsc`目录都将被忽略`['.svn', '_svn', 'CVS', '_darcs', '.arch-params', '.monotone', '.bzr', '.git', '.hg']`。
+
+#### 内置过滤器(项目)
+```
+// https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L1478
+// Remove build files
+->notName('composer.json')
+->notName('composer.lock')
+->notName('Makefile')
+->notName('Vagrantfile')
+->notName('phpstan*.neon*')
+->notName('infection*.json*')
+->notName('humbug*.json*')
+->notName('easy-coding-standard.neon*')
+->notName('phpbench.json*')
+->notName('phpcs.xml*')
+->notName('psalm.xml*')
+->notName('scoper.inc*')
+->notName('box*.json*')
+->notName('phpdoc*.xml*')
+->notName('codecov.yml*')
+->notName('Dockerfile')
+->exclude('build')
+->exclude('dist')
+->exclude('example')
+->exclude('examples')
+// Remove documentation
+->notName('*.md')
+->notName('*.rst')
+->notName('/^readme((?!\.php)(\..*+))?$/i')
+->notName('/^upgrade((?!\.php)(\..*+))?$/i')
+->notName('/^contributing((?!\.php)(\..*+))?$/i')
+->notName('/^changelog((?!\.php)(\..*+))?$/i')
+->notName('/^authors?((?!\.php)(\..*+))?$/i')
+->notName('/^conduct((?!\.php)(\..*+))?$/i')
+->notName('/^todo((?!\.php)(\..*+))?$/i')
+->exclude('doc')
+->exclude('docs')
+->exclude('documentation')
+// Remove backup files
+->notName('*~')
+->notName('*.back')
+->notName('*.swp')
+// Remove tests
+->notName('*Test.php')
+->exclude('test')
+->exclude('Test')
+->exclude('tests')
+->exclude('Tests')
+->notName('/phpunit.*\.xml(.dist)?/')
+->notName('/behat.*\.yml(.dist)?/')
+->exclude('spec')
+->exclude('specs')
+->exclude('features')
+// Remove CI config
+->exclude('travis')
+->notName('travis.yml')
+->notName('appveyor.yml')
+->notName('build.xml*')
+```
+
+#### 内置过滤器(vendor)
+```
+->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/', '*.macro.php'])
+->exclude([
+    'doc',
+    'test',
+    'test_old',
+    'tests',
+    'Tests',
+    'vendor-bin',
+    'vendor/bin',
+]);
+```
