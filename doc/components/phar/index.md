@@ -129,12 +129,14 @@ return [
 
 ## 默认过滤器
 
-#### 过滤规则
+### 过滤规则
+
 - 任何以点开头的文件都会被忽略，如果想这类型的文件，请使用`files`选项指定或自行提供`finder`实例。
 - `vsc`目录都将被忽略`['.svn', '_svn', 'CVS', '_darcs', '.arch-params', '.monotone', '.bzr', '.git', '.hg']`。
 
-#### 内置过滤器(项目)
-```
+### 内置过滤器(项目)
+
+```php
 // https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L1478
 // Remove build files
 ->notName('composer.json')
@@ -192,8 +194,9 @@ return [
 ->notName('build.xml*')
 ```
 
-#### 内置过滤器(vendor)
-```
+### 内置过滤器(vendor)
+
+```php
 ->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/', '*.macro.php'])
 ->exclude([
     'doc',
@@ -205,3 +208,9 @@ return [
     'vendor/bin',
 ]);
 ```
+
+## 注意事项
+
+- 不要在配置文件中，使用 `__DIR__`、`__FILE__` 等方式，指定物理路径，比如日志保存目录，而应该使用常量 `IMI_APP_ROOT_PHYSICS`
+
+- 默认打包文件路径是 `build/imi.phar`，如果运行不要忘记把 .env 文件（如果有）复制进去
