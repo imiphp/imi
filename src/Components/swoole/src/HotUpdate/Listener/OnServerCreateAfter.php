@@ -30,7 +30,7 @@ class OnServerCreateAfter implements IEventListener
             return;
         }
         // 热更新
-        if (Config::get('@app.beans.hotUpdate.status', true))
+        if (Config::get('@app.beans.hotUpdate.status', true) && !IMI_IN_PHAR)
         {
             // @phpstan-ignore-next-line
             App::getBean('AutoRunProcessManager')->add('hotUpdate', 'hotUpdate');

@@ -177,7 +177,7 @@ class Server extends BaseServer
             $hotUpdateProcess = null;
             /** @var \Imi\RoadRunner\HotUpdate\HotUpdateProcess $hotUpdate */
             $hotUpdate = App::getBean('hotUpdate');
-            if ($enableHotUpdate = $hotUpdate->getStatus())
+            if ($enableHotUpdate = ($hotUpdate->getStatus() && !IMI_IN_PHAR))
             {
                 $hotUpdateCmd = cmd(Imi::getImiCmd('rr/hotUpdate', [], $options));
             }
