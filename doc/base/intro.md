@@ -12,7 +12,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png)]
 
 微信群：
 
-<img src="../../res/wechat.png" alt="imi" width="256px" />
+![wechat](../../res/wechat.png)
 
 ## 官方视频教程（完全免费）
 
