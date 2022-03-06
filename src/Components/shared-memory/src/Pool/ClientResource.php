@@ -61,4 +61,12 @@ class ClientResource extends BasePoolResource
     {
         return $this->client->getClient()->isConnected();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        return $this->client->getClient()->isConnected();
+    }
 }

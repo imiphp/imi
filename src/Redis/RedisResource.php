@@ -110,4 +110,14 @@ class RedisResource extends BasePoolResource
             }
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        $redis = $this->redis;
+
+        return $redis->isCluster() || $redis->isConnected();
+    }
 }

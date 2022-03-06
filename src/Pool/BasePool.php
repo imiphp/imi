@@ -131,11 +131,18 @@ abstract class BasePool implements IPool
     {
         $hash = $resource->hashCode();
         $pool = &$this->pool;
-        if (isset($pool[$hash]))
+        if ($resource->isOpened())
         {
-            $resource->reset();
-            $pool[$hash]->release();
-            $this->push($resource);
+            if (isset($pool[$hash]))
+            {
+                $resource->reset();
+                $pool[$hash]->release();
+                $this->push($resource);
+            }
+        }
+        elseif (isset($pool[$hash]))
+        {
+            unset($pool[$hash]);
         }
     }
 

@@ -63,4 +63,12 @@ class RpcClientResource extends BasePoolResource
     {
         return $this->client->checkConnected();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        return $this->client->isConnected();
+    }
 }

@@ -29,4 +29,12 @@ abstract class BasePoolResource implements IPoolResource
     {
         return $this->pool;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        return true;
+    }
 }

@@ -42,4 +42,9 @@ interface IPoolResource extends IHashCode
      * 检查资源是否可用.
      */
     public function checkState(): bool;
+
+    /**
+     * 资源是否已打开
+     */
+    public function isOpened(): bool;
 }
