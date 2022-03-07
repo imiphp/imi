@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         uses: ./.github/actions/ci-prepare
         with:
@@ -113,7 +113,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         uses: ./.github/actions/ci-prepare
         with:
@@ -208,7 +208,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         run: |
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
@@ -312,7 +312,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         run: |
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
@@ -415,7 +415,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
 
       - name: Prepare
         run: |

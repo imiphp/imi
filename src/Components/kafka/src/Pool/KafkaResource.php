@@ -61,4 +61,12 @@ class KafkaResource extends BasePoolResource
     {
         return true;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        return true;
+    }
 }

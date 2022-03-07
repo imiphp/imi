@@ -74,4 +74,12 @@ class DbResource extends BasePoolResource
     {
         return $this->db->ping();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        return $this->db->isConnected();
+    }
 }
