@@ -93,4 +93,12 @@ class AMQPResource extends BasePoolResource
     {
         return $this->connection->isConnected();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isOpened(): bool
+    {
+        return $this->connection->isConnected();
+    }
 }

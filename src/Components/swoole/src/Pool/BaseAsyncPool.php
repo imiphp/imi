@@ -294,7 +294,7 @@ abstract class BaseAsyncPool extends BasePool
         {
             foreach ($pool as $key => $item)
             {
-                if ($item->isFree() && $item->lock())
+                if ($item->lock())
                 {
                     try
                     {
