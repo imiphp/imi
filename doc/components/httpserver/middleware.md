@@ -138,13 +138,49 @@ return [
 
 ## 注入修改核心动作中间件
 
+例如 要注入修改 `\Imi\Server\Http\Middleware\ActionWrapMiddleware::$actionMiddleware`
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Imi\Server\Http\Middleware;
+
+use Imi\Bean\Annotation\Bean;
+use Imi\Server\Http\RequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+/**
+ * @Bean("ActionWrapMiddleware")
+ */
+class ActionWrapMiddleware implements MiddlewareInterface
+{
+    /**
+     * 动作中间件.
+     */
+    protected string $actionMiddleware = ActionMiddleware::class;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+
+    }
+}
+
+```
+
 服务器 config.php:
 
 ```php
 [
     'beans' =>  [
-        'ActionWrapMiddleware'  =>  [
-            'actionMiddleware'  =>  '自定义',
+        'ActionWrapMiddleware（对应的@Bean容器名）'  =>  [
+            'actionMiddleware（@Bean容器所对应类的属性）'  =>  '自定义',
         ],
     ],
 ]
