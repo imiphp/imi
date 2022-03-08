@@ -23,17 +23,12 @@ use Imi\AppContexts;
      * 项目路径.
      * 有可能在 phar 路径中.
      */
-    \define('IMI_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : IMI_RUNNING_ROOT);
-
-    /**
-     * 项目物理路径.
-     */
-    \define('IMI_APP_ROOT_PHYSICS', \dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
+    \define('IMI_PHAR_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : IMI_RUNNING_ROOT);
 
     require __DIR__ . '/vendor/autoload.php';
 
     if (IMI_IN_PHAR)
     {
-        App::set(AppContexts::APP_PATH, IMI_APP_ROOT, true);
+        App::set(AppContexts::APP_PATH, IMI_PHAR_APP_ROOT, true);
     }
 })();

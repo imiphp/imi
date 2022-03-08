@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace
 {
+    use Imi\Env;
+    use Imi\RequestContext;
+    use Swoole\Coroutine;
+
     /**
      * 是否运行在 phar 模式.
      */
@@ -13,18 +17,6 @@ namespace
      * 工作路径.
      */
     \defined('IMI_RUNNING_ROOT') || \define('IMI_RUNNING_ROOT', realpath(getcwd()));
-
-    /**
-     * 项目路径.
-     * 有可能在 phar 路径中.
-     */
-    // @phpstan-ignore-next-line
-    \defined('IMI_APP_ROOT') || \define('IMI_APP_ROOT', IMI_IN_PHAR ? \Phar::running() : realpath(getcwd()));
-
-    /**
-     * 项目物理路径.
-     */
-    \defined('IMI_APP_ROOT_PHYSICS') || \define('IMI_APP_ROOT_PHYSICS', \dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
 
     // phar build 数据占位
 
@@ -48,10 +40,6 @@ namespace
      * phar 构件时的 Git Tag.
      */
     \defined('IMI_PHAR_BUILD_GIT_TAG') || \define('IMI_PHAR_BUILD_GIT_TAG', null);
-
-    use Imi\Env;
-    use Imi\RequestContext;
-    use Swoole\Coroutine;
 
     /**
      * 启动一个协程，自动创建和销毁上下文.

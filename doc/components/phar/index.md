@@ -211,6 +211,6 @@ return [
 
 ## 注意事项
 
-- 不要在配置文件中，使用 `__DIR__`、`__FILE__` 等方式，指定物理路径，比如日志保存目录，而应该使用常量 `IMI_APP_ROOT_PHYSICS`
+- 不要在配置文件中，使用 `__DIR__`、`__FILE__` 等方式，指定物理路径，比如日志保存目录，而应该使用 `\Imi\App::get(\Imi\AppContexts::APP_PATH_PHYSICS)`
 
 - 默认打包文件路径是 `build/imi.phar`，如果运行不要忘记把 .env 文件（如果有）复制进去
