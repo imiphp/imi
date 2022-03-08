@@ -346,6 +346,7 @@ class PharService
             $finder = (new Finder())
                 ->files()
                 ->in($this->baseDir)
+                ->name(['*.php', '*.macro'])
                 ->depth('== 0')
                 ->ignoreDotFiles(true)
                 ->ignoreVCS(true);
