@@ -339,11 +339,13 @@ Env::list('EMPTY_VALUE'); // 抛出异常
 在入口文件定义：
 
 ```php
-\Imi\App::set(\Imi\AppContexts::APP_PATH, '项目目录', true);
+\Imi\App::set(\Imi\AppContexts::APP_PATH, '项目目录', true); // phar 模式下不是物理目录
+\Imi\App::set(\Imi\AppContexts::APP_PATH_PHYSICS, '项目物理目录', true);
 ```
 
 在项目里，无论你是否定义，都可以使用下面的方法，获取到项目目录：
 
 ```php
-\Imi\App::get(\Imi\AppContexts::APP_PATH);
+\Imi\App::get(\Imi\AppContexts::APP_PATH); // phar 模式下不是物理目录
+\Imi\App::get(\Imi\AppContexts::APP_PATH_PHYSICS);
 ```

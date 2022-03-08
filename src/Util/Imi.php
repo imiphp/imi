@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\App;
+use Imi\AppContexts;
 use Imi\Bean\Annotation;
 use Imi\Bean\BeanManager;
 use Imi\Bean\BeanProxy;
@@ -441,7 +442,7 @@ class Imi
                 // @phpstan-ignore-next-line
                 if (IMI_IN_PHAR)
                 {
-                    $parentPath = File::path(IMI_RUNNING_ROOT, '.runtime');
+                    $parentPath = File::path(App::get(AppContexts::APP_PATH_PHYSICS), '.runtime');
                 }
                 else
                 {

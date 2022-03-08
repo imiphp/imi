@@ -41,9 +41,9 @@ abstract class BaseApp implements IApp
         // 加载框架配置
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
 
-        $appPath = App::get(AppContexts::APP_PATH);
+        $appPath = App::get(AppContexts::APP_PATH_PHYSICS);
         // @phpstan-ignore-next-line
-        $envFile = IMI_IN_PHAR ? (IMI_RUNNING_ROOT . '/.env') : ($appPath . '/.env');
+        $envFile = $appPath . '/.env';
         if (is_file($envFile))
         {
             // 加载项目目录下的 env
