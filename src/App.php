@@ -125,6 +125,7 @@ class App
         }
         if (!self::has(AppContexts::APP_PATH_PHYSICS))
         {
+            // @phpstan-ignore-next-line
             self::set(AppContexts::APP_PATH_PHYSICS, IMI_IN_PHAR ? \dirname(realpath($_SERVER['SCRIPT_FILENAME'])) : ($path ?? Imi::getNamespacePath($namespace, true)), true);
         }
         self::$isInited = true;
