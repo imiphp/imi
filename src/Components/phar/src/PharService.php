@@ -232,7 +232,7 @@ class PharService
         if ($this->hasBootstrapFile)
         {
             return <<<PHP
-            require IMI_APP_ROOT . '/{$this->bootstrap}';
+            require IMI_PHAR_APP_ROOT . '/{$this->bootstrap}';
             PHP;
         }
         else
@@ -240,7 +240,7 @@ class PharService
             $bootstrapFile = Constant::CONTAINER_BOOTSTRAP[$this->bootstrap];
 
             return <<<PHP
-            \$main = require IMI_APP_ROOT . '/{$bootstrapFile}';
+            \$main = require IMI_PHAR_APP_ROOT . '/{$bootstrapFile}';
             \$main();
             PHP;
         }
@@ -346,6 +346,7 @@ class PharService
             $finder = (new Finder())
                 ->files()
                 ->in($this->baseDir)
+                ->name(['*.php', '*.macro'])
                 ->depth('== 0')
                 ->ignoreDotFiles(true)
                 ->ignoreVCS(true);

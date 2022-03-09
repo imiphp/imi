@@ -132,7 +132,7 @@ class Server extends BaseServer
                     'serve',
                 ];
                 $serverConfig = $this->config;
-                $workDir = $serverConfig['workDir'] ?? App::get(AppContexts::APP_PATH);
+                $workDir = $serverConfig['workDir'] ?? App::get(AppContexts::APP_PATH_PHYSICS);
                 if (null !== $workDir)
                 {
                     $options['w'] = $workDir;
@@ -294,7 +294,7 @@ class Server extends BaseServer
         $workDir = $serverConfig['workDir'] ?? null;
         if (null === $workDir)
         {
-            $workDir = App::get(AppContexts::APP_PATH);
+            $workDir = App::get(AppContexts::APP_PATH_PHYSICS);
         }
         if (null !== $workDir)
         {

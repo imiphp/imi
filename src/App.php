@@ -120,7 +120,13 @@ class App
         AnnotationManager::init();
         if (!self::has(AppContexts::APP_PATH))
         {
-            self::set(AppContexts::APP_PATH, Imi::getNamespacePath($namespace, true), true);
+            $path = Imi::getNamespacePath($namespace, true);
+            self::set(AppContexts::APP_PATH, $path, true);
+        }
+        if (!self::has(AppContexts::APP_PATH_PHYSICS))
+        {
+            // @phpstan-ignore-next-line
+            self::set(AppContexts::APP_PATH_PHYSICS, IMI_IN_PHAR ? \dirname(realpath($_SERVER['SCRIPT_FILENAME'])) : ($path ?? Imi::getNamespacePath($namespace, true)), true);
         }
         self::$isInited = true;
         Event::trigger('IMI.INITED');
