@@ -465,6 +465,16 @@ interface IQuery
     public function select(): IResult;
 
     /**
+     * 查询所有记录，返回游标迭代器.
+     */
+    public function cursor(): iterable;
+
+//    /**
+//     * 查询所有记录，返回分块迭代器.
+//     */
+//    public function chunkById(int $limit, ?string $orderField = null, ?string $idField = null): iterable;
+
+    /**
      * 分页查询.
      *
      * @return \Imi\Db\Query\Interfaces\IPaginateResult

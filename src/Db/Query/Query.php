@@ -15,6 +15,7 @@ use Imi\Db\Query\Interfaces\IHaving;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
 use Imi\Util\Pagination;
@@ -828,6 +829,19 @@ abstract class Query implements IQuery
      */
     public function execute(string $sql): IResult
     {
+        return $this->executeEx($sql, $this->resultClass);
+    }
+
+    /**
+     * @template T
+     *
+     * @param string $sql
+     * @param class-string<T> $resultClass
+     *
+     * @return T
+     */
+    protected function executeEx(string $sql, string $resultClass)
+    {
         try
         {
             $db = &$this->db;
@@ -837,14 +851,14 @@ abstract class Query implements IQuery
             }
             if (!$db)
             {
-                return new $this->resultClass(false);
+                return new $resultClass(false);
             }
             $stmt = $db->prepare($sql);
             $binds = $this->binds;
             $this->binds = [];
             $stmt->execute($binds);
 
-            return new $this->resultClass($stmt, $this->modelClass);
+            return new $resultClass($stmt, $this->modelClass);
         }
         finally
         {
@@ -1295,6 +1309,21 @@ abstract class Query implements IQuery
     {
         return $this->execute($this->buildSelectSql());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function cursor(): iterable
+    {
+        return $this->executeEx($this->buildSelectSql(), CursorResult::class);
+    }
+
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public function chunkById(int $limit, ?string $orderField = null, ?string $idField = null): iterable
+//    {
+//    }
 
     /**
      * {@inheritDoc}
