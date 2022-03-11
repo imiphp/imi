@@ -155,10 +155,14 @@ class Server extends Base implements ISwooleTcpServer
                         'data'            => $data,
                     ], $this, ReceiveEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
                     // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    if (true !== $this->getBean('TcpErrorHandler')->handle($th))
+                    {
+                        // @phpstan-ignore-next-line
+                        App::getBean('ErrorLog')->onException($th);
+                    }
                 }
             });
         }

@@ -88,10 +88,14 @@ class Server extends Base implements ISwooleUdpServer
                         'clientInfo'    => $clientInfo,
                     ], $this, PacketEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
                     // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    if (true !== $this->getBean('UdpErrorHandler')->handle($th))
+                    {
+                        // @phpstan-ignore-next-line
+                        App::getBean('ErrorLog')->onException($th);
+                    }
                 }
             });
         }

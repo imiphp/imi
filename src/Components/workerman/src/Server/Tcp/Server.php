@@ -57,10 +57,14 @@ class Server extends Base implements ITcpServer
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
                 // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                if (true !== $this->getBean('TcpErrorHandler')->handle($th))
+                {
+                    // @phpstan-ignore-next-line
+                    App::getBean('ErrorLog')->onException($th);
+                }
             }
         };
     }

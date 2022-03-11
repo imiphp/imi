@@ -56,10 +56,14 @@ class Server extends Base implements IUdpServer
                     'packetData' => $packetData,
                 ], $this);
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
                 // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                if (true !== $this->getBean('UdpErrorHandler')->handle($th))
+                {
+                    // @phpstan-ignore-next-line
+                    App::getBean('ErrorLog')->onException($th);
+                }
             }
         };
     }
