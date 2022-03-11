@@ -49,7 +49,7 @@ class PoolItem extends \Imi\Pool\PoolItem
             $channel = ChannelContainer::getChannel($id);
             if (($channel->stats()['consumer_num'] ?? 0) > 0)
             {
-                $channel->push($id, true);
+                $channel->push(true);
             }
         }
     }
