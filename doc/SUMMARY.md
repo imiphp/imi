@@ -78,6 +78,7 @@
 
 ## WebSocket 服务
 
+* [错误异常处理](components/websocketServer/error.md)
 * [数据处理器](components/server/dataParser.md)
 * [HTTP 路由](components/websocketServer/httpRoute.md)
 * [HTTP 控制器](components/websocketServer/httpController.md)
@@ -94,6 +95,7 @@
 
 ## TCP 服务
 
+* [错误异常处理](components/tcpServer/error.md)
 * [数据处理器](components/server/dataParser.md)
 * [路由](components/tcpServer/route.md)
 * [TCP 控制器](components/tcpServer/controller.md)
@@ -106,6 +108,7 @@
 
 ## UDP 服务
 
+* [错误异常处理](components/udpServer/error.md)
 * [数据处理器](components/server/dataParser.md)
 * [路由](components/udpServer/route.md)
 * [UDP 控制器](components/udpServer/controller.md)

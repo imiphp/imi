@@ -131,7 +131,11 @@ class Server extends Base implements IWebSocketServer
             catch (\Throwable $th)
             {
                 // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($th);
+                if (true !== $this->getBean('WebSocketErrorHandler')->handle($th))
+                {
+                    // @phpstan-ignore-next-line
+                    App::getBean('ErrorLog')->onException($th);
+                }
             }
         };
     }

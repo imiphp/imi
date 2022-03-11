@@ -196,10 +196,14 @@ class Server extends Base implements ISwooleWebSocketServer
                         'frame'     => $frame,
                     ], $this, MessageEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
                     // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    if (true !== $this->getBean('WebSocketErrorHandler')->handle($th))
+                    {
+                        // @phpstan-ignore-next-line
+                        App::getBean('ErrorLog')->onException($th);
+                    }
                 }
             });
         }

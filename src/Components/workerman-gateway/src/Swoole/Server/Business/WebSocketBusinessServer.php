@@ -13,7 +13,7 @@ use Imi\Log\ErrorLog;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker;
-use Imi\WorkermanGateway\Swoole\Server\Business\Task\WorkerTask;
+use Imi\WorkermanGateway\Swoole\Server\Business\Task\WebSocketWorkerTask;
 use Swoole\Coroutine;
 use Throwable;
 use Workerman\Gateway\Config\GatewayWorkerConfig;
@@ -66,7 +66,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             }
 
             Coroutine::create(function () use ($workermanGatewayConfig) {
-                $this->pool = $pool = new CoPool($workermanGatewayConfig['worker_coroutine_num'] ?? swoole_cpu_num(), $workermanGatewayConfig['channel']['size'] ?? 1024, WorkerTask::class);
+                $this->pool = $pool = new CoPool($workermanGatewayConfig['worker_coroutine_num'] ?? swoole_cpu_num(), $workermanGatewayConfig['channel']['size'] ?? 1024, WebSocketWorkerTask::class);
                 $pool->run();
                 $pool->wait();
             });

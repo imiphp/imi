@@ -6,7 +6,7 @@
 
 默认 Http 错误处理器：`Imi\Server\Http\Error\JsonErrorHandler`
 
-### 指定默认处理器
+## 指定默认处理器
 
 配置文件中：
 
@@ -21,7 +21,7 @@ return [
 ];
 ```
 
-### 默认处理器参数设置
+## 默认处理器参数设置
 
 ```php
 return [
@@ -38,9 +38,7 @@ return [
 ];
 ```
 
-
-
-### 编写处理器
+## 编写处理器
 
 如下代码所示，实现`IErrorHandler`接口，`handle()`方法返回值为true时则取消继续抛出异常。
 

@@ -6,6 +6,7 @@ namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
 use GatewayWorker\BusinessWorker;
 use GatewayWorker\Lib\Gateway;
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
@@ -98,17 +99,29 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
         $property = $refClass->getProperty('_eventOnMessage');
         $property->setAccessible(true);
         $property->setValue($worker, function (string $clientId, $data) {
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-            ]);
+            try
+            {
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                ]);
 
-            Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
-                'server'   => $this,
-                'clientId' => $clientId,
-                'data'     => $data,
-            ], $this);
-            RequestContext::destroy();
+                Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                    'data'     => $data,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $th)
+            {
+                // @phpstan-ignore-next-line
+                if (true !== $this->getBean('TcpErrorHandler')->handle($th))
+                {
+                    // @phpstan-ignore-next-line
+                    App::getBean('ErrorLog')->onException($th);
+                }
+            }
         });
     }
 
