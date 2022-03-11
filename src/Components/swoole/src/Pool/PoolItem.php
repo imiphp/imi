@@ -46,7 +46,11 @@ class PoolItem extends \Imi\Pool\PoolItem
         $id = (string) spl_object_id($this);
         if (ChannelContainer::hasChannel($id))
         {
-            ChannelContainer::push($id, true);
+            $channel = ChannelContainer::getChannel($id);
+            if (($channel->stats()['consumer_num'] ?? 0) > 0)
+            {
+                $channel->push(true);
+            }
         }
     }
 }
