@@ -8,6 +8,7 @@ use Composer\InstalledVersions;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\Scanner;
+use Imi\Cli\ImiCommand;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
@@ -167,7 +168,7 @@ class App
         {
             $namespace = IMI_PRE_CACHE['namespace'];
         }
-        elseif ('cli' !== \PHP_SAPI || false === ($namespace = $input->getParameterOption('--app-namespace', false)))
+        elseif ('cli' !== \PHP_SAPI || false === ($namespace = ImiCommand::getInput()->getParameterOption('--app-namespace', false)))
         {
             // @deprecated 3.0
             $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
