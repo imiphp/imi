@@ -175,7 +175,6 @@ class App
             if (!isset($config['namespace']))
             {
                 throw new \RuntimeException('Has no namespace, please add arg: --app-namespace "Your App Namespace"');
-                exit(255);
             }
             $namespace = $config['namespace'];
         }
@@ -367,6 +366,11 @@ class App
 
     public static function getAppPharBuildVersion(): ?string
     {
+        // @phpstan-ignore-next-line
+        if (!IMI_IN_PHAR)
+        {
+            return '';
+        }
         // @phpstan-ignore-next-line
         if (IMI_PHAR_BUILD_GIT_HASH)
         {

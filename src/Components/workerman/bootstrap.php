@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman;
 
 use Imi\App;
-use Imi\AppContexts;
-use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
-use Imi\Util\File;
 
 return static function () {
     $path = null;

@@ -13,6 +13,7 @@ namespace
      */
     \defined('IMI_IN_PHAR') || \define('IMI_IN_PHAR', (bool) \Phar::running(false));
 
+    // @phpstan-ignore-next-line
     if (IMI_IN_PHAR)
     {
         /**
