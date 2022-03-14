@@ -167,7 +167,7 @@ class App
         {
             $namespace = IMI_PRE_CACHE['namespace'];
         }
-        else
+        elseif ('cli' !== \PHP_SAPI || false === ($namespace = $input->getParameterOption('--app-namespace', false)))
         {
             // @deprecated 3.0
             $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
