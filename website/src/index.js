@@ -30,6 +30,31 @@ $(function () {
    leave(func, lunbo_time);
 });
 
+function loadImg(url,callback){
+	if(!url) return;
+	let image = new Image();
+	image.src = url;  
+    image.onload = function() {
+      typeof callback == 'function' ? callback() : '';
+    }	
+}
+
+function loadImgage(id){
+    $(id).hide();
+    $(id).each(function(i){
+	    let that = $(this);
+	    let url = that.attr('src');
+        window.setTimeout(function(){
+		    loadImg(url,function(){
+			    that.show();
+		    });
+        },500 * i);	
+    });
+}
+
+loadImgage(".imi_contact img"); // 依次加载此布局内的图片,加载成功一张就显示一张出来,加载不出来就隐藏吧
+
+
 /** 数字累加特效 **/
 /*
 function numAutoPlusAnimation(targetEle, options) {
