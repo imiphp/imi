@@ -155,7 +155,10 @@ class App
                 if (!empty($composerConfig['imi']))
                 {
                     $preCache = $composerConfig['imi'];
-                    file_put_contents($fileName, '<?php return ' . var_export($preCache, true) . ';');
+                    if (!IMI_IN_PHAR)
+                    {
+                        file_put_contents($fileName, '<?php return ' . var_export($preCache, true) . ';');
+                    }
                 }
             }
         }
