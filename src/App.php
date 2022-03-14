@@ -141,7 +141,7 @@ class App
      */
     public static function runApp(string $vendorParentPath, string $app): void
     {
-        $fileName = $vendorParentPath . '/app.cache';
+        $fileName = $vendorParentPath . '/imi.cache';
         if (is_file($fileName))
         {
             $preCache = include $fileName;
