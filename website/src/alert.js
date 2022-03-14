@@ -19,7 +19,7 @@ let kaifa = `
  <li>完善注释</li>
  <li>bug修复</li>
  <li>功能开发</li>
- <li>文档编写（<a href="https://github.com/imiphp/imi">https://github.com/imiphp/imi</a> 中的 doc 目录）</li>
+ <li>文档编写（<a href="https://github.com/imiphp/imi" target="_blank">https://github.com/imiphp/imi</a> 中的 doc 目录）</li>
  <li>教程、博客分享</li>
  </ul>
 `;
@@ -39,7 +39,7 @@ let modal_1 = new mModal({
       window.location.href = "./donate.html";
    },
    cancel: function () {
-      window.location.href = "https://github.com/imiphp/imi";
+      window.open("https://github.com/imiphp/imi");
    }
 });
 

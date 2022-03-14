@@ -300,7 +300,6 @@ a.pure-button-primary {
     top: 0;
     left: 0;
     position: fixed !important;
-    /* animation: bgSize 5s infinite ease-in-out alternate; */
 }
 
 @keyframes bgSize {
@@ -329,10 +328,7 @@ a.pure-button-primary {
 .splash-head {
     font-size: 20px;
     font-weight: bold;
-    /* color: white; */
-    /* border: 3px solid white; */
     padding: 1em;
-    /* font-weight: 100; */
     border-radius: 5px;
     line-height: 1em;
 }
