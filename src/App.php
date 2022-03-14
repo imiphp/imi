@@ -155,6 +155,7 @@ class App
                 if (!empty($composerConfig['imi']))
                 {
                     $preCache = $composerConfig['imi'];
+                    // @phpstan-ignore-next-line
                     if (!IMI_IN_PHAR)
                     {
                         file_put_contents($fileName, '<?php return ' . var_export($preCache, true) . ';');
