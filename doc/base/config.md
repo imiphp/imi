@@ -357,6 +357,10 @@ Env::list('EMPTY_VALUE'); // 抛出异常
 
 在 `composer.json` 中，我们允许配置一些优先于项目及框架加载前的配置。
 
+在项目启动时，会在项目目录下生成 `app.cache` 文件，如果修改了 `composer.json` 中 `imi` 相关配置，需要手动删除 `app.cache` 文件才可生效！
+
+格式如下：
+
 ```json
 {
     "imi": {
