@@ -133,6 +133,57 @@ class App
     }
 
     /**
+     * 运行应用.
+     *
+     * @param string             $vendorParentPath vendor所在目录
+     * @param class-string<IApp> $app
+     */
+    public static function runApp(string $vendorParentPath, string $app): void
+    {
+        $fileName = $vendorParentPath . '/app.cache';
+        if (is_file($fileName))
+        {
+            $preCache = include $fileName;
+        }
+        else
+        {
+            $composerJsonFile = $vendorParentPath . '/composer.json';
+            if (is_file($composerJsonFile))
+            {
+                $composerConfig = json_decode(file_get_contents($composerJsonFile), true);
+                if (!empty($composerConfig['imi']))
+                {
+                    $preCache = $composerConfig['imi'];
+                    file_put_contents($fileName, '<?php return ' . var_export($preCache, true) . ';');
+                }
+            }
+        }
+        /**
+         * imi 框架预缓存.
+         */
+        \defined('IMI_PRE_CACHE') || \define('IMI_PRE_CACHE', $preCache ?? []);
+
+        if (isset(IMI_PRE_CACHE['namespace']))
+        {
+            $namespace = IMI_PRE_CACHE['namespace'];
+        }
+        else
+        {
+            // @deprecated 3.0
+            $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
+            $config = include $appPath . '/config/config.php';
+            if (!isset($config['namespace']))
+            {
+                throw new \RuntimeException('Has no namespace, please add arg: --app-namespace "Your App Namespace"');
+                exit(255);
+            }
+            $namespace = $config['namespace'];
+        }
+
+        self::run($namespace, $app);
+    }
+
+    /**
      * 获取应用命名空间.
      */
     public static function getNamespace(): string
