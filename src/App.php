@@ -164,20 +164,23 @@ class App
          */
         \defined('IMI_PRE_CACHE') || \define('IMI_PRE_CACHE', $preCache ?? []);
 
-        if (isset(IMI_PRE_CACHE['namespace']))
+        if ('cli' !== \PHP_SAPI || false === ($namespace = ImiCommand::getInput()->getParameterOption('--app-namespace', false)))
         {
-            $namespace = IMI_PRE_CACHE['namespace'];
-        }
-        elseif ('cli' !== \PHP_SAPI || false === ($namespace = ImiCommand::getInput()->getParameterOption('--app-namespace', false)))
-        {
-            // @deprecated 3.0
-            $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
-            $config = include $appPath . '/config/config.php';
-            if (!isset($config['namespace']))
+            if (isset(IMI_PRE_CACHE['namespace']))
             {
-                throw new \RuntimeException('Has no namespace, please add arg: --app-namespace "Your App Namespace"');
+                $namespace = IMI_PRE_CACHE['namespace'];
             }
-            $namespace = $config['namespace'];
+            else
+            {
+                // @deprecated 3.0
+                $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
+                $config = include $appPath . '/config/config.php';
+                if (!isset($config['namespace']))
+                {
+                    throw new \RuntimeException('imi cannot found your app namespace');
+                }
+                $namespace = $config['namespace'];
+            }
         }
 
         self::run($namespace, $app);
