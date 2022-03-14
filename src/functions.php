@@ -13,33 +13,34 @@ namespace
      */
     \defined('IMI_IN_PHAR') || \define('IMI_IN_PHAR', (bool) \Phar::running(false));
 
+    if (IMI_IN_PHAR)
+    {
+        /**
+         * phar 构建时间的时间.
+         *
+         * 格式：2022-01-01T00:00:00+08:00
+         */
+        \defined('IMI_PHAR_BUILD_TIME') || \define('IMI_PHAR_BUILD_TIME', null);
+
+        /**
+         * phar 构建时的 Git commit hash.
+         */
+        \defined('IMI_PHAR_BUILD_GIT_HASH') || \define('IMI_PHAR_BUILD_GIT_HASH', null);
+        /**
+         * phar 构建时的 Git 分支.
+         */
+        \defined('IMI_PHAR_BUILD_GIT_BRANCH') || \define('IMI_PHAR_BUILD_GIT_BRANCH', null);
+
+        /**
+         * phar 构件时的 Git Tag.
+         */
+        \defined('IMI_PHAR_BUILD_GIT_TAG') || \define('IMI_PHAR_BUILD_GIT_TAG', null);
+    }
+
     /**
      * 工作路径.
      */
     \defined('IMI_RUNNING_ROOT') || \define('IMI_RUNNING_ROOT', realpath(getcwd()));
-
-    // phar build 数据占位
-
-    /**
-     * phar 构建时间的时间.
-     *
-     * 格式：2022-01-01T00:00:00+08:00
-     */
-    \defined('IMI_PHAR_BUILD_TIME') || \define('IMI_PHAR_BUILD_TIME', null);
-
-    /**
-     * phar 构建时的 Git commit hash.
-     */
-    \defined('IMI_PHAR_BUILD_GIT_HASH') || \define('IMI_PHAR_BUILD_GIT_HASH', null);
-    /**
-     * phar 构建时的 Git 分支.
-     */
-    \defined('IMI_PHAR_BUILD_GIT_BRANCH') || \define('IMI_PHAR_BUILD_GIT_BRANCH', null);
-
-    /**
-     * phar 构件时的 Git Tag.
-     */
-    \defined('IMI_PHAR_BUILD_GIT_TAG') || \define('IMI_PHAR_BUILD_GIT_TAG', null);
 
     /**
      * 启动一个协程，自动创建和销毁上下文.
