@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman;
 
 use Imi\App;
-use Imi\AppContexts;
-use Imi\Cli\ImiCommand;
 use Imi\Event\Event;
-use Imi\Util\File;
 
 return static function () {
     $path = null;
@@ -44,22 +41,5 @@ return static function () {
     Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Workerman\Process\Listener\LoadRuntimeListener::class, 19940000);
     Event::on('IMI.BUILD_RUNTIME', \Imi\Workerman\Process\Listener\BuildRuntimeListener::class, 19940000);
 
-    App::run((static function () use ($path): string {
-        $input = ImiCommand::getInput();
-        $namespace = $input->getParameterOption('--app-namespace');
-        if (false === $namespace)
-        {
-            $appPath = App::get(AppContexts::APP_PATH) ?? ($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)));
-            $config = include File::path($appPath, 'config/config.php');
-            if (!isset($config['namespace']))
-            {
-                echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', \PHP_EOL;
-                exit(255);
-            }
-            App::setNx(AppContexts::APP_PATH, $appPath, true);
-            $namespace = $config['namespace'];
-        }
-
-        return $namespace;
-    })(), \Imi\Workerman\WorkermanApp::class);
+    App::runApp($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)), \Imi\Workerman\WorkermanApp::class);
 };

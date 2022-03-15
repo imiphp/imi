@@ -8,6 +8,7 @@ use Composer\InstalledVersions;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\Scanner;
+use Imi\Cli\ImiCommand;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
@@ -130,6 +131,63 @@ class App
         }
         self::$isInited = true;
         Event::trigger('IMI.INITED');
+    }
+
+    /**
+     * 运行应用.
+     *
+     * @param string             $vendorParentPath vendor所在目录
+     * @param class-string<IApp> $app
+     */
+    public static function runApp(string $vendorParentPath, string $app): void
+    {
+        $fileName = $vendorParentPath . '/imi.cache';
+        if (is_file($fileName))
+        {
+            $preCache = include $fileName;
+        }
+        else
+        {
+            $composerJsonFile = $vendorParentPath . '/composer.json';
+            if (is_file($composerJsonFile))
+            {
+                $composerConfig = json_decode(file_get_contents($composerJsonFile), true);
+                if (!empty($composerConfig['imi']))
+                {
+                    $preCache = $composerConfig['imi'];
+                    // @phpstan-ignore-next-line
+                    if (!IMI_IN_PHAR)
+                    {
+                        file_put_contents($fileName, '<?php return ' . var_export($preCache, true) . ';');
+                    }
+                }
+            }
+        }
+        /**
+         * imi 框架预缓存.
+         */
+        \defined('IMI_PRE_CACHE') || \define('IMI_PRE_CACHE', $preCache ?? []);
+
+        if ('cli' !== \PHP_SAPI || false === ($namespace = ImiCommand::getInput()->getParameterOption('--app-namespace', false)))
+        {
+            if (isset(IMI_PRE_CACHE['namespace']))
+            {
+                $namespace = IMI_PRE_CACHE['namespace'];
+            }
+            else
+            {
+                // @deprecated 3.0
+                $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
+                $config = include $appPath . '/config/config.php';
+                if (!isset($config['namespace']))
+                {
+                    throw new \RuntimeException('imi cannot found your app namespace');
+                }
+                $namespace = $config['namespace'];
+            }
+        }
+
+        self::run($namespace, $app);
     }
 
     /**
@@ -316,6 +374,11 @@ class App
 
     public static function getAppPharBuildVersion(): ?string
     {
+        // @phpstan-ignore-next-line
+        if (!IMI_IN_PHAR)
+        {
+            return '';
+        }
         // @phpstan-ignore-next-line
         if (IMI_PHAR_BUILD_GIT_HASH)
         {
