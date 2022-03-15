@@ -10,7 +10,6 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Async\Annotation\Async;
-use Imi\Async\AsyncResult;
 use Imi\Async\Contract\IAsyncResult;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
@@ -41,7 +40,7 @@ class AsyncAop
         $methodRef = ReflectionContainer::getMethodReflection($className, $joinPoint->getMethod());
         if (!$methodRef->hasReturnType() || ReflectionUtil::allowsType($methodRef->getReturnType(), IAsyncResult::class, $className))
         {
-            return new AsyncResult($result);
+            return $result;
         }
     }
 }
