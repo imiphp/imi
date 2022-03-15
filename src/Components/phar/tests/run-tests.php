@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Symfony\Component\Process\Process;
 
-require \dirname(__DIR__, 2) . '/vendor/autoload.php';
+require \dirname(__DIR__, 1) . '/vendor/autoload.php';
 
 const STARTUP_MAX_WAIT = 30;
 
@@ -17,9 +17,9 @@ const LOCAL_REPOSITORIES = [
     'imiphp/imi-phar'       => 'src/Components/phar',
 ];
 
-$srcSourceDir = \dirname(__DIR__, 5);
+$srcSourceDir = \dirname(__DIR__, 4);
 $srcMirrorDir = '/tmp/mirror-imi';
-$testProjectSrc = __DIR__;
+$testProjectSrc = __DIR__ . '/project';
 $testProjectDir = '/tmp/imi-phar-test';
 
 echo "> copy files...\n";
@@ -65,19 +65,20 @@ echo "> composer install...\n";
     'install',
     '--no-interaction',
     '--prefer-dist',
-    '--no-progress', // '-vvv',
+    '--no-progress',
 ], $testProjectDir, [
-    // 'COMPOSER_DISABLE_NETWORK' => '1', // 本地测试提升速度用
+//     'COMPOSER_DISABLE_NETWORK' => '1', // 本地测试提升速度用
 ]))
     ->mustRun(static function ($type, $buffer) {
         echo $buffer;
     });
 
-$testContainer = [
-    'swoole'     => ['build/imi.phar', 'swoole/start'],
-    'workerman'  => ['build/imi.phar', 'workerman/start'],
-    'roadrunner' => ['build/imi-cli.phar', 'rr/start'], // 两个入口 roadrunner、cli
-];
+$testContainer = [];
+if (extension_loaded('swoole')) {
+    $testContainer['swoole'] = ['build/imi.phar', 'swoole/start'];
+}
+$testContainer['workerman'] = ['build/imi.phar', 'workerman/start'];
+$testContainer['roadrunner'] = ['build/imi-cli.phar', 'rr/start']; // 两个入口 roadrunner、cli
 
 foreach ($testContainer as $container => $opt)
 {
