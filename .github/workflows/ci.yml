@@ -39,219 +39,219 @@ jobs:
         uses: ./.github/actions/ci-prepare
         with:
           env: ${{ env.ENV_SERVICE }}
-#      - name: Test
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test
-#      - name: Test swoole
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-swoole
-#      - name: Test workerman
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-workerman
-#      - name: Test workerman-gateway
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
-#      - name: Test roadrunner
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-roadrunner
-#      - name: Test fpm
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-fpm
-#      - name: Test jwt
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-jwt
-#      - name: Test queue
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-queue
-#      - name: Test amqp
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-amqp
-#      - name: Test kafka
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-kafka
-#      - name: Test grpc
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-grpc
-#      - name: Test snowflake
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-snowflake
-#      - name: Test mqtt
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-mqtt
-#      - name: Test smarty
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-smarty
-#      - name: Test pgsql
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-pgsql
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test swoole
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-swoole
+      - name: Test workerman
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-workerman
+      - name: Test workerman-gateway
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+      - name: Test roadrunner
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-roadrunner
+      - name: Test fpm
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-fpm
+      - name: Test jwt
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-jwt
+      - name: Test queue
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-queue
+      - name: Test amqp
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-amqp
+      - name: Test kafka
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-kafka
+      - name: Test grpc
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-grpc
+      - name: Test snowflake
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-snowflake
+      - name: Test mqtt
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-mqtt
+      - name: Test smarty
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-smarty
+      - name: Test pgsql
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-pgsql
       - name: Test phar
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test-phar
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
-#
-#  ci-unix:
-#    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        swoole:
-#          - version: 4.8-php8.0
-#            postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
-#        roadrunner: [2.7.*]
-#    env:
-#      ENV_SERVICE: swoole
-#      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
-#      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
-#      MYSQL_DOCKER_VERSION: '8.0'
-#      REDIS_SERVER_HOST: /tmp/docker/redis.sock
-#      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: /tmp/composer
-#          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
-#      - name: Prepare
-#        uses: ./.github/actions/ci-prepare
-#        with:
-#          env: ${{ env.ENV_SERVICE }}
-#      - name: Test
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test
-#      - name: Test swoole
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-swoole
-#      - name: Test workerman
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-workerman
-#      - name: Test workerman-gateway
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
-#      - name: Test roadrunner
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-roadrunner
-#      - name: Test fpm
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-fpm
-#      - name: Test jwt
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-jwt
-#      - name: Test queue
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-queue
-#      - name: Test amqp
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-amqp
-#      - name: Test kafka
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-kafka
-#      - name: Test grpc
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-grpc
-#      - name: Test snowflake
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-snowflake
-#      - name: Test mqtt
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-mqtt
-#      - name: Test smarty
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-smarty
-#      - name: Test pgsql
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-pgsql
-#      - name: Print logs
-#        if: failure()
-#        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
-#
-#  ci-swoole-cli:
-#    name: Swoole-cli-${{ matrix.swoole-cli }}
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        swoole-cli: [v4.8.6]
-#    env:
-#      MYSQL_SERVER_PASSWORD: "root"
-#      IMI_TEST_AMQP_SERVER_UTIL: 0
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Setup MySQL
-#        uses: shogo82148/actions-setup-mysql@v1
-#        with:
-#          mysql-version: "8.0"
-#          root-password: root
-#          my-cnf: |
-#            socket=/tmp/mysql.sock
-#      - name: Setup Redis
-#        uses: shogo82148/actions-setup-redis@v1
-#        with:
-#          redis-version: '6.x'
-#      - name: Setup swoole-cli
-#        run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
-#      - name: Check Version
-#        run: |
-#          swoole-cli -v
-#          php -v
-#          php -m
-#          composer -V
-#          php --ri swoole
-#      - name: Get composer cache directory
-#        id: composer-cache
-#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: ${{ steps.composer-cache.outputs.dir }}
-#          key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('/composer.json') }}
-#      - name: Prepare
-#        run: |
-#          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-#          composer update --prefer-dist --no-progress
-#          tests/db/install-db.sh
-#          echo "test_prepared=1" >> $GITHUB_ENV
-#
-#      - name: Test
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test
-#      - name: Test swoole
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-swoole
-#      - name: Test workerman
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-workerman
-#      - name: Test workerman-gateway
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-workerman-gateway
-#      - name: Test jwt
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-jwt
-#      - name: Test queue
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-queue
-#      - name: Test grpc
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-grpc
-#      - name: Test snowflake
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-snowflake
-#      - name: Test mqtt
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-mqtt
-#      - name: Test smarty
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-smarty
-#      - name: Print logs
-#        if: failure()
-#        run: php .github/print-logs.php
+
+  ci-unix:
+    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole:
+          - version: 4.8-php8.0
+            postgresql_version: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
+        roadrunner: [2.7.*]
+    env:
+      ENV_SERVICE: swoole
+      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
+      MYSQL_DOCKER_VERSION: '8.0'
+      REDIS_SERVER_HOST: /tmp/docker/redis.sock
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
+      - name: Prepare
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test swoole
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-swoole
+      - name: Test workerman
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-workerman
+      - name: Test workerman-gateway
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+      - name: Test roadrunner
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-roadrunner
+      - name: Test fpm
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-fpm
+      - name: Test jwt
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-jwt
+      - name: Test queue
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-queue
+      - name: Test amqp
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-amqp
+      - name: Test kafka
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-kafka
+      - name: Test grpc
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-grpc
+      - name: Test snowflake
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-snowflake
+      - name: Test mqtt
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-mqtt
+      - name: Test smarty
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-smarty
+      - name: Test pgsql
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-pgsql
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+
+  ci-swoole-cli:
+    name: Swoole-cli-${{ matrix.swoole-cli }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole-cli: [v4.8.6]
+    env:
+      MYSQL_SERVER_PASSWORD: "root"
+      IMI_TEST_AMQP_SERVER_UTIL: 0
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.0"
+          root-password: root
+          my-cnf: |
+            socket=/tmp/mysql.sock
+      - name: Setup Redis
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '6.x'
+      - name: Setup swoole-cli
+        run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
+      - name: Check Version
+        run: |
+          swoole-cli -v
+          php -v
+          php -m
+          composer -V
+          php --ri swoole
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('/composer.json') }}
+      - name: Prepare
+        run: |
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+          echo "test_prepared=1" >> $GITHUB_ENV
+
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: composer test
+      - name: Test swoole
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-swoole
+      - name: Test workerman
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-workerman
+      - name: Test workerman-gateway
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-workerman-gateway
+      - name: Test jwt
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-jwt
+      - name: Test queue
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-queue
+      - name: Test grpc
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-grpc
+      - name: Test snowflake
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-snowflake
+      - name: Test mqtt
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-mqtt
+      - name: Test smarty
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-smarty
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
 
   ci-macos:
     name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
@@ -331,42 +331,42 @@ jobs:
         run: |
           echo "test_prepared=1" >> $GITHUB_ENV
 
-#      - name: Test
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test
-#      - name: Test swoole
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-swoole
-#      - name: Test workerman
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-workerman
-#      - name: Test workerman-gateway
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-workerman-gateway
-#      - name: Test roadrunner
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-roadrunner
-#      - name: Test fpm
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-fpm
-#      - name: Test jwt
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-jwt
-#      - name: Test queue
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-queue
-#      - name: Test grpc
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-grpc
-#      - name: Test snowflake
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-snowflake
-#      - name: Test mqtt
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-mqtt
-#      - name: Test smarty
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-smarty
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: composer test
+      - name: Test swoole
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-swoole
+      - name: Test workerman
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-workerman
+      - name: Test workerman-gateway
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-workerman-gateway
+      - name: Test roadrunner
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-roadrunner
+      - name: Test fpm
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-fpm
+      - name: Test jwt
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-jwt
+      - name: Test queue
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-queue
+      - name: Test grpc
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-grpc
+      - name: Test snowflake
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-snowflake
+      - name: Test mqtt
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-mqtt
+      - name: Test smarty
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-smarty
       - name: Test phar
         if: ${{ env.test_prepared && always() }}
         run: composer test-phar
@@ -374,85 +374,85 @@ jobs:
         if: failure()
         run: php .github/print-logs.php
 
-#  ci-windows:
-#    name: Windows PHP-${{ matrix.php }} RoadRunner-${{ matrix.roadrunner }}
-#    runs-on: windows-latest
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        php: [7.4, '8.0', 8.1]
-#        roadrunner: [2.7.*]
-#
-#    env:
-#      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Setup MySQL
-#        uses: shogo82148/actions-setup-mysql@v1
-#        with:
-#          mysql-version: "8.0"
-#          root-password: root
-#
-#      - name: Setup Redis-server
-#        run: |
-#          nuget install redis-64 -excludeversion
-#          redis-64\tools\redis-server.exe --service-install
-#          redis-64\tools\redis-server.exe --service-start
-#          '@ECHO Redis Started'
-#
-#      - name: Setup PHP
-#        uses: shivammathur/setup-php@verbose
-#        with:
-#          php-version: ${{ matrix.php }}
-#          ini-values: session.save_path=C:\temp
-#          tools: pecl
-#          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
-#        env:
-#          fail-fast: true
-#
-#      - name: Get composer cache directory
-#        id: composer-cache
-#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-#      - name: Cache dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: ${{ steps.composer-cache.outputs.dir }}
-#          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
-#
-#      - name: Prepare
-#        run: |
-#          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-#          composer update --prefer-dist --no-progress
-#          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
-#
-#      - name: Install RoadRunner
-#        run: |
-#          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $env:ROADRUNNER_DOCKER_VERSION
-#          .\rr -v
-#
-#      - name: Prepared
-#        run: |
-#          echo "test_prepared=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-#
-#      - name: Test
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test
-#      - name: Test fpm
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-fpm
-#      - name: Test workerman
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-workerman
-#      - name: Test workerman-gateway
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-workerman-gateway-w
-#      - name: Test roadrunner
-#        if: ${{ env.test_prepared && always() }}
-#        run: composer test-roadrunner
-#      - name: Print logs
-#        if: failure()
-#        run: php .github\print-logs.php
+  ci-windows:
+    name: Windows PHP-${{ matrix.php }} RoadRunner-${{ matrix.roadrunner }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4, '8.0', 8.1]
+        roadrunner: [2.7.*]
+
+    env:
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.0"
+          root-password: root
+
+      - name: Setup Redis-server
+        run: |
+          nuget install redis-64 -excludeversion
+          redis-64\tools\redis-server.exe --service-install
+          redis-64\tools\redis-server.exe --service-start
+          '@ECHO Redis Started'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@verbose
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: session.save_path=C:\temp
+          tools: pecl
+          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
+        env:
+          fail-fast: true
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
+
+      - name: Prepare
+        run: |
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
+
+      - name: Install RoadRunner
+        run: |
+          echo no | src\Components\roadrunner\vendor\bin\rr get-binary -f $env:ROADRUNNER_DOCKER_VERSION
+          .\rr -v
+
+      - name: Prepared
+        run: |
+          echo "test_prepared=1" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: composer test
+      - name: Test fpm
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-fpm
+      - name: Test workerman
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-workerman
+      - name: Test workerman-gateway
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-workerman-gateway-w
+      - name: Test roadrunner
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-roadrunner
+      - name: Print logs
+        if: failure()
+        run: php .github\print-logs.php
