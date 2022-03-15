@@ -1,0 +1,10 @@
+server:
+  command: "php build/imi.phar" # 项目 Worker 启动文件
+ 
+http:
+  address: 0.0.0.0:13000
+  pool:
+    num_workers: 1
+ 
+rpc:
+  listen: tcp://127.0.0.1:6001
