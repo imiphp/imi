@@ -5,9 +5,6 @@ declare(strict_types=1);
 use Imi\App;
 use Imi\AppContexts;
 use Imi\RoadRunner\RoadRunnerApp;
-use Imi\Cli\ImiCommand;
-use Imi\Event\Event;
-use Imi\Util\File;
 
 //require_once dirname(__DIR__) . '/vendor/autoload.php';
 //
@@ -21,11 +18,11 @@ return static function () {
     {
         (static function () use (&$path) {
             foreach ([
-                         $_SERVER['PWD'] ?? null,
-                         getcwd(),
-                         \dirname(__DIR__, 3),
-                         \dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
-                     ] as $path)
+                $_SERVER['PWD'] ?? null,
+                getcwd(),
+                \dirname(__DIR__, 3),
+                \dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
+            ] as $path)
             {
                 if (!$path)
                 {

@@ -1,36 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 use Imi\App;
 
 $mode = App::isInited() ? App::getApp()->getType() : null;
 
 return [
     // 项目根命名空间
-    'namespace'    =>    'ImiApp',
+    'namespace'    => 'ImiApp',
 
     // 运行时目录
     'runtimePath' => app_real_root_path() . '/.runtime',
 
     // 配置文件
-    'configs'    =>    [
-        'beans'        =>    __DIR__.'/beans.php',
+    'configs'    => [
+        'beans'        => __DIR__ . '/beans.php',
     ],
 
     'ignoreNamespace'   => [
     ],
 
     'ignorePaths' => [
-        dirname(__DIR__).DIRECTORY_SEPARATOR.'public',
-        dirname(__DIR__).DIRECTORY_SEPARATOR.'rr',
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'rr',
     ],
 
     // Swoole 主服务器配置
-    'mainServer'    =>    'swoole' === $mode ? [
-        'namespace'    =>    'ImiApp\ApiServer',
-        'type'        =>    Imi\Swoole\Server\Type::HTTP,
-        'host'        =>    '0.0.0.0',
-        'port'        =>    13000,
-        'configs'    =>    [
+    'mainServer'    => 'swoole' === $mode ? [
+        'namespace'    => 'ImiApp\ApiServer',
+        'type'         => Imi\Swoole\Server\Type::HTTP,
+        'host'         => '0.0.0.0',
+        'port'         => 13000,
+        'configs'      => [
             'log_file' => app_real_root_path() . '/.runtime/swoole/swoole.log',
             // 'worker_num'        =>  8,
             // 'task_worker_num'   =>  16,
@@ -38,7 +40,7 @@ return [
     ] : [],
 
     // Swoole 子服务器（端口监听）配置
-    'subServers'        =>    'swoole' === $mode ? [
+    'subServers'        => 'swoole' === $mode ? [
         // 'SubServerName'   =>  [
         //     'namespace'    =>    'ImiApp\XXXServer',
         //     'type'        =>    Imi\Server\Type::HTTP,
@@ -61,7 +63,7 @@ return [
 
     // fpm 服务器配置
     'fpm' => 'fpm' === $mode ? [
-        'serverPath' => dirname(__DIR__).'/ApiServer',
+        'serverPath' => \dirname(__DIR__) . '/ApiServer',
     ] : [],
 
     // roadrunner 服务器配置
@@ -108,18 +110,18 @@ return [
     ] : [],
 
     // 数据库配置
-    'db'    =>    [
+    'db'    => [
         // 数默认连接池名
-        'defaultPool'    =>    'maindb',
+        'defaultPool'    => 'maindb',
         // FPM、Workerman 下用
         'connections'   => [
             'maindb' => [
-                'host' => '127.0.0.1',
+                'host'        => '127.0.0.1',
                 'port'        => 3306,
-                'username' => 'root',
-                'password' => 'root',
-                'database' => 'mysql',
-                'charset'  => 'utf8mb4',
+                'username'    => 'root',
+                'password'    => 'root',
+                'database'    => 'mysql',
+                'charset'     => 'utf8mb4',
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
@@ -139,26 +141,26 @@ return [
     ],
 
     // redis 配置
-    'redis' =>  [
+    'redis' => [
         // 数默认连接池名
-        'defaultPool'   =>  'redis',
+        'defaultPool'   => 'redis',
         // FPM、Workerman 下用
         'connections'   => [
             'redis' => [
-                'host'	=>	'127.0.0.1',
-                'port'	=>	6379,
+                'host'	 => '127.0.0.1',
+                'port'	 => 6379,
                 // 是否自动序列化变量
-                'serialize'	=>	true,
+                'serialize'	 => true,
                 // 密码
-                'password'	=>	null,
+                'password'	 => null,
                 // 第几个库
-                'db'	=>	0,
+                'db'	 => 0,
             ],
         ],
     ],
 
     // 内存表配置
-    'memoryTable'   =>  [
+    'memoryTable'   => [
         // 't1'    =>  [
         //     'columns'   =>  [
         //         ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
@@ -169,7 +171,7 @@ return [
     ],
 
     // 锁
-    'lock'  =>[
+    'lock'  => [
         // 'list'  =>  [
         //     'atomic' =>  [
         //         'class' =>  'AtomicLock',
@@ -181,7 +183,7 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    =>  [
+    'atomics'    => [
         // 'atomicLock'   =>  1,
     ],
 
