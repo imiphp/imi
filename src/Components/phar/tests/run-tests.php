@@ -33,9 +33,7 @@ rsync -av \
  --exclude 'tests' --exclude 'src/Components/*/tests' \
  --delete {$srcSourceDir}/ {$srcMirrorDir}
 SHELL;
-Process::fromShellCommandline($rsyncImiSrc)->run(static function ($type, $buffer) {
-    echo $buffer;
-});
+Process::fromShellCommandline($rsyncImiSrc)->mustRun();
 Process::fromShellCommandline("rm -r {$testProjectDir}")->run();
 Process::fromShellCommandline("cp -r {$testProjectSrc} {$testProjectDir}")->mustRun();
 
