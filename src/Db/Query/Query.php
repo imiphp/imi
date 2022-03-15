@@ -93,6 +93,7 @@ abstract class Query implements IQuery
 
     /**
      * 查询结果集类名.
+     * @var class-string<IResult>
      */
     protected string $resultClass = Result::class;
 
