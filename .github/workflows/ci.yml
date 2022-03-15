@@ -251,7 +251,7 @@ jobs:
         run: composer test-smarty
       - name: Test phar
         if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-phar
+        run: composer test-phar
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
@@ -370,6 +370,9 @@ jobs:
       - name: Test smarty
         if: ${{ env.test_prepared && always() }}
         run: composer test-smarty
+      - name: Test phar
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-phar
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
