@@ -67,14 +67,15 @@ echo "> composer install...\n";
     '--prefer-dist',
     '--no-progress',
 ], $testProjectDir, [
-//     'COMPOSER_DISABLE_NETWORK' => '1', // 本地测试提升速度用
+    //     'COMPOSER_DISABLE_NETWORK' => '1', // 本地测试提升速度用
 ]))
     ->mustRun(static function ($type, $buffer) {
         echo $buffer;
     });
 
 $testContainer = [];
-if (extension_loaded('swoole')) {
+if (\extension_loaded('swoole'))
+{
     $testContainer['swoole'] = ['build/imi.phar', 'swoole/start'];
 }
 $testContainer['workerman'] = ['build/imi.phar', 'workerman/start'];
