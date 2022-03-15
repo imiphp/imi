@@ -49,6 +49,7 @@ abstract class BaseApp implements IApp
             // 加载项目目录下的 env
             DotEnv::load([\dirname($envFile)]);
         }
+        $appPath = App::get(AppContexts::APP_PATH);
         $fileName = $appPath . '/config/config.php';
         if (is_file($fileName))
         {
