@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Symfony\Component\Process\Process;
 
-require \dirname(__DIR__, 1) . '/vendor/autoload.php';
+require \dirname(__DIR__) . '/vendor/autoload.php';
 
 const STARTUP_MAX_WAIT = 30;
 
@@ -33,7 +33,9 @@ rsync -av \
  --exclude 'tests' --exclude 'src/Components/*/tests' \
  --delete {$srcSourceDir}/ {$srcMirrorDir}
 SHELL;
-Process::fromShellCommandline($rsyncImiSrc)->run();
+Process::fromShellCommandline($rsyncImiSrc)->run(static function ($type, $buffer) {
+    echo $buffer;
+});
 Process::fromShellCommandline("rm -r {$testProjectDir}")->run();
 Process::fromShellCommandline("cp -r {$testProjectSrc} {$testProjectDir}")->mustRun();
 
