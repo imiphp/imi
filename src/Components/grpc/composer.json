@@ -26,6 +26,7 @@
         },
         "files": [
             "../../../vendor/autoload.php",
+            "../swoole/vendor/autoload.php",
             "../../../dev/try-include-swoole.php"
         ]
     },
