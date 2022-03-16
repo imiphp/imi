@@ -6,7 +6,7 @@ namespace
 {
     use Imi\Env;
     use Imi\RequestContext;
-    use Swoole\Coroutine;
+    use Imi\Swoole\Util\Coroutine;
 
     /**
      * 是否运行在 phar 模式.

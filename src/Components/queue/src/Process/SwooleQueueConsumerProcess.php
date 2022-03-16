@@ -10,8 +10,8 @@ use Imi\Log\Log;
 use Imi\Queue\Service\QueueService;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
+use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi;
-use Swoole\Coroutine;
 use Swoole\Event;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))

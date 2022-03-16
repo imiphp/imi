@@ -15,10 +15,10 @@ use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Util\Co\ChannelContainer;
+use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Worker;
-use Swoole\Coroutine;
 
 /**
  * @Bean(name="RedisServerUtil", env="swoole")

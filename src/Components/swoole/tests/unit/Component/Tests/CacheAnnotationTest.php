@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\Component\Tests;
 
 use Imi\App;
+use Imi\Swoole\Util\Coroutine;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
-use Swoole\Coroutine;
 
 /**
  * @testdox Cache Annotation

@@ -15,10 +15,10 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
+use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Worker;
-use Swoole\Coroutine;
 
 /**
  * @Bean(name="LocalServerUtil", env="swoole")
