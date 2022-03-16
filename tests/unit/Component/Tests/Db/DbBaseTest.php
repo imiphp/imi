@@ -429,6 +429,17 @@ abstract class DbBaseTest extends BaseTest
         }
 
         $this->assertEquals($args['origin'], $data);
+
+        $data = [];
+        foreach ($query->order('id', 'desc')->table('tb_article')->chunkById(36, 'id') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEquals($args['origin'], $data);
     }
 
     /**

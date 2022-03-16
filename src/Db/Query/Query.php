@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use function array_filter;
 use function array_key_last;
 use Imi\App;
 use Imi\Db\Db;
@@ -13,6 +14,7 @@ use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IHaving;
+use Imi\Db\Query\Interfaces\IOrder;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
@@ -1329,7 +1331,8 @@ abstract class Query implements IQuery
         $lastId = null;
 
         // todo 逻辑稍后移入 ChunkResult 类
-        // todo 自动移除与 column 冲突的用户定义排序
+        // 移除与 column 冲突的用户定义排序
+        $this->option->order = array_filter($this->option->order, fn (IOrder $order) => $order->getFieldName() !== $column);
 
         do
         {
