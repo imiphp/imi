@@ -6,8 +6,8 @@ namespace Imi\AMQP\Test\Queue;
 
 use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Model\Message;
+use Imi\Swoole\Util\Coroutine;
 use PHPUnit\Framework\TestCase;
-use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
 
 abstract class BaseQueueTest extends TestCase

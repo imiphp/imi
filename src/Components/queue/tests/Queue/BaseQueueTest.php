@@ -6,7 +6,7 @@ namespace Imi\Queue\Test\Queue;
 
 use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Model\Message;
-use Swoole\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Channel;
 
 abstract class BaseQueueTest extends BaseTest

@@ -36,6 +36,8 @@ function getRectorConfigCallback(string $path): callable
             $path . '/src',
         ]);
 
+        $parameters->set(Option::FOLLOW_SYMLINKS, false);
+
         // Define what rule sets will be applied
         // @phpstan-ignore-next-line
         $containerConfigurator->import(LevelSetList::UP_TO_PHP_74);

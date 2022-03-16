@@ -6,7 +6,7 @@ namespace Imi\MQTT\Test;
 
 use BinSoul\Net\Mqtt\Packet;
 use Imi\MQTT\Client\MQTTClient;
-use Swoole\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Channel;
 
 class MQTTTest extends BaseTest

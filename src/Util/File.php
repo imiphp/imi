@@ -6,10 +6,11 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use Imi\Swoole\Util\Coroutine;
 use Imi\Util\File\FileEnumItem;
 use function str_starts_with;
 use function substr;
-use Swoole\Coroutine;
+use Swoole\Coroutine\Channel;
 
 /**
  * 文件相关工具类.
@@ -142,7 +143,7 @@ class File
     /**
      * Swoole 环境下枚举文件，将结果 push 到 Channel，支持自定义中断进入下一级目录.
      */
-    public static function enumFileSwoole(Coroutine\Channel $channel, string $dirPath, ?string $pattern = null, array $extensionNames = []): bool
+    public static function enumFileSwoole(Channel $channel, string $dirPath, ?string $pattern = null, array $extensionNames = []): bool
     {
         if (!is_dir($dirPath))
         {

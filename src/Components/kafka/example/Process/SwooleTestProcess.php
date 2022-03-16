@@ -9,7 +9,7 @@ use Imi\App;
 use Imi\Kafka\Contract\IConsumer;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
-use Swoole\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 
 /**
  * @Process(name="TestProcess")

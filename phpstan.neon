@@ -15,6 +15,7 @@ parameters:
         - src/Components
         - src/Config/DotEnv/EntryParser.php
         - src/Config/DotEnv/Parser.php
+        - src/Util/File/FileFinder.php
 
     bootstrapFiles:
         - vendor/autoload.php
@@ -43,3 +44,17 @@ parameters:
             message: '#Method \S+ has no return typehint specified.#'
             paths:
                 - tests/unit/**Test.php
+services:
+    fileFinderAnalyse:
+        class: Imi\Util\File\FileFinder
+        arguments:
+            fileExcluder: @fileExcluderAnalyse
+            fileExtensions: %fileExtensions%
+        autowired: false
+
+    fileFinderScan:
+        class: Imi\Util\File\FileFinder
+        arguments:
+            fileExcluder: @fileExcluderScan
+            fileExtensions: %fileExtensions%
+        autowired: false
