@@ -41,4 +41,13 @@ class AsyncTest extends BaseTest
         $this->expectException(\RuntimeException::class);
         $asyncTester->testException()->get();
     }
+
+    public function testExceptionNotGet(): void
+    {
+        /** @var AsyncTester $asyncTester */
+        $asyncTester = App::getBean('AsyncTester');
+
+        $asyncTester->testException();
+        $this->assertTrue(true);
+    }
 }
