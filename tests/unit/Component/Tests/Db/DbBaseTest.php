@@ -399,7 +399,7 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
-    public function testCursor(array $args)
+    public function testCursor(array $args): void
     {
         $query = Db::query($this->poolName);
 
@@ -415,7 +415,7 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
-    public function testChunk(array $args)
+    public function testChunk(array $args): void
     {
         $query = Db::query($this->poolName);
 

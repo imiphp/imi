@@ -676,7 +676,7 @@ class ModelTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
-    public function testCursor(array $args)
+    public function testCursor(array $args): void
     {
         $data = [];
         foreach (Member::query()->cursor() as $item)
@@ -690,7 +690,7 @@ class ModelTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
-    public function testChunk(array $args)
+    public function testChunk(array $args): void
     {
         $data = [];
         foreach (Member::query()->chunkById(32, 'id') as $items)
