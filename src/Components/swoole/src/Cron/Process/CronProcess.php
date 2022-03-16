@@ -89,7 +89,7 @@ class CronProcess extends BaseProcess
                 {
                     continue;
                 }
-                \imigo(function () use ($conn) {
+                imigo(function () use ($conn) {
                     $this->parseConn($conn);
                     fclose($conn);
                 });
@@ -155,7 +155,7 @@ class CronProcess extends BaseProcess
      */
     protected function startSchedule(): void
     {
-        \imigo(function () {
+        imigo(function () {
             $scheduler = $this->scheduler;
             $running = &$this->running;
             do
