@@ -58,11 +58,6 @@ jobs:
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/grpc/ --config=src/Components/grpc/rector.php
 
-      - name: Analyse hprose
-        if: ${{ env.test_prepared && always() }}
-        run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/hprose/ --config=src/Components/hprose/rector.php
-
       - name: Analyse jwt
         if: ${{ env.test_prepared && always() }}
         run: |

@@ -7,8 +7,8 @@ ARG POSTGRESQL_VERSION=""
 COPY script/ /tmp/script
 
 RUN set -eux \
-    && apt-get update && apt-get -y install procps libpq-dev unzip git libevent-dev libssl-dev \
-    && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql pdo_pgsql pcntl sockets \
+    && apt-get update && apt-get -y install procps libpq-dev unzip git libevent-dev libssl-dev libicu-dev \
+    && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql pdo_pgsql pcntl sockets intl \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && pecl install inotify \

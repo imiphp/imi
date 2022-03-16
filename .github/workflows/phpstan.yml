@@ -58,11 +58,6 @@ jobs:
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/grpc/vendor/autoload.php src/Components/grpc
 
-      - name: Analyse hprose
-        if: ${{ env.test_prepared && always() }}
-        run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/hprose/vendor/autoload.php src/Components/hprose
-
       - name: Analyse jwt
         if: ${{ env.test_prepared && always() }}
         run: |
