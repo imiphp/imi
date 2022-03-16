@@ -45,3 +45,18 @@ parameters:
             message: '#Lcobucci#'
             paths:
                 - src/Components/jwt/*
+
+services:
+    fileFinderAnalyse:
+        class: Imi\Util\File\FileFinder
+        arguments:
+            fileExcluder: @fileExcluderAnalyse
+            fileExtensions: %fileExtensions%
+        autowired: false
+
+    fileFinderScan:
+        class: Imi\Util\File\FileFinder
+        arguments:
+            fileExcluder: @fileExcluderScan
+            fileExtensions: %fileExtensions%
+        autowired: false

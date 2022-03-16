@@ -64,7 +64,7 @@ function getNextVersion(string $branch, string $version): string
     else
     {
         return preg_replace_callback('/(.*\d+\.\d+.)(\d+)/', function (array $matches) {
-            return $matches[1] . ($matches[2] + 1);
+            return $matches[1] . ((int) $matches[2] + 1);
         }, $version);
     }
 }
