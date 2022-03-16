@@ -6,6 +6,7 @@ namespace Imi\Db\Query\Interfaces;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\QueryOption;
+use Imi\Db\Query\Result\CursorResult;
 
 /**
  * 查询器接口.
@@ -467,12 +468,12 @@ interface IQuery
     /**
      * 查询所有记录，返回游标迭代器.
      */
-    public function cursor(): iterable;
+    public function cursor(): CursorResult;
 
-//    /**
-//     * 查询所有记录，返回分块迭代器.
-//     */
-//    public function chunkById(int $limit, ?string $orderField = null, ?string $idField = null): iterable;
+    /**
+     * 查询所有记录，返回分块迭代器.
+     */
+    public function chunkById(int $limit, string $column, ?string $alias = null): iterable;
 
     /**
      * 分页查询.

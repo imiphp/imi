@@ -19,6 +19,7 @@ use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
 use Imi\Util\Pagination;
+use function array_key_last;
 
 abstract class Query implements IQuery
 {
@@ -1314,17 +1315,47 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function cursor(): iterable
+    public function cursor(): CursorResult
     {
         return $this->executeEx($this->buildSelectSql(), CursorResult::class);
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function chunkById(int $limit, ?string $orderField = null, ?string $idField = null): iterable
-//    {
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    public function chunkById(int $limit, string $column, ?string $alias = null): iterable
+    {
+        $alias ??= $column;
+        $lastId = null;
+
+        // todo 逻辑稍后移入 ChunkResult 类
+        // todo 自动移除与 column 冲突的用户定义排序
+
+        do {
+            $query = clone $this;
+            if (null !== $lastId) {
+                $query->where($column, '>', $lastId);
+            }
+            $query->order($column, 'asc');
+            $query->limit($limit);
+            $result = $query->select();
+
+            $resultCount = $result->getRowCount();
+
+            if (0 === $resultCount) {
+                break;
+            }
+
+            // todo 返回 result 对象还是结果数组？
+            yield $result;
+
+            // todo 理论上如果是模型查询应该通过模型获取吧，但 getArray 方法转换模型没缓存？
+            $records = $result->getStatementRecords();
+
+            $lastId = $records[array_key_last($records)][$alias];
+
+        } while ($resultCount === $limit);
+    }
 
     /**
      * {@inheritDoc}

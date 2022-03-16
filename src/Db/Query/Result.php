@@ -269,4 +269,12 @@ class Result implements IResult
     {
         return $this->statement;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStatementRecords(): array
+    {
+        return $this->statementRecords;
+    }
 }

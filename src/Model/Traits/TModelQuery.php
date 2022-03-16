@@ -6,6 +6,7 @@ namespace Imi\Model\Traits;
 
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\CursorResult;
 use Imi\Model\ModelQueryResult;
 
 trait TModelQuery
@@ -74,7 +75,7 @@ trait TModelQuery
     /**
      * {@inheritDoc}
      */
-    public function cursor(): iterable
+    public function cursor(): CursorResult
     {
         if ($this->hasCustomFields())
         {
@@ -98,6 +99,36 @@ trait TModelQuery
         }
 
         return parent::cursor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function chunkById(int $limit, string $column, ?string $alias = null): iterable
+    {
+        // todo 重复逻辑，应该分离
+        if ($this->hasCustomFields())
+        {
+            $this->isSetSerializedFields = true;
+        }
+        else
+        {
+            /** @var \Imi\Model\Meta $meta */
+            $meta = $this->modelClass::__getMeta();
+            if ($sqlColumns = $meta->getSqlColumns())
+            {
+                $this->field($meta->getTableName() . '.*');
+                $fields = $meta->getFields();
+                foreach ($sqlColumns as $name => $sqlAnnotations)
+                {
+                    $sqlAnnotation = $sqlAnnotations[0];
+                    $this->fieldRaw($sqlAnnotation->sql, $fields[$name]->name ?? $name);
+                }
+            }
+            $this->isSetSerializedFields = false;
+        }
+
+        return parent::chunkById($limit, $column, $alias);
     }
 
     private function hasCustomFields(): bool
