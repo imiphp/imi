@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Dev;
 
+use Composer\InstalledVersions;
 use Composer\Package\Link;
 use Composer\Script\Event;
 use Composer\Semver\Constraint\Constraint;
@@ -53,10 +54,7 @@ class Dev
     {
         $dir = \dirname(__DIR__);
 
-        // @phpstan-ignore-next-line
-        $package = $event->getComposer()->getPackage();
-        $requires = array_merge($package->getRequires(), $package->getDevRequires());
-        foreach ($requires as $name => $require)
+        foreach (InstalledVersions::getInstalledPackages() as $name)
         {
             $componentDir = \dirname($dir) . '/' . substr($name, 11);
             if ('imiphp/' !== substr($name, 0, 7) || !is_dir($componentDir))
