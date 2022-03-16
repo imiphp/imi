@@ -5,27 +5,30 @@ declare(strict_types=1);
 use Imi\App;
 use Swoole\Coroutine;
 
-/**
- * 启动一个协程，自动创建和销毁上下文.
- *
- * @param mixed $args
- */
-function imigo(callable $callable, ...$args): int
+if (!\function_exists('\imigo'))
 {
-    $callable = imiCallable($callable);
+    /**
+     * 启动一个协程，自动创建和销毁上下文.
+     *
+     * @param mixed $args
+     */
+    function imigo(callable $callable, ...$args): int
+    {
+        $callable = imiCallable($callable);
 
-    return Coroutine::create(static function () use ($callable, $args) {
-        try
-        {
-            $callable(...$args);
-        }
-        catch (\Throwable $th)
-        {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
-        }
-    });
+        return Coroutine::create(static function () use ($callable, $args) {
+            try
+            {
+                $callable(...$args);
+            }
+            catch (\Throwable $th)
+            {
+                /** @var \Imi\Log\ErrorLog $errorLog */
+                $errorLog = App::getBean('ErrorLog');
+                $errorLog->onException($th);
+            }
+        });
+    }
 }
 
 if (\extension_loaded('swoole'))
