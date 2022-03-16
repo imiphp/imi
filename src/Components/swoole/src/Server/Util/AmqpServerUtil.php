@@ -315,7 +315,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $server = RequestContext::getServer();
             if ($this->subscribeEnable && $server && $server->isLongConnection())
             {
-                imigo(function () {
+                \imigo(function () {
                     try
                     {
                         $this->consumerInstance->run();

@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
-require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+require_once \dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 \Imi\App::setDebug(true);
 
-require dirname(\Imi\Util\Imi::getNamespacePath('Imi\Workerman')) . '/bin/imi-workerman';
+(require \dirname(\Imi\Util\Imi::getNamespacePath('Imi\Workerman')) . '/bootstrap.php')();
