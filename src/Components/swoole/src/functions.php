@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 use Swoole\Coroutine;
 
+/**
+ * 启动一个协程，自动创建和销毁上下文.
+ *
+ * @param mixed $args
+ */
+function imigo(callable $callable, ...$args): int
+{
+    $newCallable = imiCallable($callable);
+
+    return Coroutine::create(static fn () => $newCallable(...$args), ...$args);
+}
+
 if (\extension_loaded('swoole'))
 {
     if (!\function_exists('\go'))

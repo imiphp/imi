@@ -44,20 +44,6 @@ namespace
     \defined('IMI_RUNNING_ROOT') || \define('IMI_RUNNING_ROOT', realpath(getcwd()));
 
     /**
-     * 启动一个协程，自动创建和销毁上下文.
-     *
-     * @param mixed $args
-     */
-    function imigo(callable $callable, ...$args): int
-    {
-        $newCallable = imiCallable($callable);
-
-        return Coroutine::create(static function (...$args) use ($newCallable) {
-            $newCallable(...$args);
-        }, ...$args);
-    }
-
-    /**
      * 为传入的回调自动创建和销毁上下文，并返回新的回调.
      *
      * @param bool $withGo 是否内置启动一个协程，如果为true，则无法获取回调返回值
