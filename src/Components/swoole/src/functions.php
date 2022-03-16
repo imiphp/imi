@@ -14,7 +14,7 @@ function imigo(callable $callable, ...$args): int
 {
     $callable = imiCallable($callable);
 
-    return Coroutine::create(function () use ($callable, $args) {
+    return Coroutine::create(static function () use ($callable, $args) {
         try
         {
             $callable(...$args);
