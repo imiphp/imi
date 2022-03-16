@@ -370,7 +370,7 @@ abstract class DbBaseTest extends BaseTest
 
         $basicRowCount = $query->table('tb_article')->count();
 
-        $insertCount = 1000;
+        $insertCount = 100;
         $data = [];
 
         $time = time();
@@ -387,7 +387,7 @@ abstract class DbBaseTest extends BaseTest
 
         $newRowCount = $query->table('tb_article')->count();
 
-        Assert::assertEquals($basicRowCount + $insertCount, $newRowCount);
+        $this->assertEquals($basicRowCount + $insertCount, $newRowCount);
 
         $items = $query->table('tb_article')->select()->getArray();
 
@@ -409,7 +409,7 @@ abstract class DbBaseTest extends BaseTest
             $data[] = $item;
         }
 
-        Assert::assertEquals($args['origin'], $data);
+        $this->assertEquals($args['origin'], $data);
     }
 
     /**
@@ -420,7 +420,7 @@ abstract class DbBaseTest extends BaseTest
         $query = Db::query($this->poolName);
 
         $data = [];
-        foreach ($query->table('tb_article')->chunkById(30, 'id') as $items)
+        foreach ($query->table('tb_article')->chunkById(36, 'id') as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -428,7 +428,7 @@ abstract class DbBaseTest extends BaseTest
             }
         }
 
-        Assert::assertEquals($args['origin'], $data);
+        $this->assertEquals($args['origin'], $data);
     }
 
     /**
