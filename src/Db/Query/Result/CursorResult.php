@@ -10,6 +10,7 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
 use Imi\Model\Model;
 use function is_subclass_of;
+use function var_dump;
 
 class CursorResult implements \IteratorAggregate
 {
@@ -43,14 +44,6 @@ class CursorResult implements \IteratorAggregate
         {
             $this->isSuccess = false;
         }
-    }
-
-    /**
-     * @param string|null $modelClass
-     */
-    public function setModelClass(?string $modelClass): void
-    {
-        $this->modelClass = $modelClass;
     }
 
     /**

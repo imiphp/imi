@@ -71,6 +71,35 @@ trait TModelQuery
         return parent::select();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function cursor(): iterable
+    {
+        if ($this->hasCustomFields())
+        {
+            $this->isSetSerializedFields = true;
+        }
+        else
+        {
+            /** @var \Imi\Model\Meta $meta */
+            $meta = $this->modelClass::__getMeta();
+            if ($sqlColumns = $meta->getSqlColumns())
+            {
+                $this->field($meta->getTableName() . '.*');
+                $fields = $meta->getFields();
+                foreach ($sqlColumns as $name => $sqlAnnotations)
+                {
+                    $sqlAnnotation = $sqlAnnotations[0];
+                    $this->fieldRaw($sqlAnnotation->sql, $fields[$name]->name ?? $name);
+                }
+            }
+            $this->isSetSerializedFields = false;
+        }
+
+        return parent::cursor();
+    }
+
     private function hasCustomFields(): bool
     {
         $field = $this->option->field;
