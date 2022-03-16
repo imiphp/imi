@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Imi\App;
 use Swoole\Coroutine;
 
 /**
@@ -11,9 +12,20 @@ use Swoole\Coroutine;
  */
 function imigo(callable $callable, ...$args): int
 {
-    $newCallable = imiCallable($callable);
+    $callable = imiCallable($callable);
 
-    return Coroutine::create(static fn () => $newCallable(...$args), ...$args);
+    return Coroutine::create(function () use ($callable, $args) {
+        try
+        {
+            $callable(...$args);
+        }
+        catch (\Throwable $th)
+        {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($th);
+        }
+    });
 }
 
 if (\extension_loaded('swoole'))
