@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use function array_key_last;
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
@@ -19,7 +20,6 @@ use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
 use Imi\Util\Pagination;
-use function array_key_last;
 
 abstract class Query implements IQuery
 {
@@ -94,6 +94,7 @@ abstract class Query implements IQuery
 
     /**
      * 查询结果集类名.
+     *
      * @var class-string<IResult>
      */
     protected string $resultClass = Result::class;
@@ -837,7 +838,6 @@ abstract class Query implements IQuery
     /**
      * @template T
      *
-     * @param string $sql
      * @param class-string<T> $resultClass
      *
      * @return T
@@ -1331,9 +1331,11 @@ abstract class Query implements IQuery
         // todo 逻辑稍后移入 ChunkResult 类
         // todo 自动移除与 column 冲突的用户定义排序
 
-        do {
+        do
+        {
             $query = clone $this;
-            if (null !== $lastId) {
+            if (null !== $lastId)
+            {
                 $query->where($column, '>', $lastId);
             }
             $query->order($column, 'asc');
@@ -1342,7 +1344,8 @@ abstract class Query implements IQuery
 
             $resultCount = $result->getRowCount();
 
-            if (0 === $resultCount) {
+            if (0 === $resultCount)
+            {
                 break;
             }
 
@@ -1353,8 +1356,8 @@ abstract class Query implements IQuery
             $records = $result->getStatementRecords();
 
             $lastId = $records[array_key_last($records)][$alias];
-
-        } while ($resultCount === $limit);
+        }
+        while ($resultCount === $limit);
     }
 
     /**

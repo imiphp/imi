@@ -73,7 +73,7 @@ interface IResult
     public function getStatement(): IStatement;
 
     /**
-     * 获取原始结果集
+     * 获取原始结果集.
      */
     public function getStatementRecords(): array;
 }

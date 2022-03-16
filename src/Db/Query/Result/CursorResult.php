@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Db\Query\Result;
 
-use Exception;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Event\IEvent;
@@ -10,7 +11,6 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
 use Imi\Model\Model;
 use function is_subclass_of;
-use function var_dump;
 
 class CursorResult implements \IteratorAggregate
 {
