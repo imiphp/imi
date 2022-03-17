@@ -71,7 +71,7 @@ class CursorResult implements \IteratorAggregate
     }
 
     /**
-     * @return \Generator|iterable<array>|iterable<Model>
+     * @return \Traversable<int, array|Model>|iterable<int, array|Model>
      */
     public function getIterator()
     {
@@ -80,8 +80,11 @@ class CursorResult implements \IteratorAggregate
             throw new \RuntimeException('Result is not success!');
         }
 
-        $className = $this->modelClass;
+        return $this->cursorIterator($this->modelClass);
+    }
 
+    private function cursorIterator(?string $className): \Generator
+    {
         while ($record = $this->statement->fetch())
         {
             if (null === $className)

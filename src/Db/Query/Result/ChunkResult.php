@@ -52,12 +52,11 @@ class ChunkResult implements \IteratorAggregate
                 break;
             }
 
-            // todo 返回 result 对象还是结果数组？
             yield $result;
 
-            // todo 理论上如果是模型查询应该通过模型获取吧，但 getArray 方法转换模型没缓存？
             $records = $result->getStatementRecords();
 
+            // todo 如果是模型查询应该通过模型获取，但 getArray 方法转换模型没缓存，暂时先从原始数据里获取
             $lastId = $records[array_key_last($records)][$this->alias];
         }
         while ($resultCount === $this->limit);
