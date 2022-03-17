@@ -13,7 +13,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * 状态码
      */
-    protected int $statusCode = 0;
+    protected int $statusCode = StatusCode::OK;
 
     /**
      * 状态码原因短语.
@@ -37,8 +37,6 @@ class Response extends AbstractMessage implements IResponse
 
     public function __construct()
     {
-        $this->statusCode = $statusCode = StatusCode::OK;
-        $this->reasonPhrase = StatusCode::getReasonPhrase($statusCode);
         $this->body = new MemoryStream();
     }
 
@@ -92,6 +90,11 @@ class Response extends AbstractMessage implements IResponse
      */
     public function getReasonPhrase()
     {
+        if ('' === $this->reasonPhrase)
+        {
+            return $this->reasonPhrase = StatusCode::getReasonPhrase($this->statusCode);
+        }
+
         return $this->reasonPhrase;
     }
 
