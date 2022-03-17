@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Db\Query;
 
 use function array_filter;
-use function array_key_last;
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
@@ -18,6 +17,7 @@ use Imi\Db\Query\Interfaces\IOrder;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
@@ -1325,42 +1325,14 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkById(int $limit, string $column, ?string $alias = null): iterable
+    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
     {
         $alias ??= $column;
-        $lastId = null;
 
-        // todo 逻辑稍后移入 ChunkResult 类
         // 移除与 column 冲突的用户定义排序
         $this->option->order = array_filter($this->option->order, fn (IOrder $order) => $order->getFieldName() !== $column);
 
-        do
-        {
-            $query = clone $this;
-            if (null !== $lastId)
-            {
-                $query->where($column, '>', $lastId);
-            }
-            $query->order($column, 'asc');
-            $query->limit($limit);
-            $result = $query->select();
-
-            $resultCount = $result->getRowCount();
-
-            if (0 === $resultCount)
-            {
-                break;
-            }
-
-            // todo 返回 result 对象还是结果数组？
-            yield $result;
-
-            // todo 理论上如果是模型查询应该通过模型获取吧，但 getArray 方法转换模型没缓存？
-            $records = $result->getStatementRecords();
-
-            $lastId = $records[array_key_last($records)][$alias];
-        }
-        while ($resultCount === $limit);
+        return new ChunkResult($this, $count, $column, $alias);
     }
 
     /**

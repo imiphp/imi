@@ -6,6 +6,7 @@ namespace Imi\Model\Traits;
 
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Model\ModelQueryResult;
 
@@ -104,7 +105,7 @@ trait TModelQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkById(int $limit, string $column, ?string $alias = null): iterable
+    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
     {
         // todo 重复逻辑，应该分离
         if ($this->hasCustomFields())
@@ -128,7 +129,7 @@ trait TModelQuery
             $this->isSetSerializedFields = false;
         }
 
-        return parent::chunkById($limit, $column, $alias);
+        return parent::chunkById($count, $column, $alias);
     }
 
     private function hasCustomFields(): bool
