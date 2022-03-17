@@ -44,10 +44,7 @@ trait TModelQuery
         $this->setResultClass(ModelQueryResult::class);
     }
 
-    /**
-     * 查询记录.
-     */
-    public function select(): IResult
+    private function queryPreProcess(): void
     {
         if ($this->hasCustomFields())
         {
@@ -69,6 +66,14 @@ trait TModelQuery
             }
             $this->isSetSerializedFields = false;
         }
+    }
+
+    /**
+     * 查询记录.
+     */
+    public function select(): IResult
+    {
+        $this->queryPreProcess();
 
         return parent::select();
     }
@@ -78,26 +83,7 @@ trait TModelQuery
      */
     public function cursor(): CursorResult
     {
-        if ($this->hasCustomFields())
-        {
-            $this->isSetSerializedFields = true;
-        }
-        else
-        {
-            /** @var \Imi\Model\Meta $meta */
-            $meta = $this->modelClass::__getMeta();
-            if ($sqlColumns = $meta->getSqlColumns())
-            {
-                $this->field($meta->getTableName() . '.*');
-                $fields = $meta->getFields();
-                foreach ($sqlColumns as $name => $sqlAnnotations)
-                {
-                    $sqlAnnotation = $sqlAnnotations[0];
-                    $this->fieldRaw($sqlAnnotation->sql, $fields[$name]->name ?? $name);
-                }
-            }
-            $this->isSetSerializedFields = false;
-        }
+        $this->queryPreProcess();
 
         return parent::cursor();
     }
@@ -107,27 +93,7 @@ trait TModelQuery
      */
     public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
     {
-        // todo 重复逻辑，应该分离
-        if ($this->hasCustomFields())
-        {
-            $this->isSetSerializedFields = true;
-        }
-        else
-        {
-            /** @var \Imi\Model\Meta $meta */
-            $meta = $this->modelClass::__getMeta();
-            if ($sqlColumns = $meta->getSqlColumns())
-            {
-                $this->field($meta->getTableName() . '.*');
-                $fields = $meta->getFields();
-                foreach ($sqlColumns as $name => $sqlAnnotations)
-                {
-                    $sqlAnnotation = $sqlAnnotations[0];
-                    $this->fieldRaw($sqlAnnotation->sql, $fields[$name]->name ?? $name);
-                }
-            }
-            $this->isSetSerializedFields = false;
-        }
+        $this->queryPreProcess();
 
         return parent::chunkById($count, $column, $alias);
     }

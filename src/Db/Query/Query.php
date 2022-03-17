@@ -21,6 +21,7 @@ use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
+use Imi\Model\Model;
 use Imi\Util\Pagination;
 
 abstract class Query implements IQuery
@@ -59,6 +60,8 @@ abstract class Query implements IQuery
 
     /**
      * 查询结果类的类名，为null则为数组.
+     *
+     * @var class-string<Model>|null
      */
     protected ?string $modelClass = null;
 

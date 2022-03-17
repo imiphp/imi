@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Db\Query\Interfaces;
 
 use Imi\Db\Interfaces\IStatement;
-use Imi\Model\Model;
 
 interface IResult
 {
@@ -39,8 +38,6 @@ interface IResult
      * 返回数组.
      *
      * @param string|null $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return array<array|Model>
      */
     public function getArray(?string $className = null): array;
 
