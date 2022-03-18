@@ -8,6 +8,7 @@ use Imi\Pool\BasePoolResource;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Imi;
 use PhpAmqpLib\Connection\AbstractConnection;
+use PhpAmqpLib\Wire\AMQPWriter;
 
 /**
  * AMQP 客户端连接池的资源.
@@ -91,7 +92,14 @@ class AMQPResource extends BasePoolResource
      */
     public function checkState(): bool
     {
-        return $this->connection->isConnected();
+        $pkt = new AMQPWriter();
+        $pkt->write_octet(8);
+        $pkt->write_short(0);
+        $pkt->write_long(0);
+        $pkt->write_octet(0xCE);
+        $this->connection->write($pkt->getvalue());
+
+        return true;
     }
 
     /**

@@ -15,6 +15,7 @@ use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\ConnectEventParam;
 use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
+use Imi\Worker;
 
 /**
  * TCP 服务器类.
@@ -100,6 +101,10 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     if ($this->syncConnect)
                     {
                         $channelId = 'connection:' . $fd;
@@ -120,10 +125,6 @@ class Server extends Base implements ISwooleTcpServer
                 {
                     if (isset($channel, $channelId))
                     {
-                        while (($channel->stats()['consumer_num'] ?? 0) > 0)
-                        {
-                            $channel->push(1);
-                        }
                         ChannelContainer::removeChannel($channelId);
                     }
                 }
@@ -140,6 +141,10 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     if ($this->syncConnect)
                     {
                         $channelId = 'connection:' . $fd;
@@ -173,6 +178,10 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     $this->trigger('close', [
                         'server'          => $this,
                         'clientId'        => $fd,

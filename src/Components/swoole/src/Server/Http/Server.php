@@ -21,8 +21,10 @@ use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Http\Listener\BeforeRequest;
 use Imi\Swoole\Server\Http\Listener\Http2AfterClose;
 use Imi\Swoole\Server\Http\Listener\Http2BeforeClose;
+use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
+use Imi\Worker;
 use Swoole\Http\Server as HttpServer;
 
 /**
@@ -115,6 +117,10 @@ class Server extends Base implements ISwooleHttpServer
             $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     $request = new SwooleRequest($this, $swooleRequest);
                     $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::muiltiSet([

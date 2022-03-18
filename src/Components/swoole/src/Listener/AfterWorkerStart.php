@@ -15,6 +15,7 @@ use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\SwooleWorker;
+use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Imi;
 use Imi\Worker;
 
@@ -41,8 +42,6 @@ class AfterWorkerStart implements IWorkerStartEventListener
                 ImiCommand::getOutput()->writeln('<info>App Inited</info>');
             }
         }
-        // worker 初始化
-        Worker::inited();
         foreach (ServerManager::getServers() as $name => $server)
         {
             RequestContext::set('server', $server);
@@ -50,6 +49,12 @@ class AfterWorkerStart implements IWorkerStartEventListener
         }
         $httpRouteInit = new HttpRouteInit();
         $httpRouteInit->handle($e);
+        // worker 初始化
+        Worker::inited();
+        if (ChannelContainer::hasChannel('workerInit'))
+        {
+            ChannelContainer::removeChannel('workerInit');
+        }
     }
 
     /**

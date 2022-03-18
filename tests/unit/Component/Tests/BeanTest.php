@@ -227,6 +227,13 @@ class BeanTest extends BaseTest
         }
     }
 
+    public function testBeanNew(): void
+    {
+        $a = App::getBean('BeanNew');
+        $b = App::getBean('BeanNew');
+        $this->assertTrue($a !== $b);
+    }
+
     // @phpstan-ignore-next-line
     private function test1(): self
     {

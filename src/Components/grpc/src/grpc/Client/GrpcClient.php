@@ -77,12 +77,16 @@ class GrpcClient implements IRpcClient
      */
     public function open(): bool
     {
-        $this->httpRequest = new HttpRequest();
-        $this->http2Client = new SwooleClient($this->uri->getHost(), Uri::getServerPort($this->uri), 'https' === $this->uri->getScheme());
-        $result = $this->http2Client->connect();
-        if ($result && $this->timeout)
+        $http2Client = new SwooleClient($this->uri->getHost(), Uri::getServerPort($this->uri), 'https' === $this->uri->getScheme());
+        $result = $http2Client->connect();
+        if ($result)
         {
-            $this->http2Client->setTimeout($this->timeout);
+            if ($this->timeout)
+            {
+                $http2Client->setTimeout($this->timeout);
+            }
+            $this->httpRequest = new HttpRequest();
+            $this->http2Client = $http2Client;
         }
 
         return $result;
@@ -93,7 +97,10 @@ class GrpcClient implements IRpcClient
      */
     public function close(): void
     {
-        $this->http2Client->close();
+        if ($this->isConnected())
+        {
+            $this->http2Client->close();
+        }
     }
 
     /**
@@ -101,7 +108,7 @@ class GrpcClient implements IRpcClient
      */
     public function isConnected(): bool
     {
-        return $this->http2Client->isConnected();
+        return isset($this->http2Client) && $this->http2Client->isConnected();
     }
 
     /**
@@ -109,7 +116,7 @@ class GrpcClient implements IRpcClient
      */
     public function checkConnected(): bool
     {
-        return $this->http2Client->ping();
+        return isset($this->http2Client) && $this->http2Client->ping();
     }
 
     /**
@@ -147,6 +154,10 @@ class GrpcClient implements IRpcClient
      */
     public function send(string $package, string $service, string $name, \Google\Protobuf\Internal\Message $message, array $metadata = [])
     {
+        if (!$this->isConnected())
+        {
+            throw new \RuntimeException('GrpcClient not connected');
+        }
         $url = $this->buildRequestUrl($package, $service, $name);
         $content = Parser::serializeMessage($message);
         $request = $this->httpRequest->buildRequest($url, $content, $this->requestMethod)
@@ -168,6 +179,10 @@ class GrpcClient implements IRpcClient
      */
     public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null): \Google\Protobuf\Internal\Message
     {
+        if (!$this->isConnected())
+        {
+            throw new \RuntimeException('GrpcClient not connected');
+        }
         $result = $this->http2Client->recv($streamId, $timeout);
         if (!$result || !$result->success)
         {

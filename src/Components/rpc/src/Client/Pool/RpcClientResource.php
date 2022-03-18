@@ -28,9 +28,7 @@ class RpcClientResource extends BasePoolResource
      */
     public function open(): bool
     {
-        $this->client->open();
-
-        return $this->client->isConnected();
+        return $this->client->open() && $this->client->isConnected();
     }
 
     /**

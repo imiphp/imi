@@ -96,7 +96,6 @@ trait TAMQP
         $poolName = null;
         if (null === $this->poolName)
         {
-            $class = BeanFactory::getObjectClass($this);
             $connectionConfig = AnnotationManager::getClassAnnotations($class, Connection::class)[0] ?? null;
             $connectionByPool = false;
             if ($connectionConfig)
