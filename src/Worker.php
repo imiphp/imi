@@ -13,7 +13,7 @@ class Worker
     /**
      * 是否初始化完毕.
      */
-    private static bool $isInited = false;
+    protected static bool $isInited = false;
 
     private function __construct()
     {

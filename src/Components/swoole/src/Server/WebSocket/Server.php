@@ -128,7 +128,7 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }
@@ -180,7 +180,7 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('message', \is_callable($event) ? $event : function (WebSocketServer $server, \Swoole\WebSocket\Frame $frame) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }
@@ -223,7 +223,7 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (WebSocketServer $server, int $fd, int $reactorId) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }
@@ -254,7 +254,7 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }

@@ -117,7 +117,7 @@ class Server extends Base implements ISwooleHttpServer
             $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }

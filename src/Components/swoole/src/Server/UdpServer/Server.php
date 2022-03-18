@@ -84,7 +84,7 @@ class Server extends Base implements ISwooleUdpServer
             $this->swoolePort->on('packet', \is_callable($event) ? $event : function (\Swoole\Server $server, string $data, array $clientInfo) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }

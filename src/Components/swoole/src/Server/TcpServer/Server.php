@@ -101,7 +101,7 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }
@@ -141,7 +141,7 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }
@@ -182,7 +182,7 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
-                    if (!ChannelContainer::hasChannel('workerInit'))
+                    if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
                     }
