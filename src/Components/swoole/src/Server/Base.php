@@ -94,6 +94,15 @@ abstract class Base extends BaseServer implements ISwooleServer
             {
                 $configs['pid_file'] = Imi::getRuntimePath('swoole.pid');
             }
+            if (!isset($configs['log_file']))
+            {
+                $configs['log_file'] = Imi::getRuntimePath('swoole.log');
+            }
+            elseif (false === $configs['log_file'])
+            {
+                // 设为 false 可以禁用 Swoole 错误日志文件
+                unset($configs['log_file']);
+            }
             $this->swooleServer->set($configs);
         }
         $this->bindEvents();

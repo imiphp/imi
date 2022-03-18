@@ -146,6 +146,8 @@ return [
             'reactor_num'	    => 8,
             'worker_num'	    => 8,
             'task_worker_num'	=> 16,
+            // Swoole 错误日志文件。如果不设置或为null则自动记录到 .runtime/swoole/swoole.log。如果设为 false 不记录 Swoole 错误日志。
+            // 'log_file' => '',
         ],
         // 服务器容器绑定
         'beans' => [
