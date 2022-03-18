@@ -46,15 +46,18 @@ Github: <https://github.com/imiphp/imi-amqp>
             'pool'    =>    [
                 'class'        =>    \Imi\AMQP\Pool\AMQPCoroutinePool::class,
                 'config'    =>    [
-                    'maxResources'    =>    10,
-                    'minResources'    =>    1,
+                    'maxResources'      => 10,
+                    'minResources'      => 1,
+                    'heartbeatInterval' => 30, // 连接池心跳时间，推荐设置
                 ],
             ],
             'resource'    =>    [
-                'host'      => '127.0.0.1',
-                'port'      => 5672,
-                'user'      => 'guest',
-                'password'  => 'guest',
+                'host'            => '127.0.0.1',
+                'port'            => 5672,
+                'user'            => 'guest',
+                'password'        => 'guest',
+                'keepalive'       => false, // 截止 Swoole 4.8 还有兼容问题，所以必须设为 false，不影响使用
+                'connectionClass' => \PhpAmqpLib\Connection\AMQPStreamConnection::class,
             ]
         ],
     ]
@@ -103,7 +106,7 @@ Github: <https://github.com/imiphp/imi-amqp>
 | connectionTimeout | 连接超时 |
 | readWriteTimeout | 读写超时 |
 | keepalive | keepalive，默认`false` |
-| heartbeat | 心跳时间，默认`0` |
+| heartbeat | 心跳时间。如果不设置的情况，设置了连接池的心跳，就会设置为该值的 2 倍，否则设为`0` |
 | channelRpcTimeout | 频道 RPC 超时时间，默认`0.0` |
 | sslProtocol | ssl 协议，默认`null` |
 
@@ -275,7 +278,9 @@ $message->setContent('imi niubi');
 
 // 发布消息
 /** @var \ImiApp\AMQP\Test\TestPublisher $testPublisher */
-$testPublisher = App::getBean('TestPublisher');
+$testPublisher = \Imi\RequestContext::getBean('TestPublisher');
+// 请勿使用 App::getBean()、@Inject 等全局单例注入
+// $testPublisher = App::getBean('TestPublisher');
 $testPublisher->publish($message);
 ```
 

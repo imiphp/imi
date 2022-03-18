@@ -10,6 +10,11 @@ class Worker
 {
     protected static ?IWorker $workerHandler = null;
 
+    /**
+     * 是否初始化完毕.
+     */
+    protected static bool $isInited = false;
+
     private function __construct()
     {
     }
@@ -43,7 +48,7 @@ class Worker
      */
     public static function isInited(): bool
     {
-        return static::$workerHandler ? static::$workerHandler->isInited() : false;
+        return static::$isInited;
     }
 
     /**
@@ -55,6 +60,7 @@ class Worker
         {
             static::$workerHandler->inited();
         }
+        static::$isInited = true;
     }
 
     /**

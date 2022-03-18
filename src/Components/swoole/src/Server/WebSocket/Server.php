@@ -26,6 +26,7 @@ use Imi\Swoole\Server\Http\Listener\BeforeRequest;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
+use Imi\Worker;
 use Swoole\WebSocket\Server as WebSocketServer;
 
 /**
@@ -127,6 +128,10 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     if ($this->syncConnect)
                     {
                         $channelId = 'connection:' . $swooleRequest->fd;
@@ -159,10 +164,6 @@ class Server extends Base implements ISwooleWebSocketServer
                 {
                     if (isset($channel, $channelId))
                     {
-                        while (($channel->stats()['consumer_num'] ?? 0) > 0)
-                        {
-                            $channel->push(1);
-                        }
                         ChannelContainer::removeChannel($channelId);
                     }
                 }
@@ -179,6 +180,10 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('message', \is_callable($event) ? $event : function (WebSocketServer $server, \Swoole\WebSocket\Frame $frame) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     if ($this->syncConnect)
                     {
                         $channelId = 'connection:' . $frame->fd;
@@ -218,6 +223,10 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (WebSocketServer $server, int $fd, int $reactorId) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     RequestContext::muiltiSet([
                         'server'        => $this,
                     ]);
@@ -245,6 +254,10 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
+                    }
                     $request = new SwooleRequest($this, $swooleRequest);
                     $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::muiltiSet([
