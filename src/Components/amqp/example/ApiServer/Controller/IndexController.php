@@ -7,11 +7,11 @@ namespace AMQPApp\ApiServer\Controller;
 use AMQPApp\AMQP\QueueTest\QueueTestMessage;
 use AMQPApp\AMQP\Test\TestMessage;
 use AMQPApp\AMQP\Test2\TestMessage2;
-use Imi\Aop\Annotation\Inject;
 use Imi\Controller\HttpController;
 use Imi\Queue\Facade\Queue;
 use Imi\Queue\Model\Message;
 use Imi\Redis\Redis;
+use Imi\RequestContext;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
@@ -21,20 +21,6 @@ use Imi\Server\Http\Route\Annotation\Route;
  */
 class IndexController extends HttpController
 {
-    /**
-     * @Inject("TestPublisher")
-     *
-     * @var \AMQPApp\AMQP\Test\TestPublisher
-     */
-    protected $testPublisher;
-
-    /**
-     * @Inject("TestPublisher2")
-     *
-     * @var \AMQPApp\AMQP\Test2\TestPublisher2
-     */
-    protected $testPublisher2;
-
     /**
      * @Action
      * @Route("/")
@@ -57,12 +43,12 @@ class IndexController extends HttpController
     {
         $message = new TestMessage();
         $message->setMemberId($memberId);
-        $r1 = $this->testPublisher->publish($message);
+        $r1 = RequestContext::getBean('TestPublisher')->publish($message);
 
         $message2 = new TestMessage2();
         $message2->setMemberId($memberId);
         $message2->setContent('memberId:' . $memberId);
-        $r2 = $this->testPublisher2->publish($message2);
+        $r2 = RequestContext::getBean('TestPublisher2')->publish($message2);
 
         $queueTestMessage = new QueueTestMessage();
         $queueTestMessage->setMemberId($memberId);

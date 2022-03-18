@@ -275,7 +275,9 @@ $message->setContent('imi niubi');
 
 // 发布消息
 /** @var \ImiApp\AMQP\Test\TestPublisher $testPublisher */
-$testPublisher = App::getBean('TestPublisher');
+$testPublisher = \Imi\RequestContext::getBean('TestPublisher');
+// 请勿使用 App::getBean()、@Inject 等全局单例注入
+// $testPublisher = App::getBean('TestPublisher');
 $testPublisher->publish($message);
 ```
 

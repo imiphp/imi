@@ -28,12 +28,11 @@ class AMQPCoroutinePool extends BaseAsyncPool
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $config = $this->getNextResourceConfig();
-        $poolHeartbeatInterval = $this->getConfig()->getHeartbeatInterval();
         if (isset($config['heartbeat']))
         {
             $heartbeat = $config['heartbeat'];
         }
-        elseif ($poolHeartbeatInterval > 0)
+        elseif (($poolHeartbeatInterval = $this->getConfig()->getHeartbeatInterval()) > 0)
         {
             $heartbeat = $poolHeartbeatInterval * 2;
         }
