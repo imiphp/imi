@@ -17,7 +17,7 @@ class ErrorLog
     /**
      * PHP 报告的错误级别.
      */
-    protected int $level = 0;
+    protected int $level = \E_ALL;
 
     /**
      * 错误捕获级别.
