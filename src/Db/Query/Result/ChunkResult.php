@@ -26,6 +26,7 @@ class ChunkResult implements \IteratorAggregate
     /**
      * @return \Traversable<int, IResult>|\Generator|iterable<int, IResult>
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $lastId = null;
