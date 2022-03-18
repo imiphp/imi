@@ -28,7 +28,21 @@ class AMQPCoroutinePool extends BaseAsyncPool
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $config = $this->getNextResourceConfig();
-        $connection = new AMQPSwooleConnection($config['host'], $config['port'], $config['user'], $config['password'], $config['vhost'] ?? '/', $config['insist'] ?? false, $config['loginMethod'] ?? 'AMQPLAIN', $config['loginResponse'] ?? null, $config['locale'] ?? 'en_US', $config['connectionTimeout'] ?? 3.0, $config['readWriteTimeout'] ?? 3.0, $config['context'] ?? null, $config['keepalive'] ?? false, $config['heartbeat'] ?? 0, $config['channelRpcTimeout'] ?? 0.0);
+        $poolHeartbeatInterval = $this->getConfig()->getHeartbeatInterval();
+        if (isset($config['heartbeat']))
+        {
+            $heartbeat = $config['heartbeat'];
+        }
+        elseif ($poolHeartbeatInterval > 0)
+        {
+            $heartbeat = $poolHeartbeatInterval * 2;
+        }
+        else
+        {
+            $heartbeat = 0;
+        }
+        $class = $config['connectionClass'] ?? AMQPSwooleConnection::class;
+        $connection = new $class($config['host'], $config['port'], $config['user'], $config['password'], $config['vhost'] ?? '/', $config['insist'] ?? false, $config['loginMethod'] ?? 'AMQPLAIN', $config['loginResponse'] ?? null, $config['locale'] ?? 'en_US', $config['connectionTimeout'] ?? 3.0, $config['readWriteTimeout'] ?? 3.0, $config['context'] ?? null, $config['keepalive'] ?? false, $heartbeat, $config['channelRpcTimeout'] ?? 0.0);
 
         return BeanFactory::newInstance(AMQPResource::class, $this, $connection);
     }
