@@ -7,9 +7,7 @@ imi 框架底层支持将错误转为异常，可以通过 `try...catch` 来捕�
 ```php
 [
     'ErrorLog'  =>  [
-        // PHP 报告的错误级别，默认 0，不报告任何信息
-        'level' =>  0,
-        // 'level' =>  E_ALL, // 报告所有错误
+        // 'level' =>  E_ALL, // 报告所有错误，这是默认值
         // 'level' =>  E_ALL & ~E_NOTICE, // 报告 E_NOTICE 之外的所有错误
 
         // 错误捕获级别，捕获到的错误都会做处理，此为默认值
