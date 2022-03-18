@@ -6,6 +6,7 @@ namespace Imi\Db\Query\Result;
 
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use function end;
 
 class ChunkResult implements \IteratorAggregate
 {
@@ -52,7 +53,7 @@ class ChunkResult implements \IteratorAggregate
             $records = $result->getStatementRecords();
 
             // todo 如果是模型查询应该通过模型获取，但 getArray 方法转换模型没缓存，暂时先从原始数据里获取
-            $lastId = $records[array_key_last($records)][$this->alias];
+            $lastId = end($records)[$this->alias];
         }
         while ($resultCount === $this->limit);
     }
