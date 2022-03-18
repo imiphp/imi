@@ -43,11 +43,13 @@ class IndexController extends HttpController
     {
         $message = new TestMessage();
         $message->setMemberId($memberId);
+        // @phpstan-ignore-next-line
         $r1 = RequestContext::getBean('TestPublisher')->publish($message);
 
         $message2 = new TestMessage2();
         $message2->setMemberId($memberId);
         $message2->setContent('memberId:' . $memberId);
+        // @phpstan-ignore-next-line
         $r2 = RequestContext::getBean('TestPublisher2')->publish($message2);
 
         $queueTestMessage = new QueueTestMessage();
