@@ -23,14 +23,9 @@ class ChunkResult implements \IteratorAggregate
     }
 
     /**
-     * @return \Traversable<int, IResult>|IResult[]
+     * @return \Traversable<int, IResult>|\Generator|iterable<int, IResult>
      */
     public function getIterator()
-    {
-        return $this->chunkIterator();
-    }
-
-    private function chunkIterator(): \Generator
     {
         $lastId = null;
 

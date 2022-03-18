@@ -410,6 +410,15 @@ abstract class DbBaseTest extends BaseTest
         }
 
         $this->assertEquals($args['origin'], $data);
+
+        // 空返回
+        $data = [];
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->cursor() as $item)
+        {
+            $data[] = $item;
+        }
+
+        $this->assertEmpty($data);
     }
 
     /**
@@ -430,8 +439,9 @@ abstract class DbBaseTest extends BaseTest
 
         $this->assertEquals($args['origin'], $data);
 
+        // 自动重置排序
         $data = [];
-        foreach ($query->order('id', 'desc')->table('tb_article')->chunkById(36, 'id') as $items)
+        foreach ($query->table('tb_article')->order('id', 'desc')->chunkById(36, 'id') as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -440,6 +450,18 @@ abstract class DbBaseTest extends BaseTest
         }
 
         $this->assertEquals($args['origin'], $data);
+
+        // 空返回
+        $data = [];
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEmpty($data);
     }
 
     /**
