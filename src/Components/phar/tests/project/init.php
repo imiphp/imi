@@ -10,5 +10,5 @@ date_default_timezone_set('Asia/Shanghai'); // 默认时区设置
 
 function app_real_root_path(): string
 {
-     return App::get(AppContexts::APP_PATH_PHYSICS);
+    return App::get(AppContexts::APP_PATH_PHYSICS);
 }
