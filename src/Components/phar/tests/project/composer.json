@@ -26,5 +26,8 @@
         "sort-packages": true
     },
     "repositories": [
-    ]
+    ],
+    "imi": {
+        "namespace": "ImiApp"
+    }
 }

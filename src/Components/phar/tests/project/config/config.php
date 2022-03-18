@@ -7,9 +7,6 @@ use Imi\App;
 $mode = App::isInited() ? App::getApp()->getType() : null;
 
 return [
-    // 项目根命名空间
-    'namespace'    => 'ImiApp',
-
     // 运行时目录
     'runtimePath' => app_real_root_path() . '/.runtime',
 
