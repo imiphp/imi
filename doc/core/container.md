@@ -95,8 +95,8 @@ use Imi\App;
 // 绑定
 App::getContainer()->bind('aaa', XXX::class);
 
-// 绑定带参数，单例模式，禁用递归依赖
-App::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, false);
+// 绑定带参数，非单例模式，禁用递归依赖
+App::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW, false);
 
 // 实例化
 $obj = App::getBean('aaa');
@@ -110,8 +110,8 @@ use Imi\Server\ServerManager;
 // 绑定
 ServerManager::getServer()->getContainer()->bind('aaa', XXX::class);
 
-// 绑定带参数，单例模式，禁用递归依赖
-ServerManager::getServer()->getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, false);
+// 绑定带参数，非单例模式，禁用递归依赖
+ServerManager::getServer()->getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW, false);
 
 // 实例化
 $obj = ServerManager::getServer()->getContainer()->getBean('aaa');
@@ -125,8 +125,8 @@ use Imi\RequestContext;
 // 绑定
 RequestContext::getContainer()->bind('aaa', XXX::class);
 
-// 绑定带参数，单例模式，禁用递归依赖
-RequestContext::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, false);
+// 绑定带参数，非单例模式，禁用递归依赖
+RequestContext::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW, false);
 
 // 实例化
 $obj = RequestContext::getBean('aaa');
