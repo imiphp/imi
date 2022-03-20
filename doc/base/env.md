@@ -2,7 +2,7 @@
 
 ## 运行环境
 
-- Linux 系统 (Swoole 不支持在 Windows 上运行)
+- Linux 系统 (Windows 系统需要使用Swoole-CLI)
 - [PHP](https://php.net/) >= 7.4
 - [Composer](https://getcomposer.org/) >= 2.0
 - [Swoole](https://www.swoole.com/) >= 4.8.0
