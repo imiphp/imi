@@ -29,8 +29,8 @@ class ModelTest extends BaseTest
         $member->username = '1';
         $member->password = '2';
         $this->assertEquals([
-            'id'        => null,
-            'username'  => '1',
+            'id'       => null,
+            'username' => '1',
         ], $member->toArray());
     }
 
@@ -40,13 +40,13 @@ class ModelTest extends BaseTest
         $member->username = '1';
         $member->password = '2';
         $this->assertEquals([
-            'id'        => null,
-            'username'  => '1',
+            'id'       => null,
+            'username' => '1',
         ], $member->convertToArray());
 
         $this->assertEquals([
-            'id'        => null,
-            'username'  => '1',
+            'id'       => null,
+            'username' => '1',
         ], $member->convertToArray(true));
 
         $this->assertEquals([
@@ -63,13 +63,13 @@ class ModelTest extends BaseTest
         $member->username = '1';
         $member->password = '2';
         $this->assertEquals([[
-            'id'        => null,
-            'username'  => '1',
+            'id'       => null,
+            'username' => '1',
         ]], Member::convertListToArray([$member]));
 
         $this->assertEquals([[
-            'id'        => null,
-            'username'  => '1',
+            'id'       => null,
+            'username' => '1',
         ]], Member::convertListToArray([$member], true));
 
         $this->assertEquals([[
@@ -191,7 +191,7 @@ class ModelTest extends BaseTest
         ], $member->convertToArray(false));
 
         $member = Member::find([
-            'id'    => $id,
+            'id' => $id,
         ]);
         $this->assertEquals([
             'id'        => $id,
@@ -208,18 +208,18 @@ class ModelTest extends BaseTest
     {
         ['id' => $id] = $args;
         $list = Member::select([
-            'id'    => $id,
+            'id' => $id,
         ]);
         $this->assertEquals([
             [
-                'id'        => $id,
-                'username'  => '1',
+                'id'       => $id,
+                'username' => '1',
             ],
         ], Member::convertListToArray($list));
         $this->assertEquals([
             [
-                'id'        => $id,
-                'username'  => '1',
+                'id'       => $id,
+                'username' => '1',
             ],
         ], Member::convertListToArray($list, true));
         $this->assertEquals([
@@ -241,8 +241,8 @@ class ModelTest extends BaseTest
         $list = Member::dbQuery()->field('id', 'username')->where('id', '=', $id)->select()->getArray();
         $this->assertEquals([
             [
-                'id'        => $id,
-                'username'  => '1',
+                'id'       => $id,
+                'username' => '1',
             ],
         ], $list);
     }
@@ -256,7 +256,7 @@ class ModelTest extends BaseTest
         /** @var Member $member */
         $member = Member::query()->field('username')->where('id', '=', $id)->select()->get();
         $this->assertEquals([
-            'username'  => '1',
+            'username' => '1',
         ], $member->toArray());
 
         $member = Member::newInstance(['username' => 'test']);
@@ -264,14 +264,14 @@ class ModelTest extends BaseTest
         $member->insert();
         $id = $member->id;
         $this->assertEquals([
-            'id'        => $id,
-            'username'  => 'test',
+            'id'       => $id,
+            'username' => 'test',
         ], $member->toArray());
 
         $member = Member::find($id);
         $this->assertEquals([
-            'id'        => $id,
-            'username'  => 'test',
+            'id'       => $id,
+            'username' => 'test',
         ], $member->toArray());
         $this->assertEquals('password', $member->password);
     }
@@ -282,7 +282,7 @@ class ModelTest extends BaseTest
         $this->assertGreaterThan(0, $count1);
 
         $result = Member::updateBatch([
-            'password'  => '123',
+            'password' => '123',
         ]);
         $this->assertEquals($count1, $result->getAffectedRows());
 
@@ -301,7 +301,7 @@ class ModelTest extends BaseTest
 
         // delete max id
         $result = Member::deleteBatch([
-            'id'    => $maxId,
+            'id' => $maxId,
         ]);
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
@@ -640,5 +640,67 @@ class ModelTest extends BaseTest
         $list = MemberReferenceProperty::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->getArray();
         $this->assertNotNull($member1);
         $this->assertEquals([$memberArray], Member::convertListToArray($list));
+    }
+
+    public function testBatchInsert(): array
+    {
+        $basicRowCount = Member::count();
+
+        $insertCount = 100;
+        $data = [];
+
+        for ($i = 1; $i <= $insertCount; ++$i)
+        {
+            $data[] = [
+                'username' => "username_{$i}",
+                'password' => "password_{$i}",
+            ];
+        }
+        Member::dbQuery()->batchInsert($data);
+
+        $newRowCount = Member::count();
+
+        $this->assertEquals($basicRowCount + $insertCount, $newRowCount);
+
+        $items = [];
+        foreach (Member::select() as $item)
+        {
+            $items[] = $item->toArray();
+        }
+
+        return [
+            'origin' => $items,
+        ];
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testCursor(array $args): void
+    {
+        $data = [];
+        foreach (Member::query()->cursor() as $item)
+        {
+            $data[] = $item->toArray();
+        }
+
+        $this->assertEquals($args['origin'], $data);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testChunk(array $args): void
+    {
+        $data = [];
+        foreach (Member::query()->chunkById(32, 'id') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item->toArray();
+            }
+        }
+
+        $this->assertEquals($args['origin'], $data);
     }
 }

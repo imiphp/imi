@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use function array_filter;
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
@@ -12,11 +13,15 @@ use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IHaving;
+use Imi\Db\Query\Interfaces\IOrder;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\ChunkResult;
+use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
+use Imi\Model\Model;
 use Imi\Util\Pagination;
 
 abstract class Query implements IQuery
@@ -55,6 +60,8 @@ abstract class Query implements IQuery
 
     /**
      * 查询结果类的类名，为null则为数组.
+     *
+     * @var class-string<Model>|null
      */
     protected ?string $modelClass = null;
 
@@ -92,6 +99,8 @@ abstract class Query implements IQuery
 
     /**
      * 查询结果集类名.
+     *
+     * @var class-string<IResult>
      */
     protected string $resultClass = Result::class;
 
@@ -828,6 +837,18 @@ abstract class Query implements IQuery
      */
     public function execute(string $sql): IResult
     {
+        return $this->executeEx($sql, $this->resultClass);
+    }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $resultClass
+     *
+     * @return T
+     */
+    protected function executeEx(string $sql, string $resultClass)
+    {
         try
         {
             $db = &$this->db;
@@ -837,14 +858,14 @@ abstract class Query implements IQuery
             }
             if (!$db)
             {
-                return new $this->resultClass(false);
+                return new $resultClass(false);
             }
             $stmt = $db->prepare($sql);
             $binds = $this->binds;
             $this->binds = [];
             $stmt->execute($binds);
 
-            return new $this->resultClass($stmt, $this->modelClass);
+            return new $resultClass($stmt, $this->modelClass);
         }
         finally
         {
@@ -1294,6 +1315,27 @@ abstract class Query implements IQuery
     public function select(): IResult
     {
         return $this->execute($this->buildSelectSql());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function cursor(): CursorResult
+    {
+        return $this->executeEx($this->buildSelectSql(), CursorResult::class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
+    {
+        $alias ??= $column;
+
+        // 移除与 column 冲突的用户定义排序
+        $this->option->order = array_filter($this->option->order, static fn (IOrder $order) => $order->getFieldName() !== $column);
+
+        return new ChunkResult($this, $count, $column, $alias);
     }
 
     /**

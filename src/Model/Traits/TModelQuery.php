@@ -6,6 +6,8 @@ namespace Imi\Model\Traits;
 
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\ChunkResult;
+use Imi\Db\Query\Result\CursorResult;
 use Imi\Model\ModelQueryResult;
 
 trait TModelQuery
@@ -42,10 +44,7 @@ trait TModelQuery
         $this->setResultClass(ModelQueryResult::class);
     }
 
-    /**
-     * 查询记录.
-     */
-    public function select(): IResult
+    private function queryPreProcess(): void
     {
         if ($this->hasCustomFields())
         {
@@ -67,8 +66,36 @@ trait TModelQuery
             }
             $this->isSetSerializedFields = false;
         }
+    }
+
+    /**
+     * 查询记录.
+     */
+    public function select(): IResult
+    {
+        $this->queryPreProcess();
 
         return parent::select();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function cursor(): CursorResult
+    {
+        $this->queryPreProcess();
+
+        return parent::cursor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
+    {
+        $this->queryPreProcess();
+
+        return parent::chunkById($count, $column, $alias);
     }
 
     private function hasCustomFields(): bool

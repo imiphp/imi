@@ -211,4 +211,9 @@ class PaginateResult implements IPaginateResult
     {
         return $this->toArray();
     }
+
+    public function getStatementRecords(): array
+    {
+        return $this->result->getStatementRecords();
+    }
 }

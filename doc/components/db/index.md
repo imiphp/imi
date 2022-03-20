@@ -1,203 +1,4 @@
-# 数据库
-
-数据库连接池配置方式已经在连接池里讲过，这里就不重复了，直接说使用方法。
-
-## 连接池配置
-
-> 连接池适用于 Swoole 环境
-
-标准写法：
-
-> 从 imi v1.2.1 版本开始支持
-
-```php
-<?php
-return [
-    'db'    => [
-        'defaultPool'   => 'alias1', // 默认连接池
-        'statement'     =>  [
-            'cache' =>  true, // 是否开启 statement 缓存，默认开启
-        ],
-    ],
-    'pools' => [
-        // 连接池名称
-        'alias1' => [
-            'pool' => [
-                // 协程池类名
-                'class'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                // 同步池类名，一般用不着
-                // 'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config' => [
-                    // 池子中最多资源数
-                    // 'maxResources' => 10,
-                    // 池子中最少资源数
-                    // 'minResources' => 2,
-                    // 资源回收时间间隔，单位：秒
-                    // 'gcInterval' => 60,
-                    // 获取资源最大存活时间，单位：秒
-                    // 'maxActiveTime' => 3600,
-                    // 等待资源最大超时时间，单位：毫秒
-                    // 'waitTimeout' => 3000,
-                    // 心跳时间间隔，单位：秒
-                    // 'heartbeatInterval' => null,
-                    // 当获取资源时，是否检查状态
-                    // 'checkStateWhenGetResource' => true,
-                    // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
-                    // 'maxUsedTime' => null,
-                    // 资源创建后最大空闲回收时间，单位：秒；为 null 则不限制
-                    // 'maxIdleTime' => null,
-                    // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
-                    // 'requestResourceCheckInterval' => 30,
-                    // 负载均衡-轮流
-                    // 'resourceConfigMode' => ResourceConfigMode::TURN,
-                    // 负载均衡-随机
-                    // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
-                ],
-            ],
-            // 连接池资源配置
-            'resource' => [
-                'host' => '127.0.0.1',
-                'username' => 'root',
-                'password' => 'root',
-                'database' => 'database',
-                'prefix'   => '', // 表前缀
-                // 'port'    => '3306',
-                // 'timeout' => '建立连接超时时间',
-                // 'charset' => '',
-                // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => 'PdoMysqlDriver',
-                // 使用 hook mysqli 驱动
-                // 'dbClass' => 'MysqliDriver',
-                // 使用 Swoole MySQL 驱动
-                // 'dbClass' => 'SwooleMysqlDriver',
-                // 数据库连接后，执行初始化的 SQL
-                // 'initSqls' => [
-                //     'select 1',
-                //     'select 2',
-                // ],
-            ],
-            // uri 写法
-            // 'resource'  =>  [
-            //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-            //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-            // ],
-            // 'resource'  =>  'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60;tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-        ],
-        // 从库配置
-        // 原连接池名后加.slave即为从库配置，非必设
-        // 如果配置了，默认查询走从库，增删改走主库
-        // 如果在事务中，默认都走主库
-        'alias1.slave' => [
-            'pool' => [
-                // 协程池类名
-                'class'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                // 同步池类名，一般用不着
-                // 'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config' => [
-                    // 池子中最多资源数
-                    // 'maxResources' => 10,
-                    // 池子中最少资源数
-                    // 'minResources' => 2,
-                    // 资源回收时间间隔，单位：秒
-                    // 'gcInterval' => 60,
-                    // 获取资源最大存活时间，单位：秒
-                    // 'maxActiveTime' => 3600,
-                    // 等待资源最大超时时间，单位：毫秒
-                    // 'waitTimeout' => 3000,
-                    // 心跳时间间隔，单位：秒
-                    // 'heartbeatInterval' => null,
-                    // 当获取资源时，是否检查状态
-                    // 'checkStateWhenGetResource' => true,
-                    // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
-                    // 'maxUsedTime' => null,
-                    // 资源创建后最大空闲回收时间，单位：秒；为 null 则不限制
-                    // 'maxIdleTime' => null,
-                    // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
-                    // 'requestResourceCheckInterval' => 30,
-                    // 负载均衡-轮流
-                    // 'resourceConfigMode' => ResourceConfigMode::TURN,
-                    // 负载均衡-随机
-                    // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
-                ],
-            ],
-            // 连接池资源配置
-            'resource' => [
-                'host' => '127.0.0.1',
-                'username' => 'root',
-                'password' => 'root',
-                'database' => 'database',
-                'prefix'   => '', // 表前缀
-                // 'port'    => '3306',
-                // 'timeout' => '建立连接超时时间',
-                // 'charset' => '',
-                // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => 'PdoMysqlDriver',
-                // 使用 hook mysqli 驱动
-                // 'dbClass' => 'MysqliDriver',
-                // 使用 Swoole MySQL 驱动
-                // 'dbClass' => 'SwooleMysqlDriver',
-                // 数据库连接后，执行初始化的 SQL
-                // 'initSqls' => [
-                //     'select 1',
-                //     'select 2',
-                // ],
-            ],
-            // uri 写法
-            // 'resource'  =>  [
-            //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-            //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-            // ],
-            // 'resource'  =>  'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60;tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-        ]
-    ],
-];
-```
-
-## 单例配置
-
-> 用于 php-fpm、Workerman 下
-
-```php
-<?php
-
-return [
-    'db'    => [
-        'defaultPool'   => 'alias1', // 默认连接名
-        'statement'     =>  [
-            'cache' =>  true, // 是否开启 statement 缓存，默认开启
-        ],
-        'connections' => [
-            'alias1' => [
-                'host' => '127.0.0.1',
-                'username' => 'root',
-                'password' => 'root',
-                'database' => 'database',
-                'prefix'   => '', // 表前缀
-                // 'port'    => '3306',
-                // 'timeout' => '建立连接超时时间',
-                // 'charset' => '',
-                // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => 'PdoMysqlDriver',
-                // 使用 hook mysqli 驱动
-                // 'dbClass' => 'MysqliDriver',
-                // 使用 Swoole MySQL 驱动
-                // 'dbClass' => 'SwooleMysqlDriver',
-                // 数据库连接后，执行初始化的 SQL
-                // 'initSqls' => [
-                //     'select 1',
-                //     'select 2',
-                // ],
-                // 当获取资源时，是否检查状态
-                // 'checkStateWhenGetResource' => true,
-                // 心跳时间间隔，单位：秒
-                // 'heartbeatInterval' => null,
-            ],
-        ],
-    ],
-];
-```
+# 数据库操作
 
 ## Db 驱动对象操作
 
@@ -846,6 +647,39 @@ $binds = $query->getBinds(); // 获取预处理绑定的值
 ```
 
 > 注意不要重复构建，同一个对象在执行 `execute()` 前只能构建一次
+
+#### 分块查询
+
+利用有序字段进行分段读取操作全部返回条件的数据，对于大型数据集结果，可以有效缓解数据库压力，降低应用内存消耗，提升稳定性。
+
+| 参数 | 类型 | 说明                                                        |
+| ------ | ------ |-----------------------------------------------------------|
+| limit  | int    | 每次查询的块大小                                                  |
+| column | string | 用于分块的有序字段，建议是有序且存在索引的数值字段，一般情况下可以利用主键                     |
+| alias  | string | 用于分块的有序字段的别名，一般情况下跟`column`是一致的，无须设置，如果定义字段查询结果的别名时可设置该参数 |
+
+> 对于`ORM`下使用，由于不是一次性载入全部数据，预加载功能对于每个块都是重复加载的，建议根据实际情况决定是否实现一个缓存查询来替代预加载。
+
+```php
+// 按 10 条每块遍历全部符合条件的行。
+
+foreach (Db::query()->table('tb_test')->chunkById(10, 'id') as $result)
+{
+    var_dump($result->getArray()); // select 结果集
+}
+```
+
+#### 游标查询
+
+游标查询能对于查询大结果集时能有效节约应用内存消耗，对于数据库的消耗与`select`无差别。
+对于`ORM`下使用，由于不是一次性载入全部数据，与预加载功能不兼容，不推荐对于游标查询进行任何的模型关联操作。
+
+```php
+foreach (Db::query()->table('tb_test')->cursor() as $data)
+{
+    var_dump($data); // 输出单条查询结果
+}
+```
 
 #### 聚合函数
 

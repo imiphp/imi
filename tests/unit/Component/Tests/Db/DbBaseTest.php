@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Db;
 
+use function date;
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
+use function time;
 
 /**
  * @testdox Db
@@ -360,6 +362,106 @@ abstract class DbBaseTest extends BaseTest
                 'member_id' => 0,
             ],
         ], $result->getArray());
+    }
+
+    public function testBatchInsert(): array
+    {
+        $query = Db::query($this->poolName);
+
+        $basicRowCount = $query->table('tb_article')->count();
+
+        $insertCount = 100;
+        $data = [];
+
+        $time = time();
+        for ($i = 1; $i <= $insertCount; ++$i)
+        {
+            $data[] = [
+                'title'     => "title_{$i}",
+                'content'   => "content_{$i}",
+                'time'      => date(\DATE_ATOM, $time + $i),
+                'member_id' => $i,
+            ];
+        }
+        $query->table('tb_article')->batchInsert($data);
+
+        $newRowCount = $query->table('tb_article')->count();
+
+        $this->assertEquals($basicRowCount + $insertCount, $newRowCount);
+
+        $items = $query->table('tb_article')->select()->getArray();
+
+        return [
+            'origin' => $items,
+        ];
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testCursor(array $args): void
+    {
+        $query = Db::query($this->poolName);
+
+        $data = [];
+        foreach ($query->table('tb_article')->cursor() as $item)
+        {
+            $data[] = $item;
+        }
+
+        $this->assertEquals($args['origin'], $data);
+
+        // 空返回
+        $data = [];
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->cursor() as $item)
+        {
+            $data[] = $item;
+        }
+
+        $this->assertEmpty($data);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testChunk(array $args): void
+    {
+        $query = Db::query($this->poolName);
+
+        $data = [];
+        foreach ($query->table('tb_article')->chunkById(36, 'id') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEquals($args['origin'], $data);
+
+        // 自动重置排序
+        $data = [];
+        foreach ($query->table('tb_article')->order('id', 'desc')->chunkById(36, 'id') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEquals($args['origin'], $data);
+
+        // 空返回
+        $data = [];
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEmpty($data);
     }
 
     /**

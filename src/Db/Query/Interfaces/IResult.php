@@ -71,4 +71,9 @@ interface IResult
      * 获取结果集对象
      */
     public function getStatement(): IStatement;
+
+    /**
+     * 获取原始结果集.
+     */
+    public function getStatementRecords(): array;
 }

@@ -6,6 +6,8 @@ namespace Imi\Db\Query\Interfaces;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\QueryOption;
+use Imi\Db\Query\Result\ChunkResult;
+use Imi\Db\Query\Result\CursorResult;
 
 /**
  * 查询器接口.
@@ -463,6 +465,16 @@ interface IQuery
      * 查询所有记录，返回数组.
      */
     public function select(): IResult;
+
+    /**
+     * 查询所有记录，返回游标迭代器.
+     */
+    public function cursor(): CursorResult;
+
+    /**
+     * 查询所有记录，返回分块迭代器.
+     */
+    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult;
 
     /**
      * 分页查询.
