@@ -23,6 +23,7 @@ class PharBuildCommand extends Command
         $this
             ->addArgument('container', InputArgument::OPTIONAL, "支持容器, {$container}")
             ->addOption('init', null, InputOption::VALUE_NONE, '初始化配置文件')
+            ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, 'phar 输出路径, 默认以配置文件为准')
             ->setDescription('构建 phar');
     }
 
@@ -87,7 +88,16 @@ class PharBuildCommand extends Command
 
         $container = $input->getArgument('container');
 
-        // todo 支持自动禁用热更新
+        $pharOutput = $input->getOption('output') ?? $config['output'];
+
+        if (empty($pharOutput))
+        {
+            $output->writeln('output phar file value invalid');
+
+            return self::FAILURE;
+        }
+
+        $config['output'] = $pharOutput;
 
         $phar = new PharService(
             $output,

@@ -100,6 +100,7 @@
         "test-mqtt": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/mqtt/tests/phpunit.xml",
         "test-smarty": "@php src/Components/smarty/vendor/bin/phpunit -c src/Components/smarty/tests/phpunit.xml",
         "test-pgsql": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
+        "test-phar": "@php src/Components/phar/tests/run-tests.php",
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",
@@ -113,7 +114,8 @@
             "@composer test-snowflake",
             "@composer test-mqtt",
             "@composer test-smarty",
-            "@composer test-pgsql"
+            "@composer test-pgsql",
+            "@composer test-phar"
         ]
     },
     "extra": {

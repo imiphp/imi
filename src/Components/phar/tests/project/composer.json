@@ -1,0 +1,33 @@
+{
+    "name": "imiphp/project-http",
+    "type": "project",
+    "description": "imi 框架的 Http Server 项目。https://imiphp.com",
+    "require": {
+        "php": ">=7.4",
+        "imiphp/imi": "2.1.9999",
+        "imiphp/imi-macro": "2.1.9999",
+        "imiphp/imi-workerman": "2.1.9999",
+        "imiphp/imi-swoole": "2.1.9999",
+        "imiphp/imi-roadrunner": "2.1.9999"
+    },
+    "require-dev": {
+        "swoole/ide-helper": "^4.7",
+        "imiphp/imi-phar": "2.1.9999"
+    },
+    "autoload": {
+        "psr-4": {
+            "ImiApp\\": "./"
+        },
+        "files": [
+            "init.php"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "repositories": [
+    ],
+    "imi": {
+        "namespace": "ImiApp"
+    }
+}

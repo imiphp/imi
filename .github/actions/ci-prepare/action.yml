@@ -21,6 +21,7 @@ runs:
     - name: Prepare
       shell: bash
       run: |
+        docker exec ${{ inputs.env }} apt install -y rsync
         docker exec ${{ inputs.env }} composer config -g process-timeout 600
         docker exec ${{ inputs.env }} composer update --no-interaction --prefer-dist --no-progress
         .github/prepare-kafka.sh

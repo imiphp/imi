@@ -84,6 +84,9 @@ jobs:
       - name: Test pgsql
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test-pgsql
+      - name: Test phar
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-phar
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
@@ -364,6 +367,9 @@ jobs:
       - name: Test smarty
         if: ${{ env.test_prepared && always() }}
         run: composer test-smarty
+      - name: Test phar
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-phar
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
