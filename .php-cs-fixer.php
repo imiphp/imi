@@ -40,6 +40,7 @@ return (new PhpCsFixer\Config())
         'heredoc_indentation'        => [
             'indentation' => 'same_as_start',
         ],
+        'no_trailing_whitespace_in_string' => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
