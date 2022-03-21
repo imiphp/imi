@@ -379,7 +379,7 @@ abstract class DbBaseTest extends BaseTest
             $data[] = [
                 'title'     => "title_{$i}",
                 'content'   => "content_{$i}",
-                'time'      => date(\DATE_ATOM, $time + $i),
+                'time'      => date('Y-m-d H:i:s', $time + $i),
                 'member_id' => $i,
             ];
         }
