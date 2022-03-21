@@ -24,6 +24,7 @@ use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
 use Imi\Util\Imi;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Worker;
 use InvalidArgumentException;
 use Swoole\Event as SwooleEvent;
 use Swoole\Server;
@@ -235,6 +236,11 @@ abstract class Base extends BaseServer implements ISwooleServer
                     // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                     SwooleEvent::exit();
+                }
+                finally
+                {
+                    // worker 初始化
+                    Worker::inited();
                 }
             });
 
