@@ -216,7 +216,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
             {
                 $errorCode = $this->errorCode();
                 $errorInfo = $this->errorInfo();
-                if ($this->db->getInstance()->checkCodeIsOffline($errorCode))
+                if ($this->db->checkCodeIsOffline($errorCode))
                 {
                     $this->db->close();
                 }
