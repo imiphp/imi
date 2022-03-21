@@ -24,9 +24,9 @@ class FunctionTest extends BaseTest
         $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
         $process->mustRun();
         $output = $process->getOutput();
-        $this->assertTrue(str_contains($output, <<<'STR'
-        imi.DEBUG: 
-        string(10) "Hello imi!"
-        STR));
+        $this->assertTrue(false !== preg_match(<<<'STR'
+        /imi\.DEBUG: [\r\n]+
+        string(10) "Hello imi!"/
+        STR, $output), 'output: ' . $output);
     }
 }
