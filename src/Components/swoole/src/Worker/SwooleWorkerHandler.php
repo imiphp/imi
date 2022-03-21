@@ -10,6 +10,8 @@ use Imi\Server\ServerManager;
 use Imi\Swoole\Contract\ISwooleWorker;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
+use Imi\Swoole\Util\Co\ChannelContainer;
+use function Swoole\Coroutine\defer;
 
 /**
  * @Bean("SwooleWorkerHandler")
@@ -104,6 +106,12 @@ class SwooleWorkerHandler implements ISwooleWorker
             ], $mainServer, WorkerStartEventParam::class);
             $this->workerStartAppComplete = true;
         }
+        defer(function () {
+            if (ChannelContainer::hasChannel('workerInit'))
+            {
+                ChannelContainer::removeChannel('workerInit');
+            }
+        });
     }
 
     /**
