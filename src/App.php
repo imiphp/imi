@@ -72,7 +72,7 @@ class App
      * @param string             $namespace 应用命名空间
      * @param class-string<IApp> $app
      */
-    public static function run(string $namespace, string $app): void
+    public static function run(string $namespace, string $app, ?callable $callback = null): void
     {
         /** @var IApp $appInstance */
         $appInstance = self::$app = new $app($namespace);
@@ -104,7 +104,14 @@ class App
         self::getBean('ErrorLog')->register();
         Event::trigger('IMI.APP_RUN');
         // 运行
-        $appInstance->run();
+        if ($callback)
+        {
+            $callback();
+        }
+        else
+        {
+            $appInstance->run();
+        }
     }
 
     /**
@@ -139,7 +146,7 @@ class App
      * @param string             $vendorParentPath vendor所在目录
      * @param class-string<IApp> $app
      */
-    public static function runApp(string $vendorParentPath, string $app): void
+    public static function runApp(string $vendorParentPath, string $app, ?callable $callback = null): void
     {
         $fileName = $vendorParentPath . '/imi.cache';
         if (is_file($fileName))
@@ -187,7 +194,7 @@ class App
             }
         }
 
-        self::run($namespace, $app);
+        self::run($namespace, $app, $callback);
     }
 
     /**
