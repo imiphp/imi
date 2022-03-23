@@ -6,13 +6,14 @@ namespace Imi\AMQP\Test;
 
 use Imi\App;
 use Imi\Cli\CliApp;
+use Imi\Swoole\SwooleApp;
 use PHPUnit\Runner\BeforeFirstTestHook;
 
 class PHPUnitHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        App::run('AMQPApp', CliApp::class, static function () {
+        App::run('AMQPApp', SwooleApp::class, static function () {
         });
     }
 }
