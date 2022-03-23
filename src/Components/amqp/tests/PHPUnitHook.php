@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\AMQP\Test;
 
 use Imi\App;
-use Imi\Cli\CliApp;
 use Imi\Swoole\SwooleApp;
 use PHPUnit\Runner\BeforeFirstTestHook;
 
