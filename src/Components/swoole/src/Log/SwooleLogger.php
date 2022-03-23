@@ -43,7 +43,7 @@ class SwooleLogger extends MonoLogger
             Coroutine::create(function () {
                 $this->__logProcessor();
             });
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END'], function () {
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END', 'IMI.QUICK_START_AFTER'], function () {
                 $this->asyncLogging = false;
                 $this->logChannel->close();
             }, \Imi\Util\ImiPriority::IMI_MIN);

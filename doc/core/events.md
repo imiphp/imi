@@ -153,3 +153,11 @@ string $name, $process
 请求上下文销毁事件
 
 事件参数：无
+
+### IMI.QUICK_START_BEFORE
+
+快速启动前置事件
+
+### IMI.QUICK_START_AFTER
+
+快速启动后置事件

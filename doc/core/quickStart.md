@@ -1,4 +1,4 @@
-# 单文件运行 imi
+# 单文件运行 imi（快速启动）
 
 imi v2.1.7 开始支持了单文件运行 imi。
 
@@ -26,6 +26,23 @@ require __DIR__ . '/vendor/autoload.php';
 App::runApp(__DIR__, CliApp::class, function () {
     // 你自己的代码写在这
     echo 'Test quick start', \PHP_EOL;
+});
+```
+
+**Swoole 环境使用：**
+
+```php
+
+use Imi\Swoole\SwooleApp;
+use function Swoole\Coroutine\run;
+
+// 加载 autoload.php 必不可少
+require __DIR__ . '/vendor/autoload.php';
+
+run(function () {
+    App::runApp(__DIR__, SwooleApp::class, function () {
+        echo 'Test swoole quick start', \PHP_EOL;
+    });
 });
 ```
 

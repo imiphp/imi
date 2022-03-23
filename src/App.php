@@ -106,7 +106,9 @@ class App
         // 运行
         if ($callback)
         {
+            Event::trigger('IMI.QUICK_START_BEFORE');
             $callback();
+            Event::trigger('IMI.QUICK_START_AFTER');
         }
         else
         {
