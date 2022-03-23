@@ -9,9 +9,9 @@ use Imi\Test\BaseTest;
 use Test\TestContext;
 
 /**
- * @testdox AppContext
+ * @testdox App
  */
-class AppContextTest extends BaseTest
+class AppTest extends BaseTest
 {
     public function testSetAndGet(): void
     {
@@ -29,5 +29,11 @@ class AppContextTest extends BaseTest
         require_once \dirname(__DIR__) . '/App/TestContext.php';
         $this->expectException(\RuntimeException::class);
         TestContext::set();
+    }
+
+    public function testQuickStart(): void
+    {
+        $content = $this->php(\dirname(__DIR__) . '/test.php');
+        $this->assertTrue(str_contains($content, 'Test quick start'), 'content: ' . $content);
     }
 }

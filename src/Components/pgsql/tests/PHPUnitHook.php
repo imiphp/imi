@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Pgsql\Test;
 
 use Imi\App;
+use Imi\Cli\CliApp;
 use Imi\Db\Interfaces\IDb;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
@@ -31,6 +32,7 @@ class PHPUnitHook implements BeforeFirstTestHook
                 }
             });
         }, 1);
-        App::run('Imi\Pgsql\Test', TestApp::class);
+        App::run('Imi\Pgsql\Test', CliApp::class, static function () {
+        });
     }
 }

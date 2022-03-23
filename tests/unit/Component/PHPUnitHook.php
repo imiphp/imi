@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component;
 
 use Imi\App;
+use Imi\Cli\CliApp;
 use Imi\Db\Interfaces\IDb;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
@@ -40,7 +41,8 @@ class PHPUnitHook implements BeforeFirstTestHook
         }, 1);
         try
         {
-            App::run('Imi\Test\Component', TestApp::class);
+            App::run('Imi\Test\Component', CliApp::class, static function () {
+            });
         }
         catch (\Throwable $exception)
         {

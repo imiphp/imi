@@ -10,6 +10,7 @@ use Imi\Event\Event;
 use Imi\Event\EventParam;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
+use Imi\Swoole\SwooleApp;
 use PHPUnit\Runner\BeforeFirstTestHook;
 
 class PHPUnitHook implements BeforeFirstTestHook
@@ -30,6 +31,7 @@ class PHPUnitHook implements BeforeFirstTestHook
                 }
             });
         }, 1);
-        App::run('Imi\Swoole\Test\Component', TestApp::class);
+        App::run('Imi\Swoole\Test\Component', SwooleApp::class, static function () {
+        });
     }
 }
