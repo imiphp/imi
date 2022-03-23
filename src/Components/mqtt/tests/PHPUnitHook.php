@@ -17,7 +17,7 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
     public function executeBeforeFirstTest(): void
     {
         $this->channel = $channel = new Channel(1);
-        App::run('MQTTApp', SwooleApp::class, static function () use($channel){
+        App::run('MQTTApp', SwooleApp::class, static function () use ($channel) {
             $channel->push(1);
             $channel->pop();
         });
