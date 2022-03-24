@@ -28,9 +28,10 @@ class Logger
 
     public function getLogger(?string $channelName = null): MonoLogger
     {
+        $config = null;
         if (null === $channelName)
         {
-            $config ??= Config::get('@app.logger', []);
+            $config = Config::get('@app.logger', []);
             $channelName = $config['default'] ?? 'imi';
         }
         if (!isset($this->loggers[$channelName]))
