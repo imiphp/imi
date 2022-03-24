@@ -161,12 +161,10 @@ class RequestContext
         $context = self::getContext();
         if (isset($context['container']))
         {
-            /** @var Container $container */
             return $context['container'];
         }
         elseif (isset($context['server']))
         {
-            /** @var Container $container */
             return $context['container'] = $context['server']->getContainer()->newSubContainer();
         }
         else
