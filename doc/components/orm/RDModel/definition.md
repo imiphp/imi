@@ -311,7 +311,7 @@ function demoWrap($data)
 
 `updateTime`：save/update 模型时是否将当前时间写入该字段。支持 date/time/datetime/timestamp/year/int/bigint。当字段为 int 类型，写入秒级时间戳。当字段为 bigint 类型，写入毫秒级时间戳。
 
-`createTime`：save/create 模型时是否将当前时间写入该字段，**save时表有自增ID主键才支持**；支持 date/time/datetime/timestamp/year/int/bigint；当字段为 int 类型，写入秒级时间戳；当字段为 bigint 类型，写入毫秒级时间戳。
+`createTime`：save/insert 模型时是否将当前时间写入该字段，**save时表有自增ID主键才支持**；支持 date/time/datetime/timestamp/year/int/bigint；当字段为 int 类型，写入秒级时间戳；当字段为 bigint 类型，写入毫秒级时间戳。
 
 ### @Sql
 
