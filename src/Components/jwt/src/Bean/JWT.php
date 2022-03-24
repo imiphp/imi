@@ -257,7 +257,7 @@ class JWT
     /**
      * 验证 Token.
      */
-    public function validate(?string $name = null, Token $token): void
+    public function validate(?string $name, Token $token): void
     {
         $config = $this->getConfig($name);
         if (!$config)
