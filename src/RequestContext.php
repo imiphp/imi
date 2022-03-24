@@ -158,7 +158,21 @@ class RequestContext
      */
     public static function getContainer(): Container
     {
-        return self::getContext()['container'];
+        $context = self::getContext();
+        if (isset($context['container']))
+        {
+            /** @var Container $container */
+            return $context['container'];
+        }
+        elseif (isset($context['server']))
+        {
+            /** @var Container $container */
+            return $context['container'] = $context['server']->getContainer()->newSubContainer();
+        }
+        else
+        {
+            return $context['container'] = App::getContainer()->newSubContainer();
+        }
     }
 
     /**
@@ -173,26 +187,6 @@ class RequestContext
      */
     public static function getBean(string $name, ...$params)
     {
-        $instance = static::getInstance();
-        $context = $instance->get($instance->getCurrentFlag(), true);
-        if (isset($context['container']))
-        {
-            /** @var Container $container */
-            $container = $context['container'];
-        }
-        else
-        {
-            if (isset($context['server']))
-            {
-                /** @var Container $container */
-                $container = $context['container'] = $context['server']->getContainer()->newSubContainer();
-            }
-            else
-            {
-                $container = $context['container'] = App::getContainer()->newSubContainer();
-            }
-        }
-
-        return $container->get($name, ...$params);
+        return self::getContainer()->get($name, ...$params);
     }
 }
