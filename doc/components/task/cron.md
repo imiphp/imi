@@ -119,12 +119,7 @@ class TaskProcess implements IProcess
         $success = false;
         $message = '';
         try {
-            $id = Args::get('id');
-            if(null === $id)
-            {
-                return;
-            }
-            $data = json_decode(Args::get('data'), true);
+            // 做一些事情
             $success = true;
         } catch(\Throwable $th) {
             $message = $th->getMessage();
