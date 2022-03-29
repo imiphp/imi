@@ -22,6 +22,7 @@ use Imi\Swoole\Server\Event\Param\MessageEventParam;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Http\Listener\BeforeRequest;
+use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
 use Imi\Worker;
@@ -116,11 +117,6 @@ class Server extends Base implements ISwooleWebSocketServer
                     {
                         ChannelContainer::pop('workerInit');
                     }
-                    if ($this->syncConnect)
-                    {
-                        $channelId = 'connection:' . $swooleRequest->fd;
-                        $channel = ChannelContainer::getChannel($channelId);
-                    }
                     $request = new SwooleRequest($this, $swooleRequest);
                     $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::create([
@@ -144,13 +140,6 @@ class Server extends Base implements ISwooleWebSocketServer
                     // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
                 }
-                finally
-                {
-                    if (isset($channel, $channelId))
-                    {
-                        ChannelContainer::removeChannel($channelId);
-                    }
-                }
             });
         }
         else
@@ -167,14 +156,6 @@ class Server extends Base implements ISwooleWebSocketServer
                     if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
-                    }
-                    if ($this->syncConnect)
-                    {
-                        $channelId = 'connection:' . $frame->fd;
-                        if (ChannelContainer::hasChannel($channelId))
-                        {
-                            ChannelContainer::pop($channelId);
-                        }
                     }
                     RequestContext::muiltiSet([
                         'server'        => $this,
