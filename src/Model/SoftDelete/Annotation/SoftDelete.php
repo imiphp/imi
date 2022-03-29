@@ -30,7 +30,7 @@ class SoftDelete extends Base
     public function __construct(?array $__data = null, string $field = '', $default = 0)
     {
         parent::__construct(...\func_get_args());
-        if ('' === $field)
+        if ('' === $this->field)
         {
             $this->field = Config::get('@app.model.softDelete.fields.deleteTime', 'delete_time');
         }
