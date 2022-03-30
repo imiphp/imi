@@ -5,8 +5,7 @@
     "description": "imi swoole component",
     "require": {
         "ext-swoole": ">=4.8",
-        "yurunsoft/swoole-co-pool": "^1.1.0",
-        "imiphp/imi-macro": "~2.1.0"
+        "yurunsoft/swoole-co-pool": "^1.1.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=8",
