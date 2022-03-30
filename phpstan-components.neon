@@ -11,7 +11,6 @@ parameters:
         - src/Components/grpc/example/grpc
         - src/Components/smarty/src/smarty-plugins
         - src/Components/swoole/src/Process/Process.php
-        - src/Components/swoole/src/Util/Coroutine.php
 
     bootstrapFiles:
         - vendor/autoload.php
