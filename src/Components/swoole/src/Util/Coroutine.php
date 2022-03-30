@@ -34,7 +34,7 @@ trait TCoroutine
 // @phpstan-ignore-next-line
 if (\SWOOLE_VERSION_ID >= 50000)
 {
-    include __DIR__ . '/Coroutine.swoole-5';
+    include __DIR__ . '/Coroutine.typed.php';
 }
 else
 {
