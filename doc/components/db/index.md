@@ -665,7 +665,21 @@ $binds = $query->getBinds(); // 获取预处理绑定的值
 
 foreach (Db::query()->table('tb_test')->chunkById(10, 'id') as $result)
 {
-    var_dump($result->getArray()); // select 结果集
+    $list = $result->getArray(); // select 结果集
+    // 遍历结果集
+    foreach ($list as $row)
+    {
+        var_dump($row);
+    }
+}
+```
+
+还有一个更简单的用法：
+
+```php
+foreach (Db::query()->table('tb_test')->chunkEach(10, 'id') as $row)
+{
+    var_dump($row);
 }
 ```
 

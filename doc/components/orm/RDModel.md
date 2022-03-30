@@ -255,7 +255,21 @@ var_dump(json_encode($data)); // 支持序列化
 
 foreach (TestModel::query()->chunkById(10, 'id') as $result)
 {
-    var_dump($result->getArray()); // select 结果集
+    $list = $result->getArray(); // select 结果集
+    // 遍历结果集
+    foreach ($list as $row)
+    {
+        var_dump($row);
+    }
+}
+```
+
+还有一个更简单的用法：
+
+```php
+foreach (TestModel::query()->chunkEach(10, 'id') as $row)
+{
+    var_dump($row);
 }
 ```
 

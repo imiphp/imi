@@ -98,6 +98,16 @@ trait TModelQuery
         return parent::chunkById($count, $column, $alias);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function chunkEach(int $count, string $column, ?string $alias = null)
+    {
+        $this->queryPreProcess();
+
+        return parent::chunkEach($count, $column, $alias);
+    }
+
     private function hasCustomFields(): bool
     {
         $field = $this->option->field;

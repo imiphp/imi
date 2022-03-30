@@ -465,6 +465,40 @@ abstract class DbBaseTest extends BaseTest
     }
 
     /**
+     * @depends testBatchInsert
+     */
+    public function testChunkEach(array $args): void
+    {
+        $query = Db::query($this->poolName);
+
+        $data = [];
+        foreach ($query->table('tb_article')->chunkEach(36, 'id') as $item)
+        {
+            $data[] = $item;
+        }
+
+        $this->assertEquals($args['origin'], $data);
+
+        // 自动重置排序
+        $data = [];
+        foreach ($query->table('tb_article')->order('id', 'desc')->chunkEach(36, 'id') as $item)
+        {
+            $data[] = $item;
+        }
+
+        $this->assertEquals($args['origin'], $data);
+
+        // 空返回
+        $data = [];
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkEach(36, 'id') as $item)
+        {
+            $data[] = $item;
+        }
+
+        $this->assertEmpty($data);
+    }
+
+    /**
      * @depends testInsert
      */
     public function testPrepare(array $args): void
