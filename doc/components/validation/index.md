@@ -88,6 +88,14 @@ public $exception = null;
 public $exCode = null;
 ```
 
+`name` 支持动态数组对象验证：
+
+`member.username`
+`list1.*.id`
+`list2.*`
+
+> `*` 代表上一级下面的所有值
+
 `callable` 是验证回调，支持：
 
 * `"is_int"`、
