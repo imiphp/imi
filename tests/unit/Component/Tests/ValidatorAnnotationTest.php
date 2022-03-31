@@ -40,6 +40,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->validateValueFail();
         $this->regexFail();
         $this->optional();
+        $this->star();
     }
 
     public function testAutoConstructValidator(): void
@@ -99,6 +100,11 @@ class ValidatorAnnotationTest extends BaseTest
             'validateValue' => -1,
             'optional'      => 1,
             'regex'         => 123,
+            'list1'         => [
+                ['id' => 1, 'name' => 'test1'],
+                ['id' => 2, 'name' => 'test2'],
+            ],
+            'list2'         => [1, 2, 3],
         ];
     }
 
@@ -226,6 +232,17 @@ class ValidatorAnnotationTest extends BaseTest
 
         unset($this->data['optional']);
         $this->assertTrue($this->tester->validate());
+    }
+
+    private function star(): void
+    {
+        $this->initData();
+        $this->data['list1'][0]['id'] = 11;
+        $this->assertFalse($this->tester->validate());
+
+        $this->initData();
+        $this->data['list2'][0] = 11;
+        $this->assertFalse($this->tester->validate());
     }
 
     public function testScene(): void

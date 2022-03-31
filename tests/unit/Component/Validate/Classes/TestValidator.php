@@ -29,6 +29,8 @@ use Imi\Validate\Validator;
  * @Compare(name="validateValue", value=@ValidateValue("{:data.compare}"), operation="==")
  * @Integer(name="optional", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}", optional=true)
  * @Regex(name="regex", pattern="/^\d+$/")
+ * @Integer(name="list1.*.id", min=0, max=10, message="{:value} 不符合大于等于{min}且小于等于{max}")
+ * @Integer(name="list2.*", min=0, max=10, message="{:value} 不符合大于等于{min}且小于等于{max}")
  */
 class TestValidator extends Validator
 {

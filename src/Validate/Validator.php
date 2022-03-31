@@ -282,23 +282,6 @@ class Validator implements IValidator
      */
     protected function validateByAnnotation($data, Condition $annotation): bool
     {
-        if ($annotation->optional && !ObjectArrayHelper::exists($data, $annotation->name))
-        {
-            return true;
-        }
-        $args = [];
-        if ($annotation->args)
-        {
-            foreach ($annotation->args as $arg)
-            {
-                $value = $this->getArgValue($data, $arg, $annotation);
-                if ($value instanceof ValidateValue)
-                {
-                    $value = $this->getArgValue($data, $value->value, $annotation, false);
-                }
-                $args[] = $value;
-            }
-        }
         $callable = $annotation->callable;
         if (\is_array($callable) && isset($callable[0]))
         {
@@ -311,14 +294,132 @@ class Validator implements IValidator
                 $callable[0] = $callable[0]->getRealValue();
             }
         }
-        $result = $callable(...$args);
-        if ($annotation->inverseResult)
+        // 没有参数直接调用返回
+        if (!$annotation->args)
         {
-            return !$result;
+            $result = $callable();
+            if ($annotation->inverseResult)
+            {
+                return !$result;
+            }
+            else
+            {
+                return $result;
+            }
+        }
+
+        $argName = $annotation->name;
+        $hasStar = str_contains($argName, '*');
+        if ($hasStar)
+        {
+            foreach ($this->eachValue($data, $argName, $hasValue) as $value)
+            {
+                if ($annotation->optional && !$hasValue)
+                {
+                    continue;
+                }
+                $args = [];
+                foreach ($annotation->args as $arg)
+                {
+                    $value = $this->getArgValue($data, $arg, $annotation, true, true, $value);
+                    if ($value instanceof ValidateValue)
+                    {
+                        $value = $this->getArgValue($data, $value->value, $annotation, false, true, $value);
+                    }
+                    $args[] = $value;
+                }
+                $result = $callable(...$args);
+                if ($annotation->inverseResult)
+                {
+                    if ($result)
+                    {
+                        return false;
+                    }
+                }
+                elseif (!$result)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
         else
         {
-            return $result;
+            if ($annotation->optional && !ObjectArrayHelper::exists($data, $argName))
+            {
+                return true;
+            }
+            $args = [];
+            foreach ($annotation->args as $arg)
+            {
+                $value = $this->getArgValue($data, $arg, $annotation);
+                if ($value instanceof ValidateValue)
+                {
+                    $value = $this->getArgValue($data, $value->value, $annotation, false);
+                }
+                $args[] = $value;
+            }
+            $result = $callable(...$args);
+            if ($annotation->inverseResult)
+            {
+                return !$result;
+            }
+            else
+            {
+                return $result;
+            }
+        }
+    }
+
+    /**
+     * @param mixed        $data
+     * @param string|array $argName
+     *
+     * @return mixed
+     */
+    protected function eachValue($data, $argName, ?bool &$hasValue = null)
+    {
+        if (\is_array($argName))
+        {
+            $starSplitResult = $argName;
+        }
+        else
+        {
+            $starSplitResult = explode('.', $argName);
+        }
+        if ($starSplitResult)
+        {
+            $item = array_shift($starSplitResult);
+            if ('*' === $item)
+            {
+                if ($starSplitResult)
+                {
+                    foreach ($data as $dataValue)
+                    {
+                        yield from $this->eachValue($dataValue, $starSplitResult, $hasValue);
+                    }
+                }
+                else
+                {
+                    $hasValue = true;
+                    yield from $data;
+                }
+            }
+            elseif (ObjectArrayHelper::exists($data, $item))
+            {
+                yield from $this->eachValue(ObjectArrayHelper::get($data, $item), $starSplitResult, $hasValue);
+            }
+            else
+            {
+                $hasValue = false;
+                yield null;
+            }
+        }
+        else
+        {
+            $hasValue = true;
+            yield $data;
         }
     }
 
@@ -327,10 +428,11 @@ class Validator implements IValidator
      *
      * @param array|object $data
      * @param mixed        $arg
+     * @param mixed        $value
      *
      * @return mixed
      */
-    protected function getArgValue($data, $arg, Condition $annotation, bool $includeAnnotationProperty = true)
+    protected function getArgValue($data, $arg, Condition $annotation, bool $includeAnnotationProperty = true, bool $hasValue = false, $value = null)
     {
         if (!\is_string($arg))
         {
@@ -341,7 +443,14 @@ class Validator implements IValidator
             $argName = $matches[1];
             if ('value' === $argName)
             {
-                return ObjectArrayHelper::get($data, $annotation->name);
+                if ($hasValue)
+                {
+                    return $value;
+                }
+                else
+                {
+                    return ObjectArrayHelper::get($data, $annotation->name);
+                }
             }
             $list = explode('.', $argName, 2);
             if ('data' === $list[0])
