@@ -308,68 +308,37 @@ class Validator implements IValidator
             }
         }
 
-        $argName = $annotation->name;
-        $hasStar = str_contains($argName, '*');
-        if ($hasStar)
+        foreach ($this->eachValue($data, $annotation->name, $hasValue) as $value)
         {
-            foreach ($this->eachValue($data, $argName, $hasValue) as $value)
+            if ($annotation->optional && !$hasValue)
             {
-                if ($annotation->optional && !$hasValue)
-                {
-                    continue;
-                }
-                $args = [];
-                foreach ($annotation->args as $arg)
-                {
-                    $value = $this->getArgValue($data, $arg, $annotation, true, true, $value);
-                    if ($value instanceof ValidateValue)
-                    {
-                        $value = $this->getArgValue($data, $value->value, $annotation, false, true, $value);
-                    }
-                    $args[] = $value;
-                }
-                $result = $callable(...$args);
-                if ($annotation->inverseResult)
-                {
-                    if ($result)
-                    {
-                        return false;
-                    }
-                }
-                elseif (!$result)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        else
-        {
-            if ($annotation->optional && !ObjectArrayHelper::exists($data, $argName))
-            {
-                return true;
+                continue;
             }
             $args = [];
             foreach ($annotation->args as $arg)
             {
-                $value = $this->getArgValue($data, $arg, $annotation);
+                $value = $this->getArgValue($data, $arg, $annotation, true, $hasValue, $value);
                 if ($value instanceof ValidateValue)
                 {
-                    $value = $this->getArgValue($data, $value->value, $annotation, false);
+                    $value = $this->getArgValue($data, $value->value, $annotation, false, $hasValue, $value);
                 }
                 $args[] = $value;
             }
             $result = $callable(...$args);
             if ($annotation->inverseResult)
             {
-                return !$result;
+                if ($result)
+                {
+                    return false;
+                }
             }
-            else
+            elseif (!$result)
             {
-                return $result;
+                return false;
             }
         }
+
+        return true;
     }
 
     /**
