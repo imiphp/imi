@@ -1322,6 +1322,16 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
+    public function find(?string $className = null)
+    {
+        return $this->limit(1)
+            ->select()
+            ->get($className);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function value(string $field, $default = null)
     {
         $result = $this

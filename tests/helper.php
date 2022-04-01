@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 function array_column_ex(array $arr, array $column, ?string $key = null): array
 {
     $result = array_map(function ($val) use ($column) {
         $item = [];
-        foreach ($column as $index => $key) {
-            if (\is_int($index)) {
+        foreach ($column as $index => $key)
+        {
+            if (\is_int($index))
+            {
                 $item[$key] = $val[$key];
-            } else {
+            }
+            else
+            {
                 $item[$key] = $val[$index];
             }
         }
@@ -15,7 +21,8 @@ function array_column_ex(array $arr, array $column, ?string $key = null): array
         return $item;
     }, $arr);
 
-    if (!empty($key)) {
+    if (!empty($key))
+    {
         $result = array_combine(array_column($arr, $key), $result);
     }
 

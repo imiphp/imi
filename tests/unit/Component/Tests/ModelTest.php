@@ -17,7 +17,6 @@ use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
-use function var_dump;
 
 /**
  * @testdox Model
@@ -251,16 +250,32 @@ class ModelTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testQueryFind(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Member::query()
+            ->where('id', '=', $id)
+            ->find();
+        $this->assertInstanceOf(Member::class, $result);
+        $this->assertEquals([
+            'id'       => $id,
+            'username' => '1',
+        ], $result->toArray());
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testValue(array $args): void
     {
         ['id' => $id] = $args;
 
-        $value = Member::dbQuery()
+        $value = Member::query()
             ->where('id', '=', $id)
             ->value('username');
         $this->assertEquals('1', $value);
 
-        $value = Member::dbQuery()
+        $value = Member::query()
             ->where('id', '=', -1)
             ->value('id', '9999999');
         $this->assertEquals('9999999', $value);
@@ -273,22 +288,22 @@ class ModelTest extends BaseTest
     {
         $origin = $args['origin'];
 
-        $data = Member::dbQuery()
+        $data = Member::query()
             ->column('username');
 
         $this->assertEquals(array_column($origin, 'username'), $data);
 
-        $data = Member::dbQuery()
+        $data = Member::query()
             ->column('username', 'id');
 
         $this->assertEquals(array_column($origin, 'username', 'id'), $data);
 
-        $data = Member::dbQuery()
+        $data = Member::query()
             ->column(['id', 'username'], 'id');
 
         $this->assertEquals(array_column_ex($origin, ['id', 'username'], 'id'), $data);
 
-        $data = Member::dbQuery()
+        $data = Member::query()
             ->column(['username', 'id'], 'id');
 
         $this->assertEquals(array_column_ex($origin, ['username', 'id'], 'id'), $data);

@@ -108,6 +108,25 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testFind(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::query()
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->find();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $result);
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testPreparePositional(array $args): void
     {
         ['id' => $id] = $args;

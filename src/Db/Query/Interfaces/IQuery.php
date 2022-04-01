@@ -467,6 +467,15 @@ interface IQuery
     public function select(): IResult;
 
     /**
+     * 查询首条记录.
+     *
+     * @param string|null $className 实体类名，为null则数组每个成员为数组
+     *
+     * @return mixed
+     */
+    public function find(?string $className = null);
+
+    /**
      * 查询首条记录指定字段的值
      *
      * @param mixed $default
