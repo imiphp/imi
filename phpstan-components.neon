@@ -10,6 +10,7 @@ parameters:
         - */vendor/*
         - src/Components/grpc/example/grpc
         - src/Components/smarty/src/smarty-plugins
+        - src/Components/swoole/src/Process/Process.php
 
     bootstrapFiles:
         - vendor/autoload.php
