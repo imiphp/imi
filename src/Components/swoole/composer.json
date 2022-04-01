@@ -26,8 +26,7 @@
         },
         "files": [
             "../../../vendor/autoload.php",
-            "../amqp/vendor/autoload.php",
-            "../macro/vendor/autoload.php"
+            "../amqp/vendor/autoload.php"
         ]
     },
     "scripts": {

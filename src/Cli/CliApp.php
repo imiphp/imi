@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Cli;
 
+use Composer\InstalledVersions;
 use Imi\App;
 use Imi\Bean\Scanner;
 use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Core\Component\ComponentManager;
+use Imi\Main\Helper;
+use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\System;
@@ -252,7 +256,6 @@ class CliApp extends BaseApp
         $output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
         $output->writeln('<info>Version:</info> v' . \PHP_VERSION);
         $output->writeln("<info>{$serverName}:</info> v{$serverVer}");
-        $output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
         // @phpstan-ignore-next-line
         if (IMI_IN_PHAR)
         {
@@ -260,6 +263,39 @@ class CliApp extends BaseApp
         }
         $output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
         $output->writeln('<info>Opcache:</info> ' . Imi::getOpcacheInfo());
+
+        $output->writeln(\PHP_EOL . '<fg=yellow;options=bold>[imi]</>');
+        $output->writeln('<info>imi:</info> ' . App::getImiPrettyVersion());
+        foreach (ComponentManager::getComponents() as $name => $namespace)
+        {
+            $main = Helper::getMain($namespace);
+            if ($main)
+            {
+                $path = (new \ReflectionClass($main))->getFileName();
+                while (true)
+                {
+                    $path = \dirname($path);
+                    if (\DIRECTORY_SEPARATOR === $path)
+                    {
+                        break;
+                    }
+                    $composerJson = File::path($path, 'composer.json');
+                    if (is_file($composerJson))
+                    {
+                        $data = json_decode(file_get_contents($composerJson), true);
+                        $name = $data['name'];
+                        $version = InstalledVersions::getPrettyVersion($name);
+                        $hash = InstalledVersions::getReference($name) ?? '';
+                        if (!empty($hash))
+                        {
+                            $hash = substr($hash, 0, 7);
+                        }
+                        $output->writeln('<info>' . $data['name'] . ':</info> ' . (empty($hash) ? $version : "{$version} ($hash)"));
+                        break;
+                    }
+                }
+            }
+        }
 
         $output->writeln('');
     }
