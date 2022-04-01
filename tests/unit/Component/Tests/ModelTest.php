@@ -703,4 +703,18 @@ class ModelTest extends BaseTest
 
         $this->assertEquals($args['origin'], $data);
     }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testChunkEach(array $args): void
+    {
+        $data = [];
+        foreach (Member::query()->chunkEach(32, 'id') as $item)
+        {
+            $data[] = $item->toArray();
+        }
+
+        $this->assertEquals($args['origin'], $data);
+    }
 }

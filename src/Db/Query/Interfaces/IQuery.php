@@ -477,6 +477,13 @@ interface IQuery
     public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult;
 
     /**
+     * 查询所有记录，返回分块迭代器.
+     *
+     * @return mixed
+     */
+    public function chunkEach(int $count, string $column, ?string $alias = null);
+
+    /**
      * 分页查询.
      *
      * @return \Imi\Db\Query\Interfaces\IPaginateResult
