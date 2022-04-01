@@ -83,6 +83,7 @@ namespace
 
 namespace Imi
 {
+    use Imi\Log\Log;
     use Symfony\Component\Process\Process;
 
     /**
@@ -142,5 +143,41 @@ namespace Imi
     function env(?string $varname = null, $default = null)
     {
         return Env::get($varname, $default);
+    }
+
+    /**
+     * @param mixed $values
+     */
+    function dump(...$values): void
+    {
+        ob_start();
+        var_dump(...$values);
+        $output = ob_get_clean();
+        if (false === $output)
+        {
+            throw new \RuntimeException('Get output buffer failed');
+        }
+
+        $output = preg_replace('/\]\=\>\n(\s+)/m', '] => ', $output);
+
+        if ('cli' === \PHP_SAPI)
+        {
+            if (App::getContainer()->has('ErrorLog'))
+            {
+                Log::debug(\PHP_EOL . $output);
+            }
+            else
+            {
+                fwrite(\STDOUT, $output);
+            }
+        }
+        else
+        {
+            if (!\extension_loaded('xdebug'))
+            {
+                $output = htmlspecialchars($output, \ENT_SUBSTITUTE);
+            }
+            echo '<pre>' . $output . '</pre>';
+        }
     }
 }

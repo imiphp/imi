@@ -10,6 +10,7 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use function Imi\dump;
 
 /**
  * @Command("TestTool")
@@ -62,5 +63,13 @@ class TestTool extends BaseCommand
     {
         var_dump($test);
         var_dump($this->input->getOption('test'));
+    }
+
+    /**
+     * @CommandAction(name="testDump")
+     */
+    public function testDump(): void
+    {
+        dump('Hello imi!');
     }
 }
