@@ -290,7 +290,7 @@ class CliApp extends BaseApp
                         {
                             $hash = substr($hash, 0, 7);
                         }
-                        $output->writeln('<info>' . $data['name'] . ':</info> ' . (empty($hash) ? $version : "{$version} ($hash)"));
+                        $output->writeln('<info>' . $name . ':</info> ' . (empty($hash) ? $version : "{$version} ($hash)"));
                         break;
                     }
                 }
