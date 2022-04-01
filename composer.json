@@ -50,11 +50,13 @@
             "Imi\\Test\\": "tests/unit/"
         },
         "files": [
-            "dev/bootstrap.php"
+            "dev/bootstrap.php",
+            "tests/helper.php"
         ]
     },
     "suggest": {
-        "ext-inotify": "高性能热更新支持"
+        "ext-inotify": "高性能热更新支持",
+        "ext-pdo": "数据库操作支持"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

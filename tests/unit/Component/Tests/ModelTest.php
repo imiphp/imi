@@ -17,6 +17,7 @@ use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
+use function var_dump;
 
 /**
  * @testdox Model
@@ -245,6 +246,52 @@ class ModelTest extends BaseTest
                 'username' => '1',
             ],
         ], $list);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testValue(array $args): void
+    {
+        ['id' => $id] = $args;
+
+        $value = Member::dbQuery()
+            ->where('id', '=', $id)
+            ->value('username');
+        $this->assertEquals('1', $value);
+
+        $value = Member::dbQuery()
+            ->where('id', '=', -1)
+            ->value('id', '9999999');
+        $this->assertEquals('9999999', $value);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testColumn(array $args): void
+    {
+        $origin = $args['origin'];
+
+        $data = Member::dbQuery()
+            ->column('username');
+
+        $this->assertEquals(array_column($origin, 'username'), $data);
+
+        $data = Member::dbQuery()
+            ->column('username', 'id');
+
+        $this->assertEquals(array_column($origin, 'username', 'id'), $data);
+
+        $data = Member::dbQuery()
+            ->column(['id', 'username'], 'id');
+
+        $this->assertEquals(array_column_ex($origin, ['id', 'username'], 'id'), $data);
+
+        $data = Member::dbQuery()
+            ->column(['username', 'id'], 'id');
+
+        $this->assertEquals(array_column_ex($origin, ['username', 'id'], 'id'), $data);
     }
 
     /**
