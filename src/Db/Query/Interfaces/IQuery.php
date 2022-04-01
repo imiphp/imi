@@ -487,7 +487,7 @@ interface IQuery
     /**
      * 得到某个列的数组.
      *
-     * @param string|array $fields
+     * @param string|string[] $fields
      */
     public function column($fields, ?string $key = null): array;
 

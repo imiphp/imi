@@ -639,6 +639,8 @@ $result->getRowCount(); // 获取查询出的记录行数
 #### 查询一行
 
 ```php
+Db::query()->table('tb_test')->find();
+
 Db::query()->table('tb_test')->find($className); // $className 默认null，可以不填，用途参考数据集 get 方法
 ```
 
@@ -646,16 +648,38 @@ Db::query()->table('tb_test')->find($className); // $className 默认null，可�
 
 ```php
 Db::query()->table('tb_test')->value('username');
-Db::query()->table('tb_test')->value('username', $default); // 数据查询不到时返回的默认值 $default
+Db::query()->table('tb_test')->value('username', -1); // 当数据查询不到时返回的默认值 -1
 ```
 
 #### 查询指定列
 
 ```php
+// 查询 username 列并作为数组返回
+Db::query()->table('tb_test')->column('username');
+// 结果值如下：
+[
+    'username1',
+    'username2',
+    'username4',
+]
+
 // 查询 username 列并返回 id 做下标，username 作为值的数组
 Db::query()->table('tb_test')->column('username', 'id');
+// 结果值如下：
+[
+    1 => 'username1',
+    2 => 'username2',
+    3 => 'username4',
+]
+
 // 查询 username、password 列并返回 id 做下标的数组
 Db::query()->table('tb_test')->column(['username', 'password'], 'id');
+// 结果值如下：
+[
+    1 => ['username' => 'username1', 'password' => '123'],
+    2 => ['username' => 'username2', 'password' => '456'],
+    3 => ['username' => 'username3', 'password' => '789'],
+]
 ```
 
 #### 构建查询语句
