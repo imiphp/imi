@@ -155,7 +155,7 @@ class Server extends Base implements ISwooleHttpServer
         if ($event = ($events['close'] ?? false) || $this->http2)
         {
             // @phpstan-ignore-next-line
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function (HttpServer $server, int $fd, int $reactorId) {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
                     $this->trigger('close', [
