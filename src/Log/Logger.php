@@ -28,14 +28,16 @@ class Logger
 
     public function getLogger(?string $channelName = null): MonoLogger
     {
-        $config = Config::get('@app.logger', []);
-        $channelsConfig = $config['channels'] ?? [];
+        $config = null;
         if (null === $channelName)
         {
+            $config = Config::get('@app.logger', []);
             $channelName = $config['default'] ?? 'imi';
         }
         if (!isset($this->loggers[$channelName]))
         {
+            $config ??= Config::get('@app.logger', []);
+            $channelsConfig = $config['channels'] ?? [];
             if (!isset($channelsConfig[$channelName]))
             {
                 throw new InvalidArgumentException(sprintf('Logger %s not found', $channelName));

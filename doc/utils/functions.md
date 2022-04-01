@@ -1,6 +1,6 @@
 # 全局函数
 
-### imigo
+## imigo
 
 启动一个协程，自动创建和销毁上下文
 
@@ -19,7 +19,7 @@ imigo(function($id, $name){
 }, 1, 'test');
 ```
 
-### imiCallable
+## imiCallable
 
 为传入的回调自动创建和销毁上下文，并返回新的回调
 
@@ -47,7 +47,7 @@ function test($a)
 test($callable);
 ```
 
-### imiGetEnv
+## imiGetEnv
 
 获取环境变量值
 
@@ -55,13 +55,13 @@ test($callable);
 
 > 将在 imi v3.0.0 废弃，请使用 `Imi\env()`
 
-### Imi\env
+## Imi\env
 
 获取环境变量值
 
 定义：`env($varname = null, $default = null, $localOnly = false);`
 
-### Imi\cmd
+## Imi\cmd
 
 处理命令行，执行后不会有 sh 进程
 
@@ -69,7 +69,7 @@ test($callable);
 echo \Imi\cmd('ls');
 ```
 
-### Imi\ttyExec
+## Imi\ttyExec
 
 尝试使用 tty 模式执行命令，可以保持带颜色格式的输出
 
@@ -86,3 +86,20 @@ echo \Imi\cmd('ls');
 ```
 
 超时会抛出异常：`\Symfony\Component\Process\Exception\ProcessTimedOutException`
+
+## Imi\dump
+
+调试输出函数，用法同 `var_dump()`。
+
+cli 模式运行时，会通过 `Log::debug()` 来记录运行结果。
+
+例：
+
+```php
+\Imi\dump('Hello imi!');
+```
+
+```log
+[2022-03-21 16:21:34] imi.DEBUG: 
+string(10) "Hello imi!"
+```
