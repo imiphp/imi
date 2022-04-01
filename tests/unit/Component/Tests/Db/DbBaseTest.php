@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Db;
 
+use function array_column;
+use function array_column_ex;
 use function date;
 use Imi\App;
 use Imi\Db\Db;
@@ -101,6 +103,25 @@ abstract class DbBaseTest extends BaseTest
                 'member_id' => 0,
             ],
         ], $stmt->fetchAll());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testFind(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::query()
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->find();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $result);
     }
 
     /**
@@ -496,6 +517,64 @@ abstract class DbBaseTest extends BaseTest
         }
 
         $this->assertEmpty($data);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testValue(array $args): void
+    {
+        ['id' => $id] = $args;
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->value('title');
+        $this->assertEquals('title', $value);
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->value('time');
+        $this->assertEquals('2019-06-21 00:00:00', $value);
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', -1)
+            ->value('id', '9999999');
+        $this->assertEquals('9999999', $value);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testColumn(array $args): void
+    {
+        $origin = $args['origin'];
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column('content');
+
+        $this->assertEquals(array_column($origin, 'content'), $data);
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column('content', 'id');
+
+        $this->assertEquals(array_column($origin, 'content', 'id'), $data);
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column(['id', 'content'], 'id');
+
+        $this->assertEquals(array_column_ex($origin, ['id', 'content'], 'id'), $data);
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column(['title', 'content', 'time'], 'id');
+
+        $this->assertEquals(array_column_ex($origin, ['title', 'content', 'time', 'id'], 'id'), $data);
     }
 
     /**

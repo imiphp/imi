@@ -250,6 +250,68 @@ class ModelTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testQueryFind(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Member::query()
+            ->where('id', '=', $id)
+            ->find();
+        $this->assertInstanceOf(Member::class, $result);
+        $this->assertEquals([
+            'id'       => $id,
+            'username' => '1',
+        ], $result->toArray());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testValue(array $args): void
+    {
+        ['id' => $id] = $args;
+
+        $value = Member::query()
+            ->where('id', '=', $id)
+            ->value('username');
+        $this->assertEquals('1', $value);
+
+        $value = Member::query()
+            ->where('id', '=', -1)
+            ->value('id', '9999999');
+        $this->assertEquals('9999999', $value);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testColumn(array $args): void
+    {
+        $origin = $args['origin'];
+
+        $data = Member::query()
+            ->column('username');
+
+        $this->assertEquals(array_column($origin, 'username'), $data);
+
+        $data = Member::query()
+            ->column('username', 'id');
+
+        $this->assertEquals(array_column($origin, 'username', 'id'), $data);
+
+        $data = Member::query()
+            ->column(['id', 'username'], 'id');
+
+        $this->assertEquals(array_column_ex($origin, ['id', 'username'], 'id'), $data);
+
+        $data = Member::query()
+            ->column(['username', 'id'], 'id');
+
+        $this->assertEquals(array_column_ex($origin, ['username', 'id'], 'id'), $data);
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testQuerySetField(array $args): void
     {
         ['id' => $id] = $args;

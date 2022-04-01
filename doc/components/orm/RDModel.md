@@ -152,6 +152,45 @@ $testModel = TestModel::find([
     'a' => 1,
     'b' => 'abc',
 ]);
+// 通过构建器查询
+$testModel = TestModel::query()->where('id', '=', 1)->find();
+```
+
+#### 查询单个值
+
+```php
+TestModel::query()->value('username');
+TestModel::query()->value('username', -1); // 当数据查询不到时返回的默认值 -1
+```
+
+#### 查询指定列
+
+```php
+// 查询 username 列并作为数组返回
+TestModel::query()->column('username');
+// 结果值如下：
+[
+    'username1',
+    'username2',
+    'username4',
+]
+// 查询 username 列并返回 id 做下标，username 作为值的数组
+TestModel::query()->column('username', 'id');
+// 结果值如下：
+[
+    1 => 'username1',
+    2 => 'username2',
+    3 => 'username4',
+]
+
+// 查询 username、password 列并返回 id 做下标的数组
+TestModel::query()->column(['username', 'password'], 'id');
+// 结果值如下：
+[
+    1 => ['username' => 'username1', 'password' => '123'],
+    2 => ['username' => 'username2', 'password' => '456'],
+    3 => ['username' => 'username3', 'password' => '789'],
+]
 ```
 
 ### 批量查询记录
