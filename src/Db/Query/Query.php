@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use function array_column;
 use function array_filter;
+use function array_unique;
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
@@ -1315,6 +1317,52 @@ abstract class Query implements IQuery
     public function select(): IResult
     {
         return $this->execute($this->buildSelectSql());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function value(string $field, $default = null)
+    {
+        $result = $this
+            ->limit(1)
+            ->field($field)
+            ->select();
+
+        return $result->getScalar($field) ?? $default;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function column($fields, ?string $key = null): array
+    {
+        $fields = (array) $fields;
+        $fields = array_unique($fields);
+        $rawFields = $fields;
+
+        if (empty($key))
+        {
+            $key = null;
+        }
+        if ($key && !\in_array($key, $fields))
+        {
+            $fields[] = $key;
+        }
+
+        $result = $this
+            ->field(...$fields)
+            ->select();
+
+        $records = $result->getStatementRecords();
+        if (1 === \count($rawFields))
+        {
+            return array_column($records, $rawFields[0], $key);
+        }
+        else
+        {
+            return array_column($records, null, $key);
+        }
     }
 
     /**

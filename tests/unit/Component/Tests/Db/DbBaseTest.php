@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Db;
 
+use function array_column;
 use function date;
 use Imi\App;
 use Imi\Db\Db;
@@ -496,6 +497,91 @@ abstract class DbBaseTest extends BaseTest
         }
 
         $this->assertEmpty($data);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testValue(array $args): void
+    {
+        ['id' => $id] = $args;
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->value('title');
+        $this->assertEquals('title', $value);
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->value('time');
+        $this->assertEquals('2019-06-21 00:00:00', $value);
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', -1)
+            ->value('id', '9999999');
+        $this->assertEquals('9999999', $value);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
+    public function testColumn(array $args): void
+    {
+        $origin = $args['origin'];
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column('content');
+
+        $this->assertEquals(array_column($origin, 'content'), $data);
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column('content', 'id');
+
+        $this->assertEquals(array_column($origin, 'content', 'id'), $data);
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column(['id', 'content'], 'id');
+
+        $this->assertEquals($this->arrayColumnEx($origin, ['id', 'content'], 'id'), $data);
+
+        $data = Db::query($this->poolName)
+            ->table('tb_article')
+            ->column(['title', 'content', 'time'], 'id');
+
+        $this->assertEquals($this->arrayColumnEx($origin, ['title', 'content', 'time', 'id'], 'id'), $data);
+    }
+
+    private function arrayColumnEx(array $arr, array $column, ?string $key = null): array
+    {
+        $result = array_map(function ($val) use ($column) {
+            $item = [];
+            foreach ($column as $index => $key)
+            {
+                if (\is_int($index))
+                {
+                    $item[$key] = $val[$key];
+                }
+                else
+                {
+                    $item[$key] = $val[$index];
+                }
+            }
+
+            return $item;
+        }, $arr);
+
+        if (!empty($key))
+        {
+            $result = array_combine(array_column($arr, $key), $result);
+        }
+
+        return $result;
     }
 
     /**
