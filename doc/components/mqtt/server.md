@@ -6,17 +6,7 @@ MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT�
 
 安装：`composer require imiphp/imi-mqtt`
 
-项目配置文件：
-
-```php
-[
-    'components'    =>  [
-        'MQTT'  =>  'Imi\MQTT',
-    ],
-]
-```
-
-> MQTT 功能要求 PHP >= 7.4
+示例项目：`composer create-project imiphp/project-mqtt:~2.1.0`
 
 ## 配置
 
@@ -91,7 +81,11 @@ use BinSoul\Net\Mqtt\Packet\DisconnectRequestPacket;
 use BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket;
 use BinSoul\Net\Mqtt\Packet\UnsubscribeRequestPacket;
 use BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket;
+use Imi\Server\Server;
 
+/**
+ * 示例控制器，代码全为示例，请根据实际项目编写
+ */
 class MQTTController extends BaseMQTTController
 {
     /**
@@ -163,8 +157,11 @@ class MQTTController extends BaseMQTTController
             case 'd':
                 $response = new PublishCompletePacket;
                 break;
+            default:
+                throw new \RuntimeException('Unknown topic ' . $request->getTopic());
         }
         $response->setIdentifier($request->getIdentifier());
+        // TODO: 请自行实现推送消息给订阅者
         return $response;
     }
 
@@ -180,6 +177,13 @@ class MQTTController extends BaseMQTTController
         $response = new SubscribeResponsePacket;
         $response->setIdentifier($request->getIdentifier());
         $response->setReturnCodes([0]);
+
+        $publishData = new PublishRequestPacket;
+        $publishData->setPayload('test');
+        $publishData->setTopic('a');
+        Server::send($publishData, $receiveData->getClientId());
+
+        // TODO: 请自行实现订阅消息
         return $response;
     }
 
@@ -194,9 +198,10 @@ class MQTTController extends BaseMQTTController
     {
         $response = new UnsubscribeResponsePacket;
         $response->setIdentifier($request->getIdentifier());
+        // TODO: 请自行实现取消订阅消息
+
         return $response;
     }
 
 }
-
 ```
