@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Imi\AMQP\Pool;
 
 use Imi\Pool\BasePoolResource;
-use Imi\Swoole\Util\Coroutine;
-use Imi\Util\Imi;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPWriter;
 
@@ -44,11 +42,18 @@ class AMQPResource extends BasePoolResource
      */
     public function close(): void
     {
-        if (!Imi::checkAppType('swoole') || Coroutine::isIn())
+        try
         {
             $this->connection->close();
         }
-        $this->connection->getIO()->close();
+        catch (\Exception $e)
+        {
+            // Nothing here
+        }
+        if ($this->connection instanceof \Imi\AMQP\Swoole\AMQPSwooleConnection)
+        {
+            $this->connection->getIO()->close();
+        }
     }
 
     /**

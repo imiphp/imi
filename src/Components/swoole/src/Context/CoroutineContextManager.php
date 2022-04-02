@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Context;
 
 use ArrayObject;
+use Imi\App;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
@@ -142,16 +143,25 @@ class CoroutineContextManager implements IContextManager
      */
     public function __destroy(): void
     {
-        Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
-        $context = Coroutine::getContext();
-        if (!$context)
+        try
         {
-            $coId = Coroutine::getCid();
-            $contextMap = &$this->contextMap;
-            if (isset($contextMap[$coId]))
+            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
+            $context = Coroutine::getContext();
+            if (!$context)
             {
-                unset($contextMap[$coId]);
+                $coId = Coroutine::getCid();
+                $contextMap = &$this->contextMap;
+                if (isset($contextMap[$coId]))
+                {
+                    unset($contextMap[$coId]);
+                }
             }
+        }
+        catch (\Throwable $th)
+        {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($th);
         }
     }
 }

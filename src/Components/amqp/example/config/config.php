@@ -86,10 +86,12 @@ return [
                 ],
             ],
             'resource'    => [
-                'host'      => AMQP_SERVER_HOST,
-                'port'      => 5672,
-                'user'      => 'guest',
-                'password'  => 'guest',
+                'host'            => AMQP_SERVER_HOST,
+                'port'            => 5672,
+                'user'            => 'guest',
+                'password'        => 'guest',
+                'keepalive'       => false, // 截止 Swoole 4.8 还有兼容问题，所以必须设为 false，不影响使用
+                'connectionClass' => \PhpAmqpLib\Connection\AMQPStreamConnection::class,
             ],
         ],
     ] : [],
