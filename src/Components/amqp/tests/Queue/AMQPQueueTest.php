@@ -9,10 +9,10 @@ use Imi\Queue\Driver\IQueueDriver;
 
 class AMQPQueueTest extends BaseQueueTest
 {
-    protected function getDriver(): IQueueDriver
+    protected function getDriver(string $name = 'imi-amqp-queue-test'): IQueueDriver
     {
         // @phpstan-ignore-next-line
-        return App::getBean('AMQPQueueDriver', 'imi-amqp-queue-test', [
+        return App::getBean('AMQPQueueDriver', $name, [
             'poolName'          => 'rabbit',
             'redisPoolName'     => 'redis',
         ]);
