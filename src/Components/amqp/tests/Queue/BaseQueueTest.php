@@ -13,7 +13,7 @@ use function Yurun\Swoole\Coroutine\goWait;
 
 abstract class BaseQueueTest extends TestCase
 {
-    abstract protected function getDriver(): IQueueDriver;
+    abstract protected function getDriver(string $name = 'imi-amqp-queue-test'): IQueueDriver;
 
     /**
      * @return mixed
