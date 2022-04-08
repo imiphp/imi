@@ -109,12 +109,19 @@ class ModelRelationManager
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
+                    if ($annotation->withSoftDelete)
+                    {
+                        $query = $rightModel::originQuery($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    else
+                    {
+                        $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName());
+                    }
                     /** @var IModelQuery $query */
-                    $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
-                                ->field(...$queryFields)
-                                ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
-                                ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
-                                ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
+                    $query->field(...$queryFields)
+                          ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
+                          ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
+                          ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
                     if ($annotation->withFields)
                     {
                         $query->withField(...$annotation->withFields);
@@ -158,7 +165,16 @@ class ModelRelationManager
                 elseif ($annotation instanceof OneToOne)
                 {
                     $rightField = $item['rightField'];
-                    $query = ($item['modelClass'])::query()->whereIn($rightField, $item['ids']);
+                    if ($annotation->withSoftDelete)
+                    {
+                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    else
+                    {
+                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    /** @var IModelQuery $query */
+                    $query->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
                     if ($annotation->fields)
                     {
@@ -183,7 +199,16 @@ class ModelRelationManager
                 elseif ($annotation instanceof OneToMany)
                 {
                     $rightField = $item['rightField'];
-                    $query = ($item['modelClass'])::query()->whereIn($rightField, $item['ids']);
+                    if ($annotation->withSoftDelete)
+                    {
+                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    else
+                    {
+                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    /** @var IModelQuery $query */
+                    $query->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
                     if ($annotation->fields)
                     {
@@ -227,10 +252,18 @@ class ModelRelationManager
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
-                    $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
-                                ->field(...$queryFields)
-                                ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
-                                ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
+                    if ($annotation->withSoftDelete)
+                    {
+                        $query = $rightModel::originQuery($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    else
+                    {
+                        $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    /** @var IModelQuery $query */
+                    $query->field(...$queryFields)
+                          ->join($middleTable, $middleTable . '.' . $middleRightField, '=', $rightTable . '.' . $rightField)
+                          ->where($middleTable . '.' . $middleLeftField, 'in', $ids);
                     if ($annotation->withFields)
                     {
                         $query->withField(...$annotation->withFields);
@@ -274,7 +307,16 @@ class ModelRelationManager
                 elseif ($annotation instanceof PolymorphicOneToOne)
                 {
                     $rightField = $item['rightField'];
-                    $query = ($item['modelClass'])::query()->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
+                    if ($annotation->withSoftDelete)
+                    {
+                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    else
+                    {
+                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    /** @var IModelQuery $query */
+                    $query->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
                     if ($annotation->fields)
                     {
@@ -299,7 +341,16 @@ class ModelRelationManager
                 elseif ($annotation instanceof PolymorphicOneToMany)
                 {
                     $rightField = $item['rightField'];
-                    $query = $item['modelClass']::query()->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
+                    if ($annotation->withSoftDelete)
+                    {
+                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    else
+                    {
+                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                    }
+                    /** @var IModelQuery $query */
+                    $query->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
                     $models = $item['models'];
                     if ($annotation->fields)
                     {
@@ -337,8 +388,16 @@ class ModelRelationManager
                         $subAnnotation = $subItem['annotation'];
                         $leftField = $subItem['leftField'];
                         $models = $subItem['models'];
+                        if ($annotation->withSoftDelete)
+                        {
+                            $query = ($subItem['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        }
+                        else
+                        {
+                            $query = ($subItem['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                        }
                         /** @var IModelQuery $query */
-                        $query = $subItem['modelClass']::query()->where($leftField, 'in', $subItem['ids']);
+                        $query->where($leftField, 'in', $subItem['ids']);
                         if ($subAnnotation->fields)
                         {
                             $query->field(...$subAnnotation->fields);
@@ -377,11 +436,19 @@ class ModelRelationManager
                         $queryFields = $subItem['fields'];
 
                         $ids = $subItem['ids'];
-                        $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName())
-                                    ->field(...$queryFields)
-                                    ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
-                                    ->where($middleTable . '.' . $subAnnotation->type, '=', $subAnnotation->typeValue)
-                                    ->where($middleTable . '.' . $middleRightField, 'in', $ids);
+                        if ($annotation->withSoftDelete)
+                        {
+                            $query = $rightModel::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        }
+                        else
+                        {
+                            $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName());
+                        }
+                        /** @var IModelQuery $query */
+                        $query->field(...$queryFields)
+                              ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
+                              ->where($middleTable . '.' . $subAnnotation->type, '=', $subAnnotation->typeValue)
+                              ->where($middleTable . '.' . $middleRightField, 'in', $ids);
                         if ($subAnnotation->withFields)
                         {
                             $query->withField(...$subAnnotation->withFields);

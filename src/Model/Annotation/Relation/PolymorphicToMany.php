@@ -23,6 +23,7 @@ namespace Imi\Model\Annotation\Relation;
  * @property string        $middleRightField 中间表与当前类的关联字段
  * @property bool          $with             关联预加载查询
  * @property string[]|null $withFields       设置结果模型的序列化字段
+ * @property bool          $withSoftDelete   查询结果是否包含被软删除的数据，仅查询有效。非软删除模型请勿设置为 true
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicToMany extends RelationBase
@@ -35,7 +36,7 @@ class PolymorphicToMany extends RelationBase
     /**
      * @param mixed $typeValue
      */
-    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', $typeValue = null, string $middle = '', ?string $order = null, ?array $fields = null, ?int $limit = null, string $middleLeftField = '', string $middleRightField = '', bool $with = false, ?array $withFields = null)
+    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', $typeValue = null, string $middle = '', ?string $order = null, ?array $fields = null, ?int $limit = null, string $middleLeftField = '', string $middleRightField = '', bool $with = false, ?array $withFields = null, bool $withSoftDelete = false)
     {
         parent::__construct(...\func_get_args());
     }
