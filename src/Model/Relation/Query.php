@@ -121,8 +121,16 @@ class Query
         }
         elseif (null === $refData)
         {
+            if ($annotation->withSoftDelete)
+            {
+                $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+            }
+            else
+            {
+                $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+            }
             /** @var IModelQuery $query */
-            $query = $modelClass::query()->where($rightField, '=', $leftValue);
+            $query->where($rightField, '=', $leftValue);
             if ($annotation->fields)
             {
                 $query->field(...$annotation->fields);
@@ -201,8 +209,16 @@ class Query
         {
             if (null === $refData)
             {
+                if ($annotation->withSoftDelete)
+                {
+                    $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                }
+                else
+                {
+                    $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                }
                 /** @var IModelQuery $query */
-                $query = $modelClass::query()->where($rightField, '=', $leftValue);
+                $query->where($rightField, '=', $leftValue);
                 if ($annotation->fields)
                 {
                     $query->field(...$annotation->fields);
@@ -298,10 +314,18 @@ class Query
         {
             if (null === $refData)
             {
-                $query = $rightModel::query($className::__getMeta()->getDbPoolName())
-                            ->field(...$fields)
-                            ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
-                            ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
+                if ($annotation->withSoftDelete)
+                {
+                    $query = $rightModel::originQuery($className::__getMeta()->getDbPoolName());
+                }
+                else
+                {
+                    $query = $rightModel::query($className::__getMeta()->getDbPoolName());
+                }
+                /** @var IModelQuery $query */
+                $query->field(...$fields)
+                      ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
+                      ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
                 if ($annotation->withFields)
                 {
                     $query->withField(...$annotation->withFields);
@@ -400,8 +424,16 @@ class Query
         {
             if (null === $refData)
             {
+                if ($annotation->withSoftDelete)
+                {
+                    $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                }
+                else
+                {
+                    $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                }
                 /** @var IModelQuery $query */
-                $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
+                $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
                 if ($annotation->fields)
                 {
                     $query->field(...$annotation->fields);
@@ -481,8 +513,16 @@ class Query
         {
             if (null === $refData)
             {
+                if ($annotation->withSoftDelete)
+                {
+                    $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                }
+                else
+                {
+                    $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                }
                 /** @var IModelQuery $query */
-                $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
+                $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
                 if ($annotation->fields)
                 {
                     $query->field(...$annotation->fields);
@@ -578,8 +618,16 @@ class Query
                 {
                     if (null === $refData)
                     {
+                        if ($annotationItem->withSoftDelete)
+                        {
+                            $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                        }
+                        else
+                        {
+                            $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                        }
                         /** @var IModelQuery $query */
-                        $query = $modelClass::query()->where($leftField, '=', $rightValue);
+                        $query->where($leftField, '=', $rightValue);
                         if ($annotationItem->fields)
                         {
                             $query->field(...$annotationItem->fields);
@@ -679,11 +727,19 @@ class Query
                 {
                     if (null === $refData)
                     {
-                        $query = $rightModel::query($className::__getMeta()->getDbPoolName())
-                                    ->field(...$fields)
-                                    ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
-                                    ->where($middleTable . '.' . $annotationItem->type, '=', $typeValue)
-                                    ->where($middleTable . '.' . $middleRightField, '=', $leftValue);
+                        if ($annotationItem->withSoftDelete)
+                        {
+                            $query = $rightModel::originQuery($className::__getMeta()->getDbPoolName());
+                        }
+                        else
+                        {
+                            $query = $rightModel::query($className::__getMeta()->getDbPoolName());
+                        }
+                        /** @var IModelQuery $query */
+                        $query->field(...$fields)
+                              ->join($middleTable, $middleTable . '.' . $middleLeftField, '=', $rightTable . '.' . $rightField)
+                              ->where($middleTable . '.' . $annotationItem->type, '=', $typeValue)
+                              ->where($middleTable . '.' . $middleRightField, '=', $leftValue);
                         if ($annotationItem->withFields)
                         {
                             $query->withField(...$annotationItem->withFields);
@@ -792,11 +848,19 @@ class Query
         {
             if (null === $refData)
             {
-                $query = $rightModel::query($className::__getMeta()->getDbPoolName())
-                            ->field(...$fields)
-                            ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
-                            ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
-                            ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
+                if ($annotation->withSoftDelete)
+                {
+                    $query = $rightModel::originQuery($className::__getMeta()->getDbPoolName());
+                }
+                else
+                {
+                    $query = $rightModel::query($className::__getMeta()->getDbPoolName());
+                }
+                /** @var IModelQuery $query */
+                $query->field(...$fields)
+                      ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
+                      ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
+                      ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $leftValue);
                 if ($annotation->withFields)
                 {
                     $query->withField(...$annotation->withFields);
