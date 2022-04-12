@@ -9,6 +9,7 @@ use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Imi;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPWriter;
+use Swoole\Coroutine\Channel;
 
 /**
  * AMQP 客户端连接池的资源.
@@ -19,6 +20,8 @@ class AMQPResource extends BasePoolResource
      * AMQP 客户端.
      */
     private AbstractConnection $connection;
+
+    private ?Channel $resetingChannel = null;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, AbstractConnection $connection)
     {
@@ -44,6 +47,10 @@ class AMQPResource extends BasePoolResource
      */
     public function close(): void
     {
+        if ($this->resetingChannel)
+        {
+            $this->resetingChannel->pop();
+        }
         try
         {
             if (!Imi::checkAppType('swoole') || Coroutine::isIn())
@@ -76,7 +83,9 @@ class AMQPResource extends BasePoolResource
      */
     public function reset(): void
     {
-        foreach ($this->connection->channels as $key => $channel)
+        $this->resetingChannel = new Channel();
+        $connection = $this->connection;
+        foreach ($connection->channels as $key => $channel)
         {
             if (0 === $key)
             {
@@ -95,6 +104,8 @@ class AMQPResource extends BasePoolResource
             }
             unset($this->connection->channels[$key]);
         }
+        $this->resetingChannel->push(1);
+        $this->resetingChannel = null;
     }
 
     /**
