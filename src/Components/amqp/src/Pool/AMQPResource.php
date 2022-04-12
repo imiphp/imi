@@ -26,6 +26,8 @@ class AMQPResource extends BasePoolResource
      *
      * 为兼容无 Swoole 的环境，所以声明为非强类型
      *
+     * @noRector
+     *
      * @var \Swoole\Coroutine\Channel|null
      */
     private $resetingChannel = null;
