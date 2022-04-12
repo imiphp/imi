@@ -62,6 +62,7 @@ class AnnotationParser
     {
         $this->initIncludeFiles = get_included_files();
         $this->enableAnnotationCache = Config::get('@app.imi.annotation.cache', false);
+        AnnotationReader::addGlobalIgnoredName('noRector');
     }
 
     public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
