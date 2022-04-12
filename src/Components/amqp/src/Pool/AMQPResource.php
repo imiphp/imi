@@ -21,12 +21,24 @@ class AMQPResource extends BasePoolResource
      */
     private AbstractConnection $connection;
 
-    private ?Channel $resetingChannel = null;
+    /**
+     * 重置状态的 Channel，重置中不为 null.
+     *
+     * 为兼容无 Swoole 的环境，所以声明为非强类型
+     *
+     * @noRector
+     *
+     * @var \Swoole\Coroutine\Channel|null
+     */
+    private $resetingChannel = null;
+
+    private bool $closed = false;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, AbstractConnection $connection)
     {
         parent::__construct($pool);
         $this->connection = $connection;
+        $this->closed = !$this->connection->isConnected();
     }
 
     /**
@@ -39,7 +51,10 @@ class AMQPResource extends BasePoolResource
             $this->connection->reconnect();
         }
 
-        return $this->connection->isConnected();
+        $result = $this->connection->isConnected();
+        $this->closed = !$result;
+
+        return $result;
     }
 
     /**
@@ -47,6 +62,7 @@ class AMQPResource extends BasePoolResource
      */
     public function close(): void
     {
+        $this->closed = true;
         if ($this->resetingChannel)
         {
             $this->resetingChannel->pop();
@@ -83,7 +99,15 @@ class AMQPResource extends BasePoolResource
      */
     public function reset(): void
     {
-        $this->resetingChannel = new Channel();
+        if ($this->closed)
+        {
+            return;
+        }
+        $inSwoole = Imi::checkAppType('swoole');
+        if ($inSwoole)
+        {
+            $this->resetingChannel = new Channel();
+        }
         $connection = $this->connection;
         foreach ($connection->channels as $key => $channel)
         {
@@ -104,8 +128,11 @@ class AMQPResource extends BasePoolResource
             }
             unset($this->connection->channels[$key]);
         }
-        $this->resetingChannel->push(1);
-        $this->resetingChannel = null;
+        if ($inSwoole)
+        {
+            $this->resetingChannel->push(1);
+            $this->resetingChannel = null;
+        }
     }
 
     /**
@@ -128,6 +155,6 @@ class AMQPResource extends BasePoolResource
      */
     public function isOpened(): bool
     {
-        return $this->connection->isConnected();
+        return !$this->closed && $this->connection->isConnected();
     }
 }
