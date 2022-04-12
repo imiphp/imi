@@ -103,7 +103,7 @@ class AMQPResource extends BasePoolResource
         {
             return;
         }
-        $inSwoole = Imi::checkAppType('swoole');
+        $inSwoole = \defined('SWOOLE_VERSION') && Coroutine::isIn();
         if ($inSwoole)
         {
             $this->resetingChannel = new Channel();
