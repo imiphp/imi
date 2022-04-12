@@ -80,7 +80,7 @@ class File
         #if \extension_loaded('swoole')
         if (
             #if 0
-            \extension_loaded('swoole') &&
+            \defined('SWOOLE_VERSION') &&
             #endif
             \Swoole\Coroutine::getCid() > -1)
         {

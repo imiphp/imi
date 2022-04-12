@@ -39,7 +39,7 @@ class AutoLoader
         {
             $this->composerClassLoader->setClassMapAuthoritative(false);
         }
-        $this->hasSwoole = \extension_loaded('swoole');
+        $this->hasSwoole = \defined('SWOOLE_VERSION');
         $this->lockFileDir = getenv('IMI_MACRO_LOCK_FILE_DIR') ?: '';
         $this->outputDir = getenv('IMI_MACRO_OUTPUT_DIR') ?: '';
     }
