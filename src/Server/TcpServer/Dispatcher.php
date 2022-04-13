@@ -11,7 +11,7 @@ use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
- * @Bean("TcpDispatcher")
+ * @Bean(name="TcpDispatcher", recursion=false)
  */
 class Dispatcher
 {

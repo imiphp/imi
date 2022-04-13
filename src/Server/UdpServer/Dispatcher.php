@@ -11,7 +11,7 @@ use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Server\UdpServer\Message\IPacketData;
 
 /**
- * @Bean("UdpDispatcher")
+ * @Bean(name="UdpDispatcher", recursion=false)
  */
 class Dispatcher
 {

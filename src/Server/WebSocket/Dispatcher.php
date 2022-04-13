@@ -11,7 +11,7 @@ use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\IFrame;
 
 /**
- * @Bean("WebSocketDispatcher")
+ * @Bean(name="WebSocketDispatcher", recursion=false)
  */
 class Dispatcher
 {
