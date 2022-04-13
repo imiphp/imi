@@ -141,6 +141,10 @@ class AMQPResource extends BasePoolResource
      */
     public function checkState(): bool
     {
+        if (!$this->isOpened())
+        {
+            return false;
+        }
         $pkt = new AMQPWriter();
         $pkt->write_octet(8);
         $pkt->write_short(0);
