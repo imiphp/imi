@@ -16,7 +16,7 @@ interface IWorkermanServer extends IServer, IServerGroup
     public function getWorker(): Worker;
 
     /**
-     * 处理服务器配置
+     * 处理服务器配置.
      */
     public function parseConfig(array &$config): void;
 }

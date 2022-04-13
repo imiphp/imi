@@ -287,6 +287,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                             $server = ServerManager::createServer($name, $config);
                             $subWorker = $server->getWorker();
                             $subWorker->count = $worker->count;
+                            // @phpstan-ignore-next-line
                             $subWorker->onWorkerStop = null;
                             $subWorker->listen();
                         }

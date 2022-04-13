@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Cli;
 
 use Imi\App;
-use Imi\Config;
-use Imi\Cli\CliApp;
-use Imi\Cli\ArgType;
-use Imi\Event\Event;
-use Workerman\Worker;
-use Imi\Cli\ImiCommand;
-use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
-use Imi\Worker as ImiWorker;
-use Imi\Server\ServerManager;
-use Imi\Cli\Annotation\Option;
 use Imi\Cli\Annotation\Command;
-use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\Annotation\CommandAction;
-use Imi\Workerman\Server\WorkermanServerWorker;
+use Imi\Cli\Annotation\Option;
+use Imi\Cli\ArgType;
+use Imi\Cli\CliApp;
+use Imi\Cli\Contract\BaseCommand;
+use Imi\Cli\ImiCommand;
+use Imi\Config;
+use Imi\Event\Event;
+use Imi\Pool\PoolManager;
+use Imi\Server\ServerManager;
+use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Server as WorkermanServerUtil;
+use Imi\Workerman\Server\WorkermanServerWorker;
+use Workerman\Worker;
 
 /**
  * @Command("workerman")
@@ -85,14 +85,14 @@ class Server extends BaseCommand
                     $shares[$serverName] = $config;
                 }
             }
-            if($shares)
+            if ($shares)
             {
-                foreach($shares as $serverName => $config)
+                foreach ($shares as $serverName => $config)
                 {
                     /** @var IWorkermanServer $server */
-                    $server=ServerManager::getServer($config['shareWorker']);
+                    $server = ServerManager::getServer($config['shareWorker']);
                     $server->parseConfig($config);
-                    $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>shareWorker:</info> '.$config['shareWorker'].'; <info>listen:</info> ' . $config['socketName']);
+                    $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>shareWorker:</info> ' . $config['shareWorker'] . '; <info>listen:</info> ' . $config['socketName']);
                 }
             }
         }
