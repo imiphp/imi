@@ -7,6 +7,7 @@ namespace Imi\Swoole\Process;
 use function hash;
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
@@ -132,6 +133,7 @@ class ProcessManager
             mt_srand();
             $exitCode = 0;
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode) {
+                Log::info('Process start [' . $name . ']. <info>pid: </info>' . getmypid());
                 if ($inCoroutine = Coroutine::isIn())
                 {
                     Coroutine::defer(static function () use ($name, $swooleProcess) {
@@ -187,6 +189,7 @@ class ProcessManager
                             'process'   => $swooleProcess,
                         ]);
                     }
+                    Log::info('Process stop [' . $name . ']. <info>pid: </info>' . getmypid());
                 }
             };
             if ($processOption['options']['co'])

@@ -6,6 +6,7 @@ namespace Imi\Workerman\Process;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
@@ -82,12 +83,15 @@ class ProcessManager
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $processName, true);
 
+            // 随机数播种
+            mt_srand();
+
+            Log::info('Process start [' . $processName . ']. <info>pid: </info>' . getmypid());
+
             RequestContext::muiltiSet([
                 'worker' => $worker,
             ]);
 
-            // 随机数播种
-            mt_srand();
             // 进程开始事件
             Event::trigger('IMI.PROCESS.BEGIN', [
                 'name'    => $processName,
@@ -112,6 +116,7 @@ class ProcessManager
                     'name'    => $processName,
                     'process' => $worker,
                 ]);
+                Log::info('Process stop [' . $processName . ']. <info>pid: </info>' . getmypid());
             }
         };
 

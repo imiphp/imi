@@ -9,6 +9,7 @@ use GatewayWorker\Lib\Gateway;
 use Imi\App;
 use Imi\Config;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Contract\IServerGroup;
@@ -47,31 +48,34 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->bindEvents();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function parseConfig(array &$config): void
+    {
+        if (!isset($config['worker']))
+        {
+            $config['worker'] = $this->workerClass;
+        }
+        if (!isset($config['socketName']))
+        {
+            if (isset($config['host'], $config['port']))
+            {
+                $config['socketName'] = $this->getWorkerScheme() . '://' . $config['host'] . ':' . $config['port'];
+            }
+            else
+            {
+                $config['socketName'] = '';
+            }
+        }
+    }
+
     protected function createServer(): Worker
     {
         $config = $this->config;
-        if (isset($config['worker']))
-        {
-            $class = $this->workerClass = $config['worker'];
-        }
-        else
-        {
-            $class = $this->workerClass;
-        }
-        if (isset($config['socketName']))
-        {
-            $socketName = $config['socketName'];
-        }
-        elseif (isset($config['host'], $config['port']))
-        {
-            $socketName = $this->getWorkerScheme() . '://' . $config['host'] . ':' . $config['port'];
-        }
-        else
-        {
-            $socketName = '';
-        }
+        $this->parseConfig($config);
 
-        $worker = new $class($socketName, $config['context'] ?? []);
+        $worker = new $config['worker']($config['socketName'], $config['context'] ?? []);
         $worker->name = $this->name;
         foreach ($config['configs'] ?? [] as $k => $v)
         {
@@ -283,6 +287,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                             $server = ServerManager::createServer($name, $config);
                             $subWorker = $server->getWorker();
                             $subWorker->count = $worker->count;
+                            $subWorker->onWorkerStop = null;
                             $subWorker->listen();
                         }
                     }
@@ -340,6 +345,10 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
             }
+            finally
+            {
+                Log::info('Worker start #' . \Imi\Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
+            }
         };
 
         $this->worker->onWorkerStop = function (Worker $worker) {
@@ -363,6 +372,10 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             {
                 // @phpstan-ignore-next-line
                 App::getBean('ErrorLog')->onException($ex);
+            }
+            finally
+            {
+                Log::info('Worker stop #' . \Imi\Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
             }
         };
     }

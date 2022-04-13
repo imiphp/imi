@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Cli;
 
 use Imi\App;
-use Imi\Cache\CacheManager;
-use Imi\Cli\Annotation\Command;
-use Imi\Cli\Annotation\CommandAction;
-use Imi\Cli\Annotation\Option;
-use Imi\Cli\ArgType;
-use Imi\Cli\CliApp;
-use Imi\Cli\Contract\BaseCommand;
 use Imi\Config;
+use Imi\Cli\CliApp;
+use Imi\Cli\ArgType;
 use Imi\Event\Event;
+use Workerman\Worker;
+use Imi\Cli\ImiCommand;
 use Imi\Pool\PoolManager;
-use Imi\Server\ServerManager;
+use Imi\Cache\CacheManager;
 use Imi\Worker as ImiWorker;
+use Imi\Server\ServerManager;
+use Imi\Cli\Annotation\Option;
+use Imi\Cli\Annotation\Command;
+use Imi\Cli\Contract\BaseCommand;
+use Imi\Cli\Annotation\CommandAction;
+use Imi\Workerman\Server\WorkermanServerWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Server as WorkermanServerUtil;
-use Imi\Workerman\Server\WorkermanServerWorker;
-use Workerman\Worker;
 
 /**
  * @Command("workerman")
@@ -55,9 +56,11 @@ class Server extends BaseCommand
         Event::trigger('IMI.WORKERMAN.SERVER.BEFORE_START');
         // 创建服务器对象们前置操作
         Event::trigger('IMI.SERVERS.CREATE.BEFORE');
-        $serverConfigs = Config::get('@app.workermanServer');
+        $serverConfigs = Config::get('@app.workermanServer', []);
+        $output = ImiCommand::getOutput();
         if (null === $name)
         {
+            $shares = [];
             foreach ($serverConfigs as $serverName => $config)
             {
                 if (!($config['autorun'] ?? true))
@@ -74,6 +77,22 @@ class Server extends BaseCommand
                     {
                         $server->getWorker()->count = $workerNum;
                     }
+                    $server->parseConfig($config);
+                    $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>listen:</info> ' . $config['socketName']);
+                }
+                else
+                {
+                    $shares[$serverName] = $config;
+                }
+            }
+            if($shares)
+            {
+                foreach($shares as $serverName => $config)
+                {
+                    /** @var IWorkermanServer $server */
+                    $server=ServerManager::getServer($config['shareWorker']);
+                    $server->parseConfig($config);
+                    $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>shareWorker:</info> '.$config['shareWorker'].'; <info>listen:</info> ' . $config['socketName']);
                 }
             }
         }
@@ -83,12 +102,15 @@ class Server extends BaseCommand
         }
         else
         {
+            $config = $serverConfigs[$name];
             /** @var IWorkermanServer $server */
-            $server = ServerManager::createServer($name, $serverConfigs[$name]);
+            $server = ServerManager::createServer($name, $config);
             if ($workerNum > 0)
             {
                 $server->getWorker()->count = $workerNum;
             }
+            $server->parseConfig($config);
+            $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $name . '</comment>; <info>listen:</info> ' . $config['socketName']);
         }
         // @phpstan-ignore-next-line
         ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));

@@ -6,6 +6,7 @@ namespace Imi\Swoole\Server;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Server\Group\TServerGroup;
@@ -204,6 +205,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                         App::getBean('ErrorLog')->onException($ex);
                         exit(255);
                     }
+                    finally
+                    {
+                        Log::info('Server start. <info>pid: </info>' . getmypid());
+                    }
                 });
             }
 
@@ -218,6 +223,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                 {
                     // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
+                }
+                finally
+                {
+                    Log::info('Server shutdown. <info>pid: </info>' . getmypid());
                 }
             });
 
@@ -243,6 +252,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 {
                     // worker 初始化
                     Worker::inited();
+                    Log::info('Worker start #' . Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
                 }
             });
 
@@ -262,6 +272,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                 {
                     // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
+                }
+                finally
+                {
+                    Log::info('Worker stop #' . Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
                 }
             });
 
@@ -293,6 +307,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                     App::getBean('ErrorLog')->onException($ex);
                     exit(255);
                 }
+                finally
+                {
+                    Log::info('Manager start' . '. <info>pid: </info>' . getmypid());
+                }
             });
 
             $this->swooleServer->on('ManagerStop', function (Server $server) {
@@ -306,6 +324,10 @@ abstract class Base extends BaseServer implements ISwooleServer
                 {
                     // @phpstan-ignore-next-line
                     App::getBean('ErrorLog')->onException($ex);
+                }
+                finally
+                {
+                    Log::info('Manager stop' . '. <info>pid: </info>' . getmypid());
                 }
             });
 
