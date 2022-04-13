@@ -130,8 +130,9 @@ class AMQPResource extends BasePoolResource
         }
         if ($inSwoole)
         {
-            $this->resetingChannel->push(1);
+            $channel = $this->resetingChannel;
             $this->resetingChannel = null;
+            $channel->push(1);
         }
     }
 
