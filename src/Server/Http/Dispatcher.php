@@ -14,7 +14,7 @@ use Imi\Server\Http\Middleware\ActionMiddleware;
 use Imi\Server\Http\Middleware\RouteMiddleware;
 
 /**
- * @Bean("HttpDispatcher")
+ * @Bean(name="HttpDispatcher", recursion=false)
  */
 class Dispatcher
 {
