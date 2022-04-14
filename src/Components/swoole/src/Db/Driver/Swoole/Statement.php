@@ -187,6 +187,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
                         elseif (isset($inputParameters[$key = ':' . $paramName]))
                         {
                             $bindValues[$index] = $inputParameters[$key];
+                        }else {
+                            // for inputParameters paramName : null
+                            $bindValues[$index] = null;
                         }
                     }
                 }
