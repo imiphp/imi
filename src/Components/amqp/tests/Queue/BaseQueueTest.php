@@ -7,6 +7,7 @@ namespace Imi\AMQP\Test\Queue;
 use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Model\Message;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Util\Imi;
 use PHPUnit\Framework\TestCase;
 use Swoole\Coroutine\Channel;
 use function Yurun\Swoole\Coroutine\goWait;
@@ -20,7 +21,7 @@ abstract class BaseQueueTest extends TestCase
      */
     protected function go(callable $callback)
     {
-        if (Coroutine::isIn())
+        if (Imi::checkAppType('swoole'))
         {
             return goWait($callback);
         }
@@ -72,30 +73,37 @@ abstract class BaseQueueTest extends TestCase
 
     public function testPopTimeout(): void
     {
-        $message = $totalTime = null;
-        $channel = new Channel(1);
-        Coroutine::create(function () use (&$message, &$totalTime, $channel) {
-            Coroutine::create(function () use ($channel) {
-                Coroutine::sleep(1);
-                $message = new Message();
-                $message->setMessage('testPopTimeout');
-                $messageId = $this->getDriver('imi-amqp-queue-test-timeout')->push($message);
-                $this->assertNotEmpty($messageId);
+        if (Imi::checkAppType('swoole'))
+        {
+            $message = $totalTime = null;
+            $channel = new Channel(1);
+            Coroutine::create(function () use (&$message, &$totalTime, $channel) {
+                Coroutine::create(function () use ($channel) {
+                    Coroutine::sleep(1);
+                    $message = new Message();
+                    $message->setMessage('testPopTimeout');
+                    $messageId = $this->getDriver('imi-amqp-queue-test-timeout')->push($message);
+                    $this->assertNotEmpty($messageId);
+                    $channel->push(1);
+                });
+                $time = microtime(true);
+                $message = $this->getDriver('imi-amqp-queue-test-timeout')->pop(3);
+                $totalTime = microtime(true) - $time;
                 $channel->push(1);
             });
-            $time = microtime(true);
-            $message = $this->getDriver('imi-amqp-queue-test-timeout')->pop(3);
-            $totalTime = microtime(true) - $time;
-            $channel->push(1);
-        });
-        for ($i = 0; $i < 2; ++$i)
-        {
-            $channel->pop(3);
+            for ($i = 0; $i < 2; ++$i)
+            {
+                $channel->pop(3);
+            }
+            $this->assertEquals(1, (int) $totalTime);
+            $this->assertInstanceOf(\Imi\Queue\Contract\IMessage::class, $message);
+            $this->assertNotEmpty($message->getMessageId());
+            $this->assertEquals('testPopTimeout', $message->getMessage());
         }
-        $this->assertEquals(1, (int) $totalTime);
-        $this->assertInstanceOf(\Imi\Queue\Contract\IMessage::class, $message);
-        $this->assertNotEmpty($message->getMessageId());
-        $this->assertEquals('testPopTimeout', $message->getMessage());
+        else
+        {
+            $this->markTestSkipped();
+        }
     }
 
     public function testPushDelay(): void
