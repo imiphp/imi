@@ -258,29 +258,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
         }
     }
 
-    public function __destruct()
-    {
-        $this->publisher->close();
-        $this->consumer->close();
-        if ($this->failPublisher)
-        {
-            $this->failPublisher->close();
-        }
-        if ($this->failConsumer)
-        {
-            $this->failConsumer->close();
-        }
-        if ($this->timeoutPublisher)
-        {
-            $this->timeoutPublisher->close();
-        }
-        if ($this->timeoutConsumer)
-        {
-            $this->timeoutConsumer->close();
-        }
-        $this->delayPublisher->close();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -411,6 +388,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                         // 清空所有
                         while ($message = $this->pop())
                         {
+                            // @phpstan-ignore-next-line
                             $this->success($message);
                         }
                         $this->consumer->getAMQPChannel()->queue_purge($this->queueName);
