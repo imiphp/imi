@@ -9,6 +9,8 @@ use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Client;
 use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
+use Imi\Cron\Message\GetRealTasks;
+use Imi\Cron\Message\IsRunning;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Log\Log;
@@ -106,5 +108,56 @@ class CronUtil
         {
             Log::error('Cannot connect to CronProcess');
         }
+    }
+
+    /**
+     * 获取所有任务
+     */
+    public static function getRealTasks(): mixed
+    {
+        $tasks = [];
+        $client = new Client([
+            // @phpstan-ignore-next-line
+            'socketFile'    => App::getBean('CronManager')->getSocketFile(),
+        ]);
+        if ($client->connect())
+        {
+            $result = new GetRealTasks();
+            $client->send($result);
+            $tasks = $client->recv();
+            $client->close();
+        }
+        else
+        {
+            Log::error('Cannot connect to CronProcess');
+        }
+
+        return $tasks;
+    }
+
+    /**
+     * 通过任务Id 查询任务状态
+     */
+    public static function isRunning(string $id): mixed
+    {
+        $tasks = [];
+        $client = new Client([
+            // @phpstan-ignore-next-line
+            'socketFile'    => App::getBean('CronManager')->getSocketFile(),
+        ]);
+        if ($client->connect())
+        {
+            $result = new IsRunning();
+            $result->id = $id;
+            $client->send($result);
+            $tasks = $client->recv();
+            $client->close();
+        }
+        else
+        {
+            Log::error('Cannot connect to CronProcess');
+        }
+
+        return $tasks;
     }
 }
