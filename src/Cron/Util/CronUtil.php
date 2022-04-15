@@ -126,7 +126,7 @@ class CronUtil
             $result = new GetRealTasks();
             $client->send($result);
             $tasksRecv = $client->recv();
-            $tasks = $tasksRecv->response;
+            $tasks = $tasksRecv->getResponse();
             $client->close();
         }
         else
@@ -153,7 +153,7 @@ class CronUtil
             $result->id = $id;
             $client->send($result);
             $taskRecv = $client->recv();
-            $task = $taskRecv->response;
+            $task = $taskRecv->getResponse();
             $client->close();
         }
         else
@@ -180,7 +180,7 @@ class CronUtil
             $result->id = $id;
             $client->send($result);
             $taskRecv = $client->recv();
-            $task = $taskRecv->response;
+            $task = $taskRecv->getResponse();
             $client->close();
         }
         else
