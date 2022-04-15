@@ -175,8 +175,10 @@ class CronProcess extends BaseProcess
      *
      * @param resource $conn
      * @param IMessage $msg
+     *
+     * @return int|false
      */
-    protected function answerClient($conn, $msg): int|false
+    protected function answerClient($conn, $msg)
     {
         if (!$msg instanceof IMessage)
         {
