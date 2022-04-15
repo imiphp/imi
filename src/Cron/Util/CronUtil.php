@@ -10,7 +10,7 @@ use Imi\Cron\Client;
 use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\GetRealTasks;
-use Imi\Cron\Message\IsRunning;
+use Imi\Cron\Message\HasTask;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Log\Log;
@@ -136,9 +136,9 @@ class CronUtil
     }
 
     /**
-     * 通过任务Id 查询任务状态
+     * 通过任务Id 查询状态
      */
-    public static function isRunning(string $id): mixed
+    public static function hasTask(string $id): mixed
     {
         $tasks = [];
         $client = new Client([
@@ -147,7 +147,7 @@ class CronUtil
         ]);
         if ($client->connect())
         {
-            $result = new IsRunning();
+            $result = new HasTask();
             $result->id = $id;
             $client->send($result);
             $tasks = $client->recv();

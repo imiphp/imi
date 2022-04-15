@@ -129,7 +129,7 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
-    public function isRunning($id): bool
+    public function hasTask($id): bool
     {
         return isset($this->realTasks[$id]);
     }

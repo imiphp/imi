@@ -36,6 +36,11 @@ interface ICronManager
     public function clear(): void;
 
     /**
+     * 获取任务对象是否存在.
+     */
+    public function hasTask($id): bool;
+
+    /**
      * Get 真实的任务对象列表.
      *
      * @return \Imi\Cron\CronTask[]

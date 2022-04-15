@@ -12,8 +12,8 @@ use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\CommonMsg;
 use Imi\Cron\Message\GetRealTasks;
+use Imi\Cron\Message\HasTask;
 use Imi\Cron\Message\IMessage;
-use Imi\Cron\Message\IsRunning;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Log\ErrorLog;
@@ -151,10 +151,10 @@ class CronProcess extends BaseProcess
                     //拿到返回的数据,开启通道传回
                     $this->answerClient($conn, $this->cronManager->getRealTasks());
                 }
-                elseif ($result instanceof IsRunning)
+                elseif ($result instanceof HasTask)
                 {
                     //拿到返回的数据,开启通道传回
-                    $this->answerClient($conn, $this->cronManager->isRunning($result->id));
+                    $this->answerClient($conn, $this->cronManager->hasTask($result->id));
                 }
             }
             catch (\Throwable $th)
