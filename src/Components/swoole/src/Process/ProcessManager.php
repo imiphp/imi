@@ -7,6 +7,7 @@ namespace Imi\Swoole\Process;
 use function hash;
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
@@ -88,7 +89,7 @@ class ProcessManager
      * 本方法无法在控制器中使用
      * 返回 Process 对象实例.
      */
-    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): Process
+    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null, bool $runWithManager = false): Process
     {
         $processOption = self::get($name);
         if (null === $processOption)
@@ -108,15 +109,15 @@ class ProcessManager
             $pipeType = $processOption['options']['pipeType'];
         }
 
-        return new Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
+        return new Process(static::getProcessCallable($args, $name, $processOption, $alias, $runWithManager), $redirectStdinStdout, $pipeType);
     }
 
     /**
      * 获取进程回调.
      */
-    public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null): callable
+    public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null, bool $runWithManager = false): callable
     {
-        return function (Process $swooleProcess) use ($args, $name, $processOption, $alias) {
+        return function (Process $swooleProcess) use ($args, $name, $processOption, $alias, $runWithManager) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称
@@ -131,7 +132,11 @@ class ProcessManager
             // 随机数播种
             mt_srand();
             $exitCode = 0;
-            $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode) {
+            $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
+                if ($runWithManager)
+                {
+                    Log::info('Process start [' . $name . ']. <info>pid: </info>' . getmypid());
+                }
                 if ($inCoroutine = Coroutine::isIn())
                 {
                     Coroutine::defer(static function () use ($name, $swooleProcess) {
@@ -186,6 +191,10 @@ class ProcessManager
                             'name'      => $name,
                             'process'   => $swooleProcess,
                         ]);
+                    }
+                    if ($runWithManager)
+                    {
+                        Log::info('Process stop [' . $name . ']. <info>pid: </info>' . getmypid());
                     }
                 }
             };
@@ -301,7 +310,7 @@ class ProcessManager
      */
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
-        $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
+        $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias, true);
         /** @var ISwooleServer $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
         $swooleServer = $server->getSwooleServer();
