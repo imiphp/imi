@@ -188,6 +188,11 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
                         {
                             $bindValues[$index] = $inputParameters[$key];
                         }
+                        else
+                        {
+                            // for inputParameters paramName : null
+                            $bindValues[$index] = null;
+                        }
                     }
                 }
                 else
