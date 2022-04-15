@@ -37,8 +37,6 @@ interface ICronManager
 
     /**
      * 获取任务对象是否存在.
-     *
-     * @var string
      */
     public function hasTask(string $id): bool;
 

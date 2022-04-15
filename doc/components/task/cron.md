@@ -416,23 +416,18 @@ $hasTasksMsg = CronUtil::hasTask('任务ID');
 $hasTasks = $hasTasksMsg->response;
 echo "任务ID是否存在: $hasTasks";
 ```
-
-
-
-#### 获取所有任务
+#### 获取单个任务
 
 ```php
 use Imi\Cron\Util\CronUtil;
 
-$realTasksMsg = CronUtil::getRealTasks();
-$realTasks = $realTasksMsg->response;
+$getTaskMsg = CronUtil::getTask('任务ID');
+$task = $getTaskMsg->response;
 
-foreach ($realTasks as $taskName => $task) {
-    echo "任务#$taskName : $task->id";
-}
+echo "任务#$task->id : $task->task";
 ```
 
-注：通过getRealTasks可以获得
+注：TaskMsg对象属性如下：
 
 | 参数             | 类型                   | 说明                 |
 | ---------------- | ---------------------- | -------------------- |
@@ -447,3 +442,16 @@ foreach ($realTasks as $taskName => $task) {
 | maxExecutionTime | float                  | 最大运行执行时间     |
 | lastRunTime      | int                    | 最近执行时间戳       |
 | force            | bool                   | 是否启动服务强制执行 |
+
+#### 获取所有任务
+
+```php
+use Imi\Cron\Util\CronUtil;
+
+$realTasksMsg = CronUtil::getRealTasks();
+$realTasks = $realTasksMsg->response;
+
+foreach ($realTasks as $taskName => $task) {
+    echo "任务#$taskName : $task->id";
+}
+```

@@ -10,6 +10,7 @@ use Imi\Cron\Client;
 use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\GetRealTasks;
+use Imi\Cron\Message\GetTask;
 use Imi\Cron\Message\HasTask;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
@@ -140,7 +141,7 @@ class CronUtil
      */
     public static function hasTask(string $id): mixed
     {
-        $tasks = [];
+        $task = [];
         $client = new Client([
             // @phpstan-ignore-next-line
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
@@ -150,7 +151,7 @@ class CronUtil
             $result = new HasTask();
             $result->id = $id;
             $client->send($result);
-            $tasks = $client->recv();
+            $task = $client->recv();
             $client->close();
         }
         else
@@ -158,6 +159,32 @@ class CronUtil
             Log::error('Cannot connect to CronProcess');
         }
 
-        return $tasks;
+        return $task;
+    }
+
+    /**
+     * 通过任务Id 获取单个任务
+     */
+    public static function getTask(string $id): mixed
+    {
+        $task = [];
+        $client = new Client([
+            // @phpstan-ignore-next-line
+            'socketFile'    => App::getBean('CronManager')->getSocketFile(),
+        ]);
+        if ($client->connect())
+        {
+            $result = new GetTask();
+            $result->id = $id;
+            $client->send($result);
+            $task = $client->recv();
+            $client->close();
+        }
+        else
+        {
+            Log::error('Cannot connect to CronProcess');
+        }
+
+        return $task;
     }
 }
