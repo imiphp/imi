@@ -28,7 +28,7 @@ class CommonMsg implements IMessage
      *
      * @param mixed $response
      *
-     * @return Imi\Cron\Message
+     * @return \Imi\Cron\Message\CommonMsg
      */
     public function setResponse($response = [])
     {
