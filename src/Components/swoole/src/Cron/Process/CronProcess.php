@@ -174,7 +174,7 @@ class CronProcess extends BaseProcess
      * 一个返回数据的socket通道.
      *
      * @param resource $conn
-     * @param IMessage $msg
+     * @param mixed    $msg
      *
      * @return int|false
      */
