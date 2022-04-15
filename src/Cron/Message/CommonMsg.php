@@ -39,8 +39,10 @@ class CommonMsg implements IMessage
 
     /**
      * 获取返回信息.
+     *
+     * @return mixed
      */
-    public function getResponse(): void
+    public function getResponse()
     {
         return $this->response;
     }
