@@ -7,7 +7,7 @@ namespace Imi\Cron\Message;
 class HasTask implements IMessage
 {
     /**
-     * 任务
+     * 任务ID.
      */
-    public string $task = '';
+    public string $id = '';
 }
