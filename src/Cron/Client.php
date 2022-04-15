@@ -113,7 +113,7 @@ class Client
     /**
      * 接收结果.
      *
-     * @return \Imi\Cron\Message\CommonMsg|bool
+     * @return \Imi\Cron\Message\CommonMsg|\Imi\Cron\Message\IMessage|bool
      */
     public function recv()
     {
