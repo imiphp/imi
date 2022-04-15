@@ -412,7 +412,9 @@ CronUtil::clear();
 ```php
 use Imi\Cron\Util\CronUtil;
 
-CronUtil::hasTask('任务ID');
+$hasTasksMsg = CronUtil::hasTask('任务ID');
+$hasTasks = $hasTasksMsg->response;
+echo "任务ID是否存在: $hasTasks";
 ```
 
 
