@@ -398,3 +398,50 @@ use Imi\Cron\Util\CronUtil;
 
 CronUtil::removeCron('任务ID');
 ```
+
+#### 移除所有任务
+
+```php
+use Imi\Cron\Util\CronUtil;
+
+CronUtil::clear();
+```
+
+#### 检测是否存在任务
+
+```php
+use Imi\Cron\Util\CronUtil;
+
+CronUtil::hasTask('任务ID');
+```
+
+
+
+#### 获取所有任务
+
+```php
+use Imi\Cron\Util\CronUtil;
+
+$realTasksMsg = CronUtil::getRealTasks();
+$realTasks = $realTasksMsg->response;
+
+foreach ($realTasks as $taskName => $task) {
+    echo "任务#$taskName : $task->id";
+}
+```
+
+注：通过getRealTasks可以获得
+
+| 参数             | 类型                   | 说明                 |
+| ---------------- | ---------------------- | -------------------- |
+| id               | string                 | 任务ID               |
+| type             | string                 | 任务类型             |
+| task             | string                 | 任务类               |
+| cronRules        | array[CronRuleOjbect]  | 运行规则             |
+| data             | array                  | 运行参数             |
+| unique           | ['current','all',null] | 唯一性设置           |
+| redisPool        | string                 | 锁连接池名           |
+| lockWaitTimeout  | float                  | 锁超时时间           |
+| maxExecutionTime | float                  | 最大运行执行时间     |
+| lastRunTime      | int                    | 最近执行时间戳       |
+| force            | bool                   | 是否启动服务强制执行 |
