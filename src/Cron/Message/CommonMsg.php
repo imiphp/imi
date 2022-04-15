@@ -8,7 +8,7 @@ class CommonMsg implements IMessage
 {
     public mixed $response = [];
 
-    public function __construct(mixed $response)
+    public function __construct(mixed $response = [])
     {
         $this->response = $response;
     }

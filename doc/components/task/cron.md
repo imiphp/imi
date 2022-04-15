@@ -412,8 +412,7 @@ CronUtil::clear();
 ```php
 use Imi\Cron\Util\CronUtil;
 
-$hasTasksMsg = CronUtil::hasTask('任务ID');
-$hasTasks = $hasTasksMsg->response;
+$hasTasks = CronUtil::hasTask('任务ID');
 echo "任务ID是否存在: $hasTasks";
 ```
 #### 获取单个任务
@@ -421,9 +420,7 @@ echo "任务ID是否存在: $hasTasks";
 ```php
 use Imi\Cron\Util\CronUtil;
 
-$getTaskMsg = CronUtil::getTask('任务ID');
-$task = $getTaskMsg->response;
-
+$task = CronUtil::getTask('任务ID');
 echo "任务#$task->id : $task->task";
 ```
 
@@ -448,8 +445,7 @@ echo "任务#$task->id : $task->task";
 ```php
 use Imi\Cron\Util\CronUtil;
 
-$realTasksMsg = CronUtil::getRealTasks();
-$realTasks = $realTasksMsg->response;
+$realTasks = CronUtil::getRealTasks();
 
 foreach ($realTasks as $taskName => $task) {
     echo "任务#$taskName : $task->id";
