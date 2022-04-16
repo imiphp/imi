@@ -10,6 +10,11 @@ use Imi\Cron\Contract\IScheduler;
 use Imi\Cron\CronManager;
 use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
+use Imi\Cron\Message\CommonMsg;
+use Imi\Cron\Message\GetRealTasks;
+use Imi\Cron\Message\GetTask;
+use Imi\Cron\Message\HasTask;
+use Imi\Cron\Message\IMessage;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Log\ErrorLog;
@@ -142,12 +147,49 @@ class CronProcess extends BaseProcess
                 {
                     $this->cronManager->clear();
                 }
+                elseif ($result instanceof GetRealTasks)
+                {
+                    //拿到返回的数据,开启通道传回
+                    $this->answerClient($conn, $this->cronManager->getRealTasks());
+                }
+                elseif ($result instanceof HasTask)
+                {
+                    //拿到返回的数据,开启通道传回
+                    $this->answerClient($conn, $this->cronManager->hasTask($result->id));
+                }
+                elseif ($result instanceof GetTask)
+                {
+                    //拿到返回的数据,开启通道传回
+                    $this->answerClient($conn, $this->cronManager->getTask($result->id));
+                }
             }
             catch (\Throwable $th)
             {
                 $errorLog->onException($th);
             }
         }
+    }
+
+    /**
+     * 一个返回数据的socket通道.
+     *
+     * @param resource $conn
+     * @param mixed    $msg
+     *
+     * @return int|false
+     */
+    protected function answerClient($conn, $msg)
+    {
+        if (!$msg instanceof IMessage)
+        {
+            $msg = new CommonMsg($msg);
+        }
+        $msg = serialize($msg);
+        $length = \strlen($msg);
+        $msg = pack('N', $length) . $msg;
+        $length += 4;
+
+        return fwrite($conn, $msg, $length);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Cron;
 
+use Imi\Cron\Message\CommonMsg;
 use Imi\Cron\Message\IMessage;
 
 class Client
@@ -113,7 +114,7 @@ class Client
     /**
      * 接收结果.
      *
-     * @return \Imi\Cron\Message\IMessage|bool
+     * @return \Imi\Cron\Message\CommonMsg|bool
      */
     public function recv()
     {
@@ -137,7 +138,7 @@ class Client
             return false;
         }
         $result = unserialize($data);
-        if ($result instanceof IMessage)
+        if ($result instanceof CommonMsg)
         {
             return $result;
         }

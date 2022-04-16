@@ -143,6 +143,14 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
+    public function hasTask(string $id): bool
+    {
+        return isset($this->realTasks[$id]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getRealTasks(): array
     {
         return $this->realTasks;
@@ -151,7 +159,7 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
-    public function getTask($id): ?CronTask
+    public function getTask(string $id): ?CronTask
     {
         return $this->realTasks[$id] ?? null;
     }
