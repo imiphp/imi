@@ -10,11 +10,9 @@ use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleWebSocketServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\DisconnectEventParam;
@@ -89,14 +87,10 @@ class Server extends Base implements ISwooleWebSocketServer
      */
     protected function createSubServer(): void
     {
-        $config = $this->getServerInitConfig();
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $this->swooleServer = $server->getSwooleServer();
-        $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        parent::createSubServer();
         $thisConfig = &$this->config;
         $thisConfig['configs']['open_websocket_protocol'] ??= true;
-        $this->wss = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
+        $this->wss = \defined('SWOOLE_SSL') && isset($thisConfig['sockType']) && Bit::has($thisConfig['sockType'], \SWOOLE_SSL);
     }
 
     /**

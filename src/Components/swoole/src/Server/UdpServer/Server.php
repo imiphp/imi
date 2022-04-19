@@ -7,9 +7,7 @@ namespace Imi\Swoole\Server\UdpServer;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Protocol;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Base;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleUdpServer;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
@@ -49,11 +47,7 @@ class Server extends Base implements ISwooleUdpServer
      */
     protected function createSubServer(): void
     {
-        $config = $this->getServerInitConfig();
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $this->swooleServer = $server->getSwooleServer();
-        $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        parent::createSubServer();
         $configs = &$this->config['configs'];
         foreach (static::SWOOLE_PROTOCOLS as $protocol)
         {
