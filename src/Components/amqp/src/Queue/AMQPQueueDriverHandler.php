@@ -258,29 +258,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
         }
     }
 
-    public function __destruct()
-    {
-        $this->publisher->close();
-        $this->consumer->close();
-        if ($this->failPublisher)
-        {
-            $this->failPublisher->close();
-        }
-        if ($this->failConsumer)
-        {
-            $this->failConsumer->close();
-        }
-        if ($this->timeoutPublisher)
-        {
-            $this->timeoutPublisher->close();
-        }
-        if ($this->timeoutConsumer)
-        {
-            $this->timeoutConsumer->close();
-        }
-        $this->delayPublisher->close();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -350,6 +327,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 // 检查是否被删除
                 if ($this->messageIsDeleted($message->getMessageId()))
                 {
+                    $this->success($message);
                     continue;
                 }
                 // 加入工作队列
@@ -407,7 +385,14 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 switch ($queueType)
                 {
                     case QueueType::READY:
+                        // 清空所有
+                        while ($message = $this->pop())
+                        {
+                            // @phpstan-ignore-next-line
+                            $this->success($message);
+                        }
                         $this->consumer->getAMQPChannel()->queue_purge($this->queueName);
+                        $this->consumer->reopen();
                         RedisManager::getInstance($this->redisPoolName)->del($this->getRedisQueueKey('deleted'));
                         break;
                     case QueueType::WORKING:
@@ -415,9 +400,11 @@ class AMQPQueueDriverHandler implements IQueueDriver
                         break;
                     case QueueType::FAIL:
                         $this->failConsumer->getAMQPChannel()->queue_purge($this->failQueueName);
+                        $this->failConsumer->reopen();
                         break;
                     case QueueType::TIMEOUT:
                         $this->timeoutConsumer->getAMQPChannel()->queue_purge($this->timeoutQueueName);
+                        $this->timeoutConsumer->reopen();
                         break;
                     case QueueType::DELAY:
                         $this->delayPublisher->getAMQPChannel()->queue_purge($this->delayQueueName);

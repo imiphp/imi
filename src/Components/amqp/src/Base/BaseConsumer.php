@@ -24,6 +24,11 @@ abstract class BaseConsumer implements IConsumer
         $this->initConfig();
     }
 
+    public function __destruct()
+    {
+        $this->stop();
+    }
+
     /**
      * {@inheritDoc}
      */

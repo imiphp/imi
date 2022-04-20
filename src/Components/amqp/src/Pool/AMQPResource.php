@@ -130,8 +130,9 @@ class AMQPResource extends BasePoolResource
         }
         if ($inSwoole)
         {
-            $this->resetingChannel->push(1);
+            $channel = $this->resetingChannel;
             $this->resetingChannel = null;
+            $channel->push(1);
         }
     }
 
@@ -140,6 +141,10 @@ class AMQPResource extends BasePoolResource
      */
     public function checkState(): bool
     {
+        if (!$this->isOpened())
+        {
+            return false;
+        }
         $pkt = new AMQPWriter();
         $pkt->write_octet(8);
         $pkt->write_short(0);

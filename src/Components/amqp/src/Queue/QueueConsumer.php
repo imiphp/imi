@@ -52,7 +52,6 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
             $list[] = new Consumer($consumer);
         }
         $this->consumers = $list;
-        $this->queue = new SplQueue();
 
         $this->reopen();
     }
@@ -78,6 +77,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
         {
             $this->channel = $this->connection->channel();
         }
+        $this->queue = new SplQueue();
     }
 
     /**
@@ -94,10 +94,9 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
         }
         try
         {
-            $this->channel->wait(null, false, $timeout);
             if ($this->queue->isEmpty())
             {
-                return null;
+                $this->channel->wait(null, false, $timeout);
             }
 
             return $this->queue->pop() ?: null;
