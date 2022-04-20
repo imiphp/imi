@@ -9,6 +9,8 @@ use GatewayWorker\Lib\Gateway;
 use Imi\App;
 use Imi\Config;
 use Imi\Event\Event;
+use Imi\Log\Handler\ConsoleHandler;
+use Imi\Log\Logger;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Contract\IServerGroup;
@@ -19,6 +21,7 @@ use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use InvalidArgumentException;
+use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
@@ -266,6 +269,23 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             {
                 // 随机数播种
                 mt_srand();
+
+                $workerClass = $this->workerClass;
+                if ($workerClass::$daemonize)
+                {
+                    /** @var Logger $loggerInstance */
+                    $loggerInstance = App::getBean('Logger');
+                    foreach ($loggerInstance->getLoggers() as $logger)
+                    {
+                        foreach ($logger->getHandlers() as $handler)
+                        {
+                            if ($handler instanceof ConsoleHandler)
+                            {
+                                $handler->setOutput($stdoutStream ??= new StreamOutput(fopen(WorkermanServerWorker::$stdoutFile, 'a')));
+                            }
+                        }
+                    }
+                }
 
                 Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
 

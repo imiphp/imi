@@ -22,6 +22,9 @@ class Logger
      */
     private array $loggers = [];
 
+    /**
+     * @return MonoLogger[]
+     */
     public function getLoggers(): array
     {
         return $this->loggers;

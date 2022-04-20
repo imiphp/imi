@@ -6,11 +6,14 @@ namespace Imi\Workerman\Process;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Handler\ConsoleHandler;
+use Imi\Log\Logger;
 use Imi\RequestContext;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Workerman\Process\Contract\IProcess;
 use Imi\Workerman\Server\WorkermanServerWorker;
+use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Worker;
 
 /**
@@ -79,8 +82,27 @@ class ProcessManager
         $worker->name = $processName;
         $worker->reloadable = false;
         $worker->onWorkerStart = static function (Worker $worker) use ($args, $processName, $options) {
+            // 随机数播种
+            mt_srand();
+
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $processName, true);
+
+            if (WorkermanServerWorker::$daemonize)
+            {
+                /** @var Logger $loggerInstance */
+                $loggerInstance = App::getBean('Logger');
+                foreach ($loggerInstance->getLoggers() as $logger)
+                {
+                    foreach ($logger->getHandlers() as $handler)
+                    {
+                        if ($handler instanceof ConsoleHandler)
+                        {
+                            $handler->setOutput($stdoutStream ??= new StreamOutput(fopen(WorkermanServerWorker::$stdoutFile, 'a')));
+                        }
+                    }
+                }
+            }
 
             RequestContext::muiltiSet([
                 'worker' => $worker,
