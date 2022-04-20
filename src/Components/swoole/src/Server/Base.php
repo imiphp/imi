@@ -207,7 +207,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                     }
                     finally
                     {
-                        Log::info('Server start. <info>pid: </info>' . getmypid());
+                        Log::info('Server start. pid: ' . getmypid());
                     }
                 });
             }
@@ -226,7 +226,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 finally
                 {
-                    Log::info('Server shutdown. <info>pid: </info>' . getmypid());
+                    Log::info('Server shutdown. pid: ' . getmypid());
                 }
             });
 
@@ -252,7 +252,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 {
                     // worker 初始化
                     Worker::inited();
-                    Log::info('Worker start #' . Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
+                    Log::info('Worker start #' . Worker::getWorkerId() . '. pid: ' . getmypid());
                 }
             });
 
@@ -275,7 +275,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 finally
                 {
-                    Log::info('Worker stop #' . Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
+                    Log::info('Worker stop #' . Worker::getWorkerId() . '. pid: ' . getmypid());
                 }
             });
 
@@ -309,7 +309,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 finally
                 {
-                    Log::info('Manager start' . '. <info>pid: </info>' . getmypid());
+                    Log::info('Manager start' . '. pid: ' . getmypid());
                 }
             });
 
@@ -327,7 +327,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 finally
                 {
-                    Log::info('Manager stop' . '. <info>pid: </info>' . getmypid());
+                    Log::info('Manager stop' . '. pid: ' . getmypid());
                 }
             });
 
