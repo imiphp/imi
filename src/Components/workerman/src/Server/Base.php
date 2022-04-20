@@ -287,7 +287,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                         {
                             if ($handler instanceof ConsoleHandler)
                             {
-                                $handler->setOutput($stdoutStream ??= new StreamOutput(fopen(WorkermanServerWorker::$stdoutFile, 'a')));
+                                $handler->setOutput($stdoutStream ??= new StreamOutput(fopen($workerClass::$stdoutFile, 'a')));
                             }
                         }
                     }
