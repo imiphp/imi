@@ -55,7 +55,6 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             }
             $this->consumers = $list;
 
-            $this->resultChannel = new Channel();
             $this->reopen();
         }
 
@@ -80,6 +79,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             {
                 $this->channel = $this->connection->channel();
             }
+            $this->resultChannel = new Channel();
         }
 
         /**
