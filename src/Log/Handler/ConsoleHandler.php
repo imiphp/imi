@@ -32,4 +32,16 @@ class ConsoleHandler extends AbstractProcessingHandler
     {
         $this->output->write((string) $record['formatted']);
     }
+
+    public function getOutput(): OutputInterface
+    {
+        return $this->output;
+    }
+
+    public function setOutput(OutputInterface $output): self
+    {
+        $this->output = $output;
+
+        return $this;
+    }
 }
