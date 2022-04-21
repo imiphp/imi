@@ -10,6 +10,7 @@ use Imi\Log\Log;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Server\Group\TServerGroup;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\FinishEventParam;
@@ -48,17 +49,13 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * swoole 服务器对象
-     *
-     * @var \Swoole\Server|\Swoole\Coroutine\Http\Server
      */
-    protected $swooleServer;
+    protected \Swoole\Server $swooleServer;
 
     /**
      * swoole 监听端口.
-     *
-     * @var \Swoole\Server\Port|\Swoole\Coroutine\Http\Server
      */
-    protected $swoolePort;
+    protected \Swoole\Server\Port $swoolePort;
 
     /**
      * 是否为子服务器.
@@ -422,6 +419,23 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
+     * {@inheritDoc}
+     */
+    protected function createSubServer(): void
+    {
+        $config = $this->getServerInitConfig();
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $this->swooleServer = $server->getSwooleServer();
+        $port = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        if (false === $port)
+        {
+            throw new \RuntimeException(sprintf('Swoole addListener(%s, %s, %s) failed', $config['host'], $config['port'], $config['sockType']));
+        }
+        $this->swoolePort = $port;
+    }
+
+    /**
      * 绑定服务器事件.
      */
     abstract protected function __bindEvents(): void;
@@ -430,11 +444,6 @@ abstract class Base extends BaseServer implements ISwooleServer
      * 创建 swoole 服务器对象
      */
     abstract protected function createServer(): void;
-
-    /**
-     * 从主服务器监听端口，作为子服务器.
-     */
-    abstract protected function createSubServer(): void;
 
     /**
      * 获取服务器初始化需要的配置.

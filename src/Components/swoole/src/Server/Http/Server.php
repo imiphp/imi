@@ -9,12 +9,10 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleHttpServer;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
@@ -68,14 +66,10 @@ class Server extends Base implements ISwooleHttpServer
      */
     protected function createSubServer(): void
     {
-        $config = $this->getServerInitConfig();
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $this->swooleServer = $server->getSwooleServer();
-        $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        parent::createSubServer();
         $thisConfig = &$this->config;
         $thisConfig['configs']['open_http_protocol'] ??= true;
-        $this->https = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
+        $this->https = \defined('SWOOLE_SSL') && isset($thisConfig['sockType']) && Bit::has($thisConfig['sockType'], \SWOOLE_SSL);
         $this->http2 = $thisConfig['configs']['open_http2_protocol'] ?? false;
     }
 
@@ -89,8 +83,6 @@ class Server extends Base implements ISwooleHttpServer
             'port'       => $this->config['port'] ?? 80,
             'sockType'   => $this->config['sockType'] ?? \SWOOLE_SOCK_TCP,
             'mode'       => $this->config['mode'] ?? \SWOOLE_BASE,
-            'ssl'        => $this->config['ssl'] ?? false,
-            'reuse_port' => $this->config['reuse_port'] ?? true,
         ];
     }
 
