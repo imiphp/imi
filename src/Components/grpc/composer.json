@@ -12,8 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Imi\\Grpc\\": "src/grpc",
-            "Imi\\Server\\Grpc\\": "src/server/"
+            "Imi\\Grpc\\": "src/",
+            "Imi\\Server\\Grpc\\": "src/old-server/"
         }
     },
     "autoload-dev": {
