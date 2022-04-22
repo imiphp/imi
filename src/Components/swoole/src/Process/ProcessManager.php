@@ -135,7 +135,7 @@ class ProcessManager
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
                 if ($runWithManager)
                 {
-                    Log::info('Process start [' . $name . ']. <info>pid: </info>' . getmypid());
+                    Log::info('Process start [' . $name . ']. pid: ' . getmypid());
                 }
                 if ($inCoroutine = Coroutine::isIn())
                 {
@@ -194,7 +194,7 @@ class ProcessManager
                     }
                     if ($runWithManager)
                     {
-                        Log::info('Process stop [' . $name . ']. <info>pid: </info>' . getmypid());
+                        Log::info('Process stop [' . $name . ']. pid: ' . getmypid());
                     }
                 }
             };

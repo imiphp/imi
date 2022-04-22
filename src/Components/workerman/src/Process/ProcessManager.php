@@ -105,7 +105,7 @@ class ProcessManager
                 }
             }
 
-            Log::info('Process start [' . $processName . ']. <info>pid: </info>' . getmypid());
+            Log::info('Process start [' . $processName . ']. pid: ' . getmypid());
 
             RequestContext::muiltiSet([
                 'worker' => $worker,
@@ -135,7 +135,7 @@ class ProcessManager
                     'name'    => $processName,
                     'process' => $worker,
                 ]);
-                Log::info('Process stop [' . $processName . ']. <info>pid: </info>' . getmypid());
+                Log::info('Process stop [' . $processName . ']. pid: ' . getmypid());
             }
         };
 

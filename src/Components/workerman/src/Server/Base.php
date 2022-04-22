@@ -369,7 +369,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             finally
             {
-                Log::info('Worker start #' . \Imi\Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
+                Log::info('Worker start #' . \Imi\Worker::getWorkerId() . '. pid: ' . getmypid());
             }
         };
 
@@ -397,7 +397,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
             finally
             {
-                Log::info('Worker stop #' . \Imi\Worker::getWorkerId() . '. <info>pid: </info>' . getmypid());
+                Log::info('Worker stop #' . \Imi\Worker::getWorkerId() . '. pid: ' . getmypid());
             }
         };
     }
