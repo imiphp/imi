@@ -256,7 +256,7 @@ foreach ($storeRepoMap as $name => $urls)
     foreach ($commits as $commit)
     {
         chdir($mainRepoPath);
-        execCMD('git --no-pager show ' . $commit . ' --stat=99999', '提交记录', $result);
+        execCMD('git --no-pager show ' . $commit . ' --stat=99999 --no-renames', '提交记录', $result);
 
         $needCommit = false;
         foreach ($result as $row)
@@ -266,76 +266,31 @@ foreach ($storeRepoMap as $name => $urls)
                 continue;
             }
 
-            if (preg_match('/(.+)\s+=>\s+(.+)/', $matches[1], $matches2))
+            // 文件修改
+            $fileName = $matches[1];
+            if ($path === substr($fileName, 0, $pathLen))
             {
-                // 重命名
-                if (false === strpos($matches2[2], '}'))
+                $repoFilePath = $repoPath . substr($fileName, $pathLen);
+                $originFileName = $mainRepoPath . $fileName;
+                if (is_file($originFileName))
                 {
-                    $from = $matches2[1];
-                    $to = $matches2[2];
+                    $dir = \dirname($repoFilePath);
+                    if (!is_dir($dir))
+                    {
+                        mkdir($dir, 0777, true);
+                    }
+                    file_put_contents($repoFilePath, file_get_contents($originFileName));
+                    chdir($repoPath);
+                    execCMD('git add ' . escapeshellarg($repoFilePath), 'git add');
+                    execCMD('git update-index --chmod=' . (is_executable($originFileName) ? '+' : '-') . 'x ' . $repoFilePath);
+                    $needCommit = true;
                 }
                 else
                 {
-                    // 同目录下重命名
-                    $from = str_replace('{', '', $matches2[1]);
-                    $to = str_replace('}', '', \dirname($from) . '/' . $matches2[2]);
-                }
-                if ($path === substr($from, 0, $pathLen))
-                {
-                    $repoFilePath = $repoPath . substr($from, $pathLen);
                     if (is_file($repoFilePath))
                     {
                         unlink($repoFilePath);
                         $needCommit = true;
-                    }
-                }
-                if ($path === substr($to, 0, $pathLen))
-                {
-                    $repoFilePath = $repoPath . substr($to, $pathLen);
-                    $originFileName = $mainRepoPath . $to;
-                    if (is_file($originFileName))
-                    {
-                        $dir = \dirname($repoFilePath);
-                        if (!is_dir($dir))
-                        {
-                            mkdir($dir, 0777, true);
-                        }
-                        file_put_contents($repoFilePath, file_get_contents($originFileName));
-                        chdir($repoPath);
-                        execCMD('git add ' . escapeshellarg($repoFilePath), 'git add');
-                        execCMD('git update-index --chmod=' . (is_executable($originFileName) ? '+' : '-') . 'x ' . $repoFilePath);
-                        $needCommit = true;
-                    }
-                }
-            }
-            else
-            {
-                // 文件修改
-                $fileName = $matches[1];
-                if ($path === substr($fileName, 0, $pathLen))
-                {
-                    $repoFilePath = $repoPath . substr($fileName, $pathLen);
-                    $originFileName = $mainRepoPath . $fileName;
-                    if (is_file($originFileName))
-                    {
-                        $dir = \dirname($repoFilePath);
-                        if (!is_dir($dir))
-                        {
-                            mkdir($dir, 0777, true);
-                        }
-                        file_put_contents($repoFilePath, file_get_contents($originFileName));
-                        chdir($repoPath);
-                        execCMD('git add ' . escapeshellarg($repoFilePath), 'git add');
-                        execCMD('git update-index --chmod=' . (is_executable($originFileName) ? '+' : '-') . 'x ' . $repoFilePath);
-                        $needCommit = true;
-                    }
-                    else
-                    {
-                        if (is_file($repoFilePath))
-                        {
-                            unlink($repoFilePath);
-                            $needCommit = true;
-                        }
                     }
                 }
             }
