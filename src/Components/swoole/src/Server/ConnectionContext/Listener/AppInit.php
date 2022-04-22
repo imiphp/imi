@@ -7,10 +7,12 @@ namespace Imi\Swoole\Server\ConnectionContext\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Listener\IAppInitEventListener;
+use Imi\Swoole\Server\Traits\TServerPortInfo;
 use Imi\Util\Imi;
 
 /**
@@ -18,11 +20,20 @@ use Imi\Util\Imi;
  */
 class AppInit implements IAppInitEventListener
 {
+    use TServerPortInfo;
+
     /**
      * {@inheritDoc}
      */
     public function handle(EventParam $e): void
     {
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $mainSwooleServer = $server->getSwooleServer();
+        if (($serverStart = !$mainSwooleServer->manager_pid))
+        {
+            $this->outputServerInfo();
+        }
         foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {
             if ($server->isLongConnection())
@@ -36,6 +47,10 @@ class AppInit implements IAppInitEventListener
                     $groupHandler->startup();
                 }
             }
+        }
+        if ($serverStart)
+        {
+            Log::info('Server start');
         }
     }
 }
