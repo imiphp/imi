@@ -192,6 +192,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 $this->swooleServer->on('start', function (Server $server) {
                     try
                     {
+                        \Imi\Swoole\Util\Imi::setProcessName('master');
                         Event::trigger('IMI.MAIN_SERVER.START', [
                             'server' => $this,
                         ], $this, StartEventParam::class);
