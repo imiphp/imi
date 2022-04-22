@@ -27,12 +27,15 @@ class AppInit implements IAppInitEventListener
      */
     public function handle(EventParam $e): void
     {
-        /** @var ISwooleServer $server */
+        /** @var ISwooleServer|null $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
-        $mainSwooleServer = $server->getSwooleServer();
-        if (($serverStart = !$mainSwooleServer->manager_pid))
+        if ($server)
         {
-            $this->outputServerInfo();
+            $mainSwooleServer = $server->getSwooleServer();
+            if (($serverStart = !$mainSwooleServer->manager_pid))
+            {
+                $this->outputServerInfo();
+            }
         }
         foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {
@@ -48,7 +51,7 @@ class AppInit implements IAppInitEventListener
                 }
             }
         }
-        if ($serverStart)
+        if ($serverStart ?? false)
         {
             Log::info('Server start');
         }
