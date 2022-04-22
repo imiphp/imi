@@ -63,18 +63,6 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
 
 ### 服务端
 
-在项目 `config/config.php` 中配置：
-
-```php
-[
-    'components'    =>  [
-        // 引入RPC组件以及本组件
-        'Rpc'   =>  'Imi\Rpc',
-        'Grpc'  =>  'Imi\Grpc',
-    ],
-]
-```
-
 如果你用主服务器：
 
 ```php
@@ -147,22 +135,20 @@ class AuthServiceController extends HttpController implements AuthServiceInterfa
     // 连接池配置
     'pools'    =>    [
         'grpc'  =>  [
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Rpc\Client\Pool\RpcClientCoroutinePool::class,
-                    'config'    =>    [
-                        // 根据实际情况设置
-                        'maxResources'  =>    100,
-                        'minResources'  =>    1,
-                    ],
+            'pool'    =>    [
+                'class'        =>    \Imi\Rpc\Client\Pool\RpcClientCoroutinePool::class,
+                'config'    =>    [
+                    // 根据实际情况设置
+                    'maxResources'  =>    100,
+                    'minResources'  =>    1,
                 ],
-                'resource'    =>    [
-                    // 这里需要和你的服务端路由一致
-                    'url'           =>  'http://127.0.0.1:8080/{package}.{service}/{name}',
-                    // 'url'           =>  'http://127.0.0.1:8080/{package}.{service}/{name|ucfirst}', // 参数支持设定函数处理，比如这个将方法名首字母大写，兼容其它部分语言
-                    'clientClass'   =>  \Imi\Grpc\Client\GrpcClient::class,
-                    'method'        =>  'POST', // 指定请求方式，默认 GET
-                ]
+            ],
+            'resource'    =>    [
+                // 这里需要和你的服务端路由一致
+                'url'           =>  'http://127.0.0.1:8080/{package}.{service}/{name}',
+                // 'url'           =>  'http://127.0.0.1:8080/{package}.{service}/{name|ucfirst}', // 参数支持设定函数处理，比如这个将方法名首字母大写，兼容其它部分语言
+                'clientClass'   =>  \Imi\Grpc\Client\GrpcClient::class,
+                'method'        =>  'POST', // 指定请求方式，默认 GET
             ],
         ],
     ],

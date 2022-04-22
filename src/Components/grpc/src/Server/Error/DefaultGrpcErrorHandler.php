@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\Grpc\Error;
+namespace Imi\Grpc\Server\Error;
 
 use Imi\Grpc\Enum\GrpcStatus;
 use Imi\RequestContext;

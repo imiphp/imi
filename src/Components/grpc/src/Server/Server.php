@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\Grpc;
+namespace Imi\Grpc\Server;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Grpc\Error\GrpcErrorHandler;
+use Imi\Grpc\Server\Error\GrpcErrorHandler;
 
 /**
  * @Bean(name="GrpcServer", env="swoole")
