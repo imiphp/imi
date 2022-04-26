@@ -42,7 +42,7 @@ $child->test();
 ```
 
 运行结果：
-```
+```text
 Child->__beforeTest()
 Parent->test()
 Child->__afterTest()
@@ -170,7 +170,7 @@ class Pool
 
 运行效果：
 
-```
+```text
 after Imi\Swoole\Redis\Pool\CoroutineRedisPool::getResource(): 0/1
 after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 ```

@@ -36,7 +36,8 @@ class Index extends HttpController
 
 访问地址：`http://localhost:{port}/`
 输出内容：
-```
+
+```text
 hello imi!
 ```
 
@@ -301,13 +302,16 @@ return \Imi\Server\Http\Message\Proxy\ResponseProxy::withStatus(404);
 直接对该对象操作无效，需要如下使用才可。
 
 1. 操作后赋值：
+
 ```php
 public function action()
 {
     $this->response = $this->response->withStatus(404);
 }
 ```
+
 2. 操作后返回
+
 ```php
 public function action()
 {

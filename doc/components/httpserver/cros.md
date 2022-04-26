@@ -41,7 +41,7 @@ imi 框架内置了一个 `OptionsMiddleware` 中间件，用于解决使用 `ap
 
 如果你不希望在 imi 里做跨域处理，也可以使用 Nginx 来配置：
 
-```
+```conf
 # 跨域
 # * 就是允许全部，你也可以指定
 add_header 'Access-Control-Allow-Origin' '*';

@@ -117,7 +117,8 @@ class Index extends HttpController
 
 访问地址：`http://localhost:{port}/`
 输出内容：
-```
+
+```text
 hello imi!
 ```
 

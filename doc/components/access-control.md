@@ -34,12 +34,14 @@ imi 框架的权限控制组件，不提供具体 API、管理界面，仅提供
     ],
 ]
 ```
+
 本组件中包含几个数据表，打开本组件目录，找到`Model`目录，在数据库中建立对应的表，即可使用。
 建表这里优先推荐用`generate/table`：<https://doc.imiphp.com/v2.1/dev/generate/table.html>
 
 ### 操作权限
 
 #### 引入操作权限操作类
+
 ```php
 use Imi\AC\AccessControl\Operation;
 ```
@@ -55,23 +57,30 @@ Operation::create('权限名称', '权限代码');
 // 指定父级ID、排序索引
 Operation::create('权限名称', '权限代码', $parentId, $index, '介绍');
 ```
+
 #### 修改操作权限
+
 ```php
 // 参数比创建时多了权限id，其余都一样，注意权限id是int类型
 Operation::update(权限id, '权限名称', '权限代码', $parentId, $index, '介绍');
 ```
+
 #### 删除操作权限
+
 ```php
 // 注意权限id是int类型
 Operation::delete(权限id);
 ```
+
 #### 查询操作操作权限列表
+
 ```php
 // 查询权限列表
 $data = Operation::selectList();
 // 将列表转换为树状结构
 $tree = Operation::listToTree($data);
 ```
+
 ### 角色
 
 #### 创建角色

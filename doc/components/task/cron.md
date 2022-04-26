@@ -415,6 +415,7 @@ use Imi\Cron\Util\CronUtil;
 $hasTasks = CronUtil::hasTask('任务ID');
 echo "任务ID是否存在: $hasTasks";
 ```
+
 #### 获取单个任务
 
 ```php

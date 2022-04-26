@@ -6,7 +6,7 @@ Github：https://github.com/imiphp/imi
 
 ## 目录结构
 
-```
+```text
 ├── bin         // 可执行文件路径
 ├── config      // 框架核心配置文件
 ├── doc         // 文档 markdown 源文件
