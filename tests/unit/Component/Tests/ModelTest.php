@@ -7,6 +7,7 @@ namespace Imi\Test\Component\Tests;
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article2;
+use Imi\Test\Component\Model\ArticleEx;
 use Imi\Test\Component\Model\CreateTime;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
@@ -17,6 +18,8 @@ use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
+use function dump;
+use function var_dump;
 
 /**
  * @testdox Model
@@ -778,5 +781,33 @@ class ModelTest extends BaseTest
         }
 
         $this->assertEquals($args['origin'], $data);
+    }
+
+    public function testJsonNullValue()
+    {
+        if (ArticleEx::exists(199)) {
+            ArticleEx::dbQuery()->where('article_id', '=', 199)->delete();
+        }
+
+        $model = ArticleEx::newInstance();
+        $model->articleId = 199;
+        $model->data = new \stdClass();
+        $model->save();
+
+        $jsonValue = ArticleEx::dbQuery()
+            ->where('article_id', '=', 199)
+            ->value('data');
+        $this->assertEquals('{}', $jsonValue);
+
+        $model = ArticleEx::find(199);
+        $model->data = null;
+        $model->save();
+
+        $jsonValue = ArticleEx::dbQuery()
+            ->where('article_id', '=', 199)
+            ->value('data');
+        $this->assertEquals(null, $jsonValue);
+
+        $model->delete();
     }
 }
