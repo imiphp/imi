@@ -18,8 +18,6 @@ use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
-use function dump;
-use function var_dump;
 
 /**
  * @testdox Model
@@ -783,9 +781,10 @@ class ModelTest extends BaseTest
         $this->assertEquals($args['origin'], $data);
     }
 
-    public function testJsonNullValue()
+    public function testJsonNullValue(): void
     {
-        if (ArticleEx::exists(199)) {
+        if (ArticleEx::exists(199))
+        {
             ArticleEx::dbQuery()->where('article_id', '=', 199)->delete();
         }
 
@@ -806,7 +805,7 @@ class ModelTest extends BaseTest
         $jsonValue = ArticleEx::dbQuery()
             ->where('article_id', '=', 199)
             ->value('data');
-        $this->assertEquals(null, $jsonValue);
+        $this->assertNull($jsonValue);
 
         $model->delete();
     }
