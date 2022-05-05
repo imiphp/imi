@@ -135,11 +135,12 @@ if (class_exists(PostgreSQL::class, false))
         public function open(): bool
         {
             $this->statementIncr = 0;
-            $this->instance = $instance = new PostgreSQL();
+            $instance = new PostgreSQL();
 
             $result = $instance->connect($this->buildDSN());
             if ($result)
             {
+                $this->instance = $instance;
                 $this->execInitSqls();
             }
 
@@ -256,7 +257,14 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function errorCode()
         {
-            return $this->instance->resultDiag['sqlstate'] ?? '';
+            if ($this->instance->resultDiag)
+            {
+                return $this->instance->resultDiag['sqlstate'] ?? null;
+            }
+            else
+            {
+                return '';
+            }
         }
 
         /**
