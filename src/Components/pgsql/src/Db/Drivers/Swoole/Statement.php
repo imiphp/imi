@@ -212,7 +212,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                 $errorInfo = $this->errorInfo();
                 if ($this->db->checkCodeIsOffline($errorCode))
                 {
-                    $this->close();
+                    $this->db->close();
                 }
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
