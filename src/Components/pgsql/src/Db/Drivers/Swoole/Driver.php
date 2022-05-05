@@ -96,7 +96,7 @@ if (class_exists(PostgreSQL::class, false))
             {
                 return true;
             }
-            if ($this->checkCodeIsOffline($instance->resultDiag['sqlstate'] ?? ''))
+            if ($this->checkCodeIsOffline($this->errorCode()))
             {
                 $this->close();
             }
@@ -179,7 +179,7 @@ if (class_exists(PostgreSQL::class, false))
         {
             if (!$this->inTransaction() && !$this->instance->query('begin'))
             {
-                if ($this->checkCodeIsOffline($this->instance->resultDiag['sqlstate'] ?? ''))
+                if ($this->checkCodeIsOffline($this->errorCode()))
                 {
                     $this->close();
                 }
@@ -199,7 +199,7 @@ if (class_exists(PostgreSQL::class, false))
         {
             if (!$this->instance->query('commit'))
             {
-                if ($this->checkCodeIsOffline($this->instance->resultDiag['sqlstate'] ?? ''))
+                if ($this->checkCodeIsOffline($this->errorCode()))
                 {
                     $this->close();
                 }
@@ -228,7 +228,7 @@ if (class_exists(PostgreSQL::class, false))
             {
                 $this->transaction->rollBack($levels);
             }
-            elseif ($this->checkCodeIsOffline($this->instance->resultDiag['sqlstate'] ?? ''))
+            elseif ($this->checkCodeIsOffline($this->errorCode()))
             {
                 $this->close();
             }
@@ -291,7 +291,7 @@ if (class_exists(PostgreSQL::class, false))
             $this->lastSql = $sql;
             $instance = $this->instance;
             $this->lastQueryResult = $lastQueryResult = $instance->query($sql);
-            if (false === $lastQueryResult && $this->checkCodeIsOffline($this->instance->resultDiag['sqlstate'] ?? ''))
+            if (false === $lastQueryResult && $this->checkCodeIsOffline($this->errorCode()))
             {
                 $this->close();
 
