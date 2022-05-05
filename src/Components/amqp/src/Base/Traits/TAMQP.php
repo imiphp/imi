@@ -117,6 +117,10 @@ trait TAMQP
                         $connectionByPool = true;
                     }
                 }
+                else
+                {
+                    $connectionByPool = true;
+                }
             }
             else
             {
