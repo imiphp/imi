@@ -1034,7 +1034,12 @@ abstract class Model extends BaseModel
                     {
                         $realJsonEncode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
                     }
-                    if ($realJsonEncode)
+                    if (null === $value && $column->nullable)
+                    {
+                        // 当字段允许`null`时，使用原生`null`存储
+                        $value = null;
+                    }
+                    elseif ($realJsonEncode)
                     {
                         $value = json_encode($value, $realJsonEncode->flags, $realJsonEncode->depth);
                     }
