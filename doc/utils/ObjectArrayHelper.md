@@ -1,5 +1,7 @@
 # ObjectArrayHelper
 
+[toc]
+
 **类名:** `Imi\Util\ObjectArrayHelper`
 
 对象及数组帮助类

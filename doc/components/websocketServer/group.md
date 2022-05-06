@@ -1,5 +1,7 @@
 # 连接分组
 
+[toc]
+
 imi 支持对 WebSocket 的连接（clientId）进行逻辑分组，你可以方便地对用户进行分组消息推送。
 
 所有的分组针对服务器，所以需要 imi 的服务器对象才可以调用下面这些方法，比如在`WebSocketController`中可以使用`RequestContext::getServer()`。

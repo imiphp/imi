@@ -1,5 +1,7 @@
 # 开始一个新项目
 
+[toc]
+
 ## 项目初始化
 
 创建 Http Server 项目：`composer create-project imiphp/project-http:~2.1.0`

@@ -1,5 +1,7 @@
 # ChannelContainer
 
+[toc]
+
 **类名:** `Imi\Swoole\Util\Co\ChannelContainer`
 
 一个通道（Channel）管理容器，通过一个 `id`，快速操作和管理通道。

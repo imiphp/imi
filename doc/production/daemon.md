@@ -1,5 +1,7 @@
 # 守护进程
 
+[toc]
+
 ## 命令模式
 
 守护进程方式启动：`bin/imi-swoole swoole/start -d`

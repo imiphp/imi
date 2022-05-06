@@ -1,5 +1,7 @@
 # ClassObject
 
+[toc]
+
 **类名:** `Imi\Util\ClassObject`
 
 类和对象相关工具类

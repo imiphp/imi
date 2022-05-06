@@ -145,6 +145,7 @@ function onContentChange()
 			$(this).attr('target', '_blank');
 		}
 	})
+	hCatalog('#article-content', '#content-toc');
 	setTimeout(function(){
 		resizeCode();
 	}, 1)
@@ -169,6 +170,47 @@ function resizeCode()
 	for(var i=0;i<guttelines.length;i++){
 		guttelines.eq(i).css('height',codelines.eq(i).css('height'))
 	}
+}
+
+// 基于这里的代码做了修改: https://blog.csdn.net/weixin_57215431/article/details/115676752
+function hCatalog(current, target) {
+	var box = document.querySelector(target)
+	box.innerHTML = ''
+	var titleTree = hTree(document.querySelector(current))
+	hCreatEle(titleTree, box)
+}
+
+function hCreatEle(arr, parent) {
+	if (!arr.length) return
+	var ol = document.createElement('ol')
+	arr.forEach(function(item) {
+		var li = document.createElement('li')
+		li.innerHTML = item.node.innerHTML
+		hCreatEle(item.children, li)
+		ol.appendChild(li)
+	})
+	parent.appendChild(ol)
+}
+
+function hTree(wrapNode) {
+	var root = { children: [] }
+	var current = root
+	
+	for (var i = 0; i < wrapNode.children.length; ++i)
+	{
+		var item = wrapNode.children[i]
+		if (item.localName.indexOf('h') === 0)
+		{
+			var obj = { node: item, children: [], parent: undefined }
+			while (current !== root && current.node.localName[1] - obj.node.localName[1] !== -1) {
+				current = current.parent
+			}
+			obj.parent = current
+			obj.parent.children.push(obj)
+			current = obj
+		}
+	}
+	return root.children
 }
 
 $(function(){

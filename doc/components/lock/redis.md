@@ -1,5 +1,7 @@
 # RedisLock
 
+[toc]
+
 RedisLock 是支持分布式的锁。
 
 使用前需要配置 Redis 进程池。

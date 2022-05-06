@@ -1,5 +1,7 @@
 # AMQP
 
+[toc]
+
 ## 介绍
 
 支持在 imi 框架中使用 支持 AMQP 协议的消息队列，如：RabbitMQ

@@ -1,5 +1,7 @@
 # DateTime
 
+[toc]
+
 **类名:** `Imi\Util\DateTime`
 
 日期时间工具类

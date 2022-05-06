@@ -1,5 +1,7 @@
 # 第三方支付 SDK
 
+[toc]
+
 [PaySDK](https://github.com/Yurunsoft/PaySDK) 是 PHP 集成支付 SDK ，集成了支付宝、微信支付的支付接口和其它相关接口的操作。可以轻松嵌入支持 PHP >= 5.4 的任何系统中，2.0 版现已支持 Swoole 协程环境。
 
 ## 支持的支付接口

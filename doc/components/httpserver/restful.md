@@ -1,5 +1,7 @@
 # RESTful
 
+[toc]
+
 使用 imi 提供的路由请求方法判断，可以实现 RESTful 风格的 api 开发。
 
 RESTful 风格控制器示例 (query/find/create/update/delete)：

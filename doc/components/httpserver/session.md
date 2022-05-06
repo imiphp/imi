@@ -1,5 +1,7 @@
 # Session
 
+[toc]
+
 imi 的 Http Session 目前内嵌支持文件和 Redis 两种存储方式，当然你也可以自行扩展更多存储方式。
 
 如果想要启用 Session，需要在配置文件中进行设置。

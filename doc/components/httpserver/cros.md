@@ -1,5 +1,7 @@
 # 跨域和 OPTIONS 请求
 
+[toc]
+
 imi 框架内置了一个 `OptionsMiddleware` 中间件，用于解决使用 `application/json` 请求时，浏览器会先发送一个 `OPTIONS` 请求。并且可以解决跨域头问题。
 
 类名：`\Imi\Server\Http\Middleware\OptionsMiddleware`

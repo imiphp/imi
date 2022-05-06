@@ -663,3 +663,61 @@ li{
 .syntaxhighlighter .constants {
     color: #5200FF!important
 }
+
+#article-content {
+	position: relative;
+}
+
+#article-content li {
+    list-style: inherit;
+}
+
+#content-toc-wrap {
+	width: 16em;
+	position: fixed;
+    right: 2em;
+    background: #fff;
+    z-index: 99;
+    border: 1px solid #dbdbdb;
+}
+
+#content-toc ol{
+	overflow: auto;
+}
+
+#content-toc > ol{
+	padding: 0.6em;
+	margin: 0;
+}
+
+#content-toc li {
+	line-height: 28px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    float: left;
+	margin-bottom: 0;
+}
+
+#content-toc a {
+	color: #333;
+}
+
+#content-toc a:hover {
+	color: #5FB878;
+	text-decoration: none;
+}
+
+.content-toc-title{
+	margin-bottom: 0 !important;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 0.5em;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px){
+	#content-toc-wrap {
+		display: none;
+	}
+}

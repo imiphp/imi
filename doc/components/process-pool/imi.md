@@ -1,5 +1,7 @@
 # 进程池-imi
 
+[toc]
+
 imi 实现了一个可以替代 Swoole 进程池的更强大的进程池。支持信号监听、重启进程（可指定）、Pool Master 与 Worker 消息通讯等。
 
 基于 `Swoole\Process` 实现，内部已实现了信号监听。

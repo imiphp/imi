@@ -1,5 +1,7 @@
 # Swoole
 
+[toc]
+
 imi v0.0.1 版本开始，支持运行在 Swoole 环境中。
 
 组件引入：`composer require imiphp/imi-swoole`

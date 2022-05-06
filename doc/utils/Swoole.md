@@ -1,5 +1,7 @@
 # SwooleWorker
 
+[toc]
+
 ## v2.x
 
 **类名:** `Imi\Swoole\SwooleWorker`

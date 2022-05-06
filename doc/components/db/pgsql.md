@@ -1,5 +1,7 @@
 # PostgreSQL
 
+[toc]
+
 需要引入 `imi-pgsql` 组件：`composer require imiphp/imi-pgsql`
 
 ## 驱动类

@@ -1,5 +1,7 @@
 # Partial
 
+[toc]
+
 imi 的 `Partial` 思想是从 C# 中借鉴而来。`Partial` 可以将一个类的部分，分成几个文件，分别书写。
 
 截止目前最新的 PHP 8.1 版本，还未在语言层面上支持 `Partial` 特性。

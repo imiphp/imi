@@ -1,5 +1,7 @@
 # 异步执行
 
+[toc]
+
 imi v2.0.7 支持在方法上使用 `@Async` 注解，让这个方法被正常调用时是异步调用。
 
 `@Async` 注解类：`\Imi\Async\Annotation\Async`

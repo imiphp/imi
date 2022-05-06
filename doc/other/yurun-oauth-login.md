@@ -1,5 +1,7 @@
 # 第三方授权 SDK
 
+[toc]
+
 [YurunOAuthLogin](https://github.com/Yurunsoft/YurunOAuthLogin) 是一个PHP 第三方登录授权 SDK，集成了QQ、微信、微博、Github等常用接口。可以轻松嵌入支持 PHP >= 5.4 的任何系统中，2.0 版现已支持 Swoole 协程环境。
 
 ## 支持的登录平台

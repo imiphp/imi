@@ -1,5 +1,7 @@
 # Worker
 
+[toc]
+
 **类名:** `Imi\Worker`
 
 ## 方法

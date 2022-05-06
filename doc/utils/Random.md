@@ -1,5 +1,7 @@
 # Random
 
+[toc]
+
 **类名:** `Imi\Util\Random`
 
 随机生成一些东西的工具类

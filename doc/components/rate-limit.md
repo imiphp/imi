@@ -1,5 +1,7 @@
 # 限流
 
+[toc]
+
 ## 介绍
 
 `imi-rate-limit` 是 `imi` 框架的限流组件，基于 `bandwidth-throttle/token-bucket` 开发。

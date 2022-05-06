@@ -1,5 +1,7 @@
 # Atomic
 
+[toc]
+
 基于 `Swoole` 提供的 `Swoole\Atomic`，直接在配置文件中设置，就可以在`worker`进程中使用，数据互通。
 
 使用时无需加锁！

@@ -1,5 +1,7 @@
 # Swagger API 文档生成
 
+[toc]
+
 支持在项目中使用 Swagger 注解语法，运行命令，生成 Swagger 文件。
 
 Swagger 是最流行的 API 开发工具，它遵循 OpenAPI Specification（OpenAPI 规范，也简称 OAS）。

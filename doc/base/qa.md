@@ -1,5 +1,7 @@
 # 常见问题
 
+[toc]
+
 ## 通过 `composer create-project` 创建项目报错问题
 
 **解决方案：** 请确保你的环境依赖版本符合要求：PHP >= 7.4 && Composer >= 2.0

@@ -1,5 +1,7 @@
 # KVStorage
 
+[toc]
+
 **类名:** `Imi\Util\KVStorage`
 
 kv存储类，基于SplObjectStorage，支持非对象键

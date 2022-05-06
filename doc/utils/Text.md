@@ -1,5 +1,7 @@
 # Text
 
+[toc]
+
 **类名:** `Imi\Util\Text`
 
 字符串工具类

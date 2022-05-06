@@ -1,5 +1,7 @@
 # 错误转为异常捕获
 
+[toc]
+
 imi 框架底层支持将错误转为异常，可以通过 `try...catch` 来捕获。
 
 在 `config.php` 中的 `beans` 配置

@@ -1,5 +1,7 @@
 # ArrayList
 
+[toc]
+
 限定成员类型的数组列表
 
 如果成员类型不正确，会抛出`\InvalidArgumentException`异常

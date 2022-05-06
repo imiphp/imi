@@ -1,5 +1,7 @@
 # ArrayUtil
 
+[toc]
+
 **类名:** `Imi\Util\ArrayUtil`
 
 数组帮助类

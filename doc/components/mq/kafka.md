@@ -1,5 +1,7 @@
 # Kafka
 
+[toc]
+
 ## 介绍
 
 支持在 imi 框架中使用 Kafka 客户端

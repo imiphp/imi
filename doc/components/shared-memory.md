@@ -1,5 +1,7 @@
 # 跨进程变量共享
 
+[toc]
+
 ## 介绍
 
 基于 [Swoole Shared Memory](https://github.com/Yurunsoft/swoole-shared-memory) 开发的 `imi` 框架跨进程变量共享组件。

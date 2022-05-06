@@ -1,5 +1,7 @@
 # 控制器生成
 
+[toc]
+
 生成一个 Http Controller
 
 必选参数：

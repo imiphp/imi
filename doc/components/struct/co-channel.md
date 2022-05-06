@@ -1,5 +1,7 @@
 # 协程 Channel
 
+[toc]
+
 基于 `Swoole` 提供的 `Swoole\Coroutine\Channel`，直接在配置文件中设置，就可以在`worker`进程中使用，数据互通。
 
 `Swoole\Coroutine\Channel`可以作为队列使用，支持多生产者协程和多消费者协程。底层自动实现了协程的切换和调度。

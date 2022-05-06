@@ -1,5 +1,7 @@
 # Digital
 
+[toc]
+
 **类名:** `Imi\Util\Digital`
 
 数字相关工具类

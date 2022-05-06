@@ -1,5 +1,7 @@
 # 模型软删除
 
+[toc]
+
 因为种种原因，现在大部分场景下，我们开发删除功能时，都不会将记录物理删除。
 
 使用模型软删除功能非常简单，只需要在模型类中引入 trait `Imi\Model\SoftDelete\Traits\TSoftDelete`，并且在类上加上注解 `@SoftDelete`

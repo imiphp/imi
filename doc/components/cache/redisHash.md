@@ -1,5 +1,7 @@
 # Redis Cache
 
+[toc]
+
 使用 redis 的 hash，即 hset 和 hget 方法实现，不支持ttl
 
 > 使用时需要注意，key格式为`hashkey->member`，即为`$redis->hget('hashkey', 'member')`

@@ -1,5 +1,7 @@
 # 介绍
 
+[toc]
+
 imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。
 
 imi 支持开发 Http 接口，以及 Http2、WebSocket、TCP、UDP、MQTT 等常驻内存服务。

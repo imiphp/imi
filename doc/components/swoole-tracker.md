@@ -1,5 +1,7 @@
 # swoole-tracker
 
+[toc]
+
 ## 介绍
 
 在 imi 框架中接入 Swoole Tracker 监控

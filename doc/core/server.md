@@ -1,5 +1,7 @@
 # Server 对象
 
+[toc]
+
 每个服务器、每个协议端口，在 imi 中都有一个 Server 对象。
 
 ## 如何拿到 Server 对象

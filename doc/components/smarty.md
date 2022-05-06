@@ -1,5 +1,7 @@
 # Smarty 模版引擎
 
+[toc]
+
 ## 介绍
 
 支持在 imi 框架中使用 Smarty 模版引擎

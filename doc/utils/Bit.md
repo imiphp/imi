@@ -1,5 +1,7 @@
 # Bit
 
+[toc]
+
 **类名:** `Imi\Util\Bit`
 
 位操作工具类

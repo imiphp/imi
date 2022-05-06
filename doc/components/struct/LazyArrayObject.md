@@ -1,5 +1,7 @@
 # LazyArrayObject
 
+[toc]
+
 同时可以作为数组和对象访问的类
 
 ```php

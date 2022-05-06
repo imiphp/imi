@@ -1,5 +1,7 @@
 # File
 
+[toc]
+
 **类名:** `Imi\Util\File`
 
 文件相关工具类

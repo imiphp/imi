@@ -1,5 +1,7 @@
 # 注解管理器
 
+[toc]
+
 imi 中内置了一个注解管理器，通过它可以轻松获取到类、方法、属性、常量中的注解。
 
 类：`\Imi\Bean\Annotation\AnnotationManager`

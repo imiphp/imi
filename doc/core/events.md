@@ -1,5 +1,7 @@
 # 事件列表
 
+[toc]
+
 ## imi 框架事件
 
 ### IMI.INITED

@@ -1,5 +1,7 @@
 # Pagination
 
+[toc]
+
 **类名:** `Imi\Util\Pagination`
 
 分页计算类

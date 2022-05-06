@@ -1,5 +1,7 @@
 # Apcu 缓存
 
+[toc]
+
 使用需要安装 Apcu 扩展
 
 > Apcu 仅推荐在 php-fpm 模式使用

@@ -1,5 +1,7 @@
 # imi 组件列表一览
 
+[toc]
+
 ## 官方组件
 
 * [PostgreSQL](/components/db/pgsql.html)

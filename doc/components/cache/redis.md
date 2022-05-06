@@ -1,5 +1,7 @@
 # Redis Cache
 
+[toc]
+
 使用 redis 的 set 和 get 方法实现，支持 ttl
 
 ## 配置

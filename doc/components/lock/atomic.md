@@ -1,5 +1,7 @@
 # AtomicLock
 
+[toc]
+
 AtomicLock 是单机进程锁，会阻塞。
 
 使用前需要配置 Atomic。
