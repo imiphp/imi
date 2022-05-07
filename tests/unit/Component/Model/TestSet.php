@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Model;
 
 use Imi\Bean\Annotation\Inherit;
-use Imi\Test\Component\Model\Base\TBase;
+use Imi\Test\Component\Model\Base\TestSetBase;
 
 /**
- * t.
+ * tb_test_set.
  *
  * @Inherit
  */
-class T extends TBase
+class TestSet extends TestSetBase
 {
 }

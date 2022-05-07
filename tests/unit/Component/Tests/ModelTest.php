@@ -13,9 +13,11 @@ use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
+use Imi\Test\Component\Model\TestEnum;
 use Imi\Test\Component\Model\TestJson;
 use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
+use Imi\Test\Component\Model\TestSet;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
 
@@ -808,5 +810,47 @@ class ModelTest extends BaseTest
         $this->assertNull($jsonValue);
 
         $model->delete();
+    }
+
+    public function testEnum(): void
+    {
+        $record = TestEnum::newInstance();
+        $record->insert();
+        $this->assertEquals([
+            'id'     => 1,
+            'value1' => '\'test\'',
+            'value2' => '1',
+        ], $record->toArray());
+
+        $record = TestEnum::newInstance();
+        $record->value1 = 'b';
+        $record->value2 = '2';
+        $record->insert();
+        $this->assertEquals([
+            'id'     => 2,
+            'value1' => 'b',
+            'value2' => '2',
+        ], $record->toArray());
+    }
+
+    public function testSet(): void
+    {
+        $record = TestSet::newInstance();
+        $record->insert();
+        $this->assertEquals([
+            'id'     => 1,
+            'value1' => ['\'test\''],
+            'value2' => ['1', '2'],
+        ], $record->toArray());
+
+        $record = TestSet::newInstance();
+        $record->value1 = ['a', 'b'];
+        $record->value2 = ['2', '3'];
+        $record->insert();
+        $this->assertEquals([
+            'id'     => 2,
+            'value1' => ['a', 'b'],
+            'value2' => ['2', '3'],
+        ], $record->toArray());
     }
 }

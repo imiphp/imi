@@ -422,6 +422,7 @@ class ModelGenerate extends BaseCommand
                 'float'     => ['float|null', '?float', '(float)'],
                 'decimal'   => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : '', ''],
                 'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', '', ''],
+                'set'       => ['array|null', '?array', ''],
             ];
         }
 
@@ -466,8 +467,14 @@ class ModelGenerate extends BaseCommand
             case 'text':
             case 'mediumtext':
             case 'enum':
-            case 'set':
                 return (string) $default;
+            case 'set':
+                if ('' === $default)
+                {
+                    return null;
+                }
+
+                return explode(',', $default);
             default:
                 return null;
         }

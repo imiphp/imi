@@ -144,6 +144,16 @@ abstract class Model extends BaseModel
                                 $v = explode($fieldAnnotation->listSeparator, $v);
                             }
                             break;
+                        case 'set':
+                            if ('' === $v)
+                            {
+                                $v = [];
+                            }
+                            else
+                            {
+                                $v = explode(',', $v);
+                            }
+                            break;
                     }
                 }
                 $this[$k] = $v;
@@ -1053,6 +1063,9 @@ abstract class Model extends BaseModel
                     {
                         $value = implode($column->listSeparator, $value);
                     }
+                    break;
+                case 'set':
+                    $value = implode(',', $value);
                     break;
             }
             $result[$dbFieldName] = $value;
