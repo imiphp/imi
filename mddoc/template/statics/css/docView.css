@@ -714,6 +714,7 @@ li{
     border-bottom: 1px solid #dbdbdb;
     padding: 0.5em;
     font-weight: bold;
+	cursor: move;
 }
 
 @media screen and (max-width: 768px){

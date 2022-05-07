@@ -126,6 +126,7 @@ function parseLeftHeight()
 
 function onContentChange()
 {
+	hCatalog('#article-content', '#content-toc');
 	var content = $('#article-content');
 	content.find('blockquote').addClass('layui-elem-quote');
 	content.find('table').addClass('layui-table');
@@ -145,7 +146,6 @@ function onContentChange()
 			$(this).attr('target', '_blank');
 		}
 	})
-	hCatalog('#article-content', '#content-toc');
 	setTimeout(function(){
 		resizeCode();
 	}, 1)
@@ -213,6 +213,37 @@ function hTree(wrapNode) {
 	return root.children
 }
 
+function initContentToc()
+{
+	var isDown = false;
+	var beginLeft = 0
+	var beginTop = 0;
+	var mouseBeginLeft = 0
+	var mouseBeginTop = 0;
+
+	$(document).on('mousedown', '.content-toc-title', function(e){
+		var wrap = $('#content-toc-wrap');
+		isDown = true;
+		beginLeft = wrap[0].offsetLeft;
+		beginTop = wrap[0].offsetTop;
+		mouseBeginLeft = e.pageX;
+		mouseBeginTop = e.pageY;
+	});
+
+	$(document).on('mouseup', '.content-toc-title', function(){
+		isDown = false;
+	});
+
+	$(document).on('mousemove', '.content-toc-title', function(e){
+		if(isDown)
+		{
+			var wrap = $('#content-toc-wrap');
+			wrap.css('left', (beginLeft + (e.pageX - mouseBeginLeft)) + 'px');
+			wrap.css('top', (beginTop + (e.pageY - mouseBeginTop)) + 'px');
+		}
+	});
+}
+
 $(function(){
 	parseLeftHeight();
 
@@ -225,8 +256,10 @@ $(function(){
 	});
 
 	$('#btn-about').click(function(){
-		layer.alert('本文档由 <a href="https://github.com" target="_blank">mddoc</a> 生成！');
+		layer.alert('本文档由 <a href="https://github.com/Yurunsoft/mddoc" target="_blank">mddoc</a> 生成！');
 	});
+
+	initContentToc();
 
 	SyntaxHighlighter.all();
 	onContentChange();
