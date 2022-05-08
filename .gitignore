@@ -14,3 +14,4 @@ composer.lock
 *.pid
 *.macro.php
 /.phpbench
+/node_modules

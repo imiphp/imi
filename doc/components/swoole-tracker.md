@@ -6,7 +6,7 @@
 
 在 imi 框架中接入 Swoole Tracker 监控
 
-Swoole Tracker: https://www.swoole-cloud.com/tracker.html
+Swoole Tracker: <https://www.swoole-cloud.com/tracker.html>
 
 * 企业版集成了Facebook的Xhprof工具，可以生成调用堆栈图和火焰图，亦可生成分层分析表格，方便找到程序瓶颈点进行优化。
 
@@ -32,26 +32,26 @@ Swoole Tracker: https://www.swoole-cloud.com/tracker.html
 
 1. 在你的 `composer.json` 中加入下面的内容:
 
-```json
-{
-    "require": {
-        "imiphp/imi-swoole-tracker": "~2.1.0"
+    ```json
+    {
+        "require": {
+            "imiphp/imi-swoole-tracker": "~2.1.0"
+        }
     }
-}
-```
+    ```
 
 2. 执行 `composer update` 安装。
 
 3. 在项目 `config/config.php` 中配置：
 
-```php
-[
-    'components'    =>  [
-        // 引入本组件
-        'SwooleTracker'       =>  'Imi\SwooleTracker',
-    ],
-]
-```
+    ```php
+    [
+        'components'    =>  [
+            // 引入本组件
+            'SwooleTracker'       =>  'Imi\SwooleTracker',
+        ],
+    ]
+    ```
 
 ### Http 服务
 

@@ -211,7 +211,7 @@ $queue->restoreTimeoutMessages();
 
 ## 命令行工具
 
-### 获取队列状态
+### 命令-获取队列状态
 
 命令：`bin/imi-cli queue/status 队列名称`
 
@@ -227,7 +227,7 @@ $queue->restoreTimeoutMessages();
 }
 ```
 
-### 将失败消息恢复到队列
+### 命令-将失败消息恢复到队列
 
 命令：`bin/imi-cli queue/restoreFail 队列名称`
 
@@ -237,7 +237,7 @@ $queue->restoreTimeoutMessages();
 0
 ```
 
-### 将超时消息恢复到队列
+### 命令-将超时消息恢复到队列
 
 命令：`bin/imi-cli queue/restoreTimeout 队列名称`
 

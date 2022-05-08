@@ -336,9 +336,11 @@ class WorkerErrorEventParam extends EventParam
 
 事件监听：`@ClassEventListener(className="Imi\Swoole\Server\Http\Server", eventName="事件名")`
 
-#### request
+#### Http 请求事件
 
-事件参数：
+**事件名：**`request`
+
+**事件参数：**
 
 ```php
 class RequestEventParam extends EventParam
@@ -357,9 +359,11 @@ class RequestEventParam extends EventParam
 }
 ```
 
-#### close
+#### Swoole 关闭连接事件
 
-事件参数：
+**事件名：**`close`
+
+**事件参数：**
 
 ```php
 class CloseEventParam extends EventParam
@@ -389,11 +393,13 @@ class CloseEventParam extends EventParam
 
 事件监听：`@ClassEventListener(className="Imi\Swoole\Server\WebSocket\Server", eventName="事件名")`
 
-#### handShake
+#### WebSocket 握手事件
+
+**事件名：**`handShake`
 
 握手事件
 
-事件参数：
+**事件参数：**
 
 ```php
 class HandShakeEventParam extends EventParam
@@ -412,11 +418,13 @@ class HandShakeEventParam extends EventParam
 }
 ```
 
-#### open
+#### 握手后打开连接事件
+
+**事件名：**`open`
 
 握手完成后打开连接事件
 
-事件参数：
+**事件参数：**
 
 ```php
 class OpenEventParam extends EventParam
@@ -437,9 +445,11 @@ class OpenEventParam extends EventParam
 }
 ```
 
-#### message
+#### 消息事件
 
-事件参数：
+**事件名：**`message`
+
+**事件参数：**
 
 ```php
 class MessageEventParam extends EventParam
@@ -458,9 +468,11 @@ class MessageEventParam extends EventParam
 }
 ```
 
-#### close
+#### TCP 连接关闭事件
 
-事件参数：
+**事件名：**`close`
+
+**事件参数：**
 
 ```php
 class CloseEventParam extends EventParam
@@ -486,11 +498,13 @@ class CloseEventParam extends EventParam
 }
 ```
 
-#### disconnect
+#### WebSocket 连接关闭事件
+
+**事件名：**`disconnect`
 
 用于在连接关闭时区分连接是否为 WebSocket 连接。
 
-事件参数：
+**事件参数：**
 
 ```php
 class DisconnectEventParam extends EventParam
@@ -513,9 +527,11 @@ class DisconnectEventParam extends EventParam
 
 事件监听：`@ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server", eventName="事件名")`
 
-#### connect
+#### 连接事件
 
-事件参数：
+**事件名：**`connect`
+
+**事件参数：**
 
 ```php
 class ConnectEventParam extends EventParam
@@ -540,9 +556,11 @@ class ConnectEventParam extends EventParam
 }
 ```
 
-#### receive
+#### 接收数据事件
 
-事件参数：
+**事件名：**`receive`
+
+**事件参数：**
 
 ```php
 class ReceiveEventParam extends EventParam
@@ -574,9 +592,11 @@ class ReceiveEventParam extends EventParam
 }
 ```
 
-#### close
+#### 连接关闭事件
 
-事件参数：
+**事件名：**`close`
+
+**事件参数：**
 
 ```php
 class CloseEventParam extends EventParam
@@ -602,53 +622,15 @@ class CloseEventParam extends EventParam
 }
 ```
 
-#### BufferFull
-
-事件参数：
-
-```php
-class BufferEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
-
-    /**
-     * 客户端连接的标识符
-     * @var int|string
-     */
-    public $clientId;
-}
-```
-
-#### BufferEmpty
-
-事件参数：
-
-```php
-class BufferEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
-
-    /**
-     * 客户端连接的标识符
-     * @var int|string
-     */
-    public $clientId;
-}
-```
-
 ### UDP Server
 
 事件监听：`@ClassEventListener(className="Imi\Swoole\Server\UdpServer\Server", eventName="事件名")`
 
-#### packet
+#### 包事件
+
+**事件名：**`packet`
+
+**事件参数：**
 
 ```php
 class PacketEventParam extends EventParam

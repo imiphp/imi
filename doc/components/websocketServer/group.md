@@ -94,6 +94,9 @@ $this->server->hasGroup('分组名称');
 ```php
 // 遍历分组中所有clientId，调用服务器的push方法，发送message
 $this->server->groupCall('分组名称', 'push', 'message');
+
+// 发送给组里所有的连接，其它服务器方法一样调用，省去clientId参数即可
+$group->push('message');
 ```
 
 ### 获取所有分组
@@ -130,11 +133,4 @@ $group->getServer();
 
 ```php
 $group->getMaxClients();
-```
-
-### 调用组方法
-
-```php
-// 发送给组里所有的连接，其它服务器方法一样调用，省去clientId参数即可
-$group->push('message');
 ```

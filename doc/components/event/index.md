@@ -4,9 +4,9 @@
 
 ## 全局事件
 
-### 事件监听
+### 监听全局事件
 
-#### 注解监听
+#### 注解监听全局事件
 
 以`imi/src/Listener/Init.php`为例
 
@@ -94,9 +94,9 @@ Event::trigger('事件名称', '传入事件回调的数据', '目标对象', '�
 
 局部事件就是在某个类实例的事件。
 
-### 事件监听
+### 监听局部事件
 
-#### 注解监听
+#### 注解监听局部事件
 
 以`imi/src/Server/Http/Listener/BeforeRequest.php`为例
 
@@ -136,7 +136,7 @@ class BeforeRequest implements IRequestEventListener
 `eventName`要监听的事件名称
 `priority`事件触发后执行的优先级，数字越大越先执行，同样大执行顺序不一定
 
-#### 代码监听
+#### 代码监听局部事件
 
 ```php
 $object->on('事件名', function(){
@@ -156,7 +156,7 @@ $object->off('事件名', $callable);
 
 ```
 
-### 自定义事件
+### 自定义触发事件
 
 ```php
 $object->trigger('事件名称', '传入事件回调的数据', '目标对象', '参数类，默认为EventParam::class');

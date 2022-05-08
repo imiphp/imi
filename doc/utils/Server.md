@@ -20,7 +20,9 @@
 
 ### Swoole
 
-#### LocalServerUtil
+#### Swoole 本地服务器工具类
+
+**Bean 名称：**`LocalServerUtil`
 
 基于 Swoole Server 的 `sendMessage()` 方法实现，支持跨 Worker 进程中的连接，推送数据到客户端。
 
@@ -28,7 +30,9 @@
 
 > Swoole 模式下默认使用该类
 
-#### RedisServerUtil
+#### Redis 服务器工具类
+
+**Bean 名称：**`RedisServerUtil`
 
 使用 Redis 发布订阅实现的，分布式服务器工具类，支持分布式消息推送。
 
@@ -55,11 +59,15 @@
 
 ### Workerman
 
-#### LocalServerUtil
+#### Workerman 本地服务器工具类
+
+**Bean 名称：**`LocalServerUtil`
 
 仅支持单个进程中，连接的消息推送，建议仅用于开发环境。
 
-#### ChannelServerUtil
+#### Workerman 频道工具类
+
+**Bean 名称：**`ChannelServerUtil`
 
 基于 Workerman 的 Channel 组件实现。
 
@@ -94,7 +102,9 @@
 ],
 ```
 
-#### WorkermanGatewayServerUtil
+#### Workerman 网关工具类
+
+**Bean 名称：**`WorkermanGatewayServerUtil`
 
 在 Workerman 模式下使用 Workerman 网关
 

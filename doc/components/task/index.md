@@ -46,9 +46,9 @@ class Test implements ITaskHandler
 
 类名无所谓，实现`ITaskHandler`接口和两个方法即可。
 
-## 投递任务
+## 投递任务对象
 
-### 投递异步任务
+### 投递异步任务对象
 
 ```php
 TaskManager::post(new TaskInfo(
@@ -63,7 +63,7 @@ TaskManager::post(new TaskInfo(
 
 调用后立即返回，不影响下面代码的执行
 
-### 同步投递任务
+### 同步投递任务对象
 
 ```php
 TaskManager::postWait(new TaskInfo(
@@ -80,7 +80,7 @@ TaskManager::postWait(new TaskInfo(
 
 投递任务后阻塞等待执行完毕或超时，返回值为任务执行结果或false
 
-### 协程批量投递任务
+### 协程批量投递任务对象
 
 ```php
 TaskManager::postCo([new TaskInfo(
@@ -99,7 +99,7 @@ TaskManager::postCo([new TaskInfo(
 
 ## 注解
 
-### 定义任务执行类
+### 注解定义任务执行类
 
 ```php
 <?php

@@ -257,7 +257,7 @@ Db::transContext(function(IDb $db){
 
 > 可以使用模型
 
-**自动事务处理**
+**自动事务处理：**
 
 `@Transaction` 注解，类：`Imi\Db\Annotation\Transaction`
 
@@ -285,7 +285,7 @@ Db::transContext(function(IDb $db){
 
 `@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1")`
 
-**事务监听**
+**事务监听：**
 
 监听提交事务：
 

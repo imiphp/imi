@@ -117,7 +117,7 @@ class TestRedisModel extends RedisModel
 
 需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法。
 
-#### @RedisEntity
+### @RedisEntity
 
 指定当前类为Redis实体类
 

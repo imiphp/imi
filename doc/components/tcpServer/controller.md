@@ -78,7 +78,7 @@ class Test extends \Imi\Controller\TcpController
 
 直接在方法中返回一个数组或对象，在服务器配置设定的处理器，就会把这个转为对应数据响应给客户端。
 
-**响应数据**
+**响应数据：**
 
 ```php
 return ['success'=>true];

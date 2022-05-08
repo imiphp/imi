@@ -18,6 +18,6 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png)]
 
 ![wechat](../../res/wechat.png)
 
-官方网站：https://www.imiphp.com/
+官方网站：<https://www.imiphp.com/>
 
-Github：https://github.com/imiphp/imi
+Github：<https://github.com/imiphp/imi>
