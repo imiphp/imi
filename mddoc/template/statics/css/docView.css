@@ -681,6 +681,10 @@ li{
     border: 1px solid #dbdbdb;
 }
 
+#content-toc {
+    overflow: auto;
+}
+
 #content-toc ol{
 	overflow: auto;
 }
