@@ -305,21 +305,21 @@ return \Imi\Server\Http\Message\Proxy\ResponseProxy::withStatus(404);
 
 1. 操作后赋值：
 
-```php
-public function action()
-{
-    $this->response = $this->response->withStatus(404);
-}
-```
+    ```php
+    public function action()
+    {
+        $this->response = $this->response->withStatus(404);
+    }
+    ```
 
-2. 操作后返回
+2. 操作后返回：
 
-```php
-public function action()
-{
-    return $this->response->withStatus(404);
-}
-```
+    ```php
+    public function action()
+    {
+        return $this->response->withStatus(404);
+    }
+    ```
 
 #### 重定向
 
@@ -385,6 +385,7 @@ $reponse->withHeader('test', ['v2', 'v3']);
 #### 添加返回头
 
 `public function withAddedHeader($name, $value)`
+
 ```php
 $reponse->withAddedHeader('test', 'v1');
 $reponse->withAddedHeader('test', ['v2', 'v3']);
@@ -423,11 +424,3 @@ $swooleResponse = $this->request->getSwooleResponse();
 #### 获取 Workerman 的 http 响应对象
 
 `public function getWorkermanResponse(): \Workerman\Protocols\Http\Response`
-
-#### 获取 Workerman 的 Worker 对象
-
-`public function getWorker(): \Workerman\Worker`
-
-#### 获取 Workerman 的连接对象
-
-`public function getConnection(): \Workerman\Connection\TcpConnection`

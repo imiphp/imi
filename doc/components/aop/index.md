@@ -44,6 +44,7 @@ $child->test();
 ```
 
 运行结果：
+
 ```text
 Child->__beforeTest()
 Parent->test()

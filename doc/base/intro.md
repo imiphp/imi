@@ -29,7 +29,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ### 为什么要用 Swoole？
 
-https://wiki.swoole.com/
+<https://wiki.swoole.com/>
 
 ### 核心组件
 

@@ -15,6 +15,7 @@
 `--override` 是否覆盖已存在的文件，请慎重！(true/false)
 
 示例：
+
 ```bash
 vendor/bin/imi-xxx generate/httpController 控制器名 "命名空间"
 

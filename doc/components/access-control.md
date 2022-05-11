@@ -113,7 +113,7 @@ $operations = $role->getOperations();
 $operationTree = $role->getOperationTree();
 ```
 
-#### 增加、设置权限
+#### 增加、设置角色权限
 
 ```php
 $role->addOperations('code1', 'code2'); // 只在当前基础上增加这两个权限
@@ -121,7 +121,7 @@ $role->addOperations('code1', 'code2'); // 只在当前基础上增加这两个�
 $role->setOperations('code1', 'code2'); // 将角色权限设置为仅有这两个权限
 ```
 
-#### 移除权限
+#### 移除角色权限
 
 ```php
 $role->removeOperations('code1', 'code2');
@@ -176,7 +176,7 @@ $operations = $member->getOperations();
 $operationTree = $member->getOperationTree();
 ```
 
-#### 增加、设置权限
+#### 增加、设置用户权限
 
 ```php
 $member->addOperations('code1', 'code2'); // 只在当前基础上增加这两个权限
@@ -184,7 +184,7 @@ $member->addOperations('code1', 'code2'); // 只在当前基础上增加这两�
 $member->setOperations('code1', 'code2'); // 将角色权限设置为仅有这两个权限
 ```
 
-#### 移除权限
+#### 移除用户权限
 
 ```php
 $member->removeOperations('code1', 'code2');

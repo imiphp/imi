@@ -154,7 +154,7 @@ class A
 }
 ```
 
-**@JWTValidation**
+**@JWTValidation:**
 
 JWT 验证注解
 
@@ -169,7 +169,9 @@ JWT 验证注解
 | dataParam | 数据注入的参数名称 |
 
 ### Rsa配置
+
 配置 `@app.beans`：
+
 - 打开Git Bash Here 用openssl生成私匙文件
 - openssl genrsa -out pri_key.pem 1024
 - 根据私匙文件生成公匙

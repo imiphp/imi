@@ -269,7 +269,7 @@ abstract class ArticleBase extends Model
 
 > 除 `$wrap` 外其它参数含义同 `json_decode()`
 
-**$wrap 参数说明**
+**$wrap 参数说明：**
 
 `$wrap` 反序列化数据的包装，如果是对象或者数组时有效。支持类名、函数名。
 

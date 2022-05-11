@@ -257,7 +257,7 @@ return [
 
 **更多写法：**
 
-- env:
+* env:
 
 ```env
 A=123
@@ -271,7 +271,7 @@ NULL_VALUE=null
 EMPTY_VALUE=
 ```
 
-- php:
+* php:
 
 ```php
 use Imi\Env;

@@ -37,9 +37,11 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 ### 定义任务
 
 #### Task 任务
+
 使用task定时任务时，需要在项目config.php中的服务器配置里，开启`task_worker_num`参数，否则会报下面的错：
 
 Uncaught ErrorException: Swoole\Server::task(): task method can't be executed without task worker
+
 ```php
 // 主服务器配置
 'mainServer'    =>    [
@@ -55,6 +57,7 @@ Uncaught ErrorException: Swoole\Server::task(): task method can't be executed wi
 ```
 
 与异步任务写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
+
 ```php
 <?php
 namespace Imi\Test\HttpServer\Cron;
@@ -178,11 +181,11 @@ class CronRandomWorker implements ICronTask
 
 ##### 属性
 
-**id**
+**id:**
 
 使用`@Cron`注解时的任务唯一ID。如果是 `Task`、`Process`，默认使用 `Task` 或 `Process` + 名称。
 
-**type**
+**type:**
 
 任务类型
 
@@ -198,11 +201,11 @@ class CronRandomWorker implements ICronTask
 
 `cron_process`-定时任务进程
 
-**force**
+**force:**
 
 每次启动服务强制执行，默认为`false`
 
-**year**
+**year:**
 
 指定任务执行年份，默认为 `*`。
 
@@ -216,7 +219,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 年，其它以此类推
 
-**month**
+**month:**
 
 指定任务执行月份，默认为 `*`。
 
@@ -230,7 +233,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 个月，其它以此类推
 
-**day**
+**day:**
 
 指定任务执行日期，默认为 `*`。
 
@@ -254,7 +257,7 @@ class CronRandomWorker implements ICronTask
 
 `year 1,3,5,-1` (每年 1、3、5、最后一天) - 指定一年中的多个日期，支持负数为倒数的日期
 
-**week**
+**week:**
 
 指定周几执行任务，默认为 `*`。
 `*` - 不限制
@@ -262,7 +265,7 @@ class CronRandomWorker implements ICronTask
 `1-6` (周一到周六), `-3--1` (周五到周日) - 指定周几，支持负数为倒数的周
 `1,3,5,-1` (周一、三、五、日) - 指定多个日期，支持负数为倒数的周
 
-**hour**
+**hour:**
 
 指定任务执行小时，默认为 `*`。
 
@@ -276,7 +279,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 小时，其它以此类推
 
-**minute**
+**minute:**
 
 指定任务执行分钟，默认为 `*`。
 
@@ -290,7 +293,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 分钟，其它以此类推
 
-**second**
+**second:**
 
 指定任务执行秒，默认为 `*`。
 
@@ -304,28 +307,28 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 秒，其它以此类推
 
-**unique**
+**unique:**
 
 定时任务唯一性设置
 当前实例唯一: current
 所有实例唯一: all
 不唯一: null
 
-**redisPool**
+**redisPool:**
 
 用于锁的 `Redis` 连接池名
 
-**lockWaitTimeout**
+**lockWaitTimeout:**
 
 获取锁超时时间，单位：秒
 
-**maxExecutionTime**
+**maxExecutionTime:**
 
 最大运行执行时间，单位：秒。
 
 该值与分布式锁超时时间共享，默认为 60 秒
 
-**delayMin、delayMax**
+**delayMin、delayMax:**
 
 最小、最大延迟执行秒数，默认为`0`。
 
