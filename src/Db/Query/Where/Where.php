@@ -9,7 +9,6 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhere;
 use Imi\Db\Query\Raw;
 use Imi\Db\Query\Traits\TRaw;
-use function count;
 
 class Where extends BaseWhere implements IWhere
 {
@@ -155,9 +154,9 @@ class Where extends BaseWhere implements IWhere
                 $valueNames = [];
                 if (\is_array($thisValues))
                 {
-                    if (count($thisValues) === 0)
+                    if (0 === \count($thisValues))
                     {
-                        $result .= '(' . ($operation === 'in' ? '0 = 1' : '1 = 1') . ')';
+                        $result .= '(' . ('in' === $operation ? '0 = 1' : '1 = 1') . ')';
                     }
                     else
                     {

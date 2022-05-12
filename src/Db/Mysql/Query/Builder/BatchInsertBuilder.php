@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Db\Mysql\Query\Builder;
 
+use function array_key_first;
 use Imi\Db\Query\QueryOption;
 use Imi\Util\ObjectArrayHelper;
-use function array_key_first;
 
 class BatchInsertBuilder extends BaseBuilder
 {

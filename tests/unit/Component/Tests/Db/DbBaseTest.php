@@ -608,7 +608,7 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testWhereInEmptyValue()
+    public function testWhereInEmptyValue(): void
     {
         $sql = Db::query()->table('test1')
             ->whereIn('a1', [1, 2, 3])
