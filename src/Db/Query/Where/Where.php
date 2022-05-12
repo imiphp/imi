@@ -9,6 +9,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhere;
 use Imi\Db\Query\Raw;
 use Imi\Db\Query\Traits\TRaw;
+use function count;
 
 class Where extends BaseWhere implements IWhere
 {
@@ -151,21 +152,27 @@ class Where extends BaseWhere implements IWhere
                 break;
             case 'in':
             case 'not in':
-                $result .= '(';
                 $valueNames = [];
                 if (\is_array($thisValues))
                 {
-                    foreach ($thisValues as $value)
+                    if (count($thisValues) === 0)
                     {
-                        $paramName = $query->getAutoParamName();
-                        $valueNames[] = $paramName;
-                        $binds[$paramName] = $value;
+                        $result .= '(' . ($operation === 'in' ? '0 = 1' : '1 = 1') . ')';
                     }
-                    $result .= implode(',', $valueNames) . ')';
+                    else
+                    {
+                        foreach ($thisValues as $value)
+                        {
+                            $paramName = $query->getAutoParamName();
+                            $valueNames[] = $paramName;
+                            $binds[$paramName] = $value;
+                        }
+                        $result .= '(' . implode(',', $valueNames) . ')';
+                    }
                 }
                 elseif ($thisValues instanceof Raw)
                 {
-                    $result .= $thisValues->toString($query) . ')';
+                    $result .= '(' . $thisValues->toString($query) . ')';
                 }
                 else
                 {

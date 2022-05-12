@@ -607,4 +607,19 @@ abstract class DbBaseTest extends BaseTest
             ],
         ], $stmt->fetchAll());
     }
+
+    public function testWhereInEmptyValue()
+    {
+        $sql = Db::query()->table('test1')
+            ->whereIn('a1', [1, 2, 3])
+            ->whereIn('a2', [])
+            ->whereNotIn('a3', [1, 2, 3])
+            ->whereNotIn('a4', [])
+            ->buildSelectSql();
+
+        $this->assertEquals(
+            'select * from `test1` where `a1` in (:p1,:p2,:p3) and `a2` in (0 = 1) and `a3` not in (:p4,:p5,:p6) and `a4` not in (1 = 1)',
+            $sql
+        );
+    }
 }
