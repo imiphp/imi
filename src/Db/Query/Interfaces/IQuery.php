@@ -538,7 +538,7 @@ interface IQuery
 
     /**
      * 批量插入数据
-     * 以第 0 个成员作为字段标准.
+     * 以首个成员作为字段标准.
      *
      * @param array|object|null $data
      */

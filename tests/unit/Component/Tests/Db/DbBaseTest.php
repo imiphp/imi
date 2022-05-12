@@ -397,7 +397,7 @@ abstract class DbBaseTest extends BaseTest
         $time = time();
         for ($i = 1; $i <= $insertCount; ++$i)
         {
-            $data[] = [
+            $data["k_{$i}"] = [
                 'title'     => "title_{$i}",
                 'content'   => "content_{$i}",
                 'time'      => date('Y-m-d H:i:s', $time + $i),

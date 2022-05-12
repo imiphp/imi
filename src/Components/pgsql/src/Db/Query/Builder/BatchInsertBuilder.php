@@ -29,7 +29,7 @@ class BatchInsertBuilder extends BaseBuilder
         {
             throw new \RuntimeException('Batch insert must have at least 1 data');
         }
-        $fields = array_keys($list[0]);
+        $fields = array_keys($list[array_key_first($list)]);
         $safeFields = [];
         foreach ($fields as $key)
         {
