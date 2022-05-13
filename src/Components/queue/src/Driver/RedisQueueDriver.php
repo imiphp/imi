@@ -268,7 +268,7 @@ class RedisQueueDriver implements IQueueDriver
         {
             if ('' == ($error = $redis->getLastError()))
             {
-                throw new QueueException('Queue delete failed');
+                return false;
             }
             else
             {
