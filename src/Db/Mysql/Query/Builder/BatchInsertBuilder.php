@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Db\Mysql\Query\Builder;
 
-use function array_key_first;
 use Imi\Db\Query\QueryOption;
 use Imi\Util\ObjectArrayHelper;
 
@@ -30,7 +29,7 @@ class BatchInsertBuilder extends BaseBuilder
         {
             throw new \RuntimeException('Batch insert must have at least 1 data');
         }
-        $fields = array_keys($list[array_key_first($list)]);
+        $fields = array_keys(reset($list));
         $safeFields = [];
         foreach ($fields as $key)
         {

@@ -154,11 +154,7 @@ class Where extends BaseWhere implements IWhere
                 $valueNames = [];
                 if (\is_array($thisValues))
                 {
-                    if (0 === \count($thisValues))
-                    {
-                        $result .= '(' . ('in' === $operation ? '0 = 1' : '1 = 1') . ')';
-                    }
-                    else
+                    if ($thisValues)
                     {
                         foreach ($thisValues as $value)
                         {
@@ -167,6 +163,10 @@ class Where extends BaseWhere implements IWhere
                             $binds[$paramName] = $value;
                         }
                         $result .= '(' . implode(',', $valueNames) . ')';
+                    }
+                    else
+                    {
+                        $result .= '(' . ('in' === $operation ? '0 = 1' : '1 = 1') . ')';
                     }
                 }
                 elseif ($thisValues instanceof Raw)
