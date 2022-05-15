@@ -397,7 +397,7 @@ abstract class DbBaseTest extends BaseTest
         $time = time();
         for ($i = 1; $i <= $insertCount; ++$i)
         {
-            $data[] = [
+            $data["k_{$i}"] = [
                 'title'     => "title_{$i}",
                 'content'   => "content_{$i}",
                 'time'      => date('Y-m-d H:i:s', $time + $i),
@@ -606,5 +606,20 @@ abstract class DbBaseTest extends BaseTest
                 'member_id' => 0,
             ],
         ], $stmt->fetchAll());
+    }
+
+    public function testWhereInEmptyValue(): void
+    {
+        $sql = Db::query()->table('test1')
+            ->whereIn('a1', [1, 2, 3])
+            ->whereIn('a2', [])
+            ->whereNotIn('a3', [1, 2, 3])
+            ->whereNotIn('a4', [])
+            ->buildSelectSql();
+
+        $this->assertEquals(
+            'select * from `test1` where `a1` in (:p1,:p2,:p3) and `a2` in (0 = 1) and `a3` not in (:p4,:p5,:p6) and `a4` not in (1 = 1)',
+            $sql
+        );
     }
 }

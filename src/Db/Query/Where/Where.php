@@ -151,21 +151,27 @@ class Where extends BaseWhere implements IWhere
                 break;
             case 'in':
             case 'not in':
-                $result .= '(';
                 $valueNames = [];
                 if (\is_array($thisValues))
                 {
-                    foreach ($thisValues as $value)
+                    if ($thisValues)
                     {
-                        $paramName = $query->getAutoParamName();
-                        $valueNames[] = $paramName;
-                        $binds[$paramName] = $value;
+                        foreach ($thisValues as $value)
+                        {
+                            $paramName = $query->getAutoParamName();
+                            $valueNames[] = $paramName;
+                            $binds[$paramName] = $value;
+                        }
+                        $result .= '(' . implode(',', $valueNames) . ')';
                     }
-                    $result .= implode(',', $valueNames) . ')';
+                    else
+                    {
+                        $result .= '(' . ('in' === $operation ? '0 = 1' : '1 = 1') . ')';
+                    }
                 }
                 elseif ($thisValues instanceof Raw)
                 {
-                    $result .= $thisValues->toString($query) . ')';
+                    $result .= '(' . $thisValues->toString($query) . ')';
                 }
                 else
                 {
