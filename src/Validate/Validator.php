@@ -317,12 +317,12 @@ class Validator implements IValidator
             $args = [];
             foreach ($annotation->args as $arg)
             {
-                $value = $this->getArgValue($data, $arg, $annotation, true, $hasValue, $value);
-                if ($value instanceof ValidateValue)
+                $argValue = $this->getArgValue($data, $arg, $annotation, true, $hasValue, $value);
+                if ($argValue instanceof ValidateValue)
                 {
-                    $value = $this->getArgValue($data, $value->value, $annotation, false, $hasValue, $value);
+                    $argValue = $this->getArgValue($data, $argValue->value, $annotation, false, $hasValue, $value);
                 }
-                $args[] = $value;
+                $args[] = $argValue;
             }
             $result = $callable(...$args);
             if ($annotation->inverseResult)
