@@ -19,7 +19,7 @@ use Imi\Bean\Annotation\Parser;
  * @property int         $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
  * @property string|null $msgQueueKey 消息队列key
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class ProcessPool extends Base
 {
     /**

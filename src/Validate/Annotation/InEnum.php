@@ -14,7 +14,7 @@ use Imi\Bean\Annotation;
  *
  * @property string $enum 注解类名
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class InEnum extends Condition
 {
     /**

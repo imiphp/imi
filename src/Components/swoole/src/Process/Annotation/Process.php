@@ -20,7 +20,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool   $unique              该进程是否只允许存在一个实例
  * @property bool   $co                  自动开启协程
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Process extends Base
 {
     /**

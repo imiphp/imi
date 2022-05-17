@@ -14,7 +14,7 @@ use Imi\Bean\Annotation;
  * @Annotation
  * @Target("METHOD")
  */
-#[\Attribute(\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class ExtractData extends \Imi\Server\Http\Annotation\ExtractData
 {
 }

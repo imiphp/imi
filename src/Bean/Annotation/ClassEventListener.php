@@ -15,7 +15,7 @@ namespace Imi\Bean\Annotation;
  * @property string $eventName 事件名
  * @property int    $priority  优先级，越大越先执行
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class ClassEventListener extends Base
 {
     public function __construct(?array $__data = null, string $className = '', string $eventName = '', int $priority = 0)

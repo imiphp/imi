@@ -15,7 +15,7 @@ use Imi\Bean\Annotation\Base;
  * @property string $fieldName 字段名，支持.的形式无限级取值
  * @property string $alias     提取到当前模型中的字段别名，不设置默认为原始字段名
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class ExtractProperty extends Base
 {
     /**

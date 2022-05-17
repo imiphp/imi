@@ -23,7 +23,7 @@ use Imi\Bean\Annotation\Base;
  * @property bool|null     $timeoutException 执行超时抛出异常
  * @property bool|null     $unlockException  解锁失败抛出异常
  */
-#[\Attribute(\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Lockable extends Base
 {
     public function __construct(

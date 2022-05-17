@@ -16,7 +16,7 @@ namespace Imi\Bean\Annotation;
  * @property bool              $recursion    是否启用递归特性
  * @property string|array|null $env          限制生效的环境，为 null 时则不限制
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Bean extends Base
 {
     /**

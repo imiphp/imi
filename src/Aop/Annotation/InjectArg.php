@@ -15,7 +15,7 @@ use Imi\Bean\Annotation\Base;
  * @property string $name  参数名
  * @property mixed  $value 注入的值
  */
-#[\Attribute(\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class InjectArg extends Base
 {
     /**

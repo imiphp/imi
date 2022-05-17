@@ -22,7 +22,7 @@ use Imi\Bean\Annotation\Base;
  * @property array|\PhpAmqpLib\Wire\AMQPTable $arguments  参数
  * @property int|null                         $ticket     参数
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Queue extends Base
 {
     /**
