@@ -8,6 +8,7 @@ use Imi\Db\Exception\DbException;
 use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBaseStatement;
+use Imi\Swoole\Util\Coroutine;
 
 /**
  * Swoole Coroutine Pgsql 驱动 Statement.
@@ -72,6 +73,14 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             {
                 $this->result = $result;
             }
+        }
+    }
+
+    public function __destruct()
+    {
+        if (null !== $this->statementName && Coroutine::isIn() && $this->db->isConnected())
+        {
+            $this->db->exec('DEALLOCATE ' . $this->statementName);
         }
     }
 
