@@ -12,6 +12,8 @@ class MonoLogger extends Logger
     /**
      * {@inheritDoc}
      *
+     * @param mixed $args
+     *
      * @todo 如 monolog 支持用户接管或者配置 logDepth，请更改实现方式
      */
     public function __construct(...$args)
