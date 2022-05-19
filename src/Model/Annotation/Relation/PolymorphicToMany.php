@@ -24,7 +24,7 @@ namespace Imi\Model\Annotation\Relation;
  * @property bool          $with             关联预加载查询
  * @property string[]|null $withFields       设置结果模型的序列化字段
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class PolymorphicToMany extends RelationBase
 {
     /**

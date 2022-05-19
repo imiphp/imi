@@ -28,7 +28,7 @@ use Imi\Bean\Annotation\Base;
  * @property float       $lockWaitTimeout  获取锁超时时间，单位：秒
  * @property float       $maxExecutionTime 最大运行执行时间，单位：秒；该值与分布式锁超时时间共享，默认为 60 秒
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Cron extends Base
 {
     /**

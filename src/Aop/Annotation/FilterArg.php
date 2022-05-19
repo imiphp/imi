@@ -15,7 +15,7 @@ use Imi\Bean\Annotation\Base;
  * @property string|null   $name   参数名
  * @property callable|null $filter 过滤器
  */
-#[\Attribute(\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class FilterArg extends Base
 {
     public function __construct(?array $__data = null, ?string $name = null, ?callable $filter = null)

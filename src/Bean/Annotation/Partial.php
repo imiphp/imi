@@ -13,7 +13,7 @@ namespace Imi\Bean\Annotation;
  *
  * @property string $class 注入类名
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Partial extends Base
 {
     /**

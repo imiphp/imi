@@ -14,7 +14,7 @@ use Imi\Bean\Annotation;
  *
  * @property string $pattern 正则表达式文本
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Regex extends Condition
 {
     /**

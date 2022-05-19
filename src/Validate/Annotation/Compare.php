@@ -15,7 +15,7 @@ use Imi\Bean\Annotation;
  * @property mixed  $value     被比较值
  * @property string $operation 比较符，使用顺序：name代表的值->比较符->被比较值；允许使用：==、!=、===、!==、<、<=、>、>=
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Compare extends Condition
 {
     /**
