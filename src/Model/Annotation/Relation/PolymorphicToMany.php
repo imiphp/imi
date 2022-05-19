@@ -25,7 +25,7 @@ namespace Imi\Model\Annotation\Relation;
  * @property string[]|null $withFields       设置结果模型的序列化字段
  * @property bool          $withSoftDelete   查询结果是否包含被软删除的数据，仅查询有效。非软删除模型请勿设置为 true
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class PolymorphicToMany extends RelationBase
 {
     /**

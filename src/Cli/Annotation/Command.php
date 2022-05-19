@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $name      命令行名称
  * @property string      $separator 命令名分割符
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Command extends Base
 {
     /**

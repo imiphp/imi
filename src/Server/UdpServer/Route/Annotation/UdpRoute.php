@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property array $condition 条件
  */
-#[\Attribute(\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class UdpRoute extends Base implements \Stringable
 {
     /**

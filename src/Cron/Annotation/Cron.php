@@ -30,7 +30,7 @@ use Imi\Bean\Annotation\Base;
  * @property int         $delayMin         最小延迟执行秒数
  * @property int         $delayMax         最大延迟执行秒数
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Cron extends Base
 {
     /**

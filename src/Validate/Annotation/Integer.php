@@ -15,7 +15,7 @@ use Imi\Bean\Annotation;
  * @property int|null $min 最小值，为null不限制
  * @property int|null $max 最大值，为null不限制
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Integer extends Condition
 {
     /**

@@ -21,7 +21,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string      $comments 注释
  * @property string      $to       将参数值绑定到指定名称的参数
  */
-#[\Attribute(\Attribute::TARGET_METHOD)]
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Argument extends Base
 {
     /**

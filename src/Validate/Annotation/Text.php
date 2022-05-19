@@ -16,7 +16,7 @@ use Imi\Bean\Annotation;
  * @property int      $min  最短长度
  * @property int|null $max  最长长度，为null则不限制长度
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Text extends Condition
 {
     /**

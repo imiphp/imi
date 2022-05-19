@@ -25,7 +25,7 @@ use Imi\Config;
  * @property string|null $exception     异常类
  * @property int|null    $exCode        异常编码
  */
-#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Condition extends Base
 {
     /**
