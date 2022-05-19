@@ -352,6 +352,45 @@ return \Imi\Server\Http\Message\Proxy\ResponseProxy::withStatus(404);
 public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): self
 ```
 
+**例：**
+
+```php
+/**
+ * @Action
+ */
+public function downloadFile()
+{
+    $this->response->sendFile(__FILE__); // 下载当前文件，实际上你可以指定服务器上的文件
+}
+```
+
+#### 发送图片
+
+一般可用于二维码场景
+
+```php
+/**
+ * @Action
+ */
+public function image()
+{
+    // 生成图片
+    $img = imagecreatetruecolor(256, 256);
+    $color = imagecolorallocate($img, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
+    imagefill($img, 0, 0, $color);
+
+    // 生成图片二进制到变量
+    ob_start();
+    imagejpeg($img);
+    $imgContent = ob_get_clean();
+
+    // 输出响应头和图片二进制内容
+    $this->response->setHeader(\Imi\Util\Http\Consts\ResponseHeader::CONTENT_TYPE, \Imi\Util\Http\Consts\MediaType::IMAGE_JPEG)
+                    ->getBody()->write($imgContent);
+    return $this->response;
+}
+```
+
 #### 响应头是否可写
 
 `public function isHeaderWritable()`
