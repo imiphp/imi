@@ -257,13 +257,20 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function errorCode()
         {
-            if ($this->instance->resultDiag)
+            if ($this->instance)
             {
-                return $this->instance->resultDiag['sqlstate'] ?? null;
+                if ($this->instance->resultDiag)
+                {
+                    return $this->instance->resultDiag['sqlstate'] ?? null;
+                }
+                else
+                {
+                    return '';
+                }
             }
             else
             {
-                return '';
+                return null;
             }
         }
 
@@ -291,9 +298,12 @@ if (class_exists(PostgreSQL::class, false))
             $this->lastSql = $sql;
             $instance = $this->instance;
             $this->lastQueryResult = $lastQueryResult = $instance->query($sql);
-            if (false === $lastQueryResult && $this->checkCodeIsOffline($this->errorCode()))
+            if (false === $lastQueryResult)
             {
-                $this->close();
+                if ($this->checkCodeIsOffline($this->errorCode()))
+                {
+                    $this->close();
+                }
 
                 return 0;
             }
@@ -371,7 +381,7 @@ if (class_exists(PostgreSQL::class, false))
             {
                 $this->lastSql = $sql;
                 $parsedSql = SqlUtil::parseSqlWithParams($sql, $sqlParamsMap);
-                $statementName = (string) (++$this->statementIncr);
+                $statementName = 'imi_stmt_' . (++$this->statementIncr);
                 $this->lastQueryResult = $queryResult = $this->instance->prepare($statementName, $parsedSql);
                 if (false === $queryResult)
                 {
