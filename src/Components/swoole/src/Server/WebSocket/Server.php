@@ -150,7 +150,7 @@ class Server extends Base implements ISwooleWebSocketServer
 
         if ($event = ($events['message'] ?? true))
         {
-            $this->swoolePort->on('message', \is_callable($event) ? $event : function (WebSocketServer $server, \Swoole\WebSocket\Frame $frame) {
+            $this->swoolePort->on('message', \is_callable($event) ? $event : function (\Swoole\Server $server, \Swoole\WebSocket\Frame $frame) {
                 try
                 {
                     if (!Worker::isInited())
