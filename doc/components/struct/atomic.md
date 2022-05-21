@@ -30,16 +30,16 @@ use \Imi\Swoole\Util\AtomicManager;
 $atomic = AtomicManager::getInstance('name1');
 
 // 加1，返回结果
-$number = AtomicManager::::add('name1');
+$number = AtomicManager::add('name1');
 
 // 加10，返回结果
-$number = AtomicManager::::add('name1', 10);
+$number = AtomicManager::add('name1', 10);
 
 // 减1，返回结果
-$number = AtomicManager::::sub('name1');
+$number = AtomicManager::sub('name1');
 
 // 减10，返回结果
-$number = AtomicManager::::sub('name1', 10);
+$number = AtomicManager::sub('name1', 10);
 
 // 获取当前值
 $number = AtomicManager::get('name1');
