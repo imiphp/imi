@@ -85,7 +85,17 @@ abstract class BaseConsumer implements IConsumer
                         $messageInstance->setAMQPMessage($message);
                         if ($isSwoole)
                         {
-                            $result = goWait(fn () => $this->consume($messageInstance));
+                            $result = goWait(function () use ($messageInstance) {
+                                try
+                                {
+                                    $this->consume($messageInstance);
+                                }
+                                catch (\Throwable $th)
+                                {
+                                    // @phpstan-ignore-next-line
+                                    App::getBean('ErrorLog')->onException($th);
+                                }
+                            });
                         }
                         else
                         {

@@ -48,7 +48,21 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 {
                     try
                     {
-                        goWait(fn () => $this->task($config));
+                        $throwable = null;
+                        goWait(function () use ($config, &$throwable) {
+                            try
+                            {
+                                $this->task($config);
+                            }
+                            catch (\Throwable $th)
+                            {
+                                $throwable = $th;
+                            }
+                        });
+                        if ($throwable)
+                        {
+                            throw $throwable;
+                        }
                     }
                     catch (\Throwable $th)
                     {

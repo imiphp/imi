@@ -85,6 +85,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             }
             if ($processPools)
             {
+                // @phpstan-ignore-next-line
                 while (true)
                 {
                     foreach ($processPools as $processPool)

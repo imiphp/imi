@@ -106,6 +106,7 @@ class Pool
 
     public function wait(bool $blocking = true): bool
     {
+        $result = true;
         while ($this->working)
         {
             $result = true;
