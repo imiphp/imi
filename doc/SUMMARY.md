@@ -132,7 +132,7 @@
 
 * [配置读写](components/config/index.md)
 * [连接池](components/pool/index.md)
-* [数据库 (Db)](components/db/index.md)
+* [关系型数据库 (Db)](components/db/index.md)
   * [数据库驱动](components/db/index.md)
     * [MySQL](components/db/mysql.md)
     * [PostgreSQL](components/db/pgsql.md)
@@ -202,6 +202,7 @@
   * [雪花算法发号器](components/snowflake.md)
   * [Swagger API 文档生成](dev/generate/swagger.md)
   * [Swoole Tracker](components/swoole-tracker.md)
+  * [TDengine](components/tdengine.md)
 
 ## 消息队列
 
