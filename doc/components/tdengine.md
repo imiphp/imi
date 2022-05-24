@@ -1,5 +1,7 @@
 # TDengine
 
+[TOC]
+
 ## TDengine 介绍
 
 TDengine 是一款高性能、分布式、支持 SQL 的时序数据库（Time-Series Database）。而且除时序数据库功能外，它还提供缓存、数据订阅、流式计算等功能，最大程度减少研发和运维的复杂度，且核心代码，包括集群功能全部开源（开源协议，AGPL v3.0）。与其他时序数据数据库相比，TDengine 有以下特点：

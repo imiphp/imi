@@ -176,6 +176,10 @@ function resizeCode()
 // 基于这里的代码做了修改: https://blog.csdn.net/weixin_57215431/article/details/115676752
 function hCatalog(current, target) {
 	var box = document.querySelector(target)
+	if (!box)
+	{
+		return;
+	}
 	box.innerHTML = ''
 	var titleTree = hTree(document.querySelector(current))
 	hCreatEle(titleTree, box)
