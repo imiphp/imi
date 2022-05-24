@@ -20,6 +20,7 @@
 * [雪花算法发号器](/components/snowflake.html)
 * [Swagger API 文档生成](/dev/generate/swagger.html)
 * [Swoole Tracker](/components/swoole-tracker.html)
+* [TDengine](/components/tdengine.html)
 
 ## 优秀的第三方组件
 
