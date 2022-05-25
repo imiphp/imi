@@ -231,7 +231,7 @@ class Group
         $result = [];
         /** @var ClientIdMap $clientIdMap */
         $clientIdMap = $server->getBean('ClientIdMap');
-        $clientIds = $this->handler->getClientIds($this->groupName);
+        $clientIds = $this->getHandler()->getClientIds($this->groupName);
         if ($clientIds)
         {
             foreach ($clientIds as $clientId)
