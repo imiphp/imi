@@ -44,7 +44,7 @@ class Result implements IResult
         if ($statement instanceof IStatement)
         {
             $this->statement = $statement;
-            $this->isSuccess = null === $success ? ('' === $statement->errorInfo()) : $success;
+            $this->isSuccess = ($success ?? ('' === $statement->errorInfo()));
             if ($statement->columnCount() > 0)
             {
                 $this->statementRecords = $statement->fetchAll();
