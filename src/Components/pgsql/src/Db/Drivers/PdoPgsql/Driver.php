@@ -114,7 +114,7 @@ class Driver extends PgsqlBase
             {
                 return true;
             }
-            if ($this->checkCodeIsOffline($instance->errorInfo()[0] ?? ''))
+            if ($this->checkCodeIsOffline($instance->errorCode() ?? ''))
             {
                 $this->close();
             }
@@ -175,7 +175,7 @@ class Driver extends PgsqlBase
         {
             if (!$this->inTransaction() && !$this->instance->beginTransaction())
             {
-                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                if ($this->checkCodeIsOffline($this->instance->errorCode() ?? ''))
                 {
                     $this->close();
                 }
@@ -206,7 +206,7 @@ class Driver extends PgsqlBase
         {
             if (!$this->instance->commit())
             {
-                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                if ($this->checkCodeIsOffline($this->instance->errorCode() ?? ''))
                 {
                     $this->close();
                 }
@@ -255,7 +255,7 @@ class Driver extends PgsqlBase
         {
             $this->transaction->rollBack($levels);
         }
-        elseif ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+        elseif ($this->checkCodeIsOffline($this->instance->errorCode() ?? ''))
         {
             $this->close();
         }
@@ -338,7 +338,7 @@ class Driver extends PgsqlBase
             {
                 $errorCode = $this->errorCode();
                 $errorInfo = $this->errorInfo();
-                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                if ($this->checkCodeIsOffline($errorCode))
                 {
                     $this->close();
                 }
@@ -425,7 +425,7 @@ class Driver extends PgsqlBase
                 {
                     $errorCode = $this->errorCode();
                     $errorInfo = $this->errorInfo();
-                    if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                    if ($this->checkCodeIsOffline($errorCode))
                     {
                         $this->close();
                     }
@@ -463,7 +463,7 @@ class Driver extends PgsqlBase
             {
                 $errorCode = $this->errorCode();
                 $errorInfo = $this->errorInfo();
-                if ($this->checkCodeIsOffline($this->instance->errorInfo()[0] ?? ''))
+                if ($this->checkCodeIsOffline($errorCode))
                 {
                     $this->close();
                 }

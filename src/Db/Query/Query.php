@@ -867,7 +867,7 @@ abstract class Query implements IQuery
             $this->binds = [];
             $stmt->execute($binds);
 
-            return new $resultClass($stmt, $this->modelClass);
+            return new $resultClass($stmt, $this->modelClass, true);
         }
         finally
         {
