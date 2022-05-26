@@ -152,7 +152,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                 $errorCode = $this->errorCode();
                 $errorInfo = $this->errorInfo();
                 $db = $this->db;
-                if ($db->checkCodeIsOffline($db->errorInfo()[0] ?? ''))
+                if ($db->checkCodeIsOffline($errorCode))
                 {
                     $db->close();
                 }
