@@ -812,7 +812,7 @@ abstract class Query implements IQuery
             $this->binds = [];
             $stmt->execute($binds);
 
-            return new $this->resultClass($stmt, $this->modelClass);
+            return new $this->resultClass($stmt, $this->modelClass, true);
         }
         finally
         {

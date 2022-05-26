@@ -324,7 +324,7 @@ class Db
             $stmt = $db->query($sql);
         }
 
-        return new Result($stmt);
+        return new Result($stmt, null, true);
     }
 
     /**

@@ -38,13 +38,13 @@ class Result implements IResult
     /**
      * @param \Imi\Db\Interfaces\IStatement|bool $statement
      */
-    public function __construct($statement, ?string $modelClass = null)
+    public function __construct($statement, ?string $modelClass = null, ?bool $success = null)
     {
         $this->modelClass = $modelClass;
         if ($statement instanceof IStatement)
         {
             $this->statement = $statement;
-            $this->isSuccess = '' === $statement->errorInfo();
+            $this->isSuccess = ($success ?? ('' === $statement->errorInfo()));
             if ($statement->columnCount() > 0)
             {
                 $this->statementRecords = $statement->fetchAll();
