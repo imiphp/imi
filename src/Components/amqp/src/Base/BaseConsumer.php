@@ -88,7 +88,7 @@ abstract class BaseConsumer implements IConsumer
                             $result = goWait(function () use ($messageInstance) {
                                 try
                                 {
-                                    $this->consume($messageInstance);
+                                    return $this->consume($messageInstance);
                                 }
                                 catch (\Throwable $th)
                                 {
