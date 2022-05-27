@@ -84,7 +84,7 @@ class TransactionAop
             catch (\Throwable $ex)
             {
                 // 回滚事务
-                if ($db->inTransaction())
+                if ($db->inTransaction() && $db->isConnected())
                 {
                     switch ($transaction->rollbackType)
                     {

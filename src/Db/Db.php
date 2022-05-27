@@ -274,7 +274,7 @@ class Db
         catch (\Throwable $th)
         {
             // 回滚事务
-            if ($db->inTransaction())
+            if ($db->inTransaction() && $db->isConnected())
             {
                 $db->rollBack();
             }

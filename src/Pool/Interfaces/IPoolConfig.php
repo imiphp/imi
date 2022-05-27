@@ -118,16 +118,16 @@ interface IPoolConfig
     public function setMaxIdleTime(?float $maxIdleTime): self;
 
     /**
-     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒.
+     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒，为 null 则不限制.
      */
-    public function getRequestResourceCheckInterval(): float;
+    public function getRequestResourceCheckInterval(): ?float;
 
     /**
      * 设置当前请求上下文资源检查状态间隔，单位：支持小数的秒.
      *
      * @return static
      */
-    public function setRequestResourceCheckInterval(float $value): self;
+    public function setRequestResourceCheckInterval(?float $value): self;
 
     /**
      * 获取心跳时间间隔，单位：秒.

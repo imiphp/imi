@@ -56,6 +56,8 @@ if (class_exists(PostgreSQL::class, false))
          */
         protected int $statementIncr = 0;
 
+        protected bool $connected = false;
+
         /**
          * 参数格式：
          * [
@@ -79,7 +81,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function isConnected(): bool
         {
-            return (bool) $this->instance;
+            return $this->connected;
         }
 
         /**
@@ -135,16 +137,16 @@ if (class_exists(PostgreSQL::class, false))
         public function open(): bool
         {
             $this->statementIncr = 0;
-            $instance = new PostgreSQL();
+            $this->instance = $instance = new PostgreSQL();
 
-            $result = $instance->connect($this->buildDSN());
-            if ($result)
+            if ($this->connected = $instance->connect($this->buildDSN()))
             {
-                $this->instance = $instance;
                 $this->execInitSqls();
+
+                return true;
             }
 
-            return $result;
+            return false;
         }
 
         /**
@@ -152,6 +154,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function close(): void
         {
+            $this->connected = false;
             StatementManager::clear($this);
             if (null !== $this->lastQueryResult)
             {

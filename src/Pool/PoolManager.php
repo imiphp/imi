@@ -149,7 +149,7 @@ class PoolManager
         if (null !== $resource)
         {
             $requestResourceCheckInterval = $resource->getPool()->getConfig()->getRequestResourceCheckInterval();
-            if ($requestResourceCheckInterval > 0 && microtime(true) - static::$lastGetResourceTime[$name] > $requestResourceCheckInterval && !$resource->checkState())
+            if (($requestResourceCheckInterval <= 0 || (microtime(true) - static::$lastGetResourceTime[$name] > $requestResourceCheckInterval)) && !$resource->checkState())
             {
                 $resource->getPool()->release($resource);
                 $resource = null;
