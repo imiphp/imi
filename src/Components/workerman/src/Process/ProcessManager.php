@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\Log\Handler\ConsoleHandler;
 use Imi\Log\Logger;
 use Imi\RequestContext;
+use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Workerman\Process\Contract\IProcess;
@@ -84,6 +85,7 @@ class ProcessManager
         $worker->onWorkerStart = static function (Worker $worker) use ($args, $processName, $options) {
             // 随机数播种
             mt_srand();
+            Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
 
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $processName, true);
