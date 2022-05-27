@@ -71,31 +71,10 @@ class Pool
         ], $this, BeforeStartEventParam::class);
 
         Process::signal(\SIGCHLD, function ($sig) {
-            while ($this->workers)
+            if ($this->workers)
             {
-                foreach ($this->workers as $worker)
+                while (Process::wait(false))
                 {
-                    $ret = $worker->wait(false);
-                    if ($ret)
-                    {
-                        $pid = $ret['pid'] ?? null;
-                        $workerId = $this->workerIdMap[$pid] ?? null;
-                        if (null === $workerId)
-                        {
-                            Log::warning(sprintf('%s: Can not found workerId by pid %s', self::class, $pid));
-                            continue;
-                        }
-                        Event::del($this->workers[$workerId]->pipe);
-                        unset($this->workerIdMap[$pid], $this->workers[$workerId]);
-                        if ($this->working)
-                        {
-                            $this->startWorker($workerId);
-                        }
-                        elseif (!$this->workers)
-                        {
-                            Event::exit();
-                        }
-                    }
                 }
             }
         });
@@ -123,6 +102,45 @@ class Pool
         $this->trigger('Init', [
             'pool'      => $this,
         ], $this, InitEventParam::class);
+    }
+
+    public function wait(bool $blocking = true): bool
+    {
+        $result = true;
+        while ($this->working)
+        {
+            $result = true;
+            for ($i = 0; $i < $this->workerNum; ++$i)
+            {
+                if (isset($this->workers[$i]))
+                {
+                    $worker = $this->workers[$i];
+                    if (Process::kill($worker->pid, 0))
+                    {
+                        $result = false;
+                    }
+                    else
+                    {
+                        Event::del($worker->pipe);
+                        unset($this->workerIdMap[$worker->pid], $this->workers[$i]);
+                    }
+                }
+                else
+                {
+                    $this->startWorker($i);
+                }
+            }
+            if ($blocking)
+            {
+                usleep(10000);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -216,6 +234,8 @@ class Pool
         }
         else
         {
+            $workers[$workerId] = $worker;
+            $this->workerIdMap[$pid] = $workerId;
             Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
                 $content = $worker->read();
                 if (false === $content || '' === $content)
@@ -232,8 +252,6 @@ class Pool
                     'data'      => $data,
                 ], $this, MessageEventParam::class);
             });
-            $workers[$workerId] = $worker;
-            $this->workerIdMap[$pid] = $workerId;
         }
     }
 }

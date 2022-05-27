@@ -54,25 +54,24 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 }
                 $processGroups[$group]['configs'][] = $config;
             }
+            $processPools = [];
             foreach ($processGroups as $group => $options)
             {
-                $processPool = new \Imi\Swoole\Process\Pool($options['process']);
+                $processPools[] = $processPool = new \Imi\Swoole\Process\Pool($options['process']);
                 $configs = $options['configs'];
                 $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
-                    Coroutine::create(function () use ($group, $configs) {
-                        Imi::setProcessName('process', [
-                            'processName'   => 'QueueConsumer-' . $group,
-                        ]);
-                        /** @var \Imi\Queue\Model\QueueConfig[] $configs */
-                        foreach ($configs as $config)
-                        {
-                            Coroutine::create(function () use ($config) {
-                                /** @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
-                                $queueConsumer = $this->consumers[] = App::getBean($config->getConsumer(), $config->getName());
-                                $queueConsumer->start();
-                            });
-                        }
-                    });
+                    Imi::setProcessName('process', [
+                        'processName'   => 'QueueConsumer-' . $group,
+                    ]);
+                    /** @var \Imi\Queue\Model\QueueConfig[] $configs */
+                    foreach ($configs as $config)
+                    {
+                        Coroutine::create(function () use ($config) {
+                            /** @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
+                            $queueConsumer = $this->consumers[] = App::getBean($config->getConsumer(), $config->getName());
+                            $queueConsumer->start();
+                        });
+                    }
                 });
                 // 工作进程退出事件-可选
                 $processPool->on('WorkerExit', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) {
@@ -84,7 +83,20 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 });
                 $processPool->start();
             }
-            if (!isset($name))
+            if ($processPools)
+            {
+                // @phpstan-ignore-next-line
+                while (true)
+                {
+                    foreach ($processPools as $processPool)
+                    {
+                        $processPool->wait(false);
+                    }
+                    Event::dispatch();
+                    usleep(10000);
+                }
+            }
+            else
             {
                 Log::warning('@app.beans.imiQueue.list is empty');
                 // @phpstan-ignore-next-line
@@ -93,7 +105,6 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     sleep(86400);
                 }
             }
-            Event::wait();
         }
     }
 }

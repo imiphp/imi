@@ -49,6 +49,8 @@ $processPool->on('Message', function(\Imi\Swoole\Process\Pool\MessageEventParam 
 });
 $processPool->start(); // 启动
 // $processPool->shutdown(); // 停止
+$processPool->wait(); // 阻塞等待进程池结束，成功返回 true
+$processPool->wait(false); // 不阻塞等待，成功返回 true
 ```
 
 ### 重启进程
