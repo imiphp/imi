@@ -142,6 +142,7 @@ if (class_exists(PostgreSQL::class, false))
             if ($this->connected = $instance->connect($this->buildDSN()))
             {
                 $this->execInitSqls();
+
                 return true;
             }
 
