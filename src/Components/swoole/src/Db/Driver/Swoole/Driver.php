@@ -76,7 +76,7 @@ class Driver extends MysqlBase
      */
     public function isConnected(): bool
     {
-        return (bool) $this->instance;
+        return $this->instance && $this->instance->connected;
     }
 
     /**
@@ -106,7 +106,7 @@ class Driver extends MysqlBase
      */
     public function open(): bool
     {
-        $instance = new MySQL();
+        $this->instance = $instance = new MySQL();
         $option = $this->option;
         $serverConfig = [
             'host'          => $option['host'] ?? '127.0.0.1',
@@ -123,14 +123,14 @@ class Driver extends MysqlBase
         {
             $serverConfig = array_merge($serverConfig, $option['options']);
         }
-        $result = $instance->connect($serverConfig);
-        if ($result)
+        if ($instance->connect($serverConfig))
         {
-            $this->instance = $instance;
             $this->execInitSqls();
+
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
     /**
@@ -248,9 +248,13 @@ class Driver extends MysqlBase
         {
             return $this->lastStmt->errno;
         }
-        else
+        elseif ($this->instance->connected)
         {
             return $this->instance->errno;
+        }
+        else
+        {
+            return $this->instance->connect_errno;
         }
     }
 
@@ -263,9 +267,13 @@ class Driver extends MysqlBase
         {
             return $this->lastStmt->error;
         }
-        else
+        elseif ($this->instance->connected)
         {
             return $this->instance->error;
+        }
+        else
+        {
+            return $this->instance->connect_error;
         }
     }
 
