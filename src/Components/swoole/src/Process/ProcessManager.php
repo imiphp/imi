@@ -131,6 +131,7 @@ class ProcessManager
             ]);
             // 随机数播种
             mt_srand();
+            Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
             $exitCode = 0;
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
                 if ($runWithManager)
