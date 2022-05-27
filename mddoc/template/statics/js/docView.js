@@ -236,13 +236,14 @@ function initContentToc()
 		beginTop = wrap[0].offsetTop;
 		mouseBeginLeft = e.pageX;
 		mouseBeginTop = e.pageY;
+		e.preventDefault();
 	});
 
-	$(document).on('mouseup', '.content-toc-title', function(){
+	$(document).on('mouseup', function(){
 		isDown = false;
 	});
 
-	$(document).on('mousemove', '.content-toc-title', function(e){
+	$(document).on('mousemove', function(e){
 		if(isDown)
 		{
 			var wrap = $('#content-toc-wrap');
