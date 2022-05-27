@@ -58,7 +58,7 @@ class PoolConfig implements IPoolConfig
      *
      * 为 null 则不限制
      */
-    protected float $requestResourceCheckInterval = 30;
+    protected ?float $requestResourceCheckInterval = 30;
 
     /**
      * 心跳时间间隔，单位：秒.
@@ -233,7 +233,7 @@ class PoolConfig implements IPoolConfig
     /**
      * {@inheritDoc}
      */
-    public function getRequestResourceCheckInterval(): float
+    public function getRequestResourceCheckInterval(): ?float
     {
         return $this->requestResourceCheckInterval;
     }
@@ -241,7 +241,7 @@ class PoolConfig implements IPoolConfig
     /**
      * {@inheritDoc}
      */
-    public function setRequestResourceCheckInterval(float $value): self
+    public function setRequestResourceCheckInterval(?float $value): self
     {
         $this->requestResourceCheckInterval = $value;
 
