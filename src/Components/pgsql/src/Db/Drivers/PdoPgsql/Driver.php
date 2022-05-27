@@ -115,7 +115,7 @@ class Driver extends PgsqlBase
                 return true;
             }
             // @phpstan-ignore-next-line
-            if ($this->checkCodeIsOffline($instance->errorCode() ?? ''))
+            if ($this->checkCodeIsOffline($instance->errorCode()))
             {
                 $this->close();
             }
@@ -177,7 +177,7 @@ class Driver extends PgsqlBase
             if (!$this->inTransaction() && !$this->instance->beginTransaction())
             {
                 // @phpstan-ignore-next-line
-                if ($this->checkCodeIsOffline($this->instance->errorCode() ?? ''))
+                if ($this->checkCodeIsOffline($this->instance->errorCode()))
                 {
                     $this->close();
                 }
@@ -209,7 +209,7 @@ class Driver extends PgsqlBase
             if (!$this->instance->commit())
             {
                 // @phpstan-ignore-next-line
-                if ($this->checkCodeIsOffline($this->instance->errorCode() ?? ''))
+                if ($this->checkCodeIsOffline($this->instance->errorCode()))
                 {
                     $this->close();
                 }
@@ -259,7 +259,7 @@ class Driver extends PgsqlBase
             $this->transaction->rollBack($levels);
         }
         // @phpstan-ignore-next-line
-        elseif ($this->checkCodeIsOffline($this->instance->errorCode() ?? ''))
+        elseif ($this->checkCodeIsOffline($this->instance->errorCode()))
         {
             $this->close();
         }
