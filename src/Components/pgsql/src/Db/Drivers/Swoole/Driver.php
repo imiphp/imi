@@ -141,7 +141,6 @@ if (class_exists(PostgreSQL::class, false))
 
             if ($this->connected = $instance->connect($this->buildDSN()))
             {
-                $this->instance = $instance;
                 $this->execInitSqls();
                 return true;
             }
@@ -154,6 +153,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function close(): void
         {
+            $this->connected = false;
             StatementManager::clear($this);
             if (null !== $this->lastQueryResult)
             {
