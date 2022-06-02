@@ -10,11 +10,62 @@
 
 ## Swoole
 
+### Worker 进程
+
 使用 Swoole 提供的 [sendMessage()](http://wiki.swoole.com/#/server/methods?id=sendmessage) 和 [onPipeMessage 事件](http://wiki.swoole.com/#/server/events?id=onpipemessage) 实现。
 
 在 `onPipeMessage` 事件中，收到指定结构的数据，就会触发相应事件。
 
 类名：`Imi\Swoole\Server\Server`
+
+### 用户进程
+
+imi 实现的 Unix Socket 双向通信，Swoole 自带的 pipe 无法实现双向通信。
+
+**向进程发送消息：**
+
+```php
+use Imi\Swoole\Process\ProcessManager;
+$process = ProcessManager::getProcessWithManager('XXXProcess');
+
+// 返回 bool 类型
+$process->sendUnixSocketMessage('动作名');
+$process->sendUnixSocketMessage('动作名', 123); // 第二个参数可以带任意类型的变量，如果是对象必须可被序列化
+```
+
+**进程监听消息：**
+
+监听事件：`IMI.PROCESS.PIPE_MESSAGE`
+
+事件参数类：`\Imi\Swoole\Process\Event\Param\PipeMessageEventParam`
+
+```php
+<?php
+use Imi\Bean\Annotation\Listener;
+use Imi\Event\EventParam;
+use Imi\Event\IEventListener;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
+
+/**
+ * @Listener(eventName="IMI.PROCESS.PIPE_MESSAGE")
+ */
+class MyListener implements IEventListener
+{
+    /**
+     * @param PipeMessageEventParam $e
+     */
+    public function handle(EventParam $e): void
+    {
+        var_dump($e->action); // 获取动作名
+        var_dump($e->data); // 获取数据
+
+        // 返回发送方数据（非必须）
+        $e->process->sendUnixSocketMessageByConnection($e->connection, '动作名');
+        $e->process->sendUnixSocketMessageByConnection($e->connection, '动作名', 123); // 第二个参数可以带任意类型的变量，如果是对象必须可被序列化
+    }
+}
+```
 
 ## Workerman
 

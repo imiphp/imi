@@ -40,7 +40,8 @@ abstract class BaseConsumer implements IConsumer
         $this->bindConsumer();
         while ($this->channel && $this->channel->is_consuming())
         {
-            $this->channel->wait();
+            $this->channel->wait(null, true);
+            usleep(10000);
         }
     }
 
@@ -50,7 +51,7 @@ abstract class BaseConsumer implements IConsumer
     public function stop(): void
     {
         // @phpstan-ignore-next-line
-        if ($this->channel && $this->channel->getConnection() && ($connection = $this->channel->getConnection()) && $connection->isConnected())
+        if ($this->channel && ($connection = $this->channel->getConnection()) && $connection->isConnected())
         {
             $this->channel->close();
             $this->channel = null;

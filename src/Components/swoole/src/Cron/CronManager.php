@@ -69,7 +69,11 @@ class CronManager implements ICronManager
             }
             else
             {
-                $this->socketFile = '/tmp/imi.' . App::get(ProcessAppContexts::MASTER_PID) . '.cron.sock';
+                $process = ProcessManager::getProcessWithManager('CronProcess');
+                if ($process)
+                {
+                    $this->socketFile = $process->getUnixSocketFile();
+                }
             }
         }
         $realTasks = &$this->realTasks;

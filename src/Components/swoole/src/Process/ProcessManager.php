@@ -17,10 +17,10 @@ use Imi\Swoole\Util\Imi as SwooleImi;
 use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
+use Imi\Util\ImiPriority;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Swoole\ExitException;
-use Swoole\Process;
 use Swoole\Table;
 
 /**
@@ -138,9 +138,33 @@ class ProcessManager
                 {
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid());
                 }
+                Event::on('IMI.PROCESS.END', function () {
+                    Signal::clear();
+                }, ImiPriority::IMI_MIN);
+                $processEnded = false;
+                imigo(function () use ($name, $swooleProcess, &$processEnded) {
+                    if (Signal::wait(\SIGTERM))
+                    {
+                        if ($processEnded)
+                        {
+                            return;
+                        }
+                        $processEnded = true;
+                        // 进程结束事件
+                        Event::trigger('IMI.PROCESS.END', [
+                            'name'      => $name,
+                            'process'   => $swooleProcess,
+                        ]);
+                    }
+                });
                 if ($inCoroutine = Coroutine::isIn())
                 {
-                    Coroutine::defer(static function () use ($name, $swooleProcess) {
+                    Coroutine::defer(static function () use ($name, $swooleProcess, &$processEnded) {
+                        if ($processEnded)
+                        {
+                            return;
+                        }
+                        $processEnded = true;
                         // 进程结束事件
                         Event::trigger('IMI.PROCESS.END', [
                             'name'      => $name,
@@ -153,6 +177,10 @@ class ProcessManager
                     if ($processOption['options']['unique'] && !self::lockProcess($name))
                     {
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
+                    }
+                    if ($processOption['options']['co'])
+                    {
+                        $swooleProcess->startUnixSocketServer();
                     }
                     // 写出进程信息
                     if (null !== $swooleProcess->id && null !== $swooleProcess->pid)

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
+use Imi\App;
 use Imi\Event\TEvent;
 use Imi\Log\Log;
 use Imi\Swoole\Process\Pool\BeforeStartEventParam;
 use Imi\Swoole\Process\Pool\InitEventParam;
 use Imi\Swoole\Process\Pool\MessageEventParam;
 use Imi\Swoole\Process\Pool\WorkerEventParam;
+use Imi\Swoole\Util\Coroutine;
 use Swoole\Event;
-use Swoole\Process;
-use Swoole\Timer;
 
 class Pool
 {
@@ -70,7 +70,7 @@ class Pool
             'pool'  => $this,
         ], $this, BeforeStartEventParam::class);
 
-        Process::signal(\SIGCHLD, function ($sig) {
+        Signal::waitCallback(\SIGCHLD, function () {
             if ($this->workers)
             {
                 while (Process::wait(false))
@@ -79,19 +79,59 @@ class Pool
             }
         });
 
-        Process::signal(\SIGTERM, function () {
-            $this->working = false;
-            foreach ($this->workers as $worker)
+        imigo(function () {
+            if (Signal::wait(\SIGTERM))
             {
-                Process::kill($worker->pid, \SIGTERM);
-            }
-            Timer::after(3000, function () {
-                Log::info('Worker exit timeout, forced to terminate');
-                foreach ($this->workers as $worker)
+                if ($this->workers)
                 {
-                    Process::kill($worker->pid, \SIGKILL);
+                    $this->working = false;
+                    foreach ($this->workers as $worker)
+                    {
+                        try
+                        {
+                            Process::kill($worker->pid, \SIGTERM);
+                            if (Event::isset($worker->pipe))
+                            {
+                                Event::del($worker->pipe);
+                            }
+                        }
+                        catch (\Throwable $th)
+                        {
+                            // @phpstan-ignore-next-line
+                            App::getBean('ErrorLog')->onException($th);
+                        }
+                    }
+                    $time = microtime(true);
+                    while ($this->workers)
+                    {
+                        if (microtime(true) - $time > 3)
+                        {
+                            Log::info('Worker exit timeout, forced to terminate');
+                            foreach ($this->workers as $key => $worker)
+                            {
+                                try
+                                {
+                                    Process::kill($worker->pid, \SIGKILL);
+                                }
+                                catch (\Throwable $th)
+                                {
+                                    // @phpstan-ignore-next-line
+                                    App::getBean('ErrorLog')->onException($th);
+                                }
+                            }
+                            break;
+                        }
+                        foreach ($this->workers as $key => $worker)
+                        {
+                            if (!Process::kill($worker->pid, 0))
+                            {
+                                unset($this->workers[$key]);
+                            }
+                        }
+                        usleep(10000);
+                    }
                 }
-            });
+            }
         });
 
         for ($i = 0; $i < $this->workerNum; ++$i)
@@ -162,7 +202,15 @@ class Pool
     {
         foreach ($this->workers as $worker)
         {
-            Process::kill($worker->pid);
+            try
+            {
+                Process::kill($worker->pid);
+            }
+            catch (\Throwable $th)
+            {
+                // @phpstan-ignore-next-line
+                App::getBean('ErrorLog')->onException($th);
+            }
         }
     }
 
@@ -180,7 +228,15 @@ class Pool
         {
             if (isset($workers[$workerId]))
             {
-                Process::kill($workers[$workerId]->pid);
+                try
+                {
+                    Process::kill($workers[$workerId]->pid);
+                }
+                catch (\Throwable $th)
+                {
+                    // @phpstan-ignore-next-line
+                    App::getBean('ErrorLog')->onException($th);
+                }
             }
             else
             {
@@ -204,7 +260,11 @@ class Pool
         {
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
-        $worker = new \Imi\Swoole\Process\Process(function (Process $worker) use ($workerId) {
+        $oldEnableDeadlockCheck = Coroutine::getOptions()['enable_deadlock_check'] ?? true;
+        Coroutine::set([
+            'enable_deadlock_check' => false,
+        ]);
+        $worker = new Process(function (Process $worker) use ($workerId) {
             Process::signal(\SIGTERM, function () use ($worker, $workerId) {
                 $this->trigger('WorkerExit', [
                     'pool'      => $this,
@@ -228,6 +288,9 @@ class Pool
             Event::wait();
         });
         $pid = $worker->start();
+        Coroutine::set([
+            'enable_deadlock_check' => $oldEnableDeadlockCheck,
+        ]);
         if (false === $pid)
         {
             throw new \RuntimeException(sprintf('Start worker %s failed', $workerId));
@@ -236,6 +299,7 @@ class Pool
         {
             $workers[$workerId] = $worker;
             $this->workerIdMap[$pid] = $workerId;
+
             Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
                 $content = $worker->read();
                 if (false === $content || '' === $content)
