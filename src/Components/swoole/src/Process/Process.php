@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
+use Imi\App;
+use Imi\AppContexts;
 use Imi\Event\Event;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Coroutine;
@@ -49,7 +51,7 @@ trait TProcess
 
     public function getUnixSocketFile(): string
     {
-        return '/tmp/imi.process.' . spl_object_id($this) . '.sock';
+        return '/tmp/imi.process.' . md5(App::get(AppContexts::APP_PATH)) . spl_object_id($this) . '.sock';
     }
 
     public function createUnixSocketClient(): Client
