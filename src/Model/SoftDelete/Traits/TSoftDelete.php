@@ -64,12 +64,16 @@ trait TSoftDelete
         $query = parent::query($poolName, $queryType, $queryClass);
         $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
 
+        /** @var \Imi\Model\Meta $meta */
+        $meta = static::__getMeta();
+        $fullTableName = $meta->getFullTableName();
+
         if (null === $softDeleteAnnotation->default)
         {
-            return $query->whereIsNull($softDeleteAnnotation->field);
+            return $query->whereIsNull($fullTableName . '.' . $softDeleteAnnotation->field);
         }
 
-        return $query->where($softDeleteAnnotation->field, '=', $softDeleteAnnotation->default);
+        return $query->where($fullTableName . '.' . $softDeleteAnnotation->field, '=', $softDeleteAnnotation->default);
     }
 
     /**
