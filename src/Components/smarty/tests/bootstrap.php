@@ -11,11 +11,17 @@ function checkHttpServerStatus(): bool
     for ($i = 0; $i < 60; ++$i)
     {
         sleep(1);
-        $context = stream_context_create(['http' => ['timeout' => 1]]);
-        $body = @file_get_contents('http://127.0.0.1:13456/ping', false, $context);
-        if ('pong' === $body)
+        try
         {
-            return true;
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $body = @file_get_contents('http://127.0.0.1:13456/ping', false, $context);
+            if ('pong' === $body)
+            {
+                return true;
+            }
+        }
+        catch (ErrorException $e)
+        {
         }
     }
 

@@ -15,10 +15,16 @@ function checkHttpServerStatus()
     for ($i = 0; $i < 60; ++$i)
     {
         sleep(1);
-        $context = stream_context_create(['http' => ['timeout' => 1]]);
-        if ('' === @file_get_contents('http://127.0.0.1:8081/', false, $context))
+        try
         {
-            return true;
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            if ('' === @file_get_contents('http://127.0.0.1:8081/', false, $context))
+            {
+                return true;
+            }
+        }
+        catch (ErrorException $e)
+        {
         }
     }
 

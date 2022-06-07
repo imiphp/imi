@@ -133,12 +133,18 @@ foreach ($testContainer as $container => $opt)
         $testSuccess = false;
         while ($testServer->isRunning() && $count++ < STARTUP_MAX_WAIT)
         {
-            $text = @file_get_contents('http://127.0.0.1:13000/', false, $context);
-            if ('imi' === $text)
+            try
             {
-                $testSuccess = true;
-                echo "\nresponse success";
-                break;
+                $text = @file_get_contents('http://127.0.0.1:13000/', false, $context);
+                if ('imi' === $text)
+                {
+                    $testSuccess = true;
+                    echo "\nresponse success";
+                    break;
+                }
+            }
+            catch (ErrorException $e)
+            {
             }
             sleep(1);
         }

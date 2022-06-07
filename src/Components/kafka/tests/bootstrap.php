@@ -16,11 +16,17 @@ function checkHttpServerStatus()
     for ($i = 0; $i < 60; ++$i)
     {
         sleep(1);
-        $context = stream_context_create(['http' => ['timeout' => 1]]);
-        $body = @file_get_contents('http://127.0.0.1:8080/', false, $context);
-        if ('imi' === $body)
+        try
         {
-            return true;
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $body = @file_get_contents('http://127.0.0.1:8080/', false, $context);
+            if ('imi' === $body)
+            {
+                return true;
+            }
+        }
+        catch (ErrorException $e)
+        {
         }
     }
 
