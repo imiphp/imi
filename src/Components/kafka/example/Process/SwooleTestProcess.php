@@ -52,8 +52,11 @@ class SwooleTestProcess extends BaseProcess
                 /** @var \Imi\Log\ErrorLog $errorLog */
                 $errorLog = App::getBean('ErrorLog');
                 $errorLog->onException($th);
-                sleep(3);
-                $this->runConsumer($consumer);
+                if ($this->running)
+                {
+                    sleep(3);
+                    $this->runConsumer($consumer);
+                }
             }
         });
     }
