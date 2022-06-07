@@ -34,10 +34,10 @@ function checkHttpServerStatus()
 function startServer()
 {
     $dirname = \dirname(__DIR__);
-    $mode = env('AMQP_TEST_MODE');
+    $mode = env('KAFKA_TEST_MODE');
     if (!$mode)
     {
-        throw new InvalidArgumentException('Invalid env AMQP_TEST_MODE');
+        throw new InvalidArgumentException('Invalid env KAFKA_TEST_MODE');
     }
     $servers = [
         'HttpServer'    => [

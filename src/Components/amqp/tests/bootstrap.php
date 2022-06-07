@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use function Imi\env;
+use function Imi\ttyExec;
 use function Yurun\Swoole\Coroutine\batch;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
@@ -77,6 +78,11 @@ function startServer()
     }
 
     batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
+
+    register_shutdown_function(function () {
+        echo 'check ports...', \PHP_EOL;
+        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+    });
 }
 
 (function () {

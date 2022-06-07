@@ -94,8 +94,8 @@
             "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/amqp/tests/phpunit.xml"
         ],
         "test-kafka": [
-            "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
-            "AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
+            "KAFKA_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml",
+            "KAFKA_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit -c src/Components/kafka/tests/phpunit.xml"
         ],
         "test-grpc": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/grpc/tests/phpunit.xml",
         "test-snowflake": "@php src/Components/snowflake/vendor/bin/phpunit -c src/Components/snowflake/tests/phpunit.xml",
