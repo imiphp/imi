@@ -6,10 +6,12 @@ namespace KafkaApp\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
+use Imi\Event\Event;
 use Imi\Kafka\Contract\IConsumer;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Util\ImiPriority;
 
 /**
  * @Process(name="TestProcess")
@@ -23,10 +25,19 @@ class SwooleTestProcess extends BaseProcess
      */
     protected $testConsumer;
 
+    private bool $running = false;
+
     public function run(\Swoole\Process $process): void
     {
+        $this->running = true;
         $this->runConsumer($this->testConsumer);
-        \Swoole\Coroutine::yield();
+        $cid = Coroutine::getCid();
+        Event::on('IMI.PROCESS.END', function () use ($cid) {
+            $this->running = false;
+            $this->testConsumer->close();
+            Coroutine::resume($cid);
+        }, ImiPriority::IMI_MAX);
+        Coroutine::yield();
     }
 
     private function runConsumer(IConsumer $consumer): void
