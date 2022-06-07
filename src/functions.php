@@ -118,7 +118,7 @@ namespace Imi
             $process = Process::fromShellCommandline($commands, null, null, null, $timeout);
         }
 
-        if ('/' === \DIRECTORY_SEPARATOR && Process::isTtySupported())
+        if (\Imi\Util\Process::isTtySupported())
         {
             $process->setTty(true);
             $process->run();
