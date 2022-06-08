@@ -51,7 +51,7 @@ trait TProcess
 
     public function getUnixSocketFile(): string
     {
-        return '/var/run/imi.process.' . md5(App::get(AppContexts::APP_PATH)) . '.' . spl_object_id($this) . '.sock';
+        return '/tmp/imi.process.' . md5(App::get(AppContexts::APP_PATH)) . '.' . spl_object_id($this) . '.sock';
     }
 
     public function createUnixSocketClient(): Client
