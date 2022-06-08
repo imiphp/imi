@@ -136,7 +136,7 @@ class ProcessManager
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
                 if ($runWithManager)
                 {
-                    Log::info('Process start [' . $name . ']. pid: ' . getmypid());
+                    Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
                 }
                 Event::on('IMI.PROCESS.END', function () {
                     Signal::clear();
