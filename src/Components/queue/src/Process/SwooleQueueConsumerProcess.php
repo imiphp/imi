@@ -104,11 +104,14 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             else
             {
                 Log::warning('@app.beans.imiQueue.list is empty');
-                // @phpstan-ignore-next-line
-                while ($running)
-                {
-                    sleep(1);
-                }
+                Coroutine::create(function () use (&$running) {
+                    // @phpstan-ignore-next-line
+                    while ($running)
+                    {
+                        sleep(1);
+                    }
+                });
+                Event::wait();
             }
         }
     }
