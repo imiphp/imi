@@ -7,7 +7,7 @@
         "php": ">=7.4",
         "ext-json": "*",
         "composer-runtime-api": "^2.0",
-        "monolog/monolog": "^2.2",
+        "monolog/monolog": "^2.2 <2.8",
         "phpdocumentor/reflection-docblock": "^5.2",
         "psr/container": "~1.1|~2.0",
         "psr/http-message": "~1.0",
