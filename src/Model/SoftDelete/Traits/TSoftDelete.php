@@ -247,8 +247,9 @@ trait TSoftDelete
                 $query->where($idName, '=', $this[$idName]);
             }
         }
+        $fieldName = $softDeleteAnnotation->field;
         $result = $query->update([
-            $softDeleteAnnotation->field => $softDeleteAnnotation->default,
+            $fieldName => ($this[$fieldName] = $softDeleteAnnotation->default),
         ]);
         $this->__recordExists = true;
 
