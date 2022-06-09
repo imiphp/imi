@@ -94,9 +94,3 @@ XXXModel::find(1)->hardDelete();
 ```php
 XXXModel::findDeleted(1)-restore();
 ```
-
-## 常见问题
-
-### Column 'delete_time' in where clause is ambiguous
-
-**解决方案：** 不要给模型主表指定别名
