@@ -142,7 +142,7 @@ trait TProcess
         }, \Imi\Util\ImiPriority::IMI_MIN);
         Coroutine::create(function () {
             $socketFile = $this->getUnixSocketFile();
-            if (is_file($socketFile))
+            if (file_exists($socketFile))
             {
                 unlink($socketFile);
             }
@@ -178,7 +178,8 @@ trait TProcess
 
             //开始监听端口
             $server->start();
-            if (is_file($socketFile))
+
+            if (file_exists($socketFile))
             {
                 unlink($socketFile);
             }

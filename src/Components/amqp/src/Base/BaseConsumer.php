@@ -19,6 +19,10 @@ abstract class BaseConsumer implements IConsumer
 {
     use TAMQP;
 
+    protected bool $running = false;
+
+    protected int $messageCount = 0;
+
     public function __construct()
     {
         $this->initConfig();
@@ -26,7 +30,7 @@ abstract class BaseConsumer implements IConsumer
 
     public function __destruct()
     {
-        $this->stop();
+        $this->close();
     }
 
     /**
@@ -34,14 +38,23 @@ abstract class BaseConsumer implements IConsumer
      */
     public function run(): void
     {
+        $this->running = true;
         $this->connection = $this->getConnection();
         $this->channel = $this->connection->channel();
         $this->declareConsumer();
         $this->bindConsumer();
-        while ($this->channel && $this->channel->is_consuming())
+        $messageCount = $this->messageCount;
+        while ($this->running && $this->channel && $this->channel->is_consuming())
         {
             $this->channel->wait(null, true);
-            usleep(10000);
+            if ($messageCount == $this->messageCount)
+            {
+                usleep(10000);
+            }
+            else
+            {
+                $messageCount = $this->messageCount;
+            }
         }
     }
 
@@ -50,8 +63,9 @@ abstract class BaseConsumer implements IConsumer
      */
     public function stop(): void
     {
-        // @phpstan-ignore-next-line
-        if ($this->channel && ($connection = $this->channel->getConnection()) && $connection->isConnected())
+        $this->running = false;
+
+        if ($this->channel)
         {
             $this->channel->close();
             $this->channel = null;
@@ -79,6 +93,7 @@ abstract class BaseConsumer implements IConsumer
             {
                 $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
                 $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass, $isSwoole) {
+                    ++$this->messageCount;
                     try
                     {
                         /** @var \Imi\AMQP\Message $messageInstance */
@@ -126,6 +141,8 @@ abstract class BaseConsumer implements IConsumer
                         // @phpstan-ignore-next-line
                         App::getBean('ErrorLog')->onException($th);
                     }
+
+                    return true;
                 });
             }
         }
