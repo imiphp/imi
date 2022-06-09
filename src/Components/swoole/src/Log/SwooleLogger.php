@@ -53,17 +53,17 @@ class SwooleLogger extends MonoLogger
     /**
      * {@inheritDoc}
      */
-    public function addRecord(int $level, string $message, array $context = []): bool
+    public function addRecord(int $level, string $message, array $context = [], ?DateTimeImmutable $datetime = null): bool
     {
         if ($this->asyncLogging)
         {
             $context[self::KEY_IMI_ASYNC_DATETIME] = new DateTimeImmutable($this->microsecondTimestamps, $this->timezone);
 
-            return $this->logChannel->push([$level, $message, $context]);
+            return $this->logChannel->push([$level, $message, $context, $datetime]);
         }
         else
         {
-            return parent::addRecord($level, $message, $context);
+            return parent::addRecord($level, $message, $context, $datetime);
         }
     }
 
