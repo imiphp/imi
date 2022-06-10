@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Annotation\Callback;
 use Imi\Config;
 use Imi\Config\Annotation\ConfigValue;
+use Imi\Config\Annotation\EnvValue;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -45,11 +46,19 @@ class TestInjectValueLogic
      */
     protected $callableResult;
 
+    /**
+     * @EnvValue("yurun")
+     *
+     * @var mixed
+     */
+    protected $yurun;
+
     public function test(): void
     {
         Assert::assertEquals(Config::get('@app.imi-framework'), $this->imi);
         Assert::assertEquals(\PHP_VERSION, $this->phpVersion);
         Assert::assertEquals(['A', 'test'], $this->callable);
         Assert::assertEquals(\PHP_VERSION, $this->callableResult);
+        Assert::assertEquals(777, $this->yurun);
     }
 }
