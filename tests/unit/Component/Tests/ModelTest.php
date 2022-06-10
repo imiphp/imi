@@ -528,6 +528,14 @@ class ModelTest extends BaseTest
         // 可以查到
         $this->assertNotNull(TestSoftDelete::find($record->id));
 
+        // join
+        /** @var TestSoftDelete $record2 */
+        $record2 = TestSoftDelete::query()->join('tb_test_soft_delete as b', 'b.id', '=', 'tb_test_soft_delete.id')->where('tb_test_soft_delete.id', '=', $record->id)->select()->get();
+        $this->assertEquals($record->toArray(), $record2->toArray());
+        /** @var TestSoftDelete $record2 */
+        $record2 = TestSoftDelete::query()->table('tb_test_soft_delete', 'a')->join('tb_test_soft_delete as b', 'b.id', '=', 'a.id')->where('a.id', '=', $record->id)->select()->get();
+        $this->assertEquals($record->toArray(), $record2->toArray());
+
         // 物理删除
         $record->hardDelete();
         // 查不到
