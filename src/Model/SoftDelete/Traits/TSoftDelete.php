@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Where\Where;
 use Imi\Event\Event;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
@@ -61,14 +62,32 @@ trait TSoftDelete
     {
         /** @var IModelQuery $query */
         $query = parent::query($poolName, $queryType, $queryClass);
-        $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
 
-        if (null === $softDeleteAnnotation->default)
-        {
-            return $query->whereIsNull($softDeleteAnnotation->field);
-        }
+        return $query->whereBrackets(function () use ($query) {
+            $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
+            $table = $query->getOption()->table;
+            if (null === ($alias = $table->getAlias()))
+            {
+                if (null === ($database = $table->getDatabase()))
+                {
+                    $fieldTableName = $table->getTable();
+                }
+                else
+                {
+                    $fieldTableName = $database . '.' . $table->getTable();
+                }
+            }
+            else
+            {
+                $fieldTableName = $alias;
+            }
+            if (null === $softDeleteAnnotation->default)
+            {
+                return new Where($fieldTableName . '.' . $softDeleteAnnotation->field, 'is', null);
+            }
 
-        return $query->where($softDeleteAnnotation->field, '=', $softDeleteAnnotation->default);
+            return new Where($fieldTableName . '.' . $softDeleteAnnotation->field, '=', $softDeleteAnnotation->default);
+        });
     }
 
     /**
@@ -254,8 +273,9 @@ trait TSoftDelete
                 $query->where($idName, '=', $this[$idName]);
             }
         }
+        $fieldName = $softDeleteAnnotation->field;
         $result = $query->update([
-            $softDeleteAnnotation->field => $softDeleteAnnotation->default,
+            $fieldName => ($this[$fieldName] = $softDeleteAnnotation->default),
         ]);
         $this->__recordExists = true;
 
