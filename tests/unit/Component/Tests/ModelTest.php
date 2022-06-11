@@ -12,6 +12,7 @@ use Imi\Test\Component\Model\CreateTime;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
 use Imi\Test\Component\Model\MemberWithSqlField;
+use Imi\Test\Component\Model\Prefix;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestEnum;
 use Imi\Test\Component\Model\TestJson;
@@ -860,5 +861,17 @@ class ModelTest extends BaseTest
             'value1' => ['a', 'b'],
             'value2' => ['2', '3'],
         ], $record->toArray());
+    }
+
+    public function testPrefix(): void
+    {
+        $record1 = Prefix::newInstance();
+        $record1->name = 'imi';
+        $record1->insert();
+        $this->assertGreaterThan(0,$record1->id);
+
+        $record2 = Prefix::find($record1->id);
+        $this->assertNotNull($record2);
+        $this->assertEquals($record1->toArray(),$record2->toArray());
     }
 }

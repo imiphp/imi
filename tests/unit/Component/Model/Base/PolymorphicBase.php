@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_polymorphic 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.name", default="tb_polymorphic"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.name", default="tb_polymorphic"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.poolName"))
  * @DDL(sql="CREATE TABLE `tb_polymorphic` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL,   `to_one` int(10) unsigned NOT NULL DEFAULT '0',   `to_many` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_one` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_many` int(10) unsigned NOT NULL DEFAULT '0',   `many_to_many` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null $id

@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_update_time 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\UpdateTime.name", default="tb_update_time"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\UpdateTime.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\UpdateTime.name", default="tb_update_time"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\UpdateTime.poolName"))
  * @DDL(sql="CREATE TABLE `tb_update_time` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `date` date DEFAULT NULL,   `time` time DEFAULT NULL,   `datetime` datetime DEFAULT NULL,   `timestamp` timestamp NULL DEFAULT NULL,   `int` int(11) DEFAULT NULL,   `bigint` bigint(20) DEFAULT NULL,   `year` year(4) DEFAULT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
  * @property int|null    $id

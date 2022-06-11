@@ -15,7 +15,7 @@ use Imi\Model\Model as Model;
  * tb_member_role_relation 基类.
  *
  * @Entity(camel=true, bean=true)
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.name", default="tb_member_role_relation"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.name", default="tb_member_role_relation"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\MemberRoleRelation.poolName"))
  * @DDL(sql="CREATE TABLE `tb_member_role_relation` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL DEFAULT '0',   `member_id` int(10) unsigned NOT NULL,   `role_id` int(10) unsigned NOT NULL,   PRIMARY KEY (`id`),   KEY `member_id` (`member_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null $id
