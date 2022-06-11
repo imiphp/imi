@@ -69,13 +69,19 @@ trait TSoftDelete
             $table = $query->getOption()->table;
             if (null === ($alias = $table->getAlias()))
             {
+                $tableName = $table->getTable();
+                $prefix = $table->getPrefix();
+                if ('' !== $prefix)
+                {
+                    $tableName = $prefix . $tableName;
+                }
                 if (null === ($database = $table->getDatabase()))
                 {
-                    $fieldTableName = $table->getTable();
+                    $fieldTableName = $tableName;
                 }
                 else
                 {
-                    $fieldTableName = $database . '.' . $table->getTable();
+                    $fieldTableName = $database . '.' . $tableName;
                 }
             }
             else
