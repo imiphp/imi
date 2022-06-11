@@ -36,11 +36,10 @@ trait TModelQuery
 
     public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
-        if (null !== $modelClass && null === $prefix)
+        if (null !== $modelClass)
         {
-            /** @var \Imi\Model\Meta $meta */
             $this->meta = $meta = $modelClass::__getMeta();
-            if (!$meta->isUsePrefix())
+            if (null === $prefix && !$meta->isUsePrefix())
             {
                 $prefix = '';
             }

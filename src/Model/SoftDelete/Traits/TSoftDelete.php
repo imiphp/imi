@@ -70,8 +70,7 @@ trait TSoftDelete
             if (null === ($alias = $table->getAlias()))
             {
                 $tableName = $table->getTable();
-                $prefix = $table->getPrefix();
-                if ('' !== $prefix)
+                if ('' !== ($prefix = $table->getPrefix()))
                 {
                     $tableName = $prefix . $tableName;
                 }
