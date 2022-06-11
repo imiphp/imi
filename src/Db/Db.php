@@ -132,7 +132,7 @@ class Db
         $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
         {
-            return PoolManager::getInstance($poolName)->getResourceConfig();
+            return PoolManager::getInstance($poolName)->getResourceConfig()[0] ?? [];
         }
         else
         {

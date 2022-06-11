@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Model\Traits;
 
+use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
+use Imi\Model\Meta;
 use Imi\Model\ModelQueryResult;
 
 trait TModelQuery
@@ -27,21 +29,36 @@ trait TModelQuery
      */
     protected ?array $withField = null;
 
-    public function __init(): void
+    /**
+     * 模型元数据.
+     */
+    protected ?Meta $meta = null;
+
+    public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
-        parent::__init();
-        $modelClass = $this->modelClass;
-        if ($modelClass)
+        if (null !== $modelClass && null === $prefix)
         {
             /** @var \Imi\Model\Meta $meta */
-            $meta = $modelClass::__getMeta();
-            $tableName = $meta->getTableName();
-            if (null !== $tableName)
+            $this->meta = $meta = $modelClass::__getMeta();
+            if (!$meta->isUsePrefix())
+            {
+                $prefix = '';
+            }
+        }
+        parent::__construct($db, $modelClass, $poolName, $queryType, $prefix);
+        $this->setResultClass(ModelQueryResult::class);
+    }
+
+    protected function initQuery(): void
+    {
+        parent::initQuery();
+        if ($meta = $this->meta)
+        {
+            if (null !== ($tableName = $meta->getTableName()))
             {
                 $this->table($tableName, null, $meta->getDatabaseName());
             }
         }
-        $this->setResultClass(ModelQueryResult::class);
     }
 
     private function queryPreProcess(): void

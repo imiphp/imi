@@ -868,10 +868,13 @@ class ModelTest extends BaseTest
         $record1 = Prefix::newInstance();
         $record1->name = 'imi';
         $record1->insert();
-        $this->assertGreaterThan(0,$record1->id);
+        $this->assertGreaterThan(0, $record1->id);
 
         $record2 = Prefix::find($record1->id);
         $this->assertNotNull($record2);
-        $this->assertEquals($record1->toArray(),$record2->toArray());
+        $this->assertEquals($record1->toArray(), $record2->toArray());
+
+        $record2->delete();
+        $this->assertNull(Prefix::find($record1->id));
     }
 }
