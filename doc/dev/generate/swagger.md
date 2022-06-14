@@ -127,11 +127,11 @@ imi-apidoc 会根据 `@Route` 注解、`@param` 注释，自动补足相关信�
 
 **生成命令：**
 
-Yaml 格式: `imi doc/api -to api.yml`
+Yaml 格式: `imi doc/api --to api.yml`
 
-Json 格式: `imi doc/api -to api.json`
+Json 格式: `imi doc/api --to api.json`
 
-指定扫描的命名空间：`imi doc/api -to api.json -namespace "ImiApp\Controller1,ImiApp\Controller2"`
+指定扫描的命名空间：`imi doc/api --to api.json --namespace "ImiApp\Controller1,ImiApp\Controller2"`
 
 **效果：**
 
