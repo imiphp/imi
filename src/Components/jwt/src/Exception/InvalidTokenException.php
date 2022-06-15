@@ -9,7 +9,7 @@ namespace Imi\JWT\Exception;
  */
 class InvalidTokenException extends \Exception
 {
-    public function __construct(string $message = 'Invalid Token', int $code = 0, \Throwable $previous = null)
+    public function __construct(string $message = 'Invalid Token', int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
