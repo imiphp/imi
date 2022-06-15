@@ -868,7 +868,7 @@ class ModelTest extends BaseTest
     /**
      * @see https://github.com/imiphp/imi/issues/355
      */
-    public function testBug355()
+    public function testBug355(): void
     {
         $member = MemberSerializable::newInstance();
         $member->username = 'testBug355_username';

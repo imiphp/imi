@@ -205,7 +205,7 @@ class Meta
         $this->jsonEncode = $annotations[JsonEncode::class];
         $this->jsonDecode = $annotations[JsonDecode::class];
         /** @var Serializables|null $serializables */
-        $this->serializables = $serializables = $annotations[Serializables::class];
+        $serializables = $this->serializables = $annotations[Serializables::class];
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
@@ -238,7 +238,7 @@ class Meta
             $fields[$name] = $column;
         }
         /** @var Serializable[][] $serializableSets */
-        $this->serializableSets = $serializableSets = $annotations[Serializable::class];
+        $serializableSets = $this->serializableSets = $annotations[Serializable::class];
         $this->extractPropertys = $annotations[ExtractProperty::class];
         $this->propertyJsonNotNullMap = $annotations[JsonNotNull::class];
         $this->sqlColumns = $annotations[Sql::class];
