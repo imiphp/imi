@@ -215,6 +215,11 @@ class ProcessManager
                 {
                     if (!$inCoroutine)
                     {
+                        if ($processEnded)
+                        {
+                            return;
+                        }
+                        $processEnded = true;
                         // 进程结束事件
                         Event::trigger('IMI.PROCESS.END', [
                             'name'      => $name,
