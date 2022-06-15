@@ -41,7 +41,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             $running = true;
             \Imi\Event\Event::on('IMI.PROCESS.END', function () use (&$running) {
                 $running = false;
-            }, ImiPriority::IMI_MIN);
+            }, ImiPriority::IMI_MAX);
             $imiQueue = $this->imiQueue;
             $processGroups = [];
             foreach ($imiQueue->getList() as $name => $arrayConfig)
