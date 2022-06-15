@@ -236,15 +236,13 @@ class BeanProxy
     {
         // before
         self::doAspect($className, $method, 'Before', static function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
-            $joinPoint = new JoinPoint('before', $method, $args, $object);
-            ($aopItem->getCallback())($joinPoint);
+            ($aopItem->getCallback())(new JoinPoint('before', $method, $args, $object));
         });
         // 原始方法调用
         $result = $callback(...$args);
         // after
         self::doAspect($className, $method, 'After', static function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
-            $joinPoint = new JoinPoint('after', $method, $args, $object);
-            ($aopItem->getCallback())($joinPoint);
+            ($aopItem->getCallback())(new JoinPoint('after', $method, $args, $object));
         });
         // afterReturning
         self::doAspect($className, $method, 'AfterReturning', static function (AopItem $aopItem, AfterReturning $annotation) use ($object, $method, &$args, &$result) {
@@ -291,8 +289,7 @@ class BeanProxy
             $class = 'Imi\Aop\Annotation\\' . $pointType;
             foreach ($items as $item)
             {
-                $point = new $class($item->getOptions()['extra'] ?? []);
-                $callback($item, $point);
+                $callback($item, new $class($item->getOptions()['extra'] ?? []));
             }
         }
     }
@@ -313,10 +310,7 @@ class BeanProxy
         {
             if (isset($annotations[$propertyName]))
             {
-                $class = $annotations[$propertyName]['injectType'];
-                $annotation = new $class($annotations[$propertyName]['injectOptions']);
-
-                return $annotation->getRealValue();
+                return (new $annotations[$propertyName]['injectType']($annotations[$propertyName]['injectOptions']))->getRealValue();
             }
             else
             {

@@ -48,7 +48,17 @@ class Helper
                 }
                 else
                 {
-                    return self::newInstance($namespace, $componentName);
+                    $className = $namespace . '\Main';
+                    if (class_exists($className))
+                    {
+                        self::$nameMap[$componentName] = $namespace;
+
+                        return self::$mains[$namespace] = new $className($componentName);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
         }
@@ -90,21 +100,5 @@ class Helper
         unset($mains['Imi']);
 
         return $mains;
-    }
-
-    private static function newInstance(string $namespace, string $componentName): ?BaseMain
-    {
-        $className = $namespace . '\Main';
-        if (class_exists($className))
-        {
-            self::$mains[$namespace] = $instance = new $className($componentName);
-            self::$nameMap[$componentName] = $namespace;
-
-            return $instance;
-        }
-        else
-        {
-            return null;
-        }
     }
 }
