@@ -41,6 +41,7 @@ abstract class Model extends BaseModel
     {
         $this->__meta = $meta = static::__getMeta();
         $this->__fieldNames = $meta->getSerializableFieldNames();
+        $this->__parsedSerializedFields = $meta->getParsedSerializableFieldNames();
         if (!$this instanceof IBean)
         {
             $this->__init($data, $queryRelation);

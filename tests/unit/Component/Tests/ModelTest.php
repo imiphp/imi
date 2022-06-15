@@ -11,6 +11,7 @@ use Imi\Test\Component\Model\ArticleEx;
 use Imi\Test\Component\Model\CreateTime;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
+use Imi\Test\Component\Model\MemberSerializable;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\Prefix;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
@@ -20,6 +21,7 @@ use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSet;
 use Imi\Test\Component\Model\TestSoftDelete;
+use Imi\Test\Component\Model\TestWithMember;
 use Imi\Test\Component\Model\UpdateTime;
 
 /**
@@ -861,6 +863,33 @@ class ModelTest extends BaseTest
             'value1' => ['a', 'b'],
             'value2' => ['2', '3'],
         ], $record->toArray());
+    }
+
+    /**
+     * @see https://github.com/imiphp/imi/issues/355
+     */
+    public function testBug355(): void
+    {
+        $member = MemberSerializable::newInstance();
+        $member->username = 'testBug355_username';
+        $member->password = 'testBug355_password';
+        $member->insert();
+
+        $record1 = TestWithMember::newInstance();
+        $record1->memberId = $member->id;
+        $record1->insert();
+
+        $record2 = TestWithMember::query()->with(['member'])->where('id', '=', $record1->id)->select()->get();
+        $this->assertNotNull($record2);
+        $this->assertNotNull($record2->member);
+        $data = $record2->toArray();
+        $this->assertFalse(isset($data['memberId']));
+
+        $record2 = TestWithMember::query()->with(['member'])->where('id', '=', $record1->id)->select()->getArray()[0] ?? null;
+        $this->assertNotNull($record2);
+        $this->assertNotNull($record2->member);
+        $data = $record2->toArray();
+        $this->assertFalse(isset($data['memberId']));
     }
 
     public function testPrefix(): void
