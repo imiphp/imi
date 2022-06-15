@@ -77,20 +77,24 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 序列化字段.
-     *
-     * @var array|null
      */
-    protected $__serializedFields = null;
+    protected ?array $__serializedFields = null;
 
     /**
      * 原始数据.
      */
     protected array $__originData = [];
 
+    /**
+     * 处理后的序列化字段.
+     */
+    protected array $__parsedSerializedFields = [];
+
     public function __construct(array $data = [])
     {
         $this->__meta = $meta = static::__getMeta();
         $this->__fieldNames = $meta->getSerializableFieldNames();
+        $this->__parsedSerializedFields = $meta->getParsedSerializableFieldNames();
         if (!$this instanceof IBean)
         {
             $this->__init($data);
@@ -178,7 +182,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             return $this->offsetExists($column->reference);
         }
-        $class = $meta->getRealModelClass();
+        $class = ($this->__realClass ??= $meta->getRealModelClass());
         if (isset(self::$__getterCache[$class][$offset]))
         {
             $methodName = self::$__getterCache[$class][$offset];
@@ -422,17 +426,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 $relationFieldNames = [];
             }
-            // 禁止序列化支持
-            $serializables = $meta->getSerializables();
-            $serializableSets = $meta->getSerializableSets();
             // JsonNotNull 注解支持
-            $propertyJsonNotNullMap = $meta->getPropertyJsonNotNullMap();
-            foreach ($this->__fieldNames as $name)
+            foreach ($this->__parsedSerializedFields as $name)
             {
                 $value = $this[$name];
                 if (null === $value)
                 {
-                    if (isset($propertyJsonNotNullMap[$name]))
+                    if (isset(($propertyJsonNotNullMap ??= $meta->getPropertyJsonNotNullMap())[$name]))
                     {
                         continue;
                     }
@@ -446,41 +446,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                         }
                     }
                 }
-                if (isset($serializableSets[$name]))
-                {
-                    // 单独属性上的 @Serializable 注解
-                    if (!$serializableSets[$name][0]->allow)
-                    {
-                        continue;
-                    }
-                }
-                elseif ($serializables)
-                {
-                    if (\in_array($name, $serializables->fields))
-                    {
-                        // 在黑名单中的字段剔除
-                        if ('deny' === $serializables->mode)
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        // 不在白名单中的字段剔除
-                        if ('allow' === $serializables->mode)
-                        {
-                            continue;
-                        }
-                    }
-                }
                 $result[$name] = $value;
             }
-
-            return $result;
         }
         else
         {
-            $resultArray = [];
             $__fieldNames = $this->__fieldNames;
             foreach ($serializedFields as $fieldName)
             {
@@ -492,11 +462,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 {
                     $name = $__fieldNames[$fieldName] ?? $fieldName;
                 }
-                $resultArray[$name] = $this[$name] ?? null;
+                $result[$name] = $this[$name] ?? null;
             }
-
-            return $resultArray;
         }
+
+        return $result;
     }
 
     /**

@@ -170,6 +170,13 @@ class Meta
      */
     private bool $bean = false;
 
+    /**
+     * 处理后的序列化字段数组.
+     *
+     * 已包含注解：Serializable、Serializables
+     */
+    private array $parsedSerializableFieldNames = [];
+
     public function __construct(string $modelClass, bool $inherit = false)
     {
         $id = [];
@@ -197,7 +204,8 @@ class Meta
         $entity = $annotations[Entity::class];
         $this->jsonEncode = $annotations[JsonEncode::class];
         $this->jsonDecode = $annotations[JsonDecode::class];
-        $this->serializables = $annotations[Serializables::class];
+        /** @var Serializables|null $serializables */
+        $this->serializables = $serializables = $annotations[Serializables::class];
         if ($table)
         {
             $this->dbPoolName = $table->dbPoolName;
@@ -229,7 +237,8 @@ class Meta
             }
             $fields[$name] = $column;
         }
-        $this->serializableSets = $annotations[Serializable::class];
+        /** @var Serializable[][] $serializableSets */
+        $this->serializableSets = $serializableSets = $annotations[Serializable::class];
         $this->extractPropertys = $annotations[ExtractProperty::class];
         $this->propertyJsonNotNullMap = $annotations[JsonNotNull::class];
         $this->sqlColumns = $annotations[Sql::class];
@@ -272,6 +281,39 @@ class Meta
             }
         }
         $this->bean = $entity->bean;
+        $parsedSerializableFieldNames = [];
+        foreach ($serializableFieldNames as $name)
+        {
+            if (isset($serializableSets[$name]))
+            {
+                // 单独属性上的 @Serializable 注解
+                if (!$serializableSets[$name][0]->allow)
+                {
+                    continue;
+                }
+            }
+            elseif ($serializables)
+            {
+                if (\in_array($name, $serializables->fields))
+                {
+                    // 在黑名单中的字段剔除
+                    if ('deny' === $serializables->mode)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    // 不在白名单中的字段剔除
+                    if ('allow' === $serializables->mode)
+                    {
+                        continue;
+                    }
+                }
+            }
+            $parsedSerializableFieldNames[] = $name;
+        }
+        $this->parsedSerializableFieldNames = $parsedSerializableFieldNames;
     }
 
     /**
@@ -544,6 +586,14 @@ class Meta
     public function getFieldsJsonDecode(): array
     {
         return $this->fieldsJsonDecode;
+    }
+
+    /**
+     * Get 处理后的序列化字段数组.
+     */
+    public function getParsedSerializableFieldNames(): array
+    {
+        return $this->parsedSerializableFieldNames;
     }
 
     /**
