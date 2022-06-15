@@ -1026,7 +1026,8 @@ abstract class Query implements IQuery
                 $binds = $this->binds;
                 $this->binds = [];
             }
-            $sql = (new (static::SELECT_BUILDER_CLASS)($this))->build();
+            $builderClass = static::SELECT_BUILDER_CLASS;
+            $sql = (new $builderClass($this))->build();
             if ($alias)
             {
                 // @phpstan-ignore-next-line
@@ -1099,7 +1100,8 @@ abstract class Query implements IQuery
                 $binds = $this->binds;
                 $this->binds = [];
             }
-            $sql = (new (static::INSERT_BUILDER_CLASS)($this))->build($data);
+            $builderClass = static::INSERT_BUILDER_CLASS;
+            $sql = (new $builderClass($this))->build($data);
             if ($alias)
             {
                 $aliasSqlMap[$alias] = [
@@ -1118,7 +1120,9 @@ abstract class Query implements IQuery
      */
     public function buildBatchInsertSql($data = null): string
     {
-        return (new (static::BATCH_INSERT_BUILDER_CLASS)($this))->build($data);
+        $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
+
+        return (new $builderClass($this))->build($data);
     }
 
     /**
@@ -1158,7 +1162,8 @@ abstract class Query implements IQuery
                 $binds = $this->binds;
                 $this->binds = [];
             }
-            $sql = (new (static::UPDATE_BUILDER_CLASS)($this))->build($data);
+            $builderClass = static::UPDATE_BUILDER_CLASS;
+            $sql = (new $builderClass($this))->build($data);
             if ($alias)
             {
                 // @phpstan-ignore-next-line
@@ -1219,7 +1224,8 @@ abstract class Query implements IQuery
                 $binds = $this->binds;
                 $this->binds = [];
             }
-            $sql = (new (static::REPLACE_BUILDER_CLASS)($this))->build($data);
+            $builderClass = static::REPLACE_BUILDER_CLASS;
+            $sql = (new $builderClass($this))->build($data);
             if ($alias)
             {
                 // @phpstan-ignore-next-line
@@ -1274,7 +1280,8 @@ abstract class Query implements IQuery
                 $binds = $this->binds;
                 $this->binds = [];
             }
-            $sql = (new (static::DELETE_BUILDER_CLASS)($this))->build();
+            $builderClass = static::DELETE_BUILDER_CLASS;
+            $sql = (new $builderClass($this))->build();
             if ($alias)
             {
                 // @phpstan-ignore-next-line

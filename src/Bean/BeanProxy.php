@@ -310,7 +310,7 @@ class BeanProxy
         {
             if (isset($annotations[$propertyName]))
             {
-                return (new ($annotations[$propertyName]['injectType'])($annotations[$propertyName]['injectOptions']))->getRealValue();
+                return (new $annotations[$propertyName]['injectType']($annotations[$propertyName]['injectOptions']))->getRealValue();
             }
             else
             {
