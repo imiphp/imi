@@ -38,6 +38,11 @@ class Meta
     private ?string $tableName = null;
 
     /**
+     * 使用表名前缀
+     */
+    private bool $usePrefix = false;
+
+    /**
      * 数据库连接池名称.
      */
     private ?string $dbPoolName = null;
@@ -198,6 +203,7 @@ class Meta
             $this->dbPoolName = $table->dbPoolName;
             $this->id = $id = (array) $table->id;
             $this->setTableName($table->name);
+            $this->usePrefix = $table->usePrefix;
         }
         $this->firstId = $id[0] ?? null;
         $fields = $dbFields = [];
@@ -353,7 +359,6 @@ class Meta
         return $this->camel;
     }
 
-    /**
     /**
      * Get 是否有关联.
      */
@@ -539,5 +544,13 @@ class Meta
     public function getFieldsJsonDecode(): array
     {
         return $this->fieldsJsonDecode;
+    }
+
+    /**
+     * 是否使用表名前缀
+     */
+    public function isUsePrefix(): bool
+    {
+        return $this->usePrefix;
     }
 }

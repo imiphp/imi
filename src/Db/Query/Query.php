@@ -87,6 +87,8 @@ abstract class Query implements IQuery
      */
     protected int $dbParamInc = 0;
 
+    protected string $originPrefix = '';
+
     /**
      * 查询器别名集合.
      *
@@ -111,7 +113,7 @@ abstract class Query implements IQuery
      */
     protected static array $aliasSqlMap = [];
 
-    public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null)
+    public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
         $this->db = $db;
         $this->isInitDb = (bool) $db;
@@ -119,24 +121,32 @@ abstract class Query implements IQuery
         $this->modelClass = $modelClass;
         $this->queryType = $queryType ?? QueryType::WRITE;
         $this->isInitQueryType = null !== $queryType;
+        if (null === $prefix)
+        {
+            if ($db = $this->db)
+            {
+                $this->originPrefix = $db->getOption()['prefix'] ?? '';
+            }
+            else
+            {
+                $this->originPrefix = Db::getInstanceConfig($this->poolName, $this->queryType)['prefix'] ?? '';
+            }
+        }
+        else
+        {
+            $this->originPrefix = $prefix;
+        }
+        $this->initQuery();
     }
 
-    public function __init(): void
+    protected function initQuery(): void
     {
         $this->dbParamInc = 0;
         if (!$this->isInitQueryType)
         {
             $this->queryType = QueryType::WRITE;
         }
-        if ($db = $this->db)
-        {
-            $prefix = $db->getOption()['prefix'] ?? '';
-        }
-        else
-        {
-            $prefix = Db::getInstanceConfig($this->poolName, $this->queryType)['prefix'] ?? '';
-        }
-        $this->option = new QueryOption($prefix);
+        $this->option = new QueryOption($this->originPrefix);
     }
 
     public function __clone()
@@ -871,7 +881,7 @@ abstract class Query implements IQuery
         }
         finally
         {
-            $this->__init();
+            $this->initQuery();
         }
     }
 

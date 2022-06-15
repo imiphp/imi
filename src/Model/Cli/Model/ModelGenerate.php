@@ -221,7 +221,7 @@ class ModelGenerate extends BaseCommand
             {
                 $ddl = $ddlEncode($ddl);
             }
-            if ($usePrefix = str_starts_with($table, $tablePrefix))
+            if ($usePrefix = ('' !== $tablePrefix && str_starts_with($table, $tablePrefix)))
             {
                 $tableName = Text::ltrimText($table, $tablePrefix);
             }
