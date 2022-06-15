@@ -14,12 +14,14 @@ use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
+use Imi\Timer\Timer;
 use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\ImiPriority;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
+use Swoole\Event as SwooleEvent;
 use Swoole\ExitException;
 use Swoole\Table;
 
@@ -138,9 +140,14 @@ class ProcessManager
                 {
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
                 }
-                Event::on('IMI.PROCESS.END', function () {
+                $processExitCallable = function () {
                     Signal::clear();
-                }, ImiPriority::IMI_MIN);
+                    SwooleEvent::exit();
+                };
+                // 超时强制退出
+                Event::on('IMI.PROCESS.END', static fn () => Timer::after(3000, $processExitCallable), ImiPriority::IMI_MAX);
+                // 正常退出
+                Event::on('IMI.PROCESS.END', $processExitCallable, ImiPriority::IMI_MIN);
                 $processEnded = false;
                 imigo(function () use ($name, $swooleProcess, &$processEnded) {
                     if (Signal::wait(\SIGTERM))

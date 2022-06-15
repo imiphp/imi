@@ -267,7 +267,7 @@ abstract class BaseAsyncPool extends BasePool
                 $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
                 Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
                     $this->stopAutoGC();
-                }, \Imi\Util\ImiPriority::IMI_MIN);
+                }, \Imi\Util\ImiPriority::IMI_MIN + 1);
             }
         }
     }
@@ -334,7 +334,7 @@ abstract class BaseAsyncPool extends BasePool
             $this->heartbeatTimerId = \Swoole\Timer::tick((int) ($heartbeatInterval * 1000), [$this, 'heartbeat']);
             Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
                 $this->stopHeartbeat();
-            }, \Imi\Util\ImiPriority::IMI_MIN);
+            }, \Imi\Util\ImiPriority::IMI_MIN + 1);
         }
     }
 

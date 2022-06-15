@@ -139,7 +139,7 @@ trait TProcess
         $this->unixSocketRunning = true;
         Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
             $this->stopUnixSocketServer();
-        }, \Imi\Util\ImiPriority::IMI_MIN);
+        }, \Imi\Util\ImiPriority::IMI_MIN + 1);
         Coroutine::create(function () {
             $socketFile = $this->getUnixSocketFile();
             if (file_exists($socketFile))
