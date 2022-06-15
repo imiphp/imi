@@ -26,6 +26,5 @@ class PoolTest2Process extends BaseProcess
             $result[$poolName] = $pool->getCount();
         }
         echo json_encode($result), \PHP_EOL;
-        $process->exit();
     }
 }

@@ -7,6 +7,7 @@ namespace Imi\Swoole\Process;
 use function hash;
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Event\EventParam;
 use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
@@ -140,7 +141,11 @@ class ProcessManager
                 {
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
                 }
-                $processExitCallable = function () {
+                $processExitCallable = function (?EventParam $e = null) {
+                    if ($e)
+                    {
+                        $e->stopPropagation();
+                    }
                     Signal::clear();
                     SwooleEvent::exit();
                 };
@@ -220,12 +225,8 @@ class ProcessManager
                 }
                 finally
                 {
-                    if (!$inCoroutine)
+                    if (!$inCoroutine && !$processEnded)
                     {
-                        if ($processEnded)
-                        {
-                            return;
-                        }
                         $processEnded = true;
                         // 进程结束事件
                         Event::trigger('IMI.PROCESS.END', [

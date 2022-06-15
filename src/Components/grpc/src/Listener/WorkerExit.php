@@ -15,7 +15,7 @@ use Imi\Swoole\Util\Coroutine;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.EXIT", priority=Imi\Util\ImiPriority::IMI_MIN)
- * @Listener("IMI.PROCESS.END", priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener("IMI.PROCESS.END", priority=-19940311)
  */
 class WorkerExit implements IEventListener
 {

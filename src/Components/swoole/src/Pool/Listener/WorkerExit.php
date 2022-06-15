@@ -12,7 +12,7 @@ use Imi\Util\ImiPriority;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.EXIT", priority=ImiPriority::IMI_MIN)
- * @Listener(eventName="IMI.PROCESS.END", priority=ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.PROCESS.END", priority=-19940311)
  * @Listener(eventName="IMI.QUICK_START_AFTER", priority=ImiPriority::IMI_MIN)
  */
 class WorkerExit implements IEventListener
