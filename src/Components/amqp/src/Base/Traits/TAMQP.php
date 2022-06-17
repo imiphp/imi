@@ -11,12 +11,10 @@ use Imi\AMQP\Annotation\Publisher;
 use Imi\AMQP\Annotation\Queue;
 use Imi\AMQP\Pool\AMQP;
 use Imi\AMQP\Pool\AMQPPool;
-use Imi\AMQP\Swoole\AMQPSwooleConnection;
 use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
-use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Imi;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
@@ -142,16 +140,7 @@ trait TAMQP
         }
         elseif (isset($connectionAnnotation))
         {
-            if ($this->isSwoole && Coroutine::isIn())
-            {
-                $className = AMQPSwooleConnection::class;
-            }
-            else
-            {
-                $className = AMQPStreamConnection::class;
-            }
-
-            return new $className(
+            return new AMQPStreamConnection(
                 $connectionAnnotation->host,
                 $connectionAnnotation->port,
                 $connectionAnnotation->user,

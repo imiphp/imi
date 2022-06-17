@@ -70,7 +70,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     {
         if ($this->channel)
         {
-            $this->stop();
+            $this->close();
         }
         $this->connection = $this->getConnection();
         if ($this->connection->isConnected())

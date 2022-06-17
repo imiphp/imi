@@ -46,7 +46,7 @@ class SwooleLogger extends MonoLogger
             Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END', 'IMI.QUICK_START_AFTER'], function () {
                 $this->asyncLogging = false;
                 $this->logChannel->close();
-            }, \Imi\Util\ImiPriority::IMI_MIN);
+            }, \Imi\Util\ImiPriority::IMI_MIN + 1);
         }
     }
 

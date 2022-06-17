@@ -12,6 +12,7 @@ use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi;
+use Imi\Util\ImiPriority;
 use Swoole\Event;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
@@ -37,6 +38,10 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
 
         public function run(\Swoole\Process $process): void
         {
+            $running = true;
+            \Imi\Event\Event::on('IMI.PROCESS.END', function () use (&$running) {
+                $running = false;
+            }, ImiPriority::IMI_MAX);
             $imiQueue = $this->imiQueue;
             $processGroups = [];
             foreach ($imiQueue->getList() as $name => $arrayConfig)
@@ -86,7 +91,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             if ($processPools)
             {
                 // @phpstan-ignore-next-line
-                while (true)
+                while ($running)
                 {
                     foreach ($processPools as $processPool)
                     {
@@ -99,11 +104,14 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             else
             {
                 Log::warning('@app.beans.imiQueue.list is empty');
-                // @phpstan-ignore-next-line
-                while (true)
-                {
-                    sleep(86400);
-                }
+                Coroutine::create(function () use (&$running) {
+                    // @phpstan-ignore-next-line
+                    while ($running)
+                    {
+                        sleep(1);
+                    }
+                });
+                Event::wait();
             }
         }
     }

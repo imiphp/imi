@@ -107,6 +107,8 @@ class HotUpdateProcess extends BaseProcess
      */
     private int $buildRuntimeTimerId = 0;
 
+    private bool $running = false;
+
     /**
      * @PoolClean
      */
@@ -116,6 +118,7 @@ class HotUpdateProcess extends BaseProcess
         {
             return;
         }
+        $this->running = true;
         $this->changedFilesFile = Imi::getRuntimePath('changedFilesFile');
         file_put_contents($this->changedFilesFile, '');
         if (null === $this->defaultPath)
@@ -129,8 +132,11 @@ class HotUpdateProcess extends BaseProcess
         $time = 0;
         $this->initBuildRuntime();
         $this->startBuildRuntimeTimer();
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
+            $this->running = false;
+        }, \Imi\Util\ImiPriority::IMI_MIN);
         /** @phpstan-ignore-next-line */
-        while (true)
+        while ($this->running)
         {
             // 检测间隔延时
             if ($this->timespan > 0)
@@ -167,6 +173,8 @@ class HotUpdateProcess extends BaseProcess
                 $this->beginBuildRuntime($changedFiles);
             }
         }
+        $this->stopBuildRuntimeTimer();
+        $this->closeBuildRuntime();
     }
 
     /**

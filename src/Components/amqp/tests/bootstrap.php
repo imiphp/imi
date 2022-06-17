@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use function Imi\env;
+use function Imi\ttyExec;
 use function Yurun\Swoole\Coroutine\batch;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
@@ -15,11 +16,17 @@ function checkHttpServerStatus()
     for ($i = 0; $i < 60; ++$i)
     {
         sleep(1);
-        $context = stream_context_create(['http' => ['timeout' => 1]]);
-        $body = @file_get_contents('http://127.0.0.1:8080/', false, $context);
-        if ('imi' === $body)
+        try
         {
-            return true;
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $body = @file_get_contents('http://127.0.0.1:8080/', false, $context);
+            if ('imi' === $body)
+            {
+                return true;
+            }
+        }
+        catch (ErrorException $e)
+        {
         }
     }
 
@@ -77,6 +84,11 @@ function startServer()
     }
 
     batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
+
+    register_shutdown_function(function () {
+        echo 'check ports...', \PHP_EOL;
+        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+    });
 }
 
 (function () {

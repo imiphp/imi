@@ -61,15 +61,19 @@ class CronManager implements ICronManager
             if (ProcessType::PROCESS === App::get(ProcessAppContexts::PROCESS_TYPE))
             {
                 $input = ImiCommand::getInput();
-                $this->socketFile = $input->getParameterOption('--cron-sock');
-                if (!$this->socketFile)
+                $this->socketFile = $input->getParameterOption('--cron-sock', null);
+            }
+            if (null === $this->socketFile)
+            {
+                $process = ProcessManager::getProcessWithManager('CronProcess');
+                if ($process)
                 {
-                    throw new \InvalidArgumentException('In process to run cron, you must have arg cron-sock');
+                    $this->socketFile = $process->getUnixSocketFile();
                 }
             }
-            else
+            if (null === $this->socketFile)
             {
-                $this->socketFile = '/tmp/imi.' . App::get(ProcessAppContexts::MASTER_PID) . '.cron.sock';
+                throw new \InvalidArgumentException('In process to run cron, you must have arg cron-sock');
             }
         }
         $realTasks = &$this->realTasks;

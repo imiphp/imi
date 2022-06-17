@@ -38,11 +38,17 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
-            if ('imi' === @file_get_contents('http://127.0.0.1:13001/', false, $context))
+            try
             {
-                $serverStarted = true;
-                break;
+                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                if ('imi' === @file_get_contents('http://127.0.0.1:13001/', false, $context))
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            }
+            catch (ErrorException $e)
+            {
             }
         }
 
@@ -56,12 +62,18 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
-            @file_get_contents('http://127.0.0.1:13002/', false, $context);
-            if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            try
             {
-                $serverStarted = true;
-                break;
+                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                @file_get_contents('http://127.0.0.1:13002/', false, $context);
+                if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            }
+            catch (ErrorException $e)
+            {
             }
         }
 
@@ -139,12 +151,18 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
-            @file_get_contents('http://127.0.0.1:13008/', false, $context);
-            if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            try
             {
-                $serverStarted = true;
-                break;
+                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                @file_get_contents('http://127.0.0.1:13008/', false, $context);
+                if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            }
+            catch (ErrorException $e)
+            {
             }
         }
 
@@ -158,12 +176,18 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
-            @file_get_contents('http://127.0.0.1:13009/', false, $context);
-            if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            try
             {
-                $serverStarted = true;
-                break;
+                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                @file_get_contents('http://127.0.0.1:13009/', false, $context);
+                if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            }
+            catch (ErrorException $e)
+            {
             }
         }
 
@@ -177,12 +201,18 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
-            @file_get_contents('http://127.0.0.1:13010/', false, $context);
-            if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            try
             {
-                $serverStarted = true;
-                break;
+                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                @file_get_contents('http://127.0.0.1:13010/', false, $context);
+                if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            }
+            catch (ErrorException $e)
+            {
             }
         }
 

@@ -26,7 +26,8 @@
         },
         "files": [
             "../../../vendor/autoload.php",
-            "../../../dev/try-include-swoole.php"
+            "../../../dev/try-include-swoole.php",
+            "../rpc/vendor/autoload.php"
         ]
     },
     "scripts": {

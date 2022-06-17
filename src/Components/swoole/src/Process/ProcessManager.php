@@ -7,6 +7,7 @@ namespace Imi\Swoole\Process;
 use function hash;
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Event\EventParam;
 use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
@@ -14,13 +15,15 @@ use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
+use Imi\Timer\Timer;
 use function Imi\ttyExec;
 use Imi\Util\File;
 use Imi\Util\Imi;
+use Imi\Util\ImiPriority;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
+use Swoole\Event as SwooleEvent;
 use Swoole\ExitException;
-use Swoole\Process;
 use Swoole\Table;
 
 /**
@@ -136,11 +139,44 @@ class ProcessManager
             $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
                 if ($runWithManager)
                 {
-                    Log::info('Process start [' . $name . ']. pid: ' . getmypid());
+                    Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
                 }
+                $processExitCallable = function (?EventParam $e = null) {
+                    if ($e)
+                    {
+                        $e->stopPropagation();
+                    }
+                    Signal::clear();
+                    SwooleEvent::exit();
+                };
+                // 超时强制退出
+                Event::on('IMI.PROCESS.END', static fn () => Timer::after(3000, $processExitCallable), ImiPriority::IMI_MAX);
+                // 正常退出
+                Event::on('IMI.PROCESS.END', $processExitCallable, ImiPriority::IMI_MIN);
+                $processEnded = false;
+                imigo(function () use ($name, $swooleProcess, &$processEnded) {
+                    if (Signal::wait(\SIGTERM))
+                    {
+                        if ($processEnded)
+                        {
+                            return;
+                        }
+                        $processEnded = true;
+                        // 进程结束事件
+                        Event::trigger('IMI.PROCESS.END', [
+                            'name'      => $name,
+                            'process'   => $swooleProcess,
+                        ]);
+                    }
+                });
                 if ($inCoroutine = Coroutine::isIn())
                 {
-                    Coroutine::defer(static function () use ($name, $swooleProcess) {
+                    Coroutine::defer(static function () use ($name, $swooleProcess, &$processEnded) {
+                        if ($processEnded)
+                        {
+                            return;
+                        }
+                        $processEnded = true;
                         // 进程结束事件
                         Event::trigger('IMI.PROCESS.END', [
                             'name'      => $name,
@@ -153,6 +189,10 @@ class ProcessManager
                     if ($processOption['options']['unique'] && !self::lockProcess($name))
                     {
                         throw new \RuntimeException(sprintf('Lock process %s failed', $name));
+                    }
+                    if ($processOption['options']['co'])
+                    {
+                        $swooleProcess->startUnixSocketServer();
                     }
                     // 写出进程信息
                     if (null !== $swooleProcess->id && null !== $swooleProcess->pid)
@@ -185,8 +225,9 @@ class ProcessManager
                 }
                 finally
                 {
-                    if (!$inCoroutine)
+                    if (!$inCoroutine && !$processEnded)
                     {
+                        $processEnded = true;
                         // 进程结束事件
                         Event::trigger('IMI.PROCESS.END', [
                             'name'      => $name,

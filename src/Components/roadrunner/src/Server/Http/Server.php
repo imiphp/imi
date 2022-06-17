@@ -165,7 +165,7 @@ class Server extends BaseServer
             $rrProcess = new Process($cmd, null, $env, null, null);
             try
             {
-                if ('/' === \DIRECTORY_SEPARATOR && Process::isTtySupported())
+                if (\Imi\Util\Process::isTtySupported())
                 {
                     $rrProcess->setTty(true);
                 }

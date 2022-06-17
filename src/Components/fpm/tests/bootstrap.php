@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use function Imi\env;
+use function Imi\ttyExec;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -85,6 +86,10 @@ function startServer(): void
             throw new \RuntimeException("{$name} start failed");
         }
     }
+    register_shutdown_function(function () {
+        echo 'check ports...', \PHP_EOL;
+        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+    });
 }
 
 startServer();

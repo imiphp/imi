@@ -67,7 +67,7 @@ class CronProcess extends BaseProcess
     protected function startSocketServer(): void
     {
         $socketFile = $this->cronManager->getSocketFile();
-        if (is_file($socketFile))
+        if (file_exists($socketFile))
         {
             unlink($socketFile);
         }

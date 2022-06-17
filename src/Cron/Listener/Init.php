@@ -25,8 +25,6 @@ class Init implements IEventListener
         {
             return;
         }
-        /** @var \Imi\Cron\Contract\ICronManager $cronManager */
-        $cronManager = App::getBean('CronManager');
         /** @var \Imi\Process\AutoRunProcessManager $autoRunProcessManager */
         $autoRunProcessManager = App::getBean('AutoRunProcessManager');
         // 未启用定时任务进程不初始化
@@ -34,6 +32,8 @@ class Init implements IEventListener
         {
             return;
         }
+        /** @var \Imi\Cron\Contract\ICronManager $cronManager */
+        $cronManager = App::getBean('CronManager');
         foreach (AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
             // @phpstan-ignore-next-line

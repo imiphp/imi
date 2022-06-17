@@ -98,7 +98,10 @@ class Client
         {
             return false;
         }
-        $data = serialize($message);
+        $data = serialize([
+            'action' => 'cron',
+            'data'   => $message,
+        ]);
         $length = \strlen($data);
         $data = pack('N', $length) . $data;
         $length += 4;
@@ -138,9 +141,10 @@ class Client
             return false;
         }
         $result = unserialize($data);
-        if ($result instanceof CommonMsg)
+        $resultData = $result['data'] ?? null;
+        if ($resultData instanceof CommonMsg)
         {
-            return $result;
+            return $resultData;
         }
         else
         {
