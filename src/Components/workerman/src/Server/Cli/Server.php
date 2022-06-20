@@ -39,6 +39,10 @@ class Server extends BaseCommand
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
         $this->outStartupInfo();
+        if (!PoolManager::checkPoolResource())
+        {
+            exit(255);
+        }
         PoolManager::clearPools();
         CacheManager::clearPools();
 

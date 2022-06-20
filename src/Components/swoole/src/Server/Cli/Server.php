@@ -18,6 +18,7 @@ use Imi\Pool\PoolManager;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
+use function Swoole\Coroutine\run;
 
 /**
  * @Command("swoole")
@@ -37,6 +38,22 @@ class Server extends BaseCommand
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($d) {
             $this->outStartupInfo();
+            if (Config::get('@app.server.checkPoolResource', false))
+            {
+                (function () {
+                    $exit = false;
+                    run(function () use (&$exit) {
+                        if (!PoolManager::checkPoolResource())
+                        {
+                            $exit = true;
+                        }
+                    });
+                    if ($exit)
+                    {
+                        exit(255);
+                    }
+                })();
+            }
             PoolManager::clearPools();
             CacheManager::clearPools();
             Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');

@@ -89,6 +89,12 @@ return [
         // ide 助手文件生成
         'ideHelper' => null, // 是否生成IDE助手文件，如果为`null`则依据`App::isDebug()`决定
     ],
+
+    // 统一的服务器配置
+    'server' => [
+        // 启动服务时，检查连接池连接或非连接池连接是否可用。如不可用直接退出程序。
+        'checkPoolResource' => false,
+    ],
 ];
 ```
 
