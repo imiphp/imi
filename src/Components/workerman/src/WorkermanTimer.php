@@ -14,7 +14,7 @@ class WorkermanTimer implements ITimer
      */
     public function tick(int $ms, callable $callback): int
     {
-        return Timer::add($ms / 1000, $callback);
+        return Timer::add($ms / 1000, $callback) ?: 0;
     }
 
     /**
@@ -22,7 +22,7 @@ class WorkermanTimer implements ITimer
      */
     public function after(int $ms, callable $callback): int
     {
-        return Timer::add($ms / 1000, $callback, [], false);
+        return Timer::add($ms / 1000, $callback, [], false) ?: 0;
     }
 
     /**
