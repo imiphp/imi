@@ -42,6 +42,11 @@ interface IPool
     public function tryGetResource();
 
     /**
+     * 创建一个不受连接池管理的资源.
+     */
+    public function createNewResource(): IPoolResource;
+
+    /**
      * 释放资源占用.
      */
     public function release(IPoolResource $resource): void;

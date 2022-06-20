@@ -6,6 +6,7 @@ namespace Imi\Swoole\Db\Pool;
 
 use Imi\App;
 use Imi\Db\Pool\DbResource;
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\TUriResourceConfig;
 use Imi\Swoole\Pool\BaseAsyncPool;
 
@@ -25,7 +26,15 @@ class CoroutineDbPool extends BaseAsyncPool
     /**
      * {@inheritDoc}
      */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
+    protected function createResource(): IPoolResource
+    {
+        return $this->createNewResource();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createNewResource(): IPoolResource
     {
         $config = $this->getNextResourceConfig();
 
