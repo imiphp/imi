@@ -174,7 +174,7 @@ class Update
         if ($orphanRemoval)
         {
             // 删除无关联数据
-            $pks = $rightModel::__getMeta()->getId();
+            $pks = $rightModel::PRIMARY_KEYS ?? $rightModel::__getMeta()->getId();
             if (isset($pks[1]))
             {
                 throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));
@@ -492,7 +492,7 @@ class Update
         if ($orphanRemoval)
         {
             // 删除无关联数据
-            $pks = $rightModel::__getMeta()->getId();
+            $pks = $rightModel::PRIMARY_KEYS ?? $rightModel::__getMeta()->getId();
             if (isset($pks[1]))
             {
                 throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));

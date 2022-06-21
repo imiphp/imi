@@ -28,6 +28,20 @@ abstract class Model extends BaseModel
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
 
     /**
+     * 第一个主键名称.
+     *
+     * @var string|null
+     */
+    public const PRIMARY_KEY = null;
+
+    /**
+     * 主键名称数组.
+     *
+     * @var string[]|null
+     */
+    public const PRIMARY_KEYS = null;
+
+    /**
      * 动态模型集合.
      */
     protected static array $__forks = [];
@@ -233,7 +247,7 @@ abstract class Model extends BaseModel
             else
             {
                 // 主键值
-                foreach (static::__getMeta()->getId() as $i => $name)
+                foreach (static::PRIMARY_KEYS ?? static::__getMeta()->getId() as $i => $name)
                 {
                     if (!isset($ids[$i]))
                     {
@@ -280,7 +294,7 @@ abstract class Model extends BaseModel
             else
             {
                 // 主键值
-                foreach (static::__getMeta()->getId() as $i => $name)
+                foreach (static::PRIMARY_KEYS ?? static::__getMeta()->getId() as $i => $name)
                 {
                     if (!isset($ids[$i]))
                     {
@@ -424,7 +438,7 @@ abstract class Model extends BaseModel
         }
 
         $hasIdWhere = false;
-        foreach ($meta->getId() as $idName)
+        foreach (static::PRIMARY_KEYS ?? $meta->getId() as $idName)
         {
             if (isset($data[$idName]))
             {
@@ -570,7 +584,7 @@ abstract class Model extends BaseModel
         }
         else
         {
-            foreach ($meta->getId() as $idName)
+            foreach (static::PRIMARY_KEYS ?? $meta->getId() as $idName)
             {
                 if (isset($data[$idName]))
                 {
@@ -621,7 +635,7 @@ abstract class Model extends BaseModel
         }
 
         $hasIdWhere = false;
-        foreach ($meta->getId() as $idName)
+        foreach (static::PRIMARY_KEYS ?? $meta->getId() as $idName)
         {
             if (isset($this[$idName]))
             {
@@ -1075,7 +1089,7 @@ abstract class Model extends BaseModel
         // 更新时无需更新主键
         if ($isUpdate)
         {
-            foreach ($meta->getId() as $id)
+            foreach (static::PRIMARY_KEYS ?? $meta->getId() as $id)
             {
                 if (isset($result[$id]))
                 {

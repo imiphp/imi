@@ -28,6 +28,16 @@ else
  */
 abstract class <?php echo $className; ?>Base extends Model
 {
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEY = '<?php echo addcslashes($table['id'][0] ?? '', '\'\\'); ?>';
+
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEYS = <?php echo json_encode($table['id'], JSON_UNESCAPED_UNICODE); ?>;
+
 <?php
     foreach ($fields as $field)
     {

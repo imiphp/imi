@@ -127,7 +127,7 @@ trait TSoftDelete
             ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
         }
 
-        $id = $meta->getId();
+        $id = static::PRIMARY_KEYS ?? $meta->getId();
         if ($id)
         {
             foreach ($id as $idName)
@@ -206,7 +206,7 @@ trait TSoftDelete
             else
             {
                 // 主键值
-                foreach (static::__getMeta()->getId() as $i => $name)
+                foreach (static::PRIMARY_KEYS ?? static::__getMeta()->getId() as $i => $name)
                 {
                     if (!isset($ids[$i]))
                     {
@@ -244,7 +244,7 @@ trait TSoftDelete
         /** @var IQuery $query */
         $query = static::dbQuery();
         $meta = $this->__meta;
-        $id = $meta->getId();
+        $id = static::PRIMARY_KEYS ?? $meta->getId();
         if ($id)
         {
             foreach ($id as $idName)
