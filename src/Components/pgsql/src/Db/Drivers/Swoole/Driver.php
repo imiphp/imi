@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Db\Drivers\Swoole;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Statement\StatementManager;
@@ -396,7 +396,7 @@ if (class_exists(PostgreSQL::class, false))
                     }
                     throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
-                $stmt = App::getBean(Statement::class, $this, null, $sql, $statementName, $sqlParamsMap);
+                $stmt = BeanFactory::newInstance(Statement::class, $this, null, $sql, $statementName, $sqlParamsMap);
                 if ($this->isCacheStatement && !isset($stmtCache))
                 {
                     StatementManager::setNX($stmt, true);
@@ -424,7 +424,7 @@ if (class_exists(PostgreSQL::class, false))
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
 
-            return App::getBean(Statement::class, $this, $queryResult, $sql);
+            return BeanFactory::newInstance(Statement::class, $this, $queryResult, $sql);
         }
 
         /**

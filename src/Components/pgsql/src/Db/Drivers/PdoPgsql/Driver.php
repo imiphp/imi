@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Db\Drivers\PdoPgsql;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Statement\StatementManager;
@@ -435,7 +435,7 @@ class Driver extends PgsqlBase
                     }
                     throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
-                $stmt = App::getBean(Statement::class, $this, $lastStmt);
+                $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt);
                 if ($this->isCacheStatement && !isset($stmtCache))
                 {
                     StatementManager::setNX($stmt, true);
@@ -483,7 +483,7 @@ class Driver extends PgsqlBase
             throw $e;
         }
 
-        return App::getBean(Statement::class, $this, $lastStmt);
+        return BeanFactory::newInstance(Statement::class, $this, $lastStmt);
     }
 
     /**

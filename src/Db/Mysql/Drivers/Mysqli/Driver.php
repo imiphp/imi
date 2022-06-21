@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Db\Mysql\Drivers\Mysqli;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Mysql\Contract\IMysqlStatement;
@@ -383,7 +383,7 @@ class Driver extends MysqlBase
                 }
                 throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
-            $stmt = App::getBean(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
+            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && !isset($stmtCache))
             {
                 StatementManager::setNX($stmt, true);
@@ -412,7 +412,7 @@ class Driver extends MysqlBase
             throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
 
-        return App::getBean(Statement::class, $this, null, $lastResult, $sql);
+        return BeanFactory::newInstance(Statement::class, $this, null, $lastResult, $sql);
     }
 
     /**

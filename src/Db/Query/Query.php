@@ -7,7 +7,7 @@ namespace Imi\Db\Query;
 use function array_column;
 use function array_filter;
 use function array_unique;
-use Imi\App;
+use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Mysql\Consts\LogicalOperator;
@@ -158,7 +158,7 @@ abstract class Query implements IQuery
 
     public static function newInstance(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null): self
     {
-        return App::getBean(static::class, $db, $modelClass, $poolName, $queryType);
+        return BeanFactory::newInstance(static::class, $db, $modelClass, $poolName, $queryType);
     }
 
     /**
