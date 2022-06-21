@@ -65,7 +65,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 #### 官方组件
 
-* [PostgreSQL](doc/components/db/pgsql.md)
+* [PostgreSQL](src/Components/pgsql)
 * [MQTT](src/Components/mqtt)
 * [RPC](src/Components/rpc)
 * [gRPC](src/Components/grpc)
@@ -81,8 +81,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 * [雪花算法发号器](src/Components/snowflake)
 * [Swagger API 文档生成](src/Components/apidoc)
 * [Swoole Tracker](src/Components/swoole-tracker)
-
-> 这些组件都已经在 imi 主仓库中维护
+* [TDengine](https://github.com/imiphp/imi-tdengine)
 
 #### 优秀的第三方组件
 

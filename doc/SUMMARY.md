@@ -188,6 +188,7 @@
 * [宏定义](components/macro.md)
 * [Phar打包器](components/phar/index.md)
 * [imi 组件列表一览](components/list.md)
+  * [PostgreSQL](components/db/pgsql.md)
   * [MQTT](components/mqtt/server.md)
   * [gRPC](components/rpc/grpc.md)
   * [Hprose](components/rpc/hprose.md)
