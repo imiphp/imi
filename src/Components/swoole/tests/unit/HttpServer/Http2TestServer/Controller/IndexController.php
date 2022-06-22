@@ -12,7 +12,7 @@ use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\Http\MessageUtil;
 
 /**
- * @Controller(prefix="/", singleton=true)
+ * @Controller(prefix="/")
  */
 class IndexController extends HttpController
 {

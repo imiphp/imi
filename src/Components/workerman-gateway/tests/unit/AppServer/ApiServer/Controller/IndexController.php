@@ -11,7 +11,7 @@ use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
 /**
- * @Controller(prefix="/", singleton=true)
+ * @Controller(prefix="/")
  */
 class IndexController extends HttpController
 {

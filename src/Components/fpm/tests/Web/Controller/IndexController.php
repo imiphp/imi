@@ -18,7 +18,7 @@ use Imi\Util\Http\MessageUtil;
 use Imi\Util\Stream\MemoryStream;
 
 /**
- * @Controller(prefix="/", singleton=true)
+ * @Controller(prefix="/")
  */
 class IndexController extends HttpController
 {
