@@ -11,9 +11,10 @@ use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Util\ImiPriority;
 
 /**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER")
+ * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=ImiPriority::IMI_MIN)
  */
 class OnServerCreateAfter implements IEventListener
 {
