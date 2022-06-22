@@ -9,12 +9,11 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
-use Imi\Util\ImiPriority;
 use Imi\Workerman\Process\ProcessManager;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 
 /**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=-19940311)
  */
 class OnServerCreateAfter implements IEventListener
 {
