@@ -88,7 +88,7 @@ class UdpRouteInit implements IEventListener
 
                     foreach ($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName, [$server]), [
+                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
                         ]);
                     }

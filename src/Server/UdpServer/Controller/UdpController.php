@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\UdpServer\Controller;
 
+use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Server\UdpServer\Message\IPacketData;
@@ -25,8 +26,8 @@ abstract class UdpController
      */
     public IPacketData $data;
 
-    public function __construct(IUdpServer $server)
+    public function __construct()
     {
-        $this->server = $server;
+        $this->server = RequestContext::getServer();
     }
 }

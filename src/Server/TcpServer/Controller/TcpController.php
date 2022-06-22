@@ -26,9 +26,9 @@ abstract class TcpController
      */
     public IReceiveData $data;
 
-    public function __construct(ITcpServer $server)
+    public function __construct()
     {
-        $this->server = $server;
+        $this->server = RequestContext::getServer();
     }
 
     /**

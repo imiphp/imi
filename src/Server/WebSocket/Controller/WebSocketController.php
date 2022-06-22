@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\WebSocket\Controller;
 
+use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\IFrame;
@@ -25,8 +26,8 @@ abstract class WebSocketController
      */
     public IFrame $frame;
 
-    public function __construct(IWebSocketServer $server)
+    public function __construct()
     {
-        $this->server = $server;
+        $this->server = RequestContext::getServer();
     }
 }
