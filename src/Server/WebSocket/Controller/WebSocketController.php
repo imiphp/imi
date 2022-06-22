@@ -28,6 +28,7 @@ abstract class WebSocketController
 
     public function __construct()
     {
+        // @phpstan-ignore-next-line
         $this->server = RequestContext::getServer();
     }
 }
