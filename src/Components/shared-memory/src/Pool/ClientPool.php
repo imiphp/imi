@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\SharedMemory\Pool;
 
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\SharedMemory\Client;
 use Imi\Swoole\Pool\BaseAsyncPool;
 use Imi\Util\Imi;
@@ -16,7 +17,15 @@ class ClientPool extends BaseAsyncPool
     /**
      * {@inheritDoc}
      */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
+    protected function createResource(): IPoolResource
+    {
+        return $this->createNewResource();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createNewResource(): IPoolResource
     {
         $config = $this->getNextResourceConfig();
         if (!isset($config['socketFile']))

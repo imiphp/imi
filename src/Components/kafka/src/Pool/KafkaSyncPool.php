@@ -6,6 +6,7 @@ namespace Imi\Kafka\Pool;
 
 use Imi\Bean\BeanFactory;
 use Imi\Pool\BaseSyncPool;
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\TUriResourceConfig;
 use longlang\phpkafka\Producer\Producer;
 
@@ -26,7 +27,15 @@ class KafkaSyncPool extends BaseSyncPool
     /**
      * {@inheritDoc}
      */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
+    protected function createResource(): IPoolResource
+    {
+        return $this->createNewResource();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createNewResource(): IPoolResource
     {
         $config = $this->getNextResourceConfig();
         $producerConfig = KafkaPool::createProducerConfig($config);

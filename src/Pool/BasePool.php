@@ -73,6 +73,11 @@ abstract class BasePool implements IPool
         }
     }
 
+    public function __destruct()
+    {
+        $this->close();
+    }
+
     public function __init(): void
     {
         if (\is_array($this->config))
@@ -221,7 +226,7 @@ abstract class BasePool implements IPool
         try
         {
             ++$addingResources;
-            $resource = $this->createResource();
+            $resource = $this->createNewResource();
             if (!$resource->open())
             {
                 throw new \RuntimeException(sprintf('Open pool [%s] resource failed', $this->name));
@@ -252,6 +257,8 @@ abstract class BasePool implements IPool
 
     /**
      * 创建资源.
+     *
+     * @deprecated 3.0 建议使用 createNewResource()
      */
     abstract protected function createResource(): IPoolResource;
 
@@ -259,6 +266,14 @@ abstract class BasePool implements IPool
      * 把资源加入队列.
      */
     abstract protected function push(IPoolResource $resource): void;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createNewResource(): IPoolResource
+    {
+        return $this->createResource();
+    }
 
     /**
      * {@inheritDoc}

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Imi\Pool;
 
 use Imi\App;
+use Imi\Bean\BeanFactory;
 use Imi\Config;
+use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\RequestContext;
@@ -44,10 +47,54 @@ class PoolManager
                     continue;
                 }
                 $poolPool = $poolConfig['pool'];
-                self::addName($poolName, $poolPool['class'], new PoolConfig($poolPool['config'] ?? []), $poolConfig['resource']);
+                self::addName($poolName, $poolPool['class'], new PoolConfig($poolPool['config'] ?? []), $poolConfig['resource'] ?? null);
             }
         }
         self::$inited = true;
+    }
+
+    /**
+     * 检查连接池资源可用性.
+     */
+    public static function checkPoolResource(): bool
+    {
+        $result = true;
+        foreach (Config::getAliases() as $alias)
+        {
+            foreach (Config::get($alias . '.pools', []) as $poolName => $poolConfig)
+            {
+                if (!isset($poolConfig['pool']))
+                {
+                    continue;
+                }
+                $poolPool = $poolConfig['pool'];
+                /** @var IPool $pool */
+                $pool = BeanFactory::newInstance($poolPool['class'], $poolName, new PoolConfig($poolPool['config'] ?? []), $poolConfig['resource'] ?? null);
+                try
+                {
+                    $resource = $pool->createNewResource();
+                    if (!($resource->open() && $resource->checkState()))
+                    {
+                        Log::error(sprintf('The resources of connection pool [%s] are not available', $poolName));
+                        $result = false;
+                    }
+                }
+                catch (\Throwable $th)
+                {
+                    /** @var \Imi\Log\ErrorLog $errorLog */
+                    $errorLog = App::getBean('ErrorLog');
+                    $errorLog->onException($th);
+                    Log::error(sprintf('The resources of connection pool [%s] are not available', $poolName));
+                    $result = false;
+                }
+            }
+        }
+
+        Event::trigger('IMI.CHECK_POOL_RESOURCE', [
+            'result' => &$result,
+        ]);
+
+        return $result;
     }
 
     /**
@@ -58,7 +105,7 @@ class PoolManager
      */
     public static function addName(string $name, string $poolClassName, Interfaces\IPoolConfig $config = null, $resourceConfig = null): void
     {
-        static::$pools[$name] = $pool = App::getBean($poolClassName, $name, $config, $resourceConfig);
+        static::$pools[$name] = $pool = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
         $pool->open();
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Kafka\Pool;
 
 use Imi\Bean\BeanFactory;
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\TUriResourceConfig;
 use Imi\Swoole\Pool\BaseAsyncPool;
 use longlang\phpkafka\Producer\Producer;
@@ -26,7 +27,15 @@ class KafkaCoroutinePool extends BaseAsyncPool
     /**
      * {@inheritDoc}
      */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
+    protected function createResource(): IPoolResource
+    {
+        return $this->createNewResource();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createNewResource(): IPoolResource
     {
         $config = $this->getNextResourceConfig();
         $producerConfig = KafkaPool::createProducerConfig($config);

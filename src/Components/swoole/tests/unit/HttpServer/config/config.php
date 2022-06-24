@@ -65,6 +65,12 @@ return [
         ],
     ],
 
+    // 统一的服务器配置
+    'server' => [
+        // 启动服务时，检查连接池连接或非连接池连接是否可用。如不可用直接退出程序。
+        'checkPoolResource' => true,
+    ],
+
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\Swoole\Test\HttpServer\ApiServer',
