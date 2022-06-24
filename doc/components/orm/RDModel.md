@@ -1,6 +1,12 @@
-# 数据库表模型
+# 模型用法
 
 [toc]
+
+## 模型常量
+
+`TestModel::PRIMARY_KEY` 第一个主键名称，字符串
+
+`TestModel::PRIMARY_KEYS` 主键名称数组
 
 ## 模型操作
 
