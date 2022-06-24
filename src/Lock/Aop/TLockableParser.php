@@ -68,7 +68,7 @@ trait TLockableParser
 
         // Lock 对象
         /** @var ILockHandler $locker */
-        $locker = App::getBean($type, $this->getLockerId($class, $method, $args, $lockable), $options);
+        $locker = App::getContainer()->newInstance($type, $this->getLockerId($class, $method, $args, $lockable), $options);
 
         // afterLock 处理
         $afterLockCallable = $lockableAfterLock = $lockable->afterLock;

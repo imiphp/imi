@@ -47,7 +47,7 @@ class CacheManager
      */
     public static function addName(string $name, string $handlerClass, array $option = []): void
     {
-        static::$handlers[$name] = App::getBean($handlerClass, $option);
+        static::$handlers[$name] = App::getContainer()->newInstance($handlerClass, $option);
     }
 
     /**

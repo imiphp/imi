@@ -122,7 +122,7 @@ class ProcessManager
             {
                 // 执行任务
                 /** @var IProcess $processInstance */
-                $processInstance = App::getBean($options['className'], $args);
+                $processInstance = App::getContainer()->newInstance($options['className'], $args);
                 $processInstance->run($worker);
             }
             catch (\Throwable $th)

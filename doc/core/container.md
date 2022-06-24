@@ -117,8 +117,14 @@ App::getContainer()->bind('aaa', XXX::class);
 // 绑定带参数，非单例模式，禁用递归依赖
 App::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW, false);
 
-// 实例化
+// 实例化，带缓存
 $obj = App::getBean('aaa');
+
+// 实例化，带参数，不缓存
+$obj = App::getBean('aaa', 1);
+
+// 每次都实例化返回新的对象
+$obj = App::getContainer()->newInstance('aaa');
 ```
 
 服务器容器：
@@ -132,8 +138,14 @@ ServerManager::getServer()->getContainer()->bind('aaa', XXX::class);
 // 绑定带参数，非单例模式，禁用递归依赖
 ServerManager::getServer()->getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW, false);
 
-// 实例化
+// 实例化，带缓存
 $obj = ServerManager::getServer()->getContainer()->getBean('aaa');
+
+// 实例化，带参数，不缓存
+$obj = ServerManager::getServer()->getContainer()->getBean('aaa', 1);
+
+// 每次都实例化返回新的对象
+$obj = ServerManager::getServer()->getContainer()->newInstance('aaa');
 ```
 
 请求上下文容器：
@@ -147,8 +159,14 @@ RequestContext::getContainer()->bind('aaa', XXX::class);
 // 绑定带参数，非单例模式，禁用递归依赖
 RequestContext::getContainer()->bind('aaa', XXX::class, \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW, false);
 
-// 实例化
+// 实例化，带缓存
 $obj = RequestContext::getBean('aaa');
+
+// 实例化，带参数，不缓存
+$obj = RequestContext::getBean('aaa', 1);
+
+// 每次都实例化返回新的对象
+RequestContext::getContainer()->newInstance('aaa');
 ```
 
 > 禁用递归依赖可以规避服务启动后，第一次访问概率报错问题
