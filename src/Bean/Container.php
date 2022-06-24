@@ -33,21 +33,19 @@ class Container implements ContainerInterface
     /**
      * 从容器中获取实例对象，如果不存在则实例化.
      *
-     * @param string $id 标识符
+     * @param string $id        标识符
+     * @param mixed  ...$params
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      *
      * @return mixed entry
      */
-    public function get(string $id)
+    public function get(string $id, ...$params)
     {
-        $object = null;
-        // 实现传递实例化参数
-        $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
         $beanObjects = &$this->beanObjects;
-        if (isset($beanObjects[$id]) && 1 === \func_num_args())
+        if (isset($beanObjects[$id]) && empty($params))
         {
             return $beanObjects[$id];
         }
@@ -57,7 +55,7 @@ class Container implements ContainerInterface
             throw new ContainerException('$id can not be a empty string value');
         }
 
-        unset($params[0]);
+        $object = null;
 
         $binds = $this->binds;
         $originId = $id;
@@ -138,25 +136,22 @@ class Container implements ContainerInterface
     /**
      * 从容器中实例化对象.
      *
-     * @param string $id 标识符
+     * @param string $id        标识符
+     * @param mixed  ...$params
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      *
      * @return mixed entry
      */
-    public function newInstance(string $id)
+    public function newInstance(string $id, ...$params)
     {
-        $object = null;
-        // 实现传递实例化参数
-        $params = \func_get_args();
-
         if ('' === $id)
         {
             throw new ContainerException('$id can not be a empty string value');
         }
 
-        unset($params[0]);
+        $object = null;
 
         $binds = $this->binds;
 
