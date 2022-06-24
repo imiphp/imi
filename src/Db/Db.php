@@ -51,7 +51,7 @@ class Db
             }
 
             /** @var IDb $db */
-            $db = App::getContainer()->newInstance($config['dbClass'] ?? 'PdoMysqlDriver', $config);
+            $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
             $db->open();
 
             return $db;
@@ -96,7 +96,7 @@ class Db
             if (null === $db || !$db->isConnected())
             {
                 /** @var IDb $db */
-                $db = App::getContainer()->newInstance($config['dbClass'] ?? 'PdoMysqlDriver', $config);
+                $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
                 if (!$db->open())
                 {
                     throw new DbException('Db connect error: [' . $db->errorCode() . '] ' . $db->errorInfo());

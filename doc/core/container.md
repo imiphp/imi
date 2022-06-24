@@ -122,9 +122,6 @@ $obj = App::getBean('aaa');
 
 // 实例化，带参数，不缓存
 $obj = App::getBean('aaa', 1);
-
-// 每次都实例化返回新的对象
-$obj = App::getContainer()->newInstance('aaa');
 ```
 
 服务器容器：
@@ -143,9 +140,6 @@ $obj = ServerManager::getServer()->getContainer()->getBean('aaa');
 
 // 实例化，带参数，不缓存
 $obj = ServerManager::getServer()->getContainer()->getBean('aaa', 1);
-
-// 每次都实例化返回新的对象
-$obj = ServerManager::getServer()->getContainer()->newInstance('aaa');
 ```
 
 请求上下文容器：
@@ -164,9 +158,6 @@ $obj = RequestContext::getBean('aaa');
 
 // 实例化，带参数，不缓存
 $obj = RequestContext::getBean('aaa', 1);
-
-// 每次都实例化返回新的对象
-RequestContext::getContainer()->newInstance('aaa');
 ```
 
 > 禁用递归依赖可以规避服务启动后，第一次访问概率报错问题

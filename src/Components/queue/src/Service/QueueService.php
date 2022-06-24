@@ -104,6 +104,6 @@ class QueueService
             return $queueInstances[$name];
         }
 
-        return $queueInstances[$name] = App::getContainer()->newInstance($config->getDriver(), $name, $config->getConfig());
+        return $queueInstances[$name] = App::getBean($config->getDriver(), $name, $config->getConfig());
     }
 }

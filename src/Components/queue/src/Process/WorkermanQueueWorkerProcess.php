@@ -23,7 +23,7 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
             /** @var \Imi\Queue\Model\QueueConfig $config */
             $config = $this->data['config'];
             /** @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
-            $queueConsumer = App::getContainer()->newInstance($config->getConsumer(), $config->getName());
+            $queueConsumer = App::getBean($config->getConsumer(), $config->getName());
             $queueConsumer->start();
         }
     }

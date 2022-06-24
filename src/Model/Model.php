@@ -200,7 +200,7 @@ abstract class Model extends BaseModel
     {
         $meta = static::__getMeta(static::__getRealClassName());
 
-        return App::getContainer()->newInstance($queryClass, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
+        return App::getBean($queryClass, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
     }
 
     /**
