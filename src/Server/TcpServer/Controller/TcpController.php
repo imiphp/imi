@@ -26,9 +26,10 @@ abstract class TcpController
      */
     public IReceiveData $data;
 
-    public function __construct(ITcpServer $server)
+    public function __construct()
     {
-        $this->server = $server;
+        // @phpstan-ignore-next-line
+        $this->server = RequestContext::getServer();
     }
 
     /**
