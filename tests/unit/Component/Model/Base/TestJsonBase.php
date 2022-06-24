@@ -24,6 +24,16 @@ use Imi\Model\Model as Model;
 abstract class TestJsonBase extends Model
 {
     /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEY = 'id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEYS = ['id'];
+
+    /**
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)

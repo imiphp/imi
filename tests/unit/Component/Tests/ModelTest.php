@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Article2;
 use Imi\Test\Component\Model\ArticleEx;
 use Imi\Test\Component\Model\CreateTime;
@@ -905,5 +906,11 @@ class ModelTest extends BaseTest
 
         $record2->delete();
         $this->assertNull(Prefix::find($record1->id));
+    }
+
+    public function testModelConst(): void
+    {
+        $this->assertEquals('id', Article::PRIMARY_KEY);
+        $this->assertEquals(['id'], Article::PRIMARY_KEYS);
     }
 }

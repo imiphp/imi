@@ -24,6 +24,16 @@ use Imi\Model\Model as Model;
 abstract class ArticleExBase extends Model
 {
     /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEY = 'article_id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEYS = ['article_id'];
+
+    /**
      * article_id.
      *
      * @Column(name="article_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false, unsigned=true)
