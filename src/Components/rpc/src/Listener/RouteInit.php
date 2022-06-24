@@ -69,7 +69,7 @@ class RouteInit implements IEventListener
 
                     foreach ($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($classAnnotation, $routeItem, new DelayServerBeanCallable($server, $className, $methodName, [$server]), [
+                        $route->addRuleAnnotation($classAnnotation, $routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
                             'serverName'    => $name,
                         ]);
                     }

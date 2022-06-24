@@ -46,7 +46,6 @@ class Test extends \Imi\Controller\UdpController
 
 | 属性名称 | 说明 |
 | ------------ | ------------ 
-| singleton | 是否为单例控制器，默认为 null 时取 '@server.服务器名.controller.singleton' |
 | server | 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制 |
 
 ### @UdpRoute

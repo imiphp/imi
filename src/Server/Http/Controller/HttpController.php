@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Controller;
 
+use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
@@ -35,9 +36,9 @@ abstract class HttpController
      */
     public IHttpResponse $response;
 
-    public function __construct(IServer $server)
+    public function __construct()
     {
-        $this->server = $server;
+        $this->server = RequestContext::getServer();
     }
 
     /**

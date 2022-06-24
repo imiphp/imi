@@ -90,7 +90,7 @@ class WSRouteInit implements IEventListener
                         {
                             $routeItem->route = $classAnnotation->route;
                         }
-                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName, [$server]), [
+                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
                         ]);
                     }

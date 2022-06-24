@@ -22,7 +22,7 @@ use Imi\Util\Stream\MemoryStream;
 use Swoole\Coroutine;
 
 /**
- * @Controller(prefix="/", singleton=true)
+ * @Controller(prefix="/")
  */
 class IndexController extends HttpController
 {

@@ -125,7 +125,7 @@ class HttpRouteInit implements IEventListener
                                 'default' => $item->default,
                             ];
                         }
-                        $routeCallable = new DelayServerBeanCallable($server, $className, $methodName, [$server]);
+                        $routeCallable = new DelayServerBeanCallable($server, $className, $methodName);
                         $options = [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
