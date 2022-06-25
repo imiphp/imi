@@ -138,7 +138,8 @@ class Container implements ContainerInterface
      *
      * 此方法实例化的对象，AOP、注解等都对它不产生作用
      *
-     * @param string $id 标识符
+     * @param string $id        标识符
+     * @param mixed  ...$params
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
