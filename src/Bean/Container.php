@@ -33,21 +33,19 @@ class Container implements ContainerInterface
     /**
      * 从容器中获取实例对象，如果不存在则实例化.
      *
-     * @param string $id 标识符
+     * @param string $id        标识符
+     * @param mixed  ...$params
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      *
      * @return mixed entry
      */
-    public function get(string $id)
+    public function get(string $id, ...$params)
     {
-        $object = null;
-        // 实现传递实例化参数
-        $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
         $beanObjects = &$this->beanObjects;
-        if (isset($beanObjects[$id]) && 1 === \func_num_args())
+        if (isset($beanObjects[$id]) && empty($params))
         {
             return $beanObjects[$id];
         }
@@ -57,7 +55,7 @@ class Container implements ContainerInterface
             throw new ContainerException('$id can not be a empty string value');
         }
 
-        unset($params[0]);
+        $object = null;
 
         $binds = $this->binds;
         $originId = $id;
@@ -140,16 +138,14 @@ class Container implements ContainerInterface
      *
      * 此方法实例化的对象，AOP、注解等都对它不产生作用
      *
-     * @param string $id 标识符
+     * @param string $id        标识符
+     * @param mixed  ...$params
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function getSingleton(string $id): object
+    public function getSingleton(string $id, ...$params): object
     {
-        $object = null;
-        // 实现传递实例化参数
-        $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;
         if (isset($singletonObjects[$id]) && 1 === \func_num_args())
@@ -162,8 +158,7 @@ class Container implements ContainerInterface
             throw new ContainerException('$id can not be a empty string value');
         }
 
-        unset($params[0]);
-
+        $object = null;
         $binds = $this->binds;
 
         while (true)
