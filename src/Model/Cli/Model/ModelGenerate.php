@@ -342,6 +342,7 @@ class ModelGenerate extends BaseCommand
                 'typeDefinition'    => $typeDefinitions[$field['Field']],
                 'ref'               => 'json' === $typeName,
                 'unsigned'          => $unsigned,
+                'virtual'           => str_contains($field['Extra'], 'VIRTUAL GENERATED'),
             ];
             if ($isPk)
             {
