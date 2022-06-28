@@ -45,7 +45,7 @@ Github: <https://github.com/imiphp/imi-snowflake>
         'list'  =>  [
             // 可定义多个配置名称
             'testBasic' =>  [
-                // 'datacenterId'   => null, // 数据中心ID，未空时为0
+                // 'datacenterId'   => null, // 数据中心ID，为空时为0
                 // 'workerId'       => null, // 工作进程ID，为空时取当前进程ID
                 // 'startTimeStamp' => null, // 开始时间戳，单位：毫秒
                 // 'redisPool'      => null, // Redis 连接池名称，为空取默认连接池
