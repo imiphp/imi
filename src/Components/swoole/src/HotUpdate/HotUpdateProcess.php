@@ -128,7 +128,7 @@ class HotUpdateProcess extends BaseProcess
         $this->excludePaths[] = Imi::getRuntimePath();
         $this->excludePaths[] = '*.macro.php';
         Log::info('Process [hotUpdate] start');
-        $monitor = App::getBean($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
+        $monitor = App::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
         $this->initBuildRuntime();
         $this->startBuildRuntimeTimer();

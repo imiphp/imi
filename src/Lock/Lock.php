@@ -82,11 +82,11 @@ class Lock
         $option = $options[$lockConfigId];
         if (null === $lockId)
         {
-            return $instances[$lockConfigId] = App::getBean($option->class, $lockConfigId, $option->options);
+            return $instances[$lockConfigId] = App::newInstance($option->class, $lockConfigId, $option->options);
         }
         else
         {
-            return App::getBean($option->class, $lockId, $option->options);
+            return App::newInstance($option->class, $lockId, $option->options);
         }
     }
 

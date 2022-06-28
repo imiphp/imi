@@ -21,7 +21,7 @@ trait TServerGroup
         if (!isset($this->groups[$groupName]))
         {
             /** @var \Imi\Server\Group\Group $serverGroup */
-            $serverGroup = $this->getBean('ServerGroup', $this, $groupName);
+            $serverGroup = $this->getContainer()->newInstance('ServerGroup', $this, $groupName);
 
             return $serverGroup->getHandler()->hasGroup($groupName);
         }
@@ -39,7 +39,7 @@ trait TServerGroup
         $groups = &$this->groups;
         if (!isset($groups[$groupName]))
         {
-            $groups[$groupName] = $this->getBean('ServerGroup', $this, $groupName, $maxClients);
+            $groups[$groupName] = $this->getContainer()->newInstance('ServerGroup', $this, $groupName, $maxClients);
         }
 
         return $groups[$groupName];
@@ -56,7 +56,7 @@ trait TServerGroup
         if (!isset($groups[$groupName]))
         {
             /** @var \Imi\Server\Group\Group $serverGroup */
-            $serverGroup = $this->getBean('ServerGroup', $this, $groupName);
+            $serverGroup = $this->getContainer()->newInstance('ServerGroup', $this, $groupName);
 
             if ($serverGroup->getHandler()->hasGroup($groupName))
             {

@@ -206,7 +206,7 @@ class ProcessManager
                     ]);
                     // 执行任务
                     /** @var IProcess $processInstance */
-                    $processInstance = App::getBean($processOption['className'], $args);
+                    $processInstance = App::newInstance($processOption['className'], $args);
                     $processInstance->run($swooleProcess);
                     if ($processOption['options']['unique'])
                     {
