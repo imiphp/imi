@@ -71,7 +71,9 @@ public function __generateSoftDeleteValue()
 
 如果模型引入了软删除机制，使用 `XXXModel::find()`、`XXXModel::query()` 等方式查询时，自动过滤被软删除的数据。
 
-如果需要查询到被软删除的数据，请使用 `XXXModel::findDeleted()`、`XXXModel::originQuery()` 获取查询构建器。
+如果需要查询到被软删除的数据，请使用 `XXXModel::findDeleted()`。
+
+如果想要查到所有数据（包括删除和未删除），可以使用 `XXXModel::originQuery()` 获取查询构建器。
 
 ### 删除
 
