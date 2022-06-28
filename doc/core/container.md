@@ -30,8 +30,6 @@ return [
 实例化对象用法可以代替 `new`。
 
 ```php
-// Bean 名称
-\Imi\Bean\BeanFactory::newInstance('Bean名称');
 // 具体的类名
 \Imi\Bean\BeanFactory::newInstance(XXX::class);
 // 传入构造方法的参数
@@ -50,6 +48,11 @@ return [
 
 ```php
 $object = \Imi\App::getBean('XXX');
+$object = \Imi\App::getBean('XXX', 1, 2, 3); // 支持实例化参数
+
+// 获取容器对象
+$container = \Imi\App::getContainer();
+$object = $container->get('XXX');
 ```
 
 ### 服务器容器
@@ -60,6 +63,10 @@ $object = \Imi\App::getBean('XXX');
 
 ```php
 $object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
+
+// 获取容器对象
+$container = \Imi\Server\ServerManager::getServer('main')->getContainer();
+$object = $container->get('XXX');
 ```
 
 ### 请求上下文容器
@@ -68,14 +75,27 @@ $object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
 
 ```php
 $object = \Imi\RequestContext::getBean('XXX');
+
+// 获取容器对象
+$container = \Imi\RequestContext::getContainer();
+$object = $container->get('XXX');
 ```
 
 ### 全局单例容器
 
-此方法实例化的对象，AOP、注解等都对它不产生作用，只是单纯的单例
+此方法实例化的对象，AOP、注解等都对它不产生作用，只是单纯的单例。
 
 ```php
 $object = \Imi\App::getSingleton('XXX');
+```
+
+### 全局容器实例化
+
+每次调用都实例化返回新的对象，AOP、注解等有效。
+
+```php
+$object = \Imi\App::newInstance('XXX');
+$object = \Imi\App::newInstance('XXX', 1, 2, 3); // 支持实例化参数
 ```
 
 ## 容器绑定
@@ -122,6 +142,19 @@ $obj = App::getBean('aaa');
 
 // 实例化，带参数，不缓存
 $obj = App::getBean('aaa', 1);
+
+// 绑定回调
+App::getContainer()->bindCallable('bbb', function(string $id, int $a) {
+    var_dump($id); // aaa
+    var_dump($a);  // 123
+    // 返回你要实例化的对象，这里只是示例
+    return new \stdClass;
+});
+$obj = App::getBean('aaa', 123);
+
+// 设置实例
+App::getContainer()->set('ccc', new \stdClass);
+App::getContainer()->getBean('ccc');
 ```
 
 服务器容器：

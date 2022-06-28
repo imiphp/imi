@@ -22,6 +22,8 @@ class Container implements ContainerInterface
 
     /**
      * 绑定列表.
+     *
+     * @var array[]|callable[]
      */
     private array $binds = [];
 
@@ -60,27 +62,37 @@ class Container implements ContainerInterface
         $binds = $this->binds;
         $originId = $id;
 
-        while (true)
+        while (!$object)
         {
             if (isset($binds[$id]))
             {
                 $data = $binds[$id];
-                $className = $data['className'];
-                if (class_exists($className))
+                if (\is_callable($data))
                 {
-                    if ($data['recursion'])
+                    $object = $data($originId, ...$params);
+                    if ($object)
                     {
-                        $object = BeanFactory::newInstanceNoInit($className, ...$params);
-                    }
-                    else
-                    {
-                        $object = BeanFactory::newInstance($className, ...$params);
+                        $data = null;
                     }
                 }
                 else
                 {
-                    $id = $className;
-                    continue;
+                    $className = $data['className'];
+                    if (class_exists($className))
+                    {
+                        if ($data['recursion'])
+                        {
+                            $object = BeanFactory::newInstanceNoInit($className, ...$params);
+                        }
+                        else
+                        {
+                            $object = BeanFactory::newInstance($className, ...$params);
+                        }
+                    }
+                    else
+                    {
+                        $id = $className;
+                    }
                 }
             }
             else
@@ -103,7 +115,6 @@ class Container implements ContainerInterface
                     else
                     {
                         $id = $className;
-                        continue;
                     }
                 }
                 elseif (class_exists($id))
@@ -115,12 +126,111 @@ class Container implements ContainerInterface
                     throw new ContainerException(sprintf('%s not found', $id));
                 }
             }
-            // 传参实例化强制不使用单例
-            if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
+        }
+
+        // 传参实例化强制不使用单例
+        if (empty($params) && Bean::INSTANCE_TYPE_SINGLETON === ($data['instanceType'] ?? Bean::INSTANCE_TYPE_SINGLETON))
+        {
+            $beanObjects[$originId] = $object;
+        }
+
+        if ($data['recursion'] ?? true)
+        {
+            // @phpstan-ignore-next-line
+            BeanFactory::initInstance($object, $params);
+        }
+
+        // @phpstan-ignore-next-line
+        return $object;
+    }
+
+    /**
+     * 每次调用都实例化返回新的对象.
+     *
+     * @param string $id        标识符
+     * @param mixed  ...$params
+     *
+     * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
+     * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
+     *
+     * @return mixed entry
+     */
+    public function newInstance(string $id, ...$params)
+    {
+        if ('' === $id)
+        {
+            throw new ContainerException('$id can not be a empty string value');
+        }
+
+        $object = null;
+
+        $binds = $this->binds;
+        $originId = $id;
+
+        while (!$object)
+        {
+            if (isset($binds[$id]))
             {
-                $beanObjects[$originId] = $object;
+                $data = $binds[$id];
+                if (\is_callable($data))
+                {
+                    $object = $data($originId, ...$params);
+                    if ($object)
+                    {
+                        $data = null;
+                    }
+                }
+                else
+                {
+                    $className = $data['className'];
+                    if (class_exists($className))
+                    {
+                        if ($data['recursion'])
+                        {
+                            $object = BeanFactory::newInstanceNoInit($className, ...$params);
+                        }
+                        else
+                        {
+                            $object = BeanFactory::newInstance($className, ...$params);
+                        }
+                    }
+                    else
+                    {
+                        $id = $className;
+                    }
+                }
             }
-            break;
+            else
+            {
+                $data = BeanManager::get($id);
+                if ($data)
+                {
+                    $className = $data['className'];
+                    if (class_exists($className))
+                    {
+                        if ($data['recursion'])
+                        {
+                            $object = BeanFactory::newInstanceNoInit($className, ...$params);
+                        }
+                        else
+                        {
+                            $object = BeanFactory::newInstance($className, ...$params);
+                        }
+                    }
+                    else
+                    {
+                        $id = $className;
+                    }
+                }
+                elseif (class_exists($id))
+                {
+                    $object = BeanFactory::newInstanceNoInit($id, ...$params);
+                }
+                else
+                {
+                    throw new ContainerException(sprintf('%s not found', $id));
+                }
+            }
         }
 
         if ($data['recursion'] ?? true)
@@ -148,7 +258,7 @@ class Container implements ContainerInterface
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;
-        if (isset($singletonObjects[$id]) && 1 === \func_num_args())
+        if (isset($singletonObjects[$id]) && empty($params))
         {
             return $singletonObjects[$id];
         }
@@ -160,25 +270,32 @@ class Container implements ContainerInterface
 
         $object = null;
         $binds = $this->binds;
+        $originId = $id;
 
-        while (true)
+        while (!$object)
         {
             if (isset($binds[$id]))
             {
                 $data = $binds[$id];
-                $className = $data['className'];
-                if (class_exists($className))
+                if (\is_callable($data))
                 {
-                    $object = new $className(...$params);
-                    if ([] === $params)
+                    $object = $data($originId, ...$params);
+                    if ($object)
                     {
-                        $singletonObjects[$id] = $object;
+                        $data = null;
                     }
                 }
                 else
                 {
-                    $id = $className;
-                    continue;
+                    $className = $data['className'];
+                    if (class_exists($className))
+                    {
+                        $object = new $className(...$params);
+                    }
+                    else
+                    {
+                        $id = $className;
+                    }
                 }
             }
             else
@@ -189,12 +306,11 @@ class Container implements ContainerInterface
                     $className = $data['className'];
                     if (class_exists($className))
                     {
-                        $object = new $data['className'](...$params);
+                        $object = new $className(...$params);
                     }
                     else
                     {
                         $id = $className;
-                        continue;
                     }
                 }
                 elseif (class_exists($id))
@@ -206,16 +322,24 @@ class Container implements ContainerInterface
                     throw new ContainerException(sprintf('%s not found', $id));
                 }
             }
-            // 传参实例化强制不使用单例
-            if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
-            {
-                $singletonObjects[$id] = $object;
-            }
-            break;
+        }
+
+        // 传参实例化强制不使用单例
+        if (empty($params) && Bean::INSTANCE_TYPE_SINGLETON === ($data['instanceType'] ?? Bean::INSTANCE_TYPE_SINGLETON))
+        {
+            $singletonObjects[$originId] = $object;
         }
 
         // @phpstan-ignore-next-line
         return $object;
+    }
+
+    /**
+     * 设置实例.
+     */
+    public function set(string $id, object $object): void
+    {
+        $this->beanObjects[$id] = $object;
     }
 
     /**
@@ -238,6 +362,14 @@ class Container implements ContainerInterface
             'instanceType' => $instanceType,
             'recursion'    => $recursion,
         ];
+    }
+
+    /**
+     * 绑定回调.
+     */
+    public function bindCallable(string $name, callable $callable): void
+    {
+        $this->binds[$name] = $callable;
     }
 
     /**
