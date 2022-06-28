@@ -14,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_update_time 基类.
  *
  * @Entity
- * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.name", default="tb_update_time"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.name", default="tb_update_time"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.poolName"))
  *
  * @property int|null    $id
  * @property string|null $date
@@ -27,10 +27,20 @@ use Imi\Pgsql\Model\PgModel as Model;
 abstract class UpdateTimeBase extends Model
 {
     /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEY = 'id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEYS = ['id'];
+
+    /**
      * id.
 
      *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0)
+     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
     protected ?int $id = null;
 
@@ -60,7 +70,7 @@ abstract class UpdateTimeBase extends Model
      * date.
 
      *
-     * @Column(name="date", type="date", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="date", type="date", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $date = null;
 
@@ -90,7 +100,7 @@ abstract class UpdateTimeBase extends Model
      * time.
 
      *
-     * @Column(name="time", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="time", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $time = null;
 
@@ -120,7 +130,7 @@ abstract class UpdateTimeBase extends Model
      * datetime.
 
      *
-     * @Column(name="datetime", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="datetime", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $datetime = null;
 
@@ -150,7 +160,7 @@ abstract class UpdateTimeBase extends Model
      * timestamp.
 
      *
-     * @Column(name="timestamp", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="timestamp", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timestamp = null;
 
@@ -180,7 +190,7 @@ abstract class UpdateTimeBase extends Model
      * int.
 
      *
-     * @Column(name="int", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="int", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?int $int = null;
 
@@ -210,7 +220,7 @@ abstract class UpdateTimeBase extends Model
      * bigint.
 
      *
-     * @Column(name="bigint", type="int8", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="bigint", type="int8", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?int $bigint = null;
 
