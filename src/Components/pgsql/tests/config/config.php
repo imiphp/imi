@@ -105,7 +105,8 @@ return [
             ],
             // 连接池资源配置
             'resource'    => [
-                'dbClass'     => 'SwoolePgsqlDriver',
+                // @phpstan-ignore-next-line
+                'dbClass'     => version_compare(\SWOOLE_VERSION, '5.0', '>=') ? 'SwooleNewPgsqlDriver' : 'SwoolePgsqlDriver',
                 'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => env('PGSQL_SERVER_PORT', 5432),
                 'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
