@@ -312,5 +312,14 @@ class RequestTest extends BaseTest
 
         $response = $http->header('host', 'localhost')->get($this->host . 'domain');
         $this->assertNotEquals('gg', $response->body());
+
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'domain2');
+        $this->assertEquals('gg', $response->body());
+
+        $response = $http->header('host', 'localhost')->get($this->host . 'domain2');
+        $this->assertEquals([
+            'value' => 'host',
+        ], $response->json(true));
     }
 }

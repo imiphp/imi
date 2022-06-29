@@ -212,13 +212,13 @@ class HttpRoute
             }
             else
             {
-                $rule = $router->getPathPattern($rule, true, $data);
+                $rule = $router->getPathPattern($rule, true, $fields);
                 // 域名匹配不区分大小写
                 if (preg_match_all($rule, $uriDomain, $matches) > 0)
                 {
-                    foreach ($data as $i => $fieldName)
+                    foreach ($fields as $i => $fieldName)
                     {
-                        $params[$fieldName] = $matches[$i + 1][0];
+                        $data[$fieldName] = $matches[$i + 1][0];
                     }
 
                     return true;
