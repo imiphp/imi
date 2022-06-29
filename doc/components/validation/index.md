@@ -353,9 +353,9 @@ class Test
  * @AutoValidation
  * 
  * @Required(name="id", message="用户ID为必传参数")
- * @Integer(name="id", min="1", message="用户ID不符合规则")
+ * @Integer(name="id", min=1, message="用户ID不符合规则")
  * @Required(name="name", message="用户姓名为必传参数")
- * @Text(name="name", min="2", message="用户姓名长度不得少于2位")
+ * @Text(name="name", min=2, message="用户姓名长度不得少于2位")
  *
  * @param int $id
  * @param string $name
