@@ -423,4 +423,14 @@ class IndexController extends HttpController
     public function ignoreCase(): void
     {
     }
+
+    /**
+     * 测试 domain.
+     *
+     * @Action
+     * @Route(domain="localhost")
+     */
+    public function domain(): void
+    {
+    }
 }

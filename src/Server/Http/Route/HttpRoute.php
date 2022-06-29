@@ -73,6 +73,10 @@ class HttpRoute
         {
             $checkCallables[] = [self::class, 'checkRequestMime'];
         }
+        if (null !== $annotation->domain)
+        {
+            $checkCallables[] = [self::class, 'checkDomain'];
+        }
         if (null === $annotation)
         {
             $annotation = new RouteAnnotation([
@@ -199,7 +203,6 @@ class HttpRoute
         $uriDomain = Uri::getDomain($request->getUri());
         foreach ($domain as $rule)
         {
-            $rule = $router->getPathPattern($rule, true, $data);
             if (self::isStaticPath($rule))
             {
                 if (0 === strcasecmp($rule, $uriDomain))
@@ -209,6 +212,7 @@ class HttpRoute
             }
             else
             {
+                $rule = $router->getPathPattern($rule, true, $data);
                 // 域名匹配不区分大小写
                 if (preg_match_all($rule, $uriDomain, $matches) > 0)
                 {
