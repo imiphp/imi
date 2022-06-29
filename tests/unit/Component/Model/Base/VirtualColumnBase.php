@@ -96,13 +96,17 @@ abstract class VirtualColumnBase extends Model
      * virtual_amount.
      *
      * @Column(name="virtual_amount", type="decimal", length=10, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=true)
+     *
+     * @var string|float|int|null
      */
-    protected string|float|int|null $virtualAmount = null;
+    protected $virtualAmount = null;
 
     /**
      * 获取 virtualAmount.
+     *
+     * @return string|float|int|null
      */
-    public function getVirtualAmount(): string|float|int|null
+    public function getVirtualAmount()
     {
         return $this->virtualAmount;
     }
