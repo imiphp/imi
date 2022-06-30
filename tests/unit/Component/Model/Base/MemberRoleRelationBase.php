@@ -38,7 +38,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
     protected ?int $id = null;
 
@@ -67,7 +67,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * type.
      *
-     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
+     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
     protected ?int $type = 0;
 
@@ -96,7 +96,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * member_id.
      *
-     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
+     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
     protected ?int $memberId = null;
 
@@ -125,7 +125,7 @@ abstract class MemberRoleRelationBase extends Model
     /**
      * role_id.
      *
-     * @Column(name="role_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true)
+     * @Column(name="role_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
     protected ?int $roleId = null;
 

@@ -14,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_member 基类.
  *
  * @Entity
- * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Member.name", default="tb_member"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Member.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Member.name", default="tb_member"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Member.poolName"))
  *
  * @property int|null    $id
  * @property string|null $username 用户名
@@ -23,10 +23,20 @@ use Imi\Pgsql\Model\PgModel as Model;
 abstract class MemberBase extends Model
 {
     /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEY = 'id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEYS = ['id'];
+
+    /**
      * id.
 
      *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0)
+     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
     protected ?int $id = null;
 
@@ -56,7 +66,7 @@ abstract class MemberBase extends Model
      * 用户名.
      * username.
      *
-     * @Column(name="username", type="varchar", length=0, accuracy=32, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="username", type="varchar", length=0, accuracy=32, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $username = null;
 
@@ -86,7 +96,7 @@ abstract class MemberBase extends Model
      * 密码.
      * password.
      *
-     * @Column(name="password", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="password", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $password = null;
 

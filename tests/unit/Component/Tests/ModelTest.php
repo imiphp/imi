@@ -24,6 +24,7 @@ use Imi\Test\Component\Model\TestSet;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\TestWithMember;
 use Imi\Test\Component\Model\UpdateTime;
+use Imi\Test\Component\Model\VirtualColumn;
 
 /**
  * @testdox Model
@@ -912,5 +913,15 @@ class ModelTest extends BaseTest
     {
         $this->assertEquals('id', Article::PRIMARY_KEY);
         $this->assertEquals(['id'], Article::PRIMARY_KEYS);
+    }
+
+    public function testDbVirtualColumn(): void
+    {
+        $record1 = VirtualColumn::newInstance();
+        $record1->amount = 123;
+        $record1->insert();
+
+        $record2 = VirtualColumn::find($record1->id);
+        $this->assertEquals('1.23', $record2->virtualAmount);
     }
 }

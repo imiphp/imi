@@ -192,7 +192,7 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
-            if ($usePrefix = str_starts_with($table, $tablePrefix))
+            if ($usePrefix = ('' !== $tablePrefix && str_starts_with($table, $tablePrefix)))
             {
                 $tableName = Text::ltrimText($table, $tablePrefix);
             }
@@ -320,6 +320,7 @@ class ModelGenerate extends BaseCommand
                 'comment'           => $field['description'] ?? '',
                 'typeDefinition'    => $config['relation'][$table]['fields'][$field['attname']]['typeDefinition'] ?? true,
                 'ref'               => \in_array($type, ['json', 'jsonb']),
+                'virtual'           => 's' === $field['attgenerated'],
             ];
             if ($isPk)
             {

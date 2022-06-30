@@ -37,7 +37,7 @@ abstract class TestEnumBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
     protected ?int $id = null;
 
@@ -66,7 +66,7 @@ abstract class TestEnumBase extends Model
     /**
      * value1.
      *
-     * @Column(name="value1", type="enum", length=0, accuracy=0, nullable=false, default="'test'", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
+     * @Column(name="value1", type="enum", length=0, accuracy=0, nullable=false, default="'test'", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
     protected ?string $value1 = '\'test\'';
 
@@ -95,7 +95,7 @@ abstract class TestEnumBase extends Model
     /**
      * value2.
      *
-     * @Column(name="value2", type="enum", length=0, accuracy=0, nullable=false, default="1", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
+     * @Column(name="value2", type="enum", length=0, accuracy=0, nullable=false, default="1", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
     protected ?string $value2 = '1';
 

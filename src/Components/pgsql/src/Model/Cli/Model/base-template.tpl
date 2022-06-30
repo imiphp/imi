@@ -36,7 +36,7 @@ abstract class <?php echo $className; ?>Base extends Model
     /**
      * {@inheritdoc}
      */
-    public const PRIMARY_KEYS = <?php echo json_encode($table['id'], JSON_UNESCAPED_UNICODE); ?>;
+    public const PRIMARY_KEYS = <?php echo json_encode($table['id'], \JSON_UNESCAPED_UNICODE); ?>;
 
 <?php
     foreach ($fields as $field)
@@ -53,7 +53,7 @@ abstract class <?php echo $className; ?>Base extends Model
 
 <?php } ?>
 
-     * @Column(name="<?php echo $field['name']; ?>", type="<?php echo $field['type']; ?>", length=<?php echo $field['length']; ?>, accuracy=<?php echo $field['accuracy']; ?>, nullable=<?php echo json_encode($field['nullable']); ?>, default="<?php echo $field['default']; ?>", isPrimaryKey=<?php echo json_encode($field['isPrimaryKey']); ?>, primaryKeyIndex=<?php echo $field['primaryKeyIndex']; ?>, isAutoIncrement=<?php echo json_encode($field['isAutoIncrement']); ?>, ndims=<?php echo $field['ndims']; ?>)
+     * @Column(name="<?php echo $field['name']; ?>", type="<?php echo $field['type']; ?>", length=<?php echo $field['length']; ?>, accuracy=<?php echo $field['accuracy']; ?>, nullable=<?php echo json_encode($field['nullable']); ?>, default="<?php echo $field['default']; ?>", isPrimaryKey=<?php echo json_encode($field['isPrimaryKey']); ?>, primaryKeyIndex=<?php echo $field['primaryKeyIndex']; ?>, isAutoIncrement=<?php echo json_encode($field['isAutoIncrement']); ?>, ndims=<?php echo $field['ndims']; ?>, virtual=<?php var_export($field['virtual']); ?>)
      * @var <?php echo $field['phpType']; ?>
 
      */
