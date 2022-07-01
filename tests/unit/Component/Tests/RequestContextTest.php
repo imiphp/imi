@@ -20,13 +20,14 @@ class RequestContextTest extends BaseTest
             return ++$count;
         };
 
+        RequestContext::unset($key);
         $this->assertEquals(0, $count);
-        RequestContext::remember($key, $countFun);
+        $this->assertEquals(1, RequestContext::remember($key, $countFun));
         $this->assertEquals(1, $count);
-        RequestContext::remember($key, $countFun);
+        $this->assertEquals(1, RequestContext::remember($key, $countFun));
         $this->assertEquals(1, $count);
-        RequestContext::getContext()->offsetUnset($key);
-        RequestContext::remember($key, $countFun);
+        RequestContext::unset($key);
+        $this->assertEquals(2, RequestContext::remember($key, $countFun));
         $this->assertEquals(2, $count);
     }
 }

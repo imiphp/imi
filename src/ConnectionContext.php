@@ -252,6 +252,9 @@ class ConnectionContext
         return $result;
     }
 
+    /**
+     * 销毁一个上下文记住的值
+     */
     public static function unset(string $key): void
     {
         ConnectionContext::use(function (array $cxt) use ($key) {

@@ -138,6 +138,18 @@ class RequestContext
     }
 
     /**
+     * 销毁一个上下文记住的值
+     */
+    public static function unset(string $key): void
+    {
+        $ctx = self::getContext();
+
+        if (isset($ctx[$key])) {
+            unset($ctx[$key]);
+        }
+    }
+
+    /**
      * 获取当前上下文.
      */
     public static function getContext(): ArrayObject
