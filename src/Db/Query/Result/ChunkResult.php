@@ -8,7 +8,7 @@ use function end;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 
-class ChunkResult extends ChunkResultAbstract
+class ChunkResult extends BaseChunkResult
 {
     private IQuery $query;
     private int    $limit;

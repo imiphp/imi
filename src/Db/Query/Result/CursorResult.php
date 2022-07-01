@@ -9,7 +9,7 @@ use Imi\Model\Model;
 
 class CursorResult implements \IteratorAggregate
 {
-    use ResultEntityCreate;
+    use TResultEntityCreate;
 
     /**
      * Statement.

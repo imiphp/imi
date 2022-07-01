@@ -7,7 +7,7 @@ namespace Imi\Db\Query\Result;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 
-class ChunkByOffsetResult extends ChunkResultAbstract
+class ChunkByOffsetResult extends BaseChunkResult
 {
     private IQuery $query;
     private int    $limit;

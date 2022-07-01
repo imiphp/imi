@@ -11,7 +11,7 @@ use Imi\Model\Event\Param\AfterQueryEventParam;
 use Imi\Model\Model;
 use function is_subclass_of;
 
-trait ResultEntityCreate
+trait TResultEntityCreate
 {
     /**
      * @template T of object
