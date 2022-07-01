@@ -144,7 +144,8 @@ class RequestContext
     {
         $ctx = self::getContext();
 
-        if (isset($ctx[$key])) {
+        if (isset($ctx[$key]))
+        {
             unset($ctx[$key]);
         }
     }

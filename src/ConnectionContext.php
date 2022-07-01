@@ -245,6 +245,7 @@ class ConnectionContext
             else
             {
                 $ctx[$key] = ($result = $closure());
+
                 return $ctx;
             }
         }, $clientId, $serverName);
@@ -257,7 +258,7 @@ class ConnectionContext
      */
     public static function unset(string $key): void
     {
-        ConnectionContext::use(function (array $cxt) use ($key) {
+        self::use(function (array $cxt) use ($key) {
             if (isset($cxt[$key]))
             {
                 unset($cxt[$key]);
