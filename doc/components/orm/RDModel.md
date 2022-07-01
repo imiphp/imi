@@ -287,7 +287,9 @@ var_dump(json_encode($data)); // 支持序列化
 
 #### 分块查询
 
-利用有序字段进行分段读取操作全部返回条件的数据，对于大型数据集结果，可以有效缓解数据库压力，降低应用内存消耗，提升稳定性。
+##### chunkById
+
+利用有序字段进行分段读取，返回符合条件的数据，对于大型数据集结果，可以有效缓解数据库压力，降低应用内存消耗，提升稳定性。
 
 | 参数 | 类型 | 说明                                                        |
 | ------ | ------ |-----------------------------------------------------------|
@@ -311,10 +313,40 @@ foreach (TestModel::query()->chunkById(10, 'id') as $result)
 }
 ```
 
-还有一个更简单的用法：
+##### chunkByOffset
+
+利用`limit`进行查询驱动分块，效率与一般分页查询没区别，相对`chunkById`兼容更多的场景，如果追求性能还是推荐`chunkById`。
+
+| 参数 | 类型 | 说明                                                        |
+| ------ | ------ |-----------------------------------------------------------|
+| limit  | int    | 每次查询的块大小                                                  |
+
+> 对于`ORM`下使用，由于不是一次性载入全部数据，预加载功能对于每个块都是重复加载的，建议根据实际情况决定是否实现一个缓存查询来替代预加载。
 
 ```php
-foreach (TestModel::query()->chunkEach(10, 'id') as $row)
+// 按 10 条每块遍历全部符合条件的行。
+
+foreach (TestModel::query()->chunkByOffset(10) as $result)
+{
+    $list = $result->getArray(); // select 结果集
+    // 遍历结果集
+    foreach ($list as $row)
+    {
+        var_dump($row);
+    }
+}
+```
+
+##### 还有一个更简单的用法
+
+```php
+// chunk by id
+foreach (TestModel::query()->chunkById(10, 'id')->each() as $row)
+{
+    var_dump($row);
+}
+// chunk by offset
+foreach (TestModel::query()->chunkByOffset(10)->each() as $row)
 {
     var_dump($row);
 }
