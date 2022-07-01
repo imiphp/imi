@@ -8,7 +8,7 @@ use function end;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 
-class ChunkResult implements \IteratorAggregate
+class ChunkResult extends ChunkResultAbstract
 {
     private IQuery $query;
     private int    $limit;
@@ -24,9 +24,8 @@ class ChunkResult implements \IteratorAggregate
     }
 
     /**
-     * @return \Traversable<int, IResult>|\Generator|iterable<int, IResult>
+     * @return \Traversable|\Generator|iterable<int, IResult>
      */
-    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $lastId = null;

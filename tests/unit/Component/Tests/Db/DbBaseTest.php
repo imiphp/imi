@@ -445,7 +445,7 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
-    public function testChunk(array $args): void
+    public function testChunkById(array $args): void
     {
         $query = Db::query($this->poolName);
 
@@ -488,12 +488,43 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
+    public function testChunkByOffset(array $args): void
+    {
+        $query = Db::query($this->poolName);
+
+        $data = [];
+        foreach ($query->table('tb_article')->chunkByOffset(12) as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEquals($args['origin'], $data);
+
+        // 空返回
+        $data = [];
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkByOffset(12) as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEmpty($data);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
     public function testChunkEach(array $args): void
     {
         $query = Db::query($this->poolName);
 
         $data = [];
-        foreach ($query->table('tb_article')->chunkEach(36, 'id') as $item)
+        foreach ($query->table('tb_article')->chunkById(36, 'id')->each() as $item)
         {
             $data[] = $item;
         }
@@ -502,7 +533,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 自动重置排序
         $data = [];
-        foreach ($query->table('tb_article')->order('id', 'desc')->chunkEach(36, 'id') as $item)
+        foreach ($query->table('tb_article')->order('id', 'desc')->chunkById(36, 'id')->each() as $item)
         {
             $data[] = $item;
         }
@@ -511,7 +542,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 空返回
         $data = [];
-        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkEach(36, 'id') as $item)
+        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id')->each() as $item)
         {
             $data[] = $item;
         }

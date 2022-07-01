@@ -768,7 +768,7 @@ class ModelTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
-    public function testChunk(array $args): void
+    public function testChunkById(array $args): void
     {
         $data = [];
         foreach (Member::query()->chunkById(32, 'id') as $items)
@@ -785,10 +785,27 @@ class ModelTest extends BaseTest
     /**
      * @depends testBatchInsert
      */
+    public function testChunkByOffset(array $args): void
+    {
+        $data = [];
+        foreach (Member::query()->chunkByOffset(32) as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item->toArray();
+            }
+        }
+
+        $this->assertEquals($args['origin'], $data);
+    }
+
+    /**
+     * @depends testBatchInsert
+     */
     public function testChunkEach(array $args): void
     {
         $data = [];
-        foreach (Member::query()->chunkEach(32, 'id') as $item)
+        foreach (Member::query()->chunkById(32, 'id')->each() as $item)
         {
             $data[] = $item->toArray();
         }
