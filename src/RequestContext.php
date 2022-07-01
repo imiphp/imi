@@ -126,6 +126,18 @@ class RequestContext
     }
 
     /**
+     * 获取一个闭包的值并将其持久化, 下次请求将直接从上下文中获取.
+     *
+     * @return mixed
+     */
+    public static function remember(string $key, \Closure $closure)
+    {
+        $ctx = self::getContext();
+
+        return $ctx[$key] ??= $closure();
+    }
+
+    /**
      * 获取当前上下文.
      */
     public static function getContext(): ArrayObject

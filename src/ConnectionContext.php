@@ -227,6 +227,23 @@ class ConnectionContext
     }
 
     /**
+     * 获取一个闭包的值并将其持久化, 下次请求将直接从连接上下文中获取.
+     *
+     * @return mixed
+     */
+    public static function remember(string $key, \Closure $closure, $clientId = null, ?string $serverName = null)
+    {
+        static::use(static function (array $ctx) use ($key, $closure, &$result) {
+
+            $result = $ctx[$key] ?? ($ctx[$key] = $closure());
+
+            return $ctx;
+        }, $clientId, $serverName);
+
+        return $result;
+    }
+
+    /**
      * 获取当前上下文.
      *
      * @param int|string|null $clientId
