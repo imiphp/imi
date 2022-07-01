@@ -1410,7 +1410,7 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 查询所有记录，返回分块迭代器
+     * 查询所有记录，返回分块迭代器.
      *
      * @deprecated 3.0
      *
