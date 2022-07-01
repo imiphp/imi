@@ -236,12 +236,35 @@ class ConnectionContext
     public static function remember(string $key, \Closure $closure, $clientId = null, ?string $serverName = null)
     {
         static::use(static function (array $ctx) use ($key, $closure, &$result) {
-            $result = $ctx[$key] ?? ($ctx[$key] = $closure());
-
-            return $ctx;
+            if (isset($ctx[$key]))
+            {
+                $result = $ctx[$key];
+                // no save
+                return null;
+            }
+            else
+            {
+                $ctx[$key] = ($result = $closure());
+                return $ctx;
+            }
         }, $clientId, $serverName);
 
         return $result;
+    }
+
+    public static function unset(string $key): void
+    {
+        ConnectionContext::use(function (array $cxt) use ($key) {
+            if (isset($cxt[$key]))
+            {
+                unset($cxt[$key]);
+
+                return $cxt;
+            }
+
+            // no save
+            return null;
+        });
     }
 
     /**

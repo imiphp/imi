@@ -155,6 +155,35 @@ class WSTest extends BaseTest
         });
     }
 
+    public function testContext(): void
+    {
+        $this->go(function () {
+            $http = new HttpRequest();
+            $http->retry = 3;
+            $http->timeout = 10000;
+            $client = $http->websocket($this->host . 'test');
+            $this->assertTrue($client->isConnected());
+            $this->assertTrue($client->send(json_encode([
+                'action'    => 'contextTest',
+                'username'  => 'test',
+            ])));
+            $recv = $client->recv();
+            $result = json_decode($recv, true);
+            // @phpstan-ignore-next-line
+            $this->assertEquals(
+                $result['expected-a'],
+                $result['actual-a'],
+                $client->getErrorCode() . '-' . $client->getErrorMessage()
+            );
+            $this->assertEquals(
+                $result['expected-b'],
+                $result['actual-b'],
+                $client->getErrorCode() . '-' . $client->getErrorMessage()
+            );
+            $client->close();
+        });
+    }
+
     public function testHttp(): void
     {
         $this->go(function () {
