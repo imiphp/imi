@@ -187,4 +187,19 @@ class RequestContext
     {
         return self::getContainer()->get($name, ...$params);
     }
+
+    /**
+     * 获取Bean对象
+     *
+     * @template T
+     *
+     * @param class-string<T> $name
+     * @param mixed           ...$params
+     *
+     * @return T
+     */
+    public static function newInstance(string $name, ...$params)
+    {
+        return self::getContainer()->newInstance($name, ...$params);
+    }
 }

@@ -87,7 +87,7 @@ class ProcessPoolManager
             // 随机数播种
             mt_srand();
             \Swoole\Coroutine\run(static function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
-                $processInstance = App::getBean($processPoolOption['className'], $args);
+                $processInstance = App::newInstance($processPoolOption['className'], $args);
                 // 进程开始事件
                 Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [
                     'name'          => $name,

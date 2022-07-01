@@ -38,6 +38,6 @@ class CoroutineDbPool extends BaseAsyncPool
     {
         $config = $this->getNextResourceConfig();
 
-        return new DbResource($this, App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config));
+        return new DbResource($this, App::newInstance($config['dbClass'] ?? 'PdoMysqlDriver', $config));
     }
 }

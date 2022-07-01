@@ -231,11 +231,31 @@ class App
     }
 
     /**
+     * 获取Bean对象
+     *
+     * @template T
+     *
+     * @param class-string<T> $name
+     * @param mixed           ...$params
+     *
+     * @return T
+     */
+    public static function newInstance(string $name, ...$params)
+    {
+        return self::$container->newInstance($name, ...$params);
+    }
+
+    /**
      * 获取单例对象
      *
-     * @param array $params
+     * @template T
+     *
+     * @param class-string<T> $name
+     * @param array           $params
+     *
+     * @return T
      */
-    public static function getSingleton(string $name, ...$params): object
+    public static function getSingleton(string $name, ...$params)
     {
         return self::$container->getSingleton($name, ...$params);
     }
@@ -314,24 +334,7 @@ class App
         {
             return false;
         }
-        if (isset(self::$contextReadonly[$name]))
-        {
-            $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT | \DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-            $backtrace = $backtrace[1] ?? null;
-            if (!(
-                (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
-                || (isset($backtrace['class']) && str_starts_with($backtrace['class'], 'Imi\\'))
-                || (isset($backtrace['function']) && str_starts_with($backtrace['function'], 'Imi\\'))
-            ))
-            {
-                throw new \RuntimeException('Cannot write to read-only application context');
-            }
-        }
-        elseif ($readonly)
-        {
-            self::$contextReadonly[$name] = true;
-        }
-        self::$context[$name] = $value;
+        self::set($name, $value, $readonly);
 
         return true;
     }

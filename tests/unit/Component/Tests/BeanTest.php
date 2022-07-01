@@ -14,6 +14,7 @@ use Imi\Test\Component\Bean\BeanC;
 use Imi\Util\Imi;
 use ReflectionFunction;
 use ReflectionMethod;
+use stdClass;
 
 /**
  * @testdox Bean
@@ -39,14 +40,14 @@ class BeanTest extends BaseTest
         $rf = new ReflectionFunction($f);
         $this->assertEquals('int|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-        $f = function (): \stdClass {
+        $f = function (): stdClass {
             return new \stdClass();
         };
         $rf = new ReflectionFunction($f);
         $this->assertEquals('\stdClass', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
         // @phpstan-ignore-next-line
-        $f = function (): ?\stdClass {
+        $f = function (): ?stdClass {
             return new \stdClass();
         };
         $rf = new ReflectionFunction($f);
@@ -103,14 +104,14 @@ class BeanTest extends BaseTest
         $rf = new ReflectionFunction($f);
         $this->assertEquals('?int', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-        $f = function (): \stdClass {
+        $f = function (): stdClass {
             return new \stdClass();
         };
         $rf = new ReflectionFunction($f);
         $this->assertEquals('\stdClass', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
         // @phpstan-ignore-next-line
-        $f = function (): ?\stdClass {
+        $f = function (): ?stdClass {
             return new \stdClass();
         };
         $rf = new ReflectionFunction($f);
@@ -167,14 +168,14 @@ class BeanTest extends BaseTest
         $rf = new ReflectionFunction($f);
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
 
-        $f = function (): \stdClass {
+        $f = function (): stdClass {
             return new \stdClass();
         };
         $rf = new ReflectionFunction($f);
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
 
         // @phpstan-ignore-next-line
-        $f = function (): ?\stdClass {
+        $f = function (): ?stdClass {
             return new \stdClass();
         };
         $rf = new ReflectionFunction($f);
@@ -227,11 +228,50 @@ class BeanTest extends BaseTest
         }
     }
 
-    public function testBeanNew(): void
+    public function testContainerGetBean(): void
     {
+        $a = App::getBean(stdClass::class);
+        $b = App::getBean(stdClass::class);
+        $this->assertTrue($a === $b);
+
         $a = App::getBean('BeanNew');
         $b = App::getBean('BeanNew');
         $this->assertTrue($a !== $b);
+    }
+
+    public function testContainerNewInstance(): void
+    {
+        $a = App::newInstance(stdClass::class);
+        $b = App::newInstance(stdClass::class);
+        $this->assertTrue($a !== $b);
+    }
+
+    public function testContainerSet(): void
+    {
+        $object = new stdClass();
+
+        $container = App::getContainer();
+        $container->set(__METHOD__, $object);
+
+        $a = $container->get(__METHOD__);
+        $b = $container->get(__METHOD__);
+        $this->assertTrue($a === $b);
+        $this->assertTrue($a === $object);
+    }
+
+    public function testContainerBindCallable(): void
+    {
+        $object = new stdClass();
+
+        $container = App::getContainer();
+        $container->bindCallable(__METHOD__, function () use ($object) {
+            return $object;
+        });
+
+        $a = $container->get(__METHOD__);
+        $b = $container->get(__METHOD__);
+        $this->assertTrue($a === $b);
+        $this->assertTrue($a === $object);
     }
 
     // @phpstan-ignore-next-line
