@@ -37,7 +37,7 @@ abstract class TestSetBase extends Model
     /**
      * id.
      *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true)
+     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
     protected ?int $id = null;
 
@@ -66,7 +66,7 @@ abstract class TestSetBase extends Model
     /**
      * value1.
      *
-     * @Column(name="value1", type="set", length=0, accuracy=0, nullable=false, default="'test'", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
+     * @Column(name="value1", type="set", length=0, accuracy=0, nullable=false, default="'test'", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
     protected ?array $value1 = [
         0 => '\'test\'',
@@ -97,7 +97,7 @@ abstract class TestSetBase extends Model
     /**
      * value2.
      *
-     * @Column(name="value2", type="set", length=0, accuracy=0, nullable=false, default="1,2", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false)
+     * @Column(name="value2", type="set", length=0, accuracy=0, nullable=false, default="1,2", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
     protected ?array $value2 = [
         0 => '1',

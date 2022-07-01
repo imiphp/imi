@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Unit\Model;
 
+use Imi\Pgsql\Test\Model\Article;
 use Imi\Pgsql\Test\Model\Member;
 use Imi\Pgsql\Test\Model\MemberWithSqlField;
 use Imi\Pgsql\Test\Model\ReferenceGetterTestModel;
@@ -11,6 +12,7 @@ use Imi\Pgsql\Test\Model\TestJson;
 use Imi\Pgsql\Test\Model\TestJsonNotCamel;
 use Imi\Pgsql\Test\Model\TestSoftDelete;
 use Imi\Pgsql\Test\Model\UpdateTime;
+use Imi\Pgsql\Test\Model\VirtualColumn;
 use Imi\Test\BaseTest;
 
 /**
@@ -471,5 +473,21 @@ class ModelTest extends BaseTest
             'json_data' => [4, 5, 6],
         ], $record->convertToArray());
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+    }
+
+    public function testModelConst(): void
+    {
+        $this->assertEquals('id', Article::PRIMARY_KEY);
+        $this->assertEquals(['id'], Article::PRIMARY_KEYS);
+    }
+
+    public function testDbVirtualColumn(): void
+    {
+        $record1 = VirtualColumn::newInstance();
+        $record1->amount = 123;
+        $record1->insert();
+
+        $record2 = VirtualColumn::find($record1->id);
+        $this->assertEquals('1.23', $record2->virtualAmount);
     }
 }

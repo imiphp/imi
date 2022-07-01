@@ -14,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_article 基类.
  *
  * @Entity
- * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.name", default="tb_article"), id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.poolName"))
+ * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.name", default="tb_article"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.poolName"))
  *
  * @property int|null    $id
  * @property string|null $title
@@ -24,10 +24,20 @@ use Imi\Pgsql\Model\PgModel as Model;
 abstract class ArticleBase extends Model
 {
     /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEY = 'id';
+
+    /**
+     * {@inheritdoc}
+     */
+    public const PRIMARY_KEYS = ['id'];
+
+    /**
      * id.
 
      *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0)
+     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
     protected ?int $id = null;
 
@@ -57,7 +67,7 @@ abstract class ArticleBase extends Model
      * title.
 
      *
-     * @Column(name="title", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="title", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $title = null;
 
@@ -87,7 +97,7 @@ abstract class ArticleBase extends Model
      * content.
 
      *
-     * @Column(name="content", type="text", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="content", type="text", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $content = null;
 
@@ -117,7 +127,7 @@ abstract class ArticleBase extends Model
      * time.
 
      *
-     * @Column(name="time", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0)
+     * @Column(name="time", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $time = null;
 
