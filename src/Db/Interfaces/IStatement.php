@@ -18,7 +18,7 @@ interface IStatement extends \Iterator
      * @param mixed $param
      * @param mixed $driverData
      */
-    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool;
+    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = 0, $driverData = null): bool;
 
     /**
      * 绑定一个参数到指定的变量名.
@@ -27,7 +27,7 @@ interface IStatement extends \Iterator
      * @param mixed $variable
      * @param mixed $driverOptions
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool;
+    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, $driverOptions = null): bool;
 
     /**
      * 把一个值绑定到一个参数.

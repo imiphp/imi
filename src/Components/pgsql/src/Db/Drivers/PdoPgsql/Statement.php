@@ -56,7 +56,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool
+    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = 0, $driverData = null): bool
     {
         return $this->statement->bindColumn($column, $param, $type, $maxLen, $driverData);
     }
@@ -64,7 +64,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool
+    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, $driverOptions = null): bool
     {
         return $this->statement->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
     }
