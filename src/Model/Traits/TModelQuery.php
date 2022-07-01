@@ -7,9 +7,11 @@ namespace Imi\Model\Traits;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\ChunkByOffsetResult;
 use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Model\Meta;
+use Imi\Model\Model;
 use Imi\Model\ModelQueryResult;
 
 trait TModelQuery
@@ -34,6 +36,9 @@ trait TModelQuery
      */
     protected ?Meta $meta = null;
 
+    /**
+     * @param class-string<Model>|null $modelClass
+     */
     public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
         if (null !== $modelClass)
@@ -112,6 +117,16 @@ trait TModelQuery
         $this->queryPreProcess();
 
         return parent::chunkById($count, $column, $alias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function chunkByOffset(int $count): ChunkByOffsetResult
+    {
+        $this->queryPreProcess();
+
+        return parent::chunkByOffset($count);
     }
 
     /**

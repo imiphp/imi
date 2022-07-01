@@ -8,7 +8,7 @@ use function end;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 
-class ChunkResult implements \IteratorAggregate
+class ChunkResult extends BaseChunkResult
 {
     private IQuery $query;
     private int    $limit;
@@ -24,9 +24,8 @@ class ChunkResult implements \IteratorAggregate
     }
 
     /**
-     * @return \Traversable<int, IResult>|\Generator|iterable<int, IResult>
+     * @return \Traversable|\Generator|iterable<int, IResult>
      */
-    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $lastId = null;
@@ -53,7 +52,6 @@ class ChunkResult implements \IteratorAggregate
 
             $records = $result->getStatementRecords();
 
-            // todo 如果是模型查询应该通过模型获取，但 getArray 方法转换模型没缓存，暂时先从原始数据里获取
             $lastId = end($records)[$this->alias];
         }
         while ($resultCount === $this->limit);

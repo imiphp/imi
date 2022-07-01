@@ -19,6 +19,7 @@ use Imi\Db\Query\Interfaces\IOrder;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Result\ChunkByOffsetResult;
 use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
@@ -1401,16 +1402,23 @@ abstract class Query implements IQuery
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function chunkByOffset(int $count): ChunkByOffsetResult
+    {
+        return new ChunkByOffsetResult($this, $count);
+    }
+
+    /**
      * 查询所有记录，返回分块迭代器.
+     *
+     * @deprecated 3.0
      *
      * @return mixed
      */
     public function chunkEach(int $count, string $column, ?string $alias = null)
     {
-        foreach ($this->chunkById($count, $column, $alias) as $result)
-        {
-            yield from $result->getArray();
-        }
+        return $this->chunkById($count, $column, $alias)->each();
     }
 
     /**
