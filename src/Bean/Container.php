@@ -45,9 +45,38 @@ class Container implements ContainerInterface
      */
     public function get(string $id, ...$params)
     {
+        return self::__newInstance($id, $params, true);
+    }
+
+    /**
+     * 每次调用都实例化返回新的对象.
+     *
+     * @param string $id        标识符
+     * @param mixed  ...$params
+     *
+     * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
+     * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
+     *
+     * @return mixed entry
+     */
+    public function newInstance(string $id, ...$params)
+    {
+        return self::__newInstance($id, $params, false);
+    }
+
+    /**
+     * @param string $id 标识符
+     *
+     * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
+     * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
+     *
+     * @return mixed
+     */
+    private function __newInstance(string $id, array $params, bool $allowStore)
+    {
         // 单例中有数据，且无实例化参数时直接返回单例
         $beanObjects = &$this->beanObjects;
-        if (isset($beanObjects[$id]) && empty($params))
+        if ($allowStore && isset($beanObjects[$id]) && empty($params))
         {
             return $beanObjects[$id];
         }
@@ -129,108 +158,9 @@ class Container implements ContainerInterface
         }
 
         // 传参实例化强制不使用单例
-        if (empty($params) && Bean::INSTANCE_TYPE_SINGLETON === ($data['instanceType'] ?? Bean::INSTANCE_TYPE_SINGLETON))
+        if ($allowStore && empty($params) && Bean::INSTANCE_TYPE_SINGLETON === ($data['instanceType'] ?? Bean::INSTANCE_TYPE_SINGLETON))
         {
             $beanObjects[$originId] = $object;
-        }
-
-        if ($data['recursion'] ?? true)
-        {
-            // @phpstan-ignore-next-line
-            BeanFactory::initInstance($object, $params);
-        }
-
-        // @phpstan-ignore-next-line
-        return $object;
-    }
-
-    /**
-     * 每次调用都实例化返回新的对象.
-     *
-     * @param string $id        标识符
-     * @param mixed  ...$params
-     *
-     * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
-     * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
-     *
-     * @return mixed entry
-     */
-    public function newInstance(string $id, ...$params)
-    {
-        if ('' === $id)
-        {
-            throw new ContainerException('$id can not be a empty string value');
-        }
-
-        $object = null;
-
-        $binds = $this->binds;
-        $originId = $id;
-
-        while (!$object)
-        {
-            if (isset($binds[$id]))
-            {
-                $data = $binds[$id];
-                if (\is_callable($data))
-                {
-                    $object = $data($originId, ...$params);
-                    if ($object)
-                    {
-                        $data = null;
-                    }
-                }
-                else
-                {
-                    $className = $data['className'];
-                    if (class_exists($className))
-                    {
-                        if ($data['recursion'])
-                        {
-                            $object = BeanFactory::newInstanceNoInit($className, ...$params);
-                        }
-                        else
-                        {
-                            $object = BeanFactory::newInstance($className, ...$params);
-                        }
-                    }
-                    else
-                    {
-                        $id = $className;
-                    }
-                }
-            }
-            else
-            {
-                $data = BeanManager::get($id);
-                if ($data)
-                {
-                    $className = $data['className'];
-                    if (class_exists($className))
-                    {
-                        if ($data['recursion'])
-                        {
-                            $object = BeanFactory::newInstanceNoInit($className, ...$params);
-                        }
-                        else
-                        {
-                            $object = BeanFactory::newInstance($className, ...$params);
-                        }
-                    }
-                    else
-                    {
-                        $id = $className;
-                    }
-                }
-                elseif (class_exists($id))
-                {
-                    $object = BeanFactory::newInstanceNoInit($id, ...$params);
-                }
-                else
-                {
-                    throw new ContainerException(sprintf('%s not found', $id));
-                }
-            }
         }
 
         if ($data['recursion'] ?? true)
@@ -253,8 +183,10 @@ class Container implements ContainerInterface
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
+     *
+     * @return mixed entry
      */
-    public function getSingleton(string $id, ...$params): object
+    public function getSingleton(string $id, ...$params)
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;
