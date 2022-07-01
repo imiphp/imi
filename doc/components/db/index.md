@@ -722,6 +722,13 @@ foreach (Db::query()->table('tb_test')->chunkById(10, 'id') as $result)
         var_dump($row);
     }
 }
+
+// 还有一个更简单的用法
+
+foreach (Db::query()->table('tb_test')->chunkById(10, 'id')->each() as $row)
+{
+    var_dump($row);
+}
 ```
 
 ##### chunkByOffset
@@ -746,17 +753,9 @@ foreach (Db::query()->table('tb_test')->chunkByOffset(10) as $result)
         var_dump($row);
     }
 }
-```
 
-##### 还有一个更简单的用法
+// 还有一个更简单的用法
 
-```php
-// chunk by id
-foreach (Db::query()->table('tb_test')->chunkById(10, 'id')->each() as $row)
-{
-    var_dump($row);
-}
-// chunk by offset
 foreach (Db::query()->table('tb_test')->chunkByOffset(10)->each() as $row)
 {
     var_dump($row);

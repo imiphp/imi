@@ -311,6 +311,13 @@ foreach (TestModel::query()->chunkById(10, 'id') as $result)
         var_dump($row);
     }
 }
+
+// 还有一个更简单的用法
+
+foreach (TestModel::query()->chunkById(10, 'id')->each() as $row)
+{
+    var_dump($row);
+}
 ```
 
 ##### chunkByOffset
@@ -335,17 +342,9 @@ foreach (TestModel::query()->chunkByOffset(10) as $result)
         var_dump($row);
     }
 }
-```
 
-##### 还有一个更简单的用法
+// 还有一个更简单的用法
 
-```php
-// chunk by id
-foreach (TestModel::query()->chunkById(10, 'id')->each() as $row)
-{
-    var_dump($row);
-}
-// chunk by offset
 foreach (TestModel::query()->chunkByOffset(10)->each() as $row)
 {
     var_dump($row);
