@@ -11,6 +11,7 @@ parameters:
         - src/Components/grpc/example/grpc
         - src/Components/smarty/src/smarty-plugins
         - src/Components/swoole/src/Process/Process.php
+        - src/Components/pgsql/src/Db/Drivers/SwooleNew
 
     bootstrapFiles:
         - vendor/autoload.php

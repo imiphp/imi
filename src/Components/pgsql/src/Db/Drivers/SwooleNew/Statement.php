@@ -2,23 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Db\Drivers\Swoole;
+namespace Imi\Pgsql\Db\Drivers\SwooleNew;
 
 use Imi\Db\Exception\DbException;
 use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBaseStatement;
 use Imi\Swoole\Util\Coroutine;
+use Swoole\Coroutine\PostgreSQLStatement;
 
 /**
  * Swoole Coroutine Pgsql 驱动 Statement.
  */
 class Statement extends PgsqlBaseStatement implements IPgsqlStatement
 {
-    /**
-     * @var mixed
-     */
-    protected $queryResult;
+    protected PostgreSQLStatement $stmt;
 
     /**
      * 数据库操作对象
@@ -45,37 +43,15 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     protected ?array $sqlParamsMap = null;
 
-    /**
-     * statement 名字.
-     */
-    protected ?string $statementName = null;
-
-    /**
-     * @param mixed $queryResult
-     */
-    public function __construct(IPgsqlDb $db, $queryResult, string $originSql, ?string $statementName = null, ?array $sqlParamsMap = null)
+    public function __construct(IPgsqlDb $db, PostgreSQLStatement $stmt, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
-        $this->queryResult = $queryResult;
+        $this->stmt = $stmt;
         $this->lastSql = $originSql;
-        $this->statementName = $statementName;
         $this->sqlParamsMap = $sqlParamsMap;
-        if ($queryResult)
+        if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))
         {
-            /** @var \Swoole\Coroutine\PostgreSQL $pgDb */
-            $pgDb = $db->getInstance();
-            if ($result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC))
-            {
-                $this->result = $result;
-            }
-        }
-    }
-
-    public function __destruct()
-    {
-        if (null !== $this->statementName && Coroutine::isIn() && $this->db->isConnected())
-        {
-            $this->db->exec('DEALLOCATE ' . $this->statementName);
+            $this->result = $result;
         }
     }
 
@@ -142,7 +118,14 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function errorCode()
     {
-        return $this->db->errorCode();
+        if ($this->stmt->resultDiag)
+        {
+            return $this->stmt->resultDiag['sqlstate'] ?? null;
+        }
+        else
+        {
+            return '';
+        }
     }
 
     /**
@@ -150,7 +133,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function errorInfo(): string
     {
-        return $this->db->errorInfo();
+        return $this->stmt->error ?? '';
     }
 
     /**
@@ -166,62 +149,49 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function execute(array $inputParameters = null): bool
     {
-        /** @var \Swoole\Coroutine\PostgreSQL $pgDb */
-        $pgDb = $this->db->getInstance();
-        if (null === $this->statementName)
+        if (null === $inputParameters)
         {
-            $this->queryResult = $queryResult = $pgDb->query($this->lastSql);
-            if (false === $queryResult)
-            {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql() . \PHP_EOL);
-            }
+            $inputParameters = $this->bindValues;
         }
-        else
+        $this->bindValues = $bindValues = [];
+        if ($inputParameters)
         {
-            if (null === $inputParameters)
+            $sqlParamsMap = $this->sqlParamsMap;
+            if ($sqlParamsMap)
             {
-                $inputParameters = $this->bindValues;
-            }
-            $this->bindValues = $bindValues = [];
-            if ($inputParameters)
-            {
-                $sqlParamsMap = $this->sqlParamsMap;
-                if ($sqlParamsMap)
+                foreach ($sqlParamsMap as $index => $paramName)
                 {
-                    foreach ($sqlParamsMap as $index => $paramName)
+                    if (isset($inputParameters[$paramName]))
                     {
-                        if (isset($inputParameters[$paramName]))
-                        {
-                            $bindValues[$index] = $inputParameters[$paramName];
-                        }
-                        elseif (isset($inputParameters[$key = ':' . $paramName]))
-                        {
-                            $bindValues[$index] = $inputParameters[$key];
-                        }
-                        elseif (isset($inputParameters[$index]))
-                        {
-                            $bindValues[$index] = $inputParameters[$index];
-                        }
+                        $bindValues[$index] = $inputParameters[$paramName];
+                    }
+                    elseif (isset($inputParameters[$key = ':' . $paramName]))
+                    {
+                        $bindValues[$index] = $inputParameters[$key];
+                    }
+                    elseif (isset($inputParameters[$index]))
+                    {
+                        $bindValues[$index] = $inputParameters[$index];
                     }
                 }
-                else
-                {
-                    $bindValues = array_values($inputParameters);
-                }
             }
-            $this->queryResult = $queryResult = $pgDb->execute($this->statementName, $bindValues);
-            if (false === $queryResult)
+            else
             {
-                $errorCode = $this->errorCode();
-                $errorInfo = $this->errorInfo();
-                if ($this->db->checkCodeIsOffline($errorCode))
-                {
-                    $this->db->close();
-                }
-                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
+                $bindValues = array_values($inputParameters);
             }
         }
-        $this->result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC) ?: [];
+        $stmt = $this->stmt;
+        if (false === $stmt->execute($bindValues))
+        {
+            $errorCode = $this->errorCode();
+            $errorInfo = $this->errorInfo();
+            if ($this->db->checkCodeIsOffline($errorCode))
+            {
+                $this->db->close();
+            }
+            throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
+        }
+        $this->result = $stmt->fetchAll(\SW_PGSQL_ASSOC) ?: [];
 
         return true;
     }
@@ -323,7 +293,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function lastInsertId(?string $name = null): string
     {
-        return $this->db->lastInsertId($name ?? $this->statementName);
+        return $this->stmt->lastInsertId();
     }
 
     /**
@@ -331,7 +301,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function rowCount(): int
     {
-        return $this->db->rowCount();
+        return $this->stmt->rowCount();
     }
 
     /**
