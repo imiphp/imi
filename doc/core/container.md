@@ -71,7 +71,7 @@ $object = $container->get('XXX');
 
 ### 请求上下文容器
 
-当前请求有效的容器，请求结束时即销毁。
+当前请求有效的容器，请求结束时即销毁，更多细节（[请求上下文](/v2.1/core/requestContext.html)）。
 
 ```php
 $object = \Imi\RequestContext::getBean('XXX');
@@ -79,31 +79,6 @@ $object = \Imi\RequestContext::getBean('XXX');
 // 获取容器对象
 $container = \Imi\RequestContext::getContainer();
 $object = $container->get('XXX');
-
-// 在上下文中存取值
-\Imi\RequestContext::get('myKey', 'default');
-\Imi\RequestContext::set('myKey', '123456');
-\Imi\RequestContext::unset('myKey');
-
-// 批量设置上下文
-\Imi\RequestContext::muiltiSet([
-    'myKey1' => '123456',
-    'myKey2' => '456789',
-    'myKey3' => '123456',
-]);
-
-// 在闭包中获取上下文操作并返回值
-$result = \Imi\RequestContext::use(function (ArrayObject $cxt) {
-    $cxt['myKey2'] = '789';
-    unset($cxt['myKey3']);
-
-    return 'abc';
-});
-
-// 执行一个闭包并再上下文中记住其返回值
-$result = \Imi\RequestContext::remember('myKey3', function () {
-    return 1 + 2;
-});
 ```
 
 ### 全局单例容器

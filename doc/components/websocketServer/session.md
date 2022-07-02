@@ -34,6 +34,8 @@ ConnectionContext::use(function($data){
 
 ## 方法列表
 
+上下文操作可以参考（[请求上下文](/v2.1/core/requestContext.html)）
+
 ```php
 /**
  * 为当前连接创建上下文.
