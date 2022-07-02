@@ -79,6 +79,31 @@ $object = \Imi\RequestContext::getBean('XXX');
 // 获取容器对象
 $container = \Imi\RequestContext::getContainer();
 $object = $container->get('XXX');
+
+// 在上下文中存取值
+\Imi\RequestContext::get('myKey', 'default');
+\Imi\RequestContext::set('myKey', '123456');
+\Imi\RequestContext::unset('myKey');
+
+// 批量设置上下文
+\Imi\RequestContext::muiltiSet([
+    'myKey1' => '123456',
+    'myKey2' => '456789',
+    'myKey3' => '123456',
+]);
+
+// 在闭包中获取上下文操作并返回值
+$result = \Imi\RequestContext::use(function (ArrayObject $cxt) {
+    $cxt['myKey2'] = '789';
+    unset($cxt['myKey3']);
+
+    return 'abc';
+});
+
+// 执行一个闭包并再上下文中记住其返回值
+$result = \Imi\RequestContext::remember('myKey3', function () {
+    return 1 + 2;
+});
 ```
 
 ### 全局单例容器
@@ -211,13 +236,13 @@ $obj = RequestContext::getBean('aaa', 1);
 namespace Test;
 
 /**
- * 下面两种写法相同（注意实际不要写多个 Bean 注解） 
+ * 下面两种写法相同（注意实际不要写多个 Bean 注解）
  * @Bean("MyTest")
  * @Bean(name="MyTest")
- * 
+ *
  * 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
  * @Bean(name="MyTest", instanceType=\Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion=false)
- * 
+ *
  * 下面是限制生效的环境，支持一个或多个
  * @Bean(name="MyTest", env="swoole")
  * @Bean(name="MyTest", env={"swoole", "workerman"})
@@ -283,10 +308,10 @@ use Imi\Model\Annotation\Entity;
  * ArticleBase
  * @Entity
  * @Table(name="tb_article", id={"id"})
- * @property int $id 
- * @property string $title 
- * @property string $content 
- * @property string $time 
+ * @property int $id
+ * @property string $title
+ * @property string $content
+ * @property string $time
  */
 abstract class ArticleBase extends Model
 {
@@ -301,7 +326,7 @@ abstract class ArticleBase extends Model
      * 获取 id
      *
      * @return int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -311,7 +336,7 @@ abstract class ArticleBase extends Model
      * 赋值 id
      * @param int $id id
      * @return static
-     */ 
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -329,7 +354,7 @@ abstract class ArticleBase extends Model
      * 获取 title
      *
      * @return string
-     */ 
+     */
     public function getTitle()
     {
         return $this->title;
@@ -339,7 +364,7 @@ abstract class ArticleBase extends Model
      * 赋值 title
      * @param string $title title
      * @return static
-     */ 
+     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -357,7 +382,7 @@ abstract class ArticleBase extends Model
      * 获取 content
      *
      * @return string
-     */ 
+     */
     public function getContent()
     {
         return $this->content;
@@ -367,7 +392,7 @@ abstract class ArticleBase extends Model
      * 赋值 content
      * @param string $content content
      * @return static
-     */ 
+     */
     public function setContent($content)
     {
         $this->content = $content;
@@ -385,7 +410,7 @@ abstract class ArticleBase extends Model
      * 获取 time
      *
      * @return string
-     */ 
+     */
     public function getTime()
     {
         return $this->time;
@@ -395,7 +420,7 @@ abstract class ArticleBase extends Model
      * 赋值 time
      * @param string $time time
      * @return static
-     */ 
+     */
     public function setTime($time)
     {
         $this->time = $time;
