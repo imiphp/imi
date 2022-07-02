@@ -16,6 +16,7 @@
 
 * [生命周期](core/lifeCycle.md)
 * [容器](core/container.md)
+* [请求上下文](core/requestContext.md)
 * [Partial](core/partial.md)
 * [事件](components/event/index.md)
   * [事件监听](components/event/index.md)

@@ -227,6 +227,51 @@ class ConnectionContext
     }
 
     /**
+     * 获取一个闭包的值并将其持久化, 下次请求将直接从连接上下文中获取.
+     *
+     * @param int|string|null $clientId
+     *
+     * @return mixed
+     */
+    public static function remember(string $key, \Closure $closure, $clientId = null, ?string $serverName = null)
+    {
+        static::use(static function (array $ctx) use ($key, $closure, &$result) {
+            if (isset($ctx[$key]))
+            {
+                $result = $ctx[$key];
+                // no save
+                return null;
+            }
+            else
+            {
+                $ctx[$key] = ($result = $closure());
+
+                return $ctx;
+            }
+        }, $clientId, $serverName);
+
+        return $result;
+    }
+
+    /**
+     * 销毁一个上下文记住的值
+     */
+    public static function unset(string $key): void
+    {
+        self::use(function (array $cxt) use ($key) {
+            if (isset($cxt[$key]))
+            {
+                unset($cxt[$key]);
+
+                return $cxt;
+            }
+
+            // no save
+            return null;
+        });
+    }
+
+    /**
      * 获取当前上下文.
      *
      * @param int|string|null $clientId

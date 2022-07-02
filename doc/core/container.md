@@ -71,7 +71,7 @@ $object = $container->get('XXX');
 
 ### 请求上下文容器
 
-当前请求有效的容器，请求结束时即销毁。
+当前请求有效的容器，请求结束时即销毁，更多细节（[请求上下文](/v2.1/core/requestContext.html)）。
 
 ```php
 $object = \Imi\RequestContext::getBean('XXX');
@@ -211,13 +211,13 @@ $obj = RequestContext::getBean('aaa', 1);
 namespace Test;
 
 /**
- * 下面两种写法相同（注意实际不要写多个 Bean 注解） 
+ * 下面两种写法相同（注意实际不要写多个 Bean 注解）
  * @Bean("MyTest")
  * @Bean(name="MyTest")
- * 
+ *
  * 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
  * @Bean(name="MyTest", instanceType=\Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion=false)
- * 
+ *
  * 下面是限制生效的环境，支持一个或多个
  * @Bean(name="MyTest", env="swoole")
  * @Bean(name="MyTest", env={"swoole", "workerman"})
@@ -283,10 +283,10 @@ use Imi\Model\Annotation\Entity;
  * ArticleBase
  * @Entity
  * @Table(name="tb_article", id={"id"})
- * @property int $id 
- * @property string $title 
- * @property string $content 
- * @property string $time 
+ * @property int $id
+ * @property string $title
+ * @property string $content
+ * @property string $time
  */
 abstract class ArticleBase extends Model
 {
@@ -301,7 +301,7 @@ abstract class ArticleBase extends Model
      * 获取 id
      *
      * @return int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -311,7 +311,7 @@ abstract class ArticleBase extends Model
      * 赋值 id
      * @param int $id id
      * @return static
-     */ 
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -329,7 +329,7 @@ abstract class ArticleBase extends Model
      * 获取 title
      *
      * @return string
-     */ 
+     */
     public function getTitle()
     {
         return $this->title;
@@ -339,7 +339,7 @@ abstract class ArticleBase extends Model
      * 赋值 title
      * @param string $title title
      * @return static
-     */ 
+     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -357,7 +357,7 @@ abstract class ArticleBase extends Model
      * 获取 content
      *
      * @return string
-     */ 
+     */
     public function getContent()
     {
         return $this->content;
@@ -367,7 +367,7 @@ abstract class ArticleBase extends Model
      * 赋值 content
      * @param string $content content
      * @return static
-     */ 
+     */
     public function setContent($content)
     {
         $this->content = $content;
@@ -385,7 +385,7 @@ abstract class ArticleBase extends Model
      * 获取 time
      *
      * @return string
-     */ 
+     */
     public function getTime()
     {
         return $this->time;
@@ -395,7 +395,7 @@ abstract class ArticleBase extends Model
      * 赋值 time
      * @param string $time time
      * @return static
-     */ 
+     */
     public function setTime($time)
     {
         $this->time = $time;

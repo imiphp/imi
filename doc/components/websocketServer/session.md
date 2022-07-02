@@ -34,6 +34,8 @@ ConnectionContext::use(function($data){
 
 ## 方法列表
 
+上下文操作可以参考（[请求上下文](/v2.1/core/requestContext.html)）
+
 ```php
 /**
  * 为当前连接创建上下文.
@@ -91,6 +93,20 @@ public static function muiltiSet(array $data, $clientId = null): void;
  * @param int|string|null $clientId
  */
 public static function use(callable $callable, $clientId = null): void;
+
+/**
+ * 获取一个闭包的值并将其持久化, 下次请求将直接从连接上下文中获取.
+ *
+ * @param int|string|null $clientId
+ *
+ * @return mixed
+ */
+public static function remember(string $key, \Closure $closure, $clientId = null, ?string $serverName = null);
+
+/**
+ * 销毁一个上下文记住的值
+ */
+public static function unset(string $key): void;
 
 /**
  * 获取当前上下文.
@@ -167,7 +183,7 @@ public static function restore(string $flag, ?int $toClientId = null): void;
  * @return int|string|null
  */
 public static function getClientId();
-    
+
 ```
 
 ## 会话存储器
@@ -243,7 +259,7 @@ public static function getClientId();
         'handlerClass'  =>  \Imi\WorkermanGateway\Server\ConnectionContext\StoreHandler\ConnectionContextGateway::class,
     ],
     'ConnectionContextGateway' =>  [
-        
+
     ],
 ],
 ```
