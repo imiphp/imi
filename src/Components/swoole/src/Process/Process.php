@@ -88,9 +88,9 @@ trait TProcess
                     {
                         $data = swoole_substr_unserialize($data, 4);
                         Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                            'worker'    => $this,
-                            'action'    => $data['action'] ?? '',
-                            'data'      => \array_key_exists('data', $data) ? $data['data'] : $data,
+                            'process' => $this,
+                            'action'  => $data['action'] ?? '',
+                            'data'    => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
                         ], $this, PipeMessageEventParam::class);
                     }
                 }
@@ -111,6 +111,18 @@ trait TProcess
             'action' => $action,
             'data'   => $data,
         ]);
+
+        return $this->getUnixSocketClient()->send(pack('N', \strlen($message)) . $message) > 0;
+    }
+
+    /**
+     * 发送 UnixSocket 消息.
+     *
+     * @param mixed $message
+     */
+    public function sendUnixSocketMessageRaw($message): bool
+    {
+        $message = serialize($message);
 
         return $this->getUnixSocketClient()->send(pack('N', \strlen($message)) . $message) > 0;
     }
@@ -168,9 +180,9 @@ trait TProcess
 
                     $data = swoole_substr_unserialize($data, 4);
                     Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                        'worker'     => $this,
+                        'process'    => $this,
                         'action'     => $data['action'] ?? '',
-                        'data'       => \array_key_exists('data', $data) ? $data['data'] : $data,
+                        'data'       => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
                         'connection' => $conn,
                     ], $this, PipeMessageEventParam::class);
                 }
