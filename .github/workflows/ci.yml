@@ -1,6 +1,15 @@
 name: ci
 
-on: [push, pull_request]
+on:
+  push:
+      paths-ignore:
+        - 'doc/**'
+        - 'mddoc/**'
+        - 'res/**'
+        - 'split-repository/**'
+        - 'website/**'
+        - '.markdownlint.json'
+  pull_request:
 
 jobs:
   ci:
