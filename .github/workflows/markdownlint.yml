@@ -1,6 +1,11 @@
 name: Markdownlint
 
-on: [push, pull_request]
+on:
+  push:
+      paths:
+        - 'doc/**'
+        - '.markdownlint.json'
+  pull_request:
 
 jobs:
   tests:

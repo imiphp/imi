@@ -140,10 +140,8 @@ class TestConsumer extends BaseConsumer
 {
     /**
      * 消费任务
-     *
-     * @return mixed
      */
-    protected function consume(ConsumeMessage $message)
+    protected function consume(ConsumeMessage $message): void
     {
         $messageValue = $message->getValue();
     }
