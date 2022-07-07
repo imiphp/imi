@@ -762,6 +762,10 @@ foreach (Db::query()->table('tb_test')->chunkByOffset(10)->each() as $row)
 }
 ```
 
+##### chunkEach
+
+> 该方法已弃用并计划`3.0`移除，请使用`chunkById()->each()`or`chunkByOffset()->each()`替代。
+
 #### 游标查询
 
 游标查询能对于查询大结果集时能有效节约应用内存消耗，对于数据库的消耗与`select`无差别。
