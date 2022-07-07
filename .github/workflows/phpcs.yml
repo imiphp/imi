@@ -1,6 +1,14 @@
 name: Coding Standards
 
-on: [push, pull_request]
+on:
+  push:
+      paths-ignore:
+        - 'doc/**'
+        - 'mddoc/**'
+        - 'res/**'
+        - 'website/**'
+        - '.markdownlint.json'
+  pull_request:
 
 jobs:
   tests:
