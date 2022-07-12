@@ -117,9 +117,8 @@ class AMQPQueueDriver implements IQueueDriver
     protected function getHandler(): IQueueDriver
     {
         $context = RequestContext::getContext();
-        $name = 'AMQPQueueDriver.handler.' . $this->name;
 
-        return $context[$name] ??= BeanFactory::newInstance(AMQPQueueDriverHandler::class, ...$this->args);
+        return $context['QueueDriver.handler.' . $this->name] ??= BeanFactory::newInstance(AMQPQueueDriverHandler::class, ...$this->args);
     }
 
     /**
