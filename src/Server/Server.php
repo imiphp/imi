@@ -189,7 +189,7 @@ class Server
     /**
      * 获取当前连接数量.
      */
-    public function getConnectionCount(?string $serverName = null): int
+    public static function getConnectionCount(?string $serverName = null): int
     {
         return static::getInstance($serverName)->getConnectionCount();
     }
