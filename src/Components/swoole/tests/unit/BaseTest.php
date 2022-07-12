@@ -24,7 +24,7 @@ abstract class BaseTest extends \Imi\Test\BaseTest
                 }
                 echo 'lastUseTime:', $time, 's', \PHP_EOL;
                 echo 'retry:', $i, \PHP_EOL;
-                sleep(1);
+                usleep(1000 * mt_rand(1000, 2000));
             }
             $throwable = null;
             $time = microtime(true);
