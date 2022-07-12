@@ -39,7 +39,7 @@ use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 
 class Main extends AppBaseMain
 {
-    public function __init()
+    public function __init(): void
     {
         AnnotationReader::addGlobalIgnoredName('xxx');
     }

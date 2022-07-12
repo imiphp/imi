@@ -33,7 +33,7 @@
 并且实现一个`__init()`方法:
 
 ```php
-public function __init()
+public function __init(): void
 {
 
 }
