@@ -131,9 +131,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 {
                     $context = RequestContext::getContext();
                     $handlerName = 'QueueDriver.handler.' . $queue->getName();
-                    $handler = $context[$handlerName]??null;
-                    goWait(function () use ($queue, $message,$handlerName,$handler) {
-                        RequestContext::set($handlerName,$handler);
+                    $handler = $context[$handlerName] ?? null;
+                    goWait(function () use ($queue, $message, $handlerName, $handler) {
+                        RequestContext::set($handlerName, $handler);
                         Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
                             'queue'     => $queue,
                             'message'   => $message,
