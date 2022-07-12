@@ -93,6 +93,10 @@ class Server extends BaseCommand
                 }
                 $swooleServer->set($options);
             }
+            // gc
+            gc_collect_cycles();
+            gc_mem_caches();
+            // 启动服务
             $server->start();
         });
     }
