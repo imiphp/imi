@@ -78,6 +78,11 @@ abstract class BaseConsumer implements IConsumer
             {
                 $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
                 $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass, $isSwoole) {
+                    if (!$this->running)
+                    {
+                        return;
+                    }
+                    $result = ConsumerResult::NACK;
                     try
                     {
                         /** @var \Imi\AMQP\Message $messageInstance */
@@ -94,6 +99,8 @@ abstract class BaseConsumer implements IConsumer
                                 {
                                     // @phpstan-ignore-next-line
                                     App::getBean('ErrorLog')->onException($th);
+
+                                    return ConsumerResult::NACK;
                                 }
                             });
                         }
@@ -101,6 +108,14 @@ abstract class BaseConsumer implements IConsumer
                         {
                             $result = $this->consume($messageInstance);
                         }
+                    }
+                    catch (\Throwable $th)
+                    {
+                        // @phpstan-ignore-next-line
+                        App::getBean('ErrorLog')->onException($th);
+                    }
+                    finally
+                    {
                         switch ($result)
                         {
                             case ConsumerResult::ACK:
@@ -119,11 +134,6 @@ abstract class BaseConsumer implements IConsumer
                                 $this->channel->basic_reject($message->getDeliveryTag(), true);
                                 break;
                         }
-                    }
-                    catch (\Throwable $th)
-                    {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
                     }
                 });
             }

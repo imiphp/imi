@@ -12,6 +12,7 @@ use Imi\Queue\Event\Param\ConsumerAfterPopParam;
 use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
 use Imi\Queue\Event\Param\ConsumerBeforePopParam;
 use Imi\Queue\Model\QueueConfig;
+use Imi\RequestContext;
 use Swoole\Coroutine;
 use Yurun\Swoole\CoPool\CoPool;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
@@ -128,7 +129,11 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 }
                 else
                 {
-                    goWait(function () use ($queue, $message) {
+                    $context = RequestContext::getContext();
+                    $handlerName = 'QueueDriver.handler.' . $queue->getName();
+                    $handler = $context[$handlerName] ?? null;
+                    goWait(function () use ($queue, $message, $handlerName, $handler) {
+                        RequestContext::set($handlerName, $handler);
                         Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
                             'queue'     => $queue,
                             'message'   => $message,
