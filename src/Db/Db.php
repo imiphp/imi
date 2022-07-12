@@ -360,4 +360,18 @@ class Db
     {
         return self::getInstance($poolName, $queryType)->prepare($sql);
     }
+
+    /**
+     * 尝试把绑定值渲染到的 sql 以获取实际可执行语句
+     */
+    public static function debugSql(string $sql, array $bindValues): string
+    {
+        if (empty($bindValues))
+        {
+            return $sql;
+        }
+        $bindValues = \array_reverse($bindValues);
+        $values = \array_map(fn ($val) => \var_export($val, true), \array_values($bindValues));
+        return \str_replace(\array_keys($bindValues), $values, $sql);
+    }
 }
