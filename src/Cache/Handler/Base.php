@@ -37,7 +37,7 @@ abstract class Base implements CacheInterface
     {
         if (null === $this->formatHandlerClass)
         {
-            return $data;
+            return (string) $data;
         }
         elseif (null !== ($server = RequestContext::getServer()))
         {
