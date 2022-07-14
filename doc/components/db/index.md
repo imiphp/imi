@@ -1127,3 +1127,22 @@ $sql = $result->getSql();
 ```php
 $statement = $result->getStatement(); // \Imi\Db\Interfaces\IStatement
 ```
+
+## 渲染预编译`SQL`语句
+
+主要用于日志或者调试
+
+```php
+$prepare = "select * from `test1` where `id` = :p1 and `text` = :p2 and `a1` in (:p3,:p4,:p5) and `a2` in (0 = 1)";
+$bindValues = [
+    ':p1' => -1,
+    ':p2' => 'abc123',
+    ':p3' => 1,
+    ':p4' => 2,
+    ':p5' => 3,
+];
+
+echo Db::debugSql($prepare, $bindValues)
+// 输出
+// select * from `test1` where `id` = -1 and `text` = 'abc123' and `a1` in (1,2,3) and `a2` in (0 = 1)
+```
