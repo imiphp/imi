@@ -1128,7 +1128,7 @@ $sql = $result->getSql();
 $statement = $result->getStatement(); // \Imi\Db\Interfaces\IStatement
 ```
 
-## 渲染预编译`SQL`语句
+## 渲染预编译SQL语句
 
 主要用于日志或者调试
 
@@ -1142,7 +1142,7 @@ $bindValues = [
     ':p5' => 3,
 ];
 
-echo Db::debugSql($prepare, $bindValues)
+echo Db::debugSql($prepare, $bindValues);
 // 输出
 // select * from `test1` where `id` = -1 and `text` = 'abc123' and `a1` in (1,2,3) and `a2` in (0 = 1)
 ```
