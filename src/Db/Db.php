@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db;
 
+use function array_is_list;
 use Imi\App;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
@@ -370,9 +371,23 @@ class Db
         {
             return $sql;
         }
-        $bindValues = array_reverse($bindValues);
-        $values = array_map(fn ($val) => var_export($val, true), array_values($bindValues));
+        if (array_is_list($bindValues))
+        {
+            $sql = str_replace('??', '__mask__', $sql);
 
-        return str_replace(array_keys($bindValues), $values, $sql);
+            foreach ($bindValues as $value)
+            {
+                $sql = preg_replace('/\?/', var_export($value, true), $sql, 1);
+            }
+
+            return str_replace('__mask__', '??', $sql);
+        }
+        else
+        {
+            $bindValues = array_reverse($bindValues);
+            $values = array_map(fn ($val) => var_export($val, true), array_values($bindValues));
+
+            return str_replace(array_keys($bindValues), $values, $sql);
+        }
     }
 }

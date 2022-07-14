@@ -666,5 +666,10 @@ abstract class DbBaseTest extends BaseTest
             'select * from `test1` where `id` = -1 and `text` = \'abc123\' and `a1` in (1,2,3) and `a2` in (0 = 1)',
             Db::debugSql($query->buildSelectSql(), $query->getBinds()),
         );
+
+        $this->assertEquals(
+            'select * from `test1` where `id` = -1 and `text` = \'abc123\' and `a1` in (1,2) ??',
+            Db::debugSql('select * from `test1` where `id` = ? and `text` = ? and `a1` in (?,?) ??', [-1, 'abc123', 1, 2]),
+        );
     }
 }

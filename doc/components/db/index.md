@@ -1145,4 +1145,16 @@ $bindValues = [
 echo Db::debugSql($prepare, $bindValues);
 // 输出
 // select * from `test1` where `id` = -1 and `text` = 'abc123' and `a1` in (1,2,3) and `a2` in (0 = 1)
+
+$prepare = "select * from `test1` where `id` = -1 and `text` = 'abc123' and `a1` in (1,2) ??";
+$bindValues = [
+    -1,
+    'abc123',
+    1,
+    2,
+];
+
+echo Db::debugSql($prepare, $bindValues);
+// 输出
+// select * from `test1` where `id` = -1 and `text` = 'abc123' and `a1` in (1,2) ??
 ```
