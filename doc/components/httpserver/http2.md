@@ -58,19 +58,22 @@ imi v1.0.20 新增支持开发 Http2 服务。
 [
     // 子服务器（端口监听）配置
     'subServers'    =>    [
-        // 指定服务器命名空间
-        'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
-        // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-        'type'		=>	\Imi\Swoole\Server\Type::HTTP,
-        // 监听的IP地址，可选
-        'host'		=>	'0.0.0.0',
-        // 监听的端口
-        'port'		=>	8080,
-        // 参考 swoole sockType，可选
-        'sockType'	=>	SWOOLE_SOCK_TCP,
-        // 服务器配置，参数用法同\Swoole\Server->set($configs)
-        'configs'	=>	[
-            'open_http2_protocol'   =>  true, // 启用 http2
+        // 子服务器别名
+        'alias1'	=>	[
+            // 指定服务器命名空间
+            'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
+            // 服务器类型(http/WebSocket/TcpServer/UdpServer)
+            'type'		=>	\Imi\Swoole\Server\Type::HTTP,
+            // 监听的IP地址，可选
+            'host'		=>	'0.0.0.0',
+            // 监听的端口
+            'port'		=>	8080,
+            // 参考 swoole sockType，可选
+            'sockType'	=>	SWOOLE_SOCK_TCP,
+            // 服务器配置，参数用法同\Swoole\Server->set($configs)
+            'configs'	=>	[
+                'open_http2_protocol'   =>  true, // 启用 http2
+            ],
         ],
     ],
 ]
