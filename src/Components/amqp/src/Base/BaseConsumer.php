@@ -78,10 +78,6 @@ abstract class BaseConsumer implements IConsumer
             {
                 $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
                 $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass, $isSwoole) {
-                    if (!$this->running)
-                    {
-                        return;
-                    }
                     $result = ConsumerResult::NACK;
                     try
                     {
