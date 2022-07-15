@@ -14,24 +14,27 @@ http 和 WebSocket 同时做在一个项目中，代码之间没有隔阂，可�
 [
     // 子服务器（端口监听）配置
     'subServers'    =>    [
-        // 指定服务器命名空间
-        'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
-        // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-        'type'		=>	\Imi\Swoole\Server\Type::HTTP,
-        // 监听的IP地址，可选
-        'host'		=>	'0.0.0.0',
-        // 监听的端口
-        'port'		=>	8080,
-        // 参考 swoole sockType，可选
-        'sockType'	=>	SWOOLE_SOCK_TCP,
-        // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP 有效
-        'syncConnect' => true,
-        // 服务器配置，参数用法同\Swoole\Server->set($configs)
-        'configs'	=>	[
-        ],
-        // 容器绑定
-        'beans' => [
-            'aaa' => XXX::class,
+        // 子服务器别名
+        'alias1'	=>	[
+            // 指定服务器命名空间
+            'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
+            // 服务器类型(http/WebSocket/TcpServer/UdpServer)
+            'type'		=>	\Imi\Swoole\Server\Type::HTTP,
+            // 监听的IP地址，可选
+            'host'		=>	'0.0.0.0',
+            // 监听的端口
+            'port'		=>	8080,
+            // 参考 swoole sockType，可选
+            'sockType'	=>	SWOOLE_SOCK_TCP,
+            // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP、WebSocket 有效
+            'syncConnect' => true,
+            // 服务器配置，参数用法同\Swoole\Server->set($configs)
+            'configs'	=>	[
+            ],
+            // 容器绑定
+            'beans' => [
+                'aaa' => XXX::class,
+            ],
         ],
     ],
 ]
