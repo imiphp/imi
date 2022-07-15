@@ -185,7 +185,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v4.8.8]
+        swoole-cli: [v4.8.10]
     env:
       MYSQL_SERVER_PASSWORD: "root"
       IMI_TEST_AMQP_SERVER_UTIL: 0
@@ -269,7 +269,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4, "8.0"]
-        swoole: [v4.8.8]
+        swoole: [v4.8.10]
         roadrunner: [2.7.*]
     env:
       MYSQL_SERVER_PASSWORD: "root"

@@ -29,10 +29,12 @@ abstract class BaseCacheTest extends BaseTest
         {
             $this->markTestSkipped('Handler does not support TTL');
         }
-        Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 1));
-        Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
-        sleep(2);
-        Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
+        $this->go(function () {
+            Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 1));
+            Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
+            sleep(2);
+            Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
+        }, null, 3);
     }
 
     public function testSetMultiple(): void

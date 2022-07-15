@@ -122,6 +122,10 @@ class Server extends BaseCommand
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
         WorkermanServerUtil::initWorkermanWorker($name);
         Event::trigger('IMI.APP.INIT', [], $this);
+        // gc
+        gc_collect_cycles();
+        gc_mem_caches();
+        // 启动服务
         WorkermanServerWorker::runAll();
     }
 
