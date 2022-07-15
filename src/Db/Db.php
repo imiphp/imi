@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db;
 
+use function array_is_list;
 use Imi\App;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
@@ -359,5 +360,34 @@ class Db
     public static function prepare(string $sql, ?string $poolName = null, int $queryType = QueryType::WRITE): IStatement
     {
         return self::getInstance($poolName, $queryType)->prepare($sql);
+    }
+
+    /**
+     * 尝试把绑定值渲染到的 sql 以获取实际可执行语句.
+     */
+    public static function debugSql(string $sql, array $bindValues): string
+    {
+        if (empty($bindValues))
+        {
+            return $sql;
+        }
+        if (array_is_list($bindValues))
+        {
+            $sql = str_replace('??', '__mask__', $sql);
+
+            foreach ($bindValues as $value)
+            {
+                $sql = preg_replace('/\?/', var_export($value, true), $sql, 1);
+            }
+
+            return str_replace('__mask__', '??', $sql);
+        }
+        else
+        {
+            $bindValues = array_reverse($bindValues);
+            $values = array_map(fn ($val) => var_export($val, true), array_values($bindValues));
+
+            return str_replace(array_keys($bindValues), $values, $sql);
+        }
     }
 }
