@@ -38,5 +38,13 @@
                 "redis"
             ]
         }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "yurunsoft/ide-helper": true
+        }
     }
 }

@@ -104,7 +104,6 @@ class AConsumer extends BaseQueueConsumer
      * 
      * @param \Imi\Queue\Contract\IMessage $message
      * @param \Imi\Queue\Driver\IQueueDriver $queue
-     * @return void
      */
     protected function consume(IMessage $message, IQueueDriver $queue): void
     {
