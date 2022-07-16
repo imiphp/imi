@@ -673,7 +673,7 @@ abstract class DbBaseTest extends BaseTest
         );
     }
 
-    public function testQueryClone()
+    public function testQueryClone(): void
     {
         // 测试克隆查询对象后丢失连接池信息
 
