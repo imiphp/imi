@@ -352,6 +352,7 @@ class ProcessManager
      */
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
+        $alias ??= $name;
         $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias, true);
         /** @var ISwooleServer $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
@@ -415,6 +416,8 @@ class ProcessManager
      */
     public static function getProcessWithManager(string $name, ?string $alias = null): ?Process
     {
+        $alias ??= $name;
+
         return self::$managerProcesses[$name][$alias] ?? null;
     }
 
