@@ -112,7 +112,7 @@ trait TModelQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
+    public function chunkById(int $count, string $column, ?string $alias = null, string $orderBy = 'asc'): ChunkResult
     {
         $this->queryPreProcess();
 

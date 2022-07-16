@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Db\Query;
 
 use function array_column;
-use function array_filter;
 use function array_unique;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
@@ -15,7 +14,6 @@ use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IHaving;
-use Imi\Db\Query\Interfaces\IOrder;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
@@ -1393,14 +1391,13 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
+    public function chunkById(int $count, string $column, ?string $alias = null, string $orderBy = 'asc'): ChunkResult
     {
         $alias ??= $column;
 
-        // 移除与 column 冲突的用户定义排序
-        $this->option->order = array_filter($this->option->order, static fn (IOrder $order) => $order->getFieldName() !== $column);
+        $this->option->order = [];
 
-        return new ChunkResult($this, $count, $column, $alias);
+        return new ChunkResult($this, $count, $column, $alias, $orderBy);
     }
 
     /**
