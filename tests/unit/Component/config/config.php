@@ -110,9 +110,12 @@ return [
                 'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
+                'initSqls'    => [
+                    'SET @__pool_name="maindb"',
+                ],
             ],
         ],
-        // 主数据库
+        // 从数据库
         'maindb.slave'    => [
             'pool'    => [
                 // 协程池类名
@@ -132,6 +135,9 @@ return [
                 'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
+                'initSqls'    => [
+                    'SET @__pool_name="maindb.slave"',
+                ],
             ],
         ],
         // mysqli

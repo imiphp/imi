@@ -91,6 +91,9 @@ return [
                 'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
+                'initSqls'    => [
+                    'SET @__pool_name="maindb"',
+                ],
             ],
         ],
         // 主数据库
@@ -113,6 +116,9 @@ return [
                 'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
+                'initSqls'    => [
+                    'SET @__pool_name="maindb.slave"',
+                ],
             ],
         ],
         // 主数据库

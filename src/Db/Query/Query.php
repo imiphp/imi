@@ -152,8 +152,10 @@ abstract class Query implements IQuery
 
     public function __clone()
     {
-        $this->isInitDb = false;
-        $this->db = null;
+        if (!$this->isInitDb)
+        {
+            $this->db = null;
+        }
         $this->option = clone $this->option;
     }
 
