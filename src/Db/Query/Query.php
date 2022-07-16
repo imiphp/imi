@@ -1395,8 +1395,7 @@ abstract class Query implements IQuery
     {
         $alias ??= $column;
 
-        // 移除与 column 冲突的用户定义排序
-        $this->option->order = array_filter($this->option->order, static fn (IOrder $order) => $order->getFieldName() !== $column);
+        $this->option->order = [];
 
         return new ChunkResult($this, $count, $column, $alias);
     }
