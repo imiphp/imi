@@ -392,4 +392,19 @@ abstract class DbBaseTest extends BaseTest
             ],
         ], $stmt->fetchAll());
     }
+
+    public function testQueryClone(): void
+    {
+        // 测试克隆查询对象后丢失连接池信息
+
+        $query1 = Db::query('maindb');
+        $this->assertEquals('maindb', $query1->execute('select @__pool_name as val')->getScalar('val'));
+        $query2 = Db::query('maindb.slave');
+        $this->assertEquals('maindb.slave', $query2->execute('select @__pool_name as val')->getScalar('val'));
+
+        $query1 = clone $query1;
+        $this->assertEquals('maindb', $query1->execute('select @__pool_name as val')->getScalar('val'));
+        $query2 = clone $query2;
+        $this->assertEquals('maindb.slave', $query2->execute('select @__pool_name as val')->getScalar('val'));
+    }
 }
