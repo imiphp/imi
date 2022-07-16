@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Db\Query;
 
 use function array_column;
-use function array_filter;
 use function array_unique;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
@@ -15,7 +14,6 @@ use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IHaving;
-use Imi\Db\Query\Interfaces\IOrder;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
