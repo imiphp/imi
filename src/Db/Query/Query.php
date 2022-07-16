@@ -152,8 +152,10 @@ abstract class Query implements IQuery
 
     public function __clone()
     {
-        $this->isInitDb = false;
-        $this->db = null;
+        if (!$this->isInitDb)
+        {
+            $this->db = null;
+        }
         $this->option = clone $this->option;
     }
 
@@ -1391,13 +1393,13 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult
+    public function chunkById(int $count, string $column, ?string $alias = null, string $orderBy = 'asc'): ChunkResult
     {
         $alias ??= $column;
 
         $this->option->order = [];
 
-        return new ChunkResult($this, $count, $column, $alias);
+        return new ChunkResult($this, $count, $column, $alias, $orderBy);
     }
 
     /**

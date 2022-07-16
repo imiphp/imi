@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests\Db;
 
 use function array_column;
 use function array_column_ex;
+use function array_reverse;
 use function date;
 use Imi\App;
 use Imi\Db\Db;
@@ -447,10 +448,8 @@ abstract class DbBaseTest extends BaseTest
      */
     public function testChunkById(array $args): void
     {
-        $query = Db::query($this->poolName);
-
         $data = [];
-        foreach ($query->table('tb_article')->chunkById(36, 'id') as $items)
+        foreach (Db::query($this->poolName)->table('tb_article')->chunkById(36, 'id') as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -462,7 +461,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 自动重置排序
         $data = [];
-        foreach ($query->table('tb_article')->order('id', 'desc')->chunkById(36, 'id') as $items)
+        foreach (Db::query($this->poolName)->table('tb_article')->orderRaw('member_id desc')->order('id', 'desc')->chunkById(36, 'id') as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -474,7 +473,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 空返回
         $data = [];
-        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id') as $items)
+        foreach (Db::query($this->poolName)->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id') as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -483,6 +482,18 @@ abstract class DbBaseTest extends BaseTest
         }
 
         $this->assertEmpty($data);
+
+        // 反向遍历
+        $data = [];
+        foreach (Db::query($this->poolName)->table('tb_article')->chunkById(36, 'id', null, 'desc') as $items)
+        {
+            foreach ($items->getArray() as $item)
+            {
+                $data[] = $item;
+            }
+        }
+
+        $this->assertEquals($args['origin'], array_reverse($data));
     }
 
     /**
@@ -490,10 +501,8 @@ abstract class DbBaseTest extends BaseTest
      */
     public function testChunkByOffset(array $args): void
     {
-        $query = Db::query($this->poolName);
-
         $data = [];
-        foreach ($query->table('tb_article')->chunkByOffset(12) as $items)
+        foreach (Db::query($this->poolName)->table('tb_article')->chunkByOffset(12) as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -505,7 +514,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 空返回
         $data = [];
-        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkByOffset(12) as $items)
+        foreach (Db::query($this->poolName)->table('tb_article')->where('member_id', '=', -1)->chunkByOffset(12) as $items)
         {
             foreach ($items->getArray() as $item)
             {
@@ -521,10 +530,8 @@ abstract class DbBaseTest extends BaseTest
      */
     public function testChunkEach(array $args): void
     {
-        $query = Db::query($this->poolName);
-
         $data = [];
-        foreach ($query->table('tb_article')->chunkById(36, 'id')->each() as $item)
+        foreach (Db::query($this->poolName)->table('tb_article')->chunkById(36, 'id')->each() as $item)
         {
             $data[] = $item;
         }
@@ -533,7 +540,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 自动重置排序
         $data = [];
-        foreach ($query->table('tb_article')->order('id', 'desc')->chunkById(36, 'id')->each() as $item)
+        foreach (Db::query($this->poolName)->table('tb_article')->order('id', 'desc')->chunkById(36, 'id')->each() as $item)
         {
             $data[] = $item;
         }
@@ -542,7 +549,7 @@ abstract class DbBaseTest extends BaseTest
 
         // 空返回
         $data = [];
-        foreach ($query->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id')->each() as $item)
+        foreach (Db::query($this->poolName)->table('tb_article')->where('member_id', '=', -1)->chunkById(36, 'id')->each() as $item)
         {
             $data[] = $item;
         }

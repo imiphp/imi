@@ -7,6 +7,7 @@ namespace Imi\Db\Query\Result;
 use function end;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use function strtolower;
 
 class ChunkResult extends BaseChunkResult
 {
@@ -14,13 +15,15 @@ class ChunkResult extends BaseChunkResult
     private int    $limit;
     private string $column;
     private string $alias;
+    private string $orderBy;
 
-    public function __construct(IQuery $query, int $limit, string $column, string $alias)
+    public function __construct(IQuery $query, int $limit, string $column, string $alias, string $orderBy)
     {
         $this->query = $query;
         $this->limit = $limit;
         $this->column = $column;
         $this->alias = $alias;
+        $this->orderBy = strtolower($orderBy);
     }
 
     /**
@@ -35,9 +38,9 @@ class ChunkResult extends BaseChunkResult
             $query = clone $this->query;
             if (null !== $lastId)
             {
-                $query->where($this->column, '>', $lastId);
+                $query->where($this->column, 'asc' === $this->orderBy ? '>' : '<', $lastId);
             }
-            $query->order($this->column, 'asc');
+            $query->order($this->column, $this->orderBy);
             $query->limit($this->limit);
             $result = $query->select();
 

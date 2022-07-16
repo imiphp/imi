@@ -500,7 +500,7 @@ interface IQuery
     /**
      * 查询所有记录，返回分块迭代器.
      */
-    public function chunkById(int $count, string $column, ?string $alias = null): ChunkResult;
+    public function chunkById(int $count, string $column, ?string $alias = null, string $orderBy = 'asc'): ChunkResult;
 
     /**
      * 查询所有记录，返回分块迭代器.
