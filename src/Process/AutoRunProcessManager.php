@@ -24,8 +24,12 @@ class AutoRunProcessManager
     /**
      * 添加进程.
      */
-    public function add(string $name, string $process, array $args = []): void
+    public function add(string $name, string $process = '', array $args = []): void
     {
+        if ('' === $process && empty($args))
+        {
+            $process = $name;
+        }
         $this->processes[$name] = [
             'process'   => $process,
             'args'      => $args,
