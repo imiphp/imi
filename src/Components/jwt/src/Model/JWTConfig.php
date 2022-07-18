@@ -210,15 +210,14 @@ class JWTConfig
      */
     public function getSignerInstance(): Signer
     {
-        if (class_exists($this->signer))
-        {
+        if (class_exists($this->signer)) {
             $className = $this->signer;
-        }
-        else
-        {
+        } else {
             $className = 'Lcobucci\JWT\Signer\\' . $this->signer . '\\' . $this->algo;
         }
-
+        if ($this->signer === 'Ecdsa') {
+            return new $className(new \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter());
+        }
         return new $className();
     }
 }
