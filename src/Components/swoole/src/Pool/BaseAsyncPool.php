@@ -297,6 +297,7 @@ abstract class BaseAsyncPool extends BasePool
             {
                 if ($item->lock())
                 {
+                    $resource = null;
                     try
                     {
                         $resource = $item->getResource();
@@ -315,7 +316,7 @@ abstract class BaseAsyncPool extends BasePool
                         {
                             $item->release();
                         }
-                        else
+                        elseif ($resource)
                         {
                             $resource->close();
                             unset($pool[$key]);
