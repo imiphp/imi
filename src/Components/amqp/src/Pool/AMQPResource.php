@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Pool;
 
+use Imi\App;
 use Imi\Pool\BasePoolResource;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Imi;
@@ -145,14 +146,25 @@ class AMQPResource extends BasePoolResource
         {
             return false;
         }
-        $pkt = new AMQPWriter();
-        $pkt->write_octet(8);
-        $pkt->write_short(0);
-        $pkt->write_long(0);
-        $pkt->write_octet(0xCE);
-        $this->connection->write($pkt->getvalue());
+        try
+        {
+            $pkt = new AMQPWriter();
+            $pkt->write_octet(8);
+            $pkt->write_short(0);
+            $pkt->write_long(0);
+            $pkt->write_octet(0xCE);
+            $this->connection->write($pkt->getvalue());
 
-        return true;
+            return true;
+        }
+        catch (\Throwable $th)
+        {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($th);
+
+            return false;
+        }
     }
 
     /**
