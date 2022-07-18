@@ -12,6 +12,6 @@ class Process
 
     public static function isTtySupported(): bool
     {
-        return stream_isatty(\STDOUT);
+        return '/' === \DIRECTORY_SEPARATOR && stream_isatty(\STDOUT);
     }
 }
