@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Pool;
 
+use Imi\App;
 use Imi\Event\Event;
 use Imi\Pool\BasePool;
 use Imi\Pool\Interfaces\IPoolResource;
@@ -299,19 +300,26 @@ abstract class BaseAsyncPool extends BasePool
                     try
                     {
                         $resource = $item->getResource();
-                        if (!$resource->checkState())
+                        $available = $resource->checkState();
+                    }
+                    catch (\Throwable $th)
+                    {
+                        $available = false;
+                        /** @var \Imi\Log\ErrorLog $errorLog */
+                        $errorLog = App::getBean('ErrorLog');
+                        $errorLog->onException($th);
+                    }
+                    finally
+                    {
+                        if ($available)
+                        {
+                            $item->release();
+                        }
+                        else
                         {
                             $resource->close();
                             unset($pool[$key]);
                             $hasGC = true;
-                            $item = null;
-                        }
-                    }
-                    finally
-                    {
-                        if ($item)
-                        {
-                            $item->release();
                         }
                     }
                 }
