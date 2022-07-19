@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Process;
 
 use Channel\Client;
-use GatewayWorker\Lib\Gateway;
 use Imi\App;
 use Imi\Config;
 use Imi\Event\Event;
