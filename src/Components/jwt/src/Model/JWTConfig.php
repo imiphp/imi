@@ -218,6 +218,9 @@ class JWTConfig
         {
             $className = 'Lcobucci\JWT\Signer\\' . $this->signer . '\\' . $this->algo;
         }
+        if ($this->signer === 'Ecdsa') {
+            return new $className(new \Lcobucci\JWT\Signer\Ecdsa\MultibyteStringConverter());
+        }
 
         return new $className();
     }
