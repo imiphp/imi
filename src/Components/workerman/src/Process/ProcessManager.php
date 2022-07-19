@@ -134,7 +134,6 @@ class ProcessManager
                     ]);
                 };
                 $workerId = ImiWorker::getWorkerId();
-                var_dump('on:' . 'imi.process.message.' . $workerId);
                 Client::on('imi.process.message.' . $processName . '.' . $workerId, $callback);
                 Client::on('imi.process.message.' . $workerId, $callback);
             }
