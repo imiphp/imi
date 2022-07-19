@@ -138,11 +138,6 @@ class ProcessManager
                 Client::on('imi.process.message.' . $workerId, $callback);
             }
 
-            if (isset($config['configs']['registerAddress']) && class_exists(Gateway::class))
-            {
-                Gateway::$registerAddress = $config['configs']['registerAddress'];
-            }
-
             // 进程开始事件
             Event::trigger('IMI.PROCESS.BEGIN', [
                 'name'    => $processName,
