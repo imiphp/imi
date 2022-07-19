@@ -48,7 +48,9 @@ class ChannelServerUtil extends AbstractDistributedServerUtil
                 {
                     continue;
                 }
-                Event::trigger('IMI.PIPE_MESSAGE.' . $action, $data);
+                Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
+                    'data'      => $data,
+                ]);
                 ++$success;
             }
             else

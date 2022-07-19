@@ -25,7 +25,7 @@ class OnSendRawByFlagRequest implements IEventListener
     public function handle(EventParam $e): void
     {
         $data = $e->getData();
-        ['data' => $data, 'flag' => $flag, 'serverName' => $serverName] = $data;
+        ['data' => $data, 'flag' => $flag, 'serverName' => $serverName] = $data['data'];
         RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */

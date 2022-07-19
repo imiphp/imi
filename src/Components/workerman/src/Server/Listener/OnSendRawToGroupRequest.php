@@ -25,7 +25,7 @@ class OnSendRawToGroupRequest implements IEventListener
     public function handle(EventParam $e): void
     {
         $data = $e->getData();
-        ['data' => $data, 'groupName' => $groupName, 'serverName' => $serverName] = $data;
+        ['data' => $data, 'groupName' => $groupName, 'serverName' => $serverName] = $data['data'];
         RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */
