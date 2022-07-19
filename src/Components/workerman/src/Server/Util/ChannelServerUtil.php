@@ -37,7 +37,8 @@ class ChannelServerUtil extends AbstractDistributedServerUtil
         $eventName = 'imi.process.message.' . (null === $serverName ? ($serverName . '.') : '');
         $success = 0;
         $currentWorkerId = Worker::getWorkerId();
-        $currentServerName = RequestContext::getServer()->getName();
+        $server = RequestContext::getServer();
+        $currentServerName = $server ? $server->getName() : null;
         foreach ((array) $workerId as $tmpWorkerId)
         {
             if ($tmpWorkerId === $currentWorkerId && (null === $serverName || $currentServerName === $serverName))
@@ -47,9 +48,7 @@ class ChannelServerUtil extends AbstractDistributedServerUtil
                 {
                     continue;
                 }
-                Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                    'data'      => $data,
-                ]);
+                Event::trigger('IMI.PIPE_MESSAGE.' . $action, $data);
                 ++$success;
             }
             else

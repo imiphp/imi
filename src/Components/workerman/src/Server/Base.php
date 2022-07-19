@@ -332,9 +332,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                         {
                             return;
                         }
-                        Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                            'data'      => $data,
-                        ]);
+                        Event::trigger('IMI.PIPE_MESSAGE.' . $action, $data);
                     };
                     $workerId = ImiWorker::getWorkerId();
                     Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);

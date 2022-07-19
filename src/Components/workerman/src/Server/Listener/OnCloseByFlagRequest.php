@@ -25,7 +25,7 @@ class OnCloseByFlagRequest implements IEventListener
     public function handle(EventParam $e): void
     {
         $data = $e->getData();
-        ['flag' => $flag, 'serverName' => $serverName] = $data['data'];
+        ['flag' => $flag, 'serverName' => $serverName] = $data;
         RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */
