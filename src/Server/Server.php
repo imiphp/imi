@@ -201,7 +201,15 @@ class Server
     {
         if (null === $serverName)
         {
-            return RequestContext::getServer() ?? ServerManager::getServer('main');
+            $server = RequestContext::getServer();
+            if (!$server)
+            {
+                $servers = ServerManager::getServers();
+
+                return reset($servers) ?: null;
+            }
+
+            return $server;
         }
         else
         {
