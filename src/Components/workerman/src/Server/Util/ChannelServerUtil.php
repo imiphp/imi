@@ -6,7 +6,6 @@ namespace Imi\Workerman\Server\Util;
 
 use Channel\Client;
 use Imi\Bean\Annotation\Bean;
-use Imi\Worker;
 
 /**
  * @Bean("ChannelServerUtil")
@@ -30,7 +29,7 @@ class ChannelServerUtil extends AbstractDistributedServerUtil
     {
         if (null === $workerId)
         {
-            $workerId = range(0, Worker::getWorkerNum() - 1);
+            $workerId = range(0, $this->getServer($serverName)->getWorker()->count - 1);
         }
         $eventName = 'imi.process.message.' . (null === $serverName ? '' : ($serverName . '.'));
         $success = 0;
