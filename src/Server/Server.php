@@ -197,7 +197,7 @@ class Server
     /**
      * 获取服务器.
      */
-    public static function getServer(?string $serverName = null): ?IServer
+    public static function getServer(?string $serverName = null, ?string $type = null): ?IServer
     {
         if (null === $serverName)
         {
@@ -206,14 +206,18 @@ class Server
             {
                 $servers = ServerManager::getServers();
 
-                return reset($servers) ?: null;
+                $server = reset($servers) ?: null;
+            }
+            if (null !== $type && !$server instanceof $type)
+            {
+                return null;
             }
 
             return $server;
         }
         else
         {
-            return ServerManager::getServer($serverName);
+            return ServerManager::getServer($serverName, $type);
         }
     }
 }

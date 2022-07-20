@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Imi\WorkermanGateway\Workerman\Server\Util;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\RequestContext;
-use Imi\Server\ServerManager;
+use Imi\Server\Server;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Contract\IWorkermanServerUtil;
 use Imi\WorkermanGateway\Server\Util\TGatewayServerUtil;
@@ -39,18 +38,6 @@ class GatewayServerUtil implements IWorkermanServerUtil
      */
     public function getServer(?string $serverName = null): ?IWorkermanServer
     {
-        if (null === $serverName)
-        {
-            $server = RequestContext::getServer();
-            if ($server)
-            {
-                // @phpstan-ignore-next-line
-                return $server;
-            }
-            $serverName = 'main';
-        }
-
-        // @phpstan-ignore-next-line
-        return ServerManager::getServer($serverName, IWorkermanServer::class);
+        return Server::getServer($serverName, IWorkermanServer::class);
     }
 }
