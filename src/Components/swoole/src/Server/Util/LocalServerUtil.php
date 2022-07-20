@@ -651,6 +651,7 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function getServer(?string $serverName = null): ?ISwooleServer
     {
+        // @phpstan-ignore-next-line
         return Server::getServer($serverName, ISwooleServer::class);
     }
 }

@@ -40,6 +40,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
          */
         public function getServer(?string $serverName = null): ?ISwooleServer
         {
+            // @phpstan-ignore-next-line
             return Server::getServer($serverName, ISwooleServer::class);
         }
     }

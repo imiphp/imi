@@ -377,6 +377,7 @@ class LocalServerUtil implements IWorkermanServerUtil
      */
     public function getServer(?string $serverName = null): ?IWorkermanServer
     {
+        // @phpstan-ignore-next-line
         return Server::getServer($serverName, IWorkermanServer::class);
     }
 }

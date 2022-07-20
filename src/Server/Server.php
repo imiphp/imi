@@ -196,6 +196,12 @@ class Server
 
     /**
      * 获取服务器.
+     *
+     * @template T of IServer
+     *
+     * @param class-string<T> $type
+     *
+     * @return T|null
      */
     public static function getServer(?string $serverName = null, ?string $type = null): ?IServer
     {
