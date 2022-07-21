@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Process;
 
+use Channel\Client;
 use Imi\App;
+use Imi\Config;
 use Imi\Event\Event;
 use Imi\Log\Handler\ConsoleHandler;
 use Imi\Log\Log;
@@ -13,6 +15,7 @@ use Imi\RequestContext;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
+use Imi\Worker as ImiWorker;
 use Imi\Workerman\Process\Contract\IProcess;
 use Imi\Workerman\Server\WorkermanServerWorker;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -112,6 +115,27 @@ class ProcessManager
             RequestContext::muiltiSet([
                 'worker' => $worker,
             ]);
+
+            // 多进程通讯组件连接
+            $channel = Config::get('@app.workerman.channel');
+            if ($channel)
+            {
+                Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
+                // 监听进程通讯
+                $callback = static function (array $data) {
+                    $action = $data['action'] ?? null;
+                    if (!$action)
+                    {
+                        return;
+                    }
+                    Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
+                        'data' => $data,
+                    ]);
+                };
+                $workerId = ImiWorker::getWorkerId();
+                Client::on('imi.process.message.' . $processName . '.' . $workerId, $callback);
+                Client::on('imi.process.message.' . $workerId, $callback);
+            }
 
             // 进程开始事件
             Event::trigger('IMI.PROCESS.BEGIN', [

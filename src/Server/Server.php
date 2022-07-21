@@ -196,16 +196,34 @@ class Server
 
     /**
      * 获取服务器.
+     *
+     * @template T of IServer
+     *
+     * @param class-string<T> $type
+     *
+     * @return T|null
      */
-    public static function getServer(?string $serverName = null): ?IServer
+    public static function getServer(?string $serverName = null, ?string $type = null): ?IServer
     {
         if (null === $serverName)
         {
-            return RequestContext::getServer() ?? ServerManager::getServer('main');
+            $server = RequestContext::getServer();
+            if (!$server)
+            {
+                $servers = ServerManager::getServers();
+
+                $server = reset($servers) ?: null;
+            }
+            if (null !== $type && !$server instanceof $type)
+            {
+                return null;
+            }
+
+            return $server;
         }
         else
         {
-            return ServerManager::getServer($serverName);
+            return ServerManager::getServer($serverName, $type);
         }
     }
 }

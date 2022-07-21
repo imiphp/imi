@@ -121,6 +121,7 @@
 ```php
 $server = Server::getServer(); // 获取当前服务器
 $server = Server::getServer('serverName'); // 获取指定名称的服务器
+$server = Server::getServer('serverName', \Imi\Swoole\Server\Contract\ISwooleServer::class); // 获取指定名称的服务器，并且验证是否属于某一类服务器对象
 ```
 
 ### sendMessage
