@@ -320,6 +320,10 @@ trait TPdoStatement
         {
             return \PDO::PARAM_INT;
         }
+        if (\is_resource($value))
+        {
+            return \PDO::PARAM_LOB;
+        }
 
         return \PDO::PARAM_STR;
     }

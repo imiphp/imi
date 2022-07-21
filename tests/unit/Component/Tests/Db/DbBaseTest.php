@@ -644,6 +644,25 @@ abstract class DbBaseTest extends BaseTest
                 'member_id' => 0,
             ],
         ], $stmt->fetchAll());
+
+        // \PDO::PARAM_LOB
+        $stmtInsert = Db::prepare('insert into tb_article(title,content,time,member_id) values(?,?,?,?)');
+        $title = 'lob title';
+        $fileName = __DIR__ . '/lob_title.txt';
+        file_put_contents($fileName, $title);
+        $this->assertTrue($stmtInsert->execute([fopen($fileName, 'r'), 'content', $time = date('Y-m-d H:i:s'), 0]));
+        $this->assertGreaterThanOrEqual(1, $id = $stmtInsert->lastInsertId());
+        // 验证 \PDO::PARAM_LOB
+        $this->assertTrue($stmt->execute([$id]));
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => $title,
+                'content'   => 'content',
+                'time'      => $time,
+                'member_id' => 0,
+            ],
+        ], $stmt->fetchAll());
     }
 
     public function testWhereInEmptyValue(): void
