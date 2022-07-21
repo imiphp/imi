@@ -351,6 +351,10 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 foreach (ServerManager::getServers() as $name => $_)
                 {
                     Server::getInstance($name);
+                    if ($channel)
+                    {
+                        Client::on('imi.process.message.' . $name . '.' . $workerId, $callback);
+                    }
                 }
                 RequestContext::destroy();
             }

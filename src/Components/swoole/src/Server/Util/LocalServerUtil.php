@@ -8,8 +8,8 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
-use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Server\Server;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
@@ -651,18 +651,7 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function getServer(?string $serverName = null): ?ISwooleServer
     {
-        if (null === $serverName)
-        {
-            /** @var ISwooleServer|null $server */
-            $server = RequestContext::getServer();
-            if ($server)
-            {
-                return $server;
-            }
-            $serverName = 'main';
-        }
-
         // @phpstan-ignore-next-line
-        return ServerManager::getServer($serverName, ISwooleServer::class);
+        return Server::getServer($serverName, ISwooleServer::class);
     }
 }
