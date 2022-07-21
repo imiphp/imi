@@ -39,7 +39,7 @@ trait TPdoDriver
     /**
      * 事务管理.
      */
-    protected Transaction $transaction;
+    protected ?Transaction $transaction = null;
 
     /**
      * Statement 类名.
@@ -56,7 +56,6 @@ trait TPdoDriver
         $options[\PDO::ATTR_ERRMODE] ??= \PDO::ERRMODE_EXCEPTION;
         parent::__construct($option);
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
-        $this->transaction = new Transaction();
     }
 
     /**
@@ -130,7 +129,10 @@ trait TPdoDriver
             $this->lastStmt = null;
         }
         $this->instance = null;
-        $this->transaction->init();
+        if ($this->transaction)
+        {
+            $this->transaction->init();
+        }
     }
 
     /**
@@ -159,7 +161,7 @@ trait TPdoDriver
                 return false;
             }
             $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
-            $this->transaction->beginTransaction();
+            $this->getTransaction()->beginTransaction();
         }
         catch (\PDOException $e)
         {
@@ -200,7 +202,7 @@ trait TPdoDriver
             throw $e;
         }
 
-        return $this->transaction->commit();
+        return $this->getTransaction()->commit();
     }
 
     /**
@@ -230,7 +232,7 @@ trait TPdoDriver
         }
         if ($result)
         {
-            $this->transaction->rollBack($levels);
+            $this->getTransaction()->rollBack($levels);
         }
         // @phpstan-ignore-next-line
         elseif ($this->checkCodeIsOffline($this->instance->errorCode()))
@@ -246,7 +248,7 @@ trait TPdoDriver
      */
     public function getTransactionLevels(): int
     {
-        return $this->transaction->getTransactionLevels();
+        return $this->getTransaction()->getTransactionLevels();
     }
 
     /**
@@ -449,6 +451,6 @@ trait TPdoDriver
      */
     public function getTransaction(): Transaction
     {
-        return $this->transaction;
+        return $this->transaction ??= new Transaction();
     }
 }
