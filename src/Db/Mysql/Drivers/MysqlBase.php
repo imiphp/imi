@@ -32,7 +32,7 @@ abstract class MysqlBase extends Base implements IMysqlDb
      *
      * @see https://github.com/mysql/mysql-server/blob/HEAD/include/errmsg.h
      */
-    public function checkCodeIsOffline(int $code): bool
+    public function checkCodeIsOffline($code): bool
     {
         return \in_array($code, [
             2001, // CR_SOCKET_CREATE_ERROR

@@ -10,6 +10,8 @@ interface IPgsqlDb extends IDb
 {
     /**
      * 检查错误码是否为掉线
+     *
+     * @param string|null $code
      */
-    public function checkCodeIsOffline(?string $code): bool;
+    public function checkCodeIsOffline($code): bool;
 }

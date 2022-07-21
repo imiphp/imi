@@ -146,4 +146,11 @@ interface IDb extends IHashCode
      * 获取连接配置.
      */
     public function getOption(): array;
+
+    /**
+     * 检查错误码是否为掉线
+     *
+     * @param mixed $code
+     */
+    public function checkCodeIsOffline($code): bool;
 }
