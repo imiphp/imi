@@ -38,6 +38,8 @@ abstract class BaseAsyncPool extends BasePool
      */
     protected string $poolItemClass = PoolItem::class;
 
+    protected bool $heartbeatRunning = false;
+
     /**
      * {@inheritDoc}
      */
@@ -177,7 +179,7 @@ abstract class BaseAsyncPool extends BasePool
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
-        if (!$poolItem->lock())
+        if (!$poolItem->lock(0.001))
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] lock resource failed', $this->getName()));
         }
@@ -289,47 +291,59 @@ abstract class BaseAsyncPool extends BasePool
      */
     public function heartbeat(): void
     {
-        $hasGC = false;
-        $pool = &$this->pool;
-        if ($pool)
+        if ($this->heartbeatRunning)
         {
-            foreach ($pool as $key => $item)
+            return;
+        }
+        try
+        {
+            $this->heartbeatRunning = true;
+            $hasGC = false;
+            $pool = &$this->pool;
+            if ($pool)
             {
-                if ($item->lock())
+                foreach ($pool as $key => $item)
                 {
-                    $resource = null;
-                    try
+                    if ($item->lock(0.001))
                     {
-                        $resource = $item->getResource();
-                        $available = $resource->checkState();
-                    }
-                    catch (\Throwable $th)
-                    {
-                        $available = false;
-                        /** @var \Imi\Log\ErrorLog $errorLog */
-                        $errorLog = App::getBean('ErrorLog');
-                        $errorLog->onException($th);
-                    }
-                    finally
-                    {
-                        if ($available)
+                        $resource = null;
+                        try
                         {
-                            $item->release();
+                            $resource = $item->getResource();
+                            $available = $resource->checkState();
                         }
-                        elseif ($resource)
+                        catch (\Throwable $th)
                         {
-                            $resource->close();
-                            unset($pool[$key]);
-                            $hasGC = true;
+                            $available = false;
+                            /** @var \Imi\Log\ErrorLog $errorLog */
+                            $errorLog = App::getBean('ErrorLog');
+                            $errorLog->onException($th);
+                        }
+                        finally
+                        {
+                            if ($available)
+                            {
+                                $item->release();
+                            }
+                            elseif ($resource)
+                            {
+                                $resource->close();
+                                unset($pool[$key]);
+                                $hasGC = true;
+                            }
                         }
                     }
                 }
             }
+            if ($hasGC)
+            {
+                $this->fillMinResources();
+                $this->buildQueue();
+            }
         }
-        if ($hasGC)
+        finally
         {
-            $this->fillMinResources();
-            $this->buildQueue();
+            $this->heartbeatRunning = false;
         }
     }
 
