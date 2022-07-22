@@ -47,7 +47,7 @@ class Driver extends MysqlBase
     /**
      * 事务管理.
      */
-    protected Transaction $transaction;
+    protected ?Transaction $transaction = null;
 
     /**
      * 参数格式：
@@ -68,7 +68,6 @@ class Driver extends MysqlBase
     {
         parent::__construct($option);
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
-        $this->transaction = new Transaction();
     }
 
     /**
@@ -148,7 +147,10 @@ class Driver extends MysqlBase
             $this->instance->close();
             $this->instance = null;
         }
-        $this->transaction->init();
+        if ($this->transaction)
+        {
+            $this->transaction->init();
+        }
     }
 
     /**
@@ -174,7 +176,7 @@ class Driver extends MysqlBase
             return false;
         }
         $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
-        $this->transaction->beginTransaction();
+        $this->getTransaction()->beginTransaction();
 
         return true;
     }
@@ -194,7 +196,7 @@ class Driver extends MysqlBase
             return false;
         }
 
-        return $this->transaction->commit();
+        return $this->getTransaction()->commit();
     }
 
     /**
@@ -213,7 +215,7 @@ class Driver extends MysqlBase
         }
         if ($result)
         {
-            $this->transaction->rollBack($levels);
+            $this->getTransaction()->rollBack($levels);
         }
         elseif ($this->checkCodeIsOffline($this->instance->errno))
         {
@@ -228,7 +230,7 @@ class Driver extends MysqlBase
      */
     public function getTransactionLevels(): int
     {
-        return $this->transaction->getTransactionLevels();
+        return $this->getTransaction()->getTransactionLevels();
     }
 
     /**
@@ -236,7 +238,7 @@ class Driver extends MysqlBase
      */
     public function inTransaction(): bool
     {
-        return $this->transaction->getTransactionLevels() > 0;
+        return $this->getTransaction()->getTransactionLevels() > 0;
     }
 
     /**
@@ -410,6 +412,6 @@ class Driver extends MysqlBase
      */
     public function getTransaction(): Transaction
     {
-        return $this->transaction;
+        return $this->transaction ??= new Transaction();
     }
 }

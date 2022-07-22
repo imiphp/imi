@@ -41,11 +41,10 @@ class TableGenerate extends BaseCommand
     {
         Event::trigger('IMI.GENERATE_MODEL.BEFORE');
         $override = (bool) json_decode((string) $override, false);
-        $query = Db::query($poolName);
         // 数据库
         if (null === $database)
         {
-            $database = $query->execute('select database()')->getScalar();
+            $database = Db::query($poolName)->execute('select database()')->getScalar();
         }
         if (null !== $namespace)
         {
@@ -59,13 +58,14 @@ class TableGenerate extends BaseCommand
             {
                 continue;
             }
-            /** @var \Imi\Model\Annotation\Table|null $tableAnnotation */
-            $tableAnnotation = AnnotationManager::getClassAnnotations($class, Table::class, true, true);
-            if (!$tableAnnotation)
+            /** @var \Imi\Model\Meta $meta */
+            $meta = $class::__getMeta();
+            $table = $meta->getTableName();
+            $query = Db::query($poolName ?? $meta->getDbPoolName());
+            if ($meta->isUsePrefix())
             {
-                continue;
+                $table = ($query->getDb()->getOption()['prefix'] ?? '') . $table;
             }
-            $table = $tableAnnotation->name;
             if (\in_array($table, $tables))
             {
                 continue;

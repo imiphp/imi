@@ -19,6 +19,9 @@
             <file>unit/Component/Tests/ValidatorAnnotationTest.php</file>
             <file>unit/Component/Tests/ValidatorHelperTest.php</file>
         </testsuite>
+        <testsuite name="db">
+            <directory>unit/Component/Tests/Db</directory>
+        </testsuite>
         <testsuite name="model">
             <file>unit/Component/Tests/ModelRelationTest.php</file>
             <file>unit/Component/Tests/ModelTest.php</file>

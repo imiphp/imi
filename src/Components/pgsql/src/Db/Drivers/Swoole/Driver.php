@@ -49,7 +49,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * 事务管理.
          */
-        protected Transaction $transaction;
+        protected ?Transaction $transaction = null;
 
         /**
          * 自增.
@@ -73,7 +73,6 @@ if (class_exists(PostgreSQL::class, false))
         {
             parent::__construct($option);
             $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
-            $this->transaction = new Transaction();
         }
 
         /**
@@ -164,7 +163,10 @@ if (class_exists(PostgreSQL::class, false))
             {
                 $this->instance = null;
             }
-            $this->transaction->init();
+            if ($this->transaction)
+            {
+                $this->transaction->init();
+            }
         }
 
         /**
@@ -190,7 +192,7 @@ if (class_exists(PostgreSQL::class, false))
                 return false;
             }
             $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
-            $this->transaction->beginTransaction();
+            $this->getTransaction()->beginTransaction();
 
             return true;
         }
@@ -210,7 +212,7 @@ if (class_exists(PostgreSQL::class, false))
                 return false;
             }
 
-            return $this->transaction->commit();
+            return $this->getTransaction()->commit();
         }
 
         /**
@@ -229,7 +231,7 @@ if (class_exists(PostgreSQL::class, false))
             }
             if ($result)
             {
-                $this->transaction->rollBack($levels);
+                $this->getTransaction()->rollBack($levels);
             }
             elseif ($this->checkCodeIsOffline($this->errorCode()))
             {
@@ -244,7 +246,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function getTransactionLevels(): int
         {
-            return $this->transaction->getTransactionLevels();
+            return $this->getTransaction()->getTransactionLevels();
         }
 
         /**
@@ -252,7 +254,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function inTransaction(): bool
         {
-            return $this->transaction->getTransactionLevels() > 0;
+            return $this->getTransaction()->getTransactionLevels() > 0;
         }
 
         /**
@@ -432,7 +434,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function getTransaction(): Transaction
         {
-            return $this->transaction;
+            return $this->transaction ??= new Transaction();
         }
     }
 }
