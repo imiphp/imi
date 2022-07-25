@@ -55,7 +55,7 @@ class ModelQueryResult extends Result
         }
         else
         {
-            $isModel = null;
+            $isModel = false;
         }
         if ($isModel || is_subclass_of($className, Model::class))
         {
@@ -158,7 +158,7 @@ class ModelQueryResult extends Result
         }
         else
         {
-            $isModel = null;
+            $isModel = false;
         }
         if ($isModel || is_subclass_of($className, Model::class))
         {
@@ -169,15 +169,15 @@ class ModelQueryResult extends Result
             $isBean = $meta->isBean();
             $withField = $this->withField;
             $with = $this->with;
-            if ($withField)
+            if ($with)
             {
-                $serializedFields = $withField;
-            }
-            else
-            {
-                $serializedFields = [];
-                if ($with)
+                if ($withField)
                 {
+                    $serializedFields = $withField;
+                }
+                else
+                {
+                    $serializedFields = [];
                     foreach ($with as $k => $v)
                     {
                         if (\is_string($k))
@@ -189,22 +189,27 @@ class ModelQueryResult extends Result
                             $serializedFields[] = $v;
                         }
                     }
-                }
-                if ($this->isSetSerializedFields)
-                {
-                    if ($serializedFields)
+                    if ($this->isSetSerializedFields)
                     {
                         $serializedFields = array_merge($serializedFields, $this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($statementRecords[0])));
                     }
                     else
                     {
-                        $serializedFields = $this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($statementRecords[0]));
+                        $serializedFields = array_merge($serializedFields, $meta->getParsedSerializableFieldNames());
                     }
                 }
-                elseif ($serializedFields)
-                {
-                    $serializedFields = array_merge($serializedFields, $meta->getParsedSerializableFieldNames());
-                }
+            }
+            elseif ($withField)
+            {
+                $serializedFields = $withField;
+            }
+            elseif ($this->isSetSerializedFields)
+            {
+                $serializedFields = $this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($statementRecords[0]));
+            }
+            else
+            {
+                $serializedFields = [];
             }
             foreach ($statementRecords as $item)
             {
