@@ -17,6 +17,8 @@ use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\Prefix;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestEnum;
+use Imi\Test\Component\Model\TestFieldName;
+use Imi\Test\Component\Model\TestFieldNameNotCamel;
 use Imi\Test\Component\Model\TestJson;
 use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
@@ -940,5 +942,84 @@ class ModelTest extends BaseTest
 
         $record2 = VirtualColumn::find($record1->id);
         $this->assertEquals('1.23', $record2->virtualAmount);
+    }
+
+    public function testFieldName(): void
+    {
+        $record1 = TestFieldName::newInstance();
+        $record1->abcDef = 'a1';
+        $record1->aBCXYZ = 'b1';
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+        $record2 = TestFieldName::find($record1->id);
+        $this->assertEquals([
+            'id'     => $record1->id,
+            'abcDef' => 'a1',
+            'aBCXYZ' => 'b1',
+        ], $record2->toArray());
+
+        $record1 = TestFieldName::newInstance([
+            'abcDef' => 'a2',
+            'aBCXYZ' => 'b2',
+        ]);
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+        $record2 = TestFieldName::find($record1->id);
+        $this->assertEquals([
+            'id'     => $record1->id,
+            'abcDef' => 'a2',
+            'aBCXYZ' => 'b2',
+        ], $record2->toArray());
+
+        $record1 = TestFieldName::newInstance([
+            'Abc_Def' => 'a3',
+            'ABC_XYZ' => 'b3',
+        ]);
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+        $record2 = TestFieldName::find($record1->id);
+        $this->assertEquals([
+            'id'     => $record1->id,
+            'abcDef' => 'a3',
+            'aBCXYZ' => 'b3',
+        ], $record2->toArray());
+
+        $record1 = TestFieldNameNotCamel::newInstance();
+        $record1->abcDef = 'a1';
+        $record1->aBCXYZ = 'b1';
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+        $record2 = TestFieldNameNotCamel::find($record1->id);
+        $this->assertEquals([
+            'id'      => $record1->id,
+            'Abc_Def' => 'a1',
+            'ABC_XYZ' => 'b1',
+        ], $record2->toArray());
+
+        $record1 = TestFieldNameNotCamel::newInstance([
+            'abcDef' => 'a2',
+            'aBCXYZ' => 'b2',
+        ]);
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+        $record2 = TestFieldNameNotCamel::find($record1->id);
+        $this->assertEquals([
+            'id'      => $record1->id,
+            'Abc_Def' => 'a2',
+            'ABC_XYZ' => 'b2',
+        ], $record2->toArray());
+
+        $record1 = TestFieldNameNotCamel::newInstance([
+            'Abc_Def' => 'a3',
+            'ABC_XYZ' => 'b3',
+        ]);
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+        $record2 = TestFieldNameNotCamel::find($record1->id);
+        $this->assertEquals([
+            'id'      => $record1->id,
+            'Abc_Def' => 'a3',
+            'ABC_XYZ' => 'b3',
+        ], $record2->toArray());
     }
 }

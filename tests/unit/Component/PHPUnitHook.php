@@ -36,6 +36,7 @@ class PHPUnitHook implements BeforeFirstTestHook
                     'tb_test_set',
                     'tb_test_with_member',
                     'tb_virtual_column',
+                    'tb_test_field_name',
                 ];
                 foreach ($truncateList as $table)
                 {

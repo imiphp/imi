@@ -414,56 +414,38 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $serializedFields = $this->__serializedFields;
         $result = [];
-        if (null === $serializedFields)
+        if ($serializedFields)
         {
-            $meta = $this->__meta;
-            $realClass = ($this->__realClass ??= $meta->getRealModelClass());
-            if ($meta->hasRelation())
+            $__fieldNames = $this->__fieldNames;
+        }
+        foreach ($serializedFields ?: $this->__parsedSerializedFields as $name)
+        {
+            if ($serializedFields)
             {
-                $relationFieldNames = ModelRelationManager::getRelationFieldNames($this);
-            }
-            else
-            {
-                $relationFieldNames = [];
-            }
-            // JsonNotNull 注解支持
-            foreach ($this->__parsedSerializedFields as $name)
-            {
-                $value = $this[$name];
-                if (null === $value)
+                if (!\in_array($name, $__fieldNames) && isset($__fieldNames[$name]))
                 {
-                    if (isset(($propertyJsonNotNullMap ??= $meta->getPropertyJsonNotNullMap())[$name]))
+                    $name = $__fieldNames[$name];
+                }
+            }
+            $value = $this[$name] ?? null;
+            if (null === $value)
+            {
+                // JsonNotNull 注解支持
+                if (isset(($propertyJsonNotNullMap ??= ($meta ??= $this->__meta)->getPropertyJsonNotNullMap())[$name]))
+                {
+                    continue;
+                }
+                if (\in_array($name, ($relationFieldNames ??= ($meta->hasRelation() ? ModelRelationManager::getRelationFieldNames($this) : []))))
+                {
+                    /** @var AutoSelect|null $autoSelect */
+                    $autoSelect = AnnotationManager::getPropertyAnnotations($realClass ??= ($this->__realClass ??= $meta->getRealModelClass()), $name, AutoSelect::class, true, true);
+                    if ($autoSelect && !$autoSelect->alwaysShow)
                     {
                         continue;
                     }
-                    if (\in_array($name, $relationFieldNames))
-                    {
-                        /** @var AutoSelect|null $autoSelect */
-                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class, true, true);
-                        if ($autoSelect && !$autoSelect->alwaysShow)
-                        {
-                            continue;
-                        }
-                    }
                 }
-                $result[$name] = $value;
             }
-        }
-        else
-        {
-            $__fieldNames = $this->__fieldNames;
-            foreach ($serializedFields as $fieldName)
-            {
-                if (\in_array($fieldName, $__fieldNames))
-                {
-                    $name = $fieldName;
-                }
-                else
-                {
-                    $name = $__fieldNames[$fieldName] ?? $fieldName;
-                }
-                $result[$name] = $this[$name] ?? null;
-            }
+            $result[$name] = $value;
         }
 
         return $result;

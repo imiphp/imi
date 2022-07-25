@@ -214,6 +214,7 @@ class Meta
             $this->usePrefix = $table->usePrefix;
         }
         $this->firstId = $id[0] ?? null;
+        /** @var Column[] $fields */
         $fields = $dbFields = [];
         $annotations = AnnotationManager::getPropertiesAnnotations($realModelClass, [
             Column::class,
@@ -236,6 +237,10 @@ class Meta
                 ];
             }
             $fields[$name] = $column;
+            if (null === $this->autoIncrementField && !$column->virtual && $column->isAutoIncrement)
+            {
+                $this->autoIncrementField = $name;
+            }
         }
         /** @var Serializable[][] $serializableSets */
         $serializableSets = $this->serializableSets = $annotations[Serializable::class];
@@ -257,33 +262,26 @@ class Meta
         }
         $this->dbFields = $dbFields;
         $this->fields = $fields;
-        $this->fieldNames = $fieldNames = array_keys($fields);
         $this->camel = $camel = $entity->camel ?? true;
-        $serializableFieldNames = [];
-        foreach ($fieldNames as $fieldName)
+        $this->bean = $entity->bean;
+        $serializableFieldNames = $parsedSerializableFieldNames = $fieldNames = [];
+        foreach ($fields as $fieldName => $column)
         {
+            $fieldNames[] = $fieldName;
             if ($camel)
             {
-                $serializableFieldNames[$fieldName] = Text::toCamelName($fieldName);
+                $name = Text::toCamelName($fieldName);
+            }
+            elseif ($column->virtual)
+            {
+                $name = $fieldName;
             }
             else
             {
-                $serializableFieldNames[$fieldName] = Text::toUnderScoreCase($fieldName);
+                $name = $column->name;
             }
-        }
-        $this->serializableFieldNames = $serializableFieldNames;
-        foreach ($fields as $field => $column)
-        {
-            if ($column->isAutoIncrement)
-            {
-                $this->autoIncrementField = $field;
-                break;
-            }
-        }
-        $this->bean = $entity->bean;
-        $parsedSerializableFieldNames = [];
-        foreach ($serializableFieldNames as $name)
-        {
+            $serializableFieldNames[$fieldName] = $name;
+
             if (isset($serializableSets[$name]))
             {
                 // 单独属性上的 @Serializable 注解
@@ -313,7 +311,9 @@ class Meta
             }
             $parsedSerializableFieldNames[] = $name;
         }
+        $this->serializableFieldNames = $serializableFieldNames;
         $this->parsedSerializableFieldNames = $parsedSerializableFieldNames;
+        $this->fieldNames = $fieldNames;
     }
 
     /**
