@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Base;
  * @Target("PROPERTY")
  *
  * @property bool $status     是否开启
- * @property bool $alwaysShow 是否总是显示该属性；如果为false，在为null时序列化为数组或json不显示该属性
+ * @property bool $alwaysShow 是否总是显示该属性；如果为true，在为null时序列化为数组或json不显示该属性
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class AutoSelect extends Base
