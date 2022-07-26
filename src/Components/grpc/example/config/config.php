@@ -26,6 +26,11 @@ return [
         'Grpc'   => 'Imi\Grpc',
     ],
 
+    // 忽略目录
+    'ignorePaths' => [
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'grpc',
+    ],
+
     // 主服务器配置
     'mainServer'    => [
         'namespace' => 'GrpcApp\GrpcServer',
