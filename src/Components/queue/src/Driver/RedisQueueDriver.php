@@ -206,7 +206,7 @@ class RedisQueueDriver implements IQueueDriver
                 $this->getMessageKeyPrefix(),
                 microtime(true),
             ], 3);
-            if ($result > 0)
+            if ($result && \is_array($result))
             {
                 $data = [];
                 $length = \count($result);
