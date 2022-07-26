@@ -76,7 +76,7 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
         'Grpc'  =>  'Imi\Grpc',
     ],
     'ignorePaths' => [
-    // 添加RPC忽略目录
+        // 添加RPC忽略目录
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'grpc',
     ],
 ]
