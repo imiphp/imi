@@ -157,25 +157,6 @@ class AuthServiceController extends HttpController implements AuthServiceInterfa
     'rpc'   =>  [
         'defaultPool'   =>  'grpc',
     ],
-    // 内存表配置
-    'memoryTable' => [
-        'ConnectionContext' => [
-            'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
-            'lockId' => 'redisConnectionContextLock',
-            'size'   => 65536,
-        ],
-    ],
-    // 锁
-    'lock'        => [
-        'list' => [
-            'redisConnectionContextLock' => [
-                'class'   => 'RedisLock',
-                'options' => [
-                    'poolName' => 'redis',
-                ],
-            ],
-        ],
-    ],
 ]
 ```
 
