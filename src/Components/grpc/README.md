@@ -75,6 +75,10 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
         'Rpc'   =>  'Imi\Rpc',
         'Grpc'  =>  'Imi\Grpc',
     ],
+    'ignorePaths' => [
+    // 添加RPC忽略目录
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'grpc',
+    ],
 ]
 ```
 
@@ -125,7 +129,7 @@ class AuthServiceController extends HttpController implements AuthServiceInterfa
      * Method <code>login</code>
      *
      * @Action
-     * 
+     *
      * @param \Grpc\LoginRequest $request
      * @return \Grpc\LoginResponse
      */
