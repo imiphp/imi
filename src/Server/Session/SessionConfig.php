@@ -19,16 +19,14 @@ class SessionConfig
 
     /**
      * @ServerInject("SessionCookie")
-     *
-     * @var \Imi\Server\Session\SessionCookie|null
      */
-    public ?SessionCookie $cookie;
+    public SessionCookie $cookie;
 
     /**
      * 每次请求完成后触发垃圾回收的概率，默认为1%
      * 可取值0~1.0，概率为0%~100%.
      */
-    public float $gcProbability;
+    public float $gcProbability = 0;
 
     /**
      * 最大存活时间，默认30天，单位秒.

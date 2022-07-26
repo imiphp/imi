@@ -12,7 +12,7 @@ class ReceiveEventParam extends EventParam
     /**
      * 服务器对象
      */
-    public ISwooleServer $server;
+    public ?ISwooleServer $server = null;
 
     /**
      * 客户端连接的标识符.

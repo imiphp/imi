@@ -12,7 +12,7 @@ use Imi\Util\Stream\StreamMode;
 
 class RoadRunnerResponse extends Response
 {
-    protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker;
+    protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker = null;
 
     /**
      * 是否可写.

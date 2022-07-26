@@ -19,7 +19,7 @@ abstract class BasePublisher implements IPublisher
     /**
      * ack 是否成功
      */
-    private bool $ackSuccess;
+    private bool $ackSuccess = false;
 
     public function __construct()
     {

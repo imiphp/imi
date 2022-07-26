@@ -11,11 +11,15 @@ use function strtolower;
 
 class ChunkResult extends BaseChunkResult
 {
-    private IQuery $query;
-    private int    $limit;
-    private string $column;
-    private string $alias;
-    private string $orderBy;
+    private ?IQuery $query = null;
+
+    private int $limit = 0;
+
+    private string $column = '';
+
+    private string $alias = '';
+
+    private string $orderBy = '';
 
     public function __construct(IQuery $query, int $limit, string $column, string $alias, string $orderBy)
     {

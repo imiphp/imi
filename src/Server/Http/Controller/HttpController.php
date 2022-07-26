@@ -20,7 +20,7 @@ abstract class HttpController
     /**
      * 服务器对象
      */
-    public IServer $server;
+    public ?IServer $server = null;
 
     /**
      * 请求

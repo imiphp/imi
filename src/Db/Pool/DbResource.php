@@ -16,7 +16,7 @@ class DbResource extends BasePoolResource
     /**
      * db对象
      */
-    private IDb $db;
+    private ?IDb $db = null;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, IDb $db)
     {

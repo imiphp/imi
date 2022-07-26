@@ -22,7 +22,7 @@ class HproseSocketClient implements IRpcClient
     /**
      * 配置.
      */
-    protected array $options;
+    protected array $options = [];
 
     /**
      * {@inheritDoc}

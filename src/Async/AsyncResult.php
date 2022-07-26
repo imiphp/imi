@@ -14,7 +14,7 @@ class AsyncResult implements IAsyncResult
      */
     private $result;
 
-    private bool $isException;
+    private bool $isException = false;
 
     private bool $isGeted = false;
 

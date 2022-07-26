@@ -30,7 +30,7 @@ class StoreHandler implements IHandler
     /**
      * 处理器对象
      */
-    private IHandler $handler;
+    private ?IHandler $handler = null;
 
     /**
      * 获取处理器对象

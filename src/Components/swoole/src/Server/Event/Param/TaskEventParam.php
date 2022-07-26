@@ -13,7 +13,7 @@ class TaskEventParam extends EventParam
     /**
      * 服务器对象
      */
-    public ISwooleServer $server;
+    public ?ISwooleServer $server = null;
 
     /**
      * 任务ID.

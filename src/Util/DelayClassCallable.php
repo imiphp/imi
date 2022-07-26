@@ -8,11 +8,11 @@ use Imi\App;
 
 class DelayClassCallable
 {
-    private string $className;
+    private string $className = '';
 
-    private string $methodName;
+    private string $methodName = '';
 
-    private array $constructArgs;
+    private array $constructArgs = [];
 
     public function __construct(string $className, string $methodName, array $constructArgs = [])
     {

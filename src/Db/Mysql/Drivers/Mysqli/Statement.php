@@ -18,7 +18,7 @@ use mysqli_stmt;
  */
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
-    protected ?mysqli_stmt $statement;
+    protected ?mysqli_stmt $statement = null;
 
     /**
      * @var \mysqli_result|false
@@ -33,7 +33,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * 数据库操作对象
      */
-    protected IMysqlDb $db;
+    protected ?IMysqlDb $db = null;
 
     /**
      * 最后执行过的SQL语句.

@@ -21,7 +21,7 @@ class PropertyAnnotationRelation implements IAnnotationRelation
     /**
      * 注解.
      */
-    private Base $annotation;
+    private ?Base $annotation = null;
 
     public function __construct(string $class, string $property, Base $annotation)
     {

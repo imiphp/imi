@@ -14,7 +14,7 @@ trait TPdoStatement
     /**
      * \PDOStatement.
      */
-    protected PDOStatement $statement;
+    protected ?PDOStatement $statement = null;
 
     /**
      * 数据.
@@ -24,7 +24,7 @@ trait TPdoStatement
     /**
      * 数据库操作对象
      */
-    protected IDb $db;
+    protected ?IDb $db = null;
 
     /**
      * 最后插入ID.

@@ -9,7 +9,7 @@ class Client
     /**
      * 客户端对象
      */
-    private \Yurun\Swoole\SharedMemory\Client\Client $client;
+    private ?\Yurun\Swoole\SharedMemory\Client\Client $client = null;
 
     /**
      * 存储器数组.

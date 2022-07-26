@@ -14,7 +14,7 @@ class PoolItem
     /**
      * 资源对象
      */
-    protected IPoolResource $resource;
+    protected ?IPoolResource $resource = null;
 
     /**
      * 被使用的次数.

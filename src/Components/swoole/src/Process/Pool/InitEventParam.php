@@ -12,7 +12,7 @@ class InitEventParam extends EventParam
     /**
      * 进程池对象
      */
-    protected Pool $pool;
+    protected ?Pool $pool = null;
 
     /**
      * Get 进程池对象

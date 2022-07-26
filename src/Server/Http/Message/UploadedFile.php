@@ -13,7 +13,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * 文件在客户端时的文件名.
      */
-    protected string $fileName;
+    protected string $fileName = '';
 
     /**
      * 文件mime类型.
@@ -38,7 +38,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * 文件流
      */
-    protected StreamInterface $stream;
+    protected ?StreamInterface $stream = null;
 
     /**
      * 文件是否被移动过.

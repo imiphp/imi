@@ -14,7 +14,7 @@ class EventParam
     /**
      * 触发该事件的对象
      */
-    protected ?object $__target;
+    protected ?object $__target = null;
 
     /**
      * 数据.

@@ -14,7 +14,7 @@ class FpmRequest extends Request
     /**
      * 客户端地址
      */
-    protected IPEndPoint $clientAddress;
+    protected ?IPEndPoint $clientAddress = null;
 
     /**
      * {@inheritDoc}

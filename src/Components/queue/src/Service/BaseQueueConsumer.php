@@ -23,7 +23,7 @@ abstract class BaseQueueConsumer
     /**
      * 队列名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 是否正在工作.

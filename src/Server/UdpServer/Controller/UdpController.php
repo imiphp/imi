@@ -17,7 +17,7 @@ abstract class UdpController
     /**
      * 服务器对象
      */
-    public IUdpServer $server;
+    public ?IUdpServer $server = null;
 
     /**
      * 包数据.

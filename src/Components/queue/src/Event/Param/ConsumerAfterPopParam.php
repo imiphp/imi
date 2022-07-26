@@ -16,10 +16,10 @@ class ConsumerAfterPopParam extends EventParam
     /**
      * 队列对象
      */
-    public IQueueDriver $queue;
+    public ?IQueueDriver $queue = null;
 
     /**
      * 消息.
      */
-    public IMessage $message;
+    public ?IMessage $message = null;
 }

@@ -26,7 +26,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
 {
     abstract class WorkerTask implements ICoTask
     {
-        protected string $errorHandler;
+        protected string $errorHandler = '';
 
         /**
          * {@inheritDoc}

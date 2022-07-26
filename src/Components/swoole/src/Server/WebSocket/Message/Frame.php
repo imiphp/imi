@@ -13,12 +13,12 @@ class Frame implements ISwooleWebSocketFrame
     /**
      * swoole websocket frame.
      */
-    protected \Swoole\WebSocket\Frame $frame;
+    protected ?\Swoole\WebSocket\Frame $frame = null;
 
     /**
      * 客户端地址
      */
-    protected IPEndPoint $clientAddress;
+    protected ?IPEndPoint $clientAddress = null;
 
     /**
      * 格式化后的数据.

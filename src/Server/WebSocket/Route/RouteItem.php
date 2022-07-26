@@ -11,7 +11,7 @@ class RouteItem
     /**
      * 注解.
      */
-    public WSRoute $annotation;
+    public ?WSRoute $annotation = null;
 
     /**
      * 回调.

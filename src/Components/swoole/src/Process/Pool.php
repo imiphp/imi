@@ -21,7 +21,7 @@ class Pool
     /**
      * 工作进程数量.
      */
-    private int $workerNum;
+    private int $workerNum = 0;
 
     /**
      * 工作进程列表
@@ -46,7 +46,7 @@ class Pool
     /**
      * 主进程 PID.
      */
-    private int $masterPID;
+    private int $masterPID = 0;
 
     /**
      * @param int $workerNum

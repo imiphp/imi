@@ -58,7 +58,7 @@ class Message implements IMessage
     /**
      * AMQP 消息.
      */
-    protected AMQPMessage $amqpMessage;
+    protected ?AMQPMessage $amqpMessage = null;
 
     public function __construct()
     {

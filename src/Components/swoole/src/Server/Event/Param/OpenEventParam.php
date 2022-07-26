@@ -13,10 +13,10 @@ class OpenEventParam extends EventParam
     /**
      * 服务器对象
      */
-    public ISwooleServer $server;
+    public ?ISwooleServer $server = null;
 
     /**
      * 客户端连接的标识符.
      */
-    public IHttpRequest $request;
+    public ?IHttpRequest $request = null;
 }

@@ -16,9 +16,9 @@ class WorkermanRequest extends Request
     /**
      * Workerman 的 Worker 对象
      */
-    protected Worker $worker;
+    protected ?Worker $worker = null;
 
-    protected string $clientId;
+    protected string $clientId = '';
 
     protected array $data = [];
 

@@ -14,7 +14,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * 请求地址
      */
-    protected UriInterface $uri;
+    protected ?UriInterface $uri = null;
 
     /**
      * 请求方法.

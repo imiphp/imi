@@ -20,12 +20,12 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * 结果通道.
          */
-        private Channel $resultChannel;
+        private ?Channel $resultChannel = null;
 
         /**
          * 本地缓存的队列长度.
          */
-        protected int $queueLength;
+        protected int $queueLength = 0;
 
         public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
         {

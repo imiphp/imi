@@ -9,7 +9,7 @@ class QueueConfig
     /**
      * 队列名称.
      */
-    private string $name;
+    private string $name = '';
 
     /**
      * 使用的队列驱动.
@@ -51,7 +51,7 @@ class QueueConfig
     /**
      * 消费者类.
      */
-    private string $consumer;
+    private string $consumer = '';
 
     public function __construct(string $name, array $data)
     {

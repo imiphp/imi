@@ -16,7 +16,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
     /**
      * 注解.
      */
-    private Base $annotation;
+    private ?Base $annotation = null;
 
     public function __construct(string $class, Base $annotation)
     {

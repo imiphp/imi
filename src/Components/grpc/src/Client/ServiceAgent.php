@@ -14,17 +14,17 @@ class ServiceAgent
     /**
      * 连接池名称.
      */
-    public ?string $poolName;
+    public ?string $poolName = null;
 
     /**
      * 服务名称.
      */
-    public string $serviceName;
+    public string $serviceName = '';
 
     /**
      * 服务接口.
      */
-    public string $interface;
+    public string $interface = '';
 
     public function __construct(?string $poolName, string $serviceName, string $interface)
     {

@@ -17,7 +17,7 @@ use Yurun\Doctrine\Common\Annotations\PhpParser;
 
 class BeanParser extends BaseParser
 {
-    private string $appType;
+    private string $appType = '';
 
     public function __construct()
     {

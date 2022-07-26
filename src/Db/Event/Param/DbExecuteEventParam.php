@@ -13,7 +13,7 @@ class DbExecuteEventParam extends EventParam
     /**
      * 数据库对象
      */
-    public IDb $db;
+    public ?IDb $db = null;
 
     /**
      * 数据库 Statement.
@@ -28,17 +28,17 @@ class DbExecuteEventParam extends EventParam
     /**
      * 执行开始时间.
      */
-    public float $beginTime;
+    public float $beginTime = 0;
 
     /**
      * 执行结束时间.
      */
-    public float $endTime;
+    public float $endTime = 0;
 
     /**
      * 执行时间.
      */
-    public float $time;
+    public float $time = 0;
 
     /**
      * 查询绑定的值

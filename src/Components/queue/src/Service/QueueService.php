@@ -20,7 +20,7 @@ class QueueService
     /**
      * 队列列表.
      */
-    protected array $list;
+    protected array $list = [];
 
     /**
      * 默认队列.

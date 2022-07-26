@@ -16,7 +16,7 @@ class Join implements IJoin
     /**
      * 表名.
      */
-    protected Table $table;
+    protected ?Table $table = null;
 
     /**
      * 在 join b on a.id=b.id 中的 a.id.

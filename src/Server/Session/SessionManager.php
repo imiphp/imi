@@ -20,8 +20,6 @@ class SessionManager
      * Session配置.
      *
      * @ServerInject("SessionConfig")
-     *
-     * @var \Imi\Server\Session\SessionConfig
      */
     protected SessionConfig $config;
 
@@ -33,7 +31,7 @@ class SessionManager
     /**
      * Session处理对象
      */
-    private ISessionHandler $handler;
+    private ?ISessionHandler $handler = null;
 
     /**
      * session id.

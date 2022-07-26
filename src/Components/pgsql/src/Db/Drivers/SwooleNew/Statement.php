@@ -16,12 +16,12 @@ use Swoole\Coroutine\PostgreSQLStatement;
  */
 class Statement extends PgsqlBaseStatement implements IPgsqlStatement
 {
-    protected PostgreSQLStatement $stmt;
+    protected ?PostgreSQLStatement $stmt = null;
 
     /**
      * 数据库操作对象
      */
-    protected IPgsqlDb $db;
+    protected ?IPgsqlDb $db = null;
 
     /**
      * 绑定数据.

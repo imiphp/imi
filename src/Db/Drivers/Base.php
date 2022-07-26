@@ -14,7 +14,7 @@ abstract class Base implements IDb
     /**
      * 连接配置.
      */
-    protected array $option;
+    protected array $option = [];
 
     public function __construct(array $option = [])
     {

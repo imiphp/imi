@@ -12,7 +12,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * 文件Uri.
      */
-    protected Uri $uri;
+    protected ?Uri $uri = null;
 
     /**
      * 流对象

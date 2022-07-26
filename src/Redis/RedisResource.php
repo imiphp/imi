@@ -11,10 +11,8 @@ class RedisResource extends BasePoolResource
 {
     /**
      * Redis 对象
-     *
-     * @var \Imi\Redis\RedisHandler
      */
-    private RedisHandler $redis;
+    private ?RedisHandler $redis = null;
 
     /**
      * 连接配置.

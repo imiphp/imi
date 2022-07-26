@@ -32,7 +32,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
     /**
      * 队列名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 支持消息删除功能.
@@ -85,63 +85,63 @@ class AMQPQueueDriverHandler implements IQueueDriver
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private ?QueuePublisher $publisher;
+    private ?QueuePublisher $publisher = null;
 
     /**
      * 延迟发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private ?QueuePublisher $delayPublisher;
+    private ?QueuePublisher $delayPublisher = null;
 
     /**
      * 消费者.
      */
-    private ?IQueueConsumer $consumer;
+    private ?IQueueConsumer $consumer = null;
 
     /**
      * 超时队列发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private ?QueuePublisher $timeoutPublisher;
+    private ?QueuePublisher $timeoutPublisher = null;
 
     /**
      * 超时队列消费者.
      */
-    private ?IQueueConsumer $timeoutConsumer;
+    private ?IQueueConsumer $timeoutConsumer = null;
 
     /**
      * 失败队列发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private ?QueuePublisher $failPublisher;
+    private ?QueuePublisher $failPublisher = null;
 
     /**
      * 失败队列消费者.
      */
-    private ?IQueueConsumer $failConsumer;
+    private ?IQueueConsumer $failConsumer = null;
 
     /**
      * AMQP 的队列名称.
      */
-    private string $queueName;
+    private string $queueName = '';
 
     /**
      * AMQP 的延迟队列名称.
      */
-    private string $delayQueueName;
+    private string $delayQueueName = '';
 
     /**
      * AMQP 的失败队列名称.
      */
-    private string $failQueueName;
+    private string $failQueueName = '';
 
     /**
      * AMQP 的超时队列名称.
      */
-    private string $timeoutQueueName;
+    private string $timeoutQueueName = '';
 
     public function __construct(string $name, array $config = [])
     {

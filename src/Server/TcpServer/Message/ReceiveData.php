@@ -32,7 +32,7 @@ class ReceiveData implements IReceiveData
     /**
      * 客户端地址
      */
-    protected IPEndPoint $clientAddress;
+    protected ?IPEndPoint $clientAddress = null;
 
     /**
      * @param int|string $clientId

@@ -21,22 +21,22 @@ class ReceiveData implements IReceiveData
     /**
      * Reactor线程ID.
      */
-    protected int $reactorId;
+    protected int $reactorId = 0;
 
     /**
      * 接收到的数据.
      */
-    protected string $data;
+    protected string $data = '';
 
     /**
      * 接收到的数据.
      */
-    protected Packet $formatData;
+    protected ?Packet $formatData = null;
 
     /**
      * 客户端地址
      */
-    protected IPEndPoint $clientAddress;
+    protected ?IPEndPoint $clientAddress = null;
 
     /**
      * @param string|int $clientId

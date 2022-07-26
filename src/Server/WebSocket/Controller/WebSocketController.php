@@ -17,7 +17,7 @@ abstract class WebSocketController
     /**
      * 服务器对象
      */
-    public IWebSocketServer $server;
+    public ?IWebSocketServer $server = null;
 
     /**
      * 桢.

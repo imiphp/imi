@@ -39,7 +39,7 @@ class AMQPResource extends BasePoolResource
     {
         parent::__construct($pool);
         $this->connection = $connection;
-        $this->closed = !$this->connection->isConnected();
+        $this->closed = !$connection->isConnected();
     }
 
     /**

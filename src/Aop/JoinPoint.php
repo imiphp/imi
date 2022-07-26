@@ -24,7 +24,7 @@ class JoinPoint
     /**
      * 连接点所在的目标对象
      */
-    protected object $target;
+    protected ?object $target = null;
 
     public function __construct(string $type, string $method, array &$args, object $target)
     {

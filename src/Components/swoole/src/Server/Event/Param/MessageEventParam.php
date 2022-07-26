@@ -13,10 +13,10 @@ class MessageEventParam extends EventParam
     /**
      * 服务器对象
      */
-    public ISwooleServer $server;
+    public ?ISwooleServer $server = null;
 
     /**
      * swoole 数据帧对象
      */
-    public Frame $frame;
+    public ?Frame $frame = null;
 }

@@ -12,12 +12,12 @@ class IPEndPoint implements \Stringable
     /**
      * 地址
      */
-    private string $address;
+    private string $address = '';
 
     /**
      * 端口.
      */
-    private int $port;
+    private int $port = 0;
 
     public function __construct(string $address, int $port)
     {

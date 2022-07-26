@@ -31,12 +31,12 @@ class GrpcService implements IGrpcService
     /**
      * 完整服务名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 服务接口.
      */
-    protected ?string $interface;
+    protected ?string $interface = null;
 
     /**
      * @Inject("GrpcInterfaceManager")

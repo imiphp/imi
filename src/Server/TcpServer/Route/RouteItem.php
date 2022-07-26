@@ -11,7 +11,7 @@ class RouteItem
     /**
      * 注解.
      */
-    public TcpRoute $annotation;
+    public ?TcpRoute $annotation = null;
 
     /**
      * 回调.

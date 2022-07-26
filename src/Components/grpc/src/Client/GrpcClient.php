@@ -22,17 +22,17 @@ class GrpcClient implements IRpcClient
     /**
      * 配置.
      */
-    protected array $options;
+    protected array $options = [];
 
     /**
      * Http2 客户端.
      */
-    protected SwooleClient $http2Client;
+    protected ?SwooleClient $http2Client = null;
 
     /**
      * url.
      */
-    protected string $url;
+    protected string $url = '';
 
     /**
      * uri 对象
@@ -42,12 +42,12 @@ class GrpcClient implements IRpcClient
     /**
      * 请求方法.
      */
-    protected string $requestMethod;
+    protected string $requestMethod = '';
 
     /**
      * 超时时间，单位：秒.
      */
-    protected ?float $timeout;
+    protected ?float $timeout = null;
 
     /**
      * HttpRequest.

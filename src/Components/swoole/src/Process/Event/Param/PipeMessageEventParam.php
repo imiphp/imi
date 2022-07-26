@@ -13,7 +13,7 @@ class PipeMessageEventParam extends EventParam
     /**
      * 当前进程.
      */
-    public Process $process;
+    public ?Process $process = null;
 
     /**
      * 动作名.
@@ -25,7 +25,7 @@ class PipeMessageEventParam extends EventParam
      *
      * @var mixed
      */
-    public $data;
+    public $data = null;
 
     /**
      * 连接对象，仅其它进程发给当前进程才有.

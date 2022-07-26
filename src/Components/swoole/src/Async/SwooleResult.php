@@ -11,7 +11,7 @@ use Swoole\Coroutine\Channel;
 
 class SwooleResult implements IAsyncResult
 {
-    private Channel $channel;
+    private ?Channel $channel = null;
 
     private bool $isGeted = false;
 

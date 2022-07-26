@@ -11,7 +11,7 @@ class QueryOption
     /**
      * 表名.
      */
-    public ITable $table;
+    public ?ITable $table = null;
 
     /**
      * distinct.

@@ -9,13 +9,13 @@ use Imi\Server\ServerManager;
 
 class DelayServerBeanCallable
 {
-    private IServer $server;
+    private ?IServer $server = null;
 
-    private string $beanName;
+    private string $beanName = '';
 
-    private string $methodName;
+    private string $methodName = '';
 
-    private array $constructArgs;
+    private array $constructArgs = [];
 
     /**
      * @param string|\Imi\Server\Contract\IServer $server

@@ -11,7 +11,7 @@ abstract class BaseBuilder implements IBuilder
     /**
      * IQuery 类.
      */
-    protected IQuery $query;
+    protected ?IQuery $query = null;
 
     /**
      * 绑定参数.
