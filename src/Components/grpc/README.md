@@ -173,6 +173,25 @@ class AuthServiceController extends HttpController implements AuthServiceInterfa
     'rpc'   =>  [
         'defaultPool'   =>  'grpc',
     ],
+    // 内存表配置
+    'memoryTable' => [
+        'ConnectionContext' => [
+            'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
+            'lockId' => 'redisConnectionContextLock',
+            'size'   => 65536,
+        ],
+    ],
+    // 锁
+    'lock'        => [
+        'list' => [
+            'redisConnectionContextLock' => [
+                'class'   => 'RedisLock',
+                'options' => [
+                    'poolName' => 'redis',
+                ],
+            ],
+        ],
+    ],
 ]
 ```
 
@@ -181,8 +200,8 @@ class AuthServiceController extends HttpController implements AuthServiceInterfa
 代码调用：
 
 ```php
-// $service = \Imi\Rpc\Client\Pool\RpcClientPool::getClient('连接池名')->getService('服务名', '生成出来的服务接口类名');
-$service = \Imi\Rpc\Client\Pool\RpcClientPool::getClient()->getService('AuthService', \Grpc\AuthServiceInterface::class);
+// $service = \Imi\Rpc\Client\Pool\RpcClientPool::getInstance('连接池名')->getService('服务名', '生成出来的服务接口类名');
+$service = \Imi\Rpc\Client\Pool\RpcClientPool::getInstance()->getService('AuthService', \Grpc\AuthServiceInterface::class);
 $request = new \Grpc\LoginRequest;
 $request->setPhone('');
 $service->login($request);
