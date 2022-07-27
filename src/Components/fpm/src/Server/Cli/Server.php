@@ -28,10 +28,21 @@ class Server extends BaseCommand
      */
     public function start(string $host, int $port): void
     {
-        ttyExec([
+        if (\function_exists('pcntl_signal'))
+        {
+            /** @var \Symfony\Component\Process\Process|null $process */
+            $process = null;
+            pcntl_signal(\SIGTERM, function () use (&$process) {
+                if ($process)
+                {
+                    $process->signal(\SIGINT);
+                }
+            });
+        }
+        exit(ttyExec([
             \PHP_BINARY,
             '-S', $host . ':' . $port,
             '-t', File::path(App::get(AppContexts::APP_PATH), 'public'),
-        ]);
+        ], null, $process));
     }
 }
