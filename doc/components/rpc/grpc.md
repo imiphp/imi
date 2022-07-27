@@ -63,6 +63,14 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
 
 ### 服务端
 
+`config.php` 配置忽略目录
+
+```php
+'ignorePaths' => [
+    \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'grpc',
+],
+```
+
 如果你用主服务器：
 
 ```php
