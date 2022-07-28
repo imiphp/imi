@@ -56,6 +56,30 @@ class Pool
         $this->workerNum = $workerNum;
     }
 
+    protected function listenSigChild(): void
+    {
+        Signal::waitCallback(\SIGCHLD, function () {
+            if ($this->workers)
+            {
+                while ($result = Process::wait(false))
+                {
+                    $pid = $result['pid'];
+                    $workerId = $this->workerIdMap[$pid] ?? null;
+                    if (isset($this->workers[$workerId]))
+                    {
+                        $worker = $this->workers[$workerId];
+                        Event::del($worker->pipe);
+                        unset($this->workerIdMap[$worker->pid], $this->workers[$workerId]);
+                    }
+                }
+            }
+            if ($this->working)
+            {
+                $this->listenSigChild();
+            }
+        });
+    }
+
     /**
      * 启动进程池.
      *
@@ -70,14 +94,7 @@ class Pool
             'pool'  => $this,
         ], $this, BeforeStartEventParam::class);
 
-        Signal::waitCallback(\SIGCHLD, function () {
-            if ($this->workers)
-            {
-                while (Process::wait(false))
-                {
-                }
-            }
-        });
+        $this->listenSigChild();
 
         imigo(function () {
             if (Signal::wait(\SIGTERM))
