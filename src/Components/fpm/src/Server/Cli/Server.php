@@ -37,6 +37,16 @@ class Server extends BaseCommand
                 {
                     $process->signal(\SIGINT);
                 }
+                // 等待 5 秒
+                for ($i = 0; $i < 50; ++$i)
+                {
+                    if (!$process->isRunning())
+                    {
+                        return;
+                    }
+                    usleep(100000);
+                }
+                exit(1);
             });
         }
         exit(ttyExec([
