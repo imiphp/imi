@@ -298,10 +298,10 @@ abstract class BaseAsyncPool extends BasePool
         try
         {
             $this->heartbeatRunning = true;
-            $hasGC = false;
             $pool = &$this->pool;
             if ($pool)
             {
+                $hasGC = false;
                 foreach ($pool as $key => $item)
                 {
                     if ($item->lock(0.001))
@@ -334,11 +334,11 @@ abstract class BaseAsyncPool extends BasePool
                         }
                     }
                 }
-            }
-            if ($hasGC)
-            {
-                $this->fillMinResources();
-                $this->buildQueue();
+                if ($hasGC)
+                {
+                    $this->fillMinResources();
+                    $this->buildQueue();
+                }
             }
         }
         finally

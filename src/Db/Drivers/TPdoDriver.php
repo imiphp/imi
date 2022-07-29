@@ -92,14 +92,16 @@ trait TPdoDriver
             {
                 $this->close();
             }
-
-            return false;
         }
         catch (\PDOException $e)
         {
             if ($this->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->close();
+            }
+            else
+            {
+                throw $e;
             }
         }
 

@@ -192,7 +192,7 @@ class PoolManager
     public static function getRequestContextResource(string $name): IPoolResource
     {
         $requestContext = RequestContext::getContext();
-        $resource = $requestContext['poolResource.' . $name] ?? null;
+        $resource = $requestContext[$key = 'poolResource.' . $name] ?? null;
         if (null !== $resource)
         {
             $requestResourceCheckInterval = $resource->getPool()->getConfig()->getRequestResourceCheckInterval();
@@ -205,7 +205,7 @@ class PoolManager
         if (null === $resource)
         {
             $resource = static::getResource($name);
-            $requestContext['poolResource.' . $name] = $resource;
+            $requestContext[$key] = $resource;
         }
 
         return $resource;
@@ -281,9 +281,7 @@ class PoolManager
      */
     public static function hasRequestContextResource(string $name): bool
     {
-        $resource = RequestContext::get('poolResource.' . $name);
-
-        return null !== $resource;
+        return null !== RequestContext::get('poolResource.' . $name);
     }
 
     /**
