@@ -14,7 +14,7 @@ class CursorResult implements \IteratorAggregate
     /**
      * Statement.
      */
-    protected IStatement $statement;
+    protected ?IStatement $statement = null;
 
     /**
      * 是否执行成功

@@ -29,7 +29,7 @@ class Message implements IMessage
     /**
      * 消息内容.
      */
-    protected string $message;
+    protected string $message = '';
 
     /**
      * 工作超时时间，单位：秒.

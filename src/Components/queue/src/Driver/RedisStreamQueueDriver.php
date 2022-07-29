@@ -40,7 +40,7 @@ class RedisStreamQueueDriver implements IQueueDriver
     /**
      * 队列名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 队列最大长度.

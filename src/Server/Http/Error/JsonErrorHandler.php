@@ -25,7 +25,7 @@ class JsonErrorHandler implements IErrorHandler
      */
     protected ?int $httpCode = null;
 
-    protected View $viewAnnotation;
+    protected ?View $viewAnnotation = null;
 
     public function __construct()
     {

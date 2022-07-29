@@ -23,7 +23,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * 数据库操作对象
      */
-    protected IPgsqlDb $db;
+    protected ?IPgsqlDb $db = null;
 
     /**
      * 绑定数据.

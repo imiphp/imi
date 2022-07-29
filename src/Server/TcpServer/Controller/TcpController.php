@@ -17,7 +17,7 @@ abstract class TcpController
     /**
      * 服务器对象
      */
-    public ITcpServer $server;
+    public ?ITcpServer $server = null;
 
     /**
      * 数据.

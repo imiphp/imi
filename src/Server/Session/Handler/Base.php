@@ -18,12 +18,12 @@ abstract class Base implements ISessionHandler
     /**
      * 数据格式化处理器对象
      */
-    private IFormat $formatHandler;
+    private ?IFormat $formatHandler = null;
 
     /**
      * 进程ID.
      */
-    private int $pid;
+    private int $pid = 0;
 
     /**
      * 自增值

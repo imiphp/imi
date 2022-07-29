@@ -11,7 +11,7 @@ class RouteItem
     /**
      * 注解.
      */
-    public UdpRoute $annotation;
+    public ?UdpRoute $annotation = null;
 
     /**
      * 回调.

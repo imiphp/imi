@@ -13,12 +13,12 @@ class WorkerEventParam extends EventParam
     /**
      * 进程池对象
      */
-    protected Pool $pool;
+    protected ?Pool $pool = null;
 
     /**
      * 工作进程.
      */
-    protected Process $worker;
+    protected ?Process $worker = null;
 
     /**
      * 工作进程ID.

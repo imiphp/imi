@@ -30,7 +30,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
     /**
      * The key.
      */
-    private string $key;
+    private string $key = '';
 
     /**
      * Sets the connected Redis API.

@@ -34,7 +34,7 @@ class KafkaQueueDriver implements IQueueDriver
     /**
      * 队列名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 分组ID.
@@ -44,7 +44,7 @@ class KafkaQueueDriver implements IQueueDriver
     /**
      * @var Consumer[]
      */
-    private array $consumers;
+    private array $consumers = [];
 
     public function __construct(string $name, array $config = [])
     {

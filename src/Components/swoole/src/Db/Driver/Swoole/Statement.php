@@ -29,7 +29,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * 数据库操作对象
      */
-    protected IMysqlDb $db;
+    protected ?IMysqlDb $db = null;
 
     /**
      * 绑定数据.

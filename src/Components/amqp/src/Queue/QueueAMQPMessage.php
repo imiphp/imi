@@ -12,7 +12,7 @@ class QueueAMQPMessage extends Message
     /**
      * AMQP 消息.
      */
-    protected IMessage $amqpMessage;
+    protected ?IMessage $amqpMessage = null;
 
     /**
      * Get aMQP 消息.

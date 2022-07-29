@@ -15,22 +15,22 @@ class Connection extends DefaultConnection
     /**
      * 主机地址
      */
-    private string $host;
+    private string $host = '';
 
     /**
      * 端口号.
      */
-    private int $port;
+    private int $port = 0;
 
     /**
      * 超时时间，单位：秒.
      */
-    private ?float $timeout;
+    private ?float $timeout = null;
 
     /**
      * Ping 时间间隔，为 NULL 则不自动 Ping.
      */
-    private ?float $pingTimespan;
+    private ?float $pingTimespan = null;
 
     /**
      * 使用 SSL 连接.

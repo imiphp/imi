@@ -9,7 +9,7 @@ class AfterThrowingJoinPoint extends JoinPoint
     /**
      * 异常.
      */
-    private \Throwable $throwable;
+    private ?\Throwable $throwable = null;
 
     /**
      * 是否取消抛出异常.

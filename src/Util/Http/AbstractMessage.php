@@ -28,7 +28,7 @@ abstract class AbstractMessage implements IMessage
     /**
      * 消息主体.
      */
-    protected StreamInterface $body;
+    protected ?StreamInterface $body = null;
 
     /**
      * 协议版本是否初始化.

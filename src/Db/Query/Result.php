@@ -19,7 +19,7 @@ class Result implements IResult
     /**
      * Statement.
      */
-    protected IStatement $statement;
+    protected ?IStatement $statement = null;
 
     /**
      * 是否执行成功

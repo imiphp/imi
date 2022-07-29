@@ -14,7 +14,7 @@ class RouteItem
     /**
      * 注解.
      */
-    public Route $annotation;
+    public ?Route $annotation = null;
 
     /**
      * 回调.
@@ -43,7 +43,7 @@ class RouteItem
     /**
      * 视图注解.
      */
-    public View $view;
+    public ?View $view = null;
 
     /**
      * 视图配置注解.

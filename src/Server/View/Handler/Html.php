@@ -42,7 +42,7 @@ class Html implements IHandler
     /**
      * 模版引擎处理对象
      */
-    protected IEngine $templateEngineInstance;
+    protected ?IEngine $templateEngineInstance = null;
 
     public function __init(): void
     {

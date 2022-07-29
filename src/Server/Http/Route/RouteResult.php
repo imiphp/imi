@@ -13,10 +13,8 @@ class RouteResult
 
     /**
      * 路由配置项.
-     *
-     * @var \Imi\Server\Http\Route\RouteItem
      */
-    public RouteItem $routeItem;
+    public ?RouteItem $routeItem = null;
 
     /**
      * 参数.

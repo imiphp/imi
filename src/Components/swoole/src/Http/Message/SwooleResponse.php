@@ -14,12 +14,12 @@ class SwooleResponse extends Response
     /**
      * swoole响应对象
      */
-    protected \Swoole\Http\Response $swooleResponse;
+    protected ?\Swoole\Http\Response $swooleResponse = null;
 
     /**
      * 对应的服务器.
      */
-    protected ISwooleServer $serverInstance;
+    protected ?ISwooleServer $serverInstance = null;
 
     public function __construct(ISwooleServer $server, \Swoole\Http\Response $response)
     {

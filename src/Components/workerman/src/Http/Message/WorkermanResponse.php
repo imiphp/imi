@@ -15,17 +15,17 @@ class WorkermanResponse extends Response
     /**
      * Workerman 的 http 响应对象
      */
-    protected ?\Workerman\Protocols\Http\Response $workermanResponse;
+    protected ?\Workerman\Protocols\Http\Response $workermanResponse = null;
 
     /**
      * Workerman 的 Worker 对象
      */
-    protected Worker $worker;
+    protected ?Worker $worker = null;
 
     /**
      * Workerman 连接对象
      */
-    protected TcpConnection $connection;
+    protected ?TcpConnection $connection = null;
 
     /**
      * 响应头是否可写.

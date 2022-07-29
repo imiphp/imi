@@ -17,7 +17,7 @@ trait TServerAnnotationParser
      */
     private array $cache = [];
 
-    protected string $controllerAnnotationClass;
+    protected string $controllerAnnotationClass = '';
 
     /**
      * 根据服务器获取对应的控制器数据.

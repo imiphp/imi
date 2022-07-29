@@ -76,12 +76,12 @@ class Meta
      *
      * @var string[]
      */
-    private array $serializableFieldNames;
+    private array $serializableFieldNames = [];
 
     /**
      * 数据库字段名和 Column 注解映射.
      */
-    private array $dbFields;
+    private array $dbFields = [];
 
     /**
      * 模型是否为驼峰命名.
@@ -91,7 +91,7 @@ class Meta
     /**
      * 序列化注解.
      */
-    private ?Serializables $serializables;
+    private ?Serializables $serializables = null;
 
     /**
      * 序列化注解列表.
@@ -153,7 +153,7 @@ class Meta
      *
      * @var \Imi\Model\Annotation\Sql[][]
      */
-    private array $sqlColumns;
+    private array $sqlColumns = [];
 
     /**
      * 是否为继承父类的模型.

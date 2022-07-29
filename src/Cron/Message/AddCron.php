@@ -11,7 +11,7 @@ class AddCron implements IMessage
     /**
      * 定时任务注解.
      */
-    public Cron $cronAnnotation;
+    public ?Cron $cronAnnotation = null;
 
     /**
      * 任务

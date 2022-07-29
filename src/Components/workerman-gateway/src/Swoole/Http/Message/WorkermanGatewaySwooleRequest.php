@@ -18,9 +18,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * 对应的服务器.
          */
-        protected ISwooleServer $serverInstance;
+        protected ?ISwooleServer $serverInstance = null;
 
-        protected string $clientId;
+        protected string $clientId = '';
 
         protected array $data = [];
 

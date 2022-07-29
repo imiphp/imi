@@ -10,7 +10,7 @@ use longlang\phpkafka\Consumer\ConsumeMessage;
 
 class KafkaPopMessage extends Message implements IKafkaPopMessage
 {
-    protected ConsumeMessage $consumeMessage;
+    protected ?ConsumeMessage $consumeMessage = null;
 
     public function getConsumeMessage(): ConsumeMessage
     {

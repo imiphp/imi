@@ -58,12 +58,12 @@ class CronTask
     /**
      * 获取锁超时时间，单位：秒.
      */
-    private float $lockWaitTimeout;
+    private float $lockWaitTimeout = 0;
 
     /**
      * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
      */
-    private float $maxExecutionTime;
+    private float $maxExecutionTime = 0;
 
     /**
      * 获取上一次运行时间.

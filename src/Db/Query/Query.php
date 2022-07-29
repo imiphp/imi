@@ -42,7 +42,7 @@ abstract class Query implements IQuery
     /**
      * 操作记录.
      */
-    protected QueryOption $option;
+    protected ?QueryOption $option = null;
 
     /**
      * 数据绑定.
@@ -52,7 +52,7 @@ abstract class Query implements IQuery
     /**
      * 数据库操作对象
      */
-    protected ?IDb $db;
+    protected ?IDb $db = null;
 
     /**
      * 连接池名称.

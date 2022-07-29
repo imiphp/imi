@@ -12,5 +12,5 @@ class ShutdownEventParam extends EventParam
     /**
      * 服务器对象
      */
-    public ISwooleServer $server;
+    public ?ISwooleServer $server = null;
 }

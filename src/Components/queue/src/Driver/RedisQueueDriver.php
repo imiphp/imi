@@ -37,7 +37,7 @@ class RedisQueueDriver implements IQueueDriver
     /**
      * 队列名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 循环尝试 pop 的时间间隔，单位：秒.
@@ -206,7 +206,7 @@ class RedisQueueDriver implements IQueueDriver
                 $this->getMessageKeyPrefix(),
                 microtime(true),
             ], 3);
-            if ($result > 0)
+            if ($result && \is_array($result))
             {
                 $data = [];
                 $length = \count($result);

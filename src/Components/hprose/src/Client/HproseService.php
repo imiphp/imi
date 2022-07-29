@@ -17,7 +17,7 @@ class HproseService implements IService
     /**
      * 服务名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     public function __construct(IRpcClient $client, string $name)
     {

@@ -61,7 +61,7 @@ class HotUpdateProcess
     /**
      * 热更新检测，更改的文件列表，储存在的文件名.
      */
-    protected string $changedFilesFile;
+    protected string $changedFilesFile = '';
 
     /**
      * buildRuntime resource.
@@ -83,7 +83,7 @@ class HotUpdateProcess
     /**
      * 开始时间.
      */
-    private float $beginTime;
+    private float $beginTime = 0;
 
     /**
      * 是否正在构建中.

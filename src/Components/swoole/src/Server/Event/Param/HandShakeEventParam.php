@@ -13,10 +13,10 @@ class HandShakeEventParam extends EventParam
     /**
      * swoole 请求对象
      */
-    public IHttpRequest $request;
+    public ?IHttpRequest $request = null;
 
     /**
      * swoole 响应对象
      */
-    public IHttpResponse $response;
+    public ?IHttpResponse $response = null;
 }

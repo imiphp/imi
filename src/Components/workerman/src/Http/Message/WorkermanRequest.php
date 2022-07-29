@@ -16,19 +16,19 @@ class WorkermanRequest extends Request
     /**
      * Workerman 的 http 请求对象
      */
-    protected \Workerman\Protocols\Http\Request $workermanRequest;
+    protected ?\Workerman\Protocols\Http\Request $workermanRequest = null;
 
     /**
      * Workerman 的 Worker 对象
      */
-    protected Worker $worker;
+    protected ?Worker $worker = null;
 
     /**
      * 协议.
      */
-    protected string $scheme;
+    protected string $scheme = '';
 
-    protected TcpConnection $connection;
+    protected ?TcpConnection $connection = null;
 
     public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request, string $scheme = 'http')
     {

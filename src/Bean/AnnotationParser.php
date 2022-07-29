@@ -46,7 +46,7 @@ class AnnotationParser
     /**
      * 注解读取器.
      */
-    private Reader $reader;
+    private ?Reader $reader = null;
 
     /**
      * 初始化时后的 get_included_files() 值

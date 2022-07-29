@@ -11,7 +11,7 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
     /**
      * 连接对象.
      */
-    protected UdpConnection $connection;
+    protected ?UdpConnection $connection = null;
 
     /**
      * {@inheritDoc}

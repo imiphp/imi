@@ -16,14 +16,14 @@ class SwooleRequest extends Request
     /**
      * swoole的http请求对象
      */
-    protected \Swoole\Http\Request $swooleRequest;
+    protected ?\Swoole\Http\Request $swooleRequest = null;
 
     /**
      * 对应的服务器.
      *
      * @var \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server
      */
-    protected ISwooleServer $serverInstance;
+    protected ?ISwooleServer $serverInstance = null;
 
     /**
      * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server

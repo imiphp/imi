@@ -39,7 +39,7 @@ class AMQPQueueDriver implements IQueueDriver
     /**
      * 队列名称.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 支持消息删除功能.
@@ -90,7 +90,7 @@ class AMQPQueueDriver implements IQueueDriver
     /**
      * 构造方法的参数.
      */
-    private array $args;
+    private array $args = [];
 
     public function __construct(string $name, array $config = [])
     {

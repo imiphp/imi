@@ -23,12 +23,12 @@ class ActionMethodItem
      *
      * @var mixed
      */
-    protected $default;
+    protected $default = null;
 
     /**
      * 是否允许为 null.
      */
-    protected bool $allowNull;
+    protected bool $allowNull = false;
 
     /**
      * 类型.

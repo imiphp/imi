@@ -20,19 +20,19 @@ class Frame implements IFrame
     /**
      * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
      */
-    protected string $data;
+    protected string $data = '';
 
     /**
      * WebSocket的OpCode类型，可以参考WebSocket协议标准文档
      * WEBSOCKET_OPCODE_TEXT = 0x1 ，文本数据
      * WEBSOCKET_OPCODE_BINARY = 0x2 ，二进制数据.
      */
-    protected int $opcode;
+    protected int $opcode = 0;
 
     /**
      * 表示数据帧是否完整.
      */
-    protected bool $finish;
+    protected bool $finish = false;
 
     /**
      * 格式化后的数据.
@@ -44,7 +44,7 @@ class Frame implements IFrame
     /**
      * 客户端地址
      */
-    protected IPEndPoint $clientAddress;
+    protected ?IPEndPoint $clientAddress = null;
 
     /**
      * @param int|string $clientId

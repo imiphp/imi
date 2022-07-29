@@ -21,12 +21,12 @@ class Annotation
     /**
      * 加载器.
      */
-    private AnnotationLoader $loader;
+    private ?AnnotationLoader $loader = null;
 
     /**
      * 处理器.
      */
-    private AnnotationParser $parser;
+    private ?AnnotationParser $parser = null;
 
     public function __construct()
     {

@@ -8,11 +8,11 @@ use Imi\App;
 
 class DelayBeanCallable
 {
-    private string $beanName;
+    private string $beanName = '';
 
-    private string $methodName;
+    private string $methodName = '';
 
-    private array $constructArgs;
+    private array $constructArgs = [];
 
     public function __construct(string $beanName, string $methodName, array $constructArgs = [])
     {

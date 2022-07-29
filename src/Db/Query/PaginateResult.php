@@ -14,7 +14,7 @@ class PaginateResult implements IPaginateResult
     /**
      * 数据库查询结构.
      */
-    protected IResult $result;
+    protected ?IResult $result = null;
 
     /**
      * 数组数据.

@@ -20,7 +20,7 @@ use Imi\Util\Uri;
  */
 class HttpRoute
 {
-    private Router $router;
+    private ?Router $router = null;
 
     /**
      * 忽略 URL 规则大小写.

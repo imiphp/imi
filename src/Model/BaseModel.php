@@ -60,10 +60,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 当前对象 meta 缓存.
-     *
-     * @var \Imi\Model\Meta
      */
-    protected Meta $__meta;
+    protected ?Meta $__meta = null;
 
     /**
      * 真实类名.

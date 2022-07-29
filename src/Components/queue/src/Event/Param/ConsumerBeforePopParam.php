@@ -15,5 +15,5 @@ class ConsumerBeforePopParam extends EventParam
     /**
      * 队列对象
      */
-    public IQueueDriver $queue;
+    public ?IQueueDriver $queue = null;
 }
