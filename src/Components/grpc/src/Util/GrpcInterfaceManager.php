@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Grpc\Util;
 
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\ReflectionContainer;
 use Imi\Bean\ReflectionUtil;
+use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\DocBlock;
-use ReflectionClass;
-use ReflectionMethod;
 
 /**
  * @Bean("GrpcInterfaceManager")
@@ -20,17 +21,59 @@ class GrpcInterfaceManager
      */
     private array $interfaces = [];
 
+    public function __init(): void
+    {
+        foreach (AnnotationManager::getAnnotationPoints(Controller::class, 'class') as $point)
+        {
+            $refClass = ReflectionContainer::getClassReflection($point->getClass());
+            foreach ($refClass->getInterfaces() as $interface)
+            {
+                if (preg_match('/Protobuf type <code>([^<]+)<\/code>/', $interface->getDocComment(), $matches))
+                {
+                    // 控制器是 Grpc
+                    $serviceName = $matches[1];
+                    $interfaceName = $interface->getName();
+                    $methods = [];
+                    $interfaceItem = ['serviceName' => $serviceName, 'methods' => &$methods];
+                    foreach ($interface->getMethods() as $method)
+                    {
+                        $param = $method->getParameters()[0] ?? null;
+                        if (!$param || !($type = $param->getType()))
+                        {
+                            continue;
+                        }
+                        $requestClass = ReflectionUtil::getTypeCode($type, $refClass->getName());
+
+                        $docComment = $method->getDocComment();
+                        if (false === $docComment)
+                        {
+                            $responseClass = '';
+                        }
+                        else
+                        {
+                            $docblock = DocBlock::getDocBlock($docComment);
+                            // @phpstan-ignore-next-line
+                            $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
+                        }
+
+                        $methods[$method->getName()] = [
+                            'request'  => $requestClass,
+                            'response' => $responseClass,
+                        ];
+                    }
+                    $this->interfaces[$interfaceName] = $interfaceItem;
+                    break;
+                }
+            }
+        }
+    }
+
     /**
      * 获取请求类.
      */
     public function getRequest(string $interface, string $method): string
     {
-        if (!isset($this->interfaces[$interface]))
-        {
-            $this->initInterface($interface);
-        }
-
-        return $this->interfaces[$interface][$method]['request'] ?? '';
+        return $this->interfaces[$interface]['methods'][$method]['request'] ?? '';
     }
 
     /**
@@ -38,47 +81,14 @@ class GrpcInterfaceManager
      */
     public function getResponse(string $interface, string $method): string
     {
-        if (!isset($this->interfaces[$interface]))
-        {
-            $this->initInterface($interface);
-        }
-
-        return $this->interfaces[$interface][$method]['response'] ?? '';
+        return $this->interfaces[$interface]['methods'][$method]['response'] ?? '';
     }
 
     /**
-     * 初始化接口.
+     * 获取服务名称.
      */
-    public function initInterface(string $interface): void
+    public function getServiceName(string $interface): string
     {
-        $refClass = new ReflectionClass($interface);
-        $data = [];
-        foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
-        {
-            $param = $method->getParameters()[0] ?? null;
-            if (!$param || !($type = $param->getType()))
-            {
-                continue;
-            }
-            $requestClass = ReflectionUtil::getTypeCode($type, $refClass->getName());
-
-            $docComment = $method->getDocComment();
-            if (false === $docComment)
-            {
-                $responseClass = '';
-            }
-            else
-            {
-                $docblock = DocBlock::getDocBlock($docComment);
-                // @phpstan-ignore-next-line
-                $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
-            }
-
-            $data[$method->getName()] = [
-                'request'   => $requestClass,
-                'response'  => $responseClass,
-            ];
-        }
-        $this->interfaces[$interface] = $data;
+        return $this->interfaces[$interface]['serviceName'] ?? '';
     }
 }
