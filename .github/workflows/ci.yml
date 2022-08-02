@@ -270,9 +270,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0"]
-        swoole: [v4.8.11]
+        php: [7.4, "8.0", "8.1"]
+        swoole: [v5.0.0, v4.8.11]
         roadrunner: [2.7.*]
+        exclude:
+          - php: 7.4
+            swoole: v5.0.0
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
