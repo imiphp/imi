@@ -10,7 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         swoole:
-          - version: php8.1
+          - version: 5.0-php8.1
+            postgresql_version: ""
+          - version: 5.0-php8.0
             postgresql_version: ""
           - version: 4.8-php8.1
             postgresql_version: ""
@@ -27,7 +29,7 @@ jobs:
       ENV_SERVICE: swoole
       POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
-      MYSQL_DOCKER_VERSION: '8.0'
+      MYSQL_DOCKER_VERSION: "8.0"
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +94,7 @@ jobs:
       ENV_SERVICE: swoole
       POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
-      MYSQL_DOCKER_VERSION: '8.0'
+      MYSQL_DOCKER_VERSION: "8.0"
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -148,7 +150,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v4.8.6]
+        swoole-cli: [v5.0.0, v4.8.11]
     env:
       MYSQL_SERVER_PASSWORD: "root"
       IMI_TEST_AMQP_SERVER_UTIL: 0
@@ -166,7 +168,7 @@ jobs:
       - name: Setup Redis
         uses: shogo82148/actions-setup-redis@v1
         with:
-          redis-version: '6.x'
+          redis-version: "6.x"
       - name: Setup swoole-cli
         run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
       - name: Check Version
@@ -220,9 +222,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0"]
-        swoole: [v4.8.5]
+        php: [7.4, "8.0", "8.1"]
+        swoole: [v5.0.0, v4.8.11]
         roadrunner: [2.7.*]
+        exclude:
+          - php: 7.4
+            swoole: v5.0.0
+
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -243,7 +249,7 @@ jobs:
       - name: Setup Redis
         uses: shogo82148/actions-setup-redis@v1
         with:
-          redis-version: '6.x'
+          redis-version: "6.x"
       - name: Get Openssl Dir
         id: opecssl-dir
         run: echo "::set-output name=path::$(brew --prefix openssl@1.1)"
@@ -322,7 +328,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, '8.0', 8.1]
+        php: [7.4, "8.0", 8.1]
         roadrunner: [2.7.*]
 
     env:
