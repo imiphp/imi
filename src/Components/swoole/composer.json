@@ -4,7 +4,8 @@
     "license": "MulanPSL-1.0",
     "description": "imi swoole component",
     "require": {
-        "ext-swoole": ">=4.7",
+        "php": ">=7.4 <8.2",
+        "ext-swoole": ">=4.7 <5.1",
         "yurunsoft/swoole-co-pool": "^1.1.0"
     },
     "require-dev": {

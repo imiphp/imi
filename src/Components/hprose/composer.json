@@ -4,6 +4,7 @@
     "license": "MIT",
     "description": "在 imi 框架中集成 Hprose 服务开发",
     "require": {
+        "php": ">=7.4 <8.2",
         "hprose/hprose": "^2.0",
         "hprose/hprose-swoole": "^2.0.12",
         "imiphp/imi-rpc": "~2.0.0",

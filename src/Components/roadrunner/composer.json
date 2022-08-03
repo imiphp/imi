@@ -4,6 +4,7 @@
     "license": "MulanPSL-1.0",
     "description": "imi roadrunner component",
     "require": {
+        "php": ">=7.4 <8.2",
         "spiral/roadrunner": "~2.0",
         "symfony/yaml": "^5.3"
     },

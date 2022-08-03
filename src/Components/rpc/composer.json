@@ -4,6 +4,7 @@
     "license": "MIT",
     "description": "在 imi 框架中开发 RPC 服务的基础组件",
     "require": {
+        "php": ">=7.4 <8.2",
         "imiphp/imi-swoole": "~2.0.0"
     },
     "require-dev": {},

@@ -4,6 +4,7 @@
     "license": "MIT",
     "description": "支持在 imi 框架中使用 Smarty 模版引擎",
     "require": {
+        "php": ">=7.4 <8.2",
         "smarty/smarty": "~3.1"
     },
     "require-dev": {

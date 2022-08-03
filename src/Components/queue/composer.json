@@ -3,7 +3,9 @@
     "type": "library",
     "license": "MIT",
     "description": "imi 框架的队列组件，使用 Redis 作为持久化",
-    "require": {},
+    "require": {
+        "php": ">=7.4 <8.2"
+    },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
         "swoole/ide-helper": "^4.7",

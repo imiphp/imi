@@ -4,7 +4,7 @@
     "license": "MulanPSL-1.0",
     "description": "imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。",
     "require": {
-        "php": ">=7.4",
+        "php": ">=7.4 <8.2",
         "ext-json": "*",
         "composer-runtime-api": "^2.0",
         "monolog/monolog": "^2.2 <2.6.0",
