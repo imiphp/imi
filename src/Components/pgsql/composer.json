@@ -4,6 +4,7 @@
     "license": "MIT",
     "description": "imi 框架配套的 pgsql 组件",
     "require": {
+        "php": ">=7.4 <8.2"
     },
     "require-dev": {
         "swoole/ide-helper": "^4.7"

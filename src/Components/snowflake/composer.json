@@ -4,6 +4,7 @@
     "license": "MIT",
     "description": "imi 框架的雪花算法生成组件",
     "require": {
+        "php": ">=7.4 <8.2",
         "godruoyi/php-snowflake": "^1.0"
     },
     "require-dev": {

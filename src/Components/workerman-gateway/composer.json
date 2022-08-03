@@ -4,6 +4,7 @@
     "license": "MulanPSL-1.0",
     "description": "imi workerman gateway component",
     "require": {
+        "php": ">=7.4 <8.2",
         "workerman/gateway-worker": "^3.0",
         "yurunsoft/workerman-gateway-sdk": "^1.0"
     },
