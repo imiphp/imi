@@ -18,7 +18,7 @@ use ReflectionMethod;
 class ProtobufUtil
 {
     /**
-     * 向 Grpc Message 对象设置值
+     * 向 Grpc Message 对象设置值，每次设置前会清空所有的值
      *
      * @param array|object $data
      */
@@ -38,7 +38,7 @@ class ProtobufUtil
     }
 
     /**
-     * 获取 Grpc Message 对象值
+     * 获取 Grpc Message 对象本身代表的值
      *
      * @return mixed
      */

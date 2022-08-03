@@ -29,8 +29,6 @@ class ProxyController extends HttpController
      */
     public function proxy(string $service, string $method)
     {
-        \Imi\dump($service, $method);
-
         return $this->grpcHttpProxy->proxy('grpc', $this->request, $this->response, $service, $method);
     }
 }

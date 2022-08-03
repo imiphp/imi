@@ -129,6 +129,9 @@
 
 * [Hprose](components/rpc/hprose.md)
 * [gRPC](components/rpc/grpc.md)
+  * [gRPC 服务开发](components/rpc/grpc.md)
+  * [Protobuf](components/rpc/grpc-protobuf.md)
+  * [gRPC 的 HTTP 代理网关](components/rpc/grpc-proxy.md)
 
 ## 功能组件
 

@@ -10,12 +10,18 @@ use Imi\Bean\ReflectionContainer;
 use Imi\Bean\ReflectionUtil;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\DocBlock;
+use ReflectionClass;
 
 /**
  * @Bean("GrpcInterfaceManager")
  */
 class GrpcInterfaceManager
 {
+    /**
+     * 绑定的服务接口.
+     */
+    protected array $binds = [];
+
     /**
      * 接口集合.
      */
@@ -33,48 +39,89 @@ class GrpcInterfaceManager
             $refClass = ReflectionContainer::getClassReflection($point->getClass());
             foreach ($refClass->getInterfaces() as $interface)
             {
-                if (preg_match('/Protobuf type <code>([^<]+)<\/code>/', $interface->getDocComment(), $matches))
+                if ($serviceName = $this->parseServiceNameByInterface($interface))
                 {
                     // 控制器是 Grpc
-                    $serviceName = $matches[1];
                     $interfaceName = $interface->getName();
-                    $methods = [];
-                    $interfaceItem = ['serviceName' => $serviceName, 'methods' => &$methods];
-                    $this->services[$serviceName] = [
-                        'interfaceName' => $interfaceName,
-                    ];
-                    foreach ($interface->getMethods() as $method)
-                    {
-                        $param = $method->getParameters()[0] ?? null;
-                        if (!$param || !($type = $param->getType()))
-                        {
-                            continue;
-                        }
-                        $requestClass = ReflectionUtil::getTypeCode($type, $refClass->getName());
-
-                        $docComment = $method->getDocComment();
-                        if (false === $docComment)
-                        {
-                            $responseClass = '';
-                        }
-                        else
-                        {
-                            $docblock = DocBlock::getDocBlock($docComment);
-                            // @phpstan-ignore-next-line
-                            $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
-                        }
-
-                        $methods[$method->getName()] = [
-                            'request'  => $requestClass,
-                            'response' => $responseClass,
-                        ];
-                    }
-                    $this->interfaces[$interfaceName] = $interfaceItem;
-                    unset($methods);
+                    $this->bind($interfaceName, $serviceName);
                     break;
                 }
             }
         }
+        foreach ($this->binds as $interfaceName)
+        {
+            $this->bind($interfaceName);
+        }
+    }
+
+    /**
+     * @param string|ReflectionClass $interfaceName
+     */
+    public function bind($interface, ?string $serviceName = null): void
+    {
+        if (\is_string($interface))
+        {
+            $interfaceName = $interface;
+            $interface = new ReflectionClass($interfaceName);
+        }
+        else
+        {
+            $interfaceName = $interface->getName();
+        }
+        if (null === $serviceName)
+        {
+            $serviceName = $this->parseServiceNameByInterface($interface);
+        }
+        // 控制器是 Grpc
+        $methods = [];
+        $interfaceItem = ['serviceName' => $serviceName, 'methods' => &$methods];
+        $this->services[$serviceName] = [
+            'interfaceName' => $interfaceName,
+        ];
+        foreach ($interface->getMethods() as $method)
+        {
+            $param = $method->getParameters()[0] ?? null;
+            if (!$param || !($type = $param->getType()))
+            {
+                continue;
+            }
+            $requestClass = ReflectionUtil::getTypeCode($type, $interface->getName());
+
+            $docComment = $method->getDocComment();
+            if (false === $docComment)
+            {
+                $responseClass = '';
+            }
+            else
+            {
+                $docblock = DocBlock::getDocBlock($docComment);
+                // @phpstan-ignore-next-line
+                $responseClass = (string) $docblock->getTagsByName('return')[0]->getType();
+            }
+
+            $methods[$method->getName()] = [
+                'request'  => $requestClass,
+                'response' => $responseClass,
+            ];
+        }
+        $this->interfaces[$interfaceName] = $interfaceItem;
+    }
+
+    /**
+     * @param string|ReflectionClass $interface
+     */
+    public function parseServiceNameByInterface($interface): ?string
+    {
+        if (\is_string($interface))
+        {
+            $interface = new ReflectionClass($interface);
+        }
+        if (preg_match('/Protobuf type <code>([^<]+)<\/code>/', $interface->getDocComment(), $matches))
+        {
+            return $matches[1];
+        }
+
+        return null;
     }
 
     /**
