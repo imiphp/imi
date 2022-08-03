@@ -49,5 +49,6 @@ return (new PhpCsFixer\Config())
             ->notName('*.macro.php')
             ->notPath('src/Components/swoole/src/Util/Coroutine.typed.php') // 兼容 Swoole 5.0，需要 PHP >= 8.0
             ->notPath('src/Components/hprose/src/Imi-Server-Hprose/Server.php') // bug: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/6534
+            ->notPath('src/Components/grpc/example/grpc')
     )
 ;
