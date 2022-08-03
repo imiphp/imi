@@ -219,10 +219,12 @@ class Server
                 return null;
             }
 
+            // @phpstan-ignore-next-line
             return $server;
         }
         else
         {
+            // @phpstan-ignore-next-line
             return ServerManager::getServer($serverName, $type);
         }
     }
