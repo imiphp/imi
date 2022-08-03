@@ -55,7 +55,7 @@ class GrpcInterfaceManager
     }
 
     /**
-     * @param string|ReflectionClass $interfaceName
+     * @param string|ReflectionClass $interface
      */
     public function bind($interface, ?string $serviceName = null): void
     {
