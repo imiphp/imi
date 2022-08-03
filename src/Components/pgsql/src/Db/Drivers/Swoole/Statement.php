@@ -64,7 +64,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         {
             /** @var \Swoole\Coroutine\PostgreSQL $pgDb */
             $pgDb = $db->getInstance();
-            if ($result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC))
+            if ($result = $pgDb->fetchAll($queryResult, SW_PGSQL_ASSOC))
             {
                 $this->result = $result;
             }
@@ -221,7 +221,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
         }
-        $this->result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC) ?: [];
+        $this->result = $pgDb->fetchAll($queryResult, SW_PGSQL_ASSOC) ?: [];
 
         return true;
     }

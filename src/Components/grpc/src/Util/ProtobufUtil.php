@@ -39,8 +39,10 @@ class ProtobufUtil
 
     /**
      * 获取 Grpc Message 对象值
+     *
+     * @return mixed
      */
-    public static function getMessageValue(Message $message, array $options = []): mixed
+    public static function getMessageValue(Message $message, array $options = [])
     {
         if ($message instanceof \Google\Protobuf\Any)
         {
@@ -71,7 +73,7 @@ class ProtobufUtil
         }
         if ($message instanceof \Google\Protobuf\EnumValue)
         {
-            switch ($enumReturnType ??= ($options['enumReturnType'] ?? 'value'))
+            switch ($enumReturnType = ($options['enumReturnType'] ?? 'value'))
             {
                 case 'value':
                     return $message->getNumber();
@@ -144,8 +146,10 @@ class ProtobufUtil
 
     /**
      * @param mixed $value
+     *
+     * @return mixed
      */
-    public static function parseFieldValue(FieldDescriptor $field, $value, array $options = []): mixed
+    public static function parseFieldValue(FieldDescriptor $field, $value, array $options = [])
     {
         if (null === $value)
         {
@@ -170,7 +174,7 @@ class ProtobufUtil
         {
             $map = $value;
             $value = [];
-            /** @var Descriptor $messageType */
+            /** @var Descriptor|null $messageType */
             $messageType = $field->getMessageType();
             foreach ($map as $mapValue)
             {

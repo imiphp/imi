@@ -113,8 +113,10 @@ class CronUtil
 
     /**
      * 获取所有任务
+     *
+     * @return mixed
      */
-    public static function getRealTasks(): mixed
+    public static function getRealTasks()
     {
         $tasks = [];
         $client = new Client([
@@ -139,8 +141,10 @@ class CronUtil
 
     /**
      * 通过任务Id 查询状态
+     *
+     * @return mixed
      */
-    public static function hasTask(string $id): mixed
+    public static function hasTask(string $id)
     {
         $task = [];
         $client = new Client([
@@ -166,8 +170,10 @@ class CronUtil
 
     /**
      * 通过任务Id 获取单个任务
+     *
+     * @return mixed
      */
-    public static function getTask(string $id): mixed
+    public static function getTask(string $id)
     {
         $task = [];
         $client = new Client([

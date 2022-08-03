@@ -24,6 +24,8 @@ class ProxyController extends HttpController
     /**
      * @Action
      * @Route("grpc/{service}/{method}")
+     *
+     * @return mixed
      */
     public function proxy(string $service, string $method)
     {

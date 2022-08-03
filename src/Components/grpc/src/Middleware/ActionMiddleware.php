@@ -270,6 +270,10 @@ class ActionMiddleware implements MiddlewareInterface
                         throw new \RuntimeException(sprintf('RequestData %s deserialize failed', $type));
                     }
                 }
+                else
+                {
+                    $value = null;
+                }
             }
             elseif ($actionMethodCacheItem->allowNull())
             {
