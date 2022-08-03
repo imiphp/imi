@@ -29,4 +29,11 @@ class GrpcTest extends BaseTest
             'error'     => '',
         ], $response->json(true));
     }
+
+    public function testProxy(): void
+    {
+        $http = new HttpRequest();
+        $response = $http->post('http://127.0.0.1:8080/proxy/grpc/grpc.TestService/test', self::DATA, 'json');
+        $this->assertEquals(self::DATA, $response->json(true), $response->getHeaderLine('grpc-message'));
+    }
 }

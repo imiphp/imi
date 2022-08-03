@@ -177,13 +177,17 @@ class GrpcClient implements IRpcClient
     /**
      * 接收响应结果.
      */
-    public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null): \Google\Protobuf\Internal\Message
+    public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null, ?\Yurun\Util\YurunHttp\Http\Response &$response = null): \Google\Protobuf\Internal\Message
     {
         if (!$this->isConnected())
         {
             throw new \RuntimeException('GrpcClient not connected');
         }
         $result = $this->http2Client->recv($streamId, $timeout);
+        if ($result)
+        {
+            $response = $result;
+        }
         if (!$result || !$result->success)
         {
             throw new \RuntimeException(sprintf('gRPC recv() failed, errCode:%s, errorMsg:%s', $result->getErrno(), $result->getError()));

@@ -24,6 +24,10 @@ message LoginResponse {
     string error = 2;       // 错误信息
 }
 
+service TestService {
+    rpc Test (TestRequest) returns (TestRequest);
+}
+
 enum Test {
     A = 0;
     B = 2;

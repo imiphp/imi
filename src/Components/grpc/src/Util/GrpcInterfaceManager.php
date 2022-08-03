@@ -21,6 +21,11 @@ class GrpcInterfaceManager
      */
     private array $interfaces = [];
 
+    /**
+     * 服务集合.
+     */
+    private array $services = [];
+
     public function __init(): void
     {
         foreach (AnnotationManager::getAnnotationPoints(Controller::class, 'class') as $point)
@@ -35,6 +40,9 @@ class GrpcInterfaceManager
                     $interfaceName = $interface->getName();
                     $methods = [];
                     $interfaceItem = ['serviceName' => $serviceName, 'methods' => &$methods];
+                    $this->services[$serviceName] = [
+                        'interfaceName' => $interfaceName,
+                    ];
                     foreach ($interface->getMethods() as $method)
                     {
                         $param = $method->getParameters()[0] ?? null;
@@ -62,6 +70,7 @@ class GrpcInterfaceManager
                         ];
                     }
                     $this->interfaces[$interfaceName] = $interfaceItem;
+                    unset($methods);
                     break;
                 }
             }
@@ -90,5 +99,13 @@ class GrpcInterfaceManager
     public function getServiceName(string $interface): string
     {
         return $this->interfaces[$interface]['serviceName'] ?? '';
+    }
+
+    /**
+     * 获取接口名称.
+     */
+    public function getInterface(string $serviceName): string
+    {
+        return $this->services[$serviceName]['interfaceName'];
     }
 }

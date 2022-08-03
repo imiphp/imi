@@ -24,6 +24,7 @@ class ProtobufUtil
      */
     public static function setMessageData(Message $message, $data): void
     {
+        $message->clear();
         if (\is_object($data))
         {
             $message->mergeFromJsonString(json_encode($data));
