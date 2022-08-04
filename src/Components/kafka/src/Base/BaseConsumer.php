@@ -12,6 +12,7 @@ use Imi\Kafka\Pool\KafkaPool;
 use Imi\Util\Imi;
 use longlang\phpkafka\Consumer\ConsumeMessage;
 use longlang\phpkafka\Consumer\Consumer;
+
 use function Yurun\Swoole\Coroutine\goWait;
 
 /**

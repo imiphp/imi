@@ -121,7 +121,7 @@ if (class_exists(PostgreSQL::class, false))
                     . ' user=' . ($option['username'] ?? '')
                     . ' password=' . ($option['password'] ?? '')
                     . $otherOptionsContent
-                    ;
+            ;
         }
 
         /**
@@ -219,7 +219,7 @@ if (class_exists(PostgreSQL::class, false))
             }
             else
             {
-                $this->exec('ROLLBACK TO P' . ($this->getTransactionLevels()));
+                $this->exec('ROLLBACK TO P' . $this->getTransactionLevels());
                 $result = true;
             }
             if ($result)

@@ -6,6 +6,7 @@ namespace Imi\Phar;
 
 use function file_exists;
 use function is_file;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

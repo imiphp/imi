@@ -6,11 +6,14 @@ namespace Imi\Dev;
 
 use FilesystemIterator;
 use Imi\Cli\ImiCommand;
+
 use function implode;
 use function method_exists;
 use function realpath;
 use function sprintf;
+
 use Symfony\Component\Process\Process;
+
 use function usleep;
 
 class Plugin

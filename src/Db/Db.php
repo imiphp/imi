@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Db;
 
 use function array_is_list;
+
 use Imi\App;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
@@ -206,6 +207,7 @@ class Db
                 case QueryType::WRITE:
                 default:
                     // 保持原样不做任何处理
+                    break;
             }
         }
 

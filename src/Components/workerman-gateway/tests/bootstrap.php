@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Imi\Cli\ImiCommand;
+
 use function Imi\env;
 use function Imi\ttyExec;
 

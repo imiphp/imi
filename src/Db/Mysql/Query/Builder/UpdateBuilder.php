@@ -55,7 +55,7 @@ class UpdateBuilder extends BaseBuilder
                 $field = $query->parseKeywordToText($matches['keywords']);
                 if ($matches['jsonKeywords'])
                 {
-                    if (is_scalar($v))
+                    if (\is_scalar($v))
                     {
                         $valueParam = $query->getAutoParamName();
                         $jsonSets[$field][] = [

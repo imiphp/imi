@@ -104,8 +104,6 @@ class Member
      * 为用户增加角色.
      *
      * 传入角色代码
-     *
-     * @param string ...$roles
      */
     public function addRoles(string ...$roles): void
     {
@@ -120,8 +118,6 @@ class Member
      * 传入角色代码
      *
      * 调用后，用户只拥有本次传入的角色
-     *
-     * @param string ...$roles
      */
     public function setRoles(string ...$roles): void
     {
@@ -134,8 +130,6 @@ class Member
      * 移除用户的角色.
      *
      * 传入角色代码
-     *
-     * @param string ...$roles
      */
     public function removeRoles(string ...$roles): void
     {
@@ -146,8 +140,6 @@ class Member
 
     /**
      * 根据角色代码判断，该用户是否拥有一个或多个角色.
-     *
-     * @param string ...$roles
      */
     public function hasRoles(string ...$roles): bool
     {
@@ -186,8 +178,6 @@ class Member
      * 增加操作权限.
      *
      * 传入操作代码
-     *
-     * @param string ...$operations
      */
     public function addOperations(string ...$operations): void
     {
@@ -201,8 +191,6 @@ class Member
      * 传入操作代码
      *
      * 调用后，只拥有本次传入的操作权限
-     *
-     * @param string ...$operations
      */
     public function setOperations(string ...$operations): void
     {
@@ -214,8 +202,6 @@ class Member
      * 移除操作权限.
      *
      * 传入操作代码
-     *
-     * @param string ...$operations
      */
     public function removeOperations(string ...$operations): void
     {
@@ -225,8 +211,6 @@ class Member
 
     /**
      * 根据操作代码判断，是否拥有一个或多个操作权限.
-     *
-     * @param string ...$operations
      */
     public function hasOperations(string ...$operations): bool
     {

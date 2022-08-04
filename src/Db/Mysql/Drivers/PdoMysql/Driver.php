@@ -44,7 +44,7 @@ class Driver extends MysqlBase
                  . ';dbname=' . ($option['database'] ?? '')
                  . ';unix_socket=' . ($option['unix_socket'] ?? '')
                  . ';charset=' . ($option['charset'] ?? 'utf8')
-                 ;
+        ;
     }
 
     /**

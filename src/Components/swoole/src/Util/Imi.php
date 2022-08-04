@@ -78,7 +78,7 @@ class Imi
         $result = $rule;
         foreach ($data as $k => $v)
         {
-            if (!is_scalar($v))
+            if (!\is_scalar($v))
             {
                 continue;
             }

@@ -186,7 +186,7 @@ abstract class BaseAsyncPool extends BasePool
         $resource = $poolItem->getResource();
         try
         {
-            if (($this->config->isCheckStateWhenGetResource() && !$resource->checkState()))
+            if ($this->config->isCheckStateWhenGetResource() && !$resource->checkState())
             {
                 $resource->close();
                 if (!$resource->open())

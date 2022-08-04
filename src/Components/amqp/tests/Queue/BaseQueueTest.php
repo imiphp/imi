@@ -10,6 +10,7 @@ use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Imi;
 use PHPUnit\Framework\TestCase;
 use Swoole\Coroutine\Channel;
+
 use function Yurun\Swoole\Coroutine\goWait;
 
 abstract class BaseQueueTest extends TestCase

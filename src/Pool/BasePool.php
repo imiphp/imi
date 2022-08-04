@@ -192,7 +192,7 @@ abstract class BasePool implements IPool
                     (null !== $maxActiveTime && $item->isFree() && $time - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
                     || ($needGcIdleResource && $item->isFree() && $time - $item->getLastReleaseTime() >= $maxIdleTime) // 最大空闲时间
                     || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && $time - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
-                    ) {
+                ) {
                     $item->getResource()->close();
                     unset($pool[$key]);
                     $hasGC = true;

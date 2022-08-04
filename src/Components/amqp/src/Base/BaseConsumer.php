@@ -10,6 +10,7 @@ use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Enum\ConsumerResult;
 use Imi\App;
 use Imi\Util\Imi;
+
 use function Yurun\Swoole\Coroutine\goWait;
 
 /**

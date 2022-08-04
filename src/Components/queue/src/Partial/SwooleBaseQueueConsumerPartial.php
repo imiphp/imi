@@ -17,6 +17,7 @@ use Swoole\Coroutine;
 use Yurun\Swoole\CoPool\CoPool;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
+
 use function Yurun\Swoole\Coroutine\goWait;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))

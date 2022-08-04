@@ -101,7 +101,7 @@ class MQTTClient
             ->withSslHostName($config['sslHostName'] ?? null)
             ->withSslCafile($config['sslCafile'] ?? null)
             ->withSslCapath($config['sslCapath'] ?? null)
-            ;
+        ;
 
         $this->connection = $connection;
         $option = [

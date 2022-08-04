@@ -12,7 +12,7 @@ class PharHandler extends XdebugHandler
 
     protected function requiresRestart(bool $default): bool
     {
-        $this->required = (bool) ini_get('phar.readonly');
+        $this->required = (bool) \ini_get('phar.readonly');
 
         return $this->required || $default;
     }

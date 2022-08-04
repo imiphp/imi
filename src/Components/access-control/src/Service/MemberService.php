@@ -74,8 +74,6 @@ class MemberService
      * 传入角色代码
      *
      * @Transaction
-     *
-     * @param string ...$roles
      */
     public function addRoles(int $memberId, string ...$roles): void
     {
@@ -101,8 +99,6 @@ class MemberService
      * 调用后，只拥有本次传入的角色
      *
      * @Transaction
-     *
-     * @param string ...$roles
      */
     public function setRoles(int $memberId, string ...$roles): void
     {
@@ -114,8 +110,6 @@ class MemberService
      * 移除角色.
      *
      * 传入角色代码
-     *
-     * @param string ...$roles
      */
     public function removeRoles(int $memberId, string ...$roles): void
     {
@@ -135,8 +129,6 @@ class MemberService
      * 传入操作代码
      *
      * @Transaction
-     *
-     * @param string ...$operations
      */
     public function addOperations(int $memberId, string ...$operations): void
     {
@@ -162,8 +154,6 @@ class MemberService
      * 调用后，只拥有本次传入的操作权限。不影响角色赋予的权限。
      *
      * @Transaction
-     *
-     * @param string ...$operations
      */
     public function setOperations(int $memberId, string ...$operations): void
     {
@@ -227,8 +217,6 @@ class MemberService
      * 移除操作权限.
      *
      * 传入操作代码
-     *
-     * @param string ...$operations
      */
     public function removeOperations(int $memberId, string ...$operations): void
     {

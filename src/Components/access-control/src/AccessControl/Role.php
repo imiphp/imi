@@ -21,7 +21,7 @@ class Role
     /**
      * 角色记录.
      */
-    private ?\Imi\AC\Model\Role $roleInfo;
+    private ?\Imi\AC\Model\Role $roleInfo = null;
 
     /**
      * 支持的所有操作权限.
@@ -141,8 +141,6 @@ class Role
      * 增加操作权限.
      *
      * 传入操作代码
-     *
-     * @param string ...$operations
      */
     public function addOperations(string ...$operations): void
     {
@@ -156,8 +154,6 @@ class Role
      * 传入操作代码
      *
      * 调用后，只拥有本次传入的操作权限
-     *
-     * @param string ...$operations
      */
     public function setOperations(string ...$operations): void
     {
@@ -169,8 +165,6 @@ class Role
      * 移除操作权限.
      *
      * 传入操作代码
-     *
-     * @param string ...$operations
      */
     public function removeOperations(string ...$operations): void
     {
@@ -180,8 +174,6 @@ class Role
 
     /**
      * 根据操作代码判断，是否拥有一个或多个操作权限.
-     *
-     * @param string ...$operations
      */
     public function hasOperations(string ...$operations): bool
     {

@@ -671,8 +671,6 @@ abstract class Model extends BaseModel
 
     /**
      * 查询指定关联.
-     *
-     * @param string ...$names
      */
     public function queryRelations(string ...$names): void
     {
@@ -691,8 +689,6 @@ abstract class Model extends BaseModel
 
     /**
      * 为一个列表查询指定关联.
-     *
-     * @param string ...$names
      */
     public static function queryRelationsList(iterable $list, string ...$names): iterable
     {

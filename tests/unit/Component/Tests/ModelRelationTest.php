@@ -89,7 +89,7 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals([
             'id' => 1,
         ], // @phpstan-ignore-next-line
-        $record1->ex->data->toArray());
+            $record1->ex->data->toArray());
 
         $record2 = Article::find($article2->id);
         $this->assertNotNull($record2);
@@ -100,7 +100,7 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals([
             'id' => 2,
         ], // @phpstan-ignore-next-line
-        $record2->ex->data->toArray());
+            $record2->ex->data->toArray());
 
         // 查询列表
         $list = Article::query()->whereIn('id', $articleIds)->select()->getArray();
@@ -135,7 +135,7 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals([
             'id' => 11,
         ], // @phpstan-ignore-next-line
-        $record->ex->data->toArray());
+            $record->ex->data->toArray());
 
         // 删除
         $article3->delete();
@@ -681,7 +681,7 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals([
             'id' => 1,
         ], // @phpstan-ignore-next-line
-        $record1->queryRelationsList->data->toArray());
+            $record1->queryRelationsList->data->toArray());
 
         $record2 = Article::find($article2->id);
         $record2->queryRelations('queryRelationsList');
@@ -693,7 +693,7 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals([
             'id' => 2,
         ], // @phpstan-ignore-next-line
-        $record2->queryRelationsList->data->toArray());
+            $record2->queryRelationsList->data->toArray());
 
         // 查询列表
         $list = Article::query()->whereIn('id', $articleIds)->select()->getArray();

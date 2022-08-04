@@ -6,6 +6,7 @@ namespace Imi\Config\Annotation;
 
 use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\Bean\Annotation\Inherit;
+
 use function Imi\env;
 
 /**

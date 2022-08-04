@@ -433,7 +433,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 {
                     continue;
                 }
-                if (\in_array($name, ($relationFieldNames ??= ($meta->hasRelation() ? ModelRelationManager::getRelationFieldNames($this) : []))))
+                if (\in_array($name, $relationFieldNames ??= ($meta->hasRelation() ? ModelRelationManager::getRelationFieldNames($this) : [])))
                 {
                     /** @var AutoSelect|null $autoSelect */
                     $autoSelect = AnnotationManager::getPropertyAnnotations($realClass ??= ($this->__realClass ??= $meta->getRealModelClass()), $name, AutoSelect::class, true, true);

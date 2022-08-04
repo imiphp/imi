@@ -10,6 +10,7 @@ use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 use Imi\Timer\Timer;
+
 use function str_contains;
 
 class RedisManager

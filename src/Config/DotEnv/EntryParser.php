@@ -164,7 +164,8 @@ final class EntryParser
      */
     private static function processToken(int $state, string $token)
     {
-        switch ($state) {
+        switch ($state)
+        {
             case self::INITIAL_STATE:
                 if ('\'' === $token)
                 {

@@ -51,8 +51,6 @@ class ArrayUtil
 
     /**
      * 多维数组递归合并.
-     *
-     * @param array ...$arrays
      */
     public static function recursiveMerge(array ...$arrays): array
     {

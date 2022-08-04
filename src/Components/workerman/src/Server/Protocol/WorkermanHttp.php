@@ -196,7 +196,7 @@ class WorkermanHttp
             $connection->__request->connection = null;
             $connection->__request = null;
         }
-        if (is_scalar($response) || null === $response)
+        if (\is_scalar($response) || null === $response)
         {
             $ext_header = '';
             if (isset($connection->__header))
@@ -340,7 +340,7 @@ class WorkermanHttp
         }
         if ('' === static::$_uploadTmpDir)
         {
-            if ($upload_tmp_dir = ini_get('upload_tmp_dir'))
+            if ($upload_tmp_dir = \ini_get('upload_tmp_dir'))
             {
                 static::$_uploadTmpDir = $upload_tmp_dir;
             }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Validate;
 
 use function filter_var;
+
 use Imi\Enum\BaseEnum;
 
 /**
@@ -347,8 +348,8 @@ class ValidatorHelper
      */
     public static function compare($valueLeft, string $operation, $valueRight): bool
     {
-        //eval is not safe、abandoned
-        switch ($operation) {
+        switch ($operation)
+        {
             case '==':
                 return $valueLeft == $valueRight;
             case '!=':

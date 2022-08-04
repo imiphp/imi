@@ -42,7 +42,7 @@ class Driver extends PgsqlBase
                  . 'host=' . ($option['host'] ?? '127.0.0.1')
                  . ';port=' . ($option['port'] ?? '5432')
                  . ';dbname=' . ($option['database'] ?? 'database')
-                 ;
+        ;
     }
 
     /**

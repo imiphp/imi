@@ -165,11 +165,11 @@ trait TProcess
                 'package_length_offset' => 0,
                 'package_body_offset'   => 4,
             ]);
-            //接收到新的连接请求 并自动创建一个协程
+            // 接收到新的连接请求 并自动创建一个协程
             $server->handle(function (Connection $conn) {
                 while ($this->unixSocketRunning)
                 {
-                    //接收数据
+                    // 接收数据
                     $data = $conn->recv();
 
                     if ('' === $data || false === $data)
@@ -188,7 +188,7 @@ trait TProcess
                 }
             });
 
-            //开始监听端口
+            // 开始监听端口
             $server->start();
 
             if (file_exists($socketFile))

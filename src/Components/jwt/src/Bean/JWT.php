@@ -344,14 +344,14 @@ class JWT
 
     public function getJwtPackageVersion(): int
     {
-        #if 0
+        # if 0
         return class_exists(\Lcobucci\JWT\Token\Parser::class) ? 4 : 3;
-        #endif
-        #if class_exists(\Lcobucci\JWT\Token\Parser::class)
+        # endif
+        # if class_exists(\Lcobucci\JWT\Token\Parser::class)
         // @phpstan-ignore-next-line
         return 4;
-        #else
+        # else
         return 3;
-        #endif
+        # endif
     }
 }

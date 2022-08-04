@@ -11,10 +11,13 @@ use Imi\Bean\BeanManager;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
+
 use function Imi\env;
+
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
+
 use function php_uname;
 use function round;
 use function sprintf;
@@ -429,8 +432,6 @@ class Imi
 
     /**
      * 获取运行时目录路径.
-     *
-     * @param string ...$path
      */
     public static function getRuntimePath(string ...$path): string
     {
@@ -806,7 +807,7 @@ class Imi
         {
             $status = opcache_get_status(false);
             $enabled = $status && $status['opcache_enabled'];
-            $jit = $status && isset($status['jit']) ? (', JIT ' . ini_get('opcache.jit')) : '';
+            $jit = $status && isset($status['jit']) ? (', JIT ' . \ini_get('opcache.jit')) : '';
             $opcacheStatus = ($enabled ? 'On' : 'Off') . $jit;
         }
         else

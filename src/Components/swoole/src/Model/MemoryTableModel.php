@@ -96,8 +96,6 @@ abstract class MemoryTableModel extends BaseModel
 
     /**
      * 批量删除.
-     *
-     * @param string ...$keys
      */
     public static function deleteBatch(string ...$keys): void
     {
