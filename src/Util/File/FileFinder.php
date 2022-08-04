@@ -28,7 +28,7 @@ class FileFinder extends \PHPStan\File\FileFinder
     public function __construct(
         FileExcluder $fileExcluder,
         FileHelper $fileHelper,
-        array $fileExtensions,
+        array $fileExtensions
     ) {
         $this->fileExcluder = $fileExcluder;
         $this->fileHelper = $fileHelper;

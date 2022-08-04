@@ -44,104 +44,104 @@ jobs:
       - name: Analyse access-control
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/access-control/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/access-control/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse amqp
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/amqp/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/amqp/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse apidoc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/apidoc/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/apidoc/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse fpm
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/fpm/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/fpm/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse grpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/grpc/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/grpc/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse jwt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/jwt/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/jwt/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse kafka
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/kafka/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/kafka/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse mqtt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/mqtt/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/mqtt/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse pgsql
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/pgsql/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/pgsql/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse queue
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/queue/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/queue/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse rate-limit
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/rate-limit/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/rate-limit/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse roadrunner
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/roadrunner/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/roadrunner/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse rpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/rpc/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/rpc/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse shared-memory
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/shared-memory/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/shared-memory/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse smarty
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/smarty/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/smarty/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse snowflake
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/snowflake/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/snowflake/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse swoole
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/swoole/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/swoole/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse swoole-tracker
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/swoole-tracker/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/swoole-tracker/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse workerman
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/workerman/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/workerman/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse workerman-gateway
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/workerman-gateway/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/workerman-gateway/ /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse macro
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} -w /imi/src/Components/macro/ ../../../vendor/bin/rector process --dry-run
+          docker exec ${ENV_SERVICE} -w /imi/src/Components/macro/ /imi/vendor/bin/rector process --dry-run
