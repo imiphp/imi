@@ -18,14 +18,21 @@ use Symfony\Component\Finder\Finder;
 
 class FileFinder extends \PHPStan\File\FileFinder
 {
+    private FileExcluder $fileExcluder;
+    private FileHelper $fileHelper;
+    private array $fileExtensions;
+
     /**
      * @param string[] $fileExtensions
      */
     public function __construct(
-        private FileExcluder $fileExcluder,
-        private FileHelper $fileHelper,
-        private array $fileExtensions,
+        FileExcluder $fileExcluder,
+        FileHelper $fileHelper,
+        array $fileExtensions,
     ) {
+        $this->fileExcluder = $fileExcluder;
+        $this->fileHelper = $fileHelper;
+        $this->fileExtensions = $fileExtensions;
     }
 
     /**

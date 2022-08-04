@@ -93,7 +93,7 @@ class Server extends BaseRpcServer
             'host'      => $this->config['host'] ?? '0.0.0.0',
             'port'      => $this->config['port'] ?? 8080,
             'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_TCP | $this->config['sockType']) : \SWOOLE_SOCK_TCP,
-            'mode'      => $this->config['mode'] ?? \swoole_process,
+            'mode'      => $this->config['mode'] ?? (\SWOOLE_PROCESS),
         ];
     }
 

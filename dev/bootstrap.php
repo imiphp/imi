@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Core\Configuration\Option;
 use Rector\Set\ValueObject\LevelSetList;
 
 ini_set('date.timezone', 'Asia/Shanghai');
