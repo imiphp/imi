@@ -12,6 +12,7 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Swoole\Util\Coroutine;
+
 use function Swoole\Coroutine\defer;
 
 /**

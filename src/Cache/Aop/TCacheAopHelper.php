@@ -39,7 +39,7 @@ trait TCacheAopHelper
                 else
                 {
                     $value = ObjectArrayHelper::get($args, $argName);
-                    if (is_scalar($value))
+                    if (\is_scalar($value))
                     {
                         return (string) $value;
                     }

@@ -36,6 +36,7 @@ if (\SWOOLE_VERSION_ID >= 50000)
 {
     include __DIR__ . '/Coroutine.typed.php';
 }
+// @phpstan-ignore-next-line
 else
 {
     class Coroutine extends \Swoole\Coroutine

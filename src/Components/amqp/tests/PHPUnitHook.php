@@ -6,7 +6,9 @@ namespace Imi\AMQP\Test;
 
 use Imi\App;
 use Imi\Cli\CliApp;
+
 use function Imi\env;
+
 use Imi\Swoole\SwooleApp;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;

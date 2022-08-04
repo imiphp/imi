@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Redis;
 
 use RedisException;
+
 use function str_contains;
 
 /**

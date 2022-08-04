@@ -198,7 +198,7 @@ class Driver extends MysqlBase
         }
         else
         {
-            $this->exec('ROLLBACK TO P' . ($this->getTransactionLevels()));
+            $this->exec('ROLLBACK TO P' . $this->getTransactionLevels());
             $result = true;
         }
         if ($result)

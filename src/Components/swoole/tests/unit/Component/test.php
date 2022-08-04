@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Swoole\SwooleApp;
+
 use function Swoole\Coroutine\run;
 
 require \dirname(__DIR__, 3) . '/vendor/autoload.php';

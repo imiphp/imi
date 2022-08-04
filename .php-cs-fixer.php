@@ -45,16 +45,9 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->exclude([
-                __DIR__ . '/vendor',
-                __DIR__ . '/src/Components/*/vendor',
-            ])
-            ->in(__DIR__ . '/src')
-            ->in(__DIR__ . '/config')
-            ->in(__DIR__ . '/tests')
-            ->in(__DIR__ . '/dev')
-            ->in(__DIR__ . '/split-repository')
-            ->append([__FILE__])
+            ->in(__DIR__)
             ->notName('*.macro.php')
+            ->notPath('src/Components/swoole/src/Util/Coroutine.typed.php') // 兼容 Swoole 5.0，需要 PHP >= 8.0
+            ->notPath('src/Components/hprose/src/Imi-Server-Hprose/Server.php') // bug: https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/6534
     )
 ;

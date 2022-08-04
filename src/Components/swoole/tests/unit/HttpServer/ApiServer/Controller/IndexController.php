@@ -206,7 +206,7 @@ class IndexController extends HttpController
                                             ->withCookie('e', '5', 0, '/', 'localhost')
                                             ->withCookie('f', '6', 0, '/', '', true)
                                             ->withCookie('g', '7', 0, '/', '', true, true)
-                                            ;
+        ;
     }
 
     /**

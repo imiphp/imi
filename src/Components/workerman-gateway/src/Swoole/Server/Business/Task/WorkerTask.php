@@ -20,6 +20,7 @@ use Swoole\WebSocket\Frame;
 use Workerman\Gateway\Gateway\Contract\IGatewayClient;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
+
 use function Yurun\Swoole\Coroutine\goWait;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
@@ -42,7 +43,8 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     /** @var ISwooleServer $server */
                     /** @var IGatewayClient $client */
                     ['server' => $server, 'client' => $client, 'message' => $message, 'clientId' => $clientId] = $param->getData();
-                    switch ($cmd = $message['cmd']) {
+                    switch ($cmd = $message['cmd'])
+                    {
                         case GatewayProtocol::CMD_ON_CONNECT:
                             // 连接
                             RequestContext::create([

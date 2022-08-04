@@ -157,8 +157,6 @@ class RoleService
      * 传入操作代码
      *
      * @Transaction
-     *
-     * @param string ...$operations
      */
     public function addOperations(int $roleId, string ...$operations): void
     {
@@ -184,8 +182,6 @@ class RoleService
      * 调用后，只拥有本次传入的操作权限
      *
      * @Transaction
-     *
-     * @param string ...$operations
      */
     public function setOperations(int $roleId, string ...$operations): void
     {
@@ -212,8 +208,6 @@ class RoleService
      * 移除操作权限.
      *
      * 传入操作代码
-     *
-     * @param string ...$operations
      */
     public function removeOperations(int $roleId, string ...$operations): void
     {

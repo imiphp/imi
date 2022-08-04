@@ -9,6 +9,7 @@ use function array_values;
 use function file_exists;
 use function implode;
 use function is_file;
+
 use PHPStan\File\FileExcluder;
 use PHPStan\File\FileFinderResult;
 use PHPStan\File\FileHelper;
@@ -17,14 +18,21 @@ use Symfony\Component\Finder\Finder;
 
 class FileFinder extends \PHPStan\File\FileFinder
 {
+    private FileExcluder $fileExcluder;
+    private FileHelper $fileHelper;
+    private array $fileExtensions;
+
     /**
      * @param string[] $fileExtensions
      */
     public function __construct(
-        private FileExcluder $fileExcluder,
-        private FileHelper $fileHelper,
-        private array $fileExtensions,
+        FileExcluder $fileExcluder,
+        FileHelper $fileHelper,
+        array $fileExtensions
     ) {
+        $this->fileExcluder = $fileExcluder;
+        $this->fileHelper = $fileHelper;
+        $this->fileExtensions = $fileExtensions;
     }
 
     /**

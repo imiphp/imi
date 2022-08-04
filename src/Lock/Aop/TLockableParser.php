@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Lock\Aop;
 
 use function array_merge;
+
 use Imi\App;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
@@ -138,7 +139,7 @@ trait TLockableParser
         {
             return preg_replace_callback('/\{([^\}]+)\}/', static function (array $matches) use ($args): string {
                 $value = ObjectArrayHelper::get($args, $matches[1]);
-                if (is_scalar($value))
+                if (\is_scalar($value))
                 {
                     return (string) $value;
                 }

@@ -32,7 +32,7 @@ class AppInit implements IAppInitEventListener
         if ($server)
         {
             $mainSwooleServer = $server->getSwooleServer();
-            if (($serverStart = !$mainSwooleServer->manager_pid))
+            if ($serverStart = !$mainSwooleServer->manager_pid)
             {
                 $this->outputServerInfo();
             }

@@ -44,7 +44,7 @@ class Helper
         }
         catch (RuntimeException $exception)
         {
-            $output->writeln("<comment>warning</comment>: git tag get failed, {$exception->getMessage()}", );
+            $output->writeln("<comment>warning</comment>: git tag get failed, {$exception->getMessage()}");
         }
 
         return $result;
@@ -88,6 +88,6 @@ class Helper
             return trim($process->getOutput());
         }
 
-        throw new RuntimeException(sprintf('Unable to execute git command: %s', trim($process->getErrorOutput()), ), 0, new ProcessFailedException($process), );
+        throw new RuntimeException(sprintf('Unable to execute git command: %s', trim($process->getErrorOutput())), 0, new ProcessFailedException($process));
     }
 }

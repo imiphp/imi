@@ -114,11 +114,11 @@ class AnnotationParser
     public function parseClass(\ReflectionClass $ref): void
     {
         $annotations = $this->getReader()->getClassAnnotations($ref);
-        #if PHP_VERSION_ID >= 80000
+        # if PHP_VERSION_ID >= 80000
         if (
-            #if 0
+            # if 0
             \PHP_VERSION_ID >= 80000 &&
-            #endif
+            # endif
             $phpAnnotations = $this->getPHPClassAnnotations($ref))
         {
             if ($annotations)
@@ -130,7 +130,7 @@ class AnnotationParser
                 $annotations = $phpAnnotations;
             }
         }
-        #endif
+        # endif
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)

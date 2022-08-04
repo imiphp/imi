@@ -70,8 +70,8 @@ return [
         'configs'      => [
             'worker_num'    => 1,
             // EOF自动分包
-            'open_eof_split'     => true, //打开EOF_SPLIT检测
-            'package_eof'        => "\r\n", //设置EOF
+            'open_eof_split'     => true, // 打开EOF_SPLIT检测
+            'package_eof'        => "\r\n", // 设置EOF
         ],
         'dataParser'    => \Imi\Swoole\Test\TCPServer\MainServer\Parser\JsonObjectParser::class,
     ],

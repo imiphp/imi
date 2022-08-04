@@ -57,7 +57,7 @@ foreach (LOCAL_REPOSITORIES as $package => $path)
 
 $newJson = json_encode($composerJson, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT);
 file_put_contents($testProjectDir . '/composer.json', $newJson);
-//var_dump($newJson);
+// var_dump($newJson);
 
 echo "> composer install...\n";
 (new Process([

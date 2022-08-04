@@ -502,8 +502,6 @@ class ModelRelationManager
 
     /**
      * 查询模型指定关联.
-     *
-     * @param string ...$names
      */
     public static function queryModelRelations(Model $model, string ...$names): void
     {

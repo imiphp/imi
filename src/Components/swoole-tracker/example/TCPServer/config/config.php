@@ -37,8 +37,8 @@ return [
             // 分包方式
 
             // 分包方式1-EOF自动分包
-            'open_eof_split'    => true, //打开EOF_SPLIT检测
-            'package_eof'       => "\r\n", //设置EOF
+            'open_eof_split'    => true, // 打开EOF_SPLIT检测
+            'package_eof'       => "\r\n", // 设置EOF
 
             // 分包方式2-固定包头
             // 'open_eof_split'        => false,

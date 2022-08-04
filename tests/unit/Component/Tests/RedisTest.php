@@ -43,7 +43,7 @@ class RedisTest extends BaseTest
             redis.call('set', key, value)
             return redis.call('get', key)
             SCRIPT
-, ['imi:test:a', 'imi very 6'], 1);
+                , ['imi:test:a', 'imi very 6'], 1);
         });
         Assert::assertEquals('imi very 6', $value);
     }
@@ -56,7 +56,7 @@ class RedisTest extends BaseTest
         redis.call('set', key, value)
         return redis.call('get', key)
         SCRIPT
-, ['imi:test:a', 'imi very 6'], 1);
+            , ['imi:test:a', 'imi very 6'], 1);
         Assert::assertEquals('imi very 6', $value);
     }
 

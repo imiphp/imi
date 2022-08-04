@@ -6,11 +6,15 @@ namespace Imi\Test\Component\Tests;
 
 use function array_merge;
 use function explode;
+
 use Imi\Test\BaseTest;
 use Imi\Util\File;
 use Imi\Util\Imi;
+
 use function str_replace;
+
 use Symfony\Component\Process\Process;
+
 use function trim;
 
 /**

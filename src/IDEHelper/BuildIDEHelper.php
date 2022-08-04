@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\IDEHelper;
 
 use function file_put_contents;
+
 use Imi\Bean\BeanManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;

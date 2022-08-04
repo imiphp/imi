@@ -2,20 +2,20 @@ name: Coding Standards
 
 on:
   push:
-      paths-ignore:
-        - 'doc/**'
-        - 'mddoc/**'
-        - 'res/**'
-        - 'website/**'
-        - '.markdownlint.json'
+    paths-ignore:
+      - "doc/**"
+      - "mddoc/**"
+      - "res/**"
+      - "website/**"
+      - ".markdownlint.json"
   pull_request:
 
 jobs:
   tests:
     runs-on: ubuntu-20.04
     env:
-      SWOOLE_DOCKER_VERSION: 4.8-php8.0
-      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
+      SWOOLE_DOCKER_VERSION: 4.8-php7.4
+      POSTGRESQL_VERSION: v4.8.0
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
@@ -30,4 +30,4 @@ jobs:
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
       - name: Coding Standards Tests
-        run: docker exec ${ENV_SERVICE} ./vendor/bin/php-cs-fixer fix --dry-run --diff
+        run: docker exec ${ENV_SERVICE} ./vendor/bin/php-cs-fixer fix --dry-run --diff -vvv

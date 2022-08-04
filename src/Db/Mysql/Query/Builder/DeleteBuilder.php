@@ -19,7 +19,7 @@ class DeleteBuilder extends BaseBuilder
                 . $this->parseWhere($option->where)
                 . $this->parseOrder($option->order)
                 . $this->parseLimit($option->offset, $option->limit)
-                ;
+        ;
         $query->bindValues($this->params);
 
         return $sql;

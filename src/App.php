@@ -13,6 +13,7 @@ use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Util\Imi;
+
 use function substr;
 
 class App
@@ -395,11 +396,11 @@ class App
         if (IMI_PHAR_BUILD_GIT_HASH)
         {
             return sprintf(
-                 '%s@%s',
-                 // @phpstan-ignore-next-line
-                 IMI_PHAR_BUILD_GIT_TAG ?? substr(IMI_PHAR_BUILD_GIT_HASH ?? '', 0, 7),
-                 IMI_PHAR_BUILD_TIME
-             );
+                '%s@%s',
+                // @phpstan-ignore-next-line
+                IMI_PHAR_BUILD_GIT_TAG ?? substr(IMI_PHAR_BUILD_GIT_HASH ?? '', 0, 7),
+                IMI_PHAR_BUILD_TIME
+            );
         }
         else
         {

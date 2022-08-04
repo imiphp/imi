@@ -110,7 +110,7 @@ class HttpRouteInit implements IEventListener
                         $prefix = $classAnnotation->prefix;
                         if ('' != $prefix)
                         {
-                            if ((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]))
+                            if (!isset($routeItem->url[0]) || '/' !== $routeItem->url[0])
                             {
                                 if (isset($routeItem->url[1]) && str_starts_with($routeItem->url, './'))
                                 {

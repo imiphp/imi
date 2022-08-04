@@ -114,14 +114,7 @@ class Annotation
             $ignoredPaths = array_merge($ignoredPaths, $config['appIgnorePaths'] ?? []);
         }
         $ignoredPaths = array_map([Imi::class, 'parseRule'], $ignoredPaths);
-        if ($ignoredPaths)
-        {
-            $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . ')))/';
-        }
-        else
-        {
-            $pathPattern = '/^.+\.php$/i';
-        }
+        $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . ')))/';
         if ($ignoredNamespaces)
         {
             $list = [];

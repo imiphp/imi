@@ -2,24 +2,22 @@
 
 declare(strict_types=1);
 
-use Rector\Core\Configuration\Option;
+use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 ini_set('date.timezone', 'Asia/Shanghai');
 
 function getRectorConfigCallback(string $path): callable
 {
     // @phpstan-ignore-next-line
-    return static function (ContainerConfigurator $containerConfigurator) use ($path): void {
+    return static function (RectorConfig $rectorConfig) use ($path): void {
         // get parameters
         // @phpstan-ignore-next-line
-        $parameters = $containerConfigurator->parameters();
-        $parameters->set(Option::PATHS, [
+        $rectorConfig->paths([
             $path . '/src',
         ]);
 
-        $parameters->set(Option::SKIP, [
+        $rectorConfig->skip([
             '*/vendor/*',
             $path . '/src/Components/*',
             \Rector\Php71\Rector\FuncCall\CountOnNullRector::class,
@@ -28,18 +26,14 @@ function getRectorConfigCallback(string $path): callable
             \Rector\Php70\Rector\FuncCall\RandomFunctionRector::class,
         ]);
 
-        $parameters->set(Option::BOOTSTRAP_FILES, [
+        $rectorConfig->bootstrapFiles([
             $path . '/vendor/autoload.php',
         ]);
 
-        $parameters->set(Option::AUTOLOAD_PATHS, [
+        $rectorConfig->autoloadPaths([
             $path . '/src',
         ]);
 
-        $parameters->set(Option::FOLLOW_SYMLINKS, false);
-
-        // Define what rule sets will be applied
-        // @phpstan-ignore-next-line
-        $containerConfigurator->import(LevelSetList::UP_TO_PHP_74);
+        $rectorConfig->sets([LevelSetList::UP_TO_PHP_74]);
     };
 }

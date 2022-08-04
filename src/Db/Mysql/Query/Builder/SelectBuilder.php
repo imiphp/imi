@@ -29,7 +29,7 @@ class SelectBuilder extends BaseBuilder
                 . $this->parseOrder($option->order)
                 . $this->parseLimit($option->offset, $option->limit)
                 . $this->parseLock($option->lock)
-                ;
+        ;
         $query->bindValues($this->params);
 
         return $sql;

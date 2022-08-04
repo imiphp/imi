@@ -8,8 +8,10 @@ namespace Imi\Util;
 
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\File\FileEnumItem;
+
 use function str_starts_with;
 use function substr;
+
 use Swoole\Coroutine\Channel;
 
 /**
@@ -77,11 +79,11 @@ class File
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
-        #if \extension_loaded('swoole')
+        # if \extension_loaded('swoole')
         if (
-            #if 0
+            # if 0
             \defined('SWOOLE_VERSION') &&
-            #endif
+            # endif
             \Swoole\Coroutine::getCid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
@@ -96,13 +98,13 @@ class File
         }
         else
         {
-            #endif
+            # endif
 
             yield from self::enumFileSync($dirPath, $pattern, $extensionNames);
 
-            #if \extension_loaded('swoole')
+            # if \extension_loaded('swoole')
         }
-        #endif
+        # endif
     }
 
     /**
@@ -177,8 +179,6 @@ class File
 
     /**
      * 组合路径，目录后的/不是必须.
-     *
-     * @param string ...$args
      */
     public static function path(string ...$args): string
     {

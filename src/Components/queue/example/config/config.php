@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use function Imi\env;
+
 use Imi\Util\Imi;
 
 return [

@@ -2,12 +2,12 @@ name: Rector
 
 on:
   push:
-      paths-ignore:
-        - 'doc/**'
-        - 'mddoc/**'
-        - 'res/**'
-        - 'website/**'
-        - '.markdownlint.json'
+    paths-ignore:
+      - "doc/**"
+      - "mddoc/**"
+      - "res/**"
+      - "website/**"
+      - ".markdownlint.json"
   pull_request:
 
 jobs:
@@ -16,10 +16,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-docker: [4.8-php8.0]
+        swoole-docker: [4.8-php7.4]
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole-docker }}
-      POSTGRESQL_VERSION: f5eda17f89d160d0a89ac7c5db4636bdaefd48e6
+      POSTGRESQL_VERSION: v4.8.0
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
@@ -44,105 +44,104 @@ jobs:
       - name: Analyse access-control
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/access-control/ --config=src/Components/access-control/rector.php
+          docker exec -w /imi/src/Components/access-control ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse amqp
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/amqp/ --config=src/Components/amqp/rector.php
+          docker exec -w /imi/src/Components/amqp ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse apidoc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/apidoc/ --config=src/Components/apidoc/rector.php
+          docker exec -w /imi/src/Components/apidoc ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse fpm
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/fpm/ --config=src/Components/fpm/rector.php
+          docker exec -w /imi/src/Components/fpm ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse grpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/grpc/ --config=src/Components/grpc/rector.php
+          docker exec -w /imi/src/Components/grpc ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse jwt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/jwt/ --config=src/Components/jwt/rector.php
+          docker exec -w /imi/src/Components/jwt ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse kafka
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/kafka/ --config=src/Components/kafka/rector.php
+          docker exec -w /imi/src/Components/kafka ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse mqtt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/mqtt/ --config=src/Components/mqtt/rector.php
+          docker exec -w /imi/src/Components/mqtt ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse pgsql
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/pgsql/ --config=src/Components/pgsql/rector.php
+          docker exec -w /imi/src/Components/pgsql ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse queue
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/queue/ --config=src/Components/queue/rector.php
+          docker exec -w /imi/src/Components/queue ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse rate-limit
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/rate-limit/ --config=src/Components/rate-limit/rector.php
+          docker exec -w /imi/src/Components/rate-limit ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse roadrunner
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/roadrunner/ --config=src/Components/roadrunner/rector.php
+          docker exec -w /imi/src/Components/roadrunner ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse rpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/rpc/ --config=src/Components/rpc/rector.php
+          docker exec -w /imi/src/Components/rpc ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse shared-memory
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/shared-memory/ --config=src/Components/shared-memory/rector.php
+          docker exec -w /imi/src/Components/shared-memory ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse smarty
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/smarty/ --config=src/Components/smarty/rector.php
+          docker exec -w /imi/src/Components/smarty ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse snowflake
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/snowflake/ --config=src/Components/snowflake/rector.php
+          docker exec -w /imi/src/Components/snowflake ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse swoole
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/swoole/ --config=src/Components/swoole/rector.php
+          docker exec -w /imi/src/Components/swoole ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse swoole-tracker
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/swoole-tracker/ --config=src/Components/swoole-tracker/rector.php
+          docker exec -w /imi/src/Components/swoole-tracker ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse workerman
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/workerman/ --config=src/Components/workerman/rector.php
+          docker exec -w /imi/src/Components/workerman ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse workerman-gateway
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/workerman-gateway/ --config=src/Components/workerman-gateway/rector.php
+          docker exec -w /imi/src/Components/workerman-gateway ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
 
       - name: Analyse macro
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/rector process --dry-run --working-dir=src/Components/macro/ --config=src/Components/macro/rector.php
-
+          docker exec -w /imi/src/Components/macro ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run

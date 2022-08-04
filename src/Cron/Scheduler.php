@@ -121,10 +121,10 @@ class Scheduler implements IScheduler
         switch ($type = $task->getType())
         {
             case CronTaskType::CRON_PROCESS:
-            /** @var \Imi\Cron\CronWorker $cronWorker */
-            $cronWorker = App::getBean('CronWorker');
-            $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
-            break;
+                /** @var \Imi\Cron\CronWorker $cronWorker */
+                $cronWorker = App::getBean('CronWorker');
+                $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
+                break;
         }
     }
 

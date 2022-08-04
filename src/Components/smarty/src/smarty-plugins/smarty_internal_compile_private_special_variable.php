@@ -38,7 +38,8 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
         if (!isset($compiler->smarty->security_policy)
             || $compiler->smarty->security_policy->isTrustedSpecialSmartyVar($variable, $compiler)
         ) {
-            switch ($variable) {
+            switch ($variable)
+            {
                 case 'foreach':
                 case 'section':
                     if (!isset(Smarty_Internal_TemplateCompilerBase::$_tag_objects[$variable]))
@@ -152,7 +153,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                     {
                         return "@constant({$_index[1]})";
                     }
-                // no break
+                    // no break
                 case 'config':
                     if (isset($_index[2]))
                     {
@@ -162,7 +163,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                     {
                         return "\$_smarty_tpl->smarty->ext->configload->_getConfigVariable(\$_smarty_tpl, $_index[1])";
                     }
-                // no break
+                    // no break
                 case 'ldelim':
                     return '$_smarty_tpl->smarty->left_delimiter';
                 case 'rdelim':

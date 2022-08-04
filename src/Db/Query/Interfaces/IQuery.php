@@ -392,8 +392,6 @@ interface IQuery
     /**
      * group by.
      *
-     * @param string ...$groups
-     *
      * @return static
      */
     public function group(string ...$groups): self;

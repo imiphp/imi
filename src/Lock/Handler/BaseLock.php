@@ -7,6 +7,7 @@ namespace Imi\Lock\Handler;
 use Imi\Lock\Exception\LockFailException;
 use Imi\Log\Log;
 use Imi\RequestContext;
+
 use function microtime;
 use function sprintf;
 

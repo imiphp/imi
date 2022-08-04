@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use function Imi\env;
+
 use Imi\Util\Imi;
 
 \defined('AMQP_SERVER_HOST') || \define('AMQP_SERVER_HOST', env('AMQP_SERVER_HOST', '127.0.0.1'));

@@ -270,7 +270,7 @@ class AopManager
         }
         if (isset(self::$cache[$class]['after']))
         {
-            foreach (self::$cache[$class]['after'] ?? [] as $aopItem)
+            foreach (self::$cache[$class]['after'] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
@@ -342,7 +342,7 @@ class AopManager
         }
         if (isset(self::$cache[$class]['around']))
         {
-            foreach (self::$cache[$class]['around'] ?? [] as $aopItem)
+            foreach (self::$cache[$class]['around'] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
@@ -414,7 +414,7 @@ class AopManager
         }
         if (isset(self::$cache[$class]['afterReturning']))
         {
-            foreach (self::$cache[$class]['afterReturning'] ?? [] as $aopItem)
+            foreach (self::$cache[$class]['afterReturning'] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
@@ -486,7 +486,7 @@ class AopManager
         }
         if (isset(self::$cache[$class]['afterThrowing']))
         {
-            foreach (self::$cache[$class]['afterThrowing'] ?? [] as $aopItem)
+            foreach (self::$cache[$class]['afterThrowing'] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
