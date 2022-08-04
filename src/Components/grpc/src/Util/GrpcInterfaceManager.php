@@ -129,6 +129,11 @@ class GrpcInterfaceManager
      */
     public function getRequest(string $interface, string $method): string
     {
+        if (!isset($this->interfaces[$interface]) && null !== ($serviceName = $this->parseServiceNameByInterface($interface)))
+        {
+            $this->bind($interface, $serviceName);
+        }
+
         return $this->interfaces[$interface]['methods'][$method]['request'] ?? '';
     }
 
@@ -137,6 +142,11 @@ class GrpcInterfaceManager
      */
     public function getResponse(string $interface, string $method): string
     {
+        if (!isset($this->interfaces[$interface]) && null !== ($serviceName = $this->parseServiceNameByInterface($interface)))
+        {
+            $this->bind($interface, $serviceName);
+        }
+
         return $this->interfaces[$interface]['methods'][$method]['response'] ?? '';
     }
 
@@ -145,6 +155,11 @@ class GrpcInterfaceManager
      */
     public function getServiceName(string $interface): string
     {
+        if (!isset($this->interfaces[$interface]) && null !== ($serviceName = $this->parseServiceNameByInterface($interface)))
+        {
+            $this->bind($interface, $serviceName);
+        }
+
         return $this->interfaces[$interface]['serviceName'] ?? '';
     }
 
