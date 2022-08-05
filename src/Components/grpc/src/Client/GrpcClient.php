@@ -188,14 +188,18 @@ class GrpcClient implements IRpcClient
         {
             $response = $result;
         }
-        if (!$result || !$result->success)
+        if (!$result)
         {
-            throw new \RuntimeException(sprintf('gRPC recv() failed, errCode:%s, errorMsg:%s', $result->getErrno(), $result->getError()));
+            throw new \RuntimeException('gRPC recv() failed');
+        }
+        if (!$result->success)
+        {
+            throw new \RuntimeException(sprintf('gRPC recv() failed, statusCode: %s, errCode:%s, errorMsg:%s', $result->getStatusCode(), $result->getErrno(), $result->getError()));
         }
         $return = Parser::deserializeMessage([$responseClass, 'decode'], $result->body());
         if (!$return)
         {
-            Log::debug(sprintf('GrpcClient deserializeMessage failed. statusCode: %s', $result->getStatusCode()));
+            Log::debug(sprintf('GrpcClient deserializeMessage failed. statusCode: %s, errCode:%s, errorMsg:%s', $result->getStatusCode(), $result->getErrno(), $result->getError()));
         }
 
         return $return;
