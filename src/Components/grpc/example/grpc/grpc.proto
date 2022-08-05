@@ -1,6 +1,13 @@
 syntax = "proto3";
 
 package grpc;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/field_mask.proto";
+
 option php_generic_services = true;
 
 service AuthService {
@@ -15,4 +22,31 @@ message LoginRequest {
 message LoginResponse {
     bool success = 1;       // 是否成功
     string error = 2;       // 错误信息
+}
+
+service TestService {
+    rpc Test (TestRequest) returns (TestRequest);
+}
+
+enum Test {
+    A = 0;
+    B = 2;
+}
+
+message TestRequest {
+    int32 int = 1;
+    string string = 2;
+    LoginRequest message = 3;
+    repeated LoginRequest messages = 4;
+    google.protobuf.Any any = 5;
+    map<int32, string> map = 6;
+    map<string, LoginRequest> map2 = 7;
+    repeated google.protobuf.Any anys = 8;
+    Test enum = 9;
+    bool bool = 10;
+    google.protobuf.Timestamp timestamp = 11;
+    google.protobuf.Duration duration = 12;
+    google.protobuf.Struct struct = 13;
+    google.protobuf.FieldMask fieldMask = 14;
+    repeated string strings = 15;
 }

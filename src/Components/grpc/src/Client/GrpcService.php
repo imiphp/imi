@@ -78,9 +78,9 @@ class GrpcService implements IGrpcService
     /**
      * 接收响应结果.
      */
-    public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null): \Google\Protobuf\Internal\Message
+    public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null, ?\Yurun\Util\YurunHttp\Http\Response &$response = null): \Google\Protobuf\Internal\Message
     {
-        return $this->client->recv($responseClass, $streamId, $timeout);
+        return $this->client->recv($responseClass, $streamId, $timeout, $response);
     }
 
     /**

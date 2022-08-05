@@ -1,4 +1,4 @@
-# gRPC
+# gRPC 服务开发
 
 [toc]
 
@@ -62,6 +62,17 @@ message LoginResponse {
 定义好后，通过命令生成 PHP 文件：`protoc --php_out=./ grpc.proto`
 
 protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
+
+生成好文件后，要把生成出来文件所在命名空间，配置到 `composer.json`，例：
+
+```js
+"autoload": {
+    "psr-4": {
+        "Grpc\\": "grpc/Grpc",
+        "GPBMetadata\\": "grpc/GPBMetadata",
+    }
+},
+```
 
 ### 服务端
 
