@@ -46,7 +46,7 @@ abstract class BaseSyncPool extends BasePool
         /** @var \Imi\Pool\PoolItem $poolItem */
         $poolItem = $this->queue->pop();
         $resource = $poolItem->getResource();
-        if ($config->isCheckStateWhenGetResource() && !$resource->checkState())
+        if (!$resource->isOpened() || ($config->isCheckStateWhenGetResource() && !$resource->checkState()))
         {
             $resource->close();
             if (!$resource->open())
@@ -79,7 +79,7 @@ abstract class BaseSyncPool extends BasePool
         /** @var \Imi\Pool\PoolItem $poolItem */
         $poolItem = $this->queue->pop();
         $resource = $poolItem->getResource();
-        if ($this->config->isCheckStateWhenGetResource() && !$resource->checkState())
+        if (!$resource->isOpened() || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState()))
         {
             $resource->close();
             if (!$resource->open())
