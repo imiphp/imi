@@ -168,6 +168,6 @@ class GrpcInterfaceManager
      */
     public function getInterface(string $serviceName): string
     {
-        return $this->services[$serviceName]['interfaceName'];
+        return $this->services[$serviceName]['interfaceName'] ?? '';
     }
 }

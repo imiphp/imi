@@ -7,9 +7,6 @@ namespace Imi\Grpc\Proxy\Http;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-
-use function Imi\dump;
-
 use Imi\Grpc\Client\GrpcClient;
 use Imi\Grpc\Client\GrpcService;
 use Imi\Grpc\Enum\GrpcStatus;
@@ -39,13 +36,20 @@ class GrpcHttpProxy
         try
         {
             $interface = $this->grpcInterfaceManager->getInterface($serviceName);
+            if ('' === $interface)
+            {
+                throw new \RuntimeException(sprintf('Grpc service %s not found', $serviceName));
+            }
             $requestClass = $this->grpcInterfaceManager->getRequest($interface, $methodName);
+            if ('' === $requestClass)
+            {
+                throw new \RuntimeException(sprintf('Grpc service %s::%s() not found', $serviceName, $methodName));
+            }
 
             // grpc request
             $grpcRequest = new $requestClass();
             if ($requestData = $request->request())
             {
-                dump($requestData);
                 ProtobufUtil::setMessageData($grpcRequest, $requestData);
             }
 
