@@ -105,6 +105,7 @@
         this.mFooter = mFooter;
         this.mButtonLeft = mButtonLeft;
         this.mButtonRight = mButtonRight;
+        this.mTitle = mTitle;
         // return this;
       },
       renderDom: function () {
@@ -112,24 +113,24 @@
         this.initElement();
         // 宽度
         if (options.width) {
-          document.querySelector(".m-modal__container").style.width = options.width;
+          this.mContainer.style.width = options.width;
         }
         // 标题
         if (options.title) {
-          document.querySelector(".m-modal__title").innerHTML = options.title;
+          this.mTitle.innerHTML = options.title;
         }
         // 距离顶部距离
         if (options.top) {
-          document.querySelector(".m-modal__container").style.marginTop = options.top;
+          this.mContainer.style.marginTop = options.top;
         }
         // 正文
         if (options.content) {
-          document.querySelector(".m-modal__body div").innerHTML = options.content;
+          this.mBody.querySelector('div').innerHTML = options.content;
         }
         // 是否显示确定按钮
         if (options.showConfirmButton) {
           if (options.confirmText) {
-            document.querySelector(".m-modal__footer button:first-child span").innerHTML = options.confirmText;
+            this.mFooter.querySelector('button:first-child span').innerHTML = options.confirmText;
           }
         } else {
           this.mFooter.removeChild(this.mButtonLeft);
@@ -137,7 +138,7 @@
         // 是否显示取消按钮
         if (options.showCancelButton) {
           if (options.cancelText) {
-            document.querySelector(".m-modal__footer button:last-child span").innerHTML = options.cancelText;
+            this.mFooter.querySelector('button:last-child span').innerHTML = options.cancelText;
           }
         } else {
           this.mFooter.removeChild(this.mButtonRight);
@@ -148,11 +149,11 @@
         }
         // 是否需要遮罩层
         if (!options.modal) {
-          document.querySelector(".m-modal__wrapper").style.background = "rgba(0, 0, 0, 0)";
+          this.mWrapper.style.background = "rgba(0, 0, 0, 0)";
         }
         // 自定义类名
         if (options.customClass) {
-          document.querySelector(".m-modal__container").classList.add(options.customClass);
+          this.mContainer.classList.add(options.customClass);
         }
         // 确定按钮方法回调
         if (options.showConfirmButton && options.confirm) {
@@ -160,39 +161,41 @@
             options.confirm();
           }
         }
+        var _this = this;
         // 取消按钮方法回调
         if (options.showCancelButton) {
           this.mButtonRight.onclick = function () {
             if (options.cancel) {
               options.cancel();
-              mModal.prototype.close();
+              _this.close()
             } else {
-              mModal.prototype.close();
+              _this.close()
             }
           }
         }
         // 关闭按钮点击方法
         if (options.showClose) {
           this.mHeaderbtn.onclick = function () {
-            mModal.prototype.close();
+            _this.close()
           }
         }
       },
       show: function () {
-        document.querySelector(".m-modal__wrapper").style.display = "block";
+        this.mWrapper.style.display = "block";
       },
       close: function () {
-        document.querySelector(".m-modal__wrapper").style.display = "none";
+        console.log(this.mWrapper)
+        this.mWrapper.style.display = "none";
         var timer = null;
+        var _this = this;
         timer = setTimeout(function () {
           clearTimeout(timer);
-          mModal.prototype.destroy();
+          _this.destroy();
         }, 200);
       },
       destroy: function () {
-        var mWrapper = document.querySelector(".m-modal__wrapper");
-        var parentWrapper = mWrapper.parentNode;
-        parentWrapper.removeChild(mWrapper);
+        var parentWrapper = this.mWrapper.parentNode;
+        parentWrapper.removeChild(this.mWrapper);
       }
     }
 

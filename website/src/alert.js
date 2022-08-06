@@ -9,6 +9,7 @@ import './js/modal.js';
 
 import pay from './images/pay.png';
 import wechat from './images/wechat.png';
+import QRCode from 'qrcode'
 
 
 let kaifa = `
@@ -24,56 +25,155 @@ let kaifa = `
  </ul>
 `;
 
-let modal_1 = new mModal({
-   title: "",
-   width: "30%",
-   content: "<p style=\"text-align:center;\">给项目点个star,也是一种帮助哦<br /><br />开源不求盈利，多少都是心意，生活不易，随缘随缘<br /><br /><br /><img src=\"" + pay + "\"></p>",
-   cancelText: "star为敬", // 取消按钮文本
-   confirmText: "点我查看捐赠列表", // 确定按钮文本
-   showCancelButton: true, // 是否显示取消按钮
-   showConfirmButton: true, // 是否显示确定按钮	  
-   showClose: true, // 是否显示关闭按钮
+let zanzhu = `
+<div style="text-align:center;">
+    <p>给 imi 加个鸡腿，会更有动力持续维护</p>
+    <style>
+    .button-pay {
+        background: rgb(28, 184, 65);
+    }
+    .button-list {
+        background: rgb(66, 184, 221);
+    }
+    </style>
+    <form id="donate-form" class="pure-form">
+        <fieldset class="pure-group">
+            <input type="text" name="name" class="pure-input-1-2" placeholder="你的名字，必填" required="1" />
+        </fieldset>
+        <fieldset class="pure-group">
+            <input type="text" name="amount" class="pure-input-1-2" placeholder="金额：元，必填" required="1" />
+        </fieldset>
+        <fieldset class="pure-group">
+            <input type="text" name="link" class="pure-input-1-2" placeholder="链接地址（选填）" />
+        </fieldset>
+        <fieldset class="pure-group">
+            <textarea style="width: 100%" name="message" class="pure-input-1-2" placeholder="留言内容（选填）"></textarea>
+        </fieldset>
+        <div class="pure-g">
+            <div class="pure-u-1-2"><button type="submit" class="pure-button pure-button-primary button-payway" value="ZFBZF">支付宝</button></div>
+            <div class="pure-u-1-2"><button type="submit" class="pure-button pure-button-primary button-pay button-payway" value="WXZF">微信支付</button></div>
+            <input type="hidden" id="payWay" name="payWay" value="WXZF"/>
+            <div style="text-align: center; margin-top: 1em; width: 100%"><button type="button" class="pure-button pure-button-primary button-list" onclick="window.open('/donate.html')">打赏赞助列表</button></div>
+        </div>
+    </form>
+</div>
+`;
 
-   confirm: function () {
-      modal_1.close();
-      window.location.href = "./donate.html";
-   },
-   cancel: function () {
-      window.open("https://github.com/imiphp/imi");
-   }
+let modal_1 = new mModal({
+    title: "",
+    width: "30%",
+    content: zanzhu,
+    showCancelButton: false, // 是否显示取消按钮
+    showConfirmButton: false, // 是否显示确定按钮	  
+    showClose: true, // 是否显示关闭按钮
 });
 
 let modal_2 = new mModal({
-   title: "",
-   width: "28%",
-   content: kaifa,
-   showCancelButton: false, // 是否显示取消按钮
-   showConfirmButton: false, // 是否显示确定按钮	  
-   showClose: true, // 是否显示关闭按钮
+    title: "",
+    width: "28%",
+    content: kaifa,
+    showCancelButton: false, // 是否显示取消按钮
+    showConfirmButton: false, // 是否显示确定按钮	  
+    showClose: true, // 是否显示关闭按钮
 });
 
 let modalWechat = new mModal({
-   title: "",
-   width: "30%",
-   content: "<p style=\"text-align:center;\"><img src=\"" + wechat + "\"></p>",
-   confirmText: "确定", // 确定按钮文本
-   showCancelButton: false, // 是否显示取消按钮
-   showConfirmButton: true, // 是否显示确定按钮	  
-   showClose: true, // 是否显示关闭按钮
+    title: "",
+    width: "30%",
+    content: "<p style=\"text-align:center;\"><img src=\"" + wechat + "\"></p>",
+    confirmText: "确定", // 确定按钮文本
+    showCancelButton: false, // 是否显示取消按钮
+    showConfirmButton: true, // 是否显示确定按钮	  
+    showClose: true, // 是否显示关闭按钮
 
-   confirm: function () {
-      modalWechat.close();
-   },
+    confirm: function () {
+        modalWechat.close();
+    },
 });
 
 $(function () {
-   $(".donation").on("click", function () {
-      modal_1.renderDom();
-   });
-   $(".developer").on("click", function () {
-      modal_2.renderDom();
-   });
-   $(".btn-wechat").on("click", function () {
-      modalWechat.renderDom();
-   });
+    $(".donation").on("click", function () {
+        modal_1.renderDom();
+        var submiting = false;
+        $('#donate-form').on('submit', function (e) {
+            e.preventDefault();
+            if (submiting) {
+                return;
+            }
+            submiting = true;
+            var originData = $(this).serializeArray();
+            var data = {};
+            $.each(originData, function (index, item) {
+                if ('amount' === item.name) {
+                    item.value = parseInt(item.value * 100);
+                }
+                data[item.name] = item.value;
+            });
+            var payWayText = data.payWay;
+            switch (payWayText) {
+                case 'WXZF':
+                    payWayText = '微信';
+                    break;
+                case 'ZFBZF':
+                    payWayText = '支付宝';
+                    break;
+            }
+            $.ajax({
+                method: 'POST',
+                url: 'https://www.imiphp.com/api/donate/donate/pay',
+                data: data,
+                success: function (data) {
+                    if (!('code' in data)) {
+                        alert('数据错误！');
+                        submiting = false;
+                        return;
+                    }
+                    if (0 !== data.code) {
+                        alert(data.message);
+                        submiting = false;
+                        return;
+                    }
+                    QRCode.toDataURL(data.jumpUrl, {
+                        errorCorrectionLevel: 'H',
+                        margin: 1,
+                        width: 256,
+                    })
+                        .then(url => {
+                            let modalQR = new mModal({
+                                title: "",
+                                width: "30%",
+                                content: '<div style="text-align:center;"><p>请使用' + payWayText + '扫码支付</p><p><img src="' + url + '"/></p></div>',
+                                confirmText: "完成支付", // 确定按钮文本
+                                showConfirmButton: true, // 是否显示确定按钮	  
+                                showClose: true, // 是否显示关闭按钮
+                                confirm: function () {
+                                    modalQR.close();
+                                    window.location.href = '/donate.html';
+                                },
+                            });
+                            modalQR.renderDom();
+                        })
+                        .catch(err => {
+                            alert('生成二维码失败：' + err);
+                        })
+                        .finally(function () {
+                            submiting = false;
+                        });
+                },
+                error: function () {
+                    alert('网络错误！');
+                    submiting = false;
+                },
+            });
+        });
+        $('.button-payway').on('click', function () {
+            $('#payWay').val($(this).val())
+        });
+    });
+    $(".developer").on("click", function () {
+        modal_2.renderDom();
+    });
+    $(".btn-wechat").on("click", function () {
+        modalWechat.renderDom();
+    });
 });

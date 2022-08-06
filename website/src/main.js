@@ -16,6 +16,9 @@ import './css/font-awesome.css';
 /** jquery **/
 import $ from './js/jquery-vendor.js';
 
+/* 工具类 */
+import './util.js';
+
 /* 弹窗插件 */
 import './alert.js';
 
@@ -27,3 +30,6 @@ import './index.js';
 
 /* 课程 */
 import './course.js';
+
+/* 赞助 */
+import './donate.js';

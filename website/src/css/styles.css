@@ -117,14 +117,14 @@ a {
     background-color: #FFF;
     text-align: center;
     color: #000;
-    height: 8vh;
+    height: 48px;
 }
 
 .donate-list td {
     border-bottom: #EEE 1px solid;
     background-color: #FFF;
     text-align: center;
-    height: 8vh;
+    height: 48px;
     font-size: 14px;
     color: #888;
 }
@@ -142,22 +142,22 @@ a {
     padding: 2em;
 }
 
-.l-box > a{
+.l-box>a {
     color: #34495e;
 }
 
 .l-box {
-	overflow: hidden;
+    overflow: hidden;
 }
 
 .l-box .cases {
     margin: auto;
-	width: 100%;
-	overflow: hidden;
+    width: 100%;
+    overflow: hidden;
 }
 
 .cases img {
-	height: 256px;
+    height: 256px;
     max-width: 100%;
 }
 
@@ -231,7 +231,7 @@ a.pure-button-primary {
 }
 
 .home-menu .pure-menu-heading:hover {
-    color:#1E9FFF;
+    color: #1E9FFF;
 }
 
 .home-menu .pure-menu-heading img {
@@ -239,7 +239,8 @@ a.pure-button-primary {
     vertical-align: middle;
 }
 
-.logo-full, .logo-min{
+.logo-full,
+.logo-min {
     height: 48px;
 }
 
@@ -268,7 +269,7 @@ a.pure-button-primary {
     display: inline-block;
 }
 
-.home-menu .right > a {
+.home-menu .right>a {
     font-size: inherit;
 }
 
@@ -361,7 +362,7 @@ a.pure-button-primary {
     padding-bottom: 72px;
 }
 
-.content-wrapper-height{
+.content-wrapper-height {
     top: 100px;
 }
 
@@ -408,17 +409,19 @@ a.pure-button-primary {
     overflow-y: auto;
 }
 
-.gongneng > .pure-u-1{
+.gongneng>.pure-u-1 {
     box-sizing: border-box;
 }
 
-.jz-alipay{
+.jz-alipay {
     color: #1E9FFF;
 }
-.jz-weixin{
+
+.jz-weixin {
     color: #5FB878;
 }
-.jz-qq{
+
+.jz-qq {
     color: #E81010;
 }
 
@@ -456,8 +459,8 @@ a.pure-button-primary {
 }
 
 #anli_list {
-	width: 70%;
-	margin:0 auto;
+    width: 70%;
+    margin: 0 auto;
 }
 
 #anli_list .l-box {
@@ -465,9 +468,9 @@ a.pure-button-primary {
 }
 
 .donate-list {
-	width:70%;
-	margin:0 auto;
-	border: 1px solid rgb(214 210 206);
+    width: 70%;
+    margin: 0 auto;
+    border: 1px solid rgb(214 210 206);
 }
 
 
@@ -481,7 +484,7 @@ a.pure-button-primary {
     text-align: center;
     color: #000;
     height: 6vh;
-	width:50%;
+    width: 50%;
 }
 
 .code_table td {
@@ -491,8 +494,9 @@ a.pure-button-primary {
     height: 5vh;
     font-size: 14px;
     color: #888;
-	width:50%;
+    width: 50%;
 }
+
 :not(pre)>code,
 :not(pre)>kbd,
 :not(pre)>samp {
@@ -508,10 +512,10 @@ a.pure-button-primary {
         width: 100%;
     }
 
-    .content-wrapper-height{
-		top: 50px;
-	}
-	
+    .content-wrapper-height {
+        top: 50px;
+    }
+
     .splash {
         height: 90% !important;
         padding: 0 2em;
@@ -555,43 +559,49 @@ a.pure-button-primary {
         margin-top: 1vh;
     }
 
-    .donate-list th:nth-child(2), .donate-list td:nth-child(2) {
+    .donate-list th:nth-child(3),
+    .donate-list td:nth-child(3) {
         display: none;
     }
-	
+
     .home-menu .left {
         font-size: 15px;
     }
 
     .pure-img-responsive {
         height: auto !important;
-    }	
-	
-    #anli_list {
-	    width: 90%;
     }
+
+    #anli_list {
+        width: 90%;
+    }
+
     .donate-list {
-	    width:98%;
-    }	
-    .l-box .cases {	
-	    height: 220px;
-		margin: 0;
-	}
+        width: 98%;
+    }
+
+    .l-box .cases {
+        height: 220px;
+        margin: 0;
+    }
+
     .code_table th {
         height: 10vh;
-		font-size:10px;
-		width:40%;
-    }	
+        font-size: 10px;
+        width: 40%;
+    }
+
     .code_table td {
         height: 10vh;
-		font-size:10px;
-		width:60%;
-    }		
-    :not(pre)>code {
-       font-size: 10px;
-       white-space: unset;
+        font-size: 10px;
+        width: 60%;
     }
-    
+
+    :not(pre)>code {
+        font-size: 10px;
+        white-space: unset;
+    }
+
     .l-box {
         height: initial;
         padding: 1em;
@@ -605,7 +615,7 @@ a.pure-button-primary {
 /** 按钮 **/
 .repo>a.repo-button:hover {
     text-decoration: none;
-    background-color: rgba(255,255,255,0.888);
+    background-color: rgba(255, 255, 255, 0.888);
 }
 
 .repo img {
@@ -627,7 +637,7 @@ a.pure-button-primary {
     color: #333;
     margin-right: 10px;
     border: 1px solid #F8F8F8;
-    background-color: rgba(255,255,255,0.625);
+    background-color: rgba(255, 255, 255, 0.625);
     box-sizing: border-box;
 }
 
