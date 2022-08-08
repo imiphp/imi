@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Unit\Db\Pdo;
 
+use Imi\Pgsql\Test\TPdoPgTest;
 use Imi\Pgsql\Test\Unit\Db\QueryCurdBaseTest;
 
 /**
@@ -11,6 +12,8 @@ use Imi\Pgsql\Test\Unit\Db\QueryCurdBaseTest;
  */
 class QueryCurdTest extends QueryCurdBaseTest
 {
+    use TPdoPgTest;
+
     /**
      * 连接池名.
      *

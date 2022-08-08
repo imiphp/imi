@@ -66,7 +66,7 @@ class AMQPResource extends BasePoolResource
         $this->closed = true;
         if ($this->resetingChannel)
         {
-            $this->resetingChannel->pop();
+            $this->resetingChannel->pop(30);
         }
         try
         {
@@ -77,7 +77,7 @@ class AMQPResource extends BasePoolResource
         }
         catch (\Exception $e)
         {
-            // Nothing here
+            return;
         }
         if ($this->connection instanceof \Imi\AMQP\Swoole\AMQPSwooleConnection)
         {

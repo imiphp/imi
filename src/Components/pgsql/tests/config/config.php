@@ -56,7 +56,7 @@ return [
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
-                    'minResources'              => 1,
+                    'minResources'              => 0,
                     'checkStateWhenGetResource' => false,
                 ],
             ],
@@ -78,7 +78,7 @@ return [
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
-                    'minResources'              => 1,
+                    'minResources'              => 0,
                     'checkStateWhenGetResource' => false,
                 ],
             ],
@@ -99,7 +99,7 @@ return [
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
-                    'minResources'              => 1,
+                    'minResources'              => 0,
                     'checkStateWhenGetResource' => false,
                 ],
             ],

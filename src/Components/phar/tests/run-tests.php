@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Imi\RoadRunner\Util\RoadRunner;
 use Symfony\Component\Process\Process;
 
+require \dirname(__DIR__, 2) . '/roadrunner/vendor/autoload.php';
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
 const STARTUP_MAX_WAIT = 30;
@@ -57,7 +59,6 @@ foreach (LOCAL_REPOSITORIES as $package => $path)
 
 $newJson = json_encode($composerJson, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT);
 file_put_contents($testProjectDir . '/composer.json', $newJson);
-// var_dump($newJson);
 
 echo "> composer install...\n";
 (new Process([
@@ -79,7 +80,10 @@ if (\extension_loaded('swoole'))
     $testContainer['swoole'] = ['build/imi.phar', 'swoole/start'];
 }
 $testContainer['workerman'] = ['build/imi.phar', 'workerman/start'];
-$testContainer['roadrunner'] = ['build/imi-cli.phar', 'rr/start']; // 两个入口 roadrunner、cli
+if (null !== RoadRunner::getBinaryPath())
+{
+    $testContainer['roadrunner'] = ['build/imi-cli.phar', 'rr/start']; // 两个入口 roadrunner、cli
+}
 
 foreach ($testContainer as $container => $opt)
 {
