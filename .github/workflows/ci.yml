@@ -219,7 +219,7 @@ jobs:
         run: |
           composer update --prefer-dist --no-progress
           .github/prepare-kafka.sh
-          docker exec mysql mysql -uroot -p -e "grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;flush privileges;"
+          docker exec mysql mysql -uroot -p -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';flush privileges;"
           tests/db/install-db.sh
           docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           echo "test_prepared=1" >> $GITHUB_ENV
