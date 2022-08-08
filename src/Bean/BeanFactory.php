@@ -180,14 +180,14 @@ class BeanFactory
                 $constructMethod = <<<TPL
                     public function __construct({$paramsTpls['define']})
                     {
-                        \$__args__ = func_get_args();
+                        \$__args__ = \func_get_args();
                         {$paramsTpls['set_args']}
                         \$__result__ = \Imi\Bean\BeanProxy::call(
                             \$this,
                             parent::class,
                             '__construct',
                             function({$paramsTpls['define']}){
-                                \$__args__ = func_get_args();
+                                \$__args__ = \func_get_args();
                                 {$paramsTpls['set_args']}
                                 return parent::__construct(...\$__args__);
                             },
@@ -219,7 +219,7 @@ class BeanFactory
         if ($traits)
         {
             $traits = array_unique(isset($traits[1]) ? array_merge(...$traits) : $traits[0]);
-            $traitsTpl = 'use ' . implode(',', $traits) . ';';
+            $traitsTpl = 'use ' . implode(', ', $traits) . ';';
         }
         else
         {
@@ -267,14 +267,14 @@ class BeanFactory
             $tpl .= <<<TPL
                 public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
                 {
-                    \$__args__ = func_get_args();
+                    \$__args__ = \func_get_args();
                     {$paramsTpls['set_args']}
                     \$__result__ = \Imi\Bean\BeanProxy::call(
                         \$this,
                         parent::class,
                         '{$methodName}',
                         function({$paramsTpls['define']}){
-                            \$__args__ = func_get_args();
+                            \$__args__ = \func_get_args();
                             {$paramsTpls['set_args']}
                             return parent::{$methodName}(...\$__args__);
                         },
@@ -327,14 +327,14 @@ class BeanFactory
         {
             if (\is_array($item))
             {
-                $item = implode(',', $item);
+                $item = implode(', ', $item);
             }
         }
         // 调用如果参数为空处理
         // @phpstan-ignore-next-line
         if ('' === $call)
         {
-            $call = '...func_get_args()';
+            $call = '...\func_get_args()';
         }
 
         return $result;
@@ -345,9 +345,7 @@ class BeanFactory
      */
     public static function getMethodParamArgsTpl(\ReflectionParameter $param): string
     {
-        $reference = $param->isPassedByReference() ? '&' : '';
-
-        return $reference . '$' . $param->name;
+        return ($param->isPassedByReference() ? '&' : '') . '$' . $param->name;
     }
 
     /**
