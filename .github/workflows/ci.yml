@@ -196,7 +196,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Services
         shell: bash
-        root: true
         run: |
           sudo apt update && apt install -y rsync
           docker-compose -f ./.github/docker-compose.yml up -d mysql postgres redis rabbitmq kafka1
