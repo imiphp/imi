@@ -262,10 +262,10 @@ jobs:
         run: composer test-smarty
       - name: Test pgsql
         if: ${{ matrix.swoole-cli == 'v5.0.0' && env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-pgsql
+        run: composer test-pgsql
       - name: Test phar
         if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-phar
+        run: composer test-phar
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php

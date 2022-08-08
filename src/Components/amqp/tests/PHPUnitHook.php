@@ -28,6 +28,7 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
                 Coroutine::create(fn () => App::run('AMQPApp', SwooleApp::class, static function () use ($channel) {
                     $channel->push(1);
                     $channel->pop();
+                    $channel->push(1);
                 }));
                 $channel->pop();
                 break;
@@ -43,6 +44,7 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
         if (isset($this->channel))
         {
             $this->channel->push(1);
+            $this->channel->pop();
         }
     }
 }
