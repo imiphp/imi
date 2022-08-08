@@ -190,7 +190,6 @@ jobs:
         swoole-cli: [v5.0.0, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
-      MYSQL_SERVER_HOST: 172.17.0.1
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
@@ -220,6 +219,7 @@ jobs:
         run: |
           composer update --prefer-dist --no-progress
           .github/prepare-kafka.sh
+          docker exec mysql mysql -uroot -p -e "grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;flush privileges;"
           tests/db/install-db.sh
           docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           echo "test_prepared=1" >> $GITHUB_ENV
