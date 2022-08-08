@@ -190,8 +190,7 @@ jobs:
         swoole-cli: [v5.0.0, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
-      REDIS_SERVER_HOST: redis
-      IMI_TEST_AMQP_SERVER_UTIL: 0
+      MYSQL_SERVER_HOST: host.docker.internal
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
