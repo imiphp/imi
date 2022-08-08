@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Imi\RoadRunner\Util\RoadRunner;
 use Symfony\Component\Process\Process;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
@@ -79,7 +80,10 @@ if (\extension_loaded('swoole'))
     $testContainer['swoole'] = ['build/imi.phar', 'swoole/start'];
 }
 $testContainer['workerman'] = ['build/imi.phar', 'workerman/start'];
-$testContainer['roadrunner'] = ['build/imi-cli.phar', 'rr/start']; // 两个入口 roadrunner、cli
+if (null !== RoadRunner::getBinaryPath())
+{
+    $testContainer['roadrunner'] = ['build/imi-cli.phar', 'rr/start']; // 两个入口 roadrunner、cli
+}
 
 foreach ($testContainer as $container => $opt)
 {
