@@ -190,7 +190,7 @@ jobs:
         swoole-cli: [v5.0.0, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
-      MYSQL_SERVER_HOST: host.docker.internal
+      MYSQL_SERVER_HOST: 172.17.0.1
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
