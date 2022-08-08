@@ -16,6 +16,7 @@ use Imi\Test\Component\Model\MemberSerializable;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\Prefix;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
+use Imi\Test\Component\Model\TestBug403;
 use Imi\Test\Component\Model\TestEnum;
 use Imi\Test\Component\Model\TestFieldName;
 use Imi\Test\Component\Model\TestFieldNameNotCamel;
@@ -1021,5 +1022,43 @@ class ModelTest extends BaseTest
             'Abc_Def' => 'a3',
             'ABC_XYZ' => 'b3',
         ], $record2->toArray());
+    }
+
+    public function testBug403(): void
+    {
+        $record = TestBug403::newInstance([
+            'json_data' => '[4, 5, 6]',
+        ]);
+        $this->assertEquals([
+            'id' => null,
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+        $id = $record->insert()->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+
+        $record = TestBug403::find($id);
+        $this->assertEquals([
+            'id' => $id,
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+
+        $list = TestBug403::query()->where('id', '=', $id)->select()->getArray();
+        $this->assertEquals([[
+            'id' => $id,
+        ]], TestJson::convertListToArray($list));
+
+        $record = TestBug403::query()->where('id', '=', $id)->select()->get();
+        $this->assertEquals([
+            'id' => $id,
+        ], $record->convertToArray());
+
+        $record = TestBug403::query()->field('id', 'json_data')->where('id', '=', $id)->select()->get();
+        $this->assertEquals([
+            'id'        => $id,
+            'json_data' => [4, 5, 6],
+        ], $record->convertToArray());
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
     }
 }
