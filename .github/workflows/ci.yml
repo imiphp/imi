@@ -195,17 +195,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup MySQL
-        uses: shogo82148/actions-setup-mysql@v1
-        with:
-          mysql-version: "8.0"
-          root-password: root
-          my-cnf: |
-            socket=/tmp/mysql.sock
-      - name: Setup Redis
-        uses: shogo82148/actions-setup-redis@v1
-        with:
-          redis-version: "6.x"
+      - name: Setup Services
+        shell: bash
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d mysql postgres redis rabbitmq kafka1
       - name: Setup swoole-cli
         run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
       - name: Check Version
@@ -225,9 +218,10 @@ jobs:
           key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         run: |
-          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
+          .github/prepare-kafka.sh
           tests/db/install-db.sh
+          docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
           echo "test_prepared=1" >> $GITHUB_ENV
 
       - name: Test
@@ -248,6 +242,12 @@ jobs:
       - name: Test queue
         if: ${{ env.test_prepared && always() }}
         run: composer test-queue
+      - name: Test amqp
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-amqp
+      - name: Test kafka
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-kafka
       - name: Test grpc
         if: ${{ env.test_prepared && always() }}
         run: composer test-grpc
@@ -260,6 +260,12 @@ jobs:
       - name: Test smarty
         if: ${{ env.test_prepared && always() }}
         run: composer test-smarty
+      - name: Test pgsql
+        if: ${{ matrix.swoole-cli == 'v5.0.0' && env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-pgsql
+      - name: Test phar
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-phar
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
