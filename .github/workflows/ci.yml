@@ -197,7 +197,7 @@ jobs:
       - name: Setup Services
         shell: bash
         run: |
-          sudo apt update && apt install -y rsync
+          sudo apt update && sudo apt install -y rsync
           docker-compose -f ./.github/docker-compose.yml up -d mysql postgres redis rabbitmq kafka1
           sudo echo "127.0.0.1 kafka1" >> /etc/hosts
           /etc/init.d/networking restart
