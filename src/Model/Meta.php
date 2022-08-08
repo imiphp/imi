@@ -282,10 +282,10 @@ class Meta
             }
             $serializableFieldNames[$fieldName] = $name;
 
-            if (isset($serializableSets[$name]))
+            if (isset($serializableSets[$fieldName]))
             {
                 // 单独属性上的 @Serializable 注解
-                if (!$serializableSets[$name][0]->allow)
+                if (!$serializableSets[$fieldName][0]->allow)
                 {
                     continue;
                 }
