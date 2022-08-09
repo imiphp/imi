@@ -254,8 +254,6 @@ class PoolManager
         {
             static::releaseResource($resource);
         }
-
-        return null;
     }
 
     /**
