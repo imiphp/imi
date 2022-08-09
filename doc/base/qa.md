@@ -37,3 +37,11 @@
 当项目文件放置在，共享目录等不支持文件锁的文件系统时，可以配置一个支持文件锁的目录。比如：`/tmp`。
 
 * 可以在运行命令时指定环境变量：`IMI_MACRO_LOCK_FILE_DIR=/tmp vendor/bin/imi-swoole swoole/start`
+
+## Can't create more than max_prepared_stmt_count statements
+
+```log
+PDOException: SQLSTATE[42000]: Syntax error or access violation: 1461 Can't create more than max_prepared_stmt_count statements (current value: 16382)
+```
+
+imi 默认会缓存 Statement，建议调大 mysql 的 `max_prepared_stmt_count` 配置值。

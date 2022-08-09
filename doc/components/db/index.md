@@ -209,17 +209,6 @@ $query = Db::query('mysql2', XXXModel::class, \Imi\Db\Query\QueryType::READ); //
 
 ### 事务
 
-手动控制事务：
-
-```php
-// 开启事务
-Db::getInstance()->beginTransaction();
-// 提交事务
-Db::getInstance()->commit();
-// 回滚事务
-Db::getInstance()->rollBack();
-```
-
 获取连接顺带自动开启/提交/回滚事务：
 
 ```php
@@ -257,6 +246,17 @@ Db::transContext(function(IDb $db){
 
 > 可以使用模型
 
+手动控制事务：（不推荐）
+
+```php
+// 开启事务
+Db::getInstance()->beginTransaction();
+// 提交事务
+Db::getInstance()->commit();
+// 回滚事务
+Db::getInstance()->rollBack();
+```
+
 **自动事务处理：**
 
 `@Transaction` 注解，类：`Imi\Db\Annotation\Transaction`
@@ -266,6 +266,20 @@ Db::transContext(function(IDb $db){
 `@Transaction`
 
 `@Transaction(autoCommit="自动提交事务true/false，默认为true")`
+
+例：
+
+```php
+use Imi\Db\Annotation\Transaction;
+
+/**
+ * @Transaction
+ */
+public function create()
+{
+    // 你的代码，抛异常就回滚，没异常就提交
+}
+```
 
 **事务类型：**
 
