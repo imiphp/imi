@@ -12,12 +12,12 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @Bean(name="TcpReceiveDataProxy", recursion=false, instanceType="singleton")
  * @RequestContextProxy(class="Imi\Server\TcpServer\Message\IReceiveData", name="receiveData")
  *
- * @method \int|string                 getClientId()
- * @method static                      \int|string getClientId()
+ * @method int|string                  getClientId()
+ * @method static                      int|string getClientId()
  * @method string                      getData()
  * @method static                      string getData()
- * @method \mixed                      getFormatData()
- * @method static                      \mixed getFormatData()
+ * @method mixed                       getFormatData()
+ * @method static                      mixed getFormatData()
  * @method \Imi\Util\Socket\IPEndPoint getClientAddress()
  * @method static                      \Imi\Util\Socket\IPEndPoint getClientAddress()
  */

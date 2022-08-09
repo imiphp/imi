@@ -110,9 +110,13 @@ class RequestContextProxyGenerate
                     {
                         $returnType = '\\' . $fullClass;
                     }
-                    else
+                    elseif (class_exists($class))
                     {
                         $returnType = '\\' . $class;
+                    }
+                    else
+                    {
+                        $returnType = $class;
                     }
                 }
             }

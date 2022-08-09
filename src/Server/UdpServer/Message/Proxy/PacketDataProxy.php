@@ -14,8 +14,8 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  *
  * @method string                      getData()
  * @method static                      string getData()
- * @method \mixed                      getFormatData()
- * @method static                      \mixed getFormatData()
+ * @method mixed                       getFormatData()
+ * @method static                      mixed getFormatData()
  * @method \Imi\Util\Socket\IPEndPoint getClientAddress()
  * @method static                      \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
