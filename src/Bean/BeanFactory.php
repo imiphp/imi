@@ -180,14 +180,14 @@ class BeanFactory
                 $constructMethod = <<<TPL
                     public function __construct({$paramsTpls['define']})
                     {
-                        \$__args__ = \func_get_args();
+                        \$__args__ = \\func_get_args();
                         {$paramsTpls['set_args']}
                         \$__result__ = \Imi\Bean\BeanProxy::call(
                             \$this,
                             parent::class,
                             '__construct',
                             function({$paramsTpls['define']}){
-                                \$__args__ = \func_get_args();
+                                \$__args__ = \\func_get_args();
                                 {$paramsTpls['set_args']}
                                 return parent::__construct(...\$__args__);
                             },
@@ -267,14 +267,14 @@ class BeanFactory
             $tpl .= <<<TPL
                 public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
                 {
-                    \$__args__ = \func_get_args();
+                    \$__args__ = \\func_get_args();
                     {$paramsTpls['set_args']}
                     \$__result__ = \Imi\Bean\BeanProxy::call(
                         \$this,
                         parent::class,
                         '{$methodName}',
                         function({$paramsTpls['define']}){
-                            \$__args__ = \func_get_args();
+                            \$__args__ = \\func_get_args();
                             {$paramsTpls['set_args']}
                             return parent::{$methodName}(...\$__args__);
                         },
