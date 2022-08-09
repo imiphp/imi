@@ -75,6 +75,21 @@ class CliApp extends BaseApp
                 null,
             )
         );
+        $definition->addOption(
+            new InputOption(
+                'bootstrap',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Set bootstrap file',
+                null,
+            )
+        );
+        $input = ImiCommand::getInput();
+        $bootstrap = $input->getParameterOption('--bootstrap', null);
+        if (null !== $bootstrap)
+        {
+            require $bootstrap;
+        }
     }
 
     /**
