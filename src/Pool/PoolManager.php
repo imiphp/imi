@@ -246,17 +246,16 @@ class PoolManager
     public static function use(string $name, callable $callback)
     {
         $resource = static::getResource($name);
-        $result = null;
         try
         {
-            $result = $callback($resource, $resource->getInstance());
+            return $callback($resource, $resource->getInstance());
         }
         finally
         {
             static::releaseResource($resource);
         }
 
-        return $result;
+        return null;
     }
 
     /**
@@ -272,8 +271,8 @@ class PoolManager
             {
                 $resource->getPool()->release($resource);
             }
+            $requestContext['poolResources'] = [];
         }
-        $requestContext['poolResources'] = [];
     }
 
     /**

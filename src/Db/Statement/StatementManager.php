@@ -122,10 +122,10 @@ class StatementManager
     public static function unUsingAll(IDb $db): void
     {
         $context = RequestContext::getContext();
-        $statementCaches = $context['statementCaches'] ?? [];
         $statements = self::$statements[$db->hashCode()] ?? [];
         if ($statements)
         {
+            $statementCaches = $context['statementCaches'] ?? [];
             foreach ($statements as &$item)
             {
                 $statement = $item['statement'];
@@ -139,8 +139,8 @@ class StatementManager
                 }
                 $item['using'] = false;
             }
+            $context['statementCaches'] = $statementCaches;
         }
-        $context['statementCaches'] = $statementCaches;
     }
 
     /**
@@ -173,11 +173,11 @@ class StatementManager
     public static function clear(IDb $db): void
     {
         $requestContext = RequestContext::getContext();
-        $statementCaches = $requestContext['statementCaches'] ?? [];
         $staticStatements = &self::$statements;
         $statements = $staticStatements[$db->hashCode()] ?? [];
         if ($statements)
         {
+            $statementCaches = $requestContext['statementCaches'] ?? [];
             foreach ($statements as $item)
             {
                 if (false !== $i = array_search($item['statement'], $statementCaches))
@@ -186,8 +186,8 @@ class StatementManager
                 }
             }
             unset($staticStatements[$db->hashCode()]);
+            $requestContext['statementCaches'] = $statementCaches;
         }
-        $requestContext['statementCaches'] = $statementCaches;
     }
 
     /**
