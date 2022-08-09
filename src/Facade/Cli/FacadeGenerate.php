@@ -76,7 +76,31 @@ class FacadeGenerate extends BaseCommand
             $docComment = $method->getDocComment();
             if (false !== $docComment && preg_match('/@return\s+([^\s]+)/', $docComment, $matches) > 0)
             {
-                $returnType = $matches[1];
+                $class = $matches[1];
+                if ('self' === $class || 'static' === $class)
+                {
+                    $returnType = '\\' . $method->getDeclaringClass()->getName();
+                }
+                elseif ('\\' === $class[0])
+                {
+                    $returnType = $class;
+                }
+                else
+                {
+                    $fullClass = $method->getDeclaringClass()->getNamespaceName() . '\\' . $class;
+                    if (class_exists($fullClass) || interface_exists($fullClass, false) || trait_exists($fullClass, false))
+                    {
+                        $returnType = '\\' . $fullClass;
+                    }
+                    elseif (class_exists($class))
+                    {
+                        $returnType = '\\' . $class;
+                    }
+                    else
+                    {
+                        $returnType = $class;
+                    }
+                }
             }
             elseif ($method->hasReturnType())
             {

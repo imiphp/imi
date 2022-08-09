@@ -7,10 +7,9 @@ namespace Imi\Server\TcpServer\Message\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
-use Imi\Util\Socket\IPEndPoint;
 
 /**
- * @Bean(name="TcpReceiveDataProxy", recursion=false)
+ * @Bean(name="TcpReceiveDataProxy", recursion=false, instanceType="singleton")
  * @RequestContextProxy(class="Imi\Server\TcpServer\Message\IReceiveData", name="receiveData")
  *
  * @method int|string                  getClientId()
@@ -19,8 +18,8 @@ use Imi\Util\Socket\IPEndPoint;
  * @method static                      string getData()
  * @method mixed                       getFormatData()
  * @method static                      mixed getFormatData()
- * @method \Imi\Util\Socket\IPEndPoint getFormatData()
- * @method static                      \Imi\Util\Socket\IPEndPoint getFormatData()
+ * @method \Imi\Util\Socket\IPEndPoint getClientAddress()
+ * @method static                      \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
 class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\TcpServer\Message\IReceiveData
 {
@@ -51,7 +50,7 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress(): IPEndPoint
+    public function getClientAddress(): \Imi\Util\Socket\IPEndPoint
     {
         return self::__getProxyInstance()->getClientAddress(...\func_get_args());
     }

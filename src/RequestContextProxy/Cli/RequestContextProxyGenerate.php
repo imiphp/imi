@@ -34,8 +34,9 @@ class RequestContextProxyGenerate
      * @Option(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
      * @Option(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
      * @Option(name="interface", type=ArgType::STRING, default=null, comments="生成的目标类要实现的接口")
+     * @Option(name="recursion", type=ArgType::BOOL, default=true, comments="是否启用 Bean 递归特性")
      */
-    public function generate(string $target, string $class, string $name, ?string $bean, ?string $interface): void
+    public function generate(string $target, string $class, string $name, ?string $bean, ?string $interface, bool $recursion): void
     {
         if (class_exists($class) || interface_exists($class))
         {
@@ -52,10 +53,6 @@ class RequestContextProxyGenerate
             {
                 throw new \RuntimeException(sprintf('Class %s does not found', $class));
             }
-        }
-        if (null === $interface && interface_exists($fromClass))
-        {
-            $interface = $fromClass;
         }
         $namespace = Imi::getClassNamespace($target);
         $shortClassName = Imi::getClassShortName($target);
@@ -76,7 +73,8 @@ class RequestContextProxyGenerate
         else
         {
             $beanAnnotation = Annotation::toComments(new Bean([
-                'name'  => $bean,
+                'name'      => $bean,
+                'recursion' => $recursion,
             ]));
         }
         $refClass = new ReflectionClass($fromClass);
@@ -96,7 +94,31 @@ class RequestContextProxyGenerate
             $docComment = $method->getDocComment();
             if (false !== $docComment && preg_match('/@return\s+([^\s]+)/', $docComment, $matches) > 0)
             {
-                $returnType = $matches[1];
+                $class = $matches[1];
+                if ('self' === $class || 'static' === $class)
+                {
+                    $returnType = '\\' . $method->getDeclaringClass()->getName();
+                }
+                elseif ('\\' === $class[0])
+                {
+                    $returnType = $class;
+                }
+                else
+                {
+                    $fullClass = $method->getDeclaringClass()->getNamespaceName() . '\\' . $class;
+                    if (class_exists($fullClass) || interface_exists($fullClass, false) || trait_exists($fullClass, false))
+                    {
+                        $returnType = '\\' . $fullClass;
+                    }
+                    elseif (class_exists($class))
+                    {
+                        $returnType = '\\' . $class;
+                    }
+                    else
+                    {
+                        $returnType = $class;
+                    }
+                }
             }
             elseif ($method->hasReturnType())
             {
