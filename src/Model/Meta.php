@@ -177,6 +177,11 @@ class Meta
      */
     private array $parsedSerializableFieldNames = [];
 
+    /**
+     * 是否启用增量更新.
+     */
+    private bool $incrUpdate = false;
+
     public function __construct(string $modelClass, bool $inherit = false)
     {
         $id = [];
@@ -264,6 +269,7 @@ class Meta
         $this->fields = $fields;
         $this->camel = $camel = $entity->camel ?? true;
         $this->bean = $entity->bean;
+        $this->incrUpdate = $entity->incrUpdate;
         $serializableFieldNames = $parsedSerializableFieldNames = $fieldNames = [];
         foreach ($fields as $fieldName => $column)
         {
@@ -602,5 +608,13 @@ class Meta
     public function isUsePrefix(): bool
     {
         return $this->usePrefix;
+    }
+
+    /**
+     * Get 是否启用增量更新.
+     */
+    public function isIncrUpdate(): bool
+    {
+        return $this->incrUpdate;
     }
 }
