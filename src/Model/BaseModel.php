@@ -101,8 +101,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __init(array $data = []): void
     {
-        $meta = $this->__meta;
-        $isBean = $meta->isBean();
+        $isBean = $this->__meta->isBean();
         if ($isBean)
         {
             // 初始化前
@@ -112,9 +111,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             ], $this, \Imi\Model\Event\Param\InitEventParam::class);
         }
 
-        $this->__originData = $data;
         if ($data)
         {
+            $this->__originData = $data;
             foreach ($data as $k => $v)
             {
                 $this[$k] = $v;
@@ -247,13 +246,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         if ($getterExists)
         {
-            $__methodReference = &self::$__methodReference;
-            if (!isset($__methodReference[$class][$methodName]))
-            {
-                $refMethod = ReflectionContainer::getMethodReflection(static::class, $methodName);
-                $__methodReference[$class][$methodName] = $refMethod->returnsReference();
-            }
-            if ($__methodReference[$class][$methodName])
+            if (self::$__methodReference[$class][$methodName] ??= ReflectionContainer::getMethodReflection(static::class, $methodName)->returnsReference())
             {
                 return $this->$methodName();
             }
@@ -262,13 +255,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 $result = $this->$methodName();
             }
         }
-        elseif (isset($this->__originData[$offset]))
-        {
-            $result = $this->__originData[$offset];
-        }
         else
         {
-            $result = null;
+            $result = $this->__originData[$offset] ?? null;
         }
 
         return $result;
@@ -356,10 +345,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         if ($column && '' !== $column->reference)
         {
             unset($this[$column->reference]);
-
-            return;
         }
-        if (isset($this->__fieldNames[$offset]))
+        elseif (isset($this->__fieldNames[$offset]))
         {
             unset($this->__fieldNames[$offset]);
         }
@@ -420,7 +407,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             if ($serializedFields)
             {
-                if (!\in_array($name, $__fieldNames) && isset($__fieldNames[$name]))
+                if (isset($__fieldNames[$name]) && !\in_array($name, $__fieldNames))
                 {
                     $name = $__fieldNames[$name];
                 }
@@ -597,13 +584,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $class = static::__getRealClassName();
         }
-        $__metas = &self::$__metas;
-        if (!isset($__metas[$class]))
-        {
-            return $__metas[$class] = new Meta($class);
-        }
 
-        return $__metas[$class];
+        return self::$__metas[$class] ??= new Meta($class);
     }
 
     /**
