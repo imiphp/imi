@@ -1078,6 +1078,7 @@ class ModelTest extends BaseTest
         $record2->save();
         $this->assertGreaterThanOrEqual(1, $record2->id);
 
+        // 增量更新
         $updateSql = 'update `tb_article2` set `title` = :title where `id` = :p1 limit 1';
 
         $record1->title = 't1';
@@ -1093,5 +1094,12 @@ class ModelTest extends BaseTest
 
         $record22 = Article2::find($record2->id);
         $this->assertEquals('t2', $record22->title);
+
+        // 无修改不执行SQL
+        $result = $record1->update();
+        $this->assertEquals('', $result->getSql());
+
+        $result = $record2->save();
+        $this->assertEquals('', $result->getSql());
     }
 }

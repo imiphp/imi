@@ -59,7 +59,10 @@ class Result implements IResult
 
     public function __destruct()
     {
-        StatementManager::unUsing($this->statement);
+        if ($this->statement)
+        {
+            StatementManager::unUsing($this->statement);
+        }
     }
 
     /**

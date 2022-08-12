@@ -405,7 +405,7 @@ abstract class Model extends BaseModel
             // 子模型插入
             ModelRelationManager::insertModel($this);
         }
-        $this->__originData = ObjectArrayHelper::toArray($data);
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
         $this->__recordExists = true;
 
         return $result;
@@ -495,7 +495,7 @@ abstract class Model extends BaseModel
             ModelRelationManager::updateModel($this);
         }
 
-        $this->__originData = ObjectArrayHelper::toArray($data);
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
 
         return $result;
     }
@@ -624,7 +624,7 @@ abstract class Model extends BaseModel
                 $this[$autoIncrementField] = $result->getLastInsertId();
             }
         }
-        $this->__originData = ObjectArrayHelper::toArray($data);
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
         $this->__recordExists = true;
 
         if ($isBean)
