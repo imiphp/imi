@@ -200,6 +200,11 @@ class ModelGenerate extends BaseCommand
             {
                 $tableName = $table;
             }
+            $tableComment = Text::isEmpty($item['comment']) ? $tableName : $item['comment'];
+            if ('@' === ($tableComment[0] ?? ''))
+            {
+                $tableComment = '@' . $tableComment;
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
@@ -212,7 +217,7 @@ class ModelGenerate extends BaseCommand
                 'fields'        => [],
                 'entity'        => $entity,
                 'poolName'      => $poolName,
-                'tableComment'  => Text::isEmpty($item['comment']) ? $tableName : $item['comment'],
+                'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,
             ];
             $fields = $query->execute(<<<SQL
