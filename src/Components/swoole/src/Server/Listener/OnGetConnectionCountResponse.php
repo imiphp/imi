@@ -12,7 +12,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 /**
  * 获取当前连接数量-响应.
  *
- * @Listener(eventName="IMI.PIPE_MESSAGE.getConnectionCount")
+ * @Listener(eventName="IMI.PIPE_MESSAGE.getConnectionCountResponse")
  */
 class OnGetConnectionCountResponse implements IEventListener
 {

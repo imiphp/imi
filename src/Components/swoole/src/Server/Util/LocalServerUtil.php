@@ -652,7 +652,7 @@ class LocalServerUtil implements ISwooleServerUtil
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                $count = $this->sendMessage('getConnectionCount', [
+                $count = $this->sendMessage('getConnectionCountRequest', [
                     'messageId'    => $id,
                     'serverName'   => $server->getName(),
                     'needResponse' => true,
