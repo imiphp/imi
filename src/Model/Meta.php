@@ -236,7 +236,7 @@ class Meta
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($realModelClass, Sql::class);
         $this->bean = $entity->bean;
         $parsedSerializableFieldNames = [];
-        foreach ($serializableFieldNames as $name)
+        foreach ($serializableFieldNames as $fieldName => $name)
         {
             if (isset($serializableSets[$fieldName]))
             {
