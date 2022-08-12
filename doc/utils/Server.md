@@ -433,6 +433,12 @@ $clientIds = Server::getConnections();
 
 获取当前连接数量
 
+> Swoole 下获取到的是所有 Worker 加起来的连接数，无论是 PROCESS 模式，还是 BASE 模式，imi 做了兼容。
+
+> Workerman 是获取当前 Worker 连接数
+
+> Worerman-Gateway 是获取所有连接数
+
 ```php
 $count = Server::getConnectionCount();
 ```
