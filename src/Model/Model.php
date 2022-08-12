@@ -11,6 +11,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\QueryType;
 use Imi\Db\Query\Raw;
+use Imi\Db\Query\Result;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
@@ -18,6 +19,7 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
+use Imi\Util\ObjectArrayHelper;
 use InvalidArgumentException;
 
 /**
@@ -403,6 +405,7 @@ abstract class Model extends BaseModel
             // 子模型插入
             ModelRelationManager::insertModel($this);
         }
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
         $this->__recordExists = true;
 
         return $result;
@@ -415,16 +418,34 @@ abstract class Model extends BaseModel
      */
     public function update($data = null): IResult
     {
-        $query = static::query()->limit(1);
-        $meta = $this->__meta;
         if (null === $data)
         {
             $data = self::parseSaveData(iterator_to_array($this), 'update', $this);
+            $isDataEmpty = 0 === $data->count();
         }
-        elseif (!$data instanceof \ArrayAccess)
+        else
         {
-            $data = new LazyArrayObject($data);
+            if (!$data instanceof \ArrayAccess)
+            {
+                $data = new LazyArrayObject($data);
+                $isDataEmpty = 0 === $data->count();
+            }
+            else
+            {
+                $isDataEmpty = true;
+                foreach ($data as $_)
+                {
+                    $isDataEmpty = false;
+                    break;
+                }
+            }
         }
+        if ($isDataEmpty)
+        {
+            return new Result(true, null, true);
+        }
+        $query = static::query()->limit(1);
+        $meta = $this->__meta;
         $isBean = $meta->isBean();
 
         if ($isBean)
@@ -473,6 +494,8 @@ abstract class Model extends BaseModel
             // 子模型更新
             ModelRelationManager::updateModel($this);
         }
+
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
 
         return $result;
     }
@@ -544,9 +567,25 @@ abstract class Model extends BaseModel
     public function save(): IResult
     {
         $meta = $this->__meta;
-        $query = static::query();
+
+        $recordExists = $this->__recordExists;
+        // 当有自增字段时，根据自增字段值处理
+        if (null === $recordExists)
+        {
+            $autoIncrementField = $meta->getAutoIncrementField();
+            if (null !== $autoIncrementField)
+            {
+                $recordExists = ($this[$autoIncrementField] ?? 0) > 0;
+            }
+        }
+        else
+        {
+            $autoIncrementField = null;
+        }
+
         $data = self::parseSaveData(iterator_to_array($this), 'save', $this);
         $isBean = $meta->isBean();
+        $query = static::query();
 
         if ($isBean)
         {
@@ -556,22 +595,6 @@ abstract class Model extends BaseModel
                 'data'  => $data,
                 'query' => $query,
             ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
-        }
-
-        $recordExists = $this->__recordExists;
-
-        // 当有自增字段时，根据自增字段值处理
-        if (null === $recordExists)
-        {
-            $autoIncrementField = $meta->getAutoIncrementField();
-            if (null !== $autoIncrementField)
-            {
-                $recordExists = ($data[$autoIncrementField] ?? 0) > 0;
-            }
-        }
-        else
-        {
-            $autoIncrementField = null;
         }
 
         if (true === $recordExists)
@@ -600,8 +623,9 @@ abstract class Model extends BaseModel
             {
                 $this[$autoIncrementField] = $result->getLastInsertId();
             }
-            $this->__recordExists = true;
         }
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
+        $this->__recordExists = true;
 
         if ($isBean)
         {
@@ -963,10 +987,6 @@ abstract class Model extends BaseModel
 
         if (\is_object($data))
         {
-            if (null === $object)
-            {
-                $object = $data;
-            }
             $_data = [];
             foreach ($data as $k => $v)
             {
@@ -978,15 +998,18 @@ abstract class Model extends BaseModel
         $isInsert = 'insert' === $type;
         $isUpdate = 'update' === $type;
         $isSave = 'save' === $type;
-        if ($objectIsObject = \is_object($object))
+        if ($object)
         {
             $rawValues = $object->__rawValues;
             $object->__rawValues = [];
+            $originData = $object->__originData;
         }
         else
         {
             $rawValues = null;
+            $originData = [];
         }
+        $incrUpdate = $meta->isIncrUpdate();
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
@@ -1018,9 +1041,9 @@ abstract class Model extends BaseModel
                 {
                     throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFieldName, $columnType));
                 }
-                if ($objectIsObject)
+                if ($object)
                 {
-                    $object->$dbFieldName = $value;
+                    $object[$dbFieldName] = $value;
                 }
             }
             elseif (\array_key_exists($name, $data))
@@ -1079,11 +1102,15 @@ abstract class Model extends BaseModel
                     $value = implode(',', $value);
                     break;
             }
+            if ($incrUpdate && (!$isInsert || ($isSave && $object && $object->__recordExists)) && ((\array_key_exists($dbFieldName, $originData) && $originData[$dbFieldName] === $value) || (\array_key_exists($name, $originData) && $originData[$name] === $value)))
+            {
+                continue;
+            }
             $result[$dbFieldName] = $value;
         }
 
         // 更新时无需更新主键
-        if ($isUpdate)
+        if ($isUpdate || ($isSave && $object && $object->__recordExists))
         {
             foreach (static::PRIMARY_KEYS ?? $meta->getId() as $id)
             {

@@ -1061,4 +1061,45 @@ class ModelTest extends BaseTest
         ], $record->convertToArray());
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
     }
+
+    public function testIncrUpdate(): void
+    {
+        $record1 = Article2::newInstance();
+        $record1->memberId = 1024;
+        $record1->title = __CLASS__;
+        $record1->content = __FUNCTION__;
+        $record1->insert();
+        $this->assertGreaterThanOrEqual(1, $record1->id);
+
+        $record2 = Article2::newInstance();
+        $record2->memberId = 1024;
+        $record2->title = __CLASS__;
+        $record2->content = __FUNCTION__;
+        $record2->save();
+        $this->assertGreaterThanOrEqual(1, $record2->id);
+
+        // 增量更新
+        $updateSql = 'update `tb_article2` set `title` = :title where `id` = :p1 limit 1';
+
+        $record1->title = 't1';
+        $result = $record1->update();
+        $this->assertEquals($updateSql, $result->getSql());
+
+        $record11 = Article2::find($record1->id);
+        $this->assertEquals('t1', $record11->title);
+
+        $record2->title = 't2';
+        $result = $record2->save();
+        $this->assertEquals($updateSql, $result->getSql());
+
+        $record22 = Article2::find($record2->id);
+        $this->assertEquals('t2', $record22->title);
+
+        // 无修改不执行SQL
+        $result = $record1->update();
+        $this->assertEquals('', $result->getSql());
+
+        $result = $record2->save();
+        $this->assertEquals('', $result->getSql());
+    }
 }

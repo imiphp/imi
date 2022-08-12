@@ -59,7 +59,10 @@ class Result implements IResult
 
     public function __destruct()
     {
-        StatementManager::unUsing($this->statement);
+        if ($this->statement)
+        {
+            StatementManager::unUsing($this->statement);
+        }
     }
 
     /**
@@ -79,8 +82,14 @@ class Result implements IResult
         {
             throw new \RuntimeException('Result is not success!');
         }
-
-        return (int) $this->statement->lastInsertId();
+        if ($this->statement)
+        {
+            return (int) $this->statement->lastInsertId();
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     /**
@@ -93,7 +102,14 @@ class Result implements IResult
             throw new \RuntimeException('Result is not success!');
         }
 
-        return $this->statement->rowCount();
+        if ($this->statement)
+        {
+            return $this->statement->rowCount();
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     /**
@@ -241,7 +257,14 @@ class Result implements IResult
      */
     public function getSql(): string
     {
-        return $this->statement->getSql();
+        if ($this->statement)
+        {
+            return $this->statement->getSql();
+        }
+        else
+        {
+            return '';
+        }
     }
 
     /**

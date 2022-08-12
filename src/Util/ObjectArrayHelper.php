@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use ArrayObject;
 use stdClass;
 
 /**
@@ -203,6 +204,28 @@ class ObjectArrayHelper
         else
         {
             throw new \InvalidArgumentException(sprintf('Unknow mode %s', $mode));
+        }
+    }
+
+    public static function toArray(object $object): array
+    {
+        if ($object instanceof ArrayObject)
+        {
+            return $object->getArrayCopy();
+        }
+        elseif (is_iterable($object))
+        {
+            return iterator_to_array($object);
+        }
+        else
+        {
+            $array = [];
+            foreach ($object as $k => $v)
+            {
+                $array[$k] = $v;
+            }
+
+            return $array;
         }
     }
 }

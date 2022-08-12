@@ -14,7 +14,7 @@ use Imi\Model\Model;
 /**
  * tb_test_set 基类.
  *
- * @Entity(camel=true, bean=true)
+ * @Entity(camel=true, bean=true, incrUpdate=false)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestSet.name", default="tb_test_set"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestSet.poolName"))
  * @DDL(sql="CREATE TABLE `tb_test_set` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value1` set('a','b','c','''test''') NOT NULL DEFAULT '''test''',   `value2` set('1','2','3') NOT NULL DEFAULT '1,2',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *

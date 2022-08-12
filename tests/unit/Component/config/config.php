@@ -348,7 +348,8 @@ return [
                             ],
                         ],
                         'tb_article2' => [
-                            'bean' => false,
+                            'bean'       => false,
+                            'incrUpdate' => true,
                         ],
                     ],
                 ],

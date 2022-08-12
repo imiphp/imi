@@ -45,11 +45,12 @@ class ModelGenerate extends BaseCommand
      * @Option(name="ddlEncode", type=ArgType::STRING, comments="DDL 编码函数", default="")
      * @Option(name="ddlDecode", type=ArgType::STRING, comments="DDL 解码函数", default="")
      * @Option(name="bean", type=ArgType::BOOL, comments="模型对象是否作为 bean 类使用", default=true)
+     * @Option(name="incrUpdate", type=ArgType::BOOL, comments="模型是否启用增量更新", default=false)
      *
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean, bool $incrUpdate): void
     {
         $db = Db::getInstance($poolName);
         $tablePrefix = $db->getOption()['prefix'] ?? '';
@@ -246,6 +247,7 @@ class ModelGenerate extends BaseCommand
                 'fields'        => [],
                 'entity'        => $entity,
                 'bean'          => $tableConfig['bean'] ?? $bean,
+                'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
                 'ddlDecode'     => $ddlDecode,
