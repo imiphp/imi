@@ -370,4 +370,29 @@ class ServerUtilTest extends BaseTest
             $this->assertEquals('', $client2->recv(1));
         }, null, 3);
     }
+
+    public function testGetConnectionCount(): void
+    {
+        $this->go(function () {
+            $http1 = new HttpRequest();
+            $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
+            $this->assertEquals([
+                'count' => 1,
+            ], $response->json(true));
+
+            $http2 = new HttpRequest();
+            $response = $http2->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
+            $this->assertEquals([
+                'count' => 2,
+            ], $response->json(true));
+
+            unset($http2);
+
+            $http1 = new HttpRequest();
+            $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
+            $this->assertEquals([
+                'count' => 1,
+            ], $response->json(true));
+        });
+    }
 }

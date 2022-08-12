@@ -132,4 +132,14 @@ class ServerUtilController extends HttpController
             'flag'       => Server::closeByFlag($flag),
         ];
     }
+
+    /**
+     * @Action
+     */
+    public function getConnectionCount(): array
+    {
+        return [
+            'count' => Server::getConnectionCount(),
+        ];
+    }
 }
