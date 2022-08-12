@@ -375,13 +375,13 @@ class ServerUtilTest extends BaseTest
     {
         $this->go(function () {
             $http1 = new HttpRequest();
-            $response = $http1->get($this->host . 'serverUtil/getConnectionCount');
+            $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
             $this->assertEquals([
                 'count' => 1,
             ], $response->json(true));
 
             $http2 = new HttpRequest();
-            $response = $http2->get($this->host . 'serverUtil/getConnectionCount');
+            $response = $http2->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
             $this->assertEquals([
                 'count' => 2,
             ], $response->json(true));
@@ -389,7 +389,7 @@ class ServerUtilTest extends BaseTest
             unset($http2);
 
             $http1 = new HttpRequest();
-            $response = $http1->get($this->host . 'serverUtil/getConnectionCount');
+            $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
             $this->assertEquals([
                 'count' => 1,
             ], $response->json(true));

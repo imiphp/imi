@@ -7,6 +7,7 @@ namespace Imi\Swoole\Server\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Server;
 
 /**
@@ -29,7 +30,7 @@ class OnGetConnectionCountRequest implements IEventListener
         {
             Server::sendMessage('existsResponse', [
                 'messageId'  => $data['messageId'],
-                'result'     => iterator_count(Server::getServer($serverName)->getSwoolePort()->connections),
+                'result'     => iterator_count(Server::getServer($serverName, ISwooleServer::class)->getSwoolePort()->connections),
                 'serverName' => $serverName,
             ], $workerId, $serverName);
         }
