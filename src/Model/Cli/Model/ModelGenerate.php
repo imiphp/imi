@@ -215,6 +215,11 @@ class ModelGenerate extends BaseCommand
             {
                 $ddl = $ddlEncode($ddl);
             }
+            $tableComment = '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'];
+            if ('@' === ($tableComment[0] ?? ''))
+            {
+                $tableComment = '@' . $tableComment;
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
@@ -229,7 +234,7 @@ class ModelGenerate extends BaseCommand
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
                 'ddlDecode'     => $ddlDecode,
-                'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
+                'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,
             ];
             $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
