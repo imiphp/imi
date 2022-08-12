@@ -374,19 +374,32 @@ class ServerUtilTest extends BaseTest
     public function testGetConnectionCount(): void
     {
         $this->go(function () {
-            $http1 = new HttpRequest();
-            $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
+            do
+            {
+                echo 'try get workerId 0', \PHP_EOL;
+                $http1 = new HttpRequest();
+                $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/info');
+            }
+            while (0 !== $response->json(true)['workerId']);
+            $response = $http1->get($this->host . 'serverUtil/getConnectionCount');
             $this->assertEquals([
                 'count' => 1,
             ], $response->json(true));
 
-            $http2 = new HttpRequest();
-            $response = $http2->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
+            do
+            {
+                echo 'try get workerId 1', \PHP_EOL;
+                $http2 = new HttpRequest();
+                $response = $http2->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/info');
+            }
+            while (1 !== $response->json(true)['workerId']);
+            $response = $http2->get($this->host . 'serverUtil/getConnectionCount');
             $this->assertEquals([
                 'count' => 2,
             ], $response->json(true));
 
             unset($http2);
+            sleep(1);
 
             $http1 = new HttpRequest();
             $response = $http1->header('Connection', 'keep-alive')->get($this->host . 'serverUtil/getConnectionCount');
