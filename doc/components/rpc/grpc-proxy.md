@@ -104,3 +104,151 @@ curl --location --request POST -X POST "http://127.0.0.1:8080/proxy/grpc/grpc.Au
 	"error": ""
 }
 ```
+
+### 注意事项
+
+* 如何传请求参数
+
+请求参数可以是 GET、POST、JSON 数据，只要 imi 能正常接收就可以。
+
+推荐使用 JSON，可以支持复杂数据结构。
+
+* 请求参数格式
+
+下面给个示例，可以参考，几乎覆盖了绝大部分常见类型
+
+proto:
+
+```proto
+syntax = "proto3";
+
+package grpc;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/field_mask.proto";
+
+option php_generic_services = true;
+
+service AuthService {
+    rpc Login (LoginRequest) returns (LoginResponse);
+}
+
+message LoginRequest {
+    string phone = 1;       // 手机号
+    string password = 2;    // 密码
+}
+
+message LoginResponse {
+    bool success = 1;       // 是否成功
+    string error = 2;       // 错误信息
+}
+
+service TestService {
+    rpc Test (TestRequest) returns (TestRequest);
+}
+
+enum Test {
+    A = 0;
+    B = 2;
+}
+
+message TestRequest {
+    int32 int = 1;
+    string string = 2;
+    LoginRequest message = 3;
+    repeated LoginRequest messages = 4;
+    google.protobuf.Any any = 5;
+    map<int32, string> map = 6;
+    map<string, LoginRequest> map2 = 7;
+    repeated google.protobuf.Any anys = 8;
+    Test enum = 9;
+    bool bool = 10;
+    google.protobuf.Timestamp timestamp = 11;
+    google.protobuf.Duration duration = 12;
+    google.protobuf.Struct struct = 13;
+    google.protobuf.FieldMask fieldMask = 14;
+    repeated string strings = 15;
+}
+```
+
+JSON 请求参数：
+
+```js
+{
+    "int": 1,
+    "string": "abc",
+    "strings": [
+        "a",
+        "b"
+    ],
+    "message": {
+        "phone": "114514",
+        "password": "123456"
+    },
+    "messages": [
+        {
+            "phone": "1",
+            "password": "11"
+        },
+        {
+            "phone": "2",
+            "password": "22"
+        }
+    ],
+    "any": {
+        "@type": "type.googleapis.com\/grpc.LoginRequest",
+        "phone": "114514",
+        "password": "123"
+    },
+    "map": {
+        "11": "aa",
+        "22": "bb"
+    },
+    "map2": {
+        "a": {
+            "phone": "1",
+            "password": "11"
+        },
+        "b": {
+            "phone": "2",
+            "password": "22"
+        }
+    },
+    "anys": [
+        {
+            "@type": "type.googleapis.com\/grpc.LoginRequest",
+            "phone": "114514",
+            "password": "123"
+        }
+    ],
+    "enum": 2,
+    "bool": true,
+    "timestamp": "2018-06-21T04:00:00Z",
+    "duration": "1s",
+    "struct": {
+        "null": null,
+        "number": 3.14,
+        "string": "abc",
+        "bool": true,
+        "struct": {
+            "id": 1,
+            "name": "imi"
+        },
+        "list1": [
+            1,
+            2,
+            3
+        ],
+        "list2": [
+            {
+                "id": 1,
+                "name": "imi"
+            }
+        ]
+    },
+    "fieldMask": "abc.def"
+}
+```
