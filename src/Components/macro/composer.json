@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-macro",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "支持在 imi 框架中使用宏定义",
     "require": {
         "yurunsoft/macro": "~1.0.0"

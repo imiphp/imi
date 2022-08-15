@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-rate-limit",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "imi 框架的限流组件，可以针对方法、接口设置限流，通过设置总容量、单位时间内生成填充的数量、每次扣除数量实现限流。QQ群：17916227",
     "require": {
         "bandwidth-throttle/token-bucket": "^2.0"

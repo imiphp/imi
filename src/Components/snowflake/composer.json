@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-snowflake",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "imi 框架的雪花算法生成组件",
     "require": {
         "godruoyi/php-snowflake": "^1.0"

@@ -266,7 +266,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 版权信息
 
-`imi-mqtt` 遵循 MIT 开源协议发布，并提供免费使用。
+`imi-mqtt` 遵循 MulanPSL-2.0 开源协议发布，并提供免费使用。
 
 ## 捐赠
 

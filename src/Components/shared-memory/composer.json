@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-shared-memory",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "imi 框架跨进程变量共享组件",
     "require": {
         "yurunsoft/swoole-shared-memory": "~1.0",

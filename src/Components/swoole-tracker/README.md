@@ -9,7 +9,7 @@
 
 在 imi 框架中接入 Swoole Tracker 监控
 
-Swoole Tracker: https://www.swoole-cloud.com/tracker.html
+Swoole Tracker: <https://www.swoole-cloud.com/tracker.html>
 
 * 企业版集成了Facebook的Xhprof工具，可以生成调用堆栈图和火焰图，亦可生成分层分析表格，方便找到程序瓶颈点进行优化。
 
@@ -185,13 +185,13 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 运行环境
 
-- [PHP](https://php.net/) >= 7.4
-- [Composer](https://getcomposer.org/) >= 2.0
-- [Swoole](https://www.swoole.com/) >= 4.8.0
+* [PHP](https://php.net/) >= 7.4
+* [Composer](https://getcomposer.org/) >= 2.0
+* [Swoole](https://www.swoole.com/) >= 4.8.0
 
 ## 版权信息
 
-`imi-swoole-tracker` 遵循 MIT 开源协议发布，并提供免费使用。
+`imi-swoole-tracker` 遵循 MulanPSL-2.0 开源协议发布，并提供免费使用。
 
 ## 捐赠
 

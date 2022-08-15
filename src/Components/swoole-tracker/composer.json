@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-swoole-tracker",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "在 imi 框架中接入 Swoole Tracker 监控",
     "require": {
         "imiphp/imi-swoole": "~2.1.0"

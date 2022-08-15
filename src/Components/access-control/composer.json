@@ -1,10 +1,9 @@
 {
     "name": "imiphp/imi-access-control",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "imi 框架的权限控制组件",
-    "require": {
-    },
+    "require": {},
     "require-dev": {},
     "autoload": {
         "psr-4": {

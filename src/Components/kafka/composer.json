@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-kafka",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "支持在 imi 框架中使用 Kafka 客户端",
     "require": {
         "imiphp/imi-queue": "~2.1.0",

@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-jwt",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "在 imi 框架中非常方便地接入 jwt",
     "require": {
         "lcobucci/jwt": "^3.4.6|^4.0.4|^4.1.5"

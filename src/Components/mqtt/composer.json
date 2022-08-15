@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-mqtt",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "在 imi 框架中开发 MQTT 服务端，并且内置了一个 MQTT 客户端",
     "require": {
         "binsoul/net-mqtt": "^0.8.0"

@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-hprose",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "在 imi 框架中集成 Hprose 服务开发",
     "require": {
         "hprose/hprose": "^2.0",

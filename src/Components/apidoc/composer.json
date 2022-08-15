@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-apidoc",
     "type": "library",
-    "license": "MIT",
+    "license": "MulanPSL-2.0",
     "description": "imi 框架 HTTP API 文档生成器，支持 Swagger！",
     "require": {
         "zircote/swagger-php": "^3.0"

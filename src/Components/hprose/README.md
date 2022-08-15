@@ -103,7 +103,7 @@
 - `async` 该设置表示本服务函数是否为异步函数，异步函数的最后一个参数是一个回调函数，用户需要在异步函数中调用该回调方法来传回返回值
 - `passContext` 该属性为 boolean 类型，默认值为 false。具体请参考 Hprose 文档
 
-> Hprose 文档参考：https://github.com/hprose/hprose-php/wiki/06-Hprose-服务器#addfunction-%E6%96%B9%E6%B3%95
+> Hprose 文档参考：<https://github.com/hprose/hprose-php/wiki/06-Hprose-服务器#addfunction-%E6%96%B9%E6%B3%95>
 
 ## 客户端
 
@@ -197,7 +197,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 版权信息
 
-`imi-hprose` 遵循 MIT 开源协议发布，并提供免费使用。
+`imi-hprose` 遵循 MulanPSL-2.0 开源协议发布，并提供免费使用。
 
 ## 捐赠
 

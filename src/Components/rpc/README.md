@@ -9,7 +9,7 @@
 
 在 imi 框架中开发 RPC 服务的基础组件。本组件不提供实际的 RPC 实现，仅提供开发 RPC 服务的一些插槽。
 
-`imi-hprose` 基于 `imi-rpc` 实现：https://github.com/imiphp/imi-hprose
+`imi-hprose` 基于 `imi-rpc` 实现：<https://github.com/imiphp/imi-hprose>
 
 > 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/imiphp/imi>
 
@@ -52,7 +52,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 版权信息
 
-`imi-rpc` 遵循 MIT 开源协议发布，并提供免费使用。
+`imi-rpc` 遵循 MulanPSL-2.0 开源协议发布，并提供免费使用。
 
 ## 捐赠
 
