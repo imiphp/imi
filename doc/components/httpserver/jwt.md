@@ -121,6 +121,10 @@ $tokenContent = $token->toString(); // Token 字符串
 
 ```php
 <?php
+$token = \Imi\JWT\Facade\JWT::parseToken('token字符串'); // 使用默认名称验证
+$token = \Imi\JWT\Facade\JWT::parseToken('token字符串', 'a'); // 指定名称验证
+$token = \Imi\JWT\Facade\JWT::parseToken('token字符串', 'a', true); // 获取时自带验证
+// 下面是手动验证
 \Imi\JWT\Facade\JWT::validate(null, $token); // 使用默认名称验证
 \Imi\JWT\Facade\JWT::validate('a', $token); // 指定名称验证
 ```
