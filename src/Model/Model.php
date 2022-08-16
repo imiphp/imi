@@ -1149,4 +1149,18 @@ abstract class Model extends BaseModel
     {
         return $this->__rawValues[$field] ?? null;
     }
+
+    public function __modelSerialize(): array
+    {
+        $result = parent::__modelSerialize();
+        $result['rawValues'] = $this->__rawValues;
+
+        return $result;
+    }
+
+    public function __modelUnserialize(array $data): void
+    {
+        parent::__modelUnserialize($data);
+        ['rawValues' => $this->__rawValues] = $data;
+    }
 }

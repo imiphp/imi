@@ -181,4 +181,39 @@ class RedisModelTest extends BaseTest
         ]);
         $this->assertEquals($expected, json_decode(json_encode($list), true));
     }
+
+    public function testSerialize(): void
+    {
+        $expected = [
+            [
+                'id'    => 2,
+                'name'  => 'b',
+                'age'   => 22,
+            ],
+        ];
+        $record = TestRedisModel::newInstance([
+            'id'    => 2,
+            'name'  => 'b',
+            'age'   => 22,
+        ]);
+        /** @var TestRedisModel $record */
+        $record = unserialize(serialize($record));
+        $this->assertTrue($record->save());
+        $list = TestRedisModel::select('2-b');
+        $this->assertEquals($expected, json_decode(json_encode($list), true));
+        $list = TestRedisModel::select([
+            'id'    => 2,
+            'name'  => 'b',
+        ]);
+        $this->assertEquals($expected, json_decode(json_encode($list), true));
+
+        $record = TestRedisModel::find([
+            'id'    => 2,
+            'name'  => 'b',
+        ]);
+        $this->assertNotNull($record);
+        $this->assertEquals(22, $record->age);
+        $record2 = unserialize(serialize($record));
+        $this->assertEquals($record->toArray(), $record2->toArray());
+    }
 }

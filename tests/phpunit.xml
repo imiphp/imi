@@ -25,6 +25,9 @@
         <testsuite name="model">
             <file>unit/Component/Tests/ModelRelationTest.php</file>
             <file>unit/Component/Tests/ModelTest.php</file>
+            <file>unit/Component/Tests/RedisModelTest.php</file>
+            <file>unit/Component/Tests/RedisModelHashTest.php</file>
+            <file>unit/Component/Tests/RedisModelHashObjectTest.php</file>
         </testsuite>
     </testsuites>
     <extensions>

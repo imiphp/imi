@@ -150,4 +150,18 @@ abstract class MemoryTableModel extends BaseModel
 
         return $this;
     }
+
+    public function __modelSerialize(): array
+    {
+        $result = parent::__modelSerialize();
+        $result['key'] = $this->__key;
+
+        return $result;
+    }
+
+    public function __modelUnserialize(array $data): void
+    {
+        parent::__modelUnserialize($data);
+        ['key' => $this->__key] = $data;
+    }
 }
