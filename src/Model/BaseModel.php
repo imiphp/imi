@@ -21,7 +21,7 @@ use Imi\Util\Traits\TBeanRealClass;
 /**
  * 模型基类.
  */
-abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent, \Serializable
+abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent
 {
     use TBeanRealClass;
     use TEvent;
@@ -611,7 +611,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $this->__originData;
     }
 
-    public function __modelSerialize(): array
+    public function __serialize(): array
     {
         return [
             'serializedFields' => $this->__serializedFields,
@@ -620,7 +620,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         ];
     }
 
-    public function __modelUnserialize(array $data): void
+    public function __unserialize(array $data): void
     {
         [
             'serializedFields' => $this->__serializedFields,
@@ -634,20 +634,5 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $this[$key] = $value;
         }
-    }
-
-    public function serialize(): ?string
-    {
-        return serialize($this->__modelSerialize());
-    }
-
-    public function unserialize(string $data): void
-    {
-        $unserializeResult = unserialize($data);
-        if (!\is_array($unserializeResult))
-        {
-            throw new \RuntimeException('Invalid \Imi\Model\BaseModel serialize string');
-        }
-        $this->__modelUnserialize($unserializeResult);
     }
 }
