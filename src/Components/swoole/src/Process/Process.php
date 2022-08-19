@@ -152,16 +152,10 @@ trait TProcess
             return;
         }
         $this->unixSocketRunning = true;
-        /** @var Connection[] $connections */
-        $connections = [];
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () use (&$connections) {
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
             $this->stopUnixSocketServer();
-            foreach ($connections as $connection)
-            {
-                $connection->close();
-            }
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
-        Coroutine::create(function () use (&$connections) {
+        Coroutine::create(function () {
             $socketFile = $this->getUnixSocketFile();
             if (file_exists($socketFile))
             {
@@ -175,33 +169,25 @@ trait TProcess
                 'package_body_offset'   => 4,
             ]);
             // 接收到新的连接请求 并自动创建一个协程
-            $server->handle(function (Connection $conn) use (&$connections) {
-                $connections[spl_object_id($conn)] = $conn;
-                try
+            $server->handle(function (Connection $conn) {
+                while ($this->unixSocketRunning)
                 {
-                    while ($this->unixSocketRunning)
+                    // 接收数据
+                    $data = $conn->recv();
+
+                    if ('' === $data || false === $data)
                     {
-                        // 接收数据
-                        $data = $conn->recv();
-
-                        if ('' === $data || false === $data)
-                        {
-                            $conn->close();
-                            break;
-                        }
-
-                        $data = swoole_substr_unserialize($data, 4);
-                        Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                            'process'    => $this,
-                            'action'     => $data['action'] ?? '',
-                            'data'       => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
-                            'connection' => $conn,
-                        ], $this, PipeMessageEventParam::class);
+                        $conn->close();
+                        break;
                     }
-                }
-                finally
-                {
-                    unset($connections[spl_object_id($conn)]);
+
+                    $data = swoole_substr_unserialize($data, 4);
+                    Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
+                        'process'    => $this,
+                        'action'     => $data['action'] ?? '',
+                        'data'       => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
+                        'connection' => $conn,
+                    ], $this, PipeMessageEventParam::class);
                 }
             });
 
