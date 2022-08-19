@@ -61,10 +61,10 @@ class SuperGlobalsTest extends BaseTest
         $content = file_get_contents(__FILE__);
         $file = $data['files']['file'] ?? null;
         foreach ([
-            'name'      =>  basename(__FILE__),
-            'type'      =>  MediaType::TEXT_HTML,
-            'error'     =>  0,
-            'size'      =>  \strlen($content),
+            'name'      => basename(__FILE__),
+            'type'      => MediaType::TEXT_HTML,
+            'error'     => 0,
+            'size'      => \strlen($content),
         ] as $k => $v)
         {
             $this->assertEquals($v, $file[$k] ?? null);
