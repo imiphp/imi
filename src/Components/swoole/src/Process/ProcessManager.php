@@ -150,10 +150,9 @@ class ProcessManager
                         $e->stopPropagation();
                     }
                     Signal::clear();
-                    SwooleEvent::exit();
                 };
                 // 超时强制退出
-                Event::on('IMI.PROCESS.END', static fn () => Timer::after(3000, $processExitCallable), ImiPriority::IMI_MAX);
+                Event::on('IMI.PROCESS.END', static fn () => Timer::after(3000, static fn () => SwooleEvent::exit()), ImiPriority::IMI_MAX);
                 // 正常退出
                 Event::on('IMI.PROCESS.END', $processExitCallable, ImiPriority::IMI_MIN);
                 $processEnded = false;
