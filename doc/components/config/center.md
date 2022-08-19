@@ -126,7 +126,7 @@ $configCenter->getDriver('nacos')->push($name, $value, [
 
 **安装：**`composer require imiphp/imi-etcd:~2.1.0`
 
-### 配置
+**配置：**
 
 `@app.beans`：
 
