@@ -136,7 +136,7 @@
 
 ## 功能组件
 
-* [配置]
+* [配置](components/config/index.md)
   * [配置读写](components/config/index.md)
   * [配置中心](components/config/center.md)
 * [连接池](components/pool/index.md)
