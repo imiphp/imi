@@ -8,7 +8,6 @@ use function hash;
 
 use Imi\App;
 use Imi\Event\Event;
-use Imi\Event\EventParam;
 use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
@@ -144,17 +143,10 @@ class ProcessManager
                 {
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
                 }
-                $processExitCallable = function (?EventParam $e = null) {
-                    if ($e)
-                    {
-                        $e->stopPropagation();
-                    }
-                    Signal::clear();
-                };
                 // 超时强制退出
                 Event::on('IMI.PROCESS.END', static fn () => Timer::after(3000, static fn () => SwooleEvent::exit()), ImiPriority::IMI_MAX);
                 // 正常退出
-                Event::on('IMI.PROCESS.END', $processExitCallable, ImiPriority::IMI_MIN);
+                Event::on('IMI.PROCESS.END', static fn () => Signal::clear(), ImiPriority::IMI_MIN);
                 $processEnded = false;
                 imigo(function () use ($name, $swooleProcess, &$processEnded) {
                     if (Signal::wait(\SIGTERM))
