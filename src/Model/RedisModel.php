@@ -149,7 +149,7 @@ abstract class RedisModel extends BaseModel
                 {
                     foreach ($datas as $i => $data)
                     {
-                        if (null !== $data)
+                        if (null !== $data && false !== $data)
                         {
                             if (isset($formatter))
                             {
@@ -549,5 +549,25 @@ abstract class RedisModel extends BaseModel
 
             return $staticMemberRules[$class] = new KeyRule($key, $matches[1]);
         }
+    }
+
+    public function __serialize(): array
+    {
+        $result = parent::__serialize();
+        $result['key'] = $this->key;
+        $result['member'] = $this->__member;
+        $result['ttl'] = $this->__ttl;
+
+        return $result;
+    }
+
+    public function __unserialize(array $data): void
+    {
+        parent::__unserialize($data);
+        [
+            'key'    => $this->key,
+            'member' => $this->__member,
+            'ttl'    => $this->__ttl,
+        ] = $data;
     }
 }

@@ -1102,4 +1102,27 @@ class ModelTest extends BaseTest
         $result = $record2->save();
         $this->assertEquals('', $result->getSql());
     }
+
+    public function testSerialize(): void
+    {
+        $member = Member::newInstance();
+        /** @var Member $member */
+        $member = unserialize(serialize($member));
+        $this->assertInstanceOf(Member::class, $member);
+        $member->username = '1';
+        $member->__setRaw('password', "CONCAT('p', 'w2')");
+        $result = $member->insert();
+        $this->assertTrue($result->isSuccess());
+        $this->assertEquals(1, $result->getAffectedRows());
+        $id = $result->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+        $this->assertEquals($id, $member->id);
+
+        $record = Member::find($member->id);
+        $this->assertNotNull($record);
+        $this->assertEquals('1', $record->username);
+        $this->assertEquals('pw2', $record->password);
+        $record2 = unserialize(serialize($record));
+        $this->assertEquals($record->toArray(), $record2->toArray());
+    }
 }

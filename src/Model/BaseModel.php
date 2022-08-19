@@ -610,4 +610,29 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         return $this->__originData;
     }
+
+    public function __serialize(): array
+    {
+        return [
+            'serializedFields' => $this->__serializedFields,
+            'originData'       => $this->__originData,
+            'data'             => $this->toArray(),
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [
+            'serializedFields' => $this->__serializedFields,
+            'originData'       => $this->__originData,
+            'data'             => $arrayData
+        ] = $data;
+        $this->__meta = $meta = static::__getMeta();
+        $this->__fieldNames = $meta->getSerializableFieldNames();
+        $this->__parsedSerializedFields = $meta->getParsedSerializableFieldNames();
+        foreach ($arrayData as $key => $value)
+        {
+            $this[$key] = $value;
+        }
+    }
 }
