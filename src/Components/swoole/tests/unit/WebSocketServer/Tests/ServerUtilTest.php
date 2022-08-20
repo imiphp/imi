@@ -406,6 +406,6 @@ class ServerUtilTest extends BaseTest
             $this->assertEquals([
                 'count' => 1,
             ], $response->json(true));
-        });
+        }, null, 3);
     }
 }
