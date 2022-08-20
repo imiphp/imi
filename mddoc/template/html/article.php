@@ -239,6 +239,14 @@
         })
     </script>
     <script src="<?php echo $this->path('statics/js/mddoc-search.js'); ?>"></script>
-    <div style="display:none"><script src="https://s13.cnzz.com/z_stat.php?id=1273991018&web_id=1273991018" language="JavaScript"></script></div>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a84a2a60e03941f661d43d22eeccc5af";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </body>
 </html>
