@@ -28,10 +28,10 @@ return [
                         'b' => '2',
                     ],
                     'tokenHandler'  => function () {
-                        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImEiOiIxIiwiYiI6IjIifQ.eyJhdWQiOiJhdWRpZW5jZV9hIiwic3ViIjoic3ViamVjdF9hIiwiZXhwIjoxODkzMjkxNTE1LCJpc3MiOiJpc3N1ZXJfYSIsIm5iZiI6MCwianRpIjoiIiwiaWF0IjoxNTc3OTMxNTE1LCJkYXRhIjp7Im1lbWJlcklkIjoxOTI2MDgxN319.-tXlyj1BcVD8GJIE2nQdTPULVpZFD0h5BIQdx_X943E';
+                        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImEiOiIxIiwiYiI6IjIifQ.eyJhdWQiOiJhdWRpZW5jZV9hIiwic3ViIjoic3ViamVjdF9hIiwiZXhwIjo0MTE3MTkwNDAwLCJpc3MiOiJpc3N1ZXJfYSIsIm5iZiI6MTY2MDk2MzI3OC4zMDc3NzEsImp0aSI6IiIsImlhdCI6MTY2MDk2MzI3OC4zMDc3NzEsImRhdGEiOnsibWVtYmVySWQiOjE5MjYwODE3fX0.mtXSMJrvX15-Gn0h8cPXfwtnVdyJdV8eGqwD5qRqGYc';
                     },
-                    'privateKey'    => '123456',
-                    'publicKey'     => '123456',
+                    'privateKey'    => '1010e4c5907b331741eeacae59ec6f69',
+                    'publicKey'     => '1010e4c5907b331741eeacae59ec6f69',
                 ],
                 'b' => [
                     'audience'  => 'audience_a',
@@ -45,8 +45,8 @@ return [
                     'tokenHandler'  => function () {
                         return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImEiOiIxIiwiYiI6IjIifQ.eyJhdWQiOiJhdWRpZW5jZV9hIiwic3ViIjoic3ViamVjdF9hIiwiZXhwIjotMTM2ODg2NDAwMCwiaXNzIjoiaXNzdWVyX2EiLCJuYmYiOjAsImp0aSI6IiIsImlhdCI6MTU4MTQxMjIwMywiZGF0YSI6eyJtZW1iZXJJZCI6MTkyNjA4MTd9fQ.PAZxqO48qzu_4JBK5jyRK2nJlDNHiLkBqKQ6QLb-Duo';
                     },
-                    'privateKey'    => '123456',
-                    'publicKey'     => '123456',
+                    'privateKey'    => '1010e4c5907b331741eeacae59ec6f69',
+                    'publicKey'     => '1010e4c5907b331741eeacae59ec6f69',
                 ],
             ],
         ],
