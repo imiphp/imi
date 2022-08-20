@@ -392,6 +392,12 @@ jobs:
         run: composer test-workerman-gateway-w
       - name: Test roadrunner
         run: composer test-roadrunner
+      - name: Test jwt
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-jwt
+      - name: Test snowflake
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-snowflake
       - name: Print logs
         if: failure()
         run: php .github\print-logs.php
