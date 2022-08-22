@@ -176,10 +176,8 @@ JWT 验证注解
 
 配置 `@app.beans`：
 
-- 打开Git Bash Here 用openssl生成私匙文件
-- openssl genrsa -out pri_key.pem 1024  注意：新版本Rsa密钥长度至少2048 openssl genrsa -out pri_key.pem 2048
-- 根据私匙文件生成公匙
-- openssl rsa -in pri_key.pem -pubout -out pub_key.pem
+- 打开Git Bash Here 用openssl生成私匙文件：`openssl genrsa -out pri_key.pem 2048`
+- 根据私匙文件生成公匙：`openssl rsa -in pri_key.pem -pubout -out pub_key.pem`
 - 复制文件内容到配置上
 
 ```php
