@@ -249,8 +249,8 @@
 * [Text](utils/Text.md)
 * [Pagination](utils/Pagination.md)
 * [DateTime](utils/DateTime.md)
-* [KVStorage](utils/KVStorage.md)
 * [ServerManager](utils/ServerManager.md)
+* [ExpiredStorage](utils/ExpiredStorage.md)
 * [服务器工具类](utils/Server.md)
 
 ## 开发工具
