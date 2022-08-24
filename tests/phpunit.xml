@@ -29,6 +29,18 @@
             <file>unit/Component/Tests/RedisModelHashTest.php</file>
             <file>unit/Component/Tests/RedisModelHashObjectTest.php</file>
         </testsuite>
+        <testsuite name="util">
+            <directory>unit/Component/Tests/Util</directory>
+        </testsuite>
+        <testsuite name="cache">
+            <file>unit/Component/Tests/CacheApcuTest.php</file>
+            <file>unit/Component/Tests/CacheFile1Test.php</file>
+            <file>unit/Component/Tests/CacheFile2Test.php</file>
+            <file>unit/Component/Tests/CacheFile3Test.php</file>
+            <file>unit/Component/Tests/CacheRedisHashTest.php</file>
+            <file>unit/Component/Tests/CacheRedisTest.php</file>
+            <file>unit/Component/Tests/CacheRequestContextTest.php</file>
+        </testsuite>
     </testsuites>
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />

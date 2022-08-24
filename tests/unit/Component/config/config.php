@@ -313,6 +313,11 @@ return [
             'option'        => [
             ],
         ],
+        'requestContext' => [
+            'handlerClass'  => \Imi\Cache\Handler\RequestContext::class,
+            'option'        => [
+            ],
+        ],
     ],
     // atmoic 配置
     'atomics'    => [
