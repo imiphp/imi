@@ -290,6 +290,7 @@ return [
             'option'        => [
                 'savePath'              => sys_get_temp_dir() . '/imi-cache/',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
+                'keyAsFileName'         => true,
             ],
         ],
         'redis' => [
