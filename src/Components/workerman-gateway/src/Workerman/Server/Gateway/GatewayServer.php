@@ -46,6 +46,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
         $this->worker->onConnect = function (ConnectionInterface $connection) {
             try
             {
+                // @phpstan-ignore-next-line
                 $connection->websocketType = NonControlFrameType::TEXT === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
                 // @phpstan-ignore-next-line
                 $clientId = $connection->id;
@@ -71,7 +72,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * Get 非控制帧类型.
      */
-    public function getNonControlFrameType()
+    public function getNonControlFrameType(): int
     {
         return $this->nonControlFrameType;
     }

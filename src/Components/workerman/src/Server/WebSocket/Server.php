@@ -76,6 +76,7 @@ class Server extends Base implements IWebSocketServer
         $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
             try
             {
+                // @phpstan-ignore-next-line
                 $connection->websocketType = NonControlFrameType::TEXT === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
                 $clientId = $connection->id;
                 $worker = $this->worker;

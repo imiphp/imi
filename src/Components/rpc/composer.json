@@ -13,10 +13,19 @@
         }
     },
     "autoload-dev": {
+        "psr-4": {
+            "Imi\\Rpc\\Dev\\": "dev/"
+        },
         "files": [
             "../../../vendor/autoload.php",
             "../../../dev/try-include-swoole.php"
         ]
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Rpc\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Rpc\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Rpc\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Rpc\\Dev\\Dev::postUpdate"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
