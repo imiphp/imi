@@ -193,6 +193,10 @@ class Test extends Model
 
 > 非 bean 类性能更好，但无法用 AOP 切入类，事件也不生效，一般模型建议使用非 bean 类模式。
 
+启用增量更新：（默认不启用）
+
+`@Entity(incrUpdate=true)`
+
 ### @Table
 
 写在类上，定义数据表

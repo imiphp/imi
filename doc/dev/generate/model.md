@@ -25,6 +25,7 @@
 `--ddlEncode` DDL 编码函数,可选
 `--ddlDecode` DDL 解码函数,可选
 `--bean` 模型对象是否作为 bean 类使用,默认 `true`,可选
+`--incrUpdate` 模型是否启用增量更新，默认`false`，可选
 
 示例：
 
