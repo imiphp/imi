@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use function Imi\env;
 
+use Imi\Server\WebSocket\Enum\NonControlFrameType;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\WorkermanGateway\Test\AppServer',
@@ -110,10 +112,11 @@ return [
             ],
         ],
         'gateway' => [
-            'namespace'   => 'Imi\WorkermanGateway\Test\AppServer\Gateway',
-            'type'        => Imi\WorkermanGateway\Workerman\Server\Type::GATEWAY,
-            'socketName'  => 'websocket://127.0.0.1:13002',
-            'configs'     => [
+            'namespace'           => 'Imi\WorkermanGateway\Test\AppServer\Gateway',
+            'type'                => Imi\WorkermanGateway\Workerman\Server\Type::GATEWAY,
+            'socketName'          => 'websocket://127.0.0.1:13002',
+            'nonControlFrameType' => NonControlFrameType::BINARY,
+            'configs'             => [
                 'lanIp'           => '127.0.0.1',
                 'startPort'       => 12900,
                 'registerAddress' => '127.0.0.1:13004',

@@ -10,6 +10,7 @@ use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
+use Imi\Server\WebSocket\Enum\NonControlFrameType;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
@@ -55,12 +56,18 @@ class Server extends Base implements ISwooleWebSocketServer
     private bool $syncConnect = true;
 
     /**
+     * 非控制帧类型.
+     */
+    private int $nonControlFrameType = NonControlFrameType::TEXT;
+
+    /**
      * {@inheritDoc}
      */
     public function __construct(string $name, array $config, bool $isSubServer = false)
     {
         parent::__construct($name, $config, $isSubServer);
         $this->syncConnect = $config['syncConnect'] ?? true;
+        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::TEXT;
     }
 
     /**
@@ -349,5 +356,13 @@ class Server extends Base implements ISwooleWebSocketServer
     {
         // @phpstan-ignore-next-line
         return $this->getSwooleServer()->push($clientId, $data, $opcode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNonControlFrameType(): int
+    {
+        return $this->nonControlFrameType;
     }
 }

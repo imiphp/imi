@@ -15,4 +15,9 @@ interface IWebSocketServer extends IServer, IServerGroup
      * @param int|string $clientId
      */
     public function push($clientId, string $data, int $opcode = 1): bool;
+
+    /**
+     * 非控制帧类型.
+     */
+    public function getNonControlFrameType(): int;
 }

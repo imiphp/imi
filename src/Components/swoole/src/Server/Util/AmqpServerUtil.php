@@ -169,10 +169,12 @@ if (class_exists(\Imi\AMQP\Main::class))
             if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {
                 $method = 'push';
+                $pushParams = [$server->getNonControlFrameType()];
             }
             else
             {
                 $method = 'send';
+                $pushParams = [];
             }
             if ($toAllWorkers)
             {
@@ -195,7 +197,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     {
                         continue;
                     }
-                    if ($swooleServer->$method($clientId, $data))
+                    if ($swooleServer->$method($clientId, $data, ...$pushParams))
                     {
                         ++$success;
                     }
@@ -216,10 +218,12 @@ if (class_exists(\Imi\AMQP\Main::class))
             if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {
                 $method = 'push';
+                $pushParams = [$server->getNonControlFrameType()];
             }
             else
             {
                 $method = 'send';
+                $pushParams = [];
             }
             if ($toAllWorkers)
             {
@@ -246,7 +250,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     $group = $server->getGroup($tmpGroupName);
                     if ($group)
                     {
-                        $result = $group->$method($data);
+                        $result = $group->$method($data, ...$pushParams);
                         foreach ($result as $item)
                         {
                             if ($item)

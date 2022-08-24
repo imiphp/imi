@@ -149,10 +149,12 @@ class LocalServerUtil implements ISwooleServerUtil
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
+            $pushParams = [$server->getNonControlFrameType()];
         }
         else
         {
             $method = 'send';
+            $pushParams = [];
         }
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
@@ -193,6 +195,7 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         else
         {
+            var_dump($pushParams);
             foreach ($clientIds as $tmpClientId)
             {
                 $tmpClientId = (int) $tmpClientId;
@@ -201,7 +204,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 {
                     continue;
                 }
-                if ($swooleServer->$method($tmpClientId, $data))
+                if ($swooleServer->$method($tmpClientId, $data, ...$pushParams))
                 {
                     ++$success;
                 }
@@ -268,10 +271,12 @@ class LocalServerUtil implements ISwooleServerUtil
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
+            $pushParams = [$server->getNonControlFrameType()];
         }
         else
         {
             $method = 'send';
+            $pushParams = [];
         }
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
@@ -318,7 +323,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 {
                     continue;
                 }
-                if ($swooleServer->$method($clientId, $data))
+                if ($swooleServer->$method($clientId, $data, ...$pushParams))
                 {
                     ++$success;
                 }
@@ -352,10 +357,12 @@ class LocalServerUtil implements ISwooleServerUtil
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
+            $pushParams = [$server->getNonControlFrameType()];
         }
         else
         {
             $method = 'send';
+            $pushParams = [];
         }
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
@@ -401,7 +408,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 $group = $server->getGroup($tmpGroupName);
                 if ($group)
                 {
-                    $result = $group->$method($data);
+                    $result = $group->$method($data, ...$pushParams);
                     foreach ($result as $item)
                     {
                         if ($item)
