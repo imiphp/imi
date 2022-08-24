@@ -25,6 +25,9 @@ class ExpiredStorage
         }
     }
 
+    /**
+     * @param mixed $value
+     */
     public function set(string $key, $value, float $ttl = 0): self
     {
         if (isset($this->data[$key]))
@@ -42,6 +45,8 @@ class ExpiredStorage
     }
 
     /**
+     * @param mixed $default
+     *
      * @return mixed
      */
     public function get(string $key, $default = null, ?ExpiredStorageItem &$item = null)
@@ -58,12 +63,12 @@ class ExpiredStorage
         return $default;
     }
 
-    public function unset(string $key)
+    public function unset(string $key): void
     {
         unset($this->data[$key]);
     }
 
-    public function isset(string $key)
+    public function isset(string $key): bool
     {
         if (isset($this->data[$key]))
         {
@@ -98,6 +103,9 @@ final class ExpiredStorageItem
 
     private float $lastModifyTime = 0;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct($value, float $ttl = 0)
     {
         $this->setValue($value);
