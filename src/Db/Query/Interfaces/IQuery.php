@@ -89,7 +89,7 @@ interface IQuery
     /**
      * 指定查询字段.
      *
-     * @param string $fields 查询字段
+     * @param string ...$fields 查询字段
      *
      * @return static
      */
