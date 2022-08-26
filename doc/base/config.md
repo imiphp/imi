@@ -150,6 +150,8 @@ return [
         // 参考: http://wiki.swoole.com/#/server/setting
         // 参考: http://wiki.swoole.com/#/websocket_server?id=%e9%80%89%e9%a1%b9
         // 参考: http://wiki.swoole.com/#/http_server?id=%e9%85%8d%e7%bd%ae%e9%80%89%e9%a1%b9
+        'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::TEXT, // 配置 WebSocket 纯文本通信协议
+        // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::BINARY, // 配置 WebSocket 二进制通信协议
         'configs'	=>	[
             'reactor_num'	    => 8,
             'worker_num'	    => 8,

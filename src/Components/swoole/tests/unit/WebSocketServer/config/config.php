@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use function Imi\env;
 
+use Imi\Server\WebSocket\Enum\NonControlFrameType;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Swoole\Test\WebSocketServer',
@@ -62,13 +64,14 @@ return [
 
     // 主服务器配置
     'mainServer'    => [
-        'namespace'    => 'Imi\Swoole\Test\WebSocketServer\MainServer',
-        'type'         => Imi\Swoole\Server\Type::WEBSOCKET,
-        'host'         => env('SERVER_HOST', '127.0.0.1'),
-        'port'         => 13002,
-        'mode'         => \SWOOLE_BASE,
-        'syncConnect'  => true,
-        'configs'      => [
+        'namespace'           => 'Imi\Swoole\Test\WebSocketServer\MainServer',
+        'type'                => Imi\Swoole\Server\Type::WEBSOCKET,
+        'host'                => env('SERVER_HOST', '127.0.0.1'),
+        'port'                => 13002,
+        'mode'                => \SWOOLE_BASE,
+        'syncConnect'         => true,
+        'nonControlFrameType' => NonControlFrameType::BINARY,
+        'configs'             => [
             'worker_num'    => 2,
         ],
     ],

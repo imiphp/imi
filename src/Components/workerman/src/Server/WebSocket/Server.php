@@ -12,6 +12,7 @@ use Imi\RequestContext;
 use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Protocol;
 use Imi\Server\WebSocket\Contract\IWebSocketServer;
+use Imi\Server\WebSocket\Enum\NonControlFrameType;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\ImiPriority;
@@ -29,12 +30,18 @@ use Workerman\Protocols\Websocket;
 class Server extends Base implements IWebSocketServer
 {
     /**
+     * 非控制帧类型.
+     */
+    private int $nonControlFrameType = NonControlFrameType::TEXT;
+
+    /**
      * {@inheritDoc}
      */
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
         $this->worker->protocol = Websocket::class;
+        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::TEXT;
     }
 
     /**
@@ -69,6 +76,8 @@ class Server extends Base implements IWebSocketServer
         $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
             try
             {
+                // @phpstan-ignore-next-line
+                $connection->websocketType = NonControlFrameType::TEXT === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
                 $clientId = $connection->id;
                 $worker = $this->worker;
                 $request = new WorkermanRequest($worker, $connection, new Request($httpHeader), 'ws');
@@ -161,5 +170,13 @@ class Server extends Base implements IWebSocketServer
         }
 
         return false !== $connection->send($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNonControlFrameType(): int
+    {
+        return $this->nonControlFrameType;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use function Imi\env;
 
+use Imi\Server\WebSocket\Enum\NonControlFrameType;
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Workerman\Test\AppServer',
@@ -78,12 +80,13 @@ return [
             ],
         ],
         'websocket' => [
-            'namespace'   => 'Imi\Workerman\Test\AppServer\WebSocketServer',
-            'type'        => Imi\Workerman\Server\Type::WEBSOCKET,
-            'host'        => env('SERVER_HOST', '127.0.0.1'),
-            'port'        => 13002,
-            'shareWorker' => 'http',
-            'configs'     => [
+            'namespace'           => 'Imi\Workerman\Test\AppServer\WebSocketServer',
+            'type'                => Imi\Workerman\Server\Type::WEBSOCKET,
+            'host'                => env('SERVER_HOST', '127.0.0.1'),
+            'port'                => 13002,
+            'shareWorker'         => 'http',
+            'nonControlFrameType' => NonControlFrameType::BINARY,
+            'configs'             => [
             ],
         ],
         'tcp' => [
