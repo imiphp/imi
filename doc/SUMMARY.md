@@ -176,6 +176,7 @@
   * [Redis](components/cache/redis.md)
   * [RedisHash](components/cache/redisHash.md)
   * [Apcu](components/cache/apcu.md)
+  * [RequestContext](components/cache/requestContext.md)
 * [日志](components/log/index.md)
 * [验证器](components/validation/index.md)
 * [门面 (Facade)](components/facade/index.md)
@@ -248,8 +249,8 @@
 * [Text](utils/Text.md)
 * [Pagination](utils/Pagination.md)
 * [DateTime](utils/DateTime.md)
-* [KVStorage](utils/KVStorage.md)
 * [ServerManager](utils/ServerManager.md)
+* [ExpiredStorage](utils/ExpiredStorage.md)
 * [服务器工具类](utils/Server.md)
 
 ## 开发工具

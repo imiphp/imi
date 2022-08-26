@@ -290,6 +290,7 @@ return [
             'option'        => [
                 'savePath'              => sys_get_temp_dir() . '/imi-cache/',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
+                'keyAsFileName'         => true,
             ],
         ],
         'redis' => [
@@ -309,6 +310,11 @@ return [
         ],
         'apcu' => [
             'handlerClass'  => \Imi\Cache\Handler\Apcu::class,
+            'option'        => [
+            ],
+        ],
+        'requestContext' => [
+            'handlerClass'  => \Imi\Cache\Handler\RequestContext::class,
             'option'        => [
             ],
         ],
