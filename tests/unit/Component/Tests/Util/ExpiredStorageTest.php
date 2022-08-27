@@ -24,7 +24,7 @@ class ExpiredStorageTest extends BaseTest
         $this->assertFalse($item->isExpired());
         $this->assertEquals(0.1, $item->getTTL());
         $this->assertEquals(456, $item->getValue());
-        usleep(100_000);
+        usleep(101_000);
         $this->assertEquals('default', $storage->get('a', 'default', $item));
         $this->assertTrue($item->isExpired());
         $this->assertEquals(0.1, $item->getTTL());
