@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Http;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\Log;

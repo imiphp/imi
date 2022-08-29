@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Imi\Queue\Partial;
 
-use Imi\App;
-use Imi\Log\Log;
-use Imi\Event\Event;
-use Swoole\Coroutine;
-use Imi\RequestContext;
-use Yurun\Swoole\CoPool\CoPool;
 use Imi\Bean\Annotation\Partial;
+use Imi\Event\Event;
+use Imi\Log\Log;
+use Imi\Queue\Event\Param\ConsumerAfterConsumeParam;
+use Imi\Queue\Event\Param\ConsumerAfterPopParam;
+use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
+use Imi\Queue\Event\Param\ConsumerBeforePopParam;
 use Imi\Queue\Model\QueueConfig;
-use function Yurun\Swoole\Coroutine\goWait;
+use Imi\RequestContext;
+use Swoole\Coroutine;
+use Yurun\Swoole\CoPool\CoPool;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
-use Imi\Queue\Event\Param\ConsumerAfterPopParam;
-use Imi\Queue\Event\Param\ConsumerBeforePopParam;
 
-use Imi\Queue\Event\Param\ConsumerAfterConsumeParam;
-use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
+use function Yurun\Swoole\Coroutine\goWait;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
 {

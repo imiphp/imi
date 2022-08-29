@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
-use Imi\App;
-use Imi\Log\Log;
+use GatewayWorker\BusinessWorker;
+use GatewayWorker\Lib\Gateway;
+use Imi\Bean\Annotation\Bean;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
-use ReflectionClass;
-use Imi\Server\Server;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
-use Imi\ConnectionContext;
-use Imi\Bean\Annotation\Bean;
-use GatewayWorker\Lib\Gateway;
+use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
-use GatewayWorker\BusinessWorker;
+use ReflectionClass;
 
 /**
  * @Bean("WorkermanGatewayTcpBusinessServer")

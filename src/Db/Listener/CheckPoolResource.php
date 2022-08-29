@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Db\Listener;
 
-use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Db\Db;

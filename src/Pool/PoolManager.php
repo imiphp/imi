@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pool;
 
-use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Event\Event;
