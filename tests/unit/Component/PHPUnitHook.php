@@ -51,8 +51,8 @@ class PHPUnitHook implements BeforeFirstTestHook
         }
         catch (\Throwable $th)
         {
-            var_dump((string) $exception); // 方便错误调试查看
-            throw $exception;
+            var_dump((string) $th); // 方便错误调试查看
+            throw $th;
         }
     }
 }
