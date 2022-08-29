@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\AMQP\Listener;
 
 use Imi\AMQP\Pool\AMQPPool;
-use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
@@ -44,9 +43,7 @@ class CheckPoolResource implements IEventListener
                     }
                     catch (\Throwable $th)
                     {
-                        /** @var \Imi\Log\ErrorLog $errorLog */
-                        $errorLog = App::getBean('ErrorLog');
-                        $errorLog->onException($th);
+                        Log::error($th);
                         Log::error(sprintf('The AMQP [%s] are not available', $name));
                         $result = false;
                     }

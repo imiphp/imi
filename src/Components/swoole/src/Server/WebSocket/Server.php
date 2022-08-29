@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\WebSocket;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\WebSocket\Enum\NonControlFrameType;
@@ -156,10 +156,9 @@ class Server extends Base implements ISwooleWebSocketServer
                         'response'  => $response,
                     ], $this, HandShakeEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
                 finally
                 {
@@ -207,8 +206,7 @@ class Server extends Base implements ISwooleWebSocketServer
                     // @phpstan-ignore-next-line
                     if (true !== $this->getBean('WebSocketErrorHandler')->handle($th))
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                 }
             });
@@ -237,10 +235,9 @@ class Server extends Base implements ISwooleWebSocketServer
                         'reactorId'       => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
         }
@@ -278,8 +275,7 @@ class Server extends Base implements ISwooleWebSocketServer
                     // @phpstan-ignore-next-line
                     if (true !== $this->getBean('HttpErrorHandler')->handle($th))
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                 }
             });
@@ -303,10 +299,9 @@ class Server extends Base implements ISwooleWebSocketServer
                         'clientId'      => $fd,
                     ], $this, DisconnectEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
         }

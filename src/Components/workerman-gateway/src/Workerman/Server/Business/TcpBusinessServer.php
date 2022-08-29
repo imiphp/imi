@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
-use GatewayWorker\BusinessWorker;
-use GatewayWorker\Lib\Gateway;
 use Imi\App;
-use Imi\Bean\Annotation\Bean;
-use Imi\ConnectionContext;
+use Imi\Log\Log;
 use Imi\Event\Event;
+use ReflectionClass;
+use Imi\Server\Server;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
-use Imi\Server\Server;
+use Imi\ConnectionContext;
+use Imi\Bean\Annotation\Bean;
+use GatewayWorker\Lib\Gateway;
 use Imi\Util\Socket\IPEndPoint;
-use ReflectionClass;
+use GatewayWorker\BusinessWorker;
 
 /**
  * @Bean("WorkermanGatewayTcpBusinessServer")
@@ -118,8 +119,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 // @phpstan-ignore-next-line
                 if (true !== $this->getBean('TcpErrorHandler')->handle($th))
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
         });

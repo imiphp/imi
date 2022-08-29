@@ -49,7 +49,7 @@ class PHPUnitHook implements BeforeFirstTestHook
             App::run('Imi\Test\Component', CliApp::class, static function () {
             });
         }
-        catch (\Throwable $exception)
+        catch (\Throwable $th)
         {
             var_dump((string) $exception); // 方便错误调试查看
             throw $exception;

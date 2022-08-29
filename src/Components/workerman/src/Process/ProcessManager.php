@@ -151,8 +151,7 @@ class ProcessManager
             }
             catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($th);
+                Log::error($th);
             }
             finally
             {

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\HotUpdate;
 
-use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
-use Imi\Log\ErrorLog;
 use Imi\Log\Log;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Swoole\Process\Annotation\Process;
@@ -86,11 +84,6 @@ class HotUpdateProcess extends BaseProcess
      * buildRuntime pipes.
      */
     private ?array $buildRuntimePipes = null;
-
-    /**
-     * @Inject("ErrorLog")
-     */
-    protected ErrorLog $errorLog;
 
     /**
      * 开始时间.

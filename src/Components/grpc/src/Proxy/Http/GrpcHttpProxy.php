@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Imi\Grpc\Proxy\Http;
 
 use Imi\Aop\Annotation\Inject;
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Grpc\Client\GrpcClient;
 use Imi\Grpc\Client\GrpcService;
 use Imi\Grpc\Enum\GrpcStatus;
 use Imi\Grpc\Util\GrpcInterfaceManager;
 use Imi\Grpc\Util\ProtobufUtil;
+use Imi\Log\Log;
 use Imi\Rpc\Client\Pool\RpcClientPool;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
@@ -98,9 +98,7 @@ class GrpcHttpProxy
         }
         catch (\Throwable $th)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            Log::error($th);
             $response->setStatus(StatusCode::BAD_GATEWAY)
                      ->setHeader('grpc-status', (string) GrpcStatus::UNKNOWN)
                      ->setHeader('grpc-message', $th->getMessage());

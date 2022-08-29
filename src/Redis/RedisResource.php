@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Redis;
 
-use Imi\App;
+use Imi\Log\Log;
 use Imi\Pool\BasePoolResource;
 
 class RedisResource extends BasePoolResource
@@ -98,11 +98,9 @@ class RedisResource extends BasePoolResource
                 // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
                 return true === $result || '+PONG' === $result;
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
-                $errorLog->onException($ex);
+                Log::error($th);
 
                 return false;
             }

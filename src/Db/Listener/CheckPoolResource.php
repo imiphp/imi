@@ -44,9 +44,7 @@ class CheckPoolResource implements IEventListener
                     }
                     catch (\Throwable $th)
                     {
-                        /** @var \Imi\Log\ErrorLog $errorLog */
-                        $errorLog = App::getBean('ErrorLog');
-                        $errorLog->onException($th);
+                        Log::error($th);
                         Log::error(sprintf('The Db [%s] are not available', $name));
                         $result = false;
                     }

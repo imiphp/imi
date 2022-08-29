@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Pool;
 
-use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Pool\BasePool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Swoole\Util\Coroutine;
@@ -315,9 +315,7 @@ abstract class BaseAsyncPool extends BasePool
                         catch (\Throwable $th)
                         {
                             $available = false;
-                            /** @var \Imi\Log\ErrorLog $errorLog */
-                            $errorLog = App::getBean('ErrorLog');
-                            $errorLog->onException($th);
+                            Log::error($th);
                         }
                         finally
                         {

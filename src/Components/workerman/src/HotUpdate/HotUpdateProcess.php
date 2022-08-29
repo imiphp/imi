@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\HotUpdate;
 
-use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
-use Imi\Log\ErrorLog;
 use Imi\Log\Log;
 use Imi\Util\Imi;
 use Imi\Workerman\Process\Annotation\Process;
@@ -77,11 +75,6 @@ class HotUpdateProcess extends BaseProcess
      * buildRuntime pipes.
      */
     private ?array $buildRuntimePipes = null;
-
-    /**
-     * @Inject("ErrorLog")
-     */
-    protected ErrorLog $errorLog;
 
     /**
      * 开始时间.

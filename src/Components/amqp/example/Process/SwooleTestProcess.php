@@ -6,8 +6,8 @@ namespace AMQPApp\Process;
 
 use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
-use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Coroutine;
@@ -58,9 +58,7 @@ class SwooleTestProcess extends BaseProcess
             }
             catch (\Throwable $th)
             {
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
-                $errorLog->onException($th);
+                Log::error($th);
                 if ($this->running)
                 {
                     sleep(3);

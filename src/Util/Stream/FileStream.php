@@ -78,7 +78,7 @@ class FileStream implements StreamInterface, \Stringable
 
             return stream_get_contents($this->stream);
         }
-        catch (\Throwable $ex)
+        catch (\Throwable $th)
         {
             return '';
         }

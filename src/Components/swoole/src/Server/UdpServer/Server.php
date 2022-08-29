@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\UdpServer;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Log\Log;
 use Imi\Server\Protocol;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleUdpServer;
@@ -93,8 +93,7 @@ class Server extends Base implements ISwooleUdpServer
                     // @phpstan-ignore-next-line
                     if (true !== $this->getBean('UdpErrorHandler')->handle($th))
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                 }
             });

@@ -11,8 +11,8 @@ use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Enum\ConsumerResult;
 use Imi\AMQP\Pool\AMQPPool;
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Server;
 use Imi\Server\ServerManager;
@@ -97,9 +97,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             }
             catch (\Throwable $th)
             {
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
-                $errorLog->onException($th);
+                Log::error($th);
 
                 return ConsumerResult::NACK;
             }

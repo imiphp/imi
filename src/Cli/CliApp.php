@@ -11,6 +11,7 @@ use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Core\Component\ComponentManager;
+use Imi\Log\Log;
 use Imi\Main\Helper;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -175,9 +176,7 @@ class CliApp extends BaseApp
         }
         catch (\Exception $th)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            Log::error($th);
             exit(255);
         }
     }

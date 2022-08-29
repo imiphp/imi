@@ -12,7 +12,6 @@ use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
-use Imi\Log\ErrorLog;
 use Imi\Timer\Timer;
 use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
@@ -31,11 +30,6 @@ class CronProcess extends BaseProcess
      * @Inject("CronScheduler")
      */
     protected IScheduler $scheduler;
-
-    /**
-     * @Inject("ErrorLog")
-     */
-    protected ErrorLog $errorLog;
 
     /**
      * @Inject("CronManager")

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
-use Imi\App;
 use Imi\Event\TEvent;
 use Imi\Log\Log;
 use Imi\Swoole\Process\Pool\BeforeStartEventParam;
@@ -114,8 +113,7 @@ class Pool
                         }
                         catch (\Throwable $th)
                         {
-                            // @phpstan-ignore-next-line
-                            App::getBean('ErrorLog')->onException($th);
+                            Log::error($th);
                         }
                     }
                     $time = microtime(true);
@@ -132,8 +130,7 @@ class Pool
                                 }
                                 catch (\Throwable $th)
                                 {
-                                    // @phpstan-ignore-next-line
-                                    App::getBean('ErrorLog')->onException($th);
+                                    Log::error($th);
                                 }
                             }
                             break;
@@ -225,8 +222,7 @@ class Pool
             }
             catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($th);
+                Log::error($th);
             }
         }
     }
@@ -251,8 +247,7 @@ class Pool
                 }
                 catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
             else

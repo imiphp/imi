@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace Imi\Queue\Partial;
 
 use Imi\App;
-use Imi\Bean\Annotation\Partial;
+use Imi\Log\Log;
 use Imi\Event\Event;
-use Imi\Queue\Event\Param\ConsumerAfterConsumeParam;
-use Imi\Queue\Event\Param\ConsumerAfterPopParam;
-use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
-use Imi\Queue\Event\Param\ConsumerBeforePopParam;
-use Imi\Queue\Model\QueueConfig;
-use Imi\RequestContext;
 use Swoole\Coroutine;
+use Imi\RequestContext;
 use Yurun\Swoole\CoPool\CoPool;
+use Imi\Bean\Annotation\Partial;
+use Imi\Queue\Model\QueueConfig;
+use function Yurun\Swoole\Coroutine\goWait;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
+use Imi\Queue\Event\Param\ConsumerAfterPopParam;
+use Imi\Queue\Event\Param\ConsumerBeforePopParam;
 
-use function Yurun\Swoole\Coroutine\goWait;
+use Imi\Queue\Event\Param\ConsumerAfterConsumeParam;
+use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
 {
@@ -68,7 +69,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     }
                     catch (\Throwable $th)
                     {
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                 }
             };

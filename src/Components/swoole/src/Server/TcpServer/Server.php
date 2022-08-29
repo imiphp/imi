@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\TcpServer;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Log\Log;
 use Imi\Server\Protocol;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleTcpServer;
@@ -110,10 +110,9 @@ class Server extends Base implements ISwooleTcpServer
                         'reactorId'       => $reactorId,
                     ], $this, ConnectEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
                 finally
                 {
@@ -159,8 +158,7 @@ class Server extends Base implements ISwooleTcpServer
                     // @phpstan-ignore-next-line
                     if (true !== $this->getBean('TcpErrorHandler')->handle($th))
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                 }
             });
@@ -186,10 +184,9 @@ class Server extends Base implements ISwooleTcpServer
                         'reactorId'       => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
         }

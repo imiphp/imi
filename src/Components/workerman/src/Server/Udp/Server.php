@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Udp;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\UdpServer\Contract\IUdpServer;
@@ -61,8 +61,7 @@ class Server extends Base implements IUdpServer
                 // @phpstan-ignore-next-line
                 if (true !== $this->getBean('UdpErrorHandler')->handle($th))
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
         };

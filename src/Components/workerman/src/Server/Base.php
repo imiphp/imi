@@ -149,10 +149,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         };
 
@@ -172,10 +171,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         };
 
@@ -195,10 +193,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         };
 
@@ -218,10 +215,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         };
 
@@ -243,10 +239,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         };
 
@@ -263,10 +258,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         };
 
@@ -366,10 +360,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 }
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
             finally
             {
@@ -394,10 +387,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 ], $this);
                 RequestContext::destroy();
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
             finally
             {
