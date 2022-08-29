@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Pool;
 
-use Imi\App;
+use Imi\Log\Log;
 use Imi\Pool\BasePoolResource;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Imi;
@@ -159,9 +159,7 @@ class AMQPResource extends BasePoolResource
         }
         catch (\Throwable $th)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            Log::error($th);
 
             return false;
         }

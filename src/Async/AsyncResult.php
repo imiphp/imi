@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Async;
 
-use Imi\App;
 use Imi\Async\Contract\IAsyncResult;
+use Imi\Log\Log;
 
 class AsyncResult implements IAsyncResult
 {
@@ -31,9 +31,7 @@ class AsyncResult implements IAsyncResult
     {
         if (!$this->isGeted && $this->isException)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($this->result);
+            Log::error($this->result);
         }
     }
 

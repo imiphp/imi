@@ -108,27 +108,11 @@ class ErrorLog
 
     /**
      * 致命错误.
+     *
+     * @deprecated 3.0
      */
     public function onException(\Throwable $th): void
     {
-        // 支持记录无限级上级日志
-        $throwables = [$th];
-        $prev = $th;
-        do
-        {
-            $prev = $prev->getPrevious();
-            if ($prev)
-            {
-                $throwables[] = $prev;
-            }
-        }
-        while ($prev);
-        $throwables = array_reverse($throwables);
-        foreach ($throwables as $throwable)
-        {
-            // 日志处理
-            // @phpstan-ignore-next-line
-            Log::error($throwable);
-        }
+        Log::error($th);
     }
 }

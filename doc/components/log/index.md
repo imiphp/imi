@@ -99,6 +99,6 @@ Log::debug('日志内容');
 try {
     throw new \RuntimeException('test');
 } catch(\Throwable $th) {
-    App::getBean('ErrorLog')->onException($th);
+    \Imi\Log\Log::error($th);
 }
 ```

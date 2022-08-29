@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Protocol;
@@ -112,8 +113,7 @@ class Server extends Base implements IWebSocketServer
             catch (\Throwable $th)
             {
                 $connection->close();
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($th);
+                Log::error($th);
             }
             finally
             {
@@ -142,8 +142,7 @@ class Server extends Base implements IWebSocketServer
                 // @phpstan-ignore-next-line
                 if (true !== $this->getBean('WebSocketErrorHandler')->handle($th))
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
         };

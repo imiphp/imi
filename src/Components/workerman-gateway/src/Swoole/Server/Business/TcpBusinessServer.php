@@ -6,10 +6,9 @@ namespace Imi\WorkermanGateway\Swoole\Server\Business;
 
 use GatewayWorker\Lib\Context;
 use GatewayWorker\Lib\Gateway;
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
-use Imi\Log\ErrorLog;
+use Imi\Log\Log;
 use Imi\Server\Server;
 use Imi\Swoole\SwooleWorker;
 use Imi\Swoole\Util\Coroutine;
@@ -82,9 +81,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 $client = new GatewayWorkerClient(($workermanGatewayConfig['workerName'] ?? $this->getName()) . ':' . Worker::getWorkerId(), $config);
                 // 异常处理
                 $client->onException = static function (Throwable $th) {
-                    /** @var ErrorLog $errorLog */
-                    $errorLog = App::getBean('ErrorLog');
-                    $errorLog->onException($th);
+                    Log::error($th);
                 };
                 // 网关消息
                 $client->onGatewayMessage = function (IGatewayClient $client, array $message) {

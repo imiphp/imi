@@ -134,7 +134,7 @@ class RedisManager
                 $redis->reconnect();
             }
         }
-        catch (\Throwable $ex)
+        catch (\Throwable $th)
         {
             $redis->reconnect();
         }

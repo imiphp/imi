@@ -73,9 +73,9 @@ class PharBuildCommand extends Command
         {
             $config = require $configFile;
         }
-        catch (\Throwable $exception)
+        catch (\Throwable $th)
         {
-            $output->writeln('config load fail: ' . $exception);
+            $output->writeln('config load fail: ' . $th);
 
             return self::FAILURE;
         }

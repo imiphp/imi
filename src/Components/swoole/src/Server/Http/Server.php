@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Http;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Swoole\Http\Message\SwooleRequest;
@@ -132,8 +132,7 @@ class Server extends Base implements ISwooleHttpServer
                     // @phpstan-ignore-next-line
                     if (true !== $this->getBean('HttpErrorHandler')->handle($th))
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                 }
             });
@@ -156,10 +155,9 @@ class Server extends Base implements ISwooleHttpServer
                         'reactorId'       => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
         }

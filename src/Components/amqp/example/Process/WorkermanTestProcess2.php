@@ -6,7 +6,7 @@ namespace AMQPApp\Process;
 
 use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
-use Imi\App;
+use Imi\Log\Log;
 use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
 use Workerman\Worker;
@@ -36,9 +36,7 @@ class WorkermanTestProcess2 extends BaseProcess
         }
         catch (\Throwable $th)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            Log::error($th);
             sleep(3);
             $this->runConsumer($consumer);
         }

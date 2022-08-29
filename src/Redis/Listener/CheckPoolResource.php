@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Redis\Listener;
 
-use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
@@ -44,9 +43,7 @@ class CheckPoolResource implements IEventListener
                     }
                     catch (\Throwable $th)
                     {
-                        /** @var \Imi\Log\ErrorLog $errorLog */
-                        $errorLog = App::getBean('ErrorLog');
-                        $errorLog->onException($th);
+                        Log::error($th);
                         Log::error(sprintf('The Redis [%s] are not available', $name));
                         $result = false;
                     }

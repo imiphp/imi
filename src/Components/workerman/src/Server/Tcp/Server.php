@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Tcp;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\TcpServer\Contract\ITcpServer;
@@ -62,8 +62,7 @@ class Server extends Base implements ITcpServer
                 // @phpstan-ignore-next-line
                 if (true !== $this->getBean('TcpErrorHandler')->handle($th))
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
         };

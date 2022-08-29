@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Queue\Partial;
 
-use Imi\App;
 use Imi\Bean\Annotation\Partial;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Queue\Event\Param\ConsumerAfterConsumeParam;
 use Imi\Queue\Event\Param\ConsumerAfterPopParam;
 use Imi\Queue\Event\Param\ConsumerBeforeConsumeParam;
@@ -60,7 +60,7 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
                 }
                 catch (\Throwable $th)
                 {
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
             while ($this->working);

@@ -376,7 +376,7 @@ class Test
 		$joinPoint->cancelThrow();
 		var_dump('异常捕获:' . $joinPoint->getThrowable()->getMessage());
 		// 如有需要，可以手动记录下日志：
-		\Imi\App::getBean('ErrorLog')->onException($joinPoint->getThrowable());
+		\Imi\Log\Log::error($joinPoint->getThrowable());
 	}
 }
 

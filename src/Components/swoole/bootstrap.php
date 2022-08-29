@@ -6,6 +6,7 @@ namespace Imi\Swoole;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Log\Log;
 
 return static function () {
     $status = 0;
@@ -59,9 +60,7 @@ return static function () {
             $status = 255;
             try
             {
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
-                $errorLog->onException($th);
+                Log::error($th);
             }
             catch (\Throwable $tth)
             {

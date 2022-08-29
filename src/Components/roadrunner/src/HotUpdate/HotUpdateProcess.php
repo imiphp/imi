@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\RoadRunner\HotUpdate;
 
-use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
-use Imi\Log\ErrorLog;
 use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Util\Imi;
@@ -74,11 +72,6 @@ class HotUpdateProcess
      * buildRuntime pipes.
      */
     private ?array $buildRuntimePipes = null;
-
-    /**
-     * @Inject("ErrorLog")
-     */
-    protected ErrorLog $errorLog;
 
     /**
      * 开始时间.

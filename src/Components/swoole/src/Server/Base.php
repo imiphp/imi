@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server;
 
-use Imi\App;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Server\Contract\BaseServer;
@@ -197,10 +196,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                             'server' => $this,
                         ], $this, StartEventParam::class);
                     }
-                    catch (\Throwable $ex)
+                    catch (\Throwable $th)
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($ex);
+                        Log::error($th);
                         exit(255);
                     }
                     finally
@@ -217,10 +215,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'server' => $this,
                     ], $this, ShutdownEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
                 finally
                 {
@@ -240,10 +237,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'workerId' => $workerId,
                     ], $this);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                     SwooleEvent::exit();
                 }
                 finally
@@ -266,10 +262,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'workerId' => $workerId,
                     ], $this);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
                 finally
                 {
@@ -285,10 +280,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'workerId'  => $workerId,
                     ], $this, WorkerExitEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
 
@@ -299,10 +293,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'server' => $this,
                     ], $this, ManagerStartEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                     exit(255);
                 }
                 finally
@@ -318,10 +311,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'server' => $this,
                     ], $this, ManagerStopEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
                 finally
                 {
@@ -344,10 +336,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                             'task'     => $task,
                         ], $this, TaskEventParam::class);
                     }
-                    catch (\Throwable $ex)
+                    catch (\Throwable $th)
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($ex);
+                        Log::error($th);
                     }
                 });
             }
@@ -361,10 +352,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'data'      => $data,
                     ], $this, FinishEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
 
@@ -377,10 +367,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'message'   => $message,
                     ], $this, PipeMessageEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
 
@@ -395,10 +384,9 @@ abstract class Base extends BaseServer implements ISwooleServer
                         'signal'    => $signal,
                     ], $this, WorkerErrorEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($ex);
+                    Log::error($th);
                 }
             });
         }

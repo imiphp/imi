@@ -15,6 +15,7 @@ use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Lock\Lock;
+use Imi\Log\Log;
 use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
 use Imi\Swoole\Context\CoroutineContextManager;
@@ -82,9 +83,7 @@ class SwooleApp extends CliApp
         }
         catch (\Exception $th)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            Log::error($th);
             exit(255);
         }
     }

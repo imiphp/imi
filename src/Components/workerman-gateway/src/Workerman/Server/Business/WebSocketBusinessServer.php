@@ -6,10 +6,10 @@ namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
 use GatewayWorker\BusinessWorker;
 use GatewayWorker\Lib\Gateway;
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Protocol;
@@ -153,8 +153,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 // @phpstan-ignore-next-line
                 if (true !== $this->getBean('WebSocketErrorHandler')->handle($th))
                 {
-                    // @phpstan-ignore-next-line
-                    App::getBean('ErrorLog')->onException($th);
+                    Log::error($th);
                 }
             }
         });

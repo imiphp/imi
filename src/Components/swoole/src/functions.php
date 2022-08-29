@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Imi\App;
+use Imi\Log\Log;
 use Swoole\Coroutine;
 
 if (!\function_exists('\imigo'))
@@ -23,9 +23,7 @@ if (!\function_exists('\imigo'))
             }
             catch (\Throwable $th)
             {
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
-                $errorLog->onException($th);
+                Log::error($th);
             }
         });
     }

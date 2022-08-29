@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Imi\Swoole\Context;
 
 use ArrayObject;
-use Imi\App;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
 use Imi\Event\Event;
+use Imi\Log\Log;
 use Imi\Swoole\Util\Coroutine;
 
 /**
@@ -159,9 +159,7 @@ class CoroutineContextManager implements IContextManager
         }
         catch (\Throwable $th)
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
+            Log::error($th);
         }
     }
 }

@@ -8,11 +8,11 @@ use Imi\AMQP\Contract\IConsumer;
 use Imi\AMQP\Contract\IPublisher;
 use Imi\AMQP\Message;
 use Imi\Aop\Annotation\Inject;
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
 use Imi\Worker;
@@ -326,9 +326,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     }
                     catch (\Throwable $th)
                     {
-                        /** @var \Imi\Log\ErrorLog $errorLog */
-                        $errorLog = App::getBean('ErrorLog');
-                        $errorLog->onException($th);
+                        Log::error($th);
                         sleep(1);
                         $this->startSubscribe();
                     }

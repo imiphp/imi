@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Server\Hprose;
 
-use Imi\App;
 use Imi\Event\EventParam;
 use Imi\Log\Log;
 use Imi\Pool\PoolManager;
@@ -93,7 +92,7 @@ class Server extends BaseRpcServer
             'host'      => $this->config['host'] ?? '0.0.0.0',
             'port'      => $this->config['port'] ?? 8080,
             'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_TCP | $this->config['sockType']) : \SWOOLE_SOCK_TCP,
-            'mode'      => $this->config['mode'] ?? \SWOOLE_PROCESS,
+            'mode'      => $this->config['mode'] ?? swoole_process,
         ];
     }
 
@@ -150,10 +149,9 @@ class Server extends BaseRpcServer
                     'reactorId' => $reactorId,
                 ], $this, ConnectEventParam::class);
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         });
 
@@ -167,10 +165,9 @@ class Server extends BaseRpcServer
                     'data'      => $data,
                 ], $this, ReceiveEventParam::class);
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         });
 
@@ -183,10 +180,9 @@ class Server extends BaseRpcServer
                     'reactorId' => $reactorId,
                 ], $this, CloseEventParam::class);
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
-                // @phpstan-ignore-next-line
-                App::getBean('ErrorLog')->onException($ex);
+                Log::error($th);
             }
         });
     }

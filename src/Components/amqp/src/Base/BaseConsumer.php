@@ -8,7 +8,7 @@ use Imi\AMQP\Base\Traits\TAMQP;
 use Imi\AMQP\Contract\IConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Enum\ConsumerResult;
-use Imi\App;
+use Imi\Log\Log;
 use Imi\Util\Imi;
 
 use function Yurun\Swoole\Coroutine\goWait;
@@ -114,8 +114,7 @@ abstract class BaseConsumer implements IConsumer
                                 }
                                 catch (\Throwable $th)
                                 {
-                                    // @phpstan-ignore-next-line
-                                    App::getBean('ErrorLog')->onException($th);
+                                    Log::error($th);
 
                                     return ConsumerResult::NACK;
                                 }
@@ -128,8 +127,7 @@ abstract class BaseConsumer implements IConsumer
                     }
                     catch (\Throwable $th)
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                     finally
                     {

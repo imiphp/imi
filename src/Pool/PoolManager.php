@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pool;
 
-use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Event\Event;
@@ -81,9 +80,7 @@ class PoolManager
                 }
                 catch (\Throwable $th)
                 {
-                    /** @var \Imi\Log\ErrorLog $errorLog */
-                    $errorLog = App::getBean('ErrorLog');
-                    $errorLog->onException($th);
+                    Log::error($th);
                     Log::error(sprintf('The resources of connection pool [%s] are not available', $poolName));
                     $result = false;
                 }

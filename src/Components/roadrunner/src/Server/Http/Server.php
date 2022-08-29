@@ -12,6 +12,7 @@ use function Imi\cmd;
 
 use Imi\Event\Event;
 use Imi\Event\EventParam;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\RoadRunner\Http\Message\RoadRunnerResponse;
 use Imi\RoadRunner\Util\RoadRunner;
@@ -89,8 +90,6 @@ class Server extends BaseServer
                 $this->psr7Worker = $worker = new \Spiral\RoadRunner\Http\PSR7Worker($worker, $psrFactory, $psrFactory, $psrFactory);
                 /** @var \Imi\Server\Http\Error\IErrorHandler $httpErrorHandler */
                 $httpErrorHandler = $this->getBean('HttpErrorHandler');
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
 
                 $response = new RoadRunnerResponse($worker);
                 while ($request = $worker->waitRequest())
@@ -108,7 +107,7 @@ class Server extends BaseServer
                     {
                         if (true !== $httpErrorHandler->handle($th))
                         {
-                            $errorLog->onException($th);
+                            Log::error($th);
                         }
                         else
                         {

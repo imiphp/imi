@@ -81,7 +81,7 @@ class TransactionAop
 
                 return $result;
             }
-            catch (\Throwable $ex)
+            catch (\Throwable $th)
             {
                 // 回滚事务
                 if ($db->inTransaction() && $db->isConnected())
@@ -96,7 +96,7 @@ class TransactionAop
                             break;
                     }
                 }
-                throw $ex;
+                throw $th;
             }
         }
     }

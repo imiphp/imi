@@ -6,8 +6,8 @@ namespace Imi\WorkermanGateway\Swoole\Server\Business\Task;
 
 use GatewayWorker\Lib\Gateway;
 use GatewayWorker\Protocols\GatewayProtocol;
-use Imi\App;
 use Imi\ConnectionContext;
+use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Contract\ISwooleServer;
@@ -109,8 +109,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     // @phpstan-ignore-next-line
                     if (GatewayProtocol::CMD_ON_MESSAGE === $cmd && isset($server) && true !== $server->getBean($errorHandler)->handle($th))
                     {
-                        // @phpstan-ignore-next-line
-                        App::getBean('ErrorLog')->onException($th);
+                        Log::error($th);
                     }
                     if ($closeConnectionOnFail && isset($clientId))
                     {
