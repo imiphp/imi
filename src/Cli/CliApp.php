@@ -31,6 +31,12 @@ class CliApp extends BaseApp
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
         $this->cli = $cli = new Application('imi', App::getImiPrettyVersion());
+
+        // 修复 Symfony 5.4.12 出现 Ctrl+C 无法停止服务
+        if (method_exists($cli, 'setSignalsToDispatchEvent'))
+        {
+            $cli->setSignalsToDispatchEvent();
+        }
         $cli->setDispatcher($dispatcher);
         $cli->setCatchExceptions(false);
 
