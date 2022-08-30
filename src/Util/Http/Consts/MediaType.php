@@ -52,6 +52,8 @@ class MediaType
     public const TEXT_EVENT_STREAM = 'text/event-stream';
 
     public const TEXT_HTML = 'text/html';
+    
+    public const TEXT_HTML_UTF8 = 'text/html; charset=UTF-8';
 
     public const TEXT_MARKDOWN = 'text/markdown';
 
