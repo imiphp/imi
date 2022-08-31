@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-roadrunner",
     "type": "library",
-    "license": "MulanPSL-1.0",
+    "license": "MulanPSL-2.0",
     "description": "imi roadrunner component",
     "require": {
         "spiral/roadrunner": "~2.0",

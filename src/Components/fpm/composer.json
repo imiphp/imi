@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-fpm",
     "type": "library",
-    "license": "MulanPSL-1.0",
+    "license": "MulanPSL-2.0",
     "description": "imi php-fpm component",
     "require": {},
     "require-dev": {

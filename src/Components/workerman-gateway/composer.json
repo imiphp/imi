@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-workerman-gateway",
     "type": "library",
-    "license": "MulanPSL-1.0",
+    "license": "MulanPSL-2.0",
     "description": "imi workerman gateway component",
     "require": {
         "workerman/gateway-worker": "^3.0",

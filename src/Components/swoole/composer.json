@@ -1,7 +1,7 @@
 {
     "name": "imiphp/imi-swoole",
     "type": "library",
-    "license": "MulanPSL-1.0",
+    "license": "MulanPSL-2.0",
     "description": "imi swoole component",
     "require": {
         "ext-swoole": ">=4.8",
