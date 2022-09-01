@@ -103,7 +103,7 @@ class BeforeInsert implements IBeforeInsertEventListener
 
 #### 模型类静态事件监听
 
-事件名称为`模型类名:事件名`，如：`XXX\Model\Test`+`BeforeBatchUpdate`=`XXX\Model\Test:BeforeBatchUpdate`
+事件名称为`模型类名:事件名`，如：`XXX\Model\Test`+`:`+`BeforeBatchUpdate`=`XXX\Model\Test:BeforeBatchUpdate`
 
 ```php
 <?php
@@ -113,7 +113,7 @@ use Imi\Model\Event\Param\BeforeBatchUpdateEventParam;
 use Imi\Model\Event\Listener\IBeforeBatchUpdateEventListener;
 
 /**
- * @Listener("XXX\Model\TestBeforeBatchUpdate")
+ * @Listener("XXX\Model\Test:BeforeBatchUpdate")
  */
 class BeforeBatchUpdate implements IBeforeBatchUpdateEventListener
 {
