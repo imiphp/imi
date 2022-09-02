@@ -150,10 +150,10 @@ class Insert
         {
             if (!$row instanceof $rightModel)
             {
-                /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
                 $model[$propertyName][$index] = $row;
             }
+            /** @var \Imi\Model\Model $row */
             $row[$rightField] = $model[$leftField];
             $row->insert();
         }
@@ -189,10 +189,10 @@ class Insert
         {
             if (!$row instanceof $middleModel)
             {
-                /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
                 $model[$propertyName][$index] = $row;
             }
+            /** @var \Imi\Model\Model $row */
             $row[$middleLeftField] = $model[$leftField];
             $row->insert();
         }
@@ -296,10 +296,10 @@ class Insert
         {
             if (!$row instanceof $rightModel)
             {
-                /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
                 $model[$propertyName][$index] = $row;
             }
+            /** @var \Imi\Model\Model $row */
             $row[$rightField] = $model[$leftField];
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
@@ -336,10 +336,10 @@ class Insert
         {
             if (!$row instanceof $middleModel)
             {
-                /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
                 $model[$propertyName][$index] = $row;
             }
+            /** @var \Imi\Model\Model $row */
             $row[$middleLeftField] = $model[$leftField];
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();

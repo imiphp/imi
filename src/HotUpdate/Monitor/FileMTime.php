@@ -110,6 +110,7 @@ class FileMTime extends BaseMonitor
         // 之前有的文件被删处理
         foreach ($files as $fileName => $option)
         {
+            // @phpstan-ignore-next-line
             if (!$option['exists'])
             {
                 unset($files[$fileName]);
