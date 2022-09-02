@@ -20,7 +20,7 @@
 
 * [ ] Consul
 
-* [ ] Zookeeper
+* [x] Zookeeper ([imi-zookeeper](https://github.com/imiphp/imi-zookeeper))
 
 ## 设计
 
@@ -197,6 +197,72 @@ $value = json_encode(['imi' => 'niubi']);
 $options = [];
 $configCenter->getDriver('etcd')->push($name, $value);
 $configCenter->getDriver('etcd')->push($name, $value, $options);
+```
+
+### ZooKeeper
+
+* Swoole 用户请安装 [swoole-zookeeper](https://github.com/swoole/ext-zookeeper) 扩展。
+
+* 非 Swoole 用户请安装 [php-zookeeper](<https://github.com/php-zookeeper/php-zookeeper>) 扩展。
+
+**安装：**`composer require imiphp/imi-zookeeper:~2.1.0`
+
+**配置：**
+
+`@app.beans`：
+
+```php
+use function Imi\env;
+use Imi\Util\Imi;
+
+[
+    'ConfigCenter' => [
+        // 'mode'    => \Imi\ConfigCenter\Enum\Mode::WORKER, // 工作进程模式
+        'mode'    => \Imi\ConfigCenter\Enum\Mode::PROCESS, // 进程模式
+        'configs' => [
+            'zookeeper' => [
+                'driver'  => \Imi\ZooKeeper\Config\SwooleZooKeeperConfigDriver::class, // Swoole 驱动
+                // 'driver'  => \Imi\ZooKeeper\Config\ZooKeeperConfigDriver::class, // 非 Swoole 驱动
+                // 客户端连接配置
+                'client'  => [
+                    'host'    => env('IMI_ZOOKEEPER_HOST', '127.0.0.1:2181'), // 主机名:端口
+                    'timeout' => 10, // 网络请求超时时间，单位：秒
+                ],
+                // 监听器配置
+                'listener' => [
+                    'timeout'         => 30000, // 配置监听器长轮询超时时间，单位：毫秒
+                    'failedWaitTime'  => 3000, // 失败后等待重试时间，单位：毫秒
+                    'savePath'        => Imi::getRuntimePath('config-cache'), // 配置保存路径，默认为空不保存到文件。php-fpm 模式请一定要设置！
+                    'fileCacheTime'   => 30, // 文件缓存时间，默认为0时不受缓存影响，此配置只影响 pull 操作。php-fpm 模式请一定要设置为大于0的值！
+                    'pollingInterval' => 10000, // 客户端轮询间隔时间，单位：毫秒
+                ],
+                // 配置项
+                'configs' => [
+                    'zookeeper' => [
+                        'key'   => 'imi-zooKeeper-key1',
+                        'type'  => 'json', // 配置内容类型
+                    ],
+                ],
+            ],
+        ],
+    ],
+]
+```
+
+**获取配置：**
+
+```php
+\Imi\Config::get('zookeeper'); // 对应 imi-zooKeeper-key1
+```
+
+**写入配置：**
+
+```php
+/** @var \Imi\ConfigCenter\ConfigCenter $configCenter */
+$configCenter = App::getBean('ConfigCenter');
+$name = 'imi-zooKeeper-key1';
+$value = json_encode(['imi' => 'niubi']);
+$configCenter->getDriver('zookeeper')->push($name, $value);
 ```
 
 ## 开发配置中心驱动
