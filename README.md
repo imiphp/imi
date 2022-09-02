@@ -24,11 +24,15 @@ imi 框架现在已经稳定运行在：文旅电商平台、物联网充电云�
 
 > imi 第一个版本发布于 2018 年 6 月 21 日
 
-imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
+## 社群
 
-微信群：
+**imi 框架交流群：** 17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
+
+**微信群：**
 
 <img src="res/wechat.png" alt="imi" width="256px" />
+
+**打赏赞助：**<https://www.imiphp.com/donate.html>
 
 ## 官方视频教程（完全免费）
 
@@ -170,14 +174,6 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 * 文档编写
 * 教程、博客分享
 
-> 最新代码以 `dev` 分支为准，提交 `PR` 也请合并至 `dev` 分支！
+提交 `Pull Request` 到本仓库，你可以成为 imi 的贡献者！
 
-提交 `Pull Request` 到本仓库，你就有机会成为 imi 的作者之一！
-
-参与框架开发教程详见：<doc/adv/devp.md>
-
-## 捐赠
-
-![捐赠](https://cdn.jsdelivr.net/gh/imiphp/imi@2.1/res/pay.png)
-
-开源不求盈利，多少都是心意，生活不易，随缘随缘……
+参与框架开发教程详见：<https://doc.imiphp.com/v2.1/adv/devp.html>

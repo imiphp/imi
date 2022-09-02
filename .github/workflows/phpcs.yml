@@ -8,6 +8,7 @@ on:
       - "res/**"
       - "website/**"
       - ".markdownlint.json"
+      - "README.md"
   pull_request:
 
 jobs:
