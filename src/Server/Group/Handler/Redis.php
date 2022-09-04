@@ -196,7 +196,7 @@ class Redis implements IGroupHandler
      */
     public function hasGroup(string $groupName): bool
     {
-        return true;
+        return isset($this->groups[$groupName]);
     }
 
     /**
