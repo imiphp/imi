@@ -122,7 +122,7 @@ class Pool
                         if (microtime(true) - $time > 3)
                         {
                             Log::info('Worker exit timeout, forced to terminate');
-                            foreach ($this->workers as $key => $worker)
+                            foreach ($this->workers as $worker)
                             {
                                 try
                                 {
@@ -135,11 +135,18 @@ class Pool
                             }
                             break;
                         }
-                        foreach ($this->workers as $key => $worker)
+                        foreach ($this->workers as $worker)
                         {
-                            if (!Process::kill($worker->pid, 0))
+                            if ($result = Process::wait(false))
                             {
-                                unset($this->workers[$key]);
+                                $pid = $result['pid'];
+                                $workerId = $this->workerIdMap[$pid] ?? null;
+                                if (isset($this->workers[$workerId]))
+                                {
+                                    $worker = $this->workers[$workerId];
+                                    Event::del($worker->pipe);
+                                    unset($this->workerIdMap[$worker->pid], $this->workers[$workerId]);
+                                }
                             }
                         }
                         usleep(10000);
