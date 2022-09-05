@@ -29,7 +29,8 @@ use Imi\Config;
 class Condition extends Base
 {
     /**
-     * @param mixed $default
+     * @param mixed          $default
+     * @param array|callable $callable
      */
     public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = null, array $args = ['{:value}'], ?string $exception = null, ?int $exCode = null)
     {
