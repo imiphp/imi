@@ -47,6 +47,7 @@ abstract class BaseConsumer implements IConsumer
         $messageCount = $this->messageCount;
         while ($this->running && $this->channel && $this->channel->is_consuming())
         {
+            $this->channel->getConnection()->checkHeartBeat();
             $this->channel->wait(null, true);
             if ($messageCount == $this->messageCount)
             {
