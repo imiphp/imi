@@ -306,7 +306,7 @@ class RedisServerUtil extends LocalServerUtil
             {
                 try
                 {
-                    $redis->subscribe([$this->channel], function (\Redis $redis, string $channel, string $msg) {
+                    $redis->subscribe([$this->channel], function ($redis, string $channel, string $msg) {
                         Coroutine::create(function () use ($msg) {
                             $data = json_decode($msg, true);
                             if (!isset($data['action'], $data['serverName']))
