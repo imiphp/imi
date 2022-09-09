@@ -268,8 +268,8 @@ class Meta
         $this->dbFields = $dbFields;
         $this->fields = $fields;
         $this->camel = $camel = $entity->camel ?? true;
-        $this->bean = $entity->bean;
-        $this->incrUpdate = $entity->incrUpdate;
+        $this->bean = $entity->bean ?? true;
+        $this->incrUpdate = $entity->incrUpdate ?? false;
         $serializableFieldNames = $parsedSerializableFieldNames = $fieldNames = [];
         foreach ($fields as $fieldName => $column)
         {
