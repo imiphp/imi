@@ -28,7 +28,7 @@ class TestProcess extends BaseProcess
 
 ### 释放连接池
 
-因为我们有些进程是用不到，或者不需要所有进程池的。进程池资源连着也是浪费，所有提供一个注解，用以释放。
+因为我们有些进程是用不到，或者不需要所有进程池的。进程池资源连着也是浪费，所以提供一个注解，用以释放。
 
 在 `run()` 方法上使用 `@PoolClean` 注解即可，类：`Imi\Pool\Annotation\PoolClean`
 
