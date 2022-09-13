@@ -538,3 +538,32 @@ ID 生成器指定参数：
 `@Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name"="雪花算法配置名称"})`
 
 > 雪花算法配置请参考：<https://doc.imiphp.com/v2.1/components/snowflake.html#%E9%85%8D%E7%BD%AE>
+
+#### 自定义发号器
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace app\Model;
+
+use Imi\Model\BaseModel;
+use Imi\Model\IdGenerator\Contract\IIdGenerator;
+
+class MyGenerator implements IIdGenerator
+{
+    /**
+     * @return mixed
+     */
+    public function generate(?BaseModel $model, array $options = [])
+    {
+        // $options是 @Id() 注解中 generatorOptions 参数传入的数组
+
+        // $model 是模型对象，也可能为 null，做好容错，或者直接抛异常也可
+
+        // 返回值可以是任何类型
+        return 0;
+    }
+}
+```
