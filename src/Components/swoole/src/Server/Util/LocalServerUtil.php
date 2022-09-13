@@ -195,7 +195,6 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         else
         {
-            var_dump($pushParams);
             foreach ($clientIds as $tmpClientId)
             {
                 $tmpClientId = (int) $tmpClientId;
