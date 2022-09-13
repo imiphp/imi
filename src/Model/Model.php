@@ -998,6 +998,8 @@ abstract class Model extends BaseModel
         $isInsert = 'insert' === $type;
         $isUpdate = 'update' === $type;
         $isSave = 'save' === $type;
+        $isSaveInsert = $isSave && $object && !$object->__recordExists;
+        $isSaveUpdate = $isSave && $object && $object->__recordExists;
         if ($object)
         {
             $rawValues = $object->__rawValues;
@@ -1010,6 +1012,7 @@ abstract class Model extends BaseModel
             $originData = [];
         }
         $incrUpdate = $meta->isIncrUpdate();
+        $ids = $meta->getIds();
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
@@ -1034,13 +1037,21 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if (($column->updateTime && !$isInsert) || ($column->createTime && ($isInsert || ($isSave && $object && !$object->__recordExists))))
+            if (($column->updateTime && !$isInsert) || ($column->createTime && ($isInsert || $isSaveInsert)))
             {
                 $value = static::parseDateTime($columnType);
                 if (null === $value)
                 {
                     throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFieldName, $columnType));
                 }
+                if ($object)
+                {
+                    $object[$dbFieldName] = $value;
+                }
+            }
+            elseif (($isInsert || $isSaveInsert) && isset($ids[$name]) && '' !== $ids[$name]->generator)
+            {
+                $value = App::getBean($ids[$name]->generator)->generate($object, $ids[$name]->generatorOptions);
                 if ($object)
                 {
                     $object[$dbFieldName] = $value;
@@ -1102,7 +1113,7 @@ abstract class Model extends BaseModel
                     $value = implode(',', $value);
                     break;
             }
-            if ($incrUpdate && (!$isInsert || ($isSave && $object && $object->__recordExists)) && ((\array_key_exists($dbFieldName, $originData) && $originData[$dbFieldName] === $value) || (\array_key_exists($name, $originData) && $originData[$name] === $value)))
+            if ($incrUpdate && (!$isInsert || $isSaveUpdate) && ((\array_key_exists($dbFieldName, $originData) && $originData[$dbFieldName] === $value) || (\array_key_exists($name, $originData) && $originData[$name] === $value)))
             {
                 continue;
             }
@@ -1110,7 +1121,7 @@ abstract class Model extends BaseModel
         }
 
         // 更新时无需更新主键
-        if ($isUpdate || ($isSave && $object && $object->__recordExists))
+        if ($isUpdate || $isSaveUpdate)
         {
             foreach (static::PRIMARY_KEYS ?? $meta->getId() as $id)
             {

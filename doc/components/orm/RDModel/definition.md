@@ -476,3 +476,53 @@ protected $xxx = [
     ],
 ];
 ```
+
+### @Id
+
+写在属性上，声明主键，并且支持 ID 生成器（发号器）功能。
+
+**用法：**
+
+声明主键：
+
+`@Id`
+
+声明主键，指定顺序：
+
+`@Id(0)`
+
+`@Id(index=0)`
+
+ID 生成器：
+
+`@Id(generator=生成器类::class)`
+
+ID 生成器指定参数：
+
+`@Id(generator=生成器类::class, generatorOptions={"key"="value"})`
+
+非主键字段使用 ID 生成器：
+
+`@Id(index=false, generator=生成器类::class)`
+
+#### UUID 发号器
+
+时间算法：
+
+`@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class)`
+
+`@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::TIME})`
+
+随机算法：`@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::RANDOM})`
+
+MD5、Sha1：
+
+使用方法基本一样，差别就是 `generatorOptions.type` 值不同。
+
+`@Id(index=false, generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::MD5, "ns"="99e4edaf-8363-466e-bddf-7254db57675c", "nameField"="名称字段名，该字段值必须唯一，否则会重复"})`
+
+> `ns` 必须是一个合法的 UUID
+
+`@Id(index=false, generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::SHA1, "nsField"="命名空间字段名", "name"="直接指定名称"})`
+
+> 注意：`ns`、`name` 的值如果一样，生成的 UUID 也会一样！！！

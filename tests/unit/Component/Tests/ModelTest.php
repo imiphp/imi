@@ -9,6 +9,7 @@ use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Article2;
 use Imi\Test\Component\Model\ArticleEx;
+use Imi\Test\Component\Model\ArticleId;
 use Imi\Test\Component\Model\CreateTime;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
@@ -1124,5 +1125,44 @@ class ModelTest extends BaseTest
         $this->assertEquals('pw2', $record->password);
         $record2 = unserialize(serialize($record));
         $this->assertEquals($record->toArray(), $record2->toArray());
+    }
+
+    public function testId(): void
+    {
+        // insert
+        $record1 = ArticleId::newInstance();
+        $record1->insert();
+        $this->assertNotEmpty($record1->title);
+        $this->assertNotEmpty($record1->content);
+        $record2 = ArticleId::find($record1->id);
+        $this->assertEquals($record1->toArray(), $record2->toArray());
+
+        $record1->title = uuid_create(UUID_TYPE_RANDOM);
+        $record1->update();
+        $record2 = ArticleId::find($record1->id);
+        $this->assertEquals($record1->toArray(), $record2->toArray());
+
+        $record1->title = uuid_create(UUID_TYPE_RANDOM);
+        $record1->save();
+        $record2 = ArticleId::find($record1->id);
+        $this->assertEquals($record1->toArray(), $record2->toArray());
+
+        // save
+        $record1 = ArticleId::newInstance();
+        $record1->save();
+        $this->assertNotEmpty($record1->title);
+        $this->assertNotEmpty($record1->content);
+        $record2 = ArticleId::find($record1->id);
+        $this->assertEquals($record1->toArray(), $record2->toArray());
+
+        $record1->title = uuid_create(UUID_TYPE_RANDOM);
+        $record1->update();
+        $record2 = ArticleId::find($record1->id);
+        $this->assertEquals($record1->toArray(), $record2->toArray());
+
+        $record1->title = uuid_create(UUID_TYPE_RANDOM);
+        $record1->save();
+        $record2 = ArticleId::find($record1->id);
+        $this->assertEquals($record1->toArray(), $record2->toArray());
     }
 }
