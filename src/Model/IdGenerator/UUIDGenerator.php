@@ -29,7 +29,7 @@ class UUIDGenerator implements IIdGenerator
                 }
                 elseif (!isset($options['nsField']) || null === ($ns = $model[$options['nsField']]))
                 {
-                    throw new \RuntimeException('The ns or nsField option in the uuid is required.');
+                    throw new \InvalidArgumentException('The ns or nsField option in the uuid is required.');
                 }
 
                 if (isset($options['name']))
@@ -42,7 +42,7 @@ class UUIDGenerator implements IIdGenerator
                 }
                 else
                 {
-                    throw new \RuntimeException('The name or nameField option in the uuid is required.');
+                    throw new \InvalidArgumentException('The name or nameField option in the uuid is required.');
                 }
 
                 return $functionName($ns, $name);

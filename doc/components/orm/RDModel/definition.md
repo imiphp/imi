@@ -507,15 +507,19 @@ ID 生成器指定参数：
 
 #### UUID 发号器
 
-时间算法：
+使用前请先安装 uuid 扩展：<http://pecl.php.net/package/uuid>
+
+或安装这个包：`composer require symfony/polyfill-uuid`
+
+**时间算法：**
 
 `@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class)`
 
 `@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::TIME})`
 
-随机算法：`@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::RANDOM})`
+**随机算法：**`@Id(generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::RANDOM})`
 
-MD5、Sha1：
+**MD5、Sha1：**
 
 使用方法基本一样，差别就是 `generatorOptions.type` 值不同。
 
@@ -526,3 +530,11 @@ MD5、Sha1：
 `@Id(index=false, generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::SHA1, "nsField"="命名空间字段名", "name"="直接指定名称"})`
 
 > 注意：`ns`、`name` 的值如果一样，生成的 UUID 也会一样！！！
+
+#### 雪花算法发号器
+
+使用前请先安装 imi-snowflake：`composer require imiphp/imi-snowflake`
+
+`@Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name"="雪花算法配置名称"})`
+
+> 雪花算法配置请参考：<https://doc.imiphp.com/v2.1/components/snowflake.html#%E9%85%8D%E7%BD%AE>
