@@ -274,6 +274,7 @@ class ActionMiddleware implements MiddlewareInterface
                     {
                         throw new \RuntimeException(sprintf('RequestData %s deserialize failed', $type));
                     }
+                    $request->setParsedBody($value);
                 }
                 else
                 {
