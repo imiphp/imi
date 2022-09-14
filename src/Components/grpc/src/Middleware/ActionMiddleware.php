@@ -231,6 +231,10 @@ class ActionMiddleware implements MiddlewareInterface
             if (isset($extractData[$paramName]))
             {
                 $item = $extractData[$paramName];
+                if ($item['required'] && !ObjectArrayHelper::exists($allData, $item['name']))
+                {
+                    throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
+                }
                 $value = ObjectArrayHelper::get($allData, $item['name'], $item['default']);
             }
             elseif (isset($routeResult->params[$paramName]))

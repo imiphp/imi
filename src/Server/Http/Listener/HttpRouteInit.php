@@ -9,6 +9,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\Http\Annotation\ExtractData;
+use Imi\Server\Http\Annotation\RequestParam;
 use Imi\Server\Http\Parser\ControllerParser;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Middleware;
@@ -76,6 +77,7 @@ class HttpRouteInit implements IEventListener
                         Middleware::class,
                         ExtractData::class,
                         WSConfig::class,
+                        RequestParam::class,
                     ]);
                     $routeAnnotations = $annotations[Route::class];
                     if ($routeAnnotations)
@@ -92,10 +94,13 @@ class HttpRouteInit implements IEventListener
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
-                    /** @var Middleware $middleware */
-                    foreach ($annotations[Middleware::class] as $middleware)
+                    if ($annotations[Middleware::class])
                     {
-                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        /** @var Middleware $middleware */
+                        foreach ($annotations[Middleware::class] as $middleware)
+                        {
+                            $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        }
                     }
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
@@ -124,13 +129,42 @@ class HttpRouteInit implements IEventListener
                             }
                         }
                         $extractData = [];
-                        /** @var ExtractData $item */
-                        foreach ($annotations[ExtractData::class] as $item)
+                        // @deprecated 3.0
+                        if ($annotations[ExtractData::class])
                         {
-                            $extractData[$item->to] = [
-                                'name'    => $item->name,
-                                'default' => $item->default,
-                            ];
+                            /** @var ExtractData $item */
+                            foreach ($annotations[ExtractData::class] as $item)
+                            {
+                                $extractData[$item->to] = [
+                                    'name'     => $item->name,
+                                    'default'  => $item->default,
+                                    'required' => false,
+                                ];
+                            }
+                        }
+                        if ($annotations[RequestParam::class])
+                        {
+                            /** @var RequestParam $item */
+                            foreach ($annotations[RequestParam::class] as $item)
+                            {
+                                $extractData[$item->param] = [
+                                    'name'     => $item->name,
+                                    'default'  => $item->default,
+                                    'required' => $item->required,
+                                ];
+                            }
+                        }
+                        if ($methodRequestParamAnnotations = AnnotationManager::getMethodParametersAnnotations($className, $methodName, RequestParam::class))
+                        {
+                            foreach ($methodRequestParamAnnotations as $paramName => $requestParams)
+                            {
+                                $item = $requestParams[0];
+                                $extractData[$paramName] = [
+                                    'name'     => $item->name,
+                                    'default'  => $item->default,
+                                    'required' => $item->required,
+                                ];
+                            }
                         }
                         $routeCallable = new DelayServerBeanCallable($server, $className, $methodName);
                         $options = [
