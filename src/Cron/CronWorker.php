@@ -54,7 +54,8 @@ class CronWorker
                 }
                 catch (\Throwable $th)
                 {
-                    throw new \RuntimeException(sprintf('Task %s execution failed, message: %s', $id, $th->getMessage()), $th->getCode(), $th);
+                    $code = $th->getCode();
+                    throw new \RuntimeException(sprintf('Task %s execution failed, message: %s', $id, $th->getMessage()), \is_int($code) ? $code : 0, $th);
                 }
             }
             else
