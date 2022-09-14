@@ -289,6 +289,7 @@ class AnnotationParser
         }
 
         AnnotationManager::setMethodAnnotations($className, $methodName, ...$annotations);
+        $this->parseMethodParameters($ref, $method);
     }
 
     /**
@@ -479,6 +480,91 @@ class AnnotationParser
         }
 
         AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations);
+    }
+
+    public function parseMethodParameters(\ReflectionClass $ref, \ReflectionMethod $reflectionMethod): void
+    {
+        if (\PHP_VERSION_ID < 80000)
+        {
+            return;
+        }
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter)
+        {
+            $this->parseMethodParameter($ref, $reflectionMethod, $reflectionParameter);
+        }
+    }
+
+    public function parseMethodParameter(\ReflectionClass $ref, \ReflectionMethod $reflectionMethod, \ReflectionParameter $reflectionParameter): void
+    {
+        $annotations = $this->getPHPMethodParameterAnnotations($reflectionParameter);
+        foreach ($annotations as $i => $annotation)
+        {
+            if (!$annotation instanceof \Imi\Bean\Annotation\Base)
+            {
+                unset($annotations[$i]);
+            }
+        }
+
+        $className = $ref->getName();
+        $methodName = $reflectionMethod->getName();
+        $parameterName = $reflectionParameter->getName();
+        $thisClasses = &$this->classes;
+        if ($annotations)
+        {
+            $fileName = $ref->getFileName();
+            $thisClasses[$className] = $fileName;
+            $this->files[$fileName] = 1;
+
+            // @Inherit 注解继承父级的注解
+            $hasInherit = false;
+            $annotation = null;
+            foreach ($annotations as $annotation)
+            {
+                if ($annotation instanceof Inherit)
+                {
+                    $hasInherit = true;
+                    break;
+                }
+            }
+            if ($hasInherit && $parentClass = $ref->getParentClass())
+            {
+                $parentClassName = $parentClass->getName();
+                if (!isset($thisClasses[$parentClassName]))
+                {
+                    $this->parse($parentClassName);
+                    $this->execParse($parentClassName);
+                }
+                /** @var Inherit $annotation */
+                if (\is_string($annotation->annotation))
+                {
+                    $inheritAnnotationClasses = [$annotation->annotation];
+                }
+                else
+                {
+                    $inheritAnnotationClasses = $annotation->annotation;
+                }
+                foreach (AnnotationManager::getMethodParameterAnnotations($parentClassName, $methodName, $parameterName) as $annotation)
+                {
+                    if (null === $inheritAnnotationClasses)
+                    {
+                        $annotations[] = $annotation;
+                    }
+                    else
+                    {
+                        foreach ($inheritAnnotationClasses as $inheritAnnotationClass)
+                        {
+                            if ($annotation instanceof $inheritAnnotationClass)
+                            {
+                                $annotations[] = $annotation;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        AnnotationManager::setMethodParameterAnnotations($className, $methodName, $parameterName, ...$annotations);
     }
 
     /**
@@ -817,6 +903,23 @@ class AnnotationParser
     {
         $annotations = [];
         foreach ($reflectionConstant->getAttributes() as $attribute)
+        {
+            $class = $attribute->getName();
+            $annotations[] = new $class(...$attribute->getArguments());
+        }
+
+        return $annotations;
+    }
+
+    /**
+     * 获取方法参数的 PHP 原生注解.
+     *
+     * @return \Imi\Bean\Annotation\Base[]
+     */
+    public function getPHPMethodParameterAnnotations(\ReflectionParameter $reflectionParameter): array
+    {
+        $annotations = [];
+        foreach ($reflectionParameter->getAttributes() as $attribute)
         {
             $class = $attribute->getName();
             $annotations[] = new $class(...$attribute->getArguments());
