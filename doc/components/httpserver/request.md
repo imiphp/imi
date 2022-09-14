@@ -220,3 +220,89 @@ $address = $this->request->getHeaderLine('x-real-ip');
 /** @var \Swoole\Http\Request $swooleRequest */
 $swooleRequest = $this->request->getSwooleRequest();
 ```
+
+## 绑定请求参数到控制器方法参数
+
+### RequestParam 注解
+
+imi `v2.1.27` 引入的新注解。
+
+`@RequestParam` 注解的 `name` 是指定参数来源。
+
+你可以使用`$get`、`$post`、`$body`、`$headers`、`$cookie`、`$session`后面跟上`.参数名`指定参数，其中`$get`和`$post`自然不用多说，这`$body`的用处就是，比如参数是以`json`为`body`传给你的，他会自动给你`json_decode`，你用`$body`就可以指定了。
+
+---
+
+`@RequestParam` 注释注解写法支持写在方法上。
+
+`#[RequestParam()]` PHP 原生注解写法支持写在方法和方法参数上。
+
+写在方法参数上时，无需指定 `param` 参数。
+
+---
+
+`required` 表示是否为必选参数，默认为 `true`。
+
+`default` 表示默认值，当 `required` 为 `false` 时有效，默认值是 `null`。
+
+---
+
+**代码示例：**
+
+```php
+/**
+ * @Action
+ *
+ * @RequestParam(name="$get.id", param="id2")
+ * @RequestParam(name="$get.id3", param="id3", required=false, default="imi 666")
+ */
+public function requestParam1(int $id, int $id2, string $id3): array
+{
+    return [
+        'id'  => $id,
+        'id2' => $id2,
+        'id3' => $id3,
+    ];
+}
+
+/**
+ * @Action
+ */
+public function requestParam2(
+    int $id,
+    #[RequestParam(name: '$get.id')]
+    int $id2,
+    #[RequestParam(name: '$get.id3', required: false, default: 'imi niubi')]
+    string $id3
+    ): array {
+    return [
+        'id'  => $id,
+        'id2' => $id2,
+        'id3' => $id3,
+    ];
+}
+```
+
+### ExtractData 注解
+
+将在 imi 3.0 中废弃，推荐使用 `RequestParam` 注解。
+
+**代码示例：**
+
+```php
+/**
+ * http参数验证测试
+ * 
+ * @Action
+ * 
+ * @ExtractData(name="$get.id", to="id")
+ * @ExtractData(name="$get.name", to="name")
+ * @ExtractData(name="$get.age", to="age")
+ *
+ * @return void
+ */
+public function httpValidation($id, $name, $age)
+{
+    return compact('id', 'name', 'age');
+}
+```
