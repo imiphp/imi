@@ -216,6 +216,7 @@ class ActionMiddleware implements MiddlewareInterface
             if (isset($extractData[$paramName]))
             {
                 $item = $extractData[$paramName];
+                // @phpstan-ignore-next-line
                 if ($item['required'] && !ObjectArrayHelper::exists($allData, $item['name']))
                 {
                     throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
