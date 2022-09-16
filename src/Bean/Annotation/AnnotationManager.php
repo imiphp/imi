@@ -287,6 +287,45 @@ class AnnotationManager
     }
 
     /**
+     * 增加方法参数注解.
+     *
+     * @param \Imi\Bean\Annotation\Base ...$annotations
+     */
+    public static function addMethodParameterAnnotations(string $className, string $methodName, string $parameterName, Base ...$annotations): void
+    {
+        $staticAnnotations = &self::$annotations;
+        if (isset($staticAnnotations[$className]))
+        {
+            $classAnnotation = $staticAnnotations[$className];
+        }
+        elseif (isset(self::$annotationsCache[$className]))
+        {
+            $staticAnnotations[$className] = $classAnnotation = unserialize(self::$annotationsCache[$className]);
+        }
+        else
+        {
+            $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
+        }
+        /** @var ClassAnnotation $classAnnotation */
+        $classAnnotation->addMethodParameterAnnotations($methodName, $parameterName, $annotations);
+    }
+
+    /**
+     * 设置方法参数注解.
+     *
+     * @param \Imi\Bean\Annotation\Base ...$annotations
+     */
+    public static function setMethodParameterAnnotations(string $className, string $methodName, string $parameterName, Base ...$annotations): void
+    {
+        $staticAnnotations = &self::$annotations;
+        if (isset($staticAnnotations[$className]))
+        {
+            $staticAnnotations[$className]->clearMethodParameterAnnotations($methodName, $parameterName);
+        }
+        static::addMethodParameterAnnotations($className, $methodName, $parameterName, ...$annotations);
+    }
+
+    /**
      * 获取注解使用点.
      *
      * @param string      $annotationClassName 注解类名
@@ -668,6 +707,98 @@ class AnnotationManager
     }
 
     /**
+     * 获取指定方法参数注解
+     * 可选，是否只获取指定类型注解.
+     *
+     * @param string|array|null $annotationClassName
+     *
+     * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
+     */
+    public static function getMethodParameterAnnotations(string $className, string $methodName, string $parameterName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
+    {
+        $staticAnnotations = &self::$annotations;
+        if (!isset($staticAnnotations[$className]))
+        {
+            if (isset(self::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
+        }
+        if (!isset($staticAnnotations[$className]))
+        {
+            return [];
+        }
+        $annotations = $staticAnnotations[$className]->getMethodParameterAnnotations($methodName, $parameterName);
+        if (null === $annotationClassName)
+        {
+            return $annotations;
+        }
+        elseif (\is_array($annotationClassName))
+        {
+            $result = [];
+            foreach ($annotationClassName as $name)
+            {
+                if ($onlyFirst)
+                {
+                    $result[$name] = null;
+                }
+                else
+                {
+                    $result[$name] = [];
+                }
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $name)
+                    {
+                        if ($onlyFirst)
+                        {
+                            $result[$name] = $annotation;
+                            break;
+                        }
+                        else
+                        {
+                            $result[$name][] = $annotation;
+                        }
+                    }
+                }
+            }
+
+            return $result;
+        }
+        else
+        {
+            if ($onlyFirst)
+            {
+                $result = null;
+            }
+            else
+            {
+                $result = [];
+            }
+            foreach ($annotations as $annotation)
+            {
+                if ($annotation instanceof $annotationClassName)
+                {
+                    if ($onlyFirst)
+                    {
+                        // @phpstan-ignore-next-line
+                        return $annotation;
+                    }
+                    $result[] = $annotation;
+                }
+            }
+
+            return $result;
+        }
+    }
+
+    /**
      * 获取一个类中所有包含指定注解的方法.
      *
      * @param string|array|null $annotationClassName
@@ -885,6 +1016,81 @@ class AnnotationManager
                 if ($items)
                 {
                     $result[$constantName] = $items;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取方法参数注解.
+     *
+     * @param string|array|null $annotationClassName
+     */
+    public static function getMethodParametersAnnotations(string $className, string $methodName, $annotationClassName = null, bool $autoAnalysis = true): array
+    {
+        $staticAnnotations = &self::$annotations;
+        if (!isset($staticAnnotations[$className]))
+        {
+            if (isset(self::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(self::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
+        }
+        if (!isset($staticAnnotations[$className]))
+        {
+            return [];
+        }
+        $annotationList = $staticAnnotations[$className]->getMethodParameterAnnotations($methodName);
+        if (null === $annotationClassName)
+        {
+            return $annotationList;
+        }
+        $result = [];
+        if (\is_array($annotationClassName))
+        {
+            foreach ($annotationClassName as $name)
+            {
+                $result[$name] = [];
+                foreach ($annotationList as $parameterName => $annotations)
+                {
+                    $items = [];
+                    foreach ($annotations as $annotation)
+                    {
+                        if ($annotation instanceof $name)
+                        {
+                            $items[] = $annotation;
+                        }
+                    }
+                    if ($items)
+                    {
+                        $result[$name][$parameterName] = $items;
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach ($annotationList as $parameterName => $annotations)
+            {
+                $items = [];
+                foreach ($annotations as $annotation)
+                {
+                    if ($annotation instanceof $annotationClassName)
+                    {
+                        $items[] = $annotation;
+                    }
+                }
+                if ($items)
+                {
+                    $result[$parameterName] = $items;
                 }
             }
         }

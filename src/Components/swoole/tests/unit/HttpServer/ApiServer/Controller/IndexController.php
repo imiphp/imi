@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
 use Imi\Aop\Annotation\Inject;
 use Imi\RequestContext;
 use Imi\Server\Http\Annotation\ExtractData;
+use Imi\Server\Http\Annotation\RequestParam;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Message\Proxy\ResponseProxy;
 use Imi\Server\Http\Route\Annotation\Action;
@@ -387,6 +388,38 @@ class IndexController extends HttpController
      */
     public function extractData(int $id, int $id2, string $id3): array
     {
+        return [
+            'id'  => $id,
+            'id2' => $id2,
+            'id3' => $id3,
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @RequestParam(name="$get.id", param="id2")
+     * @RequestParam(name="$get.id3", param="id3", required=false, default="imi 666")
+     */
+    public function requestParam1(int $id, int $id2, string $id3): array
+    {
+        return [
+            'id'  => $id,
+            'id2' => $id2,
+            'id3' => $id3,
+        ];
+    }
+
+    /**
+     * @Action
+     */
+    public function requestParam2(
+        int $id,
+        #[RequestParam(name: '$get.id')]
+        int $id2,
+        #[RequestParam(name: '$get.id3', required: false, default: 'imi niubi')]
+        string $id3
+        ): array {
         return [
             'id'  => $id,
             'id2' => $id2,

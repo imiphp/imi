@@ -39,6 +39,13 @@ class ClassAnnotation
      */
     private array $constantAnnotations = [];
 
+    /**
+     * 方法参数注解列表.
+     *
+     * @var \Imi\Bean\Annotation\Base[][]
+     */
+    private array $methodParameterAnnotations = [];
+
     public function __construct(string $className)
     {
         $this->className = $className;
@@ -156,6 +163,35 @@ class ClassAnnotation
     }
 
     /**
+     * Get 方法参数注解列表.
+     *
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
+     */
+    public function getMethodParameterAnnotations(string $methodName, ?string $parameterName = null): array
+    {
+        if (null === $parameterName)
+        {
+            return $this->methodParameterAnnotations[$methodName] ?? [];
+        }
+        else
+        {
+            return $this->methodParameterAnnotations[$methodName][$parameterName] ?? [];
+        }
+    }
+
+    /**
+     * Add 方法参数注解列表.
+     *
+     * @param \Imi\Bean\Annotation\Base[] $methodParameterAnnotations 方法参数注解列表
+     */
+    public function addMethodParameterAnnotations(string $methodName, string $parameterName = null, array $methodParameterAnnotations): self
+    {
+        $this->methodParameterAnnotations[$methodName][$parameterName] = array_merge($this->constantAnnotations[$methodName][$parameterName] ?? [], $methodParameterAnnotations);
+
+        return $this;
+    }
+
+    /**
      * 清空类注解.
      */
     public function clearClassAnnotations(): void
@@ -205,6 +241,25 @@ class ClassAnnotation
         elseif (isset($this->constantAnnotations[$constantName]))
         {
             unset($this->constantAnnotations[$constantName]);
+        }
+    }
+
+    /**
+     * 清空方法参数注解.
+     */
+    public function clearMethodParameterAnnotations(?string $methodName = null, ?string $parameterName = null): void
+    {
+        if (null === $methodName)
+        {
+            $this->methodParameterAnnotations = [];
+        }
+        elseif (null === $parameterName)
+        {
+            unset($this->methodParameterAnnotations[$methodName]);
+        }
+        else
+        {
+            unset($this->methodParameterAnnotations[$methodName][$parameterName]);
         }
     }
 

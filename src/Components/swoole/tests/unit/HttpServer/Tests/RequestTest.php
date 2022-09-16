@@ -295,6 +295,44 @@ class RequestTest extends BaseTest
         ]), $response->body());
     }
 
+    /**
+     * Annotation RequestParam.
+     */
+    public function testRequestParam(): void
+    {
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'requestParam1?id=123');
+        $this->assertEquals(json_encode([
+            'id'    => 123,
+            'id2'   => 123,
+            'id3'   => 'imi 666',
+        ]), $response->body());
+
+        $response = $http->get($this->host . 'requestParam1?id=123&id3=456');
+        $this->assertEquals(json_encode([
+            'id'    => 123,
+            'id2'   => 123,
+            'id3'   => '456',
+        ]), $response->body());
+
+        if (version_compare(\PHP_VERSION, '8.0', '>='))
+        {
+            $response = $http->get($this->host . 'requestParam2?id=123');
+            $this->assertEquals(json_encode([
+                'id'    => 123,
+                'id2'   => 123,
+                'id3'   => 'imi niubi',
+            ]), $response->body());
+
+            $response = $http->get($this->host . 'requestParam2?id=123&id3=456');
+            $this->assertEquals(json_encode([
+                'id'    => 123,
+                'id2'   => 123,
+                'id3'   => '456',
+            ]), $response->body());
+        }
+    }
+
     public function testIgnoreCase(): void
     {
         $http = new HttpRequest();

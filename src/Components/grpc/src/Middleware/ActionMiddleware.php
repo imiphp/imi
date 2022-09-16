@@ -231,6 +231,11 @@ class ActionMiddleware implements MiddlewareInterface
             if (isset($extractData[$paramName]))
             {
                 $item = $extractData[$paramName];
+                // @phpstan-ignore-next-line
+                if ($item['required'] && !ObjectArrayHelper::exists($allData, $item['name']))
+                {
+                    throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
+                }
                 $value = ObjectArrayHelper::get($allData, $item['name'], $item['default']);
             }
             elseif (isset($routeResult->params[$paramName]))
@@ -269,6 +274,7 @@ class ActionMiddleware implements MiddlewareInterface
                     {
                         throw new \RuntimeException(sprintf('RequestData %s deserialize failed', $type));
                     }
+                    $request->setParsedBody($value);
                 }
                 else
                 {
