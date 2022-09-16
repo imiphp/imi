@@ -28,7 +28,8 @@
         "phpunit/phpunit": ">=9",
         "rector/rector": "~0.13",
         "yurunsoft/ide-helper": "~1.0",
-        "yurunsoft/yurun-http": "^4.0.0"
+        "yurunsoft/yurun-http": "^4.0.0",
+        "symfony/polyfill-uuid": "*"
     },
     "replace": {
         "symfony/polyfill-php71": "*",
@@ -56,7 +57,9 @@
     },
     "suggest": {
         "ext-inotify": "高性能热更新支持",
-        "ext-pdo": "数据库操作支持"
+        "ext-pdo": "数据库操作支持",
+        "symfony/polyfill-uuid": "模型 uuid 发号器依赖",
+        "ext-uuid": "模型 uuid 发号器依赖"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\ExtractProperty;
+use Imi\Model\Annotation\Id;
 use Imi\Model\Annotation\JsonDecode;
 use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
@@ -51,6 +52,11 @@ class Meta
      * 主键.
      */
     private ?array $id = null;
+
+    /**
+     * @var Id[]
+     */
+    private array $ids = [];
 
     /**
      * 第一个主键.
@@ -184,7 +190,6 @@ class Meta
 
     public function __construct(string $modelClass, bool $inherit = false)
     {
-        $id = [];
         $this->inherit = $inherit;
         if ($inherit)
         {
@@ -203,6 +208,16 @@ class Meta
             JsonDecode::class,
             Serializables::class,
         ], true, true);
+        $propertyAnnotations = AnnotationManager::getPropertiesAnnotations($realModelClass, [
+            Column::class,
+            Serializable::class,
+            ExtractProperty::class,
+            JsonNotNull::class,
+            Sql::class,
+            JsonEncode::class,
+            JsonDecode::class,
+            Id::class,
+        ]);
         /** @var \Imi\Model\Annotation\Table|null $table */
         $table = $annotations[Table::class];
         /** @var \Imi\Model\Annotation\Entity|null $entity */
@@ -218,19 +233,40 @@ class Meta
             $this->setTableName($table->name);
             $this->usePrefix = $table->usePrefix;
         }
+        else
+        {
+            $id = [];
+        }
+        if ($ids = $propertyAnnotations[Id::class])
+        {
+            $setToId = !$id;
+            /** @var Id[] $propertyIds */
+            foreach ($ids as $name => $propertyIds)
+            {
+                $this->ids[$name] = $propertyId = $propertyIds[0];
+                if ($setToId && false !== ($index = $propertyId->index))
+                {
+                    /** @var Column|null $column */
+                    if ($column = $propertyAnnotations[Column::class][$name] ?? null)
+                    {
+                        if (null === $index)
+                        {
+                            $id[] = $column->name ?? $name;
+                        }
+                        else
+                        {
+                            $id[$index] = $column->name ?? $name;
+                        }
+                    }
+                }
+            }
+            ksort($id);
+            $this->id = $id;
+        }
         $this->firstId = $id[0] ?? null;
         /** @var Column[] $fields */
         $fields = $dbFields = [];
-        $annotations = AnnotationManager::getPropertiesAnnotations($realModelClass, [
-            Column::class,
-            Serializable::class,
-            ExtractProperty::class,
-            JsonNotNull::class,
-            Sql::class,
-            JsonEncode::class,
-            JsonDecode::class,
-        ]);
-        foreach ($annotations[Column::class] as $name => $columns)
+        foreach ($propertyAnnotations[Column::class] as $name => $columns)
         {
             /** @var Column $column */
             $column = $columns[0];
@@ -248,12 +284,12 @@ class Meta
             }
         }
         /** @var Serializable[][] $serializableSets */
-        $serializableSets = $this->serializableSets = $annotations[Serializable::class];
-        $this->extractPropertys = $annotations[ExtractProperty::class];
-        $this->propertyJsonNotNullMap = $annotations[JsonNotNull::class];
-        $this->sqlColumns = $annotations[Sql::class];
-        $this->fieldsJsonEncode = $annotations[JsonEncode::class];
-        $this->fieldsJsonDecode = $annotations[JsonDecode::class];
+        $serializableSets = $this->serializableSets = $propertyAnnotations[Serializable::class];
+        $this->extractPropertys = $propertyAnnotations[ExtractProperty::class];
+        $this->propertyJsonNotNullMap = $propertyAnnotations[JsonNotNull::class];
+        $this->sqlColumns = $propertyAnnotations[Sql::class];
+        $this->fieldsJsonEncode = $propertyAnnotations[JsonEncode::class];
+        $this->fieldsJsonDecode = $propertyAnnotations[JsonDecode::class];
         $this->relation = $relation = ModelRelationManager::hasRelation($realModelClass);
         if ($relation)
         {
@@ -369,6 +405,14 @@ class Meta
     public function getId(): ?array
     {
         return $this->id;
+    }
+
+    /**
+     * @return Id[]
+     */
+    public function getIds(): array
+    {
+        return $this->ids;
     }
 
     /**
