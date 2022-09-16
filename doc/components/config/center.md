@@ -22,6 +22,12 @@
 
 * [x] Zookeeper ([imi-zookeeper](https://github.com/imiphp/imi-zookeeper))
 
+**支持的容器：**
+
+* Swoole
+
+* Workerman
+
 ## 设计
 
 ### 监听模式

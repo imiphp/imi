@@ -224,6 +224,11 @@
 * [RabbitMQ(AMQP)](components/mq/amqp.md)
 * [Kafka](components/mq/kafka.md)
 
+## 微服务
+
+* [配置中心](components/config/center.md)
+* [服务注册](components/serviceRegistry/index.md)
+
 ## 数据结构
 
 * [通用数据结构](components/struct/enum.md)
