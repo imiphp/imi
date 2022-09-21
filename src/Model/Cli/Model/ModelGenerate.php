@@ -494,7 +494,8 @@ class ModelGenerate extends BaseCommand
     public function getDDL(IQuery $query, string $table, string $database): string
     {
         $result = $query->execute('show create table `' . $database . '`.`' . $table . '`');
-        $sql = $result->get()['Create Table'] ?? '';
+        $row = $result->get();
+        $sql = $row['Create Table'] ?? $row['Create View'] ?? '';
 
         return preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
     }
