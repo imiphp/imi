@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server;
 
+use Imi\Util\Imi;
 use Workerman\Worker;
 
 class WorkermanServerWorker extends Worker
@@ -28,6 +29,15 @@ class WorkermanServerWorker extends Worker
     public static function getMasterPid(): int
     {
         return static::$_masterPid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected static function init()
+    {
+        parent::init();
+        static::$_startFile = Imi::getCurrentModeRuntimePath('start_file');
     }
 
     public static function clearAll(): void
