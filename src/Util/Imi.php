@@ -366,7 +366,7 @@ class Imi
      */
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
-        $cmd = '"' . escapeshellarg(\PHP_BINARY) . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME)) . ' ' . escapeshellarg($commandName);
+        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME)) . ' ' . escapeshellarg($commandName);
         $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
