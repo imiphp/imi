@@ -396,7 +396,6 @@ class Imi
             App::get(ProcessAppContexts::SCRIPT_NAME),
             $commandName,
         ];
-        // $cmd = '"' . \PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $commandName;
         $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
