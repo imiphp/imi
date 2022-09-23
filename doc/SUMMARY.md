@@ -170,6 +170,7 @@
     * [多态一对多关联](components/orm/relation/polymorphicOneToMany.md)
     * [多态多对多关联](components/orm/relation/polymorphicManyToMany.md)
     * [前置和后置事件](components/orm/relation/events.md)
+  * [数据库迁移](components/orm/migration.md)
 * [Redis](components/redis/index.md)
 * [Redis 模型](components/orm/RedisModel.md)
 * [内存表模型](components/orm/MemoryTableModel.md)
