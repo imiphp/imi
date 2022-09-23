@@ -9,8 +9,7 @@ COPY script/ /tmp/script
 RUN set -eux \
     && apt-get update && apt-get -y install procps libpq-dev unzip git libevent-dev libssl-dev \
     && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql pdo_pgsql pcntl sockets \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
+    && (php --ri redis || (pecl install redis && docker-php-ext-enable redis)) \
     && pecl install inotify \
     && docker-php-ext-enable inotify \
     && pecl install event \
