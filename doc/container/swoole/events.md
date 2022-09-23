@@ -468,7 +468,7 @@ class MessageEventParam extends EventParam
 }
 ```
 
-#### TCP 连接关闭事件
+#### 连接关闭事件
 
 **事件名：**`close`
 
@@ -498,11 +498,11 @@ class CloseEventParam extends EventParam
 }
 ```
 
-#### WebSocket 连接关闭事件
+#### 非 WebSocket 连接关闭事件
 
 **事件名：**`disconnect`
 
-用于在连接关闭时区分连接是否为 WebSocket 连接。
+只有非 WebSocket 连接关闭时才会触发该事件。
 
 **事件参数：**
 
