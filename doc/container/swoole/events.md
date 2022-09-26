@@ -468,7 +468,7 @@ class MessageEventParam extends EventParam
 }
 ```
 
-#### 连接关闭事件
+#### WebSocket 连接关闭事件
 
 **事件名：**`close`
 
@@ -592,7 +592,7 @@ class ReceiveEventParam extends EventParam
 }
 ```
 
-#### 连接关闭事件
+#### TCP 连接关闭事件
 
 **事件名：**`close`
 
