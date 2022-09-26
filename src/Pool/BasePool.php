@@ -71,6 +71,10 @@ abstract class BasePool implements IPool
         {
             $this->resourceConfig = $resourceConfig;
         }
+        if (ResourceConfigMode::ROUND_ROBIN === $config->getResourceConfigMode())
+        {
+            $this->configIndex = mt_rand(0, \count($this->resourceConfig) - 1);
+        }
     }
 
     public function __destruct()

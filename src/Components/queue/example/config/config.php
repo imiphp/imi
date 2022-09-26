@@ -72,8 +72,8 @@ return [
                     // 'heartbeatInterval' => null,
                     // 当获取资源时，是否检查状态
                     // 'checkStateWhenGetResource' => true,
-                    // 负载均衡-轮流
-                    // 'resourceConfigMode' => ResourceConfigMode::TURN,
+                    // 负载均衡-轮询
+                    // 'resourceConfigMode' => ResourceConfigMode::ROUND_ROBIN,
                     // 负载均衡-随机
                     // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
                 ],

@@ -49,8 +49,8 @@ return [
                     // 'maxIdleTime' => null,
                     // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
                     // 'requestResourceCheckInterval' => 30,
-                    // 负载均衡-轮流
-                    // 'resourceConfigMode' => ResourceConfigMode::TURN,
+                    // 负载均衡-轮询
+                    // 'resourceConfigMode' => ResourceConfigMode::ROUND_ROBIN,
                     // 负载均衡-随机
                     // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
                 ],
@@ -116,8 +116,8 @@ return [
                     // 'maxIdleTime' => null,
                     // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
                     // 'requestResourceCheckInterval' => 30,
-                    // 负载均衡-轮流
-                    // 'resourceConfigMode' => ResourceConfigMode::TURN,
+                    // 负载均衡-轮询
+                    // 'resourceConfigMode' => ResourceConfigMode::ROUND_ROBIN,
                     // 负载均衡-随机
                     // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
                 ],

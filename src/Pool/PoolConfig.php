@@ -68,7 +68,7 @@ class PoolConfig implements IPoolConfig
     /**
      * 资源配置模式.
      */
-    protected int $resourceConfigMode = ResourceConfigMode::TURN;
+    protected int $resourceConfigMode = ResourceConfigMode::ROUND_ROBIN;
 
     /**
      * 当获取资源时，是否检查状态

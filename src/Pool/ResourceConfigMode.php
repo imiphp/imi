@@ -7,9 +7,16 @@ namespace Imi\Pool;
 class ResourceConfigMode
 {
     /**
-     * 轮流
+     * 轮询.
+     *
+     * @deprecated 3.0 请使用 ResourceConfigMode::ROUND_ROBIN
      */
     public const TURN = 1;
+
+    /**
+     * 轮询.
+     */
+    public const ROUND_ROBIN = 1;
 
     /**
      * 随机.

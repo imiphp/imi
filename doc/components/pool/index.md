@@ -26,7 +26,7 @@
 | maxUsedTime                  | 每次获取资源最长使用时间，单位：秒，`null`则不限制   | ?float | `null`                              |
 | maxIdleTime                  | 资源创建后最大空闲回收时间，单位：秒，`null`则不限制 | ?float | `null`                              |
 | requestResourceCheckInterval | 当前请求上下文资源检查状态间隔                       | float  | 30                                  |
-| resourceConfigMode           | 负载均衡模式，TURN：轮流、RANDOM：随机               | int    | `Imi\Pool\ResourceConfigMode::TURN` |
+| resourceConfigMode           | 负载均衡模式，ROUND_ROBIN：轮询、RANDOM：随机               | int    | `Imi\Pool\ResourceConfigMode::ROUND_ROBIN` |
 
 ## 获取连接
 
