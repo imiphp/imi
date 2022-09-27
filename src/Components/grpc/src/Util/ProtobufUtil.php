@@ -27,7 +27,7 @@ class ProtobufUtil
         $message->clear();
         if (\is_object($data))
         {
-            $message->mergeFromJsonString(json_encode($data));
+            $message->mergeFromJsonString(json_encode($data), $ignoreUnknown);
         }
         else
         {
