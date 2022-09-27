@@ -12,8 +12,8 @@ use Google\Protobuf\Internal\FieldDescriptor;
 use Google\Protobuf\Internal\GPBType;
 use Google\Protobuf\Internal\GPBUtil;
 use Google\Protobuf\Internal\Message;
+use Imi\Bean\ReflectionContainer;
 use Imi\Util\Text;
-use ReflectionMethod;
 
 class ProtobufUtil
 {
@@ -31,7 +31,7 @@ class ProtobufUtil
         }
         else
         {
-            $ref = new ReflectionMethod($message, 'mergeFromJsonArray');
+            $ref = ReflectionContainer::getMethodReflection(\get_class($message), 'mergeFromJsonArray');
             $ref->setAccessible(true);
             $ref->invoke($message, $data, $ignoreUnknown);
         }
