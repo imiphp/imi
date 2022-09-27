@@ -70,6 +70,16 @@ class ProtobufUtilTest extends BaseTest
         return $message;
     }
 
+    public function testSetMessageDataIgnoreUnknown(): void
+    {
+        $message = new TestRequest();
+        $data = self::DATA;
+        $data['notfound'] = 1;
+        ProtobufUtil::setMessageData($message, $data, true);
+        $this->expectException(\Google\Protobuf\Internal\GPBDecodeException::class);
+        ProtobufUtil::setMessageData($message, $data);
+    }
+
     /**
      * @depends testSetMessageData
      */

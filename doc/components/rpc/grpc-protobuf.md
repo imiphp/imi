@@ -55,6 +55,7 @@ message TestRequest {
 
 ```php
 $request = new TestRequest();
+$ignoreUnknown = true; // 忽略未知字段
 // 下面示例的值代表了几乎所有常见的类型，可供参考
 ProtobufUtil::setMessageData($request, [
     'int'      => 1,
@@ -107,7 +108,9 @@ ProtobufUtil::setMessageData($request, [
         ],
     ],
     'fieldMask' => 'abc.def',
-]);
+]
+, $ignoreUnknown  // 忽略未知字段，默认可以忽略不传
+);
 ```
 
 ### getMessageValue

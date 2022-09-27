@@ -50,7 +50,7 @@ class GrpcHttpProxy
             $grpcRequest = new $requestClass();
             if ($requestData = $request->request())
             {
-                ProtobufUtil::setMessageData($grpcRequest, $requestData);
+                ProtobufUtil::setMessageData($grpcRequest, $requestData, true);
             }
 
             /** @var GrpcClient $client */

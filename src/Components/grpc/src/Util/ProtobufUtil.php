@@ -22,7 +22,7 @@ class ProtobufUtil
      *
      * @param array|object $data
      */
-    public static function setMessageData(Message $message, $data): void
+    public static function setMessageData(Message $message, $data, bool $ignoreUnknown = false): void
     {
         $message->clear();
         if (\is_object($data))
@@ -33,7 +33,7 @@ class ProtobufUtil
         {
             $ref = new ReflectionMethod($message, 'mergeFromJsonArray');
             $ref->setAccessible(true);
-            $ref->invoke($message, $data, false);
+            $ref->invoke($message, $data, $ignoreUnknown);
         }
     }
 
