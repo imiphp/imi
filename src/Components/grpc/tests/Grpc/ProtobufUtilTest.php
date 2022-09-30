@@ -92,4 +92,18 @@ class ProtobufUtilTest extends BaseTest
             'enumReturnType' => 'name',
         ]));
     }
+
+    public function testNewMessage(): void
+    {
+        $request = ProtobufUtil::newMessage(TestRequest::class, self::DATA);
+
+        $this->assertEquals(self::DATA, ProtobufUtil::getMessageValue($request));
+    }
+
+    public function testNewMessageArray(): void
+    {
+        $requests = ProtobufUtil::newMessageArray(TestRequest::class, [self::DATA]);
+        $this->assertCount(1, $requests);
+        $this->assertEquals(self::DATA, ProtobufUtil::getMessageValue($requests[0]));
+    }
 }

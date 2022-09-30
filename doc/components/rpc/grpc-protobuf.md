@@ -49,6 +49,33 @@ message TestRequest {
 }
 ```
 
+### newMessage
+
+实例化并初始化一个消息
+
+```php
+/** @var TestRequest $request */
+$request = ProtobufUtil::newMessage(TestRequest::class, [
+    'int'      => 1,
+]);
+```
+
+### newMessageArray
+
+实例化并初始化一个消息列表
+
+```php
+/** @var TestRequest[] $requests */
+$requests = ProtobufUtil::newMessage(TestRequest::class, [
+    [
+        'int'      => 1,
+    ],
+    [
+        'int'      => 2,
+    ],
+]);
+```
+
 ### setMessageData
 
 向 Grpc Message 对象设置值，每次设置前会清空所有的值

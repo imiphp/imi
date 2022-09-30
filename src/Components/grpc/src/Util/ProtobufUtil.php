@@ -38,6 +38,35 @@ class ProtobufUtil
     }
 
     /**
+     * 实例化并初始化一个消息.
+     *
+     * @param array|object $data
+     */
+    public static function newMessage(string $messageClass, $data): Message
+    {
+        $message = new $messageClass();
+        self::setMessageData($message, $data, true);
+
+        return $message;
+    }
+
+    /**
+     * 实例化并初始化一个消息列表.
+     *
+     * @return Message[]
+     */
+    public static function newMessageArray(string $messageClass, array $dataList): array
+    {
+        $list = [];
+        foreach ($dataList as $data)
+        {
+            $list[] = self::newMessage($messageClass, $data);
+        }
+
+        return $list;
+    }
+
+    /**
      * 获取 Grpc Message 对象本身代表的值
      *
      * @return mixed
