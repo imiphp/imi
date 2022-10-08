@@ -10,6 +10,7 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
+use Imi\Swoole\Task\TaskManager;
 use Imi\Worker;
 
 /**
@@ -105,6 +106,16 @@ class ServerUtilController extends HttpController
         $result['sendRawToGroup'] = Server::sendRawToGroup($group, $dataStr);
 
         return $result;
+    }
+
+    /**
+     * @Action
+     */
+    public function sendToGroupTask(string $group): array
+    {
+        return TaskManager::nPostWait('SendToGroupTask', [
+            'group' => $group,
+        ], 3);
     }
 
     /**

@@ -226,6 +226,22 @@ class ServerUtilTest extends BaseTest
                 $recvResult = $client2->recv();
                 $this->assertEquals($dataStr, $recvResult, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
             }
+
+            $response = $http->get($this->host . 'serverUtil/sendToGroupTask', ['group' => $group]);
+            $this->assertEquals([
+                'groupClientIdCount'   => 2,
+                'sendToGroup'          => 2,
+                'sendRawToGroup'       => 2,
+            ], $response->json(true));
+
+            for ($i = 0; $i < 2; ++$i)
+            {
+                $recvResult = $client1->recv();
+                $this->assertEquals($dataStr, $recvResult, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+                $recvResult = $client2->recv();
+                $this->assertEquals($dataStr, $recvResult, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+            }
+
             $client1->close();
             $client2->close();
         }, null, 3);

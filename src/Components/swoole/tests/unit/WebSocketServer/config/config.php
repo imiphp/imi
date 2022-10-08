@@ -72,7 +72,8 @@ return [
         'syncConnect'         => true,
         'nonControlFrameType' => NonControlFrameType::BINARY,
         'configs'             => [
-            'worker_num'    => 2,
+            'worker_num'      => 2,
+            'task_worker_num' => 1,
         ],
     ],
 

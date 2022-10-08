@@ -10,6 +10,7 @@ return [
         'Imi\Swoole\Test\WebSocketServer\MainServer\Controller',
         'Imi\Swoole\Test\WebSocketServer\MainServer\Listener',
         'Imi\Swoole\Test\WebSocketServer\MainServer\Error',
+        'Imi\Swoole\Test\WebSocketServer\MainServer\Task',
     ],
     'beans'    => [
         'WebSocketDispatcher'    => [
