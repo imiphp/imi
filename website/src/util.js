@@ -8,3 +8,9 @@ window.formatDate = function (date) {
     var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
     return YY + MM + DD + " " + hh + mm + ss;
 }
+
+window.random = function(min, max) {   
+	var Range = max - min;   
+	var rand = Math.random();   
+	return min + Math.round(rand * Range);   
+}

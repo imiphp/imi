@@ -29,5 +29,9 @@ $(function () {
    };
    leave(func, lunbo_time);
    // 打乱公司列表
-   $('.anli_company_list > div').sort(()=>Math.random() - 0.5).detach().appendTo('.anli_company_list')
+   $('.anli_company_list > div').sort(()=>Math.random() - 0.5).detach().appendTo('.anli_company_list');
+   // 随机公司logo颜色
+   $('.text-img').each(function(index, value) {
+      $(value).addClass('color-' + random(0, 9));
+   });
 });

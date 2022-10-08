@@ -476,7 +476,40 @@ a.pure-button-primary {
     padding: 0.5em;
     text-align: center;
     color: #393D49;
+    margin-bottom: 1.625em;
 }
+
+#anli_company_list_box .anli_company_list > div img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+#anli_company_list_box .anli_company_list > div .text-img {
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 34px;
+    height: 96px;
+    line-height: 40px;
+    margin: 0 auto;
+    padding: 4px 0;
+    text-align: center;
+    width: 96px;
+}
+
+.anli_company_list .color-0{background-color:#e79178}
+.anli_company_list .color-1{background-color:#ae98c6}
+.anli_company_list .color-2{background-color:#c8b7d8}
+.anli_company_list .color-3{background-color:#afc8ee}
+.anli_company_list .color-4{background-color:#8ca3cc}
+.anli_company_list .color-5{background-color:#adddf3}
+.anli_company_list .color-6{background-color:#6bb5ce}
+.anli_company_list .color-7{background-color:#6daae2}
+.anli_company_list .color-8{background-color:#90cfb7}
+.anli_company_list .color-9{background-color:#e8ab6f}
 
 .donate-list {
     width: 1280px;
