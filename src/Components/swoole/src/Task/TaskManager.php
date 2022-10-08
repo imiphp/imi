@@ -76,7 +76,7 @@ class TaskManager
      * 投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
      *
-     * @return string|bool
+     * @return mixed
      */
     public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1)
     {
@@ -95,7 +95,7 @@ class TaskManager
      *
      * @param mixed $data
      *
-     * @return string|bool
+     * @return mixed
      */
     public static function nPostWait(string $name, $data, float $timeout, int $workerId = -1)
     {
