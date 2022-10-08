@@ -28,4 +28,6 @@ $(function () {
       $(".ribbon").hide(500).eq(index).show(500);
    };
    leave(func, lunbo_time);
+   // 打乱公司列表
+   $('.anli_company_list > div').sort(()=>Math.random() - 0.5).detach().appendTo('.anli_company_list')
 });

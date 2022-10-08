@@ -314,7 +314,6 @@ a.pure-button-primary {
 }
 
 .splash {
-    height: 80%;
     margin: auto;
     position: absolute;
     top: 0;
@@ -367,14 +366,14 @@ a.pure-button-primary {
 }
 
 .content {
-    padding: 1em 1em 2em;
+    padding: 1em;
     box-sizing: border-box;
 }
 
 .content-head {
     font-weight: 400;
     letter-spacing: 0.1em;
-    margin: 2em 0 1em;
+    margin: 1em 0;
 }
 
 .content-head-ribbon {
@@ -459,7 +458,7 @@ a.pure-button-primary {
 }
 
 #anli_list {
-    width: 70%;
+    width: 1280px;
     margin: 0 auto;
 }
 
@@ -467,8 +466,20 @@ a.pure-button-primary {
     margin: initial;
 }
 
+#anli_company_list_box {
+    margin: 0 auto;
+    border: 1px solid #d6d2ce;
+    padding-bottom: 1em;
+}
+
+#anli_company_list_box .anli_company_list > div{
+    padding: 0.5em;
+    text-align: center;
+    color: #393D49;
+}
+
 .donate-list {
-    width: 70%;
+    width: 1280px;
     margin: 0 auto;
     border: 1px solid rgb(214 210 206);
 }
@@ -484,7 +495,7 @@ a.pure-button-primary {
     text-align: center;
     color: #000;
     height: 6vh;
-    width: 50%;
+    width: 16em;
 }
 
 .code_table td {
@@ -494,7 +505,6 @@ a.pure-button-primary {
     height: 5vh;
     font-size: 14px;
     color: #888;
-    width: 50%;
 }
 
 :not(pre)>code,
@@ -573,11 +583,11 @@ a.pure-button-primary {
     }
 
     #anli_list {
-        width: 90%;
+        width: 100%;
     }
 
     .donate-list {
-        width: 98%;
+        width: 100%;
     }
 
     .l-box .cases {
@@ -588,13 +598,11 @@ a.pure-button-primary {
     .code_table th {
         height: 10vh;
         font-size: 10px;
-        width: 40%;
     }
 
     .code_table td {
         height: 10vh;
         font-size: 10px;
-        width: 60%;
     }
 
     :not(pre)>code {
@@ -703,9 +711,7 @@ a:hover {
 }
 
 .kaifa {
-    width: 80%;
-    margin: 30px auto;
-    line-height: 200px;
+    margin: 0 auto;
     background-color: #fff;
     text-align: center;
 }
@@ -720,6 +726,7 @@ a:hover {
     font-size: 200%;
     color: #555;
     line-height: 50px !important;
+    margin: 0;
 }
 
 .kaifa .splash-head2 {

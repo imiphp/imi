@@ -92,7 +92,8 @@ let modalWechat = new mModal({
 });
 
 $(function () {
-    $(".donation").on("click", function () {
+    $(".donation").on("click", function (e) {
+        e.preventDefault();
         modal_1.renderDom();
         var submiting = false;
         $('#donate-form').on('submit', function (e) {
