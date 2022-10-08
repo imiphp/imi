@@ -78,20 +78,14 @@ class DataParser
             $server = $requestContext['server'] ?? null;
         }
         /** @var IServer $server */
-        switch ($server->getProtocol())
+        if (Protocol::WEBSOCKET === $server->getProtocol())
         {
-            case Protocol::WEBSOCKET:
-                if (!($requestContext['clientId'] ?? null))
-                {
-                    return JsonObjectParser::class;
-                }
-
-                return ConnectionContext::get('dataParser', null, null, $serverName) ?? JsonObjectParser::class;
-            case Protocol::TCP:
-            case Protocol::UDP:
-                return $server->getConfig()['dataParser'] ?? JsonObjectParser::class;
-            default:
-                return JsonObjectParser::class;
+            if ($dataParser = ConnectionContext::get('dataParser', null, null, $serverName))
+            {
+                return $dataParser;
+            }
         }
+
+        return $server->getConfig()['dataParser'] ?? JsonObjectParser::class;
     }
 }
