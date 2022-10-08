@@ -7,6 +7,7 @@ namespace Imi\Server\Contract;
 use Imi\App;
 use Imi\Bean\Container;
 use Imi\Event\TEvent;
+use Imi\RequestContext;
 
 /**
  * 服务器基类.
@@ -74,7 +75,20 @@ abstract class BaseServer implements IServer
      */
     public function getBean(string $name, ...$params)
     {
-        return $this->container->get($name, ...$params);
+        $context = RequestContext::getContext();
+        $server = $context['server'] ?? null;
+        $context['server'] = $this;
+        try
+        {
+            return $this->container->get($name, ...$params);
+        }
+        finally
+        {
+            if ($server)
+            {
+                $context['server'] = $server;
+            }
+        }
     }
 
     /**
