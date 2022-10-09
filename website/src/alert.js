@@ -8,7 +8,7 @@ import './css/modal.css';
 import './js/modal.js';
 
 import pay from './images/pay.png';
-import wechat from './images/wechat.png';
+import wechat from './images/wechat.jpg';
 import QRCode from 'qrcode'
 
 
