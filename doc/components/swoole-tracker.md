@@ -1,4 +1,4 @@
-# swoole-tracker
+# Swoole Tracker
 
 [toc]
 
@@ -6,7 +6,7 @@
 
 在 imi 框架中接入 Swoole Tracker 监控
 
-Swoole Tracker: <https://www.swoole-cloud.com/tracker.html>
+Swoole Tracker: <https://business.swoole.com/tracker/index>
 
 * 企业版集成了Facebook的Xhprof工具，可以生成调用堆栈图和火焰图，亦可生成分层分析表格，方便找到程序瓶颈点进行优化。
 
@@ -18,9 +18,9 @@ Swoole Tracker: <https://www.swoole-cloud.com/tracker.html>
 
 * 所有工具零部署成本，后台一键开启关闭各种检测，完美支持PHP7。
 
-## Swoole Tracker
+---
 
-目前`Swoole Tracker`的`v2.5.0`版本支持自动生成应用名称并创建应用，无需修改任何代码，生成的应用名称格式为：
+`Swoole Tracker` >= `v2.5.0` 版本支持自动生成应用名称并创建应用，无需修改任何代码，生成的应用名称格式为：
 
 `Swoole`的`HttpServer`：`ip:prot`
 
