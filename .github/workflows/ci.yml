@@ -113,9 +113,11 @@ jobs:
       matrix:
         php: [8.2.0RC3]
         swoole:
-          - version: v5.0.0
-            postgresql_version: ""
-          - version: v4.8.12
+          # - version: v5.0.0
+          #   postgresql_version: ""
+          # - version: v4.8.12
+          #   postgresql_version: ""
+          - version: fix-curl-hook-php8.2
             postgresql_version: ""
         roadrunner: [2.7.*]
     env:
