@@ -24,6 +24,8 @@ jobs:
             postgresql_version: ""
           - version: 5.0-php8.0
             postgresql_version: ""
+          - version: 4.8-php8.2
+            postgresql_version: ""
           - version: 4.8-php8.1
             postgresql_version: ""
           - version: 4.8-php8.0
