@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Event;
 
+#[\AllowDynamicProperties]
 class EventParam
 {
     /**

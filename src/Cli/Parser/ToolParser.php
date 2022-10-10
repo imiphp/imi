@@ -14,6 +14,8 @@ use Imi\Event\Event;
 
 class ToolParser extends BaseParser
 {
+    private array $data = [];
+
     /**
      * {@inheritDoc}
      */
