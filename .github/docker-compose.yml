@@ -119,6 +119,38 @@ services:
     working_dir: /imi
     command: tail -f /dev/null
 
+  php:
+    container_name: "php"
+    depends_on:
+      - shared-tmp
+      - mysql
+      - redis
+      - rabbitmq
+      - kafka1
+      - postgres
+    environment:
+      MYSQL_SERVER_HOST: mysql
+      REDIS_SERVER_HOST: ${REDIS_SERVER_HOST}
+      PGSQL_SERVER_HOST: postgres
+      MYSQL_SERVER_PASSWORD: ""
+      AMQP_SERVER_HOST: "rabbitmq"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+    build:
+      context: .
+      dockerfile: php.dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        SWOOLE_VERSION: ${SWOOLE_VERSION}
+        ROADRUNNER_DOCKER_VERSION: ${ROADRUNNER_DOCKER_VERSION}
+        POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
+    volumes:
+      - "${GITHUB_WORKSPACE}:/imi:rw"
+      - "/tmp/composer:/root/.composer/cache/files:rw"
+      - shared-volume:/tmp/docker
+    working_dir: /imi
+    command: tail -f /dev/null
+
   swoole-only:
     container_name: "swoole-only"
     build:
