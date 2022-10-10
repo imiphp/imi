@@ -93,6 +93,18 @@ class BeanTest extends BaseTest
             $rf = new ReflectionFunction($f);
             $this->assertEquals('never', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
+
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.2', '>='))
+        {
+            $f = Imi::eval(<<<CODE
+            return function(): (IteratorAggregate&Countable)|ArrayObject|null {
+                return new \ArrayObject();
+            }
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('(\IteratorAggregate&\Countable)|\ArrayObject|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+        }
     }
 
     public function testGetTypeCode(): void
@@ -156,6 +168,18 @@ class BeanTest extends BaseTest
             CODE);
             $rf = new ReflectionFunction($f);
             $this->assertEquals('never', ReflectionUtil::getTypeCode($rf->getReturnType()));
+        }
+
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.2', '>='))
+        {
+            $f = Imi::eval(<<<CODE
+            return function(): (IteratorAggregate&Countable)|ArrayObject|null {
+                return new \ArrayObject();
+            }
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('(\IteratorAggregate&\Countable)|\ArrayObject|null', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
     }
 
@@ -224,6 +248,22 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
+        }
+
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.2', '>='))
+        {
+            $f = Imi::eval(<<<CODE
+            return function(): (IteratorAggregate&Countable)|stdClass|null {
+                return new \ArrayObject();
+            }
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'IteratorAggregate'));
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Countable'));
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'ArrayObject'));
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'stdClass'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
         }
     }

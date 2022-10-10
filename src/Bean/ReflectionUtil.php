@@ -53,7 +53,12 @@ class ReflectionUtil
             $result = [];
             foreach ($type->getTypes() as $subType)
             {
-                $result[] = self::getTypeComments($subType, $className);
+                $content = self::getTypeComments($subType, $className);
+                if ($subType instanceof ReflectionIntersectionType)
+                {
+                    $content = '(' . $content . ')';
+                }
+                $result[] = $content;
             }
             if ($type->allowsNull() && !\in_array('mixed', $result))
             {
@@ -115,7 +120,12 @@ class ReflectionUtil
             $result = [];
             foreach ($type->getTypes() as $subType)
             {
-                $result[] = self::getTypeCode($subType, $className);
+                $content = self::getTypeCode($subType, $className);
+                if ($subType instanceof ReflectionIntersectionType)
+                {
+                    $content = '(' . $content . ')';
+                }
+                $result[] = $content;
             }
             if ($type->allowsNull() && !\in_array('mixed', $result))
             {
@@ -150,11 +160,6 @@ class ReflectionUtil
         {
             return $type->allowsNull();
         }
-        $checkTypes = explode('|', $checkType);
-        if ('?' === $checkTypes[0][0])
-        {
-            $checkTypes[0][0] = substr($checkTypes[0][0], 1);
-        }
         if ($type instanceof ReflectionNamedType)
         {
             $typeStr = $type->getName();
@@ -169,14 +174,13 @@ class ReflectionUtil
                 }
             }
 
-            return $typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr);
+            return $typeStr === $checkType || is_subclass_of($checkType, $typeStr);
         }
         if ($type instanceof ReflectionUnionType)
         {
             foreach ($type->getTypes() as $subType)
             {
-                $typeStr = ltrim(self::getTypeCode($subType, $className), '\\');
-                if ($typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr))
+                if (self::allowsType($subType, $checkType, $className))
                 {
                     return true;
                 }
