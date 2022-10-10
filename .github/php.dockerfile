@@ -17,7 +17,7 @@ RUN set -eux \
     && docker-php-ext-enable --ini-name z-event.ini event \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
-    && curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer && composer config platform.php 8.1.99 \
+    && curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer \
     && curl -L -o swoole.tar.gz https://github.com/swoole/swoole-src/archive/${SWOOLE_VERSION}.tar.gz && mkdir -p swoole && tar -xzf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && ((stat ./make.sh && ./make.sh) || (stat ./scripts/make.sh && ./scripts/make.sh)) && cd - && docker-php-ext-enable swoole \
     && bash /tmp/script/swoole_postgresql.sh ${POSTGRESQL_VERSION} \
     && bash /tmp/script/hprose.sh \
