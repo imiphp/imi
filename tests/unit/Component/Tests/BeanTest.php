@@ -98,9 +98,9 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.2', '>='))
         {
             $f = Imi::eval(<<<CODE
-            return function(): (IteratorAggregate&Countable)|ArrayObject|null {
+            return function(): (IteratorAggregate&Countable)|stdClass|null {
                 return new \ArrayObject();
-            }
+            };
             CODE);
             $rf = new ReflectionFunction($f);
             $this->assertEquals('(\IteratorAggregate&\Countable)|\ArrayObject|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
@@ -174,9 +174,9 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.2', '>='))
         {
             $f = Imi::eval(<<<CODE
-            return function(): (IteratorAggregate&Countable)|ArrayObject|null {
+            return function(): (IteratorAggregate&Countable)|stdClass|null {
                 return new \ArrayObject();
-            }
+            };
             CODE);
             $rf = new ReflectionFunction($f);
             $this->assertEquals('(\IteratorAggregate&\Countable)|\ArrayObject|null', ReflectionUtil::getTypeCode($rf->getReturnType()));
@@ -257,7 +257,7 @@ class BeanTest extends BaseTest
             $f = Imi::eval(<<<CODE
             return function(): (IteratorAggregate&Countable)|stdClass|null {
                 return new \ArrayObject();
-            }
+            };
             CODE);
             $rf = new ReflectionFunction($f);
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'IteratorAggregate'));
