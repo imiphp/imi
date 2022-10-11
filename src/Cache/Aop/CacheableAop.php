@@ -10,6 +10,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\Cacheable;
 use Imi\Cache\CacheManager;
 use Imi\Config;
@@ -40,7 +41,7 @@ class CacheableAop
     public function parseCacheable(AroundJoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();
-        $class = get_parent_class($target);
+        $class = BeanFactory::getObjectClass($target);
         $method = $joinPoint->getMethod();
         $joinPointArgs = $joinPoint->getArgs();
 

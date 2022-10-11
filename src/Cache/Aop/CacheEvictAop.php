@@ -10,6 +10,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\CacheEvict;
 use Imi\Cache\CacheManager;
 use Imi\Config;
@@ -37,7 +38,7 @@ class CacheEvictAop
      */
     public function parseCacheEvict(AroundJoinPoint $joinPoint)
     {
-        $class = get_parent_class($joinPoint->getTarget());
+        $class = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
 
         // CacheEvict 注解列表

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\View\Parser;
 
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\IBean;
+use Imi\Bean\BeanFactory;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Server\View\Annotation\BaseViewOption;
 use Imi\Server\View\Annotation\HtmlView;
@@ -44,14 +44,7 @@ class ViewParser extends BaseParser
         if (\is_array($callable))
         {
             [$object, $methodName] = $callable;
-            if ($object instanceof IBean)
-            {
-                $className = get_parent_class($object);
-            }
-            else
-            {
-                $className = \get_class($object);
-            }
+            $className = BeanFactory::getObjectClass($object);
         }
         elseif ($callable instanceof DelayServerBeanCallable)
         {

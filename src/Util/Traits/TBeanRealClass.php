@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Util\Traits;
 
-use Imi\Bean\IBean;
+use Imi\Bean\BeanFactory;
 use Imi\Util\StaticValueStorage;
 
 trait TBeanRealClass
@@ -14,19 +14,6 @@ trait TBeanRealClass
      */
     protected static function __getRealClassName(): string
     {
-        $realClassNames = &StaticValueStorage::$realClassNames;
-        if (!isset($realClassNames[static::class]))
-        {
-            if (is_subclass_of(static::class, IBean::class))
-            {
-                $realClassNames[static::class] = get_parent_class(static::class);
-            }
-            else
-            {
-                $realClassNames[static::class] = static::class;
-            }
-        }
-
-        return $realClassNames[static::class];
+        return StaticValueStorage::$realClassNames[static::class] ??= BeanFactory::getObjectClass(static::class);
     }
 }

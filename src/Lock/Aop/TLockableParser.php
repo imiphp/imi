@@ -7,6 +7,7 @@ namespace Imi\Lock\Aop;
 use function array_merge;
 
 use Imi\App;
+use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
 use Imi\Lock\Annotation\Lockable;
@@ -32,7 +33,7 @@ trait TLockableParser
      */
     public function parseLockable($object, $method, $args, $lockable, $taskCallable, $afterLock = null)
     {
-        $class = get_parent_class($object);
+        $class = BeanFactory::getObjectClass($object);
 
         // 加载配置
         if (null !== $lockable->id && $lockable->useConfig)

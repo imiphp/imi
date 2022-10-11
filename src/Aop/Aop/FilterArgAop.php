@@ -11,6 +11,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 
 /**
@@ -33,7 +34,7 @@ class FilterArgAop
      */
     public function parse(JoinPoint $joinPoint)
     {
-        $class = get_parent_class($joinPoint->getTarget());
+        $class = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
         /** @var FilterArg[] $filterArgs */
         $filterArgs = AnnotationManager::getMethodAnnotations($class, $method, FilterArg::class);

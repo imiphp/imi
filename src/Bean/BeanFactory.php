@@ -425,6 +425,10 @@ class BeanFactory
 
             return \get_class($object);
         }
+        elseif (is_subclass_of($object, IBean::class))
+        {
+            return get_parent_class($object);
+        }
         else
         {
             return (string) $object;

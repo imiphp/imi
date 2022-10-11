@@ -10,6 +10,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Lock\Annotation\Lockable;
 
 /**
@@ -36,7 +37,7 @@ class LockAop
     {
         $target = $joinPoint->getTarget();
         $method = $joinPoint->getMethod();
-        $class = get_parent_class($target);
+        $class = BeanFactory::getObjectClass($target);
         /** @var Lockable|null $lockable */
         $lockable = AnnotationManager::getMethodAnnotations($class, $method, Lockable::class, true, true);
 

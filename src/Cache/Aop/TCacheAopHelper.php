@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Cache\Aop;
 
 use Imi\Aop\JoinPoint;
+use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\CachePut;
 use Imi\Util\ObjectArrayHelper;
 
@@ -20,7 +21,7 @@ trait TCacheAopHelper
         if ('' === $cacheable->key)
         {
             return md5(
-                get_parent_class($joinPoint->getTarget())
+                BeanFactory::getObjectClass($joinPoint->getTarget())
                 . '::'
                 . $joinPoint->getMethod()
                 . '('

@@ -11,6 +11,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 
 /**
@@ -33,7 +34,7 @@ class InjectArgAop
      */
     public function parse(AroundJoinPoint $joinPoint)
     {
-        $class = get_parent_class($joinPoint->getTarget());
+        $class = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
         /** @var InjectArg[] $injectArgs */
         $injectArgs = AnnotationManager::getMethodAnnotations($class, $method, InjectArg::class);

@@ -10,6 +10,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\CachePut;
 use Imi\Cache\CacheManager;
 use Imi\Config;
@@ -40,7 +41,7 @@ class CachePutAop
         $methodReturn = $joinPoint->proceed();
         $method = $joinPoint->getMethod();
 
-        $class = get_parent_class($joinPoint->getTarget());
+        $class = BeanFactory::getObjectClass($joinPoint->getTarget());
 
         // CachePut 注解列表
         /** @var CachePut[] $cachePuts */
