@@ -39,28 +39,31 @@ class ReflectionUtil
                     $typeStr = '\\' . $typeStr;
                 }
             }
-            if ($type->allowsNull() && 'mixed' !== $typeStr)
+            if ($type->allowsNull() && !\in_array($typeStr, ['mixed', 'null']))
             {
                 return $typeStr . '|null';
             }
-            else
-            {
-                return $typeStr;
-            }
+
+            return $typeStr;
         }
         elseif ($type instanceof ReflectionUnionType)
         {
             $result = [];
+            $hasNull = false;
             foreach ($type->getTypes() as $subType)
             {
                 $content = self::getTypeComments($subType, $className);
+                if (!$hasNull && 'null' === $content)
+                {
+                    $hasNull = true;
+                }
                 if ($subType instanceof ReflectionIntersectionType)
                 {
                     $content = '(' . $content . ')';
                 }
                 $result[] = $content;
             }
-            if ($type->allowsNull() && !\in_array('mixed', $result))
+            if (!$hasNull && $type->allowsNull() && !\in_array('mixed', $result))
             {
                 $result[] = 'null';
             }
@@ -106,28 +109,31 @@ class ReflectionUtil
                     $typeStr = '\\' . $typeStr;
                 }
             }
-            if ($type->allowsNull() && 'mixed' !== $typeStr)
+            if ($type->allowsNull() && !\in_array($typeStr, ['mixed', 'null']))
             {
                 return '?' . $typeStr;
             }
-            else
-            {
-                return $typeStr;
-            }
+
+            return $typeStr;
         }
         elseif ($type instanceof ReflectionUnionType)
         {
             $result = [];
+            $hasNull = false;
             foreach ($type->getTypes() as $subType)
             {
                 $content = self::getTypeCode($subType, $className);
+                if (!$hasNull && 'null' === $content)
+                {
+                    $hasNull = true;
+                }
                 if ($subType instanceof ReflectionIntersectionType)
                 {
                     $content = '(' . $content . ')';
                 }
                 $result[] = $content;
             }
-            if ($type->allowsNull() && !\in_array('mixed', $result))
+            if (!$hasNull && $type->allowsNull() && !\in_array('mixed', $result))
             {
                 $result[] = 'null';
             }
@@ -160,6 +166,11 @@ class ReflectionUtil
         {
             return $type->allowsNull();
         }
+        $checkTypes = explode('|', $checkType);
+        if ('?' === $checkTypes[0][0])
+        {
+            $checkTypes[0][0] = substr($checkTypes[0][0], 1);
+        }
         if ($type instanceof ReflectionNamedType)
         {
             $typeStr = $type->getName();
@@ -174,13 +185,18 @@ class ReflectionUtil
                 }
             }
 
-            return $typeStr === $checkType || is_subclass_of($checkType, $typeStr);
+            return $typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr);
         }
         if ($type instanceof ReflectionUnionType)
         {
             foreach ($type->getTypes() as $subType)
             {
-                if (self::allowsType($subType, $checkType, $className))
+                if ($subType instanceof ReflectionIntersectionType && self::allowsType($subType, $checkType, $className))
+                {
+                    return true;
+                }
+                $typeStr = ltrim(self::getTypeCode($subType, $className), '\\');
+                if ($typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr))
                 {
                     return true;
                 }

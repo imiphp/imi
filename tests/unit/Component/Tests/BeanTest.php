@@ -103,7 +103,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('(\IteratorAggregate&\Countable)|\ArrayObject|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+            $this->assertEquals('(\IteratorAggregate&\Countable)|\stdClass|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
     }
 
@@ -179,7 +179,7 @@ class BeanTest extends BaseTest
             };
             CODE);
             $rf = new ReflectionFunction($f);
-            $this->assertEquals('(\IteratorAggregate&\Countable)|\ArrayObject|null', ReflectionUtil::getTypeCode($rf->getReturnType()));
+            $this->assertEquals('(\IteratorAggregate&\Countable)|\stdClass|null', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
     }
 
