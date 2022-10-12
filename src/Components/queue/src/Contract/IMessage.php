@@ -42,26 +42,6 @@ interface IMessage extends IArrayable
     public function setWorkingTimeout(float $workingTimeout): void;
 
     /**
-     * 获取已重试次数.
-     */
-    public function getRetryCount(): int;
-
-    /**
-     * 获取重试次数.
-     */
-    public function setRetryCount(int $retryCount): void;
-
-    /**
-     * 获取最大重试次数.
-     */
-    public function getMaxRetryCount(): int;
-
-    /**
-     * 获取最大重试次数.
-     */
-    public function setMaxRetryCount(int $maxRetryCount): void;
-
-    /**
      * 从数组加载数据.
      */
     public function loadFromArray(array $data): void;

@@ -17,16 +17,6 @@ class Message implements IMessage
     protected string $messageId = '';
 
     /**
-     * 已重试次数.
-     */
-    protected int $retryCount = 0;
-
-    /**
-     * 最大重试次数.
-     */
-    protected int $maxRetryCount = 0;
-
-    /**
      * 消息内容.
      */
     protected string $message = '';
@@ -89,48 +79,10 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function getRetryCount(): int
-    {
-        return $this->retryCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param int $retryCount
-     */
-    public function setRetryCount($retryCount): void
-    {
-        $this->retryCount = (int) $retryCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getMaxRetryCount(): int
-    {
-        return $this->maxRetryCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param int $maxRetryCount
-     */
-    public function setMaxRetryCount($maxRetryCount): void
-    {
-        $this->maxRetryCount = (int) $maxRetryCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         return [
             'messageId'      => $this->getMessageId(),
-            'retryCount'     => $this->getRetryCount(),
-            'maxRetryCount'  => $this->getMaxRetryCount(),
             'message'        => $this->getMessage(),
             'workingTimeout' => $this->getWorkingTimeout(),
         ];
