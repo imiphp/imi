@@ -16,7 +16,7 @@ use Imi\Model\Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\UpdateTime.name", default="tb_update_time"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\UpdateTime.poolName"))
- * @DDL(sql="CREATE TABLE `tb_update_time` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `date` date DEFAULT NULL,   `time` time DEFAULT NULL,   `datetime` datetime DEFAULT NULL,   `timestamp` timestamp NULL DEFAULT NULL,   `int` int(11) DEFAULT NULL,   `bigint` bigint(20) DEFAULT NULL,   `year` year(4) DEFAULT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
+ * @DDL(sql="CREATE TABLE `tb_update_time` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `date` date DEFAULT NULL,   `time` time DEFAULT NULL,   `datetime` datetime DEFAULT NULL,   `timestamp` timestamp NULL DEFAULT NULL,   `int` int(11) DEFAULT NULL,   `bigint` bigint(20) DEFAULT NULL,   `bigint_second` bigint(20) DEFAULT NULL,   `year` year(4) DEFAULT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
  *
  * @property int|null    $id
  * @property string|null $date
@@ -25,6 +25,7 @@ use Imi\Model\Model;
  * @property string|null $timestamp
  * @property int|null    $int
  * @property int|null    $bigint
+ * @property int|null    $bigintSecond
  * @property int|null    $year
  */
 abstract class UpdateTimeBase extends Model
@@ -238,6 +239,35 @@ abstract class UpdateTimeBase extends Model
     public function setBigint($bigint)
     {
         $this->bigint = null === $bigint ? null : (int) $bigint;
+
+        return $this;
+    }
+
+    /**
+     * bigint_second.
+     *
+     * @Column(name="bigint_second", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
+     */
+    protected ?int $bigintSecond = null;
+
+    /**
+     * 获取 bigintSecond.
+     */
+    public function getBigintSecond(): ?int
+    {
+        return $this->bigintSecond;
+    }
+
+    /**
+     * 赋值 bigintSecond.
+     *
+     * @param int|null $bigintSecond bigint_second
+     *
+     * @return static
+     */
+    public function setBigintSecond($bigintSecond)
+    {
+        $this->bigintSecond = null === $bigintSecond ? null : (int) $bigintSecond;
 
         return $this;
     }

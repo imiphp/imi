@@ -23,9 +23,11 @@ class PgModel extends Model
     }
 
     /**
+     * @param bool|int $timeAccuracy
+     *
      * @return mixed
      */
-    protected static function parseDateTime(?string $columnType)
+    protected static function parseDateTime(?string $columnType, $timeAccuracy)
     {
         switch ($columnType)
         {
@@ -42,7 +44,7 @@ class PgModel extends Model
             case 'int4':
                 return time();
             case 'int8':
-                return (int) (microtime(true) * 1000);
+                return (int) (microtime(true) * (true === $timeAccuracy ? 1000 : $timeAccuracy));
             default:
                 return null;
         }

@@ -315,9 +315,13 @@ function demoWrap($data)
 
 > 当你指定`type=list`并且设置了`listSeparator`分割符时，写入数据库时自动`implode`，从数据实例化到对象时自动`explode`
 
-`updateTime`：save/update 模型时是否将当前时间写入该字段。支持 date/time/datetime/timestamp/year/int/bigint。当字段为 int 类型，写入秒级时间戳。当字段为 bigint 类型，写入毫秒级时间戳。
+`updateTime`：`save/update` 模型时是否将当前时间写入该字段。支持 `date/time/datetime/timestamp/year/int/bigint`。
+设为`true`时，当字段为 `int` 类型，写入秒级时间戳。当字段为 `bigint` 类型，写入毫秒级时间戳。
+设为`int`值时，当字段为 `bigint` 类型，写入值=`time() * updateTime`。比如传`1`是存秒级时间戳，传`1000`是毫秒级时间戳，以此类推。
 
-`createTime`：save/insert 模型时是否将当前时间写入该字段，**save时表有自增ID主键才支持**；支持 date/time/datetime/timestamp/year/int/bigint；当字段为 int 类型，写入秒级时间戳；当字段为 bigint 类型，写入毫秒级时间戳。
+`createTime`：`save/insert` 模型时是否将当前时间写入该字段，**save时表有自增ID主键才支持**；支持 `date/time/datetime/timestamp/year/int/bigint`；
+设为`true`时，当字段为 `int` 类型，写入秒级时间戳；当字段为 `bigint` 类型，写入毫秒级时间戳。
+设为`int`值时，当字段为 `bigint` 类型，写入值=`time() * updateTime`。比如传`1`是存秒级时间戳，传`1000`是毫秒级时间戳，以此类推。
 
 ### @Sql
 

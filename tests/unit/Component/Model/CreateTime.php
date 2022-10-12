@@ -63,4 +63,11 @@ class CreateTime extends CreateTimeBase
      * @Column(name="year", type="year", length=4, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, createTime=true)
      */
     protected ?int $year = null;
+
+    /**
+     * bigint_second.
+     *
+     * @Column(name="bigint_second", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false, createTime=1)
+     */
+    protected ?int $bigintSecond = null;
 }
