@@ -64,8 +64,15 @@ function getChapter(url) {
 				var resultElement = $(result);
 				$('#article-content').html(resultElement.find('#article-content').html());
 				onContentChange();
-				// 有时切换文档不在最上面
-				$('#content_body').scrollTop(0)
+				var hash = location.hash;
+				if (hash.length > 0) {
+					location.hash = '';
+					location.hash = hash;
+				}
+				else {
+					// 有时切换文档不在最上面
+					$('#content_body').scrollTop(0)
+				}
 			}
 			catch (err) {
 				layer.alert('文档加载失败', { icon: 2 });
@@ -97,10 +104,20 @@ function initTree(data) {
 	for (var i in data) {
 		data[i].target = '_self';
 	}
-	var treeObj = $("#treeDirectory");
-	$.fn.zTree.init(treeObj, ajaxSetting, data);
-	menuTree = $.fn.zTree.getZTreeObj("treeDirectory");
-	menuTree.selectNode(menuTree.getNodeByParam('id', currentCatalog.id, null));
+	if (null === menuTree) {
+		var treeObj = $("#treeDirectory");
+		$.fn.zTree.init(treeObj, ajaxSetting, data);
+		menuTree = $.fn.zTree.getZTreeObj("treeDirectory");
+		var nodes = menuTree.getNodesByParam('url', location.pathname + location.hash, null);
+		if (nodes.length > 0) {
+			if (nodes.length > 1) {
+				if (menuTree.getSelectedNodes().length > 0) {
+					return;
+				}
+			}
+			menuTree.selectNode(nodes[0]);
+		}
+	}
 }
 
 function onClick(event, treeId, treeNode) {
