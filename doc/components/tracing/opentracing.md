@@ -12,6 +12,7 @@ OpenTracing 是一种分布式系统链路跟踪的设计原则、规范、标�
 
 * [ ] Skywalking
 
+**imi-opentracing:** <https://github.com/imiphp/imi-opentracing>
 
 ## 配置
 
