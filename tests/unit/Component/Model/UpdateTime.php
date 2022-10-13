@@ -63,4 +63,11 @@ class UpdateTime extends UpdateTimeBase
      * @Column(name="year", type="year", length=4, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
      */
     protected ?int $year = null;
+
+    /**
+     * bigint_second.
+     *
+     * @Column(name="bigint_second", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false, updateTime=1)
+     */
+    protected ?int $bigintSecond = null;
 }

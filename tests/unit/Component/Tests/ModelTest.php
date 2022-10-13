@@ -404,6 +404,7 @@ class ModelTest extends BaseTest
         $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
         $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
         $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
+        $this->assertLessThanOrEqual(1, $record->bigintSecond - $time, sprintf('bigintSecond fail: %s', $record->bigintSecond));
         $this->assertLessThanOrEqual(1, $record->year - strtotime(date('Y', $time)), sprintf('year fail: %s', $record->year));
     }
 
@@ -441,6 +442,7 @@ class ModelTest extends BaseTest
             $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
             $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
             $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
+            $this->assertLessThanOrEqual(1, $record->bigintSecond - $time, sprintf('bigintSecond fail: %s', $record->bigintSecond));
             $this->assertLessThanOrEqual(1, $record->year - strtotime(date('Y', $time)), sprintf('year fail: %s', $record->year));
         }
         else
