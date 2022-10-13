@@ -105,7 +105,7 @@ Jaeger 是受 Dapper 和 OpenZipkin 的启发，由 Uber Technologies 创建的�
 * 服务依赖分析
 * 性能 / 延迟优化
 
-### 安装 Jaeger 所需组件
+#### 安装 Jaeger 所需组件
 
 `composer require imiphp/imi-opentracing:~2.1.0 jonahgeorge/jaeger-client-php`
 
@@ -174,7 +174,7 @@ Jaeger 是受 Dapper 和 OpenZipkin 的启发，由 Uber Technologies 创建的�
 ],
 ```
 
-### Jaeger Docker
+#### Jaeger Docker
 
 **docker-compose.yml:**
 
@@ -203,11 +203,11 @@ Zipkin是 Twitter 的一个开源项目，基于 Google Dapper 实现。
 
 除了面向开发的API接口之外，它也提供了方便的 UI 组件帮助我们直观的搜索跟踪信息和分析请求链路明细，比如：可以查询某段时间内各用户请求的处理时间等。
 
-### 安装 Zipkin 所需组件
+#### 安装 Zipkin 所需组件
 
 `composer require imiphp/imi-opentracing:~2.1.0 jcchavezs/zipkin-opentracing`
 
-### Zipkin 配置
+#### Zipkin 配置
 
 `@app.beans`:
 
@@ -241,7 +241,7 @@ Zipkin是 Twitter 的一个开源项目，基于 Google Dapper 实现。
 ],
 ```
 
-### Zipkin Docker
+#### Zipkin Docker
 
 **docker-compose.yml:**
 

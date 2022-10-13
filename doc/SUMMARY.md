@@ -231,8 +231,8 @@
 * [服务注册](components/serviceRegistry/index.md)
 * [服务发现（负载均衡）](components/serviceDiscovery/index.md)
 * [调用链路追踪](components/tracing/index.md)
-  * [Zipkin](components/tracing/opentracing.md#zipkin)
-  * [Jaeger](components/tracing/opentracing.md#jaeger)
+  * [Zipkin](components/tracing/opentracing.md#Zipkin)
+  * [Jaeger](components/tracing/opentracing.md#Jaeger)
   * [Swoole Tracker](components/swoole-tracker.md)
 * [服务限流](components/rate-limit.md)
 
