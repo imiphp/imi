@@ -52,7 +52,7 @@ OpenTracing 是一种分布式系统链路跟踪的设计原则、规范、标�
 
 开启追踪会造成性能损耗，请根据实际需要在生产环境中使用！
 
-### 追踪方法
+### 追踪方法调用（注解）
 
 > 仅使用容器实例化的对象方法可被追踪
 
@@ -92,6 +92,73 @@ class TestService
 `@Tag` 是可选的，记录一些标签数据。`{params.0}` 就是代入方法的第一个参数值；`{returnValue}` 是代入方法的返回值。
 
 你甚至可以使用 `params.0.id`、`returnValue.name` 类似这种写法，获取类型为数组或对象的属性值。
+
+### 手动追踪
+
+**在当前服务中增加追踪：**
+
+```php
+use Imi\OpenTracing\Facade\Tracer;
+
+// 开始
+$scope = Tracer::startActiveSpan('write1');
+
+// ...
+// 这里可以做一些事情
+
+// 结束
+$scope->close();
+```
+
+**用一个服务名追踪：**
+
+```php
+use Imi\OpenTracing\Facade\Tracer;
+
+// 创建 Tracer
+$tracer = Tracer::createTracer('redis');
+// 开始
+$scope1 = TracerUtil::startRootActiveSpan($tracer, 'test1');
+
+// ...
+// 这里可以做一些事情
+
+// 可以继续在 test1 下增加追踪
+$scope2 = $tracer->startActiveSpan('test1-1');
+// ...
+// 这里可以做一些事情
+// 结束 test1-1
+$scope2->close();
+
+// ...
+// 这里可以做一些事情
+
+// 结束
+$scope1->close();
+$tracer->flush();
+```
+
+### 异常类忽略追踪
+
+在异常类上加上 `@IgnoredException` 注解，捕获到该注解时不会认为错误
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace app\Exception;
+
+use Imi\OpenTracing\Annotation\IgnoredException;
+use RuntimeException;
+
+/**
+ * @IgnoredException
+ */
+class GGException extends RuntimeException
+{
+}
+```
 
 ## 驱动
 
