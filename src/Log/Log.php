@@ -12,7 +12,7 @@ class Log
     {
     }
 
-    public static function get(?string $channelName): MonoLogger
+    public static function get(?string $channelName = null): MonoLogger
     {
         // @phpstan-ignore-next-line
         return App::getBean('Logger')->getLogger($channelName);
