@@ -89,7 +89,7 @@ class Server extends Base implements IWebSocketServer
                     'request'  => $request,
                     'response' => $response,
                 ]);
-                ConnectionContext::create([
+                ConnectionContext::muiltiSet([
                     'uri'        => (string) $request->getUri(),
                     'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
                 ]);

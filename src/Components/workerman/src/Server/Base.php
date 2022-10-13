@@ -8,6 +8,7 @@ use Channel\Client;
 use GatewayWorker\Lib\Gateway;
 use Imi\App;
 use Imi\Config;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Log\Handler\ConsoleHandler;
 use Imi\Log\Log;
@@ -208,6 +209,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
+                ConnectionContext::create();
                 Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
                     'server'     => $this,
                     'clientId'   => $clientId,
