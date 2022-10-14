@@ -12,6 +12,8 @@
 
 创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.1.0`
 
+创建 gRPC 项目：`composer create-project imiphp/project-grpc:~2.1.0`
+
 创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.1.0`
 
 > 如何运行请看上面项目中的`README.md`

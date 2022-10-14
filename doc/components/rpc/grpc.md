@@ -26,6 +26,10 @@ Github: <https://github.com/imiphp/imi-grpc>
 
 然后执行 `composer update` 安装。
 
+---
+
+你也可以直接创建 imi gRPC 骨架项目：`composer create-project imiphp/project-grpc:~2.1.0`
+
 ## 使用说明
 
 可以参考 <https://github.com/imiphp/imi-grpc/tree/master/example> 目录示例，包括完整的服务端和客户端调用。
