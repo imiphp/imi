@@ -314,18 +314,16 @@ Zipkin是 Twitter 的一个开源项目，基于 Google Dapper 实现。
 **docker-compose.yml:**
 
 ```yml
-version: "2"
+version: '2.4'
 services:
-    jaeger:
-        image: jaegertracing/all-in-one:1.38
-        container_name: jaeger
-        ports:
-            - "6831:6831"
-            - "6832:6832"
-            - "5778:5778"
-            - "16686:16686"
-            - "14268:14268"
-            - "9411:9411"
+  zipkin:
+    image: openzipkin/zipkin:2
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9412:9411
 ```
 
 > 仅供开发调试用
