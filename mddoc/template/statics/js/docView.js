@@ -117,6 +117,9 @@ function initTree(data) {
 			}
 			menuTree.selectNode(nodes[0]);
 		}
+		else {
+			menuTree.selectNode(menuTree.getNodeByParam('id', currentCatalog.id, null));
+		}
 	}
 }
 

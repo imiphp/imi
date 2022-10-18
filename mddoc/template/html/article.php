@@ -174,15 +174,7 @@
                 <script>
                     document.title = '<?php echo $pageTitle; ?>';
                     var currentCatalog = <?php echo json_encode($currentCatalog, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE); ?>;
-                    if (location.hash.length > 0)
-                    {
-                        var url = currentCatalog.url.substr(0, currentCatalog.url.length - location.hash.length);
-                    }
-                    else
-                    {
-                        var url = currentCatalog.url;
-                    }
-                    var rootPath = location.pathname.substr(0, location.pathname.indexOf(url));
+                    var rootPath = location.pathname.substr(0, location.pathname.indexOf(currentCatalog.url));
                     if('' === rootPath)
                     {
                         rootPath = location.pathname;
