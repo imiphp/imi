@@ -36,6 +36,37 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 
 ### 定义任务
 
+#### 协程任务
+
+实现 `Imi\Cron\Contract\ICronTask` 接口、`run()` 方法，无需手动上报任务完成。
+
+```php
+<?php
+namespace Imi\Test\HttpServer\Cron;
+
+use Imi\Cron\Annotation\Cron;
+use Imi\Cron\Contract\ICronTask;
+
+/**
+ * @Cron(id="CronRandomWorker", second="3n", type="random_worker")
+ */
+class CronRandomWorker implements ICronTask
+{
+    /**
+     * 执行任务
+     *
+     * @param string $id
+     * @param mixed $data
+     * @return void
+     */
+    public function run(string $id, $data): void
+    {
+        var_dump('random');
+    }
+
+}
+```
+
 #### Task 任务
 
 使用task定时任务时，需要在项目config.php中的服务器配置里，开启`task_worker_num`参数，否则会报下面的错：
@@ -133,37 +164,6 @@ class TaskProcess implements IProcess
             // 上报任务完成
             CronUtil::reportCronResult($id, $success, $message);
         }
-    }
-
-}
-```
-
-#### 协程任务
-
-实现 `Imi\Cron\Contract\ICronTask` 接口、`run()` 方法，无需手动上报任务完成。
-
-```php
-<?php
-namespace Imi\Test\HttpServer\Cron;
-
-use Imi\Cron\Annotation\Cron;
-use Imi\Cron\Contract\ICronTask;
-
-/**
- * @Cron(id="CronRandomWorker", second="3n", type="random_worker")
- */
-class CronRandomWorker implements ICronTask
-{
-    /**
-     * 执行任务
-     *
-     * @param string $id
-     * @param mixed $data
-     * @return void
-     */
-    public function run(string $id, $data)
-    {
-        var_dump('random');
     }
 
 }
