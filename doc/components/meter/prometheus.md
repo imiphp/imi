@@ -1,6 +1,6 @@
 # Prometheus
 
-Prometheus是云原生计算基金会的一个项目，是一个系统和服务监控系统。它以给定的时间间隔从配置的目标收集指标，评估规则表达式，显示结果，并能在观察到指定条件时触发警报。
+Prometheus 是云原生计算基金会的一个项目，是一个系统和服务监控系统。它以给定的时间间隔从配置的目标收集指标，评估规则表达式，显示结果，并能在观察到指定条件时触发警报。
 
 普罗米修斯区别于其他指标和监控系统的特点是。
 
@@ -15,6 +15,7 @@ Prometheus是云原生计算基金会的一个项目，是一个系统和服务�
 
 项目地址：<https://github.com/prometheus/prometheus>
 
+imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 
 ## 安装
 
