@@ -235,3 +235,9 @@ $value = 114514;
 $percentile = [0.1, 0.5, 0.99];
 MeterRegistry::getDriverInstance()->summary('testHistogramManual', $tags, $description, $percentile)->record($value);
 ```
+
+#### 清除 Redis 驱动存储数据
+
+如果你的同名指标，修改了 `tags`，那么必须清理存储数据，否则会报错。
+
+`vendor/bin/imi-swoole prometheus/wipe`
