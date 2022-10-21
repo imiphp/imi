@@ -246,7 +246,11 @@ class ModelQueryResult extends Result
             $list = [];
             foreach ($this->statementRecords as $item)
             {
-                $list[] = new $className($item);
+                $list[] = $row = BeanFactory::newInstance($className, $item);
+                foreach ($item as $k => $v)
+                {
+                    $row->$k = $v;
+                }
             }
 
             return $list;
