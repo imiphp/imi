@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Result\TResultEntityCreate;
@@ -178,7 +179,11 @@ class Result implements IResult
             $list = [];
             foreach ($this->statementRecords as $item)
             {
-                $list[] = new $className($item);
+                $list[] = $row = BeanFactory::newInstance($className, $item);
+                foreach ($item as $k => $v)
+                {
+                    $row->$k = $v;
+                }
             }
 
             return $list;
