@@ -59,7 +59,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 例如：访问次数统计。
 
 | 参数名 | 类型 | 默认值  | 描述 |
-| ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | name | `string` | `imi.counted` | 指标名称 |
 | recordFailuresOnly | `false` | `bool` | 是否只在抛出异常时记录 |
 | tags | `array` | `[]` | 标签，键值数组 |
@@ -73,12 +73,12 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 例如：CPU 占用率统计。
 
 | 参数名 | 类型 | 默认值  | 描述 |
-| ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | name | `string` | `imi.counted` | 指标名称 |
 | recordFailuresOnly | `false` | `bool` | 是否只在抛出异常时记录 |
 | tags | `array` | `[]` | 标签，键值数组 |
 | description | `string` |  | 描述 |
-| value | `string|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
+| value | `string\|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | operation | `int` | `\Imi\Meter\Enum\GaugeOperation::SET` | 操作类型。设置`GaugeOperation::SET`；增加`GaugeOperation::INCREMENT`；减少`GaugeOperation::DECREMENT` |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
@@ -89,7 +89,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 例如：方法执行耗时
 
 | 参数名 | 类型 | 默认值  | 描述 |
-| ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | name | `string` | `imi.counted` | 指标名称 |
 | tags | `array` | `[]` | 标签，键值数组 |
 | description | `string` |  | 描述 |
@@ -112,13 +112,13 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 柱状图，一般人用不懂，如无特殊需求可以无视。
 
 | 参数名 | 类型 | 默认值  | 描述 |
-| ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | name | `string` | `imi.counted` | 指标名称 |
 | tags | `array` | `[]` | 标签，键值数组 |
 | description | `string` |  | 描述 |
 | buckets | `array` | `[]` | 桶，例如：`[100, 500, 1000]` |
 | baseTimeUnit | `int` | `\Imi\Meter\Enum\TimeUnit::NANO_SECOND` | 基础时间单位，默认纳秒，可以使用 `\Imi\Meter\Enum\TimeUnit::XXX` 常量设置。 |
-| value | `string|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
+| value | `string\|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
 ##### @Summary
@@ -126,13 +126,13 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 采样点分位图，一般人用不懂，如无特殊需求可以无视。
 
 | 参数名 | 类型 | 默认值  | 描述 |
-| ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ |
 | name | `string` | `imi.counted` | 指标名称 |
 | tags | `array` | `[]` | 标签，键值数组 |
 | description | `string` |  | 描述 |
 | percentile | `array` | `[]` | 百分位数，例如：`[0.01, 0.5, 0.99]` |
 | baseTimeUnit | `int` | `\Imi\Meter\Enum\TimeUnit::NANO_SECOND` | 基础时间单位，默认纳秒，可以使用 `\Imi\Meter\Enum\TimeUnit::XXX` 常量设置。 |
-| value | `string|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
+| value | `string\|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
 **代码示例：**
