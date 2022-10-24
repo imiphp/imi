@@ -81,6 +81,7 @@ class Connection extends DefaultConnection
         ?float $timeout = null,
         ?float $pingTimespan = null,
         string $username = '',
+        #[\SensitiveParameter]
         string $password = '',
         Message $will = null,
         string $clientId = '',

@@ -39,6 +39,7 @@ class AMQPSwooleConnection extends AbstractConnection
         $host,
         $port,
         $user,
+        #[\SensitiveParameter]
         $password,
         $vhost = '/',
         $insist = false,
