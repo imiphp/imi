@@ -39,7 +39,7 @@ class Server extends Base implements ISwooleUdpServer
     protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \Swoole\Server($config['host'], (int) $config['port'], (int) $config['mode'], (int) $config['sockType']);
     }
 
     /**
@@ -62,9 +62,9 @@ class Server extends Base implements ISwooleUdpServer
     {
         return [
             'host'      => $this->config['host'] ?? '0.0.0.0',
-            'port'      => $this->config['port'] ?? 8080,
+            'port'      => (int) ($this->config['port'] ?? 8080),
             'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_UDP | $this->config['sockType']) : \SWOOLE_SOCK_UDP,
-            'mode'      => $this->config['mode'] ?? \SWOOLE_BASE,
+            'mode'      => (int) ($this->config['mode'] ?? \SWOOLE_BASE),
         ];
     }
 

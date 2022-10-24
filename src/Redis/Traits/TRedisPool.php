@@ -43,7 +43,7 @@ trait TRedisPool
                     {
                         [$host, $port] = explode(':', $node);
                     }
-                    $redisSentinel = new \RedisSentinel($host, $port, $config['timeout'] ?? 0, $config['persistent'] ?? false, $config['retryInterval'] ?? 0, $config['readTimeout'] ?? 0);
+                    $redisSentinel = new \RedisSentinel($host, $port, (float) ($config['timeout'] ?? 0), $config['persistent'] ?? false, (int) ($config['retryInterval'] ?? 0), (float) ($config['readTimeout'] ?? 0));
                     $masterArray = $redisSentinel->master($master);
                     if (\is_array($masterArray) && isset($masterArray['ip'], $masterArray['port']))
                     {

@@ -190,13 +190,13 @@ class RedisManager
             }
             else
             {
-                $redis->connect($host, $config['port'] ?? 6379, $config['timeout'] ?? 0);
+                $redis->connect($host, (int) ($config['port'] ?? 6379), (float) ($config['timeout'] ?? 0));
             }
             if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
             {
                 throw new \RedisException($redis->getLastError());
             }
-            if (isset($config['db']) && !$redis->select($config['db']))
+            if (isset($config['db']) && !$redis->select((int) $config['db']))
             {
                 throw new \RedisException($redis->getLastError());
             }

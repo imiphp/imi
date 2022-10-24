@@ -30,7 +30,7 @@ class Server extends BaseRpcServer
     protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \Swoole\Server($config['host'], (int) $config['port'], (int) $config['mode'], (int) $config['sockType']);
         $this->hproseService = new \Hprose\Swoole\Socket\Service();
         $this->parseConfig($config);
     }
@@ -43,7 +43,7 @@ class Server extends BaseRpcServer
         $config = $this->getServerInitConfig();
         // @phpstan-ignore-next-line
         $this->swooleServer = ServerManager::getServer('main')->getSwooleServer();
-        $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        $this->swoolePort = $this->swooleServer->addListener((int) $config['host'], (int) $config['port'], (int) $config['sockType']);
         $this->swoolePort->set([]);
         $this->hproseService = new \Hprose\Swoole\Socket\Service();
         $this->parseConfig($config);
@@ -90,9 +90,9 @@ class Server extends BaseRpcServer
     {
         return [
             'host'      => $this->config['host'] ?? '0.0.0.0',
-            'port'      => $this->config['port'] ?? 8080,
+            'port'      => (int) ($this->config['port'] ?? 8080),
             'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_TCP | $this->config['sockType']) : \SWOOLE_SOCK_TCP,
-            'mode'      => $this->config['mode'] ?? swoole_process,
+            'mode'      => (int) ($this->config['mode'] ?? \SWOOLE_BASE),
         ];
     }
 

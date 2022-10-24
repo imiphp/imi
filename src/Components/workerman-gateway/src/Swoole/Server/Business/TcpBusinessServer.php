@@ -40,9 +40,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         {
             return [
                 'host'      => $this->config['host'] ?? '127.0.0.1',
-                'port'      => $this->config['port'] ?? 0,
-                'sockType'  => $this->config['sockType'] ?? \SWOOLE_SOCK_TCP,
-                'mode'      => $this->config['mode'] ?? \SWOOLE_BASE,
+                'port'      => (int) ($this->config['port'] ?? 0),
+                'sockType'  => (int) ($this->config['sockType'] ?? \SWOOLE_SOCK_TCP),
+                'mode'      => (int) ($this->config['mode'] ?? \SWOOLE_BASE),
             ];
         }
 

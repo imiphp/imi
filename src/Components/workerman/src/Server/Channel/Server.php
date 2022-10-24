@@ -29,7 +29,7 @@ class Server extends \Imi\Workerman\Server\Tcp\Server
         else
         {
             $ip = $config['host'] ?? '0.0.0.0';
-            $port = $config['port'] ?? 2206;
+            $port = (int) ($config['port'] ?? 2206);
         }
         $channelServer = $this->channelServer = new \Channel\Server($ip, $port);
         $refClass = new ReflectionClass($channelServer);

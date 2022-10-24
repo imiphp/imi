@@ -92,7 +92,7 @@ class MQTTClient
         {
             $will = null;
         }
-        $connection = (new Connection($config['host'], $config['port'], $config['timeout'] ?? null, $config['pingTimespan'] ?? null, $config['username'] ?? '', $config['password'] ?? '', $will, $config['clientId'] ?? '', $config['keepAlive'] ?? 60, $config['protocol'] ?? 4, $config['clean'] ?? true))
+        $connection = (new Connection($config['host'], (int) $config['port'], isset($config['timeout']) ? (float) ($config['timeout']) : null, isset($config['pingTimespan']) ? (float) ($config['pingTimespan']) : null, $config['username'] ?? '', $config['password'] ?? '', $will, $config['clientId'] ?? '', (int) ($config['keepAlive'] ?? 60), (int) ($config['protocol'] ?? 4), (bool) ($config['clean'] ?? true)))
             ->withSsl($config['ssl'] ?? false)
             ->withSslCertFile($config['sslCertFile'] ?? null)
             ->withSslKeyFile($config['sslKeyFile'] ?? null)
