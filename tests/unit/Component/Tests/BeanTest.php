@@ -379,6 +379,15 @@ class BeanTest extends BaseTest
         $this->assertEquals($list1, $list2);
     }
 
+    public function testReadOnlyBean(): void
+    {
+        if (\PHP_VERSION_ID < 80200)
+        {
+            $this->markTestSkipped();
+        }
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\ReadOnlyBean::class, App::getBean('ReadOnlyBean'));
+    }
+
     // @phpstan-ignore-next-line
     private function test1(): self
     {
