@@ -379,6 +379,21 @@ class BeanTest extends BaseTest
         $this->assertEquals($list1, $list2);
     }
 
+    public function testConstructorPropertyBean(): void
+    {
+        if (\PHP_VERSION_ID < 80000)
+        {
+            $this->markTestSkipped();
+        }
+        /** @var \Imi\Test\Component\Bean\ConstructorPropertyBean $bean */
+        // @phpstan-ignore-next-line
+        $bean = App::getBean('ConstructorPropertyBean');
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\ConstructorPropertyBean::class, $bean);
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(BeanA::class, $bean->getBeanA());
+    }
+
     public function testReadOnlyBean(): void
     {
         if (\PHP_VERSION_ID < 80200)
