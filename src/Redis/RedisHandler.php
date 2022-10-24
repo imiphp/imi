@@ -343,7 +343,7 @@ class RedisHandler
             }
             else
             {
-                $result = $redis->connect($this->host, (int)$this->port, $this->timeout);
+                $result = $redis->connect($this->host, $this->port, $this->timeout);
             }
             if ($result)
             {
