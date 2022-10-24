@@ -9,6 +9,7 @@ if (\PHP_VERSION_ID >= 80000)
     eval(<<<'PHP'
     use Imi\Async\AsyncResult;
     use Imi\Async\Contract\IAsyncResult;
+    use Imi\Bean\Annotation\Bean;
     if (!class_exists(AsyncTesterPHP8::class, false))
     {
         /**

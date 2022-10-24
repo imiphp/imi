@@ -7,6 +7,7 @@ namespace Imi\Test\Component\Bean;
 if (\PHP_VERSION_ID >= 80200)
 {
     eval(<<<'PHP'
+    use Imi\Bean\Annotation\Bean;
     if (!class_exists(ReadOnlyBean::class, false))
     {
         /**
@@ -14,6 +15,10 @@ if (\PHP_VERSION_ID >= 80200)
          */
         readonly class ReadOnlyBean
         {
+            public function test(): string
+            {
+                return 'ReadOnlyBean';
+            }
         }
     }
     PHP);

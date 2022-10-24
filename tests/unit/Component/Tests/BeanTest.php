@@ -385,8 +385,13 @@ class BeanTest extends BaseTest
         {
             $this->markTestSkipped();
         }
+        /** @var \Imi\Test\Component\Bean\ReadOnlyBean $bean */
         // @phpstan-ignore-next-line
-        $this->assertInstanceOf(\Imi\Test\Component\Bean\ReadOnlyBean::class, App::getBean('ReadOnlyBean'));
+        $bean = App::getBean('ReadOnlyBean');
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\ReadOnlyBean::class, $bean);
+        // @phpstan-ignore-next-line
+        $this->assertEquals('ReadOnlyBean', $bean->test());
     }
 
     // @phpstan-ignore-next-line
