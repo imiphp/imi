@@ -98,6 +98,30 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.2', '>='))
         {
             $f = Imi::eval(<<<CODE
+            return function(): true {
+                return true;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('true', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): false {
+                return false;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('false', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): null {
+                return null;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
             return function(): (IteratorAggregate&Countable)|stdClass|null {
                 return new \ArrayObject();
             };
@@ -173,6 +197,30 @@ class BeanTest extends BaseTest
         // @phpstan-ignore-next-line
         if (version_compare(\PHP_VERSION, '8.2', '>='))
         {
+            $f = Imi::eval(<<<CODE
+            return function(): true {
+                return true;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('true', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): false {
+                return false;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('false', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): null {
+                return null;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('null', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
             $f = Imi::eval(<<<CODE
             return function(): (IteratorAggregate&Countable)|stdClass|null {
                 return new \ArrayObject();
