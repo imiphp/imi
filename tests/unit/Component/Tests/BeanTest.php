@@ -385,6 +385,7 @@ class BeanTest extends BaseTest
         {
             $this->markTestSkipped();
         }
+        // @phpstan-ignore-next-line
         $this->assertInstanceOf(\Imi\Test\Component\Bean\ReadOnlyBean::class, App::getBean('ReadOnlyBean'));
     }
 
