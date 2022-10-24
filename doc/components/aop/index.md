@@ -336,8 +336,10 @@ class Test
 	public function around(AroundJoinPoint $joinPoint)
 	{
 		var_dump('调用前');
-		// 调用原方法，获取返回值
+		// 执行原方法，获取返回值
 		$result = $joinPoint->proceed();
+        // 执行原方法，获取返回值（方法返回值是引用返回时）
+        // $result = $joinPoint->proceed(null, true);
 		var_dump('调用后');
 		return 'value'; // 无视原方法调用后的返回值，强制返回一个其它值
 		return $result; // 返回原方法返回值

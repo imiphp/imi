@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\App;
+use Imi\Bean\ReflectionContainer;
 
 class DelayClassCallable
 {
@@ -13,6 +14,8 @@ class DelayClassCallable
     private string $methodName = '';
 
     private array $constructArgs = [];
+
+    private ?bool $returnsReference = null;
 
     public function __construct(string $className, string $methodName, array $constructArgs = [])
     {
@@ -31,13 +34,32 @@ class DelayClassCallable
         return $this->methodName;
     }
 
+    public function getInstance(): object
+    {
+        return App::getSingleton($this->className, ...$this->constructArgs);
+    }
+
+    public function returnsReference(): bool
+    {
+        return $this->returnsReference ??= ReflectionContainer::getMethodReflection($this->className, $this->methodName)->returnsReference();
+    }
+
     /**
      * @param mixed ...$args
      *
      * @return mixed
      */
-    public function __invoke(...$args)
+    public function &__invoke(...$args)
     {
-        return App::getSingleton($this->className, ...$this->constructArgs)->{$this->methodName}(...$args);
+        if ($this->returnsReference())
+        {
+            return $this->getInstance()->{$this->methodName}(...$args);
+        }
+        else
+        {
+            $result = $this->getInstance()->{$this->methodName}(...$args);
+
+            return $result;
+        }
     }
 }

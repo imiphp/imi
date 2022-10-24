@@ -41,6 +41,9 @@
             <file>unit/Component/Tests/CacheRedisTest.php</file>
             <file>unit/Component/Tests/CacheRequestContextTest.php</file>
         </testsuite>
+        <testsuite name="bean">
+            <file>unit/Component/Tests/BeanTest.php</file>
+        </testsuite>
     </testsuites>
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />

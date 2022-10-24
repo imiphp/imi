@@ -26,7 +26,7 @@ class BeanProxy
      *
      * @return mixed
      */
-    public static function call(object $object, string $className, string $method, callable $callback, array &$args)
+    public static function &call(object $object, string $className, string $method, callable $callback, array &$args, bool $returnsReference = false)
     {
         try
         {
@@ -38,7 +38,7 @@ class BeanProxy
             if (!$aroundAspectDoList)
             {
                 // 正常请求
-                return self::callOrigin($object, $className, $method, $args, $callback);
+                return self::callOrigin($object, $className, $method, $args, $callback, $returnsReference);
             }
             $aroundAspectDoList = array_reverse($aroundAspectDoList);
 
@@ -47,14 +47,14 @@ class BeanProxy
 
             foreach ($aroundAspectDoList as $aroundAspectDo)
             {
-                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, null === $nextJoinPoint ? function (?array $inArgs = null) use ($object, $className, $method, &$args, $callback) {
+                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, null === $nextJoinPoint ? function &(?array $inArgs = null) use ($object, $className, $method, &$args, $callback, $returnsReference) {
                     if (null !== $inArgs)
                     {
                         $args = $inArgs;
                     }
 
-                    return self::callOrigin($object, $className, $method, $args, $callback);
-                } : static function (?array $inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
+                    return self::callOrigin($object, $className, $method, $args, $callback, $returnsReference);
+                } : static function &(?array $inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
                     if (null !== $inArgs)
                     {
                         $args = $inArgs;
@@ -65,8 +65,16 @@ class BeanProxy
                 $nextJoinPoint = $joinPoint;
                 $nextAroundAspectDo = $aroundAspectDo;
             }
+            if ($returnsReference)
+            {
+                return $nextAroundAspectDo($nextJoinPoint);
+            }
+            else
+            {
+                $result = $nextAroundAspectDo($nextJoinPoint);
 
-            return $nextAroundAspectDo($nextJoinPoint);
+                return $result;
+            }
         }
         catch (\Throwable $throwable)
         {
@@ -232,14 +240,21 @@ class BeanProxy
      *
      * @return mixed
      */
-    private static function callOrigin(object $object, string $className, string $method, array &$args, callable $callback)
+    private static function &callOrigin(object $object, string $className, string $method, array &$args, callable $callback, bool $returnsReference)
     {
         // before
         self::doAspect($className, $method, 'Before', static function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
             ($aopItem->getCallback())(new JoinPoint('before', $method, $args, $object));
         });
         // 原始方法调用
-        $result = $callback(...$args);
+        if ($returnsReference)
+        {
+            $result = &$callback(...$args);
+        }
+        else
+        {
+            $result = $callback(...$args);
+        }
         // after
         self::doAspect($className, $method, 'After', static function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
             ($aopItem->getCallback())(new JoinPoint('after', $method, $args, $object));

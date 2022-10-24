@@ -131,6 +131,8 @@ class TransactionAop
 
         // 执行原方法，获取返回值
         $result = $joinPoint->proceed($args);
+        // 执行原方法，获取返回值（方法返回值是引用返回时）
+        // $result = $joinPoint->proceed($args, true);
         // 后置操作
 
         // 返回返回值，如有必要你也可以自己决定其他返回值

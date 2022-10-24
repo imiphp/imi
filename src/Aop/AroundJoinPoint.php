@@ -24,13 +24,20 @@ class AroundJoinPoint extends JoinPoint
      *
      * @return mixed
      */
-    public function proceed(?array $args = null)
+    public function &proceed(?array $args = null, bool $returnsReference = false)
     {
         if (null === $args)
         {
             $args = $this->getArgs();
         }
-        $result = ($this->nextProceed)($args);
+        if ($returnsReference)
+        {
+            $result = &($this->nextProceed)($args, $returnsReference);
+        }
+        else
+        {
+            $result = ($this->nextProceed)($args, $returnsReference);
+        }
 
         $this->args = $args;
 
