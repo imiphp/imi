@@ -416,7 +416,7 @@ abstract class Base extends BaseServer implements ISwooleServer
         /** @var ISwooleServer $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
         $this->swooleServer = $server->getSwooleServer();
-        $port = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        $port = $this->swooleServer->addListener($config['host'], (int) $config['port'], (int) $config['sockType']);
         if (false === $port)
         {
             throw new \RuntimeException(sprintf('Swoole addListener(%s, %s, %s) failed', $config['host'], $config['port'], $config['sockType']));

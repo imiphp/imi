@@ -109,7 +109,7 @@ class Driver extends MysqlBase
         $option = $this->option;
         $serverConfig = [
             'host'          => $option['host'] ?? '127.0.0.1',
-            'port'          => $option['port'] ?? 3306,
+            'port'          => (int) ($option['port'] ?? 3306),
             'user'          => $option['username'] ?? 'root',
             'password'      => $option['password'] ?? '',
             'database'      => $option['database'] ?? '',

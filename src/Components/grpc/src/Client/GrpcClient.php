@@ -68,7 +68,10 @@ class GrpcClient implements IRpcClient
         $this->url = $options['url'];
         $this->uri = new Uri($this->url);
         $this->requestMethod = $options['method'] ?? 'GET';
-        $this->timeout = $options['timeout'] ?? null;
+        if (isset($options['timeout']))
+        {
+            $this->timeout = (float) $options['timeout'];
+        }
         $this->options = $options;
     }
 

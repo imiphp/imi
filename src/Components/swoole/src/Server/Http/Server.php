@@ -56,8 +56,8 @@ class Server extends Base implements ISwooleHttpServer
     protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
-        $this->https = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
+        $this->swooleServer = new \Swoole\Http\Server($config['host'], (int) $config['port'], (int) $config['mode'], (int) $config['sockType']);
+        $this->https = \defined('SWOOLE_SSL') && Bit::has((int) $config['sockType'], \SWOOLE_SSL);
         $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
     }
 
@@ -69,7 +69,7 @@ class Server extends Base implements ISwooleHttpServer
         parent::createSubServer();
         $thisConfig = &$this->config;
         $thisConfig['configs']['open_http_protocol'] ??= true;
-        $this->https = \defined('SWOOLE_SSL') && isset($thisConfig['sockType']) && Bit::has($thisConfig['sockType'], \SWOOLE_SSL);
+        $this->https = \defined('SWOOLE_SSL') && isset($thisConfig['sockType']) && Bit::has((int) $thisConfig['sockType'], \SWOOLE_SSL);
         $this->http2 = $thisConfig['configs']['open_http2_protocol'] ?? false;
     }
 
@@ -80,9 +80,9 @@ class Server extends Base implements ISwooleHttpServer
     {
         return [
             'host'       => $this->config['host'] ?? '0.0.0.0',
-            'port'       => $this->config['port'] ?? 80,
-            'sockType'   => $this->config['sockType'] ?? \SWOOLE_SOCK_TCP,
-            'mode'       => $this->config['mode'] ?? \SWOOLE_BASE,
+            'port'       => (int) ($this->config['port'] ?? 80),
+            'sockType'   => (int) ($this->config['sockType'] ?? \SWOOLE_SOCK_TCP),
+            'mode'       => (int) ($this->config['mode'] ?? \SWOOLE_BASE),
         ];
     }
 

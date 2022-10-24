@@ -196,7 +196,7 @@ class RedisManager
             {
                 throw new \RedisException($redis->getLastError());
             }
-            if (isset($config['db']) && !$redis->select($config['db']))
+            if (isset($config['db']) && !$redis->select((int) $config['db']))
             {
                 throw new \RedisException($redis->getLastError());
             }
