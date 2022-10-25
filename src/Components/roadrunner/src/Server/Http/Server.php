@@ -114,6 +114,10 @@ class Server extends BaseServer
                             $worker->getWorker()->error((string) $th);
                         }
                     }
+                    finally
+                    {
+                        RequestContext::destroy();
+                    }
                     $response = new RoadRunnerResponse($worker);
                 }
             }
