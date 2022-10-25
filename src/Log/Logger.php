@@ -25,8 +25,16 @@ class Logger
     /**
      * @return MonoLogger[]
      */
-    public function getLoggers(): array
+    public function getLoggers(bool $initAll = false): array
     {
+        if ($initAll)
+        {
+            foreach (Config::get('@app.logger.channels', []) as $channelName => $_)
+            {
+                $this->getLogger($channelName);
+            }
+        }
+
         return $this->loggers;
     }
 
@@ -47,7 +55,7 @@ class Logger
             $channelConfig = $channelsConfig[$channelName];
             $logger = $this->loggers[$channelName] = new MonoLogger($channelName);
             $handlers = [];
-            $app = App::getApp();
+            $appType = App::getApp()->getType();
             foreach ($channelConfig['handlers'] ?? [] as $handlerConfig)
             {
                 if (!isset($handlerConfig['class']))
@@ -56,7 +64,7 @@ class Logger
                 }
                 if (isset($handlerConfig['env']))
                 {
-                    if (!\in_array($app->getType(), $handlerConfig['env']))
+                    if (!\in_array($appType, $handlerConfig['env']))
                     {
                         continue;
                     }

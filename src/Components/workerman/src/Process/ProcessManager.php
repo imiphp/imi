@@ -97,7 +97,7 @@ class ProcessManager
             {
                 /** @var Logger $loggerInstance */
                 $loggerInstance = App::getBean('Logger');
-                foreach ($loggerInstance->getLoggers() as $logger)
+                foreach ($loggerInstance->getLoggers(true) as $logger)
                 {
                     foreach ($logger->getHandlers() as $handler)
                     {
