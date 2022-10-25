@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use Imi\Bean\BeanFactory;
+use Imi\Bean\ReflectionContainer;
 use Imi\Server\Contract\IServer;
 use Imi\Server\ServerManager;
 
@@ -16,6 +18,8 @@ class DelayServerBeanCallable
     private string $methodName = '';
 
     private array $constructArgs = [];
+
+    private ?bool $returnsReference = null;
 
     /**
      * @param string|\Imi\Server\Contract\IServer $server
@@ -47,6 +51,16 @@ class DelayServerBeanCallable
         return $this->server;
     }
 
+    public function getInstance(): object
+    {
+        return $this->server->getBean($this->beanName, ...$this->constructArgs);
+    }
+
+    public function returnsReference(): bool
+    {
+        return $this->returnsReference ??= ReflectionContainer::getMethodReflection(BeanFactory::getObjectClass($this->getInstance()), $this->methodName)->returnsReference();
+    }
+
     /**
      * @param mixed ...$args
      *
@@ -54,6 +68,15 @@ class DelayServerBeanCallable
      */
     public function __invoke(...$args)
     {
-        return $this->server->getBean($this->beanName, ...$this->constructArgs)->{$this->methodName}(...$args);
+        if ($this->returnsReference())
+        {
+            return $this->getInstance()->{$this->methodName}(...$args);
+        }
+        else
+        {
+            $result = $this->getInstance()->{$this->methodName}(...$args);
+
+            return $result;
+        }
     }
 }

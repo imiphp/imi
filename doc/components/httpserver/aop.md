@@ -52,8 +52,11 @@ class Fuck
                     'result' => 'fuck1',
                  ]));
         $response->send();
-        // 如果需要执行原动作方法，可以去掉注释
+        // 如果需要执行原方法，可以去掉注释
         // $returnValue = $joinPoint->proceed();
+        // 执行原方法，获取返回值（方法返回值是引用返回时）
+        // $returnValue = $joinPoint->proceed(null, true);
+
         // return $returnValue; // 返回原返回值
     }
 
@@ -73,6 +76,9 @@ class Fuck
     {
         // 如果需要执行原动作方法，可以去掉注释
         // $returnValue = $joinPoint->proceed();
+        // 执行原方法，获取返回值（方法返回值是引用返回时）
+        // $returnValue = $joinPoint->proceed(null, true);
+
         // return $returnValue; // 返回原返回值
 
         // 强行修改返回值

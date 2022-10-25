@@ -274,6 +274,23 @@ class BeanTest extends BaseTest
         $this->assertTrue($a === $object);
     }
 
+    public function testReferenceBean(): void
+    {
+        /** @var \Imi\Test\Component\Bean\ReferenceBean $referenceBean */
+        $referenceBean = App::getBean('ReferenceBean');
+        $b = null;
+        $referenceBean->testParams(123, $b);
+        $this->assertEquals(124, $b); // aop 里会 + 1
+
+        $referenceBean->testReturnValue()[] = 1;
+
+        $list1 = &$referenceBean->testReturnValue();
+        $this->assertCount(1, $list1);
+        $list1[] = 2;
+        $list2 = $referenceBean->testReturnValue();
+        $this->assertEquals($list1, $list2);
+    }
+
     // @phpstan-ignore-next-line
     private function test1(): self
     {

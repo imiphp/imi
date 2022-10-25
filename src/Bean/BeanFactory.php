@@ -177,24 +177,43 @@ class BeanFactory
             $paramsTpls = static::getMethodParamTpls($constructMethod);
             if (static::hasAop($ref, '__construct'))
             {
-                $constructMethod = <<<TPL
-                    public function __construct({$paramsTpls['define']})
-                    {
-                        \$__args__ = \\func_get_args();
-                        {$paramsTpls['set_args']}
-                        \$__result__ = \Imi\Bean\BeanProxy::call(
-                            \$this,
-                            parent::class,
-                            '__construct',
-                            function({$paramsTpls['define']}){
-                                \$__args__ = \\func_get_args();
-                                {$paramsTpls['set_args']}
-                                return parent::__construct(...\$__args__);
-                            },
-                            \$__args__
-                        );
-                    }
-                TPL;
+                if ('' === $paramsTpls['set_args'])
+                {
+                    $constructMethod = <<<TPL
+                        public function __construct({$paramsTpls['define']})
+                        {
+                            \$__args__ = \\func_get_args();
+                            \Imi\Bean\BeanProxy::call(
+                                \$this,
+                                parent::class,
+                                '__construct',
+                                fn(...\$args) => parent::__construct(...\$args),
+                                \$__args__
+                            );
+                        }
+                    TPL;
+                }
+                else
+                {
+                    $constructMethod = <<<TPL
+                        public function __construct({$paramsTpls['define']})
+                        {
+                            \$__args__ = \\func_get_args();
+                            {$paramsTpls['set_args']}
+                            \Imi\Bean\BeanProxy::call(
+                                \$this,
+                                parent::class,
+                                '__construct',
+                                function ({$paramsTpls['define']}){
+                                    \$__args__ = \\func_get_args();
+                                    {$paramsTpls['set_args']}
+                                    parent::__construct(...\$__args__);
+                                },
+                                \$__args__
+                            );
+                        }
+                    TPL;
+                }
             }
             elseif ($constructMethod->isProtected())
             {
@@ -262,29 +281,53 @@ class BeanFactory
             }
             $paramsTpls = static::getMethodParamTpls($method);
             $methodReturnType = static::getMethodReturnType($method);
-            $returnsReference = $method->returnsReference() ? '&' : '';
-            $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType(), $method->getDeclaringClass()->getName()) ? '' : 'return $__result__;';
-            $tpl .= <<<TPL
-                public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
-                {
-                    \$__args__ = \\func_get_args();
-                    {$paramsTpls['set_args']}
-                    \$__result__ = \Imi\Bean\BeanProxy::call(
-                        \$this,
-                        parent::class,
-                        '{$methodName}',
-                        function({$paramsTpls['define']}){
-                            \$__args__ = \\func_get_args();
-                            {$paramsTpls['set_args']}
-                            return parent::{$methodName}(...\$__args__);
-                        },
-                        \$__args__
-                    );
-                    {$paramsTpls['set_args_back']}
-                    {$returnContent}
-                }
+            $returnsReferenceStr = ($returnsReference = $method->returnsReference()) ? '&' : '';
+            $returnsReference = $returnsReference ? 'true' : 'false';
 
-            TPL;
+            if ('' === $paramsTpls['set_args'])
+            {
+                $returnContent = $method->hasReturnType() && !ReflectionUtil::isAllowReturnedType($method->getReturnType()) ? '' : 'return ';
+                $tpl .= <<<TPL
+                    public function {$returnsReferenceStr}{$methodName}({$paramsTpls['define']}){$methodReturnType}
+                    {
+                        \$__args__ = \\func_get_args();
+                        {$returnContent}\Imi\Bean\BeanProxy::call(
+                            \$this,
+                            parent::class,
+                            '{$methodName}',
+                            fn {$returnsReferenceStr}(...\$args) => parent::{$methodName}(...\$args),
+                            \$__args__,
+                            {$returnsReference}
+                        );
+                    }
+                TPL;
+            }
+            else
+            {
+                $returnContent = $method->hasReturnType() && !ReflectionUtil::isAllowReturnedType($method->getReturnType()) ? '' : 'return $__result__;';
+                $tpl .= <<<TPL
+                    public function {$returnsReferenceStr}{$methodName}({$paramsTpls['define']}){$methodReturnType}
+                    {
+                        \$__args__ = \\func_get_args();
+                        {$paramsTpls['set_args']}
+                        \$__result__ = \Imi\Bean\BeanProxy::call(
+                            \$this,
+                            parent::class,
+                            '{$methodName}',
+                            function {$returnsReferenceStr}({$paramsTpls['define']}){
+                                \$__args__ = \\func_get_args();
+                                {$paramsTpls['set_args']}
+                                return parent::{$methodName}(...\$__args__);
+                            },
+                            \$__args__,
+                            {$returnsReference}
+                        );
+                        {$paramsTpls['set_args_back']}
+                        {$returnContent}
+                    }
+
+                TPL;
+            }
         }
 
         return $tpl;
@@ -323,18 +366,17 @@ class BeanFactory
                 $setArgsBack .= '$' . $paramName . ' = $__args__[' . $i . '];';
             }
         }
+        // 调用如果参数为空处理
+        if (!$call)
+        {
+            $call = ['...\func_get_args()'];
+        }
         foreach ($result as &$item)
         {
             if (\is_array($item))
             {
                 $item = implode(', ', $item);
             }
-        }
-        // 调用如果参数为空处理
-        // @phpstan-ignore-next-line
-        if ('' === $call)
-        {
-            $call = '...\func_get_args()';
         }
 
         return $result;
