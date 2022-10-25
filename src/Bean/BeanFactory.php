@@ -286,7 +286,7 @@ class BeanFactory
 
             if ('' === $paramsTpls['set_args'])
             {
-                $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType(), $method->getDeclaringClass()->getName()) ? '' : 'return ';
+                $returnContent = $method->hasReturnType() && !ReflectionUtil::isAllowReturnedType($method->getReturnType()) ? '' : 'return ';
                 $tpl .= <<<TPL
                     public function {$returnsReferenceStr}{$methodName}({$paramsTpls['define']}){$methodReturnType}
                     {
@@ -304,7 +304,7 @@ class BeanFactory
             }
             else
             {
-                $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType(), $method->getDeclaringClass()->getName()) ? '' : 'return $__result__;';
+                $returnContent = $method->hasReturnType() && !ReflectionUtil::isAllowReturnedType($method->getReturnType()) ? '' : 'return $__result__;';
                 $tpl .= <<<TPL
                     public function {$returnsReferenceStr}{$methodName}({$paramsTpls['define']}){$methodReturnType}
                     {

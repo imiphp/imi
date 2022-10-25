@@ -32,7 +32,7 @@ class ReferenceBeanAspect
      */
     public function before(JoinPoint $joinPoint): void
     {
-        Log::info(sprintf('before ConstructorPropertyBean::%s()', $joinPoint->getMethod()));
+        Log::info(sprintf('before ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
     /**
@@ -45,7 +45,7 @@ class ReferenceBeanAspect
      */
     public function after(JoinPoint $joinPoint): void
     {
-        Log::info(sprintf('after ConstructorPropertyBean::%s()', $joinPoint->getMethod()));
+        Log::info(sprintf('after ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
     /**
@@ -60,7 +60,7 @@ class ReferenceBeanAspect
      */
     public function &around(AroundJoinPoint $joinPoint)
     {
-        Log::info(sprintf('around ConstructorPropertyBean::%s()', $joinPoint->getMethod()));
+        Log::info(sprintf('around ReferenceBean::%s()', $joinPoint->getMethod()));
 
         if ('testParams' === $joinPoint->getMethod())
         {
@@ -84,7 +84,7 @@ class ReferenceBeanAspect
      */
     public function afterReturning(AfterReturningJoinPoint $joinPoint)
     {
-        Log::info(sprintf('afterReturning ConstructorPropertyBean::%s()', $joinPoint->getMethod()));
+        Log::info(sprintf('afterReturning ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
     /**
@@ -99,6 +99,6 @@ class ReferenceBeanAspect
      */
     public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
     {
-        Log::info(sprintf('afterThrowing ConstructorPropertyBean::%s()', $joinPoint->getMethod()));
+        Log::info(sprintf('afterThrowing ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 }

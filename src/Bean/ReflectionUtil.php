@@ -198,4 +198,18 @@ class ReflectionUtil
         }
         throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
     }
+
+    public static function isAllowReturnedType(ReflectionType $type): bool
+    {
+        if ($type instanceof ReflectionNamedType)
+        {
+            $name = $type->getName();
+            if ('void' === $name || (\PHP_VERSION_ID >= 80000 && 'never' === $name))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
