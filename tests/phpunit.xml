@@ -43,6 +43,7 @@
         </testsuite>
         <testsuite name="bean">
             <file>unit/Component/Tests/BeanTest.php</file>
+            <file>unit/Component/Tests/AopTest.php</file>
         </testsuite>
     </testsuites>
     <extensions>

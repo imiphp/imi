@@ -127,6 +127,10 @@ class BeanProxy
             {
                 throw $throwable;
             }
+
+            $null = null;
+
+            return $null;
         }
     }
 
