@@ -77,7 +77,6 @@ class Server extends BaseServer
                 {
                     (new HttpRouteInit())->handle(new EventParam(''));
                 }
-                RequestContext::set('server', $this);
                 /** @var \Imi\Server\Http\Dispatcher $dispatcher */
                 $dispatcher = $this->getBean('HttpDispatcher');
                 $this->worker = $worker = \Spiral\RoadRunner\Worker::create();
@@ -94,6 +93,7 @@ class Server extends BaseServer
                     try
                     {
                         RequestContext::muiltiSet([
+                            'server'   => $this,
                             'request'  => $request,
                             'response' => $response,
                         ]);
@@ -110,6 +110,10 @@ class Server extends BaseServer
                         {
                             $worker->getWorker()->error((string) $th);
                         }
+                    }
+                    finally
+                    {
+                        RequestContext::destroy();
                     }
                     $response = new RoadRunnerResponse($worker);
                 }
