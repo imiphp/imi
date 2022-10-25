@@ -8,6 +8,7 @@ use ArrayObject;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
+use Imi\Event\Event;
 
 /**
  * 默认上下文管理器.
@@ -21,6 +22,8 @@ class DefaultContextManager implements IContextManager
      */
     private array $contexts = [];
 
+    private bool $shutdownListened = false;
+
     /**
      * {@inheritDoc}
      */
@@ -29,6 +32,13 @@ class DefaultContextManager implements IContextManager
         if (isset($this->contexts[$flag]))
         {
             throw new ContextExistsException(sprintf('Context %s already exists!', $flag));
+        }
+
+        // 脚本执行结束时自动销毁上下文
+        if (!$this->shutdownListened)
+        {
+            $this->shutdownListened = true;
+            $this->bindAutoDestroy();
         }
 
         return $this->contexts[$flag] = new ArrayObject($data, ArrayObject::ARRAY_AS_PROPS);
@@ -41,6 +51,7 @@ class DefaultContextManager implements IContextManager
     {
         if (isset($this->contexts[$flag]))
         {
+            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
             unset($this->contexts[$flag]);
 
             return true;
@@ -82,5 +93,18 @@ class DefaultContextManager implements IContextManager
     public function getCurrentFlag(): string
     {
         return 'default';
+    }
+
+    protected function bindAutoDestroy(): void
+    {
+        register_shutdown_function(function () {
+            if ($this->contexts)
+            {
+                foreach ($this->contexts as $flag => $_)
+                {
+                    $this->destroy($flag);
+                }
+            }
+        });
     }
 }
