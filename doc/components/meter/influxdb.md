@@ -1,33 +1,90 @@
-# Prometheus
+# InfluxDB
 
-Prometheus 是云原生计算基金会的一个项目，是一个系统和服务监控系统。它以给定的时间间隔从配置的目标收集指标，评估规则表达式，显示结果，并能在观察到指定条件时触发警报。
+InfluxDB 是一个开源的时间序列数据库，没有外部依赖性。它对记录指标、事件和执行分析很有用。
 
-普罗米修斯区别于其他指标和监控系统的特点是。
+项目地址：<https://github.com/influxdata/influxdb>
 
-* 多维数据模型（时间序列由指标名称和一组键/值维度定义）
-* PromQL，一种强大而灵活的查询语言，以利用这种维度
-* 不依赖分布式存储；单个服务器节点是自主的
-* 用于收集时间序列的HTTP拉动模型
-* 通过中间网关支持批量作业的时间序列推送
-* 通过服务发现或静态配置来发现目标
-* 支持多种模式的图形和仪表盘制作
-* 支持分层和水平联合
+imi-influxdb：<https://github.com/imiphp/imi-influxdb>
 
-项目地址：<https://github.com/prometheus/prometheus>
-
-imi-prometheus：<https://github.com/imiphp/imi-prometheus>
+> 目前 imi 仅支持 InfluxDB < 1.8
 
 ## 安装
 
-`composer require imiphp/imi-prometheus:~2.1.0`
+`composer require imiphp/imi-influxdb:~2.1.0`
 
 ## 使用说明
 
-普罗米修斯组件只支持以实例为单位上报，不支持以 Worker 进程为单位。
+### InfluxDB 连接管理
 
-### 配置
+#### 配置连接
 
-首先需要配置 Redis 连接，可以参考文档，这里不再赘述。
+`config.php`：
+
+```php
+[
+    'influxDB'  => [
+        'clients'   => [
+            // default 是连接名称，可以随意更改
+            'default'   => [
+                'host'              => '127.0.0.1', // 主机名
+                'port'              => 8086, // 端口
+                'username'          => '', // 用户名
+                'password'          => '', // 密码
+                'defaultDatabase'   => '', // 默认数据库名
+                'ssl'               => false, // 是否启用 SSL
+                'verifySSL'         => false, // 是否验证 SSL 证书
+                'timeout'           => 0, // 超时时间
+                'connectTimeout'    => 0, // 连接超时时间
+                'path'              =>'/', // 请求路径前缀
+            ],
+        ],
+        'default'   => 'default', // 默认连接名
+    ],
+]
+```
+
+#### 获取客户端对象
+
+```php
+use Imi\InfluxDB\InfluxDB;
+
+$client = InfluxDB::getClient(); // 获取默认客户端
+$client = InfluxDB::getClient('default'); // 获取指定名称客户端
+```
+
+#### 获取数据库对象
+
+```php
+use Imi\InfluxDB\InfluxDB;
+
+$db = InfluxDB::getDatabase(); // 获取默认数据库名的对象
+$db = InfluxDB::getDatabase('dbname'); // 获取指定数据库名的对象
+$db = InfluxDB::getDatabase(null, 'default'); // 指定客户端名称
+```
+
+#### 使用数据库对象
+
+```php
+$db = InfluxDB::getDatabase();
+$db->query(); // SQL 查询
+$db->writePoints(); // 写入数据
+```
+
+> 详细用法请参考：<https://github.com/influxdata/influxdb-php>
+
+#### InfluxDB ORM
+
+详细用法请参考：<https://github.com/Yurunsoft/influxdb-orm>
+
+#### SQL 查询
+
+#### 写入
+
+### 服务指标监控
+
+仅支持 Swoole、Workerman。
+
+#### 配置
 
 **配置监控指标：**
 
@@ -36,15 +93,12 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 ```php
 [
     'MeterRegistry' => [
-        'driver'  => \Imi\Prometheus\PrometheusMeterRegistry::class,
+        'driver'  => \Imi\InfluxDB\Meter\InfluxDBMeterRegistry::class,
         'options' => [
-            'adapter' => [
-                'class'   => \Imi\Prometheus\Storage\Redis::class,
-                'options' => [
-                    // 'poolName' => null, // 连接池名称，如果为 null 则使用默认 Redis 连接池
-                    // 'prefix' => 'PROMETHEUS_', // 键名前缀
-                ],
-            ],
+            'database'   => null, // 使用的数据库名，可以设为null使用连接中配置的数据库名
+            'clientName' => null, // 连接客户端名称，可以设为null使用默认客户端名称
+            'batch'      => 1000, // 单次推送的记录数量
+            'interval'   => 0, // 推送时间周期，单位：秒，默认为0不启用推送，如希望监控生效，请设置一个合理的数值。
             // 所有标签如设为空字符串或 null 则忽略该标签
             'resultTag' => 'result', // 标签名-结果
             'exceptionTag' => 'exception', // 标签名-异常类名
@@ -56,11 +110,11 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 ]
 ```
 
-### 使用
+#### 使用
 
-#### 注解
+##### 注解
 
-##### @Counted
+###### @Counted
 
 类名：`\Imi\Meter\Annotation\Counted`
 
@@ -76,7 +130,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | description | `string` |  | 描述 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-##### @Gauged
+###### @Gauged
 
 类名：`\Imi\Meter\Annotation\Gauged`
 
@@ -90,11 +144,11 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | recordFailuresOnly | `false` | `bool` | 是否只在抛出异常时记录 |
 | tags | `array` | `[]` | 标签，键值数组 |
 | description | `string` |  | 描述 |
-| value | `string/float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
+| value | `string\|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | operation | `int` | `\Imi\Meter\Enum\GaugeOperation::SET` | 操作类型。设置`GaugeOperation::SET`；增加`GaugeOperation::INCREMENT`；减少`GaugeOperation::DECREMENT` |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-##### @Timed
+###### @Timed
 
 类名：`\Imi\Meter\Annotation\Timed`
 
@@ -110,18 +164,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | baseTimeUnit | `int` | `\Imi\Meter\Enum\TimeUnit::NANO_SECOND` | 基础时间单位，默认纳秒，可以使用 `\Imi\Meter\Enum\TimeUnit::XXX` 常量设置。 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-`options` 在普罗米修斯的特定配置：
-
-```php
-[
-    'histogram' => true, // 设置为柱状图，否则默认为 Summary
-    'buckets' => [], // 桶，仅柱状图
-    'maxAgeSeconds' => 600, // Summary 最大生存时间
-    'percentile' => [], // Summary 百分位
-]
-```
-
-##### @Histogram
+###### @Histogram
 
 类名：`\Imi\Meter\Annotation\Histogram`
 
@@ -134,10 +177,10 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | description | `string` |  | 描述 |
 | buckets | `array` | `[]` | 桶，例如：`[100, 500, 1000]` |
 | baseTimeUnit | `int` | `\Imi\Meter\Enum\TimeUnit::NANO_SECOND` | 基础时间单位，默认纳秒，可以使用 `\Imi\Meter\Enum\TimeUnit::XXX` 常量设置。 |
-| value | `string/float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
+| value | `string\|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-##### @Summary
+###### @Summary
 
 类名：`\Imi\Meter\Annotation\Summary`
 
@@ -150,7 +193,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | description | `string` |  | 描述 |
 | percentile | `array` | `[]` | 百分位数，例如：`[0.01, 0.5, 0.99]` |
 | baseTimeUnit | `int` | `\Imi\Meter\Enum\TimeUnit::NANO_SECOND` | 基础时间单位，默认纳秒，可以使用 `\Imi\Meter\Enum\TimeUnit::XXX` 常量设置。 |
-| value | `string/float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
+| value | `string\|float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
 **代码示例：**
@@ -174,7 +217,7 @@ public function recordMemoryUsage(): array
 }
 
 /**
- * @Timed(name="test_timed", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS, options={"quantiles"={0.1, 0.5, 0.99}})
+ * @Timed(name="test_timed", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS)
  */
 public function testTimed(): int
 {
@@ -185,7 +228,7 @@ public function testTimed(): int
 }
 
 /**
- * @Timed(name="test_timed_histogram", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS, options={"histogram"=true, "buckets"={50, 100, 300, 600, 800, 1000}})
+ * @Timed(name="test_timed_histogram", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS, options={"histogram"=true})
  */
 public function testTimedHistogram(): int
 {
@@ -196,7 +239,7 @@ public function testTimedHistogram(): int
 }
 
 /**
- * @Histogram(name="test_histogram", baseTimeUnit=TimeUnit::MILLI_SECONDS, buckets={50, 100, 300, 600, 800, 1000})
+ * @Histogram(name="test_histogram", baseTimeUnit=TimeUnit::MILLI_SECONDS)
  */
 public function testHistogram(): int
 {
@@ -204,7 +247,7 @@ public function testHistogram(): int
 }
 
 /**
- * @Summary(name="test_summary", baseTimeUnit=TimeUnit::MILLI_SECONDS, percentile={0.1, 0.5, 0.99})
+ * @Summary(name="test_summary", baseTimeUnit=TimeUnit::MILLI_SECONDS)
  */
 public function testSummary(): int
 {
@@ -212,12 +255,11 @@ public function testSummary(): int
 }
 ```
 
-#### 手动操作
+##### 手动操作
 
 ```php
 use \Imi\Meter\Facade\MeterRegistry;
 use \Imi\Meter\Enum\TimeUnit;
-
 
 $description = '我是描述';
 $tags = ['result' => 'success'];
@@ -237,7 +279,6 @@ $timerSample->stop($timer);
 // timer Histogram
 $timer = MeterRegistry::getDriverInstance()->timer('testTimedHistogramManual', $tags, $description, TimeUnit::MILLI_SECONDS, [
     'histogram' => true,
-    'buckets'   => [100, 500, 1500],
 ]);
 $timerSample = $timer->start();
 usleep(mt_rand(10, 1000) * 1000); // 你的耗时代码
@@ -245,17 +286,9 @@ $timerSample->stop($timer);
 
 // Histogram
 $value = 114514;
-$buckets = [100, 500, 1500];
-MeterRegistry::getDriverInstance()->histogram('testHistogramManual', $tags, $description, $buckets)->record($value);
+MeterRegistry::getDriverInstance()->histogram('testHistogramManual', $tags, $description)->record($value);
 
 // Summary
 $value = 114514;
-$percentile = [0.1, 0.5, 0.99];
-MeterRegistry::getDriverInstance()->summary('testHistogramManual', $tags, $description, $percentile)->record($value);
+MeterRegistry::getDriverInstance()->summary('testHistogramManual', $tags, $description)->record($value);
 ```
-
-#### 清除 Redis 驱动存储数据
-
-如果你的同名指标，修改了 `tags`，那么必须清理存储数据，否则会报错。
-
-`vendor/bin/imi-swoole prometheus/wipe`
