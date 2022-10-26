@@ -23,6 +23,8 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 
 ## 使用说明
 
+普罗米修斯组件只支持以实例为单位上报，不支持以 Worker 进程为单位。
+
 ### 配置
 
 首先需要配置 Redis 连接，可以参考文档，这里不再赘述。
@@ -43,6 +45,12 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
                     // 'prefix' => 'PROMETHEUS_', // 键名前缀
                 ],
             ],
+            // 所有标签如设为空字符串或 null 则忽略该标签
+            'resultTag' => 'result', // 标签名-结果
+            'exceptionTag' => 'exception', // 标签名-异常类名
+            'instanceTag' => 'instance', // 标签名-实例
+            'workerTag' => 'worker', // 标签名-WorkerId
+            'instance' => 'imi', // 当前实例名称，每个实例要设置不同
         ],
     ],
 ]
