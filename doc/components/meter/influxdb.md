@@ -84,6 +84,10 @@ $db->writePoints(); // 写入数据
 
 仅支持 Swoole、Workerman。
 
+#### 安装所需组件
+
+`composer require imiphp/imi-meter:~2.1.0`
+
 #### 配置
 
 **配置监控指标：**
