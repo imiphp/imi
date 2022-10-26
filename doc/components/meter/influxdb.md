@@ -1,5 +1,7 @@
 # InfluxDB
 
+[toc]
+
 InfluxDB 是一个开源的时间序列数据库，没有外部依赖性。它对记录指标、事件和执行分析很有用。
 
 项目地址：<https://github.com/influxdata/influxdb>
