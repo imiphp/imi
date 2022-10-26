@@ -43,17 +43,13 @@ class RandomTest extends BaseTest
         $this->assertEquals('aaaaa', $val);
 
         $val = Random::text('abc', 10, 20);
-        $result = preg_match('/^[abc]{10, 20}$/', $val);
-        // @phpstan-ignore-next-line
-        $this->assertTrue(false !== $result && $result >= 0);
+        $this->assertEquals(1, preg_match('/^[abc]{10,20}$/', $val));
     }
 
     public function testLetter(): void
     {
         $val = Random::letter(10, 20);
-        $result = preg_match('/^[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]{10, 20}$/', $val);
-        // @phpstan-ignore-next-line
-        $this->assertTrue(false !== $result && $result >= 0);
+        $this->assertEquals(1, preg_match('/^[a-zA-Z]{10,20}$/', $val));
 
         $this->assertEquals(5, \strlen(Random::letter(5)));
     }
@@ -61,9 +57,7 @@ class RandomTest extends BaseTest
     public function testDigital(): void
     {
         $val = Random::digital(10, 20);
-        $result = preg_match('/^[0123456789]{10, 20}$/', $val);
-        // @phpstan-ignore-next-line
-        $this->assertTrue(false !== $result && $result >= 0);
+        $this->assertEquals(1, preg_match('/^\d{10,20}$/', $val));
 
         $this->assertEquals(5, \strlen(Random::digital(5)));
     }
@@ -71,9 +65,7 @@ class RandomTest extends BaseTest
     public function testLetterAndNumber(): void
     {
         $val = Random::letterAndNumber(10, 20);
-        $result = preg_match('/^[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]{10, 20}$/', $val);
-        // @phpstan-ignore-next-line
-        $this->assertTrue(false !== $result && $result >= 0);
+        $this->assertEquals(1, preg_match('/^[a-zA-Z\d]{10,20}$/', $val));
 
         $this->assertEquals(5, \strlen(Random::letterAndNumber(5)));
     }
