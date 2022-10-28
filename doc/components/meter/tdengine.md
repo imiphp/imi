@@ -14,7 +14,8 @@ imi 支持将服务指标监控的数据写入 TDengine。
 
 * [ ] TDengine Schemaless（开发中）
 * [x] InfluxDB 兼容接口
-……
+
+更多写入协议支持开发中……
 
 ## 使用
 

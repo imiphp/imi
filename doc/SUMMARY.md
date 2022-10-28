@@ -216,6 +216,7 @@
   * [雪花算法发号器](components/snowflake.md)
   * [Swagger API 文档生成](dev/generate/swagger.md)
   * [Swoole Tracker](components/swoole-tracker.md)
+  * [InfluxDB](components/influxdb.md)
   * [TDengine](components/tdengine.md)
 
 ## 消息队列
