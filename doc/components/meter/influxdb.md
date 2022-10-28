@@ -10,6 +10,10 @@ imi-influxdb：<https://github.com/imiphp/imi-influxdb>
 
 > 目前 imi 仅支持 InfluxDB < 1.8
 
+## 说明
+
+imi 支持将服务指标监控的数据写入 InfluxDB。
+
 ## 安装
 
 `composer require imiphp/imi-influxdb:~2.1.0`
@@ -37,11 +41,25 @@ imi-influxdb：<https://github.com/imiphp/imi-influxdb>
                 'verifySSL'         => false, // 是否验证 SSL 证书
                 'timeout'           => 0, // 超时时间
                 'connectTimeout'    => 0, // 连接超时时间
-                'path'              =>'/', // 请求路径前缀
+                'path'              => '/', // 请求路径前缀
+                'createDatabase'    => true, // 当数据库不存在时，自动创建数据库
             ],
         ],
         'default'   => 'default', // 默认连接名
     ],
+]
+```
+
+**TDengine InfluxDB 所需修改的配置：**
+
+```php
+// 连接配置一定要设置这几项
+[
+    'port'              => 6041,
+    'path'              => '/influxdb/v1/',
+    'createDatabase'    => false,
+    'username'          => 'root',
+    'password'          => 'taosdata',
 ]
 ```
 
@@ -86,6 +104,8 @@ $db->writePoints(); // 写入数据
 
 仅支持 Swoole、Workerman。
 
+支持 TDengine InfluxDB 协议写入。
+
 #### 安装所需组件
 
 `composer require imiphp/imi-meter:~2.1.0`
@@ -113,6 +133,19 @@ $db->writePoints(); // 写入数据
             'instance' => 'imi', // 当前实例名称，每个实例要设置不同
         ],
     ],
+]
+```
+
+**TDengine InfluxDB 所需修改的配置：**
+
+```php
+// 连接配置一定要设置这几项
+[
+    'port'              => 6041,
+    'path'              => '/influxdb/v1/',
+    'createDatabase'    => false,
+    'username'          => 'root',
+    'password'          => 'taosdata',
 ]
 ```
 

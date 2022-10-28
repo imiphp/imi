@@ -237,6 +237,7 @@
 * [服务指标监控](components/meter/index.md)
   * [Prometheus](components/meter/prometheus.md)
   * [InfluxDB](components/meter/influxdb.md)
+  * [TDengine](components/meter/tdengine.md)
 * [服务限流](components/rate-limit.md)
 
 ## 数据结构
