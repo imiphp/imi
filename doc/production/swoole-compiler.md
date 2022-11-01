@@ -10,6 +10,8 @@ Swoole Compiler 是识沃科技推出的 PHP 代码加密和客户端授权解�
 
 使用 `imi` + `Swoole Compiler` 你需要注意如下事项：
 
-* 加密前：`vendor/bin/imi-swoole imi/buildRuntime`
+* 加密前先生成运行时缓存（注解扫描缓存）：`vendor/bin/imi-swoole imi/buildRuntime`
 
-* 加密后启动服务：`vendor/bin/imi-swoole swoole/start --app-runtime={你的项目路径}/.runtime/swoole/runtime/`
+* 加密时，不推荐加密 `config`、`tests`、`vendor` 等目录
+
+* 加密后启动服务带上参数：`vendor/bin/imi-swoole swoole/start --app-runtime={你的项目路径}/.runtime/swoole/runtime/`
