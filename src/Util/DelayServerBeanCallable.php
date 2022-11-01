@@ -11,7 +11,9 @@ use Imi\Server\ServerManager;
 
 class DelayServerBeanCallable
 {
-    private ?IServer $server = null;
+    private string $server = '';
+
+    private ?IServer $serverInstance = null;
 
     private string $beanName = '';
 
@@ -22,15 +24,20 @@ class DelayServerBeanCallable
     private ?bool $returnsReference = null;
 
     /**
-     * @param string|\Imi\Server\Contract\IServer $server
+     * @param string|IServer $server
      */
     public function __construct($server, string $beanName, string $methodName, array $constructArgs = [])
     {
         if (\is_string($server))
         {
-            $server = ServerManager::getServer($server);
+            $this->server = $server;
+            $this->serverInstance = ServerManager::getServer($server);
         }
-        $this->server = $server;
+        else
+        {
+            $this->server = $server->getName();
+            $this->serverInstance = $server;
+        }
         $this->beanName = $beanName;
         $this->methodName = $methodName;
         $this->constructArgs = $constructArgs;
@@ -48,12 +55,12 @@ class DelayServerBeanCallable
 
     public function getServer(): IServer
     {
-        return $this->server;
+        return $this->serverInstance ?? ServerManager::getServer($this->server);
     }
 
     public function getInstance(): object
     {
-        return $this->server->getBean($this->beanName, ...$this->constructArgs);
+        return $this->getServer()->getBean($this->beanName, ...$this->constructArgs);
     }
 
     public function returnsReference(): bool
@@ -78,5 +85,21 @@ class DelayServerBeanCallable
 
             return $result;
         }
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'server'           => $this->server,
+            'beanName'         => $this->beanName,
+            'methodName'       => $this->methodName,
+            'constructArgs'    => $this->constructArgs,
+            'returnsReference' => $this->returnsReference,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        ['server' => $this->server, 'beanName' => $this->beanName, 'methodName' => $this->methodName, 'constructArgs' => $this->constructArgs, 'returnsReference' => $this->returnsReference] = $data;
     }
 }
