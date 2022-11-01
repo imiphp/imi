@@ -9,24 +9,31 @@ use Imi\Server\ServerManager;
 
 class DelayServerBeanCallable
 {
-    private IServer $server;
+    private string $server = '';
 
-    private string $beanName;
+    private ?IServer $serverInstance = null;
+
+    private string $beanName = '';
 
     private string $methodName;
 
     private array $constructArgs;
 
     /**
-     * @param string|\Imi\Server\Contract\IServer $server
+     * @param string|IServer $server
      */
     public function __construct($server, string $beanName, string $methodName, array $constructArgs = [])
     {
         if (\is_string($server))
         {
-            $server = ServerManager::getServer($server);
+            $this->server = $server;
+            $this->serverInstance = ServerManager::getServer($server);
         }
-        $this->server = $server;
+        else
+        {
+            $this->server = $server->getName();
+            $this->serverInstance = $server;
+        }
         $this->beanName = $beanName;
         $this->methodName = $methodName;
         $this->constructArgs = $constructArgs;
@@ -44,7 +51,12 @@ class DelayServerBeanCallable
 
     public function getServer(): IServer
     {
-        return $this->server;
+        return $this->serverInstance ?? ServerManager::getServer($this->server);
+    }
+
+    public function getInstance(): object
+    {
+        return $this->getServer()->getBean($this->beanName, ...$this->constructArgs);
     }
 
     /**
@@ -55,5 +67,20 @@ class DelayServerBeanCallable
     public function __invoke(...$args)
     {
         return $this->server->getBean($this->beanName, ...$this->constructArgs)->{$this->methodName}(...$args);
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'server'           => $this->server,
+            'beanName'         => $this->beanName,
+            'methodName'       => $this->methodName,
+            'constructArgs'    => $this->constructArgs,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        ['server' => $this->server, 'beanName' => $this->beanName, 'methodName' => $this->methodName, 'constructArgs' => $this->constructArgs] = $data;
     }
 }
