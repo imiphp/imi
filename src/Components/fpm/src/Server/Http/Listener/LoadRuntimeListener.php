@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Fpm\FpmAppContexts;
 use Imi\Fpm\Server\Type;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\ServerManager;
@@ -34,6 +35,7 @@ class LoadRuntimeListener implements IEventListener
             /** @var HttpRoute $route */
             $route = $server->getBean('HttpRoute');
             $route->setRules($data['rules']);
+            App::set(FpmAppContexts::ROUTE_INITED, true);
         }
     }
 }
