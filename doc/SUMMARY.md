@@ -250,6 +250,7 @@
 
 * [Docker](production/docker.md)
 * [守护进程](production/daemon.md)
+* [Swoole Compiler 代码加密](production/swoole-compiler.md)
 
 ## Swoole 协程化组件
 
