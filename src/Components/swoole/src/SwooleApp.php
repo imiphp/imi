@@ -132,15 +132,11 @@ class SwooleApp extends CliApp
     {
         $this->initRuntime();
         $input = ImiCommand::getInput();
-        $isServerStart = ('swoole/start' === ($_SERVER['argv'][1] ?? null));
-        if (!$isServerStart)
+        // 尝试加载项目运行时
+        $appRuntimeFile = $input->getParameterOption('--app-runtime');
+        if (false !== $appRuntimeFile && Imi::loadRuntimeInfo($appRuntimeFile))
         {
-            // 尝试加载项目运行时
-            $appRuntimeFile = $input->getParameterOption('--app-runtime');
-            if (false !== $appRuntimeFile && Imi::loadRuntimeInfo($appRuntimeFile))
-            {
-                return LoadRuntimeResult::ALL;
-            }
+            return LoadRuntimeResult::ALL;
         }
         // 尝试加载 imi 框架运行时
         if ($file = $input->getParameterOption('--imi-runtime'))
@@ -151,16 +147,16 @@ class SwooleApp extends CliApp
         else
         {
             // 尝试加载默认 runtime
-            $result = Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('imi-runtime'), true);
+            $result = Imi::loadRuntimeInfo($imiRuntime = Imi::getCurrentModeRuntimePath('imi-runtime'), true);
         }
         if (!$result)
         {
             // 不使用缓存时去扫描
             Scanner::scanImi();
         }
-        if ($isServerStart)
+        if ('swoole/start' === ($_SERVER['argv'][1] ?? null))
         {
-            $imiRuntime = Imi::getCurrentModeRuntimePath('imi-runtime');
+            $imiRuntime ??= Imi::getCurrentModeRuntimePath('imi-runtime');
             Imi::buildRuntime($imiRuntime);
 
             // 执行命令行生成缓存
