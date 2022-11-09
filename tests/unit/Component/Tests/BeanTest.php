@@ -93,6 +93,42 @@ class BeanTest extends BaseTest
             $rf = new ReflectionFunction($f);
             $this->assertEquals('never', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
+
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.2', '>='))
+        {
+            $f = Imi::eval(<<<CODE
+            return function(): true {
+                return true;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('true', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): false {
+                return false;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('false', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): null {
+                return null;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): (IteratorAggregate&Countable)|stdClass|null {
+                return new \ArrayObject();
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('(\IteratorAggregate&\Countable)|\stdClass|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
+        }
     }
 
     public function testGetTypeCode(): void
@@ -156,6 +192,42 @@ class BeanTest extends BaseTest
             CODE);
             $rf = new ReflectionFunction($f);
             $this->assertEquals('never', ReflectionUtil::getTypeCode($rf->getReturnType()));
+        }
+
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.2', '>='))
+        {
+            $f = Imi::eval(<<<CODE
+            return function(): true {
+                return true;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('true', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): false {
+                return false;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('false', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): null {
+                return null;
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('null', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $f = Imi::eval(<<<CODE
+            return function(): (IteratorAggregate&Countable)|stdClass|null {
+                return new \ArrayObject();
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertEquals('(\IteratorAggregate&\Countable)|\stdClass|null', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
     }
 
@@ -226,6 +298,22 @@ class BeanTest extends BaseTest
             $rf = new ReflectionFunction($f);
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
         }
+
+        // @phpstan-ignore-next-line
+        if (version_compare(\PHP_VERSION, '8.2', '>='))
+        {
+            $f = Imi::eval(<<<CODE
+            return function(): (IteratorAggregate&Countable)|stdClass|null {
+                return new \ArrayObject();
+            };
+            CODE);
+            $rf = new ReflectionFunction($f);
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'IteratorAggregate'));
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Countable'));
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'ArrayObject'));
+            $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'stdClass'));
+            $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
+        }
     }
 
     public function testContainerGetBean(): void
@@ -289,6 +377,36 @@ class BeanTest extends BaseTest
         $list1[] = 2;
         $list2 = $referenceBean->testReturnValue();
         $this->assertEquals($list1, $list2);
+    }
+
+    public function testConstructorPropertyBean(): void
+    {
+        if (\PHP_VERSION_ID < 80000)
+        {
+            $this->markTestSkipped();
+        }
+        /** @var \Imi\Test\Component\Bean\ConstructorPropertyBean $bean */
+        // @phpstan-ignore-next-line
+        $bean = App::getBean('ConstructorPropertyBean');
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\ConstructorPropertyBean::class, $bean);
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(BeanA::class, $bean->getBeanA());
+    }
+
+    public function testReadOnlyBean(): void
+    {
+        if (\PHP_VERSION_ID < 80200)
+        {
+            $this->markTestSkipped();
+        }
+        /** @var \Imi\Test\Component\Bean\ReadOnlyBean $bean */
+        // @phpstan-ignore-next-line
+        $bean = App::getBean('ReadOnlyBean');
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\ReadOnlyBean::class, $bean);
+        // @phpstan-ignore-next-line
+        $this->assertEquals('ReadOnlyBean', $bean->test());
     }
 
     // @phpstan-ignore-next-line

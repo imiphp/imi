@@ -246,11 +246,14 @@ class BeanFactory
         }
 
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
+        // @phpstan-ignore-next-line
+        $readonly = (\PHP_VERSION_ID >= 80200 && $ref->isReadOnly()) ? 'readonly ' : '';
+
         // 类模版定义
         return <<<TPL
         declare(strict_types=1);
 
-        class {$newClassName} extends {$class} implements \Imi\Bean\IBean
+        {$readonly}class {$newClassName} extends {$class} implements \Imi\Bean\IBean
         {
             {$traitsTpl}
 

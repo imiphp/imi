@@ -566,11 +566,6 @@ class Imi
     }
 
     /**
-     * eval 方法用的自增变量.
-     */
-    private static int $evalAtomic = 0;
-
-    /**
      * 临时目录地址
      */
     private static string $tmpPath = '';

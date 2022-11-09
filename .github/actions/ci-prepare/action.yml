@@ -1,10 +1,10 @@
-name: 'ci-prepare'
-description: 'ci-prepare'
+name: "ci-prepare"
+description: "ci-prepare"
 
 inputs:
   env:
     required: true
-    description: 'Env Service Name'
+    description: "Env Service Name"
 
 runs:
   using: composite
@@ -23,7 +23,7 @@ runs:
       run: |
         docker exec ${{ inputs.env }} apt install -y rsync
         docker exec ${{ inputs.env }} composer config -g process-timeout 600
-        docker exec ${{ inputs.env }} composer update --no-interaction --prefer-dist --no-progress
+        docker exec ${{ inputs.env }} composer update --no-interaction --prefer-dist --no-progress ${COMPOSER_ENV}
         .github/prepare-kafka.sh
         docker exec ${{ inputs.env }} bash tests/db/install-db.sh
         docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
