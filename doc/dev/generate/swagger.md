@@ -40,7 +40,7 @@ Github: <https://github.com/imiphp/imi-apidoc>
 ]
 ```
 
-Swagger 书写文档说明：<https://zircote.github.io/swagger-php/Getting-started.html#annotation-placement>
+Swagger 书写文档说明：<https://zircote.github.io/swagger-php/>
 
 **Demo:**
 
