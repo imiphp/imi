@@ -15,9 +15,9 @@ class DelayServerBeanCallable
 
     private string $beanName = '';
 
-    private string $methodName;
+    private string $methodName = '';
 
-    private array $constructArgs;
+    private array $constructArgs = [];
 
     /**
      * @param string|IServer $server
@@ -66,7 +66,7 @@ class DelayServerBeanCallable
      */
     public function __invoke(...$args)
     {
-        return $this->server->getBean($this->beanName, ...$this->constructArgs)->{$this->methodName}(...$args);
+        return $this->getInstance()->{$this->methodName}(...$args);
     }
 
     public function __serialize(): array
