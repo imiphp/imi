@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util\File;
 
-use function array_filter;
-use function array_values;
-use function file_exists;
-use function implode;
-use function is_file;
-
 use PHPStan\File\FileExcluder;
 use PHPStan\File\FileFinderResult;
 use PHPStan\File\FileHelper;
@@ -44,11 +38,11 @@ class FileFinder extends \PHPStan\File\FileFinder
         $files = [];
         foreach ($paths as $path)
         {
-            if (is_file($path))
+            if (\is_file($path))
             {
                 $files[] = $this->fileHelper->normalizePath($path);
             }
-            elseif (!file_exists($path))
+            elseif (!\file_exists($path))
             {
                 throw new PathNotFoundException($path);
             }
@@ -57,7 +51,7 @@ class FileFinder extends \PHPStan\File\FileFinder
                 $finder = new Finder();
                 // 此行注释，防止无限套娃
                 // $finder->followLinks();
-                foreach ($finder->files()->name('*.{' . implode(',', $this->fileExtensions) . '}')->in($path) as $fileInfo)
+                foreach ($finder->files()->name('*.{' . \implode(',', $this->fileExtensions) . '}')->in($path) as $fileInfo)
                 {
                     $files[] = $this->fileHelper->normalizePath($fileInfo->getPathname());
                     $onlyFiles = false;
@@ -65,7 +59,7 @@ class FileFinder extends \PHPStan\File\FileFinder
             }
         }
 
-        $files = array_values(array_filter($files, fn (string $file): bool => !$this->fileExcluder->isExcludedFromAnalysing($file)));
+        $files = \array_values(\array_filter($files, fn (string $file): bool => !$this->fileExcluder->isExcludedFromAnalysing($file)));
 
         return new FileFinderResult($files, $onlyFiles);
     }

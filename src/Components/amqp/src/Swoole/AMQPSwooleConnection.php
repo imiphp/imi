@@ -88,7 +88,7 @@ class AMQPSwooleConnection extends AbstractConnection
      *
      * @return void
      */
-    protected function connect()
+    protected function connect(): void
     {
         parent::connect();
         $this->startHeartbeat();
@@ -108,7 +108,7 @@ class AMQPSwooleConnection extends AbstractConnection
     {
         if ($this->heartbeat > 0)
         {
-            $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 500, function () {
+            $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 500, function (): void {
                 if ($this->isConnected())
                 {
                     $this->write_heartbeat();

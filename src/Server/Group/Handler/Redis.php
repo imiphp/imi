@@ -75,7 +75,7 @@ class Redis implements IGroupHandler
         $this->masterPID = $masterPID = Worker::getMasterPid();
         if (0 === $workerId)
         {
-            $this->useRedis(function (RedisHandler $redis) use ($masterPID) {
+            $this->useRedis(function (RedisHandler $redis) use ($masterPID): void {
                 $this->initRedis($redis, $masterPID);
                 $this->startPing($redis);
             });
@@ -130,7 +130,7 @@ class Redis implements IGroupHandler
         {
             // 心跳定时器
             $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
+            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
                 if ($this->timerId)
                 {
                     Timer::del($this->timerId);
@@ -145,7 +145,7 @@ class Redis implements IGroupHandler
      */
     public function pingTimer(): void
     {
-        $this->useRedis(function (RedisHandler $redis) {
+        $this->useRedis(function (RedisHandler $redis): void {
             $this->ping($redis);
         });
     }
@@ -207,7 +207,7 @@ class Redis implements IGroupHandler
         $groups = &$this->groups;
         if (!isset($groups[$groupName]))
         {
-            $this->useRedis(function (RedisHandler $redis) use ($groupName) {
+            $this->useRedis(function (RedisHandler $redis) use ($groupName): void {
                 $redis->sAdd($this->getGroupsKey(), $groupName);
             });
             $groups[$groupName] = [
@@ -221,7 +221,7 @@ class Redis implements IGroupHandler
      */
     public function closeGroup(string $groupName): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($groupName) {
+        $this->useRedis(function (RedisHandler $redis) use ($groupName): void {
             $key = $this->getGroupNameKey($groupName);
             $redis->del($key);
             $redis->srem($this->getGroupsKey(), $groupName);
@@ -316,7 +316,7 @@ class Redis implements IGroupHandler
      */
     public function clear(): void
     {
-        $this->useRedis(function (RedisHandler $redis) {
+        $this->useRedis(function (RedisHandler $redis): void {
             $keys = [];
             $count = 0;
             foreach ($redis->scanEach($this->getGroupNameKey('*')) as $key)

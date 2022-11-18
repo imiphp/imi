@@ -11,14 +11,13 @@ use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Contract\IQueueConsumer;
 use Imi\AMQP\Message;
-use SplQueue;
 
 class QueueConsumer extends BaseConsumer implements IQueueConsumer
 {
     /**
      * 队列.
      */
-    private ?SplQueue $queue = null;
+    private ?\SplQueue $queue = null;
 
     /**
      * 本地缓存的队列长度.
@@ -77,7 +76,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
         {
             $this->channel = $this->connection->channel();
         }
-        $this->queue = new SplQueue();
+        $this->queue = new \SplQueue();
     }
 
     /**
@@ -118,7 +117,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
             foreach ((array) $consumer->queue as $queueName)
             {
                 $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
-                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
+                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass): void {
                     /** @var \Imi\AMQP\Message $messageInstance */
                     $messageInstance = new $messageClass();
                     $messageInstance->setAMQPMessage($message);
@@ -131,7 +130,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     /**
      * {@inheritDoc}
      */
-    protected function consume(IMessage $message)
+    protected function consume(IMessage $message): void
     {
         $this->queue->push($message);
     }

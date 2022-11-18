@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Imi\Queue\Model;
 
 use Imi\Util\Traits\TDataToProperty;
-use JsonSerializable;
 
 /**
  * 队列状态
  */
-class QueueStatus implements JsonSerializable
+class QueueStatus implements \JsonSerializable
 {
     use TDataToProperty;
 

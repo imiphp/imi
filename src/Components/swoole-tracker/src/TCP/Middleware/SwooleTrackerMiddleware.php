@@ -10,7 +10,6 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
-use RuntimeException;
 
 /**
  * @Bean("SwooleTrackerTCPMiddleware")
@@ -28,7 +27,7 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
     {
         if (null === $this->nameHandler)
         {
-            throw new RuntimeException('SwooleTrackerTCPMiddleware must be set beans: "nameHandler"');
+            throw new \RuntimeException('SwooleTrackerTCPMiddleware must be set beans: "nameHandler"');
         }
         parent::__init();
     }
@@ -44,9 +43,8 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
         try
         {
             $success = $code = null;
-            $result = $handler->handle($data);
 
-            return $result;
+            return $handler->handle($data);
         }
         catch (\Throwable $th)
         {

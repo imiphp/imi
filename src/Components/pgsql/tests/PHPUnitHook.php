@@ -17,9 +17,9 @@ class PHPUnitHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        Event::on('IMI.APP_RUN', function (EventParam $param) {
+        Event::on('IMI.APP_RUN', static function (EventParam $param): void {
             $param->stopPropagation();
-            PoolManager::use(\in_array('pgsql', pdo_drivers()) ? 'maindb' : 'swoole', function (IPoolResource $resource, IDb $db) {
+            PoolManager::use(\in_array('pgsql', pdo_drivers()) ? 'maindb' : 'swoole', static function (IPoolResource $resource, IDb $db): void {
                 $truncateList = [
                     'tb_article',
                     'tb_member',
@@ -32,7 +32,7 @@ class PHPUnitHook implements BeforeFirstTestHook
                 }
             });
         }, 1);
-        App::run('Imi\Pgsql\Test', CliApp::class, static function () {
+        App::run('Imi\Pgsql\Test', CliApp::class, static function (): void {
         });
     }
 }

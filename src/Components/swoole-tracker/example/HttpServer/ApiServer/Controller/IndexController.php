@@ -16,6 +16,7 @@ class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      *
      * @return mixed
@@ -32,7 +33,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function fail()
+    public function fail(): void
     {
         throw new \RuntimeException('test gg');
     }

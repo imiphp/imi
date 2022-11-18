@@ -61,7 +61,7 @@ class LocalServerUtil implements ISwooleServerUtil
         {
             if ($tmpWorkerId === $currentWorkerId)
             {
-                Coroutine::create(static function () use ($server, $currentWorkerId, $message) {
+                Coroutine::create(static function () use ($server, $currentWorkerId, $message): void {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $server,
                         'workerId'  => $currentWorkerId,
@@ -203,7 +203,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 {
                     continue;
                 }
-                if ($swooleServer->$method($tmpClientId, $data, ...$pushParams))
+                if ($swooleServer->{$method}($tmpClientId, $data, ...$pushParams))
                 {
                     ++$success;
                 }
@@ -322,7 +322,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 {
                     continue;
                 }
-                if ($swooleServer->$method($clientId, $data, ...$pushParams))
+                if ($swooleServer->{$method}($clientId, $data, ...$pushParams))
                 {
                     ++$success;
                 }
@@ -407,7 +407,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 $group = $server->getGroup($tmpGroupName);
                 if ($group)
                 {
-                    $result = $group->$method($data, ...$pushParams);
+                    $result = $group->{$method}($data, ...$pushParams);
                     foreach ($result as $item)
                     {
                         if ($item)

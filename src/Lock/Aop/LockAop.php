@@ -24,11 +24,12 @@ class LockAop
      * 处理方法加锁
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \Imi\Lock\Annotation\Lockable::class,
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\Lock\Annotation\Lockable::class,
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 事务注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string|null $dbPoolName     数据库连接池名，为null或默认都为默认连接池

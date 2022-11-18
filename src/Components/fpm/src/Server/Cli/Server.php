@@ -34,7 +34,7 @@ class Server extends BaseCommand
         {
             /** @var \Symfony\Component\Process\Process|null $process */
             $process = null;
-            pcntl_signal(\SIGTERM, function () use (&$process) {
+            pcntl_signal(\SIGTERM, static function () use (&$process): void {
                 if ($process)
                 {
                     $process->signal(\SIGINT);

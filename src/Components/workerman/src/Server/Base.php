@@ -22,7 +22,6 @@ use Imi\Util\Imi;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
-use InvalidArgumentException;
 use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Connection\TcpConnection;
@@ -84,7 +83,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $worker->name = $this->name;
         foreach ($config['configs'] ?? [] as $k => $v)
         {
-            $worker->$k = $v;
+            $worker->{$k} = $v;
         }
 
         return $worker;
@@ -134,7 +133,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      */
     protected function bindEvents(): void
     {
-        $this->worker->onBufferDrain = function (ConnectionInterface $connection) {
+        $this->worker->onBufferDrain = function (ConnectionInterface $connection): void {
             try
             {
                 // @phpstan-ignore-next-line
@@ -156,7 +155,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onBufferFull = function (ConnectionInterface $connection) {
+        $this->worker->onBufferFull = function (ConnectionInterface $connection): void {
             try
             {
                 // @phpstan-ignore-next-line
@@ -178,7 +177,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onClose = function (ConnectionInterface $connection) {
+        $this->worker->onClose = function (ConnectionInterface $connection): void {
             try
             {
                 // @phpstan-ignore-next-line
@@ -200,7 +199,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onConnect = function (ConnectionInterface $connection) {
+        $this->worker->onConnect = function (ConnectionInterface $connection): void {
             try
             {
                 // @phpstan-ignore-next-line
@@ -223,7 +222,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
+        $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg): void {
             try
             {
                 // @phpstan-ignore-next-line
@@ -247,7 +246,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onWorkerReload = function (Worker $worker) {
+        $this->worker->onWorkerReload = function (Worker $worker): void {
             try
             {
                 RequestContext::muiltiSet([
@@ -266,7 +265,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onWorkerStart = function (Worker $worker) {
+        $this->worker->onWorkerStart = function (Worker $worker): void {
             try
             {
                 // 随机数播种
@@ -322,7 +321,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 {
                     Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
                     // 监听进程通讯
-                    $callback = static function (array $data) {
+                    $callback = static function (array $data): void {
                         $action = $data['action'] ?? null;
                         if (!$action)
                         {
@@ -372,7 +371,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onWorkerStop = function (Worker $worker) {
+        $this->worker->onWorkerStop = function (Worker $worker): void {
             try
             {
                 RequestContext::muiltiSet([
@@ -409,7 +408,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $connection = $this->worker->connections[$clientId] ?? null;
         if (null === $connection)
         {
-            throw new InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
+            throw new \InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
         }
 
         return new IPEndPoint($connection->getRemoteIp(), $connection->getRemotePort());

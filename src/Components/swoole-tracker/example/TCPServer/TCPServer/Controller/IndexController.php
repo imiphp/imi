@@ -19,7 +19,8 @@ class IndexController extends \Imi\Controller\TcpController
      * 发送消息.
      *
      * @TcpAction
-     * @TcpRoute({"action"="send"})
+     *
+     * @TcpRoute({"action": "send"})
      *
      * @param mixed $data
      *

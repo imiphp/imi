@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 多对多，左侧关联到中间表模型.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string|null $field       字段名

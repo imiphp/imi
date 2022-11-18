@@ -17,16 +17,18 @@ class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
     }
 
     /**
      * @Action
+     *
      * @Route(url="login", method="POST")
      *
      * @param string $username 用户名
@@ -34,32 +36,35 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function login(string $username, int $password)
+    public function login(string $username, int $password): void
     {
     }
 
     /**
      * @Action
+     *
      * @Route(method={"GET", "POST"})
      *
      * @return void
      */
-    public function multiMethod1(int $id)
+    public function multiMethod1(int $id): void
     {
     }
 
     /**
      * @Action
+     *
      * @Route(method={"PUT", "POST"})
      *
      * @return void
      */
-    public function multiMethod2(int $id)
+    public function multiMethod2(int $id): void
     {
     }
 
     /**
      * @Action
+     *
      * @Route("register")
      * @OA\Get(
      *     path="/register",
@@ -72,7 +77,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function register(string $username, int $password, string $birthday)
+    public function register(string $username, int $password, string $birthday): void
     {
     }
 
@@ -81,7 +86,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function get(int $id)
+    public function get(int $id): void
     {
     }
 }

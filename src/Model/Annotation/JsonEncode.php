@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * JSON 序列化时的配置.
  *
  * @Annotation
+ *
  * @Target({"CLASS", "PROPERTY"})
  *
  * @property int $flags json_encode() 的 flags 参数

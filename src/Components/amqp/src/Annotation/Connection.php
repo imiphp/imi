@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 连接.
  *
  * @Annotation
+ *
  * @Target({"CLASS"})
  *
  * @property string|null $poolName          连接池名称

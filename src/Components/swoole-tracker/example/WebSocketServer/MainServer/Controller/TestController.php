@@ -23,7 +23,8 @@ class TestController extends WebSocketController
      * 登录.
      *
      * @WSAction
-     * @WSRoute({"action"="login"})
+     *
+     * @WSRoute({"action": "login"})
      *
      * @param mixed $data
      *
@@ -41,14 +42,15 @@ class TestController extends WebSocketController
      * 发送消息.
      *
      * @WSAction
-     * @WSRoute({"action"="send"})
+     *
+     * @WSRoute({"action": "send"})
      * @WSMiddleware(Imi\SwooleTracker\Example\WebSocketServer\MainServer\Middleware\Test::class)
      *
      * @param mixed $data
      *
      * @return void
      */
-    public function send($data)
+    public function send($data): void
     {
         $message = ConnectionContext::get('username') . ':' . $data->message;
         Server::sendToGroup('g1', $message);
@@ -58,7 +60,8 @@ class TestController extends WebSocketController
      * 多级参数的路由定位.
      *
      * @WSAction
-     * @WSRoute({"a.b.c"="test1"})
+     *
+     * @WSRoute({"a.b.c": "test1"})
      *
      * @param mixed $data
      *
@@ -73,7 +76,8 @@ class TestController extends WebSocketController
      * 多个参数条件的路由定位.
      *
      * @WSAction
-     * @WSRoute({"a"="1", "b"=2})
+     *
+     * @WSRoute({"a": "1", "b": 2})
      *
      * @param mixed $data
      *

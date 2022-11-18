@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Base;
  * 方法体执行时，将指定缓存清除
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string|null $name             缓存器名称；为null则使用默认缓存器

@@ -102,7 +102,7 @@ class CronProcess extends BaseProcess
      */
     protected function startSchedule(): void
     {
-        Timer::tick(1000, function () {
+        Timer::tick(1000, function (): void {
             $scheduler = $this->scheduler;
             foreach ($scheduler->schedule() as $task)
             {

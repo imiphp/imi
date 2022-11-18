@@ -19,7 +19,8 @@ class IndexController extends \Imi\Controller\UdpController
      * 登录.
      *
      * @UdpAction
-     * @UdpRoute({"action"="hello"})
+     *
+     * @UdpRoute({"action": "hello"})
      *
      * @return mixed
      */

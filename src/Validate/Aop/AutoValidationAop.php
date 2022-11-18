@@ -25,11 +25,12 @@ class AutoValidationAop
      * 类构造方法-自动验证支持
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION_CONSTRUCT,
-     *         allow={
-     *             \Imi\Validate\Annotation\AutoValidation::class
-     *         }
+     *     type=PointCutType::ANNOTATION_CONSTRUCT,
+     *     allow={
+     *         \Imi\Validate\Annotation\AutoValidation::class
+     *     }
      * )
+     *
      * @After
      *
      * @return mixed
@@ -78,11 +79,12 @@ class AutoValidationAop
      * 方法调用-自动验证支持
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \Imi\Validate\Annotation\AutoValidation::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\Validate\Annotation\AutoValidation::class
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

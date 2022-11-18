@@ -14,6 +14,7 @@ use Imi\Pgsql\Test\Model\Base\MemberBase;
  * Member.
  *
  * @Inherit
+ *
  * @Serializables(mode="deny", fields={"password"})
  */
 class MemberWithSqlField extends MemberBase

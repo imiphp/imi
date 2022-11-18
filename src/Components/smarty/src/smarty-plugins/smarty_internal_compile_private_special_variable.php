@@ -157,11 +157,11 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                 case 'config':
                     if (isset($_index[2]))
                     {
-                        return "(is_array(\$tmp = \$_smarty_tpl->smarty->ext->configload->_getConfigVariable(\$_smarty_tpl, $_index[1])) ? \$tmp[$_index[2]] : null)";
+                        return "(is_array(\$tmp = \$_smarty_tpl->smarty->ext->configload->_getConfigVariable(\$_smarty_tpl, {$_index[1]})) ? \$tmp[{$_index[2]}] : null)";
                     }
                     else
                     {
-                        return "\$_smarty_tpl->smarty->ext->configload->_getConfigVariable(\$_smarty_tpl, $_index[1])";
+                        return "\$_smarty_tpl->smarty->ext->configload->_getConfigVariable(\$_smarty_tpl, {$_index[1]})";
                     }
                     // no break
                 case 'ldelim':
@@ -178,7 +178,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                 foreach ($_index as $_ind)
                 {
                     // @phpstan-ignore-next-line
-                    $compiled_ref = $compiled_ref . "[$_ind]";
+                    $compiled_ref = $compiled_ref . "[{$_ind}]";
                 }
             }
 

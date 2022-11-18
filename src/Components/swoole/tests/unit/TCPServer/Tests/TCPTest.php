@@ -16,7 +16,7 @@ class TCPTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
             $client->set([
                 'open_eof_split' => true,
@@ -50,7 +50,7 @@ class TCPTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
             $client->set([
                 'open_eof_split' => true,

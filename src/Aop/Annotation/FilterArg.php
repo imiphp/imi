@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 过滤方法参数注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string|null   $name   参数名

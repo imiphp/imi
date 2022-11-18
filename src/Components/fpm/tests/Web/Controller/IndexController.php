@@ -24,6 +24,7 @@ class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      *
      * @return mixed
@@ -38,6 +39,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/route/{id}")
      */
     public function route(int $id): array
@@ -49,6 +51,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(autoEndSlash=true)
      * @View(renderType="html")
      * @HtmlView(template="html")
@@ -62,6 +65,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @View(renderType="html")
      * @HtmlView(baseDir="index/")
      */
@@ -200,11 +204,12 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/middleware")
      * @Middleware(\Imi\Fpm\Test\Web\Middleware\Middleware1::class)
      * @Middleware({
-     *  \Imi\Fpm\Test\Web\Middleware\Middleware2::class,
-     *  \Imi\Fpm\Test\Web\Middleware\Middleware3::class
+     *     \Imi\Fpm\Test\Web\Middleware\Middleware2::class,
+     *     \Imi\Fpm\Test\Web\Middleware\Middleware3::class
      * })
      * @Middleware("@test")
      */
@@ -258,6 +263,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
      */
     public function regularExpression1(int $id, int $page): array
@@ -270,6 +276,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/a/{name:[a-zA-Z]+}/{page}")
      */
     public function regularExpression2(string $name, int $page): array
@@ -321,6 +328,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(url="/type/{id}/{name}/{page}")
      *
      * @return array
@@ -334,6 +342,7 @@ class IndexController extends HttpController
      * 测试重复路由警告.
      *
      * @Action
+     *
      * @Route("/duplicated")
      */
     public function duplicated1(): void
@@ -344,6 +353,7 @@ class IndexController extends HttpController
      * 测试重复路由警告.
      *
      * @Action
+     *
      * @Route("/duplicated")
      */
     public function duplicated2(): void

@@ -20,7 +20,7 @@ abstract class BasePoolProcess implements IPoolProcess
         {
             foreach ($data as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

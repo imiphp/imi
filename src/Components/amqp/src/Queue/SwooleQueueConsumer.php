@@ -121,7 +121,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 foreach ((array) $consumer->queue as $queueName)
                 {
                     $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
-                    $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
+                    $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass): void {
                         /** @var \Imi\AMQP\Message $messageInstance */
                         $messageInstance = new $messageClass();
                         $messageInstance->setAMQPMessage($message);
@@ -134,7 +134,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        protected function consume(IMessage $message)
+        protected function consume(IMessage $message): void
         {
             $this->resultChannel->push($message);
         }

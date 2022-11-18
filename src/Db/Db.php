@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Db;
 
-use function array_is_list;
-
 use Imi\App;
 use Imi\Config;
 use Imi\Db\Exception\DbException;
@@ -106,7 +104,7 @@ class Db
                 App::set($requestContextKey, $db);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), function () use ($requestContextKey) {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey): void {
                         /** @var IDb|null $db */
                         $db = App::get($requestContextKey);
                         if (!$db)
@@ -263,7 +261,7 @@ class Db
         $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
         {
-            return PoolManager::use($poolName, fn (IPoolResource $resource, IDb $db) => static::trans($db, $callable));
+            return PoolManager::use($poolName, static fn (IPoolResource $resource, IDb $db) => static::trans($db, $callable));
         }
         else
         {
@@ -373,7 +371,7 @@ class Db
         {
             return $sql;
         }
-        if (array_is_list($bindValues))
+        if (\array_is_list($bindValues))
         {
             $sql = str_replace('??', '__mask__', $sql);
 
@@ -387,7 +385,7 @@ class Db
         else
         {
             $bindValues = array_reverse($bindValues);
-            $values = array_map(fn ($val) => var_export($val, true), array_values($bindValues));
+            $values = array_map(static fn ($val) => var_export($val, true), array_values($bindValues));
 
             return str_replace(array_keys($bindValues), $values, $sql);
         }

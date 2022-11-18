@@ -13,6 +13,7 @@ use Imi\Model\RedisModel;
  * Test.
  *
  * @Entity
+ *
  * @RedisEntity(key="formatter-{id}-{name}", formatter=\Imi\Util\Format\Json::class)
  *
  * @property int    $id

@@ -36,7 +36,7 @@ class TestMessage2 extends Message
     {
         foreach ($data as $k => $v)
         {
-            $this->$k = $v;
+            $this->{$k} = $v;
         }
 
         return $this;

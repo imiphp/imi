@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\IDEHelper;
 
-use function file_put_contents;
-
 use Imi\Bean\BeanManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
@@ -65,6 +63,6 @@ class BuildIDEHelper implements IEventListener
         META;
 
         $metaFile = Imi::getRuntimePath('.phpstorm.meta.php');
-        file_put_contents($metaFile, $output);
+        \file_put_contents($metaFile, $output);
     }
 }

@@ -14,12 +14,14 @@ use Imi\Pgsql\Test\Model\Base\MemberBase;
  * tb_member.
  *
  * @Inherit
+ *
  * @Serializables(mode="deny", fields={"password"})
  */
 class Member extends MemberBase
 {
     /**
      * @Column(virtual=true)
+     *
      * @JsonNotNull
      *
      * @var null

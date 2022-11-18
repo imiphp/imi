@@ -16,7 +16,7 @@ if (!\function_exists('\imigo'))
     {
         $callable = imiCallable($callable);
 
-        return Coroutine::create(static function () use ($callable, $args) {
+        return Coroutine::create(static function () use ($callable, $args): void {
             try
             {
                 $callable(...$args);

@@ -4,22 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use function array_map;
-
 use Composer\InstalledVersions;
-
-use function is_file;
-use function pathinfo;
-
-use Phar;
-
-use function realpath;
-
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-
-use function var_export;
 
 class PharService
 {
@@ -147,9 +135,9 @@ class PharService
 
         $this->output->writeln(sprintf('build date: <info>%s</info>', date(\DATE_ATOM, $this->buildTime)));
 
-        $phar = new Phar($outputPhar, 0, 'imi.phar');
+        $phar = new \Phar($outputPhar, 0, 'imi.phar');
         // todo 支持 openssl 私钥签名
-        $phar->setSignatureAlgorithm(Phar::SHA256);
+        $phar->setSignatureAlgorithm(\Phar::SHA256);
 
         $this->output->writeln('add files...');
 
@@ -186,7 +174,7 @@ class PharService
             return false;
         }
 
-        if (is_file($container) && 'php' === pathinfo($container, \PATHINFO_EXTENSION))
+        if (\is_file($container) && 'php' === \pathinfo($container, \PATHINFO_EXTENSION))
         {
             $this->hasBootstrapFile = true;
         }
@@ -227,9 +215,9 @@ class PharService
             \define('IMI_PHAR_BUILD_GIT_BRANCH', %s);
             \define('IMI_PHAR_BUILD_GIT_TAG', %s);
             PHP,
-            var_export($this->gitInfo['hash'], true),
-            var_export($this->gitInfo['branch'], true),
-            var_export($this->gitInfo['tag'], true),
+            \var_export($this->gitInfo['hash'], true),
+            \var_export($this->gitInfo['branch'], true),
+            \var_export($this->gitInfo['tag'], true),
         );
     }
 
@@ -317,7 +305,7 @@ class PharService
         else
         {
             $finder = (new Finder())
-                ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->dirs));
+                ->in(\array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->dirs));
         }
 
         $finder->files();
@@ -367,7 +355,7 @@ class PharService
             foreach ($this->files as $file)
             {
                 $filename = $this->baseDir . \DIRECTORY_SEPARATOR . $file;
-                if (!is_file($filename))
+                if (!\is_file($filename))
                 {
                     continue;
                 }
@@ -377,7 +365,7 @@ class PharService
 
         if ($this->hasBootstrapFile)
         {
-            yield realpath($this->bootstrap);
+            yield \realpath($this->bootstrap);
         }
     }
 

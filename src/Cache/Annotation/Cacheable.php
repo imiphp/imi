@@ -14,6 +14,7 @@ use Imi\Lock\Annotation\Lockable;
  * 调用方法前检测是否存在缓存，如果存在直接返回；不存在则执行方法体，然后将返回值存入缓存
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string|null   $name             缓存器名称；为null则使用默认缓存器

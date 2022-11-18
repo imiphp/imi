@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use function file_exists;
-use function is_file;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +15,7 @@ class PharBuildCommand extends Command
 {
     protected static $defaultName = 'build';
 
-    protected function configure()
+    protected function configure(): void
     {
         $container = implode('、', Constant::CONTAINER_SET);
         $this
@@ -32,14 +29,14 @@ class PharBuildCommand extends Command
     {
         $baseDir = getcwd();
         $configFile = "{$baseDir}/" . Constant::CFG_FILE_NAME;
-        $checkConfig = is_file($configFile);
+        $checkConfig = \is_file($configFile);
 
         $output->writeln("project dir : <info>{$baseDir}</info>");
         $output->writeln(sprintf('check config: <info>%s</info>', $checkConfig ? '<info>success</info>' : '<comment>fail</comment>'));
 
         if ($input->getOption('init'))
         {
-            if (file_exists($configFile))
+            if (\file_exists($configFile))
             {
                 $helper = $this->getHelper('question');
                 $question = new ConfirmationQuestion('The configuration file already exists, whether to overwrite it? (y or n)', false);
@@ -64,7 +61,7 @@ class PharBuildCommand extends Command
         }
 
         $projectAutoload = $baseDir . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
-        if (is_file($projectAutoload))
+        if (\is_file($projectAutoload))
         {
             require $projectAutoload;
         }

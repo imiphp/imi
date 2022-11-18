@@ -14,7 +14,6 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
-use ReflectionClass;
 
 /**
  * @Bean("WorkermanGatewayTcpBusinessServer")
@@ -32,7 +31,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::on('IMI.WORKERMAN.SERVER.WORKER_START', function () {
+        Event::on('IMI.WORKERMAN.SERVER.WORKER_START', function (): void {
             $this->bindBusinessEvents();
         });
     }
@@ -62,11 +61,11 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     protected function bindBusinessEvents(): void
     {
         $worker = $this->worker;
-        $refClass = new ReflectionClass($worker);
+        $refClass = new \ReflectionClass($worker);
 
         $property = $refClass->getProperty('_eventOnConnect');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId) {
+        $property->setValue($worker, function (string $clientId): void {
             RequestContext::muiltiSet([
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -84,7 +83,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 
         $property = $refClass->getProperty('_eventOnClose');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId) {
+        $property->setValue($worker, function (string $clientId): void {
             RequestContext::muiltiSet([
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -98,7 +97,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 
         $property = $refClass->getProperty('_eventOnMessage');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId, $data) {
+        $property->setValue($worker, function (string $clientId, $data): void {
             try
             {
                 RequestContext::muiltiSet([

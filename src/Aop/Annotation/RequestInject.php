@@ -12,7 +12,9 @@ use Imi\RequestContext;
  * 使用：RequestContext::getBean().
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string $name Bean名称或类名

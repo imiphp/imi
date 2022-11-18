@@ -68,7 +68,7 @@ class HandShakeMiddleware implements MiddlewareInterface
         else
         {
             $clientId = $requestContext['clientId'];
-            Coroutine::defer(static function () use ($clientId) {
+            Coroutine::defer(static function () use ($clientId): void {
                 Server::close($clientId);
             });
         }

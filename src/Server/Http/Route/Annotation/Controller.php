@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * 控制器注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *

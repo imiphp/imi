@@ -12,6 +12,7 @@ use Imi\Bean\Annotation\Parser;
  * enum 枚举项.
  *
  * @Annotation
+ *
  * @Target("CONST")
  * @Parser("Imi\Enum\Annotation\Parser\EnumParser")
  *

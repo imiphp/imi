@@ -14,8 +14,6 @@ use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Util\Imi;
 
-use function substr;
-
 class App
 {
     /**
@@ -371,7 +369,7 @@ class App
             self::$imiVersionReference = InstalledVersions::getReference('imiphp/imi') ?? '';
         }
 
-        return $isShort ? substr(self::$imiVersionReference, 0, 7) : self::$imiVersionReference;
+        return $isShort ? \substr(self::$imiVersionReference, 0, 7) : self::$imiVersionReference;
     }
 
     /**
@@ -382,7 +380,7 @@ class App
         $version = self::getImiVersion();
         $hash = self::getImiVersionReference(true);
 
-        return empty($hash) ? $version : "{$version} ($hash)";
+        return empty($hash) ? $version : "{$version} ({$hash})";
     }
 
     public static function getAppPharBuildVersion(): ?string
@@ -398,7 +396,7 @@ class App
             return sprintf(
                 '%s@%s',
                 // @phpstan-ignore-next-line
-                IMI_PHAR_BUILD_GIT_TAG ?? substr(IMI_PHAR_BUILD_GIT_HASH ?? '', 0, 7),
+                IMI_PHAR_BUILD_GIT_TAG ?? \substr(IMI_PHAR_BUILD_GIT_HASH ?? '', 0, 7),
                 IMI_PHAR_BUILD_TIME
             );
         }

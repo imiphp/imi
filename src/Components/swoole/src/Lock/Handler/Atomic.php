@@ -79,7 +79,7 @@ class Atomic extends BaseLock
         {
             $this->stopTimeoutTimer();
         }
-        $this->timeoutTimerId = Timer::after($this->lockExpire, function () {
+        $this->timeoutTimerId = Timer::after($this->lockExpire, function (): void {
             $this->unlock();
         });
     }

@@ -88,9 +88,7 @@ return [
                         'a' => '1',
                         'b' => '2',
                     ],
-                    'tokenHandler'  => function () {
-                        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImEiOiIxIiwiYiI6IjIifQ.eyJhdWQiOiJhdWRpZW5jZV9hIiwic3ViIjoic3ViamVjdF9hIiwiZXhwIjoxODkzMjkxNTE1LCJpc3MiOiJpc3N1ZXJfYSIsIm5iZiI6MCwianRpIjoiIiwiaWF0IjoxNTc3OTMxNTE1LCJkYXRhIjp7Im1lbWJlcklkIjoxOTI2MDgxN319.-tXlyj1BcVD8GJIE2nQdTPULVpZFD0h5BIQdx_X943E';
-                    },
+                    'tokenHandler'  => static fn () => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImEiOiIxIiwiYiI6IjIifQ.eyJhdWQiOiJhdWRpZW5jZV9hIiwic3ViIjoic3ViamVjdF9hIiwiZXhwIjoxODkzMjkxNTE1LCJpc3MiOiJpc3N1ZXJfYSIsIm5iZiI6MCwianRpIjoiIiwiaWF0IjoxNTc3OTMxNTE1LCJkYXRhIjp7Im1lbWJlcklkIjoxOTI2MDgxN319.-tXlyj1BcVD8GJIE2nQdTPULVpZFD0h5BIQdx_X943E',
                     'privateKey'    => '123456',
                     'publicKey'     => '123456',
                 ],

@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 内存表注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string $name               表名

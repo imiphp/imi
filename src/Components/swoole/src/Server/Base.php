@@ -26,7 +26,6 @@ use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
 use Imi\Util\Imi;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker;
-use InvalidArgumentException;
 use Swoole\Event as SwooleEvent;
 use Swoole\Server;
 use Swoole\Server\Port;
@@ -176,7 +175,7 @@ abstract class Base extends BaseServer implements ISwooleServer
             return false;
         }
 
-        return $server->$methodName(...$args);
+        return $server->{$methodName}(...$args);
     }
 
     /**
@@ -188,7 +187,7 @@ abstract class Base extends BaseServer implements ISwooleServer
         {
             if (\SWOOLE_BASE !== $this->swooleServer->mode)
             {
-                $this->swooleServer->on('start', function (Server $server) {
+                $this->swooleServer->on('start', function (Server $server): void {
                     try
                     {
                         \Imi\Swoole\Util\Imi::setProcessName('master');
@@ -208,7 +207,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 });
             }
 
-            $this->swooleServer->on('shutdown', function (Server $server) {
+            $this->swooleServer->on('shutdown', function (Server $server): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.SHUTDOWN', [
@@ -225,7 +224,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerStart', function (Server $server, int $workerId) {
+            $this->swooleServer->on('WorkerStart', function (Server $server, int $workerId): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
@@ -250,7 +249,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerStop', function (Server $server, int $workerId) {
+            $this->swooleServer->on('WorkerStop', function (Server $server, int $workerId): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
@@ -272,7 +271,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerExit', function (Server $server, int $workerId) {
+            $this->swooleServer->on('WorkerExit', function (Server $server, int $workerId): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [
@@ -286,7 +285,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('ManagerStart', function (Server $server) {
+            $this->swooleServer->on('ManagerStart', function (Server $server): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.START', [
@@ -300,11 +299,11 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 finally
                 {
-                    Log::info('Manager start' . '. pid: ' . getmypid());
+                    Log::info('Manager start. pid: ' . getmypid());
                 }
             });
 
-            $this->swooleServer->on('ManagerStop', function (Server $server) {
+            $this->swooleServer->on('ManagerStop', function (Server $server): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.STOP', [
@@ -317,14 +316,14 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
                 finally
                 {
-                    Log::info('Manager stop' . '. pid: ' . getmypid());
+                    Log::info('Manager stop. pid: ' . getmypid());
                 }
             });
 
             $configs = $this->config['configs'] ?? null;
             if (0 !== ($configs['task_worker_num'] ?? -1))
             {
-                $this->swooleServer->on('task', function (Server $server, Server\Task $task) {
+                $this->swooleServer->on('task', function (Server $server, Server\Task $task): void {
                     try
                     {
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
@@ -343,7 +342,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 });
             }
 
-            $this->swooleServer->on('finish', function (Server $server, int $taskId, $data) {
+            $this->swooleServer->on('finish', function (Server $server, int $taskId, $data): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.FINISH', [
@@ -358,7 +357,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('PipeMessage', function (Server $server, int $workerId, string $message) {
+            $this->swooleServer->on('PipeMessage', function (Server $server, int $workerId, string $message): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
@@ -373,7 +372,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerError', function (Server $server, int $workerId, int $workerPid, int $exitCode, int $signal) {
+            $this->swooleServer->on('WorkerError', function (Server $server, int $workerId, int $workerPid, int $exitCode, int $signal): void {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER_ERROR', [
@@ -401,7 +400,7 @@ abstract class Base extends BaseServer implements ISwooleServer
         $clientInfo = $this->swooleServer->getClientInfo($clientId);
         if (false === $clientInfo)
         {
-            throw new InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
+            throw new \InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
         }
 
         return new IPEndPoint($clientInfo['remote_ip'], $clientInfo['remote_port']);

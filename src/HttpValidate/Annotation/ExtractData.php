@@ -12,6 +12,7 @@ use Imi\Bean\Annotation;
  * 请使用注解类：Imi\Server\Http\Annotation\ExtractData
  *
  * @Annotation
+ *
  * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]

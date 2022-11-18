@@ -18,6 +18,7 @@ use Imi\Test\Component\Model\Base\ArticleBase;
  * Article.
  *
  * @Inherit
+ *
  * @Entity(camel=false)
  *
  * @property ArticleEx|null $ex
@@ -30,6 +31,7 @@ class Article extends ArticleBase
      * @OneToOne(model="ArticleEx")
      * @JoinFrom("id")
      * @JoinTo("article_id")
+     *
      * @AutoSave
      */
     protected ?ArticleEx $ex = null;
@@ -86,6 +88,7 @@ class Article extends ArticleBase
      * @JoinFrom("id")
      * @JoinTo("article_id")
      * @AutoSelect(false)
+     *
      * @JsonNotNull
      *
      * @var Article|null

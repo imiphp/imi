@@ -8,6 +8,7 @@ namespace Imi\Model\Annotation\Relation;
  * 多对多关联.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string        $model          关联的模型类；可以是包含命名空间的完整类名；可以同命名空间下的类名

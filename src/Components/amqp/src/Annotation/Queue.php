@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 队列.
  *
  * @Annotation
+ *
  * @Target({"CLASS"})
  *
  * @property string                           $name       队列名称

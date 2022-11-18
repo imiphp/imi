@@ -49,7 +49,7 @@ class RedisManagerTest extends BaseTest
     public function testInstance(): void
     {
         $pool = PoolManager::getInstance('redis_manager_test');
-        $this->go(function () use ($pool) {
+        $this->go(function () use ($pool): void {
             Assert::assertEquals(1, $pool->getCount());
             Assert::assertEquals(1, $pool->getFree());
 

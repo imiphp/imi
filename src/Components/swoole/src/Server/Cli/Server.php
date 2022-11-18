@@ -37,13 +37,13 @@ class Server extends BaseCommand
      */
     public function start(?int $workerNum, $d): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($d) {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($d): void {
             $this->outStartupInfo();
             if (Config::get('@app.server.checkPoolResource', false))
             {
-                (function () {
+                (static function (): void {
                     $exit = false;
-                    run(function () use (&$exit) {
+                    run(static function () use (&$exit): void {
                         if (!PoolManager::checkPoolResource())
                         {
                             $exit = true;

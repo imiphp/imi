@@ -12,7 +12,9 @@ use Imi\Bean\Annotation\Inherit;
  * 使用：App::getBean().
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string $name Bean名称或类名

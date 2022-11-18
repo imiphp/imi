@@ -14,6 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_virtual_column 基类.
  *
  * @Entity
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\VirtualColumn.name", default="tb_virtual_column"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\VirtualColumn.poolName"))
  *
  * @property int|null    $id

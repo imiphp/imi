@@ -27,11 +27,12 @@ class CachePutAop
      * 处理 CachePut 注解.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \Imi\Cache\Annotation\CachePut::class,
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\Cache\Annotation\CachePut::class,
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

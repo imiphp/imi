@@ -24,6 +24,7 @@ class ReferenceBeanAspect
 {
     /**
      * @Before
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -37,6 +38,7 @@ class ReferenceBeanAspect
 
     /**
      * @After
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -50,6 +52,7 @@ class ReferenceBeanAspect
 
     /**
      * @Around
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -74,6 +77,7 @@ class ReferenceBeanAspect
 
     /**
      * @AfterReturning
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -82,13 +86,14 @@ class ReferenceBeanAspect
      *
      * @return void
      */
-    public function afterReturning(AfterReturningJoinPoint $joinPoint)
+    public function afterReturning(AfterReturningJoinPoint $joinPoint): void
     {
         Log::info(sprintf('afterReturning ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
     /**
      * @AfterThrowing
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -97,7 +102,7 @@ class ReferenceBeanAspect
      *
      * @return void
      */
-    public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
+    public function afterThrowing(AfterThrowingJoinPoint $joinPoint): void
     {
         Log::info(sprintf('afterThrowing ReferenceBean::%s()', $joinPoint->getMethod()));
     }

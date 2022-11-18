@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Aop;
 
-use function array_merge;
-
 use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
@@ -47,7 +45,7 @@ trait TLockableParser
                     $lockable->type = $config->class;
                 }
 
-                $lockable->options = array_merge($config->options, $lockable->options);
+                $lockable->options = \array_merge($config->options, $lockable->options);
             }
         }
 
@@ -108,7 +106,7 @@ trait TLockableParser
             };
         }
 
-        if (!$locker->lock(static function () use ($taskCallable, &$result) {
+        if (!$locker->lock(static function () use ($taskCallable, &$result): void {
             // 执行原方法
             $result = $taskCallable();
         }, $afterLockCallable))

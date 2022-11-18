@@ -45,13 +45,13 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             {
                 $co = $config->getCo();
             }
-            $task = function () use ($config) {
+            $task = function () use ($config): void {
                 while ($this->working)
                 {
                     try
                     {
                         $throwable = null;
-                        goWait(function () use ($config, &$throwable) {
+                        goWait(function () use ($config, &$throwable): void {
                             try
                             {
                                 $this->task($config);
@@ -79,7 +79,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     /**
                      * {@inheritDoc}
                      */
-                    public function run(ITaskParam $param)
+                    public function run(ITaskParam $param): void
                     {
                         ($param->getData()['task'])();
                     }
@@ -133,7 +133,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     $context = RequestContext::getContext();
                     $handlerName = 'QueueDriver.handler.' . $queue->getName();
                     $handler = $context[$handlerName] ?? null;
-                    goWait(function () use ($queue, $message, $handlerName, $handler) {
+                    goWait(function () use ($queue, $message, $handlerName, $handler): void {
                         RequestContext::set($handlerName, $handler);
                         Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
                             'queue'     => $queue,

@@ -68,7 +68,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $this->serverName = $server->getName();
             $this->consumerInstance = $server->getBean($this->consumerClass);
             $this->publisherInstance = $server->getBean($this->publisherClass);
-            Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function () {
+            Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
                 $this->subscribeEnable = false;
             });
             $this->startSubscribe();
@@ -197,7 +197,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     {
                         continue;
                     }
-                    if ($swooleServer->$method($clientId, $data, ...$pushParams))
+                    if ($swooleServer->{$method}($clientId, $data, ...$pushParams))
                     {
                         ++$success;
                     }
@@ -250,7 +250,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     $group = $server->getGroup($tmpGroupName);
                     if ($group)
                     {
-                        $result = $group->$method($data, ...$pushParams);
+                        $result = $group->{$method}($data, ...$pushParams);
                         foreach ($result as $item)
                         {
                             if ($item)
@@ -319,7 +319,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $server = RequestContext::getServer();
             if ($this->subscribeEnable && $server && $server->isLongConnection())
             {
-                imigo(function () {
+                imigo(function (): void {
                     try
                     {
                         $this->consumerInstance->run();

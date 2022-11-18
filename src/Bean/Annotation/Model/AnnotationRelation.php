@@ -263,12 +263,12 @@ class AnnotationRelation
         }
 
         $fieldName = $where . 'Relations';
-        if (!isset($this->$fieldName[$className]) && isset($this->cache[$fieldName][$className]))
+        if (!isset($this->{$fieldName}[$className]) && isset($this->cache[$fieldName][$className]))
         {
-            $this->$fieldName[$className] = unserialize($this->cache[$fieldName][$className]);
+            $this->{$fieldName}[$className] = unserialize($this->cache[$fieldName][$className]);
         }
 
-        return $this->$fieldName[$className] ?? [];
+        return $this->{$fieldName}[$className] ?? [];
     }
 
     /**

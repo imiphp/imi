@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 定时任务注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string|null $id               任务唯一ID

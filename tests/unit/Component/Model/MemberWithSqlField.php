@@ -14,6 +14,7 @@ use Imi\Test\Component\Model\Base\MemberBase;
  * Member.
  *
  * @Inherit
+ *
  * @Serializables(mode="deny", fields={"password"})
  */
 class MemberWithSqlField extends MemberBase

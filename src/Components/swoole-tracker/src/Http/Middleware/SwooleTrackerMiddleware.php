@@ -33,9 +33,8 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements MiddlewareInterf
         try
         {
             $success = $code = null;
-            $response = $handler->handle($request);
 
-            return $response;
+            return $handler->handle($request);
         }
         catch (\Throwable $th)
         {

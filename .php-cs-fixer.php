@@ -9,8 +9,11 @@ if (!file_exists(__DIR__ . '/src'))
 
 return (new PhpCsFixer\Config())
     ->setRules([
+        '@PHP74Migration'            => true,
+        '@PHP74Migration:risky'      => true,
         '@Symfony'                   => true,
         '@Symfony:risky'             => true,
+        '@DoctrineAnnotation'        => true,
         'php_unit_dedicate_assert'   => ['target' => '5.6'],
         'array_syntax'               => ['syntax' => 'short'],
         'array_indentation'          => true,
@@ -41,6 +44,16 @@ return (new PhpCsFixer\Config())
             'indentation' => 'same_as_start',
         ],
         'no_trailing_whitespace_in_string' => false,
+        'static_lambda'                    => true,
+        'modernize_strpos'                 => true,
+        'regular_callable_call'            => true,
+        'combine_consecutive_issets'       => true,
+        'combine_consecutive_unsets'       => true,
+        'explicit_indirect_variable'       => true,
+        'no_useless_return'                => true,
+        'return_assignment'                => true,
+        'explicit_string_variable'         => true,
+        'heredoc_to_nowdoc'                => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

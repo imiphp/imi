@@ -24,7 +24,7 @@ class Http2Test extends BaseTest
      */
     public function testUri(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $http->protocolVersion = '2.0';
             $uri = $this->host . 'info?get=1';

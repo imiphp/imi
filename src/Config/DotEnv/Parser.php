@@ -17,13 +17,13 @@ final class Parser implements ParserInterface
     /**
      * Parse content into an entry array.
      *
-     * @throws \Dotenv\Exception\InvalidFileException
-     *
      * @return \Dotenv\Parser\Entry[]
+     *
+     * @throws \Dotenv\Exception\InvalidFileException
      */
     public function parse(string $content)
     {
-        return Regex::split("/(\r\n|\n|\r)/", $content)->mapError(static fn () => 'Could not split into separate lines.')->flatMap(static fn (array $lines) => self::process(Lines::process($lines)))->mapError(static function (string $error) {
+        return Regex::split("/(\r\n|\n|\r)/", $content)->mapError(static fn () => 'Could not split into separate lines.')->flatMap(static fn (array $lines) => self::process(Lines::process($lines)))->mapError(static function (string $error): void {
             throw new InvalidFileException(sprintf('Failed to parse dotenv file. %s', $error));
         })->success()->get();
     }

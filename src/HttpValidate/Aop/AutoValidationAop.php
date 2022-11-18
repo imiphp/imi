@@ -24,11 +24,12 @@ class AutoValidationAop
      * 验证 Http 参数.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \Imi\HttpValidate\Annotation\HttpValidation::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\HttpValidate\Annotation\HttpValidation::class
+     *     }
      * )
+     *
      * @Before
      *
      * @return mixed

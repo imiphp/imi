@@ -8,6 +8,7 @@ namespace Imi\Bean\Annotation;
  * 指定注解类处理器.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string $className 处理器类名

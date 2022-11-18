@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 小数验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property float|null $min      最小值，为null不限制

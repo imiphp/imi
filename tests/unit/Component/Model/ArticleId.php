@@ -32,7 +32,8 @@ class ArticleId extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
-     * @Id()
+     *
+     * @Id
      */
     protected ?int $id = null;
 
@@ -125,7 +126,7 @@ class ArticleId extends Model
      * content.
      *
      * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     * @Id(index=false, generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type"=\Imi\Model\IdGenerator\UUIDGeneratorType::SHA1, "ns"="99e4edaf-8363-466e-bddf-7254db57675c", "nameField"="title"})
+     * @Id(index=false, generator=\Imi\Model\IdGenerator\UUIDGenerator::class, generatorOptions={"type": \Imi\Model\IdGenerator\UUIDGeneratorType::SHA1, "ns": "99e4edaf-8363-466e-bddf-7254db57675c", "nameField": "title"})
      */
     protected ?string $content = null;
 

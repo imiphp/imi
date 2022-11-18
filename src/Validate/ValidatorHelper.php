@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Validate;
 
-use function filter_var;
-
 use Imi\Enum\BaseEnum;
 
 /**
@@ -147,7 +145,7 @@ class ValidatorHelper
      */
     public static function email($email): bool
     {
-        return false !== filter_var($email, \FILTER_VALIDATE_EMAIL);
+        return false !== \filter_var($email, \FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -207,7 +205,7 @@ class ValidatorHelper
      */
     public static function url($str): bool
     {
-        return false !== filter_var($str, \FILTER_VALIDATE_URL);
+        return false !== \filter_var($str, \FILTER_VALIDATE_URL);
     }
 
     /**
@@ -237,7 +235,7 @@ class ValidatorHelper
      */
     public static function ipv4($str): bool
     {
-        return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4);
+        return false !== \filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4);
     }
 
     /**
@@ -247,7 +245,7 @@ class ValidatorHelper
      */
     public static function ipv6($str): bool
     {
-        return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6);
+        return false !== \filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6);
     }
 
     /**

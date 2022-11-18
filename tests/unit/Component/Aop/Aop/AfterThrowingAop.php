@@ -18,6 +18,7 @@ class AfterThrowingAop
 {
     /**
      * @AfterThrowing
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::testCancelThrow"
@@ -39,6 +40,7 @@ class AfterThrowingAop
 
     /**
      * @AfterThrowing
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::testNotCancelThrow"

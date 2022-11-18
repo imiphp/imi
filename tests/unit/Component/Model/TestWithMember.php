@@ -25,6 +25,7 @@ class TestWithMember extends TestWithMemberBase
      * member_id.
      *
      * @Inherit
+     *
      * @Serializable(false)
      */
     protected ?int $memberId = null;

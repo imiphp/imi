@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\Bean\ReflectionContainer;
-use InvalidArgumentException;
-use ReflectionParameter;
 
 /**
  * 类和对象相关工具类.
@@ -71,8 +69,8 @@ class ClassObject
     /**
      * 将数组参数处理成 kv 数组.
      *
-     * @param ReflectionParameter[] $params
-     * @param bool                  $keepNotExistArgs 保留不存在的参数，如果保留则值则取默认值，没有默认值则为null
+     * @param \ReflectionParameter[] $params
+     * @param bool                   $keepNotExistArgs 保留不存在的参数，如果保留则值则取默认值，没有默认值则为null
      */
     public static function convertArrayToKV(array $params, array $args, bool $keepNotExistArgs = true): array
     {
@@ -140,7 +138,7 @@ class ClassObject
             else
             {
                 $declaringClass = $param->getDeclaringClass();
-                throw new InvalidArgumentException(sprintf('%s::__construct() %s not found', $declaringClass ? $declaringClass->getName() : '', $name));
+                throw new \InvalidArgumentException(sprintf('%s::__construct() %s not found', $declaringClass ? $declaringClass->getName() : '', $name));
             }
         }
 

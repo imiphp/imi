@@ -64,7 +64,7 @@ trait TSoftDelete
         /** @var IModelQuery $query */
         $query = parent::query($poolName, $queryType, $queryClass);
 
-        return $query->whereBrackets(function () use ($query) {
+        return $query->whereBrackets(static function () use ($query) {
             $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
             $table = $query->getOption()->table;
             if (null === ($alias = $table->getAlias()))
@@ -166,7 +166,7 @@ trait TSoftDelete
      */
     public function hardDelete(): IResult
     {
-        $this->one(ModelEvents::BEFORE_DELETE, static function (BeforeDeleteEventParam $e) {
+        $this->one(ModelEvents::BEFORE_DELETE, static function (BeforeDeleteEventParam $e): void {
             $e->query->getOption()->where = [];
         });
 

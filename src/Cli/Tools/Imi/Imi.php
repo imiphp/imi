@@ -64,7 +64,6 @@ class Imi extends BaseCommand
      * @PoolClean
      *
      * @CommandAction(name="buildRuntime", description="构建项目预加载缓存")
-     *
      * @Option(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * @Option(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
      * @Option(name="runtimeMode", type=ArgType::STRING, default=null, comments="指定运行时模式")

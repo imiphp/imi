@@ -23,6 +23,7 @@ class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      *
      * @return mixed

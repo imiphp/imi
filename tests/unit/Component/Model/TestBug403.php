@@ -13,6 +13,7 @@ use Imi\Test\Component\Model\Base\TestJsonBase;
  * tb_test_json.
  *
  * @Inherit
+ *
  * @Entity(camel=false)
  *
  * @property \Imi\Util\LazyArrayObject|array $jsonData json数据
@@ -24,6 +25,7 @@ class TestBug403 extends TestJsonBase
      * json_data.
      *
      * @Inherit
+     *
      * @Serializable(false)
      *
      * @var \Imi\Util\LazyArrayObject|object|array|null

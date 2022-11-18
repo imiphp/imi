@@ -23,11 +23,12 @@ class InjectArgAop
      * 方法参数注入.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             InjectArg::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         InjectArg::class
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

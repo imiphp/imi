@@ -82,7 +82,7 @@ abstract class WorkerLimiter
                 if ($leftSleep > 0)
                 {
                     // 等待随机1-10毫秒数后重试
-                    usleep(min(mt_rand(1000, 10000), $leftSleep * 1000));
+                    usleep(min(random_int(1000, 10000), $leftSleep * 1000));
                 }
                 else
                 {

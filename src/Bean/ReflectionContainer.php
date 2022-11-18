@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Bean;
 
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
-
 /**
  * 反射容器.
  */
@@ -35,15 +31,15 @@ class ReflectionContainer
     /**
      * 获取类反射.
      */
-    public static function getClassReflection(string $className): ReflectionClass
+    public static function getClassReflection(string $className): \ReflectionClass
     {
-        return self::$classReflectionMap[$className] ??= new ReflectionClass($className);
+        return self::$classReflectionMap[$className] ??= new \ReflectionClass($className);
     }
 
     /**
      * 获取方法反射.
      */
-    public static function getMethodReflection(string $className, string $methodName): ReflectionMethod
+    public static function getMethodReflection(string $className, string $methodName): \ReflectionMethod
     {
         return self::$methodReflectionMap[$className][$methodName] ??= static::getClassReflection($className)->getMethod($methodName);
     }
@@ -51,7 +47,7 @@ class ReflectionContainer
     /**
      * 获取属性反射.
      */
-    public static function getPropertyReflection(string $className, string $propertyName): ReflectionProperty
+    public static function getPropertyReflection(string $className, string $propertyName): \ReflectionProperty
     {
         return self::$propertyReflectionMap[$className][$propertyName] ??= static::getClassReflection($className)->getProperty($propertyName);
     }

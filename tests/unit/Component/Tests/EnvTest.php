@@ -9,7 +9,6 @@ use Imi\Env;
 use function Imi\env;
 
 use Imi\Test\BaseTest;
-use InvalidArgumentException;
 
 class EnvTest extends BaseTest
 {
@@ -49,37 +48,37 @@ class EnvTest extends BaseTest
 
     public function testInvalidArgument1(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Env::bool('A');
     }
 
     public function testInvalidArgument2(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Env::int('E');
     }
 
     public function testInvalidArgument3(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Env::float('E');
     }
 
     public function testInvalidArgument4(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Env::bool('E');
     }
 
     public function testInvalidArgument5(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Env::json('EMPTY_VALUE');
     }
 
     public function testInvalidArgument6(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Env::list('EMPTY_VALUE');
     }
 }

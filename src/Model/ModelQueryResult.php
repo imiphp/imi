@@ -125,7 +125,7 @@ class ModelQueryResult extends Result
             $object = BeanFactory::newInstance($className);
             foreach ($record as $k => $v)
             {
-                $object->$k = $v;
+                $object->{$k} = $v;
             }
         }
 
@@ -249,7 +249,7 @@ class ModelQueryResult extends Result
                 $list[] = $row = BeanFactory::newInstance($className, $item);
                 foreach ($item as $k => $v)
                 {
-                    $row->$k = $v;
+                    $row->{$k} = $v;
                 }
             }
 

@@ -39,7 +39,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function run(\Swoole\Process $process): void
         {
             $running = true;
-            \Imi\Event\Event::on('IMI.PROCESS.END', function () use (&$running) {
+            \Imi\Event\Event::on('IMI.PROCESS.END', static function () use (&$running): void {
                 $running = false;
             }, ImiPriority::IMI_MAX);
             $imiQueue = $this->imiQueue;
@@ -64,14 +64,14 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             {
                 $processPools[] = $processPool = new \Imi\Swoole\Process\Pool($options['process']);
                 $configs = $options['configs'];
-                $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
+                $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs): void {
                     Imi::setProcessName('process', [
                         'processName'   => 'QueueConsumer-' . $group,
                     ]);
                     /** @var \Imi\Queue\Model\QueueConfig[] $configs */
                     foreach ($configs as $config)
                     {
-                        Coroutine::create(function () use ($config) {
+                        Coroutine::create(function () use ($config): void {
                             /** @var \Imi\Queue\Service\BaseQueueConsumer $queueConsumer */
                             $queueConsumer = $this->consumers[] = App::newInstance($config->getConsumer(), $config->getName());
                             $queueConsumer->start();
@@ -79,7 +79,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     }
                 });
                 // 工作进程退出事件-可选
-                $processPool->on('WorkerExit', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) {
+                $processPool->on('WorkerExit', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e): void {
                     // 做一些释放操作
                     foreach ($this->consumers as $consumer)
                     {
@@ -104,7 +104,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             else
             {
                 Log::warning('@app.beans.imiQueue.list is empty');
-                Coroutine::create(function () use (&$running) {
+                Coroutine::create(static function () use (&$running): void {
                     // @phpstan-ignore-next-line
                     while ($running)
                     {

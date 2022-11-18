@@ -6,7 +6,6 @@ namespace Imi\Bean;
 
 use Imi\Aop\AopManager;
 use Imi\Util\Imi;
-use InvalidArgumentException;
 
 class BeanFactory
 {
@@ -136,7 +135,7 @@ class BeanFactory
             }
             else
             {
-                throw new InvalidArgumentException(sprintf('BeanFactory::newInstanceEx(): %s::__construct() %s not found', $class, $name));
+                throw new \InvalidArgumentException(sprintf('BeanFactory::newInstanceEx(): %s::__construct() %s not found', $class, $name));
             }
         }
 

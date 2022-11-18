@@ -86,7 +86,7 @@ class Local implements IHandler
      */
     public function delayDestroy(string $key, int $ttl): void
     {
-        Timer::after($ttl * 1000, function () use ($key) {
+        Timer::after($ttl * 1000, function () use ($key): void {
             $this->destroy($key);
         });
     }

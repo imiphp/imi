@@ -16,8 +16,6 @@ use Imi\Cli\Contract\BaseCommand;
 use Imi\Facade\Annotation\Facade;
 use Imi\Util\File;
 use Imi\Util\Imi;
-use ReflectionClass;
-use ReflectionMethod;
 
 /**
  * @Command("generate")
@@ -28,7 +26,6 @@ class FacadeGenerate extends BaseCommand
      * 生成门面类.
      *
      * @CommandAction(name="facade", description="生成门面类")
-     *
      * @Argument(name="facadeClass", type=ArgType::STRING, required=true, comments="生成的门面类")
      * @Argument(name="class", type=ArgType::STRING, required=true, comments="要绑定的类")
      * @Option(name="request", type=ArgType::BOOL, default=false, comments="是否请求上下文门面")
@@ -63,9 +60,9 @@ class FacadeGenerate extends BaseCommand
             'class'     => $class,
             'request'   => $request,
         ]));
-        $refClass = new ReflectionClass($fromClass);
+        $refClass = new \ReflectionClass($fromClass);
         $methods = [];
-        foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+        foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
         {
             $methodName = $method->getName();
             // 构造、析构方法去除

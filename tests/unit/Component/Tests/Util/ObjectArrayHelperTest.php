@@ -17,7 +17,8 @@ class ObjectArrayHelperTest extends BaseTest
         $data2 = new \stdClass();
         $data2->id = 2;
         $data2->name = 'b';
-        $data = [
+
+        return [
             'name'          => 'imi',
             'url'           => 'https://www.imiphp.com',
             'description'   => 'imi is very six',
@@ -27,8 +28,6 @@ class ObjectArrayHelperTest extends BaseTest
             ],
             'data2'         => $data2,
         ];
-
-        return $data;
     }
 
     public function testGetAndSet(): void

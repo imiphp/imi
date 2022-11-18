@@ -8,6 +8,7 @@ namespace Imi\Bean\Annotation;
  * 指定允许继承父类的指定注解.
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY", "CONST"})
  *
  * @property string|string[]|null $annotation 允许的注解类，为 null 则不限制，支持字符串或数组

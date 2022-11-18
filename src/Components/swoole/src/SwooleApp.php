@@ -52,10 +52,10 @@ class SwooleApp extends CliApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
-        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
+        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e): void {
             $this->onCommand($e);
         }, \PHP_INT_MAX - 1000);
-        Event::one('IMI.SCAN_APP', function () {
+        Event::one('IMI.SCAN_APP', function (): void {
             $this->onScanApp();
         });
     }
@@ -199,7 +199,7 @@ class SwooleApp extends CliApp
     public function init(): void
     {
         parent::init();
-        register_shutdown_function(static function () {
+        register_shutdown_function(static function (): void {
             // @phpstan-ignore-next-line
             App::getBean('Logger')->clear();
         });
@@ -214,7 +214,7 @@ class SwooleApp extends CliApp
             // @phpstan-ignore-next-line
             Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
         }
-        Event::one(['IMI.PROCESS.BEGIN', 'IMI.MAIN_SERVER.WORKER.START'], static function () {
+        Event::one(['IMI.PROCESS.BEGIN', 'IMI.MAIN_SERVER.WORKER.START'], static function (): void {
             PoolManager::init();
             CacheManager::init();
             Lock::init();

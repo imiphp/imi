@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use function array_column;
-use function array_unique;
-
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
@@ -1354,7 +1351,7 @@ abstract class Query implements IQuery
     public function column($fields, ?string $key = null): array
     {
         $fields = (array) $fields;
-        $fields = array_unique($fields);
+        $fields = \array_unique($fields);
         $rawFields = $fields;
 
         if (empty($key))
@@ -1373,11 +1370,11 @@ abstract class Query implements IQuery
         $records = $result->getStatementRecords();
         if (1 === \count($rawFields))
         {
-            return array_column($records, $rawFields[0], $key);
+            return \array_column($records, $rawFields[0], $key);
         }
         else
         {
-            return array_column($records, null, $key);
+            return \array_column($records, null, $key);
         }
     }
 

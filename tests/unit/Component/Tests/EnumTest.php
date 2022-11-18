@@ -6,7 +6,6 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Enum\TestEnum;
-use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -43,7 +42,7 @@ class EnumTest extends BaseTest
         Assert::assertTrue(TestEnum::validate(TestEnum::A));
         Assert::assertFalse(TestEnum::validate(9527));
         TestEnum::assert(TestEnum::A);
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         TestEnum::assert(9527);
     }
 }

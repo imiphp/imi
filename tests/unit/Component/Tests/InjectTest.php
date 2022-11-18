@@ -13,6 +13,7 @@ use PHPUnit\Framework\Assert;
 
 /**
  * @Bean
+ *
  * @testdox Inject
  */
 class InjectTest extends BaseTest

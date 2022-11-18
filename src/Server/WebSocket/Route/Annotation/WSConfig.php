@@ -12,6 +12,7 @@ use Imi\Bean\Annotation\Parser;
  * 写在 http 控制器的动作方法.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *

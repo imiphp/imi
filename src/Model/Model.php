@@ -20,7 +20,6 @@ use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
-use InvalidArgumentException;
 
 /**
  * 常用的数据库模型.
@@ -227,7 +226,7 @@ abstract class Model extends BaseModel
     {
         if (!$ids)
         {
-            throw new InvalidArgumentException('Model::exists() must pass in parameters');
+            throw new \InvalidArgumentException('Model::exists() must pass in parameters');
         }
         $query = static::dbQuery()->limit(1);
         if (\is_callable($ids[0]))
@@ -830,7 +829,7 @@ abstract class Model extends BaseModel
             $queryCallable($query);
         }
 
-        return $query->$functionName($fieldName);
+        return $query->{$functionName}($fieldName);
     }
 
     /**

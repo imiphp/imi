@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Base;
  * 方法体执行后，将返回值存入缓存
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string|null $name       缓存器名称；为null则使用默认缓存器

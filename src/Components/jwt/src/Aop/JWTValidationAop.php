@@ -28,11 +28,12 @@ class JWTValidationAop
      * 环绕注入.
      *
      * @PointCut(
-     *      type=\Imi\Aop\PointCutType::ANNOTATION,
-     *      allow={
-     *          \Imi\JWT\Annotation\JWTValidation::class,
-     *      }
+     *     type=\Imi\Aop\PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\JWT\Annotation\JWTValidation::class,
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

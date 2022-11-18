@@ -73,7 +73,7 @@ abstract class BasePool implements IPool
         }
         if (ResourceConfigMode::ROUND_ROBIN === $config->getResourceConfigMode())
         {
-            $this->configIndex = mt_rand(0, \count($this->resourceConfig) - 1);
+            $this->configIndex = random_int(0, \count($this->resourceConfig) - 1);
         }
     }
 
@@ -318,7 +318,7 @@ abstract class BasePool implements IPool
         switch ($this->config->getResourceConfigMode())
         {
             case ResourceConfigMode::RANDOM:
-                $index = mt_rand(0, \count($resourceConfig) - 1);
+                $index = random_int(0, \count($resourceConfig) - 1);
                 break;
             default:
                 $maxIndex = \count($resourceConfig) - 1;

@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 比较验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property mixed  $value     被比较值

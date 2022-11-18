@@ -64,7 +64,7 @@ function startServer(): void
         echo "Starting {$name}...", \PHP_EOL;
         shell_exec("{$cmd}");
 
-        register_shutdown_function(function () use ($name, $options) {
+        register_shutdown_function(static function () use ($name, $options): void {
             // stop server
             $cmd = $options['stop'];
             if ('\\' === \DIRECTORY_SEPARATOR)

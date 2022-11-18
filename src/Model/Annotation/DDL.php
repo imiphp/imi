@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 创建表语句注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string $sql    表结构 SQL；CREATE TABLE 语句

@@ -13,6 +13,7 @@ use Imi\Test\Component\Model\Base\PrefixBase;
  * prefix.
  *
  * @Inherit
+ *
  * @SoftDelete
  */
 class Prefix extends PrefixBase

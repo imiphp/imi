@@ -8,6 +8,7 @@ namespace Imi\Bean\Annotation;
  * Bean.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\BeanParser")
  *

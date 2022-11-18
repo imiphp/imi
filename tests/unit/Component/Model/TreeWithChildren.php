@@ -13,7 +13,9 @@ use Imi\Model\Tree\Annotation\TreeModel;
  * Tree.
  *
  * @Entity
+ *
  * @TreeModel
+ *
  * @Table(name="tb_tree", id={"id"})
  */
 class TreeWithChildren extends Tree

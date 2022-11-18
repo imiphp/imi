@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 列表验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property array $list 列表

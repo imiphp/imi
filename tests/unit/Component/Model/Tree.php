@@ -13,6 +13,7 @@ use Imi\Test\Component\Model\Base\TreeBase;
  * Tree.
  *
  * @Inherit
+ *
  * @TreeModel
  */
 class Tree extends TreeBase

@@ -38,9 +38,7 @@ return [
             ],
         ],
         \Imi\Server\Session\Middleware\HttpSessionMiddleware::class => [
-            'sessionIdHandler'  => function (Imi\Server\Http\Message\Request $request) {
-                return $request->getHeaderLine('X-Session-ID');
-            },
+            'sessionIdHandler'  => static fn (Imi\Server\Http\Message\Request $request) => $request->getHeaderLine('X-Session-ID'),
         ],
     ],
 ];

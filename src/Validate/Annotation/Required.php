@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 必选参数.
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]

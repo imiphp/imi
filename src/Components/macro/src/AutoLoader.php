@@ -51,7 +51,7 @@ class AutoLoader
      */
     public function __call(string $name, array $arguments)
     {
-        return $this->composerClassLoader->$name(...$arguments);
+        return $this->composerClassLoader->{$name}(...$arguments);
     }
 
     /**

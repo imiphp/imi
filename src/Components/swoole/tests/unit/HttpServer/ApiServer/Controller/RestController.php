@@ -18,6 +18,7 @@ class RestController extends HttpController
      * query.
      *
      * @Action
+     *
      * @Route(url="", method={"GET"})
      *
      * @return array
@@ -33,6 +34,7 @@ class RestController extends HttpController
      * find.
      *
      * @Action
+     *
      * @Route(url="./{id}", method={"GET"})
      *
      * @param int $id
@@ -50,6 +52,7 @@ class RestController extends HttpController
      * create.
      *
      * @Action
+     *
      * @Route(url="", method={"POST"})
      *
      * @param string $name
@@ -69,6 +72,7 @@ class RestController extends HttpController
      * update.
      *
      * @Action
+     *
      * @Route(url="./{id}", method={"PUT"})
      *
      * @param int    $id
@@ -90,6 +94,7 @@ class RestController extends HttpController
      * delete.
      *
      * @Action
+     *
      * @Route(url="./{id}", method={"DELETE"})
      *
      * @param int $id

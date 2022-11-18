@@ -4,17 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Dev;
 
-use FilesystemIterator;
 use Imi\Cli\ImiCommand;
-
-use function implode;
-use function method_exists;
-use function realpath;
-use function sprintf;
-
 use Symfony\Component\Process\Process;
-
-use function usleep;
 
 class Plugin
 {
@@ -25,7 +16,7 @@ class Plugin
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         /** @var Process[] $readyProcesses */
         $readyProcesses = [];
-        foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
+        foreach (new \FilesystemIterator($componentsDir, \FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())
             {
@@ -47,7 +38,7 @@ class Plugin
     {
         $cmd = [
             \PHP_BINARY,
-            realpath($_SERVER['SCRIPT_FILENAME']),
+            \realpath($_SERVER['SCRIPT_FILENAME']),
             'update',
             '--no-interaction',
             '--prefer-dist',
@@ -72,7 +63,7 @@ class Plugin
             '--app-namespace=Imi\\\\Dev',
         ];
         $process = self::createProcess($cmd);
-        $process->run(static function ($type, $buffer) {
+        $process->run(static function ($type, $buffer): void {
             echo $buffer;
         });
 
@@ -82,7 +73,7 @@ class Plugin
 
     protected static function createProcess(array $cmd): Process
     {
-        if (method_exists(Process::class, 'fromShellCommandline'))
+        if (\method_exists(Process::class, 'fromShellCommandline'))
         {
             $process = new Process($cmd);
         }
@@ -91,7 +82,7 @@ class Plugin
             // 兼容 symfony process < 3.3
             $process = new Process([]);
             // @phpstan-ignore-next-line
-            $process->setCommandLine(implode(' ', $cmd));
+            $process->setCommandLine(\implode(' ', $cmd));
         }
         $process->setTimeout(0);
 
@@ -109,12 +100,12 @@ class Plugin
         {
             foreach ($processes as $name => $process)
             {
-                $title = sprintf($titleTemp, $name);
+                $title = \sprintf($titleTemp, $name);
                 if (!$process->isStarted() && $max > $running)
                 {
                     ++$running;
                     $output->writeln("[{$title}]");
-                    $process->start(static function ($type, $buffer) {
+                    $process->start(static function ($type, $buffer): void {
                         echo $buffer;
                     });
                 }
@@ -126,7 +117,7 @@ class Plugin
                     unset($processes[$name]);
                 }
             }
-            usleep(1000);
+            \usleep(1000);
         }
     }
 }

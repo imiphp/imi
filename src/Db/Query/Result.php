@@ -182,7 +182,7 @@ class Result implements IResult
                 $list[] = $row = BeanFactory::newInstance($className, $item);
                 foreach ($item as $k => $v)
                 {
-                    $row->$k = $v;
+                    $row->{$k} = $v;
                 }
             }
 

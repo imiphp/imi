@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Validate\ValidatorHelper;
-use InvalidArgumentException;
-use JsonException;
 
 class Env
 {
@@ -119,7 +117,7 @@ class Env
 
         if (!ValidatorHelper::int($result))
         {
-            throw new InvalidArgumentException(sprintf('Invalid int value %s', $result));
+            throw new \InvalidArgumentException(sprintf('Invalid int value %s', $result));
         }
 
         return (int) $result;
@@ -139,7 +137,7 @@ class Env
 
         if (!ValidatorHelper::number($result))
         {
-            throw new InvalidArgumentException(sprintf('Invalid float value %s', $result));
+            throw new \InvalidArgumentException(sprintf('Invalid float value %s', $result));
         }
 
         return (float) $result;
@@ -171,7 +169,7 @@ class Env
         {
             return false;
         }
-        throw new InvalidArgumentException(sprintf('Invalid bool value %s', $result));
+        throw new \InvalidArgumentException(sprintf('Invalid bool value %s', $result));
     }
 
     /**
@@ -191,12 +189,12 @@ class Env
             $value = json_decode($result, $associative, $depth, $flags);
             if (!$value && \JSON_ERROR_NONE !== json_last_error())
             {
-                throw new InvalidArgumentException(sprintf('Invalid json value %s', $result));
+                throw new \InvalidArgumentException(sprintf('Invalid json value %s', $result));
             }
         }
-        catch (JsonException $je)
+        catch (\JsonException $je)
         {
-            throw new InvalidArgumentException(sprintf('Invalid json value %s', $result));
+            throw new \InvalidArgumentException(sprintf('Invalid json value %s', $result));
         }
         if (false === $value)
         {
@@ -220,7 +218,7 @@ class Env
         // @phpstan-ignore-next-line
         if ('' === $result || false === ($value = explode($separator, $result, $limit)))
         {
-            throw new InvalidArgumentException(sprintf('Invalid list value %s', $result));
+            throw new \InvalidArgumentException(sprintf('Invalid list value %s', $result));
         }
 
         return $value;

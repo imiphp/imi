@@ -17,7 +17,6 @@ use Imi\Server\Session\Session;
 use Imi\Server\View\View;
 use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\ObjectArrayHelper;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -219,7 +218,7 @@ class ActionMiddleware implements MiddlewareInterface
                 // @phpstan-ignore-next-line
                 if ($item['required'] && !ObjectArrayHelper::exists($allData, $item['name']))
                 {
-                    throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
+                    throw new \InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
                 }
                 $value = ObjectArrayHelper::get($allData, $item['name'], $item['default']);
             }
@@ -256,7 +255,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
             else
             {
-                throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
+                throw new \InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
             }
             if (null !== $value)
             {

@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use function parse_url;
-
 use Psr\Http\Message\UriInterface;
-
-use function sprintf;
-use function str_replace;
 
 class Uri implements UriInterface, \Stringable
 {
@@ -63,12 +58,12 @@ class Uri implements UriInterface, \Stringable
         $isUnixSocket = str_starts_with($uri, 'unix:///');
         if ($isUnixSocket)
         {
-            $uri = str_replace('unix:///', 'unix://', $uri);
+            $uri = \str_replace('unix:///', 'unix://', $uri);
         }
-        $uriOption = parse_url($uri);
+        $uriOption = \parse_url($uri);
         if (false === $uriOption)
         {
-            throw new \InvalidArgumentException(sprintf('Uri %s parse error', $uri));
+            throw new \InvalidArgumentException(\sprintf('Uri %s parse error', $uri));
         }
         if ($isUnixSocket)
         {

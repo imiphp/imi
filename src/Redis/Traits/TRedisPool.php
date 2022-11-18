@@ -8,8 +8,6 @@ use Imi\Bean\BeanFactory;
 use Imi\Redis\Enum\RedisMode;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisResource;
-use InvalidArgumentException;
-use RedisException;
 
 trait TRedisPool
 {
@@ -55,14 +53,14 @@ trait TRedisPool
                 }
                 if (!isset($redis))
                 {
-                    throw new RedisException('None of redis slave nodes are alive');
+                    throw new \RedisException('None of redis slave nodes are alive');
                 }
                 break;
             case RedisMode::CLUSTER:
                 $redis = new \RedisCluster($config['name'] ?? null, $config['seeds'] ?? [], $config['timeout'] ?? 0, $config['readTimeout'] ?? 0, $config['persistent'] ?? false, $config['password'] ?? null);
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('Invalid mode %s', $mode));
+                throw new \InvalidArgumentException(sprintf('Invalid mode %s', $mode));
         }
 
         return new RedisResource($this, BeanFactory::newInstance(RedisHandler::class, $redis), $config);

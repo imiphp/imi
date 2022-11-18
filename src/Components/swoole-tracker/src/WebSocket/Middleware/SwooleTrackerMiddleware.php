@@ -10,7 +10,6 @@ use Imi\Server\WebSocket\IMessageHandler;
 use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
-use RuntimeException;
 
 /**
  * @Bean("SwooleTrackerWebSocketMiddleware")
@@ -28,7 +27,7 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
     {
         if (null === $this->nameHandler)
         {
-            throw new RuntimeException('SwooleTrackerWebSocketMiddleware must be set beans: "nameHandler"');
+            throw new \RuntimeException('SwooleTrackerWebSocketMiddleware must be set beans: "nameHandler"');
         }
         parent::__init();
     }
@@ -44,9 +43,8 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
         try
         {
             $success = $code = null;
-            $result = $handler->handle($frame);
 
-            return $result;
+            return $handler->handle($frame);
         }
         catch (\Throwable $th)
         {

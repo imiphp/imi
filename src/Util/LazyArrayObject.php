@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use ArrayObject;
-use JsonSerializable;
-
 /**
  * 同时可以作为数组和对象访问的类.
  */
-class LazyArrayObject extends ArrayObject implements JsonSerializable
+class LazyArrayObject extends \ArrayObject implements \JsonSerializable
 {
     /**
      * @param mixed $input

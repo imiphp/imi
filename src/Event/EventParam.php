@@ -36,7 +36,7 @@ class EventParam
         {
             foreach ($data as $key => &$value)
             {
-                $this->$key = &$value;
+                $this->{$key} = &$value;
             }
         }
     }

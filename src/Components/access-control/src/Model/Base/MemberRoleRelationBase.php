@@ -14,6 +14,7 @@ use Imi\Model\Model;
  * ac_member_role_relation 基类.
  *
  * @Entity
+ *
  * @Table(name="ac_member_role_relation", id={"member_id", "role_id"})
  * @DDL("CREATE TABLE `ac_member_role_relation` (   `member_id` int(10) unsigned NOT NULL COMMENT '用户ID',   `role_id` int(10) unsigned NOT NULL COMMENT '角色ID',   PRIMARY KEY (`member_id`,`role_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  *

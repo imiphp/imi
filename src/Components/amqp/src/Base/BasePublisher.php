@@ -59,7 +59,7 @@ abstract class BasePublisher implements IPublisher
             $this->declarePublisher();
         }
         $this->ackSuccess = false;
-        $this->channel->set_ack_handler(function () {
+        $this->channel->set_ack_handler(function (): void {
             $this->ackSuccess = true;
         });
     }
@@ -104,7 +104,7 @@ abstract class BasePublisher implements IPublisher
             }
             while ($continue);
         }
-        $this->channel->set_ack_handler(static function () {
+        $this->channel->set_ack_handler(static function (): void {
         });
 
         return $this->ackSuccess;

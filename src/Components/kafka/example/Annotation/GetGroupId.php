@@ -10,7 +10,9 @@ use Imi\Util\Imi;
 
 /**
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property callable $callable 回调

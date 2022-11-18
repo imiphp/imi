@@ -15,7 +15,6 @@ use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker;
 use Imi\WorkermanGateway\Swoole\Server\Business\Task\WebSocketWorkerTask;
-use Throwable;
 use Workerman\Gateway\Config\GatewayWorkerConfig;
 use Workerman\Gateway\Gateway\Contract\IGatewayClient;
 use Workerman\Gateway\Gateway\GatewayWorkerClient;
@@ -52,7 +51,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function __construct(string $name, array $config)
         {
             parent::__construct($name, $config);
-            Event::on('IMI.MAIN_SERVER.WORKER.START', function () {
+            Event::on('IMI.MAIN_SERVER.WORKER.START', function (): void {
                 if (!SwooleWorker::isTask())
                 {
                     $this->initGatewayWorker();
@@ -68,23 +67,23 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 Gateway::$registerAddress = $workermanGatewayConfig['registerAddress'];
             }
 
-            Coroutine::create(function () use ($workermanGatewayConfig) {
+            Coroutine::create(function () use ($workermanGatewayConfig): void {
                 $this->pool = $pool = new CoPool($workermanGatewayConfig['worker_coroutine_num'] ?? swoole_cpu_num(), $workermanGatewayConfig['channel']['size'] ?? 1024, WebSocketWorkerTask::class);
                 $pool->run();
                 $pool->wait();
             });
 
-            Coroutine::create(function () use ($workermanGatewayConfig) {
+            Coroutine::create(function () use ($workermanGatewayConfig): void {
                 $config = new GatewayWorkerConfig($workermanGatewayConfig);
 
                 // Gateway Worker
                 $client = new GatewayWorkerClient(($workermanGatewayConfig['workerName'] ?? $this->getName()) . ':' . Worker::getWorkerId(), $config);
                 // 异常处理
-                $client->onException = static function (Throwable $th) {
+                $client->onException = static function (\Throwable $th): void {
                     Log::error($th);
                 };
                 // 网关消息
-                $client->onGatewayMessage = function (IGatewayClient $client, array $message) {
+                $client->onGatewayMessage = function (IGatewayClient $client, array $message): void {
                     $clientId = Context::addressToClientId($message['local_ip'], $message['local_port'], $message['connection_id']);
                     $this->pool->addTaskAsync([
                         'server'   => $this,

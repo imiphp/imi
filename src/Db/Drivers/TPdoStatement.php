@@ -7,14 +7,13 @@ namespace Imi\Db\Drivers;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\Text;
-use PDOStatement;
 
 trait TPdoStatement
 {
     /**
      * \PDOStatement.
      */
-    protected ?PDOStatement $statement = null;
+    protected ?\PDOStatement $statement = null;
 
     /**
      * 数据.
@@ -31,7 +30,7 @@ trait TPdoStatement
      */
     protected int $lastInsertId = 0;
 
-    public function __construct(IDb $db, PDOStatement $statement)
+    public function __construct(IDb $db, \PDOStatement $statement)
     {
         $this->db = $db;
         $this->statement = $statement;

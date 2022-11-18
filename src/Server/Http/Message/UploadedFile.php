@@ -77,7 +77,7 @@ class UploadedFile implements UploadedFileInterface
      *
      * @return void
      */
-    public function moveTo($targetPath)
+    public function moveTo($targetPath): void
     {
         if (!\is_string($targetPath))
         {

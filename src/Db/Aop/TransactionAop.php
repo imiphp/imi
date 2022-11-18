@@ -26,11 +26,12 @@ class TransactionAop
      * 自动事务支持
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             Transaction::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         Transaction::class
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

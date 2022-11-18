@@ -14,6 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_test_soft_delete 基类.
  *
  * @Entity
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestSoftDelete.name", default="tb_test_soft_delete"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestSoftDelete.poolName"))
  *
  * @property int|null    $id

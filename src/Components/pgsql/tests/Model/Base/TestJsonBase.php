@@ -14,6 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * test 基类.
  *
  * @Entity
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestJson.name", default="tb_test_json"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestJson.poolName"))
  *
  * @property int|null                             $id

@@ -495,7 +495,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 {
                     throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->failQueueName));
                 }
-                [, $failReady, ] = $result;
+                [, $failReady] = $result;
                 $fail += $failReady;
             }
         }
@@ -513,7 +513,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 {
                     throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->timeoutQueueName));
                 }
-                [, $timeoutReady, ] = $result;
+                [, $timeoutReady] = $result;
                 $status['timeout'] = $timeoutReady;
             }
             catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
@@ -534,7 +534,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
             {
                 throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->delayQueueName));
             }
-            [, $delayReady, ] = $result;
+            [, $delayReady] = $result;
         }
         catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
         {

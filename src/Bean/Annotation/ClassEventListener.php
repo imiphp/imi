@@ -8,6 +8,7 @@ namespace Imi\Bean\Annotation;
  * 类事件监听.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\ClassEventParser")
  *

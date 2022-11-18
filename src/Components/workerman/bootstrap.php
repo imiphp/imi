@@ -7,12 +7,12 @@ namespace Imi\Workerman;
 use Imi\App;
 use Imi\Event\Event;
 
-return static function () {
+return static function (): void {
     $path = null;
 
     if (!class_exists('Imi\App'))
     {
-        (static function () use (&$path) {
+        (static function () use (&$path): void {
             foreach ([
                 $_SERVER['PWD'] ?? null,
                 getcwd(),

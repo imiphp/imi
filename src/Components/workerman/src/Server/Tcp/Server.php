@@ -41,7 +41,7 @@ class Server extends Base implements ITcpServer
     {
         parent::bindEvents();
 
-        $this->worker->onMessage = function (TcpConnection $connection, string $data) {
+        $this->worker->onMessage = function (TcpConnection $connection, string $data): void {
             try
             {
                 $clientId = $connection->id;

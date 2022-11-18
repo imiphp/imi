@@ -8,9 +8,6 @@ use Imi\Lock\Exception\LockFailException;
 use Imi\Log\Log;
 use Imi\RequestContext;
 
-use function microtime;
-use function sprintf;
-
 abstract class BaseLock implements ILockHandler
 {
     /**
@@ -60,7 +57,7 @@ abstract class BaseLock implements ILockHandler
         {
             foreach ($options as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }
@@ -88,7 +85,7 @@ abstract class BaseLock implements ILockHandler
         }
         $this->isLocked = true;
         $this->lockCoId = RequestContext::getCurrentFlag();
-        $this->beginTime = microtime(true);
+        $this->beginTime = \microtime(true);
         if (null === $taskCallable)
         {
             return true;
@@ -127,7 +124,7 @@ abstract class BaseLock implements ILockHandler
         }
         $this->isLocked = true;
         $this->lockCoId = RequestContext::getCurrentFlag();
-        $this->beginTime = microtime(true);
+        $this->beginTime = \microtime(true);
         if (null !== $taskCallable)
         {
             try
@@ -152,10 +149,10 @@ abstract class BaseLock implements ILockHandler
         {
             return false;
         }
-        $executeTime = microtime(true) - $this->beginTime;
+        $executeTime = \microtime(true) - $this->beginTime;
         if ($executeTime * 1000 > $this->lockExpire)
         {
-            $message = sprintf('Lock execute timeout, id:%s, set timeout for %.3fs, execute time for %.3fs', $this->id, $this->lockExpire / 1000, $executeTime);
+            $message = \sprintf('Lock execute timeout, id:%s, set timeout for %.3fs, execute time for %.3fs', $this->id, $this->lockExpire / 1000, $executeTime);
             if ($this->timeoutException)
             {
                 throw new LockFailException($message);
@@ -167,7 +164,7 @@ abstract class BaseLock implements ILockHandler
         }
         if (!$this->__unlock())
         {
-            $message = sprintf('Unlock failed, id:%s', $this->id);
+            $message = \sprintf('Unlock failed, id:%s', $this->id);
             if ($this->unlockException)
             {
                 throw new LockFailException($message);

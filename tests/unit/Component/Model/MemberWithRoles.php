@@ -27,6 +27,7 @@ class MemberWithRoles extends Member
      * @ManyToMany(model="Role", middle="MemberRoleRelation", rightMany="roles")
      * @JoinToMiddle(field="id", middleField="member_id")
      * @JoinFromMiddle(middleField="role_id", field="id")
+     *
      * @AutoSave
      *
      * @var MemberRoleRelation[]|null
@@ -92,6 +93,7 @@ class MemberWithRoles extends Member
      * @ManyToMany(model="Role", middle="MemberRoleRelation", rightMany="rolesWith", with=true)
      * @JoinToMiddle(field="id", middleField="member_id")
      * @JoinFromMiddle(middleField="role_id", field="id")
+     *
      * @AutoSave
      *
      * @var MemberRoleRelation[]|null

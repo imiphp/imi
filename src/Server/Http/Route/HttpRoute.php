@@ -286,7 +286,7 @@ class HttpRoute
             }
             elseif ($isObject)
             {
-                return $parsedBody->$name ?? null;
+                return $parsedBody->{$name} ?? null;
             }
             else
             {

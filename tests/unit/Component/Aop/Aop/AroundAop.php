@@ -18,6 +18,7 @@ class AroundAop
 {
     /**
      * @Around
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Aop\Classes\TestAroundClass::test"

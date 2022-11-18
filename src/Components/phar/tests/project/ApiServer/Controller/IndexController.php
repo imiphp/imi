@@ -19,6 +19,7 @@ class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      */
     public function index()

@@ -20,7 +20,7 @@ class WorkermanServerWorker extends Worker
             && version_compare(\PHP_VERSION, '7.0.0', 'ge') // if php >= 7.0.0
             && version_compare(php_uname('r'), '3.9', 'ge') // if kernel >=3.9
             && 'darwin' !== strtolower(php_uname('s')) // if not Mac OS
-            && 0 !== strpos($socket_name, 'unix'))
+            && !str_starts_with($socket_name, 'unix'))
         { // if not unix socket
             $this->reusePort = true;
         }
@@ -34,7 +34,7 @@ class WorkermanServerWorker extends Worker
     /**
      * {@inheritDoc}
      */
-    protected static function init()
+    protected static function init(): void
     {
         parent::init();
         static::$_startFile = Imi::getCurrentModeRuntimePath('start_file');
@@ -110,7 +110,7 @@ class WorkermanServerWorker extends Worker
     /**
      * {@inheritDoc}
      */
-    protected static function displayUI()
+    protected static function displayUI(): void
     {
         // BUG: https://github.com/walkor/workerman/pull/708
         // 此处为修复低版本 bug

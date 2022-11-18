@@ -92,7 +92,7 @@ class Server extends Base implements ISwooleTcpServer
         $events = $this->config['events'] ?? null;
         if ($event = ($events['connect'] ?? true))
         {
-            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
+            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId): void {
                 try
                 {
                     if (!Worker::isInited())
@@ -125,13 +125,13 @@ class Server extends Base implements ISwooleTcpServer
         }
         else
         {
-            $this->swoolePort->on('connect', static function () {
+            $this->swoolePort->on('connect', static function (): void {
             });
         }
 
         if ($event = ($events['receive'] ?? true))
         {
-            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) {
+            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data): void {
                 try
                 {
                     if (!Worker::isInited())
@@ -165,13 +165,13 @@ class Server extends Base implements ISwooleTcpServer
         }
         else
         {
-            $this->swoolePort->on('receive', static function () {
+            $this->swoolePort->on('receive', static function (): void {
             });
         }
 
         if ($event = ($events['close'] ?? true))
         {
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId): void {
                 try
                 {
                     if (!Worker::isInited())
@@ -192,7 +192,7 @@ class Server extends Base implements ISwooleTcpServer
         }
         else
         {
-            $this->swoolePort->on('close', static function () {
+            $this->swoolePort->on('close', static function (): void {
             });
         }
     }

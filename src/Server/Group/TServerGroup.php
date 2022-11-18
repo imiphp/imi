@@ -96,7 +96,7 @@ trait TServerGroup
      */
     public function groupCall(string $groupName, string $methodName, ...$args)
     {
-        return $this->createGroup($groupName)->$methodName(...$args);
+        return $this->createGroup($groupName)->{$methodName}(...$args);
     }
 
     /**

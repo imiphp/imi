@@ -65,7 +65,7 @@ class SwooleIO extends AbstractIO
      * @throws \PhpAmqpLib\Exception\AMQPIOException
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */
-    public function connect()
+    public function connect(): void
     {
         $sock = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
         if (!$sock->connect($this->host, $this->port, $this->connection_timeout))
@@ -80,7 +80,7 @@ class SwooleIO extends AbstractIO
      *
      * @return void
      */
-    public function reconnect()
+    public function reconnect(): void
     {
         $this->close();
         $this->connect();
@@ -152,7 +152,7 @@ class SwooleIO extends AbstractIO
      * @throws \PhpAmqpLib\Exception\AMQPConnectionClosedException
      * @throws \PhpAmqpLib\Exception\AMQPTimeoutException
      */
-    public function write($data)
+    public function write($data): void
     {
         $buffer = $this->sock->send($data);
 
@@ -172,7 +172,7 @@ class SwooleIO extends AbstractIO
     /**
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         if ($this->sock)
         {
@@ -212,7 +212,7 @@ class SwooleIO extends AbstractIO
      *
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */
-    public function check_heartbeat()
+    public function check_heartbeat(): void
     {
     }
 }

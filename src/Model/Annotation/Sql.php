@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 字段 SQL 语句定义.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string $sql SQL 语句

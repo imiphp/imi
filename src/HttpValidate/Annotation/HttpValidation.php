@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Base;
  * 自动验证 Http 参数.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]

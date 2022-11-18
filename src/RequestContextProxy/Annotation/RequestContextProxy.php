@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 请求上下文代理.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string|null $class 代理类名

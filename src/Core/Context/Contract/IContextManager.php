@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Core\Context\Contract;
 
-use ArrayObject;
-
 interface IContextManager
 {
     /**
      * 创建上下文.
      */
-    public function create(string $flag, array $data = []): ArrayObject;
+    public function create(string $flag, array $data = []): \ArrayObject;
 
     /**
      * 销毁上下文.
@@ -21,7 +19,7 @@ interface IContextManager
     /**
      * 获取上下文.
      */
-    public function get(string $flag, bool $autoCreate = false): ArrayObject;
+    public function get(string $flag, bool $autoCreate = false): \ArrayObject;
 
     /**
      * 上下文是否存在.

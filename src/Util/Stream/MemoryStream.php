@@ -92,7 +92,7 @@ class MemoryStream implements StreamInterface, \Stringable
      *
      * @return void
      */
-    public function seek($offset, $whence = \SEEK_SET)
+    public function seek($offset, $whence = \SEEK_SET): void
     {
         switch ($whence)
         {

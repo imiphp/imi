@@ -24,7 +24,7 @@ class Server extends \Imi\Server\Server
         $config = Config::get('@app.workerman.worker', []);
         foreach ($config as $key => $value)
         {
-            WorkermanServerWorker::$$key = $value;
+            WorkermanServerWorker::${$key} = $value;
         }
         // 静态属性值设置
         // Pid file.

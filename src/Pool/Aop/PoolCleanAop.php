@@ -23,11 +23,12 @@ class PoolCleanAop
      * 过滤方法参数.
      *
      * @PointCut(
-     *      type=PointCutType::ANNOTATION,
-     *      allow={
-     *          \Imi\Pool\Annotation\PoolClean::class
-     *      }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\Pool\Annotation\PoolClean::class
+     *     }
      * )
+     *
      * @Before
      *
      * @return mixed

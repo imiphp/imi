@@ -11,8 +11,6 @@ use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 use Imi\Timer\Timer;
 
-use function str_contains;
-
 class RedisManager
 {
     /**
@@ -100,7 +98,7 @@ class RedisManager
                 App::set($requestContextKey, $redis);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), function () use ($requestContextKey) {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey): void {
                         /** @var RedisHandler|null $redis */
                         $redis = App::get($requestContextKey);
                         if (!$redis)
@@ -183,7 +181,7 @@ class RedisManager
         if (!$redis->isCluster())
         {
             $host = $config['host'] ?? '127.0.0.1';
-            if (str_contains($host, '/'))
+            if (\str_contains($host, '/'))
             {
                 // unix socket
                 $redis->connect($host);

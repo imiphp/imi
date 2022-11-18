@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query\Result;
 
-use function end;
-
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-
-use function strtolower;
 
 class ChunkResult extends BaseChunkResult
 {
@@ -29,7 +25,7 @@ class ChunkResult extends BaseChunkResult
         $this->limit = $limit;
         $this->column = $column;
         $this->alias = $alias;
-        $this->orderBy = strtolower($orderBy);
+        $this->orderBy = \strtolower($orderBy);
     }
 
     /**
@@ -61,7 +57,7 @@ class ChunkResult extends BaseChunkResult
 
             $records = $result->getStatementRecords();
 
-            $lastId = end($records)[$this->alias];
+            $lastId = \end($records)[$this->alias];
         }
         while ($resultCount === $this->limit);
     }

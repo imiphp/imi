@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
@@ -26,7 +25,7 @@ class Helper
         {
             $result['hash'] = self::resolveGitHash($path);
         }
-        catch (RuntimeException $exception)
+        catch (\RuntimeException $exception)
         {
             $output->writeln("<comment>warning</comment>: git hash get failed, {$exception->getMessage()}");
         }
@@ -34,7 +33,7 @@ class Helper
         {
             $result['branch'] = self::resolveGitBranch($path);
         }
-        catch (RuntimeException $exception)
+        catch (\RuntimeException $exception)
         {
             $output->writeln("<comment>warning</comment>: git branch get failed, {$exception->getMessage()}");
         }
@@ -42,7 +41,7 @@ class Helper
         {
             $result['tag'] = self::resolveGitTag($path);
         }
-        catch (RuntimeException $exception)
+        catch (\RuntimeException $exception)
         {
             $output->writeln("<comment>warning</comment>: git tag get failed, {$exception->getMessage()}");
         }
@@ -88,6 +87,6 @@ class Helper
             return trim($process->getOutput());
         }
 
-        throw new RuntimeException(sprintf('Unable to execute git command: %s', trim($process->getErrorOutput())), 0, new ProcessFailedException($process));
+        throw new \RuntimeException(sprintf('Unable to execute git command: %s', trim($process->getErrorOutput())), 0, new ProcessFailedException($process));
     }
 }

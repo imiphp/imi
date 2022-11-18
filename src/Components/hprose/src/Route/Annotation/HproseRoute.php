@@ -11,6 +11,7 @@ use Imi\Rpc\Route\Annotation\RpcRoute;
  * Hprose 路由注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
  *

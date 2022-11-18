@@ -12,7 +12,9 @@ use Imi\Rpc\Annotation\RpcService;
  * gRPC 服务对象注入.
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string|null $interface 服务接口

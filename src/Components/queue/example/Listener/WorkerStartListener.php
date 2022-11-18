@@ -30,13 +30,13 @@ class WorkerStartListener implements IEventListener
     public function handle(EventParam $e): void
     {
         // 每 1 秒投递进 test1 队列
-        Timer::tick(1000, function () {
+        Timer::tick(1000, function (): void {
             $message = new Message();
             $message->setMessage((string) time());
             $this->imiQueue->getQueue('test1')->push($message);
         });
         // 每 3 秒投递进 test2 队列
-        Timer::tick(3000, function () {
+        Timer::tick(3000, function (): void {
             $message = new Message();
             $message->setMessage((string) time());
             $this->imiQueue->getQueue('test2')->push($message);

@@ -40,7 +40,7 @@ class SwooleTestProcess extends BaseProcess
         $this->runConsumer($this->testConsumer);
         $this->runConsumer($this->testConsumer2);
         $channel = new \Swoole\Coroutine\Channel();
-        Event::on('IMI.PROCESS.END', function () use ($channel) {
+        Event::on('IMI.PROCESS.END', function () use ($channel): void {
             $this->running = false;
             $this->testConsumer->close();
             $this->testConsumer2->close();
@@ -51,7 +51,7 @@ class SwooleTestProcess extends BaseProcess
 
     private function runConsumer(IConsumer $consumer): void
     {
-        Coroutine::create(function () use ($consumer) {
+        Coroutine::create(function () use ($consumer): void {
             try
             {
                 $consumer->run();

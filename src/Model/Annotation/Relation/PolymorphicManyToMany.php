@@ -8,6 +8,7 @@ namespace Imi\Model\Annotation\Relation;
  * 多态多对多关联.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string        $type           右表多态类型字段名

@@ -13,6 +13,7 @@ use Imi\Config;
  * 传入回调进行验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property string|null    $name          参数名称；属性注解可省略

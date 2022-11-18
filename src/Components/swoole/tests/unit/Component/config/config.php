@@ -242,10 +242,8 @@ return [
             'option'        => [
                 'savePath'    => sys_get_temp_dir() . '/imi-cache/',
                 // 保存文件名处理回调，一般可以不写
-                'saveFileNameCallback'    => function (string $savePath, string $key) {
-                    return \Imi\Util\File::path($savePath, sha1($key));
-                },
-                'formatHandlerClass'    => \Imi\Util\Format\Json::class,
+                'saveFileNameCallback'    => static fn (string $savePath, string $key) => \Imi\Util\File::path($savePath, sha1($key)),
+                'formatHandlerClass'      => \Imi\Util\Format\Json::class,
             ],
         ],
         'redis' => [

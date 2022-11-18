@@ -10,7 +10,9 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * 回调注解.
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string|object $class  类名，或者传入对象

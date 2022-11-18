@@ -38,7 +38,7 @@ class HproseService implements IService
      */
     public function call(string $method, array $args = [])
     {
-        return $this->client->getInstance()->{$this->name}->$method(...$args);
+        return $this->client->getInstance()->{$this->name}->{$method}(...$args);
     }
 
     /**

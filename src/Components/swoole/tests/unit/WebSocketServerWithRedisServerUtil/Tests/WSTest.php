@@ -16,7 +16,7 @@ class WSTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 10000;
@@ -62,7 +62,7 @@ class WSTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 10000;
@@ -79,7 +79,7 @@ class WSTest extends BaseTest
 
     public function testMatchHttpRoute(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 10000;
@@ -112,7 +112,7 @@ class WSTest extends BaseTest
 
     public function testHttp(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $http->timeout = 10000;
             $response = $http->get($this->host . 'http');

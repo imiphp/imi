@@ -96,10 +96,10 @@ class PgsqlQuery extends Query
             }
         }
         $isLastStar = '*' === end($keywords);
-        $result = '"' . implode('"' . '.' . '"', $keywords) . '"';
+        $result = '"' . implode('"."', $keywords) . '"';
         if ($isLastStar)
         {
-            $result = str_replace('"' . '*' . '"', '*', $result);
+            $result = str_replace('"*"', '*', $result);
         }
         if (null !== $jsonKeywords)
         {
@@ -107,7 +107,7 @@ class PgsqlQuery extends Query
         }
         if (!Text::isEmpty($alias))
         {
-            $result .= ' as ' . '"' . $alias . '"';
+            $result .= ' as "' . $alias . '"';
         }
 
         return $result;

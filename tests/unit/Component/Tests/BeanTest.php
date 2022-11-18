@@ -12,9 +12,6 @@ use Imi\Test\Component\Bean\BeanA;
 use Imi\Test\Component\Bean\BeanB;
 use Imi\Test\Component\Bean\BeanC;
 use Imi\Util\Imi;
-use ReflectionFunction;
-use ReflectionMethod;
-use stdClass;
 
 /**
  * @testdox Bean
@@ -34,43 +31,37 @@ class BeanTest extends BaseTest
     public function testGetTypeComments(): void
     {
         // @phpstan-ignore-next-line
-        $f = function (): ?int {
-            return 0;
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): ?int => 0;
+        $rf = new \ReflectionFunction($f);
         $this->assertEquals('int|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-        $f = function (): stdClass {
-            return new \stdClass();
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): \stdClass => new \stdClass();
+        $rf = new \ReflectionFunction($f);
         $this->assertEquals('\stdClass', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
         // @phpstan-ignore-next-line
-        $f = function (): ?stdClass {
-            return new \stdClass();
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): ?\stdClass => new \stdClass();
+        $rf = new \ReflectionFunction($f);
         $this->assertEquals('\stdClass|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-        $mf = new ReflectionMethod($this, 'test1');
+        $mf = new \ReflectionMethod($this, 'test1');
         $this->assertEquals('\Imi\Test\Component\Tests\BeanTest', ReflectionUtil::getTypeComments($mf->getReturnType(), self::class));
 
         // @phpstan-ignore-next-line
         if (version_compare(\PHP_VERSION, '8.0', '>='))
         {
             // @phpstan-ignore-next-line
-            $f = function (): mixed {
+            $f = static function (): mixed {
             };
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('mixed', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function (): int|string {
                 return 0;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('string|int', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
 
@@ -82,43 +73,43 @@ class BeanTest extends BaseTest
                 return new \ArrayObject();
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('\IteratorAggregate&\Countable', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function (): never {
 
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('never', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
 
         // @phpstan-ignore-next-line
         if (version_compare(\PHP_VERSION, '8.2', '>='))
         {
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function(): true {
                 return true;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('true', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function(): false {
                 return false;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('false', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function(): null {
                 return null;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('null', ReflectionUtil::getTypeComments($rf->getReturnType()));
 
             $f = Imi::eval(<<<CODE
@@ -126,7 +117,7 @@ class BeanTest extends BaseTest
                 return new \ArrayObject();
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('(\IteratorAggregate&\Countable)|\stdClass|null', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
     }
@@ -134,43 +125,37 @@ class BeanTest extends BaseTest
     public function testGetTypeCode(): void
     {
         // @phpstan-ignore-next-line
-        $f = function (): ?int {
-            return 0;
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): ?int => 0;
+        $rf = new \ReflectionFunction($f);
         $this->assertEquals('?int', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-        $f = function (): stdClass {
-            return new \stdClass();
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): \stdClass => new \stdClass();
+        $rf = new \ReflectionFunction($f);
         $this->assertEquals('\stdClass', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
         // @phpstan-ignore-next-line
-        $f = function (): ?stdClass {
-            return new \stdClass();
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): ?\stdClass => new \stdClass();
+        $rf = new \ReflectionFunction($f);
         $this->assertEquals('?\stdClass', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-        $mf = new ReflectionMethod($this, 'test1');
+        $mf = new \ReflectionMethod($this, 'test1');
         $this->assertEquals('\Imi\Test\Component\Tests\BeanTest', ReflectionUtil::getTypeCode($mf->getReturnType(), self::class));
 
         // @phpstan-ignore-next-line
         if (version_compare(\PHP_VERSION, '8.0', '>='))
         {
             // @phpstan-ignore-next-line
-            $f = function (): mixed {
+            $f = static function (): mixed {
             };
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('mixed', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function (): int|string {
                 return 0;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('string|int', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
 
@@ -182,43 +167,43 @@ class BeanTest extends BaseTest
                 return new \ArrayObject();
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('\IteratorAggregate&\Countable', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function (): never {
 
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('never', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
 
         // @phpstan-ignore-next-line
         if (version_compare(\PHP_VERSION, '8.2', '>='))
         {
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function(): true {
                 return true;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('true', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function(): false {
                 return false;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('false', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function(): null {
                 return null;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('null', ReflectionUtil::getTypeCode($rf->getReturnType()));
 
             $f = Imi::eval(<<<CODE
@@ -226,7 +211,7 @@ class BeanTest extends BaseTest
                 return new \ArrayObject();
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertEquals('(\IteratorAggregate&\Countable)|\stdClass|null', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
     }
@@ -234,26 +219,20 @@ class BeanTest extends BaseTest
     public function testAllowsType(): void
     {
         // @phpstan-ignore-next-line
-        $f = function (): ?int {
-            return 0;
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): ?int => 0;
+        $rf = new \ReflectionFunction($f);
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
 
-        $f = function (): stdClass {
-            return new \stdClass();
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): \stdClass => new \stdClass();
+        $rf = new \ReflectionFunction($f);
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
 
         // @phpstan-ignore-next-line
-        $f = function (): ?stdClass {
-            return new \stdClass();
-        };
-        $rf = new ReflectionFunction($f);
+        $f = static fn (): ?\stdClass => new \stdClass();
+        $rf = new \ReflectionFunction($f);
         $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), \stdClass::class));
 
-        $mf = new ReflectionMethod($this, 'test1');
+        $mf = new \ReflectionMethod($this, 'test1');
         $this->assertTrue(ReflectionUtil::allowsType($mf->getReturnType(), self::class, self::class));
         $this->assertFalse(ReflectionUtil::allowsType($mf->getReturnType(), self::class));
 
@@ -261,17 +240,17 @@ class BeanTest extends BaseTest
         if (version_compare(\PHP_VERSION, '8.0', '>='))
         {
             // @phpstan-ignore-next-line
-            $f = function (): mixed {
+            $f = static function (): mixed {
             };
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'mixed'));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function (): int|string {
                 return 0;
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'string|int'));
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'string'));
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
@@ -285,17 +264,17 @@ class BeanTest extends BaseTest
                 return new \ArrayObject();
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'ArrayObject'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'IteratorAggregate'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Countable'));
 
-            $f = Imi::eval(<<<CODE
+            $f = Imi::eval(<<<'CODE'
             return function (): never {
 
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'int'));
         }
 
@@ -307,7 +286,7 @@ class BeanTest extends BaseTest
                 return new \ArrayObject();
             };
             CODE);
-            $rf = new ReflectionFunction($f);
+            $rf = new \ReflectionFunction($f);
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'IteratorAggregate'));
             $this->assertFalse(ReflectionUtil::allowsType($rf->getReturnType(), 'Countable'));
             $this->assertTrue(ReflectionUtil::allowsType($rf->getReturnType(), 'ArrayObject'));
@@ -318,8 +297,8 @@ class BeanTest extends BaseTest
 
     public function testContainerGetBean(): void
     {
-        $a = App::getBean(stdClass::class);
-        $b = App::getBean(stdClass::class);
+        $a = App::getBean(\stdClass::class);
+        $b = App::getBean(\stdClass::class);
         $this->assertTrue($a === $b);
 
         $a = App::getBean('BeanNew');
@@ -329,14 +308,14 @@ class BeanTest extends BaseTest
 
     public function testContainerNewInstance(): void
     {
-        $a = App::newInstance(stdClass::class);
-        $b = App::newInstance(stdClass::class);
+        $a = App::newInstance(\stdClass::class);
+        $b = App::newInstance(\stdClass::class);
         $this->assertTrue($a !== $b);
     }
 
     public function testContainerSet(): void
     {
-        $object = new stdClass();
+        $object = new \stdClass();
 
         $container = App::getContainer();
         $container->set(__METHOD__, $object);
@@ -349,12 +328,10 @@ class BeanTest extends BaseTest
 
     public function testContainerBindCallable(): void
     {
-        $object = new stdClass();
+        $object = new \stdClass();
 
         $container = App::getContainer();
-        $container->bindCallable(__METHOD__, function () use ($object) {
-            return $object;
-        });
+        $container->bindCallable(__METHOD__, static fn () => $object);
 
         $a = $container->get(__METHOD__);
         $b = $container->get(__METHOD__);

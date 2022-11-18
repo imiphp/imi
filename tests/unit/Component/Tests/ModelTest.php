@@ -396,7 +396,7 @@ class ModelTest extends BaseTest
     {
         $time = time();
         $bigintTime = (int) (microtime(true) * 1000);
-        $result = $record->$methodName();
+        $result = $record->{$methodName}();
         $this->assertTrue($result->isSuccess());
         $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
         $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
@@ -410,7 +410,7 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeSave(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $record = UpdateTime::newInstance();
             $this->assertUpdateTime($record, 'save');
         }, null, 3);
@@ -418,7 +418,7 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeUpdate(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $record = UpdateTime::find(1);
             $this->assertUpdateTime($record, 'update');
         }, null, 3);
@@ -432,7 +432,7 @@ class ModelTest extends BaseTest
         {
             $oldArr = $record->toArray();
         }
-        $result = $record->$methodName();
+        $result = $record->{$methodName}();
         $this->assertTrue($result->isSuccess());
         if ($equals)
         {
@@ -453,7 +453,7 @@ class ModelTest extends BaseTest
 
     public function testCreateTimeInsert(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $record = CreateTime::newInstance();
             $this->assertCreateTime($record, 'insert');
             sleep(1);
@@ -464,7 +464,7 @@ class ModelTest extends BaseTest
 
     public function testCreateTimeSave(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $record = CreateTime::newInstance();
             $this->assertCreateTime($record, 'save');
             sleep(1);

@@ -12,6 +12,7 @@ use Imi\Bean\Annotation\Base;
  * 当触发限流时，自动阻塞（协程挂起）等待
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property int|null $timeout 超时时间，单位：秒；为 null 不限制

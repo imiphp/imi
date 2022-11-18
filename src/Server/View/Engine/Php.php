@@ -20,7 +20,7 @@ class Php implements IEngine
         {
             return $response;
         }
-        $closure = static function (string $__renderFileName, $__renderData) {
+        $closure = static function (string $__renderFileName, $__renderData): void {
             if (\is_array($__renderData))
             {
                 extract($__renderData);

@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * JWT 验证注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string|null       $name       JWT 配置名称

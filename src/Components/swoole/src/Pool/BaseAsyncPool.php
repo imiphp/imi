@@ -242,7 +242,7 @@ abstract class BaseAsyncPool extends BasePool
             }
             else
             {
-                \Swoole\Coroutine\run(function () use ($poolItem) {
+                \Swoole\Coroutine\run(function () use ($poolItem): void {
                     $this->queue->push($poolItem);
                 });
             }
@@ -268,7 +268,7 @@ abstract class BaseAsyncPool extends BasePool
             if ($gcInterval > 0)
             {
                 $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
-                Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
+                Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
                     $this->stopAutoGC();
                 }, \Imi\Util\ImiPriority::IMI_MIN + 1);
             }
@@ -353,7 +353,7 @@ abstract class BaseAsyncPool extends BasePool
         if ((null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
         {
             $this->heartbeatTimerId = \Swoole\Timer::tick((int) ($heartbeatInterval * 1000), [$this, 'heartbeat']);
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
                 $this->stopHeartbeat();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);
         }
