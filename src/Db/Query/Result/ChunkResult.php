@@ -25,7 +25,7 @@ class ChunkResult extends BaseChunkResult
         $this->limit = $limit;
         $this->column = $column;
         $this->alias = $alias;
-        $this->orderBy = \strtolower($orderBy);
+        $this->orderBy = strtolower($orderBy);
     }
 
     /**
@@ -57,7 +57,7 @@ class ChunkResult extends BaseChunkResult
 
             $records = $result->getStatementRecords();
 
-            $lastId = \end($records)[$this->alias];
+            $lastId = end($records)[$this->alias];
         }
         while ($resultCount === $this->limit);
     }

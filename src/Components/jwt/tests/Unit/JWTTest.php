@@ -11,9 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class JWTTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testJWT(): void
     {
         $data = [
@@ -44,9 +41,6 @@ class JWTTest extends TestCase
         $token2 = JWT::parseToken($tokenStr, null, true); // 验证
     }
 
-    /**
-     * @return void
-     */
     public function testJWTValidation(): void
     {
         $excepted = [
@@ -59,9 +53,6 @@ class JWTTest extends TestCase
         $this->assertEquals(json_encode($excepted), json_encode($data));
     }
 
-    /**
-     * @return void
-     */
     public function testJWTValidateFail(): void
     {
         $this->expectException(\Imi\JWT\Exception\InvalidTokenException::class);

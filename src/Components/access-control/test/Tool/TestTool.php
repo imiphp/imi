@@ -21,8 +21,6 @@ class TestTool
 
     /**
      * @Operation("test")
-     *
-     * @return void
      */
     public function test(): void
     {

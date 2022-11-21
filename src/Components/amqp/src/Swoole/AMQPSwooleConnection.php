@@ -85,8 +85,6 @@ class AMQPSwooleConnection extends AbstractConnection
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
     protected function connect(): void
     {

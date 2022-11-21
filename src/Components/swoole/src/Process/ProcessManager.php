@@ -361,7 +361,7 @@ class ProcessManager
 
     public static function buildUniqueId(string $name, ?string $alias): string
     {
-        return \hash('md5', "{$name}|{$alias}");
+        return hash('md5', "{$name}|{$alias}");
     }
 
     public static function initProcessInfoTable(): void

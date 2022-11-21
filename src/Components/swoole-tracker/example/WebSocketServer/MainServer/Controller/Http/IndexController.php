@@ -27,8 +27,6 @@ class IndexController extends HttpController
      *
      * @Route("/")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
-     *
-     * @return void
      */
     public function index(): void
     {

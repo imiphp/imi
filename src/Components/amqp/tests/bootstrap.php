@@ -35,8 +35,6 @@ function checkHttpServerStatus()
 
 /**
  * 开启服务器.
- *
- * @return void
  */
 function startServer(): void
 {

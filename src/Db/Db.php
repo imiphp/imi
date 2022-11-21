@@ -371,7 +371,7 @@ class Db
         {
             return $sql;
         }
-        if (\array_is_list($bindValues))
+        if (array_is_list($bindValues))
         {
             $sql = str_replace('??', '__mask__', $sql);
 

@@ -36,7 +36,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
-            Log::info(\sprintf('scanImi %.3fs', $time));
+            Log::info(sprintf('scanImi %.3fs', $time));
         }
     }
 
@@ -121,7 +121,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
-            Log::info(\sprintf('scanVendor %.3fs', $time));
+            Log::info(sprintf('scanVendor %.3fs', $time));
         }
     }
 
@@ -138,7 +138,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
-            Log::info(\sprintf('scanApp %.3fs', $time));
+            Log::info(sprintf('scanApp %.3fs', $time));
         }
     }
 

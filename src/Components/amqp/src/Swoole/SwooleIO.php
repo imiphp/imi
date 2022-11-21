@@ -60,8 +60,6 @@ class SwooleIO extends AbstractIO
     /**
      * Set ups the connection.
      *
-     * @return void
-     *
      * @throws \PhpAmqpLib\Exception\AMQPIOException
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */
@@ -77,8 +75,6 @@ class SwooleIO extends AbstractIO
 
     /**
      * Reconnects the socket.
-     *
-     * @return void
      */
     public function reconnect(): void
     {
@@ -145,8 +141,6 @@ class SwooleIO extends AbstractIO
     /**
      * @param string $data
      *
-     * @return void
-     *
      * @throws \PhpAmqpLib\Exception\AMQPIOException
      * @throws \PhpAmqpLib\Exception\AMQPSocketException
      * @throws \PhpAmqpLib\Exception\AMQPConnectionClosedException
@@ -169,9 +163,6 @@ class SwooleIO extends AbstractIO
         $this->last_write = microtime(true);
     }
 
-    /**
-     * @return void
-     */
     public function close(): void
     {
         if ($this->sock)
@@ -207,8 +198,6 @@ class SwooleIO extends AbstractIO
 
     /**
      * Heartbeat logic: check connection health here.
-     *
-     * @return void
      *
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */

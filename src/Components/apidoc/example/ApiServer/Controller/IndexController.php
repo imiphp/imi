@@ -19,8 +19,6 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route("/")
-     *
-     * @return void
      */
     public function index(): void
     {
@@ -33,8 +31,6 @@ class IndexController extends HttpController
      *
      * @param string $username 用户名
      * @param int    $password 密码
-     *
-     * @return void
      */
     public function login(string $username, int $password): void
     {
@@ -44,8 +40,6 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route(method={"GET", "POST"})
-     *
-     * @return void
      */
     public function multiMethod1(int $id): void
     {
@@ -55,8 +49,6 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route(method={"PUT", "POST"})
-     *
-     * @return void
      */
     public function multiMethod2(int $id): void
     {
@@ -74,8 +66,6 @@ class IndexController extends HttpController
      * @param string $username 用户名
      * @param int    $password 密码
      * @param string $birthday 生日
-     *
-     * @return void
      */
     public function register(string $username, int $password, string $birthday): void
     {
@@ -83,8 +73,6 @@ class IndexController extends HttpController
 
     /**
      * @Action
-     *
-     * @return void
      */
     public function get(int $id): void
     {
