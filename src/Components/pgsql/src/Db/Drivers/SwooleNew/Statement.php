@@ -49,7 +49,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         $this->stmt = $stmt;
         $this->lastSql = $originSql;
         $this->sqlParamsMap = $sqlParamsMap;
-        if ($result = $stmt->fetchAll(SW_PGSQL_ASSOC))
+        if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))
         {
             $this->result = $result;
         }
@@ -191,7 +191,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             }
             throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
         }
-        $this->result = $stmt->fetchAll(SW_PGSQL_ASSOC) ?: [];
+        $this->result = $stmt->fetchAll(\SW_PGSQL_ASSOC) ?: [];
 
         return true;
     }
