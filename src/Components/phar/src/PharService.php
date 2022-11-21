@@ -4,22 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use function array_map;
-
 use Composer\InstalledVersions;
-
-use function is_file;
-use function pathinfo;
-
-use Phar;
-
-use function realpath;
-
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-
-use function var_export;
 
 class PharService
 {
@@ -147,9 +135,9 @@ class PharService
 
         $this->output->writeln(sprintf('build date: <info>%s</info>', date(\DATE_ATOM, $this->buildTime)));
 
-        $phar = new Phar($outputPhar, 0, 'imi.phar');
+        $phar = new \Phar($outputPhar, 0, 'imi.phar');
         // todo 支持 openssl 私钥签名
-        $phar->setSignatureAlgorithm(Phar::SHA256);
+        $phar->setSignatureAlgorithm(\Phar::SHA256);
 
         $this->output->writeln('add files...');
 

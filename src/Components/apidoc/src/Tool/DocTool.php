@@ -28,8 +28,6 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
-use ReflectionClass;
-use ReflectionMethod;
 
 /**
  * @Command("doc")
@@ -40,7 +38,6 @@ class DocTool extends BaseCommand
      * 生成 API 接口文档.
      *
      * @CommandAction(name="api")
-     *
      * @Argument(name="to", type=ArgType::STRING, required=true, comments="生成到的目标文件名")
      * @Option(name="namespace", type=ArgType::STRING, required=false, comments="指定扫描的命名空间，多个用半角逗号分隔")
      */
@@ -60,7 +57,7 @@ class DocTool extends BaseCommand
                     if (ClassObject::inNamespace($ns, $class))
                     {
                         $controllerClasses[] = $class;
-                        $ref = new ReflectionClass($class);
+                        $ref = new \ReflectionClass($class);
                         $directory[] = $ref->getFileName();
                     }
                 }
@@ -73,7 +70,7 @@ class DocTool extends BaseCommand
             {
                 $class = $point->getClass();
                 $controllerClasses[] = $class;
-                $ref = new ReflectionClass($class);
+                $ref = new \ReflectionClass($class);
                 $directory[] = $ref->getFileName();
             }
         }
@@ -136,7 +133,7 @@ class DocTool extends BaseCommand
             {
                 continue;
             }
-            $refClass = new ReflectionClass($controllerClass);
+            $refClass = new \ReflectionClass($controllerClass);
             // 动作注解
             $actionPointMaps = AnnotationManager::getMethodsAnnotations($controllerClass, Action::class);
             foreach ($actionPointMaps as $method => $_)
@@ -150,7 +147,7 @@ class DocTool extends BaseCommand
                         break;
                     }
                 }
-                $refMethod = new ReflectionMethod($controllerClass, $method);
+                $refMethod = new \ReflectionMethod($controllerClass, $method);
                 if (!$hasOperation)
                 {
                     // 自动增加个请求

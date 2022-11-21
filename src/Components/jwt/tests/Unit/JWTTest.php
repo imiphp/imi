@@ -19,7 +19,7 @@ class JWTTest extends TestCase
         $data = [
             'memberId'  => 19260817,
         ];
-        $token = JWT::getToken($data, null, function (Builder $builder) {
+        $token = JWT::getToken($data, null, static function (Builder $builder) {
             if (3 === JWT::getJwtPackageVersion())
             {
                 $builder->expiresAt(strtotime('1926-08-17'));

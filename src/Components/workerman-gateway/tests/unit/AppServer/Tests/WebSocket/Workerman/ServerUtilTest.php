@@ -132,7 +132,7 @@ class ServerUtilTest extends BaseTest
                 }
             }
             $this->assertEquals(4, $count);
-        }, function () use (&$client1, &$client2, &$client3) {
+        }, static function () use (&$client1, &$client2, &$client3) {
             if ($client1)
             {
                 $client1->disconnect();
@@ -201,7 +201,7 @@ class ServerUtilTest extends BaseTest
                 }
                 $this->assertEquals(2, $count);
             }
-        }, function () use (&$clients) {
+        }, static function () use (&$clients) {
             foreach ($clients as $client)
             {
                 $client->disconnect();

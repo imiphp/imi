@@ -4,17 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Dev;
 
-use FilesystemIterator;
 use Imi\Cli\ImiCommand;
-
-use function implode;
-use function method_exists;
-use function realpath;
-use function sprintf;
-
 use Symfony\Component\Process\Process;
-
-use function usleep;
 
 class Plugin
 {
@@ -25,7 +16,7 @@ class Plugin
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         /** @var Process[] $readyProcesses */
         $readyProcesses = [];
-        foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
+        foreach (new \FilesystemIterator($componentsDir, \FilesystemIterator::SKIP_DOTS) as $dir)
         {
             if (!$dir->isDir())
             {

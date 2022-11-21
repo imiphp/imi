@@ -59,11 +59,11 @@ class EventTest extends BaseTest
 
     public function testOff(): void
     {
-        $callable1 = function (EventParam $e) {
+        $callable1 = static function (EventParam $e) {
             Assert::assertTrue(false);
         };
 
-        $callable2 = function (EventParam $e) {
+        $callable2 = static function (EventParam $e) {
             Assert::assertTrue(false);
         };
         Event::on('IMITEST.EVENT.C', $callable1);
@@ -100,7 +100,7 @@ class EventTest extends BaseTest
     public function testClassListener2(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
-        $testClass->on('test2', function (EventParam $e) use ($testClass) {
+        $testClass->on('test2', static function (EventParam $e) use ($testClass) {
             Assert::assertEquals('test2', $e->getEventName());
             Assert::assertEquals($testClass, $e->getTarget());
             $data = $e->getData();
@@ -114,7 +114,7 @@ class EventTest extends BaseTest
     public function testClassListenerOff(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
-        $callable = function (EventParam $e) {
+        $callable = static function (EventParam $e) {
             Assert::assertTrue(false);
         };
         $testClass->on('test3', $callable);

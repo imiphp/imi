@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 切面注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property int $priority 优先级，越大越先执行

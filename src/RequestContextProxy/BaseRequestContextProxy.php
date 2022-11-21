@@ -103,7 +103,7 @@ abstract class BaseRequestContextProxy
      */
     public function __call(string $name, array $arguments)
     {
-        return static::__getProxyInstance()->$name(...$arguments);
+        return static::__getProxyInstance()->{$name}(...$arguments);
     }
 
     /**
@@ -111,6 +111,6 @@ abstract class BaseRequestContextProxy
      */
     public static function __callStatic(string $method, array $arguments)
     {
-        return static::__getProxyInstance()->$method(...$arguments);
+        return static::__getProxyInstance()->{$method}(...$arguments);
     }
 }

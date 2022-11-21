@@ -66,7 +66,7 @@ class ImiTest extends BaseTest
             'd!=0',
             'e<>0',
         ];
-        $this->assertTrue(Imi::checkCompareRules($rules, function (string $name) {
+        $this->assertTrue(Imi::checkCompareRules($rules, static function (string $name) {
             static $data = [
                 'a' => 1,
                 'b' => 0,
@@ -77,7 +77,7 @@ class ImiTest extends BaseTest
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function (string $name) {
+        $this->assertFalse(Imi::checkCompareRules($rules, static function (string $name) {
             static $data = [
                 'a' => 0,
                 'b' => 0,
@@ -88,7 +88,7 @@ class ImiTest extends BaseTest
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function (string $name) {
+        $this->assertFalse(Imi::checkCompareRules($rules, static function (string $name) {
             static $data = [
                 'a' => 1,
                 'b' => 1,
@@ -99,7 +99,7 @@ class ImiTest extends BaseTest
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function (string $name) {
+        $this->assertFalse(Imi::checkCompareRules($rules, static function (string $name) {
             static $data = [
                 'a' => 1,
                 'b' => 0,
@@ -110,7 +110,7 @@ class ImiTest extends BaseTest
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function (string $name) {
+        $this->assertFalse(Imi::checkCompareRules($rules, static function (string $name) {
             static $data = [
                 'a' => 1,
                 'b' => 0,
@@ -121,7 +121,7 @@ class ImiTest extends BaseTest
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function (string $name) {
+        $this->assertFalse(Imi::checkCompareRules($rules, static function (string $name) {
             static $data = [
                 'a' => 1,
                 'b' => 0,
@@ -139,14 +139,14 @@ class ImiTest extends BaseTest
      */
     public function testCheckCompareRule(): void
     {
-        $this->assertTrue(Imi::checkCompareRule('a=1', function (string $name) {
+        $this->assertTrue(Imi::checkCompareRule('a=1', static function (string $name) {
             static $data = [
                 'a' => 1,
             ];
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRule('a=2', function (string $name) {
+        $this->assertFalse(Imi::checkCompareRule('a=2', static function (string $name) {
             static $data = [
                 'a' => 1,
             ];

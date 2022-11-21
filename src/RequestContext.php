@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi;
 
-use ArrayObject;
 use Imi\Bean\Container;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\DefaultContextManager;
@@ -47,7 +46,7 @@ class RequestContext
     /**
      * 为当前请求创建上下文，返回当前协程ID.
      */
-    public static function create(array $data = []): ArrayObject
+    public static function create(array $data = []): \ArrayObject
     {
         $instance = static::getInstance();
 
@@ -153,7 +152,7 @@ class RequestContext
     /**
      * 获取当前上下文.
      */
-    public static function getContext(): ArrayObject
+    public static function getContext(): \ArrayObject
     {
         $instance = static::getInstance();
 

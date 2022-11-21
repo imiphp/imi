@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\CommandAction;
  * 命令行动作注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */

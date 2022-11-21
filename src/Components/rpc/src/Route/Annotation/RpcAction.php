@@ -12,6 +12,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcAction;
  * RPC 动作注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
  */

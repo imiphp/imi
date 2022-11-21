@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 正则验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property string $pattern 正则表达式文本

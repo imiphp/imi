@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * Udp 动作注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Server\UdpServer\Parser\UdpControllerParser")
  */

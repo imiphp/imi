@@ -71,7 +71,7 @@ class ImiArgvInput extends Input
             {
                 $parseOptions = false;
             }
-            elseif ($parseOptions && 0 === strpos($token, '--'))
+            elseif ($parseOptions && str_starts_with($token, '--'))
             {
                 $this->parseLongOption($token);
             }
@@ -387,8 +387,8 @@ class ImiArgvInput extends Input
                 // Options with values:
                 //   For long options, test for '--option=' at beginning
                 //   For short options, test for '-o' at beginning
-                $leading = 0 === strpos($value, '--') ? $value . '=' : $value;
-                if ($token === $value || '' !== $leading && 0 === strpos($token, (string) $leading))
+                $leading = str_starts_with($value, '--') ? $value . '=' : $value;
+                if ($token === $value || '' !== $leading && str_starts_with($token, (string) $leading))
                 {
                     return true;
                 }

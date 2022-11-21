@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Base;
  * 作为方法注解-在方法被调用前验证，验证失败抛出异常
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD"})
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]

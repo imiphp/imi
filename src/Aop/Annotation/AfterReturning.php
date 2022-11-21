@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 在After之后、return之前触发.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]

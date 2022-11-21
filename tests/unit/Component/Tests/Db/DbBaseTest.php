@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Db;
 
-use function array_column;
-use function array_column_ex;
-use function array_reverse;
-use function date;
-
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
-
-use function time;
 
 /**
  * @testdox Db
@@ -275,7 +268,7 @@ abstract class DbBaseTest extends BaseTest
     public function testTransUseCommit(): void
     {
         $id = null;
-        Db::transUse(function (IDb $db) use (&$id) {
+        Db::transUse(static function (IDb $db) use (&$id) {
             Assert::assertTrue($db->inTransaction());
             $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
             Assert::assertEquals(1, $result);
@@ -302,7 +295,7 @@ abstract class DbBaseTest extends BaseTest
         $id = null;
         try
         {
-            Db::transUse(function (IDb $db) use (&$id) {
+            Db::transUse(static function (IDb $db) use (&$id) {
                 Assert::assertTrue($db->inTransaction());
                 $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
                 Assert::assertEquals(1, $result);
@@ -329,7 +322,7 @@ abstract class DbBaseTest extends BaseTest
         Assert::assertTrue($db->inTransaction());
         $this->assertEquals(1, $db->getTransactionLevels());
         $r1 = false;
-        $db->getTransaction()->onTransactionRollback(function () use (&$r1) {
+        $db->getTransaction()->onTransactionRollback(static function () use (&$r1) {
             $r1 = true;
         });
 
@@ -350,7 +343,7 @@ abstract class DbBaseTest extends BaseTest
         Assert::assertTrue($db->inTransaction());
         $this->assertEquals(1, $db->getTransactionLevels());
         $r1 = false;
-        $db->getTransaction()->onTransactionCommit(function () use (&$r1) {
+        $db->getTransaction()->onTransactionCommit(static function () use (&$r1) {
             $r1 = true;
         });
         $db->commit();

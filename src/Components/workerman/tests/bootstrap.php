@@ -92,7 +92,7 @@ function startServer(): void
         echo "Starting {$name}...", \PHP_EOL;
         shell_exec("{$cmd}");
 
-        register_shutdown_function(function () use ($name, $options) {
+        register_shutdown_function(static function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
             if ('\\' === \DIRECTORY_SEPARATOR)
@@ -132,7 +132,7 @@ function checkPort(string $host, int $port, ?int &$errno = null, ?string &$errst
 
 startServer();
 
-register_shutdown_function(function () {
+register_shutdown_function(static function () {
     echo 'check ports...', \PHP_EOL;
     foreach ([13000, 13002, 13003, 13004, 13005, 13006, 13007] as $port)
     {

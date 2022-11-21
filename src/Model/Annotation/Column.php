@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 列字段注解.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string|null $name            字段名

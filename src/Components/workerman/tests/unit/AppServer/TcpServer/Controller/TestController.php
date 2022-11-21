@@ -22,7 +22,8 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
      * 登录.
      *
      * @TcpAction
-     * @TcpRoute({"action"="login"})
+     *
+     * @TcpRoute({"action": "login"})
      */
     public function login(\stdClass $data): array
     {
@@ -36,7 +37,8 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
      * 发送消息.
      *
      * @TcpAction
-     * @TcpRoute({"action"="send"})
+     *
+     * @TcpRoute({"action": "send"})
      */
     public function send(\stdClass $data): void
     {
@@ -58,7 +60,8 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
      * 测试重复路由警告.
      *
      * @TcpAction
-     * @TcpRoute({"duplicated"="1"})
+     *
+     * @TcpRoute({"duplicated": "1"})
      */
     public function duplicated1(): void
     {
@@ -68,7 +71,8 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
      * 测试重复路由警告.
      *
      * @TcpAction
-     * @TcpRoute({"duplicated"="1"})
+     *
+     * @TcpRoute({"duplicated": "1"})
      */
     public function duplicated2(): void
     {

@@ -14,7 +14,7 @@ abstract class Random
      */
     public static function int(int $min = \PHP_INT_MIN, int $max = \PHP_INT_MAX): int
     {
-        return mt_rand($min, $max);
+        return random_int($min, $max);
     }
 
     /**

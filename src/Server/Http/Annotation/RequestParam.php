@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Base;
  * 请求参数.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string $name     导出数据名称；支持：$get.id、$post.content、$body.name

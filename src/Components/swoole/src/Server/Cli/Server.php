@@ -41,9 +41,9 @@ class Server extends BaseCommand
             $this->outStartupInfo();
             if (Config::get('@app.server.checkPoolResource', false))
             {
-                (function () {
+                (static function () {
                     $exit = false;
-                    run(function () use (&$exit) {
+                    run(static function () use (&$exit) {
                         if (!PoolManager::checkPoolResource())
                         {
                             $exit = true;

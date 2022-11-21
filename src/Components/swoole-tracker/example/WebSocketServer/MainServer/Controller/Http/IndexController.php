@@ -15,6 +15,7 @@ use Imi\Server\View\Annotation\View;
  * 测试.
  *
  * @Controller
+ *
  * @View(renderType="html")
  */
 class IndexController extends HttpController
@@ -23,6 +24,7 @@ class IndexController extends HttpController
      * 连接地址：ws://127.0.0.1:8083/.
      *
      * @Action
+     *
      * @Route("/")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
      *

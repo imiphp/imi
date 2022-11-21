@@ -24,6 +24,7 @@ class ReferenceBeanAspect
 {
     /**
      * @Before
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -37,6 +38,7 @@ class ReferenceBeanAspect
 
     /**
      * @After
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -50,6 +52,7 @@ class ReferenceBeanAspect
 
     /**
      * @Around
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -74,6 +77,7 @@ class ReferenceBeanAspect
 
     /**
      * @AfterReturning
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
@@ -89,6 +93,7 @@ class ReferenceBeanAspect
 
     /**
      * @AfterThrowing
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ReferenceBean::*"

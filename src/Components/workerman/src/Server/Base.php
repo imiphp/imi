@@ -22,7 +22,6 @@ use Imi\Util\Imi;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
-use InvalidArgumentException;
 use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Connection\TcpConnection;
@@ -84,7 +83,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $worker->name = $this->name;
         foreach ($config['configs'] ?? [] as $k => $v)
         {
-            $worker->$k = $v;
+            $worker->{$k} = $v;
         }
 
         return $worker;
@@ -409,7 +408,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $connection = $this->worker->connections[$clientId] ?? null;
         if (null === $connection)
         {
-            throw new InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
+            throw new \InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
         }
 
         return new IPEndPoint($connection->getRemoteIp(), $connection->getRemotePort());

@@ -36,7 +36,7 @@ class Signal
         self::$waitingSignals[$signo][$coid] = $channel;
         if ($needCreateCoroutineWait)
         {
-            self::$cids[$signo] = Coroutine::create(function () use ($signo) {
+            self::$cids[$signo] = Coroutine::create(static function () use ($signo) {
                 $waitResult = System::waitSignal($signo);
                 if (!isset(self::$waitingSignals[$signo]))
                 {
@@ -61,7 +61,7 @@ class Signal
         if (!isset(self::$waitingProcessSignals[$signo]))
         {
             self::$waitingProcessSignals[$signo] = true;
-            Process::signal($signo, function ($signo) {
+            Process::signal($signo, static function ($signo) {
                 if (!isset(self::$waitCallbacks[$signo]))
                 {
                     return;

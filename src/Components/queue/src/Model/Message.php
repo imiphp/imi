@@ -98,11 +98,11 @@ class Message implements IMessage
             $method = 'set' . ucfirst($k);
             if (method_exists($this, $method))
             {
-                $this->$method($v);
+                $this->{$method}($v);
             }
             else
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

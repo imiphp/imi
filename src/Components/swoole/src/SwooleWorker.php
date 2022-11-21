@@ -8,7 +8,7 @@ use Imi\Swoole\Contract\ISwooleWorker;
 use Imi\Worker;
 
 /**
- * @method static void setWorkerHandler(ISwooleWorker $workerHandler)
+ * @method static void               setWorkerHandler(ISwooleWorker $workerHandler)
  * @method static ISwooleWorker|null getWorkerHandler()
  */
 class SwooleWorker extends Worker

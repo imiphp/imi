@@ -87,6 +87,6 @@ abstract class BaseFacade
      */
     public static function __callStatic(string $method, array $arguments)
     {
-        return static::__getFacadeInstance()->$method(...$arguments);
+        return static::__getFacadeInstance()->{$method}(...$arguments);
     }
 }

@@ -23,6 +23,7 @@ class ProxyController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("grpc/{service}/{method}")
      *
      * @return mixed

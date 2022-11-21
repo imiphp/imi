@@ -295,7 +295,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         $result = new $className();
         foreach ($row as $k => $v)
         {
-            $result->$k = $v;
+            $result->{$k} = $v;
         }
 
         return $result;

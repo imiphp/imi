@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Parser;
  * 命令行注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */

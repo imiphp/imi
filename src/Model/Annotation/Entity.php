@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 实体注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property bool $camel      序列化时使用驼峰命名

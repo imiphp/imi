@@ -11,6 +11,7 @@ use Imi\Config;
  * 软删除.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string $field   软删除字段名

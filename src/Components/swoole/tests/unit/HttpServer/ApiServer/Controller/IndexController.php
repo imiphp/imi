@@ -36,6 +36,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/")
      *
      * @return mixed
@@ -50,6 +51,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/route/{id}")
      */
     public function route(int $id): array
@@ -61,6 +63,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(autoEndSlash=true)
      * @View(renderType="html")
      * @HtmlView(template="html")
@@ -74,6 +77,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @View(renderType="html")
      * @HtmlView(baseDir="index/")
      */
@@ -226,11 +230,12 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/middleware")
      * @Middleware(\Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware1::class)
      * @Middleware({
-     *  \Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware2::class,
-     *  \Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware3::class
+     *     \Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware2::class,
+     *     \Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware3::class
      * })
      * @Middleware("@test")
      *
@@ -298,6 +303,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
      */
     public function regularExpression1(int $id, int $page): array
@@ -310,6 +316,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/a/{name:[a-zA-Z]+}/{page}")
      */
     public function regularExpression2(string $name, int $page): array
@@ -373,6 +380,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(url="/type/{id}/{name}/{page}")
      */
     public function type(int $id, string $name, int $page): array
@@ -431,6 +439,7 @@ class IndexController extends HttpController
      * 测试重复路由警告.
      *
      * @Action
+     *
      * @Route("/duplicated")
      */
     public function duplicated1(): void
@@ -441,6 +450,7 @@ class IndexController extends HttpController
      * 测试重复路由警告.
      *
      * @Action
+     *
      * @Route("/duplicated")
      */
     public function duplicated2(): void
@@ -451,6 +461,7 @@ class IndexController extends HttpController
      * 忽略大小写.
      *
      * @Action
+     *
      * @Route(ignoreCase=true)
      */
     public function ignoreCase(): void
@@ -461,6 +472,7 @@ class IndexController extends HttpController
      * 测试 domain.
      *
      * @Action
+     *
      * @Route(domain="localhost")
      */
     public function domain(): void
@@ -471,6 +483,7 @@ class IndexController extends HttpController
      * 测试 domain2.
      *
      * @Action
+     *
      * @Route(domain="local{value}")
      */
     public function domain2(string $value): array

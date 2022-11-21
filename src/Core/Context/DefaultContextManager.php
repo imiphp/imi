@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Core\Context;
 
-use ArrayObject;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
@@ -18,7 +17,7 @@ class DefaultContextManager implements IContextManager
     /**
      * 上下文对象集合.
      *
-     * @var ArrayObject[]
+     * @var \ArrayObject[]
      */
     private array $contexts = [];
 
@@ -27,7 +26,7 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function create(string $flag, array $data = []): ArrayObject
+    public function create(string $flag, array $data = []): \ArrayObject
     {
         if (isset($this->contexts[$flag]))
         {
@@ -41,7 +40,7 @@ class DefaultContextManager implements IContextManager
             $this->bindAutoDestroy();
         }
 
-        return $this->contexts[$flag] = new ArrayObject($data, ArrayObject::ARRAY_AS_PROPS);
+        return $this->contexts[$flag] = new \ArrayObject($data, \ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**
@@ -65,7 +64,7 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function get(string $flag, bool $autoCreate = false): ArrayObject
+    public function get(string $flag, bool $autoCreate = false): \ArrayObject
     {
         if (!isset($this->contexts[$flag]))
         {

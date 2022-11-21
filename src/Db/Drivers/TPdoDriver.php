@@ -10,14 +10,13 @@ use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
-use PDO;
 
 trait TPdoDriver
 {
     /**
      * 连接对象
      */
-    protected ?PDO $instance = null;
+    protected ?\PDO $instance = null;
 
     /**
      * 最后执行过的SQL语句.
@@ -140,7 +139,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?PDO
+    public function getInstance(): ?\PDO
     {
         return $this->instance;
     }

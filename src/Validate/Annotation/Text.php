@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 文本验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property bool     $char 是否为字符模式，默认为 false；设为 true 则使用字符判断长度；设为 false 则使用字节判断长度

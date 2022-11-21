@@ -14,7 +14,9 @@ use Imi\Config;
  * 支持在注解中为属性动态赋值
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string $name    配置名，支持@app、@currentServer等用法

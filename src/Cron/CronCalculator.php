@@ -149,7 +149,7 @@ class CronCalculator
                     $time = strtotime("{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}");
                     if (0 !== $delayMin || 0 !== $delayMax)
                     {
-                        $time += mt_rand($delayMin, $delayMax);
+                        $time += random_int($delayMin, $delayMax);
                     }
 
                     return $time;

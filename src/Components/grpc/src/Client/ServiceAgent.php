@@ -42,6 +42,6 @@ class ServiceAgent
         $client = RpcClientPool::getInstance($this->poolName);
         $service = $client->getService($this->serviceName, $this->interface);
 
-        return $service->$name(...$arguments);
+        return $service->{$name}(...$arguments);
     }
 }

@@ -400,7 +400,7 @@ class MQTTClient
             {
                 throw new InvalidPacketTypeException(sprintf('Unsupport MQTT packet type %s', $packet->getPacketType()));
             }
-            $this->listener->$methodName($this, $packet);
+            $this->listener->{$methodName}($this, $packet);
         }
         if ($this->pingTimerId)
         {

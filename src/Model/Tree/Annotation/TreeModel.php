@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 提取字段中的属性到当前模型.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string|null $idField       主键字段名；默认为null，则自动获取

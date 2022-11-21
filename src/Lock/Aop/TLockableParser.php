@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Aop;
 
-use function array_merge;
-
 use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;

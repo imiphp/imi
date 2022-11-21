@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 提取字段中的属性到当前模型.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string $fieldName 字段名，支持.的形式无限级取值

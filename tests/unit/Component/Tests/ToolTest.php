@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests;
 
-use function array_merge;
-use function explode;
-
 use Imi\Test\BaseTest;
 use Imi\Util\File;
 use Imi\Util\Imi;
-
-use function str_replace;
-
 use Symfony\Component\Process\Process;
-
-use function trim;
 
 /**
  * @testdox Tool
@@ -38,7 +30,7 @@ class ToolTest extends BaseTest
         $this->assertEquals(0, $process->getExitCode(), $process->getCommandLine());
 
         $cmd[] = '--code';
-        $cmd[] = $code = mt_rand(0, 255);
+        $cmd[] = $code = random_int(0, 255);
 
         $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
         $process->run();

@@ -24,11 +24,12 @@ class WorkerLimitAspect
      * 处理工作限流
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             WorkerLimit::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         WorkerLimit::class
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

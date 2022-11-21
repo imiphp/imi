@@ -20,7 +20,7 @@ abstract class BaseProcess implements IProcess
         {
             foreach ($data as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

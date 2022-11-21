@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 序列化注解.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property bool $allow 是否允许参与序列化

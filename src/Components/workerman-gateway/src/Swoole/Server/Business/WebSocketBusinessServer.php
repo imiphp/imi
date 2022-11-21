@@ -15,7 +15,6 @@ use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker;
 use Imi\WorkermanGateway\Swoole\Server\Business\Task\WebSocketWorkerTask;
-use Throwable;
 use Workerman\Gateway\Config\GatewayWorkerConfig;
 use Workerman\Gateway\Gateway\Contract\IGatewayClient;
 use Workerman\Gateway\Gateway\GatewayWorkerClient;
@@ -80,7 +79,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 // Gateway Worker
                 $client = new GatewayWorkerClient(($workermanGatewayConfig['workerName'] ?? $this->getName()) . ':' . Worker::getWorkerId(), $config);
                 // 异常处理
-                $client->onException = static function (Throwable $th) {
+                $client->onException = static function (\Throwable $th) {
                     Log::error($th);
                 };
                 // 网关消息

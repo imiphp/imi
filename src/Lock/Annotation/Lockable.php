@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Base;
  * 锁注解.
  *
  * @Annotation
+ *
  * @Target({"METHOD", "ANNOTATION"})
  *
  * @property string|null   $id               锁ID；支持{id}、{data.name}形式，代入参数；如果为null，则使用类名+方法名+全部参数，序列化后hash

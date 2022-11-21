@@ -14,6 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_article 基类.
  *
  * @Entity
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.name", default="tb_article"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.poolName"))
  *
  * @property int|null    $id

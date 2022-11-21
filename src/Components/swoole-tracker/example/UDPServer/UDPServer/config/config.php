@@ -24,9 +24,7 @@ return [
             // 'interface'         => null, // 网卡 interface 名，自动获取当前网卡IP时有效
             // 'successCode'       =>  500, // 当成功时上报的默认code
             // 'exceptionCode'     =>  500, // 当发生异常时上报的默认code
-            'nameHandler'       => function (IPacketData $data) {
-                return $data->getFormatData()->action ?? 'unknown';
-            },
+            'nameHandler'       => static fn (IPacketData $data) => $data->getFormatData()->action ?? 'unknown',
         ],
     ],
 ];

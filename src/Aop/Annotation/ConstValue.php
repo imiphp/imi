@@ -12,7 +12,9 @@ use Imi\Bean\Annotation\Inherit;
  * 支持在注解中为属性动态赋值
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string $name    常量名

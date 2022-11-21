@@ -15,12 +15,14 @@ use Imi\Server\WebSocket\Route\Annotation\WSConfig;
  * 测试.
  *
  * @Controller
+ *
  * @View(renderType="html")
  */
 class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
      */
@@ -31,6 +33,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/test2")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
      */
@@ -40,6 +43,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("/http")
      *
      * @return mixed

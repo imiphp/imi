@@ -73,7 +73,7 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
         {
             throw new \RuntimeException(sprintf('Unsupport MQTT packet type %s', $packet->getPacketType()));
         }
-        $response = $controllerInstance->$methodName($packet, $data);
+        $response = $controllerInstance->{$methodName}($packet, $data);
         if ($response)
         {
             $server->getSwooleServer()->send($clientId, $server->getBean(DataParser::class)->encode($response));

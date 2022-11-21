@@ -20,6 +20,7 @@ class MemberSerializable extends MemberBase
      * password.
      *
      * @Inherit
+     *
      * @Serializable(false)
      */
     protected ?string $password = null;

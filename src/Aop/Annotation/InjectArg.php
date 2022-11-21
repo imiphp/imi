@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 方法参数注入.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string $name  参数名

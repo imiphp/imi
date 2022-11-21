@@ -27,11 +27,12 @@ class CacheEvictAop
      * 处理 CacheEvict 注解.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \Imi\Cache\Annotation\CacheEvict::class,
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\Cache\Annotation\CacheEvict::class,
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

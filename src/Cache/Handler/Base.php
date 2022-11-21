@@ -23,7 +23,7 @@ abstract class Base implements CacheInterface
         {
             foreach ($option as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

@@ -54,7 +54,7 @@ class ToolParser extends BaseParser
                 $commandActionAnnotation = $data[$className]['CommandAction'][$targetName];
                 CliManager::addArgument($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->type, $annotation->default, $annotation->required, $annotation->comments, $annotation->to);
             };
-            if (isset($data[$className]['Command']) && isset($data[$className]['CommandAction'][$targetName]))
+            if (isset($data[$className]['Command'], $data[$className]['CommandAction'][$targetName]))
             {
                 $func();
             }
@@ -72,7 +72,7 @@ class ToolParser extends BaseParser
                 $commandActionAnnotation = $data[$className]['CommandAction'][$targetName];
                 CliManager::addOption($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->shortcut, $annotation->type, $annotation->default, $annotation->required, $annotation->comments, $annotation->to);
             };
-            if (isset($data[$className]['Command']) && isset($data[$className]['CommandAction'][$targetName]))
+            if (isset($data[$className]['Command'], $data[$className]['CommandAction'][$targetName]))
             {
                 $func();
             }

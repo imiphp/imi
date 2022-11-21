@@ -48,7 +48,7 @@ function startServer(): void
         echo "Starting {$name}...", \PHP_EOL;
         echo shell_exec("{$cmd}"), \PHP_EOL;
 
-        register_shutdown_function(function () use ($name, $options) {
+        register_shutdown_function(static function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
             echo "Stoping {$name}...", \PHP_EOL;
@@ -65,7 +65,7 @@ function startServer(): void
             throw new \RuntimeException("{$name} start failed");
         }
     }
-    register_shutdown_function(function () {
+    register_shutdown_function(static function () {
         echo 'check ports...', \PHP_EOL;
         ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
     });

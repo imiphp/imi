@@ -62,7 +62,7 @@ abstract class Parser
             $obj = new $className();
             if ($deserializeFunc && method_exists($obj, $deserializeFunc))
             {
-                $obj->$deserializeFunc($value);
+                $obj->{$deserializeFunc}($value);
             }
             else
             {
@@ -72,7 +72,7 @@ abstract class Parser
             return $obj;
         }
 
-        return \call_user_func($deserialize, $value);
+        return $deserialize($value);
     }
 
     /**

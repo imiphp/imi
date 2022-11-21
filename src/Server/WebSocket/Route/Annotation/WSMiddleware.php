@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * 中间件注解.
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD"})
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
  *

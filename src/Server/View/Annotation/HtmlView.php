@@ -8,6 +8,7 @@ namespace Imi\Server\View\Annotation;
  * HTML 视图配置注解.
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD"})
  *
  * @property string|null $baseDir  模版基础路径；abc-配置中设定的路径/abc/；/abc/-绝对路径

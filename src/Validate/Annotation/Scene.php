@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Base;
  * 场景定义.
  *
  * @Annotation
+ *
  * @Target({"CLASS"})
  *
  * @property string $name   场景名称

@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 交换机.
  *
  * @Annotation
+ *
  * @Target({"CLASS"})
  *
  * @property string   $name       交换机名称

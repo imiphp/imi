@@ -8,9 +8,6 @@ use Imi\Lock\Exception\LockFailException;
 use Imi\Log\Log;
 use Imi\RequestContext;
 
-use function microtime;
-use function sprintf;
-
 abstract class BaseLock implements ILockHandler
 {
     /**
@@ -60,7 +57,7 @@ abstract class BaseLock implements ILockHandler
         {
             foreach ($options as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

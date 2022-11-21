@@ -13,7 +13,9 @@ use Imi\Db\Query\QueryType;
  * 连接池对象注入.
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property int $queryType 查询类型

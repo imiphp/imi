@@ -9,6 +9,7 @@ use Imi\Model\Annotation\Table;
 
 /**
  * @Inherit(annotation="Imi\Bean\Annotation\Bean")
+ *
  * @Table
  */
 class TestClass extends ParentClass

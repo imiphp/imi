@@ -18,7 +18,8 @@ class Test2Controller extends WebSocketController
 {
     /**
      * @WSAction
-     * @WSRoute({"action"="test"})
+     *
+     * @WSRoute({"action": "test"})
      *
      * @param mixed $data
      */

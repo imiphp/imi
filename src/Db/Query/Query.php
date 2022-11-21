@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use function array_column;
-use function array_unique;
-
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Channel;
 
 use Imi\Bean\Annotation\Bean;
-use ReflectionClass;
 use Workerman\Worker;
 
 /**
@@ -32,13 +31,13 @@ class Server extends \Imi\Workerman\Server\Tcp\Server
             $port = (int) ($config['port'] ?? 2206);
         }
         $channelServer = $this->channelServer = new \Channel\Server($ip, $port);
-        $refClass = new ReflectionClass($channelServer);
+        $refClass = new \ReflectionClass($channelServer);
         $property = $refClass->getProperty('_worker');
         $property->setAccessible(true);
         $worker = $this->worker = $property->getValue($channelServer);
         foreach ($config['configs'] as $k => $v)
         {
-            $worker->$k = $v;
+            $worker->{$k} = $v;
         }
 
         return $worker;

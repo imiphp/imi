@@ -24,11 +24,12 @@ class AsyncAop
      * 异步执行.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             Async::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         Async::class
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

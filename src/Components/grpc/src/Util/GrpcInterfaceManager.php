@@ -10,7 +10,6 @@ use Imi\Bean\ReflectionContainer;
 use Imi\Bean\ReflectionUtil;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\DocBlock;
-use ReflectionClass;
 
 /**
  * @Bean("GrpcInterfaceManager")
@@ -55,14 +54,14 @@ class GrpcInterfaceManager
     }
 
     /**
-     * @param string|ReflectionClass $interface
+     * @param string|\ReflectionClass $interface
      */
     public function bind($interface, ?string $serviceName = null): void
     {
         if (\is_string($interface))
         {
             $interfaceName = $interface;
-            $interface = new ReflectionClass($interfaceName);
+            $interface = new \ReflectionClass($interfaceName);
         }
         else
         {
@@ -108,13 +107,13 @@ class GrpcInterfaceManager
     }
 
     /**
-     * @param string|ReflectionClass $interface
+     * @param string|\ReflectionClass $interface
      */
     public function parseServiceNameByInterface($interface): ?string
     {
         if (\is_string($interface))
         {
-            $interface = new ReflectionClass($interface);
+            $interface = new \ReflectionClass($interface);
         }
         if (preg_match('/Protobuf type <code>([^<]+)<\/code>/', $interface->getDocComment(), $matches))
         {

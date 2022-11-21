@@ -27,7 +27,7 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
                 $this->channel = $channel = new Channel(1);
                 Coroutine::create(static function () use ($channel) {
                     // 要保证连接池连接被释放，必须在当前协程执行完时推给 executeAfterLastTest() 的 pop()
-                    Coroutine::defer(function () use ($channel) {
+                    Coroutine::defer(static function () use ($channel) {
                         $channel->push(1);
                     });
                     App::run('AMQPApp', SwooleApp::class, static function () use ($channel) {

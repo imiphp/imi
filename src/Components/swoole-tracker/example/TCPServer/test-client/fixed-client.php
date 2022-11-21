@@ -6,7 +6,7 @@ use Swoole\Coroutine\Client;
 
 // EOF自动分包的客户端测试
 
-Swoole\Coroutine\run(function () {
+Swoole\Coroutine\run(static function () {
     $client = new Client(\SWOOLE_SOCK_TCP);
 
     $client->set([

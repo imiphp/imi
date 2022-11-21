@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 自动更新.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property bool $status        是否开启

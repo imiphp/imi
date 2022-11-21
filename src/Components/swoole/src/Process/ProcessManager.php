@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
-use function hash;
-
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Log\Log;
@@ -122,7 +120,7 @@ class ProcessManager
      */
     public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null, bool $runWithManager = false): callable
     {
-        return function (Process $swooleProcess) use ($args, $name, $processOption, $alias, $runWithManager) {
+        return static function (Process $swooleProcess) use ($args, $name, $processOption, $alias, $runWithManager) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称
@@ -138,7 +136,7 @@ class ProcessManager
             mt_srand();
             Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
             $exitCode = 0;
-            $callable = function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
+            $callable = static function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
                 if ($runWithManager)
                 {
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
@@ -148,7 +146,7 @@ class ProcessManager
                 // 正常退出
                 Event::on('IMI.PROCESS.END', static fn () => Signal::clear(), ImiPriority::IMI_MIN);
                 $processEnded = false;
-                imigo(function () use ($name, $swooleProcess, &$processEnded) {
+                imigo(static function () use ($name, $swooleProcess, &$processEnded) {
                     if (Signal::wait(\SIGTERM))
                     {
                         if ($processEnded)
@@ -335,7 +333,7 @@ class ProcessManager
      */
     public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): void
     {
-        Coroutine::create(function () use ($name, $args, $redirectStdinStdout, $pipeType) {
+        Coroutine::create(static function () use ($name, $args, $redirectStdinStdout, $pipeType) {
             static::run($name, $args, $redirectStdinStdout, $pipeType);
         });
     }

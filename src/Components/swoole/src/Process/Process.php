@@ -80,7 +80,7 @@ trait TProcess
         else
         {
             $this->unixSocketClient = $client = $this->createUnixSocketClient();
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () use ($client) {
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client) {
                 $client->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);
             Coroutine::create(function () use ($client) {

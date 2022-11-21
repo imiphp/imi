@@ -8,10 +8,6 @@ namespace Imi\Util;
 
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\File\FileEnumItem;
-
-use function str_starts_with;
-use function substr;
-
 use Swoole\Coroutine\Channel;
 
 /**
@@ -87,7 +83,7 @@ class File
             \Swoole\Coroutine::getCid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
-            Coroutine::create(function () use ($channel, $dirPath, $pattern, $extensionNames) {
+            Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames) {
                 static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames);
                 $channel->close();
             });

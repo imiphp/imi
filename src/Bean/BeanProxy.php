@@ -47,7 +47,7 @@ class BeanProxy
 
             foreach ($aroundAspectDoList as $aroundAspectDo)
             {
-                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, null === $nextJoinPoint ? function &(?array $inArgs = null) use ($object, $className, $method, &$args, $callback, $returnsReference) {
+                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, null === $nextJoinPoint ? static function &(?array $inArgs = null) use ($object, $className, $method, &$args, $callback, $returnsReference) {
                     if (null !== $inArgs)
                     {
                         $args = $inArgs;

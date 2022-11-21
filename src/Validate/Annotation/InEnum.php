@@ -10,6 +10,7 @@ use Imi\Bean\Annotation;
  * 枚举验证
  *
  * @Annotation
+ *
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  *
  * @property string $enum 注解类名

@@ -258,7 +258,7 @@ class ConnectionContext
      */
     public static function unset(string $key): void
     {
-        self::use(function (array $cxt) use ($key) {
+        self::use(static function (array $cxt) use ($key) {
             if (isset($cxt[$key]))
             {
                 unset($cxt[$key]);

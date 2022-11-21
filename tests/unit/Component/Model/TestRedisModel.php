@@ -13,6 +13,7 @@ use Imi\Model\RedisModel;
  * Test.
  *
  * @Entity
+ *
  * @RedisEntity(key="{id}-{name}")
  *
  * @property int    $id

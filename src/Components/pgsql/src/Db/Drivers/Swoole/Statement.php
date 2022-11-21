@@ -288,7 +288,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         $result = new $className();
         foreach ($row as $k => $v)
         {
-            $result->$k = $v;
+            $result->{$k} = $v;
         }
 
         return $result;

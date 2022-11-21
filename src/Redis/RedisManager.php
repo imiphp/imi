@@ -11,8 +11,6 @@ use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 use Imi\Timer\Timer;
 
-use function str_contains;
-
 class RedisManager
 {
     /**
@@ -100,7 +98,7 @@ class RedisManager
                 App::set($requestContextKey, $redis);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), function () use ($requestContextKey) {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey) {
                         /** @var RedisHandler|null $redis */
                         $redis = App::get($requestContextKey);
                         if (!$redis)

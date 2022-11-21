@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\Command;
  * 命令行注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */

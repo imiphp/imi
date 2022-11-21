@@ -14,6 +14,7 @@ use Imi\Model\Model;
  * ac_member_operation_relation 基类.
  *
  * @Entity
+ *
  * @Table(name="ac_member_operation_relation", id={"member_id", "operation_id"})
  * @DDL("CREATE TABLE `ac_member_operation_relation` ( `member_id` INT(10) UNSIGNED NOT NULL COMMENT '用户ID', `operation_id` INT(10) UNSIGNED NOT NULL COMMENT '操作ID', PRIMARY KEY(`member_id`, `operation_id`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  *

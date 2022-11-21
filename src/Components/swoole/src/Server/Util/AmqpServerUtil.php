@@ -197,7 +197,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     {
                         continue;
                     }
-                    if ($swooleServer->$method($clientId, $data, ...$pushParams))
+                    if ($swooleServer->{$method}($clientId, $data, ...$pushParams))
                     {
                         ++$success;
                     }
@@ -250,7 +250,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                     $group = $server->getGroup($tmpGroupName);
                     if ($group)
                     {
-                        $result = $group->$method($data, ...$pushParams);
+                        $result = $group->{$method}($data, ...$pushParams);
                         foreach ($result as $item)
                         {
                             if ($item)

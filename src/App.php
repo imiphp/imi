@@ -14,8 +14,6 @@ use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Util\Imi;
 
-use function substr;
-
 class App
 {
     /**
@@ -382,7 +380,7 @@ class App
         $version = self::getImiVersion();
         $hash = self::getImiVersionReference(true);
 
-        return empty($hash) ? $version : "{$version} ($hash)";
+        return empty($hash) ? $version : "{$version} ({$hash})";
     }
 
     public static function getAppPharBuildVersion(): ?string

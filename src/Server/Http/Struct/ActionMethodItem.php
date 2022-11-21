@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Struct;
 
-use ReflectionNamedType;
-
 class ActionMethodItem
 {
     /**
@@ -44,7 +42,7 @@ class ActionMethodItem
         $this->hasDefault = $hasDefault;
         $this->default = $default;
         $this->allowNull = $allowNull;
-        if ($type instanceof ReflectionNamedType)
+        if ($type instanceof \ReflectionNamedType)
         {
             $this->type = $type->getName();
         }

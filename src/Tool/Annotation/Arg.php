@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\Option;
  * 可选项注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */

@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace Imi\Bean;
 
-use InvalidArgumentException;
-use ReflectionIntersectionType;
-use ReflectionNamedType;
-use ReflectionType;
-use ReflectionUnionType;
-
 class ReflectionUtil
 {
     private function __construct()
     {
     }
 
-    public static function getTypeComments(?ReflectionType $type, ?string $className = null): string
+    public static function getTypeComments(?\ReflectionType $type, ?string $className = null): string
     {
         if (!$type)
         {
             return 'mixed';
         }
-        if ($type instanceof ReflectionNamedType)
+        if ($type instanceof \ReflectionNamedType)
         {
             $typeStr = $type->getName();
             if (!$type->isBuiltin())
@@ -46,7 +40,7 @@ class ReflectionUtil
 
             return $typeStr;
         }
-        elseif ($type instanceof ReflectionUnionType)
+        elseif ($type instanceof \ReflectionUnionType)
         {
             $result = [];
             $hasNull = false;
@@ -57,7 +51,7 @@ class ReflectionUtil
                 {
                     $hasNull = true;
                 }
-                if ($subType instanceof ReflectionIntersectionType)
+                if ($subType instanceof \ReflectionIntersectionType)
                 {
                     $content = '(' . $content . ')';
                 }
@@ -70,7 +64,7 @@ class ReflectionUtil
 
             return implode('|', $result);
         }
-        elseif ($type instanceof ReflectionIntersectionType)
+        elseif ($type instanceof \ReflectionIntersectionType)
         {
             $result = [];
             foreach ($type->getTypes() as $subType)
@@ -82,17 +76,17 @@ class ReflectionUtil
         }
         else
         {
-            throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+            throw new \InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
         }
     }
 
-    public static function getTypeCode(?ReflectionType $type, ?string $className = null): string
+    public static function getTypeCode(?\ReflectionType $type, ?string $className = null): string
     {
         if (!$type)
         {
             return '';
         }
-        if ($type instanceof ReflectionNamedType)
+        if ($type instanceof \ReflectionNamedType)
         {
             $typeStr = $type->getName();
             if (!$type->isBuiltin())
@@ -116,7 +110,7 @@ class ReflectionUtil
 
             return $typeStr;
         }
-        elseif ($type instanceof ReflectionUnionType)
+        elseif ($type instanceof \ReflectionUnionType)
         {
             $result = [];
             $hasNull = false;
@@ -127,7 +121,7 @@ class ReflectionUtil
                 {
                     $hasNull = true;
                 }
-                if ($subType instanceof ReflectionIntersectionType)
+                if ($subType instanceof \ReflectionIntersectionType)
                 {
                     $content = '(' . $content . ')';
                 }
@@ -140,7 +134,7 @@ class ReflectionUtil
 
             return implode('|', $result);
         }
-        elseif ($type instanceof ReflectionIntersectionType)
+        elseif ($type instanceof \ReflectionIntersectionType)
         {
             $result = [];
             foreach ($type->getTypes() as $subType)
@@ -152,11 +146,11 @@ class ReflectionUtil
         }
         else
         {
-            throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+            throw new \InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
         }
     }
 
-    public static function allowsType(ReflectionType $type, string $checkType, ?string $className = null): bool
+    public static function allowsType(\ReflectionType $type, string $checkType, ?string $className = null): bool
     {
         if ('' === $checkType)
         {
@@ -171,7 +165,7 @@ class ReflectionUtil
         {
             $checkTypes[0][0] = substr($checkTypes[0][0], 1);
         }
-        if ($type instanceof ReflectionNamedType)
+        if ($type instanceof \ReflectionNamedType)
         {
             $typeStr = $type->getName();
             if (!$type->isBuiltin())
@@ -187,11 +181,11 @@ class ReflectionUtil
 
             return $typeStr === $checkType || \in_array($typeStr, $checkTypes) || is_subclass_of($checkType, $typeStr);
         }
-        if ($type instanceof ReflectionUnionType)
+        if ($type instanceof \ReflectionUnionType)
         {
             foreach ($type->getTypes() as $subType)
             {
-                if ($subType instanceof ReflectionIntersectionType && self::allowsType($subType, $checkType, $className))
+                if ($subType instanceof \ReflectionIntersectionType && self::allowsType($subType, $checkType, $className))
                 {
                     return true;
                 }
@@ -204,7 +198,7 @@ class ReflectionUtil
 
             return false;
         }
-        elseif ($type instanceof ReflectionIntersectionType)
+        elseif ($type instanceof \ReflectionIntersectionType)
         {
             foreach ($type->getTypes() as $subType)
             {
@@ -216,12 +210,12 @@ class ReflectionUtil
 
             return true;
         }
-        throw new InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+        throw new \InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
     }
 
-    public static function isAllowReturnedType(ReflectionType $type): bool
+    public static function isAllowReturnedType(\ReflectionType $type): bool
     {
-        if ($type instanceof ReflectionNamedType)
+        if ($type instanceof \ReflectionNamedType)
         {
             $name = $type->getName();
             if ('void' === $name || (\PHP_VERSION_ID >= 80000 && 'never' === $name))

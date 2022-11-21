@@ -12,7 +12,9 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
  * RPC 客户端注入.
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string|null $poolName 连接池名称

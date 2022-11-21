@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util\File;
 
-use function array_filter;
-use function array_values;
-use function file_exists;
-use function implode;
-use function is_file;
-
 use PHPStan\File\FileExcluder;
 use PHPStan\File\FileFinderResult;
 use PHPStan\File\FileHelper;

@@ -18,6 +18,7 @@ class BeforeAop
 {
     /**
      * @Before
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Aop\Classes\TestBeforeClass::test"

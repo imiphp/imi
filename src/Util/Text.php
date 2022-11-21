@@ -30,7 +30,7 @@ class Text
             else
             {
                 # endif
-                return 0 === strpos($string, $compare);
+                return str_starts_with($string, $compare);
                 # if \PHP_VERSION_ID < 80000
             }
         # endif

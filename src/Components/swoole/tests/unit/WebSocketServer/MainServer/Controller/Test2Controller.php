@@ -19,7 +19,8 @@ class Test2Controller extends WebSocketController
 {
     /**
      * @WSAction
-     * @WSRoute({"action"="test"})
+     *
+     * @WSRoute({"action": "test"})
      *
      * @param mixed $data
      */
@@ -30,13 +31,14 @@ class Test2Controller extends WebSocketController
 
     /**
      * @WSAction
-     * @WSRoute({"action"="contextTest"})
+     *
+     * @WSRoute({"action": "contextTest"})
      */
     public function contextTest(): array
     {
         $key = 'test_remember';
         $count = 0;
-        $countFun = function () use (&$count) {
+        $countFun = static function () use (&$count) {
             return ++$count;
         };
 

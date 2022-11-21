@@ -14,7 +14,6 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
-use ReflectionClass;
 
 /**
  * @Bean("WorkermanGatewayTcpBusinessServer")
@@ -62,7 +61,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     protected function bindBusinessEvents(): void
     {
         $worker = $this->worker;
-        $refClass = new ReflectionClass($worker);
+        $refClass = new \ReflectionClass($worker);
 
         $property = $refClass->getProperty('_eventOnConnect');
         $property->setAccessible(true);

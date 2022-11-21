@@ -20,7 +20,8 @@ class TestController extends \Imi\Server\UdpServer\Controller\UdpController
      * 登录.
      *
      * @UdpAction
-     * @UdpRoute({"action"="hello"})
+     *
+     * @UdpRoute({"action": "hello"})
      */
     public function hello(): array
     {
@@ -36,7 +37,8 @@ class TestController extends \Imi\Server\UdpServer\Controller\UdpController
      * 测试重复路由警告.
      *
      * @UdpAction
-     * @UdpRoute({"duplicated"="1"})
+     *
+     * @UdpRoute({"duplicated": "1"})
      */
     public function duplicated1(): void
     {
@@ -46,7 +48,8 @@ class TestController extends \Imi\Server\UdpServer\Controller\UdpController
      * 测试重复路由警告.
      *
      * @UdpAction
-     * @UdpRoute({"duplicated"="1"})
+     *
+     * @UdpRoute({"duplicated": "1"})
      */
     public function duplicated2(): void
     {

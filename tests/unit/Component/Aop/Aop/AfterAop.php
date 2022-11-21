@@ -18,6 +18,7 @@ class AfterAop
 {
     /**
      * @After
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Aop\Classes\TestAfterClass::test"

@@ -25,7 +25,7 @@ class Driver extends MysqlBase
     /**
      * 连接对象
      */
-    protected ?mysqli $instance = null;
+    protected ?\mysqli $instance = null;
 
     /**
      * 最后执行过的SQL语句.
@@ -144,7 +144,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?mysqli
+    public function getInstance(): ?\mysqli
     {
         return $this->instance;
     }

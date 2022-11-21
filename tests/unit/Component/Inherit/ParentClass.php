@@ -14,12 +14,14 @@ use Imi\Model\Annotation\Entity;
 
 /**
  * @Entity
+ *
  * @Bean
  */
 class ParentClass
 {
     /**
      * @Column
+     *
      * @Callback(class="Test", method="test")
      *
      * @var int
@@ -28,6 +30,7 @@ class ParentClass
 
     /**
      * @Column
+     *
      * @Callback(class="Test", method="test")
      *
      * @var int
@@ -46,6 +49,7 @@ class ParentClass
 
     /**
      * @FilterArg
+     *
      * @Transaction
      */
     public function test(): void
@@ -54,6 +58,7 @@ class ParentClass
 
     /**
      * @FilterArg
+     *
      * @Transaction
      */
     public function test2(): void
@@ -62,6 +67,7 @@ class ParentClass
 
     /**
      * @FilterArg
+     *
      * @Transaction
      */
     public function test3(): void

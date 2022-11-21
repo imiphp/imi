@@ -263,11 +263,11 @@ class Redis
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
-            return RedisManager::getInstance()->$name(...$arguments);
+            return RedisManager::getInstance()->{$name}(...$arguments);
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), static fn (IPoolResource $resource, RedisHandler $redis) => $redis->$name(...$arguments));
+            return PoolManager::use(RedisManager::getDefaultPoolName(), static fn (IPoolResource $resource, RedisHandler $redis) => $redis->{$name}(...$arguments));
         }
     }
 

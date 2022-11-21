@@ -123,7 +123,7 @@ class ArrayData implements \ArrayAccess, \Countable
                     // 对象
                     if (property_exists($result, $value))
                     {
-                        $result = &$result->$value;
+                        $result = &$result->{$value};
                     }
                     else
                     {

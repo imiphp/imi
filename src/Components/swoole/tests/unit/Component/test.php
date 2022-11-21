@@ -10,8 +10,8 @@ use function Swoole\Coroutine\run;
 
 require \dirname(__DIR__, 3) . '/vendor/autoload.php';
 
-run(function () {
-    App::runApp(__DIR__, SwooleApp::class, function () {
+run(static function () {
+    App::runApp(__DIR__, SwooleApp::class, static function () {
         Db::getInstance(); // 必须，获取连接后，连接池就被启动了
         echo 'Test swoole quick start', \PHP_EOL;
     });

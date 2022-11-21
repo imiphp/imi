@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 在异常时通知.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property array $allow 允许捕获的异常类列表

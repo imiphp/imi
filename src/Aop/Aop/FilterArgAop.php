@@ -23,11 +23,12 @@ class FilterArgAop
      * 过滤方法参数.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             FilterArg::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         FilterArg::class
+     *     }
      * )
+     *
      * @Before
      *
      * @return mixed

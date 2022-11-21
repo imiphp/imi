@@ -203,7 +203,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             }
         }
 
-        return null !== $this->$methodName();
+        return null !== $this->{$methodName}();
     }
 
     /**
@@ -248,11 +248,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             if (self::$__methodReference[$class][$methodName] ??= ReflectionContainer::getMethodReflection(static::class, $methodName)->returnsReference())
             {
-                return $this->$methodName();
+                return $this->{$methodName}();
             }
             else
             {
-                $result = $this->$methodName();
+                $result = $this->{$methodName}();
             }
         }
         else
@@ -316,7 +316,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             }
         }
 
-        $this->$methodName($value);
+        $this->{$methodName}($value);
 
         if (\is_array($value) || \is_object($value))
         {

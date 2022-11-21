@@ -17,9 +17,9 @@ final class Parser implements ParserInterface
     /**
      * Parse content into an entry array.
      *
-     * @throws \Dotenv\Exception\InvalidFileException
-     *
      * @return \Dotenv\Parser\Entry[]
+     *
+     * @throws \Dotenv\Exception\InvalidFileException
      */
     public function parse(string $content)
     {

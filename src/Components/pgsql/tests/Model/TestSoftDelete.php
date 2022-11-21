@@ -13,6 +13,7 @@ use Imi\Pgsql\Test\Model\Base\TestSoftDeleteBase;
  * tb_test_soft_delete.
  *
  * @Inherit
+ *
  * @SoftDelete
  */
 class TestSoftDelete extends TestSoftDeleteBase

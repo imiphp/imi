@@ -17,7 +17,6 @@ use Imi\Server\Server;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
-use ReflectionClass;
 
 /**
  * @Bean("WorkermanGatewayWebSocketBusinessServer")
@@ -67,7 +66,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     protected function bindBusinessEvents(): void
     {
         $worker = $this->worker;
-        $refClass = new ReflectionClass($worker);
+        $refClass = new \ReflectionClass($worker);
 
         $property = $refClass->getProperty('_eventOnConnect');
         $property->setAccessible(true);

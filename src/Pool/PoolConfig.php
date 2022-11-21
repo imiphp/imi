@@ -81,7 +81,7 @@ class PoolConfig implements IPoolConfig
         {
             foreach ($option as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

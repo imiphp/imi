@@ -11,6 +11,7 @@ use Imi\Model\Enum\RedisStorageMode;
  * Redis模型注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string|null $poolName  redis 连接池名称

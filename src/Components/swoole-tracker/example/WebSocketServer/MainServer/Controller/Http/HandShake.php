@@ -15,6 +15,7 @@ use Imi\Util\Http\Consts\StatusCode;
  * 手动握手测试，不会触发框架内置的握手处理.
  *
  * @Controller
+ *
  * @View(renderType="html")
  */
 class HandShake extends HttpController
@@ -23,6 +24,7 @@ class HandShake extends HttpController
      * 连接地址：ws://127.0.0.1:8083/testHandShake.
      *
      * @Action
+     *
      * @Route("/testHandShake")
      *
      * @return void

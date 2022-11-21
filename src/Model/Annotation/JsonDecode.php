@@ -11,6 +11,7 @@ use Imi\Util\LazyArrayObject;
  * JSON 反序列化时的配置.
  *
  * @Annotation
+ *
  * @Target({"CLASS", "PROPERTY"})
  *
  * @property bool   $associative 是否返回关联数组。true-关联数组；false-对象

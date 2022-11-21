@@ -8,6 +8,7 @@ namespace Imi\Model\Annotation\Relation;
  * 用于多态一对一、一对多关联被关联的模型中使用，查询对应的左侧模型.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property string        $model          关联的模型类；可以是包含命名空间的完整类名；可以同命名空间下的类名

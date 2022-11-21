@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 门面定义.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string $class   类名，支持 Bean 名

@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Redis;
 
-use RedisException;
-
-use function str_contains;
-
 /**
  * imi 框架中封装的 Redis 类.
  *
@@ -294,7 +290,7 @@ class RedisHandler
     public function __call(string $name, array $arguments)
     {
         $redis = $this->redis;
-        $result = $redis->$name(...$arguments);
+        $result = $redis->{$name}(...$arguments);
         if (!$this->isCluster())
         {
             switch ($name)
@@ -385,12 +381,12 @@ class RedisHandler
                 $error = $this->getLastError();
                 if ($error)
                 {
-                    throw new RedisException($error);
+                    throw new \RedisException($error);
                 }
             }
             else
             {
-                throw new RedisException($error);
+                throw new \RedisException($error);
             }
         }
 

@@ -32,7 +32,8 @@ class ArticleId extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
-     * @Id()
+     *
+     * @Id
      */
     protected ?int $id = null;
 
@@ -91,7 +92,7 @@ class ArticleId extends Model
      * title.
      *
      * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name"="test1"})
+     * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name": "test1"})
      */
     protected ?string $title = null;
 
@@ -125,7 +126,7 @@ class ArticleId extends Model
      * content.
      *
      * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name"="test1"})
+     * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name": "test1"})
      */
     protected ?string $content = null;
 

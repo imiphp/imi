@@ -11,6 +11,7 @@ use Imi\Model\Annotation\Column;
  * Member.
  *
  * @property int|null $id2
+ *
  * @Inherit
  */
 class MemberReferenceProperty extends Member

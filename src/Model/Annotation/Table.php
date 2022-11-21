@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 表注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @property string|null       $name       表名

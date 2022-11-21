@@ -18,6 +18,7 @@ class AfterReturningAop
 {
     /**
      * @AfterReturning
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Aop\Classes\TestAfterReturningClass::test"

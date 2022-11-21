@@ -15,7 +15,9 @@ use function Imi\env;
  * 支持在注解中为属性动态赋值
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  *
  * @property string $name    环境变量名称

@@ -8,8 +8,6 @@ use Imi\Db\Exception\DbException;
 use Imi\Db\Mysql\Contract\IMysqlDb;
 use Imi\Db\Mysql\Contract\IMysqlStatement;
 use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
-use mysqli_result;
-use mysqli_stmt;
 
 /**
  * mysqli驱动Statement.
@@ -18,7 +16,7 @@ use mysqli_stmt;
  */
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
-    protected ?mysqli_stmt $statement = null;
+    protected ?\mysqli_stmt $statement = null;
 
     /**
      * @var \mysqli_result|false
@@ -50,7 +48,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
      */
     protected ?array $sqlParamsMap = null;
 
-    public function __construct(IMysqlDb $db, ?mysqli_stmt $statement, ?mysqli_result $result, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IMysqlDb $db, ?\mysqli_stmt $statement, ?\mysqli_result $result, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;

@@ -19,7 +19,7 @@ if (class_exists(TestCase::class))
                 if ($i > 0)
                 {
                     echo 'retry:', $i, \PHP_EOL;
-                    usleep(1000 * mt_rand(1000, 2000));
+                    usleep(1000 * random_int(1000, 2000));
                 }
                 $throwable = null;
                 try

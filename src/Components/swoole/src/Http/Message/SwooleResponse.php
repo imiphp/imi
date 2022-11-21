@@ -83,8 +83,6 @@ class SwooleResponse extends Response
         {
             $swooleResponse->status($this->statusCode);
         }
-
-        return;
     }
 
     /**

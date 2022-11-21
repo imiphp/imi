@@ -81,9 +81,7 @@ class DelayServerBeanCallable
         }
         else
         {
-            $result = $this->getInstance()->{$this->methodName}(...$args);
-
-            return $result;
+            return $this->getInstance()->{$this->methodName}(...$args);
         }
     }
 

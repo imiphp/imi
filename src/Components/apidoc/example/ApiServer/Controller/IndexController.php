@@ -17,6 +17,7 @@ class IndexController extends HttpController
 {
     /**
      * @Action
+     *
      * @Route("/")
      *
      * @return void
@@ -27,6 +28,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(url="login", method="POST")
      *
      * @param string $username 用户名
@@ -40,6 +42,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(method={"GET", "POST"})
      *
      * @return void
@@ -50,6 +53,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route(method={"PUT", "POST"})
      *
      * @return void
@@ -60,6 +64,7 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
      * @Route("register")
      * @OA\Get(
      *     path="/register",

@@ -18,7 +18,7 @@ trait TDataToProperty
         {
             foreach ($data as $k => $v)
             {
-                $this->$k = $v;
+                $this->{$k} = $v;
             }
         }
     }

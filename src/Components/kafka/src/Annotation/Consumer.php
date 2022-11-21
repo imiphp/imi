@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 消费者.
  *
  * @Annotation
+ *
  * @Target({"CLASS"})
  *
  * @property string|string[] $topic    主题名称

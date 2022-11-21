@@ -24,7 +24,8 @@ class TestController extends WebSocketController
      * 登录.
      *
      * @WSAction
-     * @WSRoute({"action"="login"})
+     *
+     * @WSRoute({"action": "login"})
      */
     public function login(\stdClass $data): array
     {
@@ -50,7 +51,8 @@ class TestController extends WebSocketController
      * 发送消息.
      *
      * @WSAction
-     * @WSRoute({"action"="send"})
+     *
+     * @WSRoute({"action": "send"})
      */
     public function send(\stdClass $data): void
     {
@@ -62,7 +64,8 @@ class TestController extends WebSocketController
      * 连接信息.
      *
      * @WSAction
-     * @WSRoute({"action"="info"})
+     *
+     * @WSRoute({"action": "info"})
      */
     public function info(): array
     {
@@ -76,7 +79,8 @@ class TestController extends WebSocketController
      * 多级参数的路由定位.
      *
      * @WSAction
-     * @WSRoute({"a.b.c"="test1"})
+     *
+     * @WSRoute({"a.b.c": "test1"})
      */
     public function test1(\stdClass $data): array
     {
@@ -87,7 +91,8 @@ class TestController extends WebSocketController
      * 多个参数条件的路由定位.
      *
      * @WSAction
-     * @WSRoute({"a"="1", "b"=2})
+     *
+     * @WSRoute({"a": "1", "b": 2})
      */
     public function test2(\stdClass $data): array
     {
@@ -98,7 +103,8 @@ class TestController extends WebSocketController
      * 测试重复路由警告.
      *
      * @WSAction
-     * @WSRoute({"duplicated"=1})
+     *
+     * @WSRoute({"duplicated": 1})
      */
     public function duplicated1(): void
     {
@@ -108,7 +114,8 @@ class TestController extends WebSocketController
      * 测试重复路由警告.
      *
      * @WSAction
-     * @WSRoute({"duplicated"=1})
+     *
+     * @WSRoute({"duplicated": 1})
      */
     public function duplicated2(): void
     {

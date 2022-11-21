@@ -24,11 +24,12 @@ class RateLimitAspect
      * 处理限流
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             RateLimit::class
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         RateLimit::class
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

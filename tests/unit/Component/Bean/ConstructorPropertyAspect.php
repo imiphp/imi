@@ -17,6 +17,7 @@ class ConstructorPropertyAspect
 {
     /**
      * @After
+     *
      * @PointCut(
      *     allow={
      *         "Imi\Test\Component\Bean\ConstructorPropertyBean::__construct"

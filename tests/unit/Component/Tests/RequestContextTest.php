@@ -16,7 +16,7 @@ class RequestContextTest extends BaseTest
     {
         $key = 'test_remember';
         $count = 0;
-        $countFun = function () use (&$count) {
+        $countFun = static function () use (&$count) {
             return ++$count;
         };
 

@@ -12,7 +12,9 @@ use Imi\Bean\Annotation\Inherit;
  * 注入队列对象
  *
  * @Inherit
+ *
  * @Annotation
+ *
  * @Target({"PROPERTY", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]

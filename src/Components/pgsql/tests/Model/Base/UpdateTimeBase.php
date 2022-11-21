@@ -14,6 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  * tb_update_time 基类.
  *
  * @Entity
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.name", default="tb_update_time"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.poolName"))
  *
  * @property int|null    $id

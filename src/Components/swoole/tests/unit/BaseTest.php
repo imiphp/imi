@@ -24,11 +24,11 @@ abstract class BaseTest extends \Imi\Test\BaseTest
                 }
                 echo 'lastUseTime:', $time, 's', \PHP_EOL;
                 echo 'retry:', $i, \PHP_EOL;
-                usleep(1000 * mt_rand(1000, 2000));
+                usleep(1000 * random_int(1000, 2000));
             }
             $throwable = null;
             $time = microtime(true);
-            goWait(function () use ($callable, &$throwable) {
+            goWait(static function () use ($callable, &$throwable) {
                 try
                 {
                     $callable();

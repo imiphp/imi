@@ -8,7 +8,6 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Config;
 use Imi\Util\ClassObject;
-use InvalidArgumentException;
 use Monolog\Handler\FormattableHandlerInterface;
 
 /**
@@ -51,7 +50,7 @@ class Logger
             $channelsConfig = $config['channels'] ?? [];
             if (!isset($channelsConfig[$channelName]))
             {
-                throw new InvalidArgumentException(sprintf('Logger %s not found', $channelName));
+                throw new \InvalidArgumentException(sprintf('Logger %s not found', $channelName));
             }
             $channelConfig = $channelsConfig[$channelName];
             $loggerClass = $config['logger'] ?? MonoLogger::class;
@@ -62,7 +61,7 @@ class Logger
             {
                 if (!isset($handlerConfig['class']))
                 {
-                    throw new InvalidArgumentException('Logger handler must have class');
+                    throw new \InvalidArgumentException('Logger handler must have class');
                 }
                 if (isset($handlerConfig['env']))
                 {

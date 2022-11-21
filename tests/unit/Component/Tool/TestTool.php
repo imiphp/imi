@@ -32,7 +32,6 @@ class TestTool extends BaseCommand
 
     /**
      * @CommandAction(name="testBool", dynamicOptions=true)
-     *
      * @Option(name="a1", shortcut="a", type=ArgType::BOOL, default=true, to="x")
      * @Option(name="b2", shortcut="b", type=ArgType::BOOL, default=false, to="y")
      */
@@ -46,7 +45,6 @@ class TestTool extends BaseCommand
 
     /**
      * @CommandAction(name="testArgument", dynamicOptions=true)
-     *
      * @Argument(name="content", type=ArgType::STRING, default="", to="content2")
      */
     public function testArgument(string $content, string $content2): void
@@ -57,7 +55,6 @@ class TestTool extends BaseCommand
 
     /**
      * @CommandAction(name="testNegatable")
-     *
      * @Option(name="test", shortcut="t", type=ArgType::BOOL_NEGATABLE, default=false)
      */
     public function testNegatable(bool $test): void

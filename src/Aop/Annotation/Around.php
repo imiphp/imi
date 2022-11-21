@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 环绕通知.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]

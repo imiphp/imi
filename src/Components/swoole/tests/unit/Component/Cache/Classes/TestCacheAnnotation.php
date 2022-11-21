@@ -17,7 +17,7 @@ class TestCacheAnnotation
 {
     /**
      * @Cacheable(
-     *   key="test:{id}",
+     *     key="test:{id}",
      * )
      *
      * @return array|int
@@ -32,8 +32,8 @@ class TestCacheAnnotation
 
     /**
      * @Cacheable(
-     *   key="test:{id}",
-     *   ttl=1
+     *     key="test:{id}",
+     *     ttl=1
      * )
      */
     public function testCacheableTTL(int $id): array
@@ -46,13 +46,13 @@ class TestCacheAnnotation
 
     /**
      * @Cacheable(
-     *   key="test:{id}",
-     *   ttl=1,
-     *   lockable=@Lockable(
-     *     id="testCacheableLock:{id}",
-     *     waitTimeout=999999,
-     *   ),
-     *   preventBreakdown=true,
+     *     key="test:{id}",
+     *     ttl=1,
+     *     lockable=@Lockable(
+     *         id="testCacheableLock:{id}",
+     *         waitTimeout=999999,
+     *     ),
+     *     preventBreakdown=true,
      * )
      */
     public function testCacheableLock(int $id): array

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Bean;
 
-use FilesystemIterator;
 use Imi\App;
 use Imi\Config;
 use Imi\Core\Component\ComponentManager;
@@ -15,9 +14,6 @@ use Imi\Main\IMain;
 use Imi\Util\Composer;
 use Imi\Util\File;
 use Imi\Util\Imi;
-use ReflectionClass;
-
-use function sprintf;
 
 /**
  * 扫描类.
@@ -67,7 +63,7 @@ class Scanner
             else
             {
                 // 兼容无法直接获取 vendorDir 的情况，但无法保证多个 loader 存在的情况下获取到正确的目录
-                $ref = new ReflectionClass($classLoader);
+                $ref = new \ReflectionClass($classLoader);
                 $fileName = $ref->getFileName();
                 if (isset($fileNameMap[$fileName]))
                 {
@@ -77,14 +73,14 @@ class Scanner
                 $vendorPath = \dirname($fileName, 2);
             }
             // 遍历第一层
-            foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)
+            foreach (new \FilesystemIterator($vendorPath, \FilesystemIterator::SKIP_DOTS) as $dir1)
             {
                 if (!$dir1->isDir())
                 {
                     continue;
                 }
                 // 遍历第二层
-                foreach (new FilesystemIterator($dir1->getPathname(), FilesystemIterator::SKIP_DOTS) as $dir2)
+                foreach (new \FilesystemIterator($dir1->getPathname(), \FilesystemIterator::SKIP_DOTS) as $dir2)
                 {
                     if (!$dir2->isDir())
                     {

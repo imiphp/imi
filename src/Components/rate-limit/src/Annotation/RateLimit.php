@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 限流器注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property string        $name     限流器名称

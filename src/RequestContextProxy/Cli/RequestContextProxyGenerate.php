@@ -16,8 +16,6 @@ use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\Tool\ArgType;
 use Imi\Util\File;
 use Imi\Util\Imi;
-use ReflectionClass;
-use ReflectionMethod;
 
 /**
  * @Command("generate")
@@ -28,7 +26,6 @@ class RequestContextProxyGenerate
      * 生成请求上下文代理类.
      *
      * @CommandAction("requestContextProxy")
-     *
      * @Option(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
      * @Option(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
      * @Option(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
@@ -77,9 +74,9 @@ class RequestContextProxyGenerate
                 'recursion' => $recursion,
             ]));
         }
-        $refClass = new ReflectionClass($fromClass);
+        $refClass = new \ReflectionClass($fromClass);
         $methods = [];
-        foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+        foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
         {
             if ($method->isStatic())
             {
@@ -167,8 +164,8 @@ class RequestContextProxyGenerate
         $methodCodes = '';
         if (null !== $interface)
         {
-            $refInterface = new ReflectionClass($interface);
-            foreach ($refInterface->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+            $refInterface = new \ReflectionClass($interface);
+            foreach ($refInterface->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
             {
                 $methodName = $method->name;
                 if ('__construct' === $methodName)

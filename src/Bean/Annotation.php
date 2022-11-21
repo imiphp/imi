@@ -9,7 +9,6 @@ use Imi\Main\Helper as MainHelper;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Traits\TSingleton;
-use ReflectionClass;
 
 /**
  * 注解处理类.
@@ -153,7 +152,7 @@ class Annotation
         $properties = [];
         if ($skipDefaultValue)
         {
-            $refClass = new ReflectionClass($annotation);
+            $refClass = new \ReflectionClass($annotation);
             $defaultProperties = $refClass->getDefaultProperties();
         }
         else

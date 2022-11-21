@@ -396,7 +396,7 @@ class ModelTest extends BaseTest
     {
         $time = time();
         $bigintTime = (int) (microtime(true) * 1000);
-        $result = $record->$methodName();
+        $result = $record->{$methodName}();
         $this->assertTrue($result->isSuccess());
         $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
         $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
@@ -432,7 +432,7 @@ class ModelTest extends BaseTest
         {
             $oldArr = $record->toArray();
         }
-        $result = $record->$methodName();
+        $result = $record->{$methodName}();
         $this->assertTrue($result->isSuccess());
         if ($equals)
         {

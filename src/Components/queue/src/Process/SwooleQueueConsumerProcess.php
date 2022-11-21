@@ -39,7 +39,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function run(\Swoole\Process $process): void
         {
             $running = true;
-            \Imi\Event\Event::on('IMI.PROCESS.END', function () use (&$running) {
+            \Imi\Event\Event::on('IMI.PROCESS.END', static function () use (&$running) {
                 $running = false;
             }, ImiPriority::IMI_MAX);
             $imiQueue = $this->imiQueue;
@@ -104,7 +104,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             else
             {
                 Log::warning('@app.beans.imiQueue.list is empty');
-                Coroutine::create(function () use (&$running) {
+                Coroutine::create(static function () use (&$running) {
                     // @phpstan-ignore-next-line
                     while ($running)
                     {

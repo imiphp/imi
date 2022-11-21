@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * 参数注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  *

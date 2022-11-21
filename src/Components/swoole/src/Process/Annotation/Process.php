@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * 进程注解.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  * @Parser("Imi\Swoole\Process\Parser\ProcessParser")
  *

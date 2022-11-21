@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-Swoole\Coroutine\run(function () {
+Swoole\Coroutine\run(static function () {
     $client = new Swoole\Coroutine\Client(\SWOOLE_SOCK_UDP);
     $client->connect('127.0.0.1', 8083);
 

@@ -18,13 +18,6 @@ use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
 
-use function php_uname;
-use function round;
-use function sprintf;
-use function str_contains;
-use function strrpos;
-use function substr;
-
 /**
  * 框架里杂七杂八的各种工具方法.
  */

@@ -7,7 +7,6 @@ namespace Imi\Swoole\Process;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Swoole\Util\Imi;
-use RuntimeException;
 
 /**
  * 进程池管理类.
@@ -62,7 +61,7 @@ class ProcessPoolManager
         $processPoolOption = self::get($name);
         if (null === $processPoolOption)
         {
-            throw new RuntimeException(sprintf('Not found process pool %s', $name));
+            throw new \RuntimeException(sprintf('Not found process pool %s', $name));
         }
         if (null === $workerNum)
         {

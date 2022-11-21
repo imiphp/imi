@@ -129,7 +129,7 @@ class ProtobufUtil
         if ($message instanceof \Google\Protobuf\Value)
         {
             $method = 'get' . Text::toPascalName($message->getKind());
-            $value = $message->$method();
+            $value = $message->{$method}();
             if ($value instanceof Message)
             {
                 return self::getMessageValue($value, $options);
@@ -166,7 +166,7 @@ class ProtobufUtil
         foreach ($desc->getField() as $field)
         {
             $methodName = $field->getGetter();
-            $value = $message->$methodName();
+            $value = $message->{$methodName}();
             $result[$field->getJsonName()] = self::parseFieldValue($field, $value, $options);
         }
 

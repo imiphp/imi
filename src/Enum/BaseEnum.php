@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Enum;
 
-use InvalidArgumentException;
-
 abstract class BaseEnum
 {
     /**
@@ -102,13 +100,13 @@ abstract class BaseEnum
      *
      * @param mixed $value
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public static function assert($value): void
     {
         if (!static::validate($value))
         {
-            throw new InvalidArgumentException(sprintf('Invalid value %s in enum %s', $value, static::class));
+            throw new \InvalidArgumentException(sprintf('Invalid value %s in enum %s', $value, static::class));
         }
     }
 }

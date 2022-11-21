@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
-use ArrayObject;
-use stdClass;
-
 /**
  * 对象及数组帮助类
  * 智能识别数组和对象，支持对a.b.c这样的name属性进行操作.
@@ -49,9 +46,9 @@ class ObjectArrayHelper
                 elseif (\is_object($result))
                 {
                     // 对象
-                    if (isset($result->$nameItem))
+                    if (isset($result->{$nameItem}))
                     {
-                        $result = &$result->$nameItem;
+                        $result = &$result->{$nameItem};
                     }
                     else
                     {
@@ -91,8 +88,8 @@ class ObjectArrayHelper
             }
             elseif (\is_object($data))
             {
-                $data->$nameItem ??= new stdClass();
-                $data = &$data->$nameItem;
+                $data->{$nameItem} ??= new \stdClass();
+                $data = &$data->{$nameItem};
             }
         }
         if (\is_array($data))
@@ -101,7 +98,7 @@ class ObjectArrayHelper
         }
         elseif (\is_object($data))
         {
-            $data->$lastName = $value;
+            $data->{$lastName} = $value;
         }
     }
 
@@ -124,8 +121,8 @@ class ObjectArrayHelper
             }
             elseif (\is_object($data))
             {
-                $data->$nameItem ??= new stdClass();
-                $data = &$data->$nameItem;
+                $data->{$nameItem} ??= new \stdClass();
+                $data = &$data->{$nameItem};
             }
         }
         if (\is_array($data))
@@ -134,7 +131,7 @@ class ObjectArrayHelper
         }
         elseif (\is_object($data))
         {
-            unset($data->$lastName);
+            unset($data->{$lastName});
         }
     }
 
@@ -159,7 +156,7 @@ class ObjectArrayHelper
         {
             if (\is_object($row))
             {
-                $result[] = $row->$columnName;
+                $result[] = $row->{$columnName};
             }
             else
             {
@@ -209,7 +206,7 @@ class ObjectArrayHelper
 
     public static function toArray(object $object): array
     {
-        if ($object instanceof ArrayObject)
+        if ($object instanceof \ArrayObject)
         {
             return $object->getArrayCopy();
         }

@@ -29,11 +29,12 @@ class CacheableAop
      * 处理 Cacheable 注解.
      *
      * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \Imi\Cache\Annotation\Cacheable::class,
-     *         }
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         \Imi\Cache\Annotation\Cacheable::class,
+     *     }
      * )
+     *
      * @Around
      *
      * @return mixed

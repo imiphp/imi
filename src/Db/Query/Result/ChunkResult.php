@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query\Result;
 
-use function end;
-
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-
-use function strtolower;
 
 class ChunkResult extends BaseChunkResult
 {

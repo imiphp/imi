@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Base;
  * 切入点.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  *
  * @property int   $type  切入点类型，PointCutType::XXX

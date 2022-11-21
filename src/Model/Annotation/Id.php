@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Base;
  * 表主键声明.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @property int|false|null $index            顺序。默认为 null 时以属性顺序为准；为 false 时表示不是主键，但 ID 生成器依然有效。

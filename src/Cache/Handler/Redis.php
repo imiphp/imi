@@ -75,7 +75,7 @@ class Redis extends Base
      */
     public function clear()
     {
-        return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->flushDB(), $this->poolName, true);
+        return (bool) ImiRedis::use(static fn (\Imi\Redis\RedisHandler $redis) => $redis->flushDB(), $this->poolName, true);
     }
 
     /**

@@ -38,10 +38,10 @@ class Container implements ContainerInterface
      * @param string $id        标识符
      * @param mixed  ...$params
      *
+     * @return mixed entry
+     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
-     *
-     * @return mixed entry
      */
     public function get(string $id, ...$params)
     {
@@ -54,10 +54,10 @@ class Container implements ContainerInterface
      * @param string $id        标识符
      * @param mixed  ...$params
      *
+     * @return mixed entry
+     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
-     *
-     * @return mixed entry
      */
     public function newInstance(string $id, ...$params)
     {
@@ -67,10 +67,10 @@ class Container implements ContainerInterface
     /**
      * @param string $id 标识符
      *
+     * @return mixed
+     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
-     *
-     * @return mixed
      */
     private function __newInstance(string $id, array $params, bool $allowStore)
     {
@@ -181,10 +181,10 @@ class Container implements ContainerInterface
      * @param string $id        标识符
      * @param mixed  ...$params
      *
+     * @return mixed entry
+     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
-     *
-     * @return mixed entry
      */
     public function getSingleton(string $id, ...$params)
     {

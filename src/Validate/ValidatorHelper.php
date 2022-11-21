@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Validate;
 
-use function filter_var;
-
 use Imi\Enum\BaseEnum;
 
 /**

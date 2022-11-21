@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Parser;
  * Tcp 路由注解.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
  *
