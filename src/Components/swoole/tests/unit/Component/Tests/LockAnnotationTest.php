@@ -27,7 +27,7 @@ class LockAnnotationTest extends BaseTest
             {
                 $throwables[] = null;
                 $index = $i;
-                Coroutine::create(static function () use (&$throwables, $index, $test, $channel): void {
+                Coroutine::create(static function () use (&$throwables, $index, $test, $channel) {
                     try
                     {
                         $test->test();

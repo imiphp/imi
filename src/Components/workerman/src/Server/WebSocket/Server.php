@@ -121,7 +121,7 @@ class Server extends Base implements IWebSocketServer
             }
         };
 
-        $this->worker->onMessage = function (TcpConnection $connection, string $data): void {
+        $this->worker->onMessage = function (TcpConnection $connection, string $data) {
             try
             {
                 $clientId = $connection->id;

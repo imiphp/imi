@@ -18,7 +18,7 @@ class CronTask implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId): void
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
     {
         $success = false;
         $message = '';

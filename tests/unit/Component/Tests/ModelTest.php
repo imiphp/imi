@@ -410,7 +410,7 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeSave(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $record = UpdateTime::newInstance();
             $this->assertUpdateTime($record, 'save');
         }, null, 3);
@@ -418,7 +418,7 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeUpdate(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $record = UpdateTime::find(1);
             $this->assertUpdateTime($record, 'update');
         }, null, 3);
@@ -453,7 +453,7 @@ class ModelTest extends BaseTest
 
     public function testCreateTimeInsert(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $record = CreateTime::newInstance();
             $this->assertCreateTime($record, 'insert');
             sleep(1);
@@ -464,7 +464,7 @@ class ModelTest extends BaseTest
 
     public function testCreateTimeSave(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $record = CreateTime::newInstance();
             $this->assertCreateTime($record, 'save');
             sleep(1);

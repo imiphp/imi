@@ -5,12 +5,12 @@ declare(strict_types=1);
 use Imi\App;
 use Imi\RoadRunner\RoadRunnerApp;
 
-return static function (): void {
+return static function () {
     $path = null;
 
     if (!class_exists('Imi\App'))
     {
-        (static function () use (&$path): void {
+        (static function () use (&$path) {
             foreach ([
                 $_SERVER['PWD'] ?? null,
                 getcwd(),

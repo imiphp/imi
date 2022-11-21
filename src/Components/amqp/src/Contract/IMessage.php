@@ -107,8 +107,10 @@ interface IMessage
 
     /**
      * 设置 AMQP 消息.
+     *
+     * @return void
      */
-    public function setAMQPMessage(AMQPMessage $amqpMessage): void;
+    public function setAMQPMessage(AMQPMessage $amqpMessage);
 
     /**
      * 获取 AMQP 消息.

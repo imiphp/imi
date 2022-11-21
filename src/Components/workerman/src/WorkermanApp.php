@@ -39,10 +39,10 @@ class WorkermanApp extends CliApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
-        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e): void {
+        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
             $this->onCommand($e);
         }, \PHP_INT_MAX - 1000);
-        Event::one('IMI.SCAN_APP', function (): void {
+        Event::one('IMI.SCAN_APP', function () {
             $this->onScanApp();
         });
     }

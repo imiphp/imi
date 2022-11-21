@@ -47,10 +47,10 @@ class CronProcess extends BaseProcess
 
     public function run(\Swoole\Process $process): void
     {
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
             $this->stop();
         }, \Imi\Util\ImiPriority::IMI_MIN);
-        Event::on('IMI.PROCESS.PIPE_MESSAGE', function (PipeMessageEventParam $e): void {
+        Event::on('IMI.PROCESS.PIPE_MESSAGE', function (PipeMessageEventParam $e) {
             $data = $e->data;
             if ($data instanceof Result)
             {

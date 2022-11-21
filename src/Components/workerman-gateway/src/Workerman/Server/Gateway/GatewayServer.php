@@ -43,7 +43,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     protected function bindEvents(): void
     {
         parent::bindEvents();
-        $this->worker->onConnect = function (ConnectionInterface $connection): void {
+        $this->worker->onConnect = function (ConnectionInterface $connection) {
             try
             {
                 // @phpstan-ignore-next-line

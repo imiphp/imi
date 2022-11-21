@@ -8,16 +8,16 @@ use Imi\App;
 use Imi\Event\Event;
 use Imi\Log\Log;
 
-return static function (): void {
+return static function () {
     $status = 0;
-    \Swoole\Coroutine\run(static function () use (&$status): void {
+    \Swoole\Coroutine\run(static function () use (&$status) {
         try
         {
             $path = null;
 
             if (!class_exists('Imi\App'))
             {
-                (static function () use (&$path): void {
+                (static function () use (&$path) {
                     foreach ([
                         $_SERVER['PWD'] ?? null,
                         getcwd(),

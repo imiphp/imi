@@ -83,8 +83,10 @@ class ReferenceBeanAspect
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
      *     }
      * )
+     *
+     * @return void
      */
-    public function afterReturning(AfterReturningJoinPoint $joinPoint): void
+    public function afterReturning(AfterReturningJoinPoint $joinPoint)
     {
         Log::info(sprintf('afterReturning ReferenceBean::%s()', $joinPoint->getMethod()));
     }
@@ -97,8 +99,10 @@ class ReferenceBeanAspect
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
      *     }
      * )
+     *
+     * @return void
      */
-    public function afterThrowing(AfterThrowingJoinPoint $joinPoint): void
+    public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
     {
         Log::info(sprintf('afterThrowing ReferenceBean::%s()', $joinPoint->getMethod()));
     }

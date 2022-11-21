@@ -17,9 +17,9 @@ class PHPUnitHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        Event::on('IMI.APP_RUN', static function (EventParam $param): void {
+        Event::on('IMI.APP_RUN', static function (EventParam $param) {
             $param->stopPropagation();
-            PoolManager::use('maindb', static function (IPoolResource $resource, IDb $db): void {
+            PoolManager::use('maindb', static function (IPoolResource $resource, IDb $db) {
                 $truncateList = [
                     'tb_article',
                     'tb_article2',
@@ -46,7 +46,7 @@ class PHPUnitHook implements BeforeFirstTestHook
         }, 1);
         try
         {
-            App::run('Imi\Test\Component', CliApp::class, static function (): void {
+            App::run('Imi\Test\Component', CliApp::class, static function () {
             });
         }
         catch (\Throwable $th)

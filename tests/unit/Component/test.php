@@ -7,6 +7,6 @@ use Imi\Cli\CliApp;
 
 require \dirname(__DIR__, 3) . '/vendor/autoload.php';
 
-App::runApp(__DIR__, CliApp::class, static function (): void {
+App::runApp(__DIR__, CliApp::class, static function () {
     echo 'Test quick start', \PHP_EOL;
 });

@@ -82,7 +82,7 @@ class CacheableAop
             {
                 // 加锁
                 $nextProceedExeced = false;
-                $this->parseLockable($target, $method, $joinPointArgs, $cacheable->lockable, static function () use (&$cacheValue, $joinPoint, &$nextProceedExeced): void {
+                $this->parseLockable($target, $method, $joinPointArgs, $cacheable->lockable, static function () use (&$cacheValue, $joinPoint, &$nextProceedExeced) {
                     $nextProceedExeced = true;
                     $cacheValue = $joinPoint->proceed();
                 }, static function () use ($cacheInstance, $key, &$cacheValue) {

@@ -63,6 +63,6 @@ class BuildIDEHelper implements IEventListener
         META;
 
         $metaFile = Imi::getRuntimePath('.phpstorm.meta.php');
-        file_put_contents($metaFile, $output);
+        \file_put_contents($metaFile, $output);
     }
 }

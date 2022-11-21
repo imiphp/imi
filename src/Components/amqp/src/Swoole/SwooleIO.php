@@ -60,10 +60,12 @@ class SwooleIO extends AbstractIO
     /**
      * Set ups the connection.
      *
+     * @return void
+     *
      * @throws \PhpAmqpLib\Exception\AMQPIOException
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */
-    public function connect(): void
+    public function connect()
     {
         $sock = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
         if (!$sock->connect($this->host, $this->port, $this->connection_timeout))
@@ -75,8 +77,10 @@ class SwooleIO extends AbstractIO
 
     /**
      * Reconnects the socket.
+     *
+     * @return void
      */
-    public function reconnect(): void
+    public function reconnect()
     {
         $this->close();
         $this->connect();
@@ -141,12 +145,14 @@ class SwooleIO extends AbstractIO
     /**
      * @param string $data
      *
+     * @return void
+     *
      * @throws \PhpAmqpLib\Exception\AMQPIOException
      * @throws \PhpAmqpLib\Exception\AMQPSocketException
      * @throws \PhpAmqpLib\Exception\AMQPConnectionClosedException
      * @throws \PhpAmqpLib\Exception\AMQPTimeoutException
      */
-    public function write($data): void
+    public function write($data)
     {
         $buffer = $this->sock->send($data);
 
@@ -163,7 +169,10 @@ class SwooleIO extends AbstractIO
         $this->last_write = microtime(true);
     }
 
-    public function close(): void
+    /**
+     * @return void
+     */
+    public function close()
     {
         if ($this->sock)
         {
@@ -199,9 +208,11 @@ class SwooleIO extends AbstractIO
     /**
      * Heartbeat logic: check connection health here.
      *
+     * @return void
+     *
      * @throws \PhpAmqpLib\Exception\AMQPRuntimeException
      */
-    public function check_heartbeat(): void
+    public function check_heartbeat()
     {
     }
 }

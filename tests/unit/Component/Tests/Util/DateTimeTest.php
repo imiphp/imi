@@ -17,7 +17,7 @@ class DateTimeTest extends BaseTest
      */
     public function testGetSecondsByInterval(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $di = new \DateInterval('PT1S');
             $sec = DateTime::getSecondsByInterval($di);
             $this->assertTrue($sec <= 1);

@@ -20,7 +20,7 @@ class ExecuteTimeoutHandler implements IExecuteTimeoutHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IHttpRequest $request, IHttpResponse $response): void
+    public function handle(IHttpRequest $request, IHttpResponse $response)
     {
         $response->setStatus(StatusCode::INTERNAL_SERVER_ERROR)->setBody(new MemoryStream('<h1>Request execute timeout</h1>'))->send();
     }

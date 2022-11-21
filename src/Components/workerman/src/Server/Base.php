@@ -133,7 +133,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      */
     protected function bindEvents(): void
     {
-        $this->worker->onBufferDrain = function (ConnectionInterface $connection): void {
+        $this->worker->onBufferDrain = function (ConnectionInterface $connection) {
             try
             {
                 // @phpstan-ignore-next-line
@@ -155,7 +155,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onBufferFull = function (ConnectionInterface $connection): void {
+        $this->worker->onBufferFull = function (ConnectionInterface $connection) {
             try
             {
                 // @phpstan-ignore-next-line
@@ -177,7 +177,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onClose = function (ConnectionInterface $connection): void {
+        $this->worker->onClose = function (ConnectionInterface $connection) {
             try
             {
                 // @phpstan-ignore-next-line
@@ -199,7 +199,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onConnect = function (ConnectionInterface $connection): void {
+        $this->worker->onConnect = function (ConnectionInterface $connection) {
             try
             {
                 // @phpstan-ignore-next-line
@@ -222,7 +222,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg): void {
+        $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
             try
             {
                 // @phpstan-ignore-next-line
@@ -246,7 +246,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onWorkerReload = function (Worker $worker): void {
+        $this->worker->onWorkerReload = function (Worker $worker) {
             try
             {
                 RequestContext::muiltiSet([
@@ -265,7 +265,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onWorkerStart = function (Worker $worker): void {
+        $this->worker->onWorkerStart = function (Worker $worker) {
             try
             {
                 // 随机数播种
@@ -321,7 +321,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 {
                     Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
                     // 监听进程通讯
-                    $callback = static function (array $data): void {
+                    $callback = static function (array $data) {
                         $action = $data['action'] ?? null;
                         if (!$action)
                         {
@@ -371,7 +371,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             }
         };
 
-        $this->worker->onWorkerStop = function (Worker $worker): void {
+        $this->worker->onWorkerStop = function (Worker $worker) {
             try
             {
                 RequestContext::muiltiSet([

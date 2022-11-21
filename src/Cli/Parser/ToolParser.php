@@ -29,7 +29,7 @@ class ToolParser extends BaseParser
         }
         elseif ($annotation instanceof CommandAction)
         {
-            $func = static function () use (&$data, $annotation, $className, $targetName): void {
+            $func = static function () use (&$data, $annotation, $className, $targetName) {
                 /** @var Command $commandAnnotation */
                 $commandAnnotation = $data[$className]['Command'];
                 CliManager::addCommand($commandAnnotation->name, $annotation->name, $className, $targetName, $annotation->dynamicOptions, $commandAnnotation->separator);
@@ -47,7 +47,7 @@ class ToolParser extends BaseParser
         }
         elseif ($annotation instanceof Argument)
         {
-            $func = static function () use (&$data, $annotation, $className, $targetName): void {
+            $func = static function () use (&$data, $annotation, $className, $targetName) {
                 /** @var Command $commandAnnotation */
                 $commandAnnotation = $data[$className]['Command'];
                 /** @var CommandAction $commandActionAnnotation */
@@ -65,7 +65,7 @@ class ToolParser extends BaseParser
         }
         elseif ($annotation instanceof Option)
         {
-            $func = static function () use (&$data, $annotation, $className, $targetName): void {
+            $func = static function () use (&$data, $annotation, $className, $targetName) {
                 /** @var Command $commandAnnotation */
                 $commandAnnotation = $data[$className]['Command'];
                 /** @var CommandAction $commandActionAnnotation */

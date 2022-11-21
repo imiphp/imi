@@ -6,12 +6,12 @@ namespace Imi\Cli;
 
 use Imi\App;
 
-return static function (): void {
+return static function () {
     $path = null;
 
     if (!class_exists(\Imi\App::class))
     {
-        (static function () use (&$path): void {
+        (static function () use (&$path) {
             foreach ([
                 $_SERVER['PWD'] ?? null,
                 getcwd(),

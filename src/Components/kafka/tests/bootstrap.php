@@ -35,8 +35,10 @@ function checkHttpServerStatus()
 
 /**
  * 开启服务器.
+ *
+ * @return void
  */
-function startServer(): void
+function startServer()
 {
     $dirname = \dirname(__DIR__);
     $mode = env('KAFKA_TEST_MODE');
@@ -55,13 +57,13 @@ function startServer(): void
     $callbacks = [];
     foreach ($servers as $name => $options)
     {
-        $callbacks[] = static function () use ($options, $name): void {
+        $callbacks[] = static function () use ($options, $name) {
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
             shell_exec($cmd);
 
-            register_shutdown_function(static function () use ($name, $options): void {
+            register_shutdown_function(static function () use ($name, $options) {
                 \Swoole\Runtime::enableCoroutine(false);
                 // stop server
                 $cmd = $options['stop'];
@@ -82,13 +84,13 @@ function startServer(): void
     }
 
     batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
-    register_shutdown_function(static function (): void {
+    register_shutdown_function(static function () {
         echo 'check ports...', \PHP_EOL;
         ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
     });
 }
 
 startServer();
-\Swoole\Coroutine::defer(static function (): void {
+\Swoole\Coroutine::defer(static function () {
     \Imi\Event\Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [], null, \Imi\Swoole\Server\Event\Param\WorkerExitEventParam::class);
 });

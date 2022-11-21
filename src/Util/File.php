@@ -83,7 +83,7 @@ class File
             \Swoole\Coroutine::getCid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
-            Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames): void {
+            Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames) {
                 static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames);
                 $channel->close();
             });
@@ -361,9 +361,9 @@ class File
     public static function absolute(string $path): string
     {
         $isPhar = false;
-        if (str_starts_with($path, 'phar://'))
+        if (\str_starts_with($path, 'phar://'))
         {
-            $path = substr($path, 7);
+            $path = \substr($path, 7);
             $isPhar = true;
         }
         $path = str_replace(['/', '\\'], \DIRECTORY_SEPARATOR, $path);
@@ -403,6 +403,6 @@ class File
             return '';
         }
 
-        return substr($path, 0, $index);
+        return \substr($path, 0, $index);
     }
 }

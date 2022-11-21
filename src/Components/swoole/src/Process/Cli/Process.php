@@ -29,7 +29,7 @@ class Process extends BaseCommand
      */
     public function start(string $name, ?bool $redirectStdinStdout, ?int $pipeType): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType): void {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType) {
             $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
             $process->start();
             $result = \Swoole\Process::wait(true);
@@ -49,7 +49,7 @@ class Process extends BaseCommand
      */
     public function pool(string $name, ?int $worker, ?int $ipcType, ?string $msgQueueKey): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', static function () use ($name, $worker, $ipcType, $msgQueueKey): void {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', static function () use ($name, $worker, $ipcType, $msgQueueKey) {
             $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
             $processPool->start();
         });
@@ -63,14 +63,14 @@ class Process extends BaseCommand
      */
     public function run(string $name): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', static function () use ($name): void {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', static function () use ($name) {
             $processOption = ProcessManager::get($name);
             if (null === $processOption)
             {
                 throw new \RuntimeException(sprintf('Not found process %s', $name));
             }
             $callable = ProcessManager::getProcessCallable($_SERVER['argv'], $name, $processOption);
-            $callable(new \Imi\Swoole\Process\Process(static function (): void {
+            $callable(new \Imi\Swoole\Process\Process(static function () {
             }));
         });
     }

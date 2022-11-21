@@ -133,7 +133,7 @@ class Delete
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField): void {
+        $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField) {
             $query->where($rightField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
@@ -163,7 +163,7 @@ class Delete
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
-        $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField): void {
+        $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField) {
             $query->where($middleLeftField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
@@ -279,7 +279,7 @@ class Delete
             'struct'       => $struct,
         ]);
 
-        $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField, $annotation): void {
+        $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField, $annotation) {
             $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [
@@ -310,7 +310,7 @@ class Delete
             'struct'       => $struct,
         ]);
 
-        $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField, $annotation): void {
+        $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField, $annotation) {
             $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model[$leftField]);
         });
         Event::trigger($eventName . '.AFTER', [

@@ -14,7 +14,7 @@ class ServerUtilTest extends BaseTest
 {
     public function testGetServer(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $http = new HttpRequest();
             $response = $http->get($this->httpHost . 'serverUtil/getServer');
             $this->assertEquals([
@@ -28,7 +28,7 @@ class ServerUtilTest extends BaseTest
     public function testSend(): void
     {
         $client1 = $client2 = $client3 = null;
-        $this->go(function () use (&$client1, &$client2, &$client3): void {
+        $this->go(function () use (&$client1, &$client2, &$client3) {
             $client1 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client1->connect());
             $this->assertTrue($client1->sendData(json_encode([
@@ -130,7 +130,7 @@ class ServerUtilTest extends BaseTest
                 }
             }
             $this->assertEquals(4, $count);
-        }, static function () use (&$client1, &$client2, &$client3): void {
+        }, static function () use (&$client1, &$client2, &$client3) {
             if ($client1)
             {
                 $client1->disconnect();
@@ -150,7 +150,7 @@ class ServerUtilTest extends BaseTest
     {
         /** @var Client[] $clients */
         $clients = [];
-        $this->go(function () use (&$clients): void {
+        $this->go(function () use (&$clients) {
             for ($i = 0; $i < 2; ++$i)
             {
                 $clients[] = $client = new Client($this->host, $this->httpHost);
@@ -193,7 +193,7 @@ class ServerUtilTest extends BaseTest
                 }
                 $this->assertEquals(2, $count);
             }
-        }, static function () use (&$clients): void {
+        }, static function () use (&$clients) {
             foreach ($clients as $client)
             {
                 $client->disconnect();

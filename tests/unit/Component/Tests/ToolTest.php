@@ -70,7 +70,7 @@ class ToolTest extends BaseTest
 
         if (\is_array($suffix))
         {
-            $cmd = array_merge($cmd, $suffix);
+            $cmd = \array_merge($cmd, $suffix);
         }
         else
         {
@@ -87,7 +87,7 @@ class ToolTest extends BaseTest
         }
         $this->assertEquals(
             $assertContent,
-            \array_slice(explode("\n", str_replace("\r\n", "\n", trim($output))), -\count($results))
+            \array_slice(\explode("\n", \str_replace("\r\n", "\n", \trim($output))), -\count($results))
         );
     }
 
@@ -114,7 +114,7 @@ class ToolTest extends BaseTest
 
         if (\is_array($suffix))
         {
-            $cmd = array_merge($cmd, $suffix);
+            $cmd = \array_merge($cmd, $suffix);
         }
         else
         {
@@ -132,7 +132,7 @@ class ToolTest extends BaseTest
         }
         $this->assertEquals(
             $assertContent,
-            \array_slice(explode("\n", str_replace("\r\n", "\n", trim($output))), -\count($results))
+            \array_slice(\explode("\n", \str_replace("\r\n", "\n", \trim($output))), -\count($results))
         );
     }
 
@@ -161,7 +161,7 @@ class ToolTest extends BaseTest
 
         if (\is_array($suffix))
         {
-            $cmd = array_merge($cmd, $suffix);
+            $cmd = \array_merge($cmd, $suffix);
         }
         elseif ('' !== $suffix)
         {
@@ -179,7 +179,7 @@ class ToolTest extends BaseTest
         }
         $this->assertEquals(
             $assertContent,
-            \array_slice(explode("\n", str_replace("\r\n", "\n", trim($output))), -\count($results))
+            \array_slice(\explode("\n", \str_replace("\r\n", "\n", \trim($output))), -\count($results))
         );
     }
 }

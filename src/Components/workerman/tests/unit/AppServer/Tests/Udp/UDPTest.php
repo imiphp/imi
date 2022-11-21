@@ -14,7 +14,7 @@ class UDPTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $fp = stream_socket_client($this->host);
             $this->assertIsResource($fp);
             stream_set_timeout($fp, 3);
@@ -34,7 +34,7 @@ class UDPTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $fp = stream_socket_client($this->host);
             $this->assertIsResource($fp);
             stream_set_timeout($fp, 3);

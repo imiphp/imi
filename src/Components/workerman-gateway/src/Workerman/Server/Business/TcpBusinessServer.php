@@ -31,7 +31,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::on('IMI.WORKERMAN.SERVER.WORKER_START', function (): void {
+        Event::on('IMI.WORKERMAN.SERVER.WORKER_START', function () {
             $this->bindBusinessEvents();
         });
     }
@@ -65,7 +65,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 
         $property = $refClass->getProperty('_eventOnConnect');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId): void {
+        $property->setValue($worker, function (string $clientId) {
             RequestContext::muiltiSet([
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -83,7 +83,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 
         $property = $refClass->getProperty('_eventOnClose');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId): void {
+        $property->setValue($worker, function (string $clientId) {
             RequestContext::muiltiSet([
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -97,7 +97,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 
         $property = $refClass->getProperty('_eventOnMessage');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId, $data): void {
+        $property->setValue($worker, function (string $clientId, $data) {
             try
             {
                 RequestContext::muiltiSet([

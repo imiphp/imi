@@ -54,6 +54,7 @@ return (new PhpCsFixer\Config())
         'return_assignment'                => true,
         'explicit_string_variable'         => true,
         'heredoc_to_nowdoc'                => true,
+        'void_return'                      => false, // BUG:https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/6690
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

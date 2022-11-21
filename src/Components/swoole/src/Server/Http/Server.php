@@ -91,7 +91,7 @@ class Server extends Base implements ISwooleHttpServer
      */
     protected function __bindEvents(): void
     {
-        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e): void {
+        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e) {
             // 内置事件监听
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
             if ($this->http2)
@@ -106,7 +106,7 @@ class Server extends Base implements ISwooleHttpServer
         $events = $this->config['events'] ?? null;
         if ($event = ($events['request'] ?? true))
         {
-            $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse): void {
+            $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
                     if (!Worker::isInited())
@@ -139,14 +139,14 @@ class Server extends Base implements ISwooleHttpServer
         }
         else
         {
-            $this->swoolePort->on('request', static function (): void {
+            $this->swoolePort->on('request', static function () {
             });
         }
 
         if ($event = ($events['close'] ?? false) || $this->http2)
         {
             // @phpstan-ignore-next-line
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId): void {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
                     $this->trigger('close', [
@@ -163,7 +163,7 @@ class Server extends Base implements ISwooleHttpServer
         }
         else
         {
-            $this->swoolePort->on('close', static function (): void {
+            $this->swoolePort->on('close', static function () {
             });
         }
     }

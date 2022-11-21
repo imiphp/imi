@@ -42,7 +42,7 @@ class MQTTTest extends BaseTest
         $listener = new TestClientListener();
         $initChannel = new Channel(1);
         $client = new MQTTClient($config, $listener);
-        Coroutine::create(function () use ($initChannel, $client): void {
+        Coroutine::create(function () use ($initChannel, $client) {
             $this->assertTrue($client->connect());
             $initChannel->push(1);
             $client->wait();

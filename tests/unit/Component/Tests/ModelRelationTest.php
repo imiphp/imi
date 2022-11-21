@@ -113,7 +113,7 @@ class ModelRelationTest extends BaseTest
         $this->assertEquals(Article::convertListToArray([$record1, $record2]), Article::convertListToArray($list));
         // with callable
         $callableAnnotation = null;
-        $list = Article::query()->with(['ex' => static function (\Imi\Model\Contract\IModelQuery $query, OneToOne $annotation) use (&$callableAnnotation): void {
+        $list = Article::query()->with(['ex' => static function (\Imi\Model\Contract\IModelQuery $query, OneToOne $annotation) use (&$callableAnnotation) {
             $callableAnnotation = $annotation;
         }])->whereIn('id', $articleIds)->select()->getArray();
         $this->assertEquals(Article::convertListToArray([$record1, $record2]), Article::convertListToArray($list));

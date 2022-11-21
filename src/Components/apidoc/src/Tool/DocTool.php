@@ -82,7 +82,7 @@ class DocTool extends BaseCommand
         }
         // 生成
         $processors = Analysis::processors();
-        array_unshift($processors, function (Analysis $analysis) use ($controllerClasses): void {
+        array_unshift($processors, function (Analysis $analysis) use ($controllerClasses) {
             $this->parseRoute($analysis, $controllerClasses);
         });
         $openapi = \OpenApi\scan($directory, [
@@ -93,8 +93,10 @@ class DocTool extends BaseCommand
 
     /**
      * 处理路由.
+     *
+     * @return void
      */
-    private function parseRoute(Analysis $analysis, array $controllerClasses): void
+    private function parseRoute(Analysis $analysis, array $controllerClasses)
     {
         // OpenApi 扫描
         $map = [];

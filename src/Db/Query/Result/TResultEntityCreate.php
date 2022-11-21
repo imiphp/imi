@@ -21,7 +21,7 @@ trait TResultEntityCreate
      */
     public function createEntity(string $className, array $record): object
     {
-        if (is_subclass_of($className, Model::class))
+        if (\is_subclass_of($className, Model::class))
         {
             $object = $className::createFromRecord($record);
         }
@@ -33,7 +33,7 @@ trait TResultEntityCreate
                 $object->{$k} = $v;
             }
         }
-        if (is_subclass_of($object, IEvent::class))
+        if (\is_subclass_of($object, IEvent::class))
         {
             $object->trigger(ModelEvents::AFTER_QUERY, [
                 'model'      => $object,

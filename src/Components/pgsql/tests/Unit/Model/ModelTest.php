@@ -307,7 +307,7 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeSave(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $record = UpdateTime::newInstance();
             $this->assertUpdateTime($record, 'save');
         }, null, 3);
@@ -315,7 +315,7 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeUpdate(): void
     {
-        $this->go(function (): void {
+        $this->go(function () {
             $record = UpdateTime::find(1);
             $this->assertUpdateTime($record, 'update');
         }, null, 3);

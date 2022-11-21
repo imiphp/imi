@@ -57,7 +57,7 @@ class Pool
 
     protected function listenSigChild(): void
     {
-        Signal::waitCallback(\SIGCHLD, function (): void {
+        Signal::waitCallback(\SIGCHLD, function () {
             if ($this->workers)
             {
                 while ($result = Process::wait(false))
@@ -81,8 +81,10 @@ class Pool
 
     /**
      * 启动进程池.
+     *
+     * @return void
      */
-    public function start(): void
+    public function start()
     {
         $this->masterPID = getmypid();
         $this->working = true;
@@ -93,7 +95,7 @@ class Pool
 
         $this->listenSigChild();
 
-        imigo(function (): void {
+        imigo(function () {
             if (Signal::wait(\SIGTERM))
             {
                 if ($this->workers)
@@ -204,16 +206,20 @@ class Pool
 
     /**
      * 停止工作池.
+     *
+     * @return void
      */
-    public function shutdown(): void
+    public function shutdown()
     {
         Process::kill($this->masterPID, \SIGTERM);
     }
 
     /**
      * 重启所有工作进程.
+     *
+     * @return void
      */
-    public function restartAllWorker(): void
+    public function restartAllWorker()
     {
         foreach ($this->workers as $worker)
         {
@@ -232,8 +238,10 @@ class Pool
      * 重启指定工作进程.
      *
      * @param int ...$workerIds
+     *
+     * @return void
      */
-    public function restartWorker(...$workerIds): void
+    public function restartWorker(...$workerIds)
     {
         $workers = &$this->workers;
         foreach ($workerIds as $workerId)
@@ -261,8 +269,10 @@ class Pool
      * 启动工作进程.
      *
      * @param int $workerId
+     *
+     * @return void
      */
-    private function startWorker($workerId): void
+    private function startWorker($workerId)
     {
         $workers = &$this->workers;
         if (isset($workers[$workerId]))
@@ -273,8 +283,8 @@ class Pool
         Coroutine::set([
             'enable_deadlock_check' => false,
         ]);
-        $worker = new Process(function (Process $worker) use ($workerId): void {
-            Process::signal(\SIGTERM, function () use ($worker, $workerId): void {
+        $worker = new Process(function (Process $worker) use ($workerId) {
+            Process::signal(\SIGTERM, function () use ($worker, $workerId) {
                 $this->trigger('WorkerExit', [
                     'pool'      => $this,
                     'worker'    => $worker,
@@ -282,7 +292,7 @@ class Pool
                 ], $this, WorkerEventParam::class);
                 Event::exit();
             });
-            register_shutdown_function(function () use ($worker, $workerId): void {
+            register_shutdown_function(function () use ($worker, $workerId) {
                 $this->trigger('WorkerStop', [
                     'pool'      => $this,
                     'worker'    => $worker,
@@ -309,7 +319,7 @@ class Pool
             $workers[$workerId] = $worker;
             $this->workerIdMap[$pid] = $workerId;
 
-            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId): void {
+            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
                 $content = $worker->read();
                 if (false === $content || '' === $content)
                 {

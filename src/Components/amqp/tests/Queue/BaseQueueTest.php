@@ -78,8 +78,8 @@ abstract class BaseQueueTest extends TestCase
         {
             $message = $totalTime = null;
             $channel = new Channel(1);
-            Coroutine::create(function () use (&$message, &$totalTime, $channel): void {
-                Coroutine::create(function () use ($channel): void {
+            Coroutine::create(function () use (&$message, &$totalTime, $channel) {
+                Coroutine::create(function () use ($channel) {
                     Coroutine::sleep(1);
                     $message = new Message();
                     $message->setMessage('testPopTimeout');

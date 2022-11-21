@@ -34,7 +34,7 @@ class WorkermanServerWorker extends Worker
     /**
      * {@inheritDoc}
      */
-    protected static function init(): void
+    protected static function init()
     {
         parent::init();
         static::$_startFile = Imi::getCurrentModeRuntimePath('start_file');
@@ -110,7 +110,7 @@ class WorkermanServerWorker extends Worker
     /**
      * {@inheritDoc}
      */
-    protected static function displayUI(): void
+    protected static function displayUI()
     {
         // BUG: https://github.com/walkor/workerman/pull/708
         // 此处为修复低版本 bug

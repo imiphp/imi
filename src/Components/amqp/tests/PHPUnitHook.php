@@ -25,12 +25,12 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
         {
             case 'swoole':
                 $this->channel = $channel = new Channel(1);
-                Coroutine::create(static function () use ($channel): void {
+                Coroutine::create(static function () use ($channel) {
                     // 要保证连接池连接被释放，必须在当前协程执行完时推给 executeAfterLastTest() 的 pop()
-                    Coroutine::defer(static function () use ($channel): void {
+                    Coroutine::defer(static function () use ($channel) {
                         $channel->push(1);
                     });
-                    App::run('AMQPApp', SwooleApp::class, static function () use ($channel): void {
+                    App::run('AMQPApp', SwooleApp::class, static function () use ($channel) {
                         $channel->push(1);
                         $channel->pop();
                     });
@@ -38,7 +38,7 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
                 $channel->pop();
                 break;
             case 'workerman':
-                App::run('AMQPApp', CliApp::class, static function (): void {
+                App::run('AMQPApp', CliApp::class, static function () {
                 });
                 break;
         }

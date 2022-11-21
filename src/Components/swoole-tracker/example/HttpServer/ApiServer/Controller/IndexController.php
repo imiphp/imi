@@ -30,8 +30,10 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     *
+     * @return void
      */
-    public function fail(): void
+    public function fail()
     {
         throw new \RuntimeException('test gg');
     }

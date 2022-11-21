@@ -80,10 +80,10 @@ trait TProcess
         else
         {
             $this->unixSocketClient = $client = $this->createUnixSocketClient();
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client): void {
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client) {
                 $client->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);
-            Coroutine::create(function () use ($client): void {
+            Coroutine::create(function () use ($client) {
                 while ($client->isConnected())
                 {
                     $data = $client->recv(1);
@@ -152,10 +152,10 @@ trait TProcess
             return;
         }
         $this->unixSocketRunning = true;
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
             $this->stopUnixSocketServer();
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
-        Coroutine::create(function (): void {
+        Coroutine::create(function () {
             $socketFile = $this->getUnixSocketFile();
             if (file_exists($socketFile))
             {
@@ -169,7 +169,7 @@ trait TProcess
                 'package_body_offset'   => 4,
             ]);
             // 接收到新的连接请求 并自动创建一个协程
-            $server->handle(function (Connection $conn): void {
+            $server->handle(function (Connection $conn) {
                 while ($this->unixSocketRunning)
                 {
                     // 接收数据

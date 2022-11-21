@@ -150,8 +150,10 @@ class FileStream implements StreamInterface, \Stringable
 
     /**
      * {@inheritDoc}
+     *
+     * @return void
      */
-    public function seek($offset, $whence = \SEEK_SET): void
+    public function seek($offset, $whence = \SEEK_SET)
     {
         if (-1 === fseek($this->stream, $offset, $whence))
         {

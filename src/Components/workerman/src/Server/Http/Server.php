@@ -60,7 +60,7 @@ class Server extends Base
             Event::on('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
             App::set('has_imi_workerman_http_request_event', true);
         }
-        $this->worker->onMessage = function (ConnectionInterface $connection, $data): void {
+        $this->worker->onMessage = function (ConnectionInterface $connection, $data) {
             try
             {
                 $worker = $this->worker;

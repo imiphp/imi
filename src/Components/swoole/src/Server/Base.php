@@ -187,7 +187,7 @@ abstract class Base extends BaseServer implements ISwooleServer
         {
             if (\SWOOLE_BASE !== $this->swooleServer->mode)
             {
-                $this->swooleServer->on('start', function (Server $server): void {
+                $this->swooleServer->on('start', function (Server $server) {
                     try
                     {
                         \Imi\Swoole\Util\Imi::setProcessName('master');
@@ -207,7 +207,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 });
             }
 
-            $this->swooleServer->on('shutdown', function (Server $server): void {
+            $this->swooleServer->on('shutdown', function (Server $server) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.SHUTDOWN', [
@@ -224,7 +224,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerStart', function (Server $server, int $workerId): void {
+            $this->swooleServer->on('WorkerStart', function (Server $server, int $workerId) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
@@ -249,7 +249,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerStop', function (Server $server, int $workerId): void {
+            $this->swooleServer->on('WorkerStop', function (Server $server, int $workerId) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
@@ -271,7 +271,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerExit', function (Server $server, int $workerId): void {
+            $this->swooleServer->on('WorkerExit', function (Server $server, int $workerId) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [
@@ -285,7 +285,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('ManagerStart', function (Server $server): void {
+            $this->swooleServer->on('ManagerStart', function (Server $server) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.START', [
@@ -303,7 +303,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('ManagerStop', function (Server $server): void {
+            $this->swooleServer->on('ManagerStop', function (Server $server) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.STOP', [
@@ -323,7 +323,7 @@ abstract class Base extends BaseServer implements ISwooleServer
             $configs = $this->config['configs'] ?? null;
             if (0 !== ($configs['task_worker_num'] ?? -1))
             {
-                $this->swooleServer->on('task', function (Server $server, Server\Task $task): void {
+                $this->swooleServer->on('task', function (Server $server, Server\Task $task) {
                     try
                     {
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
@@ -342,7 +342,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 });
             }
 
-            $this->swooleServer->on('finish', function (Server $server, int $taskId, $data): void {
+            $this->swooleServer->on('finish', function (Server $server, int $taskId, $data) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.FINISH', [
@@ -357,7 +357,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('PipeMessage', function (Server $server, int $workerId, string $message): void {
+            $this->swooleServer->on('PipeMessage', function (Server $server, int $workerId, string $message) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
@@ -372,7 +372,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 }
             });
 
-            $this->swooleServer->on('WorkerError', function (Server $server, int $workerId, int $workerPid, int $exitCode, int $signal): void {
+            $this->swooleServer->on('WorkerError', function (Server $server, int $workerId, int $workerPid, int $exitCode, int $signal) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER_ERROR', [

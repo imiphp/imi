@@ -51,8 +51,10 @@ final class ImiRedisStorage implements Storage, GlobalScope
 
     /**
      * @param float $microtime
+     *
+     * @return void
      */
-    public function bootstrap($microtime): void
+    public function bootstrap($microtime)
     {
         $this->setMicrotime($microtime);
     }
@@ -72,7 +74,10 @@ final class ImiRedisStorage implements Storage, GlobalScope
         }
     }
 
-    public function remove(): void
+    /**
+     * @return void
+     */
+    public function remove()
     {
         try
         {
@@ -91,8 +96,10 @@ final class ImiRedisStorage implements Storage, GlobalScope
      * @SuppressWarnings(PHPMD)
      *
      * @param float $microtime
+     *
+     * @return void
      */
-    public function setMicrotime($microtime): void
+    public function setMicrotime($microtime)
     {
         try
         {
@@ -140,7 +147,10 @@ final class ImiRedisStorage implements Storage, GlobalScope
         return $this->mutex;
     }
 
-    public function letMicrotimeUnchanged(): void
+    /**
+     * @return void
+     */
+    public function letMicrotimeUnchanged()
     {
     }
 }

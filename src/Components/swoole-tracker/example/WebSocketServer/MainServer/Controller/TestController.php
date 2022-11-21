@@ -47,8 +47,10 @@ class TestController extends WebSocketController
      * @WSMiddleware(Imi\SwooleTracker\Example\WebSocketServer\MainServer\Middleware\Test::class)
      *
      * @param mixed $data
+     *
+     * @return void
      */
-    public function send($data): void
+    public function send($data)
     {
         $message = ConnectionContext::get('username') . ':' . $data->message;
         Server::sendToGroup('g1', $message);

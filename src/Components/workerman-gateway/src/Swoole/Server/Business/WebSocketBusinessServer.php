@@ -51,7 +51,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function __construct(string $name, array $config)
         {
             parent::__construct($name, $config);
-            Event::on('IMI.MAIN_SERVER.WORKER.START', function (): void {
+            Event::on('IMI.MAIN_SERVER.WORKER.START', function () {
                 if (!SwooleWorker::isTask())
                 {
                     $this->initGatewayWorker();
@@ -67,23 +67,23 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 Gateway::$registerAddress = $workermanGatewayConfig['registerAddress'];
             }
 
-            Coroutine::create(function () use ($workermanGatewayConfig): void {
+            Coroutine::create(function () use ($workermanGatewayConfig) {
                 $this->pool = $pool = new CoPool($workermanGatewayConfig['worker_coroutine_num'] ?? swoole_cpu_num(), $workermanGatewayConfig['channel']['size'] ?? 1024, WebSocketWorkerTask::class);
                 $pool->run();
                 $pool->wait();
             });
 
-            Coroutine::create(function () use ($workermanGatewayConfig): void {
+            Coroutine::create(function () use ($workermanGatewayConfig) {
                 $config = new GatewayWorkerConfig($workermanGatewayConfig);
 
                 // Gateway Worker
                 $client = new GatewayWorkerClient(($workermanGatewayConfig['workerName'] ?? $this->getName()) . ':' . Worker::getWorkerId(), $config);
                 // 异常处理
-                $client->onException = static function (\Throwable $th): void {
+                $client->onException = static function (\Throwable $th) {
                     Log::error($th);
                 };
                 // 网关消息
-                $client->onGatewayMessage = function (IGatewayClient $client, array $message): void {
+                $client->onGatewayMessage = function (IGatewayClient $client, array $message) {
                     $clientId = Context::addressToClientId($message['local_ip'], $message['local_port'], $message['connection_id']);
                     $this->pool->addTaskAsync([
                         'server'   => $this,

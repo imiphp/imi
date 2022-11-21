@@ -104,7 +104,7 @@ class Db
                 App::set($requestContextKey, $db);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey): void {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey) {
                         /** @var IDb|null $db */
                         $db = App::get($requestContextKey);
                         if (!$db)
@@ -371,7 +371,7 @@ class Db
         {
             return $sql;
         }
-        if (array_is_list($bindValues))
+        if (\array_is_list($bindValues))
         {
             $sql = str_replace('??', '__mask__', $sql);
 

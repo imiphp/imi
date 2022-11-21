@@ -324,7 +324,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
      * @return mixed|false
      */
     #[\ReturnTypeWillChange]
-    public function current(): void
+    public function current()
     {
         throw new DbException('Not support current()');
     }
@@ -333,7 +333,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
      * @return int|string|null
      */
     #[\ReturnTypeWillChange]
-    public function key(): void
+    public function key()
     {
         throw new DbException('Not support key()');
     }

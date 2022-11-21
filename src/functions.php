@@ -125,7 +125,7 @@ namespace Imi
         }
         else
         {
-            $process->run(static function ($type, $buffer): void {
+            $process->run(static function ($type, $buffer) {
                 echo $buffer;
             });
         }

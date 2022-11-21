@@ -17,7 +17,7 @@ class SwooleHandler implements IAsyncHandler
     {
         $channel = new Channel();
         $result = new SwooleResult($channel);
-        imigo(static function () use ($callable, $channel): void {
+        imigo(static function () use ($callable, $channel) {
             try
             {
                 $channel->push([

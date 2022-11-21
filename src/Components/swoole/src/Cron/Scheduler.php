@@ -84,7 +84,7 @@ class Scheduler implements IScheduler
                 /**
                  * {@inheritDoc}
                  */
-                public function run(ITaskParam $param): void
+                public function run(ITaskParam $param)
                 {
                     /** @var \Imi\Cron\CronTask $task */
                     $task = $param->getData();

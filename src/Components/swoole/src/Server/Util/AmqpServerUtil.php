@@ -68,7 +68,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $this->serverName = $server->getName();
             $this->consumerInstance = $server->getBean($this->consumerClass);
             $this->publisherInstance = $server->getBean($this->publisherClass);
-            Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
+            Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function () {
                 $this->subscribeEnable = false;
             });
             $this->startSubscribe();
@@ -319,7 +319,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $server = RequestContext::getServer();
             if ($this->subscribeEnable && $server && $server->isLongConnection())
             {
-                imigo(function (): void {
+                imigo(function () {
                     try
                     {
                         $this->consumerInstance->run();

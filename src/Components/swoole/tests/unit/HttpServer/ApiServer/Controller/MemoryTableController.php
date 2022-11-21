@@ -134,7 +134,7 @@ class MemoryTableController extends HttpController
     public function lockCallableSetAndGet(): ?array
     {
         $result = null;
-        MemoryTableManager::lock('t1', static function () use (&$result): void {
+        MemoryTableManager::lock('t1', static function () use (&$result) {
             $key = '1';
             $row = [
                 'name'  => 'imi',

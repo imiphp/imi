@@ -62,7 +62,7 @@ class ConnectionContextGateway implements IHandler
         {
             return;
         }
-        Timer::after($ttl * 1000, function () use ($key): void {
+        Timer::after($ttl * 1000, function () use ($key) {
             $this->destroy($key);
         });
     }

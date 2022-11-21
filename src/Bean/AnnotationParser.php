@@ -651,7 +651,7 @@ class AnnotationParser
             }
             else
             {
-                $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className): void {
+                $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className) {
                     if ($this->hasParser($annotationClassName))
                     {
                         $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
@@ -672,7 +672,7 @@ class AnnotationParser
                 }
                 else
                 {
-                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $propName): void {
+                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $propName) {
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
@@ -694,7 +694,7 @@ class AnnotationParser
                 }
                 else
                 {
-                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $methodName): void {
+                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $methodName) {
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
@@ -716,7 +716,7 @@ class AnnotationParser
                 }
                 else
                 {
-                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $constName): void {
+                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $constName) {
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CONST, $constName);

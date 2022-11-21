@@ -78,14 +78,14 @@ class ProcessPoolManager
 
         $pool = new \Swoole\Process\Pool($workerNum, $ipcType, $msgQueueKey);
 
-        $pool->on('WorkerStart', static function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption): void {
+        $pool->on('WorkerStart', static function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
             Imi::setProcessName('processPool', [
                 'processPoolName'   => $name,
                 'workerId'          => $workerId,
             ]);
             // 随机数播种
             mt_srand();
-            \Swoole\Coroutine\run(static function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption): void {
+            \Swoole\Coroutine\run(static function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
                 $processInstance = App::newInstance($processPoolOption['className'], $args);
                 // 进程开始事件
                 Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [
@@ -102,7 +102,7 @@ class ProcessPoolManager
             });
         });
 
-        $pool->on('WorkerStop', imiCallable(static function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey): void {
+        $pool->on('WorkerStop', imiCallable(static function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey) {
             // 进程结束事件
             Event::trigger('IMI.PROCESS_POOL.PROCESS.END', [
                 'name'          => $name,
