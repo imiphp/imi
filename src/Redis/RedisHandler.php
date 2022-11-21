@@ -300,7 +300,7 @@ class RedisHandler
                     if ($redis->isConnected())
                     {
                         $this->host = $redis->getHost();
-                        $this->isUnix = \str_contains($this->host, '/');
+                        $this->isUnix = str_contains($this->host, '/');
                         $this->port = $redis->getPort();
                         $this->timeout = $redis->getTimeout();
                     }

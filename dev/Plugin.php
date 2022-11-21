@@ -38,7 +38,7 @@ class Plugin
     {
         $cmd = [
             \PHP_BINARY,
-            \realpath($_SERVER['SCRIPT_FILENAME']),
+            realpath($_SERVER['SCRIPT_FILENAME']),
             'update',
             '--no-interaction',
             '--prefer-dist',
@@ -73,7 +73,7 @@ class Plugin
 
     protected static function createProcess(array $cmd): Process
     {
-        if (\method_exists(Process::class, 'fromShellCommandline'))
+        if (method_exists(Process::class, 'fromShellCommandline'))
         {
             $process = new Process($cmd);
         }
@@ -82,7 +82,7 @@ class Plugin
             // 兼容 symfony process < 3.3
             $process = new Process([]);
             // @phpstan-ignore-next-line
-            $process->setCommandLine(\implode(' ', $cmd));
+            $process->setCommandLine(implode(' ', $cmd));
         }
         $process->setTimeout(0);
 
@@ -100,7 +100,7 @@ class Plugin
         {
             foreach ($processes as $name => $process)
             {
-                $title = \sprintf($titleTemp, $name);
+                $title = sprintf($titleTemp, $name);
                 if (!$process->isStarted() && $max > $running)
                 {
                     ++$running;
@@ -117,7 +117,7 @@ class Plugin
                     unset($processes[$name]);
                 }
             }
-            \usleep(1000);
+            usleep(1000);
         }
     }
 }

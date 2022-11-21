@@ -390,13 +390,13 @@ abstract class DbBaseTest extends BaseTest
         $insertCount = 100;
         $data = [];
 
-        $time = \time();
+        $time = time();
         for ($i = 1; $i <= $insertCount; ++$i)
         {
             $data["k_{$i}"] = [
                 'title'     => "title_{$i}",
                 'content'   => "content_{$i}",
-                'time'      => \date('Y-m-d H:i:s', $time + $i),
+                'time'      => date('Y-m-d H:i:s', $time + $i),
                 'member_id' => $i,
             ];
         }
@@ -488,7 +488,7 @@ abstract class DbBaseTest extends BaseTest
             }
         }
 
-        $this->assertEquals($args['origin'], \array_reverse($data));
+        $this->assertEquals($args['origin'], array_reverse($data));
     }
 
     /**
@@ -589,25 +589,25 @@ abstract class DbBaseTest extends BaseTest
             ->table('tb_article')
             ->column('content');
 
-        $this->assertEquals(\array_column($origin, 'content'), $data);
+        $this->assertEquals(array_column($origin, 'content'), $data);
 
         $data = Db::query($this->poolName)
             ->table('tb_article')
             ->column('content', 'id');
 
-        $this->assertEquals(\array_column($origin, 'content', 'id'), $data);
+        $this->assertEquals(array_column($origin, 'content', 'id'), $data);
 
         $data = Db::query($this->poolName)
             ->table('tb_article')
             ->column(['id', 'content'], 'id');
 
-        $this->assertEquals(\array_column_ex($origin, ['id', 'content'], 'id'), $data);
+        $this->assertEquals(array_column_ex($origin, ['id', 'content'], 'id'), $data);
 
         $data = Db::query($this->poolName)
             ->table('tb_article')
             ->column(['title', 'content', 'time'], 'id');
 
-        $this->assertEquals(\array_column_ex($origin, ['title', 'content', 'time', 'id'], 'id'), $data);
+        $this->assertEquals(array_column_ex($origin, ['title', 'content', 'time', 'id'], 'id'), $data);
     }
 
     /**
@@ -645,7 +645,7 @@ abstract class DbBaseTest extends BaseTest
         $title = 'lob title';
         $fileName = __DIR__ . '/lob_title.txt';
         file_put_contents($fileName, $title);
-        $this->assertTrue($stmtInsert->execute([fopen($fileName, 'r'), 'content', $time = \date('Y-m-d H:i:s'), 0]));
+        $this->assertTrue($stmtInsert->execute([fopen($fileName, 'r'), 'content', $time = date('Y-m-d H:i:s'), 0]));
         $this->assertGreaterThanOrEqual(1, $id = $stmtInsert->lastInsertId());
         // 验证 \PDO::PARAM_LOB
         $this->assertTrue($stmt->execute([$id]));

@@ -181,7 +181,7 @@ class RedisManager
         if (!$redis->isCluster())
         {
             $host = $config['host'] ?? '127.0.0.1';
-            if (\str_contains($host, '/'))
+            if (str_contains($host, '/'))
             {
                 // unix socket
                 $redis->connect($host);

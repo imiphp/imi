@@ -105,7 +105,7 @@ class Imi
         if (isset($rule[0]) && '!' === $rule[0])
         {
             // 不应该存在参数支持
-            return null === $valueCallback(\substr($rule, 1));
+            return null === $valueCallback(substr($rule, 1));
         }
         elseif (preg_match('/([^!<=]+)(!=|<>|=)(.+)/', $rule, $matches) > 0)
         {
@@ -157,7 +157,7 @@ class Imi
         if (isset($rule[0]) && '!' === $rule[0])
         {
             // 不等
-            return $value !== \substr($rule, 1);
+            return $value !== substr($rule, 1);
         }
         else
         {
@@ -181,13 +181,13 @@ class Imi
      */
     public static function getClassNamespace(string $className): string
     {
-        $pos = \strrpos($className, '\\');
+        $pos = strrpos($className, '\\');
         if (false === $pos)
         {
             return '';
         }
 
-        return \substr($className, 0, $pos);
+        return substr($className, 0, $pos);
     }
 
     /**
@@ -195,13 +195,13 @@ class Imi
      */
     public static function getClassShortName(string $className): string
     {
-        $pos = \strrpos($className, '\\');
+        $pos = strrpos($className, '\\');
         if (false === $pos)
         {
             return $className;
         }
 
-        return \substr($className, $pos + 1);
+        return substr($className, $pos + 1);
     }
 
     /**
@@ -223,13 +223,13 @@ class Imi
                 foreach ($prefixDirsPsr4 as $keyNamespace => $paths)
                 {
                     $len = \strlen($keyNamespace);
-                    if (\substr($namespace, 0, $len) === $keyNamespace)
+                    if (substr($namespace, 0, $len) === $keyNamespace)
                     {
                         if (isset($paths[1]) && !$returnFirst)
                         {
                             return null;
                         }
-                        $result = File::path($paths[0], str_replace('\\', \DIRECTORY_SEPARATOR, \substr($namespace, $len)));
+                        $result = File::path($paths[0], str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
                         if (is_dir($result))
                         {
                             break 2;
@@ -251,7 +251,7 @@ class Imi
                 $len = \strlen($mainNamespace);
                 if (str_starts_with($namespace, $mainNamespace))
                 {
-                    $namespaceSubPath = \substr($namespace, $len);
+                    $namespaceSubPath = substr($namespace, $len);
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
                     $path = \dirname($refClass->getFileName());
                     $result = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
@@ -292,11 +292,11 @@ class Imi
                 foreach ($prefixDirsPsr4 as $keyNamespace => $paths)
                 {
                     $len = \strlen($keyNamespace);
-                    if (\substr($namespace, 0, $len) === $keyNamespace)
+                    if (substr($namespace, 0, $len) === $keyNamespace)
                     {
                         foreach ($paths as $path)
                         {
-                            $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, \substr($namespace, $len)));
+                            $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
                         }
                     }
                 }
@@ -315,7 +315,7 @@ class Imi
                 $len = \strlen($mainNamespace);
                 if (str_starts_with($namespace, $mainNamespace))
                 {
-                    $namespaceSubPath = \substr($namespace, $len);
+                    $namespaceSubPath = substr($namespace, $len);
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
                     $path = \dirname($refClass->getFileName());
                     $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
@@ -451,7 +451,7 @@ class Imi
                     }
                     if (null === $resultNamespacePath)
                     {
-                        throw new \RuntimeException(\sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
+                        throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
                     }
                     $parentPath = File::path($resultNamespacePath, '.runtime');
                 }
@@ -555,7 +555,7 @@ class Imi
      */
     public static function checkReusePort(): bool
     {
-        return 'Linux' === \PHP_OS && version_compare(\php_uname('r'), '3.9', '>=');
+        return 'Linux' === \PHP_OS && version_compare(php_uname('r'), '3.9', '>=');
     }
 
     /**
@@ -630,7 +630,7 @@ class Imi
     {
         return is_file('/proc/sys/fs/binfmt_misc/WSLInterop')
             || (env('WSLEMV', false) || env('WSL_INTEROP', false) || env('WSL_DISTRO_NAME', false))
-            || \str_contains(\php_uname(), 'WSL');
+            || str_contains(php_uname(), 'WSL');
     }
 
     /**
@@ -747,7 +747,7 @@ class Imi
         $fileName = '/proc/1/cgroup';
         if (is_file($fileName))
         {
-            return \str_contains(file_get_contents($fileName), ':/docker/');
+            return str_contains(file_get_contents($fileName), ':/docker/');
         }
 
         return false;
@@ -776,7 +776,7 @@ class Imi
             ++$pos;
         }
 
-        $result = \sprintf("%.{$dec}f", \round($byte, $dec));
+        $result = sprintf("%.{$dec}f", round($byte, $dec));
 
         if ($unit)
         {
