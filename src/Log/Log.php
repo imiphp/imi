@@ -21,8 +21,8 @@ class Log
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed              $level
-     * @param string|\Stringable $message
+     * @param mixed                         $level
+     * @param string|\Stringable|\Throwable $message
      */
     public static function log($level, $message, array $context = [], ?string $channelName = null): void
     {
@@ -32,7 +32,7 @@ class Log
     /**
      * System is unusable.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function emergency($message, array $context = [], ?string $channelName = null): void
     {
@@ -45,7 +45,7 @@ class Log
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function alert($message, array $context = [], ?string $channelName = null): void
     {
@@ -57,7 +57,7 @@ class Log
      *
      * Example: Application component unavailable, unexpected exception.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function critical($message, array $context = [], ?string $channelName = null): void
     {
@@ -68,7 +68,7 @@ class Log
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function error($message, array $context = [], ?string $channelName = null): void
     {
@@ -81,7 +81,7 @@ class Log
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function warning($message, array $context = [], ?string $channelName = null): void
     {
@@ -91,7 +91,7 @@ class Log
     /**
      * Normal but significant events.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function notice($message, array $context = [], ?string $channelName = null): void
     {
@@ -103,7 +103,7 @@ class Log
      *
      * Example: User logs in, SQL logs.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function info($message, array $context = [], ?string $channelName = null): void
     {
@@ -113,7 +113,7 @@ class Log
     /**
      * Detailed debug information.
      *
-     * @param string|\Stringable $message
+     * @param string|\Stringable|\Throwable $message
      */
     public static function debug($message, array $context = [], ?string $channelName = null): void
     {
