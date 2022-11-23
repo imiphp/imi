@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole;
 
+use Imi\Log\Log;
 use Imi\Timer\Contract\ITimer;
 use Swoole\Timer;
 
@@ -14,7 +15,16 @@ class SwooleTimer implements ITimer
      */
     public function tick(int $ms, callable $callback): int
     {
-        return Timer::tick($ms, $callback);
+        return Timer::tick($ms, static function () use ($callback) {
+            try
+            {
+                $callback();
+            }
+            catch (\Throwable $th)
+            {
+                Log::error($th);
+            }
+        });
     }
 
     /**
@@ -22,7 +32,16 @@ class SwooleTimer implements ITimer
      */
     public function after(int $ms, callable $callback): int
     {
-        return Timer::after($ms, $callback);
+        return Timer::after($ms, static function () use ($callback) {
+            try
+            {
+                $callback();
+            }
+            catch (\Throwable $th)
+            {
+                Log::error($th);
+            }
+        });
     }
 
     /**
