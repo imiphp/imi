@@ -51,7 +51,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function __construct(string $name, array $config)
         {
             parent::__construct($name, $config);
-            Event::on('IMI.MAIN_SERVER.WORKER.START', function () {
+            Event::one('IMI.MAIN_SERVER.WORKER.START', function () {
                 if (!SwooleWorker::isTask())
                 {
                     $this->initGatewayWorker();

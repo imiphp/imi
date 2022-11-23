@@ -31,7 +31,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::on('IMI.WORKERMAN.SERVER.WORKER_START', function () {
+        Event::one('IMI.WORKERMAN.SERVER.WORKER_START', function () {
             $this->bindBusinessEvents();
         });
     }

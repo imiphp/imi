@@ -10,7 +10,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 /**
- * @Listener(eventName="IMI.WORKERMAN.SERVER.WORKER_START")
+ * @Listener(eventName="IMI.WORKERMAN.SERVER.WORKER_START", one=true)
  */
 class SuperGlobals implements IEventListener
 {

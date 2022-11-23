@@ -15,7 +15,7 @@ use Imi\Worker;
 use function Yurun\Swoole\Coroutine\goWait;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START")
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START", one=true)
  */
 class WorkerStart implements IWorkerStartEventListener
 {

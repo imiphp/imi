@@ -13,7 +13,7 @@ use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=-19940311)
+ * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=-19940311, one=true)
  */
 class OnServerCreateAfter implements IEventListener
 {

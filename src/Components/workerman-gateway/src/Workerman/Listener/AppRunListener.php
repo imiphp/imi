@@ -13,7 +13,7 @@ use Imi\Event\IEventListener;
 if (\Imi\Util\Imi::checkAppType('workerman'))
 {
     /**
-     * @Listener("IMI.APP_RUN")
+     * @Listener(eventName="IMI.APP_RUN", one=true)
      */
     class AppRunListener implements IEventListener
     {

@@ -11,7 +11,7 @@ use Imi\Swoole\Util\MemoryTableManager;
 use Imi\Util\Imi;
 
 /**
- * @Listener(eventName="IMI.SWOOLE.SERVER.BEFORE_START")
+ * @Listener(eventName="IMI.SWOOLE.SERVER.BEFORE_START", one=true)
  */
 class Init implements IEventListener
 {
