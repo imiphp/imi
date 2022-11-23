@@ -12,8 +12,8 @@ use Imi\Queue\Model\Message;
 use Imi\Timer\Timer;
 
 /**
- * @Listener("IMI.MAIN_SERVER.WORKER.START.APP")
- * @Listener("IMI.WORKERMAN.SERVER.WORKER_START")
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START.APP", one=true)
+ * @Listener(eventName="IMI.WORKERMAN.SERVER.WORKER_START", one=true)
  */
 class WorkerStartListener implements IEventListener
 {

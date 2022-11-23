@@ -13,7 +13,7 @@ use Imi\Server\ServerManager;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 
 /**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER")
+ * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", one=true)
  */
 class OnServerCreateAfter implements IEventListener
 {

@@ -14,6 +14,7 @@ namespace Imi\Bean\Annotation;
  *
  * @property string $eventName 事件名
  * @property int    $priority  优先级，越大越先执行
+ * @property bool   $one       事件仅触发一次
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Listener extends Base
@@ -23,7 +24,7 @@ class Listener extends Base
      */
     protected ?string $defaultFieldName = 'eventName';
 
-    public function __construct(?array $__data = null, string $eventName = '', int $priority = 0)
+    public function __construct(?array $__data = null, string $eventName = '', int $priority = 0, bool $one = false)
     {
         parent::__construct(...\func_get_args());
     }

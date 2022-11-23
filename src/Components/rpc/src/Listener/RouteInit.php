@@ -17,7 +17,7 @@ use Imi\Util\DelayServerBeanCallable;
 /**
  * RPC 服务器路由初始化.
  *
- * @Listener("IMI.MAIN_SERVER.WORKER.START")
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START", one=true)
  */
 class RouteInit implements IEventListener
 {

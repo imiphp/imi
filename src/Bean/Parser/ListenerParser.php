@@ -18,8 +18,16 @@ class ListenerParser extends BaseParser
         {
             $eventName = $annotation->eventName;
             $priority = $annotation->priority;
-            EventManager::add($eventName, $className, $priority);
-            Event::on($eventName, $className, $priority);
+            $one = $annotation->one;
+            EventManager::add($eventName, $className, $priority, $one);
+            if ($one)
+            {
+                Event::one($eventName, $className, $priority);
+            }
+            else
+            {
+                Event::on($eventName, $className, $priority);
+            }
         }
     }
 }

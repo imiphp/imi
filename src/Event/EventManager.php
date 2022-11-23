@@ -34,7 +34,14 @@ class EventManager
         {
             foreach ($events as $listenerClass => $event)
             {
-                Event::on($eventName, $listenerClass, $event['priority']);
+                if ($event['one'] ?? false)
+                {
+                    Event::one($eventName, $listenerClass, $event['priority']);
+                }
+                else
+                {
+                    Event::on($eventName, $listenerClass, $event['priority']);
+                }
             }
         }
     }
@@ -42,10 +49,11 @@ class EventManager
     /**
      * 增加映射关系.
      */
-    public static function add(string $eventName, string $listenerClass, int $priority): void
+    public static function add(string $eventName, string $listenerClass, int $priority, bool $one): void
     {
         self::$map[$eventName][$listenerClass] = [
             'priority'  => $priority,
+            'one'       => $one,
         ];
     }
 }

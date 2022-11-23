@@ -14,7 +14,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START", priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START", priority=Imi\Util\ImiPriority::IMI_MAX, one=true)
  */
 class OnManagerStart implements IManagerStartEventListener
 {

@@ -19,7 +19,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED", priority=PHP_INT_MAX)
  */
 class Init implements IEventListener
 {
@@ -39,10 +39,15 @@ class Init implements IEventListener
 
 类必须实现`IEventListener`接口和`public function handle(EventParam $e): void`方法。
 
-然后在类上写`@Listener`注解。注解有两个参数：
+然后在类上写`@Listener`注解。
 
-`eventName`要监听的事件名称
-`priority`事件触发后执行的优先级，数字越大越先执行，同样大执行顺序不一定
+**注解参数说明：**
+
+* `eventName` 要监听的事件名称
+
+* `priority` 事件触发后执行的优先级，数字越大越先执行，同样大执行顺序不一定
+
+* `one` 设为 `true` 事件仅触发一次，默认为 `false`
 
 #### 代码监听
 
