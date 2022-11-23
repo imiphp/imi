@@ -12,4 +12,8 @@ imi 接入了服务指标监控能力，提供了 [imi-meter](https://github.com
 
 * [x] [Prometheus](/v2.1/components/meter/prometheus.md)
 
+* [x] [InfluxDB](/v2.1/components/meter/influxdb.md)
+
+* [x] [TDengine](/v2.1/components/meter/tdengine.md)
+
 ……
