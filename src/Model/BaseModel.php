@@ -616,7 +616,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return [
             'serializedFields' => $this->__serializedFields,
             'originData'       => $this->__originData,
-            'data'             => $this->toArray(),
+            'data'             => iterator_to_array($this),
         ];
     }
 

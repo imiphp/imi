@@ -1125,8 +1125,11 @@ class ModelTest extends BaseTest
         $this->assertNotNull($record);
         $this->assertEquals('1', $record->username);
         $this->assertEquals('pw2', $record->password);
+        /** @var Member $record2 */
         $record2 = unserialize(serialize($record));
         $this->assertEquals($record->toArray(), $record2->toArray());
+        $this->assertEquals($record->username, $record2->username);
+        $this->assertEquals($record->password, $record2->password);
     }
 
     public function testId(): void
