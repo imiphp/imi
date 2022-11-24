@@ -41,7 +41,7 @@ class System
 
     public static function getCpuCoresNum(): int
     {
-        if (\PHP_OS_FAMILY == 'Windows')
+        if (\PHP_OS_FAMILY === 'Windows')
         {
             return env('NUMBER_OF_PROCESSORS', 0);
         }

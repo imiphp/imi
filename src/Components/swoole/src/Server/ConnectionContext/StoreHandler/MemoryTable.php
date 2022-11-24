@@ -248,7 +248,7 @@ class MemoryTable implements IHandler
         $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hMget($this->key . ':binder', $flags));
         foreach ($result as $k                             => $v)
         {
-            $result[$k] = [$v];
+            $result[$k] = (array) $v;
         }
 
         return $result;

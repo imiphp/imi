@@ -81,7 +81,7 @@ class TableGenerate extends BaseCommand
             }
             else
             {
-                if (1 == $query->tableRaw('information_schema.TABLES')
+                if ((bool) $query->tableRaw('information_schema.TABLES')
                 ->where('TABLE_SCHEMA', '=', $database)
                 ->where('TABLE_NAME', '=', $table)
                 ->fieldRaw('1')

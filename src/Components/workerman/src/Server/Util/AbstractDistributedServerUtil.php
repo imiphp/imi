@@ -29,7 +29,7 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
             {
                 return 0;
             }
-            $clientIds = [$clientId];
+            $clientIds = (array) $clientId;
 
             return $this->sendRaw($data, $clientIds, $serverName);
         }

@@ -49,7 +49,7 @@ abstract class BaseConsumer implements IConsumer
         {
             $this->channel->getConnection()->checkHeartBeat();
             $this->channel->wait(null, true);
-            if ($messageCount == $this->messageCount)
+            if ($messageCount === $this->messageCount)
             {
                 usleep(10000);
             }

@@ -120,7 +120,7 @@ class LocalServerUtil implements IWorkermanServerUtil
             {
                 return 0;
             }
-            $clientIds = [$clientId];
+            $clientIds = (array) $clientId;
 
             return $this->sendRaw($data, $clientIds, $serverName, false);
         }

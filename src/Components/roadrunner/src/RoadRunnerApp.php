@@ -118,7 +118,7 @@ class RoadRunnerApp extends BaseApp
     private function onScanApp(): void
     {
         $config = Config::get('@app.roadRunnerServer.main', []);
-        $namespaces = [$config['namespace'] ?? $this->namespace];
+        $namespaces = (array) ($config['namespace'] ?? $this->namespace);
         Annotation::getInstance()->initByNamespace($namespaces);
     }
 }

@@ -167,7 +167,7 @@ class AnnotationParser
                 /** @var Inherit $annotation */
                 if (\is_string($annotation->annotation))
                 {
-                    $inheritAnnotationClasses = [$annotation->annotation];
+                    $inheritAnnotationClasses = (array) $annotation->annotation;
                 }
                 else
                 {
@@ -261,7 +261,7 @@ class AnnotationParser
                 }
                 if (\is_string($annotation->annotation))
                 {
-                    $inheritAnnotationClasses = [$annotation->annotation];
+                    $inheritAnnotationClasses = (array) $annotation->annotation;
                 }
                 else
                 {
@@ -356,7 +356,7 @@ class AnnotationParser
                 }
                 if (\is_string($annotation->annotation))
                 {
-                    $inheritAnnotationClasses = [$annotation->annotation];
+                    $inheritAnnotationClasses = (array) $annotation->annotation;
                 }
                 else
                 {
@@ -452,7 +452,7 @@ class AnnotationParser
                 /** @var Inherit $annotation */
                 if (\is_string($annotation->annotation))
                 {
-                    $inheritAnnotationClasses = [$annotation->annotation];
+                    $inheritAnnotationClasses = (array) $annotation->annotation;
                 }
                 else
                 {
@@ -537,7 +537,7 @@ class AnnotationParser
                 /** @var Inherit $annotation */
                 if (\is_string($annotation->annotation))
                 {
-                    $inheritAnnotationClasses = [$annotation->annotation];
+                    $inheritAnnotationClasses = (array) $annotation->annotation;
                 }
                 else
                 {

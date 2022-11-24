@@ -91,7 +91,7 @@ class Redis extends BaseLock
      */
     protected function __tryLock(): bool
     {
-        return ImiRedis::use(fn (RedisHandler $redis): bool => 1 == $redis->evalEx(<<<'SCRIPT'
+        return ImiRedis::use(fn (RedisHandler $redis): bool => (bool) $redis->evalEx(<<<'SCRIPT'
         local key     = KEYS[1]
         local content = ARGV[1]
         local ttl     = ARGV[3]

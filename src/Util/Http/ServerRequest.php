@@ -296,7 +296,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             }
             else
             {
-                $contentType = strtolower(preg_split('/[;\s]/S', $contentType, 2)[0] ?? '');
+                $contentType = strtolower(trim(explode(';', $contentType, 2)[0]));
                 // post
                 if ('POST' === $this->getMethod() && \in_array($contentType, [
                     MediaType::APPLICATION_FORM_URLENCODED,
@@ -306,7 +306,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                     $this->post = $parsedBody = $this->post();
                 }
                 // json
-                elseif (MediaType::APPLICATION_JSON == $contentType)
+                elseif (MediaType::APPLICATION_JSON === $contentType)
                 {
                     $content = $this->body->getContents();
                     if ('' !== $content)

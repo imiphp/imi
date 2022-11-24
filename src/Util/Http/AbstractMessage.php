@@ -250,7 +250,7 @@ abstract class AbstractMessage implements IMessage
 
         if (\is_string($value))
         {
-            $value = [$value];
+            $value = (array) $value;
         }
         elseif (!\is_array($value))
         {
@@ -381,7 +381,7 @@ abstract class AbstractMessage implements IMessage
             }
             if (\is_string($value))
             {
-                $objectHeaders[$name] = [$value];
+                $objectHeaders[$name] = (array) $value;
             }
             elseif (\is_array($value))
             {

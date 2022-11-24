@@ -35,7 +35,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             /** @var AmqpServerUtil $amqpServerUtil */
             $amqpServerUtil = $this->amqpServerUtil = RequestContext::getServerBean('AmqpServerUtil');
-            $this->exchanges = [$exchangeAnnotation = new Exchange($amqpServerUtil->getExchangeConfig())];
+            $this->exchanges = (array) ($exchangeAnnotation = new Exchange($amqpServerUtil->getExchangeConfig()));
             $queueConfig = $amqpServerUtil->getQueueConfig();
             $queueName = ($queueConfig['name'] .= Worker::getWorkerId());
             $this->queues = [new Queue($queueConfig)];
@@ -43,7 +43,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $consumerAnnotation->queue = $queueName;
             $consumerAnnotation->exchange = $exchangeAnnotation->name;
             $consumerAnnotation->routingKey = 'all';
-            $this->consumers = [$consumerAnnotation];
+            $this->consumers = (array) $consumerAnnotation;
             $this->poolName = $amqpServerUtil->getAmqpName() ?? AMQPPool::getDefaultPoolName();
         }
 

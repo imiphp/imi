@@ -117,7 +117,7 @@ class RedisStreamQueueDriver implements IQueueDriver
         $result = $redis->xadd($this->getQueueKey(), Text::isEmpty($messageId) ? '*' : $messageId, $fields, $this->maxLength, $this->approximate);
         if (false === $result)
         {
-            if ('' == ($error = $redis->getLastError()))
+            if ('' === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue push failed');
             }
@@ -141,7 +141,7 @@ class RedisStreamQueueDriver implements IQueueDriver
         $result = $redis->xreadgroup($this->groupId, $this->queueConsumer, [$queueKey => '>'], 1, $timeout > 0 ? (int) ($timeout * 1000) : null);
         if (false === $result)
         {
-            if ('' == ($error = $redis->getLastError()))
+            if ('' === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue pop failed');
             }
@@ -173,7 +173,7 @@ class RedisStreamQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' == ($error = $redis->getLastError()))
+            if ('' === ($error = $redis->getLastError()))
             {
                 return false;
             }
@@ -206,7 +206,7 @@ class RedisStreamQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' == ($error = $redis->getLastError()))
+            if ('' === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue success failed');
             }
@@ -245,7 +245,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             ]);
             if (false === $result)
             {
-                if ('' == ($error = $redis->getLastError()))
+                if ('' === ($error = $redis->getLastError()))
                 {
                     throw new QueueException('Queue success failed');
                 }
@@ -270,7 +270,7 @@ class RedisStreamQueueDriver implements IQueueDriver
         $info = $redis->xinfo('STREAM', $queueKey, 'FULL', 1);
         if (false === $info)
         {
-            if ('' == ($error = $redis->getLastError()))
+            if ('' === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue success failed');
             }
@@ -331,7 +331,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             $xreadgroupResult = $redis->xreadgroup($groupId, $failConsumer, [$queueKey => $start], 100);
             if (false === $xreadgroupResult)
             {
-                if ('' == ($error = $redis->getLastError()))
+                if ('' === ($error = $redis->getLastError()))
                 {
                     throw new QueueException('Queue pop failed');
                 }
@@ -387,7 +387,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             $xpendingResult = $redis->xpending($queueKey, $groupId, $start, '+', 100, $queueConsumer);
             if (false === $xpendingResult)
             {
-                if ('' == ($error = $redis->getLastError()))
+                if ('' === ($error = $redis->getLastError()))
                 {
                     throw new QueueException('Queue pop failed');
                 }
@@ -412,7 +412,7 @@ class RedisStreamQueueDriver implements IQueueDriver
                 $xrangeResult = $redis->xrange($queueKey, $id, $id, 1);
                 if (false === $xrangeResult)
                 {
-                    if ('' == ($error = $redis->getLastError()))
+                    if ('' === ($error = $redis->getLastError()))
                     {
                         throw new QueueException('Queue pop failed');
                     }

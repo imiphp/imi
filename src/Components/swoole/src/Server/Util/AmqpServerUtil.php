@@ -169,7 +169,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {
                 $method = 'push';
-                $pushParams = [$server->getNonControlFrameType()];
+                $pushParams = (array) $server->getNonControlFrameType();
             }
             else
             {
@@ -218,7 +218,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {
                 $method = 'push';
-                $pushParams = [$server->getNonControlFrameType()];
+                $pushParams = (array) $server->getNonControlFrameType();
             }
             else
             {

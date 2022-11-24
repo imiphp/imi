@@ -129,9 +129,7 @@ class HttpRoute
      */
     public function clearRules(): void
     {
-        $router = $this->router;
-        $router->setDynamicRoutes([]);
-        $router->setStaticRoutes([]);
+        $this->router->setDynamicRoutes([])->setStaticRoutes([]);
     }
 
     /**
@@ -196,12 +194,8 @@ class HttpRoute
         {
             return true;
         }
-        if (!\is_array($domain))
-        {
-            $domain = [$domain];
-        }
         $uriDomain = Uri::getDomain($request->getUri());
-        foreach ($domain as $rule)
+        foreach ((array) $domain as $rule)
         {
             if (self::isStaticPath($rule))
             {

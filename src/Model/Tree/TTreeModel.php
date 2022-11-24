@@ -68,17 +68,16 @@ trait TTreeModel
         $idField = self::__getIdField();
         if (\is_array($parentId))
         {
-            $ids = $parentId;
-            if (!$ids)
+            $idsList = $parentId;
+            if (!$idsList)
             {
                 return [];
             }
         }
         else
         {
-            $ids = [$parentId ?? $this[$idField]];
+            $idsList = (array) ($parentId ?? $this[$idField]);
         }
-        $idsList = [$ids];
         if ($includeParentId)
         {
             $idsList2 = $idsList;
