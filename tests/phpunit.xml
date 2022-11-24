@@ -28,6 +28,7 @@
             <file>unit/Component/Tests/RedisModelTest.php</file>
             <file>unit/Component/Tests/RedisModelHashTest.php</file>
             <file>unit/Component/Tests/RedisModelHashObjectTest.php</file>
+            <file>unit/Component/Tests/TreeModelTest.php</file>
         </testsuite>
         <testsuite name="util">
             <directory>unit/Component/Tests/Util</directory>

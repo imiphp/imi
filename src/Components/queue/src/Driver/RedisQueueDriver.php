@@ -142,7 +142,7 @@ class RedisQueueDriver implements IQueueDriver
         }
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue push failed');
             }
@@ -221,7 +221,7 @@ class RedisQueueDriver implements IQueueDriver
             }
             if (false === $result)
             {
-                if ('' === ($error = $redis->getLastError()))
+                if (null === ($error = $redis->getLastError()))
                 {
                     throw new QueueException('Queue pop failed');
                 }
@@ -266,7 +266,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 return false;
             }
@@ -323,7 +323,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue success failed');
             }
@@ -369,7 +369,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue success failed');
             }
@@ -429,7 +429,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue restoreFailMessages failed');
             }
@@ -462,7 +462,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue restoreTimeoutMessages failed');
             }
@@ -504,7 +504,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue parseDelayMessages failed');
             }
@@ -546,7 +546,7 @@ class RedisQueueDriver implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue parseTimeoutMessages failed');
             }

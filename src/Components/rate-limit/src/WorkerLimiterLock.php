@@ -62,7 +62,7 @@ abstract class WorkerLimiterLock
             end
             return id
             SCRIPT, $args, $numKeys);
-            if (!$result && '' !== ($error = $redis->getLastError()))
+            if (!$result && null !== ($error = $redis->getLastError()))
             {
                 throw new \RuntimeException($error);
             }
@@ -96,7 +96,7 @@ abstract class WorkerLimiterLock
             end
             return false
             SCRIPT, $args, $numKeys);
-            if (!$result && '' !== ($error = $redis->getLastError()))
+            if (!$result && null !== ($error = $redis->getLastError()))
             {
                 throw new \RuntimeException($error);
             }

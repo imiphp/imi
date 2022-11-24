@@ -629,7 +629,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
 
         if (false === $result)
         {
-            if ('' === ($error = $redis->getLastError()))
+            if (null === ($error = $redis->getLastError()))
             {
                 throw new QueueException('Queue parseTimeoutMessages failed');
             }
