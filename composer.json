@@ -68,7 +68,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "yurunsoft/ide-helper": true
-        }
+        },
+        "platform-check": false
     },
     "bin": [
         "src/Cli/bin/imi-cli"

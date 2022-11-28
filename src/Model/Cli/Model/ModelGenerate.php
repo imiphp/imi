@@ -406,6 +406,21 @@ class ModelGenerate extends BaseCommand
         return ob_get_clean();
     }
 
+    public const DB_FIELD_TYPE_MAP = [
+        'int'       => ['int|null', '?int', '(int)'],
+        'smallint'  => ['int|null', '?int', '(int)'],
+        'tinyint'   => ['int|null', '?int', '(int)'],
+        'mediumint' => ['int|null', '?int', '(int)'],
+        'bigint'    => ['int|null', '?int', '(int)'],
+        'bit'       => ['bool|null', '?bool', '(bool)'],
+        'year'      => ['int|null', '?int', '(int)'],
+        'double'    => ['float|null', '?float', '(float)'],
+        'float'     => ['float|null', '?float', '(float)'],
+        'decimal'   => ['string|float|int|null', \PHP_VERSION_ID >= 80000 ? 'string|float|int|null' : '', ''],
+        'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', '', ''],
+        'set'       => ['array|null', '?array', ''],
+    ];
+
     /**
      * 数据库字段类型转PHP的字段类型.
      *
@@ -413,27 +428,7 @@ class ModelGenerate extends BaseCommand
      */
     private function dbFieldTypeToPhp(string $type): array
     {
-        $firstType = explode(' ', $type)[0];
-        static $map = null;
-        if (!$map)
-        {
-            $map = [
-                'int'       => ['int|null', '?int', '(int)'],
-                'smallint'  => ['int|null', '?int', '(int)'],
-                'tinyint'   => ['int|null', '?int', '(int)'],
-                'mediumint' => ['int|null', '?int', '(int)'],
-                'bigint'    => ['int|null', '?int', '(int)'],
-                'bit'       => ['bool|null', '?bool', '(bool)'],
-                'year'      => ['int|null', '?int', '(int)'],
-                'double'    => ['float|null', '?float', '(float)'],
-                'float'     => ['float|null', '?float', '(float)'],
-                'decimal'   => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : '', ''],
-                'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', '', ''],
-                'set'       => ['array|null', '?array', ''],
-            ];
-        }
-
-        return $map[$firstType] ?? ['string|null', '?string', '(string)'];
+        return self::DB_FIELD_TYPE_MAP[explode(' ', $type)[0]] ?? ['string|null', '?string', '(string)'];
     }
 
     /**

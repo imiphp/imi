@@ -302,10 +302,6 @@ class ModelGenerate extends BaseCommand
 
             $isPk = $field['ordinal_position'] > 0;
             [$phpType, $phpDefinitionType] = $this->dbFieldTypeToPhp($field);
-            if (!empty($phpDefinitionType))
-            {
-                $phpDefinitionType = '?' . $phpDefinitionType;
-            }
             $data['fields'][] = [
                 'name'              => $field['attname'],
                 'varName'           => Text::toCamelName($field['attname']),
@@ -346,6 +342,30 @@ class ModelGenerate extends BaseCommand
         return ob_get_clean();
     }
 
+    public const DB_FIELD_TYPE_MAP = [
+        'int'         => ['int', '?int'],
+        'int2'        => ['int', '?int'],
+        'int4'        => ['int', '?int'],
+        'int8'        => ['int', '?int'],
+        'integer'     => ['int', '?int'],
+        'smallint'    => ['int', '?int'],
+        'bigint'      => ['int', '?int'],
+        'smallserial' => ['int', '?int'],
+        'serial'      => ['int', '?int'],
+        'bigserial'   => ['int', '?int'],
+        'serial2'     => ['int', '?int'],
+        'serial4'     => ['int', '?int'],
+        'serial8'     => ['int', '?int'],
+        'bool'        => ['bool', '?bool'],
+        'boolean'     => ['bool', '?bool'],
+        'double'      => ['float', '?float'],
+        'float4'      => ['float', '?float'],
+        'float8'      => ['float', '?float'],
+        'numeric'     => ['string|float|int', \PHP_VERSION_ID >= 80000 ? 'string|float|int|null' : '', ''],
+        'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
+        'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
+    ];
+
     /**
      * 数据库字段类型转PHP的字段类型.
      *
@@ -362,35 +382,12 @@ class ModelGenerate extends BaseCommand
         {
             $type = $field['typname'];
         }
-        static $map = [
-            'int'         => ['int', 'int'],
-            'int2'        => ['int', 'int'],
-            'int4'        => ['int', 'int'],
-            'int8'        => ['int', 'int'],
-            'integer'     => ['int', 'int'],
-            'smallint'    => ['int', 'int'],
-            'bigint'      => ['int', 'int'],
-            'smallserial' => ['int', 'int'],
-            'serial'      => ['int', 'int'],
-            'bigserial'   => ['int', 'int'],
-            'serial2'     => ['int', 'int'],
-            'serial4'     => ['int', 'int'],
-            'serial8'     => ['int', 'int'],
-            'bool'        => ['bool', 'bool'],
-            'boolean'     => ['bool', 'bool'],
-            'double'      => ['float', 'float'],
-            'float4'      => ['float', 'float'],
-            'float8'      => ['float', 'float'],
-            'numeric'     => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : '', ''],
-            'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
-            'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
-        ];
 
-        $result = $map[$type] ?? ['string', 'string'];
+        $result = self::DB_FIELD_TYPE_MAP[$type] ?? ['string', '?string'];
         if ($isArray)
         {
-            $result[0] .= '[]';
-            $result[1] = 'array';
+            $result[0] .= 'array';
+            $result[1] = '?array';
         }
 
         return $result;

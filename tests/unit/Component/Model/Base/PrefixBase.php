@@ -14,7 +14,7 @@ use Imi\Model\Model;
 /**
  * prefix 基类.
  *
- * @Entity(camel=true, bean=true)
+ * @Entity(camel=true, bean=true, incrUpdate=false)
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Prefix.name", default="prefix"), usePrefix=true, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Prefix.poolName", default="dbPrefix"))
  * @DDL(sql="CREATE TABLE `tb_prefix` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   `delete_time` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1", decode="")
  *

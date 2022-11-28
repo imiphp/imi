@@ -17,9 +17,9 @@ use Imi\Pgsql\Model\PgModel as Model;
  *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\VirtualColumn.name", default="tb_virtual_column"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\VirtualColumn.poolName"))
  *
- * @property int|null    $id
- * @property int|null    $amount
- * @property string|null $virtualAmount
+ * @property int|null              $id
+ * @property int|null              $amount
+ * @property string|float|int|null $virtualAmount
  */
 abstract class VirtualColumnBase extends Model
 {
@@ -95,16 +95,19 @@ abstract class VirtualColumnBase extends Model
 
     /**
      * virtual_amount.
-
      *
      * @Column(name="virtual_amount", type="numeric", length=10, accuracy=2, nullable=false, default="((amount)::numeric / (100)::numeric)", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=true)
+     *
+     * @var string|float|int|null
      */
-    protected ?string $virtualAmount = null;
+    protected $virtualAmount = null;
 
     /**
      * 获取 virtualAmount.
+     *
+     * @return string|float|int|null
      */
-    public function getVirtualAmount(): ?string
+    public function getVirtualAmount()
     {
         return $this->virtualAmount;
     }
@@ -112,11 +115,11 @@ abstract class VirtualColumnBase extends Model
     /**
      * 赋值 virtualAmount.
      *
-     * @param string|null $virtualAmount virtual_amount
+     * @param string|float|int|null $virtualAmount virtual_amount
      *
      * @return static
      */
-    public function setVirtualAmount(?string $virtualAmount)
+    public function setVirtualAmount($virtualAmount)
     {
         $this->virtualAmount = $virtualAmount;
 
