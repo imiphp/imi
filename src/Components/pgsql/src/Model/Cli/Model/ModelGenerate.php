@@ -381,6 +381,7 @@ class ModelGenerate extends BaseCommand
             'double'      => ['float', 'float'],
             'float4'      => ['float', 'float'],
             'float8'      => ['float', 'float'],
+            'numeric'     => ['string|float|int|null', version_compare(\PHP_VERSION, '8.0', '>=') ? 'string|float|int|null' : '', ''],
             'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
             'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
         ];
