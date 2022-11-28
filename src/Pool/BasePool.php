@@ -63,17 +63,24 @@ abstract class BasePool implements IPool
         {
             $this->config = $config;
         }
-        if (!\is_array($resourceConfig) || ArrayUtil::isAssoc($resourceConfig))
+        if ($resourceConfig)
         {
-            $this->resourceConfig = [$resourceConfig];
+            if (!\is_array($resourceConfig) || ArrayUtil::isAssoc($resourceConfig))
+            {
+                $this->resourceConfig = [$resourceConfig];
+            }
+            else
+            {
+                $this->resourceConfig = $resourceConfig;
+            }
+            if (ResourceConfigMode::ROUND_ROBIN === $config->getResourceConfigMode())
+            {
+                $this->configIndex = random_int(0, \count($this->resourceConfig) - 1);
+            }
         }
         else
         {
-            $this->resourceConfig = $resourceConfig;
-        }
-        if (ResourceConfigMode::ROUND_ROBIN === $config->getResourceConfigMode())
-        {
-            $this->configIndex = random_int(0, \count($this->resourceConfig) - 1);
+            $this->resourceConfig = [];
         }
     }
 
@@ -215,9 +222,12 @@ abstract class BasePool implements IPool
      */
     public function fillMinResources(): void
     {
-        while ($this->getCount() < $this->config->getMinResources())
+        if ($this->resourceConfig)
         {
-            $this->addResource();
+            while ($this->getCount() < $this->config->getMinResources())
+            {
+                $this->addResource();
+            }
         }
     }
 
