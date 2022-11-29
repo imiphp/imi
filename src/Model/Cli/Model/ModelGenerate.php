@@ -454,7 +454,7 @@ class ModelGenerate extends BaseCommand
             case 'year':
                 return (int) $default;
             case 'bit':
-                return (bool) $default;
+                return (bool) str_replace(['b', '\''], '', $default);
             case 'double':
             case 'float':
                 return (float) $default;
