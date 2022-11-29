@@ -229,6 +229,7 @@
 ## 微服务
 
 * [配置中心](components/config/center.md)
+  * [通过配置中心配置连接池](components/config/pool.md)
 * [服务注册](components/serviceRegistry/index.md)
 * [服务发现（负载均衡）](components/serviceDiscovery/index.md)
 * [调用链路追踪](components/tracing/index.md)
