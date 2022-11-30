@@ -77,7 +77,7 @@ imi v2 使用 2.0 版本
 简单生成：
 
 ```php
-use \Imi\JWT\Facade\JWT;
+use Imi\JWT\Facade\JWT;
 // 你需要往token里丢的数据
 $data = [
     'memberId'  =>  19260817,
@@ -89,7 +89,7 @@ $tokenContent = $token->toString(); // Token 字符串
 指定名称：
 
 ```php
-use \Imi\JWT\Facade\JWT;
+use Imi\JWT\Facade\JWT;
 // 你需要往token里丢的数据
 $data = [
     'memberId'  =>  19260817,
@@ -101,7 +101,7 @@ $tokenContent = $token->toString(); // Token 字符串
 自定义处理：
 
 ```php
-use \Imi\JWT\Facade\JWT;
+use Imi\JWT\Facade\JWT;
 // 你需要往token里丢的数据
 $data = [
     'memberId'  =>  19260817,
