@@ -163,24 +163,7 @@ class Redis implements IGroupHandler
      */
     private function ping(RedisHandler $redis): bool
     {
-        $key = $this->getPingKey();
-        $redis->multi();
-        $redis->set($key, '');
-        $redis->expire($key, $this->heartbeatTtl);
-        $result = $redis->exec();
-        if (!$result)
-        {
-            return false;
-        }
-        foreach ($result as $value)
-        {
-            if (!$value)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return (bool) $redis->set($this->getPingKey(), '', $this->heartbeatTtl);
     }
 
     public function __destruct()
@@ -221,10 +204,12 @@ class Redis implements IGroupHandler
      */
     public function closeGroup(string $groupName): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($groupName) {
-            $key = $this->getGroupNameKey($groupName);
+        $key = $this->getGroupNameKey($groupName);
+        $this->useRedis(function (RedisHandler $redis) use ($key, $groupName) {
+            $redis->multi();
             $redis->del($key);
             $redis->srem($this->getGroupsKey(), $groupName);
+            $redis->exec();
         });
     }
 
@@ -233,11 +218,9 @@ class Redis implements IGroupHandler
      */
     public function joinGroup(string $groupName, $clientId): bool
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $clientId): bool {
-            $key = $this->getGroupNameKey($groupName);
+        $key = $this->getGroupNameKey($groupName);
 
-            return $redis->sAdd($key, $clientId) > 0;
-        });
+        return $this->useRedis(static fn (RedisHandler $redis): bool => $redis->sAdd($key, $clientId) > 0);
     }
 
     /**
@@ -245,11 +228,9 @@ class Redis implements IGroupHandler
      */
     public function leaveGroup(string $groupName, $clientId): bool
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $clientId): bool {
-            $key = $this->getGroupNameKey($groupName);
+        $key = $this->getGroupNameKey($groupName);
 
-            return $redis->srem($key, $clientId) > 0;
-        });
+        return $this->useRedis(static fn (RedisHandler $redis): bool => $redis->srem($key, $clientId) > 0);
     }
 
     /**
@@ -257,11 +238,9 @@ class Redis implements IGroupHandler
      */
     public function isInGroup(string $groupName, $clientId): bool
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $clientId): bool {
-            $key = $this->getGroupNameKey($groupName);
+        $key = $this->getGroupNameKey($groupName);
 
-            return $redis->sismember($key, $clientId);
-        });
+        return $this->useRedis(static fn (RedisHandler $redis): bool => $redis->sismember($key, $clientId));
     }
 
     /**
@@ -271,8 +250,8 @@ class Redis implements IGroupHandler
     {
         $groups = $this->groups;
 
-        $result = $this->useRedis(function (RedisHandler $redis) use ($groupName, $groups): array {
-            $key = $this->getGroupNameKey($groupName);
+        $key = $this->getGroupNameKey($groupName);
+        $result = $this->useRedis(static function (RedisHandler $redis) use ($key, $groupName, $groups): array {
             if ($groups[$groupName]['maxClient'] > 0)
             {
                 return $redis->sRandMember($key, $groups[$groupName]['maxClient']);
@@ -304,11 +283,9 @@ class Redis implements IGroupHandler
      */
     public function count(string $groupName): int
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName): int {
-            $key = $this->getGroupNameKey($groupName);
+        $key = $this->getGroupNameKey($groupName);
 
-            return $redis->scard($key);
-        });
+        return $this->useRedis(static fn (RedisHandler $redis): int => $redis->scard($key));
     }
 
     /**

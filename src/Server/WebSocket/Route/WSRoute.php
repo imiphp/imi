@@ -11,6 +11,7 @@ use Imi\Log\Log;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Http\Route\Router;
+use Imi\Server\Server;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute as WSRouteAnnotation;
 use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\Http\ServerRequest;
@@ -50,7 +51,7 @@ class WSRoute implements IRoute
             // http 路由匹配
             if (
                 $this->checkCondition($data, $itemAnnotation)
-                && (!$itemAnnotation->route || Router::FOUND === ($router->dispatchRoutes($request ??= (new ServerRequest())->setUri(new Uri(ConnectionContext::get('uri'))), [[$itemAnnotation->route, null, null, true, [], false, []]], true)[0] ?? null)))
+                && (!$itemAnnotation->route || Router::FOUND === ($router->dispatchRoutes($request ??= (new ServerRequest())->setUri(new Uri($this->getConnectionContextUri())), [[$itemAnnotation->route, null, null, true, [], false, []]], true)[0] ?? null)))
             {
                 return new RouteResult($item);
             }
@@ -169,5 +170,17 @@ class WSRoute implements IRoute
             $logString = sprintf('WebSocket Route "%s" duplicated', $route);
         }
         Log::warning($logString);
+    }
+
+    private function getConnectionContextUri(): string
+    {
+        $uri = ConnectionContext::get('uri');
+        if (null === $uri)
+        {
+            Server::close(ConnectionContext::getClientId());
+            throw new \InvalidArgumentException('Handshake uri not found');
+        }
+
+        return $uri;
     }
 }

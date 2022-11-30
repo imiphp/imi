@@ -65,8 +65,7 @@ class MemoryTable implements IHandler
         {
             $this->useRedis(function (RedisHandler $redis) {
                 $key = $this->key;
-                $redis->del($key);
-                $keys = [];
+                $keys = [$key];
                 $count = 0;
                 foreach ($redis->scanEach($key . ':*') as $key)
                 {

@@ -103,26 +103,27 @@ class Redis implements IHandler
         }
         if ($redis->setnx($this->key . ':master_pid', $this->masterPID))
         {
-            // 清空存储列表
-            $redis->del($this->getStoreKey());
-        }
-        $key = $this->key . ':binder';
-        $redis->del($key);
-        $keys = [];
-        $count = 0;
-        foreach ($redis->scanEach($key . ':*') as $key)
-        {
-            $keys[] = $key;
-            if (++$count >= 1000)
+            $key = $this->key . ':binder';
+            $keys = [
+                // 清空存储列表
+                $this->getStoreKey(),
+                $key,
+            ];
+            $count = 0;
+            foreach ($redis->scanEach($key . ':*') as $key)
+            {
+                $keys[] = $key;
+                if (++$count >= 1000)
+                {
+                    $redis->del($keys);
+                    $keys = [];
+                    $count = 0;
+                }
+            }
+            if ($keys)
             {
                 $redis->del($keys);
-                $keys = [];
-                $count = 0;
             }
-        }
-        if ($keys)
-        {
-            $redis->del($keys);
         }
     }
 
@@ -168,24 +169,7 @@ class Redis implements IHandler
      */
     private function ping(RedisHandler $redis): bool
     {
-        $key = $this->getPingKey();
-        $redis->multi();
-        $redis->set($key, '');
-        $redis->expire($key, $this->heartbeatTtl);
-        $result = $redis->exec();
-        if (!$result)
-        {
-            return false;
-        }
-        foreach ($result as $value)
-        {
-            if (!$value)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return (bool) $redis->set($this->getPingKey(), '', $this->heartbeatTtl);
     }
 
     public function __destruct()
@@ -226,11 +210,11 @@ class Redis implements IHandler
      */
     public function save(string $key, array $data): void
     {
+        if ($this->dataEncode)
+        {
+            $data = ($this->dataEncode)($data);
+        }
         $this->useRedis(function (RedisHandler $redis) use ($key, $data) {
-            if ($this->dataEncode)
-            {
-                $data = ($this->dataEncode)($data);
-            }
             $redis->hSet($this->getStoreKey(), $key, $data);
         });
     }
