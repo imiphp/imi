@@ -69,9 +69,11 @@ class ProtobufUtil
     /**
      * 获取 Grpc Message 对象本身代表的值
      *
+     * @param Message|\Traversable $message
+     *
      * @return mixed
      */
-    public static function getMessageValue(Message $message, array $options = [])
+    public static function getMessageValue($message, array $options = [])
     {
         if ($message instanceof \Google\Protobuf\Any)
         {
@@ -157,20 +159,35 @@ class ProtobufUtil
         {
             return GPBUtil::formatTimestamp($message);
         }
-        /** @var DescriptorPool $pool */
-        $pool = DescriptorPool::getGeneratedPool();
-        /** @var Descriptor $desc */
-        $desc = $pool->getDescriptorByClassName(\get_class($message));
-        $result = [];
-        /** @var FieldDescriptor $field */
-        foreach ($desc->getField() as $field)
+        if ($message instanceof \Traversable)
         {
-            $methodName = $field->getGetter();
-            $value = $message->{$methodName}();
-            $result[$field->getJsonName()] = self::parseFieldValue($field, $value, $options);
+            $result = [];
+            foreach ($message as $key => $value)
+            {
+                $result[$key] = self::getMessageValue($value, $options);
+            }
+
+            return $result;
+        }
+        if ($message instanceof Message)
+        {
+            /** @var DescriptorPool $pool */
+            $pool = DescriptorPool::getGeneratedPool();
+            /** @var Descriptor $desc */
+            $desc = $pool->getDescriptorByClassName(\get_class($message));
+            $result = [];
+            /** @var FieldDescriptor $field */
+            foreach ($desc->getField() as $field)
+            {
+                $methodName = $field->getGetter();
+                $value = $message->{$methodName}();
+                $result[$field->getJsonName()] = self::parseFieldValue($field, $value, $options);
+            }
+
+            return $result;
         }
 
-        return $result;
+        return $message;
     }
 
     /**

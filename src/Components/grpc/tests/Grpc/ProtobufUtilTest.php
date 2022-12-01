@@ -91,6 +91,16 @@ class ProtobufUtilTest extends BaseTest
         $this->assertEquals($data, ProtobufUtil::GetMessageValue($message, [
             'enumReturnType' => 'name',
         ]));
+        $this->assertEquals([
+            11 => 'aa',
+            22 => 'bb',
+        ], ProtobufUtil::GetMessageValue($message->getMap()));
+        $this->assertEquals([
+            'a' => ['phone' => '1', 'password' => '11'],
+            'b' => ['phone' => '2', 'password' => '22'],
+        ], ProtobufUtil::GetMessageValue($message->getMap2()));
+        $a = new \stdClass();
+        $this->assertEquals($a, ProtobufUtil::GetMessageValue($a));
     }
 
     public function testNewMessage(): void
