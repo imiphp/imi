@@ -69,7 +69,7 @@ class ProtobufUtil
     /**
      * 获取 Grpc Message 对象本身代表的值
      *
-     * @param Message|\Traversable $message
+     * @param Message|\Traversable|mixed $message
      *
      * @return mixed
      */
