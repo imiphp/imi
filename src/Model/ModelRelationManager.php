@@ -14,6 +14,7 @@ use Imi\Model\Annotation\Relation\PolymorphicOneToMany;
 use Imi\Model\Annotation\Relation\PolymorphicOneToOne;
 use Imi\Model\Annotation\Relation\PolymorphicToMany;
 use Imi\Model\Annotation\Relation\PolymorphicToOne;
+use Imi\Model\Annotation\Relation\Relation;
 use Imi\Model\Annotation\Relation\RelationBase;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Relation\Delete;
@@ -485,6 +486,10 @@ class ModelRelationManager
                             }
                         }
                     }
+                }
+                elseif ($annotation instanceof Relation)
+                {
+                    Query::parseListByRelation($models, $propertyName, $annotation);
                 }
             }
         }
