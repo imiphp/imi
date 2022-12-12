@@ -94,7 +94,7 @@ public static function __deleteRelation(self $model, \Imi\Model\Annotation\Relat
 在类中定义方法：
 
 ```php
-// 一定要声明为 public 而非 static
+// 一定要声明为 public static
 // 方法名规则：__query + 首字母大写的属性名
 // 需要注意：第一个参数是模型对象属性，与上面其它操作不同
 /**
