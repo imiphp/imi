@@ -1044,7 +1044,7 @@ class Query
     /**
      * 处理模型列表自定义关联.
      *
-     * @var Model[]
+     * @param Model[] $models
      */
     public static function parseListByRelation(array $models, string $propertyName, \Imi\Model\Annotation\Relation\Relation $annotation): void
     {
