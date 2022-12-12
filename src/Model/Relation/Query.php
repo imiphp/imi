@@ -23,7 +23,7 @@ use Imi\Util\Imi;
 
 class Query
 {
-    private static $methodCacheMap = [];
+    private static array $methodCacheMap = [];
 
     private function __construct()
     {

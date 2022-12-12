@@ -19,7 +19,7 @@ use Imi\Util\Imi;
 
 class Delete
 {
-    private static $methodCacheMap = [];
+    private static array $methodCacheMap = [];
 
     private function __construct()
     {

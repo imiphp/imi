@@ -21,7 +21,7 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 class Update
 {
-    private static $methodCacheMap = [];
+    private static array $methodCacheMap = [];
 
     private function __construct()
     {
