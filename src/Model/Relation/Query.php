@@ -23,6 +23,8 @@ use Imi\Util\Imi;
 
 class Query
 {
+    private static array $methodCacheMap = [];
+
     private function __construct()
     {
     }
@@ -90,6 +92,10 @@ class Query
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
         {
             static::initByManyToMany($model, $propertyName, $firstAnnotation, $refData);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\Relation)
+        {
+            static::parseByRelation($model, $propertyName, $firstAnnotation, $refData);
         }
     }
 
@@ -1014,5 +1020,37 @@ class Query
             }
             $manyList->append($modelClass::createFromRecord($tmpRow));
         }
+    }
+
+    /**
+     * 处理自定义关联.
+     */
+    public static function parseByRelation(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\Relation $annotation, ?array &$refData = null): void
+    {
+        if (null === $refData)
+        {
+            $className = $model->__getMeta()->getClassName();
+            $method = (self::$methodCacheMap[$className][$propertyName] ??= ('__query' . ucfirst($propertyName)));
+            $model::{$method}([$model], $annotation);
+        }
+        else
+        {
+            $refData[$propertyName] = [
+                'annotation' => $annotation,
+            ];
+        }
+    }
+
+    /**
+     * 处理模型列表自定义关联.
+     *
+     * @param Model[] $models
+     */
+    public static function parseListByRelation(array $models, string $propertyName, \Imi\Model\Annotation\Relation\Relation $annotation): void
+    {
+        $model = $models[0];
+        $className = $model->__getMeta()->getClassName();
+        $method = (self::$methodCacheMap[$className][$propertyName] ??= ('__query' . ucfirst($propertyName)));
+        $className::{$method}($models, $annotation);
     }
 }

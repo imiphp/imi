@@ -19,6 +19,8 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 class Insert
 {
+    private static array $methodCacheMap = [];
+
     private function __construct()
     {
     }
@@ -93,6 +95,10 @@ class Insert
         elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
         {
             static::parseByManyToMany($model, $propertyName, $firstAnnotation);
+        }
+        elseif ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\Relation)
+        {
+            static::parseByRelation($model, $propertyName, $firstAnnotation);
         }
     }
 
@@ -350,5 +356,15 @@ class Insert
             'annotation'   => $annotation,
             'struct'       => $struct,
         ]);
+    }
+
+    /**
+     * 处理自定义关联.
+     */
+    public static function parseByRelation(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\Relation $annotation): void
+    {
+        $className = $model->__getMeta()->getClassName();
+        $method = (self::$methodCacheMap[$className][$propertyName] ??= ('__insert' . ucfirst($propertyName)));
+        $className::{$method}($model, $annotation);
     }
 }

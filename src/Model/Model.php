@@ -76,9 +76,9 @@ abstract class Model extends BaseModel
             ], $this, \Imi\Model\Event\Param\InitEventParam::class);
         }
 
-        $this->__originData = $data;
         if ($data)
         {
+            $this->__originData = $data;
             $fieldAnnotations = $meta->getFields();
             $dbFieldAnnotations = $meta->getDbFields();
             foreach ($data as $k => $v)
@@ -715,10 +715,9 @@ abstract class Model extends BaseModel
      */
     public static function queryRelationsList(iterable $list, string ...$names): iterable
     {
-        ModelRelationManager::initModels($list, $names);
-
         if ($list)
         {
+            ModelRelationManager::initModels($list, $names);
             /** @var self $model */
             $model = $list[0];
             $__serializedFields = $model->__serializedFields;

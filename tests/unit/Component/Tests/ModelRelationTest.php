@@ -10,6 +10,7 @@ use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberRoleRelation;
 use Imi\Test\Component\Model\MemberWithArticles;
+use Imi\Test\Component\Model\MemberWithRelation;
 use Imi\Test\Component\Model\MemberWithRoles;
 use Imi\Test\Component\Model\Polymorphic;
 
@@ -699,5 +700,95 @@ class ModelRelationTest extends BaseTest
         $list = Article::query()->whereIn('id', $articleIds)->select()->getArray();
         Article::queryRelationsList($list, 'queryRelationsList');
         $this->assertEquals(Article::convertListToArray([$record1, $record2]), Article::convertListToArray($list));
+    }
+
+    public function testRelation(): void
+    {
+        // insert
+        $memberOrigin = MemberWithRelation::newInstance();
+        $memberOrigin->username = 'test_relation_a';
+        $memberOrigin->password = 'a';
+        $memberOrigin->insert();
+        $this->assertTrue($memberOrigin->inserted);
+        $this->assertFalse($memberOrigin->updated);
+        $this->assertFalse($memberOrigin->deleted);
+        $this->assertTrue($memberOrigin->queryed);
+        $this->assertTrue($memberOrigin->noWithQueryed);
+        $this->assertEquals(['a'], $memberOrigin->relation);
+
+        // 序列化
+        $this->assertEquals([
+            'id'             => $memberOrigin->id,
+            'username'       => $memberOrigin->username,
+            'relation'       => ['a'],
+            'relationNoWith' => null,
+        ], $memberOrigin->toArray());
+
+        // update
+        $memberOrigin->password = 'b';
+        $memberOrigin->update();
+        $this->assertTrue($memberOrigin->inserted);
+        $this->assertTrue($memberOrigin->updated);
+        $this->assertFalse($memberOrigin->deleted);
+        $this->assertTrue($memberOrigin->queryed);
+        $this->assertTrue($memberOrigin->noWithQueryed);
+        $this->assertEquals(['b'], $memberOrigin->relation);
+
+        // query-find
+        $member = MemberWithRelation::find($memberOrigin->id);
+        $this->assertNotNull($member);
+        $this->assertNotNull($memberOrigin);
+        $this->assertEquals($memberOrigin->id, $member->id);
+        $this->assertEquals($memberOrigin->username, $member->username);
+        $this->assertEquals($memberOrigin->password, $member->password);
+        $this->assertFalse($member->inserted);
+        $this->assertFalse($member->updated);
+        $this->assertFalse($member->deleted);
+        $this->assertTrue($member->queryed);
+        $this->assertTrue($member->noWithQueryed);
+        $this->assertEquals(['b'], $member->relation);
+        $member->password = 'c';
+        $member->update();
+        $this->assertFalse($member->inserted);
+        $this->assertTrue($member->updated);
+        $this->assertFalse($member->deleted);
+        $this->assertTrue($member->queryed);
+        $this->assertTrue($member->noWithQueryed);
+        $this->assertEquals(['c'], $member->relation);
+
+        // query-查询列表
+        /** @var MemberWithRelation[] $list1 */
+        $list1 = MemberWithRelation::query()->whereIn('id', [$memberOrigin->id])->select()->getArray();
+        $this->assertNotEmpty($list1);
+        foreach ($list1 as $row)
+        {
+            $this->assertFalse($row->inserted);
+            $this->assertFalse($row->updated);
+            $this->assertFalse($row->deleted);
+            $this->assertTrue($row->queryed);
+            $this->assertTrue($row->noWithQueryed);
+            $this->assertEquals(['c'], $row->relation);
+        }
+        // with
+        /** @var MemberWithRelation[] $list2 */
+        $list2 = MemberWithRelation::query()->with('relation')->whereIn('id', [$memberOrigin->id])->select()->getArray();
+        $this->assertNotEmpty($list2);
+        foreach ($list2 as $row)
+        {
+            $this->assertFalse($row->inserted);
+            $this->assertFalse($row->updated);
+            $this->assertFalse($row->deleted);
+            $this->assertTrue($row->queryed);
+            $this->assertTrue($row->noWithQueryed);
+            $this->assertEquals(['c'], $row->relation);
+        }
+
+        // delete
+        $member->delete();
+        $this->assertFalse($member->inserted);
+        $this->assertTrue($member->updated);
+        $this->assertTrue($member->deleted);
+        $this->assertTrue($member->queryed);
+        $this->assertTrue($member->noWithQueryed);
     }
 }

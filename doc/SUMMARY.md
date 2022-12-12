@@ -169,6 +169,7 @@
     * [多态一对一关联](components/orm/relation/polymorphicOneToOne.md)
     * [多态一对多关联](components/orm/relation/polymorphicOneToMany.md)
     * [多态多对多关联](components/orm/relation/polymorphicManyToMany.md)
+    * [自定义关联](components/orm/relation/relation.md)
     * [前置和后置事件](components/orm/relation/events.md)
   * [数据库迁移](components/orm/migration.md)
 * [Redis](components/redis/index.md)
