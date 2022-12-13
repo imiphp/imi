@@ -1048,8 +1048,7 @@ class Query
      */
     public static function parseListByRelation(array $models, string $propertyName, \Imi\Model\Annotation\Relation\Relation $annotation): void
     {
-        $model = $models[0];
-        $className = $model->__getMeta()->getClassName();
+        $className = reset($models)->__getMeta()->getClassName();
         $method = (self::$methodCacheMap[$className][$propertyName] ??= ('__query' . ucfirst($propertyName)));
         $className::{$method}($models, $annotation);
     }

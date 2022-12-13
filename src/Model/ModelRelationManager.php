@@ -106,7 +106,7 @@ class ModelRelationManager
                     $middleModel = $item['middleModel'];
                     $rightModel = $item['rightModel'];
                     $rightMany = $annotation->rightMany;
-                    $models = $item['models'];
+                    $itemModels = $item['models'];
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
@@ -152,7 +152,7 @@ class ModelRelationManager
                         foreach ($ids as $leftValue)
                         {
                             $tmpList = $appendList[$leftValue];
-                            foreach ($models[$leftValue] as $model)
+                            foreach ($itemModels[$leftValue] as $model)
                             {
                                 // 关联数据
                                 Query::appendMany($model[$propertyName], $tmpList, $middleTable, $middleModel);
@@ -176,7 +176,7 @@ class ModelRelationManager
                     }
                     /** @var IModelQuery $query */
                     $query->whereIn($rightField, $item['ids']);
-                    $models = $item['models'];
+                    $itemModels = $item['models'];
                     if ($annotation->fields)
                     {
                         $query->field(...$annotation->fields);
@@ -191,7 +191,7 @@ class ModelRelationManager
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
-                        foreach ($models[$resultModel[$rightField]] as $model)
+                        foreach ($itemModels[$resultModel[$rightField]] as $model)
                         {
                             $model[$propertyName] = $resultModel;
                         }
@@ -210,7 +210,7 @@ class ModelRelationManager
                     }
                     /** @var IModelQuery $query */
                     $query->whereIn($rightField, $item['ids']);
-                    $models = $item['models'];
+                    $itemModels = $item['models'];
                     if ($annotation->fields)
                     {
                         $query->field(...$annotation->fields);
@@ -233,7 +233,7 @@ class ModelRelationManager
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
-                        foreach ($models[$resultModel[$rightField]] as $model)
+                        foreach ($itemModels[$resultModel[$rightField]] as $model)
                         {
                             $model[$propertyName]->append($resultModel);
                         }
@@ -249,7 +249,7 @@ class ModelRelationManager
                     $middleModel = $item['middleModel'];
                     $rightModel = $item['rightModel'];
                     $rightMany = $annotation->rightMany;
-                    $models = $item['models'];
+                    $itemModels = $item['models'];
                     $queryFields = $item['fields'];
 
                     $ids = $item['ids'];
@@ -294,7 +294,7 @@ class ModelRelationManager
                         foreach ($ids as $leftValue)
                         {
                             $tmpList = $appendList[$leftValue];
-                            foreach ($models[$leftValue] as $model)
+                            foreach ($itemModels[$leftValue] as $model)
                             {
                                 // 关联数据
                                 Query::appendMany($model[$propertyName], $tmpList, $middleTable, $middleModel);
@@ -318,7 +318,7 @@ class ModelRelationManager
                     }
                     /** @var IModelQuery $query */
                     $query->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
-                    $models = $item['models'];
+                    $itemModels = $item['models'];
                     if ($annotation->fields)
                     {
                         $query->field(...$annotation->fields);
@@ -333,7 +333,7 @@ class ModelRelationManager
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
-                        foreach ($models[$resultModel[$rightField]] as $model)
+                        foreach ($itemModels[$resultModel[$rightField]] as $model)
                         {
                             $model[$propertyName] = $resultModel;
                         }
@@ -352,7 +352,7 @@ class ModelRelationManager
                     }
                     /** @var IModelQuery $query */
                     $query->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
-                    $models = $item['models'];
+                    $itemModels = $item['models'];
                     if ($annotation->fields)
                     {
                         $query->field(...$annotation->fields);
@@ -375,7 +375,7 @@ class ModelRelationManager
                     }
                     foreach ($query->select()->getArray() as $resultModel)
                     {
-                        foreach ($models[$resultModel[$rightField]] as $model)
+                        foreach ($itemModels[$resultModel[$rightField]] as $model)
                         {
                             $model[$propertyName]->append($resultModel);
                         }
@@ -388,7 +388,7 @@ class ModelRelationManager
                         /** @var PolymorphicToOne $subAnnotation */
                         $subAnnotation = $subItem['annotation'];
                         $leftField = $subItem['leftField'];
-                        $models = $subItem['models'];
+                        $itemModels = $subItem['models'];
                         if ($annotation->withSoftDelete)
                         {
                             $query = ($subItem['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
@@ -413,7 +413,7 @@ class ModelRelationManager
                         }
                         foreach ($query->select()->getArray() as $resultModel)
                         {
-                            foreach ($models[$resultModel[$leftField]] as $model)
+                            foreach ($itemModels[$resultModel[$leftField]] as $model)
                             {
                                 $model[$propertyName] = $resultModel;
                             }
@@ -433,7 +433,7 @@ class ModelRelationManager
                         $rightField = $subItem['rightField'];
                         $middleModel = $subItem['middleModel'];
                         $rightModel = $subItem['rightModel'];
-                        $models = $subItem['models'];
+                        $itemModels = $subItem['models'];
                         $queryFields = $subItem['fields'];
 
                         $ids = $subItem['ids'];
@@ -479,7 +479,7 @@ class ModelRelationManager
                             foreach ($ids as $leftValue)
                             {
                                 $tmpList = $appendList[$leftValue];
-                                foreach ($models[$leftValue] as $model)
+                                foreach ($itemModels[$leftValue] as $model)
                                 {
                                     $model[$propertyName]->append(...$tmpList);
                                 }
