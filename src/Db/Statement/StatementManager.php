@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Statement;
 
+use Imi\Config;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 use Imi\RequestContext;
@@ -15,6 +16,16 @@ class StatementManager
      */
     private static array $statements = [];
 
+    /**
+     * 记录每个 statement 的 sql 被使用次数.
+     */
+    private static array $statementSqlCount = [];
+
+    /**
+     * 每个连接最多缓存 Statement 的数量.
+     */
+    private static ?int $maxCacheCount = null;
+
     private function __construct()
     {
     }
@@ -24,7 +35,15 @@ class StatementManager
      */
     public static function set(IStatement $statement, bool $using): void
     {
-        self::$statements[$statement->getDb()->hashCode()][$statement->getSql()] = [
+        $db = $statement->getDb();
+        $hashCode = $db->hashCode();
+        $sql = $statement->getSql();
+        if (self::getMaxCacheCount() > 0)
+        {
+            self::gc($db);
+            self::$statementSqlCount[$hashCode][$sql] = 1;
+        }
+        self::$statements[$hashCode][$sql] = [
             'statement'     => $statement,
             'using'         => $using,
         ];
@@ -40,11 +59,17 @@ class StatementManager
      */
     public static function setNX(IStatement $statement, bool $using): bool
     {
-        $hashCode = $statement->getDb()->hashCode();
+        $db = $statement->getDb();
+        $hashCode = $db->hashCode();
         $sql = $statement->getSql();
         if (isset(self::$statements[$hashCode][$sql]))
         {
             return false;
+        }
+        if (self::getMaxCacheCount() > 0)
+        {
+            self::gc($db = $statement->getDb());
+            self::$statementSqlCount[$hashCode][$sql] = 1;
         }
         self::$statements[$hashCode][$sql] = [
             'statement'     => $statement,
@@ -57,6 +82,46 @@ class StatementManager
         }
 
         return true;
+    }
+
+    public static function getMaxCacheCount(): int
+    {
+        return self::$maxCacheCount ??= (int) Config::get('@app.db.statement.maxCacheCount', 0);
+    }
+
+    public static function gc(IDb $db): int
+    {
+        $cacheCount = self::getMaxCacheCount();
+        if ($cacheCount <= 0)
+        {
+            return 0;
+        }
+        $hashCode = $db->hashCode();
+        $staticStatements = &self::$statements;
+        if (!isset($staticStatements[$hashCode]))
+        {
+            return 0;
+        }
+        $maxGcCount = \count($staticStatements[$hashCode]) - $cacheCount;
+        if ($maxGcCount <= 0)
+        {
+            return 0;
+        }
+        asort(self::$statementSqlCount);
+        $gcCount = 0;
+        foreach (self::$statementSqlCount[$hashCode] as $sql => $count)
+        {
+            if (!$staticStatements[$hashCode][$sql]['using'])
+            {
+                unset($staticStatements[$hashCode][$sql], self::$statementSqlCount[$hashCode][$sql]);
+            }
+            if (++$gcCount === $maxGcCount)
+            {
+                break;
+            }
+        }
+
+        return $gcCount;
     }
 
     /**
@@ -83,6 +148,10 @@ class StatementManager
         $statement['using'] = true;
         $context = RequestContext::getContext();
         $context['statementCaches'][] = $statement['statement'];
+        if (self::getMaxCacheCount() > 0)
+        {
+            ++self::$statementSqlCount[$hashCode][$sql];
+        }
 
         return $statement;
     }
