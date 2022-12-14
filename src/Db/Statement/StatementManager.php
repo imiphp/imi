@@ -17,9 +17,9 @@ class StatementManager
     private static array $statements = [];
 
     /**
-     * 记录每个 statement 的 sql 被使用次数.
+     * 记录每个 statement 的最后使用时间.
      */
-    private static array $statementSqlCount = [];
+    private static array $statementLastUseTime = [];
 
     /**
      * 每个连接最多缓存 Statement 的数量.
@@ -41,7 +41,7 @@ class StatementManager
         if (self::getMaxCacheCount() > 0)
         {
             self::gc($db);
-            self::$statementSqlCount[$hashCode][$sql] = 1;
+            self::$statementLastUseTime[$hashCode][$sql] = microtime(true);
         }
         self::$statements[$hashCode][$sql] = [
             'statement'     => $statement,
@@ -69,7 +69,7 @@ class StatementManager
         if (self::getMaxCacheCount() > 0)
         {
             self::gc($db = $statement->getDb());
-            self::$statementSqlCount[$hashCode][$sql] = 1;
+            self::$statementLastUseTime[$hashCode][$sql] = microtime(true);
         }
         self::$statements[$hashCode][$sql] = [
             'statement'     => $statement,
@@ -107,13 +107,13 @@ class StatementManager
         {
             return 0;
         }
-        asort(self::$statementSqlCount);
+        asort(self::$statementLastUseTime[$hashCode]);
         $gcCount = 0;
-        foreach (self::$statementSqlCount[$hashCode] as $sql => $count)
+        foreach (self::$statementLastUseTime[$hashCode] as $sql => $count)
         {
             if (!$staticStatements[$hashCode][$sql]['using'])
             {
-                unset($staticStatements[$hashCode][$sql], self::$statementSqlCount[$hashCode][$sql]);
+                unset($staticStatements[$hashCode][$sql], self::$statementLastUseTime[$hashCode][$sql]);
             }
             if (++$gcCount === $maxGcCount)
             {
@@ -150,7 +150,7 @@ class StatementManager
         $context['statementCaches'][] = $statement['statement'];
         if (self::getMaxCacheCount() > 0)
         {
-            ++self::$statementSqlCount[$hashCode][$sql];
+            self::$statementLastUseTime[$hashCode][$sql] = microtime(true);
         }
 
         return $statement;
@@ -230,10 +230,7 @@ class StatementManager
         static::unUsing($statement);
         $hashCode = $db->hashCode();
         $staticStatements = &self::$statements;
-        if (isset($staticStatements[$hashCode][$sql]))
-        {
-            unset($staticStatements[$hashCode][$sql]);
-        }
+        unset($staticStatements[$hashCode][$sql], self::$statementLastUseTime[$hashCode][$sql]);
     }
 
     /**
@@ -243,7 +240,7 @@ class StatementManager
     {
         $requestContext = RequestContext::getContext();
         $staticStatements = &self::$statements;
-        $statements = $staticStatements[$db->hashCode()] ?? [];
+        $statements = $staticStatements[$hashCode = $db->hashCode()] ?? [];
         if ($statements)
         {
             $statementCaches = $requestContext['statementCaches'] ?? [];
@@ -254,7 +251,7 @@ class StatementManager
                     unset($statementCaches[$i]);
                 }
             }
-            unset($staticStatements[$db->hashCode()]);
+            unset($staticStatements[$hashCode], self::$statementLastUseTime[$hashCode]);
             $requestContext['statementCaches'] = $statementCaches;
         }
     }
