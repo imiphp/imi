@@ -54,11 +54,20 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
         }
         elseif (null === $offset)
         {
-            return ' limit ' . ((int) $limit);
+            $sql = ' limit ' . ($limitName = $this->query->getAutoParamName());
+
+            $this->params[$limitName] = (int) $limit;
+
+            return $sql;
         }
         else
         {
-            return ' limit ' . ((int) $limit) . ' offset ' . ((int) $offset);
+            $sql = ' limit ' . ($limitName = $this->query->getAutoParamName()) . ' offset ' . ($offsetName = $this->query->getAutoParamName());
+
+            $this->params[$offsetName] = (int) $offset;
+            $this->params[$limitName] = (int) $limit;
+
+            return $sql;
         }
     }
 }

@@ -1082,7 +1082,7 @@ class ModelTest extends BaseTest
         $this->assertGreaterThanOrEqual(1, $record2->id);
 
         // 增量更新
-        $updateSql = 'update `tb_article2` set `title` = :title where `id` = :p1 limit 1';
+        $updateSql = 'update `tb_article2` set `title` = :title where `id` = :p1 limit :p2';
 
         $record1->title = 't1';
         $result = $record1->update();

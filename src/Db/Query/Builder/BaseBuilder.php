@@ -141,11 +141,20 @@ abstract class BaseBuilder implements IBuilder
         }
         elseif (null === $offset)
         {
-            return ' limit ' . ((int) $limit);
+            $sql = ' limit ' . ($limitName = $this->query->getAutoParamName());
+
+            $this->params[$limitName] = (int) $limit;
+
+            return $sql;
         }
         else
         {
-            return ' limit ' . ((int) $offset) . ',' . ((int) $limit);
+            $sql = ' limit ' . ($offsetName = $this->query->getAutoParamName()) . ',' . ($limitName = $this->query->getAutoParamName());
+
+            $this->params[$offsetName] = (int) $offset;
+            $this->params[$limitName] = (int) $limit;
+
+            return $sql;
         }
     }
 
