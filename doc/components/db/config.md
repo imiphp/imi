@@ -16,7 +16,8 @@ return [
     'db'    => [
         'defaultPool'   => 'alias1', // 默认连接池
         'statement'     =>  [
-            'cache' =>  true, // 是否开启 statement 缓存，默认开启
+            'cache' =>  true, // 是否开启 Statement 缓存，默认开启
+            'maxCacheCount' => 0, // Statement 最大缓存数量，默认为 0 则不限制。会根据最后使用时间来决定移除缓存。
         ],
     ],
     'pools' => [

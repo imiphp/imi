@@ -247,6 +247,9 @@ return [
                 'charset'  => 'utf8mb4',
             ],
         ],
+        'statement' => [
+            'maxCacheCount' => 32,
+        ],
     ],
     // redis 配置
     'redis' => [
