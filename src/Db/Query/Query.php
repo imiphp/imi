@@ -775,14 +775,15 @@ abstract class Query implements IQuery
     {
         if ($options['total'] ?? true)
         {
-            $total = (int) (clone $this)->count();
+            $query = (clone $this);
+            $query->option->order = [];
+            $total = (int) $query->count();
         }
         else
         {
             $total = null;
         }
-        $this->page($page, $count);
-        $statement = $this->select();
+        $statement = $this->page($page, $count)->select();
         $pagination = new Pagination($page, $count);
 
         return new PaginateResult($statement, $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
