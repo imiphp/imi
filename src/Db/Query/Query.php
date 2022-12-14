@@ -783,10 +783,9 @@ abstract class Query implements IQuery
         {
             $total = null;
         }
-        $statement = $this->page($page, $count)->select();
         $pagination = new Pagination($page, $count);
 
-        return new PaginateResult($statement, $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
+        return new PaginateResult($this->page($page, $count)->select(), $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
     }
 
     /**
