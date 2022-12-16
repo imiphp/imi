@@ -2,16 +2,22 @@
 
 [toc]
 
+## 序言
+
+* [项目介绍](README.md)
+* [开发者社区](base/community.md)
+* [技术支持](base/support.md)
+* [赞助开发](base/donate.md)
+* [版本支持计划](base/version/support.md)
+* [参与框架开发](adv/devp.md)
+
 ## 基础入门
 
-* [序言](README.md)
-* [介绍](base/intro.md)
 * [Swoole 开发环境说明及安装教程](base/env.md)
 * [开始一个新项目](base/new.md)
 * [应用配置](base/config.md)
 * [常见问题](base/qa.md)
 * [v2.0-v2.1 升级指南](base/version/2.0-2.1.md)
-* [版本支持计划](base/version/support.md)
 
 ## 框架核心
 
@@ -288,7 +294,6 @@
 
 * [断点调试](adv/debug.md)
 * [生产环境性能优化](adv/performance.md)
-* [帮助 imi 变得更好](adv/devp.md)
 
 ## 运行环境
 

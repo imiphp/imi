@@ -7,7 +7,7 @@
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/imiphp/imi/ci/dev)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/test.yml?branch=2.1)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.1/)
@@ -16,9 +16,13 @@
 
 ## 介绍
 
-imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman、RoadRunner 等多种容器环境下。
+imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 `PHP-FPM`、`Swoole`、`Workerman` 和 `RoadRunner` 等多种容器环境下。
 
-imi 拥有丰富的功能组件，v2.1 版本内置了 2 个分布式长连接服务的解决方案。
+imi 提供了丰富的基础功能：`MySQL`、`PostgreSQL`、`Redis`、`超强超好用的自研 ORM`、`连接池`、`Web MVC`、`WebSocket`、`TCP Server`、`UDP Server`、`HTTP2`、`MQTT`、`gRPC`、`容器化（Container）`、`依赖注入`、`Aop`、`事件`、`异步（Async）`、`缓存（Cache）`、`命令行（Command）`、`配置化（Config）`、`上下文（Context）`、`定时任务（Cron）`、`门面（Facade）`、`验证器（Validate）`、`锁（Lock）`、`日志（Log）`、`定时器（Timer）`、`权限控制`、`消息队列（RabbitMQ、Kafka、Redis）`、`Swagger`、`Hprose`、`宏（Macro）`、`限流`、`共享内存`、`Smarty`、`雪花算法发号器（Snowflake）`、`Workerman Gateway` 和 `InfluxDB` 等组件。
+
+imi 还提供了微服务相关支持：`Nacos 配置中心`、`etcd 配置中心`、`Nacos 服务注册`、`Nacos 服务发现`、`Swoole Tracker`、`Zipkin`、`Jaeger`、`Prometheus`、`InfluxDB 服务指标监控`、`TDengine 服务指标监控` 和 `负载均衡` 等组件。
+
+管理后台开发骨架：[imi-admin](https://gitee.com/phpben/imi-admin)
 
 imi 框架现在已经稳定运行在：文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端、数据迁移服务（虎扑）等项目中。
 
@@ -28,7 +32,7 @@ imi 框架现在已经稳定运行在：文旅电商平台、物联网充电云�
 
 **imi 框架交流群：** 17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
-**微信群：**
+**微信群：**（请注明来意）
 
 <img src="res/wechat.png" alt="imi" width="256px" />
 
@@ -45,47 +49,7 @@ imi 1.0 框架入门教程（免费11集全）<https://www.bilibili.com/video/av
 
 imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.bilibili.com/768718/channel/detail?cid=136926>
 
-### 核心组件
-
-* Http、Http2、WebSocket、TCP、UDP、MQTT 服务器
-* 分布式长连接解决方案（消息队列模式、网关模式）
-* MySQL 连接池 (主从+负载均衡)
-* Redis 连接池 (主从+负载均衡)
-* 超好用的 ORM (Db、Redis、Tree)
-* 毫秒级热更新
-* AOP
-* Bean 容器
-* 缓存 (Cache)
-* 配置读写 (Config)
-* 枚举 (Enum)
-* 事件 (Event)
-* 门面 (Facade)
-* 验证器 (Validate)
-* 锁 (Lock)
-* 日志 (Log)
-* 异步任务 (Task)
-
 ### 扩展组件
-
-#### 官方组件
-
-* [PostgreSQL](src/Components/pgsql)
-* [MQTT](src/Components/mqtt)
-* [RPC](src/Components/rpc)
-* [gRPC](src/Components/grpc)
-* [Hprose](src/Components/hprose)
-* [消息队列](src/Components/queue)
-* [AMQP](src/Components/amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
-* [Kafka](src/Components/kafka)
-* [JWT](src/Components/jwt) (在 imi 框架中非常方便地接入 jwt)
-* [权限控制](src/Components/access-control)
-* [Smarty 模版引擎](src/Components/smarty)
-* [限流](src/Components/rate-limit)
-* [跨进程变量共享](src/Components/shared-memory)
-* [雪花算法发号器](src/Components/snowflake)
-* [Swagger API 文档生成](src/Components/apidoc)
-* [Swoole Tracker](src/Components/swoole-tracker)
-* [TDengine](https://github.com/imiphp/imi-tdengine)
 
 #### 优秀的第三方组件
 

@@ -6,24 +6,34 @@
 
 Github：<https://github.com/imiphp/imi>
 
+## 分支
+
+| 分支 | 说明 |
+| - | - |
+| 2.1 | v2.1.x 版本分支 |
+| 2.0 | v2.0.x 版本分支 |
+| 1.x | v1.3.x 版本分支 |
+
 ## 目录结构
 
 ```text
-├── bin         // 可执行文件路径
-├── config      // 框架核心配置文件
-├── doc         // 文档 markdown 源文件
-├── mddoc       // 文档 html 模版
-├── res         // 资源文件
-├── src         // PHP 源代码
-├── tests       // 测试用例目录
-└── website     // 官网 Html 源代码
+├── .github             // Github 相关文件
+├── config              // 框架核心配置文件目录
+├── dev                 // 开发用脚本目录
+├── doc                 // 文档 markdown 源文件
+├── mddoc               // 文档 html 模版
+├── res                 // 资源文件
+├── split-repository    // 组件发版工具
+├── src                 // PHP 源代码
+├── tests               // 测试用例目录
+└── website             // 官网 Html 源代码
 ```
 
-## 基本操作
+## PR 基本操作
 
 * 在 Github 的 imi 页面点击 `fork` 按钮，将项目复刻到你自己名下。
 
-* 将代码拉到本地，在最新的 `dev` 分支基础上创建一个用于此次贡献的分支。
+* 将代码拉到本地，在你想要合并的分支基础上创建一个用于此次贡献的分支。
 
 * 此次贡献的代码都提交到上一步创建的分支中。
 
@@ -76,6 +86,10 @@ REDIS_CACHE_DB | Redis 缓存用的 `db`，该 `db` 会被清空数据，请慎�
 * 首次运行测试脚本：`composer install-test`
 
 * 首次之后再运行测试的命令：`composer test`
+
+#### Github Action
+
+通过 `git push` 代码后，查看 Gtihub Action 中的自动化测试结果。
 
 ### 官方网站
 
