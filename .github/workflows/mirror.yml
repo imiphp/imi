@@ -1,6 +1,11 @@
 name: mirror
 
-on: [push, delete, create, release]
+on:
+  push:
+  delete:
+  create:
+  release:
+    types: [published]
 
 jobs:
   gitee:
