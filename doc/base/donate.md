@@ -14,4 +14,4 @@ imi 遵循木兰宽松许可证（Mulan PSL v2）开源协议发布，并提供�
 
 加我微信后详谈，请注明来意：
 
-![](../res/wechat.png)
+![imi微信群](../res/wechat.png)

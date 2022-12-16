@@ -12,4 +12,4 @@
 
 请注明来意：
 
-![](../res/wechat.png)
+![imi微信群](../res/wechat.png)
