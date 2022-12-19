@@ -11,7 +11,7 @@ return [
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'        => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -47,12 +47,12 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'         => [
         // 主数据库
-        'maindb'    => [
-            'pool'    => [
+        'maindb'          => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -72,9 +72,9 @@ return [
         ],
         // 主数据库
         'maindb.slave'    => [
-            'pool'    => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -92,10 +92,10 @@ return [
                 'database'    => 'db_imi_test',
             ],
         ],
-        'swoole'    => class_exists(\Swoole\Coroutine\PostgreSQL::class, false) ? [
-            'pool'    => [
+        'swoole'          => class_exists(\Swoole\Coroutine\PostgreSQL::class, false) ? [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'         => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -116,7 +116,7 @@ return [
         ] : [],
     ],
     // db 配置
-    'db' => [
+    'db'            => [
         // 默认连接池名
         'defaultPool' => 'maindb',
         'connections' => [

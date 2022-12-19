@@ -36,7 +36,7 @@ class ConfigTest extends BaseTest
     public function testAddConfig(): void
     {
         Config::addConfig('test', [
-            'a' => [
+            'a'       => [
                 'b' => 123,
             ],
             // 配置文件

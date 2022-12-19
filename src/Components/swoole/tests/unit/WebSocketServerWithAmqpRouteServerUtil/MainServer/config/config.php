@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -11,35 +11,35 @@ return [
         'Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Listener',
         'Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Error',
     ],
-    'beans'    => [
-        'WebSocketDispatcher'    => [
+    'beans'       => [
+        'WebSocketDispatcher'       => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\MainServer\Middleware\Test::class,
             ],
         ],
-        'ServerGroup' => [
+        'ServerGroup'               => [
             'groupHandler' => 'GroupAmqp',
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'            => [
             'middlewares'    => [
                 \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => 'ConnectionContextAmqp',
             'ttl'           => 600,
         ],
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'RouteNotFound',
         ],
-        'AmqpServerUtil' => [
+        'AmqpServerUtil'            => [
             'exchangeConfig' => [
                 'name' => 'imi_server_util_route_test',
                 'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::DIRECT,
             ],
-            'queueConfig' => [
+            'queueConfig'    => [
                 'name'    => 'imi_server_util_route_',
                 'durable' => false,
             ],

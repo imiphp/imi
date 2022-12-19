@@ -10,10 +10,10 @@ use Imi\Util\Imi;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'KafkaApp',
+    'namespace'         => 'KafkaApp',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
@@ -27,14 +27,14 @@ return [
     // ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole'    => 'Imi\Swoole',
         'Workerman' => 'Imi\Workerman',
         'Kafka'     => 'Imi\Kafka',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'    => 'KafkaApp\ApiServer',
         'type'         => \Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
@@ -45,7 +45,7 @@ return [
     ],
 
     // Workerman 服务器配置
-    'workermanServer' => [
+    'workermanServer'   => [
         'http' => [
             'namespace'    => 'KafkaApp\ApiServer',
             'type'         => \Imi\Workerman\Server\Type::HTTP,
@@ -61,9 +61,9 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => Imi::checkAppType('swoole') ? [
+    'pools'             => Imi::checkAppType('swoole') ? [
         'redis'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -77,7 +77,7 @@ return [
             ],
         ],
         'kafka'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Kafka\Pool\KafkaCoroutinePool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -92,7 +92,7 @@ return [
     ] : [],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
         'connections'   => [
@@ -103,7 +103,7 @@ return [
             ],
         ],
     ],
-    'kafka' => [
+    'kafka'             => [
         'connections' => [
             'kafka'    => [
                 'bootstrapServers' => KAFKA_BOOTSTRAP_SERVERS,
@@ -112,7 +112,7 @@ return [
         ],
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

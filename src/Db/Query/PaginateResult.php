@@ -187,7 +187,7 @@ class PaginateResult implements IPaginateResult
             $fields = Config::get('@app.db.paginate.fields', []);
             $arrayData = [
                 // 数据列表
-                $options['field_list'] ?? ($fields['list'] ?? 'list')   => $this->getList(),
+                $options['field_list'] ?? ($fields['list'] ?? 'list')    => $this->getList(),
                 // 每页记录数
                 $options['field_limit'] ?? ($fields['limit'] ?? 'limit') => $this->limit,
             ];

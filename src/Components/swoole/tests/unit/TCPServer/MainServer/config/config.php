@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -11,26 +11,26 @@ return [
         'Imi\Swoole\Test\TCPServer\MainServer\Listener',
         'Imi\Swoole\Test\TCPServer\MainServer\Error',
     ],
-    'beans'    => [
-        'TcpDispatcher'    => [
+    'beans'       => [
+        'TcpDispatcher'                => [
             'middlewares'    => [
                 \Imi\Swoole\Test\TCPServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\TCPServer\MainServer\Middleware\Test::class,
             ],
         ],
-        'GroupRedis'    => [
+        'GroupRedis'                   => [
             'redisPool'    => 'redis',
             'key'          => 'IMITEST.TCP.GROUP',
             'redisDb'      => 2,
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'       => [
             'handlerClass'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable::class,
         ],
         'ConnectionContextMemoryTable' => [
             'tableName' => 'ConnectionContext',
         ],
-        'TcpRouteNotFoundHandler'   => [
+        'TcpRouteNotFoundHandler'      => [
             'handler'   => 'RouteNotFound',
         ],
     ],

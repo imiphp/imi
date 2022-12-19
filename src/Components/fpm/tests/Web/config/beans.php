@@ -5,18 +5,18 @@ declare(strict_types=1);
 $rootPath = \dirname(__DIR__) . '/';
 
 return [
-    'SessionManager'    => [
+    'SessionManager'        => [
         'handlerClass'    => \Imi\Server\Session\Handler\File::class,
     ],
-    'SessionFile'    => [
+    'SessionFile'           => [
         'savePath'    => \dirname(__DIR__) . '/.session/',
     ],
-    'SessionConfig'    => [
+    'SessionConfig'         => [
     ],
-    'SessionCookie'    => [
+    'SessionCookie'         => [
         'lifetime'    => 86400 * 30,
     ],
-    'HttpDispatcher'    => [
+    'HttpDispatcher'        => [
         'middlewares'    => [
             'OptionsMiddleware',
             \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
@@ -24,12 +24,12 @@ return [
             \Imi\Server\Http\Middleware\RouteMiddleware::class,
         ],
     ],
-    'OptionsMiddleware' => [
+    'OptionsMiddleware'     => [
         'allowOrigin'   => 'http://127.0.0.1',
         'optionsBreak'  => true,
     ],
-    'HtmlView'    => [
-        'templatePath'    => \dirname(__DIR__) . '/template/',
+    'HtmlView'              => [
+        'templatePath'       => \dirname(__DIR__) . '/template/',
         // 支持的模版文件扩展名，优先级按先后顺序
         'fileSuffixs'        => [
             'tpl',

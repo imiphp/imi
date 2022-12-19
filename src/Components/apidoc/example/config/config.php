@@ -6,20 +6,20 @@ use Imi\Swoole\Server\Type;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'ApiDocApp',
+    'namespace'         => 'ApiDocApp',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'ApiDoc'    => 'Imi\ApiDoc',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'     => 'ApiDocApp\ApiServer',
         'type'          => Type::HTTP,
         'host'          => '127.0.0.1',
@@ -34,10 +34,10 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

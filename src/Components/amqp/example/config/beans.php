@@ -7,12 +7,12 @@ use Imi\Util\Imi;
 $rootPath = \dirname(__DIR__) . '/';
 
 return [
-    'hotUpdate'    => [
-        'status'    => false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
+    'hotUpdate'             => [
+        'status'          => false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
 
         // --- 文件修改时间监控 ---
         // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\FileMTime::class,
-        'timespan'    => 1, // 检测时间间隔，单位：秒
+        'timespan'        => 1, // 检测时间间隔，单位：秒
 
         // --- Inotify 扩展监控 ---
         // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\Inotify::class,
@@ -35,14 +35,14 @@ return [
             'QueueConsumer',
         ],
     ],
-    'AMQP'  => [
+    'AMQP'                  => [
         'defaultPoolName'   => 'rabbit',
     ],
-    'imiQueue'  => [
+    'imiQueue'              => [
         // 默认队列
         'default'   => 'QueueTest1',
         // 队列列表
-        'list'  => [
+        'list'      => [
             // 队列名称
             'QueueTest1' => [
                 // 使用的队列驱动
@@ -62,24 +62,24 @@ return [
                 // 驱动类所需要的参数数组
                 'config'        => [
                     // AMQP 连接池名称
-                    'poolName'      => 'rabbit',
+                    'poolName'       => 'rabbit',
                     // Redis 连接池名称
-                    'redisPoolName' => 'redis',
+                    'redisPoolName'  => 'redis',
                     // Redis 键名前缀
-                    'redisPrefix'   => 'QueueTest1:',
+                    'redisPrefix'    => 'QueueTest1:',
                     // 可选配置：
                     // 支持消息删除功能，依赖 Redis
-                    'supportDelete' => true,
+                    'supportDelete'  => true,
                     // 支持消费超时队列功能，依赖 Redis，并且自动增加一个队列
                     'supportTimeout' => true,
                     // 支持消费失败队列功能，自动增加一个队列
-                    'supportFail' => true,
+                    'supportFail'    => true,
                     // 循环尝试 pop 的时间间隔，单位：秒
-                    'timespan'  => 0.03,
+                    'timespan'       => 0.03,
                     // 本地缓存的队列长度。由于 AMQP 不支持主动pop，而是主动推送，所以本地会有缓存队列，这个队列不宜过大。
-                    'queueLength'   => 16,
+                    'queueLength'    => 16,
                     // 消息类名
-                    'message'   => \Imi\AMQP\Queue\JsonAMQPMessage::class,
+                    'message'        => \Imi\AMQP\Queue\JsonAMQPMessage::class,
                 ],
             ],
         ],

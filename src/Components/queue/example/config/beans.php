@@ -5,12 +5,12 @@ declare(strict_types=1);
 $rootPath = \dirname(__DIR__) . '/';
 
 return [
-    'hotUpdate'    => [
+    'hotUpdate'             => [
         // 'status'    =>    false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
 
         // --- 文件修改时间监控 ---
         // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\FileMTime::class,
-        'timespan'    => 1, // 检测时间间隔，单位：秒
+        'timespan'        => 1, // 检测时间间隔，单位：秒
 
         // --- Inotify 扩展监控 ---
         // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\Inotify::class,
@@ -29,11 +29,11 @@ return [
             'QueueConsumer',
         ],
     ],
-    'imiQueue'  => [
+    'imiQueue'              => [
         // 默认队列
         'default'   => 'test1',
         // 队列列表
-        'list'  => [
+        'list'      => [
             // 队列名称
             'test1' => [
                 // 使用的队列驱动

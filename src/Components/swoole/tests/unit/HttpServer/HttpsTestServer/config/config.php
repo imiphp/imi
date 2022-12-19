@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\Swoole\Test\HttpServer\HttpsTestServer\Controller',
         'Imi\Swoole\Test\HttpServer\OutsideController',
     ],
-    'beans'    => [
+    'beans'       => [
         'HttpDispatcher'    => [
             'middleware' => false,
         ],

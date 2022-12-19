@@ -8,32 +8,32 @@ use Imi\Grpc\Client\GrpcClient;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'GrpcApp',
+    'namespace'         => 'GrpcApp',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'GrpcApp\Listener',
         'GrpcApp\Task',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole' => 'Imi\Swoole',
         'Grpc'   => 'Imi\Grpc',
     ],
 
     // 忽略目录
-    'ignorePaths' => [
+    'ignorePaths'       => [
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'grpc',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace' => 'GrpcApp\GrpcServer',
         'type'      => 'GrpcServer',
         'host'      => '127.0.0.1',
@@ -54,9 +54,9 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         'redis'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -69,8 +69,8 @@ return [
                 'password'  => null,
             ],
         ],
-        'grpc'  => [
-            'pool'    => [
+        'grpc'     => [
+            'pool'        => [
                 'class'        => \Imi\Rpc\Client\Pool\RpcClientCoroutinePool::class,
                 'config'       => [
                     'maxResources'  => 100,
@@ -86,19 +86,19 @@ return [
     ],
 
     // 数据库配置
-    'db'    => [
+    'db'                => [
         // 数默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
-    'memoryTable'   => [
+    'memoryTable'       => [
         'ConnectionContext'    => [
             'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
             'lockId' => 'redisConnectionContextLock',
@@ -107,7 +107,7 @@ return [
     ],
 
     // 锁
-    'lock'  => [
+    'lock'              => [
         'list'  => [
             'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
@@ -118,11 +118,11 @@ return [
         ],
     ],
 
-    'rpc'   => [
+    'rpc'               => [
         'defaultPool'   => 'grpc',
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

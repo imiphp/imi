@@ -8,19 +8,19 @@ return [
     // 项目根命名空间
     'namespace'        => 'Imi\RoadRunner\Test\HttpServer',
     // 组件命名空间
-    'components'    => [
+    'components'       => [
         'RoadRunner' => 'Imi\RoadRunner',
     ],
     'roadRunnerServer' => [
         'main' => [],
     ],
-    'ignorePaths'   => [
+    'ignorePaths'      => [
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'bin',
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'Tests',
     ],
     // 日志配置
-    'logger' => [
+    'logger'           => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -71,20 +71,20 @@ return [
             ],
         ],
     ],
-    'middleware'    => [
+    'middleware'       => [
         'groups'    => [
             'test'  => [
                 \Imi\RoadRunner\Test\HttpServer\Middleware\Middleware4::class,
             ],
         ],
     ],
-    'beans' => [
-        'hotUpdate'    => [
-            'status'    => false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
+    'beans'            => [
+        'hotUpdate'             => [
+            'status'          => false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
 
             // --- 文件修改时间监控 ---
             // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\FileMTime::class,
-            'timespan'    => 1, // 检测时间间隔，单位：秒
+            'timespan'        => 1, // 检测时间间隔，单位：秒
 
             // --- Inotify 扩展监控 ---
             // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\Inotify::class,
@@ -98,18 +98,18 @@ return [
                 $rootPath . '.session',
             ], // 要排除的路径数组，支持通配符*
         ],
-        'SessionManager'    => [
+        'SessionManager'        => [
             'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
-        'SessionFile'    => [
+        'SessionFile'           => [
             'savePath'    => \dirname(__DIR__) . '/.session/',
         ],
-        'SessionConfig'    => [
+        'SessionConfig'         => [
         ],
-        'SessionCookie'    => [
+        'SessionCookie'         => [
             'lifetime'    => 86400 * 30,
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'        => [
             'middlewares'    => [
                 'OptionsMiddleware',
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
@@ -117,8 +117,8 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'HtmlView'    => [
-            'templatePath'    => \dirname(__DIR__) . '/template/',
+        'HtmlView'              => [
+            'templatePath'       => \dirname(__DIR__) . '/template/',
             // 支持的模版文件扩展名，优先级按先后顺序
             'fileSuffixs'        => [
                 'tpl',
@@ -129,7 +129,7 @@ return [
         'HttpNotFoundHandler'   => [
             'handler'   => 'MyHttpNotFoundHandler',
         ],
-        'OptionsMiddleware' => [
+        'OptionsMiddleware'     => [
             'allowOrigin'   => 'http://127.0.0.1',
             'optionsBreak'  => true,
         ],

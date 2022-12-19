@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Fpm\Test\Web',
+    'namespace'         => 'Imi\Fpm\Test\Web',
 
-    'debug'       => true,
+    'debug'             => true,
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\Fpm\Test\Web\Controller',
         'Imi\Fpm\Test\Web\Middleware',
         'Imi\Fpm\Test\Web\Error',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Fpm' => 'Imi\Fpm',
     ],
 
@@ -31,12 +31,12 @@ return [
         'Imi\Cron\*',
     ],
 
-    'ignorePaths'   => [
+    'ignorePaths'       => [
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -60,19 +60,19 @@ return [
     ],
 
     // 数据库配置
-    'db'    => [
+    'db'                => [
         // 默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 锁
-    'lock'  => [
+    'lock'              => [
         'list'  => [
             // 'atomic' =>  [
             //     'class' =>  'AtomicLock',
@@ -80,7 +80,7 @@ return [
             //         'atomicName'    =>  'atomicLock',
             //     ],
             // ],
-            'memoryTableLock' => [
+            'memoryTableLock'            => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',
@@ -96,11 +96,11 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    => [
+    'atomics'           => [
         'atomicLock'   => 1,
     ],
 
-    'middleware'    => [
+    'middleware'        => [
         'groups'    => [
             'test'  => [
                 \Imi\Fpm\Test\Web\Middleware\Middleware4::class,

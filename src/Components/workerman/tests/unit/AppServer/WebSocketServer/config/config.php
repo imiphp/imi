@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -12,18 +12,18 @@ return [
         'Imi\Workerman\Test\AppServer\WebSocketServer\Middleware',
         'Imi\Workerman\Test\AppServer\WebSocketServer\Listener',
     ],
-    'beans'    => [
-        'WebSocketDispatcher'    => [
+    'beans'       => [
+        'WebSocketDispatcher'       => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\Workerman\Test\AppServer\WebSocketServer\Middleware\Test::class,
             ],
         ],
-        'GroupRedis'    => [
+        'GroupRedis'                => [
             'redisPool'    => 'redis',
             'redisDb'      => 2,
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => 'ConnectionContextLocal',
             'ttl'           => 600,
         ],
@@ -32,7 +32,7 @@ return [
         ],
     ],
     // 锁配置
-    'lock'  => [
+    'lock'        => [
         'default' => 'redisConnectionContextLock',
         'list'    => [
             'redisConnectionContextLock' => [

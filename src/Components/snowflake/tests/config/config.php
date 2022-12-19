@@ -5,21 +5,21 @@ declare(strict_types=1);
 use function Imi\env;
 
 return [
-    'configs'    => [
+    'configs'           => [
     ],
-    'components'    => [
+    'components'        => [
         // 引入本组件
         'snowflake'    => 'Imi\Snowflake',
     ],
     'ignoreNamespace'   => [
     ],
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         // 主数据库
-        'maindb'    => [
-            'pool'    => [
+        'maindb'        => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -41,7 +41,7 @@ return [
             ],
         ],
         'redis_test'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 128,
@@ -56,7 +56,7 @@ return [
         ],
     ],
     // db 配置
-    'db' => [
+    'db'                => [
         // 默认连接池名
         'defaultPool' => 'maindb',
         'connections' => [
@@ -72,19 +72,19 @@ return [
         ],
     ],
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis_test',
     ],
-    'beans'    => [
-        'JWT'   => [
+    'beans'             => [
+        'JWT'       => [
             'list'  => [
                 'a' => [
-                    'audience'  => 'audience_a',
-                    'subject'   => 'subject_a',
-                    'expires'   => 86400,
-                    'issuer'    => 'issuer_a',
-                    'headers'   => [
+                    'audience'      => 'audience_a',
+                    'subject'       => 'subject_a',
+                    'expires'       => 86400,
+                    'issuer'        => 'issuer_a',
+                    'headers'       => [
                         'a' => '1',
                         'b' => '2',
                     ],
@@ -96,25 +96,25 @@ return [
         ],
         'Snowflake' => [
             'list'  => [
-                'testBasic' => [
+                'testBasic'   => [
                 ],
-                'test1' => [
+                'test1'       => [
                     'datacenterId'   => -1,
                     'workerId'       => -1,
                 ],
-                'test2' => [
+                'test2'       => [
                     'datacenterId'   => 33,
                     'workerId'       => -1,
                 ],
-                'test3' => [
+                'test3'       => [
                     'datacenterId'   => 1,
                     'workerId'       => 2,
                 ],
-                'test4' => [
+                'test4'       => [
                     'datacenterId'   => 999,
                     'workerId'       => 20,
                 ],
-                'testBatch' => [
+                'testBatch'   => [
                     'datacenterId'   => 999,
                     'workerId'       => 20,
                 ],

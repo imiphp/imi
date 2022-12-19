@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -12,14 +12,14 @@ return [
         'Imi\WorkermanGateway\Test\AppServer\WebSocketServer\Middleware',
         'Imi\WorkermanGateway\Test\AppServer\WebSocketServer\Listener',
     ],
-    'beans'    => [
-        'WebSocketDispatcher'    => [
+    'beans'       => [
+        'WebSocketDispatcher'       => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\WorkermanGateway\Test\AppServer\WebSocketServer\Middleware\Test::class,
             ],
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'            => [
             'middlewares'    => [
                 \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
@@ -28,15 +28,15 @@ return [
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'WSRouteNotFound',
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => 'ConnectionContextGateway',
         ],
-        'ServerGroup' => [
+        'ServerGroup'               => [
             'groupHandler' => 'GroupGateway',
         ],
     ],
     // 锁配置
-    'lock'  => [
+    'lock'        => [
         'default' => 'redisConnectionContextLock',
         'list'    => [
             'redisConnectionContextLock' => [

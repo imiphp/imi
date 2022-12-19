@@ -3,26 +3,26 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'GrpcApp\GrpcServer\Controller',
     ],
-    'beans'    => [
-        'HttpDispatcher'    => [
+    'beans'       => [
+        'HttpDispatcher'               => [
             'middlewares'    => [
                 \GrpcApp\GrpcServer\Middleware\PoweredBy::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'       => [
             'handlerClass'  => 'ConnectionContextMemoryTable',
         ],
         'ConnectionContextMemoryTable' => [
             'tableName' => 'ConnectionContext',
         ],
-        'ActionWrapMiddleware'  => [
+        'ActionWrapMiddleware'         => [
             'actionMiddleware'  => 'GrpcActionMiddleware',
         ],
     ],

@@ -6,15 +6,15 @@ use function Imi\env;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Swoole\Test\HttpServer',
+    'namespace'     => 'Imi\Swoole\Test\HttpServer',
 
     // 配置文件
-    'configs'    => [
+    'configs'       => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'      => [
         'Imi\Swoole\Test\HttpServer\Listener',
         'Imi\Swoole\Test\HttpServer\Task',
         'Imi\Swoole\Test\HttpServer\Process',
@@ -29,7 +29,7 @@ return [
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'        => [
         'async'    => true,
         'channels' => [
             'imi' => [
@@ -66,7 +66,7 @@ return [
     ],
 
     // 统一的服务器配置
-    'server' => [
+    'server'        => [
         // 启动服务时，检查连接池连接或非连接池连接是否可用。如不可用直接退出程序。
         'checkPoolResource' => true,
     ],
@@ -103,7 +103,7 @@ return [
                 'ssl_key_file'      => \dirname(__DIR__, 7) . '/tests/ssl/server.key',
             ],
         ],
-        'Http2Test'   => [
+        'Http2Test'     => [
             'namespace' => 'Imi\Swoole\Test\HttpServer\Http2TestServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,
             'host'      => env('SERVER_HOST', '127.0.0.1'),
@@ -118,10 +118,10 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'         => [
         // 主数据库
         'maindb'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -137,8 +137,8 @@ return [
                 'charset'     => 'utf8mb4',
             ],
         ],
-        'redis'    => [
-            'pool'    => [
+        'redis'     => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -154,20 +154,20 @@ return [
     ],
 
     // 数据库配置
-    'db'    => [
+    'db'            => [
         // 默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'         => [
         // 默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
     'memoryTable'   => [
-        't1'    => [
+        't1'                   => [
             'columns'   => [
                 ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
                 ['name' => 'quantity', 'type' => \Swoole\Table::TYPE_INT],
@@ -181,7 +181,7 @@ return [
     ],
 
     // 锁
-    'lock'  => [
+    'lock'          => [
         'list'  => [
             // 'atomic' =>  [
             //     'class' =>  'AtomicLock',
@@ -189,7 +189,7 @@ return [
             //         'atomicName'    =>  'atomicLock',
             //     ],
             // ],
-            'memoryTableLock' => [
+            'memoryTableLock'            => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',
@@ -205,7 +205,7 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    => [
+    'atomics'       => [
         'atomicLock'   => 1,
     ],
 ];

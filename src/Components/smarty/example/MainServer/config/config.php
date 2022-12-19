@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\Smarty\Example\MainServer\Controller',
     ],
-    'beans'    => [
+    'beans'       => [
         'SessionManager'    => [
             'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
-        'SessionFile'    => [
+        'SessionFile'       => [
             'savePath'    => \dirname(__DIR__, 2) . '/.session/',
         ],
-        'SessionConfig'    => [
+        'SessionConfig'     => [
         ],
-        'SessionCookie'    => [
+        'SessionCookie'     => [
             'lifetime'    => 86400 * 30,
         ],
         'HttpDispatcher'    => [
@@ -28,9 +28,9 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'HtmlView'    => [
-            'templatePath'      => \dirname(__DIR__) . '/template/',
-            'templateEngine'    => 'SmartyEngine',
+        'HtmlView'          => [
+            'templatePath'       => \dirname(__DIR__) . '/template/',
+            'templateEngine'     => 'SmartyEngine',
             // 支持的模版文件扩展名，优先级按先后顺序
             'fileSuffixs'        => [
                 'tpl',
@@ -39,7 +39,7 @@ return [
             ],
         ],
         // 可选项
-        'SmartyEngine' => [
+        'SmartyEngine'      => [
             // 缓存目录
             'cacheDir'      => null,
             // 编译目录

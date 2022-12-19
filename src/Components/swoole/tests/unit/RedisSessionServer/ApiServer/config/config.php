@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\Swoole\Test\RedisSessionServer\ApiServer\Controller',
     ],
-    'beans'    => [
+    'beans'       => [
         'SessionManager'    => [
             'handlerClass'    => \Imi\Server\Session\Handler\Redis::class,
         ],
-        'SessionRedis'    => [
+        'SessionRedis'      => [
             'poolName'              => 'redisSession',
             'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             'keyPrefix'             => 'session:',
         ],
-        'SessionConfig'    => [
+        'SessionConfig'     => [
         ],
-        'SessionCookie'    => [
+        'SessionCookie'     => [
             'lifetime'    => 0,
         ],
         'HttpDispatcher'    => [

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use function Imi\env;
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -13,20 +13,20 @@ return [
         'Imi\Workerman\Test\AppServer\TcpServer\Error',
         'Imi\Workerman\Test\AppServer\TcpServer\Middleware',
     ],
-    'beans'    => [
-        'TcpDispatcher'    => [
+    'beans'       => [
+        'TcpDispatcher'             => [
             'middlewares'    => [
                 \Imi\Workerman\Test\AppServer\TcpServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
                 \Imi\Workerman\Test\AppServer\TcpServer\Middleware\Test::class,
             ],
         ],
-        'GroupRedis'    => [
+        'GroupRedis'                => [
             'redisPool'    => 'redis',
             'key'          => 'IMITEST.TCP.GROUP',
             'redisDb'      => 2,
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => 'ConnectionContextLocal',
             'ttl'           => 600,
         ],
@@ -35,7 +35,7 @@ return [
         ],
     ],
     // db 配置
-    'db' => [
+    'db'          => [
         // 默认连接池名
         'defaultPool' => 'maindb',
         'connections' => [
@@ -51,7 +51,7 @@ return [
         ],
     ],
     // 锁配置
-    'lock'  => [
+    'lock'        => [
         'default' => 'redisConnectionContextLock',
         'list'    => [
             'redisConnectionContextLock' => [

@@ -3,27 +3,27 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'           => [
     ],
     // bean扫描目录
     // 'beanScan'    => [
     //     'Imi\JWT\Test\Test',
     // ],
-    'components'    => [
+    'components'        => [
         // 引入本组件
         'jwt'    => 'Imi\JWT',
     ],
     'ignoreNamespace'   => [
     ],
-    'beans'    => [
+    'beans'             => [
         'JWT'   => [
             'list'  => [
                 'a' => [
-                    'audience'  => 'audience_a',
-                    'subject'   => 'subject_a',
-                    'expires'   => 86400,
-                    'issuer'    => 'issuer_a',
-                    'headers'   => [
+                    'audience'      => 'audience_a',
+                    'subject'       => 'subject_a',
+                    'expires'       => 86400,
+                    'issuer'        => 'issuer_a',
+                    'headers'       => [
                         'a' => '1',
                         'b' => '2',
                     ],
@@ -32,11 +32,11 @@ return [
                     'publicKey'     => '1010e4c5907b331741eeacae59ec6f69',
                 ],
                 'b' => [
-                    'audience'  => 'audience_a',
-                    'subject'   => 'subject_a',
-                    'expires'   => 86400,
-                    'issuer'    => 'issuer_a',
-                    'headers'   => [
+                    'audience'      => 'audience_a',
+                    'subject'       => 'subject_a',
+                    'expires'       => 86400,
+                    'issuer'        => 'issuer_a',
+                    'headers'       => [
                         'a' => '1',
                         'b' => '2',
                     ],

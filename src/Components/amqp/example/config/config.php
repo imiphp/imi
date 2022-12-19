@@ -10,15 +10,15 @@ use Imi\Util\Imi;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'AMQPApp',
+    'namespace'                  => 'AMQPApp',
 
     // 配置文件
-    'configs'    => [
+    'configs'                    => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'                   => [
         'AMQPApp\Listener',
         'AMQPApp\Task',
         'AMQPApp\Consumer',
@@ -27,7 +27,7 @@ return [
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'                 => [
         'Swoole'    => 'Imi\Swoole',
         'Workerman' => 'Imi\Workerman',
         'AMQP'      => 'Imi\AMQP',
@@ -36,7 +36,7 @@ return [
     'overrideDefaultIgnorePaths' => true,
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'                 => [
         'namespace'    => 'AMQPApp\ApiServer',
         'type'         => \Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
@@ -47,7 +47,7 @@ return [
     ],
 
     // Workerman 服务器配置
-    'workermanServer' => [
+    'workermanServer'            => [
         'http' => [
             'namespace'    => 'AMQPApp\ApiServer',
             'type'         => \Imi\Workerman\Server\Type::HTTP,
@@ -59,13 +59,13 @@ return [
     ],
 
     // 子服务器（端口监听）配置
-    'subServers'        => [
+    'subServers'                 => [
     ],
 
     // 连接池配置
-    'pools'    => Imi::checkAppType('swoole') ? [
-        'redis'    => [
-            'pool'    => [
+    'pools'                      => Imi::checkAppType('swoole') ? [
+        'redis'     => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -79,7 +79,7 @@ return [
             ],
         ],
         'rabbit'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\AMQP\Pool\AMQPCoroutinePool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -98,7 +98,7 @@ return [
     ] : [],
 
     // redis 配置
-    'redis' => [
+    'redis'                      => [
         // 数默认连接池名
         'defaultPool' => 'redis',
         'connections' => [
@@ -109,7 +109,7 @@ return [
             ],
         ],
     ],
-    'amqp' => [
+    'amqp'                       => [
         'connections' => [
             'rabbit'    => [
                 'host'      => AMQP_SERVER_HOST,
@@ -120,7 +120,7 @@ return [
         ],
     ],
     // 日志配置
-    'logger' => [
+    'logger'                     => [
         'channels' => [
             'imi' => [
                 'handlers' => [

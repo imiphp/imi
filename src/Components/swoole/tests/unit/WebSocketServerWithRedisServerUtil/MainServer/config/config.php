@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -11,20 +11,20 @@ return [
         'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Listener',
         'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Error',
     ],
-    'beans'    => [
-        'WebSocketDispatcher'    => [
+    'beans'       => [
+        'WebSocketDispatcher'       => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Middleware\Test::class,
             ],
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'            => [
             'middlewares'    => [
                 \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Local::class,
             'ttl'           => 600,
         ],

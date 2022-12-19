@@ -5,15 +5,15 @@ declare(strict_types=1);
 use Imi\Util\Http\Consts\StatusCode;
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\SwooleTracker\Example\WebSocketServer\MainServer\Controller',
         'Imi\SwooleTracker\Example\WebSocketServer\MainServer\Listener',
     ],
-    'beans'    => [
-        'WebSocketDispatcher'    => [
+    'beans'       => [
+        'WebSocketDispatcher'               => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 'SwooleTrackerWebSocketMiddleware',
@@ -27,18 +27,18 @@ return [
             // 'exceptionCode'     =>  500, // 当发生异常时上报的默认code
             'nameHandler'       => static fn (Imi\Server\WebSocket\Message\IFrame $frame) => $frame->getFormatData()->action ?? 'unknown',
         ],
-        'GroupRedis'    => [
+        'GroupRedis'                        => [
             'redisPool'    => 'redis',
             'redisDb'      => 2,
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'                    => [
             'middlewares'    => [
                 \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
                 'SwooleTrackerHttpMiddleware',
             ],
         ],
-        'SwooleTrackerHttpMiddleware'   => [
+        'SwooleTrackerHttpMiddleware'       => [
             'serviceName'       => 'imi-websocket-example-handshake', // 服务名
             // 'serverIp'          => null, // 服务器 IP，默认获取当前网卡 IP
             // 'interface'         => null, // 网卡 interface 名，自动获取当前网卡IP时有效
@@ -46,13 +46,13 @@ return [
             // 'successCode'       =>  500, // 当成功时上报的默认code
             // 'exceptionCode'     =>  500, // 当发生异常时上报的默认code
         ],
-        'ConnectionContextRedis'    => [
+        'ConnectionContextRedis'            => [
             'redisPool'    => 'redis',
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'            => [
             'handlerClass'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable::class,
         ],
-        'ConnectionContextMemoryTable' => [
+        'ConnectionContextMemoryTable'      => [
             'tableName' => 'ConnectionContext',
         ],
     ],

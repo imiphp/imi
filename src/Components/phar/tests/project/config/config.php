@@ -8,23 +8,23 @@ $mode = App::isInited() ? App::getApp()->getType() : null;
 
 return [
     // 运行时目录
-    'runtimePath' => app_real_root_path() . '/.runtime',
+    'runtimePath'       => app_real_root_path() . '/.runtime',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     'ignoreNamespace'   => [
     ],
 
-    'ignorePaths' => [
+    'ignorePaths'       => [
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'rr',
     ],
 
     // Swoole 主服务器配置
-    'mainServer'    => 'swoole' === $mode ? [
+    'mainServer'        => 'swoole' === $mode ? [
         'namespace'    => 'ImiApp\ApiServer',
         'type'         => Imi\Swoole\Server\Type::HTTP,
         'host'         => '0.0.0.0',
@@ -47,7 +47,7 @@ return [
     ] : [],
 
     // Workerman 服务器配置
-    'workermanServer' => 'workerman' === $mode ? [
+    'workermanServer'   => 'workerman' === $mode ? [
         'http' => [
             'namespace' => 'ImiApp\ApiServer',
             'type'      => Imi\Workerman\Server\Type::HTTP,
@@ -59,22 +59,22 @@ return [
     ] : [],
 
     // fpm 服务器配置
-    'fpm' => 'fpm' === $mode ? [
+    'fpm'               => 'fpm' === $mode ? [
         'serverPath' => \dirname(__DIR__) . '/ApiServer',
     ] : [],
 
     // roadrunner 服务器配置
-    'roadRunnerServer' => [
+    'roadRunnerServer'  => [
         'main' => [
             'namespace' => 'ImiApp\ApiServer',
         ],
     ],
 
     // 连接池配置
-    'pools'    => 'swoole' === $mode ? [
+    'pools'             => 'swoole' === $mode ? [
         // 主数据库
         'maindb'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -90,8 +90,8 @@ return [
                 'charset'     => 'utf8mb4',
             ],
         ],
-        'redis'    => [
-            'pool'    => [
+        'redis'     => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -107,11 +107,11 @@ return [
     ] : [],
 
     // 数据库配置
-    'db'    => [
+    'db'                => [
         // 数默认连接池名
         'defaultPool'    => 'maindb',
         // FPM、Workerman 下用
-        'connections'   => [
+        'connections'    => [
             'maindb' => [
                 'host'        => '127.0.0.1',
                 'port'        => 3306,
@@ -138,26 +138,26 @@ return [
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
         // FPM、Workerman 下用
         'connections'   => [
             'redis' => [
-                'host'	 => '127.0.0.1',
-                'port'	 => 6379,
+                'host'	      => '127.0.0.1',
+                'port'	      => 6379,
                 // 是否自动序列化变量
                 'serialize'	 => true,
                 // 密码
-                'password'	 => null,
+                'password'	  => null,
                 // 第几个库
-                'db'	 => 0,
+                'db'	        => 0,
             ],
         ],
     ],
 
     // 内存表配置
-    'memoryTable'   => [
+    'memoryTable'       => [
         // 't1'    =>  [
         //     'columns'   =>  [
         //         ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
@@ -168,7 +168,7 @@ return [
     ],
 
     // 锁
-    'lock'  => [
+    'lock'              => [
         // 'list'  =>  [
         //     'atomic' =>  [
         //         'class' =>  'AtomicLock',
@@ -180,12 +180,12 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    => [
+    'atomics'           => [
         // 'atomicLock'   =>  1,
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

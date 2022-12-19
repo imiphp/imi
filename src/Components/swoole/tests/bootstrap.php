@@ -220,27 +220,27 @@ function startServer(): void
     }
 
     $servers = [
-        'HttpServer'    => [
+        'HttpServer'                            => [
             'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
-        'RedisSessionServer'    => [
+        'RedisSessionServer'                    => [
             'start'         => __DIR__ . '/unit/RedisSessionServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
             'checkStatus'   => 'checkRedisSessionServerStatus',
         ],
-        'WebSocketServer'    => [
+        'WebSocketServer'                       => [
             'start'         => __DIR__ . '/unit/WebSocketServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/WebSocketServer/bin/stop.sh',
             'checkStatus'   => 'checkWebSocketServerStatus',
         ],
-        'TCPServer'    => [
+        'TCPServer'                             => [
             'start'         => __DIR__ . '/unit/TCPServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/TCPServer/bin/stop.sh',
             'checkStatus'   => 'checkTCPServerStatus',
         ],
-        'UDPServer'    => [
+        'UDPServer'                             => [
             'start'         => __DIR__ . '/unit/UDPServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/UDPServer/bin/stop.sh',
             'checkStatus'   => 'checkUDPServerStatus',

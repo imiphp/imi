@@ -6,26 +6,26 @@ use function Imi\env;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Swoole\Test\TCPServer',
+    'namespace'         => 'Imi\Swoole\Test\TCPServer',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\Swoole\Test\TCPServer\Listener',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole' => 'Imi\Swoole',
         'Macro'  => 'Imi\Macro',
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -61,14 +61,14 @@ return [
     ],
 
     // 主服务器配置
-    'mainServer'    => [
-        'namespace'    => 'Imi\Swoole\Test\TCPServer\MainServer',
-        'type'         => Imi\Swoole\Server\Type::TCP_SERVER,
-        'host'         => env('SERVER_HOST', '127.0.0.1'),
-        'port'         => 13003,
-        'syncConnect'  => true,
-        'configs'      => [
-            'worker_num'    => 1,
+    'mainServer'        => [
+        'namespace'     => 'Imi\Swoole\Test\TCPServer\MainServer',
+        'type'          => Imi\Swoole\Server\Type::TCP_SERVER,
+        'host'          => env('SERVER_HOST', '127.0.0.1'),
+        'port'          => 13003,
+        'syncConnect'   => true,
+        'configs'       => [
+            'worker_num'         => 1,
             // EOF自动分包
             'open_eof_split'     => true, // 打开EOF_SPLIT检测
             'package_eof'        => "\r\n", // 设置EOF
@@ -81,9 +81,9 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         'redis'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -99,13 +99,13 @@ return [
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
-    'memoryTable'   => [
+    'memoryTable'       => [
         'ConnectionContext'    => [
             'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
             'lockId' => 'redisConnectionContextLock',
@@ -113,7 +113,7 @@ return [
     ],
 
     // 锁配置
-    'lock'  => [
+    'lock'              => [
         'list'  => [
             'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',

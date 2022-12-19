@@ -5,7 +5,7 @@ declare(strict_types=1);
 $imiPath = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'src' . \DIRECTORY_SEPARATOR;
 
 return [
-    'beanScan' => [
+    'beanScan'          => [
         'Imi\Config',
         'Imi\Bean',
         'Imi\Aop',
@@ -32,7 +32,7 @@ return [
     'ignoreNamespace'   => [
         'Imi\Components\*',
     ],
-    'ignorePaths'   => [
+    'ignorePaths'       => [
         $imiPath . 'functions',
         $imiPath . 'Components' . \DIRECTORY_SEPARATOR . '*' . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . '*/vendor',
         $imiPath . 'Cli' . \DIRECTORY_SEPARATOR . 'bootstrap',

@@ -161,7 +161,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $expectedData = [
-            'list'  => [
+            'list'          => [
                 [
                     'id'        => $ids[1],
                     'title'     => 'title-insert',
@@ -192,7 +192,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $expectedData = [
-            'list'  => [
+            'list'          => [
                 [
                     'id'        => $ids[1],
                     'title'     => 'title-insert',
@@ -221,7 +221,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         ['ids' => $ids] = $args;
         $expectedData = [
-            'list'  => [
+            'list'          => [
                 [
                     'id'        => $ids[0],
                     'title'     => 'title-insert',

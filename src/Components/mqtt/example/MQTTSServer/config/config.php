@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'MQTTApp\MQTTServer\Controller',
     ],
-    'beans'    => [
-        'ConnectionContextStore'   => [
+    'beans'       => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => 'ConnectionContextRedis',
         ],
         'ConnectionContextRedis'    => [

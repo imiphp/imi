@@ -50,7 +50,7 @@ function startServer(): void
     if ('\\' === \DIRECTORY_SEPARATOR)
     {
         $servers = [
-            'AppServer'    => [
+            'AppServer'                  => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start.ps1',
                 'stop'          => __DIR__ . '/unit/AppServer/bin/stop.ps1',
                 'checkStatus'   => 'checkHttpServerStatus',
@@ -65,7 +65,7 @@ function startServer(): void
     else
     {
         $servers = [
-            'AppServer'    => [
+            'AppServer'                  => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start.sh',
                 'stop'          => __DIR__ . '/unit/AppServer/bin/stop.sh',
                 'checkStatus'   => 'checkHttpServerStatus',

@@ -5,14 +5,14 @@ declare(strict_types=1);
 use Imi\Server\UdpServer\Message\IPacketData;
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\SwooleTracker\Example\UDPServer\UDPServer\Controller',
     ],
-    'beans'    => [
-        'UdpDispatcher'    => [
+    'beans'       => [
+        'UdpDispatcher'               => [
             'middlewares'    => [
                 \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
                 'SwooleTrackerUDPMiddleware',

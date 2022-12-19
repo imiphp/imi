@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\SwooleTracker\Example\HttpServer\ApiServer\Controller',
     ],
-    'beans'    => [
-        'HttpDispatcher'    => [
+    'beans'       => [
+        'HttpDispatcher'                => [
             'middlewares'    => [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
                 'SwooleTrackerHttpMiddleware',

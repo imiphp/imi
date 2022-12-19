@@ -6,32 +6,32 @@ use function Imi\env;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil',
+    'namespace'         => 'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\Listener',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole' => 'Imi\Swoole',
         'Macro'  => 'Imi\Macro',
     ],
 
-    'imi' => [
+    'imi'               => [
         'beans' => [
             'ServerUtil' => \Imi\Swoole\Server\Util\RedisServerUtil::class,
         ],
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -67,7 +67,7 @@ return [
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'    => 'Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer',
         'type'         => Imi\Swoole\Server\Type::WEBSOCKET,
         'host'         => env('SERVER_HOST', '127.0.0.1'),
@@ -83,9 +83,9 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         'redis'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -104,13 +104,13 @@ return [
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
-    'memoryTable'   => [
+    'memoryTable'       => [
         'ConnectionContext'    => [
             'class'      => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
             'lockId'     => 'atomic',
@@ -119,15 +119,15 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    => [
+    'atomics'           => [
         'atomic1'   => 1,
     ],
 
     // 锁配置
-    'lock'  => [
+    'lock'              => [
         'default' => 'atomic',
         'list'    => [
-            'atomic' => [
+            'atomic'                     => [
                 'class'     => 'AtomicLock',
                 'options'   => [
                     'atomicName'    => 'atomic1',

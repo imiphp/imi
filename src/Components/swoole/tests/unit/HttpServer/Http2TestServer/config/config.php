@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\Swoole\Test\HttpServer\Http2TestServer\Controller',
     ],
-    'beans'    => [
-        'HttpDispatcher'    => [
+    'beans'       => [
+        'HttpDispatcher'            => [
             'middlewares'    => [
                 \Imi\Swoole\Test\HttpServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Redis::class,
         ],
         'ConnectionContextRedis'    => [

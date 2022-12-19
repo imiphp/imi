@@ -3,28 +3,28 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'       => [
     ],
     // bean扫描目录
-    'beanScan'    => [
+    'beanScan'      => [
         'Imi\Swoole\Test\HttpServer\ApiServer\Controller',
         'Imi\Swoole\Test\HttpServer\Modules',
         'Imi\Swoole\Test\HttpServer\OutsideController',
         'Imi\Swoole\Test\HttpServer\ApiServer\Error',
     ],
-    'beans'    => [
-        'SessionManager'    => [
+    'beans'         => [
+        'SessionManager'           => [
             'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
-        'SessionFile'    => [
+        'SessionFile'              => [
             'savePath'    => \dirname(__DIR__, 2) . '/.session/',
         ],
-        'SessionConfig'    => [
+        'SessionConfig'            => [
         ],
-        'SessionCookie'    => [
+        'SessionCookie'            => [
             'lifetime'    => 86400 * 30,
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'           => [
             'middlewares'    => [
                 'OptionsMiddleware',
                 'ExecuteTimeoutMiddleware',
@@ -34,12 +34,12 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'OptionsMiddleware' => [
+        'OptionsMiddleware'        => [
             'allowOrigin'   => 'http://127.0.0.1',
             'optionsBreak'  => true,
         ],
-        'HtmlView'    => [
-            'templatePath'    => \dirname(__DIR__) . '/template/',
+        'HtmlView'                 => [
+            'templatePath'       => \dirname(__DIR__) . '/template/',
             // 支持的模版文件扩展名，优先级按先后顺序
             'fileSuffixs'        => [
                 'tpl',
@@ -50,7 +50,7 @@ return [
         'ExecuteTimeoutMiddleware' => [
             'maxExecuteTime'    => 1000,
         ],
-        'HttpNotFoundHandler'   => [
+        'HttpNotFoundHandler'      => [
             'handler'   => 'MyHttpNotFoundHandler',
         ],
     ],

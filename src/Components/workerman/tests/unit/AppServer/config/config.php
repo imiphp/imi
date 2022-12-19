@@ -8,27 +8,27 @@ use Imi\Server\WebSocket\Enum\NonControlFrameType;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Workerman\Test\AppServer',
+    'namespace'       => 'Imi\Workerman\Test\AppServer',
 
     // 配置文件
-    'configs'    => [
+    'configs'         => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'        => [
         'Imi\Workerman\Test\AppServer\Listener',
         'Imi\Workerman\Test\AppServer\Cron',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'      => [
         'Workerman'        => 'Imi\Workerman',
         'Macro'            => 'Imi\Macro',
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'          => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -64,14 +64,14 @@ return [
     ],
 
     // 统一的服务器配置
-    'server' => [
+    'server'          => [
         // 启动服务时，检查连接池连接或非连接池连接是否可用。如不可用直接退出程序。
         'checkPoolResource' => true,
     ],
 
     // Workerman 服务器配置
     'workermanServer' => [
-        'http' => [
+        'http'      => [
             'namespace' => 'Imi\Workerman\Test\AppServer\ApiServer',
             'type'      => Imi\Workerman\Server\Type::HTTP,
             'host'      => env('SERVER_HOST', '127.0.0.1'),
@@ -89,36 +89,36 @@ return [
             'configs'             => [
             ],
         ],
-        'tcp' => [
-            'namespace'   => 'Imi\Workerman\Test\AppServer\TcpServer',
-            'type'        => Imi\Workerman\Server\Type::TCP,
-            'host'        => env('SERVER_HOST', '127.0.0.1'),
-            'port'        => 13003,
-            'shareWorker' => 'http',
-            'configs'     => [
+        'tcp'       => [
+            'namespace'     => 'Imi\Workerman\Test\AppServer\TcpServer',
+            'type'          => Imi\Workerman\Server\Type::TCP,
+            'host'          => env('SERVER_HOST', '127.0.0.1'),
+            'port'          => 13003,
+            'shareWorker'   => 'http',
+            'configs'       => [
                 'protocol' => \Workerman\Protocols\Text::class,
             ],
             // 数据处理器
             'dataParser'    => \Imi\Workerman\Test\AppServer\TcpServer\Parser\JsonObjectParser::class,
         ],
-        'udp' => [
-            'namespace'   => 'Imi\Workerman\Test\AppServer\UdpServer',
-            'type'        => Imi\Workerman\Server\Type::UDP,
-            'host'        => env('SERVER_HOST', '127.0.0.1'),
-            'port'        => 13004,
-            'shareWorker' => 'http',
-            'configs'     => [
+        'udp'       => [
+            'namespace'     => 'Imi\Workerman\Test\AppServer\UdpServer',
+            'type'          => Imi\Workerman\Server\Type::UDP,
+            'host'          => env('SERVER_HOST', '127.0.0.1'),
+            'port'          => 13004,
+            'shareWorker'   => 'http',
+            'configs'       => [
             ],
             // 数据处理器
             'dataParser'    => Imi\Server\DataParser\JsonObjectParser::class,
         ],
     ],
 
-    'workerman' => [
+    'workerman'       => [
     ],
 
     // 数据库配置
-    'db'    => [
+    'db'              => [
         // 默认连接池名
         'defaultPool'    => 'maindb',
         'connections'    => [
@@ -135,7 +135,7 @@ return [
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'           => [
         // 默认连接池名
         'defaultPool'   => 'redis',
         'connections'   => [
@@ -149,7 +149,7 @@ return [
     ],
 
     // 锁
-    'lock'  => [
+    'lock'            => [
         'default' => 'redisConnectionContextLock',
         'list'    => [
             'redisConnectionContextLock' => [
@@ -161,7 +161,7 @@ return [
         ],
     ],
 
-    'imi' => [
+    'imi'             => [
         'beans' => [
             'ServerUtil' => \Imi\Workerman\Server\Util\LocalServerUtil::class,
         ],

@@ -6,27 +6,27 @@ use function Imi\env;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'MQTTApp',
+    'namespace'         => 'MQTTApp',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'MQTTApp\Listener',
         'MQTTApp\Task',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'Swoole' => 'Imi\Swoole',
         'MQTT'   => 'Imi\MQTT',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'     => 'MQTTApp\MQTTServer',
         'type'          => 'MQTTServer',
         'host'          => '127.0.0.1',
@@ -55,9 +55,9 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         'redis'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -73,19 +73,19 @@ return [
     ],
 
     // 数据库配置
-    'db'    => [
+    'db'                => [
         // 数默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 锁
-    'lock'  => [
+    'lock'              => [
         'list'  => [
             'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
@@ -96,7 +96,7 @@ return [
         ],
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

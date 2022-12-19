@@ -5,7 +5,7 @@ declare(strict_types=1);
 use function Imi\env;
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -13,8 +13,8 @@ return [
         'Imi\Workerman\Test\AppServer\UdpServer\Error',
         'Imi\Workerman\Test\AppServer\UdpServer\Middleware',
     ],
-    'beans'    => [
-        'UdpDispatcher'    => [
+    'beans'       => [
+        'UdpDispatcher'             => [
             'middlewares'    => [
                 \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
                 \Imi\Workerman\Test\AppServer\UdpServer\Middleware\Test::class,
@@ -25,7 +25,7 @@ return [
         ],
     ],
     // db 配置
-    'db' => [
+    'db'          => [
         // 默认连接池名
         'defaultPool' => 'maindb',
         'connections' => [
@@ -41,7 +41,7 @@ return [
         ],
     ],
     // 锁配置
-    'lock'  => [
+    'lock'        => [
         'default' => 'redisConnectionContextLock',
         'list'    => [
             'redisConnectionContextLock' => [

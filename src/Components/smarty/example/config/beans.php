@@ -10,7 +10,7 @@ return [
 
         // --- 文件修改时间监控 ---
         // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\FileMTime::class,
-        'timespan'    => 1, // 检测时间间隔，单位：秒
+        'timespan'        => 1, // 检测时间间隔，单位：秒
 
         // --- Inotify 扩展监控 ---
         // 'monitorClass'    =>    \Imi\HotUpdate\Monitor\Inotify::class,

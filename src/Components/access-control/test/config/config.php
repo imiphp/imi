@@ -7,34 +7,34 @@ use function Imi\env;
 // 注释项代表可省略的，使用默认值
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\AC\Test',
+    'namespace'         => 'Imi\AC\Test',
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\AC\Test\Tool',
     ],
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'AccessControl'       => 'Imi\AC',
         'Macro'               => 'Imi\Macro',
     ],
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
     ],
     // 子服务器（端口监听）配置
     'subServers'        => [
     ],
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
-    'db'    => [
+    'db'                => [
         // 数据库默认连接池名
         'defaultPool'    => 'maindb',
     ],
-    'pools'    => [
+    'pools'             => [
         // 数据库连接池名：maindb
         'maindb'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Db\Pool\SyncDbPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -52,7 +52,7 @@ return [
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

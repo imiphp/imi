@@ -5,10 +5,10 @@ declare(strict_types=1);
 use function Imi\env;
 
 return [
-    'configs'    => [
+    'configs'       => [
     ],
     // bean扫描目录
-    'beanScan'    => [
+    'beanScan'      => [
         'Imi\Swoole\Test\Component\Cache',
         'Imi\Swoole\Test\Component\Db',
         'Imi\Swoole\Test\Component\Lock',
@@ -25,7 +25,7 @@ return [
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'        => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -60,22 +60,22 @@ return [
         ],
     ],
 
-    'beans'    => [
+    'beans'         => [
         'ErrorLog'          => [
             // 'level' =>  ,
         ],
-        'DbQueryLog' => [
+        'DbQueryLog'        => [
             'enable' => true,
         ],
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'         => [
         // 主数据库
-        'maindb'    => [
-            'pool'    => [
+        'maindb'                => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'         => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -97,10 +97,10 @@ return [
             ],
         ],
         // 主数据库
-        'maindb.slave'    => [
-            'pool'    => [
+        'maindb.slave'          => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'         => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -122,10 +122,10 @@ return [
             ],
         ],
         // 主数据库
-        'swooleMysql'    => [
-            'pool'    => [
+        'swooleMysql'           => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'         => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -145,10 +145,10 @@ return [
             ],
         ],
         // mysqli
-        'mysqli'    => [
-            'pool'    => [
+        'mysqli'                => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'         => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -167,8 +167,8 @@ return [
                 'dbClass'     => 'MysqliDriver',
             ],
         ],
-        'redis_test'    => [
-            'pool'    => [
+        'redis_test'            => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -181,8 +181,8 @@ return [
                 'password'  => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
-        'redis_cache'    => [
-            'pool'    => [
+        'redis_cache'           => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -198,7 +198,7 @@ return [
             ],
         ],
         'redis_manager_test'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -215,38 +215,38 @@ return [
         ],
     ],
     // db 配置
-    'db' => [
+    'db'            => [
         // 默认连接池名
         'defaultPool'   => 'maindb',
     ],
     // redis 配置
-    'redis' => [
+    'redis'         => [
         // 默认连接池名
         'defaultPool'   => 'redis_test',
     ],
     // 缓存配置
-    'cache' => [
+    'cache'         => [
         'default'   => 'file1',
     ],
     // 缓存
-    'caches'    => [
-        'file1'  => [
+    'caches'        => [
+        'file1'     => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
                 'savePath'              => sys_get_temp_dir() . '/imi-cache/',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'file2'  => [
+        'file2'     => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
-                'savePath'    => sys_get_temp_dir() . '/imi-cache/',
+                'savePath'                => sys_get_temp_dir() . '/imi-cache/',
                 // 保存文件名处理回调，一般可以不写
                 'saveFileNameCallback'    => static fn (string $savePath, string $key) => \Imi\Util\File::path($savePath, sha1($key)),
                 'formatHandlerClass'      => \Imi\Util\Format\Json::class,
             ],
         ],
-        'redis' => [
+        'redis'     => [
             'handlerClass'  => \Imi\Cache\Handler\Redis::class,
             'option'        => [
                 'poolName'              => 'redis_cache',
@@ -263,12 +263,12 @@ return [
         ],
     ],
     // atmoic 配置
-    'atomics'    => [
+    'atomics'       => [
         'atomicLock'   => 1,
         'test',
     ],
     // 锁
-    'lock'  => [
+    'lock'          => [
         'list'  => [
             'atomic' => [
                 'class'     => 'AtomicLock',
@@ -278,6 +278,6 @@ return [
             ],
         ],
     ],
-    'tools'    => [
+    'tools'         => [
     ],
 ];

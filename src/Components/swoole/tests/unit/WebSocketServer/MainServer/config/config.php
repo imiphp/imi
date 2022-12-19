@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
@@ -12,21 +12,21 @@ return [
         'Imi\Swoole\Test\WebSocketServer\MainServer\Error',
         'Imi\Swoole\Test\WebSocketServer\MainServer\Task',
     ],
-    'beans'    => [
-        'WebSocketDispatcher'    => [
+    'beans'       => [
+        'WebSocketDispatcher'       => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\WebSocketServer\MainServer\Middleware\Test::class,
             ],
         ],
-        'ServerGroup' => [
+        'ServerGroup'               => [
             'groupHandler' => 'GroupRedis',
         ],
-        'GroupRedis'    => [
+        'GroupRedis'                => [
             'redisPool'    => 'redis',
             'redisDb'      => 2,
         ],
-        'HttpDispatcher'    => [
+        'HttpDispatcher'            => [
             'middlewares'    => [
                 \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
@@ -36,7 +36,7 @@ return [
             'redisPool' => 'redis',
             'lockId'    => 'redisConnectionContextLock',
         ],
-        'ConnectionContextStore'   => [
+        'ConnectionContextStore'    => [
             'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Redis::class,
             'ttl'           => 600,
         ],

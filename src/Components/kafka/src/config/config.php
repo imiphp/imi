@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'beanScan'  => [
+    'beanScan'      => [
         'Imi\Kafka\Annotation',
         'Imi\Kafka\Pool',
         'Imi\Kafka\Queue',

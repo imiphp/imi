@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'beanScan'  => [
+    'beanScan'      => [
         'Imi\AMQP\Annotation',
         'Imi\AMQP\Pool',
         'Imi\AMQP\Queue',

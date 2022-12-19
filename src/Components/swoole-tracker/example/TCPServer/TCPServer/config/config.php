@@ -5,14 +5,14 @@ declare(strict_types=1);
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'Imi\SwooleTracker\Example\TCPServer\TCPServer\Controller',
     ],
-    'beans'    => [
-        'TcpDispatcher'    => [
+    'beans'       => [
+        'TcpDispatcher'               => [
             'middlewares'    => [
                 \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
                 'SwooleTrackerTCPMiddleware',
@@ -26,13 +26,13 @@ return [
             // 'exceptionCode'     =>  500, // 当发生异常时上报的默认code
             'nameHandler'       => static fn (IReceiveData $data) => $data->getFormatData()->action ?? 'unknown',
         ],
-        'GroupRedis'    => [
+        'GroupRedis'                  => [
             'redisPool'    => 'redis',
         ],
-        'ServerGroup'   => [
+        'ServerGroup'                 => [
             'status'        => false,
         ],
-        'ConnectionContextRedis'    => [
+        'ConnectionContextRedis'      => [
             'redisPool' => 'redis',
             'lockId'    => 'redis',
         ],

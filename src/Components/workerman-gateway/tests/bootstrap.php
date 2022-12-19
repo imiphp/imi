@@ -45,17 +45,17 @@ function startServer(): void
     else
     {
         $servers = [
-            'WorkermanServer'    => [
+            'WorkermanServer'            => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh',
                 'checkStatus'   => 'checkHttpServerStatus',
             ],
             'WorkermanRegisterServer'    => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name register',
             ],
-            'WorkermanGatewayServer'    => [
+            'WorkermanGatewayServer'     => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name gateway',
             ],
-            'SwooleServer' => [
+            'SwooleServer'               => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-swoole.sh',
                 'stop'          => __DIR__ . '/unit/AppServer/bin/stop-swoole.sh',
                 'checkStatus'   => 'checkHttpServerStatus',

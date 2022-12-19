@@ -85,7 +85,7 @@ abstract class QueryCurdBaseTest extends TestCase
     public function testPaginate(): void
     {
         $expectedData = [
-            'list'  => [
+            'list'          => [
                 [
                     'id'        => '2',
                     'title'     => 'title',
@@ -112,7 +112,7 @@ abstract class QueryCurdBaseTest extends TestCase
     public function testBug58(): void
     {
         $expectedData = [
-            'list'  => [
+            'list'          => [
                 [
                     'id'        => '2',
                     'title'     => 'title',
@@ -136,7 +136,7 @@ abstract class QueryCurdBaseTest extends TestCase
     public function testPaginateNoTotal(): void
     {
         $expectedData = [
-            'list'  => [
+            'list'          => [
                 [
                     'id'        => '1',
                     'title'     => 'title',

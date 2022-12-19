@@ -5,10 +5,10 @@ declare(strict_types=1);
 use function Imi\env;
 
 return [
-    'configs'    => [
+    'configs'           => [
     ],
     // bean扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\Test\Component\Tests',
         'Imi\Test\Component\Aop',
         'Imi\Test\Component\Inject',
@@ -36,11 +36,11 @@ return [
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
     ],
 
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [
@@ -75,26 +75,26 @@ return [
         ],
     ],
 
-    'beans'    => [
+    'beans'             => [
         'TestPropertyClass' => [
             'b' => 'bbb',
         ],
         'ErrorLog'          => [
             'exceptionLevel' => \E_ALL,
         ],
-        'DbQueryLog' => [
+        'DbQueryLog'        => [
             'enable' => true,
         ],
     ],
-    'imi-framework'   => 'very six',
+    'imi-framework'     => 'very six',
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         // 主数据库
-        'maindb'    => [
-            'pool'    => [
+        'maindb'                => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -116,10 +116,10 @@ return [
             ],
         ],
         // 从数据库
-        'maindb.slave'    => [
-            'pool'    => [
+        'maindb.slave'          => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -141,10 +141,10 @@ return [
             ],
         ],
         // mysqli
-        'mysqli'    => [
-            'pool'    => [
+        'mysqli'                => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -163,10 +163,10 @@ return [
                 'dbClass'     => 'MysqliDriver',
             ],
         ],
-        'dbPrefix'    => [
-            'pool'    => [
+        'dbPrefix'              => [
+            'pool'        => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\SyncDbPool::class,
+                'class'         => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -185,8 +185,8 @@ return [
                 'prefix'      => 'tb_',
             ],
         ],
-        'redis_test'    => [
-            'pool'    => [
+        'redis_test'            => [
+            'pool'        => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -199,8 +199,8 @@ return [
                 'password'  => env('REDIS_SERVER_PASSWORD'),
             ],
         ],
-        'redis_cache'    => [
-            'pool'    => [
+        'redis_cache'           => [
+            'pool'        => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -216,7 +216,7 @@ return [
             ],
         ],
         'redis_manager_test'    => [
-            'pool'    => [
+            'pool'        => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
@@ -233,7 +233,7 @@ return [
         ],
     ],
     // db 配置
-    'db' => [
+    'db'                => [
         // 默认连接池名
         'defaultPool' => 'maindb',
         'connections' => [
@@ -247,12 +247,12 @@ return [
                 'charset'  => 'utf8mb4',
             ],
         ],
-        'statement' => [
+        'statement'   => [
             'maxCacheCount' => 32,
         ],
     ],
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 默认连接池名
         'defaultPool'   => 'redis_test',
         'connections'   => [
@@ -265,28 +265,28 @@ return [
         ],
     ],
     // 缓存配置
-    'cache' => [
+    'cache'             => [
         'default'   => 'file1',
     ],
     // 缓存
-    'caches'    => [
-        'file1'  => [
+    'caches'            => [
+        'file1'          => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
                 'savePath'              => sys_get_temp_dir() . '/imi-cache/',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'file2'  => [
+        'file2'          => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
-                'savePath'    => sys_get_temp_dir() . '/imi-cache/',
+                'savePath'                => sys_get_temp_dir() . '/imi-cache/',
                 // 保存文件名处理回调，一般可以不写
                 'saveFileNameCallback'    => static fn (string $savePath, string $key) => \Imi\Util\File::path($savePath, sha1($key)),
                 'formatHandlerClass'      => \Imi\Util\Format\Json::class,
             ],
         ],
-        'file3'  => [
+        'file3'          => [
             'handlerClass'  => \Imi\Cache\Handler\File::class,
             'option'        => [
                 'savePath'              => sys_get_temp_dir() . '/imi-cache/',
@@ -294,14 +294,14 @@ return [
                 'keyAsFileName'         => true,
             ],
         ],
-        'redis' => [
+        'redis'          => [
             'handlerClass'  => \Imi\Cache\Handler\Redis::class,
             'option'        => [
                 'poolName'              => 'redis_cache',
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'redisHash' => [
+        'redisHash'      => [
             'handlerClass'  => \Imi\Cache\Handler\RedisHash::class,
             'option'        => [
                 'poolName'              => 'redis_cache',
@@ -309,7 +309,7 @@ return [
                 'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'apcu' => [
+        'apcu'           => [
             'handlerClass'  => \Imi\Cache\Handler\Apcu::class,
             'option'        => [
             ],
@@ -321,11 +321,11 @@ return [
         ],
     ],
     // atmoic 配置
-    'atomics'    => [
+    'atomics'           => [
         'test',
     ],
     // 锁
-    'lock'  => [
+    'lock'              => [
         'list'  => [
             'redis' => [
                 'class'     => 'RedisLock',
@@ -335,16 +335,16 @@ return [
             ],
         ],
     ],
-    'yurun2'   => env('yurun'),
-    'tools'    => [
+    'yurun2'            => env('yurun'),
+    'tools'             => [
         'generate/model'    => [
             'namespace' => [
                 'Imi\Test\Component\Model' => [
                     'tables'    => [
-                        'tb_tree' => [
+                        'tb_tree'      => [
                             'withRecords' => true,
                         ],
-                        'tb_role' => [
+                        'tb_role'      => [
                             'withRecords' => true,
                         ],
                         'tb_test_list' => [
@@ -354,7 +354,7 @@ return [
                                 ],
                             ],
                         ],
-                        'tb_article2' => [
+                        'tb_article2'  => [
                             'bean'       => false,
                             'incrUpdate' => true,
                         ],

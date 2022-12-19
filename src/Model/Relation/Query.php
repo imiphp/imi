@@ -801,7 +801,7 @@ class Query
                                 'ids'              => [
                                     $leftValue,
                                 ],
-                                'models'     => [
+                                'models'           => [
                                     $leftValue => [$model],
                                 ],
                             ];

@@ -6,25 +6,25 @@ use function Imi\env;
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\SwooleTracker\Example\WebSocketServer',
+    'namespace'         => 'Imi\SwooleTracker\Example\WebSocketServer',
 
     // 配置文件
-    'configs'    => [
+    'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
     // 扫描目录
-    'beanScan'    => [
+    'beanScan'          => [
         'Imi\SwooleTracker\Example\WebSocketServer\Listener',
     ],
 
     // 组件命名空间
-    'components'    => [
+    'components'        => [
         'SwooleTracker'       => 'Imi\SwooleTracker',
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'        => [
         'namespace'    => 'Imi\SwooleTracker\Example\WebSocketServer\MainServer',
         'type'         => Imi\Swoole\Server\Type::WEBSOCKET,
         'host'         => '127.0.0.1',
@@ -39,10 +39,10 @@ return [
     ],
 
     // 连接池配置
-    'pools'    => [
+    'pools'             => [
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
+            'sync'     => [
+                'pool'        => [
                     'class'        => \Imi\Redis\SyncRedisPool::class,
                     'config'       => [
                         'maxResources'    => 10,
@@ -56,7 +56,7 @@ return [
                 ],
             ],
             'async'    => [
-                'pool'    => [
+                'pool'        => [
                     'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                     'config'       => [
                         'maxResources'    => 10,
@@ -73,13 +73,13 @@ return [
     ],
 
     // redis 配置
-    'redis' => [
+    'redis'             => [
         // 数默认连接池名
         'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
-    'memoryTable'   => [
+    'memoryTable'       => [
         'ConnectionContext'    => [
             'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
             'lockId' => 'atomic',
@@ -87,12 +87,12 @@ return [
     ],
 
     // atmoic 配置
-    'atomics'    => [
+    'atomics'           => [
         'atomic1'   => 1,
     ],
 
     // 锁配置
-    'lock'  => [
+    'lock'              => [
         'default' => 'atomic',
         'list'    => [
             'atomic' => [
@@ -104,7 +104,7 @@ return [
         ],
     ],
     // 日志配置
-    'logger' => [
+    'logger'            => [
         'channels' => [
             'imi' => [
                 'handlers' => [

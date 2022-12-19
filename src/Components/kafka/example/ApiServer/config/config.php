@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 return [
-    'configs'    => [
+    'configs'     => [
     ],
     // bean扫描目录
     'beanScan'    => [
         'KafkaApp\ApiServer\Controller',
     ],
-    'beans'    => [
+    'beans'       => [
         'HttpDispatcher'    => [
             'middlewares'    => [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
