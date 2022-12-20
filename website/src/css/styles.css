@@ -412,6 +412,19 @@ a.pure-button-primary {
     box-sizing: border-box;
 }
 
+.gongneng ul {
+    padding-left: 1em;
+}
+
+.gongneng a {
+    color: #393d49;
+}
+
+.gongneng a:hover {
+    color: #393d49;
+    text-decoration: underline !important;
+}
+
 .jz-alipay {
     color: #1E9FFF;
 }
@@ -472,14 +485,14 @@ a.pure-button-primary {
     padding-bottom: 1em;
 }
 
-#anli_company_list_box .anli_company_list > div{
+#anli_company_list_box .anli_company_list>div {
     padding: 0.5em;
     text-align: center;
     color: #393D49;
     margin-bottom: 1.625em;
 }
 
-#anli_company_list_box .anli_company_list > div img {
+#anli_company_list_box .anli_company_list>div img {
     width: 96px;
     height: 96px;
     object-fit: contain;
@@ -487,7 +500,7 @@ a.pure-button-primary {
     margin: 0 auto;
 }
 
-#anli_company_list_box .anli_company_list > div .text-img {
+#anli_company_list_box .anli_company_list>div .text-img {
     border-radius: 8px;
     box-sizing: border-box;
     color: #fff;
@@ -500,16 +513,45 @@ a.pure-button-primary {
     width: 96px;
 }
 
-.anli_company_list .color-0{background-color:#e79178}
-.anli_company_list .color-1{background-color:#ae98c6}
-.anli_company_list .color-2{background-color:#c8b7d8}
-.anli_company_list .color-3{background-color:#afc8ee}
-.anli_company_list .color-4{background-color:#8ca3cc}
-.anli_company_list .color-5{background-color:#adddf3}
-.anli_company_list .color-6{background-color:#6bb5ce}
-.anli_company_list .color-7{background-color:#6daae2}
-.anli_company_list .color-8{background-color:#90cfb7}
-.anli_company_list .color-9{background-color:#e8ab6f}
+.anli_company_list .color-0 {
+    background-color: #e79178
+}
+
+.anli_company_list .color-1 {
+    background-color: #ae98c6
+}
+
+.anli_company_list .color-2 {
+    background-color: #c8b7d8
+}
+
+.anli_company_list .color-3 {
+    background-color: #afc8ee
+}
+
+.anli_company_list .color-4 {
+    background-color: #8ca3cc
+}
+
+.anli_company_list .color-5 {
+    background-color: #adddf3
+}
+
+.anli_company_list .color-6 {
+    background-color: #6bb5ce
+}
+
+.anli_company_list .color-7 {
+    background-color: #6daae2
+}
+
+.anli_company_list .color-8 {
+    background-color: #90cfb7
+}
+
+.anli_company_list .color-9 {
+    background-color: #e8ab6f
+}
 
 .donate-list {
     width: 1280px;
@@ -543,10 +585,11 @@ a.pure-button-primary {
 :not(pre)>code,
 :not(pre)>kbd,
 :not(pre)>samp {
-    font-size: 12px;
-    font-family: Consolas, monospace, serif;
+    font-size: 14px;
+    font-family: "Cascadia Code", Consolas, "Courier New", monospace, Consolas, "Courier New", monospace;
     color: #D05;
     white-space: nowrap;
+    padding: 0.4em;
 }
 
 /** 自适应手机端 **/
@@ -639,7 +682,7 @@ a.pure-button-primary {
     }
 
     :not(pre)>code {
-        font-size: 10px;
+        font-size: 12px;
         white-space: unset;
     }
 
@@ -778,15 +821,6 @@ a:hover {
 
 .code_table td {
     text-align: left;
-}
-
-:not(pre)>code,
-:not(pre)>kbd,
-:not(pre)>samp {
-    font-size: 12px;
-    font-family: Consolas, monospace, serif;
-    color: #D05;
-    white-space: nowrap;
 }
 
 .leave_out {

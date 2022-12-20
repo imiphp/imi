@@ -12,8 +12,8 @@
 
 * [x] [Swoole Tracker](/v2.1/components/swoole-tracker.html)
 
-* [x] [Zipkin](/v2.1/components/tracing/zipkin.html)
+* [x] [Zipkin](/v2.1/components/tracing/opentracing.html#Zipkin)
 
-* [x] [Jaeger](/v2.1/components/tracing/jaeger.html)
+* [x] [Jaeger](/v2.1/components/tracing/opentracing.html#Jaeger)
 
 ……

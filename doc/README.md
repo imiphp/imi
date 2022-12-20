@@ -8,7 +8,7 @@
 
 imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 `PHP-FPM`、`Swoole`、`Workerman` 和 `RoadRunner` 等多种容器环境下。
 
-imi 提供了丰富的基础功能：`MySQL`、`PostgreSQL`、`Redis`、`超强超好用的自研 ORM`、`连接池`、`Web MVC`、`WebSocket`、`TCP Server`、`UDP Server`、`HTTP2`、`MQTT`、`gRPC`、`容器化（Container）`、`依赖注入`、`Aop`、`事件`、`异步（Async）`、`缓存（Cache）`、`命令行（Command）`、`配置化（Config）`、`上下文（Context）`、`定时任务（Cron）`、`门面（Facade）`、`验证器（Validate）`、`锁（Lock）`、`日志（Log）`、`定时器（Timer）`、`权限控制`、`消息队列（RabbitMQ、Kafka、Redis）`、`Swagger`、`Hprose`、`宏（Macro）`、`限流`、`共享内存`、`Smarty`、`雪花算法发号器（Snowflake）`、`Workerman Gateway` 和 `InfluxDB` 等组件。
+imi 提供了丰富的基础功能：`MySQL`、`PostgreSQL`、`Redis`、`超强超好用的自研 ORM`、`连接池`、`Web Api`、`Web MVC`、`WebSocket`、`TCP Server`、`UDP Server`、`HTTP2`、`MQTT`、`gRPC`、`容器化（Container）`、`依赖注入`、`Aop`、`事件`、`异步（Async）`、`缓存（Cache）`、`命令行（Command）`、`配置化（Config）`、`上下文（Context）`、`定时任务（Cron）`、`门面（Facade）`、`验证器（Validate）`、`锁（Lock）`、`日志（Log）`、`定时器（Timer）`、`权限控制`、`消息队列（RabbitMQ、Kafka、Redis）`、`Swagger`、`Hprose`、`宏（Macro）`、`限流`、`共享内存`、`Smarty`、`雪花算法发号器（Snowflake）`、`Workerman Gateway`、`InfluxDB` 和 `TDengine` 等组件。
 
 imi 还提供了微服务相关支持：`Nacos 配置中心`、`etcd 配置中心`、`Nacos 服务注册`、`Nacos 服务发现`、`Swoole Tracker`、`Zipkin`、`Jaeger`、`Prometheus`、`InfluxDB 服务指标监控`、`TDengine 服务指标监控` 和 `负载均衡` 等组件。
 
