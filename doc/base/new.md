@@ -30,14 +30,35 @@
 
 项目的`Main`必须继承`Imi\Main\AppBaseMain`类。
 
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace ImiApp;
+
+class Main extends \Imi\Main\AppBaseMain
+{
+    public function __init(): void
+    {
+    }
+}
+```
+
 服务器的`Main`必须继承`Imi\Main\BaseMain`类。
 
-并且实现一个`__init()`方法:
-
 ```php
-public function __init(): void
-{
+<?php
 
+namespace ImiApp\ApiServer;
+
+use Imi\Main\BaseMain;
+
+class Main extends BaseMain
+{
+    public function __init(): void
+    {
+    }
 }
 ```
 
