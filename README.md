@@ -7,7 +7,7 @@
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/test.yml?branch=2.1)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=2.1)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.1/)
