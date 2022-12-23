@@ -16,6 +16,7 @@ use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
 use Imi\Util\Stream\MemoryStream;
+use Imi\Workerman\Http\Message\WorkermanRequest;
 
 /**
  * @Controller(prefix="/")
@@ -354,5 +355,18 @@ class IndexController extends HttpController
      */
     public function duplicated2(): void
     {
+    }
+
+    /**
+     * @Action
+     */
+    public function connectionId(): array
+    {
+        /** @var WorkermanRequest $request */
+        $request = RequestContext::get('request');
+
+        return [
+            'id' => $request->getConnection()->id,
+        ];
     }
 }

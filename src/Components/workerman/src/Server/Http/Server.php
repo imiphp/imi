@@ -67,7 +67,7 @@ class Server extends Base
                 // @phpstan-ignore-next-line
                 $request = new WorkermanRequest($worker, $connection, $data);
                 // @phpstan-ignore-next-line
-                $response = new WorkermanResponse($worker, $connection, new Response());
+                $response = new WorkermanResponse($worker, $connection, new Response(), $request);
                 RequestContext::muiltiSet([
                     'server'   => $this,
                     'request'  => $request,

@@ -6,6 +6,7 @@ namespace Imi\Workerman\Test\AppServer\Tests\Http;
 
 use Imi\Util\Http\Consts\MediaType;
 use Yurun\Util\HttpRequest;
+use Yurun\Util\YurunHttp\Http\Psr7\Consts\RequestHeader;
 use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 
 /**
@@ -254,5 +255,46 @@ class RequestTest extends BaseTest
             'name'  => 'test',
             'page'  => 666,
         ]), $response->body());
+    }
+
+    public function testKeepAlive(): void
+    {
+        // HTTP/1.0 Close
+        $http = new HttpRequest();
+        $http->protocolVersion = '1.0';
+        $data1 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $data2 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $this->assertNotNull($data1);
+        $this->assertNotNull($data2);
+        $this->assertNotEquals($data1, $data2);
+
+        // HTTP/1.0 Keep-Alive
+        $http = new HttpRequest();
+        $http->protocolVersion = '1.0';
+        $http->header(RequestHeader::CONNECTION, 'keep-alive');
+        $data1 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $data2 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $this->assertNotNull($data1);
+        $this->assertNotNull($data2);
+        $this->assertEquals($data1, $data2);
+
+        // HTTP/1.1 Close
+        $http = new HttpRequest();
+        $http->protocolVersion = '1.1';
+        $http->header(RequestHeader::CONNECTION, 'close');
+        $data1 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $data2 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $this->assertNotNull($data1);
+        $this->assertNotNull($data2);
+        $this->assertNotEquals($data1, $data2);
+
+        // HTTP/1.1 Keep-Alive
+        $http = new HttpRequest();
+        $http->protocolVersion = '1.1';
+        $data1 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $data2 = $http->get($this->host . 'connectionId')->json(true)['id'] ?? null;
+        $this->assertNotNull($data1);
+        $this->assertNotNull($data2);
+        $this->assertEquals($data1, $data2);
     }
 }
