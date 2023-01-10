@@ -241,6 +241,30 @@ abstract class Query implements IQuery
     }
 
     /**
+     * 设置分区列表.
+     */
+    public function partition(?array $partitions = null): self
+    {
+        $partition = ($this->option->partition ??= new Partition());
+        $partition->useRaw(false);
+        $partition->setPartitions($partitions);
+
+        return $this;
+    }
+
+    /**
+     * 设置分区原生 SQL.
+     */
+    public function partitionRaw(string $partitionSql): self
+    {
+        $partition = ($this->option->partition ??= new Partition());
+        $partition->useRaw(true);
+        $partition->setRawSQL($partitionSql);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function distinct(bool $isDistinct = true): self

@@ -20,7 +20,7 @@ class ReplaceBuilder extends BaseBuilder
         {
             $data = $option->saveData;
         }
-        $sql = 'replace into ' . $option->table->toString($query) . ' ';
+        $sql = 'replace into ' . $option->table->toString($query) . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '') . ' ';
         if ($data instanceof \Imi\Db\Query\Interfaces\IQuery)
         {
             $builder = new SelectBuilder($data);

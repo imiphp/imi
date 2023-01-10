@@ -48,7 +48,9 @@ class InsertBuilder extends BaseBuilder
                     $params[$valueParam] = $v;
                 }
             }
-            $sql = 'insert into ' . $option->table->toString($query) . '(' . implode(',', $fields) . ') values(' . implode(',', $valueParams) . ')';
+            $sql = 'insert into ' . $option->table->toString($query)
+                . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '')
+                . ' (' . implode(',', $fields) . ') values(' . implode(',', $valueParams) . ')';
         }
         else
         {

@@ -86,7 +86,9 @@ class UpdateBuilder extends BaseBuilder
         {
             $jsonSets = ', ' . $jsonSets;
         }
-        $sql = 'update ' . $option->table->toString($query) . ' set ' . implode(',', $setStrs)
+        $sql = 'update ' . $option->table->toString($query)
+            . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '')
+            . ' set ' . implode(',', $setStrs)
             . $jsonSets
             . $this->parseWhere($option->where)
             . $this->parseOrder($option->order)

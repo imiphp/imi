@@ -344,6 +344,15 @@ Db::query()->tablePrefix('')->table('test')->select(); // select * from test
 
 > `table()` 和 `tableRaw()` 也可以使用 `from()` 和 `fromRaw()` 代替。
 
+### 指定分区
+
+```php
+Db::query()->partition(['a', 'b']); // 传数组
+Db::query()->partitionRaw('`a`,`b`'); // 传 sql
+```
+
+> 支持 MySQL 下的增删改查操作
+
 ### distinct
 
 ```php
