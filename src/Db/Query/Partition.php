@@ -35,7 +35,7 @@ class Partition implements IPartition
             return implode(',', array_map(static fn (string $name) => $query->fieldQuote($name), $this->partitions));
         }
 
-        return [];
+        return '';
     }
 
     /**

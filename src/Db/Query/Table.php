@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Interfaces\IPartition;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\ITable;
 use Imi\Db\Query\Traits\TRaw;
