@@ -22,6 +22,7 @@ class SelectBuilder extends BaseBuilder
                 . $this->parseField($option->field)
                 . ' from '
                 . $option->table->toString($query)
+                . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '')
                 . $this->parseJoin($option->join)
                 . $this->parseWhere($option->where)
                 . $this->parseGroup($option->group)

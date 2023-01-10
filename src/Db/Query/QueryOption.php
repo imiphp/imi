@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use Imi\Db\Query\Interfaces\IPartition;
 use Imi\Db\Query\Interfaces\ITable;
 
 class QueryOption
@@ -57,6 +58,11 @@ class QueryOption
      * @var \Imi\Db\Query\Interfaces\IHaving[]
      */
     public array $having = [];
+
+    /**
+     * 分区.
+     */
+    public ?IPartition $partition = null;
 
     /**
      * 保存的数据.

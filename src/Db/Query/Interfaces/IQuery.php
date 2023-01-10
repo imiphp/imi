@@ -60,6 +60,16 @@ interface IQuery
     public function tableRaw(string $raw, ?string $alias = null): self;
 
     /**
+     * 设置分区列表.
+     */
+    public function partition(?array $partitions = null): self;
+
+    /**
+     * 设置分区原生 SQL.
+     */
+    public function partitionRaw(string $partition): self;
+
+    /**
      * 设置表名，table()的别名.
      *
      * @param string      $table    表名

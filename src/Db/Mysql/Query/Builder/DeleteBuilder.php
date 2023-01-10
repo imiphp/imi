@@ -16,6 +16,7 @@ class DeleteBuilder extends BaseBuilder
         $option = $query->getOption();
 
         $sql = 'delete from ' . $option->table->toString($query)
+                . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '')
                 . $this->parseWhere($option->where)
                 . $this->parseOrder($option->order)
                 . $this->parseLimit($option->offset, $option->limit)
