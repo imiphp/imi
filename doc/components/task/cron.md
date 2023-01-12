@@ -154,13 +154,27 @@ class TaskProcess implements IProcess
     {
         $success = false;
         $message = '';
-        try {
+        // 获取任务 ID
+        $input = ImiCommand::getInput();
+        $id = $input->getParameterOption('--id');
+        if (false === $id)
+        {
+            return;
+        }
+        try
+        {
             // 做一些事情
+            // ...
+
             $success = true;
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
             $message = $th->getMessage();
             throw $th;
-        } finally {
+        }
+        finally
+        {
             // 上报任务完成
             CronUtil::reportCronResult($id, $success, $message);
         }
