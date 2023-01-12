@@ -137,6 +137,7 @@ class TaskCron implements ITaskHandler
 <?php
 namespace Imi\Test\HttpServer\Cron;
 
+use Imi\Cli\ImiCommand;
 use Imi\Util\Args;
 use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Cron\Annotation\Cron;
