@@ -47,7 +47,7 @@ class System
         }
         elseif (\PHP_OS_FAMILY === 'Darwin')
         {
-            return (int) (shell_exec('sysctl -n machdep.cpu.core_count'));
+            return (int) shell_exec('sysctl -n machdep.cpu.core_count');
         }
         elseif (is_file('/proc/cpuinfo'))
         {
