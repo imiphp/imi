@@ -45,6 +45,10 @@ class System
         {
             return env('NUMBER_OF_PROCESSORS', 0);
         }
+        elseif (\PHP_OS_FAMILY === 'Darwin')
+        {
+            return (int) shell_exec('sysctl -n machdep.cpu.core_count');
+        }
         elseif (is_file('/proc/cpuinfo'))
         {
             return substr_count(file_get_contents('/proc/cpuinfo'), "\nprocessor") + 1;
