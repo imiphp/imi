@@ -65,6 +65,10 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             if (isset($workermanGatewayConfig['registerAddress']))
             {
                 Gateway::$registerAddress = $workermanGatewayConfig['registerAddress'];
+                if (isset(Gateway::$persistentConnection))
+                {
+                    Gateway::$persistentConnection = false;
+                }
             }
 
             Coroutine::create(function () use ($workermanGatewayConfig) {

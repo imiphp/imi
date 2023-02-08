@@ -25,6 +25,10 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             if ($registerAddress = Config::get('@app.mainServer.workermanGateway.registerAddress'))
             {
                 Gateway::$registerAddress = $registerAddress;
+                if (isset(Gateway::$persistentConnection))
+                {
+                    Gateway::$persistentConnection = false;
+                }
             }
         }
     }

@@ -27,6 +27,10 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
                 if (isset($item['configs']['registerAddress']))
                 {
                     Gateway::$registerAddress = $item['configs']['registerAddress'];
+                    if (isset(Gateway::$persistentConnection))
+                    {
+                        Gateway::$persistentConnection = false;
+                    }
                     break;
                 }
             }

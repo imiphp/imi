@@ -339,6 +339,10 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 if (isset($config['configs']['registerAddress']) && class_exists(Gateway::class))
                 {
                     Gateway::$registerAddress = $config['configs']['registerAddress'];
+                    if (isset(Gateway::$persistentConnection))
+                    {
+                        Gateway::$persistentConnection = false;
+                    }
                 }
 
                 Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
