@@ -339,6 +339,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 if (isset($config['configs']['registerAddress']) && class_exists(Gateway::class))
                 {
                     Gateway::$registerAddress = $config['configs']['registerAddress'];
+                    // @phpstan-ignore-next-line
                     if (isset(Gateway::$persistentConnection))
                     {
                         Gateway::$persistentConnection = false;
