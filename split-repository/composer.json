@@ -8,5 +8,10 @@
         "psr-4": {
             "app\\": "./"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     }
 }
