@@ -7,7 +7,6 @@ namespace Imi\Swoole\Server\Util;
 use Imi\AMQP\Contract\IConsumer;
 use Imi\AMQP\Contract\IPublisher;
 use Imi\AMQP\Message;
-use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
