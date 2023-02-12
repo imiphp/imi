@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Util;
 
-use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
@@ -316,7 +315,7 @@ class RedisServerUtil extends LocalServerUtil
                 }
                 catch (\Throwable $e)
                 {
-                    \Imi\Log\Log::log($e);
+                    \Imi\Log\Log::error($e);
                     sleep(3); // 等待 3 秒重试
                 }
             }
