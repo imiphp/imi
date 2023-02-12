@@ -9,7 +9,6 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
-use Imi\Log\ErrorLog;
 use Imi\Redis\RedisManager;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
@@ -36,11 +35,6 @@ class RedisServerUtil extends LocalServerUtil
     protected string $channel = 'imi:RedisServerUtil:channel';
 
     protected bool $subscribeEnable = true;
-
-    /**
-     * @Inject
-     */
-    protected ErrorLog $errorLog;
 
     public function __init(): void
     {
@@ -322,7 +316,7 @@ class RedisServerUtil extends LocalServerUtil
                 }
                 catch (\Throwable $e)
                 {
-                    $this->errorLog->onException($e);
+                    \Imi\Log\Log::log($e);
                     sleep(3); // 等待 3 秒重试
                 }
             }

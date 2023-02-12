@@ -188,9 +188,7 @@ class TestProcess extends BaseProcess
             }
             catch (\Throwable $th)
             {
-                /** @var \Imi\Log\ErrorLog $errorLog */
-                $errorLog = App::getBean('ErrorLog');
-                $errorLog->onException($th);
+                \Imi\Log\Log::error($th);
                 sleep(3);
                 $this->runConsumer($consumer);
             }

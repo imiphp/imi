@@ -11,7 +11,6 @@ use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
-use Imi\Log\ErrorLog;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
@@ -48,11 +47,6 @@ if (class_exists(\Imi\AMQP\Main::class))
          * 发布者类.
          */
         protected string $publisherClass = 'AmqpServerPublisher';
-
-        /**
-         * @Inject
-         */
-        protected ErrorLog $errorLog;
 
         protected bool $subscribeEnable = true;
 
