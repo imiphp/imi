@@ -4,7 +4,9 @@
 
 ## 说明
 
-要使用 SQL 监听功能，必须先开启，并且不推荐在生产环境使用。
+使用 SQL 监听，你可以记录 SQL 执行日志。
+
+要使用 SQL 监听功能，必须先配置启用，并且**不推荐**在生产环境使用。
 
 开启方式是在配置文件中的 `beans` 中加入：
 
@@ -51,7 +53,10 @@ class DbExecuteListener implements IEventListener
     {
         if ($e->throwable)
         {
-            Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), $e->sql));
+            // 记录 SQL 语句
+            // Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), $e->sql));
+            // 记录 SQL 语句，占位符替换为真实参数
+            Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), \Imi\Db::debugSql($e->sql, $e->bindValues ?? [])));
         }
         else
         {
@@ -96,6 +101,7 @@ class DbPrepareListener implements IEventListener
     {
         if ($e->throwable)
         {
+            // 记录 SQL 语句
             Log::error(sprintf('[%s] %s', $e->throwable->getMessage(), $e->sql));
         }
         else
