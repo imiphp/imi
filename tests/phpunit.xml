@@ -46,6 +46,9 @@
             <file>unit/Component/Tests/BeanTest.php</file>
             <file>unit/Component/Tests/AopTest.php</file>
         </testsuite>
+        <testsuite name="cron">
+            <directory>unit/Component/Tests/Cron</directory>
+        </testsuite>
     </testsuites>
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />
