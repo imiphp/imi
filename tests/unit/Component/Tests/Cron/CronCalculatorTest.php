@@ -819,7 +819,7 @@ class CronCalculatorTest extends BaseTest
     }
 
     /**
-     * @depends testDelay
+     * @depends testInit
      */
     public function testDelay(CronCalculator $cronCalculator): void
     {
