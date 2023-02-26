@@ -29,6 +29,8 @@ echo Config::get('@server.abc.namespace'); // namespace 可以换为其它的节
 
 ### 智能读取
 
+> 注意！只限在请求中使用该方式！
+
 优先读取当前服务器配置，如果没有配置则取项目配置（`@app`）
 
 ```php
