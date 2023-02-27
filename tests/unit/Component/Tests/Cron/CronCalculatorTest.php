@@ -46,6 +46,45 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2020-06-21 12:34:56'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['year' => '2n']),
         ]));
+        $this->assertNull($cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['year' => '2008-2017']),
+        ]));
+        $this->assertNull($cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['year' => '-1']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['year' => '2018-2101']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(year=2018-2101) is invalid, end value must be <= 2100', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['year' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(year=0n) is invalid, the value of step must be >= 1n and <= 2100n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['year' => '2101n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(year=2101n) is invalid, the value of step must be >= 1n and <= 2100n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -75,6 +114,64 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2018-09-21 12:34:56'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['month' => '3n']),
         ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['month' => '13']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(month=13) is invalid, the value must be <= 12', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['month' => '13-14']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(month=13-14) is invalid, begin value must be <= 12', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-12-01 00:00:00'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['month' => '-1-12']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['month' => '12-13']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(month=12-13) is invalid, end value must be <= 12', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['month' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(month=0n) is invalid, the value of step must be >= 1n and <= 12n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['month' => '13n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(month=13n) is invalid, the value of step must be >= 1n and <= 12n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -101,6 +198,64 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2018-06-23 00:00:00'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['week' => '-2--1']),
         ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['week' => '8']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(week=8) is invalid, the value must be <= 7', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['week' => '8-9']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(week=8-9) is invalid, begin value must be <= 7', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-06-24 00:00:00'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['week' => '-1-7']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['week' => '7-8']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(week=7-8) is invalid, end value must be <= 7', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['week' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(week=0n) is invalid, the value of step must be >= 1n and <= 7n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['week' => '8n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(week=8n) is invalid, the value of step must be >= 1n and <= 7n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -156,6 +311,124 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2018-12-30 00:00:00'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['day' => 'year -2--1']),
         ]));
+
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => '32']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=32) is invalid, the value must be <= 31', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => '32-33']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=32-33) is invalid, begin value must be <= 31', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-06-30 00:00:00'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['day' => '-1-31']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => '31-32']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=31-32) is invalid, end value must be <= 31', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=0n) is invalid, the value of step must be >= 1n and <= 31n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => '32n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=32n) is invalid, the value of step must be >= 1n and <= 31n', $e->getMessage(), $e->getMessage());
+        }
+
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => 'year 367']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=year 367) is invalid, the value must be <= 366', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => 'year 367-368']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=year 367-368) is invalid, begin value must be <= 366', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-12-31 00:00:00'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['day' => 'year -1-366']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => 'year 366-367']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=year 366-367) is invalid, end value must be <= 366', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => 'year 0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=year 0n) is invalid, the value of step must be >= 1n and <= 366n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => 'year 367n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=year 367n) is invalid, the value of step must be >= 1n and <= 366n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -186,6 +459,65 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2018-06-21 15:34:56'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['hour' => '3n']),
         ]));
+
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['hour' => '24']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(hour=24) is invalid, the value must be <= 23', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['hour' => '24-25']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(hour=24-25) is invalid, begin value must be <= 23', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-06-21 23:00:00'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['hour' => '-1-23']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['hour' => '23-24']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(hour=23-24) is invalid, end value must be <= 23', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['hour' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(hour=0n) is invalid, the value of step must be >= 1n and <= 23n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['hour' => '24n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(hour=24n) is invalid, the value of step must be >= 1n and <= 23n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -216,6 +548,65 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2018-06-21 12:37:56'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['minute' => '3n']),
         ]));
+
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['minute' => '60']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(minute=60) is invalid, the value must be <= 59', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['minute' => '60-61']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(minute=60-61) is invalid, begin value must be <= 59', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-06-21 12:59:00'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['minute' => '-1-59']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['minute' => '59-60']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(minute=59-60) is invalid, end value must be <= 59', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['minute' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(minute=0n) is invalid, the value of step must be >= 1n and <= 59n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['minute' => '60n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(minute=60n) is invalid, the value of step must be >= 1n and <= 59n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -246,6 +637,65 @@ class CronCalculatorTest extends BaseTest
         $this->assertEquals(strtotime('2018-06-21 12:34:59'), $cronCalculator->getNextTickTime($beginTime, [
             new CronRule(['second' => '3n']),
         ]));
+
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['second' => '60']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(second=60) is invalid, the value must be <= 59', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['second' => '60-61']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(second=60-61) is invalid, begin value must be <= 59', $e->getMessage(), $e->getMessage());
+        }
+        $this->assertEquals(strtotime('2018-06-21 12:34:59'), $cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['second' => '-1-59']),
+        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['second' => '59-60']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(second=59-60) is invalid, end value must be <= 59', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['second' => '0n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(second=0n) is invalid, the value of step must be >= 1n and <= 59n', $e->getMessage(), $e->getMessage());
+        }
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['second' => '60n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(second=60n) is invalid, the value of step must be >= 1n and <= 59n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
@@ -300,29 +750,76 @@ class CronCalculatorTest extends BaseTest
             new CronRule(['year' => '61n']),
         ]));
 
-        $this->assertEquals(strtotime('2023-07-21 12:34:56'), $cronCalculator->getNextTickTime($beginTime, [
-            new CronRule(['month' => '61n']),
-        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['year' => '2101n']),
+            ]);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(year=2101n) is invalid, the value of step must be >= 1n and <= 2100n', $e->getMessage(), $e->getMessage());
+        }
 
-        $this->assertEquals(strtotime('2018-08-21 12:34:56'), $cronCalculator->getNextTickTime($beginTime, [
-            new CronRule(['day' => '61n']),
-        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['month' => '61n']),
+            ]);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(month=61n) is invalid, the value of step must be >= 1n and <= 12n', $e->getMessage(), $e->getMessage());
+        }
 
-        $this->assertEquals(strtotime('2018-06-24 01:34:56'), $cronCalculator->getNextTickTime($beginTime, [
-            new CronRule(['hour' => '61n']),
-        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['day' => '61n']),
+            ]);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(day=61n) is invalid, the value of step must be >= 1n and <= 31n', $e->getMessage(), $e->getMessage());
+        }
 
-        $this->assertEquals(strtotime('2018-06-21 13:35:56'), $cronCalculator->getNextTickTime($beginTime, [
-            new CronRule(['minute' => '61n']),
-        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['hour' => '61n']),
+            ]);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(hour=61n) is invalid, the value of step must be >= 1n and <= 23n', $e->getMessage(), $e->getMessage());
+        }
 
-        $this->assertEquals(strtotime('2018-06-21 12:35:57'), $cronCalculator->getNextTickTime($beginTime, [
-            new CronRule(['second' => '61n']),
-        ]));
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['minute' => '61n']),
+            ]);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(minute=61n) is invalid, the value of step must be >= 1n and <= 59n', $e->getMessage(), $e->getMessage());
+        }
+
+        try
+        {
+            $cronCalculator->getNextTickTime($beginTime, [
+                new CronRule(['second' => '61n']),
+            ]);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('@Cron(second=61n) is invalid, the value of step must be >= 1n and <= 59n', $e->getMessage(), $e->getMessage());
+        }
     }
 
     /**
-     * @depends testDelay
+     * @depends testInit
      */
     public function testDelay(CronCalculator $cronCalculator): void
     {

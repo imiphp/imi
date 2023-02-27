@@ -18,7 +18,7 @@ class CronCalculator
      *
      * @param \Imi\Cron\CronRule[] $cronRules
      */
-    public function getNextTickTime(int $lastTime, array $cronRules): int
+    public function getNextTickTime(int $lastTime, array $cronRules): ?int
     {
         $times = [];
         foreach ($cronRules as $cronRule)
@@ -162,62 +162,89 @@ class CronCalculator
 
     public function getAll(string $rule, string $name, int $min, int $max, string $dateFormat, int $lastTime): array
     {
+        $originRule = $rule;
+        if ('day' === $name && str_starts_with($rule, 'year '))
+        {
+            $rule = substr($rule, 5);
+        }
         // 所有
         if ('*' === $rule)
         {
             return range($min, $max);
         }
         // 区间
-        if (strpos($rule, '-') > 0)
+        if (strpos($rule, '-') > 0 && !str_contains($rule, '-,') && !str_contains($rule, ',-'))
         {
             [$begin, $end] = explode('-', substr($rule, 1), 2);
             $begin = $rule[0] . $begin;
-            if ('day' !== $name)
+            if ('year' !== $name)
             {
-                // 负数支持
+                if ('day' !== $name)
+                {
+                    // 负数支持
+                    if ($begin < $min)
+                    {
+                        $begin = $max + 1 + (int) $begin;
+                    }
+                    if ($end < $min)
+                    {
+                        $end = $max + 1 + (int) $end;
+                    }
+                }
                 if ($begin < $min)
                 {
-                    $begin = $max + 1 + (int) $begin;
-                }
-                if ($end < $min)
-                {
-                    $end = $max + 1 + (int) $end;
+                    throw new \InvalidArgumentException("@Cron({$name}={$originRule}) is invalid, begin value must be >= {$min}");
                 }
             }
+            if ($begin > $max)
+            {
+                throw new \InvalidArgumentException("@Cron({$name}={$originRule}) is invalid, begin value must be <= {$max}");
+            }
+            if ($end > $max)
+            {
+                throw new \InvalidArgumentException("@Cron({$name}={$originRule}) is invalid, end value must be <= {$max}");
+            }
 
-            return range(max($min, $begin), min($end, $max));
+            return range($begin, $end);
         }
         // 步长
         if ('n' === ($rule[-1] ?? ''))
         {
             $step = (int) substr($rule, 0, -1);
-            if ($lastTime < $min)
+            if ($step <= 0)
             {
-                if ($step > $max - $min)
-                {
-                    return [];
-                }
-
-                return range($min, $max, $step);
+                throw new \InvalidArgumentException("@Cron({$name}={$originRule}) is invalid, the value of step must be >= 1n and <= {$max}n");
             }
-            else
+            if ($lastTime >= $min)
             {
-                $s = date($dateFormat, $lastTime);
-
-                return range($s % $step, $max, $step);
+                $min = date($dateFormat, $lastTime) % $step;
             }
+            if ($step > $max - $min)
+            {
+                throw new \InvalidArgumentException("@Cron({$name}={$originRule}) is invalid, the value of step must be >= 1n and <= {$max}n");
+            }
+
+            return range($min, $max, $step);
         }
         // 列表
         $list = explode(',', $rule);
-        if ('day' !== $name)
+        // 处理负数
+        foreach ($list as &$item)
         {
-            // 处理负数
-            foreach ($list as &$item)
+            if ($item < $min)
             {
-                if ($item < $min)
+                if ('year' === $name)
+                {
+                    continue;
+                }
+                elseif ('day' !== $name)
                 {
                     $item = $max + 1 + (int) $item;
                 }
+            }
+            elseif ($item > $max)
+            {
+                throw new \InvalidArgumentException("@Cron({$name}={$originRule}) is invalid, the value must be <= {$max}");
             }
         }
         // 从小到大排序
@@ -227,7 +254,7 @@ class CronCalculator
     }
 
     /**
-     * 获取所有月份可能性.
+     * 获取所有年份可能性.
      */
     public function getAllYear(string $year, int $lastTime): array
     {
@@ -252,7 +279,6 @@ class CronCalculator
     {
         if (str_starts_with($day, 'year '))
         {
-            $day = substr($day, 5);
             $list = $this->getAll($day, 'day', 1, 366, 'd', $lastTime);
             array_unshift($list, 'year');
         }
@@ -326,33 +352,84 @@ class CronCalculator
         {
             return false;
         }
-        if (str_ends_with($cronRule->getSecond(), 'n'))
+        if (str_ends_with($rule = $cronRule->getSecond(), 'n'))
         {
-            return $lastTime + (int) substr($cronRule->getSecond(), 0, -1);
+            $value = (int) substr($rule, 0, -1);
+            if ($value < 1 || $value > 59)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(second=%s) is invalid, the value of step must be >= 1n and <= 59n', $rule));
+            }
+
+            return $lastTime + $value;
         }
-        if (str_ends_with($cronRule->getMinute(), 'n'))
+        if (str_ends_with($rule = $cronRule->getMinute(), 'n'))
         {
-            return $lastTime + (int) substr($cronRule->getMinute(), 0, -1) * 60;
+            $value = (int) substr($rule, 0, -1);
+            if ($value < 1 || $value > 59)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(minute=%s) is invalid, the value of step must be >= 1n and <= 59n', $rule));
+            }
+
+            return $lastTime + $value * 60;
         }
-        if (str_ends_with($cronRule->getHour(), 'n'))
+        if (str_ends_with($rule = $cronRule->getHour(), 'n'))
         {
-            return $lastTime + (int) substr($cronRule->getHour(), 0, -1) * 3600;
+            $value = (int) substr($rule, 0, -1);
+            if ($value < 1 || $value > 23)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(hour=%s) is invalid, the value of step must be >= 1n and <= 23n', $rule));
+            }
+
+            return $lastTime + $value * 3600;
         }
-        if (str_ends_with($cronRule->getDay(), 'n'))
+        if (str_ends_with($rule = $cronRule->getDay(), 'n'))
         {
-            return $lastTime + (int) substr($cronRule->getDay(), 0, -1) * 86400;
+            $value = (int) substr($rule, 0, -1);
+            $min = 1;
+            if (str_starts_with($rule, 'year '))
+            {
+                $max = 366;
+            }
+            else
+            {
+                $max = 31;
+            }
+            if ($value < 1 || $value > 31)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(day=%s) is invalid, the value of step must be >= %dn and <= %dn', $rule, $min, $max));
+            }
+
+            return $lastTime + $value * 86400;
         }
-        if (str_ends_with($cronRule->getWeek(), 'n'))
+        if (str_ends_with($rule = $cronRule->getWeek(), 'n'))
         {
-            return $lastTime + (int) substr($cronRule->getWeek(), 0, -1) * 604800;
+            $value = (int) substr($rule, 0, -1);
+            if ($value < 1 || $value > 7)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(week=%s) is invalid, the value of step must be >= 1n and <= 7n', $rule));
+            }
+
+            return $lastTime + $value * 604800;
         }
-        if (str_ends_with($cronRule->getMonth(), 'n'))
+        if (str_ends_with($rule = $cronRule->getMonth(), 'n'))
         {
-            return strtotime('+' . substr($cronRule->getMonth(), 0, -1) . ' month', $lastTime);
+            $value = (int) substr($rule, 0, -1);
+            if ($value < 1 || $value > 12)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(month=%s) is invalid, the value of step must be >= 1n and <= 12n', $rule));
+            }
+
+            return strtotime('+' . $value . ' month', $lastTime);
         }
-        if (str_ends_with($cronRule->getYear(), 'n'))
+        if (str_ends_with($rule = $cronRule->getYear(), 'n'))
         {
-            return strtotime('+' . substr($cronRule->getYear(), 0, -1) . ' year', $lastTime);
+            $value = (int) substr($rule, 0, -1);
+            if ($value < 1 || $value > 2100)
+            {
+                throw new \InvalidArgumentException(sprintf('@Cron(year=%s) is invalid, the value of step must be >= 1n and <= 2100n', $rule));
+            }
+
+            return strtotime('+' . substr($rule, 0, -1) . ' year', $lastTime);
         }
 
         return false;
