@@ -74,6 +74,16 @@ class Redis implements IHandler
      */
     private int $masterPID = 0;
 
+    /**
+     * 销毁数据的定时器ID.
+     */
+    private ?int $destroyTimerId = null;
+
+    /**
+     * 要销毁的键名数组.
+     */
+    private array $destroyKeys = [];
+
     public function __init(): void
     {
         if ('' === $this->key)
@@ -90,6 +100,8 @@ class Redis implements IHandler
                 $this->startPing($redis);
             });
         }
+
+        $this->startDestroyTimer();
     }
 
     /**
@@ -178,6 +190,10 @@ class Redis implements IHandler
         {
             Timer::del($this->timerId);
         }
+        if (null !== $this->destroyTimerId)
+        {
+            Timer::del($this->destroyTimerId);
+        }
     }
 
     /**
@@ -234,9 +250,7 @@ class Redis implements IHandler
      */
     public function delayDestroy(string $key, int $ttl): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($ttl) {
-            $redis->expire($this->getStoreKey(), $ttl);
-        });
+        Timer::after($ttl * 1000, fn () => $this->destroyKeys[] = $key);
     }
 
     /**
@@ -411,5 +425,22 @@ class Redis implements IHandler
     public function getOldClientIdByFlag(string $flag): ?int
     {
         return $this->useRedis(fn (RedisHandler $redis) => $redis->get($this->key . ':binder:old:' . $flag) ?: null);
+    }
+
+    private function startDestroyTimer(): void
+    {
+        Timer::tick(1000, function () {
+            if ($keys = $this->destroyKeys)
+            {
+                $this->destroyKeys = [];
+                $storeKey = $this->getStoreKey();
+                $this->useRedis(static function (RedisHandler $redis) use ($keys, $storeKey) {
+                    foreach (array_chunk($keys, 1000) as $keysChunk)
+                    {
+                        $redis->hDel($storeKey, ...$keysChunk);
+                    }
+                });
+            }
+        });
     }
 }
