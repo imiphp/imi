@@ -175,16 +175,13 @@ class Scheduler implements IScheduler
             }
             $nextTickTimeMap[$id] ??= $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
-            if ($firstRun || (isset($nextTickTimeMap[$id]) && $now >= $nextTickTimeMap[$id]))
+            if ($firstRun || (null !== $nextTickTimeMap[$id] && $now >= $nextTickTimeMap[$id]))
             {
                 if ($firstRun)
                 {
                     $firstRunMap[$id] = true;
                 }
-                else
-                {
-                    unset($nextTickTimeMap[$id]);
-                }
+                unset($nextTickTimeMap[$id]);
                 yield $task;
             }
         }
