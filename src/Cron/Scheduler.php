@@ -42,19 +42,23 @@ class Scheduler implements IScheduler
     /**
      * 下次执行时间集合.
      */
-    private array $nextTickTimeMap = [];
+    protected array $nextTickTimeMap = [];
 
     /**
      * 正在执行的任务列表.
      *
      * @var \Imi\Cron\CronTask[]
      */
-    private array $runningTasks = [];
+    protected array $runningTasks = [];
 
     /**
      * 首次执行记录集合.
      */
-    private array $firstRunMap = [];
+    protected array $firstRunMap = [];
+
+    public function __construct()
+    {
+    }
 
     /**
      * {@inheritDoc}
@@ -89,16 +93,13 @@ class Scheduler implements IScheduler
             }
             $nextTickTimeMap[$id] ??= $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
-            if ($firstRun || (isset($nextTickTimeMap[$id]) && $now >= $nextTickTimeMap[$id]))
+            if ($firstRun || (null !== $nextTickTimeMap[$id] && $now >= $nextTickTimeMap[$id]))
             {
                 if ($firstRun)
                 {
                     $firstRunMap[$id] = true;
                 }
-                else
-                {
-                    unset($nextTickTimeMap[$id]);
-                }
+                unset($nextTickTimeMap[$id]);
                 yield $task;
             }
         }
