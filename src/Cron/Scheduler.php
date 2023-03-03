@@ -56,6 +56,10 @@ class Scheduler implements IScheduler
      */
     private array $firstRunMap = [];
 
+    public function __construct()
+    {
+    }
+
     /**
      * {@inheritDoc}
      */
