@@ -42,19 +42,19 @@ class Scheduler implements IScheduler
     /**
      * 下次执行时间集合.
      */
-    private array $nextTickTimeMap = [];
+    protected array $nextTickTimeMap = [];
 
     /**
      * 正在执行的任务列表.
      *
      * @var \Imi\Cron\CronTask[]
      */
-    private array $runningTasks = [];
+    protected array $runningTasks = [];
 
     /**
      * 首次执行记录集合.
      */
-    private array $firstRunMap = [];
+    protected array $firstRunMap = [];
 
     public function __construct()
     {
