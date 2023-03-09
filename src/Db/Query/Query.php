@@ -1033,6 +1033,7 @@ abstract class Query implements IQuery
      */
     public function buildSelectSql(): string
     {
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1093,6 +1094,7 @@ abstract class Query implements IQuery
      */
     public function buildInsertSql($data = null): string
     {
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1153,6 +1155,7 @@ abstract class Query implements IQuery
      */
     public function buildBatchInsertSql($data = null): string
     {
+        $this->dbParamInc = 0;
         $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
 
         return (new $builderClass($this))->build($data);
@@ -1163,6 +1166,7 @@ abstract class Query implements IQuery
      */
     public function buildUpdateSql($data = null): string
     {
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1225,6 +1229,7 @@ abstract class Query implements IQuery
      */
     public function buildReplaceSql($data = null): string
     {
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1287,6 +1292,7 @@ abstract class Query implements IQuery
      */
     public function buildDeleteSql(): string
     {
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
