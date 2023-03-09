@@ -843,6 +843,14 @@ $result = Db::query()->table('tb_test')->insert([
     'yurun',666,
 ]);
 
+// 忽略已存在记录，仅支持 MySQL
+// insert ignore into tb_test values('yurun', 666)
+$query = Db::query();
+$query->getOption()->options['ignore'] = true;
+$result = $query->table('tb_test')->insert([
+    'yurun',666,
+]);
+
 $result->isSuccess(); // SQL是否执行成功
 $result->getLastInsertId(); // 获取最后插入的ID
 $result->getAffectedRows(); // 获取影响行数
@@ -871,6 +879,16 @@ $result = Db::query()->from('test')->batchInsert([
     ['name'=>'b'],
     ['name'=>'c'],
 ]);
+
+// 忽略已存在记录，仅支持 MySQL
+$query = Db::query();
+$query->getOption()->options['ignore'] = true;
+$result = $query->from('test')->batchInsert([
+    ['name'=>'a'],
+    ['name'=>'b'],
+    ['name'=>'c'],
+]);
+
 $result->isSuccess(); // SQL是否执行成功
 $result->getAffectedRows(); // 获取影响行数
 ```
