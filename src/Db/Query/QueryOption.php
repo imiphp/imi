@@ -88,6 +88,11 @@ class QueryOption
      */
     public $lock = null;
 
+    /**
+     * 其它动态配置项.
+     */
+    public array $options = [];
+
     public function __construct(string $tablePrefix = '')
     {
         $this->table = new Table(null, null, null, $tablePrefix);
