@@ -176,7 +176,7 @@ $reponse->withAddedHeader('test', ['v2', 'v3']);
 
 ```php
 /** @var \Swoole\Http\Response $swooleResponse */
-$swooleResponse = $this->request->getSwooleResponse();
+$swooleResponse = $this->response->getSwooleResponse();
 ```
 
 ### 获取 Workerman 的 http 响应对象
