@@ -444,6 +444,9 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals('insert into `test` PARTITION(`a`,`b`) (`value`) values (:p1),(:p2)', $query->buildBatchInsertSql([['value' => 123], ['value' => 456]]));
         $this->assertEquals('update `test` PARTITION(`a`,`b`) set `value` = :value', $query->buildUpdateSql(['value' => 123]));
         $this->assertEquals('delete from `test` PARTITION(`a`,`b`)', $query->buildDeleteSql());
+        $query->getOption()->options['ignore'] = true;
+        $this->assertEquals('insert ignore into `test` PARTITION(`a`,`b`) (`value`) values(:value)', $query->buildInsertSql(['value' => 123]));
+        $this->assertEquals('insert ignore into `test` PARTITION(`a`,`b`) (`value`) values (:p1),(:p2)', $query->buildBatchInsertSql([['value' => 123], ['value' => 456]]));
 
         $query = Db::query()->from('test')->partitionRaw('`a`,`b`');
         $this->assertEquals('select * from `test` PARTITION(`a`,`b`)', $query->buildSelectSql());
@@ -451,5 +454,8 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals('insert into `test` PARTITION(`a`,`b`) (`value`) values (:p1),(:p2)', $query->buildBatchInsertSql([['value' => 123], ['value' => 456]]));
         $this->assertEquals('update `test` PARTITION(`a`,`b`) set `value` = :value', $query->buildUpdateSql(['value' => 123]));
         $this->assertEquals('delete from `test` PARTITION(`a`,`b`)', $query->buildDeleteSql());
+        $query->getOption()->options['ignore'] = true;
+        $this->assertEquals('insert ignore into `test` PARTITION(`a`,`b`) (`value`) values(:value)', $query->buildInsertSql(['value' => 123]));
+        $this->assertEquals('insert ignore into `test` PARTITION(`a`,`b`) (`value`) values (:p1),(:p2)', $query->buildBatchInsertSql([['value' => 123], ['value' => 456]]));
     }
 }

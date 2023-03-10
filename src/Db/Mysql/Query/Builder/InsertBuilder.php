@@ -26,6 +26,7 @@ class InsertBuilder extends BaseBuilder
             $data = iterator_to_array($data);
         }
         $valueParams = [];
+        $ignore = ($option->options['ignore'] ?? false) ? ' ignore' : '';
         if (ArrayUtil::isAssoc($data))
         {
             $fields = [];
@@ -48,7 +49,7 @@ class InsertBuilder extends BaseBuilder
                     $params[$valueParam] = $v;
                 }
             }
-            $sql = 'insert into ' . $option->table->toString($query)
+            $sql = "insert{$ignore} into " . $option->table->toString($query)
                 . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '')
                 . ' (' . implode(',', $fields) . ') values(' . implode(',', $valueParams) . ')';
         }
@@ -68,7 +69,7 @@ class InsertBuilder extends BaseBuilder
                     $params[$valueParam] = $v;
                 }
             }
-            $sql = 'insert into ' . $option->table->toString($query) . ' values(' . implode(',', $valueParams) . ')';
+            $sql = "insert{$ignore} into " . $option->table->toString($query) . ' values(' . implode(',', $valueParams) . ')';
         }
         $query->bindValues($params);
 

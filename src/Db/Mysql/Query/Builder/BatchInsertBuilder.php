@@ -35,7 +35,8 @@ class BatchInsertBuilder extends BaseBuilder
         {
             $safeFields[] = $query->fieldQuote($key);
         }
-        $sql = 'insert into ' . $option->table->toString($query)
+        $ignore = ($option->options['ignore'] ?? false) ? ' ignore' : '';
+        $sql = "insert{$ignore} into " . $option->table->toString($query)
             . (($option->partition && '' !== ($partition = $option->partition->toString($query))) ? (' PARTITION(' . $partition . ')') : '')
             . ' (' . implode(',', $safeFields) . ') values ';
         $values = [];
