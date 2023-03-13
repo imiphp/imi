@@ -58,15 +58,24 @@ class PharService
     protected $buildAfterCallback = null;
 
     /**
-     * @var array|string
+     * @var string[]
      */
-    protected $resourceFiles = [];
+    protected array $resourceFiles = [];
+
     /**
-     * @var array|string
+     * @var string[]
      */
-    protected $resourceDirs = [];
-    protected array  $resourceExcludeDirs = [];
-    protected array  $resourceExcludeFiles = [];
+    protected array $resourceDirs = [];
+
+    /**
+     * @var string[]
+     */
+    protected array $resourceExcludeDirs = [];
+
+    /**
+     * @var string[]
+     */
+    protected array $resourceExcludeFiles = [];
 
     public function __construct(OutputInterface $output, string $baseDir, array $config)
     {
@@ -558,7 +567,7 @@ class PharService
             yield $filename;
         }
 
-        foreach ($this->files as $file)
+        foreach ($this->resourceFiles as $file)
         {
             $filename = $this->baseDir . \DIRECTORY_SEPARATOR . $file;
             if (!is_file($filename))

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Imi\Log\Log;
-
 // 以下输入的路径，无特殊说明都请写入当前工作目录中的相对路径
 return [
     // 构建出的 phar 文件
@@ -67,11 +65,11 @@ return [
     'build'             => [
         'before' => static function () {
             // 构建前执行的代码
-            Log::info('Before build');
+            var_dump('Before build');
         },
         'after'  => static function () {
             // 构建后执行的代码
-            Log::info('After build');
+            var_dump('After build');
         },
     ],
 
