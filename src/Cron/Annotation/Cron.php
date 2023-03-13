@@ -30,6 +30,7 @@ use Imi\Bean\Annotation\Base;
  * @property float       $maxExecutionTime 最大运行执行时间，单位：秒；该值与分布式锁超时时间共享，默认为 60 秒
  * @property int         $delayMin         最小延迟执行秒数
  * @property int         $delayMax         最大延迟执行秒数
+ * @property bool        $successLog       是否记录成功日志，默认为 true
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Cron extends Base
@@ -37,7 +38,7 @@ class Cron extends Base
     /**
      * @param mixed $data
      */
-    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, $data = null, bool $force = false, string $year = '*', string $month = '*', string $day = '*', string $week = '*', string $hour = '*', string $minute = '*', string $second = '*', ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, float $maxExecutionTime = 60, int $delayMin = 0, int $delayMax = 0)
+    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, $data = null, bool $force = false, string $year = '*', string $month = '*', string $day = '*', string $week = '*', string $hour = '*', string $minute = '*', string $second = '*', ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, float $maxExecutionTime = 60, int $delayMin = 0, int $delayMax = 0, bool $successLog = true)
     {
         parent::__construct(...\func_get_args());
     }

@@ -76,12 +76,17 @@ class CronTask
     private bool $force = false;
 
     /**
+     * 是否记录成功日志.
+     */
+    private bool $successLog = true;
+
+    /**
      * 构造方法.
      *
      * @param callable|string $task
      * @param mixed           $data
      */
-    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
+    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true)
     {
         $this->id = $id;
         $this->type = $type;
@@ -93,6 +98,7 @@ class CronTask
         $this->lockWaitTimeout = $lockWaitTimeout;
         $this->maxExecutionTime = $maxExecutionTime;
         $this->force = $force;
+        $this->successLog = $successLog;
     }
 
     /**
@@ -213,5 +219,13 @@ class CronTask
     public function getForce(): bool
     {
         return $this->force;
+    }
+
+    /**
+     * Get 是否记录成功日志.
+     */
+    public function getSuccessLog(): bool
+    {
+        return $this->successLog;
     }
 }

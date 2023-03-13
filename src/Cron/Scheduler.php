@@ -142,11 +142,19 @@ class Scheduler implements IScheduler
             {
                 Log::error(sprintf('Task %s unlock failed', $resultId));
             }
+            $task = $runningTasks[$resultId];
             unset($runningTasks[$resultId]);
+        }
+        else
+        {
+            $task = null;
         }
         if ($result->success)
         {
-            Log::info(sprintf('Task: %s, Process: %s#%s, Success', $resultId, $result->processType, $result->processId));
+            if ($task && $task->getSuccessLog())
+            {
+                Log::info(sprintf('Task: %s, Process: %s#%s, Success', $resultId, $result->processType, $result->processId));
+            }
         }
         else
         {
