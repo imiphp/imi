@@ -153,6 +153,12 @@ foreach ($testContainer as $container => $opt)
             sleep(1);
         }
         echo "\n";
+
+        if ($testSuccess && !is_file('build/a.txt'))
+        {
+            echo 'Not found a.txt',\PHP_EOL;
+            $testSuccess = false;
+        }
     }
     finally
     {

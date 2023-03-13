@@ -13,7 +13,8 @@ class PharService
 {
     protected OutputInterface $output;
 
-    protected string $outputPhar;
+    protected string $outputDir = '';
+    protected string $outputPhar = '';
     protected string $baseDir = '';
 
     /**
@@ -56,6 +57,17 @@ class PharService
      */
     protected $buildAfterCallback = null;
 
+    /**
+     * @var array|string
+     */
+    protected $resourceFiles = [];
+    /**
+     * @var array|string
+     */
+    protected $resourceDirs = [];
+    protected array  $resourceExcludeDirs = [];
+    protected array  $resourceExcludeFiles = [];
+
     public function __construct(OutputInterface $output, string $baseDir, array $config)
     {
         $this->output = $output;
@@ -66,6 +78,7 @@ class PharService
         {
             $this->outputPhar = getcwd() . \DIRECTORY_SEPARATOR . $this->outputPhar;
         }
+        $this->outputDir = \dirname($this->outputPhar);
 
         // 文件
         $this->files = $config['files'] ?? [];
@@ -87,6 +100,11 @@ class PharService
 
         $this->buildBeforeCallback = $config['build']['before'] ?? null;
         $this->buildAfterCallback = $config['build']['after'] ?? null;
+
+        $this->resourceFiles = $config['resources']['files'] ?? [];
+        $this->resourceDirs = $config['resources']['in'] ?? [];
+        $this->resourceExcludeDirs = $config['resources']['excludeDirs'] ?? [];
+        $this->resourceExcludeFiles = $config['resources']['excludeFiles'] ?? [];
     }
 
     public function checkConfiguration(): bool
@@ -180,6 +198,30 @@ class PharService
         if ($this->buildAfterCallback)
         {
             ($this->buildAfterCallback)($this);
+        }
+
+        return true;
+    }
+
+    public function outputResources(): bool
+    {
+        $skipLen = \strlen($this->baseDir);
+        foreach ($this->resourceFilesProvider() as $srcFileName)
+        {
+            $destFileName = $this->outputDir . \DIRECTORY_SEPARATOR . substr($srcFileName, $skipLen);
+            $destDir = \dirname($destFileName);
+            if (!is_dir($destDir) && !mkdir($destDir, 0755, true))
+            {
+                $this->output->writeln("<error>mkdir {$destDir} failed</error>");
+
+                return false;
+            }
+            if (!copy($srcFileName, $destFileName))
+            {
+                $this->output->writeln("<error>Copy file {$srcFileName} to {$destFileName} failed</error>");
+
+                return false;
+            }
         }
 
         return true;
@@ -491,5 +533,39 @@ class PharService
             ->notName('travis.yml')
             ->notName('appveyor.yml')
             ->notName('build.xml*');
+    }
+
+    protected function resourceFilesProvider(): \Generator
+    {
+        $finder = (new Finder())
+                ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->resourceDirs));
+
+        $finder->files();
+
+        $this->setBaseFilter($finder);
+
+        if ($this->resourceExcludeDirs)
+        {
+            $finder->exclude($this->resourceExcludeDirs);
+        }
+        if ($this->resourceExcludeFiles)
+        {
+            $finder->notName($this->resourceExcludeFiles);
+        }
+
+        foreach ($finder as $filename => $_)
+        {
+            yield $filename;
+        }
+
+        foreach ($this->files as $file)
+        {
+            $filename = $this->baseDir . \DIRECTORY_SEPARATOR . $file;
+            if (!is_file($filename))
+            {
+                continue;
+            }
+            yield $filename;
+        }
     }
 }

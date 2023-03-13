@@ -113,6 +113,11 @@ class PharBuildCommand extends Command
             return self::INVALID;
         }
 
+        if (!$phar->outputResources())
+        {
+            return self::INVALID;
+        }
+
         return self::SUCCESS;
     }
 }
