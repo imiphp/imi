@@ -46,6 +46,16 @@ class PharService
 
     protected int $buildTime;
 
+    /**
+     * @var callable|null
+     */
+    protected $buildBeforeCallback = null;
+
+    /**
+     * @var callable|null
+     */
+    protected $buildAfterCallback = null;
+
     public function __construct(OutputInterface $output, string $baseDir, array $config)
     {
         $this->output = $output;
@@ -74,6 +84,9 @@ class PharService
         $this->dumpGitInfo = $config['dumpGitInfo'] ?? true;
 
         $this->bootstrap = $config['bootstrap'] ?? null;
+
+        $this->buildBeforeCallback = $config['build']['before'] ?? null;
+        $this->buildAfterCallback = $config['build']['after'] ?? null;
     }
 
     public function checkConfiguration(): bool
@@ -97,6 +110,10 @@ class PharService
 
     public function build(?string $container): bool
     {
+        if ($this->buildBeforeCallback)
+        {
+            ($this->buildBeforeCallback)($this);
+        }
         if ($container)
         {
             $this->bootstrap = $container;
@@ -158,6 +175,11 @@ class PharService
         if (\Phar::NONE !== $this->compression)
         {
             $phar->compressFiles($this->compression);
+        }
+
+        if ($this->buildAfterCallback)
+        {
+            ($this->buildAfterCallback)($this);
         }
 
         return true;

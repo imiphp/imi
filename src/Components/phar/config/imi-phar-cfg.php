@@ -60,4 +60,14 @@ return [
     //   - \Phar::GZ   : 必须启用扩展 zlib
     //   - \Phar::BZ2  : 必须启用扩展 bzip2
     'compression'  => \Phar::NONE,
+
+    // 构建配置
+    'build'        => [
+        'before' => static function () {
+            // 构建前执行的代码
+        },
+        'after'  => static function () {
+            // 构建后执行的代码
+        },
+    ],
 ];
