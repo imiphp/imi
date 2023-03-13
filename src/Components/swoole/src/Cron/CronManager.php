@@ -80,7 +80,7 @@ class CronManager implements ICronManager
         $realTasks = &$this->realTasks;
         foreach ($this->tasks as $id => $task)
         {
-            $realTasks[$id] = new CronTask($id, $task['type'], $task['task'], $task['cron'], $task['data'] ?? null, $task['lockExpire'] ?? 120, $task['unique'] ?? null, $task['redisPool'] ?? null, $task['lockWaitTimeout'] ?? 10, $task['force'] ?? false);
+            $realTasks[$id] = new CronTask($id, $task['type'], $task['task'], $task['cron'], $task['data'] ?? null, $task['lockExpire'] ?? 120, $task['unique'] ?? null, $task['redisPool'] ?? null, $task['lockWaitTimeout'] ?? 10, $task['force'] ?? false, $task['successLog'] ?? true);
         }
     }
 
@@ -90,22 +90,22 @@ class CronManager implements ICronManager
     public function addCronByAnnotation(Cron $cron, string $pointClass): void
     {
         $this->addCron($cron->id, $cron->type, $pointClass, [[
-            'year'      => $cron->year,
-            'month'     => $cron->month,
-            'day'       => $cron->day,
-            'week'      => $cron->week,
-            'hour'      => $cron->hour,
-            'minute'    => $cron->minute,
-            'second'    => $cron->second,
-            'delayMin'  => $cron->delayMin,
-            'delayMax'  => $cron->delayMax,
-        ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout, $cron->force);
+            'year'       => $cron->year,
+            'month'      => $cron->month,
+            'day'        => $cron->day,
+            'week'       => $cron->week,
+            'hour'       => $cron->hour,
+            'minute'     => $cron->minute,
+            'second'     => $cron->second,
+            'delayMin'   => $cron->delayMin,
+            'delayMax'   => $cron->delayMax,
+        ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout, $cron->force, $cron->successLog);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void
+    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true): void
     {
         if (isset($this->tasks[$id]))
         {
@@ -119,7 +119,7 @@ class CronManager implements ICronManager
         {
             throw new \InvalidArgumentException('$type must not null');
         }
-        $this->realTasks[$id] = new CronTask($id, $type, $task, $cronRules, $data, $lockExpire, $unique, $redisPool, $lockWaitTimeout, $force);
+        $this->realTasks[$id] = new CronTask($id, $type, $task, $cronRules, $data, $lockExpire, $unique, $redisPool, $lockWaitTimeout, $force, $successLog);
     }
 
     /**

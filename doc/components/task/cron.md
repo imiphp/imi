@@ -192,7 +192,7 @@ class TaskProcess implements IProcess
 
 注解 `@Cron`，类 `Imi\Cron\Annotation\Cron`
 
-`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="", force=false, delayMin=0, delayMax=0)`
+`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="", force=false, delayMin=0, delayMax=0, successLog=true)`
 
 ##### 属性
 
@@ -366,6 +366,10 @@ class TaskProcess implements IProcess
 如果有一项不为`0`，该定时任务就会根据两个值之间的随机秒数（包含两个值），提前或者延后执行。
 
 这两个设置主要是防止固定时间执行任务过多，起到分流作用。
+
+**successLog:**
+
+是否记录成功日志，默认为 `true`
 
 #### 配置文件设定
 
