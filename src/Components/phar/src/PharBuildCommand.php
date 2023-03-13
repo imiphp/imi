@@ -31,8 +31,8 @@ class PharBuildCommand extends Command
         $configFile = "{$baseDir}/" . Constant::CFG_FILE_NAME;
         $checkConfig = is_file($configFile);
 
-        $output->writeln("project dir : <info>{$baseDir}</info>");
-        $output->writeln(sprintf('check config: <info>%s</info>', $checkConfig ? '<info>success</info>' : '<comment>fail</comment>'));
+        $output->writeln("Project dir : <info>{$baseDir}</info>");
+        $output->writeln(sprintf('Check config: <info>%s</info>', $checkConfig ? '<info>success</info>' : '<comment>fail</comment>'));
 
         if ($input->getOption('init'))
         {
@@ -46,16 +46,16 @@ class PharBuildCommand extends Command
                     return Command::SUCCESS;
                 }
             }
-            $output->writeln("write {$configFile} .");
+            $output->writeln("Write {$configFile} .");
             copy(__DIR__ . '/../config/imi-phar-cfg.php', $configFile);
-            $output->writeln('configuration file initialization completed.');
+            $output->writeln('Configuration file initialization completed.');
 
             return self::SUCCESS;
         }
 
         if (!$checkConfig)
         {
-            $output->writeln('config file does not exist, execute "vendor/bin/imi-phar build --init" initialize configuration file.');
+            $output->writeln('Config file does not exist, execute "vendor/bin/imi-phar build --init" initialize configuration file.');
 
             return self::INVALID;
         }
@@ -72,14 +72,14 @@ class PharBuildCommand extends Command
         }
         catch (\Throwable $th)
         {
-            $output->writeln('config load fail: ' . $th);
+            $output->writeln('Config load fail: ' . $th);
 
             return self::FAILURE;
         }
 
         if (!\is_array($config))
         {
-            $output->writeln('config load fail: invalid config');
+            $output->writeln('Config load fail: invalid config');
 
             return self::FAILURE;
         }
@@ -90,7 +90,7 @@ class PharBuildCommand extends Command
 
         if (empty($pharOutput))
         {
-            $output->writeln('output phar file value invalid');
+            $output->writeln('Output phar file value invalid');
 
             return self::FAILURE;
         }

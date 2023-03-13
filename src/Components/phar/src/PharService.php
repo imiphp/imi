@@ -120,14 +120,14 @@ class PharService
     {
         if ('*' !== $this->files && !\is_array($this->files))
         {
-            $this->output->writeln('invalid files value');
+            $this->output->writeln('Invalid files value');
 
             return false;
         }
 
         if ('*' !== $this->dirs && !\is_array($this->dirs))
         {
-            $this->output->writeln('invalid dirs value');
+            $this->output->writeln('Invalid dirs value');
 
             return false;
         }
@@ -149,7 +149,7 @@ class PharService
         {
             return false;
         }
-        $this->output->writeln("bootstrap: <info>{$this->bootstrap}</info>");
+        $this->output->writeln("Bootstrap: <info>{$this->bootstrap}</info>");
 
         $outputPhar = $this->outputPhar;
         $outputDir = \dirname($outputPhar);
@@ -165,11 +165,11 @@ class PharService
 
         if (!$this->dumpGitInfo || !file_exists($this->baseDir . \DIRECTORY_SEPARATOR . '.git'))
         {
-            $this->output->writeln('dump git info: <comment>not support</comment>');
+            $this->output->writeln('Dump git info: <comment>not support</comment>');
         }
         else
         {
-            $this->output->writeln('dump git info: <info>support</info>');
+            $this->output->writeln('Dump git info: <info>support</info>');
             $this->gitInfo = Helper::resolveGitInfo($this->baseDir, $this->output);
             foreach ($this->gitInfo as $key => $value)
             {
@@ -177,13 +177,13 @@ class PharService
             }
         }
 
-        $this->output->writeln(sprintf('build date: <info>%s</info>', date(\DATE_ATOM, $this->buildTime)));
+        $this->output->writeln(sprintf('Build date: <info>%s</info>', date(\DATE_ATOM, $this->buildTime)));
 
         $phar = new \Phar($outputPhar, 0, 'imi.phar');
         // todo 支持 openssl 私钥签名
         $phar->setSignatureAlgorithm(\Phar::SHA256);
 
-        $this->output->writeln('add files...');
+        $this->output->writeln('Add files...');
 
         $phar->startBuffering();
 
@@ -191,13 +191,13 @@ class PharService
 
         $phar->addFile(\dirname(__DIR__) . '/phar_init.php', '__stub_init.php');
 
-        $this->output->writeln('add files done');
+        $this->output->writeln('Add files done');
 
         $phar->setStub($this->buildStud());
 
         $phar->stopBuffering();
 
-        $this->output->writeln('output phar file: ' . $this->outputPhar);
+        $this->output->writeln('Output phar file: ' . $this->outputPhar);
 
         if (\Phar::NONE !== $this->compression)
         {
@@ -242,7 +242,7 @@ class PharService
 
         if (empty($container))
         {
-            $this->output->writeln('<error>invalid container value</error>');
+            $this->output->writeln('<error>Invalid container value</error>');
 
             return false;
         }
@@ -253,7 +253,7 @@ class PharService
         }
         elseif (!\in_array($container, Constant::CONTAINER_SET))
         {
-            $this->output->writeln("<error>not support container: {$container}</error>");
+            $this->output->writeln("<error>Not support container: {$container}</error>");
 
             return false;
         }
@@ -267,7 +267,7 @@ class PharService
 
         if (!InstalledVersions::isInstalled($package))
         {
-            $this->output->writeln("<error>container {$container} requires package {$package}.</error>");
+            $this->output->writeln("<error>Container {$container} requires package {$package}.</error>");
 
             return false;
         }
