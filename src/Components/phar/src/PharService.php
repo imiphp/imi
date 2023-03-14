@@ -546,25 +546,28 @@ class PharService
 
     protected function resourceFilesProvider(): \Generator
     {
-        $finder = (new Finder())
-                ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->resourceDirs));
-
-        $finder->files();
-
-        $this->setBaseFilter($finder);
-
-        if ($this->resourceExcludeDirs)
+        if ($this->resourceDirs)
         {
-            $finder->exclude($this->resourceExcludeDirs);
-        }
-        if ($this->resourceExcludeFiles)
-        {
-            $finder->notName($this->resourceExcludeFiles);
-        }
+            $finder = (new Finder())
+            ->in(array_map(fn ($dir) => $this->baseDir . \DIRECTORY_SEPARATOR . $dir, $this->resourceDirs));
 
-        foreach ($finder as $filename => $_)
-        {
-            yield $filename;
+            $finder->files();
+
+            $this->setBaseFilter($finder);
+
+            if ($this->resourceExcludeDirs)
+            {
+                $finder->exclude($this->resourceExcludeDirs);
+            }
+            if ($this->resourceExcludeFiles)
+            {
+                $finder->notName($this->resourceExcludeFiles);
+            }
+
+            foreach ($finder as $filename => $_)
+            {
+                yield $filename;
+            }
         }
 
         foreach ($this->resourceFiles as $file)
