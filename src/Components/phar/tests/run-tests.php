@@ -154,7 +154,7 @@ foreach ($testContainer as $container => $opt)
         }
         echo \PHP_EOL;
 
-        if ($testSuccess && (!is_file($testProjectDir . '/build/.env') || !is_file($testProjectDir . '/build/resources/a.txt')))
+        if ($testSuccess && (!is_file($testProjectDir . '/build/.env') || !is_file($testProjectDir . '/build/.env.bak') || !is_file($testProjectDir . '/build/resources/a.txt')))
         {
             echo 'Not found a.txt',\PHP_EOL;
             $testSuccess = false;

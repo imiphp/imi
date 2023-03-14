@@ -77,6 +77,7 @@ return [
     'resources'         => [
         'files'             => [
             '.env',
+            '.env' => '.env.bak',
         ],
         // 可选值：
         //   - 空数组不包含任何目录。

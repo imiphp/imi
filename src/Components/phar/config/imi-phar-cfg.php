@@ -73,7 +73,10 @@ return [
 
     // 资源文件配置
     'resources'         => [
-        'files'             => [],
+        'files'             => [
+            // 'a.txt', // 将 a.txt 输出到 build/a.txt
+            // 'a.txt' => 'b.txt', // 将 a.txt 输出到 build/b.txt
+        ],
         // 可选值：
         //   - 空数组不包含任何目录。
         //   - 定义数组并填入目录名（仅限于当前目录下的目录名）。
