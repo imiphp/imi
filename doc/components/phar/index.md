@@ -100,6 +100,29 @@ vendor/bin/imi-phar build xxx
     //   - \Phar::GZ   : 必须启用扩展 zlib
     //   - \Phar::BZ2  : 必须启用扩展 bzip2
     'compression' => \Phar::NONE,
+
+    // 构建配置
+    'build'             => [
+        'before' => static function () {
+            // 构建前执行的代码
+        },
+        'after'  => static function () {
+            // 构建后执行的代码
+        },
+    ],
+
+    // 资源文件配置
+    'resources'         => [
+        'files'             => [],
+        // 可选值：
+        //   - 空数组不包含任何目录。
+        //   - 定义数组并填入目录名（仅限于当前目录下的目录名）。
+        'in'                => [],
+        // 要排除的的目录，仅对 dirs 扫描到的内容有作用。
+        'excludeDirs'       => [],
+        // 要排除的的文件，仅对 dirs 扫描到的内容有作用。
+        'excludeFiles'      => [],
+    ],
 ]
 ```
 

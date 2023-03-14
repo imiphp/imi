@@ -24,7 +24,7 @@ $srcMirrorDir = '/tmp/mirror-imi';
 $testProjectSrc = __DIR__ . '/project';
 $testProjectDir = '/tmp/imi-phar-test';
 
-echo "> copy files...\n";
+echo '> Copy files...', \PHP_EOL;
 $rsyncImiSrc = <<<SHELL
 rsync -av \
  --exclude '.git' --exclude '.idea' --exclude '*.log' \
@@ -39,12 +39,12 @@ Process::fromShellCommandline($rsyncImiSrc)->mustRun();
 Process::fromShellCommandline("rm -r {$testProjectDir}")->run();
 Process::fromShellCommandline("cp -r {$testProjectSrc} {$testProjectDir}")->mustRun();
 
-echo "> generate config...\n";
+echo '> Generate config...', \PHP_EOL;
 $composerJson = json_decode(file_get_contents($testProjectSrc . '/composer.json'), true, \JSON_THROW_ON_ERROR);
 
 foreach (LOCAL_REPOSITORIES as $package => $path)
 {
-    echo "set package: {$package} => {$path}\n";
+    echo "Set package: {$package} => {$path}", \PHP_EOL;
     $composerJson['repositories'][] = [
         'type'    => 'path',
         'url'     => $path ? ($srcMirrorDir . \DIRECTORY_SEPARATOR . $path) : $srcMirrorDir,
@@ -60,7 +60,7 @@ foreach (LOCAL_REPOSITORIES as $package => $path)
 $newJson = json_encode($composerJson, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT);
 file_put_contents($testProjectDir . '/composer.json', $newJson);
 
-echo "> composer install...\n";
+echo '> Composer install...', \PHP_EOL;
 (new Process([
     'composer',
     'install',
@@ -87,7 +87,7 @@ if (null !== RoadRunner::getBinaryPath())
 
 foreach ($testContainer as $container => $opt)
 {
-    echo "> build {$container} phar...\n";
+    echo "> Build {$container} phar...", \PHP_EOL;
 
     [$entrance, $cmd] = $opt;
 
@@ -117,7 +117,7 @@ foreach ($testContainer as $container => $opt)
             });
     }
 
-    echo "> run {$container} phar...\n";
+    echo "> Run {$container} phar...", \PHP_EOL;
     $testServer = (new Process([
         \PHP_BINARY,
         $entrance,
@@ -131,7 +131,7 @@ foreach ($testContainer as $container => $opt)
     });
     try
     {
-        echo "> wait running\n";
+        echo '> Wait running', \PHP_EOL;
         $context = stream_context_create(['http' => ['timeout' => 3]]);
         $count = 0;
         $testSuccess = false;
@@ -143,7 +143,7 @@ foreach ($testContainer as $container => $opt)
                 if ('imi' === $text)
                 {
                     $testSuccess = true;
-                    echo "\nresponse success";
+                    echo \PHP_EOL, 'response success';
                     break;
                 }
             }
@@ -152,14 +152,20 @@ foreach ($testContainer as $container => $opt)
             }
             sleep(1);
         }
-        echo "\n";
+        echo \PHP_EOL;
+
+        if ($testSuccess && (!is_file($testProjectDir . '/build/.env') || !is_file($testProjectDir . '/build/resources/a.txt')))
+        {
+            echo 'Not found a.txt',\PHP_EOL;
+            $testSuccess = false;
+        }
     }
     finally
     {
         $testServer->stop();
         if (!$testSuccess)
         {
-            echo "> test {$container} phar fail!!!";
+            echo "> Test {$container} phar fail!!!";
             exit(1);
         }
     }

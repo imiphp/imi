@@ -27,7 +27,7 @@ class Helper
         }
         catch (\RuntimeException $exception)
         {
-            $output->writeln("<comment>warning</comment>: git hash get failed, {$exception->getMessage()}");
+            $output->writeln("<comment>Warning</comment>: git hash get failed, {$exception->getMessage()}");
         }
         try
         {
@@ -35,7 +35,7 @@ class Helper
         }
         catch (\RuntimeException $exception)
         {
-            $output->writeln("<comment>warning</comment>: git branch get failed, {$exception->getMessage()}");
+            $output->writeln("<comment>Warning</comment>: git branch get failed, {$exception->getMessage()}");
         }
         try
         {
@@ -43,7 +43,7 @@ class Helper
         }
         catch (\RuntimeException $exception)
         {
-            $output->writeln("<comment>warning</comment>: git tag get failed, {$exception->getMessage()}");
+            $output->writeln("<comment>Warning</comment>: git tag get failed, {$exception->getMessage()}");
         }
 
         return $result;
