@@ -62,9 +62,9 @@ vendor/bin/imi-phar build xxx
         //   - 空数组不包含任何目录。
         //   - 定义数组并填入目录名名（仅限于当前目录下的目录名）。
         'in' => '*',
-        // 要排除的的目录，仅对 dirs 扫描到的内容有作用。（使用参考 symfony/finder->exclude）
+        // 要排除的目录，仅对 dirs 扫描到的内容有作用。（使用参考 symfony/finder->exclude）
         'excludeDirs'  => [],
-        // 要排除的的文件，仅对 dirs 扫描到的内容有作用。（使用参考 symfony/finder->notName）
+        // 要排除的文件，仅对 dirs 扫描到的内容有作用。（使用参考 symfony/finder->notName）
         'excludeFiles' => [],
     ],
 
@@ -121,9 +121,9 @@ vendor/bin/imi-phar build xxx
         //   - 空数组不包含任何目录。
         //   - 定义数组并填入目录名（仅限于当前目录下的目录名）。
         'in'                => [],
-        // 要排除的的目录，仅对 dirs 扫描到的内容有作用。
+        // 要排除的目录，仅对 dirs 扫描到的内容有作用。
         'excludeDirs'       => [],
-        // 要排除的的文件，仅对 dirs 扫描到的内容有作用。
+        // 要排除的文件，仅对 dirs 扫描到的内容有作用。
         'excludeFiles'      => [],
     ],
 ]
