@@ -57,7 +57,7 @@ class User extends Model
 	 *
 	 * @return  self
 	 */ 
-	public function setEx(\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex)
+	public function setEx(?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex)
 	{
 		$this->ex = $ex;
 
