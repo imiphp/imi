@@ -561,8 +561,6 @@ class PharService
 
             $finder->files();
 
-            $this->setBaseFilter($finder);
-
             if ($this->resourceExcludeDirs)
             {
                 $finder->exclude($this->resourceExcludeDirs);
