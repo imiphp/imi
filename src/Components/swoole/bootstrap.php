@@ -18,8 +18,12 @@ return static function () {
             if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
             {
                 $path = \dirname(__DIR__, 3);
+                if (!class_exists(\Imi\App::class))
+                {
+                    require $path . '/vendor/autoload.php';
+                }
             }
-            elseif (!class_exists('Imi\App'))
+            elseif (!class_exists(\Imi\App::class))
             {
                 (static function () use (&$path) {
                     foreach ([
