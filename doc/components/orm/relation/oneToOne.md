@@ -35,25 +35,19 @@ class User extends Model
 	 * @JoinTo("user_id")
 	 * @AutoSave(true)
 	 * @AutoDelete
-	 *
-	 * @var \ImiDemo\HttpDemo\MainServer\Model\UserEx
 	 */
-	protected $ex;
+	protected ?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex = null;
 
 	/**
 	 * Get the value of ex
-	 *
-	 * @return  \ImiDemo\HttpDemo\MainServer\Model\UserEx
 	 */ 
-	public function getEx()
+	public function getEx(): ?\ImiDemo\HttpDemo\MainServer\Model\UserEx
 	{
 		return $this->ex;
 	}
 
 	/**
 	 * Set the value of ex
-	 *
-	 * @param  \ImiDemo\HttpDemo\MainServer\Model\UserEx  $ex
 	 *
 	 * @return  self
 	 */ 
