@@ -15,7 +15,7 @@ return static function () {
         {
             $path = null;
 
-            if (\constant('IMI_IN_PHAR'))
+            if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
             {
                 $path = \dirname(__DIR__, 3);
             }
