@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
+namespace Imi\RoadRunner;
+
 use Imi\App;
-use Imi\RoadRunner\RoadRunnerApp;
 
 return static function () {
     $path = null;
@@ -11,10 +12,6 @@ return static function () {
     if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
     {
         $path = \dirname(__DIR__, 3);
-        if (!class_exists(\Imi\App::class))
-        {
-            require $path . '/vendor/autoload.php';
-        }
     }
     elseif (!class_exists(\Imi\App::class))
     {
