@@ -422,7 +422,7 @@ class PharService
             $finder = (new Finder())
                 ->files()
                 ->in($this->baseDir)
-                ->name(['*.php', '*.macro'])
+                ->name(['*.php', '*.macro', 'composer.json'])
                 ->depth('== 0')
                 ->ignoreDotFiles(true)
                 ->ignoreVCS(true);
@@ -498,8 +498,7 @@ class PharService
         // https://github.com/box-project/box/blob/e2cbc2424c0c4b97b626653c7f8ff8029282b9aa/src/Configuration/Configuration.php#L1478
         $finder
             // Remove build files
-            ->notName('composer.json')
-            ->notName('composer.lock')
+            ->notName('*.lock')
             ->notName('Makefile')
             ->notName('Vagrantfile')
             ->notName('phpstan*.neon*')
