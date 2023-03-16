@@ -15,7 +15,11 @@ return static function () {
         {
             $path = null;
 
-            if (!class_exists('Imi\App'))
+            if (\constant('IMI_IN_PHAR'))
+            {
+                $path = \dirname(__DIR__, 3);
+            }
+            elseif (!class_exists('Imi\App'))
             {
                 (static function () use (&$path) {
                     foreach ([
