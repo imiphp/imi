@@ -37,7 +37,7 @@ class BeanProxy
             });
             if (!$aroundAspectDoList)
             {
-                // 正常请求
+                // 正常调用
                 return self::callOrigin($object, $className, $method, $args, $callback, $returnsReference);
             }
             $aroundAspectDoList = array_reverse($aroundAspectDoList);

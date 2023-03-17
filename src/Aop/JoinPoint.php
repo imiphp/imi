@@ -12,12 +12,12 @@ class JoinPoint
     protected string $type = '';
 
     /**
-     * 请求方法名.
+     * 获取切入的方法名.
      */
     protected string $method = '';
 
     /**
-     * 请求参数.
+     * 方法调用参数.
      */
     protected array $args = [];
 
@@ -43,7 +43,7 @@ class JoinPoint
     }
 
     /**
-     * 获取请求方法名.
+     * 获取切入的方法名.
      */
     public function getMethod(): string
     {
@@ -51,7 +51,7 @@ class JoinPoint
     }
 
     /**
-     * 获取请求参数.
+     * 获取方法调用参数.
      */
     public function getArgs(): array
     {
@@ -67,9 +67,9 @@ class JoinPoint
     }
 
     /**
-     * 修改请求参数.
+     * 修改方法调用参数.
      *
-     * @param array $args 请求参数
+     * @param array $args 方法调用参数
      */
     public function setArgs(array $args): void
     {

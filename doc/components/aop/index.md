@@ -167,6 +167,7 @@ class Pool
 	public function test(JoinPoint $joinPoint)
 	{
 		echo $joinPoint->getType() . ' ' . get_parent_class($joinPoint->getTarget()) . '::' . $joinPoint->getMethod() . '(): ' . $joinPoint->getTarget()->getFree() . '/' . $joinPoint->getTarget()->getCount() . PHP_EOL;
+		var_dump('args:', $joinPoint->getArgs());
 	}
 }
 ```
