@@ -77,7 +77,7 @@ deny | 不允许的切入点，即使包含中有的，也可以被排除 | `[]`
 
 名称 | 描述 | 值
 -|-|-
-METHOD | 方法 | 1
+METHOD | 方法，包括构造方法 `__construct()` | 1
 ANNOTATION | 带有注解的方法 | 2
 CONSTRUCT | 构造方法 | 3
 ANNOTATION_CONSTRUCT | 带有注解的类的构造方法 | 4
