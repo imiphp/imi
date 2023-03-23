@@ -39,6 +39,12 @@ Github：<https://github.com/imiphp/imi>
 
 * 在 Github 的 imi 页面点击 `Pull requests`，然后点击 `New pull request` 把你修改的分支申请合并。
 
+**参考：**
+
+* <https://zhuanlan.zhihu.com/p/584834288>
+
+* <https://zhuanlan.zhihu.com/p/540082562>
+
 ## 参与方式
 
 ### 文档

@@ -4,6 +4,8 @@
 
 ## 项目初始化
 
+imi 提供了多个项目模板可供选择：
+
 创建 Http Server 项目：`composer create-project imiphp/project-http:~2.1.0`
 
 创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~2.1.0`
@@ -15,6 +17,8 @@
 创建 gRPC 项目：`composer create-project imiphp/project-grpc:~2.1.0`
 
 创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.1.0`
+
+运行命令后，会在当前目录创建一个新的 imi 项目，并下载所需的依赖。
 
 > 如何运行请看上面项目中的`README.md`
 

@@ -20,13 +20,11 @@ imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以�
 
 imi 提供了丰富的基础功能：`MySQL`、`PostgreSQL`、`Redis`、`超强超好用的自研 ORM`、`连接池`、`Web Api`、`Web MVC`、`WebSocket`、`TCP Server`、`UDP Server`、`HTTP2`、`MQTT`、`gRPC`、`容器化（Container）`、`依赖注入`、`Aop`、`事件`、`异步（Async）`、`缓存（Cache）`、`命令行（Command）`、`配置化（Config）`、`上下文（Context）`、`定时任务（Cron）`、`门面（Facade）`、`验证器（Validate）`、`锁（Lock）`、`日志（Log）`、`定时器（Timer）`、`权限控制`、`消息队列（RabbitMQ、Kafka、Redis）`、`Swagger`、`Hprose`、`宏（Macro）`、`限流`、`共享内存`、`Smarty`、`雪花算法发号器（Snowflake）`、`Workerman Gateway`、`InfluxDB` 和 `TDengine` 等组件。
 
-imi 还提供了微服务相关支持：`Nacos 配置中心`、`etcd 配置中心`、`Nacos 服务注册`、`Nacos 服务发现`、`Swoole Tracker`、`Zipkin`、`Jaeger`、`Prometheus`、`InfluxDB 服务指标监控`、`TDengine 服务指标监控` 和 `负载均衡` 等组件。
+同时，imi 还提供了微服务相关支持：`Nacos 配置中心`、`etcd 配置中心`、`Nacos 服务注册`、`Nacos 服务发现`、`Swoole Tracker`、`Zipkin`、`Jaeger`、`Prometheus`、`InfluxDB 服务指标监控`、`TDengine 服务指标监控` 和 `负载均衡` 等组件。
 
-管理后台开发骨架：[imi-admin](https://gitee.com/phpben/imi-admin)
+除此之外，imi还提供了管理后台开发骨架 [imi-admin](https://gitee.com/phpben/imi-admin)
 
-imi 框架现在已经稳定运行在：文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端、数据迁移服务（虎扑）等项目中。
-
-> imi 第一个版本发布于 2018 年 6 月 21 日
+imi 框架自 2018 年 6 月 21 日首次发布以来，已经稳定运行在许多项目中，例如文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端和数据迁移服务（虎扑）等项目。
 
 ## 社群
 
@@ -72,6 +70,8 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.1.0`
 
+创建 gRPC 项目：`composer create-project imiphp/project-grpc:~2.1.0`
+
 创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.1.0`
 
 [完全开发手册](https://doc.imiphp.com/v2.1/)
@@ -90,9 +90,9 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ## 成功案例
 
-不论您使用 imi 开发的是个人项目还是公司项目，不管是开源还是商业，都可以向我们提交案例。
+无论您是在个人项目还是公司项目中使用 imi 开发，无论是开源还是商业项目，都可以向我们提交您的案例。
 
-案例可能会被采纳并展示在 imi 官网、Swoole 官网等处，这对项目的推广和发展有着促进作用。
+我们会对您提交的案例进行审查，可能会将其展示在 imi 官网、Swoole 官网等处，这将有助于您的项目推广和发展。
 
 **提交格式：**
 
@@ -113,7 +113,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ## 版权信息
 
-imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免费使用。
+imi 遵循木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免费使用。
 
 ## 鸣谢
 
