@@ -576,9 +576,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function joinRaw(string $raw): self
+    public function joinRaw(string $raw, array $binds = []): self
     {
-        $join = new Join($this);
+        $join = new Join($this, null, null, null, null, null, null, 'inner', $binds);
         $join->useRaw();
         $join->setRawSQL($raw);
         $this->option->join[] = $join;

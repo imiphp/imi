@@ -523,6 +523,10 @@ Db::query()->table('tb_test1')->join('tb_test2', 'tb_test1.aid', '=', 'tb_test2.
 // select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid
 Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid');
 
+// 支持参数绑定
+// select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = ?
+Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = ?', [123]);
+
 // 下面三种用法，第5个参数都支持传Where
 // left join
 Db::query()->table('tb_test1')->leftJoin('tb_test2', 'tb_test1.aid', '=', 'tb_test2.bid');

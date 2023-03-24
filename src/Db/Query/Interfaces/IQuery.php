@@ -314,7 +314,7 @@ interface IQuery
      *
      * @return static
      */
-    public function joinRaw(string $raw): self;
+    public function joinRaw(string $raw, array $binds = []): self;
 
     /**
      * left join.

@@ -458,4 +458,11 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals('insert ignore into `test` PARTITION(`a`,`b`) (`value`) values(:value)', $query->buildInsertSql(['value' => 123]));
         $this->assertEquals('insert ignore into `test` PARTITION(`a`,`b`) (`value`) values (:p1),(:p2)', $query->buildBatchInsertSql([['value' => 123], ['value' => 456]]));
     }
+
+    public function testJoin(): void
+    {
+        $query = Db::query()->from('test')->joinRaw('join test2 on test.id = test2.id and test2.id2 = ?', [123]);
+        $this->assertEquals('select * from `test` join test2 on test.id = test2.id and test2.id2 = ?', $query->buildSelectSql());
+        $this->assertEquals([123], $query->getBinds());
+    }
 }
