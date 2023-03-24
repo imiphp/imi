@@ -40,6 +40,11 @@ class InsertBuilder extends BaseBuilder
                         $fields[] = $query->fieldQuote($k);
                         $valueParams[] = $v->toString($query);
                     }
+                    $binds = $v->getBinds();
+                    if ($binds)
+                    {
+                        $params = array_merge($params, $binds);
+                    }
                 }
                 else
                 {

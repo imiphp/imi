@@ -666,7 +666,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setFieldExp(string $fieldName, string $exp): self;
+    public function setFieldExp(string $fieldName, string $exp, array $binds = []): self;
 
     /**
      * 设置递增字段.

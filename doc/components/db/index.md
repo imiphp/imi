@@ -1023,7 +1023,7 @@ $result = Db::query()->table('tb_test')
 // update tb_test set score = score + 1 where id = 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-                     ->setFieldExp('score', 'score + 1')
+                     ->setFieldExp('score', 'score + ?', [1])
                      ->update();
 ```
 

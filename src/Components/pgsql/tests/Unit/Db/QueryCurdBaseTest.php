@@ -346,4 +346,26 @@ abstract class QueryCurdBaseTest extends TestCase
         $this->assertEquals('select test.*, ? from "test" join test2 on test.id = test2.id and test2.id2 = ? where test.id = ? or test.id = ? group by test.id, ? having test.id = ? order by field(test.id, ?, ?)', $query->buildSelectSql());
         $this->assertEquals(['imi', 1, 2, 3, 4, 5, 6, 7], $query->getBinds());
     }
+
+    public function testSetFieldExp(): void
+    {
+        $query = Db::query()->from('test')->setFieldExp('c', '1 + ?', [1])
+        ;
+        $this->assertEquals('insert into "test"("c") values(1 + ?)', $query->buildInsertSql());
+        $this->assertEquals([1], $query->getBinds());
+
+        $query = Db::query()->from('test')->setFieldInc('a', 1)
+                                          ->setFieldDec('b', 2)
+                                          ->setFieldExp('c', 'c + ?', [3])
+        ;
+        $this->assertEquals('update "test" set "a" = "a" + ?,"b" = "b" - ?,"c" = c + ?', $query->buildUpdateSql());
+        $this->assertEquals([1, 2, 3], $query->getBinds());
+
+        $query = Db::query()->from('test')->setFieldInc('a', 4)
+                                          ->setFieldDec('b', 5)
+                                          ->setFieldExp('c', 'c + ?', [6])
+        ;
+        $this->assertEquals('replace into "test" set "a" = "a" + ?,"b" = "b" - ?,"c" = c + ?', $query->buildReplaceSql());
+        $this->assertEquals([4, 5, 6], $query->getBinds());
+    }
 }

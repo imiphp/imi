@@ -946,9 +946,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setFieldExp(string $fieldName, string $exp): self
+    public function setFieldExp(string $fieldName, string $exp, array $binds = []): self
     {
-        $this->option->saveData[$fieldName] = new Raw($exp);
+        $this->option->saveData[$fieldName] = new Raw($exp, $binds);
 
         return $this;
     }
@@ -958,9 +958,7 @@ abstract class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        $this->option->saveData[$fieldName] = new Raw($this->fieldQuote($fieldName) . ' + ' . $incValue);
-
-        return $this;
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ?', [$incValue]);
     }
 
     /**
@@ -968,9 +966,7 @@ abstract class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        $this->option->saveData[$fieldName] = new Raw($this->fieldQuote($fieldName) . ' - ' . $decValue);
-
-        return $this;
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ?', [$decValue]);
     }
 
     /**
