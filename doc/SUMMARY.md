@@ -61,6 +61,7 @@
   * [事件列表](container/swoole/events.md)
 * [Workerman](container/workerman.md)
   * [服务器配置](container/workerman/serverConfig.md)
+  * [热更新](components/hotupdate/index.md)
   * [命令行工具](dev/process-workerman.md)
     * [进程工具](dev/process-workerman.md)
   * [事件列表](container/workerman/events.md)

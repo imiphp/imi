@@ -2,11 +2,9 @@
 
 [toc]
 
-Swoole 容器可以一个端口同时支持 WebSocket + Http 协议。
+imi 框架原生支持在同一个项目中，使用一个服务器监听多个端口和协议，例如你要开发一个聊天系统，需要同时支持 HTTP 和 WebSocket 协议，imi 框架可以方便地实现这个功能。
 
-必须将服务器声明为 WebSocket 类型，主服务器或子服务器不限。
-
-在服务器配置文件中的 `beans` 配置 `HttpDispatcher` 和 `WebSocketDispatcher` 即可。
+需要将服务器声明为 WebSocket 类型，主服务器或子服务器均可。在服务器配置文件中的 `beans` 配置 `HttpDispatcher` 和 `WebSocketDispatcher` 即可实现。这样，在同一个端口下，即可同时支持 HTTP 和 WebSocket 协议，实现代码复用和互相调用。
 
 ```php
 'HttpDispatcher'    =>    [
