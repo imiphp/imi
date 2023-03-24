@@ -2,13 +2,17 @@
 
 [toc]
 
+imi 框架提供了强大的事件机制，它可以让你在特定的时刻执行某些操作。事件机制的核心是事件触发器和事件监听器。
+
+在 imi 框架中，事件触发器通常是一个具体的操作，而事件监听器则是响应某些事件的具体操作。
+
+事件机制的主要优势在于它可以让你在不改变原有代码的情况下，扩展应用的功能。
+
 ## 全局事件
 
 ### 监听全局事件
 
 #### 注解监听全局事件
-
-以`imi/src/Listener/Init.php`为例
 
 ```php
 <?php
@@ -137,9 +141,9 @@ class BeforeRequest implements IRequestEventListener
 
 然后在类上写`@ClassEventListener`注解。注解参数如下：
 
-`className`类名
-`eventName`要监听的事件名称
-`priority`事件触发后执行的优先级，数字越大越先执行，同样大执行顺序不一定
+* `className`类名
+* `eventName`要监听的事件名称
+* `priority`事件触发后执行的优先级，数字越大越先执行，同样大执行顺序不一定
 
 #### 代码监听局部事件
 

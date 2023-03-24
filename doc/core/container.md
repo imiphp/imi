@@ -2,28 +2,13 @@
 
 [toc]
 
-容器用于存放类实例对象，容器中的对象类我们称之为 `Bean`。
+imi 框架的容器采用了依赖注入 (Dependency Injection，简称 DI) 的设计模式，用于管理和注入对象及其依赖关系。
 
-通过容器实例化出来的对象，我们可以对它们进行注入操作。
+imi 框架的容器包括全局容器、服务器容器和请求上下文容器。
 
-所有通过注解实现的功能，对象如果是直接 `new` 出来的，是不会生效的，必须使用容器！
+在 imi 框架中，通过注解实现的功能，对象如果是直接 `new` 出来的，是不会生效的，必须使用容器！因为 imi 框架的容器可以管理对象及其依赖关系，并实现依赖注入。
 
-## 配置扫描命名空间
-
-应用启动时，会扫描配置中设定的命名空间，扫描到的类才可以通过容器使用 `Bean` 名称获取对象。
-
-支持在项目、子服务器的配置文件中配置：
-
-```php
-return [
-    'beanScan'  =>  [
-        'ImiApp\Model',
-        'ImiApp\Service',
-    ],
-];
-```
-
-> imi v2.0 版本开始已经不一定需要配置 `beanScan` 了
+使用容器可以更方便地管理对象的生命周期和依赖关系，提高应用程序的可维护性和性能表现。
 
 ## 实例化对象
 
@@ -41,10 +26,15 @@ return [
 * 全局容器
 * 服务器容器（继承全局容器）
 * 请求上下文容器（继承服务器容器或全局容器）
+* 全局单例容器（不支持 AOP、注解等）
 
 ### 全局容器
 
-存活于框架整个生命周期，可以理解为全局容器。
+全局容器是全局共享的，用于存储应用程序中的单例对象。
+
+全局容器存活于框架整个生命周期，是一种全局的、共享的容器，可以被整个应用程序的代码访问。
+
+**获取对象：**
 
 ```php
 $object = \Imi\App::getBean('XXX');
@@ -55,78 +45,40 @@ $container = \Imi\App::getContainer();
 $object = $container->get('XXX');
 ```
 
-### 服务器容器
+**配置类别名：**
 
-只针对目标服务器的容器，该容器中目前存储了该服务器的路由对象及配置等等。
-
-比如你的项目分别监听了 Http、TCP 两个协议端口，Http 请求接口进来，使用服务器容器获取到的对象，只会是这个 Http 服务独有的，TCP 服务里拿不到。
+方法一-注解：
 
 ```php
-$object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
+<?php
+use Imi\Bean\Annotation\Bean;
 
-// 获取容器对象
-$container = \Imi\Server\ServerManager::getServer('main')->getContainer();
-$object = $container->get('XXX');
+/**
+ * @Bean("XXX")
+ */
+class Test
+{
+
+}
 ```
 
-### 请求上下文容器
-
-当前请求有效的容器，请求结束时即销毁，更多细节（[请求上下文](/v2.1/core/requestContext.html)）。
-
-```php
-$object = \Imi\RequestContext::getBean('XXX');
-
-// 获取容器对象
-$container = \Imi\RequestContext::getContainer();
-$object = $container->get('XXX');
-```
-
-### 全局单例容器
-
-此方法实例化的对象，AOP、注解等都对它不产生作用，只是单纯的单例。
-
-```php
-$object = \Imi\App::getSingleton('XXX');
-```
-
-### 全局容器实例化
-
-每次调用都实例化返回新的对象，AOP、注解等有效。
-
-```php
-$object = \Imi\App::newInstance('XXX');
-$object = \Imi\App::newInstance('XXX', 1, 2, 3); // 支持实例化参数
-```
-
-## 容器绑定
-
-**配置绑定：**
-
-全局容器-项目配置文件：
+方法二-项目配置文件：
 
 ```php
 [
     'imi' => [
         'beans' => [
-            'aaa' => XXX::class,
+            'XXX' => Test::class,
         ],
     ],
 ]
 ```
 
-如上配置后，就可以使用 `\Imi\App::getBean('aaa')` 等方式实例化了
+如上配置后，就可以使用 `\Imi\App::getBean('XXX')` 等方式实例化了
 
 同理，你甚至可以使用自己写的类，配置覆盖 imi 内置的同名类
 
----
-
-服务器容器：
-
-> 详见各环境的服务器配置文档。
-
 **动态绑定：**
-
-全局容器：
 
 ```php
 use Imi\App;
@@ -157,7 +109,50 @@ App::getContainer()->set('ccc', new \stdClass);
 App::getContainer()->getBean('ccc');
 ```
 
-服务器容器：
+> 禁用递归依赖可以规避服务启动后，第一次访问概率报错问题
+
+### 服务器容器
+
+服务器容器是针对每个子服务器独立的，用于存储服务器级别的对象。
+
+服务器容器中存储的对象是针对目标服务器的，不同服务器之间的容器是互相独立的。
+
+在服务器容器中，目前存储了该服务器的路由对象及配置等等。
+
+比如，如果你的项目同时监听了 Http、TCP 两个协议端口，那么在 Http 请求接口进来时，通过服务器容器获取到的对象只会是该 Http 服务独有的，在 TCP 服务中是无法访问的。
+
+**获取对象：**
+
+```php
+$object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
+
+// 获取容器对象
+$container = \Imi\Server\ServerManager::getServer('main')->getContainer();
+$object = $container->get('XXX');
+```
+
+**配置类别名：**
+
+方法一-注解：
+
+```php
+<?php
+use Imi\Bean\Annotation\Bean;
+
+/**
+ * @Bean("XXX")
+ */
+class Test
+{
+
+}
+```
+
+方法二-项目配置文件：
+
+> 默认情况下继承全局容器配置，服务器容器配置因环境不同而有所差异，具体细节可以参考各环境的服务器配置文档。
+
+**动态绑定：**
 
 ```php
 use Imi\Server\ServerManager;
@@ -174,6 +169,51 @@ $obj = ServerManager::getServer()->getContainer()->getBean('aaa');
 // 实例化，带参数，不缓存
 $obj = ServerManager::getServer()->getContainer()->getBean('aaa', 1);
 ```
+
+> 禁用递归依赖可以规避服务启动后，第一次访问概率报错问题
+
+### 请求上下文容器
+
+请求上下文容器是当前请求有效的容器，请求结束时即销毁。
+
+请求上下文容器中存储的对象是针对当前请求有效的，请求结束后会自动销毁。
+
+有关更多细节可以参考[请求上下文](/v2.1/core/requestContext.html)。
+
+请求上下文容器可以为每个请求提供独立的容器实例，以存储请求处理中所需的对象，例如请求参数、数据库连接等。请求上下文容器的使用可以避免多个请求之间的对象冲突，提高应用程序的可靠性和稳定性。
+
+**获取对象：**
+
+```php
+$object = \Imi\RequestContext::getBean('XXX');
+
+// 获取容器对象
+$container = \Imi\RequestContext::getContainer();
+$object = $container->get('XXX');
+```
+
+**配置类别名：**
+
+方法一-注解：
+
+```php
+<?php
+use Imi\Bean\Annotation\Bean;
+
+/**
+ * @Bean("XXX")
+ */
+class Test
+{
+
+}
+```
+
+方法二-项目配置文件：
+
+> 继承全局容器或服务器容器配置
+
+**动态绑定：**
 
 请求上下文容器：
 
@@ -195,17 +235,54 @@ $obj = RequestContext::getBean('aaa', 1);
 
 > 禁用递归依赖可以规避服务启动后，第一次访问概率报错问题
 
+### 全局单例容器
+
+全局单例容器可以用于实例化全局共享的单例对象，该对象不会被 AOP、注解等功能所影响，只是单纯的单例。
+
+可以通过全局单例容器在整个应用程序中共享同一个对象实例，提高应用程序的性能和效率。
+
+**获取对象：**
+
+```php
+$object = \Imi\App::getSingleton('XXX');
+```
+
+**配置类别名：**
+
+> 同全局容器
+
+**动态绑定：**
+
+> 同全局容器
+
+### 全局容器实例化
+
+全局容器实例化方法可以用于每次调用时实例化并返回新的对象，同时 AOP、注解等功能仍然有效。
+
+通过全局容器实例化方法可以轻松地获取到全局范围内的新对象，可以为每个调用提供独立的对象实例，避免对象冲突和资源浪费。
+
+**实例化对象：**
+
+```php
+$object = \Imi\App::newInstance('XXX');
+$object = \Imi\App::newInstance('XXX', 1, 2, 3); // 支持实例化参数
+```
+
+**配置类别名：**
+
+> 同全局容器
+
+**动态绑定：**
+
+> 同全局容器
+
 ## 容器对象类 (Bean)
 
-`getBean()`时可以传带有完整命名空间的类名，或者别名，我们可以通过`@Bean`注解来定义别名。
+在容器中，可以通过 `getBean()` 方法来获取已经注册的 Bean 对象。在调用 `getBean()` 方法时，可以传递带有完整命名空间的类名或者别名。如果需要定义别名，可以使用 `@Bean` 注解进行定义。
 
-你也可以在类里定义一个`__init()`方法，imi 将它作为第二个构造方法。
+除此之外，在 Bean 类中还可以定义一个名为 `__init()` 的方法，该方法会作为第二个构造方法被执行。具体的执行顺序为：`__construct() -> injectProps() -> __init()`。其中，`injectProps()` 方法用于属性注入，具体内容可以参考 [AOP 章节](/components/aop/index.html)的相关内容。
 
-执行顺序：`__construct -> injectProps -> __init`
-
-`injectProps` 即为属性注入，具体请看章节：[AOP](/components/aop/index.html)
-
-定义：
+**定义：**
 
 ```php
 namespace Test;
@@ -236,7 +313,7 @@ class ABCDEFG
 }
 ```
 
-获得实例：
+**获得实例：**
 
 ```php
 App::getBean('MyTest');
@@ -245,15 +322,11 @@ App::getBean(\Test\ABCDEFG::class);
 
 ## 注解继承
 
-默认情况下，继承父类，父类的注解是不生效的。
+默认情况下，子类继承父类时，父类的注解是不会生效的。但是有时候我们需要让父类的注解生效。在这种情况下，可以在类、方法、属性或常量上使用 `@Inherit` 注解来实现。
 
-有时候，我们需要让他生效。
+**类名：**`Imi\Bean\Annotation\Inherit`
 
-imi 提供了一个 `@Inherit` 注解，支持写在：类、方法、属性、常量上。
-
-类名：`Imi\Bean\Annotation\Inherit`
-
-参数：
+**参数：**
 
 ```php
 /**
@@ -264,11 +337,11 @@ imi 提供了一个 `@Inherit` 注解，支持写在：类、方法、属性、�
 public $annotation;
 ```
 
-例子：
+**例子：**
 
-下面是模型的例子，父类定义结构，子类中可以写自定义代码。重新生成模型父类代码，不会把自定义代码给覆盖掉。
+下面是一个模型的例子，我们可以在父类中定义一些结构，然后在子类中编写自定义代码。如果重新生成模型的父类代码，这些自定义代码不会被覆盖掉。
 
-父类：
+**父类：**
 
 ```php
 <?php
@@ -405,7 +478,7 @@ abstract class ArticleBase extends Model
 }
 ```
 
-子类：
+**子类：**
 
 ```php
 <?php
@@ -423,3 +496,20 @@ class Article extends ArticleBase
 
 }
 ```
+
+## 配置扫描命名空间
+
+应用启动时，会扫描配置文件中指定的命名空间，所有被扫描到的类才可以通过容器来获取。
+
+在项目和子服务器的配置文件中，可以通过配置来指定需要扫描的命名空间。
+
+```php
+return [
+    'beanScan'  =>  [
+        'ImiApp\Model',
+        'ImiApp\Service',
+    ],
+];
+```
+
+> imi v2.0 版本开始已经不一定需要配置 `beanScan` 了

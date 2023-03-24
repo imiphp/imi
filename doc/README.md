@@ -12,7 +12,7 @@ imi 提供了丰富的基础功能：`MySQL`、`PostgreSQL`、`Redis`、`超强�
 
 同时，imi 还提供了微服务相关支持：`Nacos 配置中心`、`etcd 配置中心`、`Nacos 服务注册`、`Nacos 服务发现`、`Swoole Tracker`、`Zipkin`、`Jaeger`、`Prometheus`、`InfluxDB 服务指标监控`、`TDengine 服务指标监控` 和 `负载均衡` 等组件。
 
-除此之外，imi还提供了管理后台开发骨架 [imi-admin](https://gitee.com/phpben/imi-admin)
+除此之外，imi 还提供了管理后台开发骨架 [imi-admin](https://gitee.com/phpben/imi-admin)。
 
 imi 框架自 2018 年 6 月 21 日首次发布以来，已经稳定运行在许多项目中，例如文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端和数据迁移服务（虎扑）等项目。
 
