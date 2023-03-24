@@ -43,6 +43,11 @@ class ReplaceBuilder extends BaseBuilder
                     {
                         $setStrs[] = $query->fieldQuote($k) . ' = ' . $v->toString($query);
                     }
+                    $binds = $v->getBinds();
+                    if ($binds)
+                    {
+                        $params = array_merge($params, $binds);
+                    }
                 }
                 else
                 {

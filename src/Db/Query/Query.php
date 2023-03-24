@@ -295,11 +295,11 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function fieldRaw(string $raw, ?string $alias = null): self
+    public function fieldRaw(string $raw, ?string $alias = null, array $binds = []): self
     {
         $field = new Field();
         $field->useRaw();
-        $field->setRawSQL($raw);
+        $field->setRawSQL($raw, $binds);
         if (null !== $alias)
         {
             $field->setAlias($alias);
@@ -322,11 +322,11 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self
+    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND, array $binds = []): self
     {
         $where = new Where();
         $where->useRaw();
-        $where->setRawSQL($raw);
+        $where->setRawSQL($raw, $binds);
         $where->setLogicalOperator($logicalOperator);
         $this->option->where[] = $where;
 
@@ -470,9 +470,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function orWhereRaw(string $where): self
+    public function orWhereRaw(string $where, array $binds = []): self
     {
-        return $this->whereRaw($where, LogicalOperator::OR);
+        return $this->whereRaw($where, LogicalOperator::OR, $binds);
     }
 
     /**
@@ -576,11 +576,11 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function joinRaw(string $raw): self
+    public function joinRaw(string $raw, array $binds = []): self
     {
         $join = new Join($this);
         $join->useRaw();
-        $join->setRawSQL($raw);
+        $join->setRawSQL($raw, $binds);
         $this->option->join[] = $join;
 
         return $this;
@@ -623,7 +623,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function orderRaw($raw): self
+    public function orderRaw($raw, array $binds = []): self
     {
         $optionOrder = &$this->option->order;
         if (\is_array($raw))
@@ -647,7 +647,7 @@ abstract class Query implements IQuery
         {
             $order = new Order();
             $order->useRaw();
-            $order->setRawSQL($raw);
+            $order->setRawSQL($raw, $binds);
             $optionOrder[] = $order;
         }
 
@@ -706,11 +706,11 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function groupRaw(string $raw): self
+    public function groupRaw(string $raw, array $binds = []): self
     {
         $group = new Group();
         $group->useRaw();
-        $group->setRawSQL($raw);
+        $group->setRawSQL($raw, $binds);
         $this->option->group[] = $group;
 
         return $this;
@@ -729,11 +729,11 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self
+    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND, array $binds = []): self
     {
         $having = new Having();
         $having->useRaw();
-        $having->setRawSQL($raw);
+        $having->setRawSQL($raw, $binds);
         $having->setLogicalOperator($logicalOperator);
         $this->option->having[] = $having;
 
@@ -946,9 +946,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setFieldExp(string $fieldName, string $exp): self
+    public function setFieldExp(string $fieldName, string $exp, array $binds = []): self
     {
-        $this->option->saveData[$fieldName] = new Raw($exp);
+        $this->option->saveData[$fieldName] = new Raw($exp, $binds);
 
         return $this;
     }
@@ -958,9 +958,7 @@ abstract class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        $this->option->saveData[$fieldName] = new Raw($this->fieldQuote($fieldName) . ' + ' . $incValue);
-
-        return $this;
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ?', [$incValue]);
     }
 
     /**
@@ -968,9 +966,7 @@ abstract class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        $this->option->saveData[$fieldName] = new Raw($this->fieldQuote($fieldName) . ' - ' . $decValue);
-
-        return $this;
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ?', [$decValue]);
     }
 
     /**

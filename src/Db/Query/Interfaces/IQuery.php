@@ -110,7 +110,7 @@ interface IQuery
      *
      * @return static
      */
-    public function fieldRaw(string $raw, ?string $alias = null): self;
+    public function fieldRaw(string $raw, ?string $alias = null, array $binds = []): self;
 
     /**
      * 设置 where 条件，一般用于 =、>、<、like等.
@@ -126,7 +126,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereRaw(string $raw, string $logicalOperator = 'and'): self;
+    public function whereRaw(string $raw, string $logicalOperator = 'and', array $binds = []): self;
 
     /**
      * 设置 where 条件，传入回调，回调中的条件加括号.
@@ -215,7 +215,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereRaw(string $where): self;
+    public function orWhereRaw(string $where, array $binds = []): self;
 
     /**
      * 设置 where or 条件，传入回调，回调中的条件加括号.
@@ -314,7 +314,7 @@ interface IQuery
      *
      * @return static
      */
-    public function joinRaw(string $raw): self;
+    public function joinRaw(string $raw, array $binds = []): self;
 
     /**
      * left join.
@@ -375,7 +375,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orderRaw($raw): self;
+    public function orderRaw($raw, array $binds = []): self;
 
     /**
      * 设置分页
@@ -411,7 +411,7 @@ interface IQuery
      *
      * @return static
      */
-    public function groupRaw(string $raw): self;
+    public function groupRaw(string $raw, array $binds = []): self;
 
     /**
      * 设置 having 条件.
@@ -427,7 +427,7 @@ interface IQuery
      *
      * @return static
      */
-    public function havingRaw(string $raw, string $logicalOperator = 'and'): self;
+    public function havingRaw(string $raw, string $logicalOperator = 'and', array $binds = []): self;
 
     /**
      * 设置 having 条件，传入回调，回调中的条件加括号.
@@ -666,7 +666,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setFieldExp(string $fieldName, string $exp): self;
+    public function setFieldExp(string $fieldName, string $exp, array $binds = []): self;
 
     /**
      * 设置递增字段.

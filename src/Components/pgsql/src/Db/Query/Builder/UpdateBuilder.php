@@ -51,6 +51,11 @@ class UpdateBuilder extends BaseBuilder
                         $setStrs[] = $field . ' = ' . $v->toString($query);
                     }
                 }
+                $binds = $v->getBinds();
+                if ($binds)
+                {
+                    $params = array_merge($params, $binds);
+                }
             }
             else
             {

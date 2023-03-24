@@ -376,6 +376,9 @@ Db::query()->field(['id', 'name1 name', 'age1 as age']);
 
 // 传入参数原样代入到SQL中
 Db::query()->fieldRaw('id, name1 name, age1 as age');
+
+// 传入参数原样代入到SQL中，也支持参数绑定
+Db::query()->fieldRaw('id, name1 name, age1 as age, ? as value', null, [123]);
 ```
 
 ### 条件 where
@@ -437,6 +440,11 @@ Db::query()->whereRaw('id >= 1');
 // 传入参数原样代入到SQL中，并且为or条件
 Db::query()->whereRaw('id >= 1', 'or');
 Db::query()->orWhereRaw('id >= 1');
+
+// 支持参数绑定
+// 传入参数原样代入到SQL中，并且为or条件
+Db::query()->whereRaw('id >= ?', 'or', [1]);
+Db::query()->orWhereRaw('id >= ?', [1]);
 ```
 
 #### whereBrackets
@@ -523,6 +531,10 @@ Db::query()->table('tb_test1')->join('tb_test2', 'tb_test1.aid', '=', 'tb_test2.
 // select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid
 Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid');
 
+// 支持参数绑定
+// select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = ?
+Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = ?', [123]);
+
 // 下面三种用法，第5个参数都支持传Where
 // left join
 Db::query()->table('tb_test1')->leftJoin('tb_test2', 'tb_test1.aid', '=', 'tb_test2.bid');
@@ -541,6 +553,9 @@ Db::query()->order('id')->order('age', 'desc');
 // order by id desc
 Db::query()->orderRaw('id desc');
 
+// order by id desc, 1 asc
+Db::query()->orderRaw('id desc, ? asc', [1]);
+
 // JSON 类型参数排序
 Db::query()->order('field1->uid', 'desc');
 ```
@@ -553,6 +568,9 @@ Db::query()->group('id', 'name');
 
 // group by sum(id)
 Db::query()->groupRaw('sum(id)');
+
+// group by sum(id), ?
+Db::query()->groupRaw('sum(id), ?', 123);
 ```
 
 ### having
@@ -1005,7 +1023,7 @@ $result = Db::query()->table('tb_test')
 // update tb_test set score = score + 1 where id = 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-                     ->setFieldExp('score', 'score + 1')
+                     ->setFieldExp('score', 'score + ?', [1])
                      ->update();
 ```
 

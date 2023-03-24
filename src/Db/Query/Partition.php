@@ -37,12 +37,4 @@ class Partition implements IPartition
 
         return '';
     }
-
-    /**
-     * 获取绑定的数据们.
-     */
-    public function getBinds(): array
-    {
-        return [];
-    }
 }

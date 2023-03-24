@@ -203,7 +203,7 @@ class Join implements IJoin
         }
         else
         {
-            return [];
+            return $this->binds;
         }
     }
 }

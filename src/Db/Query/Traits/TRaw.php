@@ -17,6 +17,11 @@ trait TRaw
     protected string $rawSQL = '';
 
     /**
+     * 绑定的数据们.
+     */
+    protected array $binds = [];
+
+    /**
      * 获取是否使用原生语句.
      */
     public function isRaw(): bool
@@ -35,8 +40,17 @@ trait TRaw
     /**
      * 设置原生语句.
      */
-    public function setRawSQL(string $rawSQL): void
+    public function setRawSQL(string $rawSQL, array $binds = []): void
     {
         $this->rawSQL = $rawSQL;
+        $this->binds = $binds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBinds(): array
+    {
+        return $this->binds;
     }
 }

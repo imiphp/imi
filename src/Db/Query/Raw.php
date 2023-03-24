@@ -12,9 +12,9 @@ class Raw implements IBase
 {
     use TRaw;
 
-    public function __construct(string $raw)
+    public function __construct(string $raw, array $binds = [])
     {
-        $this->setRawSQL($raw);
+        $this->setRawSQL($raw, $binds);
     }
 
     /**
@@ -23,13 +23,5 @@ class Raw implements IBase
     public function toString(IQuery $query): string
     {
         return $this->rawSQL;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return [];
     }
 }

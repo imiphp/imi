@@ -21,11 +21,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      */
     protected $callback;
 
-    /**
-     * 绑定的数据们.
-     */
-    protected array $binds = [];
-
     public function __construct(callable $callback = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->callback = $callback;
@@ -116,13 +111,5 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         {
             return (string) $callResult;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return $this->binds;
     }
 }

@@ -199,9 +199,15 @@ abstract class BaseBuilder implements IBuilder
         {
             $groups = [];
             $query = $this->query;
+            $params = &$this->params;
             foreach ($group as $tmpGroup)
             {
                 $groups[] = $tmpGroup->toString($query);
+                $binds = $tmpGroup->getBinds();
+                if ($binds)
+                {
+                    $params = array_merge($params, $binds);
+                }
             }
 
             return ' group by ' . implode(',', $groups);
@@ -225,6 +231,7 @@ abstract class BaseBuilder implements IBuilder
         }
         $params = &$this->params;
         $query = $this->query;
+        $params = &$this->params;
         $result = [];
         foreach ($having as $item)
         {

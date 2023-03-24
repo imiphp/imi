@@ -19,7 +19,7 @@ interface IBase
     /**
      * 设置原生语句.
      */
-    public function setRawSQL(string $rawSQL): void;
+    public function setRawSQL(string $rawSQL, array $binds = []): void;
 
     public function toString(IQuery $query): string;
 
