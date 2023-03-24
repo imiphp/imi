@@ -376,6 +376,9 @@ Db::query()->field(['id', 'name1 name', 'age1 as age']);
 
 // 传入参数原样代入到SQL中
 Db::query()->fieldRaw('id, name1 name, age1 as age');
+
+// 传入参数原样代入到SQL中，也支持参数绑定
+Db::query()->fieldRaw('id, name1 name, age1 as age, ? as value', null, [123]);
 ```
 
 ### 条件 where
@@ -437,6 +440,11 @@ Db::query()->whereRaw('id >= 1');
 // 传入参数原样代入到SQL中，并且为or条件
 Db::query()->whereRaw('id >= 1', 'or');
 Db::query()->orWhereRaw('id >= 1');
+
+// 支持参数绑定
+// 传入参数原样代入到SQL中，并且为or条件
+Db::query()->whereRaw('id >= ?', 'or', [1]);
+Db::query()->orWhereRaw('id >= ?', [1]);
 ```
 
 #### whereBrackets
@@ -545,6 +553,9 @@ Db::query()->order('id')->order('age', 'desc');
 // order by id desc
 Db::query()->orderRaw('id desc');
 
+// order by id desc, 1 asc
+Db::query()->orderRaw('id desc, ? asc', [1]);
+
 // JSON 类型参数排序
 Db::query()->order('field1->uid', 'desc');
 ```
@@ -557,6 +568,9 @@ Db::query()->group('id', 'name');
 
 // group by sum(id)
 Db::query()->groupRaw('sum(id)');
+
+// group by sum(id), ?
+Db::query()->groupRaw('sum(id), ?', 123);
 ```
 
 ### having

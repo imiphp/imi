@@ -32,11 +32,6 @@ class Where extends BaseWhere implements IWhere
     protected $value;
 
     /**
-     * 绑定的数据们.
-     */
-    protected array $binds = [];
-
-    /**
      * @param mixed $value
      */
     public function __construct(?string $fieldName = null, ?string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
@@ -47,11 +42,11 @@ class Where extends BaseWhere implements IWhere
         $this->logicalOperator = $logicalOperator;
     }
 
-    public static function raw(string $rawSql, string $logicalOperator = LogicalOperator::AND): self
+    public static function raw(string $rawSql, string $logicalOperator = LogicalOperator::AND, array $binds = []): self
     {
         $where = new self();
         $where->useRaw(true);
-        $where->setRawSQL($rawSql);
+        $where->setRawSQL($rawSql, $binds);
         $where->setLogicalOperator($logicalOperator);
 
         return $where;
@@ -126,13 +121,13 @@ class Where extends BaseWhere implements IWhere
      */
     public function toStringWithoutLogic(IQuery $query): string
     {
-        $binds = &$this->binds;
-        $binds = [];
-        $thisValues = &$this->value;
         if ($this->isRaw)
         {
             return $this->rawSQL;
         }
+        $binds = &$this->binds;
+        $binds = [];
+        $thisValues = &$this->value;
         $operation = $this->operation;
         $result = $query->fieldQuote($this->fieldName) . ' ' . $operation . ' ';
         switch (strtolower($operation))
@@ -193,13 +188,5 @@ class Where extends BaseWhere implements IWhere
         }
 
         return $result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return $this->binds;
     }
 }

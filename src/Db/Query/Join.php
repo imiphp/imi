@@ -43,12 +43,7 @@ class Join implements IJoin
      */
     protected string $type = 'inner';
 
-    /**
-     * 绑定的数据们.
-     */
-    protected array $binds = [];
-
-    public function __construct(IQuery $query, ?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner', array $binds = [])
+    public function __construct(IQuery $query, ?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner')
     {
         $this->table = $thisTable = new Table();
         if (null !== $table)
@@ -64,7 +59,6 @@ class Join implements IJoin
         $this->right = $right;
         $this->where = $where;
         $this->type = $type;
-        $this->binds = $binds;
     }
 
     /**

@@ -331,4 +331,19 @@ abstract class QueryCurdBaseTest extends TestCase
             'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',
         ], $result->get());
     }
+
+    public function testRawBinds(): void
+    {
+        $query = Db::query()->from('test')
+                            ->fieldRaw('test.*, ?', null, ['imi'])
+                            ->joinRaw('join test2 on test.id = test2.id and test2.id2 = ?', [1])
+                            ->whereRaw('test.id = ?', 'and', [2])
+                            ->orWhereRaw('test.id = ?', [3])
+                            ->groupRaw('test.id, ?', [4])
+                            ->havingRaw('test.id = ?', 'and', [5])
+                            ->orderRaw('field(test.id, ?, ?)', [6, 7])
+        ;
+        $this->assertEquals('select test.*, ? from "test" join test2 on test.id = test2.id and test2.id2 = ? where test.id = ? or test.id = ? group by test.id, ? having test.id = ? order by field(test.id, ?, ?)', $query->buildSelectSql());
+        $this->assertEquals(['imi', 1, 2, 3, 4, 5, 6, 7], $query->getBinds());
+    }
 }

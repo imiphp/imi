@@ -19,6 +19,7 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
         }
         $result = [];
         $query = $this->query;
+        $params = &$this->params;
         foreach ($fields as $k => $v)
         {
             if (is_numeric($k))
@@ -38,6 +39,11 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
                 $field = new Field(null, null, $k, $v);
             }
             $result[] = $field->toString($query);
+            $binds = $field->getBinds();
+            if ($binds)
+            {
+                $params = array_merge($params, $binds);
+            }
         }
 
         return implode(',', $result);

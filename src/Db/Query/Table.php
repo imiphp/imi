@@ -150,12 +150,4 @@ class Table implements ITable
             $this->prefix . $this->table,
         ], $this->alias);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return [];
-    }
 }

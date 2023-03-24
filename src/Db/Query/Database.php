@@ -98,12 +98,4 @@ class Database implements IDatabase
             $this->database,
         ], $this->alias);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return [];
-    }
 }

@@ -72,12 +72,4 @@ class Order implements IOrder
 
         return $query->fieldQuote($this->fieldName) . ' ' . $this->direction;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBinds(): array
-    {
-        return [];
-    }
 }
