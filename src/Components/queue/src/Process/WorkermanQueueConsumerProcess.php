@@ -31,6 +31,10 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
         {
             WorkermanServerWorker::clearAll();
 
+            if (IMI_IN_PHAR)
+            {
+                WorkermanServerUtil::initWorkermanWorker('WorkermanQueue');
+            }
             $imiQueue = $this->imiQueue;
             foreach ($imiQueue->getList() as $name => $arrayConfig)
             {
