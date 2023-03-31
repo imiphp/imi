@@ -21,6 +21,7 @@ class Server extends \Imi\Server\Server
      */
     public static function initWorkermanWorker(?string $serverName = null): void
     {
+        WorkermanServerWorker::$stopTimeout = 3;
         $config = Config::get('@app.workerman.worker', []);
         foreach ($config as $key => $value)
         {

@@ -7,6 +7,7 @@ namespace Imi\Queue\Process;
 use Imi\Aop\Annotation\Inject;
 use Imi\Log\Log;
 use Imi\Queue\Service\QueueService;
+use Imi\Workerman\Hook\Timer;
 use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
 use Imi\Workerman\Process\ProcessManager;
@@ -30,6 +31,7 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
 
         public function run(Worker $worker): void
         {
+            Timer::clear();
             WorkermanServerWorker::clearAll();
 
             WorkermanServerUtil::initWorkermanWorker('QueueConsumer');
