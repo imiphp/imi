@@ -6,9 +6,10 @@ namespace Imi\Workerman\Hook;
 
 class Timer extends \Workerman\Timer
 {
-    public static function clear():void
+    public static function clear(): void
     {
         static::delAll();
+        // @phpstan-ignore-next-line
         static::$_event = null;
         static::$_timerId = 0;
     }
