@@ -84,6 +84,8 @@ abstract class Query implements IQuery
      */
     protected int $dbParamInc = 0;
 
+    protected ?int $dbParamIncBeginValue = null;
+
     protected string $originPrefix = '';
 
     /**
@@ -958,7 +960,9 @@ abstract class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ?', [$incValue]);
+        $name = $this->getAutoParamName();
+
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ' . $name, [$name => $incValue]);
     }
 
     /**
@@ -966,7 +970,9 @@ abstract class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ?', [$decValue]);
+        $name = $this->getAutoParamName();
+
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ' . $name, [$name => $decValue]);
     }
 
     /**
@@ -1029,7 +1035,14 @@ abstract class Query implements IQuery
      */
     public function buildSelectSql(): string
     {
-        $this->dbParamInc = 0;
+        if (null === $this->dbParamIncBeginValue)
+        {
+            $this->dbParamIncBeginValue = $this->dbParamInc;
+        }
+        else
+        {
+            $this->dbParamInc = $this->dbParamIncBeginValue;
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1090,7 +1103,14 @@ abstract class Query implements IQuery
      */
     public function buildInsertSql($data = null): string
     {
-        $this->dbParamInc = 0;
+        if (null === $this->dbParamIncBeginValue)
+        {
+            $this->dbParamIncBeginValue = $this->dbParamInc;
+        }
+        else
+        {
+            $this->dbParamInc = $this->dbParamIncBeginValue;
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1151,7 +1171,14 @@ abstract class Query implements IQuery
      */
     public function buildBatchInsertSql($data = null): string
     {
-        $this->dbParamInc = 0;
+        if (null === $this->dbParamIncBeginValue)
+        {
+            $this->dbParamIncBeginValue = $this->dbParamInc;
+        }
+        else
+        {
+            $this->dbParamInc = $this->dbParamIncBeginValue;
+        }
         $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
 
         return (new $builderClass($this))->build($data);
@@ -1162,7 +1189,14 @@ abstract class Query implements IQuery
      */
     public function buildUpdateSql($data = null): string
     {
-        $this->dbParamInc = 0;
+        if (null === $this->dbParamIncBeginValue)
+        {
+            $this->dbParamIncBeginValue = $this->dbParamInc;
+        }
+        else
+        {
+            $this->dbParamInc = $this->dbParamIncBeginValue;
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1225,7 +1259,14 @@ abstract class Query implements IQuery
      */
     public function buildReplaceSql($data = null): string
     {
-        $this->dbParamInc = 0;
+        if (null === $this->dbParamIncBeginValue)
+        {
+            $this->dbParamIncBeginValue = $this->dbParamInc;
+        }
+        else
+        {
+            $this->dbParamInc = $this->dbParamIncBeginValue;
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1288,7 +1329,14 @@ abstract class Query implements IQuery
      */
     public function buildDeleteSql(): string
     {
-        $this->dbParamInc = 0;
+        if (null === $this->dbParamIncBeginValue)
+        {
+            $this->dbParamIncBeginValue = $this->dbParamInc;
+        }
+        else
+        {
+            $this->dbParamInc = $this->dbParamIncBeginValue;
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))

@@ -1170,4 +1170,23 @@ class ModelTest extends BaseTest
         $record2 = ArticleId::find($record1->id);
         $this->assertEquals($record1->toArray(), $record2->toArray());
     }
+
+    public function testIncAndDec(): void
+    {
+        $record = VirtualColumn::newInstance();
+        $record->amount = 1;
+        $record->insert();
+
+        VirtualColumn::query()->where('id', '=', $record->id)
+                              ->setFieldInc('amount')
+                              ->update();
+        $record = VirtualColumn::find($record->id);
+        $this->assertEquals(2, $record->amount);
+
+        VirtualColumn::query()->where('id', '=', $record->id)
+                              ->setFieldDec('amount')
+                              ->update();
+        $record = VirtualColumn::find($record->id);
+        $this->assertEquals(1, $record->amount);
+    }
 }
