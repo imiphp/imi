@@ -105,6 +105,7 @@ class WorkermanServerWorker extends Worker
         static::$_outputStream = null;
         // @phpstan-ignore-next-line
         static::$_outputDecorated = null;
+        static::$statusFile = '';
     }
 
     /**
