@@ -39,3 +39,9 @@ RoadRunner 官方文档：<https://roadrunner.dev/docs>
   -w, --workDir[=WORKDIR]              工作路径
   -c, --config[=CONFIG]                配置文件路径，默认 .rr.yaml
 ```
+
+## 环境变量
+
+| 名称 | 默认值 | 描述 |
+|-|-
+| `IMI_ROADRUNNER_BINARY` | `false` | RoadRunner 二进制文件路径，如果不指定则自动寻找 |
