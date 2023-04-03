@@ -84,8 +84,6 @@ abstract class Query implements IQuery
      */
     protected int $dbParamInc = 0;
 
-    protected ?int $dbParamIncBeginValue = null;
-
     protected string $originPrefix = '';
 
     /**
@@ -913,16 +911,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function getAutoParamName(): string
+    public function getAutoParamName(string $prefix = 'p:'): string
     {
-        $dbParamInc = &$this->dbParamInc;
-        if ($dbParamInc >= 65535)
-        { // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
-            $dbParamInc = 0;
-        }
-        ++$dbParamInc;
-
-        return ':p' . dechex($dbParamInc);
+        return $prefix . dechex(++$this->dbParamInc);
     }
 
     /**
@@ -960,7 +951,7 @@ abstract class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        $name = $this->getAutoParamName();
+        $name = $this->getAutoParamName('fip:');
 
         return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ' . $name, [$name => $incValue]);
     }
@@ -970,7 +961,7 @@ abstract class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        $name = $this->getAutoParamName();
+        $name = $this->getAutoParamName('fdp:');
 
         return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ' . $name, [$name => $decValue]);
     }
@@ -1035,14 +1026,7 @@ abstract class Query implements IQuery
      */
     public function buildSelectSql(): string
     {
-        if (null === $this->dbParamIncBeginValue)
-        {
-            $this->dbParamIncBeginValue = $this->dbParamInc;
-        }
-        else
-        {
-            $this->dbParamInc = $this->dbParamIncBeginValue;
-        }
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1103,14 +1087,7 @@ abstract class Query implements IQuery
      */
     public function buildInsertSql($data = null): string
     {
-        if (null === $this->dbParamIncBeginValue)
-        {
-            $this->dbParamIncBeginValue = $this->dbParamInc;
-        }
-        else
-        {
-            $this->dbParamInc = $this->dbParamIncBeginValue;
-        }
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1171,14 +1148,7 @@ abstract class Query implements IQuery
      */
     public function buildBatchInsertSql($data = null): string
     {
-        if (null === $this->dbParamIncBeginValue)
-        {
-            $this->dbParamIncBeginValue = $this->dbParamInc;
-        }
-        else
-        {
-            $this->dbParamInc = $this->dbParamIncBeginValue;
-        }
+        $this->dbParamInc = 0;
         $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
 
         return (new $builderClass($this))->build($data);
@@ -1189,14 +1159,7 @@ abstract class Query implements IQuery
      */
     public function buildUpdateSql($data = null): string
     {
-        if (null === $this->dbParamIncBeginValue)
-        {
-            $this->dbParamIncBeginValue = $this->dbParamInc;
-        }
-        else
-        {
-            $this->dbParamInc = $this->dbParamIncBeginValue;
-        }
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1259,14 +1222,7 @@ abstract class Query implements IQuery
      */
     public function buildReplaceSql($data = null): string
     {
-        if (null === $this->dbParamIncBeginValue)
-        {
-            $this->dbParamIncBeginValue = $this->dbParamInc;
-        }
-        else
-        {
-            $this->dbParamInc = $this->dbParamIncBeginValue;
-        }
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1329,14 +1285,7 @@ abstract class Query implements IQuery
      */
     public function buildDeleteSql(): string
     {
-        if (null === $this->dbParamIncBeginValue)
-        {
-            $this->dbParamIncBeginValue = $this->dbParamInc;
-        }
-        else
-        {
-            $this->dbParamInc = $this->dbParamIncBeginValue;
-        }
+        $this->dbParamInc = 0;
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))

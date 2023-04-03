@@ -685,7 +685,7 @@ interface IQuery
     /**
      * 获取自动起名的参数名称.
      */
-    public function getAutoParamName(): string;
+    public function getAutoParamName(string $prefix = 'p:'): string;
 
     /**
      * 查询器别名.
