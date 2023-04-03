@@ -377,8 +377,9 @@ Db::query()->field(['id', 'name1 name', 'age1 as age']);
 // 传入参数原样代入到SQL中
 Db::query()->fieldRaw('id, name1 name, age1 as age');
 
-// 传入参数原样代入到SQL中，也支持参数绑定
+// 传入参数原样代入到SQL中，也支持参数绑定（不支持同时使用 ? 和 :xxx）
 Db::query()->fieldRaw('id, name1 name, age1 as age, ? as value', null, [123]);
+Db::query()->fieldRaw('id, name1 name, age1 as age, :value as value', null, [':value' => 123]);
 ```
 
 ### 条件 where
@@ -441,10 +442,12 @@ Db::query()->whereRaw('id >= 1');
 Db::query()->whereRaw('id >= 1', 'or');
 Db::query()->orWhereRaw('id >= 1');
 
-// 支持参数绑定
+// 支持参数绑定（不支持同时使用 ? 和 :xxx）
 // 传入参数原样代入到SQL中，并且为or条件
 Db::query()->whereRaw('id >= ?', 'or', [1]);
 Db::query()->orWhereRaw('id >= ?', [1]);
+Db::query()->whereRaw('id >= :value', 'or', [':value' => 1]);
+Db::query()->orWhereRaw('id >= :value', [':value' => 1]);
 ```
 
 #### whereBrackets
@@ -531,9 +534,11 @@ Db::query()->table('tb_test1')->join('tb_test2', 'tb_test1.aid', '=', 'tb_test2.
 // select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid
 Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid');
 
-// 支持参数绑定
+// 支持参数绑定（不支持同时使用 ? 和 :xxx）
 // select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = ?
 Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = ?', [123]);
+// select * from tb_test1 left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = :value
+Db::query()->table('tb_test1')->joinRaw('left join tb_test2 on tb_test1.aid = tb_test2.bid and tb_test2.xxx = :value', [':value' => 123]);
 
 // 下面三种用法，第5个参数都支持传Where
 // left join
@@ -556,6 +561,9 @@ Db::query()->orderRaw('id desc');
 // order by id desc, 1 asc
 Db::query()->orderRaw('id desc, ? asc', [1]);
 
+// order by id desc, 1 asc
+Db::query()->orderRaw('id desc, :value asc', [':value' => 1]);
+
 // JSON 类型参数排序
 Db::query()->order('field1->uid', 'desc');
 ```
@@ -570,7 +578,10 @@ Db::query()->group('id', 'name');
 Db::query()->groupRaw('sum(id)');
 
 // group by sum(id), ?
-Db::query()->groupRaw('sum(id), ?', 123);
+Db::query()->groupRaw('sum(id), ?', [123]);
+
+// group by sum(id), :value
+Db::query()->groupRaw('sum(id), :value', [':value' => 123]);
 ```
 
 ### having
