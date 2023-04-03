@@ -911,7 +911,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function getAutoParamName(string $prefix = 'p:'): string
+    public function getAutoParamName(string $prefix = ':p'): string
     {
         return $prefix . dechex(++$this->dbParamInc);
     }
@@ -951,7 +951,7 @@ abstract class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        $name = $this->getAutoParamName('fip:');
+        $name = $this->getAutoParamName(':fip');
 
         return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ' . $name, [$name => $incValue]);
     }
@@ -961,7 +961,7 @@ abstract class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        $name = $this->getAutoParamName('fdp:');
+        $name = $this->getAutoParamName(':fdp');
 
         return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ' . $name, [$name => $decValue]);
     }
