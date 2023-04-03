@@ -911,16 +911,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function getAutoParamName(): string
+    public function getAutoParamName(string $prefix = ':p'): string
     {
-        $dbParamInc = &$this->dbParamInc;
-        if ($dbParamInc >= 65535)
-        { // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
-            $dbParamInc = 0;
-        }
-        ++$dbParamInc;
-
-        return ':p' . dechex($dbParamInc);
+        return $prefix . dechex(++$this->dbParamInc);
     }
 
     /**
@@ -958,7 +951,9 @@ abstract class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ?', [$incValue]);
+        $name = $this->getAutoParamName(':fip');
+
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' + ' . $name, [$name => $incValue]);
     }
 
     /**
@@ -966,7 +961,9 @@ abstract class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ?', [$decValue]);
+        $name = $this->getAutoParamName(':fdp');
+
+        return $this->setFieldExp($fieldName, $this->fieldQuote($fieldName) . ' - ' . $name, [$name => $decValue]);
     }
 
     /**
