@@ -319,6 +319,11 @@ return [
             'option'        => [
             ],
         ],
+        'memory'         => [
+            'handlerClass'  => \Imi\Cache\Handler\Memory::class,
+            'option'        => [
+            ],
+        ],
     ],
     // atmoic 配置
     'atomics'           => [
