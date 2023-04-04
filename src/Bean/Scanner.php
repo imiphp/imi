@@ -7,6 +7,9 @@ namespace Imi\Bean;
 use Imi\App;
 use Imi\Config;
 use Imi\Core\Component\ComponentManager;
+
+use function Imi\env;
+
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Main\Helper;
@@ -27,13 +30,13 @@ class Scanner
     /**
      * 扫描 imi 框架.
      */
-    public static function scanImi(bool $statistics = true): void
+    public static function scanImi(?bool $statistics = null): void
     {
         $time = microtime(true);
         Helper::getMain('Imi', 'Imi');
         Annotation::getInstance()->initByNamespace('Imi');
         Event::trigger('IMI.SCAN_IMI');
-        if ($statistics)
+        if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
             Log::info(sprintf('scanImi %.3fs', $time));
@@ -43,7 +46,7 @@ class Scanner
     /**
      * 扫描 vendor 目录中的组件.
      */
-    public static function scanVendor(bool $statistics = true): void
+    public static function scanVendor(?bool $statistics = null): void
     {
         $time = microtime(true);
         $components = [];
@@ -118,7 +121,7 @@ class Scanner
             self::scanComponents($components);
         }
         Event::trigger('IMI.SCAN_VENDOR');
-        if ($statistics)
+        if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
             Log::info(sprintf('scanVendor %.3fs', $time));
@@ -128,14 +131,14 @@ class Scanner
     /**
      * 扫描项目.
      */
-    public static function scanApp(bool $statistics = true): void
+    public static function scanApp(?bool $statistics = null): void
     {
         $time = microtime(true);
         $namespace = App::getNamespace();
         Helper::getMain($namespace, 'app');
         Annotation::getInstance()->initByNamespace($namespace, true);
         Event::trigger('IMI.SCAN_APP');
-        if ($statistics)
+        if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
             Log::info(sprintf('scanApp %.3fs', $time));
