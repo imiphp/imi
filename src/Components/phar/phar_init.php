@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Imi\App;
 use Imi\AppContexts;
 
-(function () {
+(static function () {
     // putenv('IMI_MACRO_LOCK_FILE_DIR=/dev/shm');
     putenv('IMI_MACRO_OUTPUT_DIR=' . (is_dir('/run/shm') && is_writable('/run/shm') ? '/run/shm' : sys_get_temp_dir()));
 

@@ -12,6 +12,7 @@ parameters:
         - src/Components/smarty/src/smarty-plugins
         - src/Components/swoole/src/Process/Process.php
         - src/Components/pgsql/src/Db/Drivers/SwooleNew
+        - src/Components/phar/src/Ignore
 
     bootstrapFiles:
         - vendor/autoload.php

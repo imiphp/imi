@@ -129,12 +129,12 @@ foreach ($testContainer as $container => $opt)
     $testServer->start(static function ($type, $buffer) {
         echo $buffer;
     });
+    $testSuccess = false;
     try
     {
         echo '> Wait running', \PHP_EOL;
         $context = stream_context_create(['http' => ['timeout' => 3]]);
         $count = 0;
-        $testSuccess = false;
         while ($testServer->isRunning() && $count++ < STARTUP_MAX_WAIT)
         {
             try

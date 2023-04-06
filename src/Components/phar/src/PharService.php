@@ -173,6 +173,7 @@ class PharService
             $this->gitInfo = Helper::resolveGitInfo($this->baseDir, $this->output);
             foreach ($this->gitInfo as $key => $value)
             {
+                // @phpstan-ignore-next-line
                 $this->output->writeln(sprintf('  > git %s: %s', $key, $value ?? 'null'));
             }
         }
