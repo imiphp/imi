@@ -82,7 +82,7 @@ imi 默认会缓存 Statement，建议调大 mysql 的 `max_prepared_stmt_count`
 
 修改：`/etc/sysctl.conf`
 
-```
+```conf
 #TCP接收/发送缓存的最小值、默认值、最大值
 net.ipv4.tcp_rmem = 4096 32768 262142
 net.ipv4.tcp_wmem = 4096 32768 262142
