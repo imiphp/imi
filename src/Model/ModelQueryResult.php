@@ -93,10 +93,7 @@ class ModelQueryResult extends Result
                 }
                 /** @var Model $object */
                 $object = $className::createFromRecord($record, false);
-                if ($serializedFields)
-                {
-                    $object->__setSerializedFields($serializedFields);
-                }
+                $object->__setSerializedFields($serializedFields);
                 if ($meta->hasRelation())
                 {
                     ModelRelationManager::initModels([$object], null, $with, $className);
