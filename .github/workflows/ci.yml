@@ -190,7 +190,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v5.0.2, v4.8.13]
+        swoole-cli: [v5.0.2, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -282,7 +282,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4, "8.0", "8.1"]
-        swoole: [v5.0.2, v4.8.13]
+        swoole: [v5.0.2, v4.8.11]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
@@ -498,7 +498,7 @@ jobs:
   #       swoole:
   #         # - version: v5.0.2
   #         #   postgresql_version: ""
-  #         # - version: v4.8.13
+  #         # - version: v4.8.11
   #         #   postgresql_version: ""
   #         - version: fix-curl-hook-php8.2
   #           postgresql_version: ""
