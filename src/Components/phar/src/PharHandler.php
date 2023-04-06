@@ -4,29 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\Phar;
 
-use Composer\XdebugHandler\XdebugHandler;
+use Imi\Bean\ReflectionUtil;
 
-class PharHandler extends XdebugHandler
-{
-    private $required;
-
-    protected function requiresRestart(bool $default): bool
+(static function () {
+    $refMethod = new \ReflectionMethod(\Composer\XdebugHandler\XdebugHandler::class, 'check');
+    $returnType = $refMethod->getReturnType();
+    if ('void' === ReflectionUtil::getTypeCode($returnType))
     {
-        $this->required = (bool) \ini_get('phar.readonly');
-
-        return $this->required || $default;
+        require __DIR__ . '/Ignore/PharHandler3.php';
     }
-
-    protected function restart(array $command): void
+    else
     {
-        if ($this->required)
-        {
-            # Add required ini setting to tmpIni
-            $content = file_get_contents($this->tmpIni);
-            $content .= 'phar.readonly=0' . \PHP_EOL;
-            file_put_contents($this->tmpIni, $content);
-        }
-
-        parent::restart($command);
+        require __DIR__ . '/Ignore/PharHandler2.php';
     }
-}
+})();
