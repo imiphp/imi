@@ -1,4 +1,4 @@
-# Redis Cache
+# RedisHash 缓存
 
 [toc]
 
