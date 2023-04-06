@@ -91,3 +91,9 @@ net.ipv4.tcp_wmem = 4096 32768 262142
 > 将最大值调整为你希望达到的大小
 
 保存后：`sysctl -p`
+
+## Worker 进程数量建议设置多少？
+
+* Swoole 常驻内存并且有协程，所以 `worker_num` 建议设为 CPU 的 1-2 倍。
+
+* Workerman 常驻内存但依然是阻塞的，`count` 可参考 php-fpm 进程数的配置，并酌情减少一定的数量。
