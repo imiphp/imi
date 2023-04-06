@@ -15,6 +15,11 @@ class PharBuildCommand extends Command
 {
     protected static $defaultName = 'build';
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return mixed
+     */
     protected function configure()
     {
         $container = implode('、', Constant::CONTAINER_SET);

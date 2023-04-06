@@ -146,3 +146,8 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/macro/vendor/autoload.php src/Components/macro
+
+      - name: Analyse phar
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/phar/vendor/autoload.php src/Components/phar

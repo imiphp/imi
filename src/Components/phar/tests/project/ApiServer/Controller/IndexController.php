@@ -21,6 +21,8 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route("/")
+     *
+     * @return mixed
      */
     public function index()
     {
