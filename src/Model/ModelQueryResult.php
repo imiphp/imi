@@ -71,7 +71,14 @@ class ModelQueryResult extends Result
                 }
                 else
                 {
-                    $serializedFields = [];
+                    if ($this->isSetSerializedFields)
+                    {
+                        $serializedFields = $this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($record));
+                    }
+                    else
+                    {
+                        $serializedFields = $meta->getParsedSerializableFieldNames();
+                    }
                     foreach ($with as $k => $v)
                     {
                         if (\is_string($k))
@@ -82,14 +89,6 @@ class ModelQueryResult extends Result
                         {
                             $serializedFields[] = $v;
                         }
-                    }
-                    if ($this->isSetSerializedFields)
-                    {
-                        $serializedFields = array_merge($serializedFields, $this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($record)));
-                    }
-                    else
-                    {
-                        $serializedFields = array_merge($serializedFields, $meta->getParsedSerializableFieldNames());
                     }
                 }
                 /** @var Model $object */
@@ -110,7 +109,7 @@ class ModelQueryResult extends Result
                 }
                 elseif ($this->isSetSerializedFields)
                 {
-                    $object->__setSerializedFields($this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($record)));
+                    $object->__setSerializedFields($this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($record)));
                 }
             }
             if ($meta->isBean())
@@ -160,9 +159,9 @@ class ModelQueryResult extends Result
         {
             $isModel = false;
         }
+        $list = [];
         if ($isModel || is_subclass_of($className, Model::class))
         {
-            $list = [];
             /** @var Meta $meta */
             $meta = $className::__getMeta();
             $hasRelation = $meta->hasRelation();
@@ -177,7 +176,14 @@ class ModelQueryResult extends Result
                 }
                 else
                 {
-                    $serializedFields = [];
+                    if ($this->isSetSerializedFields)
+                    {
+                        $serializedFields = $this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($statementRecords[0]));
+                    }
+                    else
+                    {
+                        $serializedFields = $meta->getParsedSerializableFieldNames();
+                    }
                     foreach ($with as $k => $v)
                     {
                         if (\is_string($k))
@@ -189,14 +195,6 @@ class ModelQueryResult extends Result
                             $serializedFields[] = $v;
                         }
                     }
-                    if ($this->isSetSerializedFields)
-                    {
-                        $serializedFields = array_merge($serializedFields, $this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($statementRecords[0])));
-                    }
-                    else
-                    {
-                        $serializedFields = array_merge($serializedFields, $meta->getParsedSerializableFieldNames());
-                    }
                 }
             }
             elseif ($withField)
@@ -205,7 +203,7 @@ class ModelQueryResult extends Result
             }
             elseif ($this->isSetSerializedFields)
             {
-                $serializedFields = $this->parseFieldNames($meta->getParsedSerializableFieldNames(), $meta->getDbFields(), array_keys($statementRecords[0]));
+                $serializedFields = $this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($statementRecords[0]));
             }
             else
             {
@@ -238,12 +236,9 @@ class ModelQueryResult extends Result
                     }
                 }
             }
-
-            return $list;
         }
         else
         {
-            $list = [];
             foreach ($this->statementRecords as $item)
             {
                 $list[] = $row = BeanFactory::newInstance($className, $item);
@@ -252,9 +247,9 @@ class ModelQueryResult extends Result
                     $row->{$k} = $v;
                 }
             }
-
-            return $list;
         }
+
+        return $list;
     }
 
     /**
@@ -313,29 +308,16 @@ class ModelQueryResult extends Result
         return $this;
     }
 
-    private function parseFieldNames(array $serializableFieldNames, array $dbFields, array $fieldNames): array
+    private function parseFieldNames(array $serializableFieldNames, array $fieldNames): array
     {
-        $result = [];
-        foreach ($fieldNames as $name)
+        foreach ($fieldNames as $i => $name)
         {
-            if (isset($serializableFieldNames[$name]))
+            if (!isset($serializableFieldNames[$name]) && !\in_array($name, $serializableFieldNames))
             {
-                $result[] = $serializableFieldNames[$name];
-            }
-            elseif (isset($dbFields[$name]))
-            {
-                $result[] = $dbFields[$name]['propertyName'];
-            }
-            elseif (false !== ($index = array_search($name, $serializableFieldNames)))
-            {
-                $result[] = $index;
-            }
-            else
-            {
-                $result[] = $name;
+                unset($fieldNames[$i]);
             }
         }
 
-        return $result;
+        return $fieldNames;
     }
 }

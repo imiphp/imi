@@ -350,6 +350,33 @@ class ModelTest extends BaseTest
         $this->assertEquals('password', $member->password);
     }
 
+    /**
+     * @depends testInsert
+     */
+    public function testFieldRaw(array $args): void
+    {
+        ['id' => $id] = $args;
+
+        /** @var Member $record */
+        $record = Member::query()->fieldRaw('*, 123 as notInJson')->where('id', '=', $id)->select()->get();
+        $this->assertEquals([
+            'id'        => $id,
+            'username'  => '1',
+            'password'  => 'pw2',
+            'notInJson' => 123,
+        ], $record->convertToArray());
+
+        $list = Member::query()->fieldRaw('*, 123 as notInJson')->where('id', '=', $id)->select()->getArray();
+        $this->assertEquals([
+            [
+                'id'        => $id,
+                'username'  => '1',
+                'password'  => 'pw2',
+                'notInJson' => 123,
+            ],
+        ], Member::convertListToArray($list));
+    }
+
     public function testBatchUpdate(): void
     {
         $count1 = Member::count();
