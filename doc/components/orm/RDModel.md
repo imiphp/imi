@@ -118,7 +118,7 @@ $list = TestModel::query()->with(['a'])->withField('a', 'b')->select()->getArray
 
 ### 指定查询出的模型可序列化的字段
 
-> 必须使用驼峰命名
+按照 imi 模型思想，默认会查出模型定义的所有字段。如果你想要指定某些字段在序列化时不输出，可以使用以下方式：
 
 ```php
 $list1 = TestModel::query()->withField('id', 'name')->select()->getArray();
@@ -130,6 +130,20 @@ foreach ($list2 as $row)
     $list2->__setSerializedFields(['id', 'name']);
 }
 ```
+
+> 字段名必须使用驼峰命名
+
+### 查询时指定字段
+
+请使用 `@Sql` 注解建模，参考文档：<https://doc.imiphp.com/v2.1/components/orm/RDModel/definition.html#@Sql>
+
+不推荐的写法：
+
+```php
+TestModel::query()->field('*')->fieldRaw('123 as value')->select()->getArray();
+```
+
+> 上述写法会导致默认的 `@Serializable` 和 `@Serializables` 注解的序列化配置失效，慎用！
 
 ### 判断记录是否存在
 
