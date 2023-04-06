@@ -762,23 +762,22 @@ class AnnotationParser
             {
                 unset($thisFiles[$file]);
             }
-            $className = null;
-            if ($className = array_search($file, $thisClasses))
+            if (!($className = array_search($file, $thisClasses)))
             {
-            }
-            elseif (is_file($file))
-            {
-                $content = file_get_contents($file);
-                if (preg_match('/namespace ([^;]+);/', $content, $matches) <= 0)
+                if (is_file($file))
+                {
+                    $content = file_get_contents($file);
+                    if (preg_match('/namespace ([^;]+);/', $content, $matches) <= 0)
+                    {
+                        continue;
+                    }
+                    $namespace = trim($matches[1]);
+                    $className = $namespace . '\\' . File::getBaseNameBeforeFirstDot($file);
+                }
+                else
                 {
                     continue;
                 }
-                $namespace = trim($matches[1]);
-                $className = $namespace . '\\' . File::getBaseNameBeforeFirstDot($file);
-            }
-            else
-            {
-                continue;
             }
             AnnotationManager::clearClassAllAnnotations($className);
             if (class_exists($className))

@@ -38,8 +38,7 @@ class ClientIdMap
     public function joinGroup($clientId, Group $group): void
     {
         $map = &$this->map;
-        $index = array_search($group, $map[$clientId] ?? []);
-        if (false === $index)
+        if (!\in_array($group, $map[$clientId] ?? []))
         {
             $map[$clientId][] = $group;
         }

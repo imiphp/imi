@@ -482,7 +482,7 @@ class ValidatorHelper
             else
             {
                 // 如果身份证顺序码是996 997 998 999，这些是为百岁以上老人的特殊编码
-                if (false !== array_search(substr($id_card, 12, 3), ['996', '997', '998', '999']))
+                if (\in_array(substr($id_card, 12, 3), ['996', '997', '998', '999']))
                 {
                     $id_card = substr($id_card, 0, 6) . '18' . substr($id_card, 6, 9);
                 }
