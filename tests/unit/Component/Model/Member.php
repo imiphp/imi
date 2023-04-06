@@ -35,4 +35,14 @@ class Member extends MemberBase
     {
         return $this->notInJson;
     }
+
+    /**
+     * @param null $notInJson
+     */
+    public function setNotInJson($notInJson): self
+    {
+        $this->notInJson = $notInJson;
+
+        return $this;
+    }
 }

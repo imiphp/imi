@@ -326,10 +326,6 @@ class ModelQueryResult extends Result
             {
                 $result[] = $dbFields[$name]['propertyName'];
             }
-            elseif (false !== ($index = array_search($name, $serializableFieldNames)))
-            {
-                $result[] = $index;
-            }
             else
             {
                 $result[] = $name;
