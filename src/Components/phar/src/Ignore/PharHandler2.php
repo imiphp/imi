@@ -8,16 +8,17 @@ namespace Imi\Phar
 
     class PharHandler extends XdebugHandler
     {
-        private $required;
+        use TPharHandler {
+            requiresRestart as protected __requiresRestart;
+            restart as protected __restart;
+        }
 
         /**
          * {@inheritDoc}
          */
         protected function requiresRestart($default)
         {
-            $this->required = (bool) \ini_get('phar.readonly');
-
-            return $this->required || $default;
+            return $this->__requiresRestart($default);
         }
 
         /**
@@ -25,15 +26,7 @@ namespace Imi\Phar
          */
         protected function restart($command)
         {
-            if ($this->required)
-            {
-                # Add required ini setting to tmpIni
-                $content = file_get_contents($this->tmpIni);
-                $content .= 'phar.readonly=0' . \PHP_EOL;
-                file_put_contents($this->tmpIni, $content);
-            }
-
-            parent::restart($command);
+            return $this->__restart($command);
         }
     }
 }
