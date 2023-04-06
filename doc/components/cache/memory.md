@@ -1,8 +1,8 @@
-# 请求上下文缓存
+# 内存缓存
 
 [toc]
 
-缓存数据存储在请求上下文里。
+缓存数据储存在全局存储对象里。
 
 ## 配置
 
@@ -13,10 +13,9 @@ return [
         // 缓存名称
         'alias1'    =>    [
             // 缓存驱动类
-            'handlerClass'    =>    \Imi\Cache\Handler\RequestContext::class,
-            // 驱动实例配置
+            'handlerClass'    =>    \Imi\Cache\Handler\Memory::class,
+            // 驱动实例配置，暂无任何配置
             'option'        =>    [
-                'key' => 'RequestContextCache', // 在请求上下文中的键名
             ],
         ],
     ],

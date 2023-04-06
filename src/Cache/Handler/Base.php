@@ -72,17 +72,17 @@ abstract class Base implements CacheInterface
 
     /**
      * 检查key格式.
+     *
+     * @deprecated 3.0
      */
     protected function checkKey(string $key): void
     {
-        if (!\is_string($key))
-        {
-            throw new InvalidArgumentException('Key must be a string');
-        }
     }
 
     /**
      * 检查值是否是数组或Traversable.
+     *
+     * @deprecated 3.0
      *
      * @param mixed $values
      */
