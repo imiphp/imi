@@ -396,7 +396,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     public function testJson(): void
     {
         $query = Db::query($this->poolName);
-        $jsonStr = '{"uid": "' . ($uid = uniqid('', true)) . '", "name": "aaa", "list1": [{"id": 1}]}';
+        $jsonStr = '{"uid": "' . ($uid = uniqid('', true)) . '", "name": "aaa", "list1": [{"id": 1}], "测试": {"值": "imi"}}';
         // 插入数据
         $insertResult = $query->from($this->tableTestJson)->insert([
             'json_data' => $jsonStr,
@@ -415,11 +415,12 @@ abstract class QueryCurdBaseTest extends BaseTest
             'json_data->name'        => 'bbb',
             'json_data->list1[0].id' => '2',
             'json_data->list2'       => [1, 2, 3],
+            'json_data->"测试"."值"'    => 'imi niubi',
         ]);
         $result = $query->from($this->tableTestJson)->where('json_data->uid', '=', $uid)->order('json_data->uid')->select();
         $this->assertEquals([
             'id'        => $id,
-            'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',
+            'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3], "测试": {"值": "imi niubi"}}',
         ], $result->get());
     }
 

@@ -116,7 +116,7 @@ class UpdateBuilder extends BaseBuilder
             $item = $field . '=JSON_SET(' . $field;
             foreach ($options as $option)
             {
-                $item .= ',"$.' . implode('.', $option['jsonKeywords']) . '",' . ($option['raw'] ?? $option['valueParam']);
+                $item .= ',\'$.' . implode('.', $option['jsonKeywords']) . '\',' . ($option['raw'] ?? $option['valueParam']);
             }
             $result[] = $item . ')';
         }

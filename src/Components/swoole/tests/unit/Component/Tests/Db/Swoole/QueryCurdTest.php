@@ -30,5 +30,5 @@ class QueryCurdTest extends QueryCurdBaseTest
      *
      * @var string
      */
-    protected $expectedTestJsonSelectSql = 'select * from `tb_test_json` where `json_data`->"$.uid" = :p1';
+    protected $expectedTestJsonSelectSql = 'select * from `tb_test_json` where `json_data`->\'$.uid\' = :p1';
 }
