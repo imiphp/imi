@@ -430,7 +430,7 @@ jobs:
           '@ECHO Redis Started'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@verbose
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
@@ -438,15 +438,6 @@ jobs:
           extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
         env:
           fail-fast: true
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
 
       - name: Prepare
         run: |
