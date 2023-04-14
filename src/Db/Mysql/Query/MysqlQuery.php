@@ -403,7 +403,7 @@ class MysqlQuery extends Query
         }
         if (null !== $jsonKeywords)
         {
-            $result .= '->"$.' . implode('.', $jsonKeywords) . '"';
+            $result .= '->\'$.' . implode('.', $jsonKeywords) . '\'';
         }
         if (!Text::isEmpty($alias))
         {
