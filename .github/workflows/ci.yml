@@ -214,7 +214,7 @@ jobs:
           php --ri swoole
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -310,7 +310,7 @@ jobs:
           redis-version: "6.x"
       - name: Get Openssl Dir
         id: opecssl-dir
-        run: echo "::set-output name=path::$(brew --prefix openssl@1.1)"
+        run: echo "path=$(brew --prefix openssl@1.1)" >> $GITHUB_OUTPUT
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -335,7 +335,7 @@ jobs:
           php --ri swoole
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -430,7 +430,7 @@ jobs:
           '@ECHO Redis Started'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@verbose
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
@@ -438,15 +438,6 @@ jobs:
           extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
         env:
           fail-fast: true
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
 
       - name: Prepare
         run: |
