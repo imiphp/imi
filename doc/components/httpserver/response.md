@@ -20,7 +20,7 @@ $this->response;
 
 ```php
 /** @var \Imi\Server\Http\Message\Contract\IHttpResponse $response */
-$response = \Imi\ResponseContext::get('response');
+$response = \Imi\RequestContext::get('response');
 ```
 
 ### 请求上下文代理
