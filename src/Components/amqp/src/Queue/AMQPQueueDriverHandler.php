@@ -658,22 +658,20 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     protected function messageIsDeleted(string $messageId, bool $delete = true): bool
     {
-        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($messageId, $delete) {
-            return $redis->evalEx(<<<'LUA'
-            local deletedKey = KEYS[1];
-            local messageId = ARGV[1];
-            local deleteRecord = ARGV[2];
-            if(deleteRecord)
-            then
-                return redis.call('srem', deletedKey, messageId);
-            else
-                return redis.call('sismember', deletedKey, messageId);
-            end
-            LUA, [
-                $this->getRedisQueueKey('deleted'),
-                $redis->_serialize($messageId),
-                $delete,
-            ], 1) > 0;
-        }, $this->redisPoolName);
+        return Redis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->evalEx(<<<'LUA'
+        local deletedKey = KEYS[1];
+        local messageId = ARGV[1];
+        local deleteRecord = ARGV[2];
+        if(deleteRecord)
+        then
+            return redis.call('srem', deletedKey, messageId);
+        else
+            return redis.call('sismember', deletedKey, messageId);
+        end
+        LUA, [
+            $this->getRedisQueueKey('deleted'),
+            $redis->_serialize($messageId),
+            $delete,
+        ], 1) > 0, $this->redisPoolName);
     }
 }
