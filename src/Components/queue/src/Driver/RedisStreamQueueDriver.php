@@ -79,10 +79,26 @@ class RedisStreamQueueDriver implements IQueueDriver
      */
     private bool $groupInited = false;
 
+    private ?string $keyName = null;
+
     public function __construct(string $name, array $config = [])
     {
         $this->name = $name;
         $this->traitConstruct($config);
+    }
+
+    public function __init(): void
+    {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+            if ($redis->isCluster())
+            {
+                $this->keyName = '{' . $this->name . '}';
+            }
+            else
+            {
+                $this->keyName = $this->name;
+            }
+        }, $this->poolName, true);
     }
 
     /**
@@ -129,7 +145,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             }
 
             return $result;
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -163,7 +179,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             $message->loadFromArray($data);
 
             return $message;
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -187,7 +203,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             }
 
             return 1 == $result;
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -197,7 +213,7 @@ class RedisStreamQueueDriver implements IQueueDriver
     {
         Redis::use(function (\Imi\Redis\RedisHandler $redis) {
             $redis->del($this->getQueueKey());
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -223,7 +239,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             }
 
             return $result;
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -264,7 +280,7 @@ class RedisStreamQueueDriver implements IQueueDriver
 
                 return $result ? 1 : 0;
             }
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -319,7 +335,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             $status['ready'] = $status['timeout'] = $status['delay'] = 0;
 
             return new QueueStatus($status);
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -375,7 +391,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             }
 
             return $result;
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -450,7 +466,7 @@ class RedisStreamQueueDriver implements IQueueDriver
             }
 
             return $result;
-        }, $this->poolName);
+        }, $this->poolName, true);
     }
 
     /**
@@ -458,18 +474,7 @@ class RedisStreamQueueDriver implements IQueueDriver
      */
     public function getQueueKey(): string
     {
-        return Redis::use(function (\Imi\Redis\RedisHandler $redis) {
-            if ($redis->isCluster())
-            {
-                $name = '{' . $this->name . '}';
-            }
-            else
-            {
-                $name = $this->name;
-            }
-
-            return $this->prefix . $name;
-        }, $this->poolName);
+        return $this->prefix . $this->keyName;
     }
 
     protected function prepareGroup(\Imi\Redis\RedisHandler $redis): void

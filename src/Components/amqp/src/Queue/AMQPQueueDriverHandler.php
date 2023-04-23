@@ -290,7 +290,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
             }
 
             return $messageId;
-        }, $this->redisPoolName);
+        }, $this->redisPoolName, true);
     }
 
     /**
@@ -344,7 +344,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
 
                 Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message) {
                     $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
-                }, $this->redisPoolName);
+                }, $this->redisPoolName, true);
 
                 return $message;
             }
@@ -363,7 +363,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function delete(IMessage $message): bool
     {
-        return Redis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->sAdd($this->getRedisQueueKey('deleted'), $message->getMessageId()) > 0, $this->redisPoolName);
+        return Redis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->sAdd($this->getRedisQueueKey('deleted'), $message->getMessageId()) > 0, $this->redisPoolName, true);
     }
 
     /**
@@ -417,7 +417,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 {
                 }
             }
-        }, $this->redisPoolName);
+        }, $this->redisPoolName, true);
     }
 
     /**
@@ -546,7 +546,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
             $status['delay'] = $delayReady;
 
             return new QueueStatus($status);
-        }, $this->redisPoolName);
+        }, $this->redisPoolName, true);
     }
 
     /**
@@ -650,7 +650,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_TIMEOUT);
                 $this->timeoutPublisher->publish($amqpMessage);
             }
-        }, $this->redisPoolName);
+        }, $this->redisPoolName, true);
     }
 
     /**
@@ -672,6 +672,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
             $this->getRedisQueueKey('deleted'),
             $redis->_serialize($messageId),
             $delete,
-        ], 1) > 0, $this->redisPoolName);
+        ], 1) > 0, $this->redisPoolName, true);
     }
 }
