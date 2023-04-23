@@ -11,7 +11,7 @@ use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Enum\QueueType;
 use Imi\Queue\Exception\QueueException;
 use Imi\Queue\Model\QueueStatus;
-use Imi\Redis\RedisManager;
+use Imi\Redis\Redis;
 use Imi\Util\Imi;
 use Imi\Util\Traits\TDataToProperty;
 
@@ -271,25 +271,26 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
-        $redis = RedisManager::getInstance($this->redisPoolName);
-        $message->setMessageId($messageId = (string) $redis->incr($this->getRedisMessageIdKey()));
-        $amqpMessage = new \Imi\AMQP\Message();
-        $amqpMessage->setBody(json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
-        if ($delay > 0)
-        {
-            $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_DELAY);
-            $amqpMessage->setProperties([
-                'expiration'    => $delay * 1000,
-            ]);
-            $this->delayPublisher->publish($amqpMessage);
-        }
-        else
-        {
-            $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_NORMAL);
-            $this->publisher->publish($amqpMessage);
-        }
+        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($message, $delay) {
+            $message->setMessageId($messageId = (string) $redis->incr($this->getRedisMessageIdKey()));
+            $amqpMessage = new \Imi\AMQP\Message();
+            $amqpMessage->setBody(json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
+            if ($delay > 0)
+            {
+                $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_DELAY);
+                $amqpMessage->setProperties([
+                    'expiration'    => $delay * 1000,
+                ]);
+                $this->delayPublisher->publish($amqpMessage);
+            }
+            else
+            {
+                $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_NORMAL);
+                $this->publisher->publish($amqpMessage);
+            }
 
-        return $messageId;
+            return $messageId;
+        }, $this->redisPoolName);
     }
 
     /**
@@ -331,7 +332,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
                     continue;
                 }
                 // 加入工作队列
-                $redis = RedisManager::getInstance($this->redisPoolName);
                 $workingTimeout = $message->getWorkingTimeout();
                 if ($workingTimeout > 0)
                 {
@@ -341,7 +341,10 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 {
                     $score = -1;
                 }
-                $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
+
+                Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message) {
+                    $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
+                }, $this->redisPoolName);
 
                 return $message;
             }
@@ -360,9 +363,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function delete(IMessage $message): bool
     {
-        $redis = RedisManager::getInstance($this->redisPoolName);
-
-        return $redis->sAdd($this->getRedisQueueKey('deleted'), $message->getMessageId()) > 0;
+        return Redis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->sAdd($this->getRedisQueueKey('deleted'), $message->getMessageId()) > 0, $this->redisPoolName);
     }
 
     /**
@@ -370,51 +371,53 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function clear($queueType = null): void
     {
-        if (null === $queueType)
-        {
-            $queueTypes = QueueType::getValues();
-        }
-        else
-        {
-            $queueTypes = (array) $queueType;
-        }
-        foreach ($queueTypes as $queueType)
-        {
-            try
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($queueType) {
+            if (null === $queueType)
             {
-                switch ($queueType)
+                $queueTypes = QueueType::getValues();
+            }
+            else
+            {
+                $queueTypes = (array) $queueType;
+            }
+            foreach ($queueTypes as $queueType)
+            {
+                try
                 {
-                    case QueueType::READY:
-                        // 清空所有
-                        while ($message = $this->pop())
-                        {
-                            // @phpstan-ignore-next-line
-                            $this->success($message);
-                        }
-                        $this->consumer->getAMQPChannel()->queue_purge($this->queueName);
-                        $this->consumer->reopen();
-                        RedisManager::getInstance($this->redisPoolName)->del($this->getRedisQueueKey('deleted'));
-                        break;
-                    case QueueType::WORKING:
-                        RedisManager::getInstance($this->redisPoolName)->del($this->getRedisQueueKey(QueueType::WORKING));
-                        break;
-                    case QueueType::FAIL:
-                        $this->failConsumer->getAMQPChannel()->queue_purge($this->failQueueName);
-                        $this->failConsumer->reopen();
-                        break;
-                    case QueueType::TIMEOUT:
-                        $this->timeoutConsumer->getAMQPChannel()->queue_purge($this->timeoutQueueName);
-                        $this->timeoutConsumer->reopen();
-                        break;
-                    case QueueType::DELAY:
-                        $this->delayPublisher->getAMQPChannel()->queue_purge($this->delayQueueName);
-                        break;
+                    switch ($queueType)
+                    {
+                        case QueueType::READY:
+                            // 清空所有
+                            while ($message = $this->pop())
+                            {
+                                // @phpstan-ignore-next-line
+                                $this->success($message);
+                            }
+                            $this->consumer->getAMQPChannel()->queue_purge($this->queueName);
+                            $this->consumer->reopen();
+                            $redis->del($this->getRedisQueueKey('deleted'));
+                            break;
+                        case QueueType::WORKING:
+                            $redis->del($this->getRedisQueueKey(QueueType::WORKING));
+                            break;
+                        case QueueType::FAIL:
+                            $this->failConsumer->getAMQPChannel()->queue_purge($this->failQueueName);
+                            $this->failConsumer->reopen();
+                            break;
+                        case QueueType::TIMEOUT:
+                            $this->timeoutConsumer->getAMQPChannel()->queue_purge($this->timeoutQueueName);
+                            $this->timeoutConsumer->reopen();
+                            break;
+                        case QueueType::DELAY:
+                            $this->delayPublisher->getAMQPChannel()->queue_purge($this->delayQueueName);
+                            break;
+                    }
+                }
+                catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+                {
                 }
             }
-            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
-            {
-            }
-        }
+        }, $this->redisPoolName);
     }
 
     /**
@@ -462,87 +465,88 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function status(): QueueStatus
     {
-        $status = [];
-        $redis = RedisManager::getInstance($this->redisPoolName);
+        return Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+            $status = [];
 
-        // ready
-        try
-        {
-            $result = $this->consumer->getAMQPChannel()->queue_declare($this->queueName, true, false, false, false);
-            if (!$result)
-            {
-                throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->queueName));
-            }
-            $ready = (int) $result[1];
-        }
-        catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
-        {
-            $ready = 0;
-        }
-        $status['ready'] = $ready;
-
-        // working
-        $status['working'] = $redis->zCard($this->getRedisQueueKey(QueueType::WORKING));
-
-        // fail
-        $fail = 0;
-        try
-        {
-            if ($this->supportFail)
-            {
-                $result = $this->consumer->getAMQPChannel()->queue_declare($this->failQueueName, true, false, false, false);
-                if (!$result)
-                {
-                    throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->failQueueName));
-                }
-                [, $failReady] = $result;
-                $fail += $failReady;
-            }
-        }
-        catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
-        {
-        }
-        $status['fail'] = $fail;
-        // timeout
-        if ($this->supportTimeout)
-        {
+            // ready
             try
             {
-                $result = $this->consumer->getAMQPChannel()->queue_declare($this->timeoutQueueName, true, false, false, false);
+                $result = $this->consumer->getAMQPChannel()->queue_declare($this->queueName, true, false, false, false);
                 if (!$result)
                 {
-                    throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->timeoutQueueName));
+                    throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->queueName));
                 }
-                [, $timeoutReady] = $result;
-                $status['timeout'] = $timeoutReady;
+                $ready = (int) $result[1];
             }
             catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
             {
+                $ready = 0;
+            }
+            $status['ready'] = $ready;
+
+            // working
+            $status['working'] = $redis->zCard($this->getRedisQueueKey(QueueType::WORKING));
+
+            // fail
+            $fail = 0;
+            try
+            {
+                if ($this->supportFail)
+                {
+                    $result = $this->consumer->getAMQPChannel()->queue_declare($this->failQueueName, true, false, false, false);
+                    if (!$result)
+                    {
+                        throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->failQueueName));
+                    }
+                    [, $failReady] = $result;
+                    $fail += $failReady;
+                }
+            }
+            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+            {
+            }
+            $status['fail'] = $fail;
+            // timeout
+            if ($this->supportTimeout)
+            {
+                try
+                {
+                    $result = $this->consumer->getAMQPChannel()->queue_declare($this->timeoutQueueName, true, false, false, false);
+                    if (!$result)
+                    {
+                        throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->timeoutQueueName));
+                    }
+                    [, $timeoutReady] = $result;
+                    $status['timeout'] = $timeoutReady;
+                }
+                catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+                {
+                    $status['timeout'] = 0;
+                }
+            }
+            else
+            {
                 $status['timeout'] = 0;
             }
-        }
-        else
-        {
-            $status['timeout'] = 0;
-        }
 
-        // delay
-        try
-        {
-            $result = $this->consumer->getAMQPChannel()->queue_declare($this->delayQueueName, true, false, false, false);
-            if (!$result)
+            // delay
+            try
             {
-                throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->delayQueueName));
+                $result = $this->consumer->getAMQPChannel()->queue_declare($this->delayQueueName, true, false, false, false);
+                if (!$result)
+                {
+                    throw new \RuntimeException(sprintf('Get queue:%s info failed', $this->delayQueueName));
+                }
+                [, $delayReady] = $result;
             }
-            [, $delayReady] = $result;
-        }
-        catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
-        {
-            $delayReady = 0;
-        }
-        $status['delay'] = $delayReady;
+            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+            {
+                $delayReady = 0;
+            }
+            $status['delay'] = $delayReady;
 
-        return new QueueStatus($status);
+            return new QueueStatus($status);
+        }, $this->redisPoolName);
     }
 
     /**
@@ -610,42 +614,43 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     protected function parseTimeoutMessages(int $count = 100): void
     {
-        $redis = RedisManager::getInstance($this->redisPoolName);
-        $result = $redis->evalEx(<<<'LUA'
-        -- 查询消息ID
-        local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
-        local messageIdCount = table.getn(messages)
-        if 0 == messageIdCount then
-            return 0
-        end
-        -- 从工作队列删除
-        redis.call('zrem', KEYS[1], unpack(messages))
-        return messages
-        LUA, [
-            $this->getRedisQueueKey(QueueType::WORKING),
-            microtime(true),
-            $count,
-        ], 1);
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($count) {
+            $result = $redis->evalEx(<<<'LUA'
+            -- 查询消息ID
+            local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])
+            local messageIdCount = table.getn(messages)
+            if 0 == messageIdCount then
+                return 0
+            end
+            -- 从工作队列删除
+            redis.call('zrem', KEYS[1], unpack(messages))
+            return messages
+            LUA, [
+                $this->getRedisQueueKey(QueueType::WORKING),
+                microtime(true),
+                $count,
+            ], 1);
 
-        if (false === $result)
-        {
-            if (null === ($error = $redis->getLastError()))
+            if (false === $result)
             {
-                throw new QueueException('Queue parseTimeoutMessages failed');
+                if (null === ($error = $redis->getLastError()))
+                {
+                    throw new QueueException('Queue parseTimeoutMessages failed');
+                }
+                else
+                {
+                    throw new QueueException('Queue parseTimeoutMessages failed, ' . $error);
+                }
             }
-            else
-            {
-                throw new QueueException('Queue parseTimeoutMessages failed, ' . $error);
-            }
-        }
 
-        foreach ($result ?: [] as $message)
-        {
-            $amqpMessage = new \Imi\AMQP\Message();
-            $amqpMessage->setBody($redis->_unserialize($message));
-            $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_TIMEOUT);
-            $this->timeoutPublisher->publish($amqpMessage);
-        }
+            foreach ($result ?: [] as $message)
+            {
+                $amqpMessage = new \Imi\AMQP\Message();
+                $amqpMessage->setBody($redis->_unserialize($message));
+                $amqpMessage->setRoutingKey(AMQPQueueDriver::ROUTING_TIMEOUT);
+                $this->timeoutPublisher->publish($amqpMessage);
+            }
+        }, $this->redisPoolName);
     }
 
     /**
@@ -653,22 +658,22 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     protected function messageIsDeleted(string $messageId, bool $delete = true): bool
     {
-        $redis = RedisManager::getInstance($this->redisPoolName);
-
-        return $redis->evalEx(<<<'LUA'
-        local deletedKey = KEYS[1];
-        local messageId = ARGV[1];
-        local deleteRecord = ARGV[2];
-        if(deleteRecord)
-        then
-            return redis.call('srem', deletedKey, messageId);
-        else
-            return redis.call('sismember', deletedKey, messageId);
-        end
-        LUA, [
-            $this->getRedisQueueKey('deleted'),
-            $redis->_serialize($messageId),
-            $delete,
-        ], 1) > 0;
+        return Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($messageId, $delete) {
+            return $redis->evalEx(<<<'LUA'
+            local deletedKey = KEYS[1];
+            local messageId = ARGV[1];
+            local deleteRecord = ARGV[2];
+            if(deleteRecord)
+            then
+                return redis.call('srem', deletedKey, messageId);
+            else
+                return redis.call('sismember', deletedKey, messageId);
+            end
+            LUA, [
+                $this->getRedisQueueKey('deleted'),
+                $redis->_serialize($messageId),
+                $delete,
+            ], 1) > 0;
+        }, $this->redisPoolName);
     }
 }
