@@ -84,38 +84,25 @@ abstract class BaseAsyncPool extends BasePool
      */
     public function getResource(): IPoolResource
     {
-        $selectResult = true;
         $queue = $this->queue;
         $config = $this->config;
         $waitTimeoutFloat = $config->getWaitTimeout() / 1000;
-        if ($this->getFree() <= 0)
+        if ($this->getFree() <= 0 && $this->getCount() < $config->getMaxResources())
         {
-            if ($this->getCount() < $config->getMaxResources())
+            // 没有空闲连接，当前连接数少于最大连接数
+            $this->addResource();
+        }
+        $poolItem = $queue->pop($waitTimeoutFloat);
+        if (!$poolItem)
+        {
+            if (\SWOOLE_CHANNEL_TIMEOUT === $queue->errCode)
             {
-                // 没有空闲连接，当前连接数少于最大连接数
-                $this->addResource();
+                throw new \RuntimeException(sprintf('AsyncPool [%s] getResource timeout', $this->getName()));
             }
             else
             {
-                $selectResult = $queue->pop($waitTimeoutFloat);
-                if (false === $selectResult)
-                {
-                    throw new \RuntimeException(sprintf('AsyncPool [%s] getResource timeout', $this->getName()));
-                }
+                throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
             }
-        }
-        if (true === $selectResult)
-        {
-            $poolItem = $queue->pop();
-        }
-        else
-        {
-            $poolItem = $selectResult;
-        }
-        /** @var \Imi\Pool\PoolItem|false $poolItem */
-        if (!$poolItem)
-        {
-            throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
         if (!$poolItem->lock($waitTimeoutFloat))
         {

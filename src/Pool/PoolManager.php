@@ -229,8 +229,8 @@ class PoolManager
      */
     public static function releaseResource(IPoolResource $resource): void
     {
-        $resource->getPool()->release($resource);
         self::removeResourceFromRequestContext($resource);
+        $resource->getPool()->release($resource);
     }
 
     /**
