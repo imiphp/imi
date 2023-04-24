@@ -217,13 +217,11 @@ class CronManager implements ICronManager
                     };
                     break;
                 case CronTaskType::CRON_PROCESS:
-                    return static function (string $id, $data) use ($class) {
-                        goWait(static function () use ($class, $id, $data) {
-                            /** @var \Imi\Cron\Contract\ICronTask $handler */
-                            $handler = App::getBean($class);
-                            $handler->run($id, $data);
-                        });
-                    };
+                    return static fn (string $id, $data) => goWait(static function () use ($class, $id, $data) {
+                        /** @var \Imi\Cron\Contract\ICronTask $handler */
+                        $handler = App::getBean($class);
+                        $handler->run($id, $data);
+                    }, -1, true);
             }
         }
         elseif (is_subclass_of($class, IProcess::class))

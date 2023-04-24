@@ -63,7 +63,7 @@ abstract class BaseConsumer implements IConsumer
                     goWait(function () use ($message, $consumer) {
                         $this->consume($message);
                         $consumer->ack($message);
-                    });
+                    }, -1, true);
                 }
                 else
                 {
