@@ -50,21 +50,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 {
                     try
                     {
-                        $throwable = null;
-                        goWait(function () use ($config, &$throwable) {
-                            try
-                            {
-                                $this->task($config);
-                            }
-                            catch (\Throwable $th)
-                            {
-                                $throwable = $th;
-                            }
-                        });
-                        if ($throwable)
-                        {
-                            throw $throwable;
-                        }
+                        goWait(fn () => $this->task($config), -1, true);
                     }
                     catch (\Throwable $th)
                     {
@@ -144,7 +130,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                             'queue'     => $queue,
                             'message'   => $message,
                         ], $this, ConsumerAfterConsumeParam::class);
-                    });
+                    }, -1, true);
                 }
             }
             while ($this->working);
