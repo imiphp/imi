@@ -6,6 +6,7 @@ namespace Imi\Queue\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
+use Imi\Event\Event as ImiEvent;
 use Imi\Log\Log;
 use Imi\Queue\Service\QueueService;
 use Imi\Swoole\Process\Annotation\Process;
@@ -65,8 +66,14 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 $processPools[] = $processPool = new \Imi\Swoole\Process\Pool($options['process']);
                 $configs = $options['configs'];
                 $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
+                    $processName = 'QueueConsumer-' . $group;
+                    // 进程开始事件
+                    ImiEvent::trigger('IMI.PROCESS.BEGIN', [
+                        'name'      => $processName,
+                        'process'   => $e->getWorker(),
+                    ]);
                     Imi::setProcessName('process', [
-                        'processName'   => 'QueueConsumer-' . $group,
+                        'processName'   => $processName,
                     ]);
                     /** @var \Imi\Queue\Model\QueueConfig[] $configs */
                     foreach ($configs as $config)
@@ -79,12 +86,17 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     }
                 });
                 // 工作进程退出事件-可选
-                $processPool->on('WorkerExit', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) {
+                $processPool->on('WorkerExit', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group) {
                     // 做一些释放操作
                     foreach ($this->consumers as $consumer)
                     {
                         $consumer->stop();
                     }
+                    // 进程结束事件
+                    ImiEvent::trigger('IMI.PROCESS.END', [
+                        'name'      => 'QueueConsumer-' . $group,
+                        'process'   => $e->getWorker(),
+                    ]);
                 });
                 $processPool->start();
             }
