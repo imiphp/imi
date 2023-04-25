@@ -207,7 +207,7 @@ class SwooleApp extends CliApp
             // @phpstan-ignore-next-line
             Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
         }
-        Event::one(['IMI.PROCESS.BEGIN', 'IMI.MAIN_SERVER.WORKER.START'], static function () {
+        Event::on(['IMI.PROCESS.BEGIN', 'IMI.MAIN_SERVER.WORKER.START'], static function () {
             PoolManager::init();
             CacheManager::init();
             Lock::init();
