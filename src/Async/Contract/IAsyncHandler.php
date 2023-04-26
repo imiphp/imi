@@ -13,4 +13,14 @@ interface IAsyncHandler
      * 执行.
      */
     public function exec(callable $callable): IAsyncResult;
+
+    /**
+     * 延后执行.
+     */
+    public function defer(callable $callable): IAsyncResult;
+
+    /**
+     * 延后异步执行.
+     */
+    public function deferAsync(callable $callable): IAsyncResult;
 }

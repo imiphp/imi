@@ -39,4 +39,20 @@ class Async
     {
         return self::getInstance()->exec($callable);
     }
+
+    /**
+     * 延后执行.
+     */
+    public static function defer(callable $callable): IAsyncResult
+    {
+        return self::getInstance()->defer($callable);
+    }
+
+    /**
+     * 延后异步执行.
+     */
+    public static function deferAsync(callable $callable): IAsyncResult
+    {
+        return self::getInstance()->deferAsync($callable);
+    }
 }

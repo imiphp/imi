@@ -11,13 +11,13 @@ use Imi\Test\Component\Async\AsyncTesterPHP8;
 
 class AsyncTest extends BaseTest
 {
-    public function test(): void
+    public function testAsync(): void
     {
         /** @var AsyncTester $asyncTester */
         $asyncTester = App::getBean('AsyncTester');
 
-        $this->assertEquals(3, $asyncTester->test1(1, 2)->get());
-        $this->assertEquals(3, $asyncTester->test2(1, 2)->get());
+        $this->assertEquals(3, $asyncTester->testAsync1(1, 2)->get());
+        $this->assertEquals(3, $asyncTester->testAsync2(1, 2)->get());
 
         if (\PHP_VERSION_ID >= 80000)
         {
@@ -27,6 +27,24 @@ class AsyncTest extends BaseTest
             // @phpstan-ignore-next-line
             $this->assertEquals(3, $asyncTesterPHP8->test1(1, 2)->get());
         }
+    }
+
+    public function testDefer(): void
+    {
+        /** @var AsyncTester $asyncTester */
+        $asyncTester = App::getBean('AsyncTester');
+
+        $this->assertEquals(3, $asyncTester->testDefer1(1, 2)->get());
+        $this->assertEquals(3, $asyncTester->testDefer2(1, 2)->get());
+    }
+
+    public function testDeferAsync(): void
+    {
+        /** @var AsyncTester $asyncTester */
+        $asyncTester = App::getBean('AsyncTester');
+
+        $this->assertEquals(3, $asyncTester->testDeferAsync1(1, 2)->get());
+        $this->assertEquals(3, $asyncTester->testDeferAsync2(1, 2)->get());
     }
 
     public function testException(): void

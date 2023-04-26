@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Async;
 
 use Imi\Async\Annotation\Async;
+use Imi\Async\Annotation\Defer;
+use Imi\Async\Annotation\DeferAsync;
 use Imi\Async\AsyncResult;
 use Imi\Async\Contract\IAsyncResult;
 use Imi\Bean\Annotation\Bean;
@@ -17,7 +19,7 @@ class AsyncTester
     /**
      * @Async
      */
-    public function test1(float $a, float $b): IAsyncResult
+    public function testAsync1(float $a, float $b): IAsyncResult
     {
         return new AsyncResult($a + $b);
     }
@@ -27,7 +29,43 @@ class AsyncTester
      *
      * @return float|IAsyncResult
      */
-    public function test2(float $a, float $b)
+    public function testAsync2(float $a, float $b)
+    {
+        return $a + $b;
+    }
+
+    /**
+     * @Defer
+     */
+    public function testDefer1(float $a, float $b): IAsyncResult
+    {
+        return new AsyncResult($a + $b);
+    }
+
+    /**
+     * @Defer
+     *
+     * @return float|IAsyncResult
+     */
+    public function testDefer2(float $a, float $b)
+    {
+        return $a + $b;
+    }
+
+    /**
+     * @DeferAsync
+     */
+    public function testDeferAsync1(float $a, float $b): IAsyncResult
+    {
+        return new AsyncResult($a + $b);
+    }
+
+    /**
+     * @DeferAsync
+     *
+     * @return float|IAsyncResult
+     */
+    public function testDeferAsync2(float $a, float $b)
     {
         return $a + $b;
     }

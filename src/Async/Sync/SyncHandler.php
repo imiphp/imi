@@ -24,4 +24,34 @@ class SyncHandler implements IAsyncHandler
             return new AsyncResult($th, true);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function defer(callable $callable): IAsyncResult
+    {
+        try
+        {
+            return new AsyncResult($callable());
+        }
+        catch (\Throwable $th)
+        {
+            return new AsyncResult($th, true);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deferAsync(callable $callable): IAsyncResult
+    {
+        try
+        {
+            return new AsyncResult($callable());
+        }
+        catch (\Throwable $th)
+        {
+            return new AsyncResult($th, true);
+        }
+    }
 }
