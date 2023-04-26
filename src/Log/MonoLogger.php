@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Log;
 
-use Composer\InstalledVersions;
 use Monolog\Logger;
 
 class MonoLogger extends Logger
