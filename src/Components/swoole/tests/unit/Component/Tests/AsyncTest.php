@@ -34,6 +34,7 @@ class AsyncTest extends BaseTest
         $time = microtime(true);
         $results = goWait(static function () use ($asyncTester) {
             return [
+                // @phpstan-ignore-next-line
                 $asyncTester->testDefer1(),
                 $asyncTester->testDefer2(1, 2),
                 $asyncTester->testDefer3(1, 2),
@@ -54,6 +55,7 @@ class AsyncTest extends BaseTest
         $time = microtime(true);
         $results = goWait(static function () use ($asyncTester) {
             return [
+                // @phpstan-ignore-next-line
                 $asyncTester->testDeferAsync1(),
                 $asyncTester->testDeferAsync2(1, 2),
                 $asyncTester->testDeferAsync3(1, 2),
