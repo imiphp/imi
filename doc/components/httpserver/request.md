@@ -62,6 +62,19 @@ request 数据包含 get/post/cookie
 
 `public function getParsedBody()`
 
+> 返回值是数组或对象
+
+### 获取请求 Body
+
+```php
+$body = $this->request->getBody();
+// 获取数据内容
+// 方法一
+$data = $body->getContents();
+// 方法二
+$data = (string) $body;
+```
+
 ### 是否存在 GET 参数
 
 `public function hasGet($name)`
