@@ -10,6 +10,8 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Async\Annotation\Async;
+use Imi\Async\Annotation\Defer;
+use Imi\Async\Annotation\DeferAsync;
 use Imi\Async\Contract\IAsyncResult;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
@@ -37,6 +39,56 @@ class AsyncAop
     public function parseAsync(AroundJoinPoint $joinPoint)
     {
         $result = \Imi\Async\Async::exec(static fn () => $joinPoint->proceed());
+        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
+        $methodRef = ReflectionContainer::getMethodReflection($className, $joinPoint->getMethod());
+        if (!$methodRef->hasReturnType() || ReflectionUtil::allowsType($methodRef->getReturnType(), IAsyncResult::class, $className))
+        {
+            return $result;
+        }
+    }
+
+    /**
+     * 延后执行.
+     *
+     * @PointCut(
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         Defer::class
+     *     }
+     * )
+     *
+     * @Around
+     *
+     * @return mixed
+     */
+    public function parseDefer(AroundJoinPoint $joinPoint)
+    {
+        $result = \Imi\Async\Async::defer(static fn () => $joinPoint->proceed());
+        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
+        $methodRef = ReflectionContainer::getMethodReflection($className, $joinPoint->getMethod());
+        if (!$methodRef->hasReturnType() || ReflectionUtil::allowsType($methodRef->getReturnType(), IAsyncResult::class, $className))
+        {
+            return $result;
+        }
+    }
+
+    /**
+     * 延后执行.
+     *
+     * @PointCut(
+     *     type=PointCutType::ANNOTATION,
+     *     allow={
+     *         DeferAsync::class
+     *     }
+     * )
+     *
+     * @Around
+     *
+     * @return mixed
+     */
+    public function parseDeferAsync(AroundJoinPoint $joinPoint)
+    {
+        $result = \Imi\Async\Async::deferAsync(static fn () => $joinPoint->proceed());
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
         $methodRef = ReflectionContainer::getMethodReflection($className, $joinPoint->getMethod());
         if (!$methodRef->hasReturnType() || ReflectionUtil::allowsType($methodRef->getReturnType(), IAsyncResult::class, $className))
