@@ -52,14 +52,14 @@ parameters:
 
 services:
     fileFinderAnalyse:
-        class: Imi\Util\File\FileFinder
+        class: Imi\Dev\PHPStan\FileFinder
         arguments:
             fileExcluder: @fileExcluderAnalyse
             fileExtensions: %fileExtensions%
         autowired: false
 
     fileFinderScan:
-        class: Imi\Util\File\FileFinder
+        class: Imi\Dev\PHPStan\FileFinder
         arguments:
             fileExcluder: @fileExcluderScan
             fileExtensions: %fileExtensions%
