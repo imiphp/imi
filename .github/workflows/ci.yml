@@ -190,7 +190,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v5.0.2, v4.8.11]
+        swoole-cli: [v5.0.3, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -266,7 +266,7 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: composer test-smarty
       # - name: Test pgsql
-      #   if: ${{ matrix.swoole-cli == 'v5.0.2' && env.test_prepared && always() }}
+      #   if: ${{ matrix.swoole-cli == 'v5.0.3' && env.test_prepared && always() }}
       #   run: composer test-pgsql
       - name: Test phar
         if: ${{ env.test_prepared && always() }}
@@ -282,11 +282,11 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4, "8.0", "8.1"]
-        swoole: [v5.0.2, v4.8.11]
+        swoole: [v5.0.3, v4.8.11]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
-            swoole: v5.0.2
+            swoole: v5.0.3
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -487,7 +487,7 @@ jobs:
   #     matrix:
   #       php: [8.2.0RC3]
   #       swoole:
-  #         # - version: v5.0.2
+  #         # - version: v5.0.3
   #         #   postgresql_version: ""
   #         # - version: v4.8.11
   #         #   postgresql_version: ""
