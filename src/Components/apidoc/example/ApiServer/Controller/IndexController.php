@@ -11,6 +11,7 @@ use Imi\Server\Http\Route\Annotation\Route;
 
 /**
  * @OA\Info(title="My First API", version="0.1")
+ *
  * @Controller("/")
  */
 class IndexController extends HttpController
@@ -66,8 +67,10 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route("register")
+     *
      * @OA\Get(
      *     path="/register",
+     *
      *     @OA\Response(response="200", description="An example resource")
      * )
      *

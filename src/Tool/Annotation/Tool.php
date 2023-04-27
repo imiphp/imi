@@ -13,6 +13,7 @@ use Imi\Cli\Annotation\Command;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]

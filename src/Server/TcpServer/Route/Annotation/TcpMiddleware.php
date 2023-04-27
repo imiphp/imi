@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target({"CLASS", "METHOD"})
+ *
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
  *
  * @property string|string[]|null $middlewares

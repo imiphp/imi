@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *
  * @property string|null          $prefix 路由前缀

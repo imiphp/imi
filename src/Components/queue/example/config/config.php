@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use function Imi\env;
-
 use Imi\Util\Imi;
+
+use function Imi\env;
 
 return [
     // 项目根命名空间

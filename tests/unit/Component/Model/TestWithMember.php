@@ -32,8 +32,11 @@ class TestWithMember extends TestWithMemberBase
 
     /**
      * @OneToOne(model=MemberSerializable::class)
+     *
      * @JoinFrom("member_id")
+     *
      * @JoinTo("id")
+     *
      * @AutoSelect(false)
      *
      * @var MemberSerializable|null

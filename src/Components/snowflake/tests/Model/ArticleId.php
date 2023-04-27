@@ -17,7 +17,9 @@ use Imi\Model\Model;
  * Article.
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.name", default="tb_article"), usePrefix=false, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Article.poolName"))
+ *
  * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT '0',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='@article'", decode="")
  *
  * @property int|null    $id
@@ -92,6 +94,7 @@ class ArticleId extends Model
      * title.
      *
      * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
+     *
      * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name": "test1"})
      */
     protected ?string $title = null;
@@ -126,6 +129,7 @@ class ArticleId extends Model
      * content.
      *
      * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
+     *
      * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name": "test1"})
      */
     protected ?string $content = null;
@@ -160,6 +164,7 @@ class ArticleId extends Model
      * time.
      *
      * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
+     *
      * @Serializable(false)
      */
     protected ?string $time = null;

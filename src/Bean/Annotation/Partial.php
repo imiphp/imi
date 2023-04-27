@@ -10,6 +10,7 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Bean\Parser\PartialParser")
  *
  * @property string $class 注入类名

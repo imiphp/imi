@@ -13,13 +13,12 @@ use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Main\Helper;
-
-use function Imi\ttyExec;
-
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
+
+use function Imi\ttyExec;
 
 class WorkermanApp extends CliApp
 {

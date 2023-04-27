@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
  *
  * @property string|null          $route  http 路由；如果设置，则只有握手指定 http 路由，才可以触发该 WebSocket 路由

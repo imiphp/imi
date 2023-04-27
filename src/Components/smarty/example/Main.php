@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Smarty\Example;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Imi\Main\AppBaseMain;
+use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 
 class Main extends AppBaseMain
 {

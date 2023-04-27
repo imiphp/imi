@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Cli\Parser\ToolParser")
  *
  * @property string      $name     参数名称

@@ -10,6 +10,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
  * @Bean(name="HttpResponseProxy", recursion=false, instanceType="singleton")
+ *
  * @RequestContextProxy(class="Imi\Server\Http\Message\Contract\IHttpResponse", name="response")
  *
  * @method        \Imi\Server\Http\Message\Contract\IHttpResponse redirect(string $url, int $status = 302)

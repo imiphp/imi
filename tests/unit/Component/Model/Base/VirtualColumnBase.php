@@ -15,7 +15,9 @@ use Imi\Model\Model;
  * tb_virtual_column 基类.
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\VirtualColumn.name", default="tb_virtual_column"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\VirtualColumn.poolName"))
+ *
  * @DDL(sql="CREATE TABLE `tb_virtual_column` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `amount` int(11) NOT NULL,   `virtual_amount` decimal(10,2) GENERATED ALWAYS AS ((`amount` / 100)) VIRTUAL NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", decode="")
  *
  * @property int|null              $id

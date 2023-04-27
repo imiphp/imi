@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Env;
+use Imi\Test\BaseTest;
 
 use function Imi\env;
-
-use Imi\Test\BaseTest;
 
 class EnvTest extends BaseTest
 {

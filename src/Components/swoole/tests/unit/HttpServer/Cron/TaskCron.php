@@ -12,6 +12,7 @@ use Imi\Swoole\Task\TaskParam;
 
 /**
  * @Cron(id="TaskCron", second="3n", data={"id": "TaskCron"})
+ *
  * @Task("CronTask1")
  */
 class TaskCron implements ITaskHandler

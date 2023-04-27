@@ -24,13 +24,14 @@
         "yurunsoft/doctrine-annotations": "^1.73.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~3.13.0",
+        "composer/semver": "^3.3.2",
+        "php-cs-fixer/shim": "~3.15.1",
         "phpstan/phpstan": "~1.8.0",
         "phpunit/phpunit": "~9.6",
         "rector/rector": "~0.13",
+        "symfony/polyfill-uuid": "^1.27",
         "yurunsoft/ide-helper": "~1.0",
-        "yurunsoft/yurun-http": "^4.0.0",
-        "symfony/polyfill-uuid": "*"
+        "yurunsoft/yurun-http": "^4.0.0"
     },
     "replace": {
         "symfony/polyfill-php71": "*",

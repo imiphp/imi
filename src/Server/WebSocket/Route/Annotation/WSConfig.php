@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *
  * @property string|null $parserClass 处理器类

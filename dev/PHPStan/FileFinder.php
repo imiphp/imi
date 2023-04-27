@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Imi\Util\File;
+namespace Imi\Dev\PHPStan;
 
+use Composer\Autoload\ClassLoader;
 use PHPStan\File\FileExcluder;
 use PHPStan\File\FileFinderResult;
 use PHPStan\File\FileHelper;
 use PHPStan\File\PathNotFoundException;
-use Symfony\Component\Finder\Finder;
 
 class FileFinder extends \PHPStan\File\FileFinder
 {
     private FileExcluder $fileExcluder;
     private FileHelper $fileHelper;
     private array $fileExtensions;
+
+    private string $finderClass;
 
     /**
      * @param string[] $fileExtensions
@@ -27,6 +29,21 @@ class FileFinder extends \PHPStan\File\FileFinder
         $this->fileExcluder = $fileExcluder;
         $this->fileHelper = $fileHelper;
         $this->fileExtensions = $fileExtensions;
+
+        /** @var ClassLoader $composer */
+        $composer = require 'phar://phpstan.phar/vendor/autoload.php';
+
+        foreach ($composer->getPrefixesPsr4() as $name => $paths)
+        {
+            if (str_ends_with($name, 'Symfony\\Component\\Finder\\'))
+            {
+                $this->finderClass = $name . 'Finder';
+            }
+        }
+        if (!isset($this->finderClass))
+        {
+            throw new \RuntimeException('[Symfony\\Component\\Finder\\Finder] not found');
+        }
     }
 
     /**
@@ -48,7 +65,7 @@ class FileFinder extends \PHPStan\File\FileFinder
             }
             else
             {
-                $finder = new Finder();
+                $finder = new $this->finderClass();
                 // 此行注释，防止无限套娃
                 // $finder->followLinks();
                 foreach ($finder->files()->name('*.{' . implode(',', $this->fileExtensions) . '}')->in($path) as $fileInfo)

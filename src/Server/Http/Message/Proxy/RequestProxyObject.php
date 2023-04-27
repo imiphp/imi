@@ -10,6 +10,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
  * @Bean(name="HttpRequestProxy", recursion=false, instanceType="singleton")
+ *
  * @RequestContextProxy(class="Imi\Server\Http\Message\Contract\IHttpRequest", name="request")
  *
  * @method        \Imi\Util\Socket\IPEndPoint              getClientAddress()

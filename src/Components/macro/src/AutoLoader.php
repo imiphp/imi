@@ -6,10 +6,9 @@ namespace Imi\Macro;
 
 use Composer\Autoload\ClassLoader;
 use Swoole\Coroutine;
+use Yurun\Macro\MacroParser;
 
 use function Yurun\Macro\includeFile;
-
-use Yurun\Macro\MacroParser;
 
 class AutoLoader
 {

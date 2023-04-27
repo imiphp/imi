@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target({"CLASS", "METHOD"})
+ *
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *
  * @property string|string[]|null $middlewares 中间件类或数组

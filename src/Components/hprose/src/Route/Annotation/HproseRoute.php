@@ -13,6 +13,7 @@ use Imi\Rpc\Route\Annotation\RpcRoute;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
  *
  * @property string $rpcType     RPC 协议类型；继承本类后必须赋值

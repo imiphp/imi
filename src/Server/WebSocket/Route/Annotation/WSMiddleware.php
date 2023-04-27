@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target({"CLASS", "METHOD"})
+ *
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
  *
  * @property string|string[] $middlewares 中间件类或数组

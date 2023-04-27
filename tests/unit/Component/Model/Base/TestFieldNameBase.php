@@ -15,7 +15,9 @@ use Imi\Model\Model;
  * tb_test_field_name 基类.
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestFieldName.name", default="tb_test_field_name"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestFieldName.poolName"))
+ *
  * @DDL(sql="CREATE TABLE `tb_test_field_name` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `Abc_Def` varchar(255) NOT NULL,   `ABC_XYZ` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1", decode="")
  *
  * @property int|null    $id

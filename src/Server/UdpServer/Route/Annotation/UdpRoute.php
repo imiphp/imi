@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Server\UdpServer\Parser\UdpControllerParser")
  *
  * @property array $condition 条件

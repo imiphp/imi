@@ -17,7 +17,9 @@ use Imi\Redis\Redis;
  * 启动一个新连接消费.
  *
  * @Bean("TestConsumer")
+ *
  * @Connection(host=AMQP_SERVER_HOST, port=5672, user="guest", password="guest")
+ *
  * @Consumer(tag="tag-imi", queue="queue-imi-1", message=\AMQPApp\AMQP\Test\TestMessage::class)
  */
 class TestConsumer extends BaseConsumer

@@ -29,7 +29,9 @@ class Article extends ArticleBase
 {
     /**
      * @OneToOne(model="ArticleEx")
+     *
      * @JoinFrom("id")
+     *
      * @JoinTo("article_id")
      *
      * @AutoSave
@@ -58,7 +60,9 @@ class Article extends ArticleBase
 
     /**
      * @OneToOne(model="ArticleEx", with=true)
+     *
      * @JoinFrom("id")
+     *
      * @JoinTo("article_id")
      */
     protected ?ArticleEx $exWith = null;
@@ -85,8 +89,11 @@ class Article extends ArticleBase
 
     /**
      * @OneToOne(model="ArticleEx")
+     *
      * @JoinFrom("id")
+     *
      * @JoinTo("article_id")
+     *
      * @AutoSelect(false)
      *
      * @JsonNotNull

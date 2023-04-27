@@ -15,6 +15,7 @@ use Workerman\Worker;
 
 /**
  * @Bean(name="hotUpdate", env="workerman")
+ *
  * @Process(name="hotUpdate")
  */
 class HotUpdateProcess extends BaseProcess

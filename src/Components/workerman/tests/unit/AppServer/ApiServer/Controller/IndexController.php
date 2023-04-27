@@ -54,7 +54,9 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route(autoEndSlash=true)
+     *
      * @View(renderType="html")
+     *
      * @HtmlView(template="html")
      */
     public function html(int $time): array
@@ -68,6 +70,7 @@ class IndexController extends HttpController
      * @Action
      *
      * @View(renderType="html")
+     *
      * @HtmlView(baseDir="index/")
      */
     public function html2(int $time): array
@@ -205,6 +208,7 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route("/middleware")
+     *
      * @Middleware(\Imi\Workerman\Test\AppServer\ApiServer\Middleware\Middleware1::class)
      * @Middleware({
      *     \Imi\Workerman\Test\AppServer\ApiServer\Middleware\Middleware2::class,

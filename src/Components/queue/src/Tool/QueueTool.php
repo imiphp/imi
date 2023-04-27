@@ -19,6 +19,7 @@ class QueueTool extends BaseCommand
      * 获取队列状态
      *
      * @CommandAction(name="status", description="获取队列状态")
+     *
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void
@@ -32,6 +33,7 @@ class QueueTool extends BaseCommand
      * 将失败消息恢复到队列.
      *
      * @CommandAction(name="restoreFail", description="将失败消息恢复到队列")
+     *
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void
@@ -45,6 +47,7 @@ class QueueTool extends BaseCommand
      * 将超时消息恢复到队列.
      *
      * @CommandAction(name="restoreTimeout", description="将超时消息恢复到队列")
+     *
      * @Argument(name="queue", type="string", required=true)
      *
      * @return void

@@ -13,6 +13,7 @@ use longlang\phpkafka\Consumer\ConsumeMessage;
 
 /**
  * @Bean("TestConsumer")
+ *
  * @Consumer(topic="queue-imi-1", groupId=@GetGroupId)
  */
 class TestConsumer extends BaseConsumer

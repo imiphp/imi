@@ -7,9 +7,6 @@ namespace Imi\Bean;
 use Imi\App;
 use Imi\Config;
 use Imi\Core\Component\ComponentManager;
-
-use function Imi\env;
-
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Main\Helper;
@@ -17,6 +14,8 @@ use Imi\Main\IMain;
 use Imi\Util\Composer;
 use Imi\Util\File;
 use Imi\Util\Imi;
+
+use function Imi\env;
 
 /**
  * 扫描类.

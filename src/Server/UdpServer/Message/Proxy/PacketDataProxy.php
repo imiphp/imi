@@ -10,6 +10,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
  * @Bean(name="UdpPacketDataProxy", recursion=false, instanceType="singleton")
+ *
  * @RequestContextProxy(class="Imi\Server\UdpServer\Message\IPacketData", name="packetData")
  *
  * @method        string                      getData()

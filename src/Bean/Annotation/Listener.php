@@ -10,6 +10,7 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Bean\Parser\ListenerParser")
  *
  * @property string $eventName 事件名
