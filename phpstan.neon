@@ -44,6 +44,10 @@ parameters:
             message: '#Method \S+ has no return typehint specified.#'
             paths:
                 - tests/unit/**Test.php
+        -
+            message: '#(Extending|Creating new|Calling) \S+ is not covered by backward compatibility promise\. The class might change in a minor PHPStan version\.#'
+            paths:
+                - dev/PHPStan/FileFinder.php
 services:
     fileFinderAnalyse:
         class: Imi\Dev\PHPStan\FileFinder
