@@ -16,6 +16,7 @@ class TestArg
 {
     /**
      * @FilterArg(name="id", filter="intval")
+     *
      * @InjectArg(name="phpVersion", value=PHP_VERSION)
      *
      * @param int    $id

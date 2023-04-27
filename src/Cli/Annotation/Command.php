@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Cli\Parser\ToolParser")
  *
  * @property string|null $name      命令行名称

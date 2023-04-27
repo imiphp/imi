@@ -21,6 +21,7 @@ class MemberWithSqlField extends MemberBase
 {
     /**
      * @Column(name="a", virtual=true)
+     *
      * @Sql("1+1")
      *
      * @var int
@@ -29,6 +30,7 @@ class MemberWithSqlField extends MemberBase
 
     /**
      * @Column(virtual=true)
+     *
      * @Sql("2+2")
      *
      * @var int

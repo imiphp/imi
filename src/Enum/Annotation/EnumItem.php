@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("CONST")
+ *
  * @Parser("Imi\Enum\Annotation\Parser\EnumParser")
  *
  * @property string $text 文本描述

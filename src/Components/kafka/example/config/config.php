@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use function Imi\env;
-
 use Imi\Util\Imi;
+
+use function Imi\env;
 
 \defined('KAFKA_BOOTSTRAP_SERVERS') || \define('KAFKA_BOOTSTRAP_SERVERS', env('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
 

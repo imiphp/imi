@@ -21,7 +21,9 @@ class MemberWithArticles extends Member
 {
     /**
      * @OneToMany("Article")
+     *
      * @JoinFrom("id")
+     *
      * @JoinTo("member_id")
      *
      * @var Article[]|null
@@ -54,7 +56,9 @@ class MemberWithArticles extends Member
 
     /**
      * @OneToMany(model="Article", with=true)
+     *
      * @JoinFrom("id")
+     *
      * @JoinTo("member_id")
      *
      * @var Article[]|null

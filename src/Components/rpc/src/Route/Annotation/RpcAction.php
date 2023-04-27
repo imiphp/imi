@@ -14,6 +14,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcAction;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]

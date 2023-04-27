@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use function Imi\env;
-
 use Imi\Server\WebSocket\Enum\NonControlFrameType;
+
+use function Imi\env;
 
 return [
     // 项目根命名空间

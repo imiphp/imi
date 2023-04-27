@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]

@@ -14,6 +14,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcRoute;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
  *
  * @property mixed  $name    路由名称规则

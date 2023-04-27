@@ -13,6 +13,7 @@ use Imi\Util\Stream\MemoryStream;
 
 /**
  * @Controller("/")
+ *
  * @HtmlView(baseDir="index/")
  */
 class IndexController extends HttpController

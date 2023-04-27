@@ -15,7 +15,9 @@ use Imi\Model\Model;
  * tb_article_ex 基类.
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\ArticleEx.name", default="tb_article_ex"), usePrefix=false, id={"article_id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\ArticleEx.poolName"))
+ *
  * @DDL(sql="CREATE TABLE `tb_article_ex` (   `article_id` int(10) unsigned NOT NULL,   `data` json DEFAULT NULL,   PRIMARY KEY (`article_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null                                    $articleId

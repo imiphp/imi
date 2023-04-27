@@ -26,7 +26,9 @@ class Polymorphic extends PolymorphicBase
 {
     /**
      * @PolymorphicOneToOne(model="Article", type="title", typeValue="PolymorphicOneToOne")
+     *
      * @JoinFrom("one_to_one")
+     *
      * @JoinTo("member_id")
      *
      * @var Article|null
@@ -59,7 +61,9 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * @PolymorphicOneToMany(model="Article", type="title", typeValue="PolymorphicOneToMany")
+     *
      * @JoinFrom("one_to_many")
+     *
      * @JoinTo("member_id")
      *
      * @var Article[]|null
@@ -92,7 +96,9 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * @PolymorphicManyToMany(model="Role", middle="MemberRoleRelation", rightMany="manyToManyResultList", type="type", typeValue=1)
+     *
      * @JoinToMiddle(field="many_to_many", middleField="member_id")
+     *
      * @JoinFromMiddle(middleField="role_id", field="id")
      *
      * @var MemberRoleRelation|null
@@ -219,7 +225,9 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * @PolymorphicOneToOne(model="Article", type="title", typeValue="PolymorphicOneToOne", with=true)
+     *
      * @JoinFrom("one_to_one")
+     *
      * @JoinTo("member_id")
      *
      * @var Article|null
@@ -252,7 +260,9 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * @PolymorphicOneToMany(model="Article", type="title", typeValue="PolymorphicOneToMany", with=true)
+     *
      * @JoinFrom("one_to_many")
+     *
      * @JoinTo("member_id")
      *
      * @var Article[]|null
@@ -285,7 +295,9 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * @PolymorphicManyToMany(model="Role", middle="MemberRoleRelation", rightMany="manyToManyResultListWith", type="type", typeValue=1, with=true)
+     *
      * @JoinToMiddle(field="many_to_many", middleField="member_id")
+     *
      * @JoinFromMiddle(middleField="role_id", field="id")
      *
      * @var MemberRoleRelation|null

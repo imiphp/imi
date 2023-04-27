@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Workerman\Process\Parser\ProcessParser")
  *
  * @property string $name 进程名称

@@ -26,8 +26,10 @@ class FacadeGenerate extends BaseCommand
      * 生成门面类.
      *
      * @CommandAction(name="facade", description="生成门面类")
+     *
      * @Argument(name="facadeClass", type=ArgType::STRING, required=true, comments="生成的门面类")
      * @Argument(name="class", type=ArgType::STRING, required=true, comments="要绑定的类")
+     *
      * @Option(name="request", type=ArgType::BOOL, default=false, comments="是否请求上下文门面")
      */
     public function generate(string $facadeClass, string $class, bool $request): void

@@ -44,6 +44,7 @@ class TestController extends WebSocketController
      * @WSAction
      *
      * @WSRoute({"action": "send"})
+     *
      * @WSMiddleware(Imi\SwooleTracker\Example\WebSocketServer\MainServer\Middleware\Test::class)
      *
      * @param mixed $data

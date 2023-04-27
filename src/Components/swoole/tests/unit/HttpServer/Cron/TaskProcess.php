@@ -12,6 +12,7 @@ use Imi\Swoole\Process\Contract\IProcess;
 
 /**
  * @Cron(id="TaskProcess1", second="3n")
+ *
  * @Process("TaskProcess1")
  */
 class TaskProcess implements IProcess

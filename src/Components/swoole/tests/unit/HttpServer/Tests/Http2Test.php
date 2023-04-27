@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\Tests;
 
-use function Imi\env;
-
 use Yurun\Util\HttpRequest;
+
+use function Imi\env;
 
 /**
  * @testdox Http2

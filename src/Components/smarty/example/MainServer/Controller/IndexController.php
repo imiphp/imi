@@ -19,6 +19,7 @@ class IndexController extends HttpController
      * @Action
      *
      * @Route("/")
+     *
      * @View(renderType="html", template="index")
      *
      * @return mixed

@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target({"CLASS", "METHOD"})
+ *
  * @Parser("Imi\Server\UdpServer\Parser\UdpControllerParser")
  *
  * @property string|string[]|null $middlewares 中间件类或数组

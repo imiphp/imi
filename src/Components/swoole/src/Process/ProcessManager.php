@@ -14,9 +14,6 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Util\Imi as SwooleImi;
 use Imi\Timer\Timer;
-
-use function Imi\ttyExec;
-
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\ImiPriority;
@@ -25,6 +22,8 @@ use Imi\Util\Process\ProcessType;
 use Swoole\Event as SwooleEvent;
 use Swoole\ExitException;
 use Swoole\Table;
+
+use function Imi\ttyExec;
 
 /**
  * 进程管理类.

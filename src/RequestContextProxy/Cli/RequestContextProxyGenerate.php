@@ -26,6 +26,7 @@ class RequestContextProxyGenerate
      * 生成请求上下文代理类.
      *
      * @CommandAction("requestContextProxy")
+     *
      * @Option(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
      * @Option(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
      * @Option(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")

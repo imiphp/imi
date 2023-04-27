@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("METHOD")
+ *
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  *
  * @property string|null          $url                  请求地址规则

@@ -10,6 +10,7 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  *
  * @Target("CLASS")
+ *
  * @Parser("Imi\Bean\Parser\BeanParser")
  *
  * @property string|null       $name         Bean名称，留空则为当前类名（包含完整命名空间）

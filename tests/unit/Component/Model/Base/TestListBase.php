@@ -15,7 +15,9 @@ use Imi\Model\Model;
  * tb_test_list 基类.
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
+ *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestList.name", default="tb_test_list"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestList.poolName"))
+ *
  * @DDL(sql="CREATE TABLE `tb_test_list` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `list` varchar(255) NOT NULL DEFAULT '',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
  *
  * @property int|null    $id

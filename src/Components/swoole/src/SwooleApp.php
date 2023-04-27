@@ -21,9 +21,6 @@ use Imi\Pool\PoolManager;
 use Imi\Swoole\Context\CoroutineContextManager;
 use Imi\Swoole\Log\SwooleLogger;
 use Imi\Swoole\Util\AtomicManager;
-
-use function Imi\ttyExec;
-
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
@@ -31,6 +28,8 @@ use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function Imi\ttyExec;
 
 class SwooleApp extends CliApp
 {
