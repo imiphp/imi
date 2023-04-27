@@ -135,10 +135,22 @@ class MemoryStream implements StreamInterface, \Stringable
     {
         $content = &$this->content;
         $position = &$this->position;
-        $content = Text::insert($content, $position, $string);
+        $size = &$this->size;
+        if ($position === $size)
+        {
+            $content .= $string;
+        }
+        elseif (0 === $position)
+        {
+            $content = $string . $content;
+        }
+        else
+        {
+            $content = Text::insert($content, $position, $string);
+        }
         $len = \strlen($string);
         $position += $len;
-        $this->size += $len;
+        $size += $len;
 
         return $len;
     }
