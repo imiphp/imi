@@ -33,12 +33,15 @@ class FileFinder extends \PHPStan\File\FileFinder
         /** @var ClassLoader $composer */
         $composer = require 'phar://phpstan.phar/vendor/autoload.php';
 
-        foreach ($composer->getPrefixesPsr4() as $name => $paths) {
-            if (\str_ends_with($name, 'Symfony\\Component\\Finder\\')) {
+        foreach ($composer->getPrefixesPsr4() as $name => $paths)
+        {
+            if (str_ends_with($name, 'Symfony\\Component\\Finder\\'))
+            {
                 $this->finderClass = $name . 'Finder';
             }
         }
-        if (!isset($this->finderClass)) {
+        if (!isset($this->finderClass))
+        {
             throw new \RuntimeException('[Symfony\\Component\\Finder\\Finder] not found');
         }
     }
