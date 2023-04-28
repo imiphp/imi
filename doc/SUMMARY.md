@@ -80,6 +80,7 @@
 * [响应（Response）](components/httpserver/view.md)
   * [响应类](components/httpserver/response.md)
   * [视图](components/httpserver/view.md)
+  * [SSE](components/httpserver/sse.md)
 * [RESTful](components/httpserver/restful.md)
 * [Session](components/httpserver/session.md)
 * [JWT](components/httpserver/jwt.md)

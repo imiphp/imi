@@ -131,4 +131,18 @@ class ResponseTest extends BaseTest
         $this->assertEquals(MediaType::IMAGE_PNG, $response->getHeaderLine('content-type'));
         $this->assertEquals('attachment; filename*=UTF-8\'\'' . rawurlencode('测试.jpg'), $response->getHeaderLine('content-disposition'));
     }
+
+    public function testSSE(): void
+    {
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'sse');
+        // php-src BUG: https://github.com/php/php-src/issues/11146
+        $this->assertStringStartsWith(MediaType::TEXT_EVENT_STREAM, $response->getHeaderLine('content-type'));
+        $result = '';
+        foreach (range(1, 100) as $i)
+        {
+            $result .= 'data: ' . $i . "\n\n";
+        }
+        $this->assertEquals($result, $response->body());
+    }
 }
