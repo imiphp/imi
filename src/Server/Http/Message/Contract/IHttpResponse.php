@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Message\Contract;
 
+use Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\Contract\IResponse;
 
@@ -41,4 +42,10 @@ interface IHttpResponse extends IResponse
      * 响应主体是否可写.
      */
     public function isBodyWritable(): bool;
+
+    public function withResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self;
+
+    public function setResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self;
+
+    public function getResponseBodyEmitter(): ?IResponseBodyEmitter;
 }

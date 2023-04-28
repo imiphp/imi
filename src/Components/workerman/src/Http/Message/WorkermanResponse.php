@@ -43,6 +43,8 @@ class WorkermanResponse extends Response
      */
     protected bool $isBodyWritable = true;
 
+    protected bool $emitterWritting = false;
+
     public function __construct(Worker $worker, TcpConnection $connection, ?\Workerman\Protocols\Http\Response $response = null, ?WorkermanRequest $request = null)
     {
         $this->workermanResponse = $response;
@@ -110,22 +112,38 @@ class WorkermanResponse extends Response
      */
     public function send(): self
     {
-        $this->sendHeaders();
-        if ($this->isBodyWritable())
+        if ($this->responseBodyEmitter)
         {
-            $this->isBodyWritable = false;
-            if ($this->shouldKeepAlive())
+            if ($this->emitterWritting)
             {
-                $this->connection->send($this->workermanResponse->withBody((string) $this->getBody()));
+                return $this;
             }
-            else
-            {
-                $this->connection->close($this->workermanResponse->withBody((string) $this->getBody()));
-            }
-        }
-        elseif (!$this->shouldKeepAlive())
-        {
+            $this->emitterWritting = true;
+            $this->responseBodyEmitter->init($this, new WorkermanEmitHandler($this->connection));
+            $this->sendHeaders();
+            $this->connection->send($this->workermanResponse->withBody("\r\n"));
+            $this->responseBodyEmitter->send();
             $this->connection->close();
+        }
+        else
+        {
+            $this->sendHeaders();
+            if ($this->isBodyWritable())
+            {
+                $this->isBodyWritable = false;
+                if ($this->shouldKeepAlive())
+                {
+                    $this->connection->send($this->workermanResponse->withBody((string) $this->getBody()));
+                }
+                else
+                {
+                    $this->connection->close($this->workermanResponse->withBody((string) $this->getBody()));
+                }
+            }
+            elseif (!$this->shouldKeepAlive())
+            {
+                $this->connection->close();
+            }
         }
 
         return $this;
