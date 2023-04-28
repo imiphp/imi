@@ -47,7 +47,6 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function dispatch(ServerRequestInterface $request, ResponseInterface $response, ?RequestHandlerInterface $handler = null): ?ResponseInterface
     {
-        $context = RequestContext::getContext();
         // 路由解析
         // @phpstan-ignore-next-line
         $result = $this->route->parse($request);
@@ -59,7 +58,7 @@ class RouteMiddleware implements MiddlewareInterface
         }
         else
         {
-            $context['routeResult'] = $result;
+            RequestContext::set('routeResult', $result);
 
             return null;
         }
