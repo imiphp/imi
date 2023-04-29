@@ -30,7 +30,7 @@ retry: 重试时间间隔，单位：秒\n\n
 | -|-|-
 | Swoole | ✔ |  |
 | Workerman | ✔ |  |
-| php-fpm | ✔ | `php -S` 暂时有 BUG，`php-fpm` 可用。 |
+| php-fpm | ✔ |  |
 | RoadRunner | ✖ | 暂时无法实现 |
 
 ## 使用示例
