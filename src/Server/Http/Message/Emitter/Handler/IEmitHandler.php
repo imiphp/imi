@@ -6,5 +6,5 @@ namespace Imi\Server\Http\Message\Emitter\Handler;
 
 interface IEmitHandler
 {
-    public function send(string $data): void;
+    public function send(string $data): bool;
 }

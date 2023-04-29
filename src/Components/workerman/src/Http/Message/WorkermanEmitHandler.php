@@ -16,8 +16,8 @@ class WorkermanEmitHandler implements IEmitHandler
         $this->connection = $connection;
     }
 
-    public function send(string $data): void
+    public function send(string $data): bool
     {
-        $this->connection->send($data, true);
+        return (bool) $this->connection->send($data, true);
     }
 }

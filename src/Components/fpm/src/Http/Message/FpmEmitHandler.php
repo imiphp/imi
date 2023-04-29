@@ -8,8 +8,10 @@ use Imi\Server\Http\Message\Emitter\Handler\IEmitHandler;
 
 class FpmEmitHandler implements IEmitHandler
 {
-    public function send(string $data): void
+    public function send(string $data): bool
     {
         echo $data;
+
+        return true;
     }
 }

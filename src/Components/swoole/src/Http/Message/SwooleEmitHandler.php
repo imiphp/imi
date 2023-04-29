@@ -16,8 +16,8 @@ class SwooleEmitHandler implements IEmitHandler
         $this->response = $response;
     }
 
-    public function send(string $data): void
+    public function send(string $data): bool
     {
-        $this->response->write($data);
+        return (bool) $this->response->write($data);
     }
 }

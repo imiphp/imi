@@ -385,7 +385,10 @@ class IndexController extends HttpController
                 $handler = $this->getHandler();
                 foreach (range(1, 100) as $i)
                 {
-                    $handler->send((string) new SseMessageEvent((string) $i));
+                    if (!$handler->send((string) new SseMessageEvent((string) $i)))
+                    {
+                        throw new \RuntimeException('Send failed');
+                    }
                     usleep(10000);
                 }
             }
