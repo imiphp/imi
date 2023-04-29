@@ -11,6 +11,8 @@ use Imi\Util\Stream\StreamMode;
 
 class FpmResponse extends Response
 {
+    protected bool $emitterWritting = false;
+
     /**
      * {@inheritDoc}
      */
@@ -66,10 +68,24 @@ class FpmResponse extends Response
      */
     public function send(): self
     {
-        $this->sendHeaders();
-        if ($this->isBodyWritable())
+        if ($this->responseBodyEmitter)
         {
-            echo (string) $this->getBody();
+            if ($this->emitterWritting)
+            {
+                return $this;
+            }
+            $this->emitterWritting = true;
+            $this->responseBodyEmitter->init($this, new FpmEmitHandler());
+            $this->sendHeaders();
+            $this->responseBodyEmitter->send();
+        }
+        else
+        {
+            $this->sendHeaders();
+            if ($this->isBodyWritable())
+            {
+                echo (string) $this->getBody();
+            }
         }
 
         return $this;

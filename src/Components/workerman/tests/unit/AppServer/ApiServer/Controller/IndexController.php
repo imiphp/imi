@@ -6,6 +6,8 @@ namespace Imi\Workerman\Test\AppServer\ApiServer\Controller;
 
 use Imi\RequestContext;
 use Imi\Server\Http\Controller\HttpController;
+use Imi\Server\Http\Message\Emitter\SseEmitter;
+use Imi\Server\Http\Message\Emitter\SseMessageEvent;
 use Imi\Server\Http\Message\Proxy\ResponseProxy;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
@@ -372,5 +374,28 @@ class IndexController extends HttpController
         return [
             'id' => $request->getConnection()->id,
         ];
+    }
+
+    /**
+     * SSE.
+     *
+     * @Action
+     */
+    public function sse(): void
+    {
+        $this->response->setResponseBodyEmitter(new class() extends SseEmitter {
+            protected function task(): void
+            {
+                $handler = $this->getHandler();
+                foreach (range(1, 100) as $i)
+                {
+                    if (!$handler->send((string) new SseMessageEvent((string) $i)))
+                    {
+                        throw new \RuntimeException('Send failed');
+                    }
+                    usleep(10000);
+                }
+            }
+        });
     }
 }

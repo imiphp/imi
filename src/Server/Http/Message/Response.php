@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Message;
 
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter;
 use Imi\Util\Http\Consts\StatusCode;
 
 abstract class Response extends \Imi\Util\Http\Response implements IHttpResponse
 {
+    protected ?IResponseBodyEmitter $responseBodyEmitter = null;
+
     /**
      * {@inheritDoc}
      */
@@ -16,5 +19,25 @@ abstract class Response extends \Imi\Util\Http\Response implements IHttpResponse
     {
         // @phpstan-ignore-next-line
         return $this->setStatus($status)->setHeader('location', $url);
+    }
+
+    public function withResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self
+    {
+        $clone = clone $this;
+        $clone->responseBodyEmitter = $responseBodyEmitter;
+
+        return $clone;
+    }
+
+    public function setResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self
+    {
+        $this->responseBodyEmitter = $responseBodyEmitter;
+
+        return $this;
+    }
+
+    public function getResponseBodyEmitter(): ?IResponseBodyEmitter
+    {
+        return $this->responseBodyEmitter;
     }
 }

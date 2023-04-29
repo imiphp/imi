@@ -21,6 +21,8 @@ class SwooleResponse extends Response
      */
     protected ?ISwooleServer $serverInstance = null;
 
+    protected bool $emitterWritting = false;
+
     public function __construct(ISwooleServer $server, \Swoole\Http\Response $response)
     {
         $this->swooleResponse = $response;
@@ -90,10 +92,25 @@ class SwooleResponse extends Response
      */
     public function send(): self
     {
-        $this->sendHeaders();
-        if ($this->isBodyWritable())
+        if ($this->responseBodyEmitter)
         {
-            $this->swooleResponse->end($this->getBody());
+            if ($this->emitterWritting)
+            {
+                return $this;
+            }
+            $this->emitterWritting = true;
+            $this->responseBodyEmitter->init($this, new SwooleEmitHandler($this->swooleResponse));
+            $this->sendHeaders();
+            $this->responseBodyEmitter->send();
+            $this->swooleResponse->end();
+        }
+        else
+        {
+            $this->sendHeaders();
+            if ($this->isBodyWritable())
+            {
+                $this->swooleResponse->end($this->getBody());
+            }
         }
 
         return $this;

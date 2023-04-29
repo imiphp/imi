@@ -19,6 +19,7 @@ class PoweredBy implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $handler->handle($request)->withAddedHeader('X-Powered-By', 'imiphp.com');
+        // @phpstan-ignore-next-line
+        return $handler->handle($request)->setHeader('X-Powered-By', 'imiphp.com');
     }
 }
