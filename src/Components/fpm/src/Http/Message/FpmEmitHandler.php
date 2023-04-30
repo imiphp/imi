@@ -11,6 +11,7 @@ class FpmEmitHandler implements IEmitHandler
     public function send(string $data): bool
     {
         echo $data;
+        ob_flush();
 
         return true;
     }
