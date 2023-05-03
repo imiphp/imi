@@ -262,11 +262,45 @@ class ModelTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testDbQueryAlias(array $args): void
+    {
+        ['id' => $id] = $args;
+        $list = Member::dbQuery(null, null, 'a1')
+            ->field('a1.id', 'a1.username')->where('a1.id', '=', $id)
+            ->select()
+            ->getArray();
+        $this->assertEquals([
+            [
+                'id'       => $id,
+                'username' => '1',
+            ],
+        ], $list);
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testQueryFind(array $args): void
     {
         ['id' => $id] = $args;
         $result = Member::query()
             ->where('id', '=', $id)
+            ->find();
+        $this->assertInstanceOf(Member::class, $result);
+        $this->assertEquals([
+            'id'       => $id,
+            'username' => '1',
+        ], $result->toArray());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testQueryAlias(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Member::query(null, null, null, 'a1')
+            ->where('a1.id', '=', $id)
             ->find();
         $this->assertInstanceOf(Member::class, $result);
         $this->assertEquals([

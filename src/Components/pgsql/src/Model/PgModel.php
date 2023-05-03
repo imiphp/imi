@@ -17,9 +17,9 @@ class PgModel extends Model
     /**
      * {@inheritDoc}
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, ?string $queryClass = null, ?string $alias = null): IModelQuery
     {
-        return parent::query($poolName, $queryType, $queryClass);
+        return parent::query($poolName, $queryType, $queryClass, $alias);
     }
 
     /**
