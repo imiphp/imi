@@ -79,6 +79,13 @@ $query = TestModel::query();
 
 > `query()` 方法返回的类是 `Imi\Model\Contract\IModelQuery`，它继承了 `Imi\Db\Query\Interfaces\IQuery`，并且有扩展特性
 
+| 参数         | 说明                                                                          | 默认值  |
+|------------|-----------------------------------------------------------------------------|------|
+| poolName   | 连接池名，如果为`null`则取配置`@app.db.defaultPool`                                     | null |
+| queryType  | 查询类型，影响读写分离逻辑。可选：`QueryType::READ`/`QueryType::WRITE`，默认为`QueryType::WRITE` | null |
+| queryClass | 查询器类，默认通过`Model::DEFAULT_QUERY_CLASS`指定                                     | null |
+| alias      | 表别名                                                                         | null |
+
 **查询结果返回数组：**
 
 ```php
@@ -86,6 +93,12 @@ $query = TestModel::dbQuery();
 ```
 
 > `dbQuery()` 方法返回的类是 `Imi\Db\Query\Interfaces\IQuery`，与 `Imi\Db\Db::query()` 返回完全一致
+
+| 参数        | 说明                                                                          | 默认值  |
+|-----------|-----------------------------------------------------------------------------|------|
+| poolName  | 连接池名，如果为`null`则取配置`@app.db.defaultPool`                                     | null |
+| queryType | 查询类型，影响读写分离逻辑。可选：`QueryType::READ`/`QueryType::WRITE`，默认为`QueryType::WRITE` | null |
+| alias     | 表别名                                                                         | null |
 
 **IModelQuery 扩展特性：**
 
