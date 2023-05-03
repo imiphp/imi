@@ -202,7 +202,7 @@ abstract class Model extends BaseModel
         $meta = static::__getMeta(static::__getRealClassName());
 
         /** @var IModelQuery $query */
-        $query = App::newInstance($queryClass ?? self::DEFAULT_QUERY_CLASS, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
+        $query = App::newInstance($queryClass ?? static::DEFAULT_QUERY_CLASS, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
 
         if ($alias)
         {
