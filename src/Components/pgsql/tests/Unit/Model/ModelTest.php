@@ -224,6 +224,34 @@ class ModelTest extends BaseTest
         ], $list);
     }
 
+    public function testDbQueryAlias(): void
+    {
+        $list = Member::dbQuery(null, null, 'a1')
+            ->field('a1.id', 'username')
+            ->where('a1.id', '=', 1)
+            ->select()
+            ->getArray();
+        $this->assertEquals([
+            [
+                'id'        => 1,
+                'username'  => '1',
+            ],
+        ], $list);
+    }
+
+    public function testQueryAlias(): void
+    {
+        /** @var Member $member */
+        $member = Member::query(null, null, null, 'a1')
+            ->field('a1.username')
+            ->where('a1.id', '=', 1)
+            ->select()
+            ->get();
+        $this->assertEquals([
+            'username'  => '1',
+        ], $member->toArray());
+    }
+
     public function testQuerySetField(): void
     {
         /** @var Member $member */

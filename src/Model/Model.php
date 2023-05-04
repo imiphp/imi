@@ -197,11 +197,19 @@ abstract class Model extends BaseModel
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, ?string $queryClass = null, ?string $alias = null): IModelQuery
     {
         $meta = static::__getMeta(static::__getRealClassName());
 
-        return App::newInstance($queryClass, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
+        /** @var IModelQuery $query */
+        $query = App::newInstance($queryClass ?? static::DEFAULT_QUERY_CLASS, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
+
+        if ($alias)
+        {
+            $query->getOption()->table->setAlias($alias);
+        }
+
+        return $query;
     }
 
     /**
@@ -210,11 +218,18 @@ abstract class Model extends BaseModel
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function dbQuery(?string $poolName = null, ?int $queryType = null): IQuery
+    public static function dbQuery(?string $poolName = null, ?int $queryType = null, ?string $alias = null): IQuery
     {
         $meta = static::__getMeta(static::__getRealClassName());
 
-        return Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->table($meta->getTableName(), null, $meta->getDatabaseName());
+        $query = Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->table($meta->getTableName(), null, $meta->getDatabaseName());
+
+        if ($alias)
+        {
+            $query->getOption()->table->setAlias($alias);
+        }
+
+        return $query;
     }
 
     /**

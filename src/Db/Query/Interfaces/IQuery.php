@@ -692,6 +692,8 @@ interface IQuery
      *
      * @param callable|null $callable
      *
+     * @deprecated 3.0
+     *
      * @return static
      */
     public function alias(string $name, $callable = null): self;
