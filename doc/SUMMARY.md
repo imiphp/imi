@@ -13,7 +13,6 @@
 
 ## 基础入门
 
-* [Swoole 开发环境说明及安装教程](base/env.md)
 * [开始一个新项目](base/new.md)
 * [应用配置](base/config.md)
 * [常见问题](base/qa.md)
@@ -49,6 +48,7 @@
 
 * [PHP-FPM](container/php-fpm.md)
 * [Swoole](container/swoole.md)
+  * [Swoole 环境安装教程](base/env.md)
   * [子服务器（单项目多端口多协议）](core/subServer.md)
   * [单端口支持 WebSocket+Http](components/swoole/ws_and_http.md)
   * [热更新](components/hotupdate/index.md)
