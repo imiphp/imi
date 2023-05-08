@@ -19,7 +19,7 @@ use Imi\Util\Http\Consts\ResponseHeader;
 use Imi\Util\Http\Consts\StatusCode;
 
 /**
- * @Bean("GrpcHttpProxy")
+ * @Bean(name="GrpcHttpProxy", recursion=false)
  */
 class GrpcHttpProxy
 {

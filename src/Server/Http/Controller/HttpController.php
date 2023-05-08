@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Controller;
 
 use Imi\RequestContext;
-use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
@@ -24,21 +23,21 @@ abstract class HttpController
 
     /**
      * 请求
-     *
-     * @ServerInject("HttpRequestProxy")
      */
     public IHttpRequest $request;
 
     /**
      * 响应.
-     *
-     * @ServerInject("HttpResponseProxy")
      */
     public IHttpResponse $response;
 
     public function __construct()
     {
-        $this->server = RequestContext::getServer();
+        $server = $this->server = RequestContext::getServer();
+        // @phpstan-ignore-next-line
+        $this->request = $server->getBean('HttpRequestProxy');
+        // @phpstan-ignore-next-line
+        $this->response = $server->getBean('HttpResponseProxy');
     }
 
     /**

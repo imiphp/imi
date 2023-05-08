@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\UdpServer\Controller;
 
 use Imi\RequestContext;
-use Imi\Server\Annotation\ServerInject;
 use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Server\UdpServer\Message\IPacketData;
 
@@ -21,14 +20,14 @@ abstract class UdpController
 
     /**
      * 包数据.
-     *
-     * @ServerInject("UdpPacketDataProxy")
      */
     public IPacketData $data;
 
     public function __construct()
     {
         // @phpstan-ignore-next-line
-        $this->server = RequestContext::getServer();
+        $server = $this->server = RequestContext::getServer();
+        // @phpstan-ignore-next-line
+        $this->data = $server->getBean('UdpPacketDataProxy');
     }
 }

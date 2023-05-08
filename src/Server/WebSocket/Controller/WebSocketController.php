@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\WebSocket\Controller;
 
 use Imi\RequestContext;
-use Imi\Server\Annotation\ServerInject;
 use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\IFrame;
 
@@ -21,14 +20,14 @@ abstract class WebSocketController
 
     /**
      * 桢.
-     *
-     * @ServerInject("WebSocketFrameProxy")
      */
     public IFrame $frame;
 
     public function __construct()
     {
         // @phpstan-ignore-next-line
-        $this->server = RequestContext::getServer();
+        $server = $this->server = RequestContext::getServer();
+        // @phpstan-ignore-next-line
+        $this->frame = $server->getBean('WebSocketFrameProxy');
     }
 }
