@@ -35,7 +35,7 @@ class CacheManager
             {
                 foreach ($caches as $name => $cache)
                 {
-                    self::addName($name, $cache['handlerClass'], $cache['option']);
+                    self::addName($name, $cache['handlerClass'], $cache['option'] ?? []);
                 }
             }
         }
