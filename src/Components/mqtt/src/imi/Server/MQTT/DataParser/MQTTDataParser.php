@@ -7,9 +7,13 @@ namespace Imi\Server\MQTT\DataParser;
 use BinSoul\Net\Mqtt\DefaultPacketFactory;
 use BinSoul\Net\Mqtt\PacketStream;
 use Imi\Aop\Annotation\Inject;
+use Imi\Bean\Annotation\Bean;
 use Imi\Server\DataParser\IParser;
 use Imi\Server\MQTT\Exception\InvalidReceiveData;
 
+/**
+ * @Bean(recursion=false)
+ */
 class MQTTDataParser implements IParser
 {
     /**

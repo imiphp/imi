@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\TcpServer\Controller;
 
 use Imi\RequestContext;
-use Imi\Server\Annotation\ServerInject;
 use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
@@ -21,15 +20,15 @@ abstract class TcpController
 
     /**
      * 数据.
-     *
-     * @ServerInject("TcpReceiveDataProxy")
      */
     public IReceiveData $data;
 
     public function __construct()
     {
         // @phpstan-ignore-next-line
-        $this->server = RequestContext::getServer();
+        $server = $this->server = RequestContext::getServer();
+        // @phpstan-ignore-next-line
+        $this->data = $server->getBean('TcpReceiveDataProxy');
     }
 
     /**
