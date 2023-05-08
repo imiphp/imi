@@ -174,7 +174,10 @@ function resizeCode() {
 	var guttelines = $('.gutter .line');
 	var codelines = $('.code .line');
 	for (var i = 0; i < guttelines.length; i++) {
-		guttelines.eq(i).css('height', codelines.eq(i).css('height'))
+		var codeline = codelines.eq(i);
+		var height = codeline.css('height');
+		guttelines.eq(i).css('height', height)
+		codeline.css('height', height);
 	}
 }
 
