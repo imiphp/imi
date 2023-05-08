@@ -675,7 +675,7 @@ span.tmpzTreeMove_arrow {
 .syntaxhighlighter caption,
 .syntaxhighlighter textarea {
 	font-family: Menlo, Monaco, Menlo, Consolas, source-code-pro, "Liberation Mono", "Ubuntu Mono", Courier, "Helvetica Neue", "Microsoft Yahei", 微软雅黑, "Lantinghei SC", STXihei, WenQuanYi, sans-serif;
-	font-size: 14px;
+	font-size: 14px !important;
 }
 
 .syntaxhighlighter td.code .line,
@@ -754,9 +754,10 @@ li {
 	width: 16em;
 	position: fixed;
 	right: 2em;
-	background: #fff;
 	z-index: 99;
 	border: 1px solid #dbdbdb;
+	background-color: rgba(255, 255, 255, 0.618);
+	backdrop-filter: blur(4px);
 }
 
 #content-toc {
