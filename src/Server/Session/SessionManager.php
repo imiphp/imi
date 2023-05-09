@@ -166,7 +166,7 @@ class SessionManager
      */
     public function tryGC(): void
     {
-        if (Random::float(0, 1) <= $this->config->gcProbability)
+        if ($this->config->gcProbability > 0 && Random::float(0, 1) <= $this->config->gcProbability)
         {
             $this->gc();
         }
