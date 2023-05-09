@@ -21,7 +21,7 @@ class GrpcHttpClient
 
     protected string $requestMethod = '';
 
-    public function __construct(string $url, string $requestMethod = RequestMethod::POST, ?float $timeout = null)
+    public function __construct(string $url, string $requestMethod = RequestMethod::POST, ?int $timeout = null)
     {
         $this->url = $url;
         $this->httpRequest = $httpRequest = new HttpRequest();
@@ -35,7 +35,7 @@ class GrpcHttpClient
     /**
      * 发起请求
      *
-     * @template T
+     * @template T of Message
      *
      * @param string                                   $service          服务名
      * @param string                                   $method           方法名
@@ -74,10 +74,6 @@ class GrpcHttpClient
             throw new \RuntimeException('GrpcHttpClient request failed, response json_decode failed');
         }
         $responseMessage = ProtobufUtil::newMessage($responseClass, $data);
-        if (!$responseMessage)
-        {
-            throw new \RuntimeException(sprintf('GrpcHttpClient deserializeMessage failed. statusCode: %s, errCode:%s, errorMsg:%s', $response->getStatusCode(), $response->getErrno(), $response->getError()));
-        }
         if (GrpcStatus::OK != ($responseMetadata['grpc-status'] ?? GrpcStatus::OK))
         {
             throw new \RuntimeException(sprintf('Grpc response failed, grpc-status: %s, grpc-message: %s', $responseMetadata['grpc-status'], $responseMetadata['grpc-message'] ?? ''));
