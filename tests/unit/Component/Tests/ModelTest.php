@@ -392,21 +392,23 @@ class ModelTest extends BaseTest
         ['id' => $id] = $args;
 
         /** @var Member $record */
-        $record = Member::query()->fieldRaw('*, 123 as notInJson')->where('id', '=', $id)->select()->get();
+        $record = Member::query()->fieldRaw('*, 123 as notInJson, 456 as tmpField')->where('id', '=', $id)->select()->get();
         $this->assertEquals([
             'id'        => $id,
             'username'  => '1',
             'password'  => 'pw2',
             'notInJson' => 123,
+            'tmpField'  => 456,
         ], $record->convertToArray());
 
-        $list = Member::query()->fieldRaw('*, 123 as notInJson')->where('id', '=', $id)->select()->getArray();
+        $list = Member::query()->fieldRaw('*, 123 as notInJson, 456 as tmpField')->where('id', '=', $id)->select()->getArray();
         $this->assertEquals([
             [
                 'id'        => $id,
                 'username'  => '1',
                 'password'  => 'pw2',
                 'notInJson' => 123,
+                'tmpField'  => 456,
             ],
         ], Member::convertListToArray($list));
     }
