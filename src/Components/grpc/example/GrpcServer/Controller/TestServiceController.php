@@ -24,8 +24,14 @@ class TestServiceController extends HttpController implements TestServiceInterfa
      */
     public function test(\Grpc\TestRequest $request)
     {
-        $this->response->setHeader(RequestHeader::TRAILER, 'grpc-status, grpc-message, test')
-                       ->setHeader('test', 'value');
+        $trailers = 'grpc-status, grpc-message, test';
+        $this->response->setHeader('test', 'value');
+        if ($this->request->hasHeader('grpc-test'))
+        {
+            $this->response->setHeader('grpc-test', $this->request->getHeaderLine('grpc-test'));
+            $trailers .= ', grpc-test';
+        }
+        $this->response->setHeader(RequestHeader::TRAILER, $trailers);
 
         return $request;
     }
