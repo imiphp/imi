@@ -18,15 +18,29 @@ abstract class Random
     }
 
     /**
-     * 随机生成小数.
+     * 随机小数.
+     *
+     * @param int $precision 最大小数位数
+     */
+    public static function float(float $min = \PHP_INT_MIN, float $max = \PHP_INT_MAX, ?int $precision = null): float
+    {
+        $result = $min + mt_rand() / mt_getrandmax() * ($max - $min);
+        if (null !== $precision)
+        {
+            return round($result, $precision);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 随机生成小数文本.
      *
      * @param int $precision 最大小数位数
      */
     public static function number(float $min = \PHP_INT_MIN, float $max = \PHP_INT_MAX, int $precision = 2): string
     {
-        $value = round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
-
-        return Digital::scientificToNum((string) $value, $precision);
+        return Digital::scientificToNum((string) self::float($min, $max, $precision), $precision);
     }
 
     /**
@@ -46,11 +60,27 @@ abstract class Random
     }
 
     /**
+     * 随机生成字节集.
+     */
+    public static function bytes(string $bytes, int $min, ?int $max = null): string
+    {
+        $length = mt_rand($min, $max ?? $min);
+        $charLength = \strlen($bytes);
+        $result = str_repeat(' ', $length);
+        for ($i = 0; $i < $length; ++$i)
+        {
+            $result[$i] = $bytes[mt_rand(1, $charLength) - 1];
+        }
+
+        return $result;
+    }
+
+    /**
      * 随机生成字母.
      */
     public static function letter(int $min, ?int $max = null): string
     {
-        return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', $min, $max ?? $min);
+        return static::bytes('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', $min, $max ?? $min);
     }
 
     /**
@@ -58,7 +88,7 @@ abstract class Random
      */
     public static function digital(int $min, ?int $max = null): string
     {
-        return static::text('0123456789', $min, $max ?? $min);
+        return static::bytes('0123456789', $min, $max ?? $min);
     }
 
     /**
@@ -66,6 +96,6 @@ abstract class Random
      */
     public static function letterAndNumber(int $min, ?int $max = null): string
     {
-        return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', $min, $max ?? $min);
+        return static::bytes('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', $min, $max ?? $min);
     }
 }
