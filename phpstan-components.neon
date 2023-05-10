@@ -51,16 +51,3 @@ parameters:
                 - src/Components/jwt/*
 
 services:
-    fileFinderAnalyse:
-        class: Imi\Dev\PHPStan\FileFinder
-        arguments:
-            fileExcluder: @fileExcluderAnalyse
-            fileExtensions: %fileExtensions%
-        autowired: false
-
-    fileFinderScan:
-        class: Imi\Dev\PHPStan\FileFinder
-        arguments:
-            fileExcluder: @fileExcluderScan
-            fileExtensions: %fileExtensions%
-        autowired: false

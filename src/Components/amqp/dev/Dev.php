@@ -52,10 +52,16 @@ class Dev
     // @phpstan-ignore-next-line
     public static function postUpdate(Event $event): void
     {
+        // @phpstan-ignore-next-line
+        $componentsName = $event->getComposer()->getPackage()->getName();
         $dir = \dirname(__DIR__);
 
         foreach (InstalledVersions::getInstalledPackages() as $name)
         {
+            if ($componentsName === $name)
+            {
+                continue;
+            }
             $componentDir = \dirname($dir) . '/' . substr($name, 11);
             if ('imiphp/' !== substr($name, 0, 7) || !is_dir($componentDir))
             {
