@@ -21,6 +21,15 @@ class RandomTest extends BaseTest
         $this->assertTrue($val >= 1 && $val <= 3);
     }
 
+    public function testFloat(): void
+    {
+        $val = Random::float();
+        $this->assertTrue($val >= \PHP_INT_MIN && $val <= \PHP_INT_MAX);
+
+        $val = Random::float(1, 3);
+        $this->assertTrue($val >= 1 && $val <= 3);
+    }
+
     public function testNumber(): void
     {
         $val = Random::number();
@@ -35,6 +44,18 @@ class RandomTest extends BaseTest
     }
 
     public function testText(): void
+    {
+        $val = Random::text('哈', 5, 5);
+        $this->assertEquals('哈哈哈哈哈', $val);
+
+        $val = Random::text('哈', 5);
+        $this->assertEquals('哈哈哈哈哈', $val);
+
+        $val = Random::text('啊哦额', 10, 20);
+        $this->assertEquals(1, preg_match('/^[啊哦额]{10,20}$/u', $val));
+    }
+
+    public function testBytes(): void
     {
         $val = Random::text('a', 5, 5);
         $this->assertEquals('aaaaa', $val);

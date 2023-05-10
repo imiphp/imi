@@ -310,11 +310,12 @@ class ModelQueryResult extends Result
 
     private function parseFieldNames(array $serializableFieldNames, array $fieldNames): array
     {
-        foreach ($fieldNames as $i => $name)
+        foreach ($fieldNames as &$name)
         {
-            if (!isset($serializableFieldNames[$name]) && !\in_array($name, $serializableFieldNames))
+            // @deprecated 3.0 将废弃动态字段名
+            if (!isset($serializableFieldNames[$name]) && false !== ($index = array_search($name, $serializableFieldNames)))
             {
-                unset($fieldNames[$i]);
+                $name = $index;
             }
         }
 

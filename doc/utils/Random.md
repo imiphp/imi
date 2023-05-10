@@ -20,9 +20,21 @@ echo Random::int(), PHP_EOL;
 echo Random::int(1, 20), PHP_EOL;
 ```
 
+### float
+
+随机小数
+
+```php
+// 随机范围：PHP_INT_MIN-PHP_INT_MAX
+echo Random::float(), PHP_EOL;
+
+// 随机范围：1.1-20.5
+echo Random::float(1.1, 20.5), PHP_EOL;
+```
+
 ### number
 
-随机生成小数
+随机生成小数文本
 
 ```php
 // 随机范围：PHP_INT_MIN-PHP_INT_MAX
@@ -37,11 +49,23 @@ echo Random::number(1.2, 20), PHP_EOL;
 随机生成文本
 
 ```php
-// 从abcdefg中随机4-6个字符
-echo Random::text('abcdefg', 4, 6), PHP_EOL;
+// 从啊哦额中随机4-6个字符
+echo Random::text('啊哦额', 4, 6), PHP_EOL;
 
-// 从abcdefg中随机5个字符
-echo Random::text('abcdefg', 5), PHP_EOL;
+// 从啊哦额中随机5个字符
+echo Random::text('啊哦额', 5), PHP_EOL;
+```
+
+### bytes
+
+随机生成字节集
+
+```php
+// 从abcdefg中随机4-6个字节
+echo Random::bytes('abcdefg', 4, 6), PHP_EOL;
+
+// 从abcdefg中随机5个字节
+echo Random::bytes('abcdefg', 5), PHP_EOL;
 ```
 
 ### letter
