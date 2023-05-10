@@ -1,0 +1,72 @@
+name: codecov
+
+on:
+  push:
+    paths-ignore:
+      - "doc/**"
+      - "mddoc/**"
+      - "res/**"
+      - "split-repository/**"
+      - "website/**"
+      - ".markdownlint.json"
+      - "README.md"
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    env:
+      SWOOLE_VERSION: v5.0.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          tools: pecl
+          coverage: xdebug
+          extensions: >
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, zip,
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+          php --ri swoole
+      - name: Prepare
+        run: |
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+      - name: Run test suite
+        run: composer exec -- phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./core-coverage.xml
+          flags: unittests
+          name: codecov-core
