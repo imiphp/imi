@@ -147,6 +147,13 @@ jobs:
           php src/Components/jwt/vendor/bin/phpunit
           -c ./src/Components/jwt/tests/phpunit.xml
           --coverage-clover=./jwt-coverage.xml -v
+      - name: Run queue test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/queue/tests/phpunit.xml
+          --coverage-clover=./queue-coverage.xml -v
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
@@ -154,14 +161,14 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: >-
-            ./core-coverage.xml,
-            ./swoole-coverage.xml,
-            ./workerman-coverage.xml,
-            ./workerman-gateway-coverage.xml,
-            ./workerman-gateway-swoole-coverage.xml,
-            ./roadrunner-coverage.xml,
-            ./fpm-coverage.xml,
-            ./jwt-coverage.xml
+          file: "./core-coverage.xml,\
+            ./swoole-coverage.xml,\
+            ./workerman-coverage.xml,\
+            ./workerman-gateway-coverage.xml,\
+            ./workerman-gateway-swoole-coverage.xml,\
+            ./roadrunner-coverage.xml,\
+            ./fpm-coverage.xml,\
+            ./jwt-coverage.xml,\
+            ./queue-coverage.xml"
           flags: unittests
           name: umbrella
