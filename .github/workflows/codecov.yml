@@ -80,9 +80,14 @@ jobs:
       - name: Run core test suite
         run: php vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
       - name: Run swoole test suite
+        if: always()
         run: php src/Components/swoole/bin/swoole-phpunit -c ./src/Components/swoole/tests/phpunit.xml --coverage-clover=./swoole-coverage.xml -v
       - name: Run workerman test suite
+        if: always()
         run: php src/Components/workerman/vendor/bin/phpunit -c ./src/Components/workerman/tests/phpunit.xml --coverage-clover=./workerman-coverage.xml -v
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
