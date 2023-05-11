@@ -52,7 +52,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install libs
-        run: apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev
+        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
