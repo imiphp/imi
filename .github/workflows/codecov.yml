@@ -63,11 +63,6 @@ jobs:
           tests/db/install-db.sh
       - name: Run core test suite
         run: composer exec -- phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
-      - name: test
-        run: |
-          ls -lh ./
-          echo "===="
-          ls -lh ./tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
