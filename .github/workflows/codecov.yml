@@ -61,7 +61,7 @@ jobs:
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
-      - name: Run test suite
+      - name: Run core test suite
         run: composer exec -- phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
