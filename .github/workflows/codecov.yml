@@ -134,7 +134,7 @@ jobs:
           mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
-          psql -h 127.0.0.1 -d db_imi_test -U root -W root -f ./.github/pgsql.sql
+          PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
           echo "test_ready=1" >> $GITHUB_ENV
