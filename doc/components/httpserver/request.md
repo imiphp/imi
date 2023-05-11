@@ -58,6 +58,8 @@ request 数据包含 get/post/cookie
 
 当`$name`为`null`时，返回全部
 
+> 不支持 JSON 传参，请使用 `getParsedBody()`
+
 ### 获取 JSON/XML 传参数据
 
 `public function getParsedBody()`
