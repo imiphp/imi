@@ -64,7 +64,7 @@ class GrpcHttpProxy
             {
                 if (str_starts_with(strtolower($name), 'grpc-'))
                 {
-                    $metadata[substr($name, 5)] = $request->getHeaderLine($name);
+                    $metadata[$name] = $request->getHeaderLine($name);
                 }
             }
 

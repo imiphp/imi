@@ -8,7 +8,7 @@ imi v2.1.22 新加入的 gRPC HTTP 代理网关，作用是可以用 HTTP + JSON
 
 其实这里可以画一个很厉害的架构图，但对使用没有什么帮助，就不放了。
 
-## 使用
+## 服务端
 
 ### proto 文件生成 PHP 代码
 
@@ -83,6 +83,8 @@ class ProxyController extends HttpController
 
 > `@Controller("/proxy/")` 和 `@Route("grpc/{service}/{method}")` 的路由都是可以自己定义的，这里仅仅作为演示用。
 
+## 客户端
+
 ### 测试
 
 这里拿 gRPC 服务开发中的示例来测试：
@@ -103,6 +105,29 @@ curl --location --request POST -X POST "http://127.0.0.1:8080/proxy/grpc/grpc.Au
 	"success": true,
 	"error": ""
 }
+```
+
+### 使用 Protobuf 的 gRPC HTTP 网关客户端
+
+**类名：**`\Imi\Grpc\Proxy\Http\GrpcHttpClient`
+
+**使用：**
+
+```php
+use Imi\Grpc\Proxy\Http\GrpcHttpClient;
+
+$client = new GrpcHttpClient('http://127.0.0.1:8080/proxy/grpc');
+
+$request = new TestRequest();
+$request->setInt(123);
+
+$responseMessage = $client->request('grpc.TestService', 'test', $request, TestRequest::class, ['grpc-test' => 'abc'], $responseMetadata, $response);
+
+var_dump($responseMessage); // 响应对象
+
+var_dump($responseMetadata); // metadata
+
+$response; // YurunHttp 响应对象，一般无用
 ```
 
 ### 注意事项
@@ -252,3 +277,9 @@ JSON 请求参数：
     "fieldMask": "abc.def"
 }
 ```
+
+* Metadata
+
+以 `grpc-` 开头的请求头，都被当做 metadata 传给 gRPC 服务端。
+
+响应头同理。
