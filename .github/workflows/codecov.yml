@@ -1,4 +1,4 @@
-name: codecov
+name: Codecov
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
           tools: pecl
           coverage: xdebug
           extensions: >
-            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, zip,
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql, sockets, zip,
             swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
       - name: Check Version
         run: |
@@ -63,6 +63,11 @@ jobs:
           tests/db/install-db.sh
       - name: Run core test suite
         run: composer exec -- phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
+      - name: test
+        run: |
+          ls -lh ./
+          echo "===="
+          ls -lh ./tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
