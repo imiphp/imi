@@ -89,43 +89,63 @@ jobs:
           mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
-      - name: Install RoadRunner
-        run: |
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
+          echo "test_ready=1" >> $GITHUB_ENV
       - name: Run core test suite
         timeout-minutes: 5
         run: php vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
       - name: Run swoole test suite
-        if: always()
+        if: ${{ env.test_ready && always() }}
         timeout-minutes: 5
         run: >
           php src/Components/swoole/bin/swoole-phpunit
           -c ./src/Components/swoole/tests/phpunit.xml
           --coverage-clover=./swoole-coverage.xml -v
       - name: Run workerman test suite
-        if: always()
-        timeout-minutes: 5
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
         run: >
           php src/Components/workerman/vendor/bin/phpunit
           -c ./src/Components/workerman/tests/phpunit.xml
           --coverage-clover=./workerman-coverage.xml -v
       - name: Run workerman-gateway test suite
-        if: always()
-        timeout-minutes: 5
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
         run: >
           php src/Components/workerman-gateway/vendor/bin/phpunit
           -c ./src/Components/workerman-gateway/tests/phpunit.xml
           --testsuite workerman
           --coverage-clover=./workerman-gateway-coverage.xml -v
       - name: Run workerman-gateway(swoole) test suite
-        if: always()
-        timeout-minutes: 5
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
         run: >
           php src/Components/workerman-gateway/vendor/bin/phpunit
           -c ./src/Components/workerman-gateway/tests/phpunit.xml
           --testsuite swoole
           --coverage-clover=./workerman-gateway-swoole-coverage.xml -v
+      - name: Run roadrunner test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/roadrunner/vendor/bin/phpunit
+          -c ./src/Components/roadrunner/tests/phpunit.xml
+          --coverage-clover=./roadrunner-coverage.xml -v
+      - name: Run fpm test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/fpm/vendor/bin/phpunit
+          -c ./src/Components/fpm/tests/phpunit.xml
+          --coverage-clover=./fpm-coverage.xml -v
+      - name: Run jwt test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/jwt/vendor/bin/phpunit
+          -c ./src/Components/jwt/tests/phpunit.xml
+          --coverage-clover=./jwt-coverage.xml -v
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
@@ -133,11 +153,14 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: >
+          file: >-
             ./core-coverage.xml,
             ./swoole-coverage.xml,
             ./workerman-coverage.xml,
             ./workerman-gateway-coverage.xml,
-            ./workerman-gateway-swoole-coverage.xml
+            ./workerman-gateway-swoole-coverage.xml,
+            ./roadrunner-coverage.xml,
+            ./fpm-coverage.xml,
+            ./jwt-coverage.xml
           flags: unittests
           name: umbrella
