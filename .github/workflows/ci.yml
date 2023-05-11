@@ -10,11 +10,7 @@ on:
       - "website/**"
       - ".markdownlint.json"
       - "README.md"
-    branches:
-      - disabled
   pull_request:
-    branches:
-      - disabled
 
 jobs:
   ci:
