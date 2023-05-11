@@ -13,6 +13,8 @@ on:
     branches:
       - disabled
   pull_request:
+    branches:
+      - disabled
 
 jobs:
   ci:
