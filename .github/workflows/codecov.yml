@@ -58,7 +58,7 @@ jobs:
           php --ri swoole
       - name: Prepare
         run: |
-          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
       - name: Run core test suite
