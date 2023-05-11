@@ -37,6 +37,19 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: db_imi_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
       rabbitmq:
         image: rabbitmq:3.11-management
         env:
@@ -86,6 +99,8 @@ jobs:
       SWOOLE_VERSION: v5.0.3
       ROADRUNNER_VERSION: 2.7.*
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      AMQP_SERVER_HOST: 127.0.0.1
+      KAFKA_BOOTSTRAP_SERVERS: 127.0.0.1:9092
       SWOOLE_CONFIGURE_OPTS: >
         --enable-openssl
         --enable-http2
@@ -98,7 +113,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install libs
-        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev
+        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -119,6 +134,7 @@ jobs:
           mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
+          psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
           echo "test_ready=1" >> $GITHUB_ENV

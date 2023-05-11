@@ -19,4 +19,12 @@
     <extensions>
         <extension class="Imi\Kafka\Test\PHPUnitHook" />
     </extensions>
+    <coverage>
+        <include>
+            <directory suffix=".php">../src</directory>
+        </include>
+        <report>
+            <clover outputFile="clover.xml"/>
+        </report>
+    </coverage>
 </phpunit>
