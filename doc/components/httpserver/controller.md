@@ -76,7 +76,7 @@ class Index extends HttpController
 
 ### $server
 
-详见：</v2.1/core/server.html>
+详见：[链接](/v2.1/core/server.html)
 
 ### $request
 

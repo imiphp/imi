@@ -21,7 +21,7 @@ imi 支持将服务指标监控的数据写入 TDengine。
 
 ### InfluxDB 兼容接口
 
-这个写入方式主要依赖 imi-influxdb，文档请移步：</v2.1/components/meter/influxdb.html>
+这个写入方式主要依赖 imi-influxdb，文档请移步：[链接](/v2.1/components/meter/influxdb.html)
 
 在 InfluxDB 配置基础上，只需要做如下修改，即可兼容 TDengine：
 

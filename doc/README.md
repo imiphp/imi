@@ -130,4 +130,4 @@ imi 遵循木兰宽松许可证（Mulan PSL v2）开源协议发布，并提供�
 
 提交 `Pull Request` 到本仓库，你可以成为 imi 的贡献者！
 
-参与框架开发教程详见：</v2.1/adv/devp.html>
+参与框架开发教程详见：[链接](/v2.1/adv/devp.html)

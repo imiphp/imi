@@ -20,7 +20,7 @@ imi 支持将服务指标监控的数据写入 InfluxDB。
 
 ## 使用说明
 
-imi-influxdb 基础配置和使用说明详见：</v2.1/components/influxdb.html>
+imi-influxdb 基础配置和使用说明详见：[链接](/v2.1/components/influxdb.html)
 
 ### 服务指标监控
 
