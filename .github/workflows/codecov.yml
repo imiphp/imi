@@ -39,6 +39,15 @@ jobs:
           --health-retries=3
     env:
       SWOOLE_VERSION: v5.0.3
+      ROADRUNNER_VERSION: 2.7.*
+      SWOOLE_CONFIGURE_OPTS: >
+        --enable-openssl
+        --enable-http2
+        --enable-mysqlnd
+        --enable-sockets
+        --enable-swoole-json
+        --enable-swoole-curl
+        --enable-swoole-pgsql
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -49,7 +58,8 @@ jobs:
           tools: pecl
           coverage: xdebug
           extensions: >
-            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql, sockets, zip,
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
+            sockets, zip, inotify, event, apcu,
             swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
       - name: Check Version
         run: |
@@ -61,12 +71,20 @@ jobs:
           mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
+      - name: Install RoadRunner
+        run: |
+          src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
+          ./rr -v
       - name: Run core test suite
-        run: composer exec -- phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
+        run: php vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
+      - name: Run swoole test suite
+        run: php src/Components/swoole/bin/swoole-phpunit -c ./src/Components/swoole/tests/phpunit.xml --coverage-clover=./swoole-coverage.xml -v
+      - name: Run workerman test suite
+        run: php src/Components/workerman/vendor/bin/phpunit -c ./src/Components/workerman/tests/phpunit.xml --coverage-clover=./workerman-coverage.xml -v
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./core-coverage.xml
+          file: ./core-coverage.xml,./swoole-coverage.xml,./workerman-coverage.xml
           flags: unittests
-          name: codecov-core
+          name: umbrella
