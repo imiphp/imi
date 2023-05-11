@@ -38,7 +38,7 @@ jobs:
           --health-timeout=5s
           --health-retries=3
       rabbitmq:
-        image: rabbitmq:3.8-management
+        image: rabbitmq:3.11-management
         env:
           RABBITMQ_DEFAULT_VHOST: "/"
           RABBITMQ_DEFAULT_USER: "guest"
@@ -94,13 +94,38 @@ jobs:
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
       - name: Run core test suite
+        timeout-minutes: 5
         run: php vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
       - name: Run swoole test suite
         if: always()
-        run: php src/Components/swoole/bin/swoole-phpunit -c ./src/Components/swoole/tests/phpunit.xml --coverage-clover=./swoole-coverage.xml -v
+        timeout-minutes: 5
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/swoole/tests/phpunit.xml
+          --coverage-clover=./swoole-coverage.xml -v
       - name: Run workerman test suite
         if: always()
-        run: php src/Components/workerman/vendor/bin/phpunit -c ./src/Components/workerman/tests/phpunit.xml --coverage-clover=./workerman-coverage.xml -v
+        timeout-minutes: 5
+        run: >
+          php src/Components/workerman/vendor/bin/phpunit
+          -c ./src/Components/workerman/tests/phpunit.xml
+          --coverage-clover=./workerman-coverage.xml -v
+      - name: Run workerman-gateway test suite
+        if: always()
+        timeout-minutes: 5
+        run: >
+          php src/Components/workerman-gateway/vendor/bin/phpunit
+          -c ./src/Components/workerman-gateway/tests/phpunit.xml
+          --testsuite workerman
+          --coverage-clover=./workerman-gateway-coverage.xml -v
+      - name: Run workerman-gateway(swoole) test suite
+        if: always()
+        timeout-minutes: 5
+        run: >
+          php src/Components/workerman-gateway/vendor/bin/phpunit
+          -c ./src/Components/workerman-gateway/tests/phpunit.xml
+          --testsuite swoole
+          --coverage-clover=./workerman-gateway-swoole-coverage.xml -v
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
@@ -108,6 +133,11 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./core-coverage.xml,./swoole-coverage.xml,./workerman-coverage.xml
+          file: >
+            ./core-coverage.xml,
+            ./swoole-coverage.xml,
+            ./workerman-coverage.xml,
+            ./workerman-gateway-coverage.xml,
+            ./workerman-gateway-swoole-coverage.xml
           flags: unittests
           name: umbrella
