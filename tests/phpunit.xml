@@ -55,7 +55,7 @@
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />
     </extensions>
-    <coverage cacheDirectory="/tmp/phpunit-imi-src">
+    <coverage>
         <include>
             <directory suffix=".php">../src</directory>
         </include>
