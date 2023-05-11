@@ -17,4 +17,12 @@
             <directory>unit/AppServer/Tests/WebSocket/Swoole</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">../src</directory>
+        </include>
+        <report>
+            <clover outputFile="clover.xml"/>
+        </report>
+    </coverage>
 </phpunit>
