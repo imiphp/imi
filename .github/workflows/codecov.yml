@@ -37,6 +37,22 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+      rabbitmq:
+        image: rabbitmq:3.8-management
+        environment:
+          RABBITMQ_DEFAULT_VHOST: "/"
+          RABBITMQ_DEFAULT_USER: "guest"
+          RABBITMQ_DEFAULT_PASS: "guest"
+        ports:
+          - 4369:4369
+          - 15672:15672
+          - 5672:5672
+          - 25672:25672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     env:
       SWOOLE_VERSION: v5.0.3
       ROADRUNNER_VERSION: 2.7.*
