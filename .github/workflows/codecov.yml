@@ -39,7 +39,7 @@ jobs:
           --health-retries=3
       rabbitmq:
         image: rabbitmq:3.8-management
-        environment:
+        env:
           RABBITMQ_DEFAULT_VHOST: "/"
           RABBITMQ_DEFAULT_USER: "guest"
           RABBITMQ_DEFAULT_PASS: "guest"
