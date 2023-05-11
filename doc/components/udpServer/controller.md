@@ -92,7 +92,7 @@ return ['success'=>true];
 
 ### $server
 
-详见：<https://doc.imiphp.com/v2.1/core/server.html>
+详见：</v2.1/core/server.html>
 
 ### $data
 

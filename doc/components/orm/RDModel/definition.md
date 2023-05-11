@@ -22,7 +22,7 @@ imi 的模型类里一般不写逻辑代码，模型类的一个对象就代表�
 
 `@DDL` 定义表结构的 SQL 语句
 
-> 建议使用模型生成工具：<https://doc.imiphp.com/v2.1/dev/generate/model.html>
+> 建议使用模型生成工具：</v2.1/dev/generate/model.html>
 
 具体定义看下面代码：
 
@@ -543,7 +543,7 @@ ID 生成器指定参数：
 
 `@Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name"="雪花算法配置名称"})`
 
-> 雪花算法配置请参考：<https://doc.imiphp.com/v2.1/components/snowflake.html#%E9%85%8D%E7%BD%AE>
+> 雪花算法配置请参考：</v2.1/components/snowflake.html#%E9%85%8D%E7%BD%AE>
 
 #### 自定义发号器
 

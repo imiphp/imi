@@ -148,7 +148,7 @@ foreach ($list2 as $row)
 
 ### 查询时指定字段
 
-请使用 `@Sql` 注解建模，参考文档：<https://doc.imiphp.com/v2.1/components/orm/RDModel/definition.html#@Sql>
+请使用 `@Sql` 注解建模，参考文档：</v2.1/components/orm/RDModel/definition.html#@Sql>
 
 不推荐的写法：
 

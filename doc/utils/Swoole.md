@@ -6,7 +6,7 @@
 
 **类名:** `Imi\Swoole\SwooleWorker`
 
-**继承:** `Imi\Worker` (详见：<https://doc.imiphp.com/v2.1/utils/Worker.html>)
+**继承:** `Imi\Worker` (详见：</v2.1/utils/Worker.html>)
 
 ### 方法
 

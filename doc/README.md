@@ -2,7 +2,7 @@
 
 ![imi logo](https://cdn.jsdelivr.net/gh/imiphp/imi@2.1/res/logo.png)
 
-[![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi) ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=2.1) [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/) [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src) [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.1/) [![imi License](https://img.shields.io/badge/license-MulanPSL%202.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE) [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
+[![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi) ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=2.1) [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/) [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src) [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](/v2.1/) [![imi License](https://img.shields.io/badge/license-MulanPSL%202.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE) [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
 ## 介绍
 
@@ -22,7 +22,7 @@ imi 框架自 2018 年 6 月 21 日首次发布以来，已经稳定运行在许
 
 **微信群：**（请注明来意）
 
-![imi微信群](../res/wechat.png)
+![imi微信群](res/wechat.png)
 
 **打赏赞助：**<https://www.imiphp.com/donate.html>
 
@@ -64,7 +64,7 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.1.0`
 
-[完全开发手册](https://doc.imiphp.com/v2.1/)
+[完全开发手册](/v2.1/)
 
 ## 运行环境
 
@@ -130,4 +130,4 @@ imi 遵循木兰宽松许可证（Mulan PSL v2）开源协议发布，并提供�
 
 提交 `Pull Request` 到本仓库，你可以成为 imi 的贡献者！
 
-参与框架开发教程详见：<https://doc.imiphp.com/v2.1/adv/devp.html>
+参与框架开发教程详见：</v2.1/adv/devp.html>
