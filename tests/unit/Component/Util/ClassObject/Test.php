@@ -41,4 +41,12 @@ class Test
     public function imi($a, $b, $c = 'imi.com'): void
     {
     }
+
+    public function noParam(): void
+    {
+    }
+
+    public function variadic(string ...$params): void
+    {
+    }
 }

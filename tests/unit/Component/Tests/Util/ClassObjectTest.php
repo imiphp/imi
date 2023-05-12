@@ -53,6 +53,19 @@ class ClassObjectTest extends BaseTest
             'a' => 1,
             'b' => 2,
             'c' => 'imi.com',
+        ], ClassObject::convertArgsToKV($class, '__construct', $args));
+        // $keepNotExistArgs = false
+        $this->assertEquals([
+            'a' => 1,
+            'b' => 2,
+        ], ClassObject::convertArgsToKV($class, '__construct', $args, false));
+
+        // convertArgsToKV
+        // $keepNotExistArgs = true
+        $this->assertEquals([
+            'a' => 1,
+            'b' => 2,
+            'c' => 'imi.com',
         ], ClassObject::convertArgsToKV($class, $method, $args));
         // $keepNotExistArgs = false
         $this->assertEquals([
@@ -72,6 +85,14 @@ class ClassObjectTest extends BaseTest
             2,
             'imi.com',
         ], ClassObject::convertKVToArray($params, $kv));
+        try
+        {
+            ClassObject::convertKVToArray($params, []);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertStringMatchesFormat('Argument %s of %s::__construct() does not found', $e->getMessage());
+        }
 
         // $keepNotExistArgs = false
         $kv = ClassObject::convertArrayToKV($params, $args, false);
@@ -84,6 +105,17 @@ class ClassObjectTest extends BaseTest
             2,
             'imi.com',
         ], ClassObject::convertKVToArray($params, $kv));
+
+        $params = ReflectionContainer::getMethodReflection($class, 'noParam')->getParameters();
+        $kv = ClassObject::convertArrayToKV($params, []);
+        $this->assertEquals([], $kv);
+
+        $params = ReflectionContainer::getMethodReflection($class, 'variadic')->getParameters();
+        $kv = ClassObject::convertArrayToKV($params, ['a', 'b']);
+        $this->assertEquals(['params' => [
+            'a',
+            'b',
+        ]], $kv);
     }
 
     /**
@@ -121,5 +153,9 @@ class ClassObjectTest extends BaseTest
         $this->assertEquals(111, $object->a);
         $this->assertEquals(222, $object->b);
         $this->assertEquals('333', $object->c);
+
+        $class = \Imi\Test\Component\Util\ClassObject\TestNoConstrauct::class;
+        $object = ClassObject::newInstance($class, []);
+        $this->assertInstanceOf($class, $object);
     }
 }

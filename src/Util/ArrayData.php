@@ -96,6 +96,8 @@ class ArrayData implements \ArrayAccess, \Countable
         if (\is_string($name))
         {
             $name = explode('.', $name);
+            // TODO: 3.0 去除判断
+            // @phpstan-ignore-next-line
             if (false === $name)
             {
                 // @codeCoverageIgnoreStart
@@ -162,7 +164,7 @@ class ArrayData implements \ArrayAccess, \Countable
                 {
                     $val = explode('.', $val);
                 }
-                elseif (!\is_array($val))
+                if (!\is_array($val))
                 {
                     return false;
                 }

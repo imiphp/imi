@@ -29,6 +29,7 @@ class ArrayDataTest extends BaseTest
         ];
         $data = new ArrayData($rawData);
 
+        // @phpstan-ignore-next-line
         $this->assertFalse($data->get(1));
         $this->assertFalse($data->get('name.a'));
 
@@ -107,6 +108,7 @@ class ArrayDataTest extends BaseTest
             'c' => 2,
         ], $data->get('a'));
 
+        // @phpstan-ignore-next-line
         $this->assertFalse($data->setVal(1));
         $data->setVal('x.y', 1);
         $this->assertEquals(1, $data->x['y']);
@@ -116,6 +118,7 @@ class ArrayDataTest extends BaseTest
             'y' => 1,
         ], $data->get('x'));
 
+        // @phpstan-ignore-next-line
         $this->assertFalse($data->remove(1));
         $this->assertTrue($data->remove('data1.id'));
 

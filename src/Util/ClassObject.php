@@ -136,7 +136,7 @@ class ClassObject
             else
             {
                 $declaringClass = $param->getDeclaringClass();
-                throw new \InvalidArgumentException(sprintf('%s::__construct() %s not found', $declaringClass ? $declaringClass->getName() : '', $name));
+                throw new \InvalidArgumentException(sprintf('Argument %s of %s::__construct() does not found', $name, $declaringClass ? $declaringClass->getName() : ''));
             }
         }
 

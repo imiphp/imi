@@ -123,10 +123,6 @@ class ArrayUtil
         $keys = array_rand($array, $number);
         foreach ((array) $keys as $key)
         {
-            if (!isset($array[$key]))
-            {
-                break;
-            }
             if ($keepKey)
             {
                 $result[$key] = $array[$key];

@@ -92,6 +92,7 @@ class ArrayUtilTest extends BaseTest
                 300 => 'c',
             ],
         ];
+        $arr3 = ['imi'];
         $actual = [
             'a' => [
                 'a-1'   => [
@@ -110,8 +111,9 @@ class ArrayUtilTest extends BaseTest
                 200 => 'b',
                 300 => 'c',
             ],
+            'imi',
         ];
-        $result = ArrayUtil::recursiveMerge($arr1, $arr2);
+        $result = ArrayUtil::recursiveMerge($arr1, $arr2, [], $arr3);
         $this->assertEquals($actual, $result);
     }
 

@@ -54,8 +54,9 @@ class ArrayListTest extends BaseTest
         $this->assertEquals(json_encode($list), json_encode($arrayList));
 
         // get
-        $item = $arrayList[1] ?? null;
-        $this->assertEquals($list[1], $item);
+        $this->assertEquals($list[1], $arrayList[1]);
+
+        $this->assertNull($arrayList[114514]);
 
         // set
         try
