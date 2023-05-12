@@ -39,6 +39,14 @@
             <directory>unit/Component/Performance</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">../src</directory>
+        </include>
+        <report>
+            <clover outputFile="clover.xml"/>
+        </report>
+    </coverage>
     <extensions>
         <extension class="Imi\Swoole\Test\Component\PHPUnitHook" />
     </extensions>

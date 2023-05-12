@@ -1,0 +1,298 @@
+name: Codecov
+
+on:
+  push:
+    paths-ignore:
+      - "doc/**"
+      - "mddoc/**"
+      - "res/**"
+      - "split-repository/**"
+      - "website/**"
+      - ".markdownlint.json"
+      - "README.md"
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      zookeeper:
+        image: zookeeper:3.4
+        ports:
+          - 2181:2181
+        options: >-
+          --health-cmd="echo stat | nc localhost 2181 | grep Mode"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: db_imi_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      rabbitmq:
+        image: rabbitmq:3.11-management
+        env:
+          RABBITMQ_DEFAULT_VHOST: "/"
+          RABBITMQ_DEFAULT_USER: "guest"
+          RABBITMQ_DEFAULT_PASS: "guest"
+        ports:
+          - 4369:4369
+          - 15672:15672
+          - 5672:5672
+          - 25672:25672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      kafka1:
+        image: wurstmeister/kafka:2.13-2.7.0
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ADVERTISED_HOST_NAME: kafka1
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_HOST_NAME: kafka1
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          HOSTNAME_COMMAND: hostname -i
+          KAFKA_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_NUM_PARTITIONS: 3
+        ports:
+          - 9092:9092
+        options: >-
+          --hostname=kafka1
+          --health-cmd="kafka-topics.sh --list --zookeeper zookeeper:2181"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    env:
+      SWOOLE_VERSION: v5.0.3
+      ROADRUNNER_VERSION: 2.7.*
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      AMQP_SERVER_HOST: 127.0.0.1
+      KAFKA_BOOTSTRAP_SERVERS: kafka1:9092
+      SWOOLE_CONFIGURE_OPTS: >
+        --enable-openssl
+        --enable-http2
+        --enable-mysqlnd
+        --enable-sockets
+        --enable-swoole-json
+        --enable-swoole-curl
+        --enable-swoole-pgsql
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install libs
+        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: pecl
+          coverage: xdebug
+          extensions: >
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
+            sockets, zip, inotify, event, apcu,
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+          php --ri swoole
+      - name: Prepare
+        run: |
+          printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
+          mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+          PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
+          src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
+          ./rr -v
+          echo "test_ready=1" >> $GITHUB_ENV
+      - name: Run core test suite
+        timeout-minutes: 5
+        run: php vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
+      - name: Run swoole test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 5
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/swoole/tests/phpunit.xml
+          --coverage-clover=./swoole-coverage.xml -v
+      - name: Run workerman test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/workerman/vendor/bin/phpunit
+          -c ./src/Components/workerman/tests/phpunit.xml
+          --coverage-clover=./workerman-coverage.xml -v
+      - name: Run workerman-gateway test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/workerman-gateway/vendor/bin/phpunit
+          -c ./src/Components/workerman-gateway/tests/phpunit.xml
+          --testsuite workerman
+          --coverage-clover=./workerman-gateway-coverage.xml -v
+      - name: Run workerman-gateway(swoole) test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/workerman-gateway/vendor/bin/phpunit
+          -c ./src/Components/workerman-gateway/tests/phpunit.xml
+          --testsuite swoole
+          --coverage-clover=./workerman-gateway-swoole-coverage.xml -v
+      - name: Run roadrunner test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/roadrunner/vendor/bin/phpunit
+          -c ./src/Components/roadrunner/tests/phpunit.xml
+          --coverage-clover=./roadrunner-coverage.xml -v
+      - name: Run fpm test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/fpm/vendor/bin/phpunit
+          -c ./src/Components/fpm/tests/phpunit.xml
+          --coverage-clover=./fpm-coverage.xml -v
+      - name: Run jwt test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/jwt/vendor/bin/phpunit
+          -c ./src/Components/jwt/tests/phpunit.xml
+          --coverage-clover=./jwt-coverage.xml -v
+      - name: Run queue test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/queue/tests/phpunit.xml
+          --coverage-clover=./queue-coverage.xml -v
+      - name: Run amqp-swoole test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/amqp/tests/phpunit.xml
+          --coverage-clover=./amqp-swoole-coverage.xml -v
+      - name: Run amqp-workerman test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/amqp/tests/phpunit.xml
+          --coverage-clover=./amqp-workerman-coverage.xml -v
+      - name: Run kafka-swoole test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          KAFKA_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/kafka/tests/phpunit.xml
+          --coverage-clover=./kafka-swoole-coverage.xml -v
+      - name: Run kafka-workerman test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          KAFKA_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/kafka/tests/phpunit.xml
+          --coverage-clover=./kafka-workerman-coverage.xml -v
+      - name: Run grpc test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/grpc/tests/phpunit.xml
+          --coverage-clover=./grpc-coverage.xml -v
+      - name: Run snowflake test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/snowflake/vendor/bin/phpunit
+          -c ./src/Components/snowflake/tests/phpunit.xml
+          --coverage-clover=./snowflake-coverage.xml -v
+      - name: Run mqtt test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/mqtt/tests/phpunit.xml
+          --coverage-clover=./mqtt-coverage.xml -v
+      - name: Run smarty test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/smarty/tests/phpunit.xml
+          --coverage-clover=./smarty-coverage.xml -v
+      - name: Run pgsql test suite
+        if: ${{ env.test_ready && always() }}
+        timeout-minutes: 3
+        run: >
+          php src/Components/swoole/bin/swoole-phpunit
+          -c ./src/Components/pgsql/tests/phpunit.xml
+          --coverage-clover=./pgsql-coverage.xml -v
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: "./core-coverage.xml,\
+            ./swoole-coverage.xml,\
+            ./workerman-coverage.xml,\
+            ./workerman-gateway-coverage.xml,\
+            ./workerman-gateway-swoole-coverage.xml,\
+            ./roadrunner-coverage.xml,\
+            ./fpm-coverage.xml,\
+            ./jwt-coverage.xml,\
+            ./queue-coverage.xml,\
+            ./amqp-swoole-coverage.xml,\
+            ./amqp-workerman-coverage.xml,\
+            ./kafka-swoole-coverage.xml,\
+            ./kafka-workerman-coverage.xml,\
+            ./grpc-coverage.xml,\
+            ./amqp-swoole-coverage.xml,\
+            ./amqp-workerman-coverage.xml,\
+            ./kafka-swoole-coverage.xml,\
+            ./kafka-workerman-coverage.xml,\
+            ./grpc-coverage.xml,\
+            ./snowflake-coverage.xml,\
+            ./mqtt-coverage.xml,\
+            ./smarty-coverage.xml,\
+            ./pgsql-coverage.xml"
+          flags: unittests
+          name: umbrella
