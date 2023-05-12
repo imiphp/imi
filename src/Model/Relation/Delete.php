@@ -19,11 +19,9 @@ use Imi\Util\Imi;
 
 class Delete
 {
-    private static array $methodCacheMap = [];
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static array $methodCacheMap = [];
 
     /**
      * 处理删除.

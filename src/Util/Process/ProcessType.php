@@ -9,6 +9,8 @@ namespace Imi\Util\Process;
  */
 class ProcessType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * master 进程.
      */
@@ -33,8 +35,4 @@ class ProcessType
      * 进程.
      */
     public const PROCESS = 'process';
-
-    private function __construct()
-    {
-    }
 }

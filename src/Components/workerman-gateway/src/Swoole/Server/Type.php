@@ -6,6 +6,8 @@ namespace Imi\WorkermanGateway\Swoole\Server;
 
 class Type
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * WebSocket 业务服务器.
      */
@@ -15,8 +17,4 @@ class Type
      * TCP 业务服务器.
      */
     public const BUSINESS_TCP = 'SwooleGatewayTcpBusinessServer';
-
-    private function __construct()
-    {
-    }
 }

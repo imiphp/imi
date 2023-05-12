@@ -9,8 +9,10 @@ use Imi\RateLimit\Exception\RateLimitException;
 /**
  * 并发工作数限流器手动调用类.
  */
-abstract class WorkerLimiter
+class WorkerLimiter
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 限流执行任务
      *

@@ -9,6 +9,8 @@ namespace Imi\Util\Traits;
  */
 trait TSingleton
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 实例对象
      */
@@ -18,10 +20,6 @@ trait TSingleton
      * 实例对象数组.
      */
     protected static array $__instances = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取单例对象

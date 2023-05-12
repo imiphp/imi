@@ -14,6 +14,8 @@ use Imi\RequestContext;
 
 class PoolManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * \池子数组.
      *
@@ -30,10 +32,6 @@ class PoolManager
      * 是否初始化.
      */
     protected static bool $inited = false;
-
-    private function __construct()
-    {
-    }
 
     public static function init(): void
     {

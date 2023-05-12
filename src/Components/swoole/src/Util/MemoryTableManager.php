@@ -15,6 +15,8 @@ use Imi\Util\MemoryTable\IMemoryTableOption;
  */
 class MemoryTableManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * \Swoole\Table 数组.
      */
@@ -24,10 +26,6 @@ class MemoryTableManager
      * 是否初始化.
      */
     private static bool $inited = false;
-
-    private function __construct()
-    {
-    }
 
     public static function init(): void
     {

@@ -8,16 +8,14 @@ use Imi\Contract\IWorker;
 
 class Worker
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     protected static ?IWorker $workerHandler = null;
 
     /**
      * 是否初始化完毕.
      */
     protected static bool $isInited = false;
-
-    private function __construct()
-    {
-    }
 
     public static function setWorkerHandler(IWorker $workerHandler): void
     {

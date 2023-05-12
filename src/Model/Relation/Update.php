@@ -21,11 +21,9 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 class Update
 {
-    private static array $methodCacheMap = [];
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static array $methodCacheMap = [];
 
     /**
      * 处理更新.

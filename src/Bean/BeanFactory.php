@@ -9,6 +9,8 @@ use Imi\Util\Imi;
 
 class BeanFactory
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 计数器.
      */
@@ -23,10 +25,6 @@ class BeanFactory
      * 是否启用 bean 文件缓存.
      */
     public static bool $enableFileCache = false;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 实例化.

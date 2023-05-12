@@ -20,14 +20,12 @@ use Imi\Timer\Timer;
 
 class Db
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 连接配置.
      */
     private static ?array $connections = null;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取新的数据库连接实例.

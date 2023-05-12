@@ -13,6 +13,8 @@ use Swoole\Process;
 
 class Imi
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const DEFAULT_PROCESS_NAMES = [
         'master'        => 'imi:master:{namespace}',
         'manager'       => 'imi:manager:{namespace}',
@@ -21,10 +23,6 @@ class Imi
         'process'       => 'imi:process-{processName}:{namespace}',
         'processPool'   => 'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
     ];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 设置当前进程名.

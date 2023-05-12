@@ -9,6 +9,8 @@ namespace Imi\Cli;
  */
 class ArgType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const STRING = 'string';
 
     public const INT = 'int';
@@ -30,10 +32,6 @@ class ArgType
     public const ARRAY_EX = 'array_ex';
 
     public const MIXED = 'mixed';
-
-    private function __construct()
-    {
-    }
 
     public static function isBooleanType(string $type): bool
     {

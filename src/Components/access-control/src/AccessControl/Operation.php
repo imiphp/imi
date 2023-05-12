@@ -6,8 +6,10 @@ namespace Imi\AC\AccessControl;
 
 use Imi\App;
 
-abstract class Operation
+class Operation
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 创建操作权限.
      */

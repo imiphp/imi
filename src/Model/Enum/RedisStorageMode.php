@@ -9,6 +9,8 @@ namespace Imi\Model\Enum;
  */
 class RedisStorageMode
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 字符串模式.
      *
@@ -29,8 +31,4 @@ class RedisStorageMode
      * 使用 hset/hget，将对象存到一个 key 中，member 为字段名
      */
     public const HASH_OBJECT = 'hash_object';
-
-    private function __construct()
-    {
-    }
 }

@@ -10,16 +10,14 @@ use Imi\Server\Contract\IServer;
 
 class ServerManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 服务器对象数组.
      *
      * @var \Imi\Server\Contract\IServer[]
      */
     private static array $servers = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取服务器数组.

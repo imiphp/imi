@@ -9,13 +9,11 @@ namespace Imi\Cli;
  */
 class CliManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     private static array $map = [];
 
     private static array $commandActionMap = [];
-
-    private function __construct()
-    {
-    }
 
     public static function getMap(): array
     {

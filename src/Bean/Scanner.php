@@ -22,9 +22,7 @@ use function Imi\env;
  */
 class Scanner
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 扫描 imi 框架.

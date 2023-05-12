@@ -10,8 +10,10 @@ use Imi\Enum\BaseEnum;
 /**
  * 队列类型.
  */
-abstract class QueueType extends BaseEnum
+class QueueType extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @EnumItem(text="准备就绪", type="list")
      */

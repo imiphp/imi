@@ -9,9 +9,7 @@ namespace Imi\Swoole\Util;
  */
 class AtomicManager
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 是否已初始化过.

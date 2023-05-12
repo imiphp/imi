@@ -22,9 +22,7 @@ use function Imi\env;
  */
 class Imi
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 处理规则，暂只支持通配符*.

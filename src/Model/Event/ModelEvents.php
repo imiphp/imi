@@ -6,6 +6,8 @@ namespace Imi\Model\Event;
 
 class ModelEvents
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 初始化值前.
      */
@@ -111,8 +113,4 @@ class ModelEvents
      * 处理 save、insert、update 数据后.
      */
     public const AFTER_PARSE_DATA = 'AfterParseData';
-
-    private function __construct()
-    {
-    }
 }

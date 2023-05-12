@@ -11,6 +11,8 @@ use Imi\Enum\BaseEnum;
  */
 class UUIDGeneratorType extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const TIME = 'time';
 
     public const RANDOM = 'random';
@@ -18,8 +20,4 @@ class UUIDGeneratorType extends BaseEnum
     public const MD5 = 'md5';
 
     public const SHA1 = 'sha1';
-
-    private function __construct()
-    {
-    }
 }

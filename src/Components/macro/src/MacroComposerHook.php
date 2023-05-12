@@ -8,9 +8,7 @@ use Composer\Autoload\ClassLoader;
 
 class MacroComposerHook
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     public static function hookComposer(): void
     {

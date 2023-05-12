@@ -6,9 +6,7 @@ namespace Imi\Bean;
 
 class ReflectionUtil
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     public static function getTypeComments(?\ReflectionType $type, ?string $className = null): string
     {

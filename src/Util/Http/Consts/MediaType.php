@@ -9,6 +9,8 @@ namespace Imi\Util\Http\Consts;
  */
 class MediaType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const ALL = '*/*';
 
     public const APPLICATION_ATOM_XML = 'application/atom+xml';
@@ -195,10 +197,6 @@ class MediaType
         'webp'      => 'image/webp',
         'png'       => 'image/png',
     ];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取扩展名对应的 Content-Type.

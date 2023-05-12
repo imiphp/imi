@@ -9,9 +9,7 @@ namespace Imi\Util;
  */
 class DateTime
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 将一个 \DateInterval，与当前时间进行计算，获取秒数.

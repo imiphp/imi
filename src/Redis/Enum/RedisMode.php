@@ -6,6 +6,8 @@ namespace Imi\Redis\Enum;
 
 class RedisMode
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 单机.
      */
@@ -20,8 +22,4 @@ class RedisMode
      * 集群模式.
      */
     public const CLUSTER = 'cluster';
-
-    private function __construct()
-    {
-    }
 }

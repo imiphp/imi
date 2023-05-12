@@ -11,9 +11,7 @@ use Imi\Bean\ReflectionContainer;
  */
 class ClassObject
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 是否是匿名类对象

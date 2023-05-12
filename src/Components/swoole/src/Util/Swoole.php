@@ -9,9 +9,7 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 
 class Swoole
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 获取master进程pid.

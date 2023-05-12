@@ -8,9 +8,7 @@ use Imi\App;
 
 class Log
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     public static function get(?string $channelName = null): MonoLogger
     {

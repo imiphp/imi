@@ -9,9 +9,7 @@ namespace Imi\Util;
  */
 class Bit
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 判断是否包含值

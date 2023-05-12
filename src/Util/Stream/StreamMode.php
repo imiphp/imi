@@ -9,6 +9,8 @@ namespace Imi\Util\Stream;
  */
 class StreamMode
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 只读方式打开，指针指向开头.
      */
@@ -52,8 +54,4 @@ class StreamMode
      * 仅能用于本地文件。
      */
     public const CREATE_READ_WRITE = 'x+';
-
-    private function __construct()
-    {
-    }
 }

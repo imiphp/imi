@@ -17,6 +17,8 @@ use Imi\Model\Key\KeyRule;
 
 class ModelManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 模型类注解缓存.
      */
@@ -66,10 +68,6 @@ class ModelManager
      * 模型类的提取属性注解缓存.
      */
     private static array $extractPropertys = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取当前模型类的类注解.

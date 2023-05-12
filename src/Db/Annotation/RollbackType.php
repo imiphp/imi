@@ -6,6 +6,8 @@ namespace Imi\Db\Annotation;
 
 class RollbackType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 回滚所有（rollback）.
      */
@@ -15,8 +17,4 @@ class RollbackType
      * 回滚部分（rollback to xxx）.
      */
     public const PART = 'part';
-
-    private function __construct()
-    {
-    }
 }

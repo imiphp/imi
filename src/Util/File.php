@@ -15,9 +15,7 @@ use Swoole\Coroutine\Channel;
  */
 class File
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 枚举文件.

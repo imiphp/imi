@@ -10,9 +10,7 @@ use Dotenv\Store\StoreBuilder;
 
 class DotEnv
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     public static function load(array $paths): void
     {

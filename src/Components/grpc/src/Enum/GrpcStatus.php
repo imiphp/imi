@@ -7,8 +7,10 @@ namespace Imi\Grpc\Enum;
 /**
  * 参考：https://grpc.github.io/grpc/core/md_doc_statuscodes.html.
  */
-abstract class GrpcStatus
+class GrpcStatus
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * Not an error; returned on success.
      */

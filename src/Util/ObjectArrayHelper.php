@@ -10,9 +10,7 @@ namespace Imi\Util;
  */
 class ObjectArrayHelper
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 获取值

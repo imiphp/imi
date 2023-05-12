@@ -9,11 +9,9 @@ use Imi\Core\Runtime\Contract\IRuntimeModeHandler;
 
 class Runtime
 {
-    private static IRuntimeModeHandler $runtimeModeHandler;
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static IRuntimeModeHandler $runtimeModeHandler;
 
     public static function setRuntimeModeHandler(string $class): IRuntimeModeHandler
     {

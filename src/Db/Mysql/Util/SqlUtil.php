@@ -13,9 +13,7 @@ use Imi\Db\Query\Table;
  */
 class SqlUtil
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 解析带冒号参数的 SQL，返回解析后的 SQL.

@@ -16,14 +16,12 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
  */
 class AMQPPool
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 连接配置.
      */
     private static ?array $connections = null;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取新的连接实例.

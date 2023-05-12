@@ -10,8 +10,10 @@ use Imi\Enum\BaseEnum;
 /**
  * 消费者执行结果.
  */
-abstract class ConsumerResult extends BaseEnum
+class ConsumerResult extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 用于消息消费成功
      *

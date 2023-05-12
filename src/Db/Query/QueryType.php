@@ -6,6 +6,8 @@ namespace Imi\Db\Query;
 
 class QueryType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 读.
      */
@@ -15,8 +17,4 @@ class QueryType
      * 写.
      */
     public const WRITE = 2;
-
-    private function __construct()
-    {
-    }
 }

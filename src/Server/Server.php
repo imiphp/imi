@@ -13,9 +13,7 @@ use Imi\Server\Contract\IServerUtil;
  */
 class Server
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 获取上下文管理器实例.

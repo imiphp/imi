@@ -14,6 +14,8 @@ use Imi\Bean\Annotation\Model\PropertyAnnotationRelation;
 
 class AnnotationManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 注解列表.
      *
@@ -29,10 +31,6 @@ class AnnotationManager
     private static AnnotationRelation $annotationRelation;
 
     private static bool $removeWhenset = true;
-
-    private function __construct()
-    {
-    }
 
     public static function init(): void
     {

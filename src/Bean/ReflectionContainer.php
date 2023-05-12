@@ -9,6 +9,8 @@ namespace Imi\Bean;
  */
 class ReflectionContainer
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 类反射集合.
      */
@@ -23,10 +25,6 @@ class ReflectionContainer
      * 属性反射集合.
      */
     private static array $propertyReflectionMap = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取类反射.

@@ -9,9 +9,7 @@ namespace Imi\Util;
  */
 class Digital
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 科学计数转小数形式的.

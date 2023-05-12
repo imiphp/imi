@@ -11,6 +11,8 @@ use Imi\RequestContext;
 
 class StatementManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * statement 缓存数据.
      */
@@ -25,10 +27,6 @@ class StatementManager
      * 每个连接最多缓存 Statement 的数量.
      */
     private static ?int $maxCacheCount = null;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 设置statement缓存.

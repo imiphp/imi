@@ -13,11 +13,9 @@ use Imi\Swoole\Util\Imi;
  */
 class ProcessPoolManager
 {
-    private static array $map = [];
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static array $map = [];
 
     public static function getMap(): array
     {

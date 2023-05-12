@@ -12,6 +12,8 @@ use Imi\Enum\BaseEnum;
  */
 class UniqueLevel extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @EnumItem("当前实例唯一")
      */
@@ -21,8 +23,4 @@ class UniqueLevel extends BaseEnum
      * @EnumItem("所有实例唯一")
      */
     public const ALL = 'all';
-
-    private function __construct()
-    {
-    }
 }

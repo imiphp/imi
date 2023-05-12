@@ -10,6 +10,8 @@ use Swoole\Coroutine\System;
 
 class Signal
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @var Channel[][]
      */
@@ -23,10 +25,6 @@ class Signal
     private static array $waitCallbacks = [];
 
     private static array $waitingProcessSignals = [];
-
-    private function __construct()
-    {
-    }
 
     public static function wait(int $signo, float $timeout = -1): bool
     {
