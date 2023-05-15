@@ -69,7 +69,7 @@ class File
     /**
      * 枚举文件，支持自定义中断进入下一级目录.
      *
-     * @return \Generator|iterable<FileEnumItem>|false
+     * @return \Generator|iterable<FileEnumItem>
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
@@ -82,19 +82,31 @@ class File
         {
             $channel = new \Swoole\Coroutine\Channel(16);
             Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames) {
-                static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames);
+                if (false === static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames))
+                {
+                    $channel->push(false);
+                }
                 $channel->close();
             });
             while (false !== ($result = $channel->pop()))
             {
                 yield $result;
             }
+            if (false === $result)
+            {
+                return false;
+            }
         }
         else
         {
             # endif
 
-            yield from self::enumFileSync($dirPath, $pattern, $extensionNames);
+            $result = self::enumFileSync($dirPath, $pattern, $extensionNames);
+            yield from $result;
+            if (false === $result->getReturn())
+            {
+                return false;
+            }
 
             # if \extension_loaded('swoole')
         }
@@ -104,7 +116,7 @@ class File
     /**
      * 同步枚举文件，支持自定义中断进入下一级目录.
      *
-     * @return \Generator|iterable<FileEnumItem>|false
+     * @return \Generator|iterable<FileEnumItem>
      */
     public static function enumFileSync(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
@@ -240,7 +252,7 @@ class File
         }
         else
         {
-            return false;
+            return false; // @codeCoverageIgnore
         }
     }
 
@@ -274,7 +286,7 @@ class File
             return true;
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     /**
@@ -296,6 +308,11 @@ class File
                     return false;
                 }
             }
+        }
+        catch (\ErrorException $_)
+        {
+            // 兼容警告转异常
+            return true;
         }
         finally
         {
@@ -347,7 +364,7 @@ class File
         $dir = \dirname($fileName);
         if (!static::createDir($dir))
         {
-            throw new \RuntimeException(sprintf('Create dir %s failed', $dir));
+            throw new \RuntimeException(sprintf('Create dir %s failed', $dir)); // @codeCoverageIgnore
         }
 
         return file_put_contents($fileName, $data, $flags, $context);
