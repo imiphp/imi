@@ -29,6 +29,9 @@ class DelayServerBeanCallableTest extends BaseTest
         $this->assertEquals('ReferenceBean', $callable->getBeanName());
         $this->assertEquals('add', $callable->getMethodName());
         $this->assertEquals(3, $callable(1, 2));
+
+        $callable = new DelayServerBeanCallable(RequestContext::get('server'), 'ReferenceBean', 'add');
+        $this->assertEquals(3, $callable(1, 2));
     }
 
     public function testDelayServerBeanCallableReference(): void
