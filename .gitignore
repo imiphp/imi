@@ -15,3 +15,5 @@ composer.lock
 *.macro.php
 /.phpbench
 /node_modules
+/tests/clover.xml
+/tests/html-coverage

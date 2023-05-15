@@ -80,6 +80,7 @@ class ClassObjectTest extends BaseTest
             'b' => 2,
             'c' => 'imi.com',
         ], $kv);
+        $this->assertEquals([], ClassObject::convertKVToArray([], []));
         $this->assertEquals([
             1,
             2,

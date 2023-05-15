@@ -90,6 +90,10 @@ class ArrayDataTest extends BaseTest
             'b' => 1,
         ], $data->get('a'));
 
+        // @phpstan-ignore-next-line
+        $this->assertFalse($data->remove(1));
+        $this->assertTrue($data->remove('data1.id'));
+
         $data->set([
             'a' => [
                 'c' => 2,
@@ -117,10 +121,6 @@ class ArrayDataTest extends BaseTest
         $this->assertEquals([
             'y' => 1,
         ], $data->get('x'));
-
-        // @phpstan-ignore-next-line
-        $this->assertFalse($data->remove(1));
-        $this->assertTrue($data->remove('data1.id'));
 
         unset($data['a']);
         $this->assertEquals(404, $data->get('a', 404));
