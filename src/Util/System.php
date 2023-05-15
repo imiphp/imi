@@ -10,6 +10,8 @@ class System
 {
     /**
      * 获取本地 IP 列表.
+     *
+     * @codeCoverageIgnore
      */
     public static function netLocalIp(): array
     {
@@ -39,6 +41,11 @@ class System
         return $output;
     }
 
+    /**
+     * 获取 CPU 核心数.
+     *
+     * @codeCoverageIgnore
+     */
     public static function getCpuCoresNum(): int
     {
         if (\PHP_OS_FAMILY === 'Windows')

@@ -18,6 +18,8 @@ class DelayBeanCallable
 
     private ?bool $returnsReference = null;
 
+    private ?object $instance = null;
+
     public function __construct(string $beanName, string $methodName, array $constructArgs = [])
     {
         $this->beanName = $beanName;
@@ -37,7 +39,7 @@ class DelayBeanCallable
 
     public function getInstance(): object
     {
-        return App::getBean($this->beanName, ...$this->constructArgs);
+        return $this->instance ??= App::getBean($this->beanName, ...$this->constructArgs);
     }
 
     public function returnsReference(): bool
@@ -50,7 +52,7 @@ class DelayBeanCallable
      *
      * @return mixed
      */
-    public function __invoke(...$args)
+    public function &__invoke(...$args)
     {
         if ($this->returnsReference())
         {
@@ -58,7 +60,23 @@ class DelayBeanCallable
         }
         else
         {
-            return $this->getInstance()->{$this->methodName}(...$args);
+            $result = $this->getInstance()->{$this->methodName}(...$args);
+
+            return $result;
         }
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'beanName'         => $this->beanName,
+            'methodName'       => $this->methodName,
+            'constructArgs'    => $this->constructArgs,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        ['beanName' => $this->beanName, 'methodName' => $this->methodName, 'constructArgs' => $this->constructArgs] = $data;
     }
 }
