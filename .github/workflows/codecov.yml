@@ -130,6 +130,15 @@ jobs:
           php -v
           php -m
           php --ri swoole
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache vendor
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress
       - name: Prepare
@@ -275,6 +284,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./core-coverage.xml
           flags: core
+          name: codecov
       - name: Upload swoole coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -282,6 +292,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./swoole-coverage.xml
           flags: swoole
+          name: codecov
       - name: Upload workerman coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -289,6 +300,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./workerman-coverage.xml
           flags: workerman
+          name: codecov
       - name: Upload workerman coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -296,6 +308,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./workerman-gateway-coverage.xml,./workerman-gateway-swoole-coverage.xml
           flags: workerman-gateway
+          name: codecov
       - name: Upload roadrunner coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -303,6 +316,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./roadrunner-coverage.xml
           flags: roadrunner
+          name: codecov
       - name: Upload fpm coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -310,6 +324,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./fpm-coverage.xml
           flags: fpm
+          name: codecov
       - name: Upload jwt coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -317,6 +332,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./jwt-coverage.xml
           flags: jwt
+          name: codecov
       - name: Upload queue coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -324,6 +340,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./queue-coverage.xml
           flags: queue
+          name: codecov
       - name: Upload amqp coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -331,6 +348,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./amqp-swoole-coverage.xml,./amqp-workerman-coverage.xml
           flags: amqp
+          name: codecov
       - name: Upload kafka coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -338,6 +356,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./kafka-swoole-coverage.xml,./kafka-workerman-coverage.xml
           flags: kafka
+          name: codecov
       - name: Upload grpc coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -345,6 +364,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./grpc-coverage.xml
           flags: grpc
+          name: codecov
       - name: Upload snowflake coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -352,6 +372,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./snowflake-coverage.xml
           flags: snowflake
+          name: codecov
       - name: Upload mqtt coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -359,6 +380,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./mqtt-coverage.xml
           flags: mqtt
+          name: codecov
       - name: Upload smarty coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -366,6 +388,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./smarty-coverage.xml
           flags: smarty
+          name: codecov
       - name: Upload pgsql coverage reports to Codecov
         uses: codecov/codecov-action@v3
         if: ${{ env.test_ready && always() }}
@@ -373,3 +396,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./pgsql-coverage.xml
           flags: pgsql
+          name: codecov
