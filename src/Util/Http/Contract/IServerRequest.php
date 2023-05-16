@@ -196,16 +196,20 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 POST 数据.
      *
+     * @param mixed $post
+     *
      * @return static
      */
-    public function withPost(array $post): self;
+    public function withPost($post): self;
 
     /**
      * 设置 POST 数据.
      *
+     * @param mixed $post
+     *
      * @return static
      */
-    public function setPost(array $post): self;
+    public function setPost($post): self;
 
     /**
      * 设置 Request 数据.

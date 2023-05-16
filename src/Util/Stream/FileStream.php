@@ -54,7 +54,7 @@ class FileStream implements StreamInterface, \Stringable
             $this->stream = fopen($uri->__toString(), $mode);
             if (false === $this->stream)
             {
-                throw new \RuntimeException(sprintf('Open stream %s error', (string) $uri));
+                throw new \RuntimeException(sprintf('Open stream %s error', (string) $uri)); // @codeCoverageIgnore
             }
         }
     }
@@ -78,10 +78,12 @@ class FileStream implements StreamInterface, \Stringable
 
             return stream_get_contents($this->stream);
         }
+        // @codeCoverageIgnoreStart
         catch (\Throwable $th)
         {
             return '';
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -112,7 +114,7 @@ class FileStream implements StreamInterface, \Stringable
         $stat = fstat($this->stream);
         if (false === $stat)
         {
-            throw new \RuntimeException('Get stream size error');
+            throw new \RuntimeException('Get stream size error'); // @codeCoverageIgnore
         }
 
         return $stat['size'];
@@ -126,7 +128,7 @@ class FileStream implements StreamInterface, \Stringable
         $result = ftell($this->stream);
         if (false === $result)
         {
-            throw new \RuntimeException('Stream tell error');
+            throw new \RuntimeException('Stream tell error'); // @codeCoverageIgnore
         }
 
         return $result;
@@ -157,7 +159,7 @@ class FileStream implements StreamInterface, \Stringable
     {
         if (-1 === fseek($this->stream, $offset, $whence))
         {
-            throw new \RuntimeException('Seek stream error');
+            throw new \RuntimeException('Seek stream error'); // @codeCoverageIgnore
         }
     }
 
@@ -168,7 +170,7 @@ class FileStream implements StreamInterface, \Stringable
     {
         if (!rewind($this->stream))
         {
-            throw new \RuntimeException('Rewind stream failed');
+            throw new \RuntimeException('Rewind stream failed'); // @codeCoverageIgnore
         }
     }
 
@@ -196,7 +198,7 @@ class FileStream implements StreamInterface, \Stringable
         $result = fwrite($this->stream, $string);
         if (false === $result)
         {
-            throw new \RuntimeException('Write stream failed');
+            throw new \RuntimeException('Write stream failed'); // @codeCoverageIgnore
         }
 
         return $result;
@@ -224,7 +226,7 @@ class FileStream implements StreamInterface, \Stringable
         $result = fread($this->stream, $length);
         if (false === $result)
         {
-            throw new \RuntimeException('Read stream error');
+            throw new \RuntimeException('Read stream error'); // @codeCoverageIgnore
         }
 
         return $result;
@@ -238,7 +240,7 @@ class FileStream implements StreamInterface, \Stringable
         $result = stream_get_contents($this->stream);
         if (false === $result)
         {
-            throw new \RuntimeException('Stream getContents error');
+            throw new \RuntimeException('Stream getContents error'); // @codeCoverageIgnore
         }
 
         return $result;
@@ -253,7 +255,7 @@ class FileStream implements StreamInterface, \Stringable
         // @phpstan-ignore-next-line
         if (!$result)
         {
-            throw new \RuntimeException('Stream getMetadata error');
+            throw new \RuntimeException('Stream getMetadata error'); // @codeCoverageIgnore
         }
         if (null === $key)
         {
@@ -265,7 +267,7 @@ class FileStream implements StreamInterface, \Stringable
         }
         else
         {
-            return null;
+            return null; // @codeCoverageIgnore
         }
     }
 

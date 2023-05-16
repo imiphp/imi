@@ -136,25 +136,42 @@ class FileTest extends BaseTest
 
         $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
-            ['pathName' => File::path($path, '1.txt'), 'pathName2' => File::path($path, '1.txt'), 'fileName' => '1.txt'],
-            ['pathName' => File::path($path, '2.php'), 'pathName2' => File::path($path, '2.php'), 'fileName' => '2.php'],
-            ['pathName' => File::path($path, 'a', 'a-1'), 'pathName2' => File::path($path, 'a', 'a-1'), 'fileName' => 'a-1'],
-            ['pathName' => File::path($path, 'a'), 'pathName2' => File::path($path, 'a'), 'fileName' => 'a'],
-            ['pathName' => File::path($path, 'a', 'a-1', 'a-1.txt'), 'pathName2' => File::path($path, 'a', 'a-1', 'a-1.txt'), 'fileName' => 'a-1.txt'],
-            ['pathName' => File::path($path, 'b', 'b.php'), 'pathName2' => File::path($path, 'b', 'b.php'), 'fileName' => 'b.php'],
-            ['pathName' => File::path($path, 'b'), 'pathName2' => File::path($path, 'b'), 'fileName' => 'b'],
+            ['path' => $path, 'pathName' => File::path($path, '1.txt'), 'pathName2' => File::path($path, '1.txt'), 'fileName' => '1.txt'],
+            ['path' => $path, 'pathName' => File::path($path, '2.php'), 'pathName2' => File::path($path, '2.php'), 'fileName' => '2.php'],
+            ['path' => $path . \DIRECTORY_SEPARATOR . 'a', 'pathName' => File::path($path, 'a', 'a-1'), 'pathName2' => File::path($path, 'a', 'a-1'), 'fileName' => 'a-1'],
+            ['path' => $path, 'pathName' => File::path($path, 'a'), 'pathName2' => File::path($path, 'a'), 'fileName' => 'a'],
+            ['path' => $path . \DIRECTORY_SEPARATOR . 'a' . \DIRECTORY_SEPARATOR . 'a-1', 'pathName' => File::path($path, 'a', 'a-1', 'a-1.txt'), 'pathName2' => File::path($path, 'a', 'a-1', 'a-1.txt'), 'fileName' => 'a-1.txt'],
+            ['path' => $path . \DIRECTORY_SEPARATOR . 'b', 'pathName' => File::path($path, 'b', 'b.php'), 'pathName2' => File::path($path, 'b', 'b.php'), 'fileName' => 'b.php'],
+            ['path' => $path, 'pathName' => File::path($path, 'b'), 'pathName2' => File::path($path, 'b'), 'fileName' => 'b'],
         ];
 
         $files = [];
         foreach (File::enumFile($path) as $file)
         {
             $files[] = [
+                'path'      => $file->getPath(),
                 'pathName'  => $file->getFullPath(),
                 'pathName2' => (string) $file,
                 'fileName'  => $file->getFileName(),
             ];
         }
         $this->assertEqualsCanonicalizing($expectedFiles, $files);
+
+        $files = [];
+        foreach (File::enumFile($path) as $file)
+        {
+            $files[] = [
+                'path'      => $file->getPath(),
+                'pathName'  => $file->getFullPath(),
+                'pathName2' => (string) $file,
+                'fileName'  => $file->getFileName(),
+            ];
+            if (is_dir($file->getFullPath()))
+            {
+                $file->setContinue(false);
+            }
+        }
+        $this->assertEqualsCanonicalizing([$expectedFiles[0], $expectedFiles[1], $expectedFiles[3], $expectedFiles[6]], $files);
     }
 
     /**

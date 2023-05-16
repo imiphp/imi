@@ -50,7 +50,11 @@
     "autoload-dev": {
         "psr-4": {
             "Imi\\Dev\\": "dev/",
-            "Imi\\Test\\": "tests/unit/"
+            "Imi\\Test\\": "tests/unit/",
+            "Imi\\Test\\Unused\\": [
+                "tests/unit/unused1",
+                "tests/unit/unused2"
+            ]
         },
         "files": [
             "dev/bootstrap.php",

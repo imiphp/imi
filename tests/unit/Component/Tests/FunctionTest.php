@@ -11,6 +11,12 @@ use Symfony\Component\Process\Process;
 
 class FunctionTest extends BaseTest
 {
+    public function testImiCallable(): void
+    {
+        $callable = imiCallable(static fn () => 1);
+        $this->assertEquals(1, $callable());
+    }
+
     public function testDump(): void
     {
         $cmd = [

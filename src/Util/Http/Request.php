@@ -32,11 +32,28 @@ class Request extends AbstractMessage implements IRequest
     protected bool $methodInited = false;
 
     /**
+     * 请求目标.
+     */
+    protected ?string $requestTarget = null;
+
+    /**
      * {@inheritDoc}
      */
     public function getRequestTarget()
     {
-        return (string) $this->uri;
+        if (null === $this->requestTarget)
+        {
+            $uri = $this->getUri();
+            $requestTarget = $uri->getPath();
+            if ('' !== ($query = $uri->getQuery()))
+            {
+                $requestTarget .= '?' . $query;
+            }
+
+            return $requestTarget;
+        }
+
+        return $this->requestTarget;
     }
 
     /**
@@ -45,7 +62,7 @@ class Request extends AbstractMessage implements IRequest
     public function withRequestTarget($requestTarget)
     {
         $self = clone $this;
-        $self->withUri(new Uri($requestTarget));
+        $self->requestTarget = $requestTarget;
 
         return $self;
     }
@@ -55,7 +72,7 @@ class Request extends AbstractMessage implements IRequest
      */
     public function setRequestTarget($requestTarget): self
     {
-        $this->setUri(new Uri($requestTarget));
+        $this->requestTarget = $requestTarget;
 
         return $this;
     }

@@ -76,7 +76,7 @@ class MemoryStream implements StreamInterface, \Stringable
      */
     public function eof()
     {
-        return $this->position > $this->size;
+        return $this->position >= $this->size - 1;
     }
 
     /**
@@ -99,7 +99,7 @@ class MemoryStream implements StreamInterface, \Stringable
             case \SEEK_SET:
                 if ($offset < 0)
                 {
-                    throw new \RuntimeException('Offset failure');
+                    throw new \RuntimeException('Offset failure'); // @codeCoverageIgnore
                 }
                 $this->position = $offset;
                 break;
@@ -107,7 +107,7 @@ class MemoryStream implements StreamInterface, \Stringable
                 $this->position += $offset;
                 break;
             case \SEEK_END:
-                $this->position = $this->size - 1 + $offset;
+                $this->position = $this->size + $offset;
                 break;
         }
     }
@@ -136,7 +136,7 @@ class MemoryStream implements StreamInterface, \Stringable
         $content = &$this->content;
         $position = &$this->position;
         $size = &$this->size;
-        if ($position === $size)
+        if ($position >= $size)
         {
             $content .= $string;
         }

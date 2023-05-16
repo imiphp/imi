@@ -101,7 +101,7 @@ class Imi
     {
         if (isset($rule[0]) && '!' === $rule[0])
         {
-            // 不应该存在参数支持
+            // 必须不包含参数
             return null === $valueCallback(substr($rule, 1));
         }
         elseif (preg_match('/([^!<=]+)(!=|<>|=)(.+)/', $rule, $matches) > 0)
@@ -115,7 +115,7 @@ class Imi
                 case '=':
                     return $value == $matches[3];
                 default:
-                    return false;
+                    return false; // @codeCoverageIgnore
             }
         }
         else
@@ -549,6 +549,8 @@ class Imi
 
     /**
      * 检查系统是否支持端口重用.
+     *
+     * @codeCoverageIgnore
      */
     public static function checkReusePort(): bool
     {
@@ -598,7 +600,7 @@ class Imi
 
         if (false === file_put_contents($fileName, '<?php ' . $code))
         {
-            return eval($code);
+            return eval($code); // @codeCoverageIgnore
         }
         else
         {
@@ -622,6 +624,8 @@ class Imi
 
     /**
      * 检测是否为 WSL 环境.
+     *
+     * @codeCoverageIgnore
      */
     public static function isWSL(): bool
     {
@@ -632,6 +636,8 @@ class Imi
 
     /**
      * 获取 Linux 版本号.
+     *
+     * @codeCoverageIgnore
      */
     public static function getLinuxVersion(): string
     {
@@ -686,6 +692,8 @@ class Imi
 
     /**
      * 获取苹果系统版本.
+     *
+     * @codeCoverageIgnore
      */
     public static function getDarwinVersion(): string
     {
@@ -723,6 +731,8 @@ class Imi
 
     /**
      * 获取 Cygwin 版本.
+     *
+     * @codeCoverageIgnore
      */
     public static function getCygwinVersion(): string
     {
@@ -738,6 +748,8 @@ class Imi
 
     /**
      * 判断是否为 Docker 环境.
+     *
+     * @codeCoverageIgnore
      */
     public static function isDockerEnvironment(): bool
     {
@@ -785,6 +797,9 @@ class Imi
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getOpcacheInfo(): string
     {
         if (\function_exists('\opcache_get_status'))
