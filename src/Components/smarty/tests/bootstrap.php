@@ -13,7 +13,7 @@ function checkHttpServerStatus(): bool
         sleep(1);
         try
         {
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             $body = @file_get_contents('http://127.0.0.1:13456/ping', false, $context);
             if ('pong' === $body)
             {

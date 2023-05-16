@@ -47,7 +47,7 @@ if (class_exists(TestCase::class))
 
         protected function php(string $phpFile, string $args = ''): string
         {
-            $cmd = \Imi\cmd('"' . \PHP_BINARY . "\" \"{$phpFile}\" {$args}");
+            $cmd = \Imi\cmd(getTestPhpBinary() . " \"{$phpFile}\" {$args}");
 
             return shell_exec("{$cmd}");
         }

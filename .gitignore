@@ -17,3 +17,4 @@ composer.lock
 /node_modules
 /tests/clover.xml
 /tests/html-coverage
+/dev/cover

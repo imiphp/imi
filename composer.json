@@ -86,7 +86,10 @@
         "install-components": "Imi\\Dev\\Plugin::dev",
         "generate-ide-helper": "Imi\\Dev\\Plugin::IDEHelper",
         "test": "@php -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml",
-        "test-cover": "@php -d zend_extension=xdebug -dxdebug.mode=coverage -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml",
+        "test-coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "./dev/test-coverage.sh"
+        ],
         "install-test": "@php --ri swoole && composer install && cd ../ && composer test",
         "test-swoole": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/swoole/tests/phpunit.xml",
         "test-workerman": "@php src/Components/workerman/vendor/bin/phpunit -c src/Components/workerman/tests/phpunit.xml",

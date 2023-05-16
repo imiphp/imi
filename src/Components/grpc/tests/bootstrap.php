@@ -17,7 +17,7 @@ function checkHttpServerStatus()
         sleep(1);
         try
         {
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             if ('' === @file_get_contents('http://127.0.0.1:8081/', false, $context))
             {
                 return true;

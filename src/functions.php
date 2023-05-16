@@ -148,8 +148,6 @@ namespace Imi
     }
 
     /**
-     * @codeCoverageIgnore
-     *
      * @param mixed $values
      */
     function dump(...$values): void

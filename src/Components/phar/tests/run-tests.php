@@ -133,7 +133,7 @@ foreach ($testContainer as $container => $opt)
     try
     {
         echo '> Wait running', \PHP_EOL;
-        $context = stream_context_create(['http' => ['timeout' => 3]]);
+        $context = stream_context_create(['http' => ['timeout' => 20]]);
         $count = 0;
         while ($testServer->isRunning() && $count++ < STARTUP_MAX_WAIT)
         {

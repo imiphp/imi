@@ -519,7 +519,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
         $request = &$this->request;
         if (null === $request)
         {
-            $request = array_merge($this->get, ObjectArrayHelper::toArray($this->post), $this->cookies);
+            $request = array_merge($this->get, \is_array($this->post) ? $this->post : ObjectArrayHelper::toArray($this->post), $this->cookies);
         }
         if (null === $name)
         {
