@@ -130,11 +130,12 @@ jobs:
           php -v
           php -m
           php --ri swoole
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress
       - name: Prepare
         run: |
           printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
           mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-          composer update --prefer-dist --no-progress
           tests/db/install-db.sh
           PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
