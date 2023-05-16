@@ -13,7 +13,7 @@
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.1/)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%202.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE)
 [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
-[![codecov](https://codecov.io/github/imiphp/imi/branch/dev/graph/badge.svg?token=YrNRQgbRe2)](https://codecov.io/github/imiphp/imi)
+[![codecov](https://codecov.io/github/imiphp/imi/branch/2.1/graph/badge.svg?token=YrNRQgbRe2)](https://codecov.io/github/imiphp/imi)
 
 ## 介绍
 
