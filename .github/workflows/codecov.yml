@@ -143,7 +143,6 @@ jobs:
       - name: Run core test suite
         run: ./dev/test-coverage.sh clover
       - name: Print logs
-        if: failure()
         run: php .github/print-logs.php
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

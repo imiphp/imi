@@ -71,8 +71,8 @@ function registerCodeCoverage(): void
 
     $filter = new Filter();
     $filter->includeDirectory(\dirname(__DIR__) . '/src');
-    $filter->excludeDirectory(\dirname(__DIR__) . '/src/Components');
     $componentsDir = \dirname(__DIR__) . '/src/Components';
+    $filter->excludeDirectory($componentsDir);
     foreach (new \FilesystemIterator($componentsDir, \FilesystemIterator::SKIP_DOTS) as $dir)
     {
         if (!$dir->isDir())
@@ -80,10 +80,6 @@ function registerCodeCoverage(): void
             continue;
         }
         $filter->includeDirectory($dir->getPathname() . '/src');
-        // $filter->excludeDirectory($dir->getPathname() . '/vendor');
-        // $filter->excludeDirectory($dir->getPathname() . '/test');
-        // $filter->excludeDirectory($dir->getPathname() . '/tests');
-        // $filter->excludeDirectory($dir->getPathname() . '/example');
     }
 
     $codeCoverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
@@ -91,7 +87,7 @@ function registerCodeCoverage(): void
 
     register_shutdown_function(static function () use ($codeCoverage) {
         $codeCoverage->stop();
-        (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . random_int(0, \PHP_INT_MAX) . '.clover.php');
+        (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . getmypid() . random_int(0, \PHP_INT_MAX) . '.clover.php');
     });
 }
 
