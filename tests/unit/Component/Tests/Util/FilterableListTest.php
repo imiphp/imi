@@ -72,10 +72,20 @@ class FilterableListTest extends BaseTest
     {
         $object = new \stdClass();
         $object->id = 1;
+
         $list = new FilterableList([
             $object,
             ['id' => 2],
         ], null);
+        $this->assertEquals(json_encode([
+            ['id' => 1],
+            ['id' => 2],
+        ]), json_encode($list));
+
+        $list = new FilterableList([
+            $object,
+            ['id' => 2],
+        ], [], 'deny');
         $this->assertEquals(json_encode([
             ['id' => 1],
             ['id' => 2],

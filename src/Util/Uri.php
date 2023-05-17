@@ -237,7 +237,7 @@ class Uri implements UriInterface, \Stringable
     {
         if (!\is_string($scheme))
         {
-            throw new \InvalidArgumentException('Invalid or unsupported schemes');
+            throw new \InvalidArgumentException('Invalid or unsupported schemes'); // @codeCoverageIgnore
         }
         $self = clone $this;
         $self->scheme = $scheme;

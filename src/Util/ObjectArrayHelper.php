@@ -22,10 +22,9 @@ class ObjectArrayHelper
      */
     public static function get(&$object, string $name, $default = null)
     {
-        $names = explode('.', $name);
-        // @phpstan-ignore-next-line
-        if ($names)
+        if ('' !== $name)
         {
+            $names = explode('.', $name);
             $result = &$object;
             foreach ($names as $nameItem)
             {
@@ -62,7 +61,6 @@ class ObjectArrayHelper
             return $result;
         }
 
-        // @phpstan-ignore-next-line
         return $default;
     }
 
@@ -74,20 +72,27 @@ class ObjectArrayHelper
      */
     public static function set(&$object, string $name, $value): void
     {
+        if ('' === $name)
+        {
+            return;
+        }
         $names = explode('.', $name);
         $lastName = array_pop($names);
         $data = &$object;
-        foreach ($names as $nameItem)
+        if ($names)
         {
-            if (\is_array($data))
+            foreach ($names as $nameItem)
             {
-                $data[$nameItem] ??= [];
-                $data = &$data[$nameItem];
-            }
-            elseif (\is_object($data))
-            {
-                $data->{$nameItem} ??= new \stdClass();
-                $data = &$data->{$nameItem};
+                if (\is_array($data))
+                {
+                    $data[$nameItem] ??= [];
+                    $data = &$data[$nameItem];
+                }
+                elseif (\is_object($data))
+                {
+                    $data->{$nameItem} ??= new \stdClass();
+                    $data = &$data->{$nameItem};
+                }
             }
         }
         if (\is_array($data))
@@ -107,20 +112,27 @@ class ObjectArrayHelper
      */
     public static function remove(&$object, string $name): void
     {
+        if ('' === $name)
+        {
+            return;
+        }
         $names = explode('.', $name);
         $lastName = array_pop($names);
         $data = &$object;
-        foreach ($names as $nameItem)
+        if ($names)
         {
-            if (\is_array($data))
+            foreach ($names as $nameItem)
             {
-                $data[$nameItem] ??= [];
-                $data = &$data[$nameItem];
-            }
-            elseif (\is_object($data))
-            {
-                $data->{$nameItem} ??= new \stdClass();
-                $data = &$data->{$nameItem};
+                if (\is_array($data))
+                {
+                    $data[$nameItem] ??= [];
+                    $data = &$data[$nameItem];
+                }
+                elseif (\is_object($data))
+                {
+                    $data->{$nameItem} ??= new \stdClass();
+                    $data = &$data->{$nameItem};
+                }
             }
         }
         if (\is_array($data))

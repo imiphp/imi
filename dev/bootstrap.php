@@ -110,7 +110,7 @@ function getTestPhpBinary(): string
         return $result;
     }
 
-    return $result . ' -dzend_extension=xdebug -dxdebug.mode=coverage';
+    return $result . (\extension_loaded('xdebug') ? '' : ' -dzend_extension=xdebug') . ' -dxdebug.mode=coverage';
 }
 
 /**
@@ -123,7 +123,10 @@ function getTestPhpBinaryArray(): array
     ];
     if (isCodeCoverage())
     {
-        $result[] = '-dzend_extension=xdebug';
+        if (!\extension_loaded('xdebug'))
+        {
+            $result[] = '-dzend_extension=xdebug';
+        }
         $result[] = '-dxdebug.mode=coverage';
     }
 
