@@ -281,12 +281,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0", "8.1"]
+        php: ["7.4", "8.0", "8.1", "8.2"]
         swoole: [v5.0.3, v4.8.11]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
             swoole: v5.0.3
+          - php: 8.2
+            swoole: v4.8.13
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -405,7 +407,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0", 8.1]
+        php: ["7.4", "8.0", "8.1", "8.2"]
         roadrunner: [2.7.*]
 
     env:
