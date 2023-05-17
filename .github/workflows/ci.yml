@@ -190,7 +190,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v5.0.3, v4.8.11]
+        swoole-cli: [v5.0.3, v4.8.13]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -282,7 +282,7 @@ jobs:
       fail-fast: false
       matrix:
         php: ["7.4", "8.0", "8.1", "8.2"]
-        swoole: [v5.0.3, v4.8.11]
+        swoole: [v5.0.3, v4.8.13]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
@@ -407,9 +407,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.0", "8.1", "8.2"]
+        php: ["7.4", "8.0", "8.1"]
         roadrunner: [2.7.*]
-
+        extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
+        - php: "8.2"
+          extensions: bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets # apcu 最新版没发布 DLL，所以 Windows 测不了
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -437,7 +439,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
           tools: pecl
-          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
+          extensions: ${{ matrix.extensions }}
         env:
           fail-fast: true
 
@@ -491,7 +493,7 @@ jobs:
   #       swoole:
   #         # - version: v5.0.3
   #         #   postgresql_version: ""
-  #         # - version: v4.8.11
+  #         # - version: v4.8.13
   #         #   postgresql_version: ""
   #         - version: fix-curl-hook-php8.2
   #           postgresql_version: ""

@@ -1,20 +1,17 @@
 #!/bin/bash
 
-pids=()
-
 test() {
     local name=$1
     local cmd=$2
     echo "test $name...";
-    exec $cmd & # 后台运行，以获取 pid
-    time wait # 等待后台运行并计时
-    local pid=$!
-    pids+=($pid)
+    time $cmd
 }
 
 __DIR__=$(cd `dirname $0`; pwd) && \
 
-cd $__DIR__/../
+cd $__DIR__/../ && \
+
+rm -rf dev/cover/*
 
 export IMI_CODE_COVERAGE=1
 
@@ -60,26 +57,20 @@ do
     test "$name" "$cmd"
 done
 
-export AMQP_TEST_MODE=swoole
+# export AMQP_TEST_MODE=swoole
+# test "amqp-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-swoole-coverage.php -v"
 
-test "amqp-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-swoole-coverage.php -v"
+# export AMQP_TEST_MODE=workerman
+# test "amqp-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-workerman-coverage.php -v"
 
-export AMQP_TEST_MODE=workerman
-test "amqp-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-workerman-coverage.php -v"
+# export KAFKA_TEST_MODE=swoole
+# test "kafka-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-swoole-coverage.php -v"
 
-export KAFKA_TEST_MODE=swoole
-test "kafka-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-swoole-coverage.php -v"
+# export KAFKA_TEST_MODE=workerman
+# test "kafka-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-workerman-coverage.php -v"
 
-export KAFKA_TEST_MODE=workerman
-test "kafka-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-workerman-coverage.php -v"
+# test "workerman-gateway-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php -v"
 
-test "workerman-gateway-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php -v"
+# test "workerman-gateway--swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
 
-test "workerman-gateway--swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
-
-IFS=","
-
-pidsStr="${pids[*]}"
-
-echo "$pidsStr"
-php dev/merge-coverage.php "$pidsStr" $1
+php dev/merge-coverage.php $1
