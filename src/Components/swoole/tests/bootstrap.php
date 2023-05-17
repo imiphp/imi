@@ -220,11 +220,6 @@ function startServer(): void
     }
 
     $servers = [
-        'HttpServer'                            => [
-            'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
-            'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
-            'checkStatus'   => 'checkHttpServerStatus',
-        ],
         'RedisSessionServer'                    => [
             'start'         => __DIR__ . '/unit/RedisSessionServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
@@ -266,6 +261,13 @@ function startServer(): void
         ];
     }
 
+    // HttpServer 里有定时任务，放到最后启动，提升覆盖率测试性能
+    $servers['HttpServer'] = [
+        'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
+        'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
+        'checkStatus'   => 'checkHttpServerStatus',
+    ];
+
     $callbacks = [];
     foreach ($servers as $name => $options)
     {
@@ -301,7 +303,7 @@ function startServer(): void
         };
     }
 
-    batch($callbacks, 600, max(swoole_cpu_num() - 1, 1));
+    batch($callbacks, 1200, max(swoole_cpu_num() - 1, 1));
 
     register_shutdown_function(static function () {
         \Swoole\Runtime::enableCoroutine(false);

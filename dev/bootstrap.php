@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Imi\Event\Event;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -85,10 +86,20 @@ function registerCodeCoverage(): void
     $codeCoverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
     $codeCoverage->start('imi');
 
-    register_shutdown_function(static function () use ($codeCoverage) {
-        $codeCoverage->stop();
-        (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . getmypid() . random_int(0, \PHP_INT_MAX) . '.clover.php');
-    });
+    $stoped = false;
+
+    $shutdownCallback = static function () use ($codeCoverage, &$stoped) {
+        if (!$stoped)
+        {
+            $stoped = true;
+            $codeCoverage->stop();
+            (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . getmypid() . random_int(0, \PHP_INT_MAX) . '.clover.php');
+        }
+    };
+
+    Event::on('IMI.SERVER.WORKER_STOP', $shutdownCallback);
+
+    register_shutdown_function($shutdownCallback);
 }
 
 function getTestPhpBinary(): string
