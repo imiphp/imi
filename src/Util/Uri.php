@@ -114,7 +114,7 @@ class Uri implements UriInterface, \Stringable
         // 锚点
         $fragment = ('' === $fragment ? '' : ('#' . $fragment));
 
-        return "{$scheme}{$userInfo}{$host}{$port}{$path}{$query}{$fragment}";
+        return $scheme . $userInfo . $host . $port . $path . $query . $fragment;
     }
 
     /**

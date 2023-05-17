@@ -9,7 +9,7 @@ use Imi\Util\Http\Consts\MediaType;
 
 class MediaTypeTest extends BaseTest
 {
-    public function testGetContentType()
+    public function testGetContentType(): void
     {
         $this->assertEquals(MediaType::IMAGE_PNG, MediaType::getContentType('png'));
     }

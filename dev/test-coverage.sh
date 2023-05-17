@@ -19,7 +19,7 @@ cd $__DIR__/../ && \
 export IMI_CODE_COVERAGE=1 && \
 
 # core test
-test "core" "php -dzend_extension=xdebug -dxdebug.mode=coverage -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-php=./dev/cover/core-coverage.php -v tests/unit/Component/Tests/FunctionTest.php"
+test "core" "php -dzend_extension=xdebug -dxdebug.mode=coverage -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-php=./dev/cover/core-coverage.php -v"
 
 phpUnitCommands=(
     "workerman"

@@ -103,7 +103,7 @@ class ServerRequestTest extends BaseTest
         $this->assertEquals([], $request->getAttributes());
     }
 
-    private function __testHeader(string $type)
+    private function __testHeader(string $type): void
     {
         // withHeader/setHeader
         $request = new ServerRequest();

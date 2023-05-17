@@ -23,7 +23,7 @@ class FileStreamTest extends BaseStreamTest
 
     protected function getUrl(): string
     {
-        return \dirname(__DIR__, 3) . '/.runtime/test.txt';
+        return 'file://' . \dirname(__DIR__, 3) . '/.runtime/test.txt';
     }
 
     /**

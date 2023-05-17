@@ -9,7 +9,7 @@ use Imi\Util\Http\Consts\StatusCode;
 
 class StatusCodeTest extends BaseTest
 {
-    public function testGetReasonPhrase()
+    public function testGetReasonPhrase(): void
     {
         $this->assertEquals('OK', StatusCode::getReasonPhrase(StatusCode::OK));
     }

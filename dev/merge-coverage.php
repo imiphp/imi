@@ -20,10 +20,10 @@ foreach (File::enumFile(ROOT_DIR . '/dev/cover') as $file)
     else
     {
         echo 'Loading coverage ', $path, '...', \PHP_EOL;
-        /** @var \SebastianBergmann\CodeCoverage\CodeCoverage $codeCoverage */
         $tmpCodeCoverage = include $path;
         if (isset($codeCoverage))
         {
+            /** @var \SebastianBergmann\CodeCoverage\CodeCoverage $codeCoverage */
             $codeCoverage->merge($tmpCodeCoverage);
         }
         else
@@ -31,6 +31,11 @@ foreach (File::enumFile(ROOT_DIR . '/dev/cover') as $file)
             $codeCoverage = $tmpCodeCoverage;
         }
     }
+}
+
+if (!isset($codeCoverage))
+{
+    throw new \RuntimeException('No coverage data');
 }
 
 $pids = explode(',', $_SERVER['argv'][1]);

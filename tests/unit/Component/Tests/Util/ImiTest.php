@@ -274,7 +274,7 @@ class ImiTest extends BaseTest
         $namespace = ' --app-namespace ' . escapeshellarg(App::getNamespace());
         $this->assertEquals($cmd . $namespace, Imi::getImiCmd('test'));
 
-        $this->assertEquals($cmd . ' \'arguments\' -a -b \'bbb\' --cc --dd \'ddd\'' . $namespace, Imi::getImiCmd('test', ['arguments'], ['a', 'b' => 'bbb', 'cc', 'dd' => 'ddd']));
+        $this->assertEquals($cmd . ' ' . escapeshellarg('arguments') . ' -a -b ' . escapeshellarg('bbb') . ' --cc --dd ' . escapeshellarg('ddd') . ' ' . $namespace, Imi::getImiCmd('test', ['arguments'], ['a', 'b' => 'bbb', 'cc', 'dd' => 'ddd']));
     }
 
     public function testGetImiCmdArray(): void
