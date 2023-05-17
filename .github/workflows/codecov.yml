@@ -140,7 +140,7 @@ jobs:
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
           echo "test_ready=1" >> $GITHUB_ENV
-      - name: Run core test suite
+      - name: Run test suite
         run: ./dev/test-coverage.sh clover
       - name: Print logs
         run: php .github/print-logs.php

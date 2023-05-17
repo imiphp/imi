@@ -301,7 +301,7 @@ function startServer(): void
         };
     }
 
-    batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
+    batch($callbacks, 600, max(swoole_cpu_num() - 1, 1));
 
     register_shutdown_function(static function () {
         \Swoole\Runtime::enableCoroutine(false);
