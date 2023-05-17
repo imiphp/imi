@@ -45,6 +45,7 @@ return static function () {
     if (\function_exists('registerCodeCoverage'))
     {
         registerCodeCoverage();
+        Event::on('IMI.SERVER.WORKER_START', 'registerCodeCoverage');
     }
 
     // 事件监听
