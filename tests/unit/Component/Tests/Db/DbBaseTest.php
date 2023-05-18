@@ -84,6 +84,18 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testStatementClose(array $args): void
+    {
+        ['id' => $id] = $args;
+        $db = Db::getInstance($this->poolName);
+        $stmt = $db->query('select * from tb_article where id = ' . $id);
+        $stmt->close();
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testQuery(array $args): void
     {
         ['id' => $id] = $args;
