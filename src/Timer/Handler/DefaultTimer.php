@@ -10,6 +10,8 @@ use Imi\Timer\Contract\ITimer;
 /**
  * 默认定时器，无定时功能，立即执行.
  *
+ * @codeCoverageIgnore
+ *
  * @Bean("DefaultTimer")
  */
 class DefaultTimer implements ITimer
@@ -19,9 +21,7 @@ class DefaultTimer implements ITimer
      */
     public function tick(int $ms, callable $callback): int
     {
-        $callback();
-
-        return 0;
+        throw new \RuntimeException('Unsupport tick timer');
     }
 
     /**
@@ -29,9 +29,7 @@ class DefaultTimer implements ITimer
      */
     public function after(int $ms, callable $callback): int
     {
-        $callback();
-
-        return 0;
+        throw new \RuntimeException('Unsupport after timer');
     }
 
     /**
@@ -39,6 +37,7 @@ class DefaultTimer implements ITimer
      */
     public function del(int $id): void
     {
+        throw new \RuntimeException('Unsupport del timer');
     }
 
     /**
