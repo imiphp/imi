@@ -88,12 +88,21 @@ class PgsqlQuery extends Query
      */
     public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string
     {
+        if (!$keywords)
+        {
+            return '';
+        }
         foreach ($keywords as $k => $v)
         {
             if (Text::isEmpty($v))
             {
                 unset($keywords[$k]);
             }
+        }
+        // @phpstan-ignore-next-line
+        if (!$keywords)
+        {
+            return '';
         }
         $isLastStar = '*' === end($keywords);
         $result = '"' . implode('"."', $keywords) . '"';

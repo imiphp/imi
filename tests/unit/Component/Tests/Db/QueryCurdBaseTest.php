@@ -519,7 +519,10 @@ abstract class QueryCurdBaseTest extends BaseTest
 
         $database->useRaw(true);
         $this->assertTrue($database->isRaw());
-        $database->setRawSQL('db_imi as b');
-        $this->assertEquals('db_imi as b', $database->toString($query));
+        $database->setRawSQL('db_imi2');
+        $this->assertEquals('(db_imi2) as `a`', $database->toString($query));
+        $database->setAlias(null);
+        $this->assertNull($database->getAlias());
+        $this->assertEquals('db_imi2', $database->toString($query));
     }
 }

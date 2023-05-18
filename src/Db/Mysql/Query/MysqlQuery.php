@@ -99,6 +99,7 @@ class MysqlQuery extends Query
                 unset($keywords[$k]);
             }
         }
+        // @phpstan-ignore-next-line
         if (!$keywords)
         {
             return '';
