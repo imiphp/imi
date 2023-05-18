@@ -24,6 +24,8 @@ class Router
 
     protected array $dynamicRoutes = [];
 
+    protected array $pathPatternCache = [];
+
     /**
      * @param string|string[] $method
      */
