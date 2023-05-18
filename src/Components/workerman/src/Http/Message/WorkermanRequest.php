@@ -32,6 +32,7 @@ class WorkermanRequest extends Request
 
     public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request, string $scheme = 'http')
     {
+        var_dump(__METHOD__);
         $this->workermanRequest = $request;
         $this->worker = $worker;
         $this->connection = $connection;

@@ -33,6 +33,7 @@ return [
         'port'          => 8081,
         'configs'       => [
             'worker_num'        => 1,
+            'max_wait_time'     => 30,
         ],
         'controller'    => \MQTTApp\MQTTServer\Controller\MQTTController::class,
     ],

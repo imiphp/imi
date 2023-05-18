@@ -40,6 +40,7 @@ return [
         'port'      => 8080,
         'configs'   => [
             'worker_num'        => 1,
+            'max_wait_time'     => 30,
         ],
     ],
 

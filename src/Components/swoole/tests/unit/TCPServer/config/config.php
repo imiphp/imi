@@ -72,6 +72,7 @@ return [
             // EOF自动分包
             'open_eof_split'     => true, // 打开EOF_SPLIT检测
             'package_eof'        => "\r\n", // 设置EOF
+            'max_wait_time'      => 30,
         ],
         'dataParser'    => \Imi\Swoole\Test\TCPServer\MainServer\Parser\JsonObjectParser::class,
     ],

@@ -31,6 +31,7 @@ return [
         'configs'       => [
             // 'worker_num'        =>  8,
             // 'task_worker_num'   =>  16,
+            'max_wait_time' => 30,
         ],
         // 数据处理器
         'dataParser'    => Imi\Server\DataParser\JsonObjectParser::class,

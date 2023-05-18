@@ -81,6 +81,7 @@ return [
         'configs'      => [
             'worker_num'        => 2,
             'task_worker_num'   => 1,
+            'max_wait_time'     => 30,
         ],
     ],
 

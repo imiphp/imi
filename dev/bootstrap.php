@@ -86,14 +86,15 @@ function registerCodeCoverage(): void
     $codeCoverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
     $codeCoverage->start('imi');
 
+    $pid = getmypid();
     $stoped = false;
 
-    $shutdownCallback = static function () use ($codeCoverage, &$stoped) {
-        if (!$stoped)
+    $shutdownCallback = static function () use ($codeCoverage, $pid, &$stoped) {
+        if (!$stoped && $pid === getmypid())
         {
             $stoped = true;
             $codeCoverage->stop();
-            (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . getmypid() . random_int(0, \PHP_INT_MAX) . '.clover.php');
+            (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . $pid . random_int(0, \PHP_INT_MAX) . '.clover.php');
         }
     };
 

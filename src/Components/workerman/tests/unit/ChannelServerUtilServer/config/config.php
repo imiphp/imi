@@ -90,6 +90,9 @@ return [
     ],
 
     'workerman'       => [
+        'worker' => [
+            'stopTimeout' => 30,
+        ],
         // 多进程通讯组件配置
         'channel' => [
             'host' => env('SERVER_HOST', '127.0.0.1'),

@@ -415,6 +415,7 @@ jobs:
           ]
         include:
           - php: "8.2"
+            roadrunner: "2.7.*"
             extensions: bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets # apcu 最新版没发布 DLL，所以 Windows 测不了
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe

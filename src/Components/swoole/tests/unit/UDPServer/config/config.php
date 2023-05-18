@@ -68,6 +68,7 @@ return [
         'port'          => 13004,
         'configs'       => [
             'worker_num'    => 1,
+            'max_wait_time' => 30,
         ],
         // 数据处理器
         'dataParser'    => Imi\Server\DataParser\JsonObjectParser::class,
