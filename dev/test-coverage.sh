@@ -26,23 +26,23 @@ else
 fi
 
 # core test
-# test "core" "php $paramsXdebug -dxdebug.mode=coverage -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-php=./dev/cover/core-coverage.php -v"
+test "core" "php $paramsXdebug -dxdebug.mode=coverage -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-php=./dev/cover/core-coverage.php -v"
 
 phpUnitCommands=(
     "workerman"
-    # "roadrunner"
-    # "fpm"
-    # "jwt"
-    # "snowflake"
+    "roadrunner"
+    "fpm"
+    "jwt"
+    "snowflake"
 )
 
 swoolePhpUnitCommands=(
-    # "swoole"
-    # "queue"
-    # "grpc"
-    # "mqtt"
-    # "smarty"
-    # "pgsql"
+    "swoole"
+    "queue"
+    "grpc"
+    "mqtt"
+    "smarty"
+    "pgsql"
 )
 
 for name in "${phpUnitCommands[@]}"
@@ -57,20 +57,20 @@ do
     test "$name" "$cmd"
 done
 
-# export AMQP_TEST_MODE=swoole
-# test "amqp-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-swoole-coverage.php -v"
+export AMQP_TEST_MODE=swoole
+test "amqp-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-swoole-coverage.php -v"
 
 # export AMQP_TEST_MODE=workerman
 # test "amqp-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-workerman-coverage.php -v"
 
-# export KAFKA_TEST_MODE=swoole
-# test "kafka-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-swoole-coverage.php -v"
+export KAFKA_TEST_MODE=swoole
+test "kafka-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-swoole-coverage.php -v"
 
 # export KAFKA_TEST_MODE=workerman
 # test "kafka-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-workerman-coverage.php -v"
 
-# test "workerman-gateway-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php -v"
+test "workerman-gateway-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php -v"
 
-# test "workerman-gateway--swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
+test "workerman-gateway--swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
 
 php dev/merge-coverage.php $1

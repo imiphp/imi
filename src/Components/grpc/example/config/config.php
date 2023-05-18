@@ -18,7 +18,6 @@ return [
     // 扫描目录
     'beanScan'          => [
         'GrpcApp\Listener',
-        'GrpcApp\Task',
     ],
 
     // 组件命名空间

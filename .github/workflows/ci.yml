@@ -190,7 +190,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v5.0.3, v4.8.13]
+        swoole-cli: [v5.0.3, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -407,16 +407,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.0", "8.1"]
+        php: ["7.4", "8.0", "8.1"] # 部分扩展还未在 pecl 发布 PHP 8.2 Windows 版扩展，所以无法测试
         roadrunner: [2.7.*]
         extensions:
           [
             "apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets",
           ]
-        include:
-          - php: "8.2"
-            roadrunner: "2.7.*"
-            extensions: bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets # apcu 最新版没发布 DLL，所以 Windows 测不了
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
