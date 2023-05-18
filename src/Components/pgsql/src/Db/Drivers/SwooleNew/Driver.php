@@ -213,13 +213,13 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function rollBack(?int $levels = null): bool
         {
-            if (null === $levels)
+            if (null === $levels || ($toLevel = $this->getTransactionLevels() - $levels) <= 0)
             {
                 $result = $this->instance->query('rollback');
             }
             else
             {
-                $this->exec('ROLLBACK TO P' . $this->getTransactionLevels());
+                $this->exec('ROLLBACK TO P' . $toLevel);
                 $result = true;
             }
             if ($result)

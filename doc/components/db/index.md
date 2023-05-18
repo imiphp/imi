@@ -297,7 +297,7 @@ public function create()
 
 **部分回滚：**
 
-`@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1")`
+`@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1；当 $rollbackType 为 RollbackType::PART 时有效。设为null则全部回滚")`
 
 **事务监听：**
 
