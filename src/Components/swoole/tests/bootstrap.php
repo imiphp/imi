@@ -17,7 +17,7 @@ function startServer(): void
     function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             $context = stream_context_create(['http' => ['timeout' => 20]]);
@@ -35,7 +35,7 @@ function startServer(): void
     function checkRedisSessionServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
@@ -59,7 +59,7 @@ function startServer(): void
     function checkWebSocketServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
@@ -148,7 +148,7 @@ function startServer(): void
     function checkWebSocketServerWithRedisServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
@@ -173,7 +173,7 @@ function startServer(): void
     function checkWebSocketServerWithAmqpServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
@@ -198,7 +198,7 @@ function startServer(): void
     function checkWebSocketServerWithAmqpRouteServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
@@ -307,8 +307,7 @@ function startServer(): void
 
     register_shutdown_function(static function () {
         \Swoole\Runtime::enableCoroutine(false);
-        echo 'check ports...', \PHP_EOL;
-        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+        checkPorts([13000, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010]);
     });
 }
 

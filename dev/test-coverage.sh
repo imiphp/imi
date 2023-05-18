@@ -71,6 +71,6 @@ test "kafka-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/
 
 test "workerman-gateway-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php -v"
 
-test "workerman-gateway--swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
+test "workerman-gateway-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
 
 php dev/merge-coverage.php $1

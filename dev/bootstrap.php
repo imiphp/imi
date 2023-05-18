@@ -133,6 +133,52 @@ function getTestPhpBinaryArray(): array
     return $result;
 }
 
+/**
+ * 检查端口是否可以被绑定.
+ */
+function checkPort(string $host, int $port, ?int &$errno = null, ?string &$errstr = null): bool
+{
+    try
+    {
+        $socket = @stream_socket_client('tcp://' . $host . ':' . $port, $errno, $errstr, 3);
+        if (!$socket)
+        {
+            return false;
+        }
+        fclose($socket);
+
+        return true;
+    }
+    catch (\Throwable $th)
+    {
+        return false;
+    }
+}
+
+/**
+ * 批量检查端口是否可以被绑定.
+ */
+function checkPorts(array $ports, string $host = '127.0.0.1', int $tryCount = 30, int $sleep = 1): void
+{
+    echo 'checking ports...', \PHP_EOL;
+    foreach ($ports as $port)
+    {
+        echo "checking port {$port}...";
+        $count = 0;
+        while (checkPort($host, $port))
+        {
+            if ($count >= $tryCount)
+            {
+                echo 'failed', \PHP_EOL;
+                continue 2;
+            }
+            ++$count;
+            sleep($sleep);
+        }
+        echo 'OK', \PHP_EOL;
+    }
+}
+
 if (isCodeCoverage())
 {
     putenv('IMI_CODE_COVERAGE_NAME=' . getCodeCoverageName());
