@@ -40,11 +40,5 @@ return static function () {
         })();
     }
 
-    // test CodeCoverage
-    if (\function_exists('registerCodeCoverage'))
-    {
-        registerCodeCoverage();
-    }
-
     App::runApp($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)), \Imi\Cli\CliApp::class);
 };

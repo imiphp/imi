@@ -63,45 +63,6 @@ function getCodeCoverageName(): string
     return $name;
 }
 
-function registerCodeCoverage(): void
-{
-    if (!isCodeCoverage())
-    {
-        return;
-    }
-
-    $filter = new Filter();
-    $filter->includeDirectory(\dirname(__DIR__) . '/src');
-    $componentsDir = \dirname(__DIR__) . '/src/Components';
-    $filter->excludeDirectory($componentsDir);
-    foreach (new \FilesystemIterator($componentsDir, \FilesystemIterator::SKIP_DOTS) as $dir)
-    {
-        if (!$dir->isDir())
-        {
-            continue;
-        }
-        $filter->includeDirectory($dir->getPathname() . '/src');
-    }
-
-    $codeCoverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
-    $codeCoverage->start('imi');
-
-    $stoped = false;
-
-    $shutdownCallback = static function () use ($codeCoverage, &$stoped) {
-        if (!$stoped)
-        {
-            $stoped = true;
-            $codeCoverage->stop();
-            (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . getmypid() . random_int(0, \PHP_INT_MAX) . '.clover.php');
-        }
-    };
-
-    Event::on('IMI.SERVER.WORKER_STOP', $shutdownCallback);
-
-    register_shutdown_function($shutdownCallback);
-}
-
 function getTestPhpBinary(): string
 {
     $result = '"' . \PHP_BINARY . '"';
@@ -182,4 +143,34 @@ function checkPorts(array $ports, string $host = '127.0.0.1', int $tryCount = 30
 if (isCodeCoverage())
 {
     putenv('IMI_CODE_COVERAGE_NAME=' . getCodeCoverageName());
+    (static function () {
+        $filter = new Filter();
+        $filter->includeDirectory(\dirname(__DIR__) . '/src');
+        $componentsDir = \dirname(__DIR__) . '/src/Components';
+        $filter->excludeDirectory($componentsDir);
+        foreach (new \FilesystemIterator($componentsDir, \FilesystemIterator::SKIP_DOTS) as $dir)
+        {
+            if (!$dir->isDir())
+            {
+                continue;
+            }
+            $filter->includeDirectory($dir->getPathname() . '/src');
+        }
+
+        $codeCoverage = new CodeCoverage((new Selector())->forLineCoverage($filter), $filter);
+        $codeCoverage->start('imi');
+
+        $stoped = false;
+        $shutdownCallback = static function () use ($codeCoverage, &$stoped) {
+            if (!$stoped)
+            {
+                $stoped = true;
+                $codeCoverage->stop();
+                (new PHP())->process($codeCoverage, __DIR__ . '/cover/' . getenv('IMI_CODE_COVERAGE_NAME') . '/' . getmypid() . random_int(0, \PHP_INT_MAX) . '.clover.php');
+            }
+        };
+
+        Event::on('IMI.SERVER.WORKER_STOP', $shutdownCallback);
+        register_shutdown_function($shutdownCallback);
+    })();
 }
