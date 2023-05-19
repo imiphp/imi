@@ -151,8 +151,13 @@ jobs:
         with:
           name: ${{ matrix.testType }}-coverage
           path: tests/coverage.php
-      - name: Print logs
-        run: php .github/print-logs.php
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.testType }}-logs
+          path: |
+            tests/unit/Component/logs/*.log
+            src/Components/*/tests/*/*/logs/*.log
+            src/Components/*/example/.runtime/logs/*.log
   upload-coverage:
     runs-on: ubuntu-latest
     needs: test
