@@ -154,6 +154,7 @@ jobs:
         run: php .github/print-logs.php
   upload-coverage:
     runs-on: ubuntu-latest
+    needs: test-core
     steps:
       - name: Checkout
         uses: actions/checkout@v2
