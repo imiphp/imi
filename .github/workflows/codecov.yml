@@ -151,7 +151,8 @@ jobs:
         with:
           name: ${{ matrix.testType }}-coverage
           path: tests/coverage.php
-      - uses: actions/upload-artifact@v3
+      - name: Upload output file
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.testType }}-logs
           path: |
@@ -206,3 +207,8 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: "./tests/coverage.xml"
+      - name: Upload coverage reports to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: tests/coverage.xml
