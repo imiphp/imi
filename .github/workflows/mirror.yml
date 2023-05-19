@@ -10,6 +10,7 @@ on:
 jobs:
   gitee:
     if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/2.1')
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-20.04
     steps:
       - name: Configure Private Key
