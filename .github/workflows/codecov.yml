@@ -134,6 +134,15 @@ jobs:
           php -v
           php -m
           php --ri swoole
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache vendor
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
