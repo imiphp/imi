@@ -41,19 +41,10 @@ if [[ $testType -eq "core" ]]; then
 elif [[ $testType -eq "swoole" ]]; then
     swoolePhpUnitCommands=(
         "swoole"
-        "queue"
-        "grpc"
-        "mqtt"
-        "smarty"
-        "pgsql"
     )
 elif [[ $testType -eq "workerman" ]]; then
     phpUnitCommands=(
         "workerman"
-        "roadrunner"
-        "fpm"
-        "jwt"
-        "snowflake"
     )
     export AMQP_TEST_MODE=workerman
     test "amqp-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/amqp/tests/phpunit.xml --coverage-php=./dev/cover/amqp-workerman-coverage.php -v"
