@@ -13,8 +13,10 @@ on:
   pull_request:
 
 jobs:
-  tests:
+  test-core:
     runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.run-test-suite.outputs.coverage }}
     services:
       zookeeper:
         image: zookeeper:3.4
@@ -123,7 +125,7 @@ jobs:
           coverage: xdebug
           extensions: >
             apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
-            sockets, zip, inotify, event, apcu,
+            sockets, zip, inotify, event
             swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
       - name: Check Version
         run: |
@@ -139,15 +141,453 @@ jobs:
           PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
-          echo "test_ready=1" >> $GITHUB_ENV
       - name: Run test suite
-        run: ./dev/test-coverage.sh clover
+        id: run-test-suite
+        run: |
+          ./dev/test-coverage.sh php
+          echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
       - name: Print logs
         run: php .github/print-logs.php
+  test-workerman:
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.run-test-suite.outputs.coverage }}
+    services:
+      zookeeper:
+        image: zookeeper:3.4
+        ports:
+          - 2181:2181
+        options: >-
+          --health-cmd="echo stat | nc localhost 2181 | grep Mode"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: db_imi_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      rabbitmq:
+        image: rabbitmq:3.11-management
+        env:
+          RABBITMQ_DEFAULT_VHOST: "/"
+          RABBITMQ_DEFAULT_USER: "guest"
+          RABBITMQ_DEFAULT_PASS: "guest"
+        ports:
+          - 4369:4369
+          - 15672:15672
+          - 5672:5672
+          - 25672:25672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      kafka1:
+        image: wurstmeister/kafka:2.13-2.7.0
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ADVERTISED_HOST_NAME: kafka1
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_HOST_NAME: kafka1
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          HOSTNAME_COMMAND: hostname -i
+          KAFKA_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_NUM_PARTITIONS: 3
+        ports:
+          - 9092:9092
+        options: >-
+          --hostname=kafka1
+          --health-cmd="kafka-topics.sh --list --zookeeper zookeeper:2181"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    env:
+      SWOOLE_VERSION: v5.0.3
+      ROADRUNNER_VERSION: 2.7.*
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      AMQP_SERVER_HOST: 127.0.0.1
+      KAFKA_BOOTSTRAP_SERVERS: kafka1:9092
+      SWOOLE_CONFIGURE_OPTS: >
+        --enable-openssl
+        --enable-http2
+        --enable-mysqlnd
+        --enable-sockets
+        --enable-swoole-json
+        --enable-swoole-curl
+        --enable-swoole-pgsql
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install libs
+        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: pecl
+          coverage: xdebug
+          extensions: >
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
+            sockets, zip, inotify, event
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+          php --ri swoole
+      - name: Prepare
+        run: |
+          printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
+          mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+          PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
+          src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
+          ./rr -v
+      - name: Run test suite
+        id: run-test-suite
+        run: |
+          ./dev/test-coverage.sh php
+          echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
+      - name: Print logs
+        run: php .github/print-logs.php
+  test-swoole:
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.run-test-suite.outputs.coverage }}
+    services:
+      zookeeper:
+        image: zookeeper:3.4
+        ports:
+          - 2181:2181
+        options: >-
+          --health-cmd="echo stat | nc localhost 2181 | grep Mode"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: db_imi_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      rabbitmq:
+        image: rabbitmq:3.11-management
+        env:
+          RABBITMQ_DEFAULT_VHOST: "/"
+          RABBITMQ_DEFAULT_USER: "guest"
+          RABBITMQ_DEFAULT_PASS: "guest"
+        ports:
+          - 4369:4369
+          - 15672:15672
+          - 5672:5672
+          - 25672:25672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      kafka1:
+        image: wurstmeister/kafka:2.13-2.7.0
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ADVERTISED_HOST_NAME: kafka1
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_HOST_NAME: kafka1
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          HOSTNAME_COMMAND: hostname -i
+          KAFKA_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_NUM_PARTITIONS: 3
+        ports:
+          - 9092:9092
+        options: >-
+          --hostname=kafka1
+          --health-cmd="kafka-topics.sh --list --zookeeper zookeeper:2181"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    env:
+      SWOOLE_VERSION: v5.0.3
+      ROADRUNNER_VERSION: 2.7.*
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      AMQP_SERVER_HOST: 127.0.0.1
+      KAFKA_BOOTSTRAP_SERVERS: kafka1:9092
+      SWOOLE_CONFIGURE_OPTS: >
+        --enable-openssl
+        --enable-http2
+        --enable-mysqlnd
+        --enable-sockets
+        --enable-swoole-json
+        --enable-swoole-curl
+        --enable-swoole-pgsql
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install libs
+        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: pecl
+          coverage: xdebug
+          extensions: >
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
+            sockets, zip, inotify, event
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+          php --ri swoole
+      - name: Prepare
+        run: |
+          printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
+          mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+          PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
+          src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
+          ./rr -v
+      - name: Run test suite
+        id: run-test-suite
+        run: |
+          ./dev/test-coverage.sh php
+          echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
+      - name: Print logs
+        run: php .github/print-logs.php
+  test-components:
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.run-test-suite.outputs.coverage }}
+    services:
+      zookeeper:
+        image: zookeeper:3.4
+        ports:
+          - 2181:2181
+        options: >-
+          --health-cmd="echo stat | nc localhost 2181 | grep Mode"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: db_imi_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      rabbitmq:
+        image: rabbitmq:3.11-management
+        env:
+          RABBITMQ_DEFAULT_VHOST: "/"
+          RABBITMQ_DEFAULT_USER: "guest"
+          RABBITMQ_DEFAULT_PASS: "guest"
+        ports:
+          - 4369:4369
+          - 15672:15672
+          - 5672:5672
+          - 25672:25672
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      kafka1:
+        image: wurstmeister/kafka:2.13-2.7.0
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ADVERTISED_HOST_NAME: kafka1
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_HOST_NAME: kafka1
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          HOSTNAME_COMMAND: hostname -i
+          KAFKA_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+          KAFKA_NUM_PARTITIONS: 3
+        ports:
+          - 9092:9092
+        options: >-
+          --hostname=kafka1
+          --health-cmd="kafka-topics.sh --list --zookeeper zookeeper:2181"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    env:
+      SWOOLE_VERSION: v5.0.3
+      ROADRUNNER_VERSION: 2.7.*
+      IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
+      AMQP_SERVER_HOST: 127.0.0.1
+      KAFKA_BOOTSTRAP_SERVERS: kafka1:9092
+      SWOOLE_CONFIGURE_OPTS: >
+        --enable-openssl
+        --enable-http2
+        --enable-mysqlnd
+        --enable-sockets
+        --enable-swoole-json
+        --enable-swoole-curl
+        --enable-swoole-pgsql
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install libs
+        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: pecl
+          coverage: xdebug
+          extensions: >
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
+            sockets, zip, inotify, event
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+          php --ri swoole
+      - name: Prepare
+        run: |
+          printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
+          mysql -h 127.0.0.1 -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          tests/db/install-db.sh
+          PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
+          src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
+          ./rr -v
+      - name: Run test suite
+        id: run-test-suite
+        run: |
+          ./dev/test-coverage.sh php
+          echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
+      - name: Print logs
+        run: php .github/print-logs.php
+  upload-coverage:
+    runs-on: ubuntu-latest
+    needs: [test-core, test-swoole, test-workerman, test-components]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: pecl
+          coverage: xdebug
+          extensions: >
+            bcmath, curl, openssl, mbstring, intl, json, sockets, zip, event
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+      - name: Prepare
+        run: |
+          composer update --prefer-dist --no-progress
+      - name: Parse coverage data
+        env:
+          COVERAGE_CORE: ${{needs.test-core.outputs.coverage}}
+          COVERAGE_SWOOLE: ${{needs.test-swoole.outputs.coverage}}
+          COVERAGE_WORKERMAN: ${{needs.test-workerman.outputs.coverage}}
+          COVERAGE_COMPONENTS: ${{needs.test-components.outputs.coverage}}
+        run: |
+          echo $COVERAGE_CORE > ./tests/core-coverage.php
+          echo $COVERAGE_SWOOLE > ./tests/swoole-coverage.php
+          echo $COVERAGE_WORKERMAN > ./tests/workerman-coverage.php
+          echo $COVERAGE_COMPONENTS > ./tests/components-coverage.php
+          php ./dev/cover/merge-coverage.php
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: "./tests/core-coverage.xml"
-          flags: unittests
-          name: umbrella

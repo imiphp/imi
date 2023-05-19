@@ -35,13 +35,16 @@ if (!isset($codeCoverage))
 
 echo 'Generating coverage report...', \PHP_EOL;
 
-if ('clover' === ($_SERVER['argv'][1] ?? 'html'))
+switch ($_SERVER['argv'][1] ?? 'html')
 {
-    // clover
-    (new Clover())->process($codeCoverage, ROOT_DIR . '/tests/core-coverage.xml');
-}
-else
-{
-    // html
-    (new Facade())->process($codeCoverage, ROOT_DIR . '/tests/html-coverage');
+    case 'clover':
+        (new Clover())->process($codeCoverage, ROOT_DIR . '/tests/core-coverage.xml');
+        break;
+    case 'php':
+        (new \SebastianBergmann\CodeCoverage\Report\PHP())->process($codeCoverage, ROOT_DIR . '/tests/core-coverage.php');
+        break;
+    default:
+        // html
+        (new Facade())->process($codeCoverage, ROOT_DIR . '/tests/html-coverage');
+        break;
 }
