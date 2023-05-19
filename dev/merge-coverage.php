@@ -38,10 +38,10 @@ echo 'Generating coverage report...', \PHP_EOL;
 switch ($_SERVER['argv'][1] ?? 'html')
 {
     case 'clover':
-        (new Clover())->process($codeCoverage, ROOT_DIR . '/tests/core-coverage.xml');
+        (new Clover())->process($codeCoverage, ROOT_DIR . '/tests/coverage.xml');
         break;
     case 'php':
-        (new \SebastianBergmann\CodeCoverage\Report\PHP())->process($codeCoverage, ROOT_DIR . '/tests/core-coverage.php');
+        (new \SebastianBergmann\CodeCoverage\Report\PHP())->process($codeCoverage, ROOT_DIR . '/tests/coverage.php');
         break;
     default:
         // html

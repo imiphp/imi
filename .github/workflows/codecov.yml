@@ -199,4 +199,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: "./tests/core-coverage.xml"
+          file: "./tests/coverage.xml"
