@@ -194,7 +194,7 @@ jobs:
           name: components-coverage
           path: ./dev/cover/components-coverage.php
       - name: Parse coverage data
-        run: php ./dev/merge-coverage.php
+        run: php ./dev/merge-coverage.php clover
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:

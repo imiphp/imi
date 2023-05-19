@@ -109,7 +109,7 @@ abstract class Model extends BaseModel
                             }
                             else
                             {
-                                $realJsonDecode = ($jsonEncode ??= ($meta->getJsonDecode() ?? false));
+                                $realJsonDecode = ($jsonDecode ??= ($meta->getJsonDecode() ?? false));
                             }
                             if ($realJsonDecode)
                             {
