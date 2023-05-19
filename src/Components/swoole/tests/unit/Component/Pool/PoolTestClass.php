@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\Component\Pool;
 
+use Imi\Db\Pool\DbResource;
 use Imi\Pool\Annotation\PoolResource;
-use Imi\Swoole\Db\Pool\CoroutineDbPool;
 
 class PoolTestClass
 {
     /**
      * @PoolResource("maindb")
      */
-    public CoroutineDbPool $maindbPool;
+    public DbResource $db;
 }
