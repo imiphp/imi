@@ -16,11 +16,11 @@ rm -rf dev/cover/*
 export IMI_CODE_COVERAGE=1
 
 php --ri xdebug > /dev/null
-if [ $? -eq 0 ]; then
+if [ $? = 0 ]; then
     paramsXdebug=""
 else
     php -dzend_extension=xdebug --ri xdebug > /dev/null
-    if [ $? -eq 0 ]; then
+    if [ $? = 0 ]; then
         paramsXdebug="-dzend_extension=xdebug"
     fi
 fi
@@ -30,14 +30,14 @@ testType=$2
 phpUnitCommands=()
 swoolePhpUnitCommands=()
 
-if [[ $testType -eq "core" ]]; then
+if [[ $testType = "core" ]]; then
     # core test
     test "core" "php $paramsXdebug -dxdebug.mode=coverage -dapc.enable_cli=1 vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-php=./dev/cover/core-coverage.php -v"
-elif [[ $testType -eq "swoole" ]]; then
+elif [[ $testType = "swoole" ]]; then
     swoolePhpUnitCommands=(
         "swoole"
     )
-elif [[ $testType -eq "workerman" ]]; then
+elif [[ $testType = "workerman" ]]; then
     phpUnitCommands=(
         "workerman"
     )
@@ -50,7 +50,7 @@ elif [[ $testType -eq "workerman" ]]; then
     test "workerman-gateway-workerman" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php -v"
 
     test "workerman-gateway-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/workerman-gateway/vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite swoole --coverage-php=./dev/cover/workerman-gateway-swoole-coverage.php -v"
-elif [[ $testType -eq "components" ]]; then
+elif [[ $testType = "components" ]]; then
     swoolePhpUnitCommands=(
         "queue"
         "grpc"
