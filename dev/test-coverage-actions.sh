@@ -28,8 +28,8 @@ fi
 testType=$2
 
 if [[ ! $testType ]]; then
-    echo "测试类型参数不能为空";
-    exit(1)
+    echo "测试类型参数不能为空"
+    exit 1
 fi
 
 phpUnitCommands=()
