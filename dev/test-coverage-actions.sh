@@ -27,11 +27,6 @@ fi
 
 testType=$2
 
-if [[ ! $testType ]]; then
-    echo "测试类型参数不能为空"
-    exit 1
-fi
-
 phpUnitCommands=()
 swoolePhpUnitCommands=()
 
@@ -74,6 +69,9 @@ elif [[ $testType -eq "components" ]]; then
 
     export KAFKA_TEST_MODE=swoole
     test "kafka-swoole" "php $paramsXdebug -dxdebug.mode=coverage src/Components/swoole/bin/swoole-phpunit -c ./src/Components/kafka/tests/phpunit.xml --coverage-php=./dev/cover/kafka-swoole-coverage.php -v"
+else
+    echo "未知的测试类型：$testType"
+    exit 1
 fi
 
 for name in "${phpUnitCommands[@]}"

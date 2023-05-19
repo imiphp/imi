@@ -13,11 +13,13 @@ on:
   pull_request:
 
 jobs:
-  test-core:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         testType: [core, swoole, workerman, components]
+    env:
+      TEST_TYPE: ${{ matrix.testType }}
     services:
       zookeeper:
         image: zookeeper:3.4
@@ -144,7 +146,7 @@ jobs:
           ./rr -v
       - name: Run test suite
         id: run-test-suite
-        run: ./dev/test-coverage-actions.sh php ${{ matrix.testType }}
+        run: ./dev/test-coverage-actions.sh php $TEST_TYPE
       - name: Upload output file
         uses: actions/upload-artifact@v3
         with:
