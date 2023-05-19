@@ -67,7 +67,7 @@ abstract class MemoryTableModel extends BaseModel
     public function save(): void
     {
         /** @var MemoryTable|null $memoryTableAnnotation */
-        $memoryTableAnnotation = AnnotationManager::getClassAnnotations($this->__getRealClassName(), MemoryTable::class)[0] ?? null;
+        $memoryTableAnnotation = AnnotationManager::getClassAnnotations(static::__getRealClassName(), MemoryTable::class)[0] ?? null;
         if (null === $memoryTableAnnotation)
         {
             return;
@@ -86,7 +86,7 @@ abstract class MemoryTableModel extends BaseModel
     public function delete(): void
     {
         /** @var MemoryTable|null $memoryTableAnnotation */
-        $memoryTableAnnotation = AnnotationManager::getClassAnnotations($this->__getRealClassName(), MemoryTable::class)[0] ?? null;
+        $memoryTableAnnotation = AnnotationManager::getClassAnnotations(static::__getRealClassName(), MemoryTable::class)[0] ?? null;
         if (null === $memoryTableAnnotation)
         {
             return;
