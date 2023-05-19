@@ -122,7 +122,7 @@ abstract class DbBaseTest extends BaseTest
         $result = Db::getInstance($this->poolName)
             ->createQuery()
             ->table('tb_article', 'a1')
-            ->where('id', '=', $id)
+            ->where('a1.id', '=', $id)
             ->select()
             ->getArray();
         Assert::assertEquals([

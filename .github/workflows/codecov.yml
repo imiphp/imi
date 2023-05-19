@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        testType: [core, swoole, workerman, components]
+        testType: [core, swoole, components]
     services:
       zookeeper:
         image: zookeeper:3.4
@@ -155,12 +155,12 @@ jobs:
       - name: Run test suite
         id: run-test-suite
         run: ./dev/test-coverage-actions.sh php $TEST_TYPE
-      - name: Upload output file
+      - name: Upload coverage file
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.testType }}-coverage
           path: tests/coverage.php
-      - name: Upload output file
+      - name: Upload log files
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.testType }}-logs
@@ -199,11 +199,6 @@ jobs:
         with:
           name: swoole-coverage
           path: ./dev/cover/swoole-coverage.php
-      - name: Download workerman coverage
-        uses: actions/download-artifact@v3
-        with:
-          name: workerman-coverage
-          path: ./dev/cover/workerman-coverage.php
       - name: Download components coverage
         uses: actions/download-artifact@v3
         with:
