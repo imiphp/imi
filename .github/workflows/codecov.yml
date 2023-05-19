@@ -149,7 +149,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.testType }}-coverage
-          path: ./dev/cover/${{ matrix.testType }}-coverage.php
+          path: tests/coverage.php
       - name: Print logs
         run: php .github/print-logs.php
   upload-coverage:
