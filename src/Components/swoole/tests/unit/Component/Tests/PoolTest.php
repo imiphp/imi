@@ -7,7 +7,7 @@ namespace Imi\Swoole\Test\Component\Tests;
 use Imi\App;
 use Imi\Swoole\Db\Pool\CoroutineDbPool;
 use Imi\Swoole\Test\BaseTest;
-use Imi\Swoole\Test\Component\Tests\Pool\PoolTestClass;
+use Imi\Swoole\Test\Component\Pool\PoolTestClass;
 
 class PoolTest extends BaseTest
 {

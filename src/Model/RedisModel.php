@@ -53,6 +53,10 @@ abstract class RedisModel extends BaseModel
         {
             $object = static::__getRealClassName();
         }
+        else
+        {
+            $object = BeanFactory::getObjectClass($object);
+        }
 
         return AnnotationManager::getClassAnnotations($object, RedisEntity::class)[0] ?? null;
     }

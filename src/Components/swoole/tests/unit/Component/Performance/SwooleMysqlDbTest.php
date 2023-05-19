@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Test\Component\Tests\Performance;
+namespace Imi\Swoole\Test\Component\Performance;
 
 use Imi\Test\Component\Performance\BaseDbTest;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Test\Component\Tests\Pool;
+namespace Imi\Swoole\Test\Component\Pool;
 
 use Imi\Pool\Annotation\PoolResource;
 use Imi\Swoole\Db\Pool\CoroutineDbPool;
