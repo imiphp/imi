@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\App;
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Model\Annotation\RedisEntity;
 use Imi\Model\Enum\RedisStorageMode;
@@ -53,8 +54,7 @@ abstract class RedisModel extends BaseModel
             $object = static::__getRealClassName();
         }
 
-        // @phpstan-ignore-next-line
-        return ModelManager::getAnnotation($object, RedisEntity::class);
+        return AnnotationManager::getClassAnnotations($object, RedisEntity::class)[0] ?? null;
     }
 
     public function __init(array $data = []): void
@@ -512,7 +512,7 @@ abstract class RedisModel extends BaseModel
         else
         {
             /** @var RedisEntity|null $redisEntity */
-            $redisEntity = ModelManager::getAnnotation($class, RedisEntity::class);
+            $redisEntity = AnnotationManager::getClassAnnotations($class, RedisEntity::class)[0] ?? null;
             $key = $redisEntity ? $redisEntity->key : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
@@ -543,7 +543,7 @@ abstract class RedisModel extends BaseModel
         else
         {
             /** @var RedisEntity|null $redisEntity */
-            $redisEntity = ModelManager::getAnnotation($class, RedisEntity::class);
+            $redisEntity = AnnotationManager::getClassAnnotations($class, RedisEntity::class)[0] ?? null;
             $key = $redisEntity ? $redisEntity->member : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
