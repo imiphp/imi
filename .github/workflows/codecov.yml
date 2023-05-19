@@ -580,6 +580,7 @@ jobs:
           COVERAGE_WORKERMAN: ${{needs.test-workerman.outputs.coverage}}
           COVERAGE_COMPONENTS: ${{needs.test-components.outputs.coverage}}
         run: |
+          mkdir -p ./dev/cover
           echo $COVERAGE_CORE > ./dev/cover/core-coverage.php
           echo $COVERAGE_SWOOLE > ./dev/cover/swoole-coverage.php
           echo $COVERAGE_WORKERMAN > ./dev/cover/workerman-coverage.php
