@@ -564,7 +564,6 @@ jobs:
         with:
           php-version: 8.2
           tools: pecl
-          coverage: xdebug
           extensions: >
             bcmath, curl, openssl, mbstring, intl, json, sockets, zip, event
       - name: Check Version
@@ -581,10 +580,10 @@ jobs:
           COVERAGE_WORKERMAN: ${{needs.test-workerman.outputs.coverage}}
           COVERAGE_COMPONENTS: ${{needs.test-components.outputs.coverage}}
         run: |
-          echo $COVERAGE_CORE > ./tests/core-coverage.php
-          echo $COVERAGE_SWOOLE > ./tests/swoole-coverage.php
-          echo $COVERAGE_WORKERMAN > ./tests/workerman-coverage.php
-          echo $COVERAGE_COMPONENTS > ./tests/components-coverage.php
+          echo $COVERAGE_CORE > ./dev/cover/core-coverage.php
+          echo $COVERAGE_SWOOLE > ./dev/cover/swoole-coverage.php
+          echo $COVERAGE_WORKERMAN > ./dev/cover/workerman-coverage.php
+          echo $COVERAGE_COMPONENTS > ./dev/cover/components-coverage.php
           php ./dev/cover/merge-coverage.php
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
