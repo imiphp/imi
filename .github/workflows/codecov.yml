@@ -144,7 +144,7 @@ jobs:
       - name: Run test suite
         id: run-test-suite
         run: |
-          ./dev/test-coverage.sh php core
+          ./dev/test-coverage-actions.sh php core
           echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
       - name: Print logs
         run: php .github/print-logs.php
@@ -279,7 +279,7 @@ jobs:
       - name: Run test suite
         id: run-test-suite
         run: |
-          ./dev/test-coverage.sh php workerman
+          ./dev/test-coverage-actions.sh php workerman
           echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
       - name: Print logs
         run: php .github/print-logs.php
@@ -414,7 +414,7 @@ jobs:
       - name: Run test suite
         id: run-test-suite
         run: |
-          ./dev/test-coverage.sh php swoole
+          ./dev/test-coverage-actions.sh php swoole
           echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
       - name: Print logs
         run: php .github/print-logs.php
@@ -549,7 +549,7 @@ jobs:
       - name: Run test suite
         id: run-test-suite
         run: |
-          ./dev/test-coverage.sh php components
+          ./dev/test-coverage-actions.sh php components
           echo "coverage=`cat /tests/core-coverage.php`" >> "$GITHUB_OUTPUT"
       - name: Print logs
         run: php .github/print-logs.php
