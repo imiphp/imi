@@ -20,7 +20,8 @@ use <?php echo $baseClassName; ?> as Model;
  * @Table(name=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.name", default="<?php echo $table['name']; ?>"), usePrefix=<?php var_export($table['usePrefix']); ?><?php if (isset($table['id'][0]))
  { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.poolName"<?php if (null !== $poolName)
  {?>, default="<?php echo $poolName; ?>"<?php }?>))
- * @DDL(sql="<?php echo str_replace('"', '""', $ddl); ?>", decode="<?php echo $ddlDecode; ?>")
+ * @DDL(sql="<?php echo str_replace('"', '""', $ddl); ?>"<?php if (null !== $ddlDecode)
+ { ?>, decode="<?php echo $ddlDecode; ?>"<?php }?>)
  *
 <?php foreach ($fields as $field)
 { ?>

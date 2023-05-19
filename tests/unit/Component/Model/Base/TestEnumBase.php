@@ -18,7 +18,7 @@ use Imi\Model\Model;
  *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestEnum.name", default="tb_test_enum"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\TestEnum.poolName"))
  *
- * @DDL(sql="CREATE TABLE `tb_test_enum` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value1` enum('a','b','c','''test''') NOT NULL DEFAULT '''test''',   `value2` enum('1','2','3') NOT NULL DEFAULT '1',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
+ * @DDL(sql="CREATE TABLE `tb_test_enum` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value1` enum('a','b','c','''test''') NOT NULL DEFAULT '''test''',   `value2` enum('1','2','3') NOT NULL DEFAULT '1',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  *
  * @property int|null    $id
  * @property string|null $value1

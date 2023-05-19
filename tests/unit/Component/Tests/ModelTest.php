@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Db\Db;
+use Imi\Model\Annotation\DDL;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Article2;
@@ -1251,5 +1252,14 @@ class ModelTest extends BaseTest
                               ->update();
         $record = VirtualColumn::find($record->id);
         $this->assertEquals(1, $record->amount);
+    }
+
+    public function testAnnotationDDL(): void
+    {
+        $ddl = new DDL(null, '1+1');
+        $this->assertEquals('1+1', $ddl->getRawSql());
+
+        $ddl = new DDL(null, '1+1', static fn (string $sql): string => '2' . $sql);
+        $this->assertEquals('21+1', $ddl->getRawSql());
     }
 }

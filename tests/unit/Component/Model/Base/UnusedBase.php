@@ -18,7 +18,7 @@ use Imi\Model\Model;
  *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Unused.name", default="tb_unused"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Unused.poolName"))
  *
- * @DDL(sql="CREATE TABLE `tb_unused` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8", decode="")
+ * @DDL(sql="CREATE TABLE `tb_unused` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  *
  * @property int|null $id
  */
