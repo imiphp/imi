@@ -367,7 +367,7 @@ class Driver extends MysqlBase
         {
             $this->lastSql = $sql;
             $parsedSql = SqlUtil::parseSqlWithColonParams($sql, $sqlParamsMap);
-            $this->lastStmt = $lastStmt = $this->instance->prepare($parsedSql);
+            $lastStmt = $this->instance->prepare($parsedSql);
             if (false === $lastStmt)
             {
                 $errorCode = $this->errorCode();
@@ -378,6 +378,7 @@ class Driver extends MysqlBase
                 }
                 throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
+            $this->lastStmt = $lastStmt;
             $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && !isset($stmtCache))
             {
@@ -394,7 +395,7 @@ class Driver extends MysqlBase
     public function query(string $sql): IMysqlStatement
     {
         $this->lastSql = $sql;
-        $this->lastStmt = $lastStmt = $this->instance->query($sql);
+        $lastStmt = $this->instance->query($sql);
         if (false === $lastStmt)
         {
             $errorCode = $this->errorCode();
@@ -405,6 +406,7 @@ class Driver extends MysqlBase
             }
             throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
+        $this->lastStmt = $lastStmt;
 
         return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql);
     }

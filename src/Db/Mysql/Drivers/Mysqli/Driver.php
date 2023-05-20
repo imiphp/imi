@@ -374,7 +374,7 @@ class Driver extends MysqlBase
         {
             $this->lastSql = $sql;
             $parsedSql = SqlUtil::parseSqlWithColonParams($sql, $sqlParamsMap);
-            $this->lastStmt = $lastStmt = $this->instance->prepare($parsedSql);
+            $lastStmt = $this->instance->prepare($parsedSql);
             if (false === $lastStmt)
             {
                 $errorCode = $this->errorCode();
@@ -385,6 +385,7 @@ class Driver extends MysqlBase
                 }
                 throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
+            $this->lastStmt = $lastStmt;
             $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && !isset($stmtCache))
             {

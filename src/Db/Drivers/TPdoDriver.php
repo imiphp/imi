@@ -384,7 +384,7 @@ trait TPdoDriver
             try
             {
                 $this->lastSql = $sql;
-                $lastStmt = $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
+                $lastStmt = $this->instance->prepare($sql, $driverOptions);
                 // @phpstan-ignore-next-line
                 if (false === $lastStmt)
                 {
@@ -396,6 +396,7 @@ trait TPdoDriver
                     }
                     throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
+                $this->lastStmt = $lastStmt;
                 $stmt = BeanFactory::newInstance($this->statementClass, $this, $lastStmt);
                 if ($this->isCacheStatement && !isset($stmtCache))
                 {
@@ -423,7 +424,7 @@ trait TPdoDriver
         try
         {
             $this->lastSql = $sql;
-            $this->lastStmt = $lastStmt = $this->instance->query($sql);
+            $lastStmt = $this->instance->query($sql);
             if (false === $lastStmt)
             {
                 $errorCode = $this->errorCode();
@@ -434,6 +435,7 @@ trait TPdoDriver
                 }
                 throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
+            $this->lastStmt = $lastStmt;
         }
         catch (\PDOException $e)
         {

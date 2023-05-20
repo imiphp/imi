@@ -295,7 +295,7 @@ if (class_exists(PostgreSQL::class, false))
         {
             $this->lastSql = $sql;
             $instance = $this->instance;
-            $this->lastStmt = $lastStmt = $instance->query($sql);
+            $lastStmt = $instance->query($sql);
             if (false === $lastStmt)
             {
                 if ($this->checkCodeIsOffline($this->errorCode()))
@@ -305,6 +305,7 @@ if (class_exists(PostgreSQL::class, false))
 
                 return 0;
             }
+            $this->lastStmt = $lastStmt;
 
             return $lastStmt->affectedRows();
         }
@@ -379,7 +380,7 @@ if (class_exists(PostgreSQL::class, false))
             {
                 $this->lastSql = $sql;
                 $parsedSql = SqlUtil::parseSqlWithParams($sql, $sqlParamsMap);
-                $this->lastStmt = $lastStmt = $this->instance->prepare($parsedSql);
+                $lastStmt = $this->instance->prepare($parsedSql);
                 if (false === $lastStmt)
                 {
                     $errorCode = $this->errorCode();
@@ -390,6 +391,7 @@ if (class_exists(PostgreSQL::class, false))
                     }
                     throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
+                $this->lastStmt = $lastStmt;
                 $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
                 if ($this->isCacheStatement && !isset($stmtCache))
                 {
@@ -406,7 +408,7 @@ if (class_exists(PostgreSQL::class, false))
         public function query(string $sql): IPgsqlStatement
         {
             $this->lastSql = $sql;
-            $this->lastStmt = $lastStmt = $this->instance->query($sql);
+            $lastStmt = $this->instance->query($sql);
             if (false === $lastStmt)
             {
                 $errorCode = $this->errorCode();
@@ -417,6 +419,7 @@ if (class_exists(PostgreSQL::class, false))
                 }
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
+            $this->lastStmt = $lastStmt;
 
             return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql);
         }
