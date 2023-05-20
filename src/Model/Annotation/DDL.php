@@ -13,8 +13,8 @@ use Imi\Bean\Annotation\Base;
  *
  * @Target("CLASS")
  *
- * @property string $sql    表结构 SQL；CREATE TABLE 语句
- * @property string $decode SQL 解码函数
+ * @property string               $sql    表结构 SQL；CREATE TABLE 语句
+ * @property callable|string|null $decode SQL 解码函数
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class DDL extends Base
@@ -24,7 +24,12 @@ class DDL extends Base
      */
     protected ?string $defaultFieldName = 'sql';
 
-    public function __construct(?array $__data = null, string $sql = '', string $decode = '')
+    /**
+     * @todo $decode 类型改为：?callable
+     *
+     * @param callable|string|null $decode
+     */
+    public function __construct(?array $__data = null, string $sql = '', $decode = null)
     {
         parent::__construct(...\func_get_args());
     }
@@ -34,7 +39,7 @@ class DDL extends Base
      */
     public function getRawSql(): string
     {
-        if ('' === $this->decode)
+        if (null === $this->decode || '' === $this->decode)
         {
             return $this->sql;
         }

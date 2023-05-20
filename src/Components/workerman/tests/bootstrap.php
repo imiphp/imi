@@ -18,7 +18,7 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
                 $serverStarted = true;
@@ -36,7 +36,7 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13006/'), false, $context))
             {
                 $serverStarted = true;
@@ -115,39 +115,8 @@ function startServer(): void
     }
 }
 
-/**
- * 检查端口是否可以被绑定.
- */
-function checkPort(string $host, int $port, ?int &$errno = null, ?string &$errstr = null): bool
-{
-    $socket = @stream_socket_client('tcp://' . $host . ':' . $port, $errno, $errstr, 3);
-    if (!$socket)
-    {
-        return false;
-    }
-    fclose($socket);
-
-    return true;
-}
-
 startServer();
 
 register_shutdown_function(static function () {
-    echo 'check ports...', \PHP_EOL;
-    foreach ([13000, 13002, 13003, 13004, 13005, 13006, 13007] as $port)
-    {
-        echo "checking port {$port}...";
-        $count = 0;
-        while (checkPort('127.0.0.1', $port))
-        {
-            if ($count >= 10)
-            {
-                echo 'failed', \PHP_EOL;
-                continue 2;
-            }
-            ++$count;
-            sleep(1);
-        }
-        echo 'OK', \PHP_EOL;
-    }
+    checkPorts([13000, 13002, 13003, 13004, 13005, 13006, 13007]);
 });

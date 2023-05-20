@@ -18,6 +18,8 @@ use Swoole\Coroutine\MySQL;
 /**
  * Swoole Coroutine MySQL 驱动.
  *
+ * @deprecated 3.0
+ *
  * @Bean("SwooleMysqlDriver")
  */
 class Driver extends MysqlBase
@@ -204,13 +206,13 @@ class Driver extends MysqlBase
      */
     public function rollBack(?int $levels = null): bool
     {
-        if (null === $levels)
+        if (null === $levels || ($toLevel = $this->getTransactionLevels() - $levels) <= 0)
         {
             $result = $this->instance->rollback();
         }
         else
         {
-            $this->exec('ROLLBACK TO P' . $this->getTransactionLevels());
+            $this->exec('ROLLBACK TO P' . $toLevel);
             $result = true;
         }
         if ($result)

@@ -12,12 +12,10 @@ use Imi\Enum\BaseEnum;
  */
 class CronTaskType extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @EnumItem("定时任务进程")
      */
     public const CRON_PROCESS = 'cron_process';
-
-    private function __construct()
-    {
-    }
 }

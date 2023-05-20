@@ -17,10 +17,10 @@ function startServer(): void
     function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
                 $serverStarted = true;
@@ -35,12 +35,12 @@ function startServer(): void
     function checkRedisSessionServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
             {
-                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                $context = stream_context_create(['http' => ['timeout' => 20]]);
                 if ('imi' === @file_get_contents('http://127.0.0.1:13001/', false, $context))
                 {
                     $serverStarted = true;
@@ -59,12 +59,12 @@ function startServer(): void
     function checkWebSocketServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
             {
-                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                $context = stream_context_create(['http' => ['timeout' => 20]]);
                 @file_get_contents('http://127.0.0.1:13002/', false, $context);
                 if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
                 {
@@ -148,12 +148,12 @@ function startServer(): void
     function checkWebSocketServerWithRedisServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
             {
-                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                $context = stream_context_create(['http' => ['timeout' => 20]]);
                 @file_get_contents('http://127.0.0.1:13008/', false, $context);
                 if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
                 {
@@ -173,12 +173,12 @@ function startServer(): void
     function checkWebSocketServerWithAmqpServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
             {
-                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                $context = stream_context_create(['http' => ['timeout' => 20]]);
                 @file_get_contents('http://127.0.0.1:13009/', false, $context);
                 if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
                 {
@@ -198,12 +198,12 @@ function startServer(): void
     function checkWebSocketServerWithAmqpRouteServerUtilStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
             try
             {
-                $context = stream_context_create(['http' => ['timeout' => 3]]);
+                $context = stream_context_create(['http' => ['timeout' => 20]]);
                 @file_get_contents('http://127.0.0.1:13010/', false, $context);
                 if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
                 {
@@ -220,11 +220,6 @@ function startServer(): void
     }
 
     $servers = [
-        'HttpServer'                            => [
-            'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
-            'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
-            'checkStatus'   => 'checkHttpServerStatus',
-        ],
         'RedisSessionServer'                    => [
             'start'         => __DIR__ . '/unit/RedisSessionServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
@@ -266,6 +261,13 @@ function startServer(): void
         ];
     }
 
+    // HttpServer 里有定时任务，放到最后启动，提升覆盖率测试性能
+    $servers['HttpServer'] = [
+        'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
+        'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
+        'checkStatus'   => 'checkHttpServerStatus',
+    ];
+
     $callbacks = [];
     foreach ($servers as $name => $options)
     {
@@ -301,12 +303,11 @@ function startServer(): void
         };
     }
 
-    batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
+    batch($callbacks, 1200, max(swoole_cpu_num() - 1, 1));
 
     register_shutdown_function(static function () {
         \Swoole\Runtime::enableCoroutine(false);
-        echo 'check ports...', \PHP_EOL;
-        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+        checkPorts([13000, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010]);
     });
 }
 

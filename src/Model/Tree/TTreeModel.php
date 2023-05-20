@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Model\Tree;
 
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Model\ModelManager;
 use Imi\Model\Tree\Annotation\TreeModel;
 use Imi\Util\ArrayUtil;
 
@@ -19,8 +19,7 @@ trait TTreeModel
      */
     private static function __getTreeModel(): ?TreeModel
     {
-        // @phpstan-ignore-next-line
-        return ModelManager::getAnnotation(static::__getRealClassName(), TreeModel::class);
+        return AnnotationManager::getClassAnnotations(static::__getRealClassName(), TreeModel::class)[0] ?? null;
     }
 
     /**

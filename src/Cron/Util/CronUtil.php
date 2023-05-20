@@ -18,9 +18,7 @@ use Imi\Log\Log;
 
 class CronUtil
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 上报定时任务结果.

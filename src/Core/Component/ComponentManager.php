@@ -8,11 +8,9 @@ use Imi\Main\Helper;
 
 class ComponentManager
 {
-    private static array $components = [];
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static array $components = [];
 
     public static function addComponent(string $name, string $namespace): void
     {

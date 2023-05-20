@@ -6,9 +6,7 @@ namespace Imi\Util;
 
 class Process
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     public static function isTtySupported(): bool
     {

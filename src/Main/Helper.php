@@ -9,13 +9,11 @@ namespace Imi\Main;
  */
 class Helper
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     private static array $mains = [];
 
     private static array $nameMap = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取主类实例对象

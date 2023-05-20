@@ -10,6 +10,8 @@ namespace Imi\Util;
  */
 class ImiPriority
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 优先级最小值
      */
@@ -31,8 +33,4 @@ class ImiPriority
      * 大于这个值，可以先于框架最大优先级执行.
      */
     public const IMI_MAX = 19940312;
-
-    private function __construct()
-    {
-    }
 }

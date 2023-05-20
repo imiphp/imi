@@ -68,6 +68,7 @@ return [
         'port'         => 13001,
         'configs'      => [
             'worker_num'    => 1,
+            'max_wait_time' => 30,
         ],
     ],
 

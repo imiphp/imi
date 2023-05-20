@@ -9,6 +9,8 @@ namespace Imi\Util\Process;
  */
 class ProcessAppContexts
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 进程类型.
      */
@@ -28,8 +30,4 @@ class ProcessAppContexts
      * 当前进程脚本名称.
      */
     public const SCRIPT_NAME = 'script_name';
-
-    private function __construct()
-    {
-    }
 }

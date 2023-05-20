@@ -72,6 +72,7 @@ return [
         'mode'         => \SWOOLE_BASE,
         'configs'      => [
             'worker_num'    => 2,
+            'max_wait_time' => 30,
         ],
     ],
 

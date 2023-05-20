@@ -115,6 +115,9 @@ return [
     ],
 
     'workerman'       => [
+        'worker' => [
+            'stopTimeout' => 30,
+        ],
     ],
 
     // 数据库配置

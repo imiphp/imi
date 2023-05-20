@@ -6,6 +6,8 @@ namespace Imi;
 
 class AppContexts
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 应用命名空间根所在路径.
      */
@@ -15,8 +17,4 @@ class AppContexts
      * 应用命名空间根所在物理路径.
      */
     public const APP_PATH_PHYSICS = 'app_path_physics';
-
-    private function __construct()
-    {
-    }
 }

@@ -11,14 +11,12 @@ use Imi\Server\Contract\IServer;
 
 class RequestContext
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 上下文管理器.
      */
     private static IContextManager $contextManager;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取上下文管理器实例.

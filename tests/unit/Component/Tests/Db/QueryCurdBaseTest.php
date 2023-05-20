@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests\Db;
 
 use Imi\Db\Db;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
+use Imi\Db\Query\Database;
 use Imi\Db\Query\Raw;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
@@ -495,5 +496,33 @@ abstract class QueryCurdBaseTest extends BaseTest
         ;
         $this->assertEquals('replace into `test` set `a` = `a` + :fip1,`b` = `b` - :fdp2,`c` = c + :c', $query->buildReplaceSql());
         $this->assertEquals([':fip1' => 4, ':fdp2' => 5, ':c' => 6], $query->getBinds());
+    }
+
+    public function testDatabase(): void
+    {
+        $query = Db::query();
+
+        $database = new Database();
+        $this->assertNull($database->getDatabase());
+        $this->assertNull($database->getAlias());
+        $this->assertEquals('', $database->toString($query));
+
+        $database->setDatabase('db_imi');
+        $this->assertEquals('db_imi', $database->getDatabase());
+        $this->assertNull($database->getAlias());
+        $this->assertEquals('`db_imi`', $database->toString($query));
+
+        $database->setAlias('a');
+        $this->assertEquals('db_imi', $database->getDatabase());
+        $this->assertEquals('a', $database->getAlias());
+        $this->assertEquals('`db_imi` as `a`', $database->toString($query));
+
+        $database->useRaw(true);
+        $this->assertTrue($database->isRaw());
+        $database->setRawSQL('db_imi2');
+        $this->assertEquals('(db_imi2) as `a`', $database->toString($query));
+        $database->setAlias(null);
+        $this->assertNull($database->getAlias());
+        $this->assertEquals('db_imi2', $database->toString($query));
     }
 }

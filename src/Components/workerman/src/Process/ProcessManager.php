@@ -26,6 +26,8 @@ use Workerman\Worker;
  */
 class ProcessManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     private static array $map = [];
 
     /**
@@ -34,10 +36,6 @@ class ProcessManager
      * @var Worker[]
      */
     private static array $processes = [];
-
-    private function __construct()
-    {
-    }
 
     public static function getMap(): array
     {

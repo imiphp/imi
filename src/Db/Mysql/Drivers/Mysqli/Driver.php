@@ -192,13 +192,13 @@ class Driver extends MysqlBase
      */
     public function rollBack(?int $levels = null): bool
     {
-        if (null === $levels)
+        if (null === $levels || ($toLevel = $this->getTransactionLevels() - $levels) <= 0)
         {
             $result = $this->instance->rollback();
         }
         else
         {
-            $this->exec('ROLLBACK TO P' . $this->getTransactionLevels());
+            $this->exec('ROLLBACK TO P' . $toLevel);
             $result = true;
         }
         if ($result)

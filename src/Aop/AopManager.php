@@ -12,6 +12,8 @@ use Imi\Util\Imi;
  */
 class AopManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @var AopItem[][][]
      */
@@ -28,10 +30,6 @@ class AopManager
      * @var AopItem[][]
      */
     private static array $dynamicRulesCache = [];
-
-    private function __construct()
-    {
-    }
 
     public static function getCache(): array
     {

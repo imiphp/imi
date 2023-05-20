@@ -6,6 +6,8 @@ namespace Imi\Workerman\Server;
 
 class Type
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * HTTP 服务器.
      */
@@ -30,8 +32,4 @@ class Type
      * Channel 服务器.
      */
     public const CHANNEL = 'WorkermanChannelServer';
-
-    private function __construct()
-    {
-    }
 }

@@ -18,7 +18,7 @@ use Imi\Model\Model;
  *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Performance.name", default="tb_performance"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Performance.poolName"))
  *
- * @DDL(sql="CREATE TABLE `tb_performance` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value` varchar(255) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT", decode="")
+ * @DDL(sql="CREATE TABLE `tb_performance` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value` varchar(255) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
  *
  * @property int|null    $id
  * @property string|null $value

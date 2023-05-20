@@ -13,6 +13,14 @@ abstract class BaseDbTest extends BaseTest
 {
     abstract public function getPoolName(): string;
 
+    public static function setUpBeforeClass(): void
+    {
+        if (isCodeCoverage())
+        {
+            static::markTestSkipped();
+        }
+    }
+
     public function testTruncate(): void
     {
         App::set('DB_LOG', false);

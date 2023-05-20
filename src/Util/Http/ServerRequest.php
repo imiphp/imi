@@ -9,6 +9,7 @@ use Imi\Server\Http\Message\UploadedFile;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
 use Imi\Util\Http\Contract\IServerRequest;
+use Imi\Util\ObjectArrayHelper;
 
 class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 {
@@ -29,8 +30,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * post数据.
+     *
+     * @var mixed
      */
-    protected array $post = [];
+    protected $post = [];
 
     /**
      * 包含 GET/POST/Cookie 数据.
@@ -327,7 +330,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                     MediaType::APPLICATION_XML,
                 ]))
                 {
-                    $parsedBody = new \DOMDocument();
+                    $this->post = $parsedBody = new \DOMDocument();
                     $parsedBody->loadXML($this->body->getContents());
                 }
                 // 其它
@@ -471,7 +474,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
         }
         else
         {
-            return $this->post[$name] ?? $default;
+            return ObjectArrayHelper::get($this->post, $name, $default);
         }
     }
 
@@ -500,7 +503,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             $this->requestParamsInited = true;
         }
 
-        return isset($this->post[$name]);
+        return ObjectArrayHelper::exists($this->post, $name);
     }
 
     /**
@@ -516,7 +519,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
         $request = &$this->request;
         if (null === $request)
         {
-            $request = array_merge($this->get, $this->post, $this->cookies);
+            $request = array_merge($this->get, \is_array($this->post) ? $this->post : ObjectArrayHelper::toArray($this->post), $this->cookies);
         }
         if (null === $name)
         {
@@ -538,13 +541,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             $this->initRequestParams();
             $this->requestParamsInited = true;
         }
-        $request = &$this->request;
-        if (null === $request)
-        {
-            $request = array_merge($this->get, $this->post, $this->cookies);
-        }
 
-        return isset($request[$name]);
+        return isset($this->request()[$name]);
     }
 
     /**
@@ -581,7 +579,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withPost(array $post): self
+    public function withPost($post): self
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -597,7 +595,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setPost(array $post): self
+    public function setPost($post): self
     {
         if (!$this->requestParamsInited)
         {

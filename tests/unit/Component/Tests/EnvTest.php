@@ -11,6 +11,23 @@ use function Imi\env;
 
 class EnvTest extends BaseTest
 {
+    public function testFunctionImiGetEnv(): void
+    {
+        $this->assertEquals(123, imiGetEnv('A'));
+        $this->assertEquals('imi', imiGetEnv('E'));
+        $this->assertEquals('123', imiGetEnv('A', 'default'));
+        $this->assertEquals(123, imiGetEnv('A', 0));
+        $this->assertEquals(123.0, imiGetEnv('A', 3.14));
+        $this->assertEquals('123', imiGetEnv('A', false));
+        $this->assertFalse(imiGetEnv('B', false));
+        $this->assertTrue(imiGetEnv('BOOL_TRUE', false));
+        $this->assertFalse(imiGetEnv('BOOL_FALSE', false));
+        $this->assertEquals(['1', '2', '3'], imiGetEnv('C', []));
+        $this->assertEquals(['4', '5', '6'], imiGetEnv('D', []));
+        $this->assertNull(imiGetEnv('NULL_VALUE'));
+        $this->assertNull(imiGetEnv('NULL_VALUE', 666));
+    }
+
     public function testFunctionEnv(): void
     {
         $this->assertEquals(123, env('A'));

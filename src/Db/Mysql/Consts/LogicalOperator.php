@@ -9,6 +9,8 @@ use Imi\Enum\BaseEnum;
 
 class LogicalOperator extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @EnumItem
      */
@@ -38,8 +40,4 @@ class LogicalOperator extends BaseEnum
      * @EnumItem
      */
     public const XOR_NOT = 'xor not';
-
-    private function __construct()
-    {
-    }
 }

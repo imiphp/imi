@@ -9,14 +9,12 @@ use Imi\Timer\Contract\ITimer;
 
 class Timer
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 定时器.
      */
     private static ITimer $timer;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取定时器实例.

@@ -10,6 +10,8 @@ use Psr\SimpleCache\CacheInterface;
 
 class CacheManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 缓存处理器数组.
      *
@@ -21,10 +23,6 @@ class CacheManager
      * 是否初始化.
      */
     protected static bool $inited = false;
-
-    private function __construct()
-    {
-    }
 
     public static function init(): void
     {

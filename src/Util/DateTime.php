@@ -9,9 +9,7 @@ namespace Imi\Util;
  */
 class DateTime
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 将一个 \DateInterval，与当前时间进行计算，获取秒数.
@@ -104,20 +102,38 @@ class DateTime
      *
      * @return string|int
      */
-    public static function getLastWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
+    public static function getPrevWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
     {
         if (null === $timestamp)
         {
             $timestamp = time();
         }
         $currentWeek = date('N', $timestamp);
-        $timestamp -= ((7 - $currentWeek + ($weekNo ?? $currentWeek)) * 86400);
+        $timestamp -= (7 + $currentWeek - ($weekNo ?? $currentWeek)) * 86400;
         if (null === $format)
         {
             return $timestamp;
         }
 
         return date($format, $timestamp);
+    }
+
+    /**
+     * 获取上周的时间.
+     *
+     * 可传入 $weekNo 指定周几，周一到周日为1-7，不传则取时间戳对应周几
+     * 可传入 $format 格式化，不传则返回时间戳
+     * 可传入 $timestamp 指定时间戳，不传则取当前时间
+     *
+     * @deprecated 3.0 错误的方法命名，请使用 getPrevWeek()
+     *
+     * @codeCoverageIgnore
+     *
+     * @return string|int
+     */
+    public static function getLastWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
+    {
+        return static::getPrevWeek($weekNo, $format, $timestamp);
     }
 
     /**
@@ -147,13 +163,9 @@ class DateTime
             $weeks = 1;
             $days -= (8 - $week);
         }
-        $weeks += (int) ($days / 7);
-        if ($days % 7 > 0)
-        {
-            ++$weeks;
-        }
+        $weeks += ceil($days / 7);
 
-        return $weeks;
+        return (int) $weeks;
     }
 
     /**
@@ -175,8 +187,8 @@ class DateTime
             $weeks = 1;
             $days -= (8 - $week);
         }
-        $weeks += (int) ($days / 7) + 1;
+        $weeks += ceil($days / 7);
 
-        return $weeks;
+        return (int) $weeks;
     }
 }

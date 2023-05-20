@@ -11,9 +11,7 @@ use Imi\Bean\ReflectionContainer;
  */
 class ClassObject
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 是否是匿名类对象
@@ -138,7 +136,7 @@ class ClassObject
             else
             {
                 $declaringClass = $param->getDeclaringClass();
-                throw new \InvalidArgumentException(sprintf('%s::__construct() %s not found', $declaringClass ? $declaringClass->getName() : '', $name));
+                throw new \InvalidArgumentException(sprintf('Argument %s of %s::__construct() does not found', $name, $declaringClass ? $declaringClass->getName() : ''));
             }
         }
 

@@ -20,7 +20,10 @@ abstract class BaseProcess implements IProcess
         {
             foreach ($data as $k => $v)
             {
-                $this->{$k} = $v;
+                if (\is_string($k) && property_exists($this, $k))
+                {
+                    $this->{$k} = $v;
+                }
             }
         }
     }

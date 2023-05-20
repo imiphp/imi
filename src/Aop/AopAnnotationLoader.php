@@ -17,11 +17,9 @@ use Imi\Util\DelayClassCallable;
 
 class AopAnnotationLoader
 {
-    private static bool $loaded = false;
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static bool $loaded = false;
 
     public static function load(bool $force = true): void
     {

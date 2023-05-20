@@ -88,11 +88,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      */
     public function offsetUnset($offset): void
     {
-        $list = &$this->list;
-        if (isset($list[$offset]))
-        {
-            unset($list[$offset]);
-        }
+        unset($this->list[$offset]);
     }
 
     /**

@@ -17,6 +17,8 @@ class DelayClassCallable
 
     private ?bool $returnsReference = null;
 
+    private ?object $instance = null;
+
     public function __construct(string $className, string $methodName, array $constructArgs = [])
     {
         $this->className = $className;
@@ -36,7 +38,7 @@ class DelayClassCallable
 
     public function getInstance(): object
     {
-        return App::getSingleton($this->className, ...$this->constructArgs);
+        return $this->instance ??= App::getSingleton($this->className, ...$this->constructArgs);
     }
 
     public function returnsReference(): bool
@@ -61,5 +63,19 @@ class DelayClassCallable
 
             return $result;
         }
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'className'        => $this->className,
+            'methodName'       => $this->methodName,
+            'constructArgs'    => $this->constructArgs,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        ['className' => $this->className, 'methodName' => $this->methodName, 'constructArgs' => $this->constructArgs] = $data;
     }
 }

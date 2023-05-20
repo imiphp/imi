@@ -16,7 +16,7 @@ else
 }
 
 echo '[Swoole Component]', \PHP_EOL;
-$fileName = \dirname(__DIR__) . '/tests/unit/Component/logs/log-' . date('Y-m-d') . '.log';
+$fileName = \dirname(__DIR__) . 'src/Components/swoole/tests/unit/Component/logs/log-' . date('Y-m-d') . '.log';
 if (is_file($fileName))
 {
     echo file_get_contents($fileName), \PHP_EOL;

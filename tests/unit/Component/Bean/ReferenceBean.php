@@ -13,6 +13,11 @@ class ReferenceBean
 {
     private array $list = [];
 
+    public function add(int $a, int $b): int
+    {
+        return $a + $b;
+    }
+
     public function testParams(int $a, ?int &$b): void
     {
         $b = $a;

@@ -252,9 +252,7 @@ use Imi\Pool\PoolManager;
  */
 class Redis
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * @return mixed

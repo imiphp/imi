@@ -11,11 +11,9 @@ use phpDocumentor\Reflection\Types\Context;
 
 class DocBlock
 {
-    private static ?DocBlockFactory $factory = null;
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static ?DocBlockFactory $factory = null;
 
     public static function getFactory(): DocBlockFactory
     {

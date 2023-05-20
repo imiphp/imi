@@ -12,9 +12,6 @@ use Imi\Util\Uri;
  */
 class UriTest extends BaseTest
 {
-    /**
-     * @testdox startwith
-     */
     public function testUri(): void
     {
         $url = 'https://admin:123456@www.baidu.com/a/b/c.jpg?id=1&name=imi#gg';
@@ -37,6 +34,10 @@ class UriTest extends BaseTest
         $this->assertEquals('http', $uri->getScheme());
         $this->assertEquals('www.imiphp.com:4433', $uri->getAuthority());
         $this->assertEquals('', $uri->getUserInfo());
+        $uri2 = $uri->withUserInfo('yurun');
+        $this->assertEquals('yurun', $uri2->getUserInfo());
+        $uri2 = $uri->withUserInfo('yurun', '123456');
+        $this->assertEquals('yurun:123456', $uri2->getUserInfo());
         $this->assertEquals('www.imiphp.com', $uri->getHost());
         $this->assertEquals(4433, $uri->getPort());
         $this->assertEquals(4433, Uri::getServerPort($uri));
@@ -60,5 +61,20 @@ class UriTest extends BaseTest
             $url,
             Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo())
         );
+
+        $uri = Uri::makeUri('127.0.0.1', '/imi', 'id=1', 80, 'http', 'gg', 'admin:123456');
+        $this->assertEquals('127.0.0.1', $uri->getHost());
+        $this->assertEquals('/imi', $uri->getPath());
+        $this->assertEquals('id=1', $uri->getQuery());
+        $this->assertEquals(80, $uri->getPort());
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('gg', $uri->getFragment());
+        $this->assertEquals('admin:123456', $uri->getUserInfo());
+    }
+
+    public function testInvalidUri(): void
+    {
+        $this->expectExceptionMessageMatches('/Uri .+ parse error/');
+        new Uri('http:////www.baidu.com');
     }
 }

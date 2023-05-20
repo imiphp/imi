@@ -96,54 +96,53 @@ class ArrayData implements \ArrayAccess, \Countable
         if (\is_string($name))
         {
             $name = explode('.', $name);
+            // TODO: 3.0 去除判断
+            // @phpstan-ignore-next-line
+            if (false === $name)
+            {
+                // @codeCoverageIgnoreStart
+                return $default;
+                // @codeCoverageIgnoreEnd
+            }
         }
         elseif (!\is_array($name))
         {
             return $default;
         }
         $result = &$this->__data;
-        if ($name)
+        foreach ($name as $value)
         {
-            foreach ($name as $value)
+            if (\is_array($result))
             {
-                if (\is_array($result))
+                // 数组
+                if (isset($result[$value]))
                 {
-                    // 数组
-                    if (isset($result[$value]))
-                    {
-                        $result = &$result[$value];
-                    }
-                    else
-                    {
-                        return $default;
-                    }
-                }
-                elseif (\is_object($result))
-                {
-                    // 对象
-                    if (property_exists($result, $value))
-                    {
-                        $result = &$result->{$value};
-                    }
-                    else
-                    {
-                        return $default;
-                    }
+                    $result = &$result[$value];
                 }
                 else
                 {
                     return $default;
                 }
             }
+            elseif (\is_object($result))
+            {
+                // 对象
+                if (property_exists($result, $value))
+                {
+                    $result = &$result->{$value};
+                }
+                else
+                {
+                    return $default;
+                }
+            }
+            else
+            {
+                return $default;
+            }
         }
-        if (isset($value))
-        {
-            return $result;
-        }
-        else
-        {
-            return $default;
-        }
+
+        return $result;
     }
 
     /**
@@ -165,7 +164,7 @@ class ArrayData implements \ArrayAccess, \Countable
                 {
                     $val = explode('.', $val);
                 }
-                elseif (!\is_array($val))
+                if (!\is_array($val))
                 {
                     return false;
                 }

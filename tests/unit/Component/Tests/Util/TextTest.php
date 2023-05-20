@@ -21,6 +21,7 @@ class TextTest extends BaseTest
         $this->assertFalse(Text::startwith('imi is very niu bi', 'niu bi'));
         $this->assertFalse(Text::startwith('imi is very niu bi', 'Imi'));
         $this->assertFalse(Text::startwith('imi is very niu bi', 'Imi', true));
+        $this->assertTrue(Text::startwith('imi is very niu bi', 'Imi', false));
     }
 
     /**
@@ -32,6 +33,7 @@ class TextTest extends BaseTest
         $this->assertFalse(Text::endwith('imi is very niu bi', 'imi'));
         $this->assertFalse(Text::endwith('imi is very niu bi', 'Niu BI'));
         $this->assertFalse(Text::endwith('imi is very niu bi', 'Niu BI', true));
+        $this->assertFalse(Text::endwith('imi is very niu bi', 'Niu BI', false));
     }
 
     /**

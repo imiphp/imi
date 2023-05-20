@@ -84,6 +84,18 @@ abstract class DbBaseTest extends BaseTest
     /**
      * @depends testInsert
      */
+    public function testStatementClose(array $args): void
+    {
+        ['id' => $id] = $args;
+        $db = Db::getInstance($this->poolName);
+        $stmt = $db->query('select * from tb_article where id = ' . $id);
+        $stmt->close();
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @depends testInsert
+     */
     public function testQuery(array $args): void
     {
         ['id' => $id] = $args;
@@ -99,6 +111,29 @@ abstract class DbBaseTest extends BaseTest
                 'member_id' => 0,
             ],
         ], $stmt->fetchAll());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testQueryAlias(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::getInstance($this->poolName)
+            ->createQuery()
+            ->table('tb_article', 'a1')
+            ->where('a1.id', '=', $id)
+            ->select()
+            ->getArray();
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+                'member_id' => 0,
+            ],
+        ], $result);
     }
 
     /**

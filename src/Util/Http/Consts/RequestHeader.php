@@ -9,6 +9,8 @@ namespace Imi\Util\Http\Consts;
  */
 class RequestHeader
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const ACCEPT = 'Accept';
     public const ACCEPT_CHARSET = 'Accept-Charset';
     public const ACCEPT_ENCODING = 'Accept-Encoding';
@@ -42,8 +44,4 @@ class RequestHeader
     public const VIA = 'Via';
     public const WARNING = 'Warning';
     public const TRAILER = 'trailer';
-
-    private function __construct()
-    {
-    }
 }

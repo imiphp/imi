@@ -16,6 +16,8 @@ use Imi\Util\Imi;
 
 class App
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 应用命名空间.
      */
@@ -60,10 +62,6 @@ class App
      * App 实例对象
      */
     private static IApp $app;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 框架服务运行入口.

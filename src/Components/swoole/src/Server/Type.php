@@ -6,6 +6,8 @@ namespace Imi\Swoole\Server;
 
 class Type
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 异步服务器，支持TCP、UDP、UnixSocket.
      */
@@ -30,8 +32,4 @@ class Type
      * 异步服务器，支持TCP、UDP、UnixSocket.
      */
     public const UDP_SERVER = 'UdpServer';
-
-    private function __construct()
-    {
-    }
 }

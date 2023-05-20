@@ -9,6 +9,8 @@ namespace Imi\Util\Http\Consts;
  */
 class ResponseHeader
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const ACCESS_CONTROL_ALLOW_ORIGIN = 'Access-Control-Allow-Origin';
     public const ACCEPT_PATCH = 'Accept-Patch';
     public const ACCEPT_RANGES = 'Accept-Ranges';
@@ -46,8 +48,4 @@ class ResponseHeader
     public const VIA = 'Via';
     public const WARNING = 'Warning';
     public const WWW_AUTHENTICATE = 'WWW-Authenticate';
-
-    private function __construct()
-    {
-    }
 }

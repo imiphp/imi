@@ -12,6 +12,8 @@ use Imi\Enum\BaseEnum;
  */
 class NonControlFrameType extends BaseEnum
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @EnumItem("文本帧")
      */
@@ -21,8 +23,4 @@ class NonControlFrameType extends BaseEnum
      * @EnumItem("二进制帧")
      */
     public const BINARY = 2;
-
-    private function __construct()
-    {
-    }
 }

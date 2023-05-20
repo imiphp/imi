@@ -9,6 +9,8 @@ namespace Imi\Util\Http\Consts;
  */
 class RequestMethod
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const GET = 'GET';
 
     public const POST = 'POST';
@@ -24,8 +26,4 @@ class RequestMethod
     public const OPTIONS = 'OPTIONS';
 
     public const TRACE = 'TRACE';
-
-    private function __construct()
-    {
-    }
 }

@@ -9,11 +9,9 @@ namespace Imi\Event;
  */
 class ClassEventManager
 {
-    private static array $map = [];
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static array $map = [];
 
     public static function getMap(): array
     {

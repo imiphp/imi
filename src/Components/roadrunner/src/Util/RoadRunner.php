@@ -8,9 +8,7 @@ use function Imi\env;
 
 class RoadRunner
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 获取 RoadRunner 二进制文件路径.

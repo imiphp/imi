@@ -10,6 +10,8 @@ use Imi\Lock\Handler\ILockHandler;
 
 class Lock
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 配置.
      *
@@ -25,10 +27,6 @@ class Lock
     private static array $instances = [];
 
     private static bool $inited = false;
-
-    private function __construct()
-    {
-    }
 
     public static function init(): void
     {

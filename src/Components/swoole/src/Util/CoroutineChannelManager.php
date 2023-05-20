@@ -11,6 +11,8 @@ use Imi\Config;
  */
 class CoroutineChannelManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * \Swoole\Coroutine\Channel 数组.
      *
@@ -22,10 +24,6 @@ class CoroutineChannelManager
      * 是否初始化.
      */
     protected static bool $inited = false;
-
-    private function __construct()
-    {
-    }
 
     public static function init(): void
     {

@@ -3,13 +3,14 @@ name: split repository
 on:
   push:
     branches:
-      - '2.1'
+      - "2.1"
   release:
     types: [published]
 
 jobs:
   split-repository:
     if: github.repository == 'imiphp/imi'
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2

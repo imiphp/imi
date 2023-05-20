@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use function Imi\env;
-use function Imi\ttyExec;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -19,7 +18,7 @@ function startServer(): void
         for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
                 $serverStarted = true;
@@ -87,8 +86,7 @@ function startServer(): void
         }
     }
     register_shutdown_function(static function () {
-        echo 'check ports...', \PHP_EOL;
-        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+        checkPorts([13000]);
     });
 }
 

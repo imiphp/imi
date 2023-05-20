@@ -8,8 +8,10 @@ use Imi\Pool\PoolManager;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
 
-abstract class WorkerLimiterLock
+class WorkerLimiterLock
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @return mixed
      */

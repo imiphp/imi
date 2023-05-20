@@ -43,6 +43,7 @@ return [
         'port'         => 8080,
         'configs'      => [
             'worker_num'        => 1,
+            'max_wait_time'     => 30,
         ],
     ],
 
@@ -55,6 +56,12 @@ return [
             'port'         => 8080,
             'configs'      => [
             ],
+        ],
+    ],
+
+    'workerman'       => [
+        'worker' => [
+            'stopTimeout' => 30,
         ],
     ],
 

@@ -72,6 +72,7 @@ return [
         'mode'             => \SWOOLE_BASE,
         'configs'          => [
             'worker_num'    => 2,
+            'max_wait_time' => 30,
         ],
         'workermanGateway' => [
             'registerAddress'      => '127.0.0.1:13004',
@@ -170,6 +171,9 @@ return [
             'beans' => [
                 'ServerUtil' => Imi\WorkermanGateway\Workerman\Server\Util\GatewayServerUtil::class,
             ],
+        ],
+        'worker' => [
+            'stopTimeout' => 30,
         ],
     ],
 

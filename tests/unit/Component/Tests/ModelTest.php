@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Db\Db;
+use Imi\Model\Annotation\DDL;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Article2;
@@ -22,6 +23,9 @@ use Imi\Test\Component\Model\TestEnum;
 use Imi\Test\Component\Model\TestFieldName;
 use Imi\Test\Component\Model\TestFieldNameNotCamel;
 use Imi\Test\Component\Model\TestJson;
+use Imi\Test\Component\Model\TestJsonEncodeDecode1;
+use Imi\Test\Component\Model\TestJsonEncodeDecode2;
+use Imi\Test\Component\Model\TestJsonExtractProperty;
 use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSet;
@@ -1251,5 +1255,56 @@ class ModelTest extends BaseTest
                               ->update();
         $record = VirtualColumn::find($record->id);
         $this->assertEquals(1, $record->amount);
+    }
+
+    public function testAnnotationDDL(): void
+    {
+        $ddl = new DDL(null, '1+1');
+        $this->assertEquals('1+1', $ddl->getRawSql());
+
+        $ddl = new DDL(null, '1+1', static fn (string $sql): string => '2' . $sql);
+        $this->assertEquals('21+1', $ddl->getRawSql());
+    }
+
+    public function testAnnotationExtractProperty(): void
+    {
+        $record = TestJsonExtractProperty::newInstance();
+        $record->jsonData = ['ex' => ['userId' => 123]];
+        $record->insert();
+        $record2 = TestJsonExtractProperty::find($record->id);
+        $this->assertNotNull($record2);
+        // @phpstan-ignore-next-line
+        $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
+        $this->assertEquals(123, $record2->userId);
+        $this->assertEquals(123, $record2->userId2);
+
+        $record = TestJsonExtractProperty::newInstance();
+        $record->jsonData = [];
+        $record->insert();
+        $record2 = TestJsonExtractProperty::find($record->id);
+        $this->assertNotNull($record2);
+        // @phpstan-ignore-next-line
+        $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
+        $this->assertNull($record2->userId);
+        $this->assertNull($record2->userId2);
+    }
+
+    public function testAnnotationEncodeDecode(): void
+    {
+        $record = TestJsonEncodeDecode1::newInstance();
+        $record->jsonData = ['name' => '宇润'];
+        $record->insert();
+        $record2 = TestJsonEncodeDecode1::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertIsArray($record2->jsonData);
+        $this->assertEquals('宇润', $record2->jsonData['name'] ?? null);
+
+        $record = TestJsonEncodeDecode2::newInstance();
+        $record->jsonData = ['name' => '宇润'];
+        $record->insert();
+        $record2 = TestJsonEncodeDecode2::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertIsObject($record2->jsonData);
+        $this->assertEquals('宇润', $record2->jsonData->name ?? null);
     }
 }

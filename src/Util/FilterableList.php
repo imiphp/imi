@@ -74,13 +74,14 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      */
     public function offsetSet($offset, $value): void
     {
+        $values = $this->parseList([$value]);
         if (null === $offset)
         {
-            $this->list[] = $value;
+            $this->list[] = $values[0];
         }
         else
         {
-            $this->list[$offset] = $value;
+            $this->list[$offset] = $values[0];
         }
     }
 
@@ -89,11 +90,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      */
     public function offsetUnset($offset): void
     {
-        $list = $this->list;
-        if (isset($list[$offset]))
-        {
-            unset($list[$offset]);
-        }
+        unset($this->list[$offset]);
     }
 
     /**
@@ -155,7 +152,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      */
     public function remove(...$value): void
     {
-        $this->list = ArrayUtil::remove($this->list, ...$value);
+        $this->list = ArrayUtil::removeKeepKey($this->list, ...$value);
     }
 
     /**
@@ -173,6 +170,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      */
     public function append(...$value): void
     {
+        $value = $this->parseList($value);
         foreach ($value as $row)
         {
             $this[] = $row;

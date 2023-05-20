@@ -6,6 +6,8 @@ namespace Imi\Util\Http\Consts;
 
 class StatusCode
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const CONTINUE = 100;
     public const SWITCHING_PROTOCOLS = 101;
     public const PROCESSING = 102;
@@ -131,10 +133,6 @@ class StatusCode
         self::NOT_EXTENDED                    => 'Not Extended',
         self::NETWORK_AUTHENTICATION_REQUIRED => 'Network Authentication Required',
     ];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 根据状态码获取原因短语.

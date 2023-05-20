@@ -140,7 +140,17 @@ class KafkaPool
             $config['maxWait'] = 10;
         }
 
-        return new ConsumerConfig($config);
+        $consumerConfig = new ConsumerConfig();
+        foreach ($config as $k => $v)
+        {
+            $methodName = 'set' . ucfirst($k);
+            if (method_exists(ConsumerConfig::class, $methodName))
+            {
+                $consumerConfig->{$methodName}($v);
+            }
+        }
+
+        return $consumerConfig;
     }
 
     public static function createProducerConfig(array $config = []): ProducerConfig
@@ -150,12 +160,18 @@ class KafkaPool
         {
             $config['clientId'] = $clientId;
         }
-        if (!isset($config['groupInstanceId']))
+
+        $producerConfig = new ProducerConfig();
+        foreach ($config as $k => $v)
         {
-            $config['groupInstanceId'] = $clientId;
+            $methodName = 'set' . ucfirst($k);
+            if (method_exists(ProducerConfig::class, $methodName))
+            {
+                $producerConfig->{$methodName}($v);
+            }
         }
 
-        return new ProducerConfig($config);
+        return $producerConfig;
     }
 
     /**

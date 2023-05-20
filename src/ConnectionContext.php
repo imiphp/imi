@@ -11,9 +11,7 @@ use Imi\Server\ServerManager;
 
 class ConnectionContext
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 为当前连接创建上下文.

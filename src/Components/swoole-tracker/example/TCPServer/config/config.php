@@ -47,6 +47,8 @@ return [
             // 'package_length_offset' => 0,       //第N个字节是包长度的值
             // 'package_body_offset'   => 4,       //第几个字节开始计算长度
             // 'package_max_length'    => 1024 * 1024,  //协议最大长度
+
+            'max_wait_time' => 30,
         ],
         // EOF自动分包数据处理器
         'dataParser'        => \Imi\SwooleTracker\Example\TCPServer\TCPServer\DataParser\JsonObjectEOFParser::class,

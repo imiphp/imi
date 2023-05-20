@@ -8,8 +8,10 @@ use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 
-abstract class SharedMemory
+class SharedMemory
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 获取新的内存共享连接实例.
      *

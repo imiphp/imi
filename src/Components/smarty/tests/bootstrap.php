@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use function Imi\ttyExec;
-
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
 function checkHttpServerStatus(): bool
@@ -13,7 +11,7 @@ function checkHttpServerStatus(): bool
         sleep(1);
         try
         {
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             $body = @file_get_contents('http://127.0.0.1:13456/ping', false, $context);
             if ('pong' === $body)
             {
@@ -66,8 +64,7 @@ function startServer(): void
         }
     }
     register_shutdown_function(static function () {
-        echo 'check ports...', \PHP_EOL;
-        ttyExec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+        checkPorts([13456]);
     });
 }
 

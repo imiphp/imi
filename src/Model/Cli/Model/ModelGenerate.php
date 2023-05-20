@@ -251,7 +251,7 @@ class ModelGenerate extends BaseCommand
                 'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
-                'ddlDecode'     => $ddlDecode,
+                'ddlDecode'     => '' === $ddlDecode ? null : $ddlDecode,
                 'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,
             ];

@@ -17,14 +17,16 @@ class ToolTest extends BaseTest
     public function testCoExit(): void
     {
         $cmd = [
-            \PHP_BINARY,
+            ...getTestPhpBinaryArray(),
             File::path(\dirname(Imi::getNamespacePath('Imi')), 'src', 'Cli', 'bin', 'imi-cli'),
             '--app-namespace',
             'Imi\Test\Component',
             'TestTool/test',
         ];
 
-        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
+        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')), [
+            'IMI_CODE_COVERAGE_NAME' => getCodeCoverageName(),
+        ]);
         $process->mustRun();
 
         $this->assertEquals(0, $process->getExitCode(), $process->getCommandLine());
@@ -32,7 +34,9 @@ class ToolTest extends BaseTest
         $cmd[] = '--code';
         $cmd[] = $code = random_int(0, 255);
 
-        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
+        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')), [
+            'IMI_CODE_COVERAGE_NAME' => getCodeCoverageName(),
+        ]);
         $process->run();
         $this->assertEquals($code, $process->getExitCode(), $process->getCommandLine());
     }
@@ -61,7 +65,7 @@ class ToolTest extends BaseTest
     public function testBool($suffix, array $results): void
     {
         $cmd = [
-            \PHP_BINARY,
+            ...getTestPhpBinaryArray(),
             File::path(\dirname(Imi::getNamespacePath('Imi')), 'src', 'Cli', 'bin', 'imi-cli'),
             '--app-namespace',
             'Imi\Test\Component',
@@ -76,7 +80,9 @@ class ToolTest extends BaseTest
         {
             $cmd[] = $suffix;
         }
-        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
+        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')), [
+            'IMI_CODE_COVERAGE_NAME' => getCodeCoverageName(),
+        ]);
         $process->mustRun();
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
@@ -105,7 +111,7 @@ class ToolTest extends BaseTest
     public function testArgument($suffix, array $results): void
     {
         $cmd = [
-            \PHP_BINARY,
+            ...getTestPhpBinaryArray(),
             File::path(\dirname(Imi::getNamespacePath('Imi')), 'src', 'Cli', 'bin', 'imi-cli'),
             '--app-namespace',
             'Imi\Test\Component',
@@ -120,7 +126,9 @@ class ToolTest extends BaseTest
         {
             $cmd[] = $suffix;
         }
-        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
+        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')), [
+            'IMI_CODE_COVERAGE_NAME' => getCodeCoverageName(),
+        ]);
         $process->mustRun();
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();
@@ -152,7 +160,7 @@ class ToolTest extends BaseTest
     public function testNegatable($suffix, array $results): void
     {
         $cmd = [
-            \PHP_BINARY,
+            ...getTestPhpBinaryArray(),
             File::path(\dirname(Imi::getNamespacePath('Imi')), 'src', 'Cli', 'bin', 'imi-cli'),
             '--app-namespace',
             'Imi\Test\Component',
@@ -167,7 +175,9 @@ class ToolTest extends BaseTest
         {
             $cmd[] = $suffix;
         }
-        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')));
+        $process = new Process($cmd, \dirname(Imi::getNamespacePath('Imi')), [
+            'IMI_CODE_COVERAGE_NAME' => getCodeCoverageName(),
+        ]);
         $process->mustRun();
         $this->assertEquals(0, $process->getExitCode());
         $output = $process->getOutput();

@@ -9,12 +9,10 @@ namespace Imi\Cli;
  */
 class CliAppContexts
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 命令行名称.
      */
     public const COMMAND_NAME = 'command_name';
-
-    private function __construct()
-    {
-    }
 }

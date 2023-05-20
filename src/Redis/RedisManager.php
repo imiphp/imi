@@ -13,14 +13,12 @@ use Imi\Timer\Timer;
 
 class RedisManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 连接配置.
      */
     private static ?array $connections = null;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取新的 Redis 连接实例.

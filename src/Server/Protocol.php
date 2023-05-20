@@ -6,6 +6,8 @@ namespace Imi\Server;
 
 class Protocol
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     public const HTTP = 'http';
 
     public const WEBSOCKET = 'websocket';
@@ -18,8 +20,4 @@ class Protocol
         self::WEBSOCKET,
         self::TCP,
     ];
-
-    private function __construct()
-    {
-    }
 }

@@ -15,8 +15,10 @@ use Imi\Redis\RedisManager;
 /**
  * 限流器手动调用类.
  */
-abstract class RateLimiter
+class RateLimiter
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 限流
      *

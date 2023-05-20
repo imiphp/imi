@@ -9,9 +9,7 @@ namespace Imi\Util;
  */
 class ArrayUtil
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 从数组中移除一个或多个元素，重新组织为连续的键.
@@ -125,10 +123,6 @@ class ArrayUtil
         $keys = array_rand($array, $number);
         foreach ((array) $keys as $key)
         {
-            if (!isset($array[$key]))
-            {
-                break;
-            }
             if ($keepKey)
             {
                 $result[$key] = $array[$key];

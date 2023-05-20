@@ -31,6 +31,7 @@ return [
         'port'         => 13002,
         'configs'      => [
             'worker_num'    => 1,
+            'max_wait_time' => 30,
         ],
     ],
 

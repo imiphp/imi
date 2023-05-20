@@ -17,6 +17,8 @@ class ObjectArrayHelperTest extends BaseTest
         $data2 = new \stdClass();
         $data2->id = 2;
         $data2->name = 'b';
+        $data2->object = new \stdClass();
+        $data2->object->value = 123;
 
         return [
             'name'          => 'imi',
@@ -35,13 +37,22 @@ class ObjectArrayHelperTest extends BaseTest
         $data = $this->getTestData();
         $this->assertEquals($data['data1']['name'], ObjectArrayHelper::get($data, 'data1.name'));
 
+        ObjectArrayHelper::set($data, '', '');
+
         ObjectArrayHelper::set($data, 'data2.name', $data['data2']->name . '-2');
         $this->assertEquals('b-2', $data['data2']->name);
         $this->assertEquals($data['data2']->name, ObjectArrayHelper::get($data, 'data2.name'));
 
+        $this->assertEquals(123, ObjectArrayHelper::get($data, 'data2.object.value'));
+        ObjectArrayHelper::set($data, 'data2.object.value', 456);
+        $this->assertEquals(456, ObjectArrayHelper::get($data, 'data2.object.value'));
+
         ObjectArrayHelper::set($data, 'description', 'imi niubi');
         $this->assertEquals('imi niubi', $data['description']);
         $this->assertEquals($data['description'], ObjectArrayHelper::get($data, 'description'));
+
+        $this->assertEquals(123, ObjectArrayHelper::get($data, 'data1.id.a', 123));
+        $this->assertEquals(456, ObjectArrayHelper::get($data, '', 456));
     }
 
     public function testExists(): void
@@ -61,6 +72,9 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertTrue(ObjectArrayHelper::exists($data, 'name'));
         $this->assertTrue(ObjectArrayHelper::exists($data, 'data1.name'));
         $this->assertTrue(ObjectArrayHelper::exists($data, 'data2.name'));
+        $this->assertTrue(ObjectArrayHelper::exists($data, 'data2.object.value'));
+
+        ObjectArrayHelper::remove($data, '');
 
         ObjectArrayHelper::remove($data, 'name');
         $this->assertFalse(ObjectArrayHelper::exists($data, 'name'));
@@ -68,6 +82,8 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertFalse(ObjectArrayHelper::exists($data, 'data1.name'));
         ObjectArrayHelper::remove($data, 'data2.name');
         $this->assertFalse(ObjectArrayHelper::exists($data, 'data2.name'));
+        ObjectArrayHelper::remove($data, 'data2.object.value');
+        $this->assertFalse(ObjectArrayHelper::exists($data, 'data2.object.value'));
     }
 
     public function testColumn(): void
@@ -131,5 +147,27 @@ class ObjectArrayHelperTest extends BaseTest
         ObjectArrayHelper::filter($data, ['name'], 'deny');
         $this->assertEquals(1, $data->id);
         $this->assertFalse(ObjectArrayHelper::exists($data, 'name'));
+
+        $this->expectExceptionMessage('Unknow mode abc');
+        ObjectArrayHelper::filter($data, ['name'], 'abc');
+    }
+
+    public function testToArray(): void
+    {
+        $data = new \ArrayObject(['name' => 'imi']);
+        $this->assertEquals([
+            'name' => 'imi',
+        ], ObjectArrayHelper::toArray($data));
+
+        $data = (static fn () => yield 'name' => 'imi')();
+        $this->assertEquals([
+            'name' => 'imi',
+        ], ObjectArrayHelper::toArray($data));
+
+        $data = new \stdClass();
+        $data->name = 'imi';
+        $this->assertEquals([
+            'name' => 'imi',
+        ], ObjectArrayHelper::toArray($data));
     }
 }

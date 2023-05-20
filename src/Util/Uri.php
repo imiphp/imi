@@ -114,7 +114,7 @@ class Uri implements UriInterface, \Stringable
         // 锚点
         $fragment = ('' === $fragment ? '' : ('#' . $fragment));
 
-        return "{$scheme}{$userInfo}{$host}{$port}{$path}{$query}{$fragment}";
+        return $scheme . $userInfo . $host . $port . $path . $query . $fragment;
     }
 
     /**
@@ -237,7 +237,7 @@ class Uri implements UriInterface, \Stringable
     {
         if (!\is_string($scheme))
         {
-            throw new \InvalidArgumentException('Invalid or unsupported schemes');
+            throw new \InvalidArgumentException('Invalid or unsupported schemes'); // @codeCoverageIgnore
         }
         $self = clone $this;
         $self->scheme = $scheme;

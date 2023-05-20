@@ -6,9 +6,7 @@ namespace Imi\Swoole\Util;
 
 trait TCoroutine
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 判断当前是否在协程中运行.

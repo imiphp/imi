@@ -11,6 +11,8 @@ use Imi\Enum\Annotation\EnumItem;
  */
 class CronTaskType extends \Imi\Cron\Consts\CronTaskType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * @EnumItem("随机工作进程任务")
      */
@@ -35,8 +37,4 @@ class CronTaskType extends \Imi\Cron\Consts\CronTaskType
      * @EnumItem("定时任务进程")
      */
     public const CRON_PROCESS = 'cron_process';
-
-    private function __construct()
-    {
-    }
 }

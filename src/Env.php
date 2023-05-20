@@ -8,9 +8,7 @@ use Imi\Validate\ValidatorHelper;
 
 class Env
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * @param mixed $default

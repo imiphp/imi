@@ -29,9 +29,22 @@ class ArrayDataTest extends BaseTest
         ];
         $data = new ArrayData($rawData);
 
+        // @phpstan-ignore-next-line
+        $this->assertFalse($data->get(1));
+        $this->assertFalse($data->get('name.a'));
+
+        $this->assertEquals($rawData, $data->get());
         $this->assertEquals($rawData, $data->getRawData());
-        $this->assertEquals(5, $data->length());
-        $this->assertCount(5, $data);
+
+        $data->set([
+            'data3' => 123,
+        ]);
+        $rawData['data3'] = 123;
+        $this->assertEquals($rawData, $data->get());
+        $this->assertEquals($rawData, $data->getRawData());
+
+        $this->assertEquals(6, $data->length());
+        $this->assertCount(6, $data);
         foreach ($data as $k => $v)
         {
             $this->assertEquals($rawData[$k], $v);
@@ -77,6 +90,10 @@ class ArrayDataTest extends BaseTest
             'b' => 1,
         ], $data->get('a'));
 
+        // @phpstan-ignore-next-line
+        $this->assertFalse($data->remove(1));
+        $this->assertTrue($data->remove('data1.id'));
+
         $data->set([
             'a' => [
                 'c' => 2,
@@ -95,6 +112,8 @@ class ArrayDataTest extends BaseTest
             'c' => 2,
         ], $data->get('a'));
 
+        // @phpstan-ignore-next-line
+        $this->assertFalse($data->setVal(1));
         $data->setVal('x.y', 1);
         $this->assertEquals(1, $data->x['y']);
         $this->assertEquals($data->x['y'], $data['x.y']);
@@ -121,5 +140,8 @@ class ArrayDataTest extends BaseTest
 
         $data->clear();
         $this->assertEmpty($data->getRawData());
+
+        $data[] = 1;
+        $this->assertEquals([1], $data->getRawData());
     }
 }

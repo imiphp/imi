@@ -9,6 +9,8 @@ namespace Imi\Aop;
  */
 class PointCutType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 方法.
      */
@@ -28,8 +30,4 @@ class PointCutType
      * 带有注解的类的构造方法.
      */
     public const ANNOTATION_CONSTRUCT = 4;
-
-    private function __construct()
-    {
-    }
 }

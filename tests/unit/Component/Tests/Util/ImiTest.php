@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Util;
 
+use Imi\App;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Util\Imi\TestPropertyClass;
 use Imi\Util\File;
 use Imi\Util\Imi;
+use Imi\Util\Process\ProcessAppContexts;
 
 /**
  * @testdox Imi\Util\Imi
@@ -139,19 +141,31 @@ class ImiTest extends BaseTest
      */
     public function testCheckCompareRule(): void
     {
-        $this->assertTrue(Imi::checkCompareRule('a=1', static function (string $name) {
+        $this->assertTrue(Imi::checkCompareRule('a=1', function (string $name) {
             static $data = [
                 'a' => 1,
             ];
+            $this->assertEquals('a', $name);
 
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRule('a=2', static function (string $name) {
+        $this->assertFalse(Imi::checkCompareRule('a=2', function (string $name) {
             static $data = [
                 'a' => 1,
             ];
+            $this->assertEquals('a', $name);
 
             return $data[$name];
+        }));
+        $this->assertTrue(Imi::checkCompareRule('!id', function (string $name) {
+            $this->assertEquals('id', $name);
+
+            return null;
+        }));
+        $this->assertTrue(Imi::checkCompareRule('test', function (string $name) {
+            $this->assertEquals('test', $name);
+
+            return true;
         }));
     }
 
@@ -229,6 +243,7 @@ class ImiTest extends BaseTest
     {
         $this->assertEquals(__DIR__, Imi::getNamespacePath('Imi\Test\Component\Tests\Util'));
         $this->assertEquals(__DIR__, Imi::getNamespacePath('Imi\Test\Component\Tests\Util', true));
+        $this->assertNull(Imi::getNamespacePath('Imi\Test\Unused\Test'));
     }
 
     /**
@@ -251,5 +266,75 @@ class ImiTest extends BaseTest
         $this->assertEquals('bbb', Imi::getClassPropertyValue('TestPropertyClass', 'b'));
         $this->assertEquals(1, Imi::getClassPropertyValue(TestPropertyClass::class, 'a'));
         $this->assertEquals('bbb', Imi::getClassPropertyValue(TestPropertyClass::class, 'b'));
+    }
+
+    public function testGetImiCmd(): void
+    {
+        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME'])) . ' ' . escapeshellarg('test');
+        $namespace = ' --app-namespace ' . escapeshellarg(App::getNamespace());
+        $this->assertEquals($cmd . $namespace, Imi::getImiCmd('test'));
+
+        $this->assertEquals($cmd . ' ' . escapeshellarg('arguments') . ' -a -b ' . escapeshellarg('bbb') . ' --cc --dd ' . escapeshellarg('ddd') . $namespace, Imi::getImiCmd('test', ['arguments'], ['a', 'b' => 'bbb', 'cc', 'dd' => 'ddd']));
+    }
+
+    public function testGetImiCmdArray(): void
+    {
+        $cmdTpl = [
+            \PHP_BINARY,
+            App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']),
+            'test',
+        ];
+        $cmd = $cmdTpl;
+        $cmd[] = '--app-namespace';
+        $cmd[] = App::getNamespace();
+        $this->assertEquals($cmd, Imi::getImiCmdArray('test'));
+
+        $cmd = $cmdTpl;
+        $cmd[] = 'arguments';
+        $cmd[] = '-a';
+        $cmd[] = '-b';
+        $cmd[] = 'bbb';
+        $cmd[] = '--cc';
+        $cmd[] = '--dd';
+        $cmd[] = 'ddd';
+        $cmd[] = '--app-namespace';
+        $cmd[] = App::getNamespace();
+        $this->assertEquals($cmd, Imi::getImiCmdArray('test', ['arguments'], ['a', 'b' => 'bbb', 'cc', 'dd' => 'ddd']));
+    }
+
+    public function testGetModeRuntimePath(): void
+    {
+        $this->assertEquals(\dirname(__DIR__, 2) . \DIRECTORY_SEPARATOR . '.runtime' . \DIRECTORY_SEPARATOR . 'test' . \DIRECTORY_SEPARATOR . 'a', Imi::getModeRuntimePath('test', 'a'));
+    }
+
+    public function testGetCurrentModeRuntimePath(): void
+    {
+        $this->assertEquals(\dirname(__DIR__, 2) . \DIRECTORY_SEPARATOR . '.runtime' . \DIRECTORY_SEPARATOR . 'cli' . \DIRECTORY_SEPARATOR . 'a', Imi::getCurrentModeRuntimePath('a'));
+    }
+
+    public function testEval(): void
+    {
+        $this->assertEquals(3, Imi::eval('return 1+2;'));
+        $this->assertEquals(4, Imi::eval('return 2+2;', null, false));
+    }
+
+    public function testCheckAppType(): void
+    {
+        $this->assertTrue(Imi::checkAppType('cli'));
+        $this->assertFalse(Imi::checkAppType('swoole'));
+    }
+
+    public function testFormatByte(): void
+    {
+        $this->assertEquals('1.00 B', Imi::formatByte(1));
+        $this->assertEquals('1.00 KB', Imi::formatByte(1024));
+        $this->assertEquals('1.00 MB', Imi::formatByte(1024 * 1024));
+        $this->assertEquals('1.00 GB', Imi::formatByte(1024 * 1024 * 1024));
+        $this->assertEquals('1.00 TB', Imi::formatByte(1024 * 1024 * 1024 * 1024));
+        $this->assertEquals('1.00 PB', Imi::formatByte(1024 * 1024 * 1024 * 1024 * 1024));
+        $this->assertEquals('1024.00 PB', Imi::formatByte(1024 * 1024 * 1024 * 1024 * 1024 * 1024));
+
+        $this->assertEquals('1.006 KB', Imi::formatByte(1030, 3));
+        $this->assertEquals('1.006', Imi::formatByte(1030, 3, false));
     }
 }

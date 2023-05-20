@@ -6,6 +6,8 @@ namespace Imi\Db\Annotation;
 
 class TransactionType
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 事务嵌套.
      */
@@ -20,8 +22,4 @@ class TransactionType
      * 如果当前不在事务中则开启事务
      */
     public const AUTO = 'auto';
-
-    private function __construct()
-    {
-    }
 }

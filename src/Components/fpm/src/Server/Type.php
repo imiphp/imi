@@ -6,12 +6,10 @@ namespace Imi\Fpm\Server;
 
 class Type
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * HTTP服务器.
      */
     public const HTTP = 'FpmHttpServer';
-
-    private function __construct()
-    {
-    }
 }

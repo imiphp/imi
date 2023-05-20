@@ -18,11 +18,45 @@ function startServer(): void
     function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 20; ++$i)
+        for ($i = 0; $i < 60; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 3]]);
+            $context = stream_context_create(['http' => ['timeout' => 20]]);
             if ('imi' === @file_get_contents(env('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
+            {
+                $serverStarted = true;
+                break;
+            }
+        }
+
+        return $serverStarted;
+    }
+
+    // @phpstan-ignore-next-line
+    function checkPort13004(): bool
+    {
+        $serverStarted = false;
+        for ($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            if (checkPort('127.0.0.1', 13004))
+            {
+                $serverStarted = true;
+                break;
+            }
+        }
+
+        return $serverStarted;
+    }
+
+    // @phpstan-ignore-next-line
+    function checkPort13002(): bool
+    {
+        $serverStarted = false;
+        for ($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            if (checkPort('127.0.0.1', 13002))
             {
                 $serverStarted = true;
                 break;
@@ -51,9 +85,11 @@ function startServer(): void
             ],
             'WorkermanRegisterServer'    => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name register',
+                'checkStatus'   => 'checkPort13004',
             ],
             'WorkermanGatewayServer'     => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name gateway',
+                'checkStatus'   => 'checkPort13002',
             ],
             'SwooleServer'               => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-swoole.sh',
@@ -140,39 +176,8 @@ function runTestServer(string $name, array $options): void
     }
 }
 
-/**
- * 检查端口是否可以被绑定.
- */
-function checkPort(string $host, int $port, ?int &$errno = null, ?string &$errstr = null): bool
-{
-    $socket = @stream_socket_client('tcp://' . $host . ':' . $port, $errno, $errstr, 3);
-    if (!$socket)
-    {
-        return false;
-    }
-    fclose($socket);
-
-    return true;
-}
-
 startServer();
 
 register_shutdown_function(static function () {
-    echo 'check ports...', \PHP_EOL;
-    foreach ([13000, 13002, 13004, 12900] as $port)
-    {
-        echo "checking port {$port}...";
-        $count = 0;
-        while (checkPort('127.0.0.1', $port))
-        {
-            if ($count >= 10)
-            {
-                echo 'failed', \PHP_EOL;
-                continue 2;
-            }
-            ++$count;
-            sleep(1);
-        }
-        echo 'OK', \PHP_EOL;
-    }
+    checkPorts([13000, 13002, 13004, 12900]);
 });

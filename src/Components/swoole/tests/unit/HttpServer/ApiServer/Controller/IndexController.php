@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Aop\Annotation\Inject;
+use Imi\HttpValidate\Annotation\HttpValidation;
 use Imi\RequestContext;
 use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Annotation\RequestParam;
@@ -22,6 +23,7 @@ use Imi\Swoole\Process\ProcessManager;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
 use Imi\Util\Stream\MemoryStream;
+use Imi\Validate\Annotation\Required;
 use Swoole\Coroutine;
 
 /**
@@ -520,5 +522,28 @@ class IndexController extends HttpController
                 }
             }
         });
+    }
+
+    /**
+     * @Action
+     *
+     * @HttpValidation
+     */
+    public function validateNone(): void
+    {
+    }
+
+    /**
+     * @Action
+     *
+     * @HttpValidation
+     *
+     * @Required(name="$get.id")
+     */
+    public function validate(int $id = 0): array
+    {
+        return [
+            'id' => $id,
+        ];
     }
 }

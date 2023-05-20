@@ -30,6 +30,8 @@ use function Imi\ttyExec;
  */
 class ProcessManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     private static array $map = [];
 
     /**
@@ -52,10 +54,6 @@ class ProcessManager
     private static array $managerProcessSet = [];
 
     private static Table $processInfoTable;
-
-    private function __construct()
-    {
-    }
 
     public static function getMap(): array
     {

@@ -14,16 +14,14 @@ use Imi\RequestContext;
  */
 abstract class BaseFacade
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 门面缓存.
      *
      * @var \Imi\Facade\Annotation\Facade[]
      */
     protected static array $cache = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取实例.

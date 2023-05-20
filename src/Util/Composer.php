@@ -12,13 +12,11 @@ use Imi\Macro\AutoLoader;
  */
 class Composer
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     private static ?array $classLoaders = null;
 
     private static ?array $classLoadersWithVendorDir = null;
-
-    private function __construct()
-    {
-    }
 
     /**
      * 获取 Composer ClassLoader 对象

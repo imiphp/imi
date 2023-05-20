@@ -281,12 +281,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0", "8.1"]
-        swoole: [v5.0.3, v4.8.11]
+        php: ["7.4", "8.0", "8.1", "8.2"]
+        swoole: [v5.0.3, v4.8.13]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
             swoole: v5.0.3
+          - php: 8.2
+            swoole: v4.8.13
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -405,9 +407,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, "8.0", 8.1]
+        php: ["7.4", "8.0", "8.1"] # 部分扩展还未在 pecl 发布 PHP 8.2 Windows 版扩展，所以无法测试
         roadrunner: [2.7.*]
-
+        extensions:
+          [
+            "apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets",
+          ]
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -435,7 +440,7 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: session.save_path=C:\temp
           tools: pecl
-          extensions: apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets
+          extensions: ${{ matrix.extensions }}
         env:
           fail-fast: true
 
@@ -489,7 +494,7 @@ jobs:
   #       swoole:
   #         # - version: v5.0.3
   #         #   postgresql_version: ""
-  #         # - version: v4.8.11
+  #         # - version: v4.8.13
   #         #   postgresql_version: ""
   #         - version: fix-curl-hook-php8.2
   #           postgresql_version: ""

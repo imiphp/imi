@@ -30,7 +30,8 @@ return [
         'host'         => '0.0.0.0',
         'port'         => 13000,
         'configs'      => [
-            'log_file' => app_real_root_path() . '/.runtime/swoole/swoole.log',
+            'log_file'      => app_real_root_path() . '/.runtime/swoole/swoole.log',
+            'max_wait_time' => 30,
             // 'worker_num'        =>  8,
             // 'task_worker_num'   =>  16,
         ],
@@ -57,6 +58,12 @@ return [
             ],
         ],
     ] : [],
+
+    'workerman'       => [
+        'worker' => [
+            'stopTimeout' => 30,
+        ],
+    ],
 
     // fpm 服务器配置
     'fpm'               => 'fpm' === $mode ? [

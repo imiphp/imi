@@ -24,14 +24,12 @@ use Imi\Model\Relation\Update;
 
 class ModelRelationManager
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 模型关联字段名数组.
      */
     private static array $relationFieldsNames = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 初始化模型.

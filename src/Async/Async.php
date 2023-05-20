@@ -11,11 +11,9 @@ use Imi\Config;
 
 class Async
 {
-    private static IAsyncHandler $handler;
+    use \Imi\Util\Traits\TStaticClass;
 
-    private function __construct()
-    {
-    }
+    private static IAsyncHandler $handler;
 
     /**
      * 获取实例.

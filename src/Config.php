@@ -9,6 +9,8 @@ use Imi\Util\Imi;
 
 class Config
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * 配置数组.
      *
@@ -17,10 +19,6 @@ class Config
     private static array $configs = [];
 
     private static array $dotRulesCache = [];
-
-    private function __construct()
-    {
-    }
 
     /**
      * 增加配置.

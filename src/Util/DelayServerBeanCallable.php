@@ -23,6 +23,8 @@ class DelayServerBeanCallable
 
     private ?bool $returnsReference = null;
 
+    private ?object $instance = null;
+
     /**
      * @param string|IServer $server
      */
@@ -60,7 +62,7 @@ class DelayServerBeanCallable
 
     public function getInstance(): object
     {
-        return $this->getServer()->getBean($this->beanName, ...$this->constructArgs);
+        return $this->instance ??= $this->getServer()->getBean($this->beanName, ...$this->constructArgs);
     }
 
     public function returnsReference(): bool
@@ -73,7 +75,7 @@ class DelayServerBeanCallable
      *
      * @return mixed
      */
-    public function __invoke(...$args)
+    public function &__invoke(...$args)
     {
         if ($this->returnsReference())
         {
@@ -81,7 +83,9 @@ class DelayServerBeanCallable
         }
         else
         {
-            return $this->getInstance()->{$this->methodName}(...$args);
+            $result = $this->getInstance()->{$this->methodName}(...$args);
+
+            return $result;
         }
     }
 
@@ -92,12 +96,11 @@ class DelayServerBeanCallable
             'beanName'         => $this->beanName,
             'methodName'       => $this->methodName,
             'constructArgs'    => $this->constructArgs,
-            'returnsReference' => $this->returnsReference,
         ];
     }
 
     public function __unserialize(array $data): void
     {
-        ['server' => $this->server, 'beanName' => $this->beanName, 'methodName' => $this->methodName, 'constructArgs' => $this->constructArgs, 'returnsReference' => $this->returnsReference] = $data;
+        ['server' => $this->server, 'beanName' => $this->beanName, 'methodName' => $this->methodName, 'constructArgs' => $this->constructArgs] = $data;
     }
 }

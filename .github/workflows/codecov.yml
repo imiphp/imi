@@ -13,8 +13,11 @@ on:
   pull_request:
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        testType: [core, swoole, components]
     services:
       zookeeper:
         image: zookeeper:3.4
@@ -97,6 +100,7 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     env:
+      TEST_TYPE: ${{ matrix.testType }}
       SWOOLE_VERSION: v5.0.3
       ROADRUNNER_VERSION: 2.7.*
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
@@ -110,6 +114,7 @@ jobs:
         --enable-swoole-json
         --enable-swoole-curl
         --enable-swoole-pgsql
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -118,18 +123,27 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2
           tools: pecl
           coverage: xdebug
           extensions: >
             apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
-            sockets, zip, inotify, event, apcu,
+            sockets, zip, inotify, event
             swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
       - name: Check Version
         run: |
           php -v
           php -m
           php --ri swoole
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache vendor
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts
@@ -139,160 +153,67 @@ jobs:
           PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
           src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
-          echo "test_ready=1" >> $GITHUB_ENV
-      - name: Run core test suite
-        timeout-minutes: 5
-        run: php vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover=./core-coverage.xml -v
-      - name: Run swoole test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 5
-        run: >
-          php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/swoole/tests/phpunit.xml
-          --coverage-clover=./swoole-coverage.xml -v
-      - name: Run workerman test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/workerman/vendor/bin/phpunit
-          -c ./src/Components/workerman/tests/phpunit.xml
-          --coverage-clover=./workerman-coverage.xml -v
-      - name: Run workerman-gateway test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/workerman-gateway/vendor/bin/phpunit
-          -c ./src/Components/workerman-gateway/tests/phpunit.xml
-          --testsuite workerman
-          --coverage-clover=./workerman-gateway-coverage.xml -v
-      - name: Run workerman-gateway(swoole) test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/workerman-gateway/vendor/bin/phpunit
-          -c ./src/Components/workerman-gateway/tests/phpunit.xml
-          --testsuite swoole
-          --coverage-clover=./workerman-gateway-swoole-coverage.xml -v
-      - name: Run roadrunner test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/roadrunner/vendor/bin/phpunit
-          -c ./src/Components/roadrunner/tests/phpunit.xml
-          --coverage-clover=./roadrunner-coverage.xml -v
-      - name: Run fpm test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/fpm/vendor/bin/phpunit
-          -c ./src/Components/fpm/tests/phpunit.xml
-          --coverage-clover=./fpm-coverage.xml -v
-      - name: Run jwt test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/jwt/vendor/bin/phpunit
-          -c ./src/Components/jwt/tests/phpunit.xml
-          --coverage-clover=./jwt-coverage.xml -v
-      - name: Run queue test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/queue/tests/phpunit.xml
-          --coverage-clover=./queue-coverage.xml -v
-      - name: Run amqp-swoole test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/amqp/tests/phpunit.xml
-          --coverage-clover=./amqp-swoole-coverage.xml -v
-      - name: Run amqp-workerman test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          AMQP_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/amqp/tests/phpunit.xml
-          --coverage-clover=./amqp-workerman-coverage.xml -v
-      - name: Run kafka-swoole test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          KAFKA_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/kafka/tests/phpunit.xml
-          --coverage-clover=./kafka-swoole-coverage.xml -v
-      - name: Run kafka-workerman test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          KAFKA_TEST_MODE=workerman php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/kafka/tests/phpunit.xml
-          --coverage-clover=./kafka-workerman-coverage.xml -v
-      - name: Run grpc test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/grpc/tests/phpunit.xml
-          --coverage-clover=./grpc-coverage.xml -v
-      - name: Run snowflake test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/snowflake/vendor/bin/phpunit
-          -c ./src/Components/snowflake/tests/phpunit.xml
-          --coverage-clover=./snowflake-coverage.xml -v
-      - name: Run mqtt test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/mqtt/tests/phpunit.xml
-          --coverage-clover=./mqtt-coverage.xml -v
-      - name: Run smarty test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/smarty/tests/phpunit.xml
-          --coverage-clover=./smarty-coverage.xml -v
-      - name: Run pgsql test suite
-        if: ${{ env.test_ready && always() }}
-        timeout-minutes: 3
-        run: >
-          php src/Components/swoole/bin/swoole-phpunit
-          -c ./src/Components/pgsql/tests/phpunit.xml
-          --coverage-clover=./pgsql-coverage.xml -v
-      - name: Print logs
-        if: failure()
-        run: php .github/print-logs.php
+      - name: Run test suite
+        id: run-test-suite
+        run: ./dev/test-coverage-actions.sh php $TEST_TYPE
+      - name: Upload coverage file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.testType }}-coverage
+          path: tests/coverage.php
+      - name: Upload log files
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.testType }}-logs
+          path: |
+            tests/unit/Component/logs/*.log
+            src/Components/*/tests/*/*/logs/*.log
+            src/Components/*/example/.runtime/logs/*.log
+  upload-coverage:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: pecl
+          extensions: >
+            bcmath, curl, openssl, mbstring, intl, json, sockets, zip, event
+      - name: Check Version
+        run: |
+          php -v
+          php -m
+      - name: Prepare
+        run: |
+          composer update --prefer-dist --no-progress
+          mkdir -p ./dev/cover
+      - name: Download core coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: core-coverage
+          path: ./dev/cover/core-coverage.php
+      - name: Download swoole coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: swoole-coverage
+          path: ./dev/cover/swoole-coverage.php
+      - name: Download components coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: components-coverage
+          path: ./dev/cover/components-coverage.php
+      - name: Parse coverage data
+        run: php ./dev/merge-coverage.php clover
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: "./core-coverage.xml,\
-            ./swoole-coverage.xml,\
-            ./workerman-coverage.xml,\
-            ./workerman-gateway-coverage.xml,\
-            ./workerman-gateway-swoole-coverage.xml,\
-            ./roadrunner-coverage.xml,\
-            ./fpm-coverage.xml,\
-            ./jwt-coverage.xml,\
-            ./queue-coverage.xml,\
-            ./amqp-swoole-coverage.xml,\
-            ./amqp-workerman-coverage.xml,\
-            ./kafka-swoole-coverage.xml,\
-            ./kafka-workerman-coverage.xml,\
-            ./grpc-coverage.xml,\
-            ./amqp-swoole-coverage.xml,\
-            ./amqp-workerman-coverage.xml,\
-            ./kafka-swoole-coverage.xml,\
-            ./kafka-workerman-coverage.xml,\
-            ./grpc-coverage.xml,\
-            ./snowflake-coverage.xml,\
-            ./mqtt-coverage.xml,\
-            ./smarty-coverage.xml,\
-            ./pgsql-coverage.xml"
-          flags: unittests
-          name: umbrella
+          file: "./tests/coverage.xml"
+      - name: Upload coverage reports to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: tests/coverage.xml

@@ -11,9 +11,7 @@ namespace Imi\Util;
  */
 class Text
 {
-    private function __construct()
-    {
-    }
+    use \Imi\Util\Traits\TStaticClass;
 
     /**
      * 字符串是否以另一个字符串开头.
@@ -22,18 +20,7 @@ class Text
     {
         if ($caseSensitive)
         {
-            # if \PHP_VERSION_ID < 80000
-            if (\PHP_VERSION_ID >= 80000)
-            {
-                return str_starts_with($string, $compare);
-            }
-            else
-            {
-                # endif
-                return str_starts_with($string, $compare);
-                # if \PHP_VERSION_ID < 80000
-            }
-        # endif
+            return str_starts_with($string, $compare);
         }
         else
         {
@@ -56,14 +43,20 @@ class Text
             else
             {
                 # endif
-                return $compare === strrchr($string, $compare);
+                return $compare === strrchr($string, $compare); // @codeCoverageIgnore
                 # if \PHP_VERSION_ID < 80000
             }
         # endif
         }
         else
         {
-            return 0 === substr_compare($compare, strrchr($string, $compare), 0, 0, true);
+            $needle = strrchr($string, $compare);
+            if (false === $needle)
+            {
+                return false;
+            }
+
+            return 0 === substr_compare($compare, $needle, 0, 0, true);
         }
     }
 

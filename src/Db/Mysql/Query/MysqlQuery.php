@@ -88,6 +88,10 @@ class MysqlQuery extends Query
      */
     public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string
     {
+        if (!$keywords)
+        {
+            return '';
+        }
         foreach ($keywords as $k => $v)
         {
             if (Text::isEmpty($v))
@@ -95,9 +99,13 @@ class MysqlQuery extends Query
                 unset($keywords[$k]);
             }
         }
-        $isLastStar = '*' === end($keywords);
+        // @phpstan-ignore-next-line
+        if (!$keywords)
+        {
+            return '';
+        }
         $result = '`' . implode('`.`', $keywords) . '`';
-        if ($isLastStar)
+        if ('*' === end($keywords))
         {
             $result = str_replace('`*`', '*', $result);
         }

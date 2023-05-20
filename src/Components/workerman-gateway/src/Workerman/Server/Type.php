@@ -6,6 +6,8 @@ namespace Imi\WorkermanGateway\Workerman\Server;
 
 class Type
 {
+    use \Imi\Util\Traits\TStaticClass;
+
     /**
      * WebSocket 业务服务器.
      */
@@ -25,8 +27,4 @@ class Type
      * 注册中心服务器.
      */
     public const REGISTER = 'WorkermanGatewayRegisterServer';
-
-    private function __construct()
-    {
-    }
 }

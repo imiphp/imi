@@ -18,7 +18,6 @@ return [
     // 扫描目录
     'beanScan'          => [
         'GrpcApp\Listener',
-        'GrpcApp\Task',
     ],
 
     // 组件命名空间
@@ -40,6 +39,7 @@ return [
         'port'      => 8080,
         'configs'   => [
             'worker_num'        => 1,
+            'max_wait_time'     => 30,
         ],
     ],
 

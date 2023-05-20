@@ -105,6 +105,8 @@ namespace Imi
      * 尝试使用 tty 模式执行命令，可以保持带颜色格式的输出
      * 返回进程退出码
      *
+     * @codeCoverageIgnore
+     *
      * @param string|array $commands
      */
     function ttyExec($commands, ?float $timeout = null, ?Process &$process = null): int
