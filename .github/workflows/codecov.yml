@@ -114,6 +114,7 @@ jobs:
         --enable-swoole-json
         --enable-swoole-curl
         --enable-swoole-pgsql
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -150,7 +151,7 @@ jobs:
           composer update --prefer-dist --no-progress
           tests/db/install-db.sh
           PGPASSWORD=root psql -h 127.0.0.1 -d db_imi_test -U root -f ./.github/pgsql.sql
-          php .github/script/install-roadrunner.php -f $ROADRUNNER_VERSION
+          src/Components/roadrunner/vendor/bin/rr get-binary -f $ROADRUNNER_VERSION
           ./rr -v
       - name: Run test suite
         id: run-test-suite
