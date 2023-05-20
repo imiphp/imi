@@ -14,9 +14,9 @@
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
         </testsuite>
-        <!-- <testsuite name="Performance">
+        <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
-        </testsuite> -->
+        </testsuite>
         <testsuite name="validate">
             <file>unit/Component/Tests/ValidatorAnnotationTest.php</file>
             <file>unit/Component/Tests/ValidatorHelperTest.php</file>

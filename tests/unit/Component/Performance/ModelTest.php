@@ -15,6 +15,14 @@ use Imi\Test\Component\Model\Performance;
  */
 class ModelTest extends BaseTest
 {
+    public static function setUpBeforeClass(): void
+    {
+        if (isCodeCoverage())
+        {
+            static::markTestSkipped();
+        }
+    }
+
     public function testTruncate(): void
     {
         App::set('DB_LOG', false);
