@@ -10,9 +10,9 @@ on:
 jobs:
   split-repository:
     if: github.repository == 'imiphp/imi'
-    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-20.04
     steps:
+      - uses: ahmadnassri/action-workflow-queue@v1
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0

@@ -10,9 +10,9 @@ on:
 jobs:
   gitee:
     if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/2.1')
-    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-20.04
     steps:
+      - uses: ahmadnassri/action-workflow-queue@v1
       - name: Configure Private Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
