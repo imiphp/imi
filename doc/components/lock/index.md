@@ -32,27 +32,40 @@
 
 ### 使用说明
 
-顺序用法：
+**顺序用法：**
 
 ```php
 use Imi\Lock\Lock;
-$lockId = ''; // 你定义的ID
-if(Lock::lock($lockId))
+$lockConfigId = 'redis'; // 配置中定义的ID
+if(Lock::lock($lockConfigId))
 {
     try {
         // 干一些事情
     } catch(\Throwable $th) {
         throw $th;
     } finally {
-        Lock::unlock($lockId);
+        Lock::unlock($lockConfigId);
+    }
+}
+
+// 可以动态指定锁ID
+$lockId = 'id123'; // 锁ID，如果为null则使用 $lockConfigId
+if(Lock::lock($lockConfigId, null, null, $lockId))
+{
+    try {
+        // 干一些事情
+    } catch(\Throwable $th) {
+        throw $th;
+    } finally {
+        Lock::unlock($lockConfigId, $lockId);
     }
 }
 ```
 
-回调用法（无需手动释放锁）：
+**回调用法（无需手动释放锁）：**
 
 ```php
-$result = Lock::lock($lockId, function(){
+$result = Lock::lock($lockConfigId, function(){
     // 执行任务
 }, function(){
     // return 非null则不执行任务
@@ -67,12 +80,15 @@ else
 {
     // 加锁失败
 }
+
+// 同样可以动态指定锁ID，这里不再演示
 ```
 
-获取 Handler 对象：
+**获取 Handler 对象：**
 
 ```php
-$lock = Lock::getInstance($lockId);
+$lock = Lock::getInstance($lockConfigId);
+$lock = Lock::getInstance($lockConfigId, $lockId); // 指定锁ID
 $lock->lock(); // 使用方法参考下面的“实例化使用方法”
 ```
 
