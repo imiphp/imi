@@ -40,7 +40,23 @@ function switchSearchNode(a)
 
 function searchArticle(keyword)
 {
-    var keywords = keyword.split(' ');
+    if ('object' === (typeof Intl))
+    {
+        var segmenterJa = new Intl.Segmenter("zh-CN", { granularity: "word" });
+        var segments = segmenterJa.segment(keyword);
+        var keywords = [];
+        for (let segment of segments)
+        {
+            if (segment.segment.trim().length > 0)
+            {
+                keywords.push(segment.segment);
+            }
+        }
+    }
+    else
+    {
+        var keywords = keyword.split(' ');
+    }
     var tSearchDatas = searchDatas;
     var result = [];
     keywords.forEach(function(kw){
