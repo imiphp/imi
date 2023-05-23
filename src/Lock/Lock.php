@@ -22,7 +22,7 @@ class Lock
     /**
      * 对象列表.
      *
-     * @var \Imi\Lock\Handler\ILockHandler[]
+     * @var \Imi\Lock\Handler\ILockHandler[][]
      */
     private static array $instances = [];
 
@@ -68,9 +68,13 @@ class Lock
             $lockConfigId = static::getDefaultId();
         }
         $instances = &self::$instances;
-        if (null === $lockId && isset($instances[$lockConfigId]))
+        if (null === $lockId)
         {
-            return $instances[$lockConfigId];
+            $lockId = $lockConfigId;
+        }
+        if (isset($instances[$lockConfigId][$lockId]))
+        {
+            return $instances[$lockConfigId][$lockId];
         }
         $options = &self::$options;
         if (!isset($options[$lockConfigId]))
@@ -78,14 +82,8 @@ class Lock
             throw new \RuntimeException(sprintf('Lock %s does not exists', $lockConfigId));
         }
         $option = $options[$lockConfigId];
-        if (null === $lockId)
-        {
-            return $instances[$lockConfigId] = App::newInstance($option->class, $lockConfigId, $option->options);
-        }
-        else
-        {
-            return App::newInstance($option->class, $lockId, $option->options);
-        }
+
+        return $instances[$lockConfigId][$lockId] = App::newInstance($option->class, $lockId, $option->options);
     }
 
     /**
@@ -110,9 +108,9 @@ class Lock
      * @param callable|null $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      * @param callable|null $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
      */
-    public static function lock(?string $id = null, ?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
+    public static function lock(?string $lockConfigId = null, ?callable $taskCallable = null, ?callable $afterLockCallable = null, ?string $lockId = null): bool
     {
-        return static::getInstance($id)->lock($taskCallable, $afterLockCallable);
+        return static::getInstance($lockConfigId, $lockId)->lock($taskCallable, $afterLockCallable);
     }
 
     /**
@@ -120,24 +118,24 @@ class Lock
      *
      * @param callable|null $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      */
-    public static function tryLock(?string $id = null, ?callable $taskCallable = null): bool
+    public static function tryLock(?string $lockConfigId = null, ?callable $taskCallable = null, ?string $lockId = null): bool
     {
-        return static::getInstance($id)->tryLock($taskCallable);
+        return static::getInstance($lockConfigId, $lockId)->tryLock($taskCallable);
     }
 
     /**
      * 解锁
      */
-    public static function unlock(?string $id = null): bool
+    public static function unlock(?string $lockConfigId = null, ?string $lockId = null): bool
     {
-        return static::getInstance($id)->unlock();
+        return static::getInstance($lockConfigId, $lockId)->unlock();
     }
 
     /**
      * 获取当前是否已获得锁状态
      */
-    public static function isLocked(?string $id = null): bool
+    public static function isLocked(?string $lockConfigId = null, ?string $lockId = null): bool
     {
-        return static::getInstance($id)->isLocked();
+        return static::getInstance($lockConfigId, $lockId)->isLocked();
     }
 }

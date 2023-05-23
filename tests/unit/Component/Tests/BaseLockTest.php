@@ -11,7 +11,9 @@ use PHPUnit\Framework\Assert;
 
 abstract class BaseLockTest extends BaseTest
 {
-    protected string $lockId;
+    protected ?string $lockConfigId = null;
+
+    protected ?string $lockId = null;
 
     protected function check(): void
     {
@@ -20,83 +22,98 @@ abstract class BaseLockTest extends BaseTest
     public function testLockAndUnlock(): void
     {
         $this->check();
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
-        $result = Lock::lock($this->lockId);
-        try
+        foreach ([null, $this->lockId] as $lockId)
         {
-            Assert::assertTrue($result);
-            Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
-        }
-        finally
-        {
-            Assert::assertTrue(Lock::unlock($this->lockId));
-            Assert::assertFalse(Lock::isLocked($this->lockId));
-            Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            $result = Lock::lock($this->lockConfigId, null, null, $lockId);
+            try
+            {
+                Assert::assertTrue($result);
+                Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
+                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            }
+            finally
+            {
+                Assert::assertTrue(Lock::unlock($this->lockConfigId, $lockId));
+                Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+                Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            }
         }
     }
 
     public function testTryLock(): void
     {
         $this->check();
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
-        $result = Lock::tryLock($this->lockId);
-        try
+        foreach ([null, $this->lockId] as $lockId)
         {
-            Assert::assertTrue($result);
-            Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
-        }
-        finally
-        {
-            Assert::assertTrue(Lock::unlock($this->lockId));
-            Assert::assertFalse(Lock::isLocked($this->lockId));
-            Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            $result = Lock::tryLock($this->lockConfigId, null, $lockId);
+            try
+            {
+                Assert::assertTrue($result);
+                Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
+                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            }
+            finally
+            {
+                Assert::assertTrue(Lock::unlock($this->lockConfigId, $lockId));
+                Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+                Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            }
         }
     }
 
     public function testLockCallable(): void
     {
         $this->check();
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        $result = Lock::lock($this->lockId, function () {
-            Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
-        });
-        Assert::assertTrue($result);
-        Assert::assertFalse(Lock::isLocked($this->lockId));
+        foreach ([null, $this->lockId] as $lockId)
+        {
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            $result = Lock::lock($this->lockConfigId, function () use ($lockId) {
+                Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
+                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            }, null, $lockId);
+            Assert::assertTrue($result);
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+        }
     }
 
     public function testTryLockCallable(): void
     {
         $this->check();
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
-        $result = Lock::tryLock($this->lockId, function () {
-            Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
-        });
-        Assert::assertTrue($result);
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
+        foreach ([null, $this->lockId] as $lockId)
+        {
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            $result = Lock::tryLock($this->lockConfigId, function () use ($lockId) {
+                Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
+                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            }, $lockId);
+            Assert::assertTrue($result);
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+        }
     }
 
     public function testCancelLockCallabale(): void
     {
         $this->check();
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
-        $result = Lock::lock($this->lockId, static function () {
-            Assert::assertTrue(false);
-        }, function () {
-            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
+        foreach ([null, $this->lockId] as $lockId)
+        {
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+            $result = Lock::lock($this->lockConfigId, static function () {
+                Assert::assertTrue(false);
+            }, function () use ($lockId) {
+                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
 
-            return true;
-        });
-        Assert::assertTrue($result);
-        Assert::assertFalse(Lock::isLocked($this->lockId));
-        Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
+                return true;
+            }, $lockId);
+            Assert::assertTrue($result);
+            Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
+            Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+        }
     }
 }
