@@ -153,7 +153,7 @@
                     </div>
                 </div>
             </div>
-            <div class="copyright noScroll">imiphp</div>
+            <div class="copyright noScroll">imiphp.com</div>
         </div>
     </div>
     <script id="searchListTemplate" type="text/html">

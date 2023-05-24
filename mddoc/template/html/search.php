@@ -52,14 +52,17 @@ function searchArticle(keyword) {
         return keywords.indexOf(item) === index;
     });
 
-    // var tSearchDatas = searchDatas;
     var result = [];
 
+    var matchFirstScore = 10000;
     var totalScore = 0;
+    var fullMatchedCount = 0;
     searchDatas.forEach(function (item, index) {
         var score = 0;
         var first = true;
+        var fullMatched = false;
         var matchedKeywords = [];
+        var matchedCount = 0;
         keywords.forEach(function (kw) {
             if ('' === kw) {
                 first = false;
@@ -67,23 +70,28 @@ function searchArticle(keyword) {
             }
             // 统计标题中关键字出现的次数
             var titleCount = item.title.toUpperCase().split(kw.toUpperCase()).length - 1;
-            score += titleCount * 10;
+            score += titleCount;
             // 统计内容中关键字出现的次数
             var contentCount = item.content.toUpperCase().split(kw.toUpperCase()).length - 1;
-            score += contentCount;
+            score += contentCount * 0.1;
             if (titleCount > 0 || contentCount > 0) {
                 matchedKeywords.push(kw);
+                ++matchedCount;
             }
             // 用户输入完全匹配，给最高分
             if (first && matchedKeywords.length > 0) {
-                score = Number.MAX_SAFE_INTEGER;
+                score = matchFirstScore;
+                fullMatched = true;
+                ++fullMatchedCount;
             }
             first = false;
         });
         if (score > 0) {
+            // 每匹配一个关键词 * 100
+            score += matchedCount * 10;
             // 完全匹配积分 * 10
-            if (matchedKeywords.length >= keywords.length - 1) {
-                score *= 10;
+            if (fullMatched) {
+                score += 100;
             }
             totalScore += score;
             var newItem = JSON.parse(JSON.stringify(item));
@@ -121,13 +129,16 @@ function searchArticle(keyword) {
         return b.score - a.score;
     });
 
-    // 平均数 / 0.618
-    var filterScore = totalScore / result.length / 0.618;
+    if (result.length > fullMatchedCount)
+    {
+        // 去除完全匹配
+        var filterScore = (totalScore - matchFirstScore * fullMatchedCount * 10) / (result.length - fullMatchedCount) / 0.618;
 
-    // 把小于过滤分数的过滤掉
-    result = result.filter(function (item, index) {
-        return item.score >= filterScore;
-    });
+        // 把小于过滤分数的过滤掉
+        result = result.filter(function (item, index) {
+            return item.score >= filterScore;
+        });
+    }
 
     // 保留前 20 结果
     result = result.slice(0, 20);
