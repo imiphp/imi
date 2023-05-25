@@ -163,9 +163,10 @@ class ModelGenerate extends BaseCommand
                 $hasResult = false;
                 $fileName = '';
                 $modelNamespace = '';
+                $tableConfig = null;
                 foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
                 {
-                    if (\in_array($table, $namespaceItem['tables'] ?? []))
+                    if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
                     {
                         $modelNamespace = $namespaceName;
                         $path = Imi::getNamespacePath($modelNamespace, true);
