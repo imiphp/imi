@@ -102,9 +102,9 @@ trait TSoftDelete
      * @param string|null $poolName  连接池名，为null则取默认
      * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function originQuery(?string $poolName = null, ?int $queryType = null, string $queryClass = self::DEFAULT_QUERY_CLASS): IModelQuery
+    public static function originQuery(?string $poolName = null, ?int $queryType = null, ?string $queryClass = null, ?string $alias = null): IModelQuery
     {
-        return parent::query($poolName, $queryType, $queryClass);
+        return parent::query($poolName, $queryType, $queryClass, $alias);
     }
 
     /**
