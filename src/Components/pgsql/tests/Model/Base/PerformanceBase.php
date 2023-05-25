@@ -13,7 +13,7 @@ use Imi\Pgsql\Model\PgModel as Model;
 /**
  * tb_performance 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true, incrUpdate=false)
  *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Performance.name", default="tb_performance"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Performance.poolName"))
  *

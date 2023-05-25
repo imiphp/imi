@@ -13,7 +13,7 @@ use Imi\Pgsql\Model\PgModel as Model;
 /**
  * tb_article 基类.
  *
- * @Entity
+ * @Entity(camel=true, bean=true, incrUpdate=false)
  *
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.name", default="tb_article"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\Article.poolName"))
  *
