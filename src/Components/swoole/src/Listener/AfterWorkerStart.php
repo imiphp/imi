@@ -36,7 +36,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
                 Event::trigger('IMI.APP.INIT', [
                 ], $e->getTarget());
 
-                file_put_contents($initFlagFile, SwooleWorker::getMasterPid());
+                file_put_contents($initFlagFile, SwooleWorker::getManagerPid());
 
                 ImiCommand::getOutput()->writeln('<info>App Inited</info>');
             }
@@ -55,6 +55,6 @@ class AfterWorkerStart implements IWorkerStartEventListener
      */
     private function checkInitFlagFile(string $initFlagFile): bool
     {
-        return is_file($initFlagFile) && filemtime($initFlagFile) >= $_SERVER['REQUEST_TIME'] && file_get_contents($initFlagFile) == SwooleWorker::getMasterPid();
+        return is_file($initFlagFile) && filemtime($initFlagFile) >= $_SERVER['REQUEST_TIME'] && file_get_contents($initFlagFile) == SwooleWorker::getManagerPid();
     }
 }
