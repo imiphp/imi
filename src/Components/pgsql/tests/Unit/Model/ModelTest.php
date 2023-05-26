@@ -324,8 +324,7 @@ class ModelTest extends BaseTest
         [$usec, $sec] = explode(' ', microtime());
         $result = $record->{$methodName}();
         $time = (int) $sec;
-        $bigintTime = ($time + (int) $usec) * 1000;
-        $usec = (int) $usec * 1000;
+        $bigintTime = ($time + (float) $usec) * 1000;
         $this->assertTrue($result->isSuccess());
         $this->assertStringMatchesFormat('%d-%d-%d', $record->date);
         $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));

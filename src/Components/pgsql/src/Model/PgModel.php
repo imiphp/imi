@@ -30,7 +30,7 @@ class PgModel extends Model
                 {
                     [$usec, $sec] = explode(' ', microtime());
 
-                    return date('H:i:s.', (int) $sec) . ((int) $usec * $timeAccuracy);
+                    return date('H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
                 }
                 else
                 {
@@ -43,7 +43,7 @@ class PgModel extends Model
                 {
                     [$usec, $sec] = explode(' ', microtime());
 
-                    return date('Y-m-d H:i:s.', (int) $sec) . ((int) $usec * $timeAccuracy);
+                    return date('Y-m-d H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
                 }
                 else
                 {
