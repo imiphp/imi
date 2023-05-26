@@ -293,7 +293,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function lastInsertId(?string $name = null): string
     {
-        return $this->stmt->lastInsertId();
+        return $this->db->lastInsertId();
     }
 
     /**
