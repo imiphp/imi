@@ -321,14 +321,30 @@ class ModelTest extends BaseTest
 
     private function assertUpdateTime(UpdateTime $record, string $methodName): void
     {
-        $time = time();
-        $bigintTime = (int) (microtime(true) * 1000);
+        [$usec, $sec] = explode(' ', microtime());
         $result = $record->{$methodName}();
+        $time = (int) $sec;
+        $bigintTime = (int) (($time + $usec) * 1000);
+        $usec = (int) ($usec * 1000);
         $this->assertTrue($result->isSuccess());
+        $this->assertStringMatchesFormat('%d-%d-%d', $record->date);
         $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
+        $this->assertStringMatchesFormat('%d:%d:%d.%d', $record->time);
         $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
-        $this->assertLessThanOrEqual(1, strtotime($record->datetime) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('datetime fail: %s', $record->datetime));
+        $this->assertStringMatchesFormat('%d:%d:%d.%d', $record->timetz);
+        $this->assertLessThanOrEqual(1, strtotime($record->timetz) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->timetz));
+        $this->assertStringMatchesFormat('%d:%d:%d.%d', $record->time);
+        $this->assertLessThanOrEqual(1, strtotime($record->time2) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time2));
+        $this->assertStringMatchesFormat('%d:%d:%d.%d', $record->timetz);
+        $this->assertLessThanOrEqual(1, strtotime($record->timetz2) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->timetz2));
+        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.%d', $record->timestamp);
         $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
+        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.%d', $record->timestamptz);
+        $this->assertLessThanOrEqual(1, strtotime($record->timestamptz) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamptz));
+        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.%d', $record->timestamp2);
+        $this->assertLessThanOrEqual(1, strtotime($record->timestamp2) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp2));
+        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.%d', $record->timestamptz2);
+        $this->assertLessThanOrEqual(1, strtotime($record->timestamptz2) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamptz2));
         $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
         $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
     }

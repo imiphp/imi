@@ -36,7 +36,6 @@ abstract class ArticleBase extends Model
 
     /**
      * id.
-
      *
      * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
@@ -66,7 +65,6 @@ abstract class ArticleBase extends Model
 
     /**
      * title.
-
      *
      * @Column(name="title", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -96,7 +94,6 @@ abstract class ArticleBase extends Model
 
     /**
      * content.
-
      *
      * @Column(name="content", type="text", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -126,7 +123,6 @@ abstract class ArticleBase extends Model
 
     /**
      * time.
-
      *
      * @Column(name="time", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
