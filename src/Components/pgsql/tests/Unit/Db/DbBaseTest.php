@@ -284,4 +284,133 @@ abstract class DbBaseTest extends TestCase
         $this->assertFalse($db->inTransaction());
         $this->assertTrue($r1);
     }
+
+    public function testInsert(): array
+    {
+        $data = [
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+        ];
+        $query = Db::query($this->poolName);
+
+        $result = $query->from('tb_article')->insert($data);
+        $id = (int) $result->getLastInsertId();
+        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+        ], $record);
+
+        return [
+            'id' => $id,
+        ];
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testStatementClose(array $args): void
+    {
+        ['id' => $id] = $args;
+        $db = Db::getInstance($this->poolName);
+        $stmt = $db->query('select * from tb_article where id = ' . $id);
+        $stmt->close();
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testQueryAlias(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::getInstance($this->poolName)
+            ->createQuery()
+            ->table('tb_article', 'a1')
+            ->where('a1.id', '=', $id)
+            ->select()
+            ->getArray();
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+            ],
+        ], $result);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testFind(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::query()
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->find();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
+        ], $result);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testSelect(array $args): void
+    {
+        ['id' => $id] = $args;
+        $result = Db::select('select * from tb_article where id = ' . $id, [], $this->poolName);
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+            ],
+        ], $result->getArray());
+
+        $result = Db::select('select * from tb_article where id = ?', [$id], $this->poolName);
+        Assert::assertEquals([
+            [
+                'id'        => $id,
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+            ],
+        ], $result->getArray());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testValue(array $args): void
+    {
+        ['id' => $id] = $args;
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->value('title');
+        $this->assertEquals('title', $value);
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', $id)
+            ->value('time');
+        $this->assertEquals('2019-06-21 00:00:00', $value);
+
+        $value = Db::query($this->poolName)
+            ->table('tb_article')
+            ->where('id', '=', -1)
+            ->value('id', '9999999');
+        $this->assertEquals('9999999', $value);
+    }
 }

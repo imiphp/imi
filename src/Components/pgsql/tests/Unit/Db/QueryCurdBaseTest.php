@@ -94,8 +94,8 @@ abstract class QueryCurdBaseTest extends TestCase
                 ],
             ],
             'limit'         => 1,
-            'total'         => 3,
-            'page_count'    => 3,
+            'total'         => 4,
+            'page_count'    => 4,
         ];
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->paginate(2, 1);
