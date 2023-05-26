@@ -298,7 +298,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             {
                 $contentType = strtolower(preg_split('/[;\s]/S', $contentType, 2)[0] ?? '');
                 // post
-                if ('POST' === $this->getMethod() && \in_array($contentType, [
+                if (\in_array($contentType, [
                     MediaType::APPLICATION_FORM_URLENCODED,
                     MediaType::MULTIPART_FORM_DATA,
                 ]))
