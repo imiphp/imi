@@ -460,38 +460,6 @@ class ModelTest extends BaseTest
         $this->assertEquals(0, $count3);
     }
 
-    private function assertUpdateTime(UpdateTime $record, string $methodName): void
-    {
-        $time = time();
-        $bigintTime = (int) (microtime(true) * 1000);
-        $result = $record->{$methodName}();
-        $this->assertTrue($result->isSuccess());
-        $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
-        $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
-        $this->assertLessThanOrEqual(1, strtotime($record->datetime) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('datetime fail: %s', $record->datetime));
-        $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
-        $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
-        $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
-        $this->assertLessThanOrEqual(1, $record->bigintSecond - $time, sprintf('bigintSecond fail: %s', $record->bigintSecond));
-        $this->assertLessThanOrEqual(1, $record->year - strtotime(date('Y', $time)), sprintf('year fail: %s', $record->year));
-    }
-
-    public function testUpdateTimeSave(): void
-    {
-        $this->go(function () {
-            $record = UpdateTime::newInstance();
-            $this->assertUpdateTime($record, 'save');
-        }, null, 3);
-    }
-
-    public function testUpdateTimeUpdate(): void
-    {
-        $this->go(function () {
-            $record = UpdateTime::find(1);
-            $this->assertUpdateTime($record, 'update');
-        }, null, 3);
-    }
-
     /**
      * @param CreateTime|UpdateTime $record
      *

@@ -18,12 +18,14 @@ class PgModel extends Model
      *
      * @return mixed
      */
-    protected static function parseDateTime(?string $columnType, $timeAccuracy)
+    protected static function parseDateTime(?string $columnType, $timeAccuracy, ?float $microTime = null)
     {
+        $microTime ??= microtime(true);
+
         switch ($columnType)
         {
             case 'date':
-                return date('Y-m-d');
+                return date('Y-m-d', (int) $microTime);
             case 'time':
             case 'timetz':
                 if ($timeAccuracy >= 1000)
@@ -55,7 +57,7 @@ class PgModel extends Model
             case 'int4':
                 return time();
             case 'int8':
-                return (int) (microtime(true) * (true === $timeAccuracy ? 1000 : $timeAccuracy));
+                return (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
             default:
                 return null;
         }
