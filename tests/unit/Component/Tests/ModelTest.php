@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Db\Db;
 use Imi\Model\Annotation\DDL;
+use Imi\Model\Model;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Article;
 use Imi\Test\Component\Model\Article2;
@@ -491,53 +492,128 @@ class ModelTest extends BaseTest
         }, null, 3);
     }
 
-    private function assertCreateTime(CreateTime $record, string $methodName, bool $equals = true): void
+    /**
+     * @param CreateTime|UpdateTime $record
+     *
+     * @return void
+     */
+    private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime)
     {
-        $time = time();
-        $bigintTime = (int) (microtime(true) * 1000);
-        if (!$equals)
+        $parseDateTimeFun = (static fn (?string $columnType, $timeAccuracy, float $microTime) => Model::parseDateTime($columnType, $timeAccuracy, $microTime))->bindTo(null, Model::class);
+
+        foreach ($fields as $field => $opts)
         {
-            $oldArr = $record->toArray();
-        }
-        $result = $record->{$methodName}();
-        $this->assertTrue($result->isSuccess());
-        if ($equals)
-        {
-            $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
-            $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
-            $this->assertLessThanOrEqual(1, strtotime($record->datetime) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('datetime fail: %s', $record->datetime));
-            $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
-            $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
-            $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
-            $this->assertLessThanOrEqual(1, $record->bigintSecond - $time, sprintf('bigintSecond fail: %s', $record->bigintSecond));
-            $this->assertLessThanOrEqual(1, $record->year - strtotime(date('Y', $time)), sprintf('year fail: %s', $record->year));
-        }
-        else
-        {
-            $this->assertEquals($oldArr, $record->toArray());
+            self::assertLessThanOrEqual($parseDateTimeFun($opts[0], $opts[1], $startMicroTime), $record->{$field}, sprintf('%s fail: %s', $field, $record->getDate()));
         }
     }
 
-    public function testCreateTimeInsert(): void
+    public function testAutoCreateTime(): void
     {
-        $this->go(function () {
-            $record = CreateTime::newInstance();
-            $this->assertCreateTime($record, 'insert');
-            sleep(1);
-            $this->assertCreateTime($record, 'update', false);
-            $this->assertCreateTime($record, 'save', false);
-        }, null, 3);
+        self::assertFalse(CreateTime::__getMeta()->isIncrUpdate());
+
+        $microTime = microtime(true);
+
+        $fields = [
+            'data'         => ['date', true],
+            'time'         => ['time', true],
+            'datetime'     => ['datetime', true],
+            'timestamp'    => ['timestamp', true],
+            'int'          => ['int', true],
+            'bigint'       => ['bigint', true],
+            'year'         => ['year', true],
+            'bigintSecond' => ['bigint', 1],
+        ];
+
+        // save 测试
+        $record = CreateTime::newInstance();
+        $result = $record->save();
+        self::assertTrue($result->isSuccess());
+        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+
+        // 更新测试
+        $fixed = $record->toArray();
+        $record->update();
+        $this->assertEquals($fixed, $record->toArray());
+        $record->save();
+        $this->assertEquals($fixed, $record->toArray());
+
+        // insert 测试
+        $record = CreateTime::newInstance();
+        $record->insert();
+        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+
+        // 输入覆盖
+        $record = CreateTime::newInstance();
+        $record->setDate('2000-01-01');
+        $record->setTime('01:15:30');
+        $record->setDatetime('2000-01-01 01:15:30');
+        $record->setTimestamp('2000-01-02 01:15:30');
+        $record->setInt(1);
+        $record->setBigint(2);
+        $record->setYear(3);
+        $record->setBigintSecond(4);
+
+        $fixed = $record->toArray();
+        $record->save();
+        $recordArr = $record->toArray();
+
+        unset($fixed['id'], $recordArr['id']);
+
+        self::assertEquals($fixed, $recordArr);
     }
 
-    public function testCreateTimeSave(): void
+    public function testAutoUpdateTime(): void
     {
-        $this->go(function () {
-            $record = CreateTime::newInstance();
-            $this->assertCreateTime($record, 'save');
-            sleep(1);
-            $this->assertCreateTime($record, 'update', false);
-            $this->assertCreateTime($record, 'save', false);
-        }, null, 3);
+        self::assertFalse(UpdateTime::__getMeta()->isIncrUpdate());
+
+        $fields = [
+            'data'         => ['date', true],
+            'time'         => ['time', true],
+            'datetime'     => ['datetime', true],
+            'timestamp'    => ['timestamp', true],
+            'int'          => ['int', true],
+            'bigint'       => ['bigint', true],
+            'year'         => ['year', true],
+            'bigintSecond' => ['bigint', 1],
+        ];
+
+        // create 测试
+        $record = UpdateTime::newInstance();
+        $result = $record->save();
+        self::assertTrue($result->isSuccess());
+        $microTime = microtime(true);
+        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+
+        // update-1 测试
+        $result = $record->update();
+        self::assertTrue($result->isSuccess());
+        $microTime = microtime(true);
+        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+
+        // update-2 测试
+        $result = $record->save();
+        self::assertTrue($result->isSuccess());
+        $microTime = microtime(true);
+        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+
+        // 输入覆盖
+        $record = UpdateTime::newInstance();
+        $record->setDate('2000-01-01');
+        $record->setTime('01:15:30');
+        $record->setDatetime('2000-01-01 01:15:30');
+        $record->setTimestamp('2000-01-02 01:15:30');
+        $record->setInt(1);
+        $record->setBigint(2);
+        $record->setYear(3);
+        $record->setBigintSecond(4);
+
+        $fixed = $record->toArray();
+        $record->save();
+        $recordArr = $record->toArray();
+
+        unset($fixed['id'], $recordArr['id']);
+
+        self::assertEquals($fixed, $recordArr);
     }
 
     public function testModelReferenceGetter(): void

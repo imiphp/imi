@@ -962,23 +962,25 @@ abstract class Model extends BaseModel
      *
      * @return mixed
      */
-    protected static function parseDateTime(?string $columnType, $timeAccuracy)
+    protected static function parseDateTime(?string $columnType, $timeAccuracy, ?float $microTime = null)
     {
+        $microTime ??= microtime(true);
+
         switch ($columnType)
         {
             case 'date':
-                return date('Y-m-d');
+                return date('Y-m-d', (int) $microTime);
             case 'time':
-                return date('H:i:s');
+                return date('H:i:s', (int) $microTime);
             case 'datetime':
             case 'timestamp':
-                return date('Y-m-d H:i:s');
+                return date('Y-m-d H:i:s', (int) $microTime);
             case 'int':
-                return time();
+                return (int) $microTime;
             case 'bigint':
-                return (int) (microtime(true) * (true === $timeAccuracy ? 1000 : $timeAccuracy));
+                return (int) ((int) $microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
             case 'year':
-                return (int) date('Y');
+                return (int) date('Y', (int) $microTime);
             default:
                 return null;
         }
@@ -1028,6 +1030,7 @@ abstract class Model extends BaseModel
         }
         $incrUpdate = $meta->isIncrUpdate();
         $ids = $meta->getIds();
+        $microTime = microtime(true);
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
@@ -1052,9 +1055,9 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ($column->updateTime && !$isInsert)
+            if ($column->updateTime && !$isInsert && empty($object[$dbFieldName]))
             {
-                $value = static::parseDateTime($columnType, $column->updateTime);
+                $value = static::parseDateTime($columnType, $column->updateTime, $microTime);
                 if (null === $value)
                 {
                     throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFieldName, $columnType));
@@ -1064,9 +1067,9 @@ abstract class Model extends BaseModel
                     $object[$dbFieldName] = $value;
                 }
             }
-            elseif ($column->createTime && ($isInsert || $isSaveInsert))
+            elseif ($column->createTime && ($isInsert || $isSaveInsert) && empty($object[$dbFieldName]))
             {
-                $value = static::parseDateTime($columnType, $column->createTime);
+                $value = static::parseDateTime($columnType, $column->createTime, $microTime);
                 if (null === $value)
                 {
                     throw new \RuntimeException(sprintf('Column %s type is %s, can not createTime', $dbFieldName, $columnType));
