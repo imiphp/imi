@@ -42,11 +42,13 @@ class ModelGenerate extends BaseCommand
      * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Option(name="lengthCheck", type=ArgType::BOOLEAN, default=false, comments="是否检查字符串字段长度,可选")
+     * @Option(name="bean", type=ArgType::BOOL, comments="模型对象是否作为 bean 类使用", default=true)
+     * @Option(name="incrUpdate", type=ArgType::BOOL, comments="模型是否启用增量更新", default=false)
      *
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $lengthCheck): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $lengthCheck, bool $bean, bool $incrUpdate): void
     {
         $db = Db::getInstance($poolName);
         $tablePrefix = $db->getOption()['prefix'] ?? '';
@@ -161,9 +163,10 @@ class ModelGenerate extends BaseCommand
                 $hasResult = false;
                 $fileName = '';
                 $modelNamespace = '';
+                $tableConfig = null;
                 foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
                 {
-                    if (\in_array($table, $namespaceItem['tables'] ?? []))
+                    if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
                     {
                         $modelNamespace = $namespaceName;
                         $path = Imi::getNamespacePath($modelNamespace, true);
@@ -217,6 +220,8 @@ class ModelGenerate extends BaseCommand
                 ],
                 'fields'        => [],
                 'entity'        => $entity,
+                'bean'          => $tableConfig['bean'] ?? $bean,
+                'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
                 'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,
