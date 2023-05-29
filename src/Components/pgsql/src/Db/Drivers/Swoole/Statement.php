@@ -74,8 +74,8 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             {
                 $this->result = $result;
             }
-            $this->updateLastInsertId();
         }
+        $this->updateLastInsertId();
     }
 
     public function __destruct()
@@ -399,11 +399,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         $queryString = $this->lastSql;
         if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
         {
-            $this->lastInsertId = (string) $this->db->lastInsertId();
+            $this->lastInsertId = $this->db->lastInsertId();
         }
         else
         {
-            $this->lastInsertId = '0';
+            $this->lastInsertId = '';
         }
     }
 }

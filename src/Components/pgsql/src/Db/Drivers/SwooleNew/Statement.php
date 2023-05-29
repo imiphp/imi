@@ -58,8 +58,8 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))
         {
             $this->result = $result;
-            $this->updateLastInsertId();
         }
+        $this->updateLastInsertId();
     }
 
     /**
@@ -369,11 +369,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         $queryString = $this->lastSql;
         if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
         {
-            $this->lastInsertId = (string) $this->db->lastInsertId();
+            $this->lastInsertId = $this->db->lastInsertId();
         }
         else
         {
-            $this->lastInsertId = '0';
+            $this->lastInsertId = '';
         }
     }
 }
