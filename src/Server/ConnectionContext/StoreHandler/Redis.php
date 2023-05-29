@@ -91,7 +91,7 @@ class Redis implements IHandler
             $this->key = 'imi:' . App::getNamespace() . ':connect_context';
         }
         $workerId = Worker::getWorkerId();
-        $this->masterPID = $masterPID = Worker::getManagerPid();
+        $this->masterPID = $masterPID = Worker::getMasterPid();
 
         if (0 === $workerId)
         {

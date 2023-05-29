@@ -72,7 +72,7 @@ class Redis implements IGroupHandler
             $this->key = 'imi:' . App::getNamespace() . ':connect_group';
         }
         $workerId = Worker::getWorkerId();
-        $this->masterPID = $masterPID = Worker::getManagerPid();
+        $this->masterPID = $masterPID = Worker::getMasterPid();
         if (0 === $workerId)
         {
             $this->useRedis(function (RedisHandler $redis) use ($masterPID) {
