@@ -187,6 +187,9 @@ abstract class QueryCurdBaseTest extends TestCase
 
         $result = $query->from('tb_article')->insert($data);
         $id = $result->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+        // lastInsertId 传 name 测试
+        $this->assertEquals($id, $query->getDb()->lastInsertId('tb_article_id_seq'));
         $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
             'id'        => $id . '',

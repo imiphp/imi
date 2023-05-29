@@ -348,14 +348,47 @@ if (class_exists(PostgreSQL::class, false))
         {
             if (null === $name)
             {
-                return (string) $this->query('select LASTVAL()')->fetchColumn();
+                $lastStmt = $this->instance->query($sql = 'select LASTVAL()');
+                if (false === $lastStmt)
+                {
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                $row = $lastStmt->fetchRow(0);
+
+                return (string) reset($row);
             }
             else
             {
-                $stmt = $this->prepare('SELECT CURRVAL($1)');
-                $stmt->execute([$name]);
+                $lastStmt = $this->instance->prepare($sql = 'SELECT CURRVAL($1)');
+                if (false === $lastStmt)
+                {
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                if (false === $lastStmt->execute([$name]))
+                {
+                    $errorCode = $lastStmt->resultDiag['sqlstate'] ?? '';
+                    $errorInfo = $lastStmt->error ?? '';
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                $row = $lastStmt->fetchRow(0);
 
-                return (string) $stmt->fetchColumn();
+                return (string) reset($row);
             }
         }
 
