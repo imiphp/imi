@@ -366,7 +366,7 @@ if (class_exists(PostgreSQL::class, false))
                     }
                     throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
-                $row = $instance->fetchRow(0);
+                $row = $instance->fetchRow($queryResult, 0);
 
                 return (string) reset($row);
             }
