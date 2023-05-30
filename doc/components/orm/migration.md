@@ -39,13 +39,13 @@ vendor/bin/imi-swoole migration/patch -f
 **输出到命令行：**
 
 ```shell
-vendor/bin/imi-swoole migration/patch
+vendor/bin/imi-swoole migration/dump
 ```
 
 **保存到文件：**
 
 ```shell
-vendor/bin/imi-swoole migration/patch -f "文件名"
+vendor/bin/imi-swoole migration/dump -f "文件名"
 ```
 
 ### 通用参数
