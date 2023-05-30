@@ -35,7 +35,6 @@ abstract class VirtualColumnBase extends Model
 
     /**
      * id.
-
      *
      * @Column(name="id", type="int8", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
@@ -65,7 +64,6 @@ abstract class VirtualColumnBase extends Model
 
     /**
      * amount.
-
      *
      * @Column(name="amount", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */

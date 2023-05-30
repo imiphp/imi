@@ -352,16 +352,52 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function lastInsertId(?string $name = null): string
         {
+            $instance = $this->instance;
             if (null === $name)
             {
-                return (string) $this->query('select LASTVAL()')->fetchColumn();
+                $queryResult = $instance->query($sql = 'select LASTVAL()');
+                if (false === $queryResult)
+                {
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                $row = $instance->fetchRow($queryResult, 0);
+
+                return (string) reset($row);
             }
             else
             {
-                $stmt = $this->prepare('SELECT CURRVAL($1)');
-                $stmt->execute([$name]);
+                $statementName = 'imi_stmt_' . (++$this->statementIncr);
+                $queryResult = $instance->prepare($statementName, $sql = 'SELECT CURRVAL($1)');
+                if (false === $queryResult)
+                {
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                $queryResult = $instance->execute($statementName, [$name]);
+                if (false === $queryResult)
+                {
+                    $errorCode = $this->errorCode();
+                    $errorInfo = $this->errorInfo();
+                    if ($this->checkCodeIsOffline($errorCode))
+                    {
+                        $this->close();
+                    }
+                    throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                }
+                $row = $instance->fetchRow($queryResult, 0);
 
-                return (string) $stmt->fetchColumn();
+                return (string) reset($row);
             }
         }
 

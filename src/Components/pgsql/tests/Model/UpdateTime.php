@@ -30,11 +30,28 @@ class UpdateTime extends UpdateTimeBase
     protected ?string $time = null;
 
     /**
-     * datetime.
+     * timetz.
+
      *
-     * @Column(name="datetime", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, updateTime=true)
+     * @Column(name="timetz", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=true)
      */
-    protected ?string $datetime = null;
+    protected ?string $timetz = null;
+
+    /**
+     * time2.
+
+     *
+     * @Column(name="time2", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
+     */
+    protected ?string $time2 = null;
+
+    /**
+     * timetz2.
+
+     *
+     * @Column(name="timetz2", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
+     */
+    protected ?string $timetz2 = null;
 
     /**
      * timestamp.
@@ -42,6 +59,30 @@ class UpdateTime extends UpdateTimeBase
      * @Column(name="timestamp", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, updateTime=true)
      */
     protected ?string $timestamp = null;
+
+    /**
+     * timestamptz.
+
+     *
+     * @Column(name="timestamptz", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=true)
+     */
+    protected ?string $timestamptz = null;
+
+    /**
+     * timestamp2.
+
+     *
+     * @Column(name="timestamp2", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
+     */
+    protected ?string $timestamp2 = null;
+
+    /**
+     * timestamptz2.
+
+     *
+     * @Column(name="timestamptz2", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
+     */
+    protected ?string $timestamptz2 = null;
 
     /**
      * int.

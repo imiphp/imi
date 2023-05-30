@@ -35,7 +35,6 @@ abstract class TestSoftDeleteBase extends Model
 
     /**
      * id.
-
      *
      * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
@@ -65,7 +64,6 @@ abstract class TestSoftDeleteBase extends Model
 
     /**
      * title.
-
      *
      * @Column(name="title", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -95,7 +93,6 @@ abstract class TestSoftDeleteBase extends Model
 
     /**
      * delete_time.
-
      *
      * @Column(name="delete_time", type="int4", length=-1, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
