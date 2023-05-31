@@ -26,10 +26,30 @@ class PgModel extends Model
                 return date('Y-m-d');
             case 'time':
             case 'timetz':
-                return date('H:i:s');
+                if ($timeAccuracy >= 1000)
+                {
+                    [$usec, $sec] = explode(' ', microtime());
+
+                    return date('H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
+                }
+                else
+                {
+                    return date('H:i:s');
+                }
+                // no break
             case 'timestamp':
             case 'timestamptz':
-                return date('Y-m-d H:i:s');
+                if ($timeAccuracy >= 1000)
+                {
+                    [$usec, $sec] = explode(' ', microtime());
+
+                    return date('Y-m-d H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
+                }
+                else
+                {
+                    return date('Y-m-d H:i:s');
+                }
+                // no break
             case 'int':
             case 'int2':
             case 'int4':

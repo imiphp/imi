@@ -20,8 +20,13 @@ use Imi\Pgsql\Model\PgModel as Model;
  * @property int|null    $id
  * @property string|null $date
  * @property string|null $time
- * @property string|null $datetime
+ * @property string|null $timetz
+ * @property string|null $time2
+ * @property string|null $timetz2
  * @property string|null $timestamp
+ * @property string|null $timestamptz
+ * @property string|null $timestamp2
+ * @property string|null $timestamptz2
  * @property int|null    $int
  * @property int|null    $bigint
  */
@@ -39,7 +44,6 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * id.
-
      *
      * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
@@ -69,7 +73,6 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * date.
-
      *
      * @Column(name="date", type="date", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -99,7 +102,6 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * time.
-
      *
      * @Column(name="time", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -128,38 +130,94 @@ abstract class UpdateTimeBase extends Model
     }
 
     /**
-     * datetime.
-
+     * timetz.
      *
-     * @Column(name="datetime", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timetz", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
-    protected ?string $datetime = null;
+    protected ?string $timetz = null;
 
     /**
-     * 获取 datetime.
+     * 获取 timetz.
      */
-    public function getDatetime(): ?string
+    public function getTimetz(): ?string
     {
-        return $this->datetime;
+        return $this->timetz;
     }
 
     /**
-     * 赋值 datetime.
+     * 赋值 timetz.
      *
-     * @param string|null $datetime datetime
+     * @param string|null $timetz timetz
      *
      * @return static
      */
-    public function setDatetime(?string $datetime)
+    public function setTimetz(?string $timetz)
     {
-        $this->datetime = $datetime;
+        $this->timetz = $timetz;
+
+        return $this;
+    }
+
+    /**
+     * time2.
+     *
+     * @Column(name="time2", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     */
+    protected ?string $time2 = null;
+
+    /**
+     * 获取 time2.
+     */
+    public function getTime2(): ?string
+    {
+        return $this->time2;
+    }
+
+    /**
+     * 赋值 time2.
+     *
+     * @param string|null $time2 time2
+     *
+     * @return static
+     */
+    public function setTime2(?string $time2)
+    {
+        $this->time2 = $time2;
+
+        return $this;
+    }
+
+    /**
+     * timetz2.
+     *
+     * @Column(name="timetz2", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     */
+    protected ?string $timetz2 = null;
+
+    /**
+     * 获取 timetz2.
+     */
+    public function getTimetz2(): ?string
+    {
+        return $this->timetz2;
+    }
+
+    /**
+     * 赋值 timetz2.
+     *
+     * @param string|null $timetz2 timetz2
+     *
+     * @return static
+     */
+    public function setTimetz2(?string $timetz2)
+    {
+        $this->timetz2 = $timetz2;
 
         return $this;
     }
 
     /**
      * timestamp.
-
      *
      * @Column(name="timestamp", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -188,8 +246,94 @@ abstract class UpdateTimeBase extends Model
     }
 
     /**
-     * int.
+     * timestamptz.
+     *
+     * @Column(name="timestamptz", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     */
+    protected ?string $timestamptz = null;
 
+    /**
+     * 获取 timestamptz.
+     */
+    public function getTimestamptz(): ?string
+    {
+        return $this->timestamptz;
+    }
+
+    /**
+     * 赋值 timestamptz.
+     *
+     * @param string|null $timestamptz timestamptz
+     *
+     * @return static
+     */
+    public function setTimestamptz(?string $timestamptz)
+    {
+        $this->timestamptz = $timestamptz;
+
+        return $this;
+    }
+
+    /**
+     * timestamp2.
+     *
+     * @Column(name="timestamp2", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     */
+    protected ?string $timestamp2 = null;
+
+    /**
+     * 获取 timestamp2.
+     */
+    public function getTimestamp2(): ?string
+    {
+        return $this->timestamp2;
+    }
+
+    /**
+     * 赋值 timestamp2.
+     *
+     * @param string|null $timestamp2 timestamp2
+     *
+     * @return static
+     */
+    public function setTimestamp2(?string $timestamp2)
+    {
+        $this->timestamp2 = $timestamp2;
+
+        return $this;
+    }
+
+    /**
+     * timestamptz2.
+     *
+     * @Column(name="timestamptz2", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     */
+    protected ?string $timestamptz2 = null;
+
+    /**
+     * 获取 timestamptz2.
+     */
+    public function getTimestamptz2(): ?string
+    {
+        return $this->timestamptz2;
+    }
+
+    /**
+     * 赋值 timestamptz2.
+     *
+     * @param string|null $timestamptz2 timestamptz2
+     *
+     * @return static
+     */
+    public function setTimestamptz2(?string $timestamptz2)
+    {
+        $this->timestamptz2 = $timestamptz2;
+
+        return $this;
+    }
+
+    /**
+     * int.
      *
      * @Column(name="int", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
@@ -219,7 +363,6 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * bigint.
-
      *
      * @Column(name="bigint", type="int8", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */

@@ -9,6 +9,7 @@ use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBaseStatement;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Util\Text;
 use Swoole\Coroutine\PostgreSQLStatement;
 
 /**
@@ -43,6 +44,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     protected ?array $sqlParamsMap = null;
 
+    /**
+     * 最后插入ID.
+     */
+    protected string $lastInsertId = '';
+
     public function __construct(IPgsqlDb $db, PostgreSQLStatement $stmt, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
@@ -53,6 +59,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         {
             $this->result = $result;
         }
+        $this->updateLastInsertId();
     }
 
     /**
@@ -293,7 +300,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function lastInsertId(?string $name = null): string
     {
-        return $this->stmt->lastInsertId();
+        return $this->lastInsertId;
     }
 
     /**
@@ -352,5 +359,21 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     public function valid(): bool
     {
         return false !== $this->current();
+    }
+
+    /**
+     * 更新最后插入ID.
+     */
+    private function updateLastInsertId(): void
+    {
+        $queryString = $this->lastSql;
+        if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
+        {
+            $this->lastInsertId = $this->db->lastInsertId();
+        }
+        else
+        {
+            $this->lastInsertId = '';
+        }
     }
 }

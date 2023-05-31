@@ -35,8 +35,13 @@ CACHE 1
 ),
   "date" date,
   "time" time(6),
-  "datetime" timestamp(6),
+  "timetz" timetz(6),
+  "time2" time(6),
+  "timetz2" timetz(6),
   "timestamp" timestamp(6),
+  "timestamptz" timestamptz(6),
+  "timestamp2" timestamp(6),
+  "timestamptz2" timestamptz(6),
   "int" int4,
   "bigint" int8
 )

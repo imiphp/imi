@@ -34,7 +34,6 @@ abstract class TestJsonBase extends Model
 
     /**
      * id.
-
      *
      * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=true, ndims=0, virtual=false)
      */
