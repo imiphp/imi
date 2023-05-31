@@ -127,6 +127,8 @@ $token = \Imi\JWT\Facade\JWT::parseToken('token字符串', 'a', true); // 获取
 // 下面是手动验证
 \Imi\JWT\Facade\JWT::validate(null, $token); // 使用默认名称验证
 \Imi\JWT\Facade\JWT::validate('a', $token); // 指定名称验证
+// 获取token的数据
+$data = $token->claims()->get('data');
 ```
 
 注解验证：
@@ -163,7 +165,7 @@ class A
 JWT 验证注解
 
 | 属性名称 | 说明 |
-|-|-
+|-|-|
 | name | JWT 配置名称 |
 | id | 验证 ID。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
 | issuer | 验证发行人。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
