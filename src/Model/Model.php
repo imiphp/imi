@@ -978,7 +978,7 @@ abstract class Model extends BaseModel
             case 'int':
                 return (int) $microTime;
             case 'bigint':
-                return (int) ((int) $microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
+                return (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
             case 'year':
                 return (int) date('Y', (int) $microTime);
             default:
@@ -1055,7 +1055,7 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ($column->updateTime && !$isInsert && empty($object[$dbFieldName]))
+            if ($column->updateTime && !$isInsert && (empty($object[$dbFieldName]) || ($object[$dbFieldName] && ($originData[$dbFieldName] ?? null) === $object[$dbFieldName])))
             {
                 $value = static::parseDateTime($columnType, $column->updateTime, $microTime);
                 if (null === $value)
