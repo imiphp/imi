@@ -30,9 +30,10 @@ class PgModel extends Model
             case 'timetz':
                 if ($timeAccuracy >= 1000)
                 {
-                    [$usec, $sec] = explode(' ', microtime());
+                    $sec = (int) $microTime;
+                    $usec = $microTime - $sec; // 获取小数部分
 
-                    return date('H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
+                    return date('H:i:s.', $sec) . (int) ((float) $usec * $timeAccuracy);
                 }
                 else
                 {
@@ -43,9 +44,10 @@ class PgModel extends Model
             case 'timestamptz':
                 if ($timeAccuracy >= 1000)
                 {
-                    [$usec, $sec] = explode(' ', microtime());
+                    $sec = (int) $microTime;
+                    $usec = $microTime - $sec; // 获取小数部分
 
-                    return date('Y-m-d H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
+                    return date('Y-m-d H:i:s.', $sec) . (int) ($usec * $timeAccuracy);
                 }
                 else
                 {
@@ -55,7 +57,7 @@ class PgModel extends Model
             case 'int':
             case 'int2':
             case 'int4':
-                return time();
+                return (int) $microTime;
             case 'int8':
                 return (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
             default:
