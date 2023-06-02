@@ -471,7 +471,8 @@ class ModelTest extends BaseTest
 
         foreach ($fields as $field => $opts)
         {
-            self::assertLessThanOrEqual($parseDateTimeFun($opts[0], $opts[1], $startMicroTime), $record->{$field}, sprintf('%s fail: %s', $field, $record->getDate()));
+            \var_dump(\sprintf("%s, %s, %s", $field, $parseDateTimeFun($opts[0], $opts[1], $startMicroTime), $record->{$field}));
+            self::assertEquals($parseDateTimeFun($opts[0], $opts[1], $startMicroTime), $record->{$field}, sprintf('%s fail: %s', $field, $record->{$field}));
         }
     }
 
@@ -479,10 +480,8 @@ class ModelTest extends BaseTest
     {
         self::assertFalse(CreateTime::__getMeta()->isIncrUpdate());
 
-        $microTime = microtime(true);
-
         $fields = [
-            'data'         => ['date', true],
+            'date'         => ['date', true],
             'time'         => ['time', true],
             'datetime'     => ['datetime', true],
             'timestamp'    => ['timestamp', true],
@@ -496,7 +495,8 @@ class ModelTest extends BaseTest
         $record = CreateTime::newInstance();
         $result = $record->save();
         self::assertTrue($result->isSuccess());
-        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+        $startMicroTime = $record->getBigint() / 1000;
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
 
         // 更新测试
         $fixed = $record->toArray();
@@ -508,7 +508,8 @@ class ModelTest extends BaseTest
         // insert 测试
         $record = CreateTime::newInstance();
         $record->insert();
-        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+        $startMicroTime = $record->getBigint() / 1000;
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
 
         // 输入覆盖
         $record = CreateTime::newInstance();
@@ -535,7 +536,7 @@ class ModelTest extends BaseTest
         self::assertFalse(UpdateTime::__getMeta()->isIncrUpdate());
 
         $fields = [
-            'data'         => ['date', true],
+            'date'         => ['date', true],
             'time'         => ['time', true],
             'datetime'     => ['datetime', true],
             'timestamp'    => ['timestamp', true],
@@ -549,20 +550,26 @@ class ModelTest extends BaseTest
         $record = UpdateTime::newInstance();
         $result = $record->save();
         self::assertTrue($result->isSuccess());
-        $microTime = microtime(true);
-        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+        $startMicroTime = $record->getBigint() / 1000;
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
 
         // update-1 测试
+        $copyArr = $record->toArray();
         $result = $record->update();
         self::assertTrue($result->isSuccess());
-        $microTime = microtime(true);
-        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+        $startMicroTime = $record->getBigint() / 1000;
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
+        // 更新后时间必须发生变化
+        self::assertNotEquals($copyArr, $record->toArray());
 
         // update-2 测试
+        $copyArr = $record->toArray();
         $result = $record->save();
         self::assertTrue($result->isSuccess());
-        $microTime = microtime(true);
-        self::assertAutoCreateOrUpdateTime($record, $fields, $microTime);
+        $startMicroTime = $record->getBigint() / 1000;
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
+        // 更新后时间必须发生变化
+        self::assertNotEquals($copyArr, $record->toArray());
 
         // 输入覆盖
         $record = UpdateTime::newInstance();
