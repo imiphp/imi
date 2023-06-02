@@ -71,9 +71,9 @@ abstract class QueryCurdBaseTest extends BaseTest
             'title'     => 'title-insert',
             'content'   => 'content-insert',
         ])
-            ->setField('time', '2019-06-21 00:00:00')
-            ->from($this->tableArticle)
-            ->insert();
+        ->setField('time', '2019-06-21 00:00:00')
+        ->from($this->tableArticle)
+        ->insert();
         $id2 = $result->getLastInsertId();
         $record = $query->from($this->tableArticle)->where('id', '=', $id2)->select()->get();
         Assert::assertEquals([
@@ -208,11 +208,11 @@ abstract class QueryCurdBaseTest extends BaseTest
             'page_count'    => 1,
         ];
         $result = Db::query($this->poolName)->from($this->tableArticle)
-            ->bindValues([
-                ':id'  => $ids[1],
-            ])
-            ->whereRaw('id = :id')
-            ->paginate(1, 1);
+                             ->bindValues([
+                                 ':id'  => $ids[1],
+                             ])
+                             ->whereRaw('id = :id')
+                             ->paginate(1, 1);
         $this->assertEquals($expectedData, $result->toArray());
     }
 
@@ -465,32 +465,36 @@ abstract class QueryCurdBaseTest extends BaseTest
     public function testRawBinds(): void
     {
         $query = Db::query()->from('test')
-            ->fieldRaw('test.*, ?', null, ['imi'])
-            ->joinRaw('join test2 on test.id = test2.id and test2.id2 = ?', [1])
-            ->whereRaw('test.id = ?', 'and', [2])
-            ->orWhereRaw('test.id = ?', [3])
-            ->groupRaw('test.id, ?', [4])
-            ->havingRaw('test.id = ?', 'and', [5])
-            ->orderRaw('field(test.id, ?, ?)', [6, 7]);
+                            ->fieldRaw('test.*, ?', null, ['imi'])
+                            ->joinRaw('join test2 on test.id = test2.id and test2.id2 = ?', [1])
+                            ->whereRaw('test.id = ?', 'and', [2])
+                            ->orWhereRaw('test.id = ?', [3])
+                            ->groupRaw('test.id, ?', [4])
+                            ->havingRaw('test.id = ?', 'and', [5])
+                            ->orderRaw('field(test.id, ?, ?)', [6, 7])
+        ;
         $this->assertEquals('select test.*, ? from `test` join test2 on test.id = test2.id and test2.id2 = ? where test.id = ? or test.id = ? group by test.id, ? having test.id = ? order by field(test.id, ?, ?)', $query->buildSelectSql());
         $this->assertEquals(['imi', 1, 2, 3, 4, 5, 6, 7], $query->getBinds());
     }
 
     public function testSetFieldExp(): void
     {
-        $query = Db::query()->from('test')->setFieldExp('c', '1 + ?', [1]);
+        $query = Db::query()->from('test')->setFieldExp('c', '1 + ?', [1])
+        ;
         $this->assertEquals('insert into `test` (`c`) values(1 + ?)', $query->buildInsertSql());
         $this->assertEquals([1], $query->getBinds());
 
         $query = Db::query()->from('test')->setFieldInc('a', 1)
-            ->setFieldDec('b', 2)
-            ->setFieldExp('c', 'c + :c', [':c' => 3]);
+                                          ->setFieldDec('b', 2)
+                                          ->setFieldExp('c', 'c + :c', [':c' => 3])
+        ;
         $this->assertEquals('update `test` set `a` = `a` + :fip1,`b` = `b` - :fdp2,`c` = c + :c', $query->buildUpdateSql());
         $this->assertEquals([':fip1' => 1, ':fdp2' => 2, ':c' => 3], $query->getBinds());
 
         $query = Db::query()->from('test')->setFieldInc('a', 4)
-            ->setFieldDec('b', 5)
-            ->setFieldExp('c', 'c + :c', [':c' => 6]);
+                                          ->setFieldDec('b', 5)
+                                          ->setFieldExp('c', 'c + :c', [':c' => 6])
+        ;
         $this->assertEquals('replace into `test` set `a` = `a` + :fip1,`b` = `b` - :fdp2,`c` = c + :c', $query->buildReplaceSql());
         $this->assertEquals([':fip1' => 4, ':fdp2' => 5, ':c' => 6], $query->getBinds());
     }
@@ -523,13 +527,11 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals('db_imi2', $database->toString($query));
     }
 
-    public function testJoinWhere()
+    public function testJoinWhere(): void
     {
-        $query = Db::query();
-
         $query = Db::query()->from('test')
             ->join('test2', 'test.id', '=', 'test2.id', null, new Where('test2.id2', '=', 1));
-        $this->assertEquals('select * from `test` join test2 on test.id = test2.id and test2.id2 = :p1', $query->buildSelectSql());
+        $this->assertEquals('select * from `test` inner join `test2` on `test`.`id`=`test2`.`id` and `test2`.`id2` = :p1', $query->buildSelectSql());
         $this->assertEquals([':p1' => 1], $query->getBinds());
     }
 }
