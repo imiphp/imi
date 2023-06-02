@@ -46,12 +46,10 @@ class Join implements IJoin
     public function __construct(IQuery $query, ?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner')
     {
         $this->table = $thisTable = new Table();
-        if (null !== $table)
-        {
+        if (null !== $table) {
             $thisTable->setValue($table, $query);
         }
-        if (null !== $tableAlias)
-        {
+        if (null !== $tableAlias) {
             $thisTable->setAlias($tableAlias);
         }
         $this->left = $left;
@@ -179,14 +177,12 @@ class Join implements IJoin
      */
     public function toString(IQuery $query): string
     {
-        if ($this->isRaw)
-        {
+        if ($this->isRaw) {
             return $this->rawSQL;
         }
         $result = $this->type . ' join ' . $this->table->toString($query) . ' on ' . $query->fieldQuote($this->left ?? '') . $this->operation . $query->fieldQuote($this->right ?? '');
-        if ($this->where instanceof IBaseWhere)
-        {
-            $result .= ' and ' . $this->where->toStringWithoutLogic($query);
+        if ($this->where instanceof IBaseWhere) {
+            $result .= ' ' . $this->where->getLogicalOperator() . ' ' . $this->where->toStringWithoutLogic($query);
         }
 
         return $result;
@@ -197,12 +193,9 @@ class Join implements IJoin
      */
     public function getBinds(): array
     {
-        if ($this->where instanceof IBaseWhere)
-        {
+        if ($this->where instanceof IBaseWhere) {
             return $this->where->getBinds();
-        }
-        else
-        {
+        } else {
             return $this->binds;
         }
     }
