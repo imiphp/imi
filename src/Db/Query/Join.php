@@ -186,7 +186,7 @@ class Join implements IJoin
         $result = $this->type . ' join ' . $this->table->toString($query) . ' on ' . $query->fieldQuote($this->left ?? '') . $this->operation . $query->fieldQuote($this->right ?? '');
         if ($this->where instanceof IBaseWhere)
         {
-            $result .= ' ' . $this->where->toString($query);
+            $result .= ' ' . $this->where->getLogicalOperator() . ' ' . $this->where->toStringWithoutLogic($query);
         }
 
         return $result;

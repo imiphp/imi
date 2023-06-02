@@ -8,6 +8,7 @@ use Imi\Db\Db;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
 use Imi\Db\Query\Database;
 use Imi\Db\Query\Raw;
+use Imi\Db\Query\Where\Where;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 
@@ -524,5 +525,13 @@ abstract class QueryCurdBaseTest extends BaseTest
         $database->setAlias(null);
         $this->assertNull($database->getAlias());
         $this->assertEquals('db_imi2', $database->toString($query));
+    }
+
+    public function testJoinWhere(): void
+    {
+        $query = Db::query()->from('test')
+            ->join('test2', 'test.id', '=', 'test2.id', null, new Where('test2.id2', '=', 1));
+        $this->assertEquals('select * from `test` inner join `test2` on `test`.`id`=`test2`.`id` and `test2`.`id2` = :p1', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1], $query->getBinds());
     }
 }
