@@ -467,17 +467,18 @@ class ModelTest extends BaseTest
      */
     private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime)
     {
+        /** @phpstan-ignore-next-line */
         $parseDateTimeFun = (static fn (?string $columnType, $timeAccuracy, float $microTime) => Model::parseDateTime($columnType, $timeAccuracy, $microTime))->bindTo(null, Model::class);
 
         foreach ($fields as $field => $opts)
         {
-            \var_dump(\sprintf("%s, %s, %s", $field, $parseDateTimeFun($opts[0], $opts[1], $startMicroTime), $record->{$field}));
             self::assertEquals($parseDateTimeFun($opts[0], $opts[1], $startMicroTime), $record->{$field}, sprintf('%s fail: %s', $field, $record->{$field}));
         }
     }
 
     public function testAutoCreateTime(): void
     {
+        // 不支持增量更新的模型才能完成此测试
         self::assertFalse(CreateTime::__getMeta()->isIncrUpdate());
 
         $fields = [
@@ -533,6 +534,7 @@ class ModelTest extends BaseTest
 
     public function testAutoUpdateTime(): void
     {
+        // 不支持增量更新的模型才能完成此测试
         self::assertFalse(UpdateTime::__getMeta()->isIncrUpdate());
 
         $fields = [
