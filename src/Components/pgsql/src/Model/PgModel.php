@@ -33,7 +33,7 @@ class PgModel extends Model
                     $sec = (int) $microTime;
                     $usec = $microTime - $sec; // 获取小数部分
 
-                    return date('H:i:s.', $sec) . (int) ((float) $usec * $timeAccuracy);
+                    return date('H:i:s.', $sec) . (int) ($usec * $timeAccuracy);
                 }
                 else
                 {
