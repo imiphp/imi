@@ -462,10 +462,8 @@ class ModelTest extends BaseTest
 
     /**
      * @param CreateTime|UpdateTime $record
-     *
-     * @return void
      */
-    private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime)
+    private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime): void
     {
         /** @phpstan-ignore-next-line */
         $parseDateTimeFun = (static fn (?string $columnType, $timeAccuracy, float $microTime) => Model::parseDateTime($columnType, $timeAccuracy, $microTime))->bindTo(null, Model::class);

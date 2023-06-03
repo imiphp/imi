@@ -322,8 +322,6 @@ class ModelTest extends BaseTest
 
     /**
      * @param UpdateTime $record
-     *
-     * @return void
      */
     private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime): void
     {
@@ -334,7 +332,8 @@ class ModelTest extends BaseTest
         {
             $value = $parseDateTimeFun($opts[0], $opts[1], $startMicroTime);
             self::assertEquals($value, $record->{$field}, sprintf('%s fail: %s', $field, $record->{$field}));
-            if (isset($opts[2])) {
+            if (isset($opts[2]))
+            {
                 self::assertStringMatchesFormat($opts[2], $value);
             }
         }
