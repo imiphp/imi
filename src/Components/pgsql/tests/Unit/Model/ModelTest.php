@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Unit\Model;
 
+use Imi\Pgsql\Model\PgModel;
 use Imi\Pgsql\Test\Model\Article;
 use Imi\Pgsql\Test\Model\Member;
 use Imi\Pgsql\Test\Model\MemberWithSqlField;
@@ -319,49 +320,91 @@ class ModelTest extends BaseTest
         $this->assertEquals(0, $count3);
     }
 
-    private function assertUpdateTime(UpdateTime $record, string $methodName): void
+    /**
+     * @param UpdateTime $record
+     *
+     * @return void
+     */
+    private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime): void
     {
-        [$usec, $sec] = explode(' ', microtime());
-        $result = $record->{$methodName}();
-        $time = (int) $sec;
-        $bigintTime = ($time + (float) $usec) * 1000;
-        $this->assertTrue($result->isSuccess());
-        $this->assertStringMatchesFormat('%d-%d-%d', $record->date);
-        $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
-        $this->assertStringMatchesFormat('%d:%d:%d.0', $record->time);
-        $this->assertLessThanOrEqual(1, strtotime($record->time) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time));
-        $this->assertStringMatchesFormat('%d:%d:%d.0', $record->timetz);
-        $this->assertLessThanOrEqual(1, strtotime($record->timetz) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->timetz));
-        $this->assertStringMatchesFormat('%d:%d:%d.%d', $record->time);
-        $this->assertLessThanOrEqual(1, strtotime($record->time2) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->time2));
-        $this->assertStringMatchesFormat('%d:%d:%d.%d', $record->timetz);
-        $this->assertLessThanOrEqual(1, strtotime($record->timetz2) - strtotime(date('H:i:s', $time)), sprintf('time fail: %s', $record->timetz2));
-        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.0', $record->timestamp);
-        $this->assertLessThanOrEqual(1, strtotime($record->timestamp) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp));
-        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.0', $record->timestamptz);
-        $this->assertLessThanOrEqual(1, strtotime($record->timestamptz) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamptz));
-        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.%d', $record->timestamp2);
-        $this->assertLessThanOrEqual(1, strtotime($record->timestamp2) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamp2));
-        $this->assertStringMatchesFormat('%d-%d-%d %d:%d:%d.%d', $record->timestamptz2);
-        $this->assertLessThanOrEqual(1, strtotime($record->timestamptz2) - strtotime(date('Y-m-d H:i:s', $time)), sprintf('timestamp fail: %s', $record->timestamptz2));
-        $this->assertLessThanOrEqual(1, $record->int - $time, sprintf('int fail: %s', $record->int));
-        $this->assertLessThanOrEqual(1, $record->bigint - $bigintTime, sprintf('bigint fail: %s', $record->bigint));
+        /** @phpstan-ignore-next-line */
+        $parseDateTimeFun = (static fn (?string $columnType, $timeAccuracy, float $microTime) => PgModel::parseDateTime($columnType, $timeAccuracy, $microTime))->bindTo(null, PgModel::class);
+
+        foreach ($fields as $field => $opts)
+        {
+            $value = $parseDateTimeFun($opts[0], $opts[1], $startMicroTime);
+            self::assertEquals($value, $record->{$field}, sprintf('%s fail: %s', $field, $record->{$field}));
+            if (isset($opts[2])) {
+                self::assertStringMatchesFormat($opts[2], $value);
+            }
+        }
     }
 
-    public function testUpdateTimeSave(): void
+    public function testAutoUpdateTime(): void
     {
-        $this->go(function () {
-            $record = UpdateTime::newInstance();
-            $this->assertUpdateTime($record, 'save');
-        }, null, 3);
-    }
+        // 不支持增量更新的模型才能完成此测试
+        self::assertFalse(UpdateTime::__getMeta()->isIncrUpdate());
 
-    public function testUpdateTimeUpdate(): void
-    {
-        $this->go(function () {
-            $record = UpdateTime::find(1);
-            $this->assertUpdateTime($record, 'update');
-        }, null, 3);
+        $fields = [
+            'date'         => ['date', true, '%d-%d-%d'],
+            'time'         => ['time', true, '%d:%d:%d.0'],
+            'timetz'       => ['timetz', true, '%d:%d:%d.0'],
+            'time2'        => ['time', 1000, '%d:%d:%d.%d'],
+            'timetz2'      => ['timetz', 1000, '%d:%d:%d.%d'],
+            'timestamp'    => ['timestamp', true, '%d-%d-%d %d:%d:%d.0'],
+            'timestamptz'  => ['timestamptz', true, '%d-%d-%d %d:%d:%d.0'],
+            'timestamp2'   => ['timestamp', 1000, '%d-%d-%d %d:%d:%d.%d'],
+            'timestamptz2' => ['timestamptz', 1000, '%d-%d-%d %d:%d:%d.%d'],
+            'int'          => ['int4', true, null],
+            'bigint'       => ['int8', true, null],
+        ];
+
+        // create 测试
+        $record = UpdateTime::newInstance();
+        $result = $record->save();
+        self::assertTrue($result->isSuccess());
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000; // 为了避免浮点误差，这里加上 0.001
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
+
+        // update-1 测试
+        $copyArr = $record->toArray();
+        $result = $record->update();
+        self::assertTrue($result->isSuccess());
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000; // 为了避免浮点误差，这里加上 0.001
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
+        // 更新后时间必须发生变化
+        self::assertNotEquals($copyArr, $record->toArray());
+
+        // update-2 测试
+        $copyArr = $record->toArray();
+        $result = $record->save();
+        self::assertTrue($result->isSuccess());
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000; // 为了避免浮点误差，这里加上 0.001
+        self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
+        // 更新后时间必须发生变化
+        self::assertNotEquals($copyArr, $record->toArray());
+
+        // 输入覆盖
+        $record = UpdateTime::newInstance();
+        $record->setDate('2000-01-01');
+        $record->setTime('01:15:30');
+        $record->setTimetz('01:15:30+08');
+        $record->setTime2('01:15:30.45');
+        $record->setTimetz2('01:15:30.45+08');
+        $record->setTimestamp('2000-01-01 01:15:30');
+        $record->setTimestamptz('2000-01-01 01:15:30+08');
+        $record->setTimestamp2('2000-01-01 01:15:30.45');
+        $record->setTimestamptz2('2000-01-01 01:15:30.45+08');
+        $record->setInt(456);
+        $record->setBigint(789);
+
+        $fixed = $record->toArray();
+        $record->save();
+        $recordArr = $record->toArray();
+
+        unset($fixed['id'], $recordArr['id']);
+
+        self::assertEquals($fixed, $recordArr);
     }
 
     public function testModelReferenceGetter(): void

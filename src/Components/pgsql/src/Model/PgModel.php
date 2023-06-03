@@ -14,9 +14,9 @@ class PgModel extends Model
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
 
     /**
-     * @param bool|int $timeAccuracy
+     * @param bool|int $timeAccuracy 推荐最大精度6位（微秒），部分系统能提供9位精度（纳秒）
      *
-     * @return mixed
+     * @return int|string|null
      */
     protected static function parseDateTime(?string $columnType, $timeAccuracy, ?float $microTime = null)
     {

@@ -496,7 +496,7 @@ class ModelTest extends BaseTest
         $record = CreateTime::newInstance();
         $result = $record->save();
         self::assertTrue($result->isSuccess());
-        $startMicroTime = $record->getBigint() / 1000;
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000;
         self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
 
         // 更新测试
@@ -509,7 +509,7 @@ class ModelTest extends BaseTest
         // insert 测试
         $record = CreateTime::newInstance();
         $record->insert();
-        $startMicroTime = $record->getBigint() / 1000;
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000;
         self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
 
         // 输入覆盖
@@ -552,14 +552,14 @@ class ModelTest extends BaseTest
         $record = UpdateTime::newInstance();
         $result = $record->save();
         self::assertTrue($result->isSuccess());
-        $startMicroTime = $record->getBigint() / 1000;
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000;
         self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
 
         // update-1 测试
         $copyArr = $record->toArray();
         $result = $record->update();
         self::assertTrue($result->isSuccess());
-        $startMicroTime = $record->getBigint() / 1000;
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000;
         self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
         // 更新后时间必须发生变化
         self::assertNotEquals($copyArr, $record->toArray());
@@ -568,7 +568,7 @@ class ModelTest extends BaseTest
         $copyArr = $record->toArray();
         $result = $record->save();
         self::assertTrue($result->isSuccess());
-        $startMicroTime = $record->getBigint() / 1000;
+        $startMicroTime = ($record->getBigint() + 0.001) / 1000;
         self::assertAutoCreateOrUpdateTime($record, $fields, $startMicroTime);
         // 更新后时间必须发生变化
         self::assertNotEquals($copyArr, $record->toArray());
