@@ -1030,7 +1030,7 @@ abstract class Model extends BaseModel
         }
         $incrUpdate = $meta->isIncrUpdate();
         $ids = $meta->getIds();
-        $microTime = microtime(true);
+        $microTime = null;
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
@@ -1057,6 +1057,7 @@ abstract class Model extends BaseModel
             // 字段自动更新时间
             if ($column->updateTime && !$isInsert && (empty($object[$dbFieldName]) || ($object[$dbFieldName] && ($originData[$dbFieldName] ?? null) === $object[$dbFieldName])))
             {
+                $microTime ??= microtime(true);
                 $value = static::parseDateTime($columnType, $column->updateTime, $microTime);
                 if (null === $value)
                 {
@@ -1069,6 +1070,7 @@ abstract class Model extends BaseModel
             }
             elseif ($column->createTime && ($isInsert || $isSaveInsert) && empty($object[$dbFieldName]))
             {
+                $microTime ??= microtime(true);
                 $value = static::parseDateTime($columnType, $column->createTime, $microTime);
                 if (null === $value)
                 {
