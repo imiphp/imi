@@ -1030,7 +1030,6 @@ abstract class Model extends BaseModel
         }
         $incrUpdate = $meta->isIncrUpdate();
         $ids = $meta->getIds();
-        $microTime = null;
         foreach ($meta->getDbFields() as $dbFieldName => $item)
         {
             /** @var Column $column */
