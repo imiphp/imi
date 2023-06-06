@@ -19,6 +19,7 @@ use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\ObjectArrayHelper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -252,6 +253,20 @@ class ActionMiddleware implements MiddlewareInterface
             elseif ($actionMethodCacheItem->allowNull())
             {
                 $value = null;
+            }
+            elseif (($type = $actionMethodCacheItem->getType()) && (UploadedFileInterface::class === $type || is_subclass_of($type, UploadedFileInterface::class)))
+            {
+                $uploadedFiles ??= $request->getUploadedFiles();
+                if (!isset($uploadedFiles[$paramName]))
+                {
+                    throw new \InvalidArgumentException(sprintf('Missing uploaded file: %s', $paramName));
+                }
+                /** @var UploadedFileInterface $value */
+                $value = $uploadedFiles[$paramName];
+                if (0 !== $value->getError())
+                {
+                    throw new \RuntimeException(sprintf('Upload file failed. error:', $value->getError()));
+                }
             }
             else
             {

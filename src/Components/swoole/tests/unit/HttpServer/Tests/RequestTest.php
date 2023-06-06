@@ -172,6 +172,29 @@ class RequestTest extends BaseTest
         $this->assertEquals(md5($content), $file['hash']);
     }
 
+    public function testUpload2(): void
+    {
+        $http = new HttpRequest();
+        $response = $http->post($this->host . 'upload2');
+        $data = $response->json(true);
+        $this->assertEquals('Missing uploaded file: file', $data['message'] ?? null);
+
+        $file = new UploadedFile(basename(__FILE__), MediaType::TEXT_HTML, __FILE__);
+        $http->content([
+            'file'  => $file,
+        ]);
+        $response = $http->post($this->host . 'upload2');
+        $data = $response->json(true);
+
+        $this->assertTrue(isset($data['data']));
+        $file = $data['data'];
+        $content = file_get_contents(__FILE__);
+        $this->assertEquals(basename(__FILE__), $file['clientFilename']);
+        $this->assertEquals(MediaType::TEXT_HTML, $file['clientMediaType']);
+        $this->assertEquals(\strlen($content), $file['size']);
+        $this->assertEquals(md5($content), $file['hash']);
+    }
+
     /**
      * 控制器不在服务器目录下的测试.
      */

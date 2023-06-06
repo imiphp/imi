@@ -238,6 +238,22 @@ $swooleRequest = $this->request->getSwooleRequest();
 
 ## 绑定请求参数到控制器方法参数
 
+### Action 方法参数
+
+在控制器中，可以通过方法参数获取请求参数，imi 会自动绑定同名请求参数到方法参数。
+
+imi `v2.1.47` 新增支持 `\Psr\Http\Message\UploadedFileInterface` 类型参数，可以直接获取上传的文件，并且 imi 底层会帮你做是否上传和成功的验证，失败会自动抛出异常。
+
+```php
+/**
+ * @Action
+ */
+public function requestParam1(string $string, int $int, float $float, bool $bool, \Psr\Http\Message\UploadedFileInterface $file): array
+{
+    return compact('string', 'int', 'float', 'bool', 'file');
+}
+```
+
 ### RequestParam 注解
 
 imi `v2.1.27` 引入的新注解。
