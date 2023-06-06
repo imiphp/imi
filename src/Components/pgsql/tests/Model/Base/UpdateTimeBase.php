@@ -103,7 +103,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * time.
      *
-     * @Column(name="time", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="time", type="time", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $time = null;
 
@@ -132,7 +132,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * timetz.
      *
-     * @Column(name="timetz", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timetz", type="timetz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timetz = null;
 
@@ -161,7 +161,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * time2.
      *
-     * @Column(name="time2", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="time2", type="time", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $time2 = null;
 
@@ -190,7 +190,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * timetz2.
      *
-     * @Column(name="timetz2", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timetz2", type="timetz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timetz2 = null;
 
@@ -219,7 +219,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * timestamp.
      *
-     * @Column(name="timestamp", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timestamp", type="timestamp", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timestamp = null;
 
@@ -248,7 +248,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * timestamptz.
      *
-     * @Column(name="timestamptz", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timestamptz", type="timestamptz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timestamptz = null;
 
@@ -277,7 +277,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * timestamp2.
      *
-     * @Column(name="timestamp2", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timestamp2", type="timestamp", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timestamp2 = null;
 
@@ -306,7 +306,7 @@ abstract class UpdateTimeBase extends Model
     /**
      * timestamptz2.
      *
-     * @Column(name="timestamptz2", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="timestamptz2", type="timestamptz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $timestamptz2 = null;
 

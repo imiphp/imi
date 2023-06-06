@@ -64,7 +64,7 @@ abstract class PerformanceBase extends Model
     /**
      * value.
      *
-     * @Column(name="value", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="value", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $value = null;
 
@@ -85,6 +85,10 @@ abstract class PerformanceBase extends Model
      */
     public function setValue(?string $value)
     {
+        if (\is_string($value) && mb_strlen($value) > 255)
+        {
+            throw new \InvalidArgumentException('The maximum length of $value is 255');
+        }
         $this->value = $value;
 
         return $this;

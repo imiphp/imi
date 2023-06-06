@@ -66,7 +66,7 @@ abstract class ArticleBase extends Model
     /**
      * title.
      *
-     * @Column(name="title", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $title = null;
 
@@ -87,6 +87,10 @@ abstract class ArticleBase extends Model
      */
     public function setTitle(?string $title)
     {
+        if (\is_string($title) && mb_strlen($title) > 255)
+        {
+            throw new \InvalidArgumentException('The maximum length of $title is 255');
+        }
         $this->title = $title;
 
         return $this;
@@ -124,7 +128,7 @@ abstract class ArticleBase extends Model
     /**
      * time.
      *
-     * @Column(name="time", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="time", type="timestamp", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $time = null;
 

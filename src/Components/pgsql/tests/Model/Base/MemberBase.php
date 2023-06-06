@@ -66,7 +66,7 @@ abstract class MemberBase extends Model
      * 用户名.
      * username.
      *
-     * @Column(name="username", type="varchar", length=0, accuracy=32, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $username = null;
 
@@ -87,6 +87,10 @@ abstract class MemberBase extends Model
      */
     public function setUsername(?string $username)
     {
+        if (\is_string($username) && mb_strlen($username) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $username is 32');
+        }
         $this->username = $username;
 
         return $this;
@@ -96,7 +100,7 @@ abstract class MemberBase extends Model
      * 密码.
      * password.
      *
-     * @Column(name="password", type="varchar", length=0, accuracy=255, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="password", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $password = null;
 
@@ -117,6 +121,10 @@ abstract class MemberBase extends Model
      */
     public function setPassword(?string $password)
     {
+        if (\is_string($password) && mb_strlen($password) > 255)
+        {
+            throw new \InvalidArgumentException('The maximum length of $password is 255');
+        }
         $this->password = $password;
 
         return $this;

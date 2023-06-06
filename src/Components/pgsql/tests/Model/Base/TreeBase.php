@@ -94,7 +94,7 @@ abstract class TreeBase extends Model
     /**
      * name.
      *
-     * @Column(name="name", type="varchar", length=0, accuracy=32, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?string $name = null;
 
@@ -115,6 +115,10 @@ abstract class TreeBase extends Model
      */
     public function setName(?string $name)
     {
+        if (\is_string($name) && mb_strlen($name) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $name is 32');
+        }
         $this->name = $name;
 
         return $this;

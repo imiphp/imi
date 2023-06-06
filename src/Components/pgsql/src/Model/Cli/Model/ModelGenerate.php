@@ -294,12 +294,22 @@ class ModelGenerate extends BaseCommand
     private function parseFields(array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
     {
         $idCount = 0;
-        foreach ($fields as $i => $field)
+        foreach ($fields as $field)
         {
-            if ($field['atttypmod'] > -1)
+            $atttypmod = $field['atttypmod'];
+            if ($atttypmod > -1)
             {
-                $length = (($field['atttypmod'] - 4) >> 16) & 65535;
-                $accuracy = ($field['atttypmod'] - 4) & 65535;
+                if (-1 === $field['attlen'])
+                {
+                    $atttypmod -= 4;
+                }
+                $length = ($atttypmod >> 16) & 65535;
+                $accuracy = $atttypmod & 65535;
+                if (0 === $length)
+                {
+                    $length = $accuracy;
+                    $accuracy = 0;
+                }
             }
             else
             {
