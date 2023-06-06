@@ -158,7 +158,7 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
                 if ($this->needResponse)
@@ -279,7 +279,7 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
                 if ($this->needResponse)
@@ -365,7 +365,7 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
                 if ($this->needResponse)
@@ -464,17 +464,20 @@ class LocalServerUtil implements ISwooleServerUtil
         $result = 0;
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && null !== $flag)
         {
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
-                $channel = ChannelContainer::getChannel($id);
+                if ($this->needResponse)
+                {
+                    $channel = ChannelContainer::getChannel($id);
+                }
                 $count = $this->sendMessage('closeByFlagRequest', [
                     'messageId'    => $id,
                     'flag'         => $flag,
                     'serverName'   => $server->getName(),
                     'needResponse' => true,
                 ]);
-                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if (isset($channel) && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
@@ -531,17 +534,20 @@ class LocalServerUtil implements ISwooleServerUtil
         $swooleServer = $server->getSwooleServer();
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
         {
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
-                $channel = ChannelContainer::getChannel($id);
+                if ($this->needResponse)
+                {
+                    $channel = ChannelContainer::getChannel($id);
+                }
                 $count = $this->sendMessage('existsRequest', [
                     'messageId'    => $id,
                     'clientId'     => $clientId,
                     'serverName'   => $server->getName(),
                     'needResponse' => true,
                 ]);
-                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if (isset($channel) && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {
@@ -579,17 +585,20 @@ class LocalServerUtil implements ISwooleServerUtil
         $swooleServer = $server->getSwooleServer();
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && null !== $flag)
         {
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
-                $channel = ChannelContainer::getChannel($id);
+                if ($this->needResponse)
+                {
+                    $channel = ChannelContainer::getChannel($id);
+                }
                 $count = $this->sendMessage('existsRequest', [
                     'messageId'    => $id,
                     'flag'         => $flag,
                     'serverName'   => $server->getName(),
                     'needResponse' => true,
                 ]);
-                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
+                if (isset($channel) && ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
                     for ($i = $count; $i > 0; --$i)
                     {

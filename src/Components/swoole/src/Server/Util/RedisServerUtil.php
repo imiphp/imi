@@ -105,7 +105,7 @@ class RedisServerUtil extends LocalServerUtil
             $success = 0;
             foreach ((array) $flag as $tmpFlag)
             {
-                $id = uniqid('', true);
+                $id = static::class . ':' . bin2hex(random_bytes(8));
                 try
                 {
                     if ($this->needResponse)
@@ -184,7 +184,7 @@ class RedisServerUtil extends LocalServerUtil
                 $serverName = $server->getName();
             }
             $success = 0;
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
                 if ($this->needResponse)
@@ -246,7 +246,7 @@ class RedisServerUtil extends LocalServerUtil
                 }
                 $serverName = $server->getName();
             }
-            $id = uniqid('', true);
+            $id = static::class . ':' . bin2hex(random_bytes(8));
             try
             {
                 if ($this->needResponse)

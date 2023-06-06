@@ -126,7 +126,7 @@ class KafkaPool
 
     public static function createConsumerConfig(array $config = []): ConsumerConfig
     {
-        $clientId = getmypid() . '-' . uniqid('', true);
+        $clientId = getmypid() . '-' . bin2hex(random_bytes(8));
         if (!isset($config['clientId']))
         {
             $config['clientId'] = $clientId;
@@ -155,7 +155,7 @@ class KafkaPool
 
     public static function createProducerConfig(array $config = []): ProducerConfig
     {
-        $clientId = getmypid() . '-' . uniqid('', true);
+        $clientId = getmypid() . '-' . bin2hex(random_bytes(8));
         if (!isset($config['clientId']))
         {
             $config['clientId'] = $clientId;

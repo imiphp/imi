@@ -117,9 +117,8 @@ if (class_exists(\Imi\AMQP\Main::class))
                 $success = 0;
                 foreach ((array) $flag as $tmpFlag)
                 {
-                    $id = uniqid('', true);
                     if ($this->sendAmqpMessage('sendRawByFlag', [
-                        'messageId'  => $id,
+                        'messageId'  => bin2hex(random_bytes(16)),
                         'flag'       => $tmpFlag,
                         'data'       => $data,
                         'serverName' => $server->getName(),
@@ -171,9 +170,8 @@ if (class_exists(\Imi\AMQP\Main::class))
             }
             if ($toAllWorkers)
             {
-                $id = uniqid('', true);
                 if ($this->sendAmqpMessage('sendRawToAll', [
-                    'messageId'  => $id,
+                    'messageId'  => bin2hex(random_bytes(16)),
                     'data'       => $data,
                     'serverName' => $server->getName(),
                 ], 'all'))
@@ -222,9 +220,8 @@ if (class_exists(\Imi\AMQP\Main::class))
             {
                 foreach ($groups as $tmpGroup)
                 {
-                    $id = uniqid('', true);
                     if ($this->sendAmqpMessage('sendRawToGroup', [
-                        'messageId'  => $id,
+                        'messageId'  => bin2hex(random_bytes(16)),
                         'group'      => $tmpGroup,
                         'data'       => $data,
                         'serverName' => $server->getName(),
@@ -270,9 +267,8 @@ if (class_exists(\Imi\AMQP\Main::class))
             {
                 foreach ((array) $flag as $tmpFlag)
                 {
-                    $id = uniqid('', true);
                     if ($this->sendAmqpMessage('closeByFlag', [
-                        'messageId'  => $id,
+                        'messageId'  => bin2hex(random_bytes(16)),
                         'flag'       => $tmpFlag,
                         'serverName' => $server->getName(),
                     ], 'flag.' . $tmpFlag))
