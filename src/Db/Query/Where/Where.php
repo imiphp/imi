@@ -79,14 +79,6 @@ class Where extends BaseWhere implements IWhere
     /**
      * {@inheritDoc}
      */
-    public function getLogicalOperator(): string
-    {
-        return $this->logicalOperator;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setFieldName(?string $fieldName): void
     {
         $this->fieldName = $fieldName;
@@ -106,14 +98,6 @@ class Where extends BaseWhere implements IWhere
     public function setValue($value): void
     {
         $this->value = $value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLogicalOperator(string $logicalOperator): void
-    {
-        $this->logicalOperator = $logicalOperator;
     }
 
     /**
