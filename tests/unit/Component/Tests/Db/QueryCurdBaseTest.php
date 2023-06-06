@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests\Db;
 
 use Imi\Db\Db;
+use Imi\Db\Mysql\Query\FullText\MysqlFullTextOptions;
+use Imi\Db\Mysql\Query\FullText\SearchModifier;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
 use Imi\Db\Query\Database;
 use Imi\Db\Query\Raw;
@@ -533,5 +535,52 @@ abstract class QueryCurdBaseTest extends BaseTest
             ->join('test2', 'test.id', '=', 'test2.id', null, new Where('test2.id2', '=', 1));
         $this->assertEquals('select * from `test` inner join `test2` on `test`.`id`=`test2`.`id` and `test2`.`id2` = :p1', $query->buildSelectSql());
         $this->assertEquals([':p1' => 1], $query->getBinds());
+    }
+
+    public function testFullTextSearch(): void
+    {
+        $query = Db::query()->from('test')->whereFullText('content', 'imi');
+        $this->assertEquals('select * from `test` where MATCH (`content`) AGAINST (:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->whereFullText(['title', 'content'], 'imi');
+        $this->assertEquals('select * from `test` where MATCH (`title`,`content`) AGAINST (:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->whereFullText('content', 'imi');
+        $this->assertEquals('select * from `test` where `member_id` = :p1 and MATCH (`content`) AGAINST (:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->whereFullText(['title', 'content'], 'imi');
+        $this->assertEquals('select * from `test` where `member_id` = :p1 and MATCH (`title`,`content`) AGAINST (:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText('content', 'imi');
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`content`) AGAINST (:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText(['title', 'content'], 'imi');
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`title`,`content`) AGAINST (:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText(['title', 'content'], 'imi', new MysqlFullTextOptions());
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`title`,`content`) AGAINST (:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText(['title', 'content'], 'imi', new MysqlFullTextOptions(SearchModifier::IN_NATURAL_LANGUAGE_MODE));
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`title`,`content`) AGAINST (:p2 IN NATURAL LANGUAGE MODE)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText(['title', 'content'], 'imi', new MysqlFullTextOptions(SearchModifier::IN_NATURAL_LANGUAGE_MODE_WITH_QUERY_EXPANSION));
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`title`,`content`) AGAINST (:p2 IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText(['title', 'content'], 'imi', new MysqlFullTextOptions(SearchModifier::IN_BOOLEAN_MODE));
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`title`,`content`) AGAINST (:p2 IN BOOLEAN MODE)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->orWhereFullText(['title', 'content'], 'imi', new MysqlFullTextOptions(SearchModifier::WITH_QUERY_EXPANSION));
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`title`,`content`) AGAINST (:p2 WITH QUERY EXPANSION)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
     }
 }

@@ -11,6 +11,7 @@ use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
+use Imi\Db\Query\Interfaces\IFullTextOptions;
 use Imi\Db\Query\Interfaces\IHaving;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
@@ -20,6 +21,7 @@ use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
+use Imi\Db\Query\Where\WhereFullText;
 use Imi\Model\Model;
 use Imi\Util\Pagination;
 
@@ -36,6 +38,8 @@ abstract class Query implements IQuery
     public const REPLACE_BUILDER_CLASS = '';
 
     public const DELETE_BUILDER_CLASS = '';
+
+    public const FULL_TEXT_OPTIONS_CLASS = '';
 
     /**
      * 操作记录.
@@ -561,6 +565,34 @@ abstract class Query implements IQuery
     public function orWhereIsNotNull(string $fieldName): self
     {
         return $this->whereIsNotNull($fieldName, LogicalOperator::OR);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function whereFullText($fieldNames, string $searchText, ?IFullTextOptions $options = null, string $logicalOperator = 'and'): self
+    {
+        if (!$options)
+        {
+            $class = static::FULL_TEXT_OPTIONS_CLASS;
+            /** @var IFullTextOptions $options */
+            $options = new $class();
+        }
+
+        $options->setFieldNames($fieldNames);
+        $options->setSearchText($searchText);
+
+        $this->option->where[] = new WhereFullText($options, $logicalOperator);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function orWhereFullText($fieldNames, string $searchText, ?IFullTextOptions $options = null): self
+    {
+        return $this->whereFullText($fieldNames, $searchText, $options, 'or');
     }
 
     /**

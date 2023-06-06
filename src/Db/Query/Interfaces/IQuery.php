@@ -295,6 +295,20 @@ interface IQuery
     public function orWhereIsNotNull(string $fieldName): self;
 
     /**
+     * 全文搜索.
+     *
+     * @param string|string[] $fieldNames
+     */
+    public function whereFullText($fieldNames, string $searchText, ?IFullTextOptions $options = null, string $logicalOperator = 'and'): self;
+
+    /**
+     * 全文搜索 OR.
+     *
+     * @param string|string[] $fieldNames
+     */
+    public function orWhereFullText($fieldNames, string $searchText, ?IFullTextOptions $options = null): self;
+
+    /**
      * join.
      *
      * @param string     $table      表名
