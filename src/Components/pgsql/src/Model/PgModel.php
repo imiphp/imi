@@ -14,23 +14,26 @@ class PgModel extends Model
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
 
     /**
-     * @param bool|int $timeAccuracy
+     * @param bool|int $timeAccuracy 推荐最大精度6位（微秒），部分系统能提供9位精度（纳秒）
      *
-     * @return mixed
+     * @return int|string|null
      */
-    protected static function parseDateTime(?string $columnType, $timeAccuracy)
+    protected static function parseDateTime(?string $columnType, $timeAccuracy, ?float $microTime = null)
     {
+        $microTime ??= microtime(true);
+
         switch ($columnType)
         {
             case 'date':
-                return date('Y-m-d');
+                return date('Y-m-d', (int) $microTime);
             case 'time':
             case 'timetz':
                 if ($timeAccuracy >= 1000)
                 {
-                    [$usec, $sec] = explode(' ', microtime());
+                    $sec = (int) $microTime;
+                    $usec = $microTime - $sec; // 获取小数部分
 
-                    return date('H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
+                    return date('H:i:s.', $sec) . (int) ($usec * $timeAccuracy);
                 }
                 else
                 {
@@ -41,9 +44,10 @@ class PgModel extends Model
             case 'timestamptz':
                 if ($timeAccuracy >= 1000)
                 {
-                    [$usec, $sec] = explode(' ', microtime());
+                    $sec = (int) $microTime;
+                    $usec = $microTime - $sec; // 获取小数部分
 
-                    return date('Y-m-d H:i:s.', (int) $sec) . (int) ((float) $usec * $timeAccuracy);
+                    return date('Y-m-d H:i:s.', $sec) . (int) ($usec * $timeAccuracy);
                 }
                 else
                 {
@@ -53,9 +57,9 @@ class PgModel extends Model
             case 'int':
             case 'int2':
             case 'int4':
-                return time();
+                return (int) $microTime;
             case 'int8':
-                return (int) (microtime(true) * (true === $timeAccuracy ? 1000 : $timeAccuracy));
+                return (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
             default:
                 return null;
         }
