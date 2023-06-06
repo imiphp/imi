@@ -265,7 +265,7 @@ class ActionMiddleware implements MiddlewareInterface
                 $value = $uploadedFiles[$paramName];
                 if (0 !== $value->getError())
                 {
-                    throw new \RuntimeException(sprintf('Upload file failed. error:', $value->getError()));
+                    throw new \RuntimeException(sprintf('Upload file failed. error:%d', $value->getError()));
                 }
             }
             else
