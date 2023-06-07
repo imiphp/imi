@@ -1579,7 +1579,7 @@ abstract class Query implements IQuery
                 }
                 else
                 {
-                    $this->orderRaw($scoreFieldName . ' ' . $orderDirection);
+                    $this->order($scoreFieldName, $orderDirection);
                 }
             };
         }

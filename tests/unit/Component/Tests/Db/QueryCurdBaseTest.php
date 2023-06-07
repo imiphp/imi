@@ -584,7 +584,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals('desc', $options->getOrderDirection());
 
         $query = Db::query()->from('test')->field('*')->where('member_id', '=', 1)->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setMinScore(0.25)->setWhereLogicalOperator('or')->setScoreFieldName('score')->setOrderDirection('desc'));
-        $this->assertEquals('select *,(MATCH (`content`) AGAINST (:p1)) as `score` from `test` where `member_id` = :p2 or MATCH (`content`) AGAINST (:p3) > :p4 order by score desc', $query->buildSelectSql());
+        $this->assertEquals('select *,(MATCH (`content`) AGAINST (:p1)) as `score` from `test` where `member_id` = :p2 or MATCH (`content`) AGAINST (:p3) > :p4 order by `score` desc', $query->buildSelectSql());
         $this->assertEquals([':p1' => 'imi', ':p2' => 1, ':p3' => 'imi', ':p4' => 0.25], $query->getBinds());
         $this->assertEquals(0.25, $options->getMinScore());
         $this->assertEquals('or', $options->getWhereLogicalOperator());

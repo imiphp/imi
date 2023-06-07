@@ -17,6 +17,8 @@ interface IFullTextOptions
      * 设置字段名.
      *
      * @param string|string[] $fieldNames
+     *
+     * @return static
      */
     public function setFieldNames($fieldNames): self;
 
@@ -27,11 +29,15 @@ interface IFullTextOptions
 
     /**
      * 设置搜索内容.
+     *
+     * @return static
      */
     public function setSearchText(string $searchText): self;
 
     /**
      * 获取最小分数.
+     *
+     * @return static
      */
     public function setMinScore(float $minScore): self;
 
@@ -49,6 +55,8 @@ interface IFullTextOptions
 
     /**
      * 设置分数字段名.
+     *
+     * @return static
      */
     public function setScoreFieldName(?string $scoreFieldName): self;
 
@@ -61,6 +69,8 @@ interface IFullTextOptions
 
     /**
      * 设置分数排序顺序.
+     *
+     * @return static
      */
     public function setOrderDirection(?string $orderDirection): self;
 
@@ -73,6 +83,8 @@ interface IFullTextOptions
 
     /**
      * 设置查询条件的逻辑运算符.
+     *
+     * @return static
      */
     public function setWhereLogicalOperator(?string $whereLogicalOperator): self;
 

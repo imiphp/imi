@@ -53,6 +53,8 @@ abstract class BaseFullTextOptions implements IFullTextOptions
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setFieldNames($fieldNames): self
     {
@@ -71,6 +73,8 @@ abstract class BaseFullTextOptions implements IFullTextOptions
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setSearchText(string $searchText): self
     {
@@ -89,6 +93,8 @@ abstract class BaseFullTextOptions implements IFullTextOptions
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setMinScore(float $minScore): self
     {
@@ -115,6 +121,8 @@ abstract class BaseFullTextOptions implements IFullTextOptions
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setScoreFieldName(?string $scoreFieldName): self
     {
@@ -133,6 +141,8 @@ abstract class BaseFullTextOptions implements IFullTextOptions
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setOrderDirection(?string $orderDirection): self
     {
@@ -151,6 +161,8 @@ abstract class BaseFullTextOptions implements IFullTextOptions
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setWhereLogicalOperator(?string $whereLogicalOperator): self
     {
