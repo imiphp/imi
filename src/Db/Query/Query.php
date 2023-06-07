@@ -146,6 +146,11 @@ abstract class Query implements IQuery
      */
     public function getDb(): IDb
     {
+        if (!$this->isInitDb)
+        {
+            $this->db = Db::getInstance($this->poolName, $this->queryType);
+        }
+
         return $this->db;
     }
 
@@ -892,7 +897,12 @@ abstract class Query implements IQuery
      */
     protected function isInTransaction(): bool
     {
-        return QueryType::WRITE === $this->queryType && Db::getInstance($this->poolName)->inTransaction();
+        if (QueryType::WRITE !== $this->queryType)
+        {
+            return false;
+        }
+
+        return $this->getDb()->inTransaction();
     }
 
     /**
