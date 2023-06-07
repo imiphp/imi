@@ -114,6 +114,13 @@ abstract class Query implements IQuery
      */
     protected static array $aliasSqlMap = [];
 
+    /**
+     * 构建 Sql 前的回调.
+     *
+     * @var callable[]
+     */
+    protected array $beforeBuildSqlCallbacks = [];
+
     public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
         $this->db = $db;
@@ -565,34 +572,6 @@ abstract class Query implements IQuery
     public function orWhereIsNotNull(string $fieldName): self
     {
         return $this->whereIsNotNull($fieldName, LogicalOperator::OR);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function whereFullText($fieldNames, string $searchText, ?IFullTextOptions $options = null, string $logicalOperator = 'and'): self
-    {
-        if (!$options)
-        {
-            $class = static::FULL_TEXT_OPTIONS_CLASS;
-            /** @var IFullTextOptions $options */
-            $options = new $class();
-        }
-
-        $options->setFieldNames($fieldNames);
-        $options->setSearchText($searchText);
-
-        $this->option->where[] = new WhereFullText($options, $logicalOperator);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function orWhereFullText($fieldNames, string $searchText, ?IFullTextOptions $options = null): self
-    {
-        return $this->whereFullText($fieldNames, $searchText, $options, 'or');
     }
 
     /**
@@ -1059,6 +1038,15 @@ abstract class Query implements IQuery
     public function buildSelectSql(): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
+
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1120,6 +1108,14 @@ abstract class Query implements IQuery
     public function buildInsertSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1181,6 +1177,14 @@ abstract class Query implements IQuery
     public function buildBatchInsertSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
 
         return (new $builderClass($this))->build($data);
@@ -1192,6 +1196,14 @@ abstract class Query implements IQuery
     public function buildUpdateSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1255,6 +1267,14 @@ abstract class Query implements IQuery
     public function buildReplaceSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1318,6 +1338,14 @@ abstract class Query implements IQuery
     public function buildDeleteSql(): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1509,5 +1537,53 @@ abstract class Query implements IQuery
     public function delete(): IResult
     {
         return $this->execute($this->buildDeleteSql());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function fullText($fieldNames, string $searchText, ?IFullTextOptions $options = null): self
+    {
+        if (!$options)
+        {
+            $class = static::FULL_TEXT_OPTIONS_CLASS;
+            /** @var IFullTextOptions $options */
+            $options = new $class();
+        }
+
+        $options->setFieldNames($fieldNames)
+                ->setSearchText($searchText);
+
+        // where
+        $whereLogicalOperator = $options->getWhereLogicalOperator();
+        if (null !== $whereLogicalOperator)
+        {
+            $this->option->where[] = new WhereFullText($options, $whereLogicalOperator);
+        }
+
+        // score field
+        $scoreFieldName = $options->getScoreFieldName();
+        if (null !== $scoreFieldName)
+        {
+            $this->beforeBuildSqlCallbacks[] = fn () => $this->fieldRaw($options->toScoreSql($this), '' === $scoreFieldName ? null : $scoreFieldName);
+        }
+
+        // order score
+        $orderDirection = $options->getOrderDirection();
+        if (null !== $orderDirection)
+        {
+            $this->beforeBuildSqlCallbacks[] = function () use ($scoreFieldName, $options, $orderDirection) {
+                if (null === $scoreFieldName || '' === $scoreFieldName)
+                {
+                    $this->orderRaw('(' . $options->toScoreSql($this) . ') ' . $orderDirection);
+                }
+                else
+                {
+                    $this->orderRaw($scoreFieldName . ' ' . $orderDirection);
+                }
+            };
+        }
+
+        return $this;
     }
 }
