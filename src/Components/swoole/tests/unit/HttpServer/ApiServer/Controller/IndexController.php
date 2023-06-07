@@ -24,6 +24,7 @@ use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Validate\Annotation\Required;
+use Psr\Http\Message\UploadedFileInterface;
 use Swoole\Coroutine;
 
 /**
@@ -295,6 +296,22 @@ class IndexController extends HttpController
         }
 
         return $result;
+    }
+
+    /**
+     * @Action
+     */
+    public function upload2(UploadedFileInterface $file): array
+    {
+        return [
+            'data' => [
+                'clientFilename'    => $file->getClientFilename(),
+                'clientMediaType'   => $file->getClientMediaType(),
+                'error'             => $file->getError(),
+                'size'              => $file->getSize(),
+                'hash'              => md5($file->getStream()->getContents()),
+            ],
+        ];
     }
 
     /**
