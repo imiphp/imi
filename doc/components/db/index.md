@@ -485,6 +485,54 @@ Db::query()->whereStruct(new \Imi\Db\Query\Where\Where('age', '<', 14), 'or');
 Db::query()->orWhereStruct(new \Imi\Db\Query\Where\Where('age', '<', 14));
 ```
 
+#### 全文搜索（fullText）
+
+imi 查询构建器提供的全文搜索功能，不仅支持全文搜索匹配，还支持返回匹配分数和排序等功能。
+
+**支持的数据库：**
+
+* MySQL
+* PostgreSQL
+
+**基础写法：**
+
+```php
+// 最简单用法
+$query = Db::query()->fullText('字段名', '搜索词');
+
+// 支持多个字段搜索
+$query = Db::query()->fullText(['字段A', '字段B'], '搜索词');
+```
+
+**MySQL：**
+
+```php
+// 以下所有 set 语句都是可选，根据实际情况选择是否设置
+$options = (new MysqlFullTextOptions())->setMinScore(0) // 匹配度最小值，取值范围是0-1之间的小数，默认值0
+                                       ->setWhereLogicalOperator('and') // where条件逻辑运算符，默认值and
+                                       ->setScoreFieldName('score') // 匹配分数字段名，默认值 null 不返回匹配分数
+                                       ->setOrderDirection('desc') // 排序方向，默认值 null 不排序
+                                       ->setSearchModifier(\Imi\Db\Mysql\Query\FullText\SearchModifier::IN_NATURAL_LANGUAGE_MODE) // 搜索修饰符，默认值空字符串。可使用 \Imi\Db\Mysql\Query\FullText\SearchModifier 中定义的常量
+                                       ;
+$query = Db::query()->fullText('字段名', '搜索词', $options);
+```
+
+> `setSearchModifier()` 具体参考：<https://dev.mysql.com/doc/refman/8.0/en/fulltext-search.html>
+
+**PostgreSQL：**
+
+```php
+$options = (new PgsqlFullTextOptions())->setMinScore(0) // 匹配度最小值，取值范围是0-1之间的小数，默认值0
+                                       ->setWhereLogicalOperator('and') // where条件逻辑运算符，默认值and
+                                       ->setScoreFieldName('score') // 匹配分数字段名，默认值 null 不返回匹配分数
+                                       ->setOrderDirection('desc') // 排序方向，默认值 null 不排序
+                                       ->setLanguage('simple') // 分词语言，默认值 null
+                                       ->setTsQueryFunction(\Imi\Pgsql\Db\Query\FullText\TsQuery::TO_TSQUERY) // ts_query 函数，默认值 plainto_tsquery
+                                       ->setTsRankFunction(\Imi\Pgsql\Db\Query\FullText\TsRank::TS_RANK) // ts_rank 函数，默认值 ts_rank_cd
+```
+
+> `setLanguage()`、`setTsQueryFunction()` 和 `setTsRankFunction()` 具体参考：<https://www.postgresql.org/docs/15/textsearch-controls.html>
+
 #### 其它
 
 ```php
