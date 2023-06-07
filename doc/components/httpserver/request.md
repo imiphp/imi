@@ -250,7 +250,17 @@ imi `v2.1.47` 新增支持 `\Psr\Http\Message\UploadedFileInterface` 类型参�
  */
 public function requestParam1(string $string, int $int, float $float, bool $bool, \Psr\Http\Message\UploadedFileInterface $file): array
 {
-    return compact('string', 'int', 'float', 'bool', 'file');
+    // 本地保存文件，$saveFileName 请改为自己的路径规则
+    $saveFileName = '/var/www/html/upload/' . uniqid(true) . '.' . pathinfo($file->getClientFilename(), \PATHINFO_EXTENSION);
+    $file->moveTo($saveFileName);
+
+    // 获取临时文件名，可用于对象存储上传
+    $tmpFileName = $file->getTmpFileName();
+
+    // 获取文件内容，可用于对象存储上传
+    $fileData = (string) $file->getStream();
+
+    return compact('string', 'int', 'float', 'bool');
 }
 ```
 
