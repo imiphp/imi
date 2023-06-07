@@ -507,6 +507,8 @@ $query = Db::query()->fullText(['字段A', '字段B'], '搜索词');
 **MySQL：**
 
 ```php
+use \Imi\Db\Mysql\Query\FullText\MysqlFullTextOptions;
+
 // 以下所有 set 语句都是可选，根据实际情况选择是否设置
 $options = (new MysqlFullTextOptions())->setMinScore(0) // 匹配度最小值，取值范围是0-1之间的小数，默认值0
                                        ->setWhereLogicalOperator('and') // where条件逻辑运算符，默认值and
@@ -522,6 +524,9 @@ $query = Db::query()->fullText('字段名', '搜索词', $options);
 **PostgreSQL：**
 
 ```php
+use \Imi\Pgsql\Db\Query\FullText\PgsqlFullTextOptions;
+
+// 以下所有 set 语句都是可选，根据实际情况选择是否设置
 $options = (new PgsqlFullTextOptions())->setMinScore(0) // 匹配度最小值，取值范围是0-1之间的小数，默认值0
                                        ->setWhereLogicalOperator('and') // where条件逻辑运算符，默认值and
                                        ->setScoreFieldName('score') // 匹配分数字段名，默认值 null 不返回匹配分数
