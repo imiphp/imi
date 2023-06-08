@@ -49,17 +49,20 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     protected string $lastInsertId = '';
 
-    public function __construct(IPgsqlDb $db, PostgreSQLStatement $stmt, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IPgsqlDb $db, PostgreSQLStatement $stmt, string $originSql, ?array $sqlParamsMap = null, bool $isExecuted = false)
     {
         $this->db = $db;
         $this->stmt = $stmt;
         $this->lastSql = $originSql;
         $this->sqlParamsMap = $sqlParamsMap;
-        if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))
+        if ($isExecuted)
         {
-            $this->result = $result;
+            if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))
+            {
+                $this->result = $result;
+            }
+            $this->updateLastInsertId();
         }
-        $this->updateLastInsertId();
     }
 
     /**

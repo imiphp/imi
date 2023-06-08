@@ -74,8 +74,8 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
             {
                 $this->result = $result;
             }
+            $this->updateLastInsertId();
         }
-        $this->updateLastInsertId();
     }
 
     public function __destruct()

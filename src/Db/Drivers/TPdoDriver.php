@@ -446,7 +446,7 @@ trait TPdoDriver
             throw $e;
         }
 
-        return BeanFactory::newInstance($this->statementClass, $this, $lastStmt);
+        return BeanFactory::newInstance($this->statementClass, $this, $lastStmt, true);
     }
 
     /**
