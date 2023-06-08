@@ -228,6 +228,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
         }
+        $this->updateLastInsertId();
         $this->result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC) ?: [];
 
         return true;
