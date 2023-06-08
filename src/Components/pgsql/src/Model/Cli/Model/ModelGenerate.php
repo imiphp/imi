@@ -429,6 +429,7 @@ class ModelGenerate extends BaseCommand
         }
         catch (\Throwable $_)
         {
+            $resultAfterExec = $default;
         }
         switch ($type)
         {
