@@ -75,7 +75,6 @@ class ModelGenerate extends BaseCommand
             $configData = null;
         }
         $query = Db::query($poolName);
-        $db = Db::getInstance($poolName);
         // 数据库
         if (null === $database)
         {
@@ -216,7 +215,7 @@ class ModelGenerate extends BaseCommand
             order by attnum
             ;
             SQL)->getArray();
-            $this->parseFields($fields, $data, 'v' === $item['relkind'], $table, $configData);
+            $this->parseFields($poolName, $fields, $data, 'v' === $item['relkind'], $table, $configData);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
@@ -270,7 +269,7 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理字段信息.
      */
-    private function parseFields(array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
+    private function parseFields(?string $poolName, array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
     {
         $idCount = 0;
         foreach ($fields as $i => $field)
@@ -303,7 +302,7 @@ class ModelGenerate extends BaseCommand
                 'accuracy'          => $accuracy,
                 'nullable'          => 'f' === $field['attnotnull'],
                 'default'           => $field['adsrc'],
-                'defaultValue'      => $this->parseFieldDefaultValue($type, $field['adsrc']),
+                'defaultValue'      => $this->parseFieldDefaultValue($poolName, $type, $field['adsrc']),
                 'isPrimaryKey'      => $isPk,
                 'primaryKeyIndex'   => $field['ordinal_position'] ?? -1,
                 'isAutoIncrement'   => '' !== $field['attidentity'],
@@ -387,11 +386,20 @@ class ModelGenerate extends BaseCommand
      *
      * @return mixed
      */
-    private function parseFieldDefaultValue(string $type, $default)
+    private function parseFieldDefaultValue(?string $poolName, string $type, $default)
     {
         if (null === $default)
         {
             return null;
+        }
+        try
+        {
+            $result = Db::query($poolName)->execute('select ' . $default);
+            $resultAfterExec = $result->getScalar();
+        }
+        catch (\Throwable $_)
+        {
+            $resultAfterExec = $default;
         }
         switch ($type)
         {
@@ -407,18 +415,18 @@ class ModelGenerate extends BaseCommand
             case 'serial2':
             case 'serial4':
             case 'serial8':
-                return (int) $default;
+                return (int) $resultAfterExec;
             case 'bool':
             case 'boolean':
-                return (bool) $default;
+                return (bool) $resultAfterExec;
             case 'double':
             case 'float4':
             case 'float8':
-                return (float) $default;
+                return (float) $resultAfterExec;
             case 'varchar':
             case 'char':
             case 'text':
-                return (string) $default;
+                return (string) $resultAfterExec;
             default:
                 return null;
         }
