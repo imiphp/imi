@@ -1,0 +1,91 @@
+name: daily-test
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  ci:
+    name: Linux PHP-${{ matrix.php }} Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.2]
+        swoole:
+          - version: master
+            postgresql_version: ""
+        roadrunner: [2.7.*]
+    env:
+      ENV_SERVICE: php
+      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
+      PHP_VERSION: ${{ matrix.php }}
+      SWOOLE_VERSION: ${{ matrix.swoole.version }}
+      MYSQL_DOCKER_VERSION: "8.0"
+      REDIS_SERVER_HOST: redis
+      ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      COMPOSER_ENV: --ignore-platform-reqs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
+      - name: Prepare
+        uses: ./.github/actions/ci-prepare
+        with:
+          env: ${{ env.ENV_SERVICE }}
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test swoole
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-swoole
+      - name: Test workerman
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-workerman
+      - name: Test workerman-gateway
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-workerman-gateway
+      - name: Test roadrunner
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-roadrunner
+      - name: Test fpm
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-fpm
+      - name: Test jwt
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-jwt
+      - name: Test queue
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-queue
+      - name: Test amqp
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-amqp
+      - name: Test kafka
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-kafka
+      - name: Test grpc
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-grpc
+      - name: Test snowflake
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-snowflake
+      - name: Test mqtt
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-mqtt
+      - name: Test smarty
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-smarty
+      - name: Test pgsql
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-pgsql
+      - name: Test phar
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-phar
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
