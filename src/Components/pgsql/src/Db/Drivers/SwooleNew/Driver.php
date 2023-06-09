@@ -454,7 +454,7 @@ if (class_exists(PostgreSQL::class, false))
             }
             $this->lastStmt = $lastStmt;
 
-            return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql);
+            return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, null, true);
         }
 
         /**

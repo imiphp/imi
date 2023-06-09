@@ -30,11 +30,14 @@ trait TPdoStatement
      */
     protected int $lastInsertId = 0;
 
-    public function __construct(IDb $db, \PDOStatement $statement)
+    public function __construct(IDb $db, \PDOStatement $statement, bool $isExecuted = false)
     {
         $this->db = $db;
         $this->statement = $statement;
-        $this->updateLastInsertId();
+        if ($isExecuted)
+        {
+            $this->updateLastInsertId();
+        }
     }
 
     /**
