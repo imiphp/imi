@@ -770,26 +770,22 @@ class Imi
         return App::isInited() && $appType === App::getApp()->getType();
     }
 
+    public const BYTE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+
     /**
      * 格式化可读字节单位.
      */
     public static function formatByte(float $byte, int $dec = 2, bool $unit = true): string
     {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        $count = \count($units) - 1;
-        $pos = 0;
-
-        while ($byte >= 1024 && $pos < $count)
+        $index = floor(log($byte) / log(1024));
+        while ($index > 0 && !isset(self::BYTE_UNITS[$index]))
         {
-            $byte /= 1024;
-            ++$pos;
+            --$index;
         }
-
-        $result = sprintf("%.{$dec}f", round($byte, $dec));
-
+        $result = sprintf("%.{$dec}f", round($byte / 1024 ** $index, $dec));
         if ($unit)
         {
-            return "{$result} {$units[$pos]}";
+            return $result . ' ' . self::BYTE_UNITS[$index];
         }
         else
         {
