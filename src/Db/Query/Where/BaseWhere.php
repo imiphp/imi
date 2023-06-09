@@ -13,6 +13,16 @@ abstract class BaseWhere
      */
     protected string $logicalOperator = '';
 
+    public function getLogicalOperator(): string
+    {
+        return $this->logicalOperator;
+    }
+
+    public function setLogicalOperator(string $logicalOperator): void
+    {
+        $this->logicalOperator = $logicalOperator;
+    }
+
     public function toString(IQuery $query): string
     {
         throw new \RuntimeException(sprintf('%s object can not be used as string', static::class)); // @codeCoverageIgnore

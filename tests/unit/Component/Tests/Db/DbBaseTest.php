@@ -678,7 +678,7 @@ abstract class DbBaseTest extends BaseTest
         // \PDO::PARAM_LOB
         $stmtInsert = Db::prepare('insert into tb_article(title,content,time,member_id) values(?,?,?,?)');
         $title = 'lob title';
-        $fileName = __DIR__ . '/lob_title.txt';
+        $fileName = \dirname(__DIR__, 2) . '/.runtime/lob_title.txt';
         file_put_contents($fileName, $title);
         $this->assertTrue($stmtInsert->execute([fopen($fileName, 'r'), 'content', $time = date('Y-m-d H:i:s'), 0]));
         $this->assertGreaterThanOrEqual(1, $id = $stmtInsert->lastInsertId());

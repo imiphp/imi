@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests\Db;
 
 use Imi\Db\Db;
+use Imi\Db\Mysql\Query\FullText\MysqlFullTextOptions;
+use Imi\Db\Mysql\Query\FullText\SearchModifier;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
 use Imi\Db\Query\Database;
 use Imi\Db\Query\Raw;
@@ -533,5 +535,80 @@ abstract class QueryCurdBaseTest extends BaseTest
             ->join('test2', 'test.id', '=', 'test2.id', null, new Where('test2.id2', '=', 1));
         $this->assertEquals('select * from `test` inner join `test2` on `test`.`id`=`test2`.`id` and `test2`.`id2` = :p1', $query->buildSelectSql());
         $this->assertEquals([':p1' => 1], $query->getBinds());
+    }
+
+    public function testFullTextSearch(): void
+    {
+        $query = Db::query()->from('test')->fullText('content', 'imi');
+        $this->assertEquals('select * from `test` where MATCH (`content`) AGAINST (:p1) > :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
+
+        $query = Db::query()->from('test')->fullText(['title', 'content'], 'imi');
+        $this->assertEquals('select * from `test` where MATCH (`title`,`content`) AGAINST (:p1) > :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->fullText('content', 'imi');
+        $this->assertEquals('select * from `test` where `member_id` = :p1 and MATCH (`content`) AGAINST (:p2) > :p3', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi', ':p3' => 0], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->fullText(['title', 'content'], 'imi');
+        $this->assertEquals('select * from `test` where `member_id` = :p1 and MATCH (`title`,`content`) AGAINST (:p2) > :p3', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi', ':p3' => 0], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setMinScore(0.25)->setWhereLogicalOperator('or'));
+        $this->assertEquals('select * from `test` where `member_id` = :p1 or MATCH (`content`) AGAINST (:p2) > :p3', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi', ':p3' => 0.25], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+        $this->assertEquals('or', $options->getWhereLogicalOperator());
+
+        $query = Db::query()->from('test')->field('*')->where('member_id', '=', 1)->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setMinScore(0.25)->setWhereLogicalOperator('or')->setScoreFieldName(''));
+        $this->assertEquals('select *,MATCH (`content`) AGAINST (:p1) from `test` where `member_id` = :p2 or MATCH (`content`) AGAINST (:p3) > :p4', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 1, ':p3' => 'imi', ':p4' => 0.25], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+        $this->assertEquals('or', $options->getWhereLogicalOperator());
+        $this->assertEquals('', $options->getScoreFieldName());
+
+        $query = Db::query()->from('test')->field('*')->where('member_id', '=', 1)->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setMinScore(0.25)->setWhereLogicalOperator('or')->setScoreFieldName('score'));
+        $this->assertEquals('select *,(MATCH (`content`) AGAINST (:p1)) as `score` from `test` where `member_id` = :p2 or MATCH (`content`) AGAINST (:p3) > :p4', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 1, ':p3' => 'imi', ':p4' => 0.25], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+        $this->assertEquals('or', $options->getWhereLogicalOperator());
+        $this->assertEquals('score', $options->getScoreFieldName());
+
+        $query = Db::query()->from('test')->field('*')->where('member_id', '=', 1)->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setMinScore(0.25)->setWhereLogicalOperator('or')->setScoreFieldName('')->setOrderDirection('desc'));
+        $this->assertEquals('select *,MATCH (`content`) AGAINST (:p1) from `test` where `member_id` = :p3 or MATCH (`content`) AGAINST (:p4) > :p5 order by (MATCH (`content`) AGAINST (:p2)) desc', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 'imi', ':p3' => 1, ':p4' => 'imi', ':p5' => 0.25], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+        $this->assertEquals('or', $options->getWhereLogicalOperator());
+        $this->assertEquals('', $options->getScoreFieldName());
+        $this->assertEquals('desc', $options->getOrderDirection());
+
+        $query = Db::query()->from('test')->field('*')->where('member_id', '=', 1)->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setMinScore(0.25)->setWhereLogicalOperator('or')->setScoreFieldName('score')->setOrderDirection('desc'));
+        $this->assertEquals('select *,(MATCH (`content`) AGAINST (:p1)) as `score` from `test` where `member_id` = :p2 or MATCH (`content`) AGAINST (:p3) > :p4 order by `score` desc', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 1, ':p3' => 'imi', ':p4' => 0.25], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+        $this->assertEquals('or', $options->getWhereLogicalOperator());
+        $this->assertEquals('score', $options->getScoreFieldName());
+        $this->assertEquals('desc', $options->getOrderDirection());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setSearchModifier(SearchModifier::IN_NATURAL_LANGUAGE_MODE));
+        $this->assertEquals('select * from `test` where MATCH (`content`) AGAINST (:p1 IN NATURAL LANGUAGE MODE) > :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
+        $this->assertEquals(SearchModifier::IN_NATURAL_LANGUAGE_MODE, $options->getSearchModifier());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setSearchModifier(SearchModifier::IN_NATURAL_LANGUAGE_MODE_WITH_QUERY_EXPANSION));
+        $this->assertEquals('select * from `test` where MATCH (`content`) AGAINST (:p1 IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION) > :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
+        $this->assertEquals(SearchModifier::IN_NATURAL_LANGUAGE_MODE_WITH_QUERY_EXPANSION, $options->getSearchModifier());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setSearchModifier(SearchModifier::IN_BOOLEAN_MODE));
+        $this->assertEquals('select * from `test` where MATCH (`content`) AGAINST (:p1 IN BOOLEAN MODE) > :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
+        $this->assertEquals(SearchModifier::IN_BOOLEAN_MODE, $options->getSearchModifier());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new MysqlFullTextOptions())->setSearchModifier(SearchModifier::WITH_QUERY_EXPANSION));
+        $this->assertEquals('select * from `test` where MATCH (`content`) AGAINST (:p1 WITH QUERY EXPANSION) > :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
+        $this->assertEquals(SearchModifier::WITH_QUERY_EXPANSION, $options->getSearchModifier());
     }
 }

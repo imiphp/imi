@@ -733,4 +733,11 @@ interface IQuery
      * 从数组拼装为有分隔标识符的关键字.
      */
     public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string;
+
+    /**
+     * 全文搜索.
+     *
+     * @param string|string[] $fieldNames
+     */
+    public function fullText($fieldNames, string $searchText, ?IFullTextOptions $options = null): self;
 }

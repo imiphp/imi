@@ -11,6 +11,7 @@ use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
+use Imi\Db\Query\Interfaces\IFullTextOptions;
 use Imi\Db\Query\Interfaces\IHaving;
 use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
@@ -20,6 +21,7 @@ use Imi\Db\Query\Result\ChunkResult;
 use Imi\Db\Query\Result\CursorResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
+use Imi\Db\Query\Where\WhereFullText;
 use Imi\Model\Model;
 use Imi\Util\Pagination;
 
@@ -36,6 +38,8 @@ abstract class Query implements IQuery
     public const REPLACE_BUILDER_CLASS = '';
 
     public const DELETE_BUILDER_CLASS = '';
+
+    public const FULL_TEXT_OPTIONS_CLASS = '';
 
     /**
      * 操作记录.
@@ -109,6 +113,13 @@ abstract class Query implements IQuery
      * 别名 Sql 数据集合.
      */
     protected static array $aliasSqlMap = [];
+
+    /**
+     * 构建 Sql 前的回调.
+     *
+     * @var callable[]
+     */
+    protected array $beforeBuildSqlCallbacks = [];
 
     public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
@@ -1029,6 +1040,15 @@ abstract class Query implements IQuery
     public function buildSelectSql(): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
+
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1090,6 +1110,14 @@ abstract class Query implements IQuery
     public function buildInsertSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1151,6 +1179,14 @@ abstract class Query implements IQuery
     public function buildBatchInsertSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $builderClass = static::BATCH_INSERT_BUILDER_CLASS;
 
         return (new $builderClass($this))->build($data);
@@ -1162,6 +1198,14 @@ abstract class Query implements IQuery
     public function buildUpdateSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1225,6 +1269,14 @@ abstract class Query implements IQuery
     public function buildReplaceSql($data = null): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1288,6 +1340,14 @@ abstract class Query implements IQuery
     public function buildDeleteSql(): string
     {
         $this->dbParamInc = 0;
+        if ($this->beforeBuildSqlCallbacks)
+        {
+            foreach ($this->beforeBuildSqlCallbacks as $callback)
+            {
+                $callback($this);
+            }
+            $this->beforeBuildSqlCallbacks = [];
+        }
         $alias = $this->alias;
         $aliasSqlMap = &static::$aliasSqlMap;
         if ($alias && isset($aliasSqlMap[$alias]))
@@ -1479,5 +1539,53 @@ abstract class Query implements IQuery
     public function delete(): IResult
     {
         return $this->execute($this->buildDeleteSql());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function fullText($fieldNames, string $searchText, ?IFullTextOptions $options = null): self
+    {
+        if (!$options)
+        {
+            $class = static::FULL_TEXT_OPTIONS_CLASS;
+            /** @var IFullTextOptions $options */
+            $options = new $class();
+        }
+
+        $options->setFieldNames($fieldNames)
+                ->setSearchText($searchText);
+
+        // where
+        $whereLogicalOperator = $options->getWhereLogicalOperator();
+        if (null !== $whereLogicalOperator)
+        {
+            $this->option->where[] = new WhereFullText($options, $whereLogicalOperator);
+        }
+
+        // score field
+        $scoreFieldName = $options->getScoreFieldName();
+        if (null !== $scoreFieldName)
+        {
+            $this->beforeBuildSqlCallbacks[] = fn () => $this->fieldRaw($options->toScoreSql($this), '' === $scoreFieldName ? null : $scoreFieldName);
+        }
+
+        // order score
+        $orderDirection = $options->getOrderDirection();
+        if (null !== $orderDirection)
+        {
+            $this->beforeBuildSqlCallbacks[] = function () use ($scoreFieldName, $options, $orderDirection) {
+                if (null === $scoreFieldName || '' === $scoreFieldName)
+                {
+                    $this->orderRaw('(' . $options->toScoreSql($this) . ') ' . $orderDirection);
+                }
+                else
+                {
+                    $this->order($scoreFieldName, $orderDirection);
+                }
+            };
+        }
+
+        return $this;
     }
 }

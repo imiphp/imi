@@ -11,6 +11,7 @@ use Imi\Pgsql\Db\Query\Builder\InsertBuilder;
 use Imi\Pgsql\Db\Query\Builder\ReplaceBuilder;
 use Imi\Pgsql\Db\Query\Builder\SelectBuilder;
 use Imi\Pgsql\Db\Query\Builder\UpdateBuilder;
+use Imi\Pgsql\Db\Query\FullText\PgsqlFullTextOptions;
 use Imi\Util\Text;
 
 class PgsqlQuery extends Query
@@ -26,6 +27,8 @@ class PgsqlQuery extends Query
     public const REPLACE_BUILDER_CLASS = ReplaceBuilder::class;
 
     public const DELETE_BUILDER_CLASS = DeleteBuilder::class;
+
+    public const FULL_TEXT_OPTIONS_CLASS = PgsqlFullTextOptions::class;
 
     public const PARSE_KEYWORD_TEXT_PATTERN = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
 

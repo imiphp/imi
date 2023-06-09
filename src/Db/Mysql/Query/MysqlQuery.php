@@ -10,6 +10,7 @@ use Imi\Db\Mysql\Query\Builder\InsertBuilder;
 use Imi\Db\Mysql\Query\Builder\ReplaceBuilder;
 use Imi\Db\Mysql\Query\Builder\SelectBuilder;
 use Imi\Db\Mysql\Query\Builder\UpdateBuilder;
+use Imi\Db\Mysql\Query\FullText\MysqlFullTextOptions;
 use Imi\Db\Query\Query;
 use Imi\Util\Text;
 
@@ -26,6 +27,8 @@ class MysqlQuery extends Query
     public const REPLACE_BUILDER_CLASS = ReplaceBuilder::class;
 
     public const DELETE_BUILDER_CLASS = DeleteBuilder::class;
+
+    public const FULL_TEXT_OPTIONS_CLASS = MysqlFullTextOptions::class;
 
     public const PARSE_KEYWORD_TEXT_PATTERN = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
 

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Imi\Pgsql\Test\Unit\Db;
 
 use Imi\Db\Db;
+use Imi\Pgsql\Db\Query\FullText\PgsqlFullTextOptions;
+use Imi\Pgsql\Db\Query\FullText\TsQuery;
+use Imi\Pgsql\Db\Query\FullText\TsRank;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
@@ -479,5 +482,77 @@ abstract class QueryCurdBaseTest extends TestCase
             ->where('id', '=', -1)
             ->value('id', '9999999');
         $this->assertEquals('9999999', $value);
+    }
+
+    public function testFullTextSearch(): void
+    {
+        $query = Db::query()->from('test')->fullText('content', 'imi');
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->fullText(['title', 'content'], 'imi');
+        $this->assertEquals('select * from "test" where (to_tsvector("title")||to_tsvector("content")) @@ plainto_tsquery(:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->fullText('content', 'imi');
+        $this->assertEquals('select * from "test" where "member_id" = :p1 and (to_tsvector("content")) @@ plainto_tsquery(:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+
+        $query = Db::query()->from('test')->where('member_id', '=', 1)->fullText(['title', 'content'], 'imi', $options = (new PgsqlFullTextOptions())->setWhereLogicalOperator('or'));
+        $this->assertEquals('select * from "test" where "member_id" = :p1 or (to_tsvector("title")||to_tsvector("content")) @@ plainto_tsquery(:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 1, ':p2' => 'imi'], $query->getBinds());
+        $this->assertEquals('or', $options->getWhereLogicalOperator());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setLanguage('simple'));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p1,:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'simple', ':p2' => 'imi'], $query->getBinds());
+        $this->assertEquals('simple', $options->getLanguage());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setTsQueryFunction(TsQuery::TO_TSQUERY));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ to_tsquery(:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+        $this->assertEquals(TsQuery::TO_TSQUERY, $options->getTsQueryFunction());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setTsQueryFunction(TsQuery::PHRASETO_TSQUERY));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ phraseto_tsquery(:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+        $this->assertEquals(TsQuery::PHRASETO_TSQUERY, $options->getTsQueryFunction());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setTsQueryFunction(TsQuery::WEBSEARCH_TO_TSQUERY));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ websearch_to_tsquery(:p1)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi'], $query->getBinds());
+        $this->assertEquals(TsQuery::WEBSEARCH_TO_TSQUERY, $options->getTsQueryFunction());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setMinScore(0.25));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p1) AND ts_rank_cd(to_tsvector("content"), plainto_tsquery(:p3)) >= :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0.25, ':p3' => 'imi'], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+
+        $query = Db::query()->from('test')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setMinScore(0.25)->setTsRankFunction(TsRank::TS_RANK));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p1) AND ts_rank(to_tsvector("content"), plainto_tsquery(:p3)) >= :p2', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 0.25, ':p3' => 'imi'], $query->getBinds());
+        $this->assertEquals(0.25, $options->getMinScore());
+        $this->assertEquals(TsRank::TS_RANK, $options->getTsRankFunction());
+
+        $query = Db::query()->from('test')->field('*')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setScoreFieldName(''));
+        $this->assertEquals('select *,ts_rank_cd(to_tsvector("content"), plainto_tsquery(:p1)) from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 'imi'], $query->getBinds());
+        $this->assertEquals('', $options->getScoreFieldName());
+
+        $query = Db::query()->from('test')->field('*')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setScoreFieldName('score'));
+        $this->assertEquals('select *,(ts_rank_cd(to_tsvector("content"), plainto_tsquery(:p1))) as "score" from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p2)', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 'imi'], $query->getBinds());
+        $this->assertEquals('score', $options->getScoreFieldName());
+
+        $query = Db::query()->from('test')->field('*')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setOrderDirection('desc'));
+        $this->assertEquals('select * from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p2) order by (ts_rank_cd(to_tsvector("content"), plainto_tsquery(:p1))) desc', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 'imi'], $query->getBinds());
+        $this->assertEquals('desc', $options->getOrderDirection());
+
+        $query = Db::query()->from('test')->field('*')->fullText('content', 'imi', $options = (new PgsqlFullTextOptions())->setScoreFieldName('score')->setOrderDirection('desc'));
+        $this->assertEquals('select *,(ts_rank_cd(to_tsvector("content"), plainto_tsquery(:p1))) as "score" from "test" where (to_tsvector("content")) @@ plainto_tsquery(:p2) order by "score" desc', $query->buildSelectSql());
+        $this->assertEquals([':p1' => 'imi', ':p2' => 'imi'], $query->getBinds());
+        $this->assertEquals('score', $options->getScoreFieldName());
+        $this->assertEquals('desc', $options->getOrderDirection());
     }
 }

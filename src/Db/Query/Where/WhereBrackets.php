@@ -38,25 +38,9 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     /**
      * {@inheritDoc}
      */
-    public function getLogicalOperator(): string
-    {
-        return $this->logicalOperator;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setCallback(callable $callback): void
     {
         $this->callback = $callback;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLogicalOperator(string $logicalOperator): void
-    {
-        $this->logicalOperator = $logicalOperator;
     }
 
     /**
