@@ -66,9 +66,9 @@ abstract class MemberBase extends Model
      * 用户名.
      * username.
      *
-     * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="''::character varying", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
-    protected ?string $username = null;
+    protected ?string $username = '';
 
     /**
      * 获取 username - 用户名.
