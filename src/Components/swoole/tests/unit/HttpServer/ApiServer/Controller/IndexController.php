@@ -452,7 +452,7 @@ class IndexController extends HttpController
         int $id2,
         #[RequestParam(name: '$get.id3', required: false, default: 'imi niubi')]
         string $id3
-        ): array {
+    ): array {
         return [
             'id'  => $id,
             'id2' => $id2,

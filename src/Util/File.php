@@ -75,10 +75,8 @@ class File
     {
         # if \extension_loaded('swoole')
         if (
-            # if 0
-            \defined('SWOOLE_VERSION') &&
-            # endif
-            \Swoole\Coroutine::getCid() > -1)
+            \defined('SWOOLE_VERSION')
+            && \Swoole\Coroutine::getCid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
             Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames) {

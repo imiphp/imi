@@ -31,7 +31,6 @@ class UpdateTime extends UpdateTimeBase
 
     /**
      * timetz.
-
      *
      * @Column(name="timetz", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=true)
      */
@@ -39,7 +38,6 @@ class UpdateTime extends UpdateTimeBase
 
     /**
      * time2.
-
      *
      * @Column(name="time2", type="time", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
      */
@@ -47,7 +45,6 @@ class UpdateTime extends UpdateTimeBase
 
     /**
      * timetz2.
-
      *
      * @Column(name="timetz2", type="timetz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
      */
@@ -62,7 +59,6 @@ class UpdateTime extends UpdateTimeBase
 
     /**
      * timestamptz.
-
      *
      * @Column(name="timestamptz", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=true)
      */
@@ -70,7 +66,6 @@ class UpdateTime extends UpdateTimeBase
 
     /**
      * timestamp2.
-
      *
      * @Column(name="timestamp2", type="timestamp", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
      */
@@ -78,7 +73,6 @@ class UpdateTime extends UpdateTimeBase
 
     /**
      * timestamptz2.
-
      *
      * @Column(name="timestamptz2", type="timestamptz", length=0, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false, updateTime=1000)
      */

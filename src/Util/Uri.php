@@ -248,10 +248,11 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withUserInfo($user,
-    #[\SensitiveParameter]
-    $password = null)
-    {
+    public function withUserInfo(
+        $user,
+        #[\SensitiveParameter]
+        $password = null
+    ) {
         $self = clone $this;
         $self->userInfo = $user;
         if (null !== $password)

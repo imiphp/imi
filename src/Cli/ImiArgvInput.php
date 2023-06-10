@@ -183,16 +183,14 @@ class ImiArgvInput extends Input
         {
             $arg = $this->definition->getArgument($c);
             $this->arguments[$arg->getName()] = $arg->isArray() ? [$token] : $token;
-
-        // if last argument isArray(), append token to last argument
         }
+        // if last argument isArray(), append token to last argument
         elseif ($this->definition->hasArgument($c - 1) && $this->definition->getArgument($c - 1)->isArray())
         {
             $arg = $this->definition->getArgument($c - 1);
             $this->arguments[$arg->getName()][] = $token;
-
-        // unexpected argument
         }
+        // unexpected argument
         elseif (!$this->dynamicOptions)
         {
             $all = $this->definition->getArguments();
