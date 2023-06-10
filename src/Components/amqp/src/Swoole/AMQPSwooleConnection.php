@@ -13,10 +13,7 @@ use PhpAmqpLib\Wire\AMQPWriter;
  */
 class AMQPSwooleConnection extends AbstractConnection
 {
-    /**
-     * @var int|null
-     */
-    protected $heartbeatTimerId = null;
+    protected ?int $heartbeatTimerId = null;
 
     /**
      * @param string   $host

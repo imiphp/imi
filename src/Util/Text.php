@@ -46,7 +46,7 @@ class Text
                 return $compare === strrchr($string, $compare); // @codeCoverageIgnore
                 # if \PHP_VERSION_ID < 80000
             }
-        # endif
+            # endif
         }
         else
         {

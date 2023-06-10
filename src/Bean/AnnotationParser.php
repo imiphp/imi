@@ -116,10 +116,8 @@ class AnnotationParser
         $annotations = $this->getReader()->getClassAnnotations($ref);
         # if PHP_VERSION_ID >= 80000
         if (
-            # if 0
-            \PHP_VERSION_ID >= 80000 &&
-            # endif
-            $phpAnnotations = $this->getPHPClassAnnotations($ref))
+            \PHP_VERSION_ID >= 80000
+            && $phpAnnotations = $this->getPHPClassAnnotations($ref))
         {
             if ($annotations)
             {
