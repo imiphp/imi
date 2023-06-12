@@ -2,7 +2,7 @@ name: daily-test
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 16 * * *" # 这个值是 UTC 时间，每天北京时间 0 点执行
 
 jobs:
   ci:
