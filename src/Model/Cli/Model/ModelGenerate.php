@@ -14,6 +14,12 @@ use Imi\Config;
 use Imi\Db\Db;
 use Imi\Db\Mysql\Util\SqlUtil;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Event\Event;
+use Imi\Model\Annotation\DDL;
+use Imi\Model\Cli\Model\Event\Param\AfterGenerateModel;
+use Imi\Model\Cli\Model\Event\Param\AfterGenerateModels;
+use Imi\Model\Cli\Model\Event\Param\BeforeGenerateModel;
+use Imi\Model\Cli\Model\Event\Param\BeforeGenerateModels;
 use Imi\Model\Model;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -53,6 +59,7 @@ class ModelGenerate extends BaseCommand
      */
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean, bool $incrUpdate): void
     {
+        Event::trigger(BeforeGenerateModels::class, [], $this, BeforeGenerateModels::class);
         $db = Db::getInstance($poolName);
         $tablePrefix = $db->getOption()['prefix'] ?? '';
         if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
@@ -206,6 +213,7 @@ class ModelGenerate extends BaseCommand
                 $dataList = $query->tablePrefix('')->table($table, null, $database)->select()->getArray();
                 $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
             }
+            $fullClassName = $modelNamespace . '\\' . $className;
             if ($sqlSingleLine)
             {
                 $ddl = str_replace(\PHP_EOL, ' ', $ddl);
@@ -240,6 +248,8 @@ class ModelGenerate extends BaseCommand
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
                 'className'     => $className,
+                'fullClassName' => $fullClassName,
+                'tableName'     => $tableName,
                 'table'         => [
                     'name'      => $tableName,
                     'id'        => [],
@@ -265,6 +275,8 @@ class ModelGenerate extends BaseCommand
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE'], $typeDefinitions);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
+
+            Event::trigger(BeforeGenerateModel::class, $data, $this, BeforeGenerateModel::class);
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> BaseClass...');
@@ -278,8 +290,11 @@ class ModelGenerate extends BaseCommand
                 $content = $this->renderTemplate('template', $data);
                 File::putContents($fileName, $content);
             }
+            Event::trigger(AfterGenerateModel::class, $data, $this, AfterGenerateModel::class);
         }
         $this->output->writeln('<info>Complete</info>');
+
+        Event::trigger(AfterGenerateModels::class, [], $this, AfterGenerateModels::class);
     }
 
     /**
