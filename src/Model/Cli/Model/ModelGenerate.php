@@ -207,30 +207,34 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
-            $ddl = $this->getDDL($query, $table, $database);
+            $rawDDL = $this->getDDL($query, $table, $database);
             if ($withRecords)
             {
                 $dataList = $query->tablePrefix('')->table($table, null, $database)->select()->getArray();
-                $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
+                $rawDDL .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
             }
             $fullClassName = $modelNamespace . '\\' . $className;
             if ($sqlSingleLine)
             {
-                $ddl = str_replace(\PHP_EOL, ' ', $ddl);
+                $rawDDL = str_replace(\PHP_EOL, ' ', $rawDDL);
             }
             $ddlDecodeTmp = null;
             if ('' === $ddlEncode)
             {
                 // 未指定编码方式，判断存在注释时，base64 编码
-                if (str_contains($ddl, '/*'))
+                if (str_contains($rawDDL, '/*'))
                 {
-                    $ddl = base64_encode($ddl);
+                    $ddl = base64_encode($rawDDL);
                     $ddlDecodeTmp = 'base64_decode';
+                }
+                else
+                {
+                    $ddl = $rawDDL;
                 }
             }
             else
             {
-                $ddl = $ddlEncode($ddl);
+                $ddl = $ddlEncode($rawDDL);
             }
             if ($usePrefix = ('' !== $tablePrefix && str_starts_with($table, $tablePrefix)))
             {
@@ -262,6 +266,7 @@ class ModelGenerate extends BaseCommand
                 'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
+                'rawDDL'        => $rawDDL,
                 'ddlDecode'     => $ddlDecodeTmp ?? ('' === $ddlDecode ? null : $ddlDecode),
                 'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,

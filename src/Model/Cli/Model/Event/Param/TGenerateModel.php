@@ -30,6 +30,8 @@ trait TGenerateModel
 
     public string $ddl = '';
 
+    public string $rawDDL = '';
+
     public ?string $ddlDecode = null;
 
     public string $tableComment = '';
