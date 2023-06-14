@@ -218,13 +218,14 @@ class ModelGenerate extends BaseCommand
             {
                 $ddl = str_replace(\PHP_EOL, ' ', $ddl);
             }
+            $ddlDecodeTmp = null;
             if ('' === $ddlEncode)
             {
                 // 未指定编码方式，判断存在注释时，base64 编码
                 if (str_contains($ddl, '/*'))
                 {
                     $ddl = base64_encode($ddl);
-                    $ddlDecode = 'base64_decode';
+                    $ddlDecodeTmp = 'base64_decode';
                 }
             }
             else
@@ -261,7 +262,7 @@ class ModelGenerate extends BaseCommand
                 'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
-                'ddlDecode'     => '' === $ddlDecode ? null : $ddlDecode,
+                'ddlDecode'     => $ddlDecodeTmp ?? ('' === $ddlDecode ? null : $ddlDecode),
                 'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,
             ];
