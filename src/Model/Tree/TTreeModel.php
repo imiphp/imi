@@ -19,7 +19,7 @@ trait TTreeModel
      */
     private static function __getTreeModel(): ?TreeModel
     {
-        return AnnotationManager::getClassAnnotations(static::__getRealClassName(), TreeModel::class)[0] ?? null;
+        return AnnotationManager::getClassAnnotations(static::__getRealClassName(), TreeModel::class, true, true);
     }
 
     /**
