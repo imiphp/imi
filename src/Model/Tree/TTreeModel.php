@@ -19,6 +19,7 @@ trait TTreeModel
      */
     private static function __getTreeModel(): ?TreeModel
     {
+        // @phpstan-ignore-next-line
         return AnnotationManager::getClassAnnotations(static::__getRealClassName(), TreeModel::class, true, true);
     }
 

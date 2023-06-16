@@ -58,6 +58,7 @@ abstract class RedisModel extends BaseModel
             $object = BeanFactory::getObjectClass($object);
         }
 
+        // @phpstan-ignore-next-line
         return AnnotationManager::getClassAnnotations($object, RedisEntity::class, true, true);
     }
 
