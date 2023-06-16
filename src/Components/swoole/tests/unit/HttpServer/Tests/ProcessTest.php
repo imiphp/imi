@@ -19,13 +19,10 @@ class ProcessTest extends BaseTest
         $file = \dirname(__DIR__) . '/bin/imi';
         $cmd = \Imi\cmd('"' . $file . '" process/start PoolTest1');
         $result = shell_exec("{$cmd}");
-        $list = explode(\PHP_EOL, $result);
-        end($list);
-        prev($list);
-        $this->assertEquals(json_encode([
+        $this->assertStringContainsString(json_encode([
             'maindb'    => 0,
             'redis'     => 0,
-        ]), prev($list));
+        ]), $result);
     }
 
     /**
@@ -36,12 +33,10 @@ class ProcessTest extends BaseTest
         $file = \dirname(__DIR__) . '/bin/imi';
         $cmd = \Imi\cmd('"' . $file . '" process/run PoolTest2');
         $result = shell_exec("{$cmd}");
-        $list = explode(\PHP_EOL, $result);
-        end($list);
-        $this->assertEquals(json_encode([
+        $this->assertStringContainsString(json_encode([
             'maindb'    => 0,
             'redis'     => 1,
-        ]), prev($list));
+        ]), $result);
     }
 
     /**

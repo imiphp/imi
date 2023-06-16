@@ -555,6 +555,7 @@ class ModelTest extends BaseTest
 
         // update-1 测试
         $copyArr = $record->toArray();
+        usleep(1000); // 延时 1 毫秒，避免时间相同
         $result = $record->update();
         self::assertTrue($result->isSuccess());
         $startMicroTime = ($record->getBigint() + 0.001) / 1000;
@@ -564,6 +565,7 @@ class ModelTest extends BaseTest
 
         // update-2 测试
         $copyArr = $record->toArray();
+        usleep(1000); // 延时 1 毫秒，避免时间相同
         $result = $record->save();
         self::assertTrue($result->isSuccess());
         $startMicroTime = ($record->getBigint() + 0.001) / 1000;

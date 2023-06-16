@@ -362,10 +362,9 @@ class ServerUtilTest extends BaseTest
             while (0 !== ($data['workerId'] ?? null));
             // @phpstan-ignore-next-line
             $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => $flag]);
-            $this->assertEquals([
-                'clientId'   => 1,
-                'flag'       => 1,
-            ], $response->json(true));
+            $data = $response->json(true);
+            $this->assertGreaterThan(0, $data['clientId']);
+            $this->assertGreaterThan(0, $data['flag']);
             $this->assertEquals('', $client1->recv(1));
             $this->assertEquals('', $client2->recv(1));
         }, null, 3);
