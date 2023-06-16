@@ -119,7 +119,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install libs
-        run: sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
+        run: sudo apt update && sudo apt install -y libevent-dev libcurl4-openssl-dev libc-ares-dev libpq-dev postgresql-client
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
