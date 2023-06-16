@@ -72,7 +72,11 @@ function startServer(): void
             'WorkermanServer'    => [
                 'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.ps1',
                 'stop'          => __DIR__ . '/unit/AppServer/bin/stop-workerman.ps1',
-                'checkStatus'   => 'checkHttpServerStatus',
+                'checkStatus'   => [
+                    'checkHttpServerStatus',
+                    'checkPort13004',
+                    'checkPort13002',
+                ],
             ],
         ];
     }
@@ -165,13 +169,26 @@ function runTestServer(string $name, array $options): void
 
     if (isset($options['checkStatus']))
     {
-        if (($options['checkStatus'])())
+        if (\is_array($options['checkStatus']))
         {
-            echo "{$name} started!", \PHP_EOL;
+            $checkStatuses = $options['checkStatus'];
         }
         else
         {
-            throw new \RuntimeException("{$name} start failed");
+            $checkStatuses = [$options['checkStatus']];
+        }
+        foreach ($checkStatuses as $checkStatus)
+        {
+            if ($checkStatus())
+            {
+                echo "{$name} started!", \PHP_EOL;
+
+                return;
+            }
+            else
+            {
+                throw new \RuntimeException("{$name} start failed");
+            }
         }
     }
 }
