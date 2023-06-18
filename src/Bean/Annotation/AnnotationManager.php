@@ -362,7 +362,14 @@ class AnnotationManager
         }
         if (!isset($staticAnnotations[$className]))
         {
-            return [];
+            if ($onlyFirst)
+            {
+                return null;
+            }
+            else
+            {
+                return [];
+            }
         }
         $annotations = $staticAnnotations[$className]->getClassAnnotations();
         if (null === $annotationClassName)
@@ -454,7 +461,14 @@ class AnnotationManager
         }
         if (!isset($staticAnnotations[$className]))
         {
-            return [];
+            if ($onlyFirst)
+            {
+                return null;
+            }
+            else
+            {
+                return [];
+            }
         }
         $annotations = $staticAnnotations[$className]->getMethodAnnotations($methodName);
         if (null === $annotationClassName)
@@ -546,7 +560,14 @@ class AnnotationManager
         }
         if (!isset($staticAnnotations[$className]))
         {
-            return [];
+            if ($onlyFirst)
+            {
+                return null;
+            }
+            else
+            {
+                return [];
+            }
         }
         $annotations = $staticAnnotations[$className]->getPropertyAnnotations($propertyName);
         if (null === $annotationClassName)
@@ -638,7 +659,14 @@ class AnnotationManager
         }
         if (!isset($staticAnnotations[$className]))
         {
-            return [];
+            if ($onlyFirst)
+            {
+                return null;
+            }
+            else
+            {
+                return [];
+            }
         }
         $annotations = $staticAnnotations[$className]->getConstantAnnotations($constantName);
         if (null === $annotationClassName)
@@ -730,7 +758,14 @@ class AnnotationManager
         }
         if (!isset($staticAnnotations[$className]))
         {
-            return [];
+            if ($onlyFirst)
+            {
+                return null;
+            }
+            else
+            {
+                return [];
+            }
         }
         $annotations = $staticAnnotations[$className]->getMethodParameterAnnotations($methodName, $parameterName);
         if (null === $annotationClassName)

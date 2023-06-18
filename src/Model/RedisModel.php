@@ -58,7 +58,8 @@ abstract class RedisModel extends BaseModel
             $object = BeanFactory::getObjectClass($object);
         }
 
-        return AnnotationManager::getClassAnnotations($object, RedisEntity::class)[0] ?? null;
+        // @phpstan-ignore-next-line
+        return AnnotationManager::getClassAnnotations($object, RedisEntity::class, true, true);
     }
 
     public function __init(array $data = []): void
@@ -516,7 +517,7 @@ abstract class RedisModel extends BaseModel
         else
         {
             /** @var RedisEntity|null $redisEntity */
-            $redisEntity = AnnotationManager::getClassAnnotations($class, RedisEntity::class)[0] ?? null;
+            $redisEntity = AnnotationManager::getClassAnnotations($class, RedisEntity::class, true, true);
             $key = $redisEntity ? $redisEntity->key : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
@@ -547,7 +548,7 @@ abstract class RedisModel extends BaseModel
         else
         {
             /** @var RedisEntity|null $redisEntity */
-            $redisEntity = AnnotationManager::getClassAnnotations($class, RedisEntity::class)[0] ?? null;
+            $redisEntity = AnnotationManager::getClassAnnotations($class, RedisEntity::class, true, true);
             $key = $redisEntity ? $redisEntity->member : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
