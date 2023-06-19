@@ -77,7 +77,6 @@ class AnnotationParser
 
             return false;
         }
-        $this->files[$fileName] = true;
         if ($transaction)
         {
             AnnotationManager::setRemoveWhenset(false);
