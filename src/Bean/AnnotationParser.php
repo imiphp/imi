@@ -40,6 +40,8 @@ class AnnotationParser
 
     /**
      * 文件映射.
+     *
+     * @var array<string, bool>
      */
     private array $files = [];
 
@@ -77,6 +79,7 @@ class AnnotationParser
 
             return false;
         }
+        $this->files[$fileName] = true;
         if ($transaction)
         {
             AnnotationManager::setRemoveWhenset(false);
@@ -148,7 +151,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -243,7 +245,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -338,7 +339,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -432,7 +432,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -517,7 +516,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
