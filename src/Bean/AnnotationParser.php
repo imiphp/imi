@@ -67,10 +67,17 @@ class AnnotationParser
 
     public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
     {
-        if (!class_exists($className, null === $fileName || !\in_array($fileName, $this->initIncludeFiles)) && !interface_exists($className, false) && !trait_exists($className, false))
+        $autoload = (null === $fileName) || (!isset($this->files[$fileName]) && (!\in_array($fileName, $this->initIncludeFiles)));
+        if (!class_exists($className, $autoload) && !interface_exists($className, false) && !trait_exists($className, false))
         {
+            if ($autoload && !isset($this->files[$fileName]) && null !== $fileName)
+            {
+                $this->files[$fileName] = false;
+            }
+
             return false;
         }
+        $this->files[$fileName] = true;
         if ($transaction)
         {
             AnnotationManager::setRemoveWhenset(false);
