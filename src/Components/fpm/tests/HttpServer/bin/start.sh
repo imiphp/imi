@@ -14,6 +14,8 @@ else
     fi
 fi
 
+rm -rf "$__DIR__/../../Web/.runtime/fpm"
+
 if [[ "$1" = "-d" ]]; then
     nohup /usr/bin/env php $paramsXdebug -dxdebug.mode=coverage -d request_order=CGP -t "$__DIR__/../../Web/public" -S 127.0.0.1:13000 > "$__DIR__/../logs/cli.log" 2>&1 & echo $! > "$__DIR__/server.pid"
 else

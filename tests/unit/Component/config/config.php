@@ -34,6 +34,9 @@ return [
         'Imi\Test\Component\Annotation\A\*',
         'Imi\Test\Component\Annotation\B\TestB',
     ],
+    'ignorePaths'       => [
+        \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'test.php',
+    ],
 
     // 组件命名空间
     'components'        => [

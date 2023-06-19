@@ -54,7 +54,8 @@
             "Imi\\Test\\Unused\\": [
                 "tests/unit/unused1",
                 "tests/unit/unused2"
-            ]
+            ],
+            "Test\\": "tests/unit/Component/App"
         },
         "files": [
             "dev/bootstrap.php",
