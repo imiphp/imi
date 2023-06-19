@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test;
+namespace Imi\Test\Component\App;
 
 use Imi\App;
 

@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\App;
 use Imi\Test\BaseTest;
-use Test\TestContext;
+use Imi\Test\Component\App\TestContext;
 
 /**
  * @testdox App
