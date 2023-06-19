@@ -136,6 +136,7 @@ class WorkermanServerWorker extends Worker
             return false;
         }
 
+        // @phpstan-ignore-next-line
         $master_is_alive = $master_pid && posix_kill((int) $master_pid, 0) && posix_getpid() !== $master_pid;
         if (!$master_is_alive)
         {
