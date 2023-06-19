@@ -101,8 +101,6 @@ class AnnotationRelation
 
     /**
      * 增加类关联.
-     *
-     * @param \Imi\Bean\Annotation\Model\ClassAnnotationRelation $relation
      */
     public function addClassRelation(ClassAnnotationRelation $relation): void
     {
