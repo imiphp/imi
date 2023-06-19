@@ -746,7 +746,7 @@ class AnnotationParser
      */
     public function getFiles(): array
     {
-        return $this->files;
+        return array_keys($this->files);
     }
 
     /**
