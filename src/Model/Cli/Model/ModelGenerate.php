@@ -261,7 +261,7 @@ class ModelGenerate extends BaseCommand
                     'usePrefix' => $usePrefix,
                 ],
                 'fields'        => [],
-                'entity'        => $entity,
+                'camel'         => $entity,
                 'bean'          => $tableConfig['bean'] ?? $bean,
                 'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
