@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server;
 
 use Imi\Util\Imi;
+use Imi\Workerman\Util\Imi as UtilImi;
 use Workerman\Worker;
 
 class WorkermanServerWorker extends Worker
@@ -38,6 +39,7 @@ class WorkermanServerWorker extends Worker
     {
         parent::init();
         static::$_startFile = Imi::getCurrentModeRuntimePath('start_file');
+        UtilImi::setProcessName('master');
     }
 
     public static function clearAll(): void

@@ -9,6 +9,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Workerman\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.WORKERMAN.SERVER.WORKER_START", priority=Imi\Util\ImiPriority::IMI_MAX, one=true)
@@ -20,6 +21,7 @@ class OnWorkerStart implements IEventListener
      */
     public function handle(EventParam $e): void
     {
+        Imi::setProcessName('worker');
         App::getApp()->loadConfig();
         foreach (Config::get('@app.db.connections', []) as $name => $_)
         {
