@@ -37,6 +37,8 @@ class AnnotationParser
 
     /**
      * 文件映射.
+     *
+     * @var array<string, bool>
      */
     private array $files = [];
 
@@ -64,10 +66,17 @@ class AnnotationParser
 
     public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
     {
-        if (!class_exists($className, null === $fileName || !\in_array($fileName, $this->initIncludeFiles)) && !interface_exists($className, false) && !trait_exists($className, false))
+        $autoload = (null === $fileName) || (!isset($this->files[$fileName]) && (!\in_array($fileName, $this->initIncludeFiles)));
+        if (!class_exists($className, $autoload) && !interface_exists($className, false) && !trait_exists($className, false))
         {
+            if ($autoload && !isset($this->files[$fileName]) && null !== $fileName)
+            {
+                $this->files[$fileName] = false;
+            }
+
             return false;
         }
+        $this->files[$fileName] = true;
         if ($transaction)
         {
             AnnotationManager::setRemoveWhenset(false);
@@ -135,7 +144,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -230,7 +238,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -324,7 +331,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -418,7 +424,6 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
-            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -649,7 +654,7 @@ class AnnotationParser
      */
     public function getFiles(): array
     {
-        return $this->files;
+        return array_keys($this->files);
     }
 
     /**
