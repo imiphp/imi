@@ -63,9 +63,9 @@ class AnnotationLoader
         }
         if ($beanScan)
         {
-            foreach ($beanScan as $namespace)
+            foreach ($beanScan as $beanScanNamespace)
             {
-                $this->loadModuleAnnotations($namespace, $callback, $pattern);
+                $this->loadModuleAnnotations($beanScanNamespace, $callback, $pattern);
             }
         }
         foreach ($namespacePaths as $path)
