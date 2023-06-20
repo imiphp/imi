@@ -38,11 +38,11 @@ class Server extends BaseCommand
      */
     public function start(?int $workerNum, $d): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($d) {
-            $this->outStartupInfo();
-            if (Config::get('@app.server.checkPoolResource', false))
-            {
-                (static function () {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($workerNum, $d) {
+            $server = (function () use ($workerNum, $d) {
+                $this->outStartupInfo();
+                if (Config::get('@app.server.checkPoolResource', false))
+                {
                     $exit = false;
                     run(static function () use (&$exit) {
                         if (!PoolManager::checkPoolResource())
@@ -54,47 +54,56 @@ class Server extends BaseCommand
                     {
                         exit(255);
                     }
-                })();
-            }
-            PoolManager::clearPools();
-            CacheManager::clearPools();
-            Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
-            // 创建服务器对象们前置操作
-            Event::trigger('IMI.SERVERS.CREATE.BEFORE');
-            $mainServer = Config::get('@app.mainServer');
-            if (null === $mainServer)
-            {
-                throw new \RuntimeException('config.mainServer not found');
-            }
-            // 主服务器
-            ServerManager::createServer('main', $mainServer);
-            // 创建监听子服务器端口
-            $subServers = Config::get('@app.subServers', []);
-            if ($subServers)
-            {
-                foreach ($subServers as $name => $config)
-                {
-                    ServerManager::createServer($name, $config, true);
                 }
-            }
-            // 创建服务器对象们后置操作
-            Event::trigger('IMI.SERVERS.CREATE.AFTER');
+                PoolManager::clearPools();
+                CacheManager::clearPools();
+                Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
+                // 创建服务器对象们前置操作
+                Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+                $mainServer = Config::get('@app.mainServer');
+                if (null === $mainServer)
+                {
+                    throw new \RuntimeException('config.mainServer not found');
+                }
+                // 主服务器
+                /** @var ISwooleServer $server */
+                $server = ServerManager::createServer('main', $mainServer);
+                // 创建监听子服务器端口
+                $subServers = Config::get('@app.subServers', []);
+                if ($subServers)
+                {
+                    foreach ($subServers as $name => $config)
+                    {
+                        ServerManager::createServer($name, $config, true);
+                    }
+                }
+                // 创建服务器对象们后置操作
+                Event::trigger('IMI.SERVERS.CREATE.AFTER');
 
-            /** @var ISwooleServer $server */
-            $server = ServerManager::getServer('main', ISwooleServer::class);
-            $swooleServer = $server->getSwooleServer();
-            // 守护进程支持
-            if ($d)
-            {
-                $options = [
-                    'daemonize' => 1,
-                ];
-                if (true !== $d)
+                $swooleServer = $server->getSwooleServer();
+                $options = [];
+                if (null !== $workerNum)
                 {
-                    $options['log_file'] = $d;
+                    $options['worker_num'] = $workerNum;
                 }
-                $swooleServer->set($options);
-            }
+
+                // 守护进程支持
+                if ($d)
+                {
+                    $options['daemonize'] = true;
+                    if (true !== $d)
+                    {
+                        $options['log_file'] = $d;
+                    }
+                }
+
+                if ($options)
+                {
+                    $swooleServer->set($options);
+                }
+
+                return $server;
+            })();
             // gc
             gc_collect_cycles();
             gc_mem_caches();

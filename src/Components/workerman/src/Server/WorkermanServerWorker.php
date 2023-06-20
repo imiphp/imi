@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server;
 
 use Imi\Util\Imi;
+use Imi\Workerman\Util\Imi as UtilImi;
 use Workerman\Worker;
 
 class WorkermanServerWorker extends Worker
@@ -38,6 +39,7 @@ class WorkermanServerWorker extends Worker
     {
         parent::init();
         static::$_startFile = Imi::getCurrentModeRuntimePath('start_file');
+        UtilImi::setProcessName('master');
     }
 
     public static function clearAll(): void
@@ -118,5 +120,41 @@ class WorkermanServerWorker extends Worker
         $tmpArgv = $GLOBALS['argv'];
         parent::displayUI();
         $GLOBALS['argv'] = $tmpArgv;
+    }
+
+    /**
+     * Check master process is alive.
+     *
+     * @param int $master_pid
+     *
+     * @return bool
+     */
+    protected static function checkMasterIsAlive($master_pid)
+    {
+        if (empty($master_pid))
+        {
+            return false;
+        }
+
+        // @phpstan-ignore-next-line
+        $master_is_alive = $master_pid && posix_kill((int) $master_pid, 0) && posix_getpid() !== $master_pid;
+        if (!$master_is_alive)
+        {
+            return false;
+        }
+
+        $cmdline = "/proc/{$master_pid}/cmdline";
+        if (!is_readable($cmdline) || empty(static::$processTitle))
+        {
+            return true;
+        }
+
+        $content = file_get_contents($cmdline);
+        if (empty($content))
+        {
+            return true;
+        }
+
+        return false !== stripos($content, 'imi') || false !== stripos($content, 'php');
     }
 }

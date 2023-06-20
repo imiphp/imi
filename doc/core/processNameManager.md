@@ -4,6 +4,8 @@
 
 imi 为启动出来的进程统一管理了进程名，你可以在 `@app.process` 中自定义，其默认设置为：
 
+**Swoole：**
+
 ```php
 'process'   =>  [
     'master'        =>  'imi:master:{namespace}',
@@ -12,8 +14,15 @@ imi 为启动出来的进程统一管理了进程名，你可以在 `@app.proces
     'taskWorker'    =>  'imi:taskWorker-{workerId}:{namespace}',
     'process'       =>  'imi:process-{processName}:{namespace}',
     'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
-    'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
 ]
 ```
 
-> 目前仅支持 Swoole
+**Workerman：**
+
+```php
+'process'   =>  [
+    'master'        =>  'imi:master:{namespace}',
+    'worker'        =>  'imi:worker-{workerId}:{namespace}',
+    'process'       =>  'imi:process-{processName}:{namespace}',
+]
+```

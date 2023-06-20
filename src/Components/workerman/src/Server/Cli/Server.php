@@ -39,90 +39,92 @@ class Server extends BaseCommand
      */
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
-        $this->outStartupInfo();
-        if (Config::get('@app.server.checkPoolResource', false) && !PoolManager::checkPoolResource())
-        {
-            exit(255);
-        }
-        PoolManager::clearPools();
-        CacheManager::clearPools();
-
-        // workerman argv
-        global $argv;
-        $argv = [
-            $argv[0],
-            'start',
-        ];
-        unset($argv);
-
-        // 守护进程
-        WorkermanServerWorker::$daemonize = $d;
-
-        Event::trigger('IMI.WORKERMAN.SERVER.BEFORE_START');
-        // 创建服务器对象们前置操作
-        Event::trigger('IMI.SERVERS.CREATE.BEFORE');
-        $serverConfigs = Config::get('@app.workermanServer', []);
-        $output = ImiCommand::getOutput();
-        if (null === $name)
-        {
-            $shares = [];
-            foreach ($serverConfigs as $serverName => $config)
+        (function () use ($name, $workerNum, $d) {
+            $this->outStartupInfo();
+            if (Config::get('@app.server.checkPoolResource', false) && !PoolManager::checkPoolResource())
             {
-                if (!($config['autorun'] ?? true))
+                exit(255);
+            }
+            PoolManager::clearPools();
+            CacheManager::clearPools();
+
+            // workerman argv
+            global $argv;
+            $argv = [
+                $argv[0],
+                'start',
+            ];
+            unset($argv);
+
+            // 守护进程
+            WorkermanServerWorker::$daemonize = $d;
+
+            Event::trigger('IMI.WORKERMAN.SERVER.BEFORE_START');
+            // 创建服务器对象们前置操作
+            Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+            $serverConfigs = Config::get('@app.workermanServer', []);
+            $output = ImiCommand::getOutput();
+            if (null === $name)
+            {
+                $shares = [];
+                foreach ($serverConfigs as $serverName => $config)
                 {
-                    continue;
-                }
-                $shareWorker = $config['shareWorker'] ?? false;
-                // 这边共享 Worker 的服务只创建一次
-                if (false === $shareWorker)
-                {
-                    /** @var IWorkermanServer $server */
-                    $server = ServerManager::createServer($serverName, $config);
-                    if ($workerNum > 0)
+                    if (!($config['autorun'] ?? true))
                     {
-                        $server->getWorker()->count = $workerNum;
+                        continue;
                     }
-                    $server->parseConfig($config);
-                    $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>listen:</info> ' . $config['socketName']);
+                    $shareWorker = $config['shareWorker'] ?? false;
+                    // 这边共享 Worker 的服务只创建一次
+                    if (false === $shareWorker)
+                    {
+                        /** @var IWorkermanServer $server */
+                        $server = ServerManager::createServer($serverName, $config);
+                        if ($workerNum > 0)
+                        {
+                            $server->getWorker()->count = $workerNum;
+                        }
+                        $server->parseConfig($config);
+                        $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>listen:</info> ' . $config['socketName']);
+                    }
+                    else
+                    {
+                        $shares[$serverName] = $config;
+                    }
                 }
-                else
+                if ($shares)
                 {
-                    $shares[$serverName] = $config;
+                    foreach ($shares as $serverName => $config)
+                    {
+                        /** @var IWorkermanServer $server */
+                        $server = ServerManager::getServer($config['shareWorker']);
+                        $server->parseConfig($config);
+                        $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>shareWorker:</info> ' . $config['shareWorker'] . '; <info>listen:</info> ' . $config['socketName']);
+                    }
                 }
             }
-            if ($shares)
+            elseif (!isset($serverConfigs[$name]))
             {
-                foreach ($shares as $serverName => $config)
+                throw new \RuntimeException(sprintf('Server [%s] not found', $name));
+            }
+            else
+            {
+                $config = $serverConfigs[$name];
+                /** @var IWorkermanServer $server */
+                $server = ServerManager::createServer($name, $config);
+                if ($workerNum > 0)
                 {
-                    /** @var IWorkermanServer $server */
-                    $server = ServerManager::getServer($config['shareWorker']);
-                    $server->parseConfig($config);
-                    $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $serverName . '</comment>; <info>shareWorker:</info> ' . $config['shareWorker'] . '; <info>listen:</info> ' . $config['socketName']);
+                    $server->getWorker()->count = $workerNum;
                 }
+                $server->parseConfig($config);
+                $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $name . '</comment>; <info>listen:</info> ' . $config['socketName']);
             }
-        }
-        elseif (!isset($serverConfigs[$name]))
-        {
-            throw new \RuntimeException(sprintf('Server [%s] not found', $name));
-        }
-        else
-        {
-            $config = $serverConfigs[$name];
-            /** @var IWorkermanServer $server */
-            $server = ServerManager::createServer($name, $config);
-            if ($workerNum > 0)
-            {
-                $server->getWorker()->count = $workerNum;
-            }
-            $server->parseConfig($config);
-            $output->writeln('<info>[' . $config['type'] . ']</info> <comment>' . $name . '</comment>; <info>listen:</info> ' . $config['socketName']);
-        }
-        // @phpstan-ignore-next-line
-        ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
-        // 创建服务器对象们后置操作
-        Event::trigger('IMI.SERVERS.CREATE.AFTER');
-        WorkermanServerUtil::initWorkermanWorker($name);
-        Event::trigger('IMI.APP.INIT', [], $this);
+            // @phpstan-ignore-next-line
+            ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
+            // 创建服务器对象们后置操作
+            Event::trigger('IMI.SERVERS.CREATE.AFTER');
+            WorkermanServerUtil::initWorkermanWorker($name);
+            Event::trigger('IMI.APP.INIT', [], $this);
+        })();
         // gc
         gc_collect_cycles();
         gc_mem_caches();

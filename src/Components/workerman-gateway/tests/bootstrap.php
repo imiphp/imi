@@ -128,7 +128,7 @@ function startServer(): void
             }
             else
             {
-                $keyword = 'WorkerMan: master process';
+                $keyword = 'imi:master';
             }
             ttyExec(<<<CMD
             kill `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`

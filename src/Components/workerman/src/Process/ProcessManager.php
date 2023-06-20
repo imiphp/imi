@@ -18,6 +18,7 @@ use Imi\Util\Process\ProcessType;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Process\Contract\IProcess;
 use Imi\Workerman\Server\WorkermanServerWorker;
+use Imi\Workerman\Util\Imi as UtilImi;
 use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Worker;
 
@@ -91,6 +92,10 @@ class ProcessManager
 
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $processName, true);
+
+            UtilImi::setProcessName('process', [
+                'processName'   => $processName,
+            ]);
 
             if (WorkermanServerWorker::$daemonize)
             {
