@@ -14,6 +14,12 @@ use Imi\Config;
 use Imi\Db\Db;
 use Imi\Db\Mysql\Util\SqlUtil;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Event\Event;
+use Imi\Model\Annotation\DDL;
+use Imi\Model\Cli\Model\Event\Param\AfterGenerateModel;
+use Imi\Model\Cli\Model\Event\Param\AfterGenerateModels;
+use Imi\Model\Cli\Model\Event\Param\BeforeGenerateModel;
+use Imi\Model\Cli\Model\Event\Param\BeforeGenerateModels;
 use Imi\Model\Model;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -27,7 +33,7 @@ class ModelGenerate extends BaseCommand
     /**
      * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
      *
-     * @CommandAction(name="model", description="模型生成")
+     * @CommandAction(name="model", description="模型生成", dynamicOptions=true)
      *
      * @Argument(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
      * @Argument(name="baseClass", type=ArgType::STRING, default="Imi\Model\Model", comments="生成的Model所继承的基类,默认\Imi\Model\Model,可选")
@@ -53,6 +59,7 @@ class ModelGenerate extends BaseCommand
      */
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean, bool $incrUpdate): void
     {
+        Event::trigger(BeforeGenerateModels::class, [], $this, BeforeGenerateModels::class);
         $db = Db::getInstance($poolName);
         $tablePrefix = $db->getOption()['prefix'] ?? '';
         if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
@@ -200,28 +207,34 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
-            $ddl = $this->getDDL($query, $table, $database);
+            $rawDDL = $this->getDDL($query, $table, $database);
             if ($withRecords)
             {
                 $dataList = $query->tablePrefix('')->table($table, null, $database)->select()->getArray();
-                $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
+                $rawDDL .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
             }
+            $fullClassName = $modelNamespace . '\\' . $className;
             if ($sqlSingleLine)
             {
-                $ddl = str_replace(\PHP_EOL, ' ', $ddl);
+                $rawDDL = str_replace(\PHP_EOL, ' ', $rawDDL);
             }
+            $ddlDecodeTmp = null;
             if ('' === $ddlEncode)
             {
                 // 未指定编码方式，判断存在注释时，base64 编码
-                if (str_contains($ddl, '/*'))
+                if (str_contains($rawDDL, '/*'))
                 {
-                    $ddl = base64_encode($ddl);
-                    $ddlDecode = 'base64_decode';
+                    $ddl = base64_encode($rawDDL);
+                    $ddlDecodeTmp = 'base64_decode';
+                }
+                else
+                {
+                    $ddl = $rawDDL;
                 }
             }
             else
             {
-                $ddl = $ddlEncode($ddl);
+                $ddl = $ddlEncode($rawDDL);
             }
             if ($usePrefix = ('' !== $tablePrefix && str_starts_with($table, $tablePrefix)))
             {
@@ -240,18 +253,21 @@ class ModelGenerate extends BaseCommand
                 'namespace'     => $modelNamespace,
                 'baseClassName' => $baseClass,
                 'className'     => $className,
+                'fullClassName' => $fullClassName,
+                'tableName'     => $tableName,
                 'table'         => [
                     'name'      => $tableName,
                     'id'        => [],
                     'usePrefix' => $usePrefix,
                 ],
                 'fields'        => [],
-                'entity'        => $entity,
+                'camel'         => $entity,
                 'bean'          => $tableConfig['bean'] ?? $bean,
                 'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
-                'ddlDecode'     => '' === $ddlDecode ? null : $ddlDecode,
+                'rawDDL'        => $rawDDL,
+                'ddlDecode'     => $ddlDecodeTmp ?? ('' === $ddlDecode ? null : $ddlDecode),
                 'tableComment'  => $tableComment,
                 'lengthCheck'   => $lengthCheck,
             ];
@@ -265,6 +281,8 @@ class ModelGenerate extends BaseCommand
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE'], $typeDefinitions);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
+
+            Event::trigger(BeforeGenerateModel::class, $data, $this, BeforeGenerateModel::class);
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> BaseClass...');
@@ -278,8 +296,11 @@ class ModelGenerate extends BaseCommand
                 $content = $this->renderTemplate('template', $data);
                 File::putContents($fileName, $content);
             }
+            Event::trigger(AfterGenerateModel::class, $data, $this, AfterGenerateModel::class);
         }
         $this->output->writeln('<info>Complete</info>');
+
+        Event::trigger(AfterGenerateModels::class, [], $this, AfterGenerateModels::class);
     }
 
     /**
