@@ -27,6 +27,11 @@ class BigTablePagination
         return $this->query;
     }
 
+    public function getIdField(): string
+    {
+        return $this->idField;
+    }
+
     public function paginate(int $page, int $limit, array $options = []): IPaginateResult
     {
         if ($options['total'] ?? true)

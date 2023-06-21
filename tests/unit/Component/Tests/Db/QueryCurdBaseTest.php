@@ -210,7 +210,9 @@ abstract class QueryCurdBaseTest extends BaseTest
         ];
         $query = Db::query($this->poolName)->from($this->tableArticle);
         $pagination = new BigTablePagination($query);
-        $this->assertEquals($expectedData, $pagination->select(2, 1)->getArray());
+        $this->assertEquals($query, $pagination->getQuery());
+        $this->assertEquals('id', $pagination->getIdField());
+        $this->assertEquals($expectedData['list'], $pagination->select(2, 1)->getArray());
         $result = $pagination->paginate(2, 1);
         $this->assertEquals($expectedData, $result->toArray());
         $this->assertEquals($expectedData['list'], $result->getList());
