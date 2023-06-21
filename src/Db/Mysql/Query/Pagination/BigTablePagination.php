@@ -59,19 +59,27 @@ class BigTablePagination
                      ->select()
                      ->getColumn();
 
-        $valueNames = $bindValues = [];
-        foreach ($ids as $i => $value)
-        {
-            $valueNames[] = $valueName = ':v' . $i;
-            $bindValues[$valueName] = $value;
-        }
-
         $query = clone $this->query;
         $option = $query->getOption();
         $option->order = [];
 
-        return $query->whereIn($this->idField, $ids)
-                     ->orderRaw('field(' . $this->idField . ', ' . implode(',', $valueNames) . ')', $bindValues)
-                     ->select();
+        if ($ids)
+        {
+            $valueNames = $bindValues = [];
+            foreach ($ids as $i => $value)
+            {
+                $valueNames[] = $valueName = ':v' . $i;
+                $bindValues[$valueName] = $value;
+            }
+
+            return $query->whereIn($this->idField, $ids)
+                         ->orderRaw('field(' . $this->idField . ', ' . implode(',', $valueNames) . ')', $bindValues)
+                         ->select();
+        }
+        else
+        {
+            return $query->whereRaw('1=2')
+                         ->select();
+        }
     }
 }
