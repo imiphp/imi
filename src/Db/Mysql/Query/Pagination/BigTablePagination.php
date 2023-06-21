@@ -54,9 +54,24 @@ class BigTablePagination
     public function select(int $page, int $limit): IResult
     {
         $query = clone $this->query;
-        $ids = $query->field($this->idField)->page($page, $limit)->select()->getColumn();
-        $query = clone $this->query;
+        $ids = $query->field($this->idField)
+                     ->page($page, $limit)
+                     ->select()
+                     ->getColumn();
 
-        return $query->whereIn($this->idField, $ids)->select();
+        $valueNames = $bindValues = [];
+        foreach ($ids as $i => $value)
+        {
+            $valueNames[] = $valueName = ':v' . $i;
+            $bindValues[$valueName] = $value;
+        }
+
+        $query = clone $this->query;
+        $option = $query->getOption();
+        $option->order = [];
+
+        return $query->whereIn($this->idField, $ids)
+                     ->orderRaw('field(' . $this->idField . ', ' . implode(',', $valueNames) . ')', $bindValues)
+                     ->select();
     }
 }

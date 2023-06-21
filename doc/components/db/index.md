@@ -724,6 +724,11 @@ var_dump(json_encode($data)); // 支持序列化
 
 ### 高性能分页查询
 
+原理：
+
+* 先查出记录 id
+* 再根据 id 查询记录
+
 ```php
 // 首先准备好查询构建器
 $query = Db::query()->from('xxxtable');
