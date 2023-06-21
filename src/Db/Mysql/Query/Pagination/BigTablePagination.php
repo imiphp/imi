@@ -73,7 +73,7 @@ class BigTablePagination
             }
 
             return $query->whereIn($this->idField, $ids)
-                         ->orderRaw('field(' . $this->idField . ', ' . implode(',', $valueNames) . ')', $bindValues)
+                         ->orderRaw('field(' . $this->query->fieldQuote($this->idField) . ', ' . implode(',', $valueNames) . ')', $bindValues)
                          ->select();
         }
         else
