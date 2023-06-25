@@ -66,16 +66,13 @@ class FpmApp extends BaseApp
         if (!Imi::loadRuntimeInfo($fileName))
         {
             $fileName = Imi::getCurrentModeRuntimePath('imi-runtime');
-            $isBuildRuntime = !Imi::loadRuntimeInfo($fileName, true);
-            if ($isBuildRuntime)
+            if (!Imi::loadRuntimeInfo($fileName, true))
             {
                 // 扫描 imi 框架
                 Scanner::scanImi(false);
                 // 扫描组件
                 Scanner::scanVendor(false);
-            }
-            if ($isBuildRuntime)
-            {
+                // 构建项目运行时缓存
                 Imi::buildRuntime($fileName);
             }
             // 扫描项目
