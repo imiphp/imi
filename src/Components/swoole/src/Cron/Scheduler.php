@@ -56,9 +56,7 @@ class Scheduler extends \Imi\Cron\Scheduler
                     switch ($type = $task->getType())
                     {
                         case CronTaskType::RANDOM_WORKER:
-                            /** @var ISwooleServer $server */
-                            $server = ServerManager::getServer('main', ISwooleServer::class);
-                            $swooleServer = $server->getSwooleServer();
+                            $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
                             $taskClass = $task->getTask();
                             $swooleServer->sendMessage(json_encode([
                                 'action'    => 'cronTask',
@@ -69,9 +67,7 @@ class Scheduler extends \Imi\Cron\Scheduler
                             ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE), random_int(0, $swooleServer->setting['worker_num'] - 1));
                             break;
                         case CronTaskType::ALL_WORKER:
-                            /** @var ISwooleServer $server */
-                            $server = ServerManager::getServer('main', ISwooleServer::class);
-                            $swooleServer = $server->getSwooleServer();
+                            $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
                             $taskClass = $task->getTask();
                             $message = json_encode([
                                 'action'    => 'cronTask',
