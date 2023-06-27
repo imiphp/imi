@@ -15,14 +15,9 @@ class Transaction
      */
     private int $transactionLevels = 0;
 
-    /**
-     * 事务总数.
-     */
-    private int $transactionCount = 0;
-
     public function init(): void
     {
-        $this->transactionLevels = $this->transactionCount = 0;
+        $this->transactionLevels = 0;
         $this->__events = $this->__eventQueue = $this->__eventChangeRecords = $this->__sortedEventQueue = [];
     }
 
@@ -32,7 +27,6 @@ class Transaction
     public function beginTransaction(): bool
     {
         ++$this->transactionLevels;
-        ++$this->transactionCount;
 
         return true;
     }
@@ -43,10 +37,9 @@ class Transaction
     public function commit(): bool
     {
         $offEvents = [];
-        $levels = $this->transactionLevels;
+        $i = $this->transactionLevels;
         $this->transactionLevels = 0;
-        $i = $levels;
-        $prefixName = 'transaction.' . $this->transactionCount . '.';
+        $prefixName = 'transaction.';
         try
         {
             for (; $i >= 0; --$i)
@@ -92,7 +85,7 @@ class Transaction
             $final = $transactionLevels - $levels;
         }
         $i = $transactionLevels;
-        $prefixName = 'transaction.' . $this->transactionCount . '.';
+        $prefixName = 'transaction.';
         try
         {
             for (; $i >= $final; --$i)
@@ -135,7 +128,7 @@ class Transaction
      */
     public function onTransactionCommit(callable $callable): void
     {
-        $this->one('transaction.' . $this->transactionCount . '.' . $this->transactionLevels . '.commit', $callable);
+        $this->one('transaction.' . $this->transactionLevels . '.commit', $callable);
     }
 
     /**
@@ -143,6 +136,6 @@ class Transaction
      */
     public function onTransactionRollback(callable $callable): void
     {
-        $this->one('transaction.' . $this->transactionCount . '.' . $this->transactionLevels . '.rollback', $callable);
+        $this->one('transaction.' . $this->transactionLevels . '.rollback', $callable);
     }
 }

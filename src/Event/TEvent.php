@@ -131,12 +131,19 @@ trait TEvent
                             unset($map[$k]);
                         }
                     }
+                    if ($map)
+                    {
+                        $eventChangeRecords[$eventName] = 1;
+                    }
+                    else
+                    {
+                        unset($eventChangeRecords[$eventName], $events[$eventName], $this->__sortedEventQueue[$eventName], $this->__eventQueue[$eventName]);
+                    }
                 }
                 else
                 {
-                    unset($events[$eventName]);
+                    unset($eventChangeRecords[$eventName], $events[$eventName], $this->__sortedEventQueue[$eventName], $this->__eventQueue[$eventName]);
                 }
-                $eventChangeRecords[$eventName] = 1;
             }
         }
     }
@@ -217,7 +224,14 @@ trait TEvent
                         }
                     }
                 }
-                $this->__eventChangeRecords[$name] = 1;
+                if ($eventsMap)
+                {
+                    $this->__eventChangeRecords[$name] = 1;
+                }
+                else
+                {
+                    unset($this->__eventChangeRecords[$name], $this->__events[$name], $this->__sortedEventQueue[$name], $this->__eventQueue[$name]);
+                }
             }
         }
     }
