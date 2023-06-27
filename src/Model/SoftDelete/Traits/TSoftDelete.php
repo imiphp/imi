@@ -64,7 +64,7 @@ trait TSoftDelete
         /** @var IModelQuery $query */
         $query = parent::query($poolName, $queryType, $queryClass, $alias);
 
-        return $query->whereBrackets(static function () use ($query) {
+        return $query->whereBrackets(static function (IQuery $query) {
             $softDeleteAnnotation = self::__getSoftDeleteAnnotation();
             $table = $query->getOption()->table;
             if (null === ($alias = $table->getAlias()))

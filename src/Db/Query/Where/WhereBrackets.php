@@ -53,7 +53,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
             return $this->rawSQL;
         }
         $binds = &$this->binds;
-        $callResult = ($this->callback)();
+        $callResult = ($this->callback)($query);
         if (\is_array($callResult))
         {
             if (empty($callResult))
