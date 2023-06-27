@@ -16,10 +16,7 @@ class Swoole
      */
     public static function getMasterPID(): int
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-
-        return $server->getSwooleServer()->master_pid;
+        return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->master_pid;
     }
 
     /**
@@ -27,9 +24,6 @@ class Swoole
      */
     public static function getManagerPID(): int
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-
-        return $server->getSwooleServer()->manager_pid;
+        return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->manager_pid;
     }
 }

@@ -412,9 +412,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     protected function createSubServer(): void
     {
         $config = $this->getServerInitConfig();
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $this->swooleServer = $server->getSwooleServer();
+        $this->swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         $port = $this->swooleServer->addListener($config['host'], (int) $config['port'], (int) $config['sockType']);
         if (false === $port)
         {

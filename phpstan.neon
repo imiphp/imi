@@ -31,6 +31,7 @@ parameters:
         - '#expects class-string<\S+>, string given#'
         - '#Unable to resolve the template type T in call to method#'
         - '#PHPDoc tag @return with type T\|null is not subtype of native type#'
+        - '#expects class-string<.+>|null, string given#'
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
         - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
         - '#Unsafe usage of new static\(\).+#'

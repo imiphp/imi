@@ -51,10 +51,7 @@ class TaskManager
      */
     public static function post(TaskInfo $taskInfo, int $workerId = -1)
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-
-        return $server->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
+        return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
     }
 
     /**
@@ -78,9 +75,7 @@ class TaskManager
      */
     public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1)
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $server = $server->getSwooleServer();
+        $server = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         $result = $server->taskwait($taskInfo, $timeout, $workerId);
         $taskInfo->getTaskHandler()->finish($server, -1, $result);
 
@@ -112,9 +107,7 @@ class TaskManager
      */
     public static function postCo(array $tasks, float $timeout): array
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $server = $server->getSwooleServer();
+        $server = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         foreach ($tasks as $i => $item)
         {
             if (!$item instanceof TaskInfo)

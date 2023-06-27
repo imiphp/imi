@@ -75,9 +75,7 @@ class SwooleWorkerHandler implements ISwooleWorker
     {
         if (!$this->workerNum)
         {
-            /** @var ISwooleServer $server */
-            $server = ServerManager::getServer('main', ISwooleServer::class);
-            $this->workerNum = (int) $server->getSwooleServer()->setting['worker_num'];
+            $this->workerNum = (int) ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->setting['worker_num'];
         }
 
         return $this->workerNum;
@@ -139,9 +137,7 @@ class SwooleWorkerHandler implements ISwooleWorker
     {
         if (!$this->taskWorkerNum)
         {
-            /** @var ISwooleServer $server */
-            $server = ServerManager::getServer('main', ISwooleServer::class);
-            $this->taskWorkerNum = (int) $server->getSwooleServer()->setting['task_worker_num'];
+            $this->taskWorkerNum = (int) ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->setting['task_worker_num'];
         }
 
         return $this->taskWorkerNum;
@@ -152,10 +148,7 @@ class SwooleWorkerHandler implements ISwooleWorker
      */
     public function isTask(): bool
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-
-        return $server->getSwooleServer()->taskworker;
+        return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->taskworker;
     }
 
     /**
@@ -163,16 +156,15 @@ class SwooleWorkerHandler implements ISwooleWorker
      */
     public function getMasterPid(): int
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
 
-        if (\SWOOLE_BASE === $server->getSwooleServer()->mode)
+        if (\SWOOLE_BASE === $swooleServer->mode)
         {
             return $this->getManagerPid();
         }
         else
         {
-            return $this->getMasterPid();
+            return $swooleServer->master_pid;
         }
     }
 
@@ -181,10 +173,7 @@ class SwooleWorkerHandler implements ISwooleWorker
      */
     public function getManagerPid(): int
     {
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-
-        return $server->getSwooleServer()->manager_pid;
+        return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->manager_pid;
     }
 
     /**

@@ -13,7 +13,6 @@ trait TServerPortInfo
     public function outputServerInfo(): void
     {
         $output = ImiCommand::getOutput();
-        /** @var ISwooleServer $server */
         $server = ServerManager::getServer('main', ISwooleServer::class);
         $mainSwooleServer = $server->getSwooleServer();
         $output->writeln('<info>WorkerNum: </info>' . $mainSwooleServer->setting['worker_num'] . ', <info>TaskWorkerNum: </info>' . $mainSwooleServer->setting['task_worker_num']);

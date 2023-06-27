@@ -342,9 +342,7 @@ class ProcessManager
     {
         $alias ??= $name;
         $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias, true);
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $swooleServer = $server->getSwooleServer();
+        $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         $swooleServer->addProcess($process);
         self::$managerProcesses[$name][$alias] = $process;
         self::$managerProcessSet[self::buildUniqueId($name, $alias)] = [
