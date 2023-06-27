@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests\Db;
 
 use Imi\App;
 use Imi\Db\Db;
+use Imi\Db\Transaction\Transaction;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Db\Classes\TestTransaction;
 
@@ -22,6 +23,10 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         try
         {
             $object->nestingCommit();
@@ -34,9 +39,18 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
 
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         // 在事务中，不自动提交事务
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
         {
@@ -53,6 +67,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testNestingRollback(): void
@@ -60,7 +75,15 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
         try
@@ -91,6 +114,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testRequirementCommit1(): void
@@ -105,7 +129,15 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
         {
@@ -122,6 +154,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testRequirementRollback(): void
@@ -129,7 +162,15 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
         try
@@ -160,6 +201,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testAutoCommit(): void
@@ -168,6 +210,10 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         try
         {
             $object->autoCommit();
@@ -180,9 +226,18 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
 
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         // 在事务中，不自动提交事务
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
         {
@@ -199,6 +254,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testAutoRollback(): void
@@ -206,6 +262,10 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
 
         try
         {
@@ -235,6 +295,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testRollbackPart1(): void
@@ -242,7 +303,15 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
         try
@@ -273,6 +342,7 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
     }
 
     public function testRollbackPartAll(): void
@@ -280,7 +350,15 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
         try
@@ -311,5 +389,15 @@ class TransactionTest extends BaseTest
                 $transaction->rollBack();
             }
         }
+        $this->assertEmptyEvents($transaction);
+    }
+
+    private function assertEmptyEvents(Transaction $event): void
+    {
+        $propertyRef = new \ReflectionProperty($event, '__events');
+        $propertyRef->setAccessible(true);
+        $events = $propertyRef->getValue($event);
+
+        $this->assertEquals([], $events);
     }
 }
