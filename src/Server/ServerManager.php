@@ -24,7 +24,11 @@ class ServerManager
     /**
      * 获取服务器数组.
      *
-     * @return \Imi\Server\Contract\IServer[]
+     * @template T of IServer
+     *
+     * @param class-string<T>|null $class
+     *
+     * @return T[]|\Imi\Server\Contract\IServer[]
      */
     public static function getServers(?string $class = null): array
     {
@@ -49,6 +53,12 @@ class ServerManager
 
     /**
      * 获取服务器对象
+     *
+     * @template T of IServer
+     *
+     * @param class-string<T>|null $class
+     *
+     * @return T|null
      */
     public static function getServer(string $name, ?string $class = null): ?IServer
     {

@@ -29,6 +29,7 @@ parameters:
         - '#is never read, only written#'
         - '#expects class-string<\S+>, string given#'
         - '#Unable to resolve the template type T in call to method#'
+        - '#expects class-string<.+>|null, string given#'
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
         - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
         - '#Unsafe usage of new static\(\).+#'

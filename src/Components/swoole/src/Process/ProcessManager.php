@@ -303,9 +303,7 @@ class ProcessManager
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
         $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $swooleServer = $server->getSwooleServer();
+        $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         $swooleServer->addProcess($process);
         self::$managerProcesses[$name][$alias] = $process;
         self::$managerProcessSet[self::buildUniqueId($name, $alias)] = [
