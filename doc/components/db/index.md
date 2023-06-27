@@ -454,12 +454,12 @@ Db::query()->orWhereRaw('id >= :value', [':value' => 1]);
 
 ```php
 // where id = 1 or (age < 14)
-Db::query()->where('id', '=', 1)->whereBrackets(function(){
+Db::query()->where('id', '=', 1)->whereBrackets(function(\Imi\Db\Query\Interfaces\IQuery $query) {
     // 直接返回字符串
     return 'age < 14';
 }, 'or');
 // 支持使用 sql 语句: where id = 1 or (age > 10 and age < 14)
-Db::query()->where('id', '=', 1)->whereBrackets(function(){
+Db::query()->where('id', '=', 1)->whereBrackets(function(\Imi\Db\Query\Interfaces\IQuery $query) {
     // 直接返回字符串
     return [
         \Imi\Db\Query\Where\Where::raw('age > 10'),
@@ -467,11 +467,11 @@ Db::query()->where('id', '=', 1)->whereBrackets(function(){
     ];
 }, 'or');
 // where id = 1 or (age < 14)
-Db::query()->where('id', '=', 1)->whereBrackets(function(){
+Db::query()->where('id', '=', 1)->whereBrackets(function(\Imi\Db\Query\Interfaces\IQuery $query) {
     // 直接返回字符串
     return new \Imi\Db\Query\Where\Where('age', '<', 14);
 }, 'or');
-Db::query()->where('id', '=', 1)->orWhereBrackets(function(){
+Db::query()->where('id', '=', 1)->orWhereBrackets(function(\Imi\Db\Query\Interfaces\IQuery $query) {
     // 直接返回字符串
     return new \Imi\Db\Query\Where\Where('age', '<', 14);
 });
