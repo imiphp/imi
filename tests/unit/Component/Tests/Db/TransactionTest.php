@@ -70,6 +70,59 @@ class TransactionTest extends BaseTest
         $this->assertEmptyEvents($transaction);
     }
 
+    public function testNestingCommit2(): void
+    {
+        // 不在事务中，开启事务并提交事务
+        $object = $this->getObject();
+        $db = Db::getInstance();
+        $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
+        try
+        {
+            $object->nestingCommit2();
+            $this->assertEquals(0, $transaction->getTransactionLevels());
+        }
+        finally
+        {
+            if ($db->inTransaction())
+            {
+                $transaction->rollBack();
+            }
+        }
+        $this->assertEmptyEvents($transaction);
+
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
+        // 在事务中，不自动提交事务
+        $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
+        $this->assertEquals(1, $transaction->getTransactionLevels());
+        try
+        {
+            $object->nestingCommit2();
+            // 事务嵌套
+            $this->assertEquals(3, $transaction->getTransactionLevels());
+            $db->commit();
+            $this->assertEquals(0, $transaction->getTransactionLevels());
+        }
+        finally
+        {
+            if ($db->inTransaction())
+            {
+                $transaction->rollBack();
+            }
+        }
+        $this->assertEmptyEvents($transaction);
+    }
+
     public function testNestingRollback(): void
     {
         $object = $this->getObject();
@@ -92,6 +145,53 @@ class TransactionTest extends BaseTest
             try
             {
                 $object->nestingRollback();
+            }
+            catch (\Throwable $th)
+            {
+                $catched = true;
+                $this->assertEquals('gg', $th->getMessage());
+                $this->assertEquals(0, $transaction->getTransactionLevels());
+            }
+            finally
+            {
+                if (!$catched)
+                {
+                    $this->assertTrue(false);
+                }
+            }
+        }
+        finally
+        {
+            if ($db->inTransaction())
+            {
+                $transaction->rollBack();
+            }
+        }
+        $this->assertEmptyEvents($transaction);
+    }
+
+    public function testNestingRollback2(): void
+    {
+        $object = $this->getObject();
+        $db = Db::getInstance();
+        $transaction = $db->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
+        $db->beginTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
+        $this->assertEquals(1, $transaction->getTransactionLevels());
+
+        try
+        {
+            $catched = false;
+            try
+            {
+                $object->nestingRollback2();
             }
             catch (\Throwable $th)
             {
@@ -394,10 +494,13 @@ class TransactionTest extends BaseTest
 
     private function assertEmptyEvents(Transaction $event): void
     {
-        $propertyRef = new \ReflectionProperty($event, '__events');
-        $propertyRef->setAccessible(true);
-        $events = $propertyRef->getValue($event);
+        foreach (['__events', '__eventQueue', '__eventChangeRecords', '__sortedEventQueue'] as $property)
+        {
+            $propertyRef = new \ReflectionProperty($event, $property);
+            $propertyRef->setAccessible(true);
+            $events = $propertyRef->getValue($event);
 
-        $this->assertEquals([], $events);
+            $this->assertEquals([], $events);
+        }
     }
 }

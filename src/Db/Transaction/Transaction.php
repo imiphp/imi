@@ -15,9 +15,19 @@ class Transaction
      */
     private int $transactionLevels = 0;
 
+    /**
+     * 事务总数.
+     */
+    private int $transactionCount = 0;
+
+    /**
+     * 当前事务.
+     */
+    private int $currentTransaction = 0;
+
     public function init(): void
     {
-        $this->transactionLevels = 0;
+        $this->transactionLevels = $this->transactionCount = $this->currentTransaction = 0;
         $this->__events = $this->__eventQueue = $this->__eventChangeRecords = $this->__sortedEventQueue = [];
     }
 
@@ -26,7 +36,10 @@ class Transaction
      */
     public function beginTransaction(): bool
     {
-        ++$this->transactionLevels;
+        if (1 === ++$this->transactionLevels)
+        {
+            $this->currentTransaction = ++$this->transactionCount;
+        }
 
         return true;
     }
@@ -37,9 +50,12 @@ class Transaction
     public function commit(): bool
     {
         $offEvents = [];
-        $i = $this->transactionLevels;
+        $levels = $this->transactionLevels;
         $this->transactionLevels = 0;
-        $prefixName = 'transaction.';
+        $i = $levels;
+        $currentTransaction = &$this->currentTransaction;
+        $prefixName = 'transaction.' . $currentTransaction . '.';
+        $currentTransaction = 0;
         try
         {
             for (; $i >= 0; --$i)
@@ -76,19 +92,25 @@ class Transaction
     {
         $offEvents = [];
         $transactionLevels = &$this->transactionLevels;
+        $i = $transactionLevels;
+        $currentTransaction = &$this->currentTransaction;
+        $prefixName = 'transaction.' . $currentTransaction . '.';
         if (null === $levels)
         {
-            $final = 0;
+            $transactionLevels = 0;
+            $currentTransaction = 0;
         }
         else
         {
-            $final = $transactionLevels - $levels;
+            $transactionLevels -= $levels;
+            if ($transactionLevels <= 0)
+            {
+                $currentTransaction = 0;
+            }
         }
-        $i = $transactionLevels;
-        $prefixName = 'transaction.';
         try
         {
-            for (; $i >= $final; --$i)
+            for (; $i >= $transactionLevels; --$i)
             {
                 $this->trigger($prefixName . $i . '.rollback', [
                     'db'    => $this,
@@ -99,7 +121,7 @@ class Transaction
         }
         catch (\Throwable $th)
         {
-            for (; $i >= $final; --$i)
+            for (; $i >= $transactionLevels; --$i)
             {
                 $offEvents[] = $prefixName . $i . '.commit';
                 $offEvents[] = $prefixName . $i . '.rollback';
@@ -108,7 +130,6 @@ class Transaction
         }
         finally
         {
-            $transactionLevels = $final;
             $this->off($offEvents);
         }
 
@@ -128,7 +149,7 @@ class Transaction
      */
     public function onTransactionCommit(callable $callable): void
     {
-        $this->one('transaction.' . $this->transactionLevels . '.commit', $callable);
+        $this->one('transaction.' . ($this->currentTransaction ?: ($this->transactionCount + 1)) . '.' . $this->transactionLevels . '.commit', $callable);
     }
 
     /**
@@ -136,6 +157,6 @@ class Transaction
      */
     public function onTransactionRollback(callable $callable): void
     {
-        $this->one('transaction.' . $this->transactionLevels . '.rollback', $callable);
+        $this->one('transaction.' . ($this->currentTransaction ?: ($this->transactionCount + 1)) . '.' . $this->transactionLevels . '.rollback', $callable);
     }
 }

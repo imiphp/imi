@@ -7,6 +7,7 @@ namespace Imi\Test\Component\Db\Classes;
 use Imi\Db\Annotation\RollbackType;
 use Imi\Db\Annotation\Transaction;
 use Imi\Db\Annotation\TransactionType;
+use Imi\Db\Db;
 
 class TestTransaction
 {
@@ -17,6 +18,18 @@ class TestTransaction
      */
     public function nestingCommit(): void
     {
+        $this->__listen();
+    }
+
+    /**
+     * 事务嵌套.
+     *
+     * @Transaction(type=TransactionType::NESTING)
+     */
+    public function nestingCommit2(): void
+    {
+        $this->__listen();
+        $this->nestingCommit();
     }
 
     /**
@@ -26,7 +39,19 @@ class TestTransaction
      */
     public function nestingRollback(): void
     {
+        $this->__listen();
         throw new \RuntimeException('gg');
+    }
+
+    /**
+     * 事务嵌套.
+     *
+     * @Transaction(type=TransactionType::NESTING)
+     */
+    public function nestingRollback2(): void
+    {
+        $this->__listen();
+        $this->nestingRollback();
     }
 
     /**
@@ -36,6 +61,7 @@ class TestTransaction
      */
     public function requirementCommit(): void
     {
+        $this->__listen();
     }
 
     /**
@@ -45,6 +71,7 @@ class TestTransaction
      */
     public function requirementRollback(): void
     {
+        $this->__listen();
         throw new \RuntimeException('gg');
     }
 
@@ -55,6 +82,7 @@ class TestTransaction
      */
     public function autoCommit(): void
     {
+        $this->__listen();
     }
 
     /**
@@ -64,6 +92,7 @@ class TestTransaction
      */
     public function autoRollback(): void
     {
+        $this->__listen();
         throw new \RuntimeException('gg');
     }
 
@@ -74,6 +103,7 @@ class TestTransaction
      */
     public function rollbackPart1(): void
     {
+        $this->__listen();
         throw new \RuntimeException('gg');
     }
 
@@ -84,6 +114,16 @@ class TestTransaction
      */
     public function rollbackPartAll(): void
     {
+        $this->__listen();
         throw new \RuntimeException('gg');
+    }
+
+    private function __listen(): void
+    {
+        $transaction = Db::getInstance()->getTransaction();
+        $transaction->onTransactionCommit(static function () {
+        });
+        $transaction->onTransactionRollback(static function () {
+        });
     }
 }
