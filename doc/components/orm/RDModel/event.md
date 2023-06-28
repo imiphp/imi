@@ -37,13 +37,13 @@
  */
 class Test extends Model
 {
-    public function __init($data = [])
+    public function __init(array $data = [], bool $queryRelation = true): void
     {
         $this->on(ModelEvents::AFTER_INIT, [$this, 'onAfterInit']);
-        parent::__init($data);
+        parent::__init($data, $queryRelation);
     }
 
-    public function onAfterInit(\Imi\Model\Event\Param\InitEventParam $data)
+    public function onAfterInit(\Imi\Model\Event\Param\InitEventParam $data): void
     {
         var_dump($data->data);
     }

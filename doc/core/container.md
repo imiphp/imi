@@ -306,7 +306,7 @@ class ABCDEFG
         echo 'first', PHP_EOL;
     }
 
-    public function __init($id)
+    public function __init($id): void
     {
         echo 'second first', PHP_EOL;
     }
