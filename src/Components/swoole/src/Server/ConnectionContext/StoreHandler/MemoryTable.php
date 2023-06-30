@@ -10,8 +10,8 @@ use Imi\Redis\Redis;
 use Imi\Redis\RedisHandler;
 use Imi\Server\ConnectionContext\StoreHandler\IHandler;
 use Imi\Swoole\Util\MemoryTableManager;
+use Imi\Timer\Timer;
 use Imi\Worker;
-use Swoole\Timer;
 
 /**
  * 连接上下文存储处理器-MemoryTable.

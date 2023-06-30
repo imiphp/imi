@@ -12,8 +12,8 @@ use Imi\Pool\Annotation\PoolClean;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
+use Imi\Timer\Timer;
 use Imi\Util\Imi;
-use Swoole\Timer;
 
 /**
  * @Bean(name="hotUpdate", env="swoole")
@@ -184,7 +184,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function stopBuildRuntimeTimer(): void
     {
-        Timer::clear($this->buildRuntimeTimerId);
+        Timer::del($this->buildRuntimeTimerId);
     }
 
     /**

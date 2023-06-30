@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Imi\Pgsql\Test;
 
 use Imi\App;
-use Imi\Cli\CliApp;
 use Imi\Db\Interfaces\IDb;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
+use Imi\Swoole\SwooleApp;
 use PHPUnit\Runner\BeforeFirstTestHook;
 
 class PHPUnitHook implements BeforeFirstTestHook
@@ -32,7 +32,7 @@ class PHPUnitHook implements BeforeFirstTestHook
                 }
             });
         }, 1);
-        App::run('Imi\Pgsql\Test', CliApp::class, static function () {
+        App::run('Imi\Pgsql\Test', SwooleApp::class, static function () {
         });
     }
 }
