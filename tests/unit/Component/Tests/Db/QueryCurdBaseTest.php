@@ -8,6 +8,7 @@ use Imi\Db\Db;
 use Imi\Db\Mysql\Query\FullText\MysqlFullTextOptions;
 use Imi\Db\Mysql\Query\FullText\SearchModifier;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
+use Imi\Db\Mysql\Query\Pagination\BigTablePagination;
 use Imi\Db\Query\Database;
 use Imi\Db\Query\Raw;
 use Imi\Db\Query\Where\Where;
@@ -185,6 +186,51 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals($expectedData['total'], $result->getTotal());
         $this->assertEquals($expectedData['limit'], $result->getLimit());
         $this->assertEquals($expectedData['page_count'], $result->getPageCount());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testBigTablePagination(array $args): void
+    {
+        ['ids' => $ids] = $args;
+        $expectedData = [
+            'list'          => [
+                [
+                    'id'        => $ids[1],
+                    'title'     => 'title-insert',
+                    'content'   => 'content-insert',
+                    'time'      => '2019-06-21 00:00:00',
+                    'member_id' => 0,
+                ],
+            ],
+            'limit'         => 1,
+            'total'         => 2,
+            'page_count'    => 2,
+        ];
+        $query = Db::query($this->poolName)->from($this->tableArticle);
+        $pagination = new BigTablePagination($query);
+        $this->assertEquals($query, $pagination->getQuery());
+        $this->assertEquals('id', $pagination->getIdField());
+        $this->assertEquals($expectedData['list'], $pagination->select(2, 1)->getArray());
+
+        $this->assertEquals([], $pagination->select(100, 1)->getArray());
+
+        $result = $pagination->paginate(2, 1);
+        $this->assertEquals($expectedData, $result->toArray());
+        $this->assertEquals($expectedData['list'], $result->getList());
+        $this->assertEquals($expectedData['total'], $result->getTotal());
+        $this->assertEquals($expectedData['limit'], $result->getLimit());
+        $this->assertEquals($expectedData['page_count'], $result->getPageCount());
+
+        $result = $pagination->paginate(100, 1);
+        $tmpExceptedData = $expectedData;
+        $tmpExceptedData['list'] = [];
+        $this->assertEquals($tmpExceptedData, $result->toArray());
+        $this->assertEquals($tmpExceptedData['list'], $result->getList());
+        $this->assertEquals($tmpExceptedData['total'], $result->getTotal());
+        $this->assertEquals($tmpExceptedData['limit'], $result->getLimit());
+        $this->assertEquals($tmpExceptedData['page_count'], $result->getPageCount());
     }
 
     /**

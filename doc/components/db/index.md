@@ -722,6 +722,35 @@ var_dump(json_encode($data)); // 支持序列化
 ]
 ```
 
+### 高性能分页查询
+
+原理：
+
+* 先查出记录 id
+* 再根据 id 查询记录
+
+```php
+// 首先准备好查询构建器
+$query = Db::query()->from('xxxtable');
+
+// 实例化大表分页类，字段名默认 id
+$pagination = new \Imi\Db\Mysql\Query\Pagination\BigTablePagination($query);
+// 指定主表主键字段名，如果涉及多张表关联，这里需要指定主表的主键字段名
+$pagination = new \Imi\Db\Mysql\Query\Pagination\BigTablePagination($query, 'xxxtable.id');
+
+// 只查列表，返回值同 $query->select()，Result 对象
+$result = $pagination->select();
+// 获取数组
+$result->getArray();
+
+// 分页查询，返回值同 $query->paginate()，PaginationResult 对象
+$page = 1;
+$limit = 10;
+$result = $pagination->paginate($page, $limit);
+```
+
+> 仅 MySQL 数据库支持
+
 ## 查询执行
 
 ### 查询记录
