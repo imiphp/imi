@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\AMQP\Swoole;
 
 use Imi\Swoole\Util\Coroutine;
+use Imi\Timer\Timer;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPWriter;
 
@@ -107,7 +108,7 @@ class AMQPSwooleConnection extends AbstractConnection
     {
         if ($this->heartbeat > 0)
         {
-            $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 500, function () {
+            $this->heartbeatTimerId = Timer::tick($this->heartbeat * 500, function () {
                 if ($this->isConnected())
                 {
                     $this->write_heartbeat();
@@ -120,7 +121,7 @@ class AMQPSwooleConnection extends AbstractConnection
     {
         if ($this->heartbeatTimerId)
         {
-            \Swoole\Timer::clear($this->heartbeatTimerId);
+            Timer::del($this->heartbeatTimerId);
             $this->heartbeatTimerId = null;
         }
     }

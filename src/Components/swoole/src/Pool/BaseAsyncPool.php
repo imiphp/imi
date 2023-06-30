@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\Pool\BasePool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Timer\Timer;
 use Imi\Worker;
 use Swoole\Coroutine\Channel;
 
@@ -267,7 +268,7 @@ abstract class BaseAsyncPool extends BasePool
             $gcInterval = $this->config->getGCInterval();
             if ($gcInterval > 0)
             {
-                $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
+                $this->gcTimerId = Timer::tick($gcInterval * 1000, [$this, 'gc']);
                 Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
                     $this->stopAutoGC();
                 }, \Imi\Util\ImiPriority::IMI_MIN);
@@ -282,7 +283,7 @@ abstract class BaseAsyncPool extends BasePool
     {
         if (null !== $this->gcTimerId)
         {
-            \Swoole\Timer::clear($this->gcTimerId);
+            Timer::del($this->gcTimerId);
         }
     }
 
@@ -354,7 +355,7 @@ abstract class BaseAsyncPool extends BasePool
     {
         if ((null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
         {
-            $this->heartbeatTimerId = \Swoole\Timer::tick((int) ($heartbeatInterval * 1000), [$this, 'heartbeat']);
+            $this->heartbeatTimerId = Timer::tick((int) ($heartbeatInterval * 1000), [$this, 'heartbeat']);
             Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
                 $this->stopHeartbeat();
             }, \Imi\Util\ImiPriority::IMI_MIN);
@@ -368,7 +369,7 @@ abstract class BaseAsyncPool extends BasePool
     {
         if (null !== $this->heartbeatTimerId)
         {
-            \Swoole\Timer::clear($this->heartbeatTimerId);
+            Timer::del($this->heartbeatTimerId);
         }
     }
 }

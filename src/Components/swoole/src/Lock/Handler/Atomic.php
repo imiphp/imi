@@ -7,7 +7,7 @@ namespace Imi\Swoole\Lock\Handler;
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Handler\BaseLock;
 use Imi\Swoole\Util\AtomicManager;
-use Swoole\Timer;
+use Imi\Timer\Timer;
 
 /**
  * Atomic 实现的多进程单机锁，注意会阻塞进程，只推荐在自定义进程、进程池中使用.
@@ -89,7 +89,7 @@ class Atomic extends BaseLock
      */
     private function stopTimeoutTimer(): void
     {
-        Timer::clear($this->timeoutTimerId);
+        Timer::del($this->timeoutTimerId);
         $this->timeoutTimerId = null;
     }
 }

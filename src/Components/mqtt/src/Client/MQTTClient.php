@@ -23,8 +23,8 @@ use Imi\MQTT\Client\Contract\IMQTTClientListener;
 use Imi\MQTT\Client\Exception\ConnectException;
 use Imi\MQTT\Client\Exception\InvalidPacketTypeException;
 use Imi\MQTT\Client\Exception\SendException;
+use Imi\Timer\Timer;
 use Swoole\Coroutine\Client;
-use Swoole\Timer;
 
 class MQTTClient
 {
@@ -131,7 +131,7 @@ class MQTTClient
     {
         if ($this->pingTimerId)
         {
-            Timer::clear($this->pingTimerId);
+            Timer::del($this->pingTimerId);
         }
     }
 
@@ -212,7 +212,7 @@ class MQTTClient
         }
         if ($this->pingTimerId)
         {
-            Timer::clear($this->pingTimerId);
+            Timer::del($this->pingTimerId);
         }
         $this->connected = false;
         $this->client->close();
@@ -404,7 +404,7 @@ class MQTTClient
         }
         if ($this->pingTimerId)
         {
-            Timer::clear($this->pingTimerId);
+            Timer::del($this->pingTimerId);
         }
     }
 }

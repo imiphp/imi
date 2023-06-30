@@ -270,12 +270,12 @@ class HttpRoute
         $routeItem = $route[Router::ROUTE_DATA]['routeItem'];
         $annotation = $routeItem->annotation;
         $params = $annotation->paramsBody;
-        $paramsBodyMultiLevel = $annotation->paramsBodyMultiLevel;
         if (null === $params)
         {
             return true;
         }
 
+        $paramsBodyMultiLevel = $annotation->paramsBodyMultiLevel;
         $parsedBody = $request->getParsedBody();
         $isObject = \is_object($parsedBody);
 
