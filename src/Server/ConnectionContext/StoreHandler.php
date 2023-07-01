@@ -32,6 +32,11 @@ class StoreHandler implements IHandler
      */
     private ?IHandler $handler = null;
 
+    public function init(): void
+    {
+        $this->getHandler();
+    }
+
     /**
      * 获取处理器对象
      */
