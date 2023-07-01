@@ -42,7 +42,7 @@ class AppInit implements IAppInitEventListener
             if ($server->isLongConnection())
             {
                 RequestContext::set('server', $server);
-                $server->getBean('ConnectionContextStore');
+                $server->getBean('ConnectionContextStore')->init();
                 if (Imi::getClassPropertyValue('ServerGroup', 'status'))
                 {
                     /** @var \Imi\Server\Group\Handler\IGroupHandler $groupHandler */
