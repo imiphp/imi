@@ -42,6 +42,7 @@ class AppInit implements IAppInitEventListener
             if ($server->isLongConnection())
             {
                 RequestContext::set('server', $server);
+                // @phpstan-ignore-next-line
                 $server->getBean('ConnectionContextStore')->init();
                 if (Imi::getClassPropertyValue('ServerGroup', 'status'))
                 {
