@@ -129,14 +129,14 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
-                    if (!Worker::isInited())
-                    {
-                        ChannelContainer::pop('workerInit');
-                    }
                     if ($this->syncConnect)
                     {
                         $channelId = 'connection:' . $swooleRequest->fd;
                         $channel = ChannelContainer::getChannel($channelId);
+                    }
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
                     }
                     $request = new SwooleRequest($this, $swooleRequest);
                     $response = new SwooleResponse($this, $swooleResponse);
