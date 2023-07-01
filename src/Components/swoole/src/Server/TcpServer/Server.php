@@ -101,14 +101,14 @@ class Server extends Base implements ISwooleTcpServer
             $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
-                    if (!Worker::isInited())
-                    {
-                        ChannelContainer::pop('workerInit');
-                    }
                     if ($this->syncConnect)
                     {
                         $channelId = 'connection:' . $fd;
                         $channel = ChannelContainer::getChannel($channelId);
+                    }
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
                     }
                     $this->trigger('connect', [
                         'server'          => $this,
