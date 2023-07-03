@@ -36,7 +36,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * 最后插入ID.
      */
-    protected string $lastInsertId = 0;
+    protected string $lastInsertId = '';
 
     public function __construct(IPgsqlDb $db, PDOStatement $statement)
     {
