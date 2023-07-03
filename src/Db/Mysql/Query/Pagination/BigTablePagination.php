@@ -16,10 +16,13 @@ class BigTablePagination
 
     protected string $idField = '';
 
-    public function __construct(IQuery $query, string $idField = 'id')
+    protected bool $cleanWhere = true;
+
+    public function __construct(IQuery $query, string $idField = 'id', bool $cleanWhere = true)
     {
         $this->query = $query;
         $this->idField = $idField;
+        $this->cleanWhere = $cleanWhere;
     }
 
     public function getQuery(): IQuery
@@ -30,6 +33,11 @@ class BigTablePagination
     public function getIdField(): string
     {
         return $this->idField;
+    }
+
+    public function isCleanWhere(): bool
+    {
+        return $this->cleanWhere;
     }
 
     public function paginate(int $page, int $limit, array $options = []): IPaginateResult
@@ -62,6 +70,10 @@ class BigTablePagination
         $query = clone $this->query;
         $option = $query->getOption();
         $option->order = [];
+        if ($this->cleanWhere)
+        {
+            $option->where = [];
+        }
 
         if ($ids)
         {

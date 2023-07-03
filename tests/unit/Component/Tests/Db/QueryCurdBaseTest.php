@@ -208,10 +208,11 @@ abstract class QueryCurdBaseTest extends BaseTest
             'total'         => 2,
             'page_count'    => 2,
         ];
-        $query = Db::query($this->poolName)->from($this->tableArticle);
+        $query = Db::query($this->poolName)->from($this->tableArticle)->whereRaw('1=1');
         $pagination = new BigTablePagination($query);
         $this->assertEquals($query, $pagination->getQuery());
         $this->assertEquals('id', $pagination->getIdField());
+        $this->assertTrue($pagination->isCleanWhere());
         $this->assertEquals($expectedData['list'], $pagination->select(2, 1)->getArray());
 
         $this->assertEquals([], $pagination->select(100, 1)->getArray());
@@ -231,6 +232,25 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals($tmpExceptedData['total'], $result->getTotal());
         $this->assertEquals($tmpExceptedData['limit'], $result->getLimit());
         $this->assertEquals($tmpExceptedData['page_count'], $result->getPageCount());
+
+        $pagination = new BigTablePagination($query, 'id', false);
+        $this->assertEquals($query, $pagination->getQuery());
+        $this->assertEquals('id', $pagination->getIdField());
+        $this->assertFalse($pagination->isCleanWhere());
+        $this->assertEquals($expectedData['list'], $pagination->select(2, 1)->getArray());
+
+        $query = Db::query($this->poolName)->from($this->tableArticle)->whereRaw('1=2');
+        $pagination = new BigTablePagination($query);
+        $this->assertEquals($query, $pagination->getQuery());
+        $this->assertEquals('id', $pagination->getIdField());
+        $this->assertTrue($pagination->isCleanWhere());
+        $this->assertEquals([], $pagination->select(2, 1)->getArray());
+
+        $pagination = new BigTablePagination($query, 'id', false);
+        $this->assertEquals($query, $pagination->getQuery());
+        $this->assertEquals('id', $pagination->getIdField());
+        $this->assertFalse($pagination->isCleanWhere());
+        $this->assertEquals([], $pagination->select(2, 1)->getArray());
     }
 
     /**

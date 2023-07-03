@@ -737,6 +737,8 @@ $query = Db::query()->from('xxxtable');
 $pagination = new \Imi\Db\Mysql\Query\Pagination\BigTablePagination($query);
 // 指定主表主键字段名，如果涉及多张表关联，这里需要指定主表的主键字段名
 $pagination = new \Imi\Db\Mysql\Query\Pagination\BigTablePagination($query, 'xxxtable.id');
+// 第三个参数表示实际查询记录时，是否禁止清空 where 条件，不传则为 true，一般不需要传 false
+$pagination = new \Imi\Db\Mysql\Query\Pagination\BigTablePagination($query, 'xxxtable.id', false);
 
 // 只查列表，返回值同 $query->select()，Result 对象
 $result = $pagination->select();
