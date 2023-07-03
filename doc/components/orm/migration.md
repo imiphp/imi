@@ -1,5 +1,7 @@
 # 数据库迁移
 
+[TOC]
+
 长期以来，数据库迁移一直是个麻烦事。当我们部署代码到服务器上时，希望可以轻松简单地升级我们的表结构。可能会有人用 Navicat 的结构同步来升级，这个确实好用，但有商业风险。
 
 常见的建表方式有：使用图形化工具建表、使用 PHP 代码定义表结构、手写 SQL 建表等。
@@ -26,7 +28,9 @@ imi 的数据库迁移依赖模型功能，支持：使用图形化工具、手�
 
 ## 使用说明
 
-### 同步表结构
+### 模型同步到表结构
+
+#### 同步表结构
 
 将数据库中的数据表结构升级为模型中定义的结构。
 
@@ -34,19 +38,72 @@ imi 的数据库迁移依赖模型功能，支持：使用图形化工具、手�
 vendor/bin/imi-swoole migration/patch -f
 ```
 
-### 生成同步结构 SQL 语句
+#### 生成同步结构 SQL 语句
 
 **输出到命令行：**
 
 ```shell
-vendor/bin/imi-swoole migration/dump
+vendor/bin/imi-swoole migration/patch
 ```
 
 **保存到文件：**
 
 ```shell
-vendor/bin/imi-swoole migration/dump -f "文件名"
+vendor/bin/imi-swoole migration/patch -f "文件名"
 ```
+
+### 数据库迁移
+
+#### 配置
+
+`@app.beans`:
+
+```php
+[
+    \Imi\Migration\Service\MigrationService::class => [
+        'handler' => \Imi\Migration\Handler\FileMigrationHandler::class, // 迁移处理器
+        'onGenerateModel' => true, // 是否在生成模型时自动生成迁移文件
+    ],
+]
+```
+
+> 上述配置是默认配置，不配置时自动启用。
+
+#### 目录
+
+`.migration` 是存放数据库迁移文件和版本信息的目录，请勿将 `.migration/version` 提交到版本控制系统。
+
+#### 执行数据库迁移
+
+**执行前询问：**
+
+```shell
+vendor/bin/imi-swoole migration/migrate
+```
+
+**强制执行：**
+
+```shell
+vendor/bin/imi-swoole migration/migrate -f
+```
+
+> 请谨慎操作
+
+### 执行数据库回滚
+
+**执行前询问：**
+
+```shell
+vendor/bin/imi-swoole migration/rollback
+```
+
+**强制执行：**
+
+```shell
+vendor/bin/imi-swoole migration/rollback -f
+```
+
+> 请谨慎操作
 
 ### 通用参数
 
