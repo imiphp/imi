@@ -52,7 +52,7 @@ vendor/bin/imi-swoole migration/patch
 vendor/bin/imi-swoole migration/patch -f "文件名"
 ```
 
-### 数据库迁移
+### 数据库迁移功能
 
 #### 配置
 
