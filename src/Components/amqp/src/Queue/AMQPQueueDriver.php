@@ -15,7 +15,7 @@ use Imi\Util\Traits\TDataToProperty;
 /**
  * AMQP 队列驱动.
  *
- * @Bean("AMQPQueueDriver")
+ * @Bean(name="AMQPQueueDriver", recursive=false)
  */
 class AMQPQueueDriver implements IQueueDriver
 {
@@ -97,6 +97,10 @@ class AMQPQueueDriver implements IQueueDriver
         $this->name = $name;
         $this->traitConstruct($config);
         $this->args = \func_get_args();
+    }
+
+    public function __init(): void
+    {
         $config = &$this->args[1];
         $config['poolName'] ??= $this->poolName;
         $config['name'] ??= $this->name;
