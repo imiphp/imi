@@ -26,7 +26,7 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Constraint\ValidAt;
 
 /**
- * @Bean("JWT")
+ * @Bean(name="JWT", recursion=false)
  */
 class JWT
 {

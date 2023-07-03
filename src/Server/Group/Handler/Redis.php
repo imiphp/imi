@@ -13,7 +13,7 @@ use Imi\Timer\Timer;
 use Imi\Worker;
 
 /**
- * @Bean("GroupRedis")
+ * @Bean(name="GroupRedis", recursion=false)
  */
 class Redis implements IGroupHandler
 {

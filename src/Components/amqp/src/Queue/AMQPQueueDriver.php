@@ -15,7 +15,7 @@ use Imi\Util\Traits\TDataToProperty;
 /**
  * AMQP 队列驱动.
  *
- * @Bean("AMQPQueueDriver")
+ * @Bean(name="AMQPQueueDriver", recursive=false)
  */
 class AMQPQueueDriver implements IQueueDriver
 {

@@ -12,7 +12,7 @@ use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\DocBlock;
 
 /**
- * @Bean("GrpcInterfaceManager")
+ * @Bean(name="GrpcInterfaceManager", recursion=false)
  */
 class GrpcInterfaceManager
 {

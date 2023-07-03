@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Redis\Redis as ImiRedis;
 
 /**
- * @Bean("SessionRedis")
+ * @Bean(name="SessionRedis", recursion=false)
  */
 class Redis extends Base
 {

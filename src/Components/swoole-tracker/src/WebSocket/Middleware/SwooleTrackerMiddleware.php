@@ -12,7 +12,7 @@ use Imi\Server\WebSocket\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
 
 /**
- * @Bean("SwooleTrackerWebSocketMiddleware")
+ * @Bean(name="SwooleTrackerWebSocketMiddleware", recursion=false)
  */
 class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
 {
