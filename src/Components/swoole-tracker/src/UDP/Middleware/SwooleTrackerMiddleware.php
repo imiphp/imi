@@ -12,7 +12,7 @@ use Imi\Server\UdpServer\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
 
 /**
- * @Bean("SwooleTrackerUDPMiddleware")
+ * @Bean(name="SwooleTrackerUDPMiddleware", recursion=false)
  */
 class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
 {

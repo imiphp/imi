@@ -13,7 +13,7 @@ use Imi\Event\Event;
 use Imi\Util\DelayBeanCallable;
 
 /**
- * @Bean("DbQueryLog")
+ * @Bean(name="DbQueryLog", recursion=false)
  */
 class DbQueryLog
 {

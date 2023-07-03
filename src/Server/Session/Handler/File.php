@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
 
 /**
- * @Bean("SessionFile")
+ * @Bean(name="SessionFile", recursion=false)
  */
 class File extends Base
 {

@@ -97,10 +97,6 @@ class AMQPQueueDriver implements IQueueDriver
         $this->name = $name;
         $this->traitConstruct($config);
         $this->args = \func_get_args();
-    }
-
-    public function __init(): void
-    {
         $config = &$this->args[1];
         $config['poolName'] ??= $this->poolName;
         $config['name'] ??= $this->name;

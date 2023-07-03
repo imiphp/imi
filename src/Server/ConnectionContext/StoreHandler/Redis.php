@@ -16,7 +16,7 @@ use Imi\Worker;
 /**
  * 连接上下文存储处理器-Redis.
  *
- * @Bean("ConnectionContextRedis")
+ * @Bean(name="ConnectionContextRedis", recursion=false)
  */
 class Redis implements IHandler
 {

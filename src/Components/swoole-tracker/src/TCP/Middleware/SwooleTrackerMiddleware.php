@@ -12,7 +12,7 @@ use Imi\Server\TcpServer\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
 
 /**
- * @Bean("SwooleTrackerTCPMiddleware")
+ * @Bean(name="SwooleTrackerTCPMiddleware", recursion=false)
  */
 class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
 {
