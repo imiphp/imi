@@ -36,7 +36,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * 最后插入ID.
      */
-    protected int $lastInsertId = 0;
+    protected string $lastInsertId = 0;
 
     public function __construct(IPgsqlDb $db, PDOStatement $statement)
     {
@@ -244,7 +244,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function lastInsertId(?string $name = null): string
     {
-        return (string) $this->lastInsertId;
+        return $this->lastInsertId;
     }
 
     /**
@@ -340,11 +340,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         $queryString = $this->statement->queryString;
         if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
         {
-            $this->lastInsertId = (int) $this->db->lastInsertId();
+            $this->lastInsertId = $this->db->lastInsertId();
         }
         else
         {
-            $this->lastInsertId = 0;
+            $this->lastInsertId = '';
         }
     }
 }

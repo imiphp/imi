@@ -9,6 +9,7 @@ use Imi\Pgsql\Db\Contract\IPgsqlDb;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBaseStatement;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Util\Text;
 
 /**
  * Swoole Coroutine Pgsql 驱动 Statement.
@@ -54,6 +55,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      * statement 名字.
      */
     protected ?string $statementName = null;
+
+    /**
+     * 最后插入ID.
+     */
+    protected string $lastInsertId = '';
 
     /**
      * @param mixed $queryResult
@@ -330,7 +336,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function lastInsertId(?string $name = null): string
     {
-        return $this->db->lastInsertId($name ?? $this->statementName);
+        return $this->lastInsertId;
     }
 
     /**
@@ -389,5 +395,21 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     public function valid(): bool
     {
         return false !== $this->current();
+    }
+
+    /**
+     * 更新最后插入ID.
+     */
+    private function updateLastInsertId(): void
+    {
+        $queryString = $this->lastSql;
+        if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
+        {
+            $this->lastInsertId = $this->db->lastInsertId();
+        }
+        else
+        {
+            $this->lastInsertId = '';
+        }
     }
 }
