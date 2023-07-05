@@ -327,8 +327,10 @@ abstract class RedisModel extends BaseModel
                     $formatter = App::getBean($redisEntity->formatter);
                     $data = $formatter->encode($this->toArray());
                 }
+                $redis = static::__getRedis($this);
+                $data = $redis->_serialize($data);
 
-                return (bool) static::__getRedis($this)->evalEx(<<<'LUA'
+                return (bool) $redis->evalEx(<<<'LUA'
                 if (ARGV[1] == redis.call('get', KEYS[1])) then
                     return redis.call('del', KEYS[1])
                 else
@@ -346,8 +348,10 @@ abstract class RedisModel extends BaseModel
                     $formatter = App::getBean($redisEntity->formatter);
                     $data = $formatter->encode($this->toArray());
                 }
+                $redis = static::__getRedis($this);
+                $data = $redis->_serialize($data);
 
-                return (bool) static::__getRedis($this)->evalEx(<<<'LUA'
+                return (bool) $redis->evalEx(<<<'LUA'
                 if (ARGV[1] == redis.call('hget', KEYS[1], ARGV[1])) then
                     return redis.call('hdel', KEYS[1], ARGV[1])
                 else
