@@ -306,6 +306,79 @@ abstract class RedisModel extends BaseModel
     }
 
     /**
+     * 安全删除记录.
+     *
+     * 如果值发生改变，则不删除.
+     */
+    public function safeDelete(): bool
+    {
+        /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
+        $redisEntity = static::__getRedisEntity(static::__getRealClassName());
+        switch ($redisEntity->storage)
+        {
+            case RedisStorageMode::STRING:
+                if (null === $redisEntity->formatter)
+                {
+                    $data = $this->toArray();
+                }
+                else
+                {
+                    /** @var IFormat $formatter */
+                    $formatter = App::getBean($redisEntity->formatter);
+                    $data = $formatter->encode($this->toArray());
+                }
+
+                return (bool) static::__getRedis($this)->evalEx(<<<'LUA'
+                if (ARGV[1] == redis.call('get', KEYS[1])) then
+                    return redis.call('del', KEYS[1])
+                else
+                    return 0
+                end
+                LUA, [$this->__getKey(), $data], 1);
+            case RedisStorageMode::HASH:
+                if (null === $redisEntity->formatter)
+                {
+                    $data = $this->toArray();
+                }
+                else
+                {
+                    /** @var IFormat $formatter */
+                    $formatter = App::getBean($redisEntity->formatter);
+                    $data = $formatter->encode($this->toArray());
+                }
+
+                return (bool) static::__getRedis($this)->evalEx(<<<'LUA'
+                if (ARGV[1] == redis.call('hget', KEYS[1], ARGV[1])) then
+                    return redis.call('hdel', KEYS[1], ARGV[1])
+                else
+                    return 0
+                end
+                LUA, [$this->__getKey(), $this->__getMember(), $data], 1);
+            case RedisStorageMode::HASH_OBJECT:
+                $data = $this->toArray();
+                $argv = [];
+                $redis = static::__getRedis($this);
+                foreach ($data as $key => $value)
+                {
+                    $argv[] = $key;
+                    $argv[] = $redis->_serialize($value);
+                }
+
+                return (bool) $redis->evalEx(<<<'LUA'
+                local data = redis.call('hgetall', KEYS[1])
+                for i = 1, #data do
+                    if (ARGV[i] ~= data[i]) then
+                        return 0
+                    end
+                end
+                return redis.call('del', KEYS[1])
+                LUA, [$this->__getKey(), ...$argv], 1);
+            default:
+                throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
+        }
+    }
+
+    /**
      * 批量删除.
      *
      * @param mixed ...$conditions
