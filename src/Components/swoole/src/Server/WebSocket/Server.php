@@ -123,13 +123,14 @@ class Server extends Base implements ISwooleWebSocketServer
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         });
 
+        $enableSyncConnect = $this->syncConnect && \SWOOLE_BASE === $this->swooleServer->mode;
         $events = $this->config['events'] ?? null;
         if ($event = ($events['handshake'] ?? true))
         {
-            $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
+            $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) use ($enableSyncConnect) {
                 try
                 {
-                    if ($this->syncConnect)
+                    if ($enableSyncConnect)
                     {
                         $channelId = 'connection:' . $swooleRequest->fd;
                         $channel = ChannelContainer::getChannel($channelId);
@@ -177,20 +178,20 @@ class Server extends Base implements ISwooleWebSocketServer
 
         if ($event = ($events['message'] ?? true))
         {
-            $this->swoolePort->on('message', \is_callable($event) ? $event : function (\Swoole\Server $server, \Swoole\WebSocket\Frame $frame) {
+            $this->swoolePort->on('message', \is_callable($event) ? $event : function (\Swoole\Server $server, \Swoole\WebSocket\Frame $frame) use ($enableSyncConnect) {
                 try
                 {
-                    if (!Worker::isInited())
-                    {
-                        ChannelContainer::pop('workerInit');
-                    }
-                    if ($this->syncConnect)
+                    if ($enableSyncConnect)
                     {
                         $channelId = 'connection:' . $frame->fd;
                         if (ChannelContainer::hasChannel($channelId))
                         {
                             ChannelContainer::pop($channelId);
                         }
+                    }
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
                     }
                     RequestContext::muiltiSet([
                         'server'        => $this,

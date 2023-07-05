@@ -30,7 +30,7 @@ http 和 WebSocket 同时做在一个项目中，代码之间没有隔阂，可�
             'port'		=>	8080,
             // 参考 swoole sockType，可选
             'sockType'	=>	SWOOLE_SOCK_TCP,
-            // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP、WebSocket 有效
+            // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP、WebSocket 且 SWOOLE_BASE 模式有效
             'syncConnect' => true,
             'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::TEXT, // 配置 WebSocket 纯文本通信协议
             // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::BINARY, // 配置 WebSocket 二进制通信协议
