@@ -75,6 +75,73 @@ class RedisModelHashObjectTest extends BaseTest
         ]);
         $this->assertNotNull($record);
         $this->assertTrue($record->delete());
+        $this->assertNull(TestRedisHashObjectModel::find([
+            'id'    => 1,
+            'name'  => 'a',
+        ]));
+    }
+
+    public function testSafeDelete(): void
+    {
+        // --更新--
+        // 原始记录
+        $record = TestRedisHashObjectModel::newInstance([
+            'id'    => 114514,
+            'name'  => 'b',
+            'age'   => 22,
+        ]);
+        $this->assertTrue($record->save());
+
+        // 查出2个对象实例
+        $record1 = TestRedisHashObjectModel::find([
+            'id'    => 114514,
+        ]);
+        $this->assertNotNull($record1);
+        $this->assertEquals($record->toArray(), $record1->toArray());
+
+        $record2 = TestRedisHashObjectModel::find([
+            'id'    => 114514,
+        ]);
+        $this->assertNotNull($record2);
+        $this->assertEquals($record->toArray(), $record2->toArray());
+
+        // 更新一个
+        $record1->age = 23;
+        $this->assertTrue($record1->save());
+
+        // 安全删除失败
+        $this->assertFalse($record2->safeDelete());
+
+        // 安全删除成功
+        $this->assertTrue($record1->safeDelete());
+
+        // --删除--
+        // 原始记录
+        $record = TestRedisHashObjectModel::newInstance([
+            'id'    => 114514,
+            'name'  => 'b',
+            'age'   => 22,
+        ]);
+        $this->assertTrue($record->save());
+
+        // 查出2个对象实例
+        $record1 = TestRedisHashObjectModel::find([
+            'id'    => 114514,
+        ]);
+        $this->assertNotNull($record1);
+        $this->assertEquals($record->toArray(), $record1->toArray());
+
+        $record2 = TestRedisHashObjectModel::find([
+            'id'    => 114514,
+        ]);
+        $this->assertNotNull($record2);
+        $this->assertEquals($record->toArray(), $record2->toArray());
+
+        // 更新一个
+        $this->assertTrue($record1->delete());
+
+        // 安全删除失败
+        $this->assertFalse($record2->safeDelete());
     }
 
     public function testDeleteBatch(): void

@@ -203,6 +203,17 @@ $model2 = TestRedisModel::find('123-imi');
 $model2->delete();
 ```
 
+### 安全删除记录
+
+安全删除记录，可以防止并发场景下，其它进程或协程对记录更新后，会造成数据的误删除。
+
+安全删除会判断模型中的值，是否和 Redis 中存储的值相同，如果完全相同才会执行删除操作，整个过程是原子性的。
+
+```php
+$model2 = TestRedisModel::find('123-imi');
+$model2->safeDelete();
+```
+
 ### 批量删除
 
 ```php
