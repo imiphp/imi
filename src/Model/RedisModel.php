@@ -352,7 +352,7 @@ abstract class RedisModel extends BaseModel
                 $data = $redis->_serialize($data);
 
                 return (bool) $redis->evalEx(<<<'LUA'
-                if (ARGV[1] == redis.call('hget', KEYS[1], ARGV[1])) then
+                if (ARGV[2] == redis.call('hget', KEYS[1], ARGV[1])) then
                     return redis.call('hdel', KEYS[1], ARGV[1])
                 else
                     return 0
