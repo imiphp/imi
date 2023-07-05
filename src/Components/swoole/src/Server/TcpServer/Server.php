@@ -89,13 +89,14 @@ class Server extends Base implements ISwooleTcpServer
      */
     protected function __bindEvents(): void
     {
+        $enableSyncConnect = $this->syncConnect && \SWOOLE_BASE === $this->swooleServer->mode;
         $events = $this->config['events'] ?? null;
         if ($event = ($events['connect'] ?? true))
         {
-            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
+            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) use ($enableSyncConnect) {
                 try
                 {
-                    if ($this->syncConnect)
+                    if ($enableSyncConnect)
                     {
                         $channelId = 'connection:' . $fd;
                         $channel = ChannelContainer::getChannel($channelId);
@@ -131,20 +132,20 @@ class Server extends Base implements ISwooleTcpServer
 
         if ($event = ($events['receive'] ?? true))
         {
-            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) {
+            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) use ($enableSyncConnect) {
                 try
                 {
-                    if (!Worker::isInited())
-                    {
-                        ChannelContainer::pop('workerInit');
-                    }
-                    if ($this->syncConnect)
+                    if ($enableSyncConnect)
                     {
                         $channelId = 'connection:' . $fd;
                         if (ChannelContainer::hasChannel($channelId))
                         {
                             ChannelContainer::pop($channelId);
                         }
+                    }
+                    if (!Worker::isInited())
+                    {
+                        ChannelContainer::pop('workerInit');
                     }
                     $this->trigger('receive', [
                         'server'          => $this,
