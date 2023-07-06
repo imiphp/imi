@@ -101,7 +101,7 @@ class Container implements ContainerInterface
                     $object = $data($originId, ...$params);
                     if ($object)
                     {
-                        $data = null;
+                        $data = ['recursion' => false];
                     }
                 }
                 else
@@ -214,7 +214,7 @@ class Container implements ContainerInterface
                     $object = $data($originId, ...$params);
                     if ($object)
                     {
-                        $data = null;
+                        $data = ['recursion' => false];
                     }
                 }
                 else

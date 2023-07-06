@@ -328,7 +328,19 @@ class BeanTest extends BaseTest
 
     public function testContainerBindCallable(): void
     {
-        $object = new \stdClass();
+        $object = new class() {
+            private int $counter = 0;
+
+            public function __init(): void
+            {
+                ++$this->counter;
+            }
+
+            public function getCounter(): int
+            {
+                return $this->counter;
+            }
+        };
 
         $container = App::getContainer();
         $container->bindCallable(__METHOD__, static fn () => $object);
@@ -337,6 +349,7 @@ class BeanTest extends BaseTest
         $b = $container->get(__METHOD__);
         $this->assertTrue($a === $b);
         $this->assertTrue($a === $object);
+        $this->assertEquals(0, $object->getCounter());
     }
 
     public function testReferenceBean(): void
