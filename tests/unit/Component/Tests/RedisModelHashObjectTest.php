@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Model\TestRedisHashObjectColumnTypeModel;
 use Imi\Test\Component\Model\TestRedisHashObjectModel;
 
 /**
@@ -165,5 +166,26 @@ class RedisModelHashObjectTest extends BaseTest
             'id'    => 2,
             'name'  => 'b',
         ]));
+    }
+
+    public function testColumnType(): void
+    {
+        $record = TestRedisHashObjectColumnTypeModel::newInstance();
+        $record->setJson([
+            'name' => 'imi',
+        ]);
+        $record->setList([1, 2, 3]);
+        $record->setSet(['a', 'b', 'c']);
+        $this->assertTrue($record->save());
+        $this->assertEquals([
+            'json'  => [
+                'name' => 'imi',
+            ],
+            'list'  => [1, 2, 3],
+            'set'   => ['a', 'b', 'c'],
+        ], $record->toArray());
+
+        $record2 = TestRedisHashObjectColumnTypeModel::find();
+        $this->assertEquals($record->toArray(), $record2->toArray());
     }
 }
