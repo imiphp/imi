@@ -185,7 +185,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return static|null
      */
-    public static function find($condition): ?self
+    public static function find($condition = []): ?self
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
@@ -571,7 +571,7 @@ abstract class RedisModel extends BaseModel
      *
      * @param string|array $condition
      */
-    public static function generateKey($condition): string
+    public static function generateKey($condition = []): string
     {
         if (\is_string($condition))
         {
@@ -599,7 +599,7 @@ abstract class RedisModel extends BaseModel
      *
      * @param string|array $condition
      */
-    public static function generateMember($condition): string
+    public static function generateMember($condition = []): string
     {
         if (\is_string($condition))
         {
