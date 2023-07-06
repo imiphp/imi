@@ -29,6 +29,7 @@ class BeanParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
+        $annotationClass = \get_class($annotation);
         if ($annotation instanceof \Imi\Bean\Annotation\Bean)
         {
             $beanName = $annotation->name ?? $className;
@@ -40,7 +41,6 @@ class BeanParser extends BaseParser
         }
         elseif ($annotation instanceof BaseInjectValue)
         {
-            $annotationClass = \get_class($annotation);
             switch ($annotationClass)
             {
                 case Inject::class:
@@ -99,7 +99,7 @@ class BeanParser extends BaseParser
                     }
                     break;
             }
-            BeanManager::addPropertyInject($className, $targetName, \get_class($annotation), $annotation->toArray());
+            BeanManager::addPropertyInject($className, $targetName, $annotationClass, $annotation->toArray());
         }
     }
 }
