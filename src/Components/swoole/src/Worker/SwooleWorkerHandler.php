@@ -95,10 +95,10 @@ class SwooleWorkerHandler implements ISwooleWorker
     public function inited(): void
     {
         $this->isInited = true;
-        $mainServer = ServerManager::getServer('main', ISwooleServer::class);
         // 触发 IMI.MAIN_SERVER.WORKER.START.APP 事件.
         if (!$this->workerStartAppComplete)
         {
+            $mainServer = ServerManager::getServer('main', ISwooleServer::class);
             // 触发项目的workerstart事件
             Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
                 'server'    => $mainServer,

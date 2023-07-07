@@ -22,9 +22,9 @@ class CheckPoolResource implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        $result = &$e->getData()['result'];
         if ($connections = Config::get('@app.redis.connections'))
         {
+            $result = &$e->getData()['result'];
             foreach ($connections as $name => $_)
             {
                 if (!PoolManager::exists($name))

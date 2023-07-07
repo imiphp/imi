@@ -145,8 +145,9 @@ class BeanFactory
      */
     public static function initInstance(object $object, array $args = []): void
     {
-        $ref = ReflectionContainer::getClassReflection(\get_class($object));
-        BeanProxy::injectProps($object, self::getObjectClass($object));
+        $class = self::getObjectClass($object);
+        BeanProxy::injectProps($object, $class);
+        $ref = ReflectionContainer::getClassReflection($class);
         if ($ref->hasMethod('__init'))
         {
             $ref->getMethod('__init')->invoke($object, ...$args);

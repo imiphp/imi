@@ -24,6 +24,7 @@ use Imi\MQTT\Client\Exception\ConnectException;
 use Imi\MQTT\Client\Exception\InvalidPacketTypeException;
 use Imi\MQTT\Client\Exception\SendException;
 use Imi\Timer\Timer;
+use Imi\Util\Imi;
 use Swoole\Coroutine\Client;
 
 class MQTTClient
@@ -344,10 +345,7 @@ class MQTTClient
         }
         else
         {
-            $class = \get_class($packet);
-            $list = explode('\\', $class);
-            $classShortName = array_pop($list);
-            throw new SendException(sprintf('Send %s failed! error: [%s]%s', $classShortName, $client->errCode, $client->errMsg));
+            throw new SendException(sprintf('Send %s failed! error: [%s]%s', Imi::getClassShortName(\get_class($packet)), $client->errCode, $client->errMsg));
         }
     }
 
