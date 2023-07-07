@@ -18,7 +18,9 @@ use Imi\Model\RedisModel;
  */
 class TestRedisHashObjectColumnTypeModel extends RedisModel
 {
-    #[Column(type: 'json')]
+    /**
+     * @Column(type="json")
+     */
     protected array $json = [];
 
     public function getJson(): array
@@ -33,7 +35,9 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
         return $this;
     }
 
-    #[Column(type: 'list')]
+    /**
+     * @Column(type="list")
+     */
     protected array $list = [];
 
     public function getList(): array
@@ -48,7 +52,9 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
         return $this;
     }
 
-    #[Column(type: 'set')]
+    /**
+     * @Column(type="set")
+     */
     protected array $set = [];
 
     public function getSet(): array
