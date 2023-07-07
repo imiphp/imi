@@ -112,7 +112,7 @@ abstract class RedisModel extends BaseModel
                             {
                                 if (ReflectionUtil::allowsType($type, $checkType))
                                 {
-                                    self::$fieldTypeCache[$class][$k] = $type;
+                                    self::$fieldTypeCache[$class][$k] = $checkType;
                                     break;
                                 }
                             }
