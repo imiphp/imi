@@ -7,6 +7,7 @@ namespace Imi\Model;
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
+use Imi\Bean\ReflectionUtil;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\RedisEntity;
 use Imi\Model\Enum\RedisStorageMode;
@@ -30,6 +31,11 @@ abstract class RedisModel extends BaseModel
      * member规则缓存.
      */
     protected static array $memberRules = [];
+
+    /**
+     * 字段类型缓存.
+     */
+    protected static array $fieldTypeCache = [];
 
     /**
      * 默认的key.
@@ -81,6 +87,11 @@ abstract class RedisModel extends BaseModel
         {
             $this->__originData = $data;
             $fieldAnnotations = $meta->getFields();
+            $class = $meta->getRealModelClass();
+            if (!isset(self::$fieldTypeCache[$class]))
+            {
+                self::$fieldTypeCache[$class] = [];
+            }
             foreach ($data as $k => $v)
             {
                 if (isset($fieldAnnotations[$k]))
@@ -93,8 +104,22 @@ abstract class RedisModel extends BaseModel
                 }
                 if ($fieldAnnotation && \is_string($v))
                 {
+                    if (!isset(self::$fieldTypeCache[$class][$k]))
+                    {
+                        if ($type = (new \ReflectionProperty($class, $k))->getType())
+                        {
+                            foreach (['int', 'float', 'bool'] as $checkType)
+                            {
+                                if (ReflectionUtil::allowsType($type, $checkType))
+                                {
+                                    self::$fieldTypeCache[$class][$k] = $type;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     /** @var \Imi\Model\Annotation\Column $fieldAnnotation */
-                    switch ($fieldAnnotation->type)
+                    switch ($fieldAnnotation->type ?? self::$fieldTypeCache[$class][$k] ?? null)
                     {
                         case 'json':
                             $fieldsJsonDecode ??= $meta->getFieldsJsonDecode();
@@ -160,6 +185,15 @@ abstract class RedisModel extends BaseModel
                             {
                                 $v = explode(',', $v);
                             }
+                            break;
+                        case 'int':
+                            $v = (int) $v;
+                            break;
+                        case 'float':
+                            $v = (float) $v;
+                            break;
+                        case 'bool':
+                            $v = (bool) $v;
                             break;
                     }
                 }
