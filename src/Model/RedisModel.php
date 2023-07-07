@@ -148,7 +148,7 @@ abstract class RedisModel extends BaseModel
                             }
                             elseif (null !== $fieldAnnotation->listSeparator)
                             {
-                                $v = explode($fieldAnnotation->listSeparator, $v);
+                                $v = '' === $fieldAnnotation->listSeparator ? [] : explode($fieldAnnotation->listSeparator, $v);
                             }
                             break;
                         case 'set':
