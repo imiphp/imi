@@ -14,7 +14,7 @@ use Imi\Model\RedisModel;
  *
  * @Entity
  *
- * @RedisEntity(key="imi:redisModel:test2:{id}", storage="hash_object")
+ * @RedisEntity(key="imi:redisModel:test2:{id}", storage="hash_object", poolName="redis_cache")
  *
  * @property int    $id
  * @property string $name

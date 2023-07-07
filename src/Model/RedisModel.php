@@ -7,8 +7,11 @@ namespace Imi\Model;
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
+use Imi\Bean\ReflectionUtil;
+use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\RedisEntity;
 use Imi\Model\Enum\RedisStorageMode;
+use Imi\Model\Event\ModelEvents;
 use Imi\Model\Key\KeyRule;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
@@ -28,6 +31,11 @@ abstract class RedisModel extends BaseModel
      * member规则缓存.
      */
     protected static array $memberRules = [];
+
+    /**
+     * 字段类型缓存.
+     */
+    protected static array $fieldTypeCache = [];
 
     /**
      * 默认的key.
@@ -64,7 +72,143 @@ abstract class RedisModel extends BaseModel
 
     public function __init(array $data = []): void
     {
-        parent::__init($data);
+        $meta = $this->__meta;
+        $isBean = $meta->isBean();
+        if ($isBean)
+        {
+            // 初始化前
+            $this->trigger(ModelEvents::BEFORE_INIT, [
+                'model' => $this,
+                'data'  => $data,
+            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        }
+
+        if ($data)
+        {
+            $this->__originData = $data;
+            $fieldAnnotations = $meta->getFields();
+            $class = $meta->getRealModelClass();
+            if (!isset(self::$fieldTypeCache[$class]))
+            {
+                self::$fieldTypeCache[$class] = [];
+            }
+            foreach ($data as $k => $v)
+            {
+                if (isset($fieldAnnotations[$k]))
+                {
+                    $fieldAnnotation = $fieldAnnotations[$k];
+                }
+                else
+                {
+                    $fieldAnnotation = null;
+                }
+                if ($fieldAnnotation && \is_string($v))
+                {
+                    if (!isset(self::$fieldTypeCache[$class][$k]))
+                    {
+                        if ($type = (new \ReflectionProperty($class, $k))->getType())
+                        {
+                            foreach (['int', 'float', 'bool'] as $checkType)
+                            {
+                                if (ReflectionUtil::allowsType($type, $checkType))
+                                {
+                                    self::$fieldTypeCache[$class][$k] = $checkType;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    /** @var \Imi\Model\Annotation\Column $fieldAnnotation */
+                    switch ($fieldAnnotation->type ?? self::$fieldTypeCache[$class][$k] ?? null)
+                    {
+                        case 'json':
+                            $fieldsJsonDecode ??= $meta->getFieldsJsonDecode();
+                            if (isset($fieldsJsonDecode[$k][0]))
+                            {
+                                $realJsonDecode = $fieldsJsonDecode[$k][0];
+                            }
+                            else
+                            {
+                                $realJsonDecode = ($jsonDecode ??= ($meta->getJsonDecode() ?? false));
+                            }
+                            if ($realJsonDecode)
+                            {
+                                $value = json_decode($v, $realJsonDecode->associative, $realJsonDecode->depth, $realJsonDecode->flags);
+                            }
+                            else
+                            {
+                                $value = json_decode($v, true);
+                            }
+                            if (\JSON_ERROR_NONE === json_last_error())
+                            {
+                                if ($realJsonDecode)
+                                {
+                                    $wrap = $realJsonDecode->wrap;
+                                    if ('' !== $wrap && (\is_array($value) || \is_object($value)))
+                                    {
+                                        if (class_exists($wrap))
+                                        {
+                                            $v = new $wrap($value);
+                                        }
+                                        else
+                                        {
+                                            $v = $wrap($value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $v = $value;
+                                    }
+                                }
+                                else
+                                {
+                                    $v = $value;
+                                }
+                            }
+                            break;
+                        case 'list':
+                            if ('' === $v)
+                            {
+                                $v = [];
+                            }
+                            elseif (null !== $fieldAnnotation->listSeparator)
+                            {
+                                $v = '' === $fieldAnnotation->listSeparator ? [] : explode($fieldAnnotation->listSeparator, $v);
+                            }
+                            break;
+                        case 'set':
+                            if ('' === $v)
+                            {
+                                $v = [];
+                            }
+                            else
+                            {
+                                $v = explode(',', $v);
+                            }
+                            break;
+                        case 'int':
+                            $v = (int) $v;
+                            break;
+                        case 'float':
+                            $v = (float) $v;
+                            break;
+                        case 'bool':
+                            $v = (bool) $v;
+                            break;
+                    }
+                }
+                $this[$k] = $v;
+            }
+        }
+
+        if ($isBean)
+        {
+            // 初始化后
+            $this->trigger(ModelEvents::AFTER_INIT, [
+                'model' => $this,
+                'data'  => $data,
+            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+        }
         $this->__ttl = static::__getRedisEntity($this)->ttl;
     }
 
@@ -75,7 +219,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return static|null
      */
-    public static function find($condition): ?self
+    public static function find($condition = []): ?self
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
@@ -149,9 +293,9 @@ abstract class RedisModel extends BaseModel
         {
             case RedisStorageMode::STRING:
                 $datas = static::__getRedis()->mget($keys);
-                $list = [];
                 if ($datas)
                 {
+                    $list = [];
                     foreach ($datas as $i => $data)
                     {
                         if (null !== $data && false !== $data)
@@ -165,9 +309,11 @@ abstract class RedisModel extends BaseModel
                             $list[] = $record;
                         }
                     }
+
+                    return $list;
                 }
 
-                return $list;
+                return [];
             case RedisStorageMode::HASH:
                 $members = [];
                 if ($conditions)
@@ -177,10 +323,10 @@ abstract class RedisModel extends BaseModel
                         $members[] = static::generateMember($condition);
                     }
                 }
-                $list = [];
                 $redis = static::__getRedis();
                 if ($keys)
                 {
+                    $list = [];
                     foreach (array_unique($keys) as $key)
                     {
                         $datas = $redis->hMget($key, $members);
@@ -205,14 +351,16 @@ abstract class RedisModel extends BaseModel
                             }
                         }
                     }
+
+                    return $list;
                 }
 
-                return $list;
+                return [];
             case RedisStorageMode::HASH_OBJECT:
                 $redis = static::__getRedis();
-                $list = [];
                 if ($keys)
                 {
+                    $list = [];
                     foreach ($keys as $key)
                     {
                         $data = $redis->hGetAll($key);
@@ -220,9 +368,11 @@ abstract class RedisModel extends BaseModel
                         $record->key = $key;
                         $list[] = $record;
                     }
+
+                    return $list;
                 }
 
-                return $list;
+                return [];
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
@@ -273,7 +423,9 @@ abstract class RedisModel extends BaseModel
                 return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $data);
             case RedisStorageMode::HASH_OBJECT:
                 $key = $this->__getKey();
-                $result = $redis->hMset($key, $this->toArray());
+                $data = $this->toArray();
+                $this->parseSaveData($data);
+                $result = $redis->hMset($key, $data);
                 if ($result && null !== $this->__ttl)
                 {
                     $result = $redis->expire($key, $this->__ttl);
@@ -360,6 +512,7 @@ abstract class RedisModel extends BaseModel
                 LUA, [$this->__getKey(), $this->__getMember(), $data], 1);
             case RedisStorageMode::HASH_OBJECT:
                 $data = $this->toArray();
+                $this->parseSaveData($data);
                 $argv = [];
                 $redis = static::__getRedis($this);
                 foreach ($data as $key => $value)
@@ -452,7 +605,7 @@ abstract class RedisModel extends BaseModel
      *
      * @param string|array $condition
      */
-    public static function generateKey($condition): string
+    public static function generateKey($condition = []): string
     {
         if (\is_string($condition))
         {
@@ -480,7 +633,7 @@ abstract class RedisModel extends BaseModel
      *
      * @param string|array $condition
      */
-    public static function generateMember($condition): string
+    public static function generateMember($condition = []): string
     {
         if (\is_string($condition))
         {
@@ -651,5 +804,56 @@ abstract class RedisModel extends BaseModel
             'member' => $this->__member,
             'ttl'    => $this->__ttl,
         ] = $data;
+    }
+
+    protected function parseSaveData(array &$data): void
+    {
+        $meta = $this->__meta;
+        $fieldAnnotations = $meta->getFields();
+        foreach ($data as $name => &$value)
+        {
+            /** @var Column|null $columnAnnotation */
+            $columnAnnotation = $fieldAnnotations[$name] ?? null;
+            if (!$columnAnnotation)
+            {
+                continue;
+            }
+            switch ($columnAnnotation->type)
+            {
+                case 'json':
+                    $fieldsJsonEncode ??= $meta->getFieldsJsonEncode();
+                    if (isset($fieldsJsonEncode[$name][0]))
+                    {
+                        $realJsonEncode = $fieldsJsonEncode[$name][0];
+                    }
+                    else
+                    {
+                        $realJsonEncode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
+                    }
+                    if (null === $value && $columnAnnotation->nullable)
+                    {
+                        // 当字段允许`null`时，使用原生`null`存储
+                        $value = null;
+                    }
+                    elseif ($realJsonEncode)
+                    {
+                        $value = json_encode($value, $realJsonEncode->flags, $realJsonEncode->depth);
+                    }
+                    else
+                    {
+                        $value = json_encode($value, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+                    }
+                    break;
+                case 'list':
+                    if (null !== $value && null !== $columnAnnotation->listSeparator)
+                    {
+                        $value = implode($columnAnnotation->listSeparator, $value);
+                    }
+                    break;
+                case 'set':
+                    $value = implode(',', $value);
+                    break;
+            }
+        }
     }
 }
