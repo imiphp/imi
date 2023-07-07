@@ -36,7 +36,7 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
     }
 
     /**
-     * @Column(type="list")
+     * @Column(type="list", listSeparator=",")
      */
     protected array $list = [];
 
