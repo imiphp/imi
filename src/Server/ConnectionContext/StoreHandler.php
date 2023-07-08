@@ -11,7 +11,7 @@ use Imi\Server\ConnectionContext\StoreHandler\IHandler;
 /**
  * 连接上下文存储处理器-总.
  *
- * @Bean("ConnectionContextStore")
+ * @Bean(name="ConnectionContextStore", recursion=false)
  */
 class StoreHandler implements IHandler
 {
