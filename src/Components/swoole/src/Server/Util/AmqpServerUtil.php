@@ -15,10 +15,12 @@ use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
 use Imi\Worker;
 
+use function Swoole\Coroutine\defer;
+
 if (class_exists(\Imi\AMQP\Main::class))
 {
     /**
-     * @Bean(name="AmqpServerUtil", env="swoole")
+     * @Bean(name="AmqpServerUtil", env="swoole", recursion=false)
      */
     class AmqpServerUtil extends LocalServerUtil
     {
@@ -60,7 +62,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $server = RequestContext::getServer();
             $this->serverName = $server->getName();
             $this->consumerInstance = $server->getBean($this->consumerClass);
-            $this->publisherInstance = $server->getBean($this->publisherClass);
+            $this->publisherInstance = $server->getBean($this->publisherClass, $this);
             Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function () {
                 $this->subscribeEnable = false;
             });
@@ -308,7 +310,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $server = RequestContext::getServer();
             if ($this->subscribeEnable && $server && $server->isLongConnection())
             {
-                imigo(function () {
+                defer(fn () => imigo(function () {
                     try
                     {
                         $this->consumerInstance->run();
@@ -319,7 +321,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                         sleep(1);
                         $this->startSubscribe();
                     }
-                });
+                }));
             }
         }
 

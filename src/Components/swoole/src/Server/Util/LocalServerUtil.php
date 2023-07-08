@@ -21,7 +21,7 @@ use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 
 /**
- * @Bean(name="LocalServerUtil", env="swoole")
+ * @Bean(name="LocalServerUtil", env="swoole", recursion=false)
  */
 class LocalServerUtil implements ISwooleServerUtil
 {
