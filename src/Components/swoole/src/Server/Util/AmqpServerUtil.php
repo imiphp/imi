@@ -61,7 +61,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             $server = RequestContext::getServer();
             $this->serverName = $server->getName();
-            $this->consumerInstance = $server->getBean($this->consumerClass);
+            $this->consumerInstance = $server->getBean($this->consumerClass, $this);
             $this->publisherInstance = $server->getBean($this->publisherClass, $this);
             Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function () {
                 $this->subscribeEnable = false;

@@ -23,6 +23,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         public function __construct(?AmqpServerUtil $amqpServerUtil = null)
         {
             $this->amqpServerUtil = $amqpServerUtil;
+            parent::__construct();
         }
 
         /**
