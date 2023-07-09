@@ -15,7 +15,6 @@ use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
-use Imi\Util\Imi;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -73,8 +72,6 @@ trait TAMQP
      */
     protected ?string $poolName = null;
 
-    protected bool $isSwoole = false;
-
     /**
      * 初始化配置.
      */
@@ -93,7 +90,6 @@ trait TAMQP
         $this->publishers = $annotations[Publisher::class];
         $this->consumers = $annotations[Consumer::class];
         $this->connectionAnnotation = $annotations[Connection::class][0] ?? null;
-        $this->isSwoole = Imi::checkAppType('swoole');
     }
 
     /**

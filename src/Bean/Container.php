@@ -158,8 +158,13 @@ class Container implements ContainerInterface
         }
 
         // 传参实例化强制不使用单例
-        if ($allowStore && empty($params) && Bean::INSTANCE_TYPE_SINGLETON === ($data['instanceType'] ?? Bean::INSTANCE_TYPE_SINGLETON))
+        if ($stored = ($allowStore && empty($params) && Bean::INSTANCE_TYPE_SINGLETON === ($data['instanceType'] ?? Bean::INSTANCE_TYPE_SINGLETON)))
         {
+            if (isset($beanObjects[$originId]))
+            {
+                // 防止类 __construct() 方法有协程上下文切换，导致单例被覆盖
+                return $beanObjects[$originId];
+            }
             $beanObjects[$originId] = $object;
         }
 
@@ -167,6 +172,11 @@ class Container implements ContainerInterface
         {
             // @phpstan-ignore-next-line
             BeanFactory::initInstance($object, $params);
+            if ($stored && $object !== $beanObjects[$originId])
+            {
+                // 防止类 __init() 方法有协程上下文切换，导致单例被覆盖
+                return $beanObjects[$originId];
+            }
         }
 
         // @phpstan-ignore-next-line

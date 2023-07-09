@@ -12,13 +12,16 @@ use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\RequestContext;
+use Imi\Server\Contract\IServer;
 use Imi\Server\DataParser\DataParser;
 use Imi\Worker;
+
+use function Swoole\Coroutine\defer;
 
 if (class_exists(\Imi\AMQP\Main::class))
 {
     /**
-     * @Bean(name="AmqpServerUtil", env="swoole")
+     * @Bean(name="AmqpServerUtil", env="swoole", recursion=false)
      */
     class AmqpServerUtil extends LocalServerUtil
     {
@@ -51,16 +54,12 @@ if (class_exists(\Imi\AMQP\Main::class))
 
         protected IConsumer $consumerInstance;
 
-        protected IPublisher $publisherInstance;
-
-        protected string $serverName;
+        protected IServer $server;
 
         public function __init(): void
         {
-            $server = RequestContext::getServer();
-            $this->serverName = $server->getName();
-            $this->consumerInstance = $server->getBean($this->consumerClass);
-            $this->publisherInstance = $server->getBean($this->publisherClass);
+            $this->server = $server = RequestContext::getServer();
+            $this->consumerInstance = $server->getBean($this->consumerClass, $this);
             Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function () {
                 $this->subscribeEnable = false;
             });
@@ -76,7 +75,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $amqpMessage->setBody($message);
             $amqpMessage->setRoutingKey($routingKey);
 
-            return $this->publisherInstance->publish($amqpMessage);
+            return $this->getPublisherInstance()->publish($amqpMessage);
         }
 
         /**
@@ -308,7 +307,7 @@ if (class_exists(\Imi\AMQP\Main::class))
             $server = RequestContext::getServer();
             if ($this->subscribeEnable && $server && $server->isLongConnection())
             {
-                imigo(function () {
+                defer(fn () => imigo(function () {
                     try
                     {
                         $this->consumerInstance->run();
@@ -319,7 +318,7 @@ if (class_exists(\Imi\AMQP\Main::class))
                         sleep(1);
                         $this->startSubscribe();
                     }
-                });
+                }));
             }
         }
 
@@ -335,7 +334,15 @@ if (class_exists(\Imi\AMQP\Main::class))
 
         public function getPublisherInstance(): IPublisher
         {
-            return $this->publisherInstance;
+            return RequestContext::use(function (\ArrayObject $context) {
+                $key = static::class . ':' . $this->server->getName() . ':publisherClass';
+                if (isset($context[$key]))
+                {
+                    return $context[$key];
+                }
+
+                return $context[$key] = $this->server->getBean($this->publisherClass, $this);
+            });
         }
 
         public function getAmqpName(): ?string
