@@ -206,7 +206,7 @@ class File extends Base
         }
         foreach ($values as $key => $value)
         {
-            $result = $result && $this->set($key, $value, $ttl);
+            $result = $result && $this->set((string) $key, $value, $ttl);
         }
 
         return $result;

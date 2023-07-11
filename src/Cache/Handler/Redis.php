@@ -124,7 +124,7 @@ class Redis extends Base
         }
         foreach ($setValues as $k => $v)
         {
-            $setValues[$this->parseKey($k)] = $this->encode($v);
+            $setValues[$this->parseKey((string) $k)] = $this->encode($v);
         }
         // ttl 支持 \DateInterval 格式
         if ($ttl instanceof \DateInterval)

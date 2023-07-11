@@ -92,7 +92,7 @@ class RequestContext extends Base
         $object = $this->getObject();
         foreach ($values as $key => $value)
         {
-            $object->set($key, $value, $ttl ?? 0);
+            $object->set((string) $key, $value, $ttl ?? 0);
         }
 
         return true;
