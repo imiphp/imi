@@ -40,6 +40,7 @@
             <file>unit/Component/Tests/CacheFile1Test.php</file>
             <file>unit/Component/Tests/CacheFile2Test.php</file>
             <file>unit/Component/Tests/CacheFile3Test.php</file>
+            <file>unit/Component/Tests/CacheMemoryTest.php</file>
             <file>unit/Component/Tests/CacheRedisHashTest.php</file>
             <file>unit/Component/Tests/CacheRedisTest.php</file>
             <file>unit/Component/Tests/CacheRequestContextTest.php</file>
