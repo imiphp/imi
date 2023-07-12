@@ -971,7 +971,7 @@ class Query
             $field->setTable($rightTable);
             $field->setField($name);
         }
-        foreach ($rightModelMeta->getSqlColumns() as $name => $sqlAnnotations)
+        foreach ($rightModelMeta->getSqlColumns() as $sqlAnnotations)
         {
             /** @var \Imi\Model\Annotation\Sql $sqlAnnotation */
             $sqlAnnotation = $sqlAnnotations[0];
