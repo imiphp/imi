@@ -31,7 +31,7 @@ class UpdateBuilder extends BaseBuilder
         {
             if ($v instanceof \Imi\Db\Query\Raw)
             {
-                if (is_int($k))
+                if (\is_int($k))
                 {
                     $setStrs[] = $v->toString($query);
                 }

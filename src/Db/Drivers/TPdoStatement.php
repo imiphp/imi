@@ -131,7 +131,7 @@ trait TPdoStatement
             {
                 foreach ($inputParameters as $k => $v)
                 {
-                    if (is_int($k))
+                    if (\is_int($k))
                     {
                         $statement->bindValue($k + 1, $v, $this->getDataTypeByValue($v));
                     }

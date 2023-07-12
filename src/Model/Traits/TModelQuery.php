@@ -154,7 +154,7 @@ trait TModelQuery
         $k = array_key_first($field);
         $v = $field[$k] ?? null;
 
-        if (is_int($k))
+        if (\is_int($k))
         {
             if ('*' === $v)
             {
