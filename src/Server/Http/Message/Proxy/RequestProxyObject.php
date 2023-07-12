@@ -75,42 +75,42 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Psr\Http\Message\ServerRequestInterface withParsedBody($data)
  * @method        array                                    getAttributes()
  * @method static array                                    getAttributes()
- * @method        mixed                                    getAttribute(string $name, $default = NULL)
- * @method static mixed                                    getAttribute(string $name, $default = NULL)
- * @method        \Psr\Http\Message\ServerRequestInterface withAttribute(string $name, $value)
- * @method static \Psr\Http\Message\ServerRequestInterface withAttribute(string $name, $value)
- * @method        \Psr\Http\Message\ServerRequestInterface withoutAttribute(string $name)
- * @method static \Psr\Http\Message\ServerRequestInterface withoutAttribute(string $name)
+ * @method        mixed                                    getAttribute($name, $default = NULL)
+ * @method static mixed                                    getAttribute($name, $default = NULL)
+ * @method        \Psr\Http\Message\ServerRequestInterface withAttribute($name, $value)
+ * @method static \Psr\Http\Message\ServerRequestInterface withAttribute($name, $value)
+ * @method        \Psr\Http\Message\ServerRequestInterface withoutAttribute($name)
+ * @method static \Psr\Http\Message\ServerRequestInterface withoutAttribute($name)
  * @method        string                                   getRequestTarget()
  * @method static string                                   getRequestTarget()
- * @method        \Psr\Http\Message\RequestInterface       withRequestTarget(string $requestTarget)
- * @method static \Psr\Http\Message\RequestInterface       withRequestTarget(string $requestTarget)
+ * @method        \Psr\Http\Message\RequestInterface       withRequestTarget($requestTarget)
+ * @method static \Psr\Http\Message\RequestInterface       withRequestTarget($requestTarget)
  * @method        string                                   getMethod()
  * @method static string                                   getMethod()
- * @method        \Psr\Http\Message\RequestInterface       withMethod(string $method)
- * @method static \Psr\Http\Message\RequestInterface       withMethod(string $method)
+ * @method        \Psr\Http\Message\RequestInterface       withMethod($method)
+ * @method static \Psr\Http\Message\RequestInterface       withMethod($method)
  * @method        \Psr\Http\Message\UriInterface           getUri()
  * @method static \Psr\Http\Message\UriInterface           getUri()
- * @method        \Psr\Http\Message\RequestInterface       withUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
- * @method static \Psr\Http\Message\RequestInterface       withUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
+ * @method        \Psr\Http\Message\RequestInterface       withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false)
+ * @method static \Psr\Http\Message\RequestInterface       withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false)
  * @method        string                                   getProtocolVersion()
  * @method static string                                   getProtocolVersion()
- * @method        \Psr\Http\Message\MessageInterface       withProtocolVersion(string $version)
- * @method static \Psr\Http\Message\MessageInterface       withProtocolVersion(string $version)
+ * @method        \Psr\Http\Message\MessageInterface       withProtocolVersion($version)
+ * @method static \Psr\Http\Message\MessageInterface       withProtocolVersion($version)
  * @method        string[][]                               getHeaders()
  * @method static string[][]                               getHeaders()
- * @method        bool                                     hasHeader(string $name)
- * @method static bool                                     hasHeader(string $name)
- * @method        string[]                                 getHeader(string $name)
- * @method static string[]                                 getHeader(string $name)
- * @method        string                                   getHeaderLine(string $name)
- * @method static string                                   getHeaderLine(string $name)
- * @method        \Psr\Http\Message\MessageInterface       withHeader(string $name, $value)
- * @method static \Psr\Http\Message\MessageInterface       withHeader(string $name, $value)
- * @method        \Psr\Http\Message\MessageInterface       withAddedHeader(string $name, $value)
- * @method static \Psr\Http\Message\MessageInterface       withAddedHeader(string $name, $value)
- * @method        \Psr\Http\Message\MessageInterface       withoutHeader(string $name)
- * @method static \Psr\Http\Message\MessageInterface       withoutHeader(string $name)
+ * @method        bool                                     hasHeader($name)
+ * @method static bool                                     hasHeader($name)
+ * @method        string[]                                 getHeader($name)
+ * @method static string[]                                 getHeader($name)
+ * @method        string                                   getHeaderLine($name)
+ * @method static string                                   getHeaderLine($name)
+ * @method        \Psr\Http\Message\MessageInterface       withHeader($name, $value)
+ * @method static \Psr\Http\Message\MessageInterface       withHeader($name, $value)
+ * @method        \Psr\Http\Message\MessageInterface       withAddedHeader($name, $value)
+ * @method static \Psr\Http\Message\MessageInterface       withAddedHeader($name, $value)
+ * @method        \Psr\Http\Message\MessageInterface       withoutHeader($name)
+ * @method static \Psr\Http\Message\MessageInterface       withoutHeader($name)
  * @method        \Psr\Http\Message\StreamInterface        getBody()
  * @method static \Psr\Http\Message\StreamInterface        getBody()
  * @method        \Psr\Http\Message\MessageInterface       withBody(\Psr\Http\Message\StreamInterface $body)
@@ -375,7 +375,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function getAttribute(string $name, $default = null)
+    public function getAttribute($name, $default = null)
     {
         return self::__getProxyInstance()->getAttribute($name, $default);
     }
@@ -383,7 +383,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withAttribute(string $name, $value)
+    public function withAttribute($name, $value)
     {
         return self::__getProxyInstance()->withAttribute($name, $value);
     }
@@ -391,7 +391,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withoutAttribute(string $name)
+    public function withoutAttribute($name)
     {
         return self::__getProxyInstance()->withoutAttribute($name);
     }
@@ -407,7 +407,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withRequestTarget(string $requestTarget)
+    public function withRequestTarget($requestTarget)
     {
         return self::__getProxyInstance()->withRequestTarget($requestTarget);
     }
@@ -423,7 +423,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withMethod(string $method)
+    public function withMethod($method)
     {
         return self::__getProxyInstance()->withMethod($method);
     }
@@ -439,7 +439,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
+    public function withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false)
     {
         return self::__getProxyInstance()->withUri($uri, $preserveHost);
     }
@@ -455,7 +455,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withProtocolVersion(string $version)
+    public function withProtocolVersion($version)
     {
         return self::__getProxyInstance()->withProtocolVersion($version);
     }
@@ -471,7 +471,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function hasHeader(string $name)
+    public function hasHeader($name)
     {
         return self::__getProxyInstance()->hasHeader($name);
     }
@@ -479,7 +479,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function getHeader(string $name)
+    public function getHeader($name)
     {
         return self::__getProxyInstance()->getHeader($name);
     }
@@ -487,7 +487,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function getHeaderLine(string $name)
+    public function getHeaderLine($name)
     {
         return self::__getProxyInstance()->getHeaderLine($name);
     }
@@ -495,7 +495,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withHeader(string $name, $value)
+    public function withHeader($name, $value)
     {
         return self::__getProxyInstance()->withHeader($name, $value);
     }
@@ -503,7 +503,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withAddedHeader(string $name, $value)
+    public function withAddedHeader($name, $value)
     {
         return self::__getProxyInstance()->withAddedHeader($name, $value);
     }
@@ -511,7 +511,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withoutHeader(string $name)
+    public function withoutHeader($name)
     {
         return self::__getProxyInstance()->withoutHeader($name);
     }
