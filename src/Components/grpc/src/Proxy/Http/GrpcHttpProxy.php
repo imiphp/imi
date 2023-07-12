@@ -53,11 +53,6 @@ class GrpcHttpProxy
                 ProtobufUtil::setMessageData($grpcRequest, $requestData, true);
             }
 
-            /** @var GrpcClient $client */
-            $client = RpcClientPool::getInstance($poolName);
-            /** @var GrpcService $service */
-            $service = $client->getService($serviceName, $interface);
-
             // metadata
             $metadata = [];
             foreach ($request->getHeaders() as $name => $_)
@@ -67,6 +62,11 @@ class GrpcHttpProxy
                     $metadata[$name] = $request->getHeaderLine($name);
                 }
             }
+
+            /** @var GrpcClient $client */
+            $client = RpcClientPool::getInstance($poolName);
+            /** @var GrpcService $service */
+            $service = $client->getService($serviceName, $interface);
 
             // send
             if (false === ($streamId = $service->send($methodName, $grpcRequest, $metadata)))
