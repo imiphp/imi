@@ -646,7 +646,7 @@ abstract class Query implements IQuery
         {
             foreach ($raw as $k => $v)
             {
-                if (is_numeric($k))
+                if (\is_int($k))
                 {
                     $fieldName = $v;
                     $direction = 'asc';

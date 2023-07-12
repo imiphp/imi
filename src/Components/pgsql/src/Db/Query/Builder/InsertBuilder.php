@@ -34,7 +34,7 @@ class InsertBuilder extends BaseBuilder
             {
                 if ($v instanceof \Imi\Db\Query\Raw)
                 {
-                    if (!is_numeric($k))
+                    if (!is_int($k))
                     {
                         $fields[] = $query->fieldQuote($k);
                         $valueParams[] = $v->toString($query);
