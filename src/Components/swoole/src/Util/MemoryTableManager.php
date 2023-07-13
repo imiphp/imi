@@ -168,7 +168,7 @@ class MemoryTableManager
         }
         foreach ($names as $key => $value)
         {
-            if (is_numeric($key))
+            if (\is_int($key))
             {
                 self::$tables[$value] = 0;
             }

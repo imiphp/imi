@@ -103,7 +103,7 @@ class HandShakeMiddleware implements MiddlewareInterface
 
         foreach ($headers as $key => $val)
         {
-            $response = $response->setHeader($key, $val);
+            $response = $response->setHeader((string) $key, $val);
         }
 
         return $response->setStatus(StatusCode::SWITCHING_PROTOCOLS);

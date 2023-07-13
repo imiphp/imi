@@ -47,14 +47,14 @@ class FpmResponse extends Response
         {
             foreach ($headers as $name => $_)
             {
-                header($name . ':' . $this->getHeaderLine($name));
+                header($name . ':' . $this->getHeaderLine((string) $name));
             }
         }
         // cookie
         $cookieParams = $this->getCookieParams();
         if ($cookieParams)
         {
-            foreach ($cookieParams as $name => $cookie)
+            foreach ($cookieParams as $cookie)
             {
                 setcookie($cookie['key'], $cookie['value'], ['expires' => $cookie['expire'] ?? 0, 'path' => $cookie['path'] ?? '/', 'domain' => $cookie['domain'] ?? '', 'secure' => $cookie['secure'] ?? false, 'httponly' => $cookie['httponly'] ?? false]);
             }

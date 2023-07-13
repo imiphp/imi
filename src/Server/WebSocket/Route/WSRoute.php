@@ -114,7 +114,7 @@ class WSRoute implements IRoute
         // 匹配 WebSocket 路由
         foreach ($annotation->condition as $name => $value)
         {
-            if (ObjectArrayHelper::get($data, $name) !== $value)
+            if (ObjectArrayHelper::get($data, (string) $name) !== $value)
             {
                 return false;
             }

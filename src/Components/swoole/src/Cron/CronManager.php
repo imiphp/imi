@@ -75,7 +75,7 @@ class CronManager implements ICronManager
         $realTasks = &$this->realTasks;
         foreach ($this->tasks as $id => $task)
         {
-            $realTasks[$id] = new CronTask($id, $task['type'], $task['task'], $task['cron'], $task['data'] ?? null, $task['lockExpire'] ?? 120, $task['unique'] ?? null, $task['redisPool'] ?? null, $task['lockWaitTimeout'] ?? 10, $task['force'] ?? false);
+            $realTasks[$id] = new CronTask((string) $id, $task['type'], $task['task'], $task['cron'], $task['data'] ?? null, $task['lockExpire'] ?? 120, $task['unique'] ?? null, $task['redisPool'] ?? null, $task['lockWaitTimeout'] ?? 10, $task['force'] ?? false);
         }
     }
 

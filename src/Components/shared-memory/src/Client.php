@@ -21,7 +21,7 @@ class Client
         $this->client = new \Yurun\Swoole\SharedMemory\Client\Client($options);
         foreach ($options['storeTypes'] as $k => $v)
         {
-            if (is_numeric($k))
+            if (\is_int($k))
             {
                 $refClass = new \ReflectionClass($v);
                 $this->objects[$refClass->getShortName()] = new $v($this->client);

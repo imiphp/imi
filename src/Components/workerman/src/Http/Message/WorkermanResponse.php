@@ -87,6 +87,7 @@ class WorkermanResponse extends Response
         {
             foreach ($this->headers as $name => $headers)
             {
+                $name = (string) $name;
                 $response->header($name, $this->getHeaderLine($name));
             }
         }

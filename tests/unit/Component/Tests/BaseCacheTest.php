@@ -38,11 +38,12 @@ abstract class BaseCacheTest extends BaseTest
     public function testSetMultiple(): void
     {
         $values = [
-            'k1'    => 'v1',
-            'k2'    => 'v2',
+            'k1'       => 'v1',
+            'k2'       => 'v2',
+            '19940312' => 'yurun', // 数字键名测试
         ];
         Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values));
-        $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
+        $getValues = CacheManager::getMultiple($this->cacheName, array_keys_string($values));
         Assert::assertEquals($values, $getValues);
     }
 
@@ -61,13 +62,13 @@ abstract class BaseCacheTest extends BaseTest
                 'k2'    => 'v2',
             ];
             Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values, 1));
-            $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
+            $getValues = CacheManager::getMultiple($this->cacheName, array_keys_string($values));
             Assert::assertEquals($values, $getValues);
             sleep(2);
             Assert::assertEquals([
                 'k1'    => 'none',
                 'k2'    => 'none',
-            ], CacheManager::getMultiple($this->cacheName, array_keys($values), 'none'));
+            ], CacheManager::getMultiple($this->cacheName, array_keys_string($values), 'none'));
         }, null, 3);
     }
 
@@ -82,18 +83,20 @@ abstract class BaseCacheTest extends BaseTest
     public function testDeleteMultiple(): void
     {
         $values = [
-            'k1'    => 'v1',
-            'k2'    => 'v2',
+            'k1'       => 'v1',
+            'k2'       => 'v2',
+            '19940312' => 'yurun', // 数字键名测试
         ];
         Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values));
-        $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
+        $getValues = CacheManager::getMultiple($this->cacheName, array_keys_string($values));
         Assert::assertEquals($values, $getValues);
 
-        Assert::assertTrue(CacheManager::deleteMultiple($this->cacheName, array_keys($values)));
+        Assert::assertTrue(CacheManager::deleteMultiple($this->cacheName, array_keys_string($values)));
         Assert::assertEquals([
-            'k1'    => null,
-            'k2'    => null,
-        ], CacheManager::getMultiple($this->cacheName, array_keys($values)));
+            'k1'       => null,
+            'k2'       => null,
+            '19940312' => null,
+        ], CacheManager::getMultiple($this->cacheName, array_keys_string($values)));
     }
 
     public function testHas(): void
@@ -111,13 +114,13 @@ abstract class BaseCacheTest extends BaseTest
             'k2'    => 'v2',
         ];
         Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values));
-        $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
+        $getValues = CacheManager::getMultiple($this->cacheName, array_keys_string($values));
         Assert::assertEquals($values, $getValues);
 
         Assert::assertTrue(CacheManager::clear($this->cacheName));
         Assert::assertEquals([
             'k1'    => null,
             'k2'    => null,
-        ], CacheManager::getMultiple($this->cacheName, array_keys($values)));
+        ], CacheManager::getMultiple($this->cacheName, array_keys_string($values)));
     }
 }

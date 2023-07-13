@@ -108,7 +108,7 @@ abstract class BaseApp implements IApp
             // 加载 .env 配置
             foreach ($_ENV as $name => $value)
             {
-                Config::set($name, $value);
+                Config::set((string) $name, $value);
             }
         }
     }

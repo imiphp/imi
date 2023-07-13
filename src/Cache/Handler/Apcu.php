@@ -78,7 +78,7 @@ class Apcu extends Base
         $newValues = [];
         foreach ($values as $k => $v)
         {
-            $newValues[$this->parseKey($k)] = $v;
+            $newValues[$this->parseKey((string) $k)] = $v;
         }
 
         return [] === apcu_store($newValues, null, (int) $ttl);

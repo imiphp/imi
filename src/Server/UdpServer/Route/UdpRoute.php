@@ -93,7 +93,7 @@ class UdpRoute implements IRoute
         }
         foreach ($annotation->condition as $name => $value)
         {
-            if (ObjectArrayHelper::get($data, $name) !== $value)
+            if (ObjectArrayHelper::get($data, (string) $name) !== $value)
             {
                 return false;
             }

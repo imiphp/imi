@@ -370,6 +370,7 @@ abstract class AbstractMessage implements IMessage
         $objectHeaders = &$object->headers;
         foreach ($headers as $name => $value)
         {
+            $name = (string) $name;
             $lowerName = strtolower($name);
             if (isset($headerNames[$lowerName]))
             {

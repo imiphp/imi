@@ -21,7 +21,7 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
         $query = $this->query;
         foreach ($fields as $k => $v)
         {
-            if (is_numeric($k))
+            if (\is_int($k))
             {
                 if ($v instanceof Field)
                 {

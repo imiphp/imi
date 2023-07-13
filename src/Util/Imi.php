@@ -80,7 +80,7 @@ class Imi
     {
         foreach ((array) $rules as $fieldName => $rule)
         {
-            if (is_numeric($fieldName))
+            if (\is_int($fieldName))
             {
                 if (!static::checkCompareRule($rule, $valueCallback))
                 {
@@ -373,7 +373,7 @@ class Imi
         }
         foreach ($options as $k => $v)
         {
-            if (is_numeric($k))
+            if (\is_int($k))
             {
                 $cmd .= ' -' . (isset($v[1]) ? '-' : '') . $v;
             }
@@ -406,7 +406,7 @@ class Imi
         }
         foreach ($options as $k => $v)
         {
-            if (is_numeric($k))
+            if (\is_int($k))
             {
                 $cmd[] = '-' . (isset($v[1]) ? '-' : '') . $v;
             }
