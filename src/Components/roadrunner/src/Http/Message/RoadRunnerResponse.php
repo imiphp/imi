@@ -51,7 +51,7 @@ class RoadRunnerResponse extends Response
             $cookieParams = $this->getCookieParams();
             if ($cookieParams)
             {
-                foreach ($cookieParams as $name => $cookie)
+                foreach ($cookieParams as $cookie)
                 {
                     $this->addHeader(ResponseHeader::SET_COOKIE, $this->cookieArrayToHeader($cookie));
                 }

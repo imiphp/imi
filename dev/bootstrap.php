@@ -174,3 +174,14 @@ if (isCodeCoverage())
         register_shutdown_function($shutdownCallback);
     })();
 }
+
+function array_keys_string(array $array): array
+{
+    $keys = [];
+    foreach ($array as $key => $_)
+    {
+        $keys[] = (string) $key;
+    }
+
+    return $keys;
+}

@@ -22,7 +22,7 @@ abstract class BaseBuilder extends \Imi\Db\Query\Builder\BaseBuilder
         $params = &$this->params;
         foreach ($fields as $k => $v)
         {
-            if (is_numeric($k))
+            if (\is_int($k))
             {
                 if ($v instanceof Field)
                 {

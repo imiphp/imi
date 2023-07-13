@@ -170,7 +170,7 @@ class GrpcClient implements IRpcClient
         {
             foreach ($metadata as $k => $v)
             {
-                $request = $request->withHeader($k, $v);
+                $request = $request->withHeader((string) $k, $v);
             }
         }
 

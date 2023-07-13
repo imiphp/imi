@@ -168,6 +168,7 @@ class RedisHash extends Base
         $setValues = [];
         foreach ($_setValues as $k => $v)
         {
+            $k = (string) $k;
             $this->parseKey($k, $member);
             $setValues[$k]['member'][] = $member;
             $setValues[$k]['value'][] = $this->encode($v);

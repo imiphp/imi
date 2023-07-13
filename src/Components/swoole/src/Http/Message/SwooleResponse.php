@@ -69,6 +69,7 @@ class SwooleResponse extends Response
         {
             foreach ($this->headers as $name => $headers)
             {
+                $name = (string) $name;
                 $swooleResponse->header($name, $this->getHeaderLine($name));
             }
         }
@@ -77,7 +78,7 @@ class SwooleResponse extends Response
         {
             foreach ($this->trailers as $name => $value)
             {
-                $swooleResponse->trailer($name, $value);
+                $swooleResponse->trailer((string) $name, $value);
             }
         }
         // status

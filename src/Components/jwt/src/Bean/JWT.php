@@ -124,7 +124,7 @@ class JWT
             {
                 foreach ($headers as $k => $v)
                 {
-                    $builder->withHeader($k, $v);
+                    $builder->withHeader((string) $k, $v);
                 }
             }
             $signer = $config->getSignerInstance();
@@ -156,7 +156,7 @@ class JWT
             {
                 foreach ($headers as $k => $v)
                 {
-                    $builder->withHeader($k, $v);
+                    $builder->withHeader((string) $k, $v);
                 }
             }
         }

@@ -62,7 +62,7 @@ class AtomicManager
         }
         foreach ($names as $key => $value)
         {
-            if (is_numeric($key))
+            if (\is_int($key))
             {
                 self::$atomics[$value] = 0;
             }

@@ -58,7 +58,7 @@ class GrpcHttpClient
         $responseMetadata = [];
         foreach ($response->getHeaders() as $name => $_)
         {
-            $name = strtolower($name);
+            $name = strtolower((string) $name);
             if (str_starts_with($name, 'grpc-'))
             {
                 $responseMetadata[$name] = $response->getHeaderLine($name);
@@ -113,7 +113,7 @@ class GrpcHttpClient
         {
             foreach ($metadata as $k => $v)
             {
-                $httpRequest->header($k, $v);
+                $httpRequest->header((string) $k, $v);
             }
         }
     }
