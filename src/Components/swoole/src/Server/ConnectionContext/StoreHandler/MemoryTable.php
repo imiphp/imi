@@ -246,7 +246,7 @@ class MemoryTable implements IHandler
     public function getClientIdsByFlags(array $flags): array
     {
         $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hMget($this->key . ':binder', $flags));
-        foreach ($result as $k => $v)
+        foreach ($result as $k                             => $v)
         {
             $result[$k] = [$v];
         }

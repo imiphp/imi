@@ -41,3 +41,14 @@ function getRectorConfigCallback(string $path): callable
         $containerConfigurator->import(LevelSetList::UP_TO_PHP_74);
     };
 }
+
+function array_keys_string(array $array): array
+{
+    $keys = [];
+    foreach ($array as $key => $_)
+    {
+        $keys[] = (string) $key;
+    }
+
+    return $keys;
+}
