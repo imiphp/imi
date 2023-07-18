@@ -284,4 +284,12 @@ abstract class DbBaseTest extends TestCase
         $this->assertFalse($db->inTransaction());
         $this->assertTrue($r1);
     }
+
+    public function testExecuteBool(): void
+    {
+        $db = Db::getInstance($this->poolName);
+        $stmt = $db->prepare('select ?::bool=true as true, ?::bool=false as false');
+        Assert::assertTrue($stmt->execute([true, false]));
+        Assert::assertEquals(['true' => true, 'false' => true], $stmt->fetch());
+    }
 }
