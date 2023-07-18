@@ -743,4 +743,12 @@ abstract class DbBaseTest extends BaseTest
         $query2 = clone $query2;
         $this->assertEquals('maindb.slave', $query2->execute('select @__pool_name as val')->getScalar('val'));
     }
+
+    public function testExecuteBool(): void
+    {
+        $db = Db::getInstance($this->poolName);
+        $stmt = $db->prepare('select ?=1 as `true`, ?=0 as `false`');
+        Assert::assertTrue($stmt->execute([true, false]));
+        Assert::assertEquals(['true' => true, 'false' => true], $stmt->fetch());
+    }
 }

@@ -102,7 +102,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         {
             --$parameter;
         }
-        $this->bindValues[$parameter] = $value;
+        $this->bindValues[$parameter] = $this->parseValue($value);
 
         return true;
     }
@@ -173,21 +173,24 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
                 {
                     if (isset($inputParameters[$paramName]))
                     {
-                        $bindValues[$index] = $inputParameters[$paramName];
+                        $bindValues[$index] = $this->parseValue($inputParameters[$paramName]);
                     }
                     elseif (isset($inputParameters[$key = ':' . $paramName]))
                     {
-                        $bindValues[$index] = $inputParameters[$key];
+                        $bindValues[$index] = $this->parseValue($inputParameters[$key]);
                     }
                     elseif (isset($inputParameters[$index]))
                     {
-                        $bindValues[$index] = $inputParameters[$index];
+                        $bindValues[$index] = $this->parseValue($inputParameters[$index]);
                     }
                 }
             }
             else
             {
-                $bindValues = array_values($inputParameters);
+                foreach ($inputParameters as $value)
+                {
+                    $bindValues[] = $this->parseValue($value);
+                }
             }
         }
         $stmt = $this->stmt;
@@ -363,6 +366,21 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     public function valid(): bool
     {
         return false !== $this->current();
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    protected function parseValue($value)
+    {
+        if (\is_bool($value))
+        {
+            return (int) $value;
+        }
+
+        return $value;
     }
 
     /**
