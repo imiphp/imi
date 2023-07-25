@@ -7,6 +7,7 @@ namespace Imi\Test\Component\Tests;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\TestRedisModel;
 use Imi\Test\Component\Model\TestRedisModel2;
+use Imi\Test\Component\Model\TestRedisModelSerializable;
 use Imi\Test\Component\Model\TestRedisWithFormatterModel;
 
 /**
@@ -281,5 +282,26 @@ class RedisModelTest extends BaseTest
         $this->assertEquals(22, $record->age);
         $record2 = unserialize(serialize($record));
         $this->assertEquals($record->toArray(), $record2->toArray());
+    }
+
+    public function testSerializable(): void
+    {
+        $data = [
+            'id'    => 2,
+            'name'  => 'b',
+            'age'   => 22,
+        ];
+        $record = TestRedisModelSerializable::newInstance($data);
+        $record->save();
+
+        $record2 = TestRedisModelSerializable::find([
+            'id'    => 2,
+            'name'  => 'b',
+        ]);
+        $this->assertNotNull($record2);
+        foreach ($data as $name => $value)
+        {
+            $this->assertEquals($value, $record2->{$name});
+        }
     }
 }
