@@ -209,13 +209,13 @@ abstract class RedisModel extends BaseModel
             case RedisStorageMode::STRING:
                 if (null === $redisEntity->formatter)
                 {
-                    $data = $this->toArray();
+                    $data = iterator_to_array($this);
                 }
                 else
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode($this->toArray());
+                    $data = $formatter->encode(iterator_to_array($this));
                 }
                 if (null === $this->__ttl)
                 {
@@ -229,19 +229,20 @@ abstract class RedisModel extends BaseModel
             case RedisStorageMode::HASH:
                 if (null === $redisEntity->formatter)
                 {
-                    $data = $this->toArray();
+                    $data = iterator_to_array($this);
                 }
                 else
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode($this->toArray());
+                    $data = $formatter->encode(iterator_to_array($this));
                 }
 
                 return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $data);
             case RedisStorageMode::HASH_OBJECT:
                 $key = $this->__getKey();
-                $result = $redis->hMset($key, $this->toArray());
+                $data = iterator_to_array($this);
+                $result = $redis->hMset($key, $data);
                 if ($result && null !== $this->__ttl)
                 {
                     $result = $redis->expire($key, $this->__ttl);
