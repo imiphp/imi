@@ -8,6 +8,7 @@ use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\TestRedisModel;
 use Imi\Test\Component\Model\TestRedisModel2;
 use Imi\Test\Component\Model\TestRedisModelSerializable;
+use Imi\Test\Component\Model\TestRedisModelVirtual;
 use Imi\Test\Component\Model\TestRedisWithFormatterModel;
 
 /**
@@ -199,6 +200,30 @@ class RedisModelTest extends BaseTest
         ]);
         $this->assertNotNull($record2);
         foreach ($data as $name => $value)
+        {
+            $this->assertEquals($value, $record2->{$name});
+        }
+    }
+
+    public function testVirtual(): void
+    {
+        $record = TestRedisModelVirtual::newInstance([
+            'id'    => 2,
+            'name'  => 'b',
+            'age'   => 22,
+        ]);
+        $record->save();
+
+        $record2 = TestRedisModelVirtual::find([
+            'id'    => 2,
+            'name'  => 'b',
+        ]);
+        $this->assertNotNull($record2);
+        foreach ([
+            'id'    => 2,
+            'name'  => 'b',
+            'age'   => 0,
+        ] as $name => $value)
         {
             $this->assertEquals($value, $record2->{$name});
         }

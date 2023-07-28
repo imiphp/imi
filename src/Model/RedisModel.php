@@ -204,18 +204,16 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         $redis = static::__getRedis($this);
+        $data = iterator_to_array($this);
+        $this->parseSaveData($data);
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                if (null === $redisEntity->formatter)
-                {
-                    $data = iterator_to_array($this);
-                }
-                else
+                if (null !== $redisEntity->formatter)
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode(iterator_to_array($this));
+                    $data = $formatter->encode($data);
                 }
                 if (null === $this->__ttl)
                 {
@@ -227,21 +225,16 @@ abstract class RedisModel extends BaseModel
                 }
                 // no break
             case RedisStorageMode::HASH:
-                if (null === $redisEntity->formatter)
-                {
-                    $data = iterator_to_array($this);
-                }
-                else
+                if (null !== $redisEntity->formatter)
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode(iterator_to_array($this));
+                    $data = $formatter->encode($data);
                 }
 
                 return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $data);
             case RedisStorageMode::HASH_OBJECT:
                 $key = $this->__getKey();
-                $data = iterator_to_array($this);
                 $result = $redis->hMset($key, $data);
                 if ($result && null !== $this->__ttl)
                 {
@@ -461,5 +454,56 @@ abstract class RedisModel extends BaseModel
         $this->__member = $member;
 
         return $this;
+    }
+    protected function parseSaveData(array &$data): void
+    {
+        $meta = $this->__meta;
+        $fieldAnnotations = $meta->getFields();
+        foreach ($data as $name => &$value)
+        {
+            /** @var Column|null $columnAnnotation */
+            $columnAnnotation = $fieldAnnotations[$name] ?? null;
+            if (!$columnAnnotation || $columnAnnotation->virtual)
+            {
+                unset($data[$name]);
+                continue;
+            }
+            switch ($columnAnnotation->type)
+            {
+                case 'json':
+                    $fieldsJsonEncode ??= $meta->getFieldsJsonEncode();
+                    if (isset($fieldsJsonEncode[$name][0]))
+                    {
+                        $realJsonEncode = $fieldsJsonEncode[$name][0];
+                    }
+                    else
+                    {
+                        $realJsonEncode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
+                    }
+                    if (null === $value && $columnAnnotation->nullable)
+                    {
+                        // 当字段允许`null`时，使用原生`null`存储
+                        $value = null;
+                    }
+                    elseif ($realJsonEncode)
+                    {
+                        $value = json_encode($value, $realJsonEncode->flags, $realJsonEncode->depth);
+                    }
+                    else
+                    {
+                        $value = json_encode($value, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+                    }
+                    break;
+                case 'list':
+                    if (null !== $value && null !== $columnAnnotation->listSeparator)
+                    {
+                        $value = implode($columnAnnotation->listSeparator, $value);
+                    }
+                    break;
+                case 'set':
+                    $value = implode(',', $value);
+                    break;
+            }
+        }
     }
 }
