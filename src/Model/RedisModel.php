@@ -386,18 +386,16 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
         $redis = static::__getRedis($this);
+        $data = iterator_to_array($this);
+        $this->parseSaveData($data);
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                if (null === $redisEntity->formatter)
-                {
-                    $data = iterator_to_array($this);
-                }
-                else
+                if (null !== $redisEntity->formatter)
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode(iterator_to_array($this));
+                    $data = $formatter->encode($data);
                 }
                 if (null === $this->__ttl)
                 {
@@ -409,22 +407,16 @@ abstract class RedisModel extends BaseModel
                 }
                 // no break
             case RedisStorageMode::HASH:
-                if (null === $redisEntity->formatter)
-                {
-                    $data = iterator_to_array($this);
-                }
-                else
+                if (null !== $redisEntity->formatter)
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode(iterator_to_array($this));
+                    $data = $formatter->encode($data);
                 }
 
                 return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $data);
             case RedisStorageMode::HASH_OBJECT:
                 $key = $this->__getKey();
-                $data = iterator_to_array($this);
-                $this->parseSaveData($data);
                 $result = $redis->hMset($key, $data);
                 if ($result && null !== $this->__ttl)
                 {
@@ -466,18 +458,16 @@ abstract class RedisModel extends BaseModel
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
+        $data = iterator_to_array($this);
+        $this->parseSaveData($data);
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                if (null === $redisEntity->formatter)
-                {
-                    $data = iterator_to_array($this);
-                }
-                else
+                if (null !== $redisEntity->formatter)
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode(iterator_to_array($this));
+                    $data = $formatter->encode($data);
                 }
                 $redis = static::__getRedis($this);
                 $data = $redis->_serialize($data);
@@ -490,15 +480,11 @@ abstract class RedisModel extends BaseModel
                 end
                 LUA, [$this->__getKey(), $data], 1);
             case RedisStorageMode::HASH:
-                if (null === $redisEntity->formatter)
-                {
-                    $data = iterator_to_array($this);
-                }
-                else
+                if (null !== $redisEntity->formatter)
                 {
                     /** @var IFormat $formatter */
                     $formatter = App::getBean($redisEntity->formatter);
-                    $data = $formatter->encode(iterator_to_array($this));
+                    $data = $formatter->encode($data);
                 }
                 $redis = static::__getRedis($this);
                 $data = $redis->_serialize($data);
@@ -511,8 +497,6 @@ abstract class RedisModel extends BaseModel
                 end
                 LUA, [$this->__getKey(), $this->__getMember(), $data], 1);
             case RedisStorageMode::HASH_OBJECT:
-                $data = iterator_to_array($this);
-                $this->parseSaveData($data);
                 $argv = [];
                 $redis = static::__getRedis($this);
                 foreach ($data as $key => $value)
@@ -814,8 +798,9 @@ abstract class RedisModel extends BaseModel
         {
             /** @var Column|null $columnAnnotation */
             $columnAnnotation = $fieldAnnotations[$name] ?? null;
-            if (!$columnAnnotation)
+            if (!$columnAnnotation || $columnAnnotation->virtual)
             {
+                unset($data[$name]);
                 continue;
             }
             switch ($columnAnnotation->type)
