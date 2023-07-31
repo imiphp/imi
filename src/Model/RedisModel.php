@@ -455,6 +455,7 @@ abstract class RedisModel extends BaseModel
 
         return $this;
     }
+
     protected function parseSaveData(array &$data): void
     {
         $meta = $this->__meta;
