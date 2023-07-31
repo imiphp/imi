@@ -143,6 +143,7 @@ abstract class RedisModel extends BaseModel
                             {
                                 if ($realJsonDecode)
                                 {
+                                    /** @var \Imi\Model\Annotation\JsonDecode $realJsonDecode */
                                     $wrap = $realJsonDecode->wrap;
                                     if ('' !== $wrap && (\is_array($value) || \is_object($value)))
                                     {

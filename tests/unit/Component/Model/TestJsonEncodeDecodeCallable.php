@@ -21,14 +21,19 @@ use Imi\Test\Component\Model\Base\TestJsonBase;
  * @property int|null                        $userId
  * @property int|null                        $userId2
  */
-class TestJsonEncodeDecode1 extends TestJsonBase
+class TestJsonEncodeDecodeCallable extends TestJsonBase
 {
     /**
      * @Inherit
      *
      * @JsonEncode
      *
-     * @JsonDecode(wrap="")
+     * @JsonDecode(wrap="Imi\Test\Component\Model\parseJsonEncodeDecodeCallableData")
      */
     protected $jsonData = null;
+}
+
+function parseJsonEncodeDecodeCallableData(array $data): array
+{
+    return ['data' => $data];
 }
