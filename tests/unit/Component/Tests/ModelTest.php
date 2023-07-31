@@ -24,8 +24,10 @@ use Imi\Test\Component\Model\TestEnum;
 use Imi\Test\Component\Model\TestFieldName;
 use Imi\Test\Component\Model\TestFieldNameNotCamel;
 use Imi\Test\Component\Model\TestJson;
-use Imi\Test\Component\Model\TestJsonEncodeDecode1;
 use Imi\Test\Component\Model\TestJsonEncodeDecode2;
+use Imi\Test\Component\Model\TestJsonEncodeDecodeArraywarp;
+use Imi\Test\Component\Model\TestJsonEncodeDecodeCallable;
+use Imi\Test\Component\Model\TestJsonEncodeDecodeNone;
 use Imi\Test\Component\Model\TestJsonExtractProperty;
 use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
@@ -1344,13 +1346,21 @@ class ModelTest extends BaseTest
 
     public function testAnnotationEncodeDecode(): void
     {
-        $record = TestJsonEncodeDecode1::newInstance();
+        $record = TestJsonEncodeDecodeNone::newInstance();
         $record->jsonData = ['name' => '宇润'];
         $record->insert();
-        $record2 = TestJsonEncodeDecode1::find($record->id);
+        $record2 = TestJsonEncodeDecodeNone::find($record->id);
         $this->assertNotNull($record2);
         $this->assertIsArray($record2->jsonData);
         $this->assertEquals('宇润', $record2->jsonData['name'] ?? null);
+
+        $record = TestJsonEncodeDecodeCallable::newInstance();
+        $record->jsonData = ['name' => '宇润'];
+        $record->insert();
+        $record2 = TestJsonEncodeDecodeCallable::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertIsArray($record2->jsonData);
+        $this->assertEquals(['data' => ['name' => '宇润']], $record2->jsonData);
 
         $record = TestJsonEncodeDecode2::newInstance();
         $record->jsonData = ['name' => '宇润'];
@@ -1359,5 +1369,17 @@ class ModelTest extends BaseTest
         $this->assertNotNull($record2);
         $this->assertIsObject($record2->jsonData);
         $this->assertEquals('宇润', $record2->jsonData->name ?? null);
+
+        $record = TestJsonEncodeDecodeArraywarp::newInstance();
+        $record->jsonData = [
+            ['name' => '宇润'],
+            ['name' => 'imi'],
+        ];
+        $record->insert();
+        $record2 = TestJsonEncodeDecodeArraywarp::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertIsArray($record2->jsonData);
+        $this->assertEquals('宇润', $record2->jsonData[0]['name'] ?? null);
+        $this->assertEquals('imi', $record2->jsonData[1]['name'] ?? null);
     }
 }

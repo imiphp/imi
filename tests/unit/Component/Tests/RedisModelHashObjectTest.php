@@ -174,16 +174,24 @@ class RedisModelHashObjectTest extends BaseTest
         $record->setJson([
             'name' => 'imi',
         ]);
+        $record->setJsonArray([
+            [
+                'name' => '宇润',
+            ],
+            [
+                'name' => 'imi',
+            ],
+        ]);
         $record->setList([1, 2, 3]);
         $record->setSet(['a', 'b', 'c']);
         $this->assertTrue($record->save());
         $this->assertEquals([
-            'json'  => [
-                'name' => 'imi',
-            ],
-            'list'  => [1, 2, 3],
-            'set'   => ['a', 'b', 'c'],
-        ], $record->toArray());
+            'name' => 'imi',
+        ], $record->getJson());
+        $this->assertEquals('宇润', $record->getJsonArray()[0]['name']);
+        $this->assertEquals('imi', $record->getJsonArray()[1]['name']);
+        $this->assertEquals([1, 2, 3], $record->getList());
+        $this->assertEquals(['a', 'b', 'c'], $record->getSet());
 
         $record2 = TestRedisHashObjectColumnTypeModel::find();
         $this->assertEquals($record->toArray(), $record2->toArray());

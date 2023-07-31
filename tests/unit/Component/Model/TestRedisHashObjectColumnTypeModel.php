@@ -36,6 +36,23 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
     }
 
     /**
+     * @Column(type="json", arrayWrap=true)
+     */
+    protected array $jsonArray = [];
+
+    public function getJsonArray(): array
+    {
+        return $this->jsonArray;
+    }
+
+    public function setJsonArray(array $jsonArray): self
+    {
+        $this->jsonArray = $jsonArray;
+
+        return $this;
+    }
+
+    /**
      * @Column(type="list", listSeparator=",")
      */
     protected array $list = [];

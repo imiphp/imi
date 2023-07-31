@@ -143,10 +143,27 @@ abstract class RedisModel extends BaseModel
                             {
                                 if ($realJsonDecode)
                                 {
+                                    /** @var \Imi\Model\Annotation\JsonDecode $realJsonDecode */
                                     $wrap = $realJsonDecode->wrap;
-                                    if ('' !== $wrap && (\is_array($value) || \is_object($value)))
+                                    $classExists = class_exists($wrap);
+                                    if ($realJsonDecode->arrayWrap)
                                     {
-                                        if (class_exists($wrap))
+                                        $v = [];
+                                        foreach ($value as $key => $_value)
+                                        {
+                                            if ($classExists)
+                                            {
+                                                $v[$key] = new $wrap($_value);
+                                            }
+                                            else
+                                            {
+                                                $v[$key] = $wrap($_value);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if ($classExists)
                                         {
                                             $v = new $wrap($value);
                                         }
@@ -154,10 +171,6 @@ abstract class RedisModel extends BaseModel
                                         {
                                             $v = $wrap($value);
                                         }
-                                    }
-                                    else
-                                    {
-                                        $v = $value;
                                     }
                                 }
                                 else

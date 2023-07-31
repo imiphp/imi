@@ -123,16 +123,36 @@ abstract class Model extends BaseModel
                             {
                                 if ($realJsonDecode)
                                 {
+                                    /** @var \Imi\Model\Annotation\JsonDecode $realJsonDecode */
                                     $wrap = $realJsonDecode->wrap;
                                     if ('' !== $wrap && (\is_array($value) || \is_object($value)))
                                     {
-                                        if (class_exists($wrap))
+                                        $classExists = class_exists($wrap);
+                                        if ($realJsonDecode->arrayWrap)
                                         {
-                                            $v = new $wrap($value);
+                                            $v = [];
+                                            foreach ($value as $key => $_value)
+                                            {
+                                                if ($classExists)
+                                                {
+                                                    $v[$key] = new $wrap($_value);
+                                                }
+                                                else
+                                                {
+                                                    $v[$key] = $wrap($_value);
+                                                }
+                                            }
                                         }
                                         else
                                         {
-                                            $v = $wrap($value);
+                                            if ($classExists)
+                                            {
+                                                $v = new $wrap($value);
+                                            }
+                                            else
+                                            {
+                                                $v = $wrap($value);
+                                            }
                                         }
                                     }
                                     else
