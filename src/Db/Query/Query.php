@@ -1266,7 +1266,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildReplaceSql($data = null): string
+    public function buildReplaceSql($data = null, array $uniqueFields = []): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1310,7 +1310,7 @@ abstract class Query implements IQuery
                 $this->binds = [];
             }
             $builderClass = static::REPLACE_BUILDER_CLASS;
-            $sql = (new $builderClass($this))->build($data);
+            $sql = (new $builderClass($this))->build($data, $uniqueFields);
             if ($alias)
             {
                 // @phpstan-ignore-next-line
@@ -1528,9 +1528,9 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function replace($data = null): IResult
+    public function replace($data = null, array $uniqueFields = []): IResult
     {
-        return $this->execute($this->buildReplaceSql($data));
+        return $this->execute($this->buildReplaceSql($data, $uniqueFields));
     }
 
     /**
