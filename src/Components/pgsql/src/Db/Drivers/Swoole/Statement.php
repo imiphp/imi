@@ -418,7 +418,17 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         $queryString = $this->lastSql;
         if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
         {
-            $this->lastInsertId = $this->db->lastInsertId();
+            try
+            {
+                $this->lastInsertId = $this->db->lastInsertId();
+            }
+            catch (\Throwable $th)
+            {
+                if (!str_contains($th->getMessage(), 'lastval is not yet defined in this session'))
+                {
+                    throw $th;
+                }
+            }
         }
         else
         {
