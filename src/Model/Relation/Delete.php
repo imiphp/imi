@@ -20,6 +20,7 @@ use Imi\Util\Imi;
 class Delete
 {
     use \Imi\Util\Traits\TStaticClass;
+    use TRelation;
 
     private static array $methodCacheMap = [];
 
@@ -104,7 +105,8 @@ class Delete
         ]);
         if (null === $modelField)
         {
-            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField])->limit(1)->delete();
+            $rightModel = $struct->getRightModel();
+            $rightModel::query(self::parsePoolName($annotation->poolName, $className, $rightModel))->where($rightField, '=', $model[$leftField])->limit(1)->delete();
         }
         else
         {
@@ -208,7 +210,7 @@ class Delete
                     {
                         $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
                     }
-                    $modelClass::query()->where($annotationItem->modelField, '=', $model[$annotationItem->field])->limit(1)->delete();
+                    $modelClass::query(self::parsePoolName($annotationItem->poolName, $className, $modelClass))->where($annotationItem->modelField, '=', $model[$annotationItem->field])->limit(1)->delete();
                 }
                 else
                 {
@@ -247,7 +249,8 @@ class Delete
         $modelField = $model[$propertyName];
         if (null === $modelField)
         {
-            $struct->getRightModel()::query()->where($rightField, '=', $model[$leftField])->delete();
+            $rightModel = $struct->getRightModel();
+            $rightModel::query(self::parsePoolName($annotation->poolName, $className, $rightModel))->where($rightField, '=', $model[$leftField])->delete();
         }
         else
         {

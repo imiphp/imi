@@ -20,6 +20,7 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 class Insert
 {
     use \Imi\Util\Traits\TStaticClass;
+    use TRelation;
 
     private static array $methodCacheMap = [];
 

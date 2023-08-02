@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Model\Annotation\Relation;
 
+use Imi\Model\Enum\RelationPoolName;
+
 /**
  * 多态一对一
  *
@@ -18,6 +20,7 @@ namespace Imi\Model\Annotation\Relation;
  * @property bool          $with           关联预加载查询
  * @property string[]|null $withFields     设置结果模型的序列化字段
  * @property bool          $withSoftDelete 查询结果是否包含被软删除的数据，仅查询有效。非软删除模型请勿设置为 true
+ * @property int|string    $poolName       连接池名称，或 \Imi\Model\Enum\RelationPoolName 中的常量
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class PolymorphicOneToOne extends RelationBase
@@ -28,9 +31,10 @@ class PolymorphicOneToOne extends RelationBase
     protected ?string $defaultFieldName = 'model';
 
     /**
-     * @param mixed $typeValue
+     * @param mixed           $typeValue
+     * @param int|string|null $poolName  连接池名称，或 \Imi\Model\Enum\RelationPoolName 中的常量
      */
-    public function __construct(?array $__data = null, string $model = '', string $type = '', $typeValue = null, ?array $fields = null, bool $with = false, ?array $withFields = null, bool $withSoftDelete = false)
+    public function __construct(?array $__data = null, string $model = '', string $type = '', $typeValue = null, ?array $fields = null, bool $with = false, ?array $withFields = null, bool $withSoftDelete = false, $poolName = RelationPoolName::PARENT)
     {
         parent::__construct(...\func_get_args());
     }

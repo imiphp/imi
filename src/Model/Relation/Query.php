@@ -24,6 +24,7 @@ use Imi\Util\Imi;
 class Query
 {
     use \Imi\Util\Traits\TStaticClass;
+    use TRelation;
 
     private static array $methodCacheMap = [];
 
@@ -127,11 +128,11 @@ class Query
         {
             if ($annotation->withSoftDelete)
             {
-                $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                $query = $modelClass::originQuery(self::parsePoolName($annotation->poolName, $className, $modelClass));
             }
             else
             {
-                $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                $query = $modelClass::query(self::parsePoolName($annotation->poolName, $className, $modelClass));
             }
             /** @var IModelQuery $query */
             $query->where($rightField, '=', $leftValue);
@@ -215,11 +216,11 @@ class Query
             {
                 if ($annotation->withSoftDelete)
                 {
-                    $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                    $query = $modelClass::originQuery(self::parsePoolName($annotation->poolName, $className, $modelClass));
                 }
                 else
                 {
-                    $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                    $query = $modelClass::query(self::parsePoolName($annotation->poolName, $className, $modelClass));
                 }
                 /** @var IModelQuery $query */
                 $query->where($rightField, '=', $leftValue);
@@ -320,11 +321,11 @@ class Query
             {
                 if ($annotation->withSoftDelete)
                 {
-                    $query = $rightModel::originQuery($className::__getMeta()->getDbPoolName());
+                    $query = $rightModel::originQuery(self::parsePoolName($annotation->poolName, $className, $rightModel));
                 }
                 else
                 {
-                    $query = $rightModel::query($className::__getMeta()->getDbPoolName());
+                    $query = $rightModel::query(self::parsePoolName($annotation->poolName, $className, $rightModel));
                 }
                 /** @var IModelQuery $query */
                 $query->field(...$fields)
@@ -430,11 +431,11 @@ class Query
             {
                 if ($annotation->withSoftDelete)
                 {
-                    $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                    $query = $modelClass::originQuery(self::parsePoolName($annotation->poolName, $className, $modelClass));
                 }
                 else
                 {
-                    $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                    $query = $modelClass::query(self::parsePoolName($annotation->poolName, $className, $modelClass));
                 }
                 /** @var IModelQuery $query */
                 $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
@@ -519,11 +520,11 @@ class Query
             {
                 if ($annotation->withSoftDelete)
                 {
-                    $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                    $query = $modelClass::originQuery(self::parsePoolName($annotation->poolName, $className, $modelClass));
                 }
                 else
                 {
-                    $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                    $query = $modelClass::query(self::parsePoolName($annotation->poolName, $className, $modelClass));
                 }
                 /** @var IModelQuery $query */
                 $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $leftValue);
@@ -624,11 +625,11 @@ class Query
                     {
                         if ($annotationItem->withSoftDelete)
                         {
-                            $query = $modelClass::originQuery($className::__getMeta()->getDbPoolName());
+                            $query = $modelClass::originQuery(self::parsePoolName($annotationItem->poolName, $className, $modelClass));
                         }
                         else
                         {
-                            $query = $modelClass::query($className::__getMeta()->getDbPoolName());
+                            $query = $modelClass::query(self::parsePoolName($annotationItem->poolName, $className, $modelClass));
                         }
                         /** @var IModelQuery $query */
                         $query->where($leftField, '=', $rightValue);
@@ -733,11 +734,11 @@ class Query
                     {
                         if ($annotationItem->withSoftDelete)
                         {
-                            $query = $rightModel::originQuery($className::__getMeta()->getDbPoolName());
+                            $query = $rightModel::originQuery(self::parsePoolName($annotationItem->poolName, $className, $rightModel));
                         }
                         else
                         {
-                            $query = $rightModel::query($className::__getMeta()->getDbPoolName());
+                            $query = $rightModel::query(self::parsePoolName($annotationItem->poolName, $className, $rightModel));
                         }
                         /** @var IModelQuery $query */
                         $query->field(...$fields)
@@ -854,11 +855,11 @@ class Query
             {
                 if ($annotation->withSoftDelete)
                 {
-                    $query = $rightModel::originQuery($className::__getMeta()->getDbPoolName());
+                    $query = $rightModel::originQuery(self::parsePoolName($annotation->poolName, $className, $rightModel));
                 }
                 else
                 {
-                    $query = $rightModel::query($className::__getMeta()->getDbPoolName());
+                    $query = $rightModel::query(self::parsePoolName($annotation->poolName, $className, $rightModel));
                 }
                 /** @var IModelQuery $query */
                 $query->field(...$fields)

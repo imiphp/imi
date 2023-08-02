@@ -20,11 +20,13 @@ use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Relation\Delete;
 use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Query;
+use Imi\Model\Relation\TRelation;
 use Imi\Model\Relation\Update;
 
 class ModelRelationManager
 {
     use \Imi\Util\Traits\TStaticClass;
+    use TRelation;
 
     /**
      * 模型关联字段名数组.
@@ -110,11 +112,11 @@ class ModelRelationManager
                     $ids = $item['ids'];
                     if ($annotation->withSoftDelete)
                     {
-                        $query = $rightModel::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        $query = $rightModel::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $rightModel));
                     }
                     else
                     {
-                        $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName());
+                        $query = $rightModel::query(self::parsePoolName($annotation->poolName, $modelClass, $rightModel));
                     }
                     /** @var IModelQuery $query */
                     $query->field(...$queryFields)
@@ -164,13 +166,14 @@ class ModelRelationManager
                 elseif ($annotation instanceof OneToOne)
                 {
                     $rightField = $item['rightField'];
+                    $relationModelClass = $item['modelClass'];
                     if ($annotation->withSoftDelete)
                     {
-                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     else
                     {
-                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::query(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     /** @var IModelQuery $query */
                     $query->whereIn($rightField, $item['ids']);
@@ -198,13 +201,14 @@ class ModelRelationManager
                 elseif ($annotation instanceof OneToMany)
                 {
                     $rightField = $item['rightField'];
+                    $relationModelClass = $item['modelClass'];
                     if ($annotation->withSoftDelete)
                     {
-                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     else
                     {
-                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::query(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     /** @var IModelQuery $query */
                     $query->whereIn($rightField, $item['ids']);
@@ -253,11 +257,11 @@ class ModelRelationManager
                     $ids = $item['ids'];
                     if ($annotation->withSoftDelete)
                     {
-                        $query = $rightModel::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        $query = $rightModel::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $rightModel));
                     }
                     else
                     {
-                        $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName());
+                        $query = $rightModel::query(self::parsePoolName($annotation->poolName, $modelClass, $rightModel));
                     }
                     /** @var IModelQuery $query */
                     $query->field(...$queryFields)
@@ -306,13 +310,14 @@ class ModelRelationManager
                 elseif ($annotation instanceof PolymorphicOneToOne)
                 {
                     $rightField = $item['rightField'];
+                    $relationModelClass = $item['modelClass'];
                     if ($annotation->withSoftDelete)
                     {
-                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     else
                     {
-                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::query(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     /** @var IModelQuery $query */
                     $query->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
@@ -340,13 +345,14 @@ class ModelRelationManager
                 elseif ($annotation instanceof PolymorphicOneToMany)
                 {
                     $rightField = $item['rightField'];
+                    $relationModelClass = $item['modelClass'];
                     if ($annotation->withSoftDelete)
                     {
-                        $query = ($item['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     else
                     {
-                        $query = ($item['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                        $query = $relationModelClass::query(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                     }
                     /** @var IModelQuery $query */
                     $query->where($annotation->type, '=', $annotation->typeValue)->whereIn($rightField, $item['ids']);
@@ -387,13 +393,14 @@ class ModelRelationManager
                         $subAnnotation = $subItem['annotation'];
                         $leftField = $subItem['leftField'];
                         $itemModels = $subItem['models'];
+                        $relationModelClass = $subItem['modelClass'];
                         if ($annotation->withSoftDelete)
                         {
-                            $query = ($subItem['modelClass'])::originQuery($modelClass::__getMeta()->getDbPoolName());
+                            $query = $relationModelClass::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                         }
                         else
                         {
-                            $query = ($subItem['modelClass'])::query($modelClass::__getMeta()->getDbPoolName());
+                            $query = $relationModelClass::query(self::parsePoolName($annotation->poolName, $modelClass, $relationModelClass));
                         }
                         /** @var IModelQuery $query */
                         $query->where($leftField, 'in', $subItem['ids']);
@@ -437,11 +444,11 @@ class ModelRelationManager
                         $ids = $subItem['ids'];
                         if ($annotation->withSoftDelete)
                         {
-                            $query = $rightModel::originQuery($modelClass::__getMeta()->getDbPoolName());
+                            $query = $rightModel::originQuery(self::parsePoolName($annotation->poolName, $modelClass, $rightModel));
                         }
                         else
                         {
-                            $query = $rightModel::query($modelClass::__getMeta()->getDbPoolName());
+                            $query = $rightModel::query(self::parsePoolName($annotation->poolName, $modelClass, $rightModel));
                         }
                         /** @var IModelQuery $query */
                         $query->field(...$queryFields)

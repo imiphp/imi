@@ -12,6 +12,7 @@ use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\JoinFrom;
 use Imi\Model\Annotation\Relation\JoinTo;
 use Imi\Model\Annotation\Relation\OneToOne;
+use Imi\Model\Enum\RelationPoolName;
 use Imi\Test\Component\Model\Base\ArticleBase;
 
 /**
@@ -28,7 +29,7 @@ use Imi\Test\Component\Model\Base\ArticleBase;
 class Article extends ArticleBase
 {
     /**
-     * @OneToOne(model="ArticleEx")
+     * @OneToOne(model="ArticleEx", poolName=RelationPoolName::PARENT)
      *
      * @JoinFrom("id")
      *
@@ -59,7 +60,7 @@ class Article extends ArticleBase
     }
 
     /**
-     * @OneToOne(model="ArticleEx", with=true)
+     * @OneToOne(model="ArticleEx", with=true, poolName=RelationPoolName::RELATION)
      *
      * @JoinFrom("id")
      *
@@ -88,7 +89,7 @@ class Article extends ArticleBase
     }
 
     /**
-     * @OneToOne(model="ArticleEx")
+     * @OneToOne(model="ArticleEx", poolName="maindb")
      *
      * @JoinFrom("id")
      *

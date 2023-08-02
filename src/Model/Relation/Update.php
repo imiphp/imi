@@ -22,6 +22,7 @@ use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 class Update
 {
     use \Imi\Util\Traits\TStaticClass;
+    use TRelation;
 
     private static array $methodCacheMap = [];
 
@@ -185,7 +186,7 @@ class Update
             }
             $pk = $pks[0];
 
-            $oldIds = $rightModel::query()->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
+            $oldIds = $rightModel::query(self::parsePoolName($annotation->poolName, $className, $rightModel))->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
             $updateIds = [];
             foreach ($model[$propertyName] as $row)
@@ -276,7 +277,7 @@ class Update
         if ($orphanRemoval)
         {
             // 删除无关联数据
-            $oldRightIds = $middleModel::query()->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
+            $oldRightIds = $middleModel::query(self::parsePoolName($annotation->poolName, $className, $middleModel))->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
             $updateIds = [];
             foreach ($model[$propertyName] as $row)
@@ -503,7 +504,7 @@ class Update
             }
             $pk = $pks[0];
 
-            $oldIds = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
+            $oldIds = $rightModel::query(self::parsePoolName($annotation->poolName, $className, $rightModel))->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
             $updateIds = [];
             foreach ($model[$propertyName] as $row)
@@ -595,7 +596,7 @@ class Update
         if ($orphanRemoval)
         {
             // 删除无关联数据
-            $oldRightIds = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
+            $oldRightIds = $middleModel::query(self::parsePoolName($annotation->poolName, $className, $middleModel))->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
             $updateIds = [];
             foreach ($model[$propertyName] as $row)
