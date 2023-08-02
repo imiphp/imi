@@ -370,13 +370,6 @@ abstract class QueryCurdBaseTest extends TestCase
         ;
         $this->assertEquals('update "test" set "a" = "a" + :fip1,"b" = "b" - :fdp2,"c" = c + :c', $query->buildUpdateSql());
         $this->assertEquals([':fip1' => 1, ':fdp2' => 2, ':c' => 3], $query->getBinds());
-
-        $query = Db::query()->from('test')->setFieldInc('a', 4)
-                                          ->setFieldDec('b', 5)
-                                          ->setFieldExp('c', 'c + :c', [':c' => 6])
-        ;
-        $this->assertEquals('replace into "test" set "a" = "a" + :fip1,"b" = "b" - :fdp2,"c" = c + :c', $query->buildReplaceSql());
-        $this->assertEquals([':fip1' => 4, ':fdp2' => 5, ':c' => 6], $query->getBinds());
     }
 
     /**

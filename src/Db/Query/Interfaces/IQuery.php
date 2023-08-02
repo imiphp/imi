@@ -579,14 +579,14 @@ interface IQuery
      *
      * @param array|object|null $data
      */
-    public function buildReplaceSql($data = null): string;
+    public function buildReplaceSql($data = null, array $uniqueFields = []): string;
 
     /**
      * 替换数据（Replace）.
      *
      * @param array|object|null $data
      */
-    public function replace($data = null): IResult;
+    public function replace($data = null, array $uniqueFields = []): IResult;
 
     /**
      * 构建删除语句.

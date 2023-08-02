@@ -17,6 +17,7 @@ use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberReferenceProperty;
 use Imi\Test\Component\Model\MemberSerializable;
 use Imi\Test\Component\Model\MemberWithSqlField;
+use Imi\Test\Component\Model\NoIncPk;
 use Imi\Test\Component\Model\Prefix;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestBug403;
@@ -169,6 +170,37 @@ class ModelTest extends BaseTest
         $result = $member->save();
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
+
+        $record = NoIncPk::newInstance();
+        $record->aId = 1;
+        $record->bId = 2;
+        $record->value = 'imi';
+        $record->save();
+
+        $record2 = NoIncPk::find([
+            'a_id' => 1,
+            'b_id' => 2,
+        ]);
+        $this->assertNotNull($record2);
+        $this->assertEquals([
+            'aId'   => 1,
+            'bId'   => 2,
+            'value' => 'imi',
+        ], $record2->toArray());
+
+        $record2->value = 'yurun';
+        $record2->save();
+
+        $record3 = NoIncPk::find([
+            'a_id' => 1,
+            'b_id' => 2,
+        ]);
+        $this->assertNotNull($record3);
+        $this->assertEquals([
+            'aId'   => 1,
+            'bId'   => 2,
+            'value' => 'yurun',
+        ], $record3->toArray());
     }
 
     public function testDelete(): void

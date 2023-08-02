@@ -652,7 +652,7 @@ abstract class Model extends BaseModel
                     $query->where($idName, '=', $this[$idName]);
                 }
             }
-            $result = $query->replace($data);
+            $result = $query->replace($data, $meta->getId() ?? []);
             if ($result->isSuccess() && $autoIncrementField)
             {
                 $this[$autoIncrementField] = $result->getLastInsertId();

@@ -17,10 +17,6 @@ CACHE 1
 ;
 
 -- ----------------------------
--- Records of tb_article
--- ----------------------------
-
--- ----------------------------
 -- Table structure for tb_member
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tb_member";
@@ -40,8 +36,15 @@ COMMENT ON COLUMN "public"."tb_member"."username" IS '用户名';
 COMMENT ON COLUMN "public"."tb_member"."password" IS '密码';
 
 -- ----------------------------
--- Records of tb_member
+-- Table structure for tb_no_inc_pk
 -- ----------------------------
+DROP TABLE IF EXISTS "public"."tb_no_inc_pk";
+CREATE TABLE "public"."tb_no_inc_pk" (
+  "a_id" int4 NOT NULL,
+  "b_id" int4 NOT NULL,
+  "value" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
 
 -- ----------------------------
 -- Table structure for tb_performance
@@ -58,10 +61,6 @@ CACHE 1
   "value" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-
--- ----------------------------
--- Records of tb_performance
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_test_json
@@ -82,10 +81,6 @@ COMMENT ON COLUMN "public"."tb_test_json"."json_data" IS 'json数据';
 COMMENT ON TABLE "public"."tb_test_json" IS 'test';
 
 -- ----------------------------
--- Records of tb_test_json
--- ----------------------------
-
--- ----------------------------
 -- Table structure for tb_test_soft_delete
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tb_test_soft_delete";
@@ -101,10 +96,6 @@ CACHE 1
   "delete_time" int4 NOT NULL DEFAULT 0
 )
 ;
-
--- ----------------------------
--- Records of tb_test_soft_delete
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_tree
@@ -163,10 +154,6 @@ CACHE 1
 ;
 
 -- ----------------------------
--- Records of tb_update_time
--- ----------------------------
-
--- ----------------------------
 -- Table structure for tb_virtual_column
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tb_virtual_column";
@@ -186,23 +173,9 @@ CACHE 1
 ;
 
 -- ----------------------------
--- Records of tb_virtual_column
--- ----------------------------
-
--- ----------------------------
--- Auto increment value for tb_article
--- ----------------------------
-SELECT setval('"public"."tb_article_id_seq"', 10, true);
-
--- ----------------------------
 -- Primary Key structure for table tb_article
 -- ----------------------------
 ALTER TABLE "public"."tb_article" ADD CONSTRAINT "tb_article_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
--- Auto increment value for tb_member
--- ----------------------------
-SELECT setval('"public"."tb_member_id_seq"', 6, true);
 
 -- ----------------------------
 -- Primary Key structure for table tb_member
@@ -210,9 +183,9 @@ SELECT setval('"public"."tb_member_id_seq"', 6, true);
 ALTER TABLE "public"."tb_member" ADD CONSTRAINT "tb_member_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Auto increment value for tb_performance
+-- Primary Key structure for table tb_no_inc_pk
 -- ----------------------------
-SELECT setval('"public"."tb_performance_id_seq"', 1, false);
+ALTER TABLE "public"."tb_no_inc_pk" ADD CONSTRAINT "tb_no_inc_pk_pkey" PRIMARY KEY ("a_id", "b_id");
 
 -- ----------------------------
 -- Primary Key structure for table tb_performance
@@ -220,19 +193,9 @@ SELECT setval('"public"."tb_performance_id_seq"', 1, false);
 ALTER TABLE "public"."tb_performance" ADD CONSTRAINT "tb_performance_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Auto increment value for tb_test_json
--- ----------------------------
-SELECT setval('"public"."tb_test_json_id_seq"', 165, true);
-
--- ----------------------------
 -- Primary Key structure for table tb_test_json
 -- ----------------------------
 ALTER TABLE "public"."tb_test_json" ADD CONSTRAINT "tb_test_json_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
--- Auto increment value for tb_test_soft_delete
--- ----------------------------
-SELECT setval('"public"."tb_test_soft_delete_id_seq"', 33, true);
 
 -- ----------------------------
 -- Primary Key structure for table tb_test_soft_delete
@@ -240,29 +203,14 @@ SELECT setval('"public"."tb_test_soft_delete_id_seq"', 33, true);
 ALTER TABLE "public"."tb_test_soft_delete" ADD CONSTRAINT "tb_test_soft_delete_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Auto increment value for tb_tree
--- ----------------------------
-SELECT setval('"public"."tb_tree_id_seq"', 1, false);
-
--- ----------------------------
 -- Primary Key structure for table tb_tree
 -- ----------------------------
 ALTER TABLE "public"."tb_tree" ADD CONSTRAINT "tb_tree_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
--- Auto increment value for tb_update_time
--- ----------------------------
-SELECT setval('"public"."tb_update_time_id_seq"', 1, true);
-
--- ----------------------------
 -- Primary Key structure for table tb_update_time
 -- ----------------------------
 ALTER TABLE "public"."tb_update_time" ADD CONSTRAINT "tb_update_time_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
--- Auto increment value for tb_virtual_column
--- ----------------------------
-SELECT setval('"public"."tb_virtual_column_id_seq"', 33, true);
 
 -- ----------------------------
 -- Primary Key structure for table tb_virtual_column

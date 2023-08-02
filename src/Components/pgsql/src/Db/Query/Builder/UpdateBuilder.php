@@ -107,7 +107,7 @@ class UpdateBuilder extends BaseBuilder
     /**
      * @param mixed $value
      */
-    private function parseValueParam(string $valueParam, $value): string
+    protected function parseValueParam(string $valueParam, $value): string
     {
         if (\is_bool($value))
         {
