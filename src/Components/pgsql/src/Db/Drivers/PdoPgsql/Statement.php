@@ -40,7 +40,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         }
         else
         {
-            $this->lastInsertId = 0;
+            $this->lastInsertId = '';
         }
     }
 }

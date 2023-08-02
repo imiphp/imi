@@ -27,8 +27,10 @@ trait TPdoStatement
 
     /**
      * 最后插入ID.
+     *
+     * @var int|string
      */
-    protected int $lastInsertId = 0;
+    protected $lastInsertId = '';
 
     public function __construct(IDb $db, \PDOStatement $statement, bool $isExecuted = false)
     {
@@ -238,7 +240,14 @@ trait TPdoStatement
      */
     public function lastInsertId(?string $name = null): string
     {
-        return (string) $this->lastInsertId;
+        if (null === $name)
+        {
+            return (string) $this->lastInsertId;
+        }
+        else
+        {
+            return $this->db->lastInsertId($name);
+        }
     }
 
     /**
