@@ -89,11 +89,11 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
             $result = $callResult->toStringWithoutLogic($query);
             $binds = array_merge($binds, $callResult->getBinds());
 
-            return $result;
+            return '(' . $result . ')';
         }
         else
         {
-            return (string) $callResult;
+            return '(' . $callResult . ')';
         }
     }
 }

@@ -186,6 +186,24 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals($expectedData['total'], $result->getTotal());
         $this->assertEquals($expectedData['limit'], $result->getLimit());
         $this->assertEquals($expectedData['page_count'], $result->getPageCount());
+
+        // distinct
+        $result = $query->distinct()->field('member_id')->from($this->tableArticle)->paginate(1, 1);
+        $expectedData = [
+            'list' => [
+                [
+                    'member_id' => 0,
+                ],
+            ],
+            'limit'      => 1,
+            'total'      => 1,
+            'page_count' => 1,
+        ];
+        $this->assertEquals($expectedData, $result->toArray());
+        $this->assertEquals($expectedData['list'], $result->getList());
+        $this->assertEquals($expectedData['total'], $result->getTotal());
+        $this->assertEquals($expectedData['limit'], $result->getLimit());
+        $this->assertEquals($expectedData['page_count'], $result->getPageCount());
     }
 
     /**
