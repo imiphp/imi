@@ -73,11 +73,33 @@ class BigTablePagination
     public function select(int $page, int $limit): IResult
     {
         $query = clone $this->query;
-        $query->getOption()->field = [];
-        $ids = $query->field($this->idField)
-                     ->page($page, $limit)
-                     ->select()
-                     ->getColumn();
+        $option = $query->getOption();
+        if ($option->distinct)
+        {
+            $list = $query->field($this->idField)
+                          ->page($page, $limit)
+                          ->select()
+                          ->getArray();
+            var_dump($list);
+            if ($list)
+            {
+                $row = $list[0];
+                end($row);
+                $ids = array_column($list, key($row));
+            }
+            else
+            {
+                $ids = [];
+            }
+        }
+        else
+        {
+            $option->field = [];
+            $ids = $query->field($this->idField)
+                         ->page($page, $limit)
+                         ->select()
+                         ->getColumn();
+        }
 
         $query = clone $this->query;
         $option = $query->getOption();
