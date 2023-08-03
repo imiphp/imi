@@ -816,8 +816,19 @@ abstract class Query implements IQuery
         if ($options['total'] ?? true)
         {
             $query = (clone $this);
-            $query->option->order = [];
-            $total = (int) $query->count();
+            $option = $query->option;
+            $option->order = [];
+            if ($option->distinct)
+            {
+                $option->field = [
+                    new WrapField('count(distinct ', $option->field ?: ['*'], ')'),
+                ];
+                $total = (int) $query->select()->getScalar();
+            }
+            else
+            {
+                $total = (int) $query->count();
+            }
         }
         else
         {

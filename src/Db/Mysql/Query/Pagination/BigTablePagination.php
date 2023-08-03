@@ -8,6 +8,7 @@ use Imi\Db\Query\Interfaces\IPaginateResult;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\PaginateResult;
+use Imi\Db\Query\WrapField;
 use Imi\Util\Pagination;
 
 class BigTablePagination
@@ -47,7 +48,17 @@ class BigTablePagination
             $query = clone $this->query;
             $option = $query->getOption();
             $option->order = [];
-            $total = (int) $query->count();
+            if ($option->distinct)
+            {
+                $option->field = [
+                    new WrapField('count(distinct ', $option->field ?: ['*'], ')'),
+                ];
+                $total = (int) $query->select()->getScalar();
+            }
+            else
+            {
+                $total = (int) $query->count();
+            }
         }
         else
         {
@@ -62,6 +73,7 @@ class BigTablePagination
     public function select(int $page, int $limit): IResult
     {
         $query = clone $this->query;
+        $query->getOption()->field = [];
         $ids = $query->field($this->idField)
                      ->page($page, $limit)
                      ->select()
