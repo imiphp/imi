@@ -80,9 +80,9 @@ class ClassObject
 
         foreach ($params as $i => $param)
         {
-            if (isset($args[$i]))
+            if (\array_key_exists($i, $args))
             {
-                $result[$param->name] = $args[$i];
+                $result[$param->name] = &$args[$i];
             }
             elseif ($keepNotExistArgs)
             {
@@ -98,7 +98,7 @@ class ClassObject
         {
             $paramName = $param->name;
             $resultItem = [$result[$paramName]];
-            if (isset($args[$i + 1]))
+            if (\array_key_exists($i + 1, $args))
             {
                 $count = \count($args);
                 for (++$i; $i < $count; ++$i)
@@ -125,9 +125,9 @@ class ClassObject
         foreach ($params as $param)
         {
             $name = $param->getName();
-            if (isset($args[$name]))
+            if (\array_key_exists($name, $args))
             {
-                $result[] = $args[$name];
+                $result[] = &$args[$name];
             }
             elseif ($param->isDefaultValueAvailable())
             {
