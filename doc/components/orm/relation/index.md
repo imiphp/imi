@@ -34,6 +34,18 @@
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
+描述的字段模型，使用父模型连接池名称（默认）：
+
+`@OneToOne(model="模型类名", poolName=\Imi\Model\Enum\RelationPoolName::PARENT)`
+
+描述的字段模型，使用被关联的模型本身的连接池配置：
+
+`@OneToOne(model="模型类名", poolName=\Imi\Model\Enum\RelationPoolName::RELATION)`
+
+描述的字段模型，指定连接池名字：
+
+`@OneToOne(model="模型类名", poolName="连接池名")`
+
 ### @OneToMany
 
 一对多关系声明

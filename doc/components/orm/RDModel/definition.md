@@ -271,13 +271,15 @@ abstract class ArticleBase extends Model
 
 写在属性上，可以覆盖写在类上的注解。
 
-完整参数：`@JsonDecode(associative=true, depth=512, flags=0, wrap=\Imi\Util\LazyArrayObject::class)`
+完整参数：`@JsonDecode(associative=true, depth=512, flags=0, wrap=\Imi\Util\LazyArrayObject::class, arrayWrap=false)`
 
-> 除 `$wrap` 外其它参数含义同 `json_decode()`
+> `associative`、`depth`、`flags` 参数含义同 `json_decode()`
 
-**$wrap 参数说明：**
+**参数说明：**
 
 `$wrap` 反序列化数据的包装，如果是对象或者数组时有效。支持类名、函数名。设为空字符串时，反序列化为数组。
+
+`$arrayWrap` 设为 `true` 时，属性值类型为数组，使用 `wrap` 对数组成员进行包装。
 
 类名：
 
