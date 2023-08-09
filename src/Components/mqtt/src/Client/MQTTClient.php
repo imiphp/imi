@@ -23,6 +23,7 @@ use Imi\MQTT\Client\Contract\IMQTTClientListener;
 use Imi\MQTT\Client\Exception\ConnectException;
 use Imi\MQTT\Client\Exception\InvalidPacketTypeException;
 use Imi\MQTT\Client\Exception\SendException;
+use Imi\Swoole\Util\Swoole;
 use Imi\Timer\Timer;
 use Imi\Util\Imi;
 use Swoole\Coroutine\Client;
@@ -108,9 +109,10 @@ class MQTTClient
         $option = [
             'open_mqtt_protocol'    => true,
         ];
+        $type = Swoole::getTcpSockTypeByHost($config['host']);
         if ($connection->getSsl())
         {
-            $type = \SWOOLE_SOCK_TCP | \SWOOLE_SSL;
+            $type |= \SWOOLE_SSL;
             $option['ssl_cert_file'] = $connection->getSslCertFile();
             $option['ssl_key_file'] = $connection->getSslKeyFile();
             $option['ssl_verify_peer'] = $connection->getSslVerifyPeer();
@@ -118,10 +120,6 @@ class MQTTClient
             $option['ssl_host_name'] = $connection->getSslHostName();
             $option['ssl_ca_file'] = $connection->getSslCafile();
             $option['ssl_ca_path'] = $connection->getSslCapath();
-        }
-        else
-        {
-            $type = \SWOOLE_SOCK_TCP;
         }
         // Swoole 客户端对象
         $this->client = $client = new Client($type);

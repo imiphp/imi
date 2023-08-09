@@ -79,9 +79,9 @@ class Server extends Base implements ISwooleHttpServer
     protected function getServerInitConfig(): array
     {
         return [
-            'host'       => $this->config['host'] ?? '0.0.0.0',
+            'host'       => $host = $this->config['host'] ?? '0.0.0.0',
             'port'       => (int) ($this->config['port'] ?? 80),
-            'sockType'   => (int) ($this->config['sockType'] ?? \SWOOLE_SOCK_TCP),
+            'sockType'   => (int) ($this->config['sockType'] ?? \Imi\Swoole\Util\Swoole::getTcpSockTypeByHost($host)),
             'mode'       => (int) ($this->config['mode'] ?? \SWOOLE_BASE),
         ];
     }
