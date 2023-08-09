@@ -76,10 +76,13 @@ class Server extends Base implements ISwooleTcpServer
      */
     protected function getServerInitConfig(): array
     {
+        $host = $this->config['host'] ?? '0.0.0.0';
+        $sockType = \Imi\Swoole\Util\Swoole::getTcpSockTypeByHost($host);
+
         return [
-            'host'      => $this->config['host'] ?? '0.0.0.0',
+            'host'      => $host,
             'port'      => (int) ($this->config['port'] ?? 8080),
-            'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_TCP | $this->config['sockType']) : \SWOOLE_SOCK_TCP,
+            'sockType'  => isset($this->config['sockType']) ? ($sockType | $this->config['sockType']) : $sockType,
             'mode'      => (int) ($this->config['mode'] ?? \SWOOLE_BASE),
         ];
     }
