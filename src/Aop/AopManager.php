@@ -79,7 +79,12 @@ class AopManager
 
     public static function clear(): void
     {
-        self::$cache = self::$parsedCache = [];
+        self::$cache = self::$arrayCache = self::$parsedCache = [];
+    }
+
+    public static function clearRuntimeCache(): void
+    {
+        self::$arrayCache = self::$parsedCache = [];
     }
 
     public static function isDynamicRule(string $class, string $methodRule): bool

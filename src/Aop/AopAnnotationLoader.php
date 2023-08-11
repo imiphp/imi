@@ -29,6 +29,7 @@ class AopAnnotationLoader
         {
             return;
         }
+        AopManager::clearRuntimeCache();
         foreach (AnnotationManager::getAnnotationPoints(Aspect::class) as $item)
         {
             /** @var Aspect $aspectAnnotation */

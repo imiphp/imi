@@ -545,6 +545,8 @@ class Imi
         {
             $parser->execParse($className);
         }
+
+        \Imi\Aop\AopAnnotationLoader::load();
     }
 
     /**

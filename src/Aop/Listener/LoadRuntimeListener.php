@@ -22,15 +22,17 @@ class LoadRuntimeListener implements IEventListener
         }
         $eventData = $e->getData();
         $data = $eventData['data']['aop'] ?? [];
-        if ($cache = ($data['cache'] ?? null))
+        if ((bool) ($cache = ($data['cache'] ?? null)) | (bool) ($dynamicRulesCache = ($data['dynamicRulesCache'] ?? null)))
         {
-            AopManager::setCache([]);
-            AopManager::setArrayCache($cache);
-        }
-        if ($cache = ($data['dynamicRulesCache'] ?? null))
-        {
-            AopManager::setCache([]);
-            AopManager::setDynamicRulesCache($cache);
+            AopManager::clear();
+            if ($cache)
+            {
+                AopManager::setArrayCache($cache);
+            }
+            if ($dynamicRulesCache)
+            {
+                AopManager::setDynamicRulesCache($dynamicRulesCache);
+            }
         }
     }
 }
