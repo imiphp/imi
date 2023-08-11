@@ -722,6 +722,18 @@ var_dump(json_encode($data)); // 支持序列化
 ]
 ```
 
+**指定查询记录数量时的字段：**
+
+一般用于带 `distinct` 的查询，例如：
+
+```php
+$page = 1;
+$count = 10;
+$data = Db::query()->from('xxxtable')->distinct()->field('xxxtable.*')->paginate($page, $count, [
+    'countField' => 'distinct xxxtable.id',
+]);
+```
+
 ### 高性能分页查询
 
 **原理：**

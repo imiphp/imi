@@ -818,7 +818,17 @@ abstract class Query implements IQuery
             $query = (clone $this);
             $option = $query->option;
             $option->order = [];
-            if ($option->distinct)
+            if (isset($options['countField']))
+            {
+                $field = new Field();
+                $field->useRaw();
+                $field->setRawSQL($options['countField']);
+                $option->field = [
+                    new WrapField('count(', [$field], ')'),
+                ];
+                $total = (int) $query->select()->getScalar();
+            }
+            elseif ($option->distinct)
             {
                 $option->field = [
                     new WrapField('count(distinct ', $option->field ?: ['*'], ')'),
