@@ -94,7 +94,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->close();
             }
@@ -166,7 +166,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->close();
             }
@@ -196,7 +196,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->close();
             }
@@ -219,7 +219,7 @@ trait TPdoDriver
             }
             catch (\PDOException $e)
             {
-                if ($this->checkCodeIsOffline($e->errorInfo[0]))
+                if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
                 {
                     $this->close();
                 }
@@ -328,7 +328,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->close();
             }
@@ -405,7 +405,7 @@ trait TPdoDriver
             }
             catch (\PDOException $e)
             {
-                if ($this->checkCodeIsOffline($e->errorInfo[0]))
+                if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
                 {
                     $this->close();
                 }
@@ -439,7 +439,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if ($this->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->close();
             }
