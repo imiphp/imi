@@ -158,7 +158,7 @@ trait TPdoStatement
         }
         catch (\PDOException $e)
         {
-            if ($this->db->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[0]) && $this->db->checkCodeIsOffline($e->errorInfo[0]))
             {
                 $this->db->close();
             }
