@@ -547,6 +547,36 @@ class RedisHandler
     }
 
     /**
+     * geoadd.
+     *
+     * 当开启序列化后，经纬度会被序列化，并返回错误：ERR value is not a valid float
+     *
+     * 如下链接，官方认为这不算 BUG，所以这里做了一个兼容处理
+     *
+     * @see https://github.com/phpredis/phpredis/issues/1549
+     *
+     * @param float|string $lng
+     * @param float|string $lat
+     * @param mixed        ...$other_triples_and_options
+     *
+     * @return mixed
+     */
+    public function geoadd(string $key, $lng, $lat, string $member, ...$other_triples_and_options)
+    {
+        $redis = $this->redis;
+        $serializer = $redis->getOption(\Redis::OPT_SERIALIZER);
+        $redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_NONE);
+        try
+        {
+            return $redis->geoadd($key, $lng, $lat, $member, ...$other_triples_and_options);
+        }
+        finally
+        {
+            $redis->setOption(\Redis::OPT_SERIALIZER, $serializer);
+        }
+    }
+
+    /**
      * 是否为集群.
      */
     public function isCluster(): bool
