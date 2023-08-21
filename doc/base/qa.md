@@ -97,3 +97,13 @@ net.ipv4.tcp_wmem = 4096 32768 262142
 * Swoole 常驻内存并且有协程，所以 `worker_num` 建议设为 CPU 的 1-2 倍。
 
 * Workerman 常驻内存但依然是阻塞的，`count` 可参考 php-fpm 进程数的配置，并酌情减少一定的数量。
+
+## Redis 报错 ERR value is not a valid float
+
+该问题主要出现在，当启用 Redis 序列化时候，方法的参数值会被序列化后传输。
+
+官方认为这不算 BUG：<https://github.com/phpredis/phpredis/issues/1549>。
+
+imi v2.1.53 中对 `geoAdd()` 做了兼容处理。
+
+如果你在调用其它 Redis 方法报这个类似的错误，可以尝试关闭 Redis 连接池配置中的序列化，然后到 imi 的 github 提 issue，我们会在后续版本中做兼容处理。

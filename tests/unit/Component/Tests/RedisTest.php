@@ -137,4 +137,19 @@ class RedisTest extends BaseTest
         }
         $this->assertEquals($excepted, $map);
     }
+
+    public function testGeoAdd(): void
+    {
+        if (\PHP_OS_FAMILY === 'Windows')
+        {
+            $this->markTestSkipped('Windows redis not support geo.');
+        }
+        foreach ([
+            'redis_test', // 开启序列化
+            'redis_cache', // 禁用序列化
+        ] as $poolName)
+        {
+            $this->assertNotFalse(Redis::use(static fn (RedisHandler $redis) => $redis->geoAdd('imi:geo', 120.31858, 31.49881, $poolName), $poolName));
+        }
+    }
 }
