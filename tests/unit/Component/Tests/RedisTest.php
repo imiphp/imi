@@ -140,6 +140,10 @@ class RedisTest extends BaseTest
 
     public function testGeoAdd(): void
     {
+        if (\PHP_OS_FAMILY === 'Windows')
+        {
+            $this->markTestSkipped('Windows redis not support geo.');
+        }
         foreach ([
             'redis_test', // 开启序列化
             'redis_cache', // 禁用序列化
