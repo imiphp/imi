@@ -27,6 +27,8 @@ imi 提供了丰富的基础功能：`MySQL`、`PostgreSQL`、`Redis`、`超强�
 
 imi 框架自 2018 年 6 月 21 日首次发布以来，已经稳定运行在许多项目中，例如文旅电商平台、物联网充电云平台、停车云平台、支付微服务、短信微服务、钱包微服务、卡牌游戏服务端和数据迁移服务（虎扑）等项目。
 
+imi 官方提供了一个 AI 助手 [imi-ai](https://ai.imiphp.com)，不管是工作、生活、学习，它都可以帮你解决问题。
+
 ## 社群
 
 **imi 框架交流群：** 17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
