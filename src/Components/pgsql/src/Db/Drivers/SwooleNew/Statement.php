@@ -322,7 +322,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function rowCount(): int
     {
-        return $this->stmt->rowCount();
+        return $this->stmt->affectedRows();
     }
 
     /**
