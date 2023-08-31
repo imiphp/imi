@@ -10,6 +10,8 @@ use Imi\Db\Mysql\Query\FullText\SearchModifier;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
 use Imi\Db\Mysql\Query\Pagination\BigTablePagination;
 use Imi\Db\Query\Database;
+use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Query\Interfaces\IWhereCollector;
 use Imi\Db\Query\Raw;
 use Imi\Db\Query\Where\Where;
 use Imi\Test\BaseTest;
@@ -457,6 +459,67 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
         // BUG: https://github.com/imiphp/imi/pull/25
         Assert::assertEquals('select * from `' . $this->fullTableArticle . '`', Db::query($this->poolName)->from($this->tableArticle)->whereEx([])->select()->getSql());
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testWhereBrackets(array $args): void
+    {
+        ['ids' => $ids] = $args;
+        $id = $ids[1];
+
+        // 字符串
+        $query = Db::query($this->poolName);
+        $result = $query->from($this->tableArticle)->whereBrackets(static fn () => 'id=' . $id)->select();
+        $record = $result->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $record);
+
+        // Where 数组
+        $query = Db::query($this->poolName);
+        $result = $query->from($this->tableArticle)->whereBrackets(static fn () => [
+            new Where('id', '=', $id),
+        ])->select();
+        $record = $result->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $record);
+
+        // Where 对象
+        $query = Db::query($this->poolName);
+        $result = $query->from($this->tableArticle)->whereBrackets(static fn () => new Where('id', '=', $id))->select();
+        $record = $result->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $record);
+
+        // Where 收集器
+        $query = Db::query($this->poolName);
+        $result = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where) use ($id) {
+            $where->where('id', '=', $id);
+        })->select();
+        $record = $result->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $record);
     }
 
     /**
