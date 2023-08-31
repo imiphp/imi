@@ -70,17 +70,21 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
                 {
                     if (0 === $i)
                     {
-                        $result .= $callResultItem->toStringWithoutLogic($query) . ' ';
+                        $result .= $callResultItem->toStringWithoutLogic($query);
                     }
                     else
                     {
-                        $result .= $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query) . ' ';
+                        $result .= ' ' . $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query);
                     }
                     $binds = array_merge($binds, $callResultItem->getBinds());
                 }
                 else
                 {
-                    $result .= $callResultItem . ' ';
+                    if ($i > 0)
+                    {
+                        $result .= ' ';
+                    }
+                    $result .= $callResultItem;
                 }
             }
 

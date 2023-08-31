@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests\Db;
 
 use Imi\Db\Db;
+use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Mysql\Query\FullText\MysqlFullTextOptions;
 use Imi\Db\Mysql\Query\FullText\SearchModifier;
 use Imi\Db\Mysql\Query\Lock\MysqlLock;
@@ -433,6 +434,32 @@ abstract class QueryCurdBaseTest extends BaseTest
         Assert::assertNull($record);
     }
 
+    public function testWhere(): void
+    {
+        $query = Db::query($this->poolName);
+        $sql = $query->from($this->tableArticle)->where('where', '=', 1)
+                                                ->orWhere('orWhere', '=', 2)
+                                                ->whereBetween('whereBetween', 1, 2)
+                                                ->orWhereBetween('orWhereBetween', 1, 2)
+                                                ->whereNotBetween('whereNotBetween', 1, 2)
+                                                ->orWhereNotBetween('orWhereNotBetween', 1, 2)
+                                                ->whereIn('whereIn', [1, 2])
+                                                ->orWhereIn('orWhereIn', [1, 2])
+                                                ->whereNotIn('whereNotIn', [1, 2])
+                                                ->orWhereNotIn('orWhereNotIn', [1, 2])
+                                                ->whereIsNull('whereIsNull')
+                                                ->orWhereIsNull('orWhereIsNull')
+                                                ->whereIsNotNull('whereIsNotNull')
+                                                ->orWhereIsNotNull('orWhereIsNotNull')
+                                                ->whereRaw('whereRaw = 1')
+                                                ->orWhereRaw('orWhereRaw = 2')
+                                                ->whereStruct(new Where('whereStruct', '=', 1))
+                                                ->buildSelectSql();
+        Assert::assertEquals(<<<SQL
+        select * from `{$this->fullTableArticle}` where `where` = :p1 or `orWhere` = :p2 and `whereBetween` between :p3 and :p4 or `orWhereBetween` between :p5 and :p6 and `whereNotBetween` not between :p7 and :p8 or `orWhereNotBetween` not between :p9 and :pa and `whereIn` in (:pb,:pc) or `orWhereIn` in (:pd,:pe) and `whereNotIn` not in (:pf,:p10) or `orWhereNotIn` not in (:p11,:p12) and `whereIsNull` is null or `orWhereIsNull` is null and `whereIsNotNull` is not null or `orWhereIsNotNull` is not null and whereRaw = 1 or orWhereRaw = 2 and `whereStruct` = :p13
+        SQL, $sql);
+    }
+
     /**
      * @depends testInsert
      */
@@ -480,11 +507,20 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
             'member_id' => 0,
         ], $record);
+        Assert::assertEquals('select * from `tb_article` where (id=2)', $result->getSql());
 
         // Where 数组
         $query = Db::query($this->poolName);
         $result = $query->from($this->tableArticle)->whereBrackets(static fn () => [
             new Where('id', '=', $id),
+            (static function () {
+                $where = new Where();
+                $where->setRawSQL('1=2');
+                $where->setLogicalOperator(LogicalOperator::OR);
+                $where->useRaw();
+
+                return $where;
+            })(),
         ])->select();
         $record = $result->get();
         Assert::assertEquals([
@@ -494,6 +530,21 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
             'member_id' => 0,
         ], $record);
+        Assert::assertEquals('select * from `tb_article` where (`id` = :p1 or 1=2)', $result->getSql());
+        $query = Db::query($this->poolName);
+        $result = $query->from($this->tableArticle)->whereBrackets(static fn () => [
+            new Where('id', '=', $id),
+            'or 1=2',
+        ])->select();
+        $record = $result->get();
+        Assert::assertEquals([
+            'id'        => $id,
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
+            'member_id' => 0,
+        ], $record);
+        Assert::assertEquals('select * from `tb_article` where (`id` = :p1 or 1=2)', $result->getSql());
 
         // Where 对象
         $query = Db::query($this->poolName);
@@ -506,11 +557,12 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
             'member_id' => 0,
         ], $record);
+        Assert::assertEquals('select * from `tb_article` where (`id` = :p1)', $result->getSql());
 
         // Where 收集器
         $query = Db::query($this->poolName);
         $result = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where) use ($id) {
-            $where->where('id', '=', $id);
+            $where->where('id', '=', $id)->orWhereRaw('1=2');
         })->select();
         $record = $result->get();
         Assert::assertEquals([
@@ -520,6 +572,43 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
             'member_id' => 0,
         ], $record);
+        Assert::assertEquals('select * from `tb_article` where (`id` = :p1 or 1=2)', $result->getSql());
+
+        $query = Db::query($this->poolName);
+        $sql = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where) {
+            $where->where('where', '=', 1)
+                    ->orWhere('orWhere', '=', 2)
+                    ->whereBetween('whereBetween', 1, 2)
+                    ->orWhereBetween('orWhereBetween', 1, 2)
+                    ->whereNotBetween('whereNotBetween', 1, 2)
+                    ->orWhereNotBetween('orWhereNotBetween', 1, 2)
+                    ->whereIn('whereIn', [1, 2])
+                    ->orWhereIn('orWhereIn', [1, 2])
+                    ->whereNotIn('whereNotIn', [1, 2])
+                    ->orWhereNotIn('orWhereNotIn', [1, 2])
+                    ->whereIsNull('whereIsNull')
+                    ->orWhereIsNull('orWhereIsNull')
+                    ->whereIsNotNull('whereIsNotNull')
+                    ->orWhereIsNotNull('orWhereIsNotNull')
+                    ->whereRaw('whereRaw = 1')
+                    ->orWhereRaw('orWhereRaw = 2')
+                    ->whereStruct(new Where('whereStruct', '=', 1))
+                    ->whereEx([
+                        'whereEx'    => 1,
+                        'and'        => [
+                            'whereEx'    => ['in', [1]],
+                        ],
+                    ])
+                    ->orWhereEx([
+                        'orWhereEx'    => 1,
+                        'or'           => [
+                            'orWhereEx'    => ['in', [1]],
+                        ],
+                    ]);
+        })->buildSelectSql();
+        Assert::assertEquals(<<<SQL
+        select * from `{$this->fullTableArticle}` where (`where` = :p1 or `orWhere` = :p2 and `whereBetween` between :p3 and :p4 or `orWhereBetween` between :p5 and :p6 and `whereNotBetween` not between :p7 and :p8 or `orWhereNotBetween` not between :p9 and :pa and `whereIn` in (:pb,:pc) or `orWhereIn` in (:pd,:pe) and `whereNotIn` not in (:pf,:p10) or `orWhereNotIn` not in (:p11,:p12) and `whereIsNull` is null or `orWhereIsNull` is null and `whereIsNotNull` is not null or `orWhereIsNotNull` is not null and whereRaw = 1 or orWhereRaw = 2 and `whereStruct` = :p13 and (`whereEx` = :p14 and (`whereEx` in (:p15))) or (`orWhereEx` = :p16 or (`orWhereEx` in (:p17))))
+        SQL, $sql);
     }
 
     /**
