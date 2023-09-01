@@ -9,6 +9,7 @@ use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhereBrackets;
 use Imi\Db\Query\Traits\TRaw;
+use Imi\Db\Query\WhereCollector;
 
 class WhereBrackets extends BaseWhere implements IWhereBrackets
 {
@@ -53,7 +54,8 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
             return $this->rawSQL;
         }
         $binds = &$this->binds;
-        $callResult = ($this->callback)($query);
+        $whereCollector = new WhereCollector($query);
+        $callResult = ($this->callback)($query, $whereCollector);
         if (\is_array($callResult))
         {
             if (empty($callResult))
@@ -68,17 +70,21 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
                 {
                     if (0 === $i)
                     {
-                        $result .= $callResultItem->toStringWithoutLogic($query) . ' ';
+                        $result .= $callResultItem->toStringWithoutLogic($query);
                     }
                     else
                     {
-                        $result .= $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query) . ' ';
+                        $result .= ' ' . $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query);
                     }
                     $binds = array_merge($binds, $callResultItem->getBinds());
                 }
                 else
                 {
-                    $result .= $callResultItem . ' ';
+                    if ($i > 0)
+                    {
+                        $result .= ' ';
+                    }
+                    $result .= $callResultItem;
                 }
             }
 
@@ -90,6 +96,24 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
             $binds = array_merge($binds, $callResult->getBinds());
 
             return '(' . $result . ')';
+        }
+        elseif (null === $callResult)
+        {
+            $result = '(';
+            foreach ($whereCollector->getWhere() as $i => $where)
+            {
+                if (0 === $i)
+                {
+                    $result .= $where->toStringWithoutLogic($query);
+                }
+                else
+                {
+                    $result .= ' ' . $where->getLogicalOperator() . ' ' . $where->toStringWithoutLogic($query);
+                }
+                $binds = array_merge($binds, $where->getBinds());
+            }
+
+            return $result . ')';
         }
         else
         {
