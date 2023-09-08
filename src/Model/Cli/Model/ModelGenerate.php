@@ -21,6 +21,7 @@ use Imi\Model\Cli\Model\Event\Param\AfterGenerateModels;
 use Imi\Model\Cli\Model\Event\Param\BeforeGenerateModel;
 use Imi\Model\Cli\Model\Event\Param\BeforeGenerateModels;
 use Imi\Model\Model;
+use Imi\Util\ArrayUtil;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Text;
@@ -277,8 +278,10 @@ class ModelGenerate extends BaseCommand
             {
                 $typeDefinitions[$field['Field']] = ($tableConfig['fields'][$field['Field']]['typeDefinition'] ?? null) ?? ($configData['relation'][$table]['fields'][$field['Field']]['typeDefinition'] ?? true);
             }
+            $pks = $query->execute(sprintf('SHOW KEYS FROM `%s`.`%s` where Key_name = \'PRIMARY\'', $database, $table))->getArray();
+            $pks = ArrayUtil::columnToKey($pks, 'Column_name');
 
-            $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE'], $typeDefinitions);
+            $this->parseFields($fields, $pks, $data, $typeDefinitions);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
 
@@ -337,20 +340,12 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理字段信息.
      */
-    private function parseFields(array $fields, ?array &$data, bool $isView, array $typeDefinitions): void
+    private function parseFields(array $fields, array $pks, ?array &$data, array $typeDefinitions): void
     {
-        $idCount = 0;
-        foreach ($fields as $i => $field)
+        foreach ($fields as $field)
         {
             $this->parseFieldType($field['Type'], $typeName, $length, $accuracy, $unsigned);
-            if ($isView && 0 === $i)
-            {
-                $isPk = true;
-            }
-            else
-            {
-                $isPk = 'PRI' === $field['Key'];
-            }
+            $isPk = isset($pks[$field['Field']]);
             [$phpType, $phpDefinitionType, $typeConvert] = $this->dbFieldTypeToPhp($typeName);
             $data['fields'][] = [
                 'name'              => $field['Field'],
@@ -365,7 +360,7 @@ class ModelGenerate extends BaseCommand
                 'default'           => $field['Default'],
                 'defaultValue'      => $this->parseFieldDefaultValue($typeName, $field['Default']),
                 'isPrimaryKey'      => $isPk,
-                'primaryKeyIndex'   => $isPk ? $idCount : -1,
+                'primaryKeyIndex'   => $primaryKeyIndex = ($pks[$field['Field']]['Seq_in_index'] ?? 0) - 1,
                 'isAutoIncrement'   => str_contains($field['Extra'], 'auto_increment'),
                 'comment'           => $field['Comment'],
                 'typeDefinition'    => $typeDefinitions[$field['Field']],
@@ -375,10 +370,11 @@ class ModelGenerate extends BaseCommand
             ];
             if ($isPk)
             {
-                $data['table']['id'][] = $field['Field'];
-                ++$idCount;
+                $data['table']['id'][$primaryKeyIndex] = $field['Field'];
             }
         }
+        ksort($data['table']['id']);
+        $data['table']['id'] = array_values($data['table']['id']);
     }
 
     /**

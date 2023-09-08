@@ -292,7 +292,6 @@ class ModelGenerate extends BaseCommand
      */
     private function parseFields(?string $poolName, array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
     {
-        $idCount = 0;
         foreach ($fields as $field)
         {
             $atttypmod = $field['atttypmod'];
@@ -331,7 +330,7 @@ class ModelGenerate extends BaseCommand
                 'default'           => $field['adsrc'],
                 'defaultValue'      => $this->parseFieldDefaultValue($poolName, $type, $field['adsrc']),
                 'isPrimaryKey'      => $isPk,
-                'primaryKeyIndex'   => $field['ordinal_position'] ?? -1,
+                'primaryKeyIndex'   => $primaryKeyIndex = ($field['ordinal_position'] ?? 0) - 1,
                 'isAutoIncrement'   => '' !== $field['attidentity'],
                 'comment'           => $field['description'] ?? '',
                 'typeDefinition'    => $config['relation'][$table]['fields'][$field['attname']]['typeDefinition'] ?? true,
@@ -340,10 +339,11 @@ class ModelGenerate extends BaseCommand
             ];
             if ($isPk)
             {
-                $data['table']['id'][] = $field['attname'];
-                ++$idCount;
+                $data['table']['id'][$primaryKeyIndex] = $field['attname'];
             }
         }
+        ksort($data['table']['id']);
+        $data['table']['id'] = array_values($data['table']['id']);
     }
 
     /**
