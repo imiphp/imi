@@ -36,7 +36,7 @@ abstract class NoIncPkBase extends Model
     /**
      * a_id.
      *
-     * @Column(name="a_id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="a_id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?int $aId = null;
 
@@ -65,7 +65,7 @@ abstract class NoIncPkBase extends Model
     /**
      * b_id.
      *
-     * @Column(name="b_id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=2, isAutoIncrement=false, ndims=0, virtual=false)
+     * @Column(name="b_id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=false, ndims=0, virtual=false)
      */
     protected ?int $bId = null;
 
