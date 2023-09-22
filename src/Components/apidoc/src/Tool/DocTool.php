@@ -20,6 +20,7 @@ use Imi\Util\ClassObject;
 use Imi\Util\DocBlock;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
+use OpenApi\Annotations\Items;
 use OpenApi\Annotations\MediaType;
 use OpenApi\Annotations\Operation as AnnotationsOperation;
 use OpenApi\Annotations\Parameter;
@@ -28,6 +29,7 @@ use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\Schema;
 use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * @Command("doc")
@@ -83,13 +85,16 @@ class DocTool extends BaseCommand
             return;
         }
         // 生成
-        $processors = Analysis::processors();
+        $generator = new Generator(App::getBean('Logger')->getLogger());
+
+        $processors = $generator->getProcessors();
         array_unshift($processors, function (Analysis $analysis) use ($controllerClasses) {
             $this->parseRoute($analysis, $controllerClasses);
         });
-        $openapi = \OpenApi\scan($directory, [
-            'processors'    => $processors,
-        ]);
+
+        $openapi = $generator
+            ->setProcessors($processors)
+            ->generate([$directory]);
         $openapi->saveAs($to);
     }
 
@@ -105,6 +110,10 @@ class DocTool extends BaseCommand
         $info = null;
         foreach ($analysis->annotations as $annotation)
         {
+            if (!isset($annotation->_context))
+            {
+                continue;
+            }
             /** @var \OpenApi\Context $context */
             $context = $annotation->_context;
             /** @var \OpenApi\Annotations\AbstractAnnotation $annotation */
@@ -196,12 +205,13 @@ class DocTool extends BaseCommand
                         foreach ($refMethod->getParameters() as $param)
                         {
                             $docParam = $this->getDocParam($docParams, $param->getName());
+
                             $requestParameters[] = new Parameter([
                                 'parameter'     => $controllerClass . '::' . $method . '@request.' . $param->getName(),
                                 'name'          => $param->getName(),
                                 'in'            => 'query',
                                 'required'      => !$param->isOptional(),
-                                'description'   => $docParam ? (string) $docParam->getDescription() : \OpenApi\Annotations\UNDEFINED,
+                                'description'   => $docParam ? (string) $docParam->getDescription() : Generator::UNDEFINED,
                                 '_context'      => $context ?? null,
                             ]);
                         }
@@ -212,11 +222,44 @@ class DocTool extends BaseCommand
                         foreach ($refMethod->getParameters() as $param)
                         {
                             $docParam = $this->getDocParam($docParams, $param->getName());
+                            $type = $param->getType();
+                            if ($type && ReflectionUtil::allowsType($type, 'array'))
+                            {
+                                if ($docParam && $type = $docParam->getType())
+                                {
+                                    $type = $type->__toString();
+                                    $types = explode('|', $type);
+                                    foreach ($types as &$type)
+                                    {
+                                        if (str_ends_with($type, '[]'))
+                                        {
+                                            $type = substr($type, 0, -2);
+                                            break;
+                                        }
+                                    }
+                                    unset($type);
+                                    $type = implode('|', $types);
+                                    $items = new Items([
+                                        'type' => $type,
+                                    ]);
+                                }
+                                else
+                                {
+                                    $items = new Items([
+                                        'type' => 'mixed',
+                                    ]);
+                                }
+                            }
+                            else
+                            {
+                                $items = Generator::UNDEFINED;
+                            }
                             $properties[] = new Property([
                                 'property'  => $param->getName(),
                                 'type'      => ReflectionUtil::getTypeCode($param->getType(), $refMethod->getDeclaringClass()->getName()),
-                                'title'     => $docParam ? (string) $docParam->getDescription() : \OpenApi\Annotations\UNDEFINED,
+                                'title'     => $docParam ? (string) $docParam->getDescription() : Generator::UNDEFINED,
                                 '_context'  => $context ?? null,
+                                'items'     => $items,
                             ]);
                         }
                         $schema = new Schema([

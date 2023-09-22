@@ -48,7 +48,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function multiMethod1(int $id)
+    public function multiMethod1(int $id, int $type, array $tags)
     {
     }
 
@@ -57,9 +57,11 @@ class IndexController extends HttpController
      *
      * @Route(method={"PUT", "POST"})
      *
+     * @param int[] $tags 标签
+     *
      * @return void
      */
-    public function multiMethod2(int $id)
+    public function multiMethod2(int $id, int $type, array $tags)
     {
     }
 
