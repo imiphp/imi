@@ -12,6 +12,7 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Log\Logger;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
@@ -85,7 +86,9 @@ class DocTool extends BaseCommand
             return;
         }
         // 生成
-        $generator = new Generator(App::getBean('Logger')->getLogger());
+        /** @var Logger $loggerInstance */
+        $loggerInstance = App::getBean('Logger');
+        $generator = new Generator($loggerInstance->getLogger());
 
         $processors = $generator->getProcessors();
         array_unshift($processors, function (Analysis $analysis) use ($controllerClasses) {
