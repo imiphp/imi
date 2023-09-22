@@ -221,36 +221,48 @@ class DocTool extends BaseCommand
                     }
                     else
                     {
-                        $properties = [];
+                        $properties = $requiredProperties = [];
                         foreach ($refMethod->getParameters() as $param)
                         {
-                            $docParam = $this->getDocParam($docParams, $param->getName());
-                            $type = $param->getType();
-                            if ($type && ReflectionUtil::allowsType($type, 'array'))
+                            if (!$param->isDefaultValueAvailable())
                             {
-                                if ($docParam && $type = $docParam->getType())
+                                $requiredProperties[] = $param->getName();
+                            }
+                            $docParam = $this->getDocParam($docParams, $param->getName());
+                            $typeText = ReflectionUtil::getTypeCode($param->getType(), $refMethod->getDeclaringClass()->getName());
+                            if ('array' === $typeText)
+                            {
+                                $type = $param->getType();
+                                if ($type && ReflectionUtil::allowsType($type, 'array'))
                                 {
-                                    $type = $type->__toString();
-                                    $types = explode('|', $type);
-                                    foreach ($types as &$type)
+                                    if ($docParam && $type = $docParam->getType())
                                     {
-                                        if (str_ends_with($type, '[]'))
+                                        $type = $type->__toString();
+                                        $types = explode('|', $type);
+                                        foreach ($types as &$type)
                                         {
-                                            $type = substr($type, 0, -2);
-                                            break;
+                                            if (str_ends_with($type, '[]'))
+                                            {
+                                                $type = substr($type, 0, -2);
+                                                break;
+                                            }
                                         }
+                                        unset($type);
+                                        $type = implode('|', $types);
+                                        $items = new Items([
+                                            'type' => $type,
+                                        ]);
                                     }
-                                    unset($type);
-                                    $type = implode('|', $types);
-                                    $items = new Items([
-                                        'type' => $type,
-                                    ]);
+                                    else
+                                    {
+                                        $items = new Items([
+                                            'type' => 'mixed',
+                                        ]);
+                                    }
                                 }
                                 else
                                 {
-                                    $items = new Items([
-                                        'type' => 'mixed',
-                                    ]);
+                                    $items = Generator::UNDEFINED;
                                 }
                             }
                             else
@@ -259,7 +271,7 @@ class DocTool extends BaseCommand
                             }
                             $properties[] = new Property([
                                 'property'  => $param->getName(),
-                                'type'      => ReflectionUtil::getTypeCode($param->getType(), $refMethod->getDeclaringClass()->getName()),
+                                'type'      => $typeText,
                                 'title'     => $docParam ? (string) $docParam->getDescription() : Generator::UNDEFINED,
                                 '_context'  => $context ?? null,
                                 'items'     => $items,
@@ -270,6 +282,7 @@ class DocTool extends BaseCommand
                             'title'      => $controllerClass . '::' . $method . '@request',
                             'type'       => 'object',
                             'properties' => $properties,
+                            'required'   => $requiredProperties,
                             '_context'   => $context ?? null,
                         ]);
                         $requestContent = new MediaType([
