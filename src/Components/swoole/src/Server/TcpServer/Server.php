@@ -175,9 +175,17 @@ class Server extends Base implements ISwooleTcpServer
 
         if ($event = ($events['close'] ?? true))
         {
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) use ($enableSyncConnect) {
                 try
                 {
+                    if ($enableSyncConnect)
+                    {
+                        $channelId = 'connection:' . $fd;
+                        if (ChannelContainer::hasChannel($channelId))
+                        {
+                            ChannelContainer::pop($channelId);
+                        }
+                    }
                     if (!Worker::isInited())
                     {
                         ChannelContainer::pop('workerInit');
