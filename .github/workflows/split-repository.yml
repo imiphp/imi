@@ -12,8 +12,8 @@ jobs:
     if: github.repository == 'imiphp/imi'
     runs-on: ubuntu-20.04
     env:
-      GITHUB_REF: ${{ env.GITHUB_REF }}
-      GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
+      GITHUB_REF: ${{ github.ref }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
     steps:
       - uses: ahmadnassri/action-workflow-queue@v1
       - uses: actions/checkout@v2
