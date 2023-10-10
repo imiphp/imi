@@ -12,7 +12,9 @@ return [
         'RoadRunner' => 'Imi\RoadRunner',
     ],
     'roadRunnerServer' => [
-        'main' => [],
+        'main' => [
+            'appUri' => TEST_APP_URI_CONFIG,
+        ],
     ],
     'ignorePaths'      => [
         \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'bin',

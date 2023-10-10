@@ -70,4 +70,6 @@ interface IRequest extends RequestInterface
      * @return static
      */
     public function setUri(UriInterface $uri, bool $preserveHost = false): self;
+
+    public function getAppUri(?string $serverName = null): UriInterface;
 }

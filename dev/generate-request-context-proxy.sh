@@ -4,6 +4,14 @@ __DIR__=$(cd `dirname $0`; pwd)
 
 cd $__DIR__/../
 
+rm -f src/Server/Http/Message/Proxy/RequestProxy.php \
+&& rm -f src/Server/Http/Message/Proxy/RequestProxyObject.php \
+&& rm -f src/Server/Http/Message/Proxy/ResponseProxy.php \
+&& rm -f src/Server/Http/Message/Proxy/ResponseProxyObject.php \
+&& rm -f src/Server/TcpServer/Message/Proxy/ReceiveDataProxy.php \
+&& rm -f src/Server/UdpServer/Message/Proxy/PacketDataProxy.php \
+&& rm -f src/Server/WebSocket/Message/Proxy/FrameProxy.php
+
 src/Cli/bin/imi-cli --app-namespace "Imi" generate/requestContextProxy --target "Imi\Server\Http\Message\Proxy\RequestProxy" --class "Imi\Server\Http\Message\Contract\IHttpRequest" --name request && \
 
 src/Cli/bin/imi-cli --app-namespace "Imi" generate/requestContextProxy --target "Imi\Server\Http\Message\Proxy\RequestProxyObject" --class "Imi\Server\Http\Message\Contract\IHttpRequest" --name request --bean HttpRequestProxy --interface "Imi\Server\Http\Message\Contract\IHttpRequest" --recursion=false && \

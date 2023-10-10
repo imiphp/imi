@@ -121,6 +121,8 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Imi\Util\Http\Contract\IRequest         setMethod(string $method)
  * @method        \Imi\Util\Http\Contract\IRequest         setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
  * @method static \Imi\Util\Http\Contract\IRequest         setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
+ * @method        \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
+ * @method static \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
  */
 class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpRequest
 {
@@ -554,5 +556,13 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     public function setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false): \Imi\Util\Http\Contract\IRequest
     {
         return self::__getProxyInstance()->setUri($uri, $preserveHost);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAppUri(?string $serverName = null): \Psr\Http\Message\UriInterface
+    {
+        return self::__getProxyInstance()->getAppUri($serverName);
     }
 }

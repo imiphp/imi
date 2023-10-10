@@ -53,7 +53,7 @@ class Uri implements UriInterface, \Stringable
         'ftp'   => 21,
     ];
 
-    public function __construct(string $uri = '')
+    public function __construct(string $uri = '', array $params = [])
     {
         $isUnixSocket = str_starts_with($uri, 'unix:///');
         if ($isUnixSocket)
@@ -70,18 +70,22 @@ class Uri implements UriInterface, \Stringable
             $uriOption['host'] = "/{$uriOption['host']}{$uriOption['path']}";
             $uriOption['path'] = '';
         }
-        $this->scheme = $uriOption['scheme'] ?? '';
-        $this->host = $uriOption['host'] ?? '';
-        $this->port = $uriOption['port'] ?? null;
-        $userInfo = $uriOption['user'] ?? '';
-        if (isset($uriOption['pass']))
+        $this->scheme = $params['scheme'] ?? $uriOption['scheme'] ?? '';
+        $this->host = $params['host'] ?? $uriOption['host'] ?? '';
+        $this->port = $params['port'] ?? $uriOption['port'] ?? null;
+        $userInfo = $params['user'] ?? $uriOption['user'] ?? '';
+        if (isset($params['pass']))
+        {
+            $userInfo .= ':' . $params['pass'];
+        }
+        elseif (isset($uriOption['pass']))
         {
             $userInfo .= ':' . $uriOption['pass'];
         }
         $this->userInfo = $userInfo;
-        $this->path = $uriOption['path'] ?? '';
-        $this->query = $uriOption['query'] ?? '';
-        $this->fragment = $uriOption['fragment'] ?? '';
+        $this->path = $params['path'] ?? $uriOption['path'] ?? '';
+        $this->query = $params['query'] ?? $uriOption['query'] ?? '';
+        $this->fragment = $params['fragment'] ?? $uriOption['fragment'] ?? '';
     }
 
     /**

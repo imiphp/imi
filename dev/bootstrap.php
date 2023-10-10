@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Imi\Event\Event;
+use Imi\Util\Uri;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -11,6 +12,29 @@ use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 
 ini_set('date.timezone', 'Asia/Shanghai');
+
+const TEST_APP_URI_CONFIG = [
+    'host'     => 'imi-test',
+    'port'     => 1234,
+    'scheme'   => 'https',
+    'user'     => 'root',
+    'pass'     => '123',
+    'path'     => '/test',
+    'query'    => 'id=666',
+    'fragment' => 'test',
+];
+const TEST_APP_URI = 'https://root:123@imi-test:1234/test?id=666#test';
+function testAppCallbackUriConfig(Uri $uri)
+{
+    return $uri->withHost('imi-test-callback')
+                ->withPort(6666)
+                ->withScheme('https')
+                ->withUserInfo('admin', '123456')
+                ->withPath('/testCallback')
+                ->withQuery('id=999')
+                ->withFragment('testCallback');
+}
+const TEST_APP_CALLBACK_URI = 'https://admin:123456@imi-test-callback:6666/testCallback?id=999#testCallback';
 
 function getRectorConfigCallback(string $path): callable
 {

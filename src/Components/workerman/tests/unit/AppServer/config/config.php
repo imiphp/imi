@@ -78,6 +78,7 @@ return [
             'port'      => 13000,
             'configs'   => [
             ],
+            'appUri' => TEST_APP_URI_CONFIG,
         ],
         'websocket' => [
             'namespace'           => 'Imi\Workerman\Test\AppServer\WebSocketServer',

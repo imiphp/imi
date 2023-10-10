@@ -89,9 +89,9 @@ class RoadRunnerApp extends BaseApp
     public function run(): void
     {
         $config = Config::get('@app.roadRunnerServer.main', []);
-        $server = ServerManager::createServer('main', [
+        $server = ServerManager::createServer('main', $config + [
             'type'      => Type::HTTP,
-            'namespace' => $config['namespace'] ?? $this->namespace,
+            'namespace' => $this->namespace,
         ]);
         Event::trigger('IMI.APP.INIT', [], $this);
         $server->start();

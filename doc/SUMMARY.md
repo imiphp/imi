@@ -47,6 +47,7 @@
 ## 多容器
 
 * [PHP-FPM](container/php-fpm.md)
+  * [服务器配置](container/php-fpm/serverConfig.md)
 * [Swoole](container/swoole.md)
   * [Swoole 环境安装教程](base/env.md)
   * [子服务器（单项目多端口多协议）](core/subServer.md)

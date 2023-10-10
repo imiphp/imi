@@ -90,7 +90,7 @@ class FpmApp extends BaseApp
         $server = ServerManager::getServer('main');
         if (null === $server)
         {
-            $server = ServerManager::createServer('main', [
+            $server = ServerManager::createServer('main', Config::get('@app.fpmServer') + [
                 'type'      => Type::HTTP,
                 'namespace' => $this->namespace,
             ]);
