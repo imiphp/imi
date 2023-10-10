@@ -192,7 +192,18 @@ class Request extends AbstractMessage implements IRequest
             }
             else
             {
-                return $this->appUri = new Uri($this->getUri()->__toString(), $uriConfig);
+                $uri = $this->getUri();
+
+                if (isset($uriConfig['user']))
+                {
+                    $userInfo = $uriConfig['user'] ?? '';
+                    if (isset($uriConfig['pass']))
+                    {
+                        $userInfo .= ':' . $uriConfig['pass'];
+                    }
+                }
+
+                return $this->appUri = Uri::makeUri($uriConfig['host'] ?? $uri->getHost(), $uriConfig['path'] ?? $uri->getPath(), $uriConfig['query'] ?? $uri->getQuery(), $uriConfig['port'] ?? $uri->getPort(), $uriConfig['scheme'] ?? $uri->getScheme(), $uriConfig['fragment'] ?? $uri->getFragment(), $userInfo ?? $uri->getUserInfo());
             }
         }
         else
