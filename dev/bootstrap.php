@@ -24,7 +24,7 @@ const TEST_APP_URI_CONFIG = [
     'fragment' => 'test',
 ];
 const TEST_APP_URI = 'https://root:123@imi-test:1234/test?id=666#test';
-function testAppCallbackUriConfig(Uri $uri)
+function testAppCallbackUriConfig(Uri $uri): Uri
 {
     return $uri->withHost('imi-test-callback')
                 ->withPort(6666)
