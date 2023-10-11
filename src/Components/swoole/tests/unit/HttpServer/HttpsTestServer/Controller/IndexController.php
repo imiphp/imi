@@ -31,6 +31,7 @@ class IndexController extends HttpController
             'server'    => $request->getServerParams(),
             'request'   => $request->request(),
             'uri'       => (string) $request->getUri(),
+            'appUri'    => (string) $request->getAppUri(),
         ];
     }
 }

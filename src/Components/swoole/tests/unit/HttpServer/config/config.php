@@ -83,6 +83,7 @@ return [
             'task_worker_num'   => 1,
             'max_wait_time'     => 30,
         ],
+        'appUri' => TEST_APP_URI_CONFIG,
     ],
 
     // 子服务器（端口监听）配置

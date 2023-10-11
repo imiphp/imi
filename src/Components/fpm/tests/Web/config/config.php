@@ -107,4 +107,8 @@ return [
             ],
         ],
     ],
+
+    'fpmServer' => [
+        'appUri' => 'testAppCallbackUriConfig',
+    ],
 ];

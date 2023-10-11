@@ -133,6 +133,18 @@ request 数据包含 get/post/cookie
 > 可在`nginx`配置`location`中添加 `proxy_set_header X-Forwarded-Proto $scheme;`
 > 通过获取请求头`$this->request->getHeaderLine('x-forwarded-proto');`来获取对应的`scheme`
 
+### 获取应用请求地址
+
+`public function getAppUri(?string $serverName = null)`
+
+和 `getUri()` 不同的是，可以通过配置修改 `getUri()` 获取到的 Uri 里的 `host` 等参数。
+
+适合用于替换生产环境中的 https、域名等参数。
+
+需要在服务器配置中修改，详见对应容器服务器配置。
+
+`$serverName` 默认不传则使用当前服务器。
+
 ### 获取 Swoole 服务器对象
 
 `public function getServerInstance(): \Imi\Swoole\Server\Http\Server`

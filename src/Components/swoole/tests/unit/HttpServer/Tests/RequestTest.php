@@ -245,6 +245,7 @@ class RequestTest extends BaseTest
         $response = $http->get($uri);
         $data = $response->json(true);
         $this->assertEquals($uri, $data['uri'] ?? null);
+        $this->assertEquals(TEST_APP_URI, $data['appUri'] ?? null);
     }
 
     /**
