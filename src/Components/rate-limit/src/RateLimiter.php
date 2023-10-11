@@ -117,6 +117,7 @@ class RateLimiter
         $storage = new ImiRedisStorage($name, RedisManager::getInstance($poolName));
         $rate = new Rate($fill ?? $capacity, $unit);
         $bucket = new TokenBucket($capacity, $rate, $storage);
+        $bucket->bootstrap($capacity);
 
         return $bucket->getTokens();
     }
