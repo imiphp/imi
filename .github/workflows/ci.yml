@@ -20,6 +20,12 @@ jobs:
       fail-fast: false
       matrix:
         swoole:
+          - version: 5.1-php8.2
+            postgresql_version: ""
+          - version: 5.1-php8.1
+            postgresql_version: ""
+          - version: 5.1-php8.0
+            postgresql_version: ""
           - version: 5.0-php8.2
             postgresql_version: ""
           - version: 5.0-php8.1
@@ -282,9 +288,11 @@ jobs:
       fail-fast: false
       matrix:
         php: ["7.4", "8.0", "8.1", "8.2"]
-        swoole: [v5.0.3, v4.8.13]
+        swoole: [v5.1.0, v5.0.3, v4.8.13]
         roadrunner: [2.7.*]
         exclude:
+          - php: 7.4
+            swoole: v5.1.0
           - php: 7.4
             swoole: v5.0.3
           - php: 8.2
