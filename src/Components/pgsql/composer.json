@@ -5,7 +5,7 @@
     "description": "imi 框架配套的 pgsql 组件",
     "require": {},
     "require-dev": {
-        "swoole/ide-helper": "~4.8"
+        "swoole/ide-helper": "~5.0"
     },
     "autoload": {
         "psr-4": {

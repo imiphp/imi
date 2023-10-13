@@ -9,7 +9,7 @@
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "~4.8",
+        "swoole/ide-helper": "~5.0",
         "phpunit/phpunit": "~9.6"
     },
     "autoload": {

@@ -409,7 +409,7 @@ class TestClass
 	protected $model2;
 	
 	/**
-	 * 某Model对象，通过 PHP 7.4 以上类型声明注入
+	 * 某Model对象，类型声明注入
 	 * @Inject
 	 */
 	protected XXX\Model\User $model3;

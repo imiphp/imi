@@ -14,7 +14,7 @@
 
 ```yml
 # 版本也可以自行修改
-FROM phpswoole/swoole:4.8-php7.4
+FROM phpswoole/swoole:5.0-php8.2
 
 RUN apt update && apt install unzip
 
@@ -33,7 +33,7 @@ RUN pecl install redis && docker-php-ext-enable redis
 
 ```yml
 # 版本也可以自行修改
-FROM php:7.4-cli
+FROM php:8.2-cli
 
 RUN apt update && apt install unzip libevent-dev libssl-dev
 
@@ -58,7 +58,7 @@ RUN curl -o /usr/bin/composer https://getcomposer.org/composer.phar && chmod +x 
 
 ```yml
 # 版本也可以自行修改
-FROM php:7.4
+FROM php:8.2
 
 RUN apt update && apt install unzip
 

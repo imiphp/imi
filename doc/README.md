@@ -2,7 +2,7 @@
 
 ![imi logo](https://cdn.jsdelivr.net/gh/imiphp/imi@3.0/res/logo.png)
 
-[![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi) ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=3.0) [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/) [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src) [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](/v3.0/) [![imi License](https://img.shields.io/badge/license-MulanPSL%202.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE) [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
+[![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi) ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=3.0) [![Php Version](https://img.shields.io/badge/php-%3E=8.1-brightgreen.svg)](https://secure.php.net/) [![Swoole Version](https://img.shields.io/badge/swoole-%3E=5.0.0-brightgreen.svg)](https://github.com/swoole/swoole-src) [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](/v3.0/) [![imi License](https://img.shields.io/badge/license-MulanPSL%202.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE) [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
 ## 介绍
 
@@ -81,9 +81,9 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 ## 运行环境
 
 * Linux 系统 (Swoole 不支持在 Windows 上运行)
-* [PHP](https://php.net/) >= 7.4
+* [PHP](https://php.net/) >= 8.1
 * [Composer](https://getcomposer.org/) >= 2.0
-* [Swoole](https://www.swoole.com/) >= 4.8.0
+* [Swoole](https://www.swoole.com/) >= 5.0.0
 * Redis、PDO 扩展
 
 ## Docker

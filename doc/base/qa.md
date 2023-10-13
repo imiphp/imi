@@ -4,7 +4,7 @@
 
 ## 通过 `composer create-project` 创建项目报错问题
 
-**解决方案：** 请确保你的环境依赖版本符合要求：PHP >= 7.4 && Composer >= 2.0
+**解决方案：** 请确保你的环境依赖版本符合要求：PHP >= 8.1 && Composer >= 2.0
 
 查看命令：`php -v && composer -V`
 
@@ -14,7 +14,7 @@
 
 ## Composer 引入 `imi-swoole` 组件报错
 
-**解决方案：** 请确保你的 Swoole >= 4.8.0
+**解决方案：** 请确保你的 Swoole >= 5.0.0
 
 查看命令：`php --ri swoole`
 

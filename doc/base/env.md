@@ -5,9 +5,9 @@
 ## 运行环境
 
 - Linux 系统 (Swoole 不支持在 Windows 上运行)
-- [PHP](https://php.net/) >= 7.4
+- [PHP](https://php.net/) >= 8.1
 - [Composer](https://getcomposer.org/) >= 2.0
-- [Swoole](https://www.swoole.com/) >= 4.8.0
+- [Swoole](https://www.swoole.com/) >= 5.0.0
 - Redis、PDO 扩展
 
 ## Windows 开发者
