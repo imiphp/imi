@@ -12,7 +12,7 @@ imi-influxdb：<https://github.com/imiphp/imi-influxdb>
 
 ## 安装
 
-`composer require imiphp/imi-influxdb:~2.1.0`
+`composer require imiphp/imi-influxdb:~3.0.0`
 
 ## 使用说明
 

@@ -8,7 +8,7 @@ MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT�
 
 安装：`composer require imiphp/imi-mqtt`
 
-示例项目：`composer create-project imiphp/project-mqtt:~2.1.0`
+示例项目：`composer create-project imiphp/project-mqtt:~3.0.0`
 
 ## 配置
 

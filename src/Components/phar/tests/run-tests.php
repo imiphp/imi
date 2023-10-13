@@ -51,7 +51,7 @@ foreach (LOCAL_REPOSITORIES as $package => $path)
         'options' => [
             'symlink'  => false,
             'versions' => [
-                $package => '2.1.9999',
+                $package => '3.0.9999',
             ],
         ],
     ];

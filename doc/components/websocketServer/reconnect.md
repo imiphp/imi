@@ -12,4 +12,4 @@
 
 > 断线重连视频介绍：<https://www.bilibili.com/video/BV1GC4y1s7yf>
 
-使用文档详见：[链接](/v2.1/components/websocketServer/session.html)
+使用文档详见：[链接](/v3.0/components/websocketServer/session.html)

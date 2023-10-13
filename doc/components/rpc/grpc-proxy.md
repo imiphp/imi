@@ -12,13 +12,13 @@ imi v2.1.22 新加入的 gRPC HTTP 代理网关，作用是可以用 HTTP + JSON
 
 ### proto 文件生成 PHP 代码
 
-这一步和 [gRPC 服务开发](/v2.1/components/rpc/grpc.html#%E6%9C%8D%E5%8A%A1%E5%92%8C%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F%E5%AE%9A%E4%B9%89)一样，就不再赘述。
+这一步和 [gRPC 服务开发](/v3.0/components/rpc/grpc.html#%E6%9C%8D%E5%8A%A1%E5%92%8C%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F%E5%AE%9A%E4%B9%89)一样，就不再赘述。
 
 ### 配置 gRPC 连接池
 
 因为我们服务端是代理网关，其实就是作为客户端去连服务端，所以要配置连接池。
 
-可参考 [gRPC 服务开发](/v2.1/components/rpc/grpc.html#%E5%AE%A2%E6%88%B7%E7%AB%AF)。
+可参考 [gRPC 服务开发](/v3.0/components/rpc/grpc.html#%E5%AE%A2%E6%88%B7%E7%AB%AF)。
 
 ### 绑定 gRPC 接口（非必须）
 

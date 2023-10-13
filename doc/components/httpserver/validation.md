@@ -2,7 +2,7 @@
 
 [toc]
 
-请先阅读 [验证器](/v2.1/components/validation/index.html) 章节，HTTP 验证器基于验证器扩展，基本使用方式相似。
+请先阅读 [验证器](/v3.0/components/validation/index.html) 章节，HTTP 验证器基于验证器扩展，基本使用方式相似。
 
 ## @HttpValidation
 

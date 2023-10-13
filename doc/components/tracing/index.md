@@ -10,10 +10,10 @@
 
 **支持的中间件：**
 
-* [x] [Swoole Tracker](/v2.1/components/swoole-tracker.html)
+* [x] [Swoole Tracker](/v3.0/components/swoole-tracker.html)
 
-* [x] [Zipkin](/v2.1/components/tracing/opentracing.html#Zipkin)
+* [x] [Zipkin](/v3.0/components/tracing/opentracing.html#Zipkin)
 
-* [x] [Jaeger](/v2.1/components/tracing/opentracing.html#Jaeger)
+* [x] [Jaeger](/v3.0/components/tracing/opentracing.html#Jaeger)
 
 ……

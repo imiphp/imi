@@ -13,7 +13,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-shared-memory": "~2.1.0"
+        "imiphp/imi-shared-memory": "~3.0.0"
     }
 }
 ```

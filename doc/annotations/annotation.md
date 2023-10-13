@@ -145,11 +145,11 @@ class TransactionAop
 }
 ```
 
-具体用法请参考：[链接](/v2.1/components/aop/index.html)
+具体用法请参考：[链接](/v3.0/components/aop/index.html)
 
 ## 获取注解
 
-具体用法请参考：[链接](/v2.1/annotations/annotationManager.html)
+具体用法请参考：[链接](/v3.0/annotations/annotationManager.html)
 
 ## 编写处理器
 

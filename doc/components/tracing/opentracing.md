@@ -175,7 +175,7 @@ Jaeger 是受 Dapper 和 OpenZipkin 的启发，由 Uber Technologies 创建的�
 
 #### 安装 Jaeger 所需组件
 
-`composer require imiphp/imi-opentracing:~2.1.0 jonahgeorge/jaeger-client-php`
+`composer require imiphp/imi-opentracing:~3.0.0 jonahgeorge/jaeger-client-php`
 
 #### Jaeger 配置
 
@@ -273,7 +273,7 @@ Zipkin是 Twitter 的一个开源项目，基于 Google Dapper 实现。
 
 #### 安装 Zipkin 所需组件
 
-`composer require imiphp/imi-opentracing:~2.1.0 jcchavezs/zipkin-opentracing`
+`composer require imiphp/imi-opentracing:~3.0.0 jcchavezs/zipkin-opentracing`
 
 #### Zipkin 配置
 

@@ -15,7 +15,7 @@ Github: <https://github.com/imiphp/imi-snowflake>
 ```json
 {
     "require": {
-        "imiphp/imi-snowflake": "~2.1.0"
+        "imiphp/imi-snowflake": "~3.0.0"
     }
 }
 ```

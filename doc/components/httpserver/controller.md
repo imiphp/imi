@@ -74,13 +74,13 @@ class Index extends HttpController
 
 ## 绑定请求参数到控制器方法参数
 
-详见：[链接](/v2.1/components/httpserver/request.html#%E7%BB%91%E5%AE%9A%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%88%B0%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0)
+详见：[链接](/v3.0/components/httpserver/request.html#%E7%BB%91%E5%AE%9A%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%88%B0%E6%8E%A7%E5%88%B6%E5%99%A8%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0)
 
 ## 属性
 
 ### $server
 
-详见：[链接](/v2.1/core/server.html)
+详见：[链接](/v3.0/core/server.html)
 
 ### $request
 

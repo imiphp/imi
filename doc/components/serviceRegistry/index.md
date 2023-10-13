@@ -24,7 +24,7 @@
 
 ### Nacos
 
-**安装：**`composer require imiphp/imi-nacos:~2.1.0 imiphp/imi-service:~2.1.0`
+**安装：**`composer require imiphp/imi-nacos:~3.0.0 imiphp/imi-service:~3.0.0`
 
 **配置：**
 

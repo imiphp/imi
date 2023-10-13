@@ -34,7 +34,7 @@ ConnectionContext::use(function($data){
 
 ## 方法列表
 
-上下文操作可以参考（[请求上下文](/v2.1/core/requestContext.html)）
+上下文操作可以参考（[请求上下文](/v3.0/core/requestContext.html)）
 
 ```php
 /**

@@ -4,15 +4,15 @@
     "description": "imi 框架的 Http Server 项目。https://imiphp.com",
     "require": {
         "php": ">=7.4",
-        "imiphp/imi": "2.1.9999",
-        "imiphp/imi-macro": "2.1.9999",
-        "imiphp/imi-workerman": "2.1.9999",
-        "imiphp/imi-swoole": "2.1.9999",
-        "imiphp/imi-roadrunner": "2.1.9999"
+        "imiphp/imi": "3.0.9999",
+        "imiphp/imi-macro": "3.0.9999",
+        "imiphp/imi-workerman": "3.0.9999",
+        "imiphp/imi-swoole": "3.0.9999",
+        "imiphp/imi-roadrunner": "3.0.9999"
     },
     "require-dev": {
         "swoole/ide-helper": "^4.7",
-        "imiphp/imi-phar": "2.1.9999",
+        "imiphp/imi-phar": "3.0.9999",
         "friendsofphp/php-cs-fixer": "~3.13.0"
     },
     "autoload": {

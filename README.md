@@ -2,18 +2,18 @@
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/imiphp/imi@2.1/res/logo.png" alt="imi" />
+        <img src="https://cdn.jsdelivr.net/gh/imiphp/imi@3.0/res/logo.png" alt="imi" />
     </a>
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=2.1)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/imiphp/imi/ci.yml?branch=3.0)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.8.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
-[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v2.1/)
+[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com/v3.0/)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%202.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE)
 [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
-[![codecov](https://codecov.io/github/imiphp/imi/branch/2.1/graph/badge.svg?token=YrNRQgbRe2)](https://codecov.io/github/imiphp/imi)
+[![codecov](https://codecov.io/github/imiphp/imi/branch/3.0/graph/badge.svg?token=YrNRQgbRe2)](https://codecov.io/github/imiphp/imi)
 
 ## 介绍
 
@@ -75,19 +75,19 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ## 开始使用
 
-创建 Http Server 项目：`composer create-project imiphp/project-http:~2.1.0`
+创建 Http Server 项目：`composer create-project imiphp/project-http:~3.0.0`
 
-创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~2.1.0`
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket:~3.0.0`
 
-创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~2.1.0`
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp:~3.0.0`
 
-创建 UDP Server 项目：`composer create-project imiphp/project-udp:~2.1.0`
+创建 UDP Server 项目：`composer create-project imiphp/project-udp:~3.0.0`
 
-创建 gRPC 项目：`composer create-project imiphp/project-grpc:~2.1.0`
+创建 gRPC 项目：`composer create-project imiphp/project-grpc:~3.0.0`
 
-创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~2.1.0`
+创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt:~3.0.0`
 
-[完全开发手册](https://doc.imiphp.com/v2.1/)
+[完全开发手册](https://doc.imiphp.com/v3.0/)
 
 ## 运行环境
 
@@ -153,4 +153,4 @@ imi 遵循木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免�
 
 提交 `Pull Request` 到本仓库，你可以成为 imi 的贡献者！
 
-参与框架开发教程详见：<https://doc.imiphp.com/v2.1/adv/devp.html>
+参与框架开发教程详见：<https://doc.imiphp.com/v3.0/adv/devp.html>

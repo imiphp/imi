@@ -21,7 +21,7 @@ Github: <https://github.com/imiphp/imi-apidoc>
 ```json
 {
     "require": {
-        "imiphp/imi-apidoc": "~2.1.0"
+        "imiphp/imi-apidoc": "~3.0.0"
     }
 }
 ```

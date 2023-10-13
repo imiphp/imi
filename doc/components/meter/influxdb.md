@@ -16,11 +16,11 @@ imi 支持将服务指标监控的数据写入 InfluxDB。
 
 ## 安装
 
-`composer require imiphp/imi-influxdb:~2.1.0`
+`composer require imiphp/imi-influxdb:~3.0.0`
 
 ## 使用说明
 
-imi-influxdb 基础配置和使用说明详见：[链接](/v2.1/components/influxdb.html)
+imi-influxdb 基础配置和使用说明详见：[链接](/v3.0/components/influxdb.html)
 
 ### 服务指标监控
 
@@ -30,7 +30,7 @@ imi-influxdb 基础配置和使用说明详见：[链接](/v2.1/components/influ
 
 #### 安装所需组件
 
-`composer require imiphp/imi-meter:~2.1.0`
+`composer require imiphp/imi-meter:~3.0.0`
 
 #### 配置
 

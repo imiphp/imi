@@ -17,7 +17,7 @@ Github: <https://github.com/imiphp/imi-hprose>
 ```json
 {
     "require": {
-        "imiphp/imi-hprose": "~2.1.0"
+        "imiphp/imi-hprose": "~3.0.0"
     }
 }
 ```

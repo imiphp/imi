@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <?php
-    $pageTitle = $currentCatalog['title'] . ' - imi 框架 v2.1 开发手册文档';
+    $pageTitle = $currentCatalog['title'] . ' - imi 框架 v3.0 开发手册文档';
     ?>
     <title><?php echo $pageTitle; ?></title>
     <!-- jQuery-->
@@ -33,7 +33,7 @@
             <ul class="layui-nav" lay-filter="">
                 <div class="navRight">
                     <li class="layui-nav-item layui-this" lay-unselect>
-                        <a href="/v2.1/" target="_blank">v2.1</a>
+                        <a href="/v3.0/" target="_blank">v3.0</a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
                         <a href="https://ai.imiphp.com/#/embedding/chat/1E6OG6Vb" target="_blank" style="padding-right: 40px;">imi智能助手<span class="layui-badge">热</span></a>
@@ -41,6 +41,7 @@
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;">历史版本</a>
                         <dl class="layui-nav-child">
+                            <dd><a href="/v2.1/" target="_blank">v2.1</a></dd>
                             <dd><a href="/v2.0/" target="_blank">v2.0</a></dd>
                             <dd><a href="/v1/" target="_blank">v1.x</a></dd>
                         </dl>

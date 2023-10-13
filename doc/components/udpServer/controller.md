@@ -92,7 +92,7 @@ return ['success'=>true];
 
 ### $server
 
-详见：[链接](/v2.1/core/server.html)
+详见：[链接](/v3.0/core/server.html)
 
 ### $data
 

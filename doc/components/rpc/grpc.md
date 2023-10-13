@@ -19,7 +19,7 @@ Github: <https://github.com/imiphp/imi-grpc>
 ```json
 {
     "require": {
-        "imiphp/imi-grpc": "~2.1.0"
+        "imiphp/imi-grpc": "~3.0.0"
     }
 }
 ```
@@ -28,7 +28,7 @@ Github: <https://github.com/imiphp/imi-grpc>
 
 ---
 
-你也可以直接创建 imi gRPC 骨架项目：`composer create-project imiphp/project-grpc:~2.1.0`
+你也可以直接创建 imi gRPC 骨架项目：`composer create-project imiphp/project-grpc:~3.0.0`
 
 ## 使用说明
 

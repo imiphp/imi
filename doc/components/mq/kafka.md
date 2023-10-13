@@ -17,7 +17,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-kafka": "~2.1.0"
+        "imiphp/imi-kafka": "~3.0.0"
     }
 }
 ```

@@ -27,8 +27,8 @@ class Dev
             }
             // @phpstan-ignore-next-line
             $require = new Link($require->getSource(), $require->getTarget(), new MultiConstraint([
-                new Constraint('>=', '2.1'),
-                new Constraint('<', '2.2'),
+                new Constraint('>=', '3.0'),
+                new Constraint('<', '3.1'),
             ]), $require->getDescription());
         }
         $package->setRequires($requires);
@@ -42,8 +42,8 @@ class Dev
             }
             // @phpstan-ignore-next-line
             $require = new Link($require->getSource(), $require->getTarget(), new MultiConstraint([
-                new Constraint('>=', '2.1'),
-                new Constraint('<', '2.2'),
+                new Constraint('>=', '3.0'),
+                new Constraint('<', '3.1'),
             ]), $require->getDescription());
         }
         $package->setDevRequires($requires);

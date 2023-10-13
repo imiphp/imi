@@ -35,7 +35,7 @@ Swoole Tracker: <https://business.swoole.com/tracker/index>
     ```json
     {
         "require": {
-            "imiphp/imi-swoole-tracker": "~2.1.0"
+            "imiphp/imi-swoole-tracker": "~3.0.0"
         }
     }
     ```

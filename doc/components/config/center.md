@@ -60,7 +60,7 @@
 
 ### Nacos
 
-**安装：**`composer require imiphp/imi-nacos:~2.1.0`
+**安装：**`composer require imiphp/imi-nacos:~3.0.0`
 
 **配置：**
 
@@ -130,7 +130,7 @@ $configCenter->getDriver('nacos')->push($name, $value, [
 
 ### Etcd
 
-**安装：**`composer require imiphp/imi-etcd:~2.1.0`
+**安装：**`composer require imiphp/imi-etcd:~3.0.0`
 
 **配置：**
 
@@ -211,7 +211,7 @@ $configCenter->getDriver('etcd')->push($name, $value, $options);
 
 * 非 Swoole 用户请安装 [php-zookeeper](<https://github.com/php-zookeeper/php-zookeeper>) 扩展。
 
-**安装：**`composer require imiphp/imi-zookeeper:~2.1.0`
+**安装：**`composer require imiphp/imi-zookeeper:~3.0.0`
 
 **配置：**
 

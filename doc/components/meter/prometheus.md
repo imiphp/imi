@@ -21,7 +21,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 
 ## 安装
 
-`composer require imiphp/imi-prometheus:~2.1.0`
+`composer require imiphp/imi-prometheus:~3.0.0`
 
 ## 使用说明
 

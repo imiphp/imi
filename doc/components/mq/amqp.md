@@ -17,7 +17,7 @@ Github: <https://github.com/imiphp/imi-amqp>
 ```json
 {
     "require": {
-        "imiphp/imi-amqp": "~2.1.0"
+        "imiphp/imi-amqp": "~3.0.0"
     }
 }
 ```
@@ -477,7 +477,7 @@ class TestProcess extends BaseProcess
 
 适合计算密集型场景、消费量非常多的场景。
 
-进程池写法参考：[链接](/v2.1/components/process-pool/swoole.html)
+进程池写法参考：[链接](/v3.0/components/process-pool/swoole.html)
 
 启动消费者写法参考上面的即可。
 

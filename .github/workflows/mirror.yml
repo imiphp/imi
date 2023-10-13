@@ -9,7 +9,7 @@ on:
 
 jobs:
   gitee:
-    if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/2.1')
+    if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/3.0')
     runs-on: ubuntu-20.04
     steps:
       - uses: ahmadnassri/action-workflow-queue@v1

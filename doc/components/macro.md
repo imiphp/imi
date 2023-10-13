@@ -21,7 +21,7 @@
 ```json
 {
     "require": {
-        "imiphp/imi-macro": "~2.1.0"
+        "imiphp/imi-macro": "~3.0.0"
     }
 }
 ```

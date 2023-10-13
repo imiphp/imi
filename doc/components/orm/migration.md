@@ -24,7 +24,7 @@ imi 的数据库迁移依赖模型功能，支持：使用图形化工具、手�
 
 ## 安装
 
-`composer require imiphp/imi-migration:~2.1.0`
+`composer require imiphp/imi-migration:~3.0.0`
 
 ## 使用说明
 

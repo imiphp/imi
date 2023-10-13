@@ -4,7 +4,7 @@
     "license": "MulanPSL-2.0",
     "description": "在 imi 框架中开发 RPC 服务的基础组件",
     "require": {
-        "imiphp/imi-swoole": "~2.1.0"
+        "imiphp/imi-swoole": "~3.0.0"
     },
     "require-dev": {},
     "autoload": {

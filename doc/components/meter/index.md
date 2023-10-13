@@ -10,10 +10,10 @@ imi 接入了服务指标监控能力，提供了 [imi-meter](https://github.com
 
 **支持的中间件：**
 
-* [x] [Prometheus](/v2.1/components/meter/prometheus.html)
+* [x] [Prometheus](/v3.0/components/meter/prometheus.html)
 
-* [x] [InfluxDB](/v2.1/components/meter/influxdb.html)
+* [x] [InfluxDB](/v3.0/components/meter/influxdb.html)
 
-* [x] [TDengine](/v2.1/components/meter/tdengine.html)
+* [x] [TDengine](/v3.0/components/meter/tdengine.html)
 
 ……

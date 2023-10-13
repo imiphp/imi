@@ -46,7 +46,7 @@ PDOException: SQLSTATE[42000]: Syntax error or access violation: 1461 Can't crea
 
 imi 默认会缓存 Statement，建议调大 mysql 的 `max_prepared_stmt_count` 配置值。
 
-从 imi v2.1.34 开始你也可以配置 [Statement 最大缓存数量](/v2.1/components/db/config.html) 来自动清理缓存的 Statement。
+从 imi v2.1.34 开始你也可以配置 [Statement 最大缓存数量](/v3.0/components/db/config.html) 来自动清理缓存的 Statement。
 
 ## Workerman 报错：send buffer full and drop package
 
