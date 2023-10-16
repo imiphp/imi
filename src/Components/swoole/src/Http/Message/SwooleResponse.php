@@ -91,7 +91,7 @@ class SwooleResponse extends Response
     /**
      * {@inheritDoc}
      */
-    public function send(): self
+    public function send(): static
     {
         if ($this->responseBodyEmitter)
         {

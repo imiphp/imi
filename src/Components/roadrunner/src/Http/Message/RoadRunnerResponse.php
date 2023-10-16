@@ -44,7 +44,7 @@ class RoadRunnerResponse extends Response
     /**
      * {@inheritDoc}
      */
-    public function send(): self
+    public function send(): static
     {
         if ($this->isWritable)
         {

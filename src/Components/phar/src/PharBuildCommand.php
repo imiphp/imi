@@ -43,6 +43,7 @@ class PharBuildCommand extends Command
         {
             if (file_exists($configFile))
             {
+                /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
                 $helper = $this->getHelper('question');
                 $question = new ConfirmationQuestion('The configuration file already exists, whether to overwrite it? (y or n)', false);
 
