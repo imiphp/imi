@@ -23,25 +23,19 @@ interface IResponse extends ResponseInterface, IMessage
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification
      *
-     * @return static
-     *
      * @throws \InvalidArgumentException for invalid status code arguments
      */
-    public function setStatus(int $code, string $reasonPhrase = ''): self;
+    public function setStatus(int $code, string $reasonPhrase = ''): static;
 
     /**
      * 设置cookie.
-     *
-     * @return static
      */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static;
 
     /**
      * 设置cookie.
-     *
-     * @return static
      */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static;
 
     /**
      * Retrieve cookies.
@@ -55,12 +49,8 @@ interface IResponse extends ResponseInterface, IMessage
 
     /**
      * 获取cookie值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getCookie(string $name, $default = null);
+    public function getCookie(string $name, ?array $default = null): ?array;
 
     /**
      * 获取 Trailer 列表.
@@ -79,15 +69,11 @@ interface IResponse extends ResponseInterface, IMessage
 
     /**
      * 设置 Trailer.
-     *
-     * @return static
      */
-    public function withTrailer(string $name, string $value): self;
+    public function withTrailer(string $name, string $value): static;
 
     /**
      * 设置 Trailer.
-     *
-     * @return static
      */
-    public function setTrailer(string $name, string $value): self;
+    public function setTrailer(string $name, string $value): static;
 }

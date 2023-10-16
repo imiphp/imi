@@ -19,12 +19,8 @@ interface IRequest extends RequestInterface
      *
      * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
-     *
-     * @param mixed $requestTarget
-     *
-     * @return static
      */
-    public function setRequestTarget($requestTarget): self;
+    public function setRequestTarget(string $requestTarget): static;
 
     /**
      * Return an instance with the provided HTTP method.
@@ -35,11 +31,9 @@ interface IRequest extends RequestInterface
      *
      * @param string $method case-sensitive method
      *
-     * @return static
-     *
      * @throws \InvalidArgumentException for invalid HTTP methods
      */
-    public function setMethod(string $method): self;
+    public function setMethod(string $method): static;
 
     /**
      * Returns an instance with the provided URI.
@@ -66,10 +60,8 @@ interface IRequest extends RequestInterface
      *
      * @param UriInterface $uri          new request URI to use
      * @param bool         $preserveHost preserve the original state of the Host header
-     *
-     * @return static
      */
-    public function setUri(UriInterface $uri, bool $preserveHost = false): self;
+    public function setUri(UriInterface $uri, bool $preserveHost = false): static;
 
     public function getAppUri(?string $serverName = null): UriInterface;
 }

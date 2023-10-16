@@ -45,7 +45,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function getRequestTarget()
+    public function getRequestTarget(): string
     {
         if (null === $this->requestTarget)
         {
@@ -65,7 +65,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget(string $requestTarget): static
     {
         $self = clone $this;
         $self->requestTarget = $requestTarget;
@@ -76,7 +76,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function setRequestTarget($requestTarget): self
+    public function setRequestTarget(string $requestTarget): static
     {
         $this->requestTarget = $requestTarget;
 
@@ -93,7 +93,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         if (!$this->methodInited)
         {
@@ -107,7 +107,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function withMethod($method)
+    public function withMethod(string $method): static
     {
         $self = clone $this;
         $self->method = $method;
@@ -119,7 +119,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function setMethod(string $method): self
+    public function setMethod(string $method): static
     {
         $this->method = $method;
         $this->methodInited = true;
@@ -137,7 +137,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function getUri()
+    public function getUri(): UriInterface
     {
         if (!$this->uriInited)
         {
@@ -151,7 +151,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, bool $preserveHost = false): static
     {
         $self = clone $this;
 
@@ -162,7 +162,7 @@ class Request extends AbstractMessage implements IRequest
     /**
      * {@inheritDoc}
      */
-    public function setUri(UriInterface $uri, bool $preserveHost = false): self
+    public function setUri(UriInterface $uri, bool $preserveHost = false): static
     {
         $this->uri = $uri;
         $this->appUri = null;

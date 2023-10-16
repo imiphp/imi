@@ -19,7 +19,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         $result = apcu_fetch($this->parseKey($key), $success);
         if ($success)
@@ -35,7 +35,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         return apcu_store($this->parseKey($key), $value, (int) $ttl);
     }
@@ -43,7 +43,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function delete($key)
+    public function delete(string $key): bool
     {
         return apcu_delete($this->parseKey($key));
     }
@@ -51,7 +51,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         return apcu_clear_cache();
     }
@@ -59,7 +59,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $result = [];
         foreach ($keys as $key)
@@ -73,7 +73,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         $newValues = [];
         foreach ($values as $k => $v)
@@ -87,7 +87,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         $newKeys = [];
         foreach ($keys as $key)
@@ -101,7 +101,7 @@ class Apcu extends Base
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         return apcu_exists($this->parseKey($key));
     }

@@ -22,7 +22,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return $this->getObject()->get($key, $default);
     }
@@ -30,7 +30,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         // ttl 支持 \DateInterval 格式
         if ($ttl instanceof \DateInterval)
@@ -45,7 +45,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function delete($key)
+    public function delete(string $key): bool
     {
         $this->getObject()->unset($key);
 
@@ -55,7 +55,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         $this->getObject()->clear();
 
@@ -65,7 +65,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $this->checkArrayOrTraversable($keys);
         $object = $this->getObject();
@@ -81,7 +81,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         $this->checkArrayOrTraversable($values);
         // ttl 支持 \DateInterval 格式
@@ -101,7 +101,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         $this->checkArrayOrTraversable($keys);
         $object = $this->getObject();
@@ -116,7 +116,7 @@ class RequestContext extends Base
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->getObject()->isset($key);
     }

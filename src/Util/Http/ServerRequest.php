@@ -98,7 +98,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getServerParam(string $name, $default = null)
+    public function getServerParam(string $name, mixed $default = null): mixed
     {
         if (!$this->serverInited)
         {
@@ -119,7 +119,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setCookieParams(array $cookies): self
+    public function setCookieParams(array $cookies): static
     {
         if (!$this->requestParamsInited)
         {
@@ -134,7 +134,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getCookieParams()
+    public function getCookieParams(): array
     {
         if (!$this->requestParamsInited)
         {
@@ -148,7 +148,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $cookies): static
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -164,7 +164,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getCookie(string $name, $default = null)
+    public function getCookie(string $name, ?string $default = null): ?string
     {
         if (!$this->requestParamsInited)
         {
@@ -178,7 +178,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setQueryParams(array $query): self
+    public function setQueryParams(array $query): static
     {
         if (!$this->requestParamsInited)
         {
@@ -193,7 +193,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         if (!$this->requestParamsInited)
         {
@@ -207,7 +207,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $query): static
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -230,7 +230,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getUploadedFiles()
+    public function getUploadedFiles(): array
     {
         if (!$this->uploadedFilesInited)
         {
@@ -244,7 +244,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $self = clone $this;
 
@@ -255,7 +255,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setUploadedFiles(array $uploadedFiles): self
+    public function setUploadedFiles(array $uploadedFiles): static
     {
         $objectFiles = &$this->files;
         $objectFiles = [];
@@ -348,7 +348,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withParsedBody($data)
+    public function withParsedBody($data): static
     {
         $self = clone $this;
         $self->parsedBody = $data;
@@ -359,7 +359,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setParsedBody($data): self
+    public function setParsedBody($data): static
     {
         $this->parsedBody = $data;
 
@@ -369,7 +369,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -377,7 +377,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute(string $name, $default = null)
     {
         $attributes = $this->attributes;
         if (\array_key_exists($name, $attributes))
@@ -393,7 +393,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withAttribute($name, $value)
+    public function withAttribute(string $name, $value): static
     {
         $self = clone $this;
         $self->attributes[$name] = $value;
@@ -404,7 +404,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setAttribute(string $name, $value): self
+    public function setAttribute(string $name, $value): static
     {
         $this->attributes[$name] = $value;
 
@@ -414,7 +414,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withoutAttribute($name)
+    public function withoutAttribute(string $name): static
     {
         $self = clone $this;
         if (\array_key_exists($name, $self->attributes))
@@ -428,7 +428,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function removeAttribute(string $name): self
+    public function removeAttribute(string $name): static
     {
         if (\array_key_exists($name, $this->attributes))
         {
@@ -441,7 +441,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function get(?string $name = null, $default = null)
+    public function get(?string $name = null, mixed $default = null): mixed
     {
         if (!$this->requestParamsInited)
         {
@@ -461,7 +461,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function post(?string $name = null, $default = null)
+    public function post(?string $name = null, mixed $default = null): mixed
     {
         if (!$this->requestParamsInited)
         {
@@ -509,7 +509,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function request(?string $name = null, $default = null)
+    public function request(?string $name = null, mixed $default = null): mixed
     {
         if (!$this->requestParamsInited)
         {
@@ -548,7 +548,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withGet(array $get): self
+    public function withGet(array $get): static
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -564,7 +564,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setGet(array $get): self
+    public function setGet(array $get): static
     {
         if (!$this->requestParamsInited)
         {
@@ -579,7 +579,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withPost($post): self
+    public function withPost(mixed $post): static
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -595,7 +595,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setPost($post): self
+    public function setPost(mixed $post): static
     {
         if (!$this->requestParamsInited)
         {
@@ -610,7 +610,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function withRequest(array $request): self
+    public function withRequest(array $request): static
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -626,7 +626,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function setRequest(array $request): self
+    public function setRequest(array $request): static
     {
         if (!$this->requestParamsInited)
         {

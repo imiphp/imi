@@ -43,7 +43,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -51,7 +51,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function withStatus($code, $reasonPhrase = '')
+    public function withStatus(int $code, string $reasonPhrase = ''): static
     {
         $self = clone $this;
         $self->statusCode = $code;
@@ -70,7 +70,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function setStatus(int $code, string $reasonPhrase = ''): self
+    public function setStatus(int $code, string $reasonPhrase = ''): static
     {
         $this->statusCode = $code;
         if ('' === $reasonPhrase)
@@ -88,7 +88,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function getReasonPhrase()
+    public function getReasonPhrase(): string
     {
         if ('' === $this->reasonPhrase)
         {
@@ -101,7 +101,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static
     {
         $self = clone $this;
         $self->cookies[$key] = [
@@ -120,7 +120,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static
     {
         $this->cookies[$key] = [
             'key'       => $key,
@@ -146,7 +146,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function getCookie(string $name, $default = null)
+    public function getCookie(string $name, ?array $default = null): ?array
     {
         return $this->cookies[$name] ?? $default;
     }
@@ -178,7 +178,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function withTrailer(string $name, string $value): self
+    public function withTrailer(string $name, string $value): static
     {
         $self = clone $this;
         $self->trailers[$name] = $value;
@@ -189,7 +189,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function setTrailer(string $name, string $value): self
+    public function setTrailer(string $name, string $value): static
     {
         $this->trailers[$name] = $value;
 

@@ -10,21 +10,13 @@ interface IServerRequest extends ServerRequestInterface, IRequest
 {
     /**
      * 获取服务器参数.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getServerParam(string $name, $default = null);
+    public function getServerParam(string $name, mixed $default = null): mixed;
 
     /**
      * 获取cookie值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getCookie(string $name, $default = null);
+    public function getCookie(string $name, ?string $default = null): ?string;
 
     /**
      * Return an instance with the specified cookies.
@@ -37,10 +29,8 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * instance, nor related values in the server params.
      *
      * @param array $cookies array of key/value pairs representing cookies
-     *
-     * @return static
      */
-    public function setCookieParams(array $cookies): self;
+    public function setCookieParams(array $cookies): static;
 
     /**
      * Return an instance with the specified query string arguments.
@@ -58,21 +48,17 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      *
      * @param array $query array of query string arguments, typically from
      *                     $_GET
-     *
-     * @return static
      */
-    public function setQueryParams(array $query): self;
+    public function setQueryParams(array $query): static;
 
     /**
      * Create a new instance with the specified uploaded files.
      *
      * @param array $uploadedFiles an array tree of UploadedFileInterface instances
      *
-     * @return static
-     *
      * @throws \InvalidArgumentException if an invalid structure is provided
      */
-    public function setUploadedFiles(array $uploadedFiles): self;
+    public function setUploadedFiles(array $uploadedFiles): static;
 
     /**
      * Return an instance with the specified body parameters.
@@ -95,12 +81,10 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * @param array|object|null $data The deserialized body data. This will
      *                                typically be in an array or object.
      *
-     * @return static
-     *
      * @throws \InvalidArgumentException if an unsupported argument type is
      *                                   provided
      */
-    public function setParsedBody($data): self;
+    public function setParsedBody(array|object|null $data): static;
 
     /**
      * Return an instance with the specified derived request attribute.
@@ -112,10 +96,8 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      *
      * @param string $name  the attribute name
      * @param mixed  $value the value of the attribute
-     *
-     * @return static
      */
-    public function setAttribute(string $name, $value): self;
+    public function setAttribute(string $name, mixed $value): static;
 
     /**
      * Return an instance that removes the specified derived request attribute.
@@ -126,30 +108,20 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * @see getAttributes()
      *
      * @param string $name the attribute name
-     *
-     * @return static
      */
-    public function removeAttribute(string $name): self;
+    public function removeAttribute(string $name): static;
 
     /**
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function get(?string $name = null, $default = null);
+    public function get(?string $name = null, mixed $default = null): mixed;
 
     /**
      * 获取 POST 参数
      * 当 $name 为 null 时，返回所有.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function post(?string $name = null, $default = null);
+    public function post(?string $name = null, mixed $default = null): mixed;
 
     /**
      * 判断是否存在 GET 参数.
@@ -165,13 +137,8 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * 获取 REQUEST 参数
      * 当 $name 为 null 时，返回所有
      * REQUEST 中包括：GET/POST/COOKIE.
-     *
-     * @param string $name
-     * @param mixed  $default
-     *
-     * @return mixed
      */
-    public function request(?string $name = null, $default = null);
+    public function request(?string $name = null, mixed $default = null): mixed;
 
     /**
      * 判断是否存在 REQUEST 参数
@@ -181,47 +148,31 @@ interface IServerRequest extends ServerRequestInterface, IRequest
 
     /**
      * 设置 GET 数据.
-     *
-     * @return static
      */
-    public function withGet(array $get): self;
+    public function withGet(array $get): static;
 
     /**
      * 设置 GET 数据.
-     *
-     * @return static
      */
-    public function setGet(array $get): self;
+    public function setGet(array $get): static;
 
     /**
      * 设置 POST 数据.
-     *
-     * @param mixed $post
-     *
-     * @return static
      */
-    public function withPost($post): self;
+    public function withPost(mixed $post): static;
 
     /**
      * 设置 POST 数据.
-     *
-     * @param mixed $post
-     *
-     * @return static
      */
-    public function setPost($post): self;
+    public function setPost(mixed $post): static;
 
     /**
      * 设置 Request 数据.
-     *
-     * @return static
      */
-    public function withRequest(array $request): self;
+    public function withRequest(array $request): static;
 
     /**
      * 设置 Request 数据.
-     *
-     * @return static
      */
-    public function setRequest(array $request): self;
+    public function setRequest(array $request): static;
 }
