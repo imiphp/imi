@@ -1,0 +1,71 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Offset 'lockExpire' on array\\{waitTimeout\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Cache/Aop/CacheableAop.php
+
+		-
+			message: "#^Offset 'timeoutException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Cache/Aop/CacheableAop.php
+
+		-
+			message: "#^Offset 'unlockException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed, timeoutException\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Cache/Aop/CacheableAop.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../src/Cache/Handler/File.php
+
+		-
+			message: "#^Offset 'lockExpire' on array\\{waitTimeout\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Lock/Aop/LockAop.php
+
+		-
+			message: "#^Offset 'timeoutException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Lock/Aop/LockAop.php
+
+		-
+			message: "#^Offset 'unlockException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed, timeoutException\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Lock/Aop/LockAop.php
+
+		-
+			message: "#^Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../src/Model/Model.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: ../src/Model/Model.php
+
+		-
+			message: "#^PHPDoc tag @return with type T\\|null is not subtype of native type Imi\\\\Bean\\\\Annotation\\\\Base\\|null\\.$#"
+			count: 1
+			path: ../src/Model/ModelManager.php
+
+		-
+			message: "#^Parameter \\#2 \\$class of static method Imi\\\\Server\\\\ServerManager\\:\\:getServer\\(\\) expects class\\-string\\<Imi\\\\Server\\\\Contract\\\\IServer\\>\\|null, string given\\.$#"
+			count: 1
+			path: ../src/Server/Group/Listener/GroupRestore.php
+
+		-
+			message: "#^Method Imi\\\\Test\\\\Component\\\\Model\\\\Article\\:\\:getQueryRelationsList\\(\\) should return Imi\\\\Test\\\\Component\\\\Model\\\\Article\\|null but returns Imi\\\\Test\\\\Component\\\\Model\\\\ArticleEx\\|null\\.$#"
+			count: 1
+			path: ../tests/unit/Component/Model/Article.php
+
+		-
+			message: "#^Property Imi\\\\Test\\\\Component\\\\Model\\\\Article\\:\\:\\$queryRelationsList \\(Imi\\\\Test\\\\Component\\\\Model\\\\ArticleEx\\|null\\) does not accept Imi\\\\Test\\\\Component\\\\Model\\\\Article\\|null\\.$#"
+			count: 1
+			path: ../tests/unit/Component/Model/Article.php
+
+		-
+			message: "#^Argument of an invalid type Imi\\\\Util\\\\ArrayData supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: ../tests/unit/Component/Tests/Util/ArrayDataTest.php
