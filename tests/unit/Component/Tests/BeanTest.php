@@ -63,6 +63,17 @@ class BeanTest extends BaseTest
             CODE);
             $rf = new \ReflectionFunction($f);
             $this->assertEquals('string|int', ReflectionUtil::getTypeComments($rf->getReturnType()));
+
+            $c = Imi::eval(<<<'CODE'
+            return new class() {
+                public function test(): static
+                {
+                    return $this;
+                }
+            };
+            CODE);
+            $rf = new \ReflectionMethod($c, 'test');
+            $this->assertEquals('static', ReflectionUtil::getTypeComments($rf->getReturnType()));
         }
 
         // @phpstan-ignore-next-line
@@ -157,6 +168,17 @@ class BeanTest extends BaseTest
             CODE);
             $rf = new \ReflectionFunction($f);
             $this->assertEquals('string|int', ReflectionUtil::getTypeCode($rf->getReturnType()));
+
+            $c = Imi::eval(<<<'CODE'
+            return new class() {
+                public function test(): static
+                {
+                    return $this;
+                }
+            };
+            CODE);
+            $rf = new \ReflectionMethod($c, 'test');
+            $this->assertEquals('static', ReflectionUtil::getTypeCode($rf->getReturnType()));
         }
 
         // @phpstan-ignore-next-line
