@@ -26,7 +26,7 @@ class ReflectionUtil
                         $typeStr = '\\' . $className;
                     }
                 }
-                else
+                elseif ('static' !== $typeStr)
                 {
                     $typeStr = '\\' . $typeStr;
                 }
@@ -96,7 +96,7 @@ class ReflectionUtil
                         $typeStr = '\\' . $className;
                     }
                 }
-                else
+                elseif ('static' !== $typeStr)
                 {
                     $typeStr = '\\' . $typeStr;
                 }
