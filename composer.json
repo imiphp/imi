@@ -25,7 +25,7 @@
     "require-dev": {
         "composer/semver": "^3.3.2",
         "php-cs-fixer/shim": "~3.35.1",
-        "phpstan/phpstan": "~1.8.0",
+        "phpstan/phpstan": "~1.10.39",
         "phpunit/phpunit": "~9.6",
         "rector/rector": "~0.13",
         "symfony/polyfill-uuid": "^1.27",
