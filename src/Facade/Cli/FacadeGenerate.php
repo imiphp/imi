@@ -76,13 +76,9 @@ class FacadeGenerate extends BaseCommand
             if (false !== $docComment && preg_match('/@return\s+([^\s]+)/', $docComment, $matches) > 0)
             {
                 $class = $matches[1];
-                if ('self' === $class)
+                if ('self' === $class || 'static' === $class)
                 {
                     $returnType = '\\' . $method->getDeclaringClass()->getName();
-                }
-                elseif ('static' === $class)
-                {
-                    $returnType = 'static';
                 }
                 elseif ('\\' === $class[0])
                 {
