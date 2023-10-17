@@ -23,31 +23,20 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
-        - '#is never read, only written#'
-        - '#expects class-string<\S+>, string given#'
-        - '#Unable to resolve the template type T in call to method#'
-        - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
-        - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
-        - '#Unsafe usage of new static\(\).+#'
-        - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
-        - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
-        - '#Property GPBMetadata\\Grpc::\$\S+ has no typehint specified.#'
-        - '#Property Grpc\\[^:]+::\$\S+ has no typehint specified.#'
-        - '#Method GPBMetadata\\Grpc::initOnce\(\) has no return typehint specified.#'
-        - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
-        - '#Constant IMI_PATH not found.#'
-        - '#Swoole\\Coroutine\\\S+ not found#'
         -
-            message: '#Method \S+ has no return typehint specified.#'
-            paths:
-                - tests/unit/**Test.php
+            message: '#expects class-string<\S+>, string given#'
+            reportUnmatched: false
         -
-            message: '#class .+ not found#'
-            paths:
-                - src/Components/jwt/*
+            message: '#Unable to resolve the template type T in call to method#'
+            reportUnmatched: false
         -
-            message: '#Lcobucci#'
-            paths:
-                - src/Components/jwt/*
+            message: "#^Unsafe usage of new static\\(\\)\\.$#"
+            reportUnmatched: false
+        -
+            message: '#Swoole\\Coroutine\\\S+ not found#'
+            reportUnmatched: false
+        -
+            message: '#^Call to an undefined method Swoole\\Coroutine\\#'
+            reportUnmatched: false
 
 services:

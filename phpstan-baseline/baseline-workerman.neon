@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Binary operation \"\\+\\=\" between int\\<4, max\\> and string results in an error\\.$#"
+			count: 1
+			path: ../src/Components/workerman/src/Server/Protocol/WorkermanHttp.php

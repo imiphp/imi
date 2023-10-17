@@ -1,0 +1,21 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Imi\\\\Swoole\\\\Util\\\\Coroutine\\:\\:__create\\(\\) never returns bool so it can be removed from the return type\\.$#"
+			count: 1
+			path: ../src/Components/swoole/src/Util/Coroutine.typed.php
+
+		-
+			message: "#^Offset 'class' on array\\{class\\: \\*NEVER\\*\\} in isset\\(\\) always exists and is always null\\.$#"
+			count: 1
+			path: ../src/Components/swoole/src/Util/MemoryTableManager.php
+
+		-
+			message: "#^Offset 'conflictProportion' on array\\{class\\: \\*NEVER\\*\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Components/swoole/src/Util/MemoryTableManager.php
+
+		-
+			message: "#^Offset 'size' on array\\{class\\: \\*NEVER\\*\\} on left side of \\?\\? does not exist\\.$#"
+			count: 1
+			path: ../src/Components/swoole/src/Util/MemoryTableManager.php
