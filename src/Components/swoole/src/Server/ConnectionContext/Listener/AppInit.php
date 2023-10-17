@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\ConnectionContext\Listener;
 
-use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Log\Log;

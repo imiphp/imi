@@ -14,7 +14,6 @@ use Imi\RoadRunner\HotUpdate\HotUpdateProcess;
 use Imi\RoadRunner\Util\RoadRunner;
 use Imi\Server\Contract\IServer;
 use Imi\Server\ServerManager;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @Command("rr")

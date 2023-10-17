@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AMQPApp\AMQP\Test2;
 
 use Imi\AMQP\Annotation\Consumer;
-use Imi\AMQP\Annotation\Queue;
 use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Enum\ConsumerResult;

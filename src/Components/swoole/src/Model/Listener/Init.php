@@ -8,7 +8,6 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Util\MemoryTableManager;
-use Imi\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.SWOOLE.SERVER.BEFORE_START", one=true)
