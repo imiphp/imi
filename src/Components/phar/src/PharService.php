@@ -26,11 +26,11 @@ class PharService
      * @var array|string
      */
     protected $dirs = [];
-    protected array  $excludeDirs = [];
-    protected array  $excludeFiles = [];
+    protected array $excludeDirs = [];
+    protected array $excludeFiles = [];
 
-    protected array  $finder = [];
-    protected int    $compression = \Phar::NONE;
+    protected array $finder = [];
+    protected int $compression = \Phar::NONE;
 
     /**
      * @var bool|Finder
