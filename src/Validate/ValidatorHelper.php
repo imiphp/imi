@@ -491,7 +491,7 @@ class ValidatorHelper
                     $id_card = substr($id_card, 0, 6) . '19' . substr($id_card, 6, 9);
                 }
             }
-            $id_card = $id_card . $idcard_verify_number();
+            $id_card .= $idcard_verify_number();
 
             return $id_card;
         };

@@ -178,7 +178,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
                 foreach ($_index as $_ind)
                 {
                     // @phpstan-ignore-next-line
-                    $compiled_ref = $compiled_ref . "[{$_ind}]";
+                    $compiled_ref .= "[{$_ind}]";
                 }
             }
 
