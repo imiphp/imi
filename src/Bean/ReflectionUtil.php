@@ -172,12 +172,8 @@ class ReflectionUtil
                 {
                     if (null !== $className)
                     {
-                        $typeStr = '\\' . $className;
+                        $typeStr = $className;
                     }
-                }
-                elseif ('static' !== $typeStr)
-                {
-                    $typeStr = '\\' . $typeStr;
                 }
             }
 
