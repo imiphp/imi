@@ -344,8 +344,6 @@ interface IQuery extends IBaseWhereCollector
 
     /**
      * 分页查询.
-     *
-     * @return \Imi\Db\Query\Interfaces\IPaginateResult
      */
     public function paginate(int $page, int $count, array $options = []): IPaginateResult;
 

@@ -143,8 +143,7 @@ class Annotation
     /**
      * 注解类转注释文本.
      *
-     * @param \Imi\Bean\Annotation\Base $annotation
-     * @param bool                      $skipDefaultValue 过滤默认值不显示
+     * @param bool $skipDefaultValue 过滤默认值不显示
      */
     public static function toComments(Annotation\Base $annotation, bool $skipDefaultValue = true): string
     {

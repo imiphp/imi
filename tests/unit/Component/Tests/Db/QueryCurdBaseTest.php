@@ -25,8 +25,6 @@ abstract class QueryCurdBaseTest extends BaseTest
 {
     /**
      * 连接池名.
-     *
-     * @var string
      */
     protected ?string $poolName = null;
 

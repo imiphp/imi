@@ -13,8 +13,6 @@ class GrpcService implements IGrpcService
 {
     /**
      * 客户端.
-     *
-     * @var \Imi\Grpc\Client\GrpcClient
      */
     protected GrpcClient $client;
 

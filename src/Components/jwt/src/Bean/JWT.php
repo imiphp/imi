@@ -346,10 +346,12 @@ class JWT
     {
         # if 0
         return class_exists(\Lcobucci\JWT\Token\Parser::class) ? 4 : 3;
+
         # endif
         # if class_exists(\Lcobucci\JWT\Token\Parser::class)
         // @phpstan-ignore-next-line
         return 4;
+
         # else
         return 3;
         # endif

@@ -17,8 +17,6 @@ class SqlUtil
 
     /**
      * 解析带冒号参数的 SQL，返回解析后的 SQL.
-     *
-     * @param array $map
      */
     public static function parseSqlWithColonParams(string $sql, ?array &$map): string
     {

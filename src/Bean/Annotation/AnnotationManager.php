@@ -102,8 +102,6 @@ class AnnotationManager
 
     /**
      * 增加类注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function addClassAnnotations(string $className, Base ...$annotations): void
     {
@@ -129,8 +127,6 @@ class AnnotationManager
 
     /**
      * 设置类注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function setClassAnnotations(string $className, Base ...$annotations): void
     {
@@ -148,8 +144,6 @@ class AnnotationManager
 
     /**
      * 增加方法注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function addMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
@@ -175,8 +169,6 @@ class AnnotationManager
 
     /**
      * 设置方法注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function setMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
@@ -194,8 +186,6 @@ class AnnotationManager
 
     /**
      * 增加属性注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function addPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
@@ -221,8 +211,6 @@ class AnnotationManager
 
     /**
      * 设置属性注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function setPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
@@ -240,8 +228,6 @@ class AnnotationManager
 
     /**
      * 增加常量注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function addConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
@@ -267,8 +253,6 @@ class AnnotationManager
 
     /**
      * 设置常量注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function setConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
@@ -286,8 +270,6 @@ class AnnotationManager
 
     /**
      * 增加方法参数注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function addMethodParameterAnnotations(string $className, string $methodName, string $parameterName, Base ...$annotations): void
     {
@@ -310,8 +292,6 @@ class AnnotationManager
 
     /**
      * 设置方法参数注解.
-     *
-     * @param \Imi\Bean\Annotation\Base ...$annotations
      */
     public static function setMethodParameterAnnotations(string $className, string $methodName, string $parameterName, Base ...$annotations): void
     {

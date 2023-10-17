@@ -110,8 +110,6 @@ class AMQPPool
 
     /**
      * 处理连接池名称.
-     *
-     * @param string $poolName
      */
     public static function parsePoolName(?string $poolName = null): string
     {

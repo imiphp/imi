@@ -13,8 +13,6 @@ class QueryCurdTest extends QueryCurdBaseTest
 {
     /**
      * 连接池名.
-     *
-     * @var string
      */
     protected ?string $poolName = 'swooleMysql';
 

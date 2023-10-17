@@ -33,8 +33,6 @@ interface IJoin extends IBase
 
     /**
      * where条件.
-     *
-     * @return \Imi\Db\Query\Interfaces\IBaseWhere|null
      */
     public function getWhere(): ?IBaseWhere;
 

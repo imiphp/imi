@@ -30,8 +30,6 @@ class RouteItem
 
     /**
      * WebSocket 配置.
-     *
-     * @var WSConfig
      */
     public ?WSConfig $wsConfig = null;
 

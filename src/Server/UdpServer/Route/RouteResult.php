@@ -8,8 +8,6 @@ class RouteResult
 {
     /**
      * 路由配置项.
-     *
-     * @var \Imi\Server\UdpServer\Route\RouteItem
      */
     public RouteItem $routeItem;
 

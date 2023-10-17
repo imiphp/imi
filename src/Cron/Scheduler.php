@@ -27,15 +27,11 @@ class Scheduler implements IScheduler
 
     /**
      * @Inject("CronCalculator")
-     *
-     * @var \Imi\Cron\CronCalculator
      */
     protected CronCalculator $cronCalculator;
 
     /**
      * @Inject("CronLock")
-     *
-     * @var \Imi\Cron\CronLock
      */
     protected CronLock $cronLock;
 

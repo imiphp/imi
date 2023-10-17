@@ -24,8 +24,6 @@ class RedisManager
      * 获取新的 Redis 连接实例.
      *
      * @param string|null $poolName 连接池名称
-     *
-     * @return \Imi\Redis\RedisHandler
      */
     public static function getNewInstance(?string $poolName = null): RedisHandler
     {
@@ -55,8 +53,6 @@ class RedisManager
      * 获取 Redis 连接实例，每个RequestContext中共用一个.
      *
      * @param string|null $poolName 连接池名称
-     *
-     * @return \Imi\Redis\RedisHandler|null
      */
     public static function getInstance(?string $poolName = null): ?RedisHandler
     {
@@ -138,8 +134,6 @@ class RedisManager
 
     /**
      * 释放 Redis 连接实例.
-     *
-     * @param \Imi\Redis\RedisHandler $redis
      */
     public static function release(RedisHandler $redis): void
     {

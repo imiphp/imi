@@ -13,8 +13,6 @@ interface IField extends ITable
 
     /**
      * 设置字段名.
-     *
-     * @param string $field
      */
     public function setField(?string $field = null): void;
 

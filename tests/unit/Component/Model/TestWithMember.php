@@ -56,8 +56,6 @@ class TestWithMember extends TestWithMemberBase
     /**
      * Set the value of member.
      *
-     * @param MemberSerializable $member
-     *
      * @return self
      */
     public function setMember(?MemberSerializable $member)

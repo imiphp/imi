@@ -23,8 +23,6 @@ interface IService
 
     /**
      * 获取客户端对象
-     *
-     * @return \Imi\Rpc\Client\IRpcClient
      */
     public function getClient(): IRpcClient;
 }

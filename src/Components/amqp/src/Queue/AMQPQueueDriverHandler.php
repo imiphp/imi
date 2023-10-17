@@ -82,15 +82,11 @@ class AMQPQueueDriverHandler implements IQueueDriver
 
     /**
      * 发布者.
-     *
-     * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
     private ?QueuePublisher $publisher = null;
 
     /**
      * 延迟发布者.
-     *
-     * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
     private ?QueuePublisher $delayPublisher = null;
 
@@ -101,8 +97,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
 
     /**
      * 超时队列发布者.
-     *
-     * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
     private ?QueuePublisher $timeoutPublisher = null;
 
@@ -113,8 +107,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
 
     /**
      * 失败队列发布者.
-     *
-     * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
     private ?QueuePublisher $failPublisher = null;
 

@@ -379,10 +379,6 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 处理类似varchar(32)和decimal(10,2)格式的字段类型.
-     *
-     * @param string $typeName
-     * @param int    $length
-     * @param int    $accuracy
      */
     public function parseFieldType(string $text, ?string &$typeName, ?int &$length, ?int &$accuracy, ?bool &$unsigned): bool
     {
