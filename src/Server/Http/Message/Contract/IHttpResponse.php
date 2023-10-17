@@ -17,12 +17,12 @@ interface IHttpResponse extends IResponse
      * 设置服务器端重定向
      * 默认状态码为302.
      */
-    public function redirect(string $url, int $status = StatusCode::FOUND): static;
+    public function redirect(string $url, int $status = StatusCode::FOUND): self;
 
     /**
      * 发送所有响应数据.
      */
-    public function send(): static;
+    public function send(): self;
 
     /**
      * 发送文件，一般用于文件下载.
@@ -31,7 +31,7 @@ interface IHttpResponse extends IResponse
      * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
      * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
      */
-    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): static;
+    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): self;
 
     /**
      * 响应头是否可写.
@@ -43,9 +43,9 @@ interface IHttpResponse extends IResponse
      */
     public function isBodyWritable(): bool;
 
-    public function withResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): static;
+    public function withResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self;
 
-    public function setResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): static;
+    public function setResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self;
 
     public function getResponseBodyEmitter(): ?IResponseBodyEmitter;
 }

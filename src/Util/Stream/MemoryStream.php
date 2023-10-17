@@ -33,7 +33,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->content;
     }

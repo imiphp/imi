@@ -233,7 +233,7 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withScheme(string $scheme): static
+    public function withScheme(string $scheme): self
     {
         if (!\is_string($scheme))
         {
@@ -252,7 +252,7 @@ class Uri implements UriInterface, \Stringable
         string $user,
         #[\SensitiveParameter]
         ?string $password = null
-    ): static {
+    ): self {
         $self = clone $this;
         $self->userInfo = $user;
         if (null !== $password)
@@ -266,7 +266,7 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withHost(string $host): static
+    public function withHost(string $host): self
     {
         $self = clone $this;
         $self->host = $host;
@@ -277,7 +277,7 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withPort(?int $port): static
+    public function withPort(?int $port): self
     {
         $self = clone $this;
         $self->port = $port;
@@ -288,7 +288,7 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withPath(string $path): static
+    public function withPath(string $path): self
     {
         $self = clone $this;
         $self->path = $path;
@@ -299,7 +299,7 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withQuery(string $query): static
+    public function withQuery(string $query): self
     {
         $self = clone $this;
         $self->query = $query;
@@ -310,7 +310,7 @@ class Uri implements UriInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function withFragment(string $fragment): static
+    public function withFragment(string $fragment): self
     {
         $self = clone $this;
         $self->fragment = $fragment;

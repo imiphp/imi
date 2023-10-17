@@ -23,19 +23,25 @@ interface IResponse extends ResponseInterface, IMessage
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification
      *
+     * @return static
+     *
      * @throws \InvalidArgumentException for invalid status code arguments
      */
-    public function setStatus(int $code, string $reasonPhrase = ''): static;
+    public function setStatus(int $code, string $reasonPhrase = ''): self;
 
     /**
      * 设置cookie.
+     *
+     * @return static
      */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static;
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
 
     /**
      * 设置cookie.
+     *
+     * @return static
      */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static;
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
 
     /**
      * Retrieve cookies.
@@ -69,11 +75,15 @@ interface IResponse extends ResponseInterface, IMessage
 
     /**
      * 设置 Trailer.
+     *
+     * @return static
      */
-    public function withTrailer(string $name, string $value): static;
+    public function withTrailer(string $name, string $value): self;
 
     /**
      * 设置 Trailer.
+     *
+     * @return static
      */
-    public function setTrailer(string $name, string $value): static;
+    public function setTrailer(string $name, string $value): self;
 }

@@ -13,28 +13,28 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  *
  * @RequestContextProxy(class="Imi\Server\Http\Message\Contract\IHttpResponse", name="response")
  *
- * @method        static                                                              redirect(string $url, int $status = 302)
- * @method static static                                                              redirect(string $url, int $status = 302)
- * @method        static                                                              send()
- * @method static static                                                              send()
- * @method        static                                                              sendFile(string $filename, ?string $contentType = NULL, ?string $outputFileName = NULL, int $offset = 0, int $length = 0)
- * @method static static                                                              sendFile(string $filename, ?string $contentType = NULL, ?string $outputFileName = NULL, int $offset = 0, int $length = 0)
+ * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     redirect(string $url, int $status = 302)
+ * @method static \Imi\Server\Http\Message\Contract\IHttpResponse                     redirect(string $url, int $status = 302)
+ * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     send()
+ * @method static \Imi\Server\Http\Message\Contract\IHttpResponse                     send()
+ * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     sendFile(string $filename, ?string $contentType = NULL, ?string $outputFileName = NULL, int $offset = 0, int $length = 0)
+ * @method static \Imi\Server\Http\Message\Contract\IHttpResponse                     sendFile(string $filename, ?string $contentType = NULL, ?string $outputFileName = NULL, int $offset = 0, int $length = 0)
  * @method        bool                                                                isHeaderWritable()
  * @method static bool                                                                isHeaderWritable()
  * @method        bool                                                                isBodyWritable()
  * @method static bool                                                                isBodyWritable()
- * @method        static                                                              withResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
- * @method static static                                                              withResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
- * @method        static                                                              setResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
- * @method static static                                                              setResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
+ * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     withResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
+ * @method static \Imi\Server\Http\Message\Contract\IHttpResponse                     withResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
+ * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     setResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
+ * @method static \Imi\Server\Http\Message\Contract\IHttpResponse                     setResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter)
  * @method        \Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter|null getResponseBodyEmitter()
  * @method static \Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter|null getResponseBodyEmitter()
- * @method        static                                                              setStatus(int $code, string $reasonPhrase = '')
- * @method static static                                                              setStatus(int $code, string $reasonPhrase = '')
- * @method        static                                                              withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
- * @method static static                                                              withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
- * @method        static                                                              setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
- * @method static static                                                              setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
+ * @method        \Imi\Util\Http\Contract\IResponse                                   setStatus(int $code, string $reasonPhrase = '')
+ * @method static \Imi\Util\Http\Contract\IResponse                                   setStatus(int $code, string $reasonPhrase = '')
+ * @method        \Imi\Util\Http\Contract\IResponse                                   withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
+ * @method static \Imi\Util\Http\Contract\IResponse                                   withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
+ * @method        \Imi\Util\Http\Contract\IResponse                                   setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
+ * @method static \Imi\Util\Http\Contract\IResponse                                   setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
  * @method        array                                                               getCookieParams()
  * @method static array                                                               getCookieParams()
  * @method        array|null                                                          getCookie(string $name, ?array $default = NULL)
@@ -45,10 +45,10 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static bool                                                                hasTrailer(string $name)
  * @method        string|null                                                         getTrailer(string $name)
  * @method static string|null                                                         getTrailer(string $name)
- * @method        static                                                              withTrailer(string $name, string $value)
- * @method static static                                                              withTrailer(string $name, string $value)
- * @method        static                                                              setTrailer(string $name, string $value)
- * @method static static                                                              setTrailer(string $name, string $value)
+ * @method        \Imi\Util\Http\Contract\IResponse                                   withTrailer(string $name, string $value)
+ * @method static \Imi\Util\Http\Contract\IResponse                                   withTrailer(string $name, string $value)
+ * @method        \Imi\Util\Http\Contract\IResponse                                   setTrailer(string $name, string $value)
+ * @method static \Imi\Util\Http\Contract\IResponse                                   setTrailer(string $name, string $value)
  * @method        int                                                                 getStatusCode()
  * @method static int                                                                 getStatusCode()
  * @method        \Psr\Http\Message\ResponseInterface                                 withStatus(int $code, string $reasonPhrase = '')
@@ -77,23 +77,23 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Psr\Http\Message\StreamInterface                                   getBody()
  * @method        \Psr\Http\Message\MessageInterface                                  withBody(\Psr\Http\Message\StreamInterface $body)
  * @method static \Psr\Http\Message\MessageInterface                                  withBody(\Psr\Http\Message\StreamInterface $body)
- * @method        static                                                              setProtocolVersion(string $version)
- * @method static static                                                              setProtocolVersion(string $version)
- * @method        static                                                              setHeader(string $name, array|string $value)
- * @method static static                                                              setHeader(string $name, array|string $value)
- * @method        static                                                              addHeader(string $name, array|string $value)
- * @method static static                                                              addHeader(string $name, array|string $value)
- * @method        static                                                              removeHeader(string $name)
- * @method static static                                                              removeHeader(string $name)
- * @method        static                                                              setBody(\Psr\Http\Message\StreamInterface $body)
- * @method static static                                                              setBody(\Psr\Http\Message\StreamInterface $body)
+ * @method        \Imi\Util\Http\Contract\IMessage                                    setProtocolVersion(string $version)
+ * @method static \Imi\Util\Http\Contract\IMessage                                    setProtocolVersion(string $version)
+ * @method        \Imi\Util\Http\Contract\IMessage                                    setHeader(string $name, array|string $value)
+ * @method static \Imi\Util\Http\Contract\IMessage                                    setHeader(string $name, array|string $value)
+ * @method        \Imi\Util\Http\Contract\IMessage                                    addHeader(string $name, array|string $value)
+ * @method static \Imi\Util\Http\Contract\IMessage                                    addHeader(string $name, array|string $value)
+ * @method        \Imi\Util\Http\Contract\IMessage                                    removeHeader(string $name)
+ * @method static \Imi\Util\Http\Contract\IMessage                                    removeHeader(string $name)
+ * @method        \Imi\Util\Http\Contract\IMessage                                    setBody(\Psr\Http\Message\StreamInterface $body)
+ * @method static \Imi\Util\Http\Contract\IMessage                                    setBody(\Psr\Http\Message\StreamInterface $body)
  */
 class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpResponse
 {
     /**
      * {@inheritDoc}
      */
-    public function redirect(string $url, int $status = 302): static
+    public function redirect(string $url, int $status = 302): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
         return self::__getProxyInstance()->redirect($url, $status);
     }
@@ -101,7 +101,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function send(): static
+    public function send(): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
         return self::__getProxyInstance()->send(...\func_get_args());
     }
@@ -109,7 +109,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): static
+    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
         return self::__getProxyInstance()->sendFile($filename, $contentType, $outputFileName, $offset, $length);
     }
@@ -133,7 +133,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function withResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter): static
+    public function withResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
         return self::__getProxyInstance()->withResponseBodyEmitter($responseBodyEmitter);
     }
@@ -141,7 +141,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter): static
+    public function setResponseBodyEmitter(?\Imi\Server\Http\Message\Emitter\Contract\IResponseBodyEmitter $responseBodyEmitter): \Imi\Server\Http\Message\Contract\IHttpResponse
     {
         return self::__getProxyInstance()->setResponseBodyEmitter($responseBodyEmitter);
     }
@@ -157,7 +157,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setStatus(int $code, string $reasonPhrase = ''): static
+    public function setStatus(int $code, string $reasonPhrase = ''): \Imi\Util\Http\Contract\IResponse
     {
         return self::__getProxyInstance()->setStatus($code, $reasonPhrase);
     }
@@ -165,7 +165,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): \Imi\Util\Http\Contract\IResponse
     {
         return self::__getProxyInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
@@ -173,7 +173,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): static
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): \Imi\Util\Http\Contract\IResponse
     {
         return self::__getProxyInstance()->setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
@@ -221,7 +221,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function withTrailer(string $name, string $value): static
+    public function withTrailer(string $name, string $value): \Imi\Util\Http\Contract\IResponse
     {
         return self::__getProxyInstance()->withTrailer($name, $value);
     }
@@ -229,7 +229,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setTrailer(string $name, string $value): static
+    public function setTrailer(string $name, string $value): \Imi\Util\Http\Contract\IResponse
     {
         return self::__getProxyInstance()->setTrailer($name, $value);
     }
@@ -349,7 +349,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setProtocolVersion(string $version): static
+    public function setProtocolVersion(string $version): \Imi\Util\Http\Contract\IMessage
     {
         return self::__getProxyInstance()->setProtocolVersion($version);
     }
@@ -357,7 +357,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setHeader(string $name, array|string $value): static
+    public function setHeader(string $name, array|string $value): \Imi\Util\Http\Contract\IMessage
     {
         return self::__getProxyInstance()->setHeader($name, $value);
     }
@@ -365,7 +365,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function addHeader(string $name, array|string $value): static
+    public function addHeader(string $name, array|string $value): \Imi\Util\Http\Contract\IMessage
     {
         return self::__getProxyInstance()->addHeader($name, $value);
     }
@@ -373,7 +373,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function removeHeader(string $name): static
+    public function removeHeader(string $name): \Imi\Util\Http\Contract\IMessage
     {
         return self::__getProxyInstance()->removeHeader($name);
     }
@@ -381,7 +381,7 @@ class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server
     /**
      * {@inheritDoc}
      */
-    public function setBody(\Psr\Http\Message\StreamInterface $body): static
+    public function setBody(\Psr\Http\Message\StreamInterface $body): \Imi\Util\Http\Contract\IMessage
     {
         return self::__getProxyInstance()->setBody($body);
     }

@@ -19,18 +19,18 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static mixed                                    getServerParam(string $name, mixed $default = NULL)
  * @method        string|null                              getCookie(string $name, ?string $default = NULL)
  * @method static string|null                              getCookie(string $name, ?string $default = NULL)
- * @method        static                                   setCookieParams(array $cookies)
- * @method static static                                   setCookieParams(array $cookies)
- * @method        static                                   setQueryParams(array $query)
- * @method static static                                   setQueryParams(array $query)
- * @method        static                                   setUploadedFiles(array $uploadedFiles)
- * @method static static                                   setUploadedFiles(array $uploadedFiles)
- * @method        static                                   setParsedBody(object|array|null $data)
- * @method static static                                   setParsedBody(object|array|null $data)
- * @method        static                                   setAttribute(string $name, mixed $value)
- * @method static static                                   setAttribute(string $name, mixed $value)
- * @method        static                                   removeAttribute(string $name)
- * @method static static                                   removeAttribute(string $name)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setCookieParams(array $cookies)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setCookieParams(array $cookies)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setQueryParams(array $query)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setQueryParams(array $query)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setUploadedFiles(array $uploadedFiles)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setUploadedFiles(array $uploadedFiles)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setParsedBody(object|array|null $data)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setParsedBody(object|array|null $data)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setAttribute(string $name, mixed $value)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setAttribute(string $name, mixed $value)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   removeAttribute(string $name)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   removeAttribute(string $name)
  * @method        mixed                                    get(?string $name = NULL, mixed $default = NULL)
  * @method static mixed                                    get(?string $name = NULL, mixed $default = NULL)
  * @method        mixed                                    post(?string $name = NULL, mixed $default = NULL)
@@ -43,18 +43,18 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static mixed                                    request(?string $name = NULL, mixed $default = NULL)
  * @method        bool                                     hasRequest(string $name)
  * @method static bool                                     hasRequest(string $name)
- * @method        static                                   withGet(array $get)
- * @method static static                                   withGet(array $get)
- * @method        static                                   setGet(array $get)
- * @method static static                                   setGet(array $get)
- * @method        static                                   withPost(mixed $post)
- * @method static static                                   withPost(mixed $post)
- * @method        static                                   setPost(mixed $post)
- * @method static static                                   setPost(mixed $post)
- * @method        static                                   withRequest(array $request)
- * @method static static                                   withRequest(array $request)
- * @method        static                                   setRequest(array $request)
- * @method static static                                   setRequest(array $request)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   withGet(array $get)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   withGet(array $get)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setGet(array $get)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setGet(array $get)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   withPost(mixed $post)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   withPost(mixed $post)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setPost(mixed $post)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setPost(mixed $post)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   withRequest(array $request)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   withRequest(array $request)
+ * @method        \Imi\Util\Http\Contract\IServerRequest   setRequest(array $request)
+ * @method static \Imi\Util\Http\Contract\IServerRequest   setRequest(array $request)
  * @method        array                                    getServerParams()
  * @method static array                                    getServerParams()
  * @method        array                                    getCookieParams()
@@ -115,12 +115,12 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Psr\Http\Message\StreamInterface        getBody()
  * @method        \Psr\Http\Message\MessageInterface       withBody(\Psr\Http\Message\StreamInterface $body)
  * @method static \Psr\Http\Message\MessageInterface       withBody(\Psr\Http\Message\StreamInterface $body)
- * @method        static                                   setRequestTarget(string $requestTarget)
- * @method static static                                   setRequestTarget(string $requestTarget)
- * @method        static                                   setMethod(string $method)
- * @method static static                                   setMethod(string $method)
- * @method        static                                   setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
- * @method static static                                   setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
+ * @method        \Imi\Util\Http\Contract\IRequest         setRequestTarget(string $requestTarget)
+ * @method static \Imi\Util\Http\Contract\IRequest         setRequestTarget(string $requestTarget)
+ * @method        \Imi\Util\Http\Contract\IRequest         setMethod(string $method)
+ * @method static \Imi\Util\Http\Contract\IRequest         setMethod(string $method)
+ * @method        \Imi\Util\Http\Contract\IRequest         setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
+ * @method static \Imi\Util\Http\Contract\IRequest         setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
  * @method        \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
  * @method static \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
  */
@@ -153,7 +153,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setCookieParams(array $cookies): static
+    public function setCookieParams(array $cookies): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setCookieParams($cookies);
     }
@@ -161,7 +161,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setQueryParams(array $query): static
+    public function setQueryParams(array $query): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setQueryParams($query);
     }
@@ -169,7 +169,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setUploadedFiles(array $uploadedFiles): static
+    public function setUploadedFiles(array $uploadedFiles): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setUploadedFiles($uploadedFiles);
     }
@@ -177,7 +177,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setParsedBody(object|array|null $data): static
+    public function setParsedBody(object|array|null $data): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setParsedBody($data);
     }
@@ -185,7 +185,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setAttribute(string $name, mixed $value): static
+    public function setAttribute(string $name, mixed $value): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setAttribute($name, $value);
     }
@@ -193,7 +193,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function removeAttribute(string $name): static
+    public function removeAttribute(string $name): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->removeAttribute($name);
     }
@@ -249,7 +249,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withGet(array $get): static
+    public function withGet(array $get): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->withGet($get);
     }
@@ -257,7 +257,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setGet(array $get): static
+    public function setGet(array $get): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setGet($get);
     }
@@ -265,7 +265,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withPost(mixed $post): static
+    public function withPost(mixed $post): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->withPost($post);
     }
@@ -273,7 +273,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setPost(mixed $post): static
+    public function setPost(mixed $post): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setPost($post);
     }
@@ -281,7 +281,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function withRequest(array $request): static
+    public function withRequest(array $request): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->withRequest($request);
     }
@@ -289,7 +289,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setRequest(array $request): static
+    public function setRequest(array $request): \Imi\Util\Http\Contract\IServerRequest
     {
         return self::__getProxyInstance()->setRequest($request);
     }
@@ -537,7 +537,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setRequestTarget(string $requestTarget): static
+    public function setRequestTarget(string $requestTarget): \Imi\Util\Http\Contract\IRequest
     {
         return self::__getProxyInstance()->setRequestTarget($requestTarget);
     }
@@ -545,7 +545,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setMethod(string $method): static
+    public function setMethod(string $method): \Imi\Util\Http\Contract\IRequest
     {
         return self::__getProxyInstance()->setMethod($method);
     }
@@ -553,7 +553,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false): static
+    public function setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false): \Imi\Util\Http\Contract\IRequest
     {
         return self::__getProxyInstance()->setUri($uri, $preserveHost);
     }

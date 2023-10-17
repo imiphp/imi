@@ -15,13 +15,13 @@ abstract class Response extends \Imi\Util\Http\Response implements IHttpResponse
     /**
      * {@inheritDoc}
      */
-    public function redirect(string $url, int $status = StatusCode::FOUND): static
+    public function redirect(string $url, int $status = StatusCode::FOUND): self
     {
         // @phpstan-ignore-next-line
         return $this->setStatus($status)->setHeader('location', $url);
     }
 
-    public function withResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): static
+    public function withResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self
     {
         $clone = clone $this;
         $clone->responseBodyEmitter = $responseBodyEmitter;
@@ -29,7 +29,7 @@ abstract class Response extends \Imi\Util\Http\Response implements IHttpResponse
         return $clone;
     }
 
-    public function setResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): static
+    public function setResponseBodyEmitter(?IResponseBodyEmitter $responseBodyEmitter): self
     {
         $this->responseBodyEmitter = $responseBodyEmitter;
 

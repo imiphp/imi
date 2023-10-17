@@ -64,8 +64,10 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withRequestTarget(string $requestTarget): static
+    public function withRequestTarget(string $requestTarget): self
     {
         $self = clone $this;
         $self->requestTarget = $requestTarget;
@@ -75,8 +77,10 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setRequestTarget(string $requestTarget): static
+    public function setRequestTarget(string $requestTarget): self
     {
         $this->requestTarget = $requestTarget;
 
@@ -106,8 +110,10 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withMethod(string $method): static
+    public function withMethod(string $method): self
     {
         $self = clone $this;
         $self->method = $method;
@@ -118,8 +124,10 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setMethod(string $method): static
+    public function setMethod(string $method): self
     {
         $this->method = $method;
         $this->methodInited = true;
@@ -150,8 +158,10 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withUri(UriInterface $uri, bool $preserveHost = false): static
+    public function withUri(UriInterface $uri, bool $preserveHost = false): self
     {
         $self = clone $this;
 
@@ -161,8 +171,10 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setUri(UriInterface $uri, bool $preserveHost = false): static
+    public function setUri(UriInterface $uri, bool $preserveHost = false): self
     {
         $this->uri = $uri;
         $this->appUri = null;

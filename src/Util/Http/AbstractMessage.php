@@ -68,8 +68,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withProtocolVersion($version): static
+    public function withProtocolVersion($version): self
     {
         $self = clone $this;
         $self->protocolVersion = $version;
@@ -80,8 +82,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setProtocolVersion(string $version): static
+    public function setProtocolVersion(string $version): self
     {
         $this->protocolVersion = $version;
         $this->protocolVersionInited = true;
@@ -184,8 +188,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withHeader(string $name, $value): static
+    public function withHeader(string $name, $value): self
     {
         $self = clone $this;
         if (!$self->headersInited)
@@ -199,8 +205,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setHeader(string $name, $value): static
+    public function setHeader(string $name, $value): self
     {
         if (!$this->headersInited)
         {
@@ -213,8 +221,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withAddedHeader(string $name, $value): static
+    public function withAddedHeader(string $name, $value): self
     {
         $self = clone $this;
         if (!$self->headersInited)
@@ -229,8 +239,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function addHeader(string $name, $value): static
+    public function addHeader(string $name, $value): self
     {
         if (!$this->headersInited)
         {
@@ -272,8 +284,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withoutHeader(string $name): static
+    public function withoutHeader(string $name): self
     {
         $self = clone $this;
         if (!$self->headersInited)
@@ -288,8 +302,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function removeHeader(string $name): static
+    public function removeHeader(string $name): self
     {
         if (!$this->headersInited)
         {
@@ -332,8 +348,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withBody(StreamInterface $body): static
+    public function withBody(StreamInterface $body): self
     {
         $self = clone $this;
         $self->body = $body;
@@ -344,8 +362,10 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setBody(StreamInterface $body): static
+    public function setBody(StreamInterface $body): self
     {
         $this->body = $body;
         $this->bodyInited = true;
@@ -357,8 +377,10 @@ abstract class AbstractMessage implements IMessage
      * 在当前实例下设置头.
      *
      * @param static|null $object
+     *
+     * @return static
      */
-    protected function mergeHeaders(array $headers, self $object = null): static
+    protected function mergeHeaders(array $headers, ?self $object = null): self
     {
         if (null === $object)
         {

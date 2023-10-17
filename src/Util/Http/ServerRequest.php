@@ -118,8 +118,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setCookieParams(array $cookies): static
+    public function setCookieParams(array $cookies): self
     {
         if (!$this->requestParamsInited)
         {
@@ -147,8 +149,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withCookieParams(array $cookies): static
+    public function withCookieParams(array $cookies): self
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -177,8 +181,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setQueryParams(array $query): static
+    public function setQueryParams(array $query): self
     {
         if (!$this->requestParamsInited)
         {
@@ -206,8 +212,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withQueryParams(array $query): static
+    public function withQueryParams(array $query): self
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -243,8 +251,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withUploadedFiles(array $uploadedFiles): static
+    public function withUploadedFiles(array $uploadedFiles): self
     {
         $self = clone $this;
 
@@ -254,8 +264,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setUploadedFiles(array $uploadedFiles): static
+    public function setUploadedFiles(array $uploadedFiles): self
     {
         $objectFiles = &$this->files;
         $objectFiles = [];
@@ -347,8 +359,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withParsedBody($data): static
+    public function withParsedBody($data): self
     {
         $self = clone $this;
         $self->parsedBody = $data;
@@ -358,8 +372,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setParsedBody($data): static
+    public function setParsedBody($data): self
     {
         $this->parsedBody = $data;
 
@@ -392,8 +408,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withAttribute(string $name, $value): static
+    public function withAttribute(string $name, $value): self
     {
         $self = clone $this;
         $self->attributes[$name] = $value;
@@ -403,8 +421,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setAttribute(string $name, $value): static
+    public function setAttribute(string $name, $value): self
     {
         $this->attributes[$name] = $value;
 
@@ -413,8 +433,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withoutAttribute(string $name): static
+    public function withoutAttribute(string $name): self
     {
         $self = clone $this;
         if (\array_key_exists($name, $self->attributes))
@@ -427,8 +449,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function removeAttribute(string $name): static
+    public function removeAttribute(string $name): self
     {
         if (\array_key_exists($name, $this->attributes))
         {
@@ -547,8 +571,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withGet(array $get): static
+    public function withGet(array $get): self
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -563,8 +589,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setGet(array $get): static
+    public function setGet(array $get): self
     {
         if (!$this->requestParamsInited)
         {
@@ -578,8 +606,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withPost(mixed $post): static
+    public function withPost(mixed $post): self
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -594,8 +624,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setPost(mixed $post): static
+    public function setPost(mixed $post): self
     {
         if (!$this->requestParamsInited)
         {
@@ -609,8 +641,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withRequest(array $request): static
+    public function withRequest(array $request): self
     {
         $self = clone $this;
         if (!$self->requestParamsInited)
@@ -625,8 +659,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function setRequest(array $request): static
+    public function setRequest(array $request): self
     {
         if (!$this->requestParamsInited)
         {
