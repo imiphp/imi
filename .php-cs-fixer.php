@@ -118,7 +118,7 @@ return (new PhpCsFixer\Config())
         'heredoc_to_nowdoc'                => true,
         'void_return'                      => false, // BUG:https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/6690
         // Symfony 冲突
-        'curly_braces_position'            => [
+        'braces_position'                  => [
             'control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end',
         ],
         'nullable_type_declaration_for_default_null_value' => false,

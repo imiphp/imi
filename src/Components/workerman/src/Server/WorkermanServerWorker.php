@@ -21,8 +21,8 @@ class WorkermanServerWorker extends Worker
             && version_compare(\PHP_VERSION, '7.0.0', 'ge') // if php >= 7.0.0
             && version_compare(php_uname('r'), '3.9', 'ge') // if kernel >=3.9
             && 'darwin' !== strtolower(php_uname('s')) // if not Mac OS
-            && !str_starts_with($socket_name, 'unix'))
-        { // if not unix socket
+            && !str_starts_with($socket_name, 'unix')) // if not unix socket
+        {
             $this->reusePort = true;
         }
     }
