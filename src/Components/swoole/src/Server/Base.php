@@ -166,7 +166,7 @@ abstract class Base extends BaseServer implements ISwooleServer
         $server = $this->swooleServer;
         if (!method_exists($server, $methodName))
         {
-            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($server), $methodName));
+            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', $server::class, $methodName));
         }
 
         /** @var \Swoole\WebSocket\Server $server */

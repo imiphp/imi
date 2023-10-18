@@ -40,7 +40,7 @@ class BeanParser extends BaseParser
         }
         elseif ($annotation instanceof BaseInjectValue)
         {
-            $annotationClass = \get_class($annotation);
+            $annotationClass = $annotation::class;
             switch ($annotationClass)
             {
                 case Inject::class:

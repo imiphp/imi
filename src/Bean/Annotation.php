@@ -147,7 +147,7 @@ class Annotation
      */
     public static function toComments(Annotation\Base $annotation, bool $skipDefaultValue = true): string
     {
-        $result = '@' . Imi::getClassShortName(\get_class($annotation));
+        $result = '@' . Imi::getClassShortName($annotation::class);
         $properties = [];
         if ($skipDefaultValue)
         {

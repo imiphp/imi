@@ -128,8 +128,6 @@ return (new PhpCsFixer\Config())
             'remove_inheritdoc' => false,
         ],
         'no_null_property_initialization'  => false,
-        // 当支持 php>=8.0 后改配置可以移除
-        'get_class_to_class_keyword'       => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

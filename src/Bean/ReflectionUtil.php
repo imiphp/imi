@@ -74,7 +74,7 @@ class ReflectionUtil
         }
         else
         {
-            throw new \InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+            throw new \InvalidArgumentException(sprintf('Unknown type %s', $type::class));
         }
     }
 
@@ -144,7 +144,7 @@ class ReflectionUtil
         }
         else
         {
-            throw new \InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+            throw new \InvalidArgumentException(sprintf('Unknown type %s', $type::class));
         }
     }
 
@@ -208,7 +208,7 @@ class ReflectionUtil
 
             return true;
         }
-        throw new \InvalidArgumentException(sprintf('Unknown type %s', \get_class($type)));
+        throw new \InvalidArgumentException(sprintf('Unknown type %s', $type::class));
     }
 
     public static function isAllowReturnedType(\ReflectionType $type): bool

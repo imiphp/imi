@@ -84,7 +84,7 @@ class BeanProxy
                 // 验证异常是否捕获
                 if ($annotation->allow || $annotation->deny)
                 {
-                    $throwableClassName = \get_class($throwable);
+                    $throwableClassName = $throwable::class;
                     if ($annotation->allow)
                     {
                         $allowResult = false;

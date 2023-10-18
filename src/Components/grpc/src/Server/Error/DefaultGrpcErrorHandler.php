@@ -36,7 +36,7 @@ class DefaultGrpcErrorHandler implements IErrorHandler
 
     private function getGrpcStatus(\Throwable $throwable): int
     {
-        $class = \get_class($throwable);
+        $class = $throwable::class;
         switch ($class)
         {
             case \BadFunctionCallException::class:

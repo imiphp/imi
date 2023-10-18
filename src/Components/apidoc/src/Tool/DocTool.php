@@ -121,7 +121,7 @@ class DocTool extends BaseCommand
             $context = $annotation->_context;
             /** @var \OpenApi\Annotations\AbstractAnnotation $annotation */
             $className = $context->namespace . '\\' . $context->class;
-            $map[$className][$context->method][\get_class($annotation)][] = $annotation;
+            $map[$className][$context->method][$annotation::class][] = $annotation;
             if ($annotation instanceof Info)
             {
                 $info = $annotation;

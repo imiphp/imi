@@ -31,7 +31,7 @@ class ProtobufUtil
         }
         else
         {
-            $ref = ReflectionContainer::getMethodReflection(\get_class($message), 'mergeFromJsonArray');
+            $ref = ReflectionContainer::getMethodReflection($message::class, 'mergeFromJsonArray');
             $ref->setAccessible(true);
             $ref->invoke($message, $data, $ignoreUnknown);
         }
@@ -174,7 +174,7 @@ class ProtobufUtil
             /** @var DescriptorPool $pool */
             $pool = DescriptorPool::getGeneratedPool();
             /** @var Descriptor $desc */
-            $desc = $pool->getDescriptorByClassName(\get_class($message));
+            $desc = $pool->getDescriptorByClassName($message::class);
             $result = [];
             /** @var FieldDescriptor $field */
             foreach ($desc->getField() as $field)

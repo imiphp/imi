@@ -646,7 +646,7 @@ class AnnotationParser
         // 类
         foreach ($classAnnotations as $annotation)
         {
-            $annotationClassName = \get_class($annotation);
+            $annotationClassName = $annotation::class;
             if ($this->hasParser($annotationClassName))
             {
                 $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
@@ -667,7 +667,7 @@ class AnnotationParser
         {
             foreach ($annotations as $annotation)
             {
-                $annotationClassName = \get_class($annotation);
+                $annotationClassName = $annotation::class;
                 if ($this->hasParser($annotationClassName))
                 {
                     $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
@@ -689,7 +689,7 @@ class AnnotationParser
         {
             foreach ($annotations as $annotation)
             {
-                $annotationClassName = \get_class($annotation);
+                $annotationClassName = $annotation::class;
                 if ($this->hasParser($annotationClassName))
                 {
                     $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
@@ -711,7 +711,7 @@ class AnnotationParser
         {
             foreach ($annotations as $annotation)
             {
-                $annotationClassName = \get_class($annotation);
+                $annotationClassName = $annotation::class;
                 if ($this->hasParser($annotationClassName))
                 {
                     $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CONST, $constName);

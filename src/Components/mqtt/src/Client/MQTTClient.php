@@ -339,7 +339,7 @@ class MQTTClient
         }
         else
         {
-            throw new SendException(sprintf('Send %s failed! error: [%s]%s', Imi::getClassShortName(\get_class($packet)), $client->errCode, $client->errMsg));
+            throw new SendException(sprintf('Send %s failed! error: [%s]%s', Imi::getClassShortName($packet::class), $client->errCode, $client->errMsg));
         }
     }
 

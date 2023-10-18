@@ -249,7 +249,7 @@ class Imi
                 if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
-                    $refClass = ReflectionContainer::getClassReflection(\get_class($main));
+                    $refClass = ReflectionContainer::getClassReflection($main::class);
                     $path = \dirname($refClass->getFileName());
                     $result = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
                     if (is_dir($result))
@@ -313,7 +313,7 @@ class Imi
                 if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
-                    $refClass = ReflectionContainer::getClassReflection(\get_class($main));
+                    $refClass = ReflectionContainer::getClassReflection($main::class);
                     $path = \dirname($refClass->getFileName());
                     $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
                 }

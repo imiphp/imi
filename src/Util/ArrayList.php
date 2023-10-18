@@ -71,7 +71,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         if (!$value instanceof $this->itemType)
         {
             $type = \gettype($value);
-            throw new \InvalidArgumentException('ArrayList item must be an instance of ' . $this->itemType . ', ' . ('object' === $type ? \get_class($value) : $type) . ' given');
+            throw new \InvalidArgumentException('ArrayList item must be an instance of ' . $this->itemType . ', ' . ('object' === $type ? $value::class : $type) . ' given');
         }
         if (null === $offset)
         {

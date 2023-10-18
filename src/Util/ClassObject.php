@@ -22,7 +22,7 @@ class ClassObject
     {
         if (!\is_string($object))
         {
-            $object = \get_class($object);
+            $object = $object::class;
         }
 
         return str_contains($object, 'class@anonymous');
