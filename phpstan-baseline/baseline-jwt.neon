@@ -61,6 +61,56 @@ parameters:
 			path: ../src/Components/jwt/src/Bean/JWT.php
 
 		-
+			message: "#^Call to an undefined method Lcobucci\\\\JWT\\\\Builder\\:\\:sign\\(\\)\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Call to an undefined method Lcobucci\\\\JWT\\\\Token\\:\\:validate\\(\\)\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Call to an undefined method Lcobucci\\\\JWT\\\\Token\\:\\:verify\\(\\)\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Call to method setAudience\\(\\) on an unknown class Lcobucci\\\\JWT\\\\ValidationData\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Call to method setId\\(\\) on an unknown class Lcobucci\\\\JWT\\\\ValidationData\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Call to method setIssuer\\(\\) on an unknown class Lcobucci\\\\JWT\\\\ValidationData\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Call to method setSubject\\(\\) on an unknown class Lcobucci\\\\JWT\\\\ValidationData\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Cannot instantiate interface Lcobucci\\\\JWT\\\\Builder\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Cannot instantiate interface Lcobucci\\\\JWT\\\\Parser\\.$#"
+			count: 2
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
+			message: "#^Instantiated class Lcobucci\\\\JWT\\\\ValidationData not found\\.$#"
+			count: 1
+			path: ../src/Components/jwt/src/Bean/JWT.php.macro.php
+
+		-
 			message: "#^Call to an undefined method Lcobucci\\\\JWT\\\\Token\\:\\:claims\\(\\)\\.$#"
 			count: 1
 			path: ../src/Components/jwt/tests/Unit/JWTTest.php

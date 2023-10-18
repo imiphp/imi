@@ -40,3 +40,5 @@ parameters:
             reportUnmatched: false
 
 services:
+includes:
+    - phpstan-baseline/component-baseline.php
