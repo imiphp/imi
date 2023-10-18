@@ -96,47 +96,7 @@ trait TAMQP
      */
     protected function getConnection(): AbstractConnection
     {
-        $poolName = null;
-        if (null === $this->poolName)
-        {
-            $connectionByPool = false;
-            $connectionAnnotation = $this->connectionAnnotation;
-            if ($connectionAnnotation)
-            {
-                if (null === $connectionAnnotation->poolName)
-                {
-                    if (!(null !== $connectionAnnotation->host && null !== $connectionAnnotation->port && null !== $connectionAnnotation->user && null !== $connectionAnnotation->password))
-                    {
-                        $connectionByPool = true;
-                    }
-                }
-                else
-                {
-                    $connectionByPool = true;
-                }
-            }
-            else
-            {
-                $connectionByPool = true;
-            }
-            if ($connectionByPool)
-            {
-                $poolName = $connectionAnnotation->poolName ?? $this->amqp->getDefaultPoolName();
-            }
-        }
-        else
-        {
-            $connectionByPool = true;
-            $poolName = $this->poolName;
-        }
-        if ($connectionByPool || $poolName)
-        {
-            return AMQPPool::getInstance($poolName);
-        }
-        else
-        {
-            throw new \RuntimeException('Connection poolName must be set');
-        }
+        return AMQPPool::getInstance($this->poolName ?? $this->connectionAnnotation->poolName ?? null);
     }
 
     /**
