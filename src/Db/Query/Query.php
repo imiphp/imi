@@ -296,7 +296,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function field(...$fields): self
+    public function field(mixed ...$fields): self
     {
         $option = $this->option;
         if (!isset($fields[1]) && \is_array($fields[0]))
@@ -909,9 +909,9 @@ abstract class Query implements IQuery
             $sql = (new $builderClass($this))->build();
             if ($alias)
             {
-                // @phpstan-ignore-next-line
                 $originBinds = $binds;
                 $binds = $this->binds;
+                // @phpstan-ignore-next-line todo 此处 $binds 为无效判断，已经利用 $alias 在前一个 if 中置空了。
                 if ($binds)
                 {
                     $this->binds = array_merge($originBinds, $binds);
