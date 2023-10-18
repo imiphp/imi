@@ -27,7 +27,7 @@
         "php-cs-fixer/shim": "~3.35.1",
         "phpstan/phpstan": "~1.10.39",
         "phpunit/phpunit": "~9.6",
-        "rector/rector": "~0.13",
+        "rector/rector": "~0.18.5",
         "symfony/polyfill-uuid": "^1.27",
         "yurunsoft/ide-helper": "~1.0",
         "yurunsoft/yurun-http": "^5.0.0"
