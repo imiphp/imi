@@ -79,10 +79,6 @@ class AMQPResource extends BasePoolResource
         {
             return;
         }
-        if ($this->connection instanceof \Imi\AMQP\Swoole\AMQPSwooleConnection)
-        {
-            $this->connection->getIO()->close();
-        }
     }
 
     /**

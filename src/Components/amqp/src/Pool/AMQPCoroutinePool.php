@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Pool;
 
-use Imi\AMQP\Swoole\AMQPSwooleConnection;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\TUriResourceConfig;
 use Imi\Swoole\Pool\BaseAsyncPool;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
  * 协程 AMQP 客户端连接池.
@@ -49,7 +49,7 @@ class AMQPCoroutinePool extends BaseAsyncPool
         {
             $heartbeat = 0;
         }
-        $class = $config['connectionClass'] ?? AMQPSwooleConnection::class;
+        $class = $config['connectionClass'] ?? AMQPStreamConnection::class;
 
         return BeanFactory::newInstance(AMQPResource::class, $this, new $class($config['host'], (int) $config['port'], $config['user'], $config['password'], $config['vhost'] ?? '/', (bool) ($config['insist'] ?? false), $config['loginMethod'] ?? 'AMQPLAIN', $config['loginResponse'] ?? null, $config['locale'] ?? 'en_US', (float) ($config['connectionTimeout'] ?? 3.0), (float) ($config['readWriteTimeout'] ?? 3.0), $config['context'] ?? null, (bool) ($config['keepalive'] ?? false), $heartbeat, (float) ($config['channelRpcTimeout'] ?? 0.0)));
     }
