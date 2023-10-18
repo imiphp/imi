@@ -34,7 +34,7 @@ interface IMessage extends MessageInterface
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
-    public function setHeader(string $name, $value): self;
+    public function setHeader(string $name, string|array $value): self;
 
     /**
      * Return an instance with the specified header appended with the given value.
@@ -50,7 +50,7 @@ interface IMessage extends MessageInterface
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
-    public function addHeader(string $name, $value): self;
+    public function addHeader(string $name, string|array $value): self;
 
     /**
      * Return an instance without the specified header.

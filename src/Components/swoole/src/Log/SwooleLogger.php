@@ -10,6 +10,8 @@ use Imi\Event\Event;
 use Imi\Log\MonoLogger;
 use Imi\Swoole\Util\Coroutine;
 use Monolog\DateTimeImmutable;
+use Monolog\Level;
+use Monolog\LogRecord;
 use Swoole\Coroutine\Channel;
 
 class SwooleLogger extends MonoLogger
@@ -30,11 +32,12 @@ class SwooleLogger extends MonoLogger
         parent::__construct(...$args);
         if ($this->async = Config::get('@app.logger.async', false) && Coroutine::isIn())
         {
-            $this->pushProcessor(static function (array $record): array {
-                if (isset($record['context'][self::KEY_IMI_ASYNC_DATETIME]))
+            $this->pushProcessor(static function (LogRecord $record): LogRecord {
+                if (isset($record->context[self::KEY_IMI_ASYNC_DATETIME]))
                 {
-                    $record['datetime'] = $record['context'][self::KEY_IMI_ASYNC_DATETIME];
-                    unset($record['context'][self::KEY_IMI_ASYNC_DATETIME]);
+                    $context = $record->context;
+                    unset($context[self::KEY_IMI_ASYNC_DATETIME]);
+                    $record = $record->with(datetime: $record->context[self::KEY_IMI_ASYNC_DATETIME], context: $context);
                 }
 
                 return $record;
@@ -53,7 +56,7 @@ class SwooleLogger extends MonoLogger
     /**
      * {@inheritDoc}
      */
-    public function addRecord(int $level, string $message, array $context = [], ?DateTimeImmutable $datetime = null): bool
+    public function addRecord(int|Level $level, string $message, array $context = [], DateTimeImmutable $datetime = null): bool
     {
         if ($this->asyncLogging)
         {

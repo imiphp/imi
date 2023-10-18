@@ -33,7 +33,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->content;
     }
@@ -58,7 +58,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
@@ -66,7 +66,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function tell()
+    public function tell(): int
     {
         return $this->position;
     }
@@ -74,7 +74,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function eof()
+    public function eof(): bool
     {
         return $this->position >= $this->size - 1;
     }
@@ -82,17 +82,15 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return true;
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
-    public function seek($offset, $whence = \SEEK_SET)
+    public function seek(int $offset, int $whence = \SEEK_SET): void
     {
         switch ($whence)
         {
@@ -123,7 +121,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function isWritable()
+    public function isWritable(): bool
     {
         return true;
     }
@@ -131,7 +129,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function write($string)
+    public function write(string $string): int
     {
         $content = &$this->content;
         $position = &$this->position;
@@ -158,7 +156,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function isReadable()
+    public function isReadable(): bool
     {
         return true;
     }
@@ -166,7 +164,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function read($length)
+    public function read(int $length): string
     {
         $position = &$this->position;
         $result = substr($this->content, $position, $length);
@@ -178,7 +176,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function getContents()
+    public function getContents(): string
     {
         $position = &$this->position;
         if (0 === $position)
@@ -196,7 +194,7 @@ class MemoryStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function getMetadata($key = null)
+    public function getMetadata(?string $key = null)
     {
         return null;
     }

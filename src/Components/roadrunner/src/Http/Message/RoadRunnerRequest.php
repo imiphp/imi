@@ -45,7 +45,7 @@ class RoadRunnerRequest extends Request
     /**
      * {@inheritDoc}
      */
-    public function withParsedBody($data)
+    public function withParsedBody($data): static
     {
         $result = parent::withParsedBody($data);
         $contentType = $_SERVER['CONTENT_TYPE'] ?? '';

@@ -36,7 +36,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
@@ -86,7 +86,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
@@ -135,7 +135,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function delete($key)
+    public function delete(string $key): bool
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
@@ -159,7 +159,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         foreach (FileUtil::enumAll($this->savePath) as $fileIterator)
         {
@@ -180,7 +180,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $this->checkArrayOrTraversable($keys);
         $result = [];
@@ -195,7 +195,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         $this->checkArrayOrTraversable($values);
         $result = true;
@@ -215,7 +215,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         $this->checkArrayOrTraversable($keys);
         $result = true;
@@ -230,7 +230,7 @@ class File extends Base
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);

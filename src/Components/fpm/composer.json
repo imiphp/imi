@@ -4,9 +4,7 @@
     "license": "MulanPSL-2.0",
     "description": "imi php-fpm component",
     "require": {},
-    "require-dev": {
-        "phpunit/phpunit": "~9.6"
-    },
+    "require-dev": {},
     "autoload": {
         "psr-4": {
             "Imi\\Fpm\\": "src/"

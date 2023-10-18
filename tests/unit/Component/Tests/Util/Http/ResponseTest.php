@@ -55,7 +55,7 @@ class ResponseTest extends BaseTest
             'secure'   => false,
             'httponly' => false,
         ], $response->getCookie('a'));
-        $this->assertEquals('aaa', $response->getCookie('b', 'aaa'));
+        $this->assertEquals([], $response->getCookie('b', []));
 
         // trailer
         $response = new Response();

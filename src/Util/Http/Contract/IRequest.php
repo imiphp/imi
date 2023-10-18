@@ -20,11 +20,9 @@ interface IRequest extends RequestInterface
      * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
      *
-     * @param mixed $requestTarget
-     *
      * @return static
      */
-    public function setRequestTarget($requestTarget): self;
+    public function setRequestTarget(string $requestTarget): self;
 
     /**
      * Return an instance with the provided HTTP method.

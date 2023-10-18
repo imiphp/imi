@@ -16,6 +16,7 @@ use Imi\Util\Http\Consts\RequestMethod;
 use Imi\Util\Http\ServerRequest;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
+use TypeError;
 
 class ServerRequestTest extends BaseTest
 {
@@ -65,7 +66,15 @@ class ServerRequestTest extends BaseTest
         }
 
         $request = new ServerRequest();
-        $this->assertNull($request->getUri());
+        try
+        {
+            $this->assertNull($request->getUri());
+            $this->assertTrue(false);
+        }
+        catch (TypeError)
+        {
+            $this->assertTrue(true);
+        }
 
         $this->__testHeader($type);
         $this->__testParsedBody($type);

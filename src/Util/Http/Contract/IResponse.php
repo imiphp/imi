@@ -55,12 +55,8 @@ interface IResponse extends ResponseInterface, IMessage
 
     /**
      * 获取cookie值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getCookie(string $name, $default = null);
+    public function getCookie(string $name, ?array $default = null): ?array;
 
     /**
      * 获取 Trailer 列表.

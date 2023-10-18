@@ -10,21 +10,13 @@ interface IServerRequest extends ServerRequestInterface, IRequest
 {
     /**
      * 获取服务器参数.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getServerParam(string $name, $default = null);
+    public function getServerParam(string $name, mixed $default = null): mixed;
 
     /**
      * 获取cookie值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function getCookie(string $name, $default = null);
+    public function getCookie(string $name, ?string $default = null): ?string;
 
     /**
      * Return an instance with the specified cookies.
@@ -100,7 +92,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * @throws \InvalidArgumentException if an unsupported argument type is
      *                                   provided
      */
-    public function setParsedBody($data): self;
+    public function setParsedBody(array|object|null $data): self;
 
     /**
      * Return an instance with the specified derived request attribute.
@@ -115,7 +107,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      *
      * @return static
      */
-    public function setAttribute(string $name, $value): self;
+    public function setAttribute(string $name, mixed $value): self;
 
     /**
      * Return an instance that removes the specified derived request attribute.
@@ -134,22 +126,14 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function get(?string $name = null, $default = null);
+    public function get(?string $name = null, mixed $default = null): mixed;
 
     /**
      * 获取 POST 参数
      * 当 $name 为 null 时，返回所有.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function post(?string $name = null, $default = null);
+    public function post(?string $name = null, mixed $default = null): mixed;
 
     /**
      * 判断是否存在 GET 参数.
@@ -165,13 +149,8 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * 获取 REQUEST 参数
      * 当 $name 为 null 时，返回所有
      * REQUEST 中包括：GET/POST/COOKIE.
-     *
-     * @param string $name
-     * @param mixed  $default
-     *
-     * @return mixed
      */
-    public function request(?string $name = null, $default = null);
+    public function request(?string $name = null, mixed $default = null): mixed;
 
     /**
      * 判断是否存在 REQUEST 参数
@@ -196,20 +175,16 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 POST 数据.
      *
-     * @param mixed $post
-     *
      * @return static
      */
-    public function withPost($post): self;
+    public function withPost(mixed $post): self;
 
     /**
      * 设置 POST 数据.
      *
-     * @param mixed $post
-     *
      * @return static
      */
-    public function setPost($post): self;
+    public function setPost(mixed $post): self;
 
     /**
      * 设置 Request 数据.

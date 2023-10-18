@@ -111,7 +111,7 @@ class WorkermanResponse extends Response
     /**
      * {@inheritDoc}
      */
-    public function send(): self
+    public function send(): static
     {
         if ($this->responseBodyEmitter)
         {
@@ -153,7 +153,7 @@ class WorkermanResponse extends Response
     /**
      * {@inheritDoc}
      */
-    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): self
+    public function sendFile(string $filename, ?string $contentType = null, ?string $outputFileName = null, int $offset = 0, int $length = 0): static
     {
         if (null === $outputFileName)
         {

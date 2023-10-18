@@ -57,7 +57,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         $this->parseKey($key, $member);
         $result = Redis::use(static fn (\Imi\Redis\RedisHandler $redis) => $redis->hGet($key, $member), $this->poolName, true);
@@ -74,7 +74,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         $this->parseKey($key, $member);
 
@@ -84,7 +84,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function delete($key)
+    public function delete(string $key): bool
     {
         $this->parseKey($key, $member);
 
@@ -103,7 +103,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         return (bool) Redis::use(static fn (\Imi\Redis\RedisHandler $redis) => $redis->flushDB(), $this->poolName, true);
     }
@@ -111,7 +111,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $this->checkArrayOrTraversable($keys);
 
@@ -152,7 +152,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         $this->checkArrayOrTraversable($values);
 
@@ -193,7 +193,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         $this->checkArrayOrTraversable($keys);
 
@@ -224,7 +224,7 @@ class RedisHash extends Base
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         $this->parseKey($key, $member);
 

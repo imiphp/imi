@@ -7,6 +7,7 @@ namespace Imi\Log\Handler;
 use Imi\Cli\ImiCommand;
 use Imi\Log\MonoLogger;
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\LogRecord;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -28,9 +29,9 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record): void
+    protected function write(LogRecord $record): void
     {
-        $this->output->write((string) $record['formatted']);
+        $this->output->write((string) $record->formatted);
     }
 
     public function getOutput(): OutputInterface

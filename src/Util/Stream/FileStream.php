@@ -70,7 +70,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         try
         {
@@ -109,7 +109,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function getSize()
+    public function getSize(): ?int
     {
         $stat = fstat($this->stream);
         if (false === $stat)
@@ -123,7 +123,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function tell()
+    public function tell(): int
     {
         $result = ftell($this->stream);
         if (false === $result)
@@ -137,7 +137,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function eof()
+    public function eof(): bool
     {
         return feof($this->stream);
     }
@@ -145,17 +145,15 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return (bool) $this->getMetadata('seekable');
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
-    public function seek($offset, $whence = \SEEK_SET)
+    public function seek(int $offset, int $whence = \SEEK_SET): void
     {
         if (-1 === fseek($this->stream, $offset, $whence))
         {
@@ -177,7 +175,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function isWritable()
+    public function isWritable(): bool
     {
         return \in_array($this->mode, [
             StreamMode::WRITE_CLEAN,
@@ -193,7 +191,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function write($string)
+    public function write(string $string): int
     {
         $result = fwrite($this->stream, $string);
         if (false === $result)
@@ -207,7 +205,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function isReadable()
+    public function isReadable(): bool
     {
         return \in_array($this->mode, [
             StreamMode::READ_WRITE,
@@ -221,7 +219,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function read($length)
+    public function read(int $length): string
     {
         $result = fread($this->stream, $length);
         if (false === $result)
@@ -235,7 +233,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function getContents()
+    public function getContents(): string
     {
         $result = stream_get_contents($this->stream);
         if (false === $result)
@@ -249,7 +247,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * {@inheritDoc}
      */
-    public function getMetadata($key = null)
+    public function getMetadata(?string $key = null)
     {
         $result = stream_get_meta_data($this->stream);
         // @phpstan-ignore-next-line

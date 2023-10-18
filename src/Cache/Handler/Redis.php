@@ -31,7 +31,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         $this->checkKey($key);
         $result = ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->get($this->parseKey($key)), $this->poolName, true);
@@ -48,7 +48,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         $this->checkKey($key);
         // ttl 支持 \DateInterval 格式
@@ -63,7 +63,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function delete($key)
+    public function delete(string $key): bool
     {
         $this->checkKey($key);
 
@@ -73,7 +73,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         return (bool) ImiRedis::use(static fn (\Imi\Redis\RedisHandler $redis) => $redis->flushDB(), $this->poolName, true);
     }
@@ -81,7 +81,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         $this->checkArrayOrTraversable($keys);
         foreach ($keys as &$key)
@@ -111,7 +111,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         $this->checkArrayOrTraversable($values);
         if ($values instanceof \Traversable)
@@ -158,7 +158,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         $this->checkArrayOrTraversable($keys);
 
@@ -173,7 +173,7 @@ class Redis extends Base
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         $this->checkKey($key);
 

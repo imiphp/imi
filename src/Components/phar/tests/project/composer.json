@@ -3,7 +3,7 @@
     "type": "project",
     "description": "imi 框架的 Http Server 项目。https://imiphp.com",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "imiphp/imi": "3.0.9999",
         "imiphp/imi-macro": "3.0.9999",
         "imiphp/imi-workerman": "3.0.9999",
@@ -11,7 +11,7 @@
         "imiphp/imi-roadrunner": "3.0.9999"
     },
     "require-dev": {
-        "swoole/ide-helper": "^4.7",
+        "swoole/ide-helper": "~5.0",
         "imiphp/imi-phar": "3.0.9999",
         "friendsofphp/php-cs-fixer": "~3.13.0"
     },

@@ -17,10 +17,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-docker: [4.8-php7.4]
+        swoole-docker: [5.0-php8.1]
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole-docker }}
-      POSTGRESQL_VERSION: v4.8.0
+      POSTGRESQL_VERSION: ""
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout

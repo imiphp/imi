@@ -43,15 +43,17 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
-    public function withStatus($code, $reasonPhrase = '')
+    public function withStatus(int $code, string $reasonPhrase = ''): self
     {
         $self = clone $this;
         $self->statusCode = $code;
@@ -69,6 +71,8 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setStatus(int $code, string $reasonPhrase = ''): self
     {
@@ -88,7 +92,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function getReasonPhrase()
+    public function getReasonPhrase(): string
     {
         if ('' === $this->reasonPhrase)
         {
@@ -100,6 +104,8 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
@@ -119,6 +125,8 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
@@ -146,7 +154,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * {@inheritDoc}
      */
-    public function getCookie(string $name, $default = null)
+    public function getCookie(string $name, ?array $default = null): ?array
     {
         return $this->cookies[$name] ?? $default;
     }
@@ -177,6 +185,8 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function withTrailer(string $name, string $value): self
     {
@@ -188,6 +198,8 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * {@inheritDoc}
+     *
+     * @return static
      */
     public function setTrailer(string $name, string $value): self
     {

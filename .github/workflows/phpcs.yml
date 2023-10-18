@@ -15,8 +15,8 @@ jobs:
   tests:
     runs-on: ubuntu-20.04
     env:
-      SWOOLE_DOCKER_VERSION: 4.8-php7.4
-      POSTGRESQL_VERSION: v4.8.0
+      SWOOLE_DOCKER_VERSION: 5.0-php8.1
+      POSTGRESQL_VERSION: ""
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
