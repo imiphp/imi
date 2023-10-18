@@ -21,7 +21,7 @@ parameters:
         - vendor/autoload.php
         - split-repository/vendor/autoload.php
 
-    treatPhpDocTypesAsCertain: false
+#    treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false

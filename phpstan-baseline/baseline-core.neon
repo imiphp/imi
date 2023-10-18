@@ -1,39 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Offset 'lockExpire' on array\\{waitTimeout\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../src/Cache/Aop/CacheableAop.php
-
-		-
-			message: "#^Offset 'timeoutException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../src/Cache/Aop/CacheableAop.php
-
-		-
-			message: "#^Offset 'unlockException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed, timeoutException\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../src/Cache/Aop/CacheableAop.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../src/Cache/Handler/File.php
-
-		-
-			message: "#^Offset 'lockExpire' on array\\{waitTimeout\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../src/Lock/Aop/LockAop.php
-
-		-
-			message: "#^Offset 'timeoutException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../src/Lock/Aop/LockAop.php
-
-		-
-			message: "#^Offset 'unlockException' on array\\{waitTimeout\\: mixed, lockExpire\\: mixed, timeoutException\\: mixed\\} on left side of \\?\\? does not exist\\.$#"
-			count: 1
-			path: ../src/Lock/Aop/LockAop.php
+			message: "#^If condition is always false\\.$#"
+			count: 3
+			path: ../src/Db/Query/Query.php
 
 		-
 			message: "#^Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported\\.$#"
