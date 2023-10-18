@@ -55,6 +55,15 @@ class EventTest extends BaseTest
             'return' => &$return,
         ], $this);
         Assert::assertNull($return);
+
+        // 测试在事件中取消事件监听
+        $return = null;
+        Event::one('IMITEST.EVENT.OFF', static function () use (&$return) {
+            Event::off('IMITEST.EVENT.OFF');
+            $return = 114514;
+        });
+        Event::trigger('IMITEST.EVENT.OFF');
+        Assert::assertEquals(114514, $return);
     }
 
     public function testOff(): void
