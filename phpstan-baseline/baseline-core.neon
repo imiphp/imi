@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Cannot access constant class on array\\<Imi\\\\Bean\\\\Annotation\\\\Base\\>\\|Imi\\\\Bean\\\\Annotation\\\\Base\\.$#"
+			count: 1
+			path: ../src/Bean/AnnotationParser.php
+
+		-
+			message: "#^Creating callable from a non\\-native method Imi\\\\Redis\\\\RedisHandler\\:\\:_serialize\\(\\)\\.$#"
+			count: 4
+			path: ../src/Cache/Handler/RedisHash.php
+
+		-
 			message: "#^If condition is always false\\.$#"
 			count: 3
 			path: ../src/Db/Query/Query.php

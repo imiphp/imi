@@ -16,12 +16,10 @@ class PacketHandler implements IPacketHandler
 
     /**
      * 构造方法.
-     *
-     * @param string[] $middlewares 中间件数组
      */
     public function __construct(
         /**
-         * 中间件数组.
+         * @var array<string|object> 中间件数组
          */
         protected array $middlewares
     ) {
