@@ -16,8 +16,6 @@ abstract class DbBaseTest extends TestCase
 {
     /**
      * 连接池名.
-     *
-     * @var string
      */
     protected ?string $poolName = null;
 

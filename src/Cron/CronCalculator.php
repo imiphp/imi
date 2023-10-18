@@ -342,8 +342,6 @@ class CronCalculator
     /**
      * 处理 2n、3n……格式.
      *
-     * @param \Imi\Cron\CronRule $cronRule
-     *
      * @return int|false
      */
     private function parseN(CronRule $cronRule, int $lastTime)

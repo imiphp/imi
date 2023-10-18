@@ -19,8 +19,6 @@ class SqlUtil
      * 解析带参数的 SQL，返回解析后的 SQL.
      *
      * 支持 :xxx、?
-     *
-     * @param array $map
      */
     public static function parseSqlWithParams(string $sql, ?array &$map): string
     {

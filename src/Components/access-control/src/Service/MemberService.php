@@ -37,14 +37,8 @@ class MemberService
      */
     protected string $memberOperationRelationModel = MemberOperationRelation::class;
 
-    /**
-     * @var \Imi\AC\Service\RoleService
-     */
     protected RoleService $roleService;
 
-    /**
-     * @var \Imi\AC\Service\OperationService
-     */
     protected OperationService $operationService;
 
     public function __init(): void

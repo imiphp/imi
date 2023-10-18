@@ -37,8 +37,6 @@ class MQTTClient
 
     /**
      * 连接信息.
-     *
-     * @var \Imi\MQTT\Client\Connection
      */
     private Connection $connection;
 
@@ -144,8 +142,6 @@ class MQTTClient
 
     /**
      * Get 连接信息.
-     *
-     * @return \Imi\MQTT\Client\Connection
      */
     public function getConnection(): Connection
     {

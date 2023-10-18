@@ -137,8 +137,6 @@ interface IServerUtil
 
     /**
      * 获取服务器.
-     *
-     * @return \Imi\Server\Contract\IServer|null
      */
     public function getServer(?string $serverName = null): ?IServer;
 }

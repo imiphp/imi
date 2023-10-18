@@ -32,9 +32,6 @@ class RoleService
      */
     protected string $operationServiceBean = 'ACOperationService';
 
-    /**
-     * @var \Imi\AC\Service\OperationService
-     */
     protected OperationService $operationService;
 
     public function __init(): void

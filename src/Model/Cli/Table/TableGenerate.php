@@ -13,7 +13,6 @@ use Imi\Cli\Contract\BaseCommand;
 use Imi\Db\Db;
 use Imi\Event\Event;
 use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Table;
 use Imi\Util\ClassObject;
 
 /**

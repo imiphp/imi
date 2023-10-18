@@ -66,8 +66,6 @@ interface IStatement extends \Iterator
 
     /**
      * 执行一条预处理语句.
-     *
-     * @param array $inputParameters
      */
     public function execute(array $inputParameters = null): bool;
 

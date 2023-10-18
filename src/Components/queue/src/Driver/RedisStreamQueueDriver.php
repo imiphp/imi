@@ -431,7 +431,8 @@ class RedisStreamQueueDriver implements IQueueDriver
                 {
                     $id = $data[0];
                     if ($id === $start || $data[2] < $workingTimeoutMs)
-                    { // 判断超时
+                    {
+                        // 判断超时
                         continue;
                     }
                     $start = $id;

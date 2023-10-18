@@ -30,6 +30,7 @@ class TextCRLF
         {
             return 0;
         }
+
         // Return the current package length.
         return $pos + 2;
     }

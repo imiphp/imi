@@ -31,8 +31,6 @@ trait TServerGroup
 
     /**
      * 创建组，返回组对象
-     *
-     * @return \Imi\Server\Group\Group
      */
     public function createGroup(string $groupName, int $maxClients = -1): Group
     {
@@ -47,8 +45,6 @@ trait TServerGroup
 
     /**
      * 获取组对象，不存在返回null.
-     *
-     * @return \Imi\Server\Group\Group|null
      */
     public function getGroup(string $groupName): ?Group
     {

@@ -13,8 +13,6 @@ class DbTest extends DbBaseTest
 {
     /**
      * 连接池名.
-     *
-     * @var string
      */
     protected ?string $poolName = 'swooleMysql';
 }

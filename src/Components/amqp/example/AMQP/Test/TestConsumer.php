@@ -6,7 +6,6 @@ namespace AMQPApp\AMQP\Test;
 
 use Imi\AMQP\Annotation\Connection;
 use Imi\AMQP\Annotation\Consumer;
-use Imi\AMQP\Annotation\Queue;
 use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Enum\ConsumerResult;

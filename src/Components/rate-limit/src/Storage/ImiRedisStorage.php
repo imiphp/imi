@@ -9,7 +9,6 @@ use bandwidthThrottle\tokenBucket\storage\Storage;
 use bandwidthThrottle\tokenBucket\storage\StorageException;
 use bandwidthThrottle\tokenBucket\util\DoublePacker;
 use Imi\Redis\RedisHandler;
-use malkusch\lock\mutex\Mutex;
 use malkusch\lock\mutex\PHPRedisMutex;
 
 /**

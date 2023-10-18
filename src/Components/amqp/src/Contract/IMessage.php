@@ -114,8 +114,6 @@ interface IMessage
 
     /**
      * 获取 AMQP 消息.
-     *
-     * @return \PhpAmqpLib\Message\AMQPMessage
      */
     public function getAMQPMessage(): ?AMQPMessage;
 }

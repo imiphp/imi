@@ -17,8 +17,6 @@ class SnowflakeUtil
      * 获取实例对象
      *
      * 不存在则实例化
-     *
-     * @return \Imi\Snowflake\SnowflakeClass
      */
     public static function getInstance(string $name): SnowflakeClass
     {
@@ -39,8 +37,6 @@ class SnowflakeUtil
 
     /**
      * 实例化对象
-     *
-     * @return \Imi\Snowflake\SnowflakeClass
      */
     public static function newInstance(?int $datacenterId = null, ?int $workerId = null, ?int $startTimeStamp = null, ?string $redisPool = null): SnowflakeClass
     {

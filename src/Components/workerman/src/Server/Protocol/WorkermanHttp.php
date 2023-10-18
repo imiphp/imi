@@ -62,12 +62,12 @@ class WorkermanHttp extends Http
         $has_content_length = false;
         if ($pos = strpos($header, "\r\nContent-Length: "))
         {
-            $length = $length + (int) substr($header, $pos + 18, 10);
+            $length += (int) substr($header, $pos + 18, 10);
             $has_content_length = true;
         }
         elseif (preg_match("/\r\ncontent-length: ?(\d+)/i", $header, $match))
         {
-            $length = $length + $match[1];
+            $length += $match[1];
             $has_content_length = true;
         }
 

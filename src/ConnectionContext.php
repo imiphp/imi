@@ -138,7 +138,6 @@ class ConnectionContext
     /**
      * 设置上下文数据.
      *
-     * @param string          $name
      * @param mixed           $value
      * @param int|string|null $clientId
      */
@@ -237,6 +236,7 @@ class ConnectionContext
             if (isset($ctx[$key]))
             {
                 $result = $ctx[$key];
+
                 // no save
                 return null;
             }

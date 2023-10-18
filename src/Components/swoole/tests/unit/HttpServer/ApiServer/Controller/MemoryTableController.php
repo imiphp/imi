@@ -128,8 +128,6 @@ class MemoryTableController extends HttpController
      * 设置行的数据.
      *
      * @Action
-     *
-     * @return array
      */
     public function lockCallableSetAndGet(): ?array
     {

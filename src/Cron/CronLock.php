@@ -28,8 +28,6 @@ class CronLock
 
     /**
      * 加锁
-     *
-     * @param \Imi\Cron\CronTask $task
      */
     public function lock(CronTask $task): bool
     {
@@ -69,8 +67,6 @@ class CronLock
 
     /**
      * 解锁
-     *
-     * @param \Imi\Cron\CronTask $task
      */
     public function unlock(CronTask $task): bool
     {

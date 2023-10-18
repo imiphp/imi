@@ -15,8 +15,6 @@ abstract class BaseQueueConsumer
 {
     /**
      * @Inject("imiQueue")
-     *
-     * @var \Imi\Queue\Service\QueueService
      */
     protected QueueService $imiQueue;
 

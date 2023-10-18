@@ -393,6 +393,7 @@ class ProcessManager
         {
             return null;
         }
+
         // @phpstan-ignore-next-line
         return self::$processInfoTable->get($id) ?: null;
     }

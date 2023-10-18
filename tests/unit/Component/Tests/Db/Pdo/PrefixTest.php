@@ -8,8 +8,6 @@ class PrefixTest extends QueryCurdTest
 {
     /**
      * 连接池名.
-     *
-     * @var string
      */
     protected ?string $poolName = 'dbPrefix';
 

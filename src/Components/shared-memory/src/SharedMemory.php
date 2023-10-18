@@ -16,8 +16,6 @@ class SharedMemory
      * 获取新的内存共享连接实例.
      *
      * @param string $poolName 连接池名称
-     *
-     * @return \Imi\SharedMemory\Client
      */
     public static function getNewInstance($poolName = null): Client
     {
@@ -28,8 +26,6 @@ class SharedMemory
      * 获取内存共享连接实例，每个RequestContext中共用一个.
      *
      * @param string $poolName 连接池名称
-     *
-     * @return \Imi\SharedMemory\Client
      */
     public static function getInstance($poolName = null): Client
     {
@@ -38,8 +34,6 @@ class SharedMemory
 
     /**
      * 释放内存共享连接实例.
-     *
-     * @param \Imi\SharedMemory\Client $client
      */
     public static function release(Client $client): void
     {

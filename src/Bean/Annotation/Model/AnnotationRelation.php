@@ -133,8 +133,6 @@ class AnnotationRelation
 
     /**
      * 增加方法关联.
-     *
-     * @param \Imi\Bean\Annotation\Model\MethodAnnotationRelation $relation
      */
     public function addMethodRelation(MethodAnnotationRelation $relation): void
     {
@@ -167,8 +165,6 @@ class AnnotationRelation
 
     /**
      * 增加属性关联.
-     *
-     * @param \Imi\Bean\Annotation\Model\PropertyAnnotationRelation $relation
      */
     public function addPropertyRelation(PropertyAnnotationRelation $relation): void
     {
@@ -201,8 +197,6 @@ class AnnotationRelation
 
     /**
      * 增加常量关联.
-     *
-     * @param \Imi\Bean\Annotation\Model\ConstantAnnotationRelation $relation
      */
     public function addConstantRelation(ConstantAnnotationRelation $relation): void
     {

@@ -22,8 +22,7 @@ class RpcClientSyncPool extends BaseSyncPool
     protected string $resource = RpcClientResource::class;
 
     /**
-     * @param \Imi\Pool\Interfaces\IPoolConfig $config
-     * @param mixed                            $resourceConfig
+     * @param mixed $resourceConfig
      */
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {

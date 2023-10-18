@@ -95,6 +95,7 @@ class RedisResource extends BasePoolResource
             try
             {
                 $result = $redis->ping();
+
                 // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
                 return true === $result || '+PONG' === $result;
             }
