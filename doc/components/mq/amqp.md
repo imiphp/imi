@@ -93,7 +93,7 @@ Github: <https://github.com/imiphp/imi-amqp>
 ]
 ```
 
-#### 连接配置项
+### 连接配置项
 
 | 属性名称 | 说明 |
 |-|-
