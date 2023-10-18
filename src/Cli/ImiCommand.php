@@ -58,24 +58,30 @@ class ImiCommand extends Command
         return $this->methodName;
     }
 
-    public function __construct(/**
-     * 命令名称.
-     */
-        protected ?string $commandName, /**
-     * 命令动作名称.
-     */
-        protected string $actionName, /**
-     * 类名.
-     */
-        protected string $className, /**
-     * 方法名.
-     */
-        protected string $methodName, /**
-     * 是否启用动态参数支持.
-     */
-        protected bool $dynamicOptions = false, /**
-     * 命令名称分割符.
-     */
+    public function __construct(
+        /**
+         * 命令名称.
+         */
+        protected ?string $commandName,
+        /**
+         * 命令动作名称.
+         */
+        protected string $actionName,
+        /**
+         * 类名.
+         */
+        protected string $className,
+        /**
+         * 方法名.
+         */
+        protected string $methodName,
+        /**
+         * 是否启用动态参数支持.
+         */
+        protected bool $dynamicOptions = false,
+        /**
+         * 命令名称分割符.
+         */
         protected string $separator = '/')
     {
         $actionName = '' === $actionName ? $methodName : $actionName;

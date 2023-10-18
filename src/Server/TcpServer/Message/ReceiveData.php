@@ -25,12 +25,14 @@ class ReceiveData implements IReceiveData
     /**
      * @param int|string $clientId
      */
-    public function __construct(/**
-     * 客户端连接的标识符.
-     */
-        protected $clientId, /**
-     * 接收到的数据.
-     */
+    public function __construct(
+        /**
+         * 客户端连接的标识符.
+         */
+        protected $clientId,
+        /**
+         * 接收到的数据.
+         */
         protected string $data)
     {
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);

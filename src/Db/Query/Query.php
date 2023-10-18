@@ -107,17 +107,20 @@ abstract class Query implements IQuery
      */
     protected array $beforeBuildSqlCallbacks = [];
 
-    public function __construct(/**
-     * 数据库操作对象
-     */
-        protected ?IDb $db = null, /**
-     * 查询结果类的类名，为null则为数组.
-     *
-     * @var class-string<Model>|null
-     */
-        protected ?string $modelClass = null, /**
-     * 连接池名称.
-     */
+    public function __construct(
+        /**
+         * 数据库操作对象
+         */
+        protected ?IDb $db = null,
+        /**
+         * 查询结果类的类名，为null则为数组.
+         *
+         * @var class-string<Model>|null
+         */
+        protected ?string $modelClass = null,
+        /**
+         * 连接池名称.
+         */
         protected ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
         $this->isInitDb = (bool) $db;

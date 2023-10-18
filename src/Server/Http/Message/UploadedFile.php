@@ -28,18 +28,22 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @param string|StreamInterface $tmpFileName
      */
-    public function __construct(/**
-     * 文件在客户端时的文件名.
-     */
-        protected string $fileName, /**
-     * 文件mime类型.
-     */
-        protected string $mediaType, $tmpFileName, /**
-     * 文件大小，单位：字节
-     */
-        protected int $size, /**
-     * 错误码
-     */
+    public function __construct(
+        /**
+         * 文件在客户端时的文件名.
+         */
+        protected string $fileName,
+        /**
+         * 文件mime类型.
+         */
+        protected string $mediaType, $tmpFileName,
+        /**
+         * 文件大小，单位：字节
+         */
+        protected int $size,
+        /**
+         * 错误码
+         */
         protected int $error)
     {
         if ($tmpFileName instanceof StreamInterface)

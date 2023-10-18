@@ -26,9 +26,10 @@ abstract class BaseMain implements IMain
      */
     protected ?array $config = null;
 
-    public function __construct(/**
-     * 模块名称.
-     */
+    public function __construct(
+        /**
+         * 模块名称.
+         */
         protected string $moduleName)
     {
         $this->__init();

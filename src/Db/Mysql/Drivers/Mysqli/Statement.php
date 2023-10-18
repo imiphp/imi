@@ -31,15 +31,18 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
      */
     protected array $bindValues = [];
 
-    public function __construct(/**
-     * 数据库操作对象
-     */
-        protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result, /**
-     * 最后执行过的SQL语句.
-     */
-        protected string $lastSql, /**
-     * SQL 参数映射.
-     */
+    public function __construct(
+        /**
+         * 数据库操作对象
+         */
+        protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result,
+        /**
+         * 最后执行过的SQL语句.
+         */
+        protected string $lastSql,
+        /**
+         * SQL 参数映射.
+         */
         protected ?array $sqlParamsMap = null)
     {
         $this->result = $result;

@@ -19,9 +19,10 @@ class MemoryStream implements StreamInterface, \Stringable
      */
     protected int $position = 0;
 
-    public function __construct(/**
-     * 内容.
-     */
+    public function __construct(
+        /**
+         * 内容.
+         */
         protected string $content = '')
     {
         $this->size = \strlen($content);

@@ -21,18 +21,22 @@ class Result implements IMessage
      */
     public ?string $processId = null;
 
-    public function __construct(/**
-     * 动作.
-     */
-        public string $action, /**
-     * 定时任务ID.
-     */
-        public string $id, /**
-     * 是否成功
-     */
-        public bool $success, /**
-     * 消息.
-     */
+    public function __construct(
+        /**
+         * 动作.
+         */
+        public string $action,
+        /**
+         * 定时任务ID.
+         */
+        public string $id,
+        /**
+         * 是否成功
+         */
+        public bool $success,
+        /**
+         * 消息.
+         */
         public string $message)
     {
         $this->processType = App::get(ProcessAppContexts::PROCESS_TYPE);

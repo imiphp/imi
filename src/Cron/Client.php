@@ -31,9 +31,10 @@ class Client
     /**
      * 构造方法.
      */
-    public function __construct(/**
-     * 配置项.
-     */
+    public function __construct(
+        /**
+         * 配置项.
+         */
         private readonly array $options = [])
     {
         if (!isset($options['socketFile']))

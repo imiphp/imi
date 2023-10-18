@@ -16,9 +16,10 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      */
     private array $list = [];
 
-    public function __construct(/**
-     * 限定的数组列表成员类型.
-     */
+    public function __construct(
+        /**
+         * 限定的数组列表成员类型.
+         */
         private readonly string $itemType, array $list = [])
     {
         if ($list)

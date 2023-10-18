@@ -11,15 +11,18 @@ class JoinPoint
      */
     protected array $args = [];
 
-    public function __construct(/**
-     * 切入点类型.
-     */
-        protected string $type, /**
-     * 获取切入的方法名.
-     */
-        protected string $method, array &$args, /**
-     * 连接点所在的目标对象
-     */
+    public function __construct(
+        /**
+         * 切入点类型.
+         */
+        protected string $type,
+        /**
+         * 获取切入的方法名.
+         */
+        protected string $method, array &$args,
+        /**
+         * 连接点所在的目标对象
+         */
         protected ?object $target)
     {
         $this->args = &$args;

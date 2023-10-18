@@ -183,9 +183,10 @@ class Meta
      */
     private bool $incrUpdate = false;
 
-    public function __construct(string $modelClass, /**
-     * 是否为继承父类的模型.
-     */
+    public function __construct(string $modelClass,
+        /**
+         * 是否为继承父类的模型.
+         */
         private readonly bool $inherit = false)
     {
         if ($inherit)

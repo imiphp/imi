@@ -28,18 +28,22 @@ class RouteItem
      */
     public ?WSConfig $wsConfig = null;
 
-    public function __construct(/**
-     * 注解.
-     */
-        public ?Route $annotation, callable $callable, /**
-     * 视图注解.
-     */
-        public ?View $view, /**
-     * 视图配置注解.
-     */
-        public ?BaseViewOption $viewOption = null, /**
-     * 其它配置项.
-     */
+    public function __construct(
+        /**
+         * 注解.
+         */
+        public ?Route $annotation, callable $callable,
+        /**
+         * 视图注解.
+         */
+        public ?View $view,
+        /**
+         * 视图配置注解.
+         */
+        public ?BaseViewOption $viewOption = null,
+        /**
+         * 其它配置项.
+         */
         public array $options = [])
     {
         $this->callable = $callable;

@@ -13,12 +13,14 @@ class RouteResult
      */
     public $callable;
 
-    public function __construct(/**
-     * 路由配置项.
-     */
-        public ?RouteItem $routeItem, /**
-     * 参数.
-     */
+    public function __construct(
+        /**
+         * 路由配置项.
+         */
+        public ?RouteItem $routeItem,
+        /**
+         * 参数.
+         */
         public array $params = [])
     {
         $this->callable = $routeItem->callable;

@@ -12,15 +12,18 @@ class EventParam
      */
     protected bool $__stopPropagation = false;
 
-    public function __construct(/**
-     * 事件名称.
-     */
-        protected string $__eventName, /**
-     * 数据.
-     */
-        protected array $__data = [], /**
-     * 触发该事件的对象
-     */
+    public function __construct(
+        /**
+         * 事件名称.
+         */
+        protected string $__eventName,
+        /**
+         * 数据.
+         */
+        protected array $__data = [],
+        /**
+         * 触发该事件的对象
+         */
         protected ?object $__target = null)
     {
         if ($__data)

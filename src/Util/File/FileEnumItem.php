@@ -18,12 +18,14 @@ class FileEnumItem implements \Stringable
      */
     private bool $continue = true;
 
-    public function __construct(/**
-     * 路径.
-     */
-        private readonly string $path, /**
-     * 文件名.
-     */
+    public function __construct(
+        /**
+         * 路径.
+         */
+        private readonly string $path,
+        /**
+         * 文件名.
+         */
         private readonly string $fileName)
     {
         $this->fullPath = File::path($path, $fileName);

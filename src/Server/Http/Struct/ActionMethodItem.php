@@ -14,18 +14,22 @@ class ActionMethodItem
     /**
      * @param mixed $default
      */
-    public function __construct(/**
-     * 参数名.
-     */
-        protected string $name, /**
-     * 是否有默认值
-     */
-        protected bool $hasDefault, /**
-     * 默认值
-     */
-        protected $default, /**
-     * 是否允许为 null.
-     */
+    public function __construct(
+        /**
+         * 参数名.
+         */
+        protected string $name,
+        /**
+         * 是否有默认值
+         */
+        protected bool $hasDefault,
+        /**
+         * 默认值
+         */
+        protected $default,
+        /**
+         * 是否允许为 null.
+         */
         protected bool $allowNull, ?\ReflectionType $type)
     {
         if ($type instanceof \ReflectionNamedType)

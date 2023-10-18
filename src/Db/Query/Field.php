@@ -14,9 +14,10 @@ class Field extends Table implements IField
      */
     protected ?array $jsonKeywords = null;
 
-    public function __construct(?string $database = null, ?string $table = null, /**
-     * 字段名.
-     */
+    public function __construct(?string $database = null, ?string $table = null,
+        /**
+         * 字段名.
+         */
         protected ?string $field = null, ?string $alias = null, string $prefix = '')
     {
         $this->database = $database;

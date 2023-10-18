@@ -19,12 +19,14 @@ class Pagination
      */
     private int $limitEndOffset = 0;
 
-    public function __construct(/**
-     * 当前页码
-     */
-        private int $page, /**
-     * 每页显示数量.
-     */
+    public function __construct(
+        /**
+         * 当前页码
+         */
+        private int $page,
+        /**
+         * 每页显示数量.
+         */
         private int $count)
     {
         $this->calc();

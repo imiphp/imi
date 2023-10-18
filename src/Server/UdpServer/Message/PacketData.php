@@ -22,9 +22,10 @@ class PacketData implements IPacketData
      */
     protected $formatData;
 
-    public function __construct(string $remoteIp, int $remotePort, /**
-     * 数据内容.
-     */
+    public function __construct(string $remoteIp, int $remotePort,
+        /**
+         * 数据内容.
+         */
         protected string $data)
     {
         $this->clientAddress = new IPEndPoint($remoteIp, $remotePort);

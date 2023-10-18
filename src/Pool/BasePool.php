@@ -50,9 +50,10 @@ abstract class BasePool implements IPool
     /**
      * @param mixed $resourceConfig
      */
-    public function __construct(/**
-     * 池子名称.
-     */
+    public function __construct(
+        /**
+         * 池子名称.
+         */
         protected string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         if (null !== $config)

@@ -16,18 +16,20 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      */
     private array $list = [];
 
-    public function __construct(array $list = [], /**
-     * 字段名数组.
-     *
-     * 为null则不过滤
-     *
-     * @var string[]|null
-     */
-        private readonly ?array $fields = null, /**
-     * 模式
-     * allow-白名单
-     * deny-黑名单.
-     */
+    public function __construct(array $list = [],
+        /**
+         * 字段名数组.
+         *
+         * 为null则不过滤
+         *
+         * @var string[]|null
+         */
+        private readonly ?array $fields = null,
+        /**
+         * 模式
+         * allow-白名单
+         * deny-黑名单.
+         */
         private readonly string $mode = 'allow')
     {
         $this->list = $this->parseList($list);

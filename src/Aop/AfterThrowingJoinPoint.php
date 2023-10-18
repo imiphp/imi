@@ -11,9 +11,10 @@ class AfterThrowingJoinPoint extends JoinPoint
      */
     private bool $isCancelThrow = false;
 
-    public function __construct(string $type, string $method, array &$args, object $target, /**
-     * 异常.
-     */
+    public function __construct(string $type, string $method, array &$args, object $target,
+        /**
+         * 异常.
+         */
         private readonly ?\Throwable $throwable)
     {
         parent::__construct($type, $method, $args, $target);

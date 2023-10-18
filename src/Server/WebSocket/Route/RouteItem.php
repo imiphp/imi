@@ -20,12 +20,14 @@ class RouteItem
      */
     public array $middlewares = [];
 
-    public function __construct(/**
-     * 注解.
-     */
-        public ?WSRoute $annotation, callable $callable, /**
-     * 其它配置项.
-     */
+    public function __construct(
+        /**
+         * 注解.
+         */
+        public ?WSRoute $annotation, callable $callable,
+        /**
+         * 其它配置项.
+         */
         public array $options = [])
     {
         $this->callable = $callable;

@@ -36,9 +36,10 @@ class PoolItem
      */
     protected float $lastReleaseTime = 0;
 
-    public function __construct(/**
-     * 资源对象
-     */
+    public function __construct(
+        /**
+         * 资源对象
+         */
         protected ?IPoolResource $resource)
     {
         $this->createTime = microtime(true);
