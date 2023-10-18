@@ -11,11 +11,6 @@ use Imi\RequestContext;
 abstract class BaseLock implements ILockHandler
 {
     /**
-     * 锁的唯一 ID.
-     */
-    protected string $id = '';
-
-    /**
      * 是否已加锁
      */
     protected bool $isLocked = false;
@@ -50,9 +45,11 @@ abstract class BaseLock implements ILockHandler
      */
     protected bool $unlockException = false;
 
-    public function __construct(string $id, array $options = [])
+    public function __construct(/**
+     * 锁的唯一 ID.
+     */
+    protected string $id, array $options = [])
     {
-        $this->id = $id;
         if ($options)
         {
             foreach ($options as $k => $v)

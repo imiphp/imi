@@ -112,7 +112,7 @@ class Annotation
             }
             $ignoredPaths = array_merge($ignoredPaths, $config['appIgnorePaths'] ?? []);
         }
-        $ignoredPaths = array_map([Imi::class, 'parseRule'], $ignoredPaths);
+        $ignoredPaths = array_map(Imi::parseRule(...), $ignoredPaths);
         $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . ')))/';
         if ($ignoredNamespaces)
         {

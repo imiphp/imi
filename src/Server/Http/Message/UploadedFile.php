@@ -11,29 +11,9 @@ use Psr\Http\Message\UploadedFileInterface;
 class UploadedFile implements UploadedFileInterface
 {
     /**
-     * 文件在客户端时的文件名.
-     */
-    protected string $fileName = '';
-
-    /**
-     * 文件mime类型.
-     */
-    protected string $mediaType = '';
-
-    /**
      * 临时文件名.
      */
     protected ?string $tmpFileName = null;
-
-    /**
-     * 文件大小，单位：字节
-     */
-    protected int $size = 0;
-
-    /**
-     * 错误码
-     */
-    protected int $error = 0;
 
     /**
      * 文件流
@@ -48,10 +28,20 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @param string|StreamInterface $tmpFileName
      */
-    public function __construct(string $fileName, string $mediaType, $tmpFileName, int $size, int $error)
+    public function __construct(/**
+     * 文件在客户端时的文件名.
+     */
+    protected string $fileName, /**
+     * 文件mime类型.
+     */
+    protected string $mediaType, $tmpFileName, /**
+     * 文件大小，单位：字节
+     */
+    protected int $size, /**
+     * 错误码
+     */
+    protected int $error)
     {
-        $this->fileName = $fileName;
-        $this->mediaType = $mediaType;
         if ($tmpFileName instanceof StreamInterface)
         {
             $this->stream = $tmpFileName;
@@ -60,8 +50,6 @@ class UploadedFile implements UploadedFileInterface
         {
             $this->tmpFileName = $tmpFileName;
         }
-        $this->size = $size;
-        $this->error = $error;
     }
 
     /**

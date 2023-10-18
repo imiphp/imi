@@ -10,16 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseCommand
 {
-    protected ImiCommand $command;
-
-    protected InputInterface $input;
-
-    protected OutputInterface $output;
-
-    public function __construct(ImiCommand $command, InputInterface $input, OutputInterface $output)
+    public function __construct(protected ImiCommand $command, protected InputInterface $input, protected OutputInterface $output)
     {
-        $this->command = $command;
-        $this->input = $input;
-        $this->output = $output;
     }
 }

@@ -22,14 +22,12 @@ class FileStream implements StreamInterface, \Stringable
     protected $stream = null;
 
     /**
-     * 流访问类型.
-     */
-    protected string $mode = '';
-
-    /**
      * @param string|resource|Uri $uri
      */
-    public function __construct($uri, string $mode = StreamMode::READ_WRITE)
+    public function __construct($uri, /**
+     * 流访问类型.
+     */
+    protected string $mode = StreamMode::READ_WRITE)
     {
         if (\is_string($uri))
         {
@@ -48,7 +46,6 @@ class FileStream implements StreamInterface, \Stringable
         {
             $uri = $this->uri;
         }
-        $this->mode = $mode;
         if (!$this->stream)
         {
             $this->stream = fopen($uri->__toString(), $mode);
@@ -76,10 +73,10 @@ class FileStream implements StreamInterface, \Stringable
         {
             $this->rewind();
 
-            return stream_get_contents($this->stream);
+            return (string) stream_get_contents($this->stream);
         }
         // @codeCoverageIgnoreStart
-        catch (\Throwable $th)
+        catch (\Throwable)
         {
             return '';
         }

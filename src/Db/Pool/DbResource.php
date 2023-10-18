@@ -13,15 +13,12 @@ use Imi\Pool\BasePoolResource;
  */
 class DbResource extends BasePoolResource
 {
-    /**
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool, /**
      * db对象
      */
-    private ?IDb $db = null;
-
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, IDb $db)
+    private ?IDb $db)
     {
         parent::__construct($pool);
-        $this->db = $db;
     }
 
     /**

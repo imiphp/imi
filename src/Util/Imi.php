@@ -107,16 +107,11 @@ class Imi
         elseif (preg_match('/([^!<=]+)(!=|<>|=)(.+)/', $rule, $matches) > 0)
         {
             $value = $valueCallback($matches[1]);
-            switch ($matches[2])
-            {
-                case '!=':
-                case '<>':
-                    return null !== $value && $value != $matches[3];
-                case '=':
-                    return $value == $matches[3];
-                default:
-                    return false; // @codeCoverageIgnore
-            }
+            return match ($matches[2]) {
+                '!=', '<>' => null !== $value && $value != $matches[3],
+                '=' => $value == $matches[3],
+                default => false,
+            };
         }
         else
         {
@@ -356,7 +351,7 @@ class Imi
      */
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
-        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME'])) . ' ' . escapeshellarg($commandName);
+        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg((string) (App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']))) . ' ' . escapeshellarg($commandName);
         $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
@@ -672,7 +667,7 @@ class Imi
                 break;
             }
         }
-        $result = trim($name, '"');
+        $result = trim((string) $name, '"');
         if (isset($matches['version']))
         {
             $version = '';
@@ -685,7 +680,7 @@ class Imi
             }
             if ('' !== $version)
             {
-                $result .= ' ' . trim($version, '"');
+                $result .= ' ' . trim((string) $version, '"');
             }
         }
 

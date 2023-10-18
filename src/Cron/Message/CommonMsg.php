@@ -7,20 +7,17 @@ namespace Imi\Cron\Message;
 class CommonMsg implements IMessage
 {
     /**
-     * 从socket获取的返回信息.
-     *
-     * @var mixed
-     */
-    protected $response = [];
-
-    /**
      * 初始化.
      *
      * @param mixed $response
      */
-    public function __construct($response = [])
+    public function __construct(
+        /**
+         * 从socket获取的返回信息.
+         */
+        protected $response = []
+    )
     {
-        $this->response = $response;
     }
 
     /**

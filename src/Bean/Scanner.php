@@ -103,7 +103,7 @@ class Scanner
                         if (class_exists($mainClassName) && is_subclass_of($mainClassName, IMain::class))
                         {
                             // 此目录为 imi 组件目录
-                            $realNamespace = rtrim($namespace, '\\');
+                            $realNamespace = rtrim((string) $namespace, '\\');
                             $componentName = basename($pathName);
                             $components[$componentName] = $realNamespace;
                             break;

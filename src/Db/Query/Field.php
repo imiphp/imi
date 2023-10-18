@@ -10,20 +10,17 @@ use Imi\Db\Query\Interfaces\IQuery;
 class Field extends Table implements IField
 {
     /**
-     * 字段名.
-     */
-    protected ?string $field = null;
-
-    /**
      * JSON 关键词配置.
      */
     protected ?array $jsonKeywords = null;
 
-    public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null, string $prefix = '')
+    public function __construct(?string $database = null, ?string $table = null, /**
+     * 字段名.
+     */
+    protected ?string $field = null, ?string $alias = null, string $prefix = '')
     {
         $this->database = $database;
         $this->table = $table;
-        $this->field = $field;
         $this->alias = $alias;
         $this->prefix = $prefix;
     }

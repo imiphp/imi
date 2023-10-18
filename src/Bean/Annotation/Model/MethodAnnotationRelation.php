@@ -8,26 +8,21 @@ use Imi\Bean\Annotation\Base;
 
 class MethodAnnotationRelation implements IAnnotationRelation
 {
-    /**
-     * 类名.
-     */
-    private string $class = '';
-
-    /**
-     * 方法名.
-     */
-    private string $method = '';
-
-    /**
-     * 注解.
-     */
-    private ?Base $annotation = null;
-
-    public function __construct(string $class, string $method, Base $annotation)
+    public function __construct(
+        /**
+         * 类名.
+         */
+        private readonly string $class,
+        /**
+         * 方法名.
+         */
+        private readonly string $method,
+        /**
+         * 注解.
+         */
+        private readonly ?Base $annotation
+    )
     {
-        $this->class = $class;
-        $this->method = $method;
-        $this->annotation = $annotation;
     }
 
     /**

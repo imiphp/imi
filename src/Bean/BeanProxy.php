@@ -283,26 +283,14 @@ class BeanProxy
      */
     private static function doAspect(string $className, string $method, string $pointType, callable $callback): void
     {
-        switch ($pointType)
-        {
-            case 'Before':
-                $items = AopManager::getBeforeItems($className, $method);
-                break;
-            case 'After':
-                $items = AopManager::getAfterItems($className, $method);
-                break;
-            case 'Around':
-                $items = AopManager::getAroundItems($className, $method);
-                break;
-            case 'AfterReturning':
-                $items = AopManager::getAfterReturningItems($className, $method);
-                break;
-            case 'AfterThrowing':
-                $items = AopManager::getAfterThrowingItems($className, $method);
-                break;
-            default:
-                throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType));
-        }
+        $items = match ($pointType) {
+            'Before' => AopManager::getBeforeItems($className, $method),
+            'After' => AopManager::getAfterItems($className, $method),
+            'Around' => AopManager::getAroundItems($className, $method),
+            'AfterReturning' => AopManager::getAfterReturningItems($className, $method),
+            'AfterThrowing' => AopManager::getAfterThrowingItems($className, $method),
+            default => throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType)),
+        };
         if ($items)
         {
             $class = 'Imi\Aop\Annotation\\' . $pointType;

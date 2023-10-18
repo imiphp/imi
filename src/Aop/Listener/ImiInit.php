@@ -53,7 +53,7 @@ class ImiInit implements IEventListener
                         }
                         else
                         {
-                            $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
+                            $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst((string) $annotationName);
                         }
                         $annotations[] = new $annotationClassName($annotationArgs);
                     }
@@ -72,7 +72,7 @@ class ImiInit implements IEventListener
                         }
                         else
                         {
-                            $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
+                            $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst((string) $annotationName);
                         }
                         $annotations[] = new $annotationClassName($annotationArgs);
                     }

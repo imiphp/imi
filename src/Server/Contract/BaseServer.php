@@ -17,16 +17,6 @@ abstract class BaseServer implements IServer
     use TEvent;
 
     /**
-     * 服务器名称.
-     */
-    protected string $name = '';
-
-    /**
-     * 服务器配置.
-     */
-    protected array $config = [];
-
-    /**
      * 容器.
      */
     protected Container $container;
@@ -34,11 +24,15 @@ abstract class BaseServer implements IServer
     /**
      * 构造方法.
      */
-    public function __construct(string $name, array $config)
+    public function __construct(/**
+     * 服务器名称.
+     */
+    protected string $name, /**
+     * 服务器配置.
+     */
+    protected array $config)
     {
         $this->container = $container = App::getContainer()->newSubContainer();
-        $this->name = $name;
-        $this->config = $config;
         $beans = $config['beans'] ?? [];
         if ($beans)
         {

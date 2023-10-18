@@ -96,14 +96,14 @@ class ConsoleLineFormatter extends LineFormatter
                 switch ($var)
                 {
                     case 'level_name':
-                        $style = $this->levelStyles[strtolower($vars['level_name'])] ?? null;
+                        $style = $this->levelStyles[strtolower((string) $vars['level_name'])] ?? null;
                         if ($style)
                         {
                             $replace = $style . $replace . '</>';
                         }
                         break;
                     case 'message':
-                        $style = $this->messageStyles[strtolower($vars['level_name'])] ?? null;
+                        $style = $this->messageStyles[strtolower((string) $vars['level_name'])] ?? null;
                         if ($style)
                         {
                             $replace = $style . $replace . '</>';

@@ -9,14 +9,8 @@ use Imi\Db\Query\Interfaces\IResult;
 
 class ChunkByOffsetResult extends BaseChunkResult
 {
-    private ?IQuery $query = null;
-
-    private int $limit = 0;
-
-    public function __construct(IQuery $query, int $limit)
+    public function __construct(private readonly ?IQuery $query, private readonly int $limit)
     {
-        $this->query = $query;
-        $this->limit = $limit;
     }
 
     /**

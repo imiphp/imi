@@ -237,7 +237,7 @@ class ModelGenerate extends BaseCommand
             {
                 $ddl = $ddlEncode($rawDDL);
             }
-            if ($usePrefix = ('' !== $tablePrefix && str_starts_with($table, $tablePrefix)))
+            if ($usePrefix = ('' !== $tablePrefix && str_starts_with((string) $table, (string) $tablePrefix)))
             {
                 $tableName = Text::ltrimText($table, $tablePrefix);
             }
@@ -326,7 +326,7 @@ class ModelGenerate extends BaseCommand
     {
         foreach ($prefixs as $prefix)
         {
-            $prefixLen = \strlen($prefix);
+            $prefixLen = \strlen((string) $prefix);
             if (substr($table, 0, $prefixLen) === $prefix)
             {
                 $table = substr($table, $prefixLen);
@@ -361,12 +361,12 @@ class ModelGenerate extends BaseCommand
                 'defaultValue'      => $this->parseFieldDefaultValue($typeName, $field['Default']),
                 'isPrimaryKey'      => $isPk,
                 'primaryKeyIndex'   => $primaryKeyIndex = ($pks[$field['Field']]['Seq_in_index'] ?? 0) - 1,
-                'isAutoIncrement'   => str_contains($field['Extra'], 'auto_increment'),
+                'isAutoIncrement'   => str_contains((string) $field['Extra'], 'auto_increment'),
                 'comment'           => $field['Comment'],
                 'typeDefinition'    => $typeDefinitions[$field['Field']],
                 'ref'               => 'json' === $typeName,
                 'unsigned'          => $unsigned,
-                'virtual'           => str_contains($field['Extra'], 'VIRTUAL GENERATED'),
+                'virtual'           => str_contains((string) $field['Extra'], 'VIRTUAL GENERATED'),
             ];
             if ($isPk)
             {
@@ -469,7 +469,7 @@ class ModelGenerate extends BaseCommand
             case 'year':
                 return (int) $default;
             case 'bit':
-                return (bool) str_replace(['b', '\''], '', $default);
+                return (bool) str_replace(['b', '\''], '', (string) $default);
             case 'double':
             case 'float':
                 return (float) $default;
@@ -491,7 +491,7 @@ class ModelGenerate extends BaseCommand
                     return null;
                 }
 
-                return explode(',', $default);
+                return explode(',', (string) $default);
             default:
                 return null;
         }
@@ -506,6 +506,6 @@ class ModelGenerate extends BaseCommand
         $row = $result->get();
         $sql = $row['Create Table'] ?? $row['Create View'] ?? '';
 
-        return preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
+        return preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', (string) $sql, 1);
     }
 }

@@ -22,18 +22,15 @@ abstract class BaseMain implements IMain
     protected ?string $namespace = null;
 
     /**
-     * 模块名称.
-     */
-    protected string $moduleName = '';
-
-    /**
      * 模块配置.
      */
     protected ?array $config = null;
 
-    public function __construct(string $moduleName)
+    public function __construct(/**
+     * 模块名称.
+     */
+    protected string $moduleName)
     {
-        $this->moduleName = $moduleName;
         $this->__init();
     }
 

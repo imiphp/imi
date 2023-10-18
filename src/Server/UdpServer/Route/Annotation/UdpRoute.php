@@ -26,7 +26,7 @@ class UdpRoute extends Base implements \Stringable
      */
     protected ?string $defaultFieldName = 'condition';
 
-    public function __toString()
+    public function __toString(): string
     {
         return http_build_query($this->toArray());
     }

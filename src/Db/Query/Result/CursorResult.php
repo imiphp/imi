@@ -22,16 +22,13 @@ class CursorResult implements \IteratorAggregate
     protected bool $isSuccess = false;
 
     /**
-     * 查询结果类的类名，为null则为数组.
-     */
-    protected ?string $modelClass = null;
-
-    /**
      * @param \Imi\Db\Interfaces\IStatement|bool $statement
      */
-    public function __construct($statement, ?string $modelClass = null)
+    public function __construct($statement, /**
+     * 查询结果类的类名，为null则为数组.
+     */
+    protected ?string $modelClass = null)
     {
-        $this->modelClass = $modelClass;
         if ($statement instanceof IStatement)
         {
             $this->statement = $statement;

@@ -69,7 +69,7 @@ class AopAnnotationLoader
                                 }
                                 else
                                 {
-                                    [$class, $method] = explode('::', $allowItem);
+                                    [$class, $method] = explode('::', (string) $allowItem);
                                 }
                                 if ($beforeAnnotation)
                                 {

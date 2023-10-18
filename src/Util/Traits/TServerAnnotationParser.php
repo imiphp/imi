@@ -46,7 +46,7 @@ trait TServerAnnotationParser
                 $class = $option->getClass();
                 foreach ($namespaces as $namespace)
                 {
-                    if (str_starts_with($class, $namespace))
+                    if (str_starts_with($class, (string) $namespace))
                     {
                         $result[$class] = $option;
                         continue 2;

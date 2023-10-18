@@ -9,11 +9,6 @@ use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 class RouteItem
 {
     /**
-     * 注解.
-     */
-    public ?WSRoute $annotation = null;
-
-    /**
      * 回调.
      *
      * @var callable
@@ -25,15 +20,14 @@ class RouteItem
      */
     public array $middlewares = [];
 
-    /**
+    public function __construct(/**
+     * 注解.
+     */
+    public ?WSRoute $annotation, callable $callable, /**
      * 其它配置项.
      */
-    public array $options = [];
-
-    public function __construct(WSRoute $annotation, callable $callable, array $options = [])
+    public array $options = [])
     {
-        $this->annotation = $annotation;
         $this->callable = $callable;
-        $this->options = $options;
     }
 }

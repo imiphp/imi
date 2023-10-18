@@ -49,7 +49,7 @@ class Local implements IHandler
     {
         if ($this->gcInteval > 0)
         {
-            Timer::tick((int) ($this->gcInteval * 1000), [$this, 'gc']);
+            Timer::tick((int) ($this->gcInteval * 1000), $this->gc(...));
         }
     }
 

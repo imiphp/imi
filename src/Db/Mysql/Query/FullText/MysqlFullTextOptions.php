@@ -9,14 +9,13 @@ use Imi\Db\Query\Interfaces\IQuery;
 
 class MysqlFullTextOptions extends BaseFullTextOptions
 {
-    /**
-     * 搜索修饰符.
-     */
-    protected string $searchModifier = '';
-
-    public function __construct(string $searchModifier = '')
+    public function __construct(
+        /**
+         * 搜索修饰符.
+         */
+        protected string $searchModifier = ''
+    )
     {
-        $this->searchModifier = $searchModifier;
     }
 
     /**

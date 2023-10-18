@@ -8,26 +8,21 @@ use Imi\Bean\Annotation\Base;
 
 class ConstantAnnotationRelation implements IAnnotationRelation
 {
-    /**
-     * 类名.
-     */
-    private string $class = '';
-
-    /**
-     * 常量名.
-     */
-    private string $constant = '';
-
-    /**
-     * 注解.
-     */
-    private ?Base $annotation = null;
-
-    public function __construct(string $class, string $constant, Base $annotation)
+    public function __construct(
+        /**
+         * 类名.
+         */
+        private readonly string $class,
+        /**
+         * 常量名.
+         */
+        private readonly string $constant,
+        /**
+         * 注解.
+         */
+        private readonly ?Base $annotation
+    )
     {
-        $this->class = $class;
-        $this->constant = $constant;
-        $this->annotation = $annotation;
     }
 
     /**

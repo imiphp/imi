@@ -9,14 +9,13 @@ namespace Imi\Util;
  */
 class ArrayData implements \ArrayAccess, \Countable
 {
-    /**
-     * 数据.
-     */
-    protected array $__data = [];
-
-    public function __construct(array $data)
+    public function __construct(
+        /**
+         * 数据.
+         */
+        protected array $__data
+    )
     {
-        $this->__data = $data;
     }
 
     /**

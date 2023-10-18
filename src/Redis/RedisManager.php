@@ -126,7 +126,7 @@ class RedisManager
                 $redis->reconnect();
             }
         }
-        catch (\Throwable $th)
+        catch (\Throwable)
         {
             $redis->reconnect();
         }
@@ -173,7 +173,7 @@ class RedisManager
         if (!$redis->isCluster())
         {
             $host = $config['host'] ?? '127.0.0.1';
-            if (str_contains($host, '/'))
+            if (str_contains((string) $host, '/'))
             {
                 // unix socket
                 $redis->connect($host);

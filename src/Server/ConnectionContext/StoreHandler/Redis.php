@@ -147,7 +147,7 @@ class Redis implements IHandler
         if ($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
+            $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, $this->pingTimer(...));
             Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
                 if ($this->timerId)
                 {

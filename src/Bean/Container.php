@@ -20,16 +20,15 @@ class Container implements ContainerInterface
      */
     private array $singletonObjects = [];
 
-    /**
-     * 绑定列表.
-     *
-     * @var array[]|callable[]
-     */
-    private array $binds = [];
-
-    public function __construct(array $binds = [])
+    public function __construct(
+        /**
+         * 绑定列表.
+         *
+         * @var array[]|callable[]
+         */
+        private array $binds = []
+    )
     {
-        $this->binds = $binds;
     }
 
     /**

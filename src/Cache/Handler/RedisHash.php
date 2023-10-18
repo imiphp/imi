@@ -129,7 +129,7 @@ class RedisHash extends Base
             {
                 $evalResult = $redis->evalEx(self::GET_MULTIPLE_SCRIPT, array_merge(
                     [$key],
-                    array_map([$redis, '_serialize'], $members),
+                    array_map($redis->_serialize(...), $members),
                 ), 1);
                 foreach ($evalResult as $v)
                 {
@@ -177,7 +177,7 @@ class RedisHash extends Base
         $result = Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($setValues) {
             foreach ($setValues as $key => $item)
             {
-                $result = false !== $redis->evalEx(self::SET_MULTIPLE_SCRIPT, array_merge([$key], array_map([$redis, '_serialize'], $item['member']), array_map([$redis, '_serialize'], $item['value'])), 1);
+                $result = false !== $redis->evalEx(self::SET_MULTIPLE_SCRIPT, array_merge([$key], array_map($redis->_serialize(...), $item['member']), array_map($redis->_serialize(...), $item['value'])), 1);
                 if (!$result)
                 {
                     return $result;
@@ -209,7 +209,7 @@ class RedisHash extends Base
             {
                 $result = $redis->evalEx(self::DELETE_MULTIPLE_SCRIPT, array_merge(
                     [$key],
-                    array_map([$redis, '_serialize'], $members),
+                    array_map($redis->_serialize(...), $members),
                 ), 1);
                 if (!$result)
                 {

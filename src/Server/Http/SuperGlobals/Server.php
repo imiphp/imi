@@ -9,14 +9,13 @@ use Imi\RequestContext;
 
 class Server implements \ArrayAccess, \JsonSerializable
 {
-    /**
-     * 默认的 $_SERVER 变量.
-     */
-    private array $defaultServer = [];
-
-    public function __construct(array $defaultServer)
+    public function __construct(
+        /**
+         * 默认的 $_SERVER 变量.
+         */
+        private array $defaultServer
+    )
     {
-        $this->defaultServer = $defaultServer;
     }
 
     /**

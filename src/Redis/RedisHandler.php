@@ -238,13 +238,6 @@ namespace Imi\Redis;
  */
 class RedisHandler
 {
-    /**
-     * redis 对象
-     *
-     * @var \Redis|\RedisCluster
-     */
-    private $redis;
-
     private bool $isUnix = false;
 
     /**
@@ -272,9 +265,11 @@ class RedisHandler
     /**
      * @param \Redis|\RedisCluster $redis
      */
-    public function __construct($redis)
+    public function __construct(/**
+     * redis 对象
+     */
+    private $redis)
     {
-        $this->redis = $redis;
         if (!$this->isCluster() && $redis->isConnected())
         {
             $this->host = $redis->getHost();

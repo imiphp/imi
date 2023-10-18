@@ -8,33 +8,24 @@ namespace Imi\Event;
 class EventParam
 {
     /**
-     * 事件名称.
-     */
-    protected string $__eventName = '';
-
-    /**
-     * 触发该事件的对象
-     */
-    protected ?object $__target = null;
-
-    /**
-     * 数据.
-     */
-    protected array $__data = [];
-
-    /**
      * 阻止事件继续传播.
      */
     protected bool $__stopPropagation = false;
 
-    public function __construct(string $eventName, array $data = [], ?object $target = null)
+    public function __construct(/**
+     * 事件名称.
+     */
+    protected string $__eventName, /**
+     * 数据.
+     */
+    protected array $__data = [], /**
+     * 触发该事件的对象
+     */
+    protected ?object $__target = null)
     {
-        $this->__eventName = $eventName;
-        $this->__target = $target;
-        $this->__data = $data;
-        if ($data)
+        if ($__data)
         {
-            foreach ($data as $key => &$value)
+            foreach ($__data as $key => &$value)
             {
                 $this->{$key} = &$value;
             }

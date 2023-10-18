@@ -16,7 +16,7 @@ trait TUriResourceConfig
             {
                 continue;
             }
-            $list = explode(';', $config);
+            $list = explode(';', (string) $config);
             $config = [];
             foreach ($list as $uri)
             {

@@ -307,7 +307,7 @@ class File
                 }
             }
         }
-        catch (\ErrorException $_)
+        catch (\ErrorException)
         {
             // 兼容警告转异常
             return true;

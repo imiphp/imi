@@ -25,21 +25,6 @@ use Imi\Util\ArrayUtil;
 class Group
 {
     /**
-     * 服务器对象
-     */
-    protected IServer $server;
-
-    /**
-     * 组中最大允许的客户端数量.
-     */
-    protected int $maxClients = 0;
-
-    /**
-     * 组名.
-     */
-    protected string $groupName = '';
-
-    /**
      * 分组处理器.
      */
     protected string $groupHandler = 'GroupLocal';
@@ -54,11 +39,21 @@ class Group
      */
     protected bool $status = true;
 
-    public function __construct(IServer $server, string $groupName, int $maxClients = -1)
+    public function __construct(
+        /**
+         * 服务器对象
+         */
+        protected IServer $server,
+        /**
+         * 组名.
+         */
+        protected string $groupName,
+        /**
+         * 组中最大允许的客户端数量.
+         */
+        protected int $maxClients = -1
+    )
     {
-        $this->server = $server;
-        $this->groupName = $groupName;
-        $this->maxClients = $maxClients;
     }
 
     /**

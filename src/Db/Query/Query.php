@@ -55,23 +55,6 @@ abstract class Query implements IQuery
     protected array $binds = [];
 
     /**
-     * 数据库操作对象
-     */
-    protected ?IDb $db = null;
-
-    /**
-     * 连接池名称.
-     */
-    protected ?string $poolName = null;
-
-    /**
-     * 查询结果类的类名，为null则为数组.
-     *
-     * @var class-string<Model>|null
-     */
-    protected ?string $modelClass = null;
-
-    /**
      * 查询类型.
      */
     protected ?int $queryType = null;
@@ -124,12 +107,20 @@ abstract class Query implements IQuery
      */
     protected array $beforeBuildSqlCallbacks = [];
 
-    public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
+    public function __construct(/**
+     * 数据库操作对象
+     */
+    protected ?IDb $db = null, /**
+     * 查询结果类的类名，为null则为数组.
+     *
+     * @var class-string<Model>|null
+     */
+    protected ?string $modelClass = null, /**
+     * 连接池名称.
+     */
+    protected ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
-        $this->db = $db;
         $this->isInitDb = (bool) $db;
-        $this->poolName = $poolName;
-        $this->modelClass = $modelClass;
         $this->queryType = $queryType ?? QueryType::WRITE;
         $this->isInitQueryType = null !== $queryType;
         if (null === $prefix)

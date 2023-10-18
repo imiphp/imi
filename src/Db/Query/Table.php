@@ -12,32 +12,25 @@ class Table implements ITable
 {
     use TRaw;
 
-    /**
-     * 数据库名.
-     */
-    protected ?string $database = null;
-
-    /**
-     * 表前缀.
-     */
-    protected string $prefix = '';
-
-    /**
-     * 表名.
-     */
-    protected ?string $table = null;
-
-    /**
-     * 别名.
-     */
-    protected ?string $alias = null;
-
-    public function __construct(?string $database = null, ?string $table = null, ?string $alias = null, string $prefix = '')
+    public function __construct(
+        /**
+         * 数据库名.
+         */
+        protected ?string $database = null,
+        /**
+         * 表名.
+         */
+        protected ?string $table = null,
+        /**
+         * 别名.
+         */
+        protected ?string $alias = null,
+        /**
+         * 表前缀.
+         */
+        protected string $prefix = ''
+    )
     {
-        $this->database = $database;
-        $this->table = $table;
-        $this->alias = $alias;
-        $this->prefix = $prefix;
     }
 
     /**

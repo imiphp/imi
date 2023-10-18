@@ -50,7 +50,7 @@ class Inotify extends BaseMonitor
         $this->handler = $handler = inotify_init();
         stream_set_blocking($handler, false);
 
-        $excludePaths = array_map([Imi::class, 'parseRule'], $this->excludePaths);
+        $excludePaths = array_map(Imi::parseRule(...), $this->excludePaths);
 
         $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
         $paths = &$this->paths;
@@ -72,7 +72,7 @@ class Inotify extends BaseMonitor
                     {
                         continue;
                     }
-                    if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
+                    if ('' !== $excludeRule && !preg_match($excludeRule, (string) $fullPath))
                     {
                         $file->setContinue(false);
                         continue;

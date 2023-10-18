@@ -6,26 +6,14 @@ namespace Imi\Aop\Model;
 
 class AopItem
 {
-    private string $class = '';
-
-    private string $methodRule = '';
-
     /**
      * @var callable
      */
     private $callback;
 
-    private int $priority = 0;
-
-    private array $options = [];
-
-    public function __construct(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = [])
+    public function __construct(private readonly string $class, private readonly string $methodRule, callable $callback, private readonly int $priority = 0, private readonly array $options = [])
     {
-        $this->class = $class;
-        $this->methodRule = $methodRule;
         $this->callback = $callback;
-        $this->priority = $priority;
-        $this->options = $options;
     }
 
     public function getClass(): string

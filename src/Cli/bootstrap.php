@@ -40,5 +40,5 @@ return static function (): void {
         })();
     }
 
-    App::runApp($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)), \Imi\Cli\CliApp::class);
+    App::runApp($path ?? realpath(\dirname((string) $_SERVER['SCRIPT_NAME'], 2)), \Imi\Cli\CliApp::class);
 };

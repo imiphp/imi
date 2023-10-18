@@ -9,11 +9,6 @@ use Imi\Db\Query\Interfaces\IQuery;
 abstract class BaseBuilder implements IBuilder
 {
     /**
-     * IQuery 类.
-     */
-    protected ?IQuery $query = null;
-
-    /**
      * 绑定参数.
      */
     protected array $params = [];
@@ -30,9 +25,13 @@ abstract class BaseBuilder implements IBuilder
         return $builder->build(...$args);
     }
 
-    public function __construct(IQuery $query)
+    public function __construct(
+        /**
+         * IQuery 类.
+         */
+        protected ?IQuery $query
+    )
     {
-        $this->query = $query;
     }
 
     /**

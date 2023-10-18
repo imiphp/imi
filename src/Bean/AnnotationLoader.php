@@ -74,7 +74,7 @@ class AnnotationLoader
             foreach (File::enumFile($path, $pattern, ['php']) as $file)
             {
                 $path = $file->getFullPath();
-                $diffPath = substr($path, $pathLength);
+                $diffPath = substr((string) $path, $pathLength);
                 if (isset($diffPath[0]) && \DIRECTORY_SEPARATOR === $diffPath[0])
                 {
                     $diffPath = substr($diffPath, 1);

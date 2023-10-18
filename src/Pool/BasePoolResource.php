@@ -12,14 +12,13 @@ abstract class BasePoolResource implements IPoolResource
 {
     use THashCode;
 
-    /**
-     * 池子实例.
-     */
-    private ?IPool $pool = null;
-
-    public function __construct(IPool $pool)
+    public function __construct(
+        /**
+         * 池子实例.
+         */
+        private readonly ?IPool $pool
+    )
     {
-        $this->pool = $pool;
     }
 
     /**

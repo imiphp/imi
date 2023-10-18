@@ -16,8 +16,6 @@ use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
  */
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
-    protected ?\mysqli_stmt $statement = null;
-
     /**
      * @var \mysqli_result|false
      */
@@ -29,32 +27,22 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     protected array $data = [];
 
     /**
-     * 数据库操作对象
-     */
-    protected ?IMysqlDb $db = null;
-
-    /**
-     * 最后执行过的SQL语句.
-     */
-    protected string $lastSql = '';
-
-    /**
      * 绑定数据.
      */
     protected array $bindValues = [];
 
-    /**
+    public function __construct(/**
+     * 数据库操作对象
+     */
+    protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result, /**
+     * 最后执行过的SQL语句.
+     */
+    protected string $lastSql, /**
      * SQL 参数映射.
      */
-    protected ?array $sqlParamsMap = null;
-
-    public function __construct(IMysqlDb $db, ?\mysqli_stmt $statement, ?\mysqli_result $result, string $originSql, ?array $sqlParamsMap = null)
+    protected ?array $sqlParamsMap = null)
     {
-        $this->db = $db;
-        $this->statement = $statement;
         $this->result = $result;
-        $this->lastSql = $originSql;
-        $this->sqlParamsMap = $sqlParamsMap;
     }
 
     /**
@@ -200,19 +188,13 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
     {
         $result = $this->result;
-        switch ($fetchStyle)
-        {
-            case \PDO::FETCH_ASSOC:
-                return $result->fetch_assoc();
-            case \PDO::FETCH_BOTH:
-                return $result->fetch_array();
-            case \PDO::FETCH_NUM:
-                return $result->fetch_array(\MYSQLI_NUM);
-            case \PDO::FETCH_OBJ:
-                return $result->fetch_object();
-            default:
-                throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle));
-        }
+        return match ($fetchStyle) {
+            \PDO::FETCH_ASSOC => $result->fetch_assoc(),
+            \PDO::FETCH_BOTH => $result->fetch_array(),
+            \PDO::FETCH_NUM => $result->fetch_array(\MYSQLI_NUM),
+            \PDO::FETCH_OBJ => $result->fetch_object(),
+            default => throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle)),
+        };
     }
 
     /**

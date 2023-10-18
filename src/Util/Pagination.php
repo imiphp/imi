@@ -10,16 +10,6 @@ namespace Imi\Util;
 class Pagination
 {
     /**
-     * 当前页码
-     */
-    private int $page = 0;
-
-    /**
-     * 每页显示数量.
-     */
-    private int $count = 0;
-
-    /**
      * 偏移量.
      */
     private int $limitOffset = 0;
@@ -29,10 +19,14 @@ class Pagination
      */
     private int $limitEndOffset = 0;
 
-    public function __construct(int $page, int $count)
+    public function __construct(/**
+     * 当前页码
+     */
+    private int $page, /**
+     * 每页显示数量.
+     */
+    private int $count)
     {
-        $this->page = $page;
-        $this->count = $count;
         $this->calc();
     }
 

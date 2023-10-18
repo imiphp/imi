@@ -9,22 +9,10 @@ use Imi\Db\Query\Interfaces\IResult;
 
 class ChunkResult extends BaseChunkResult
 {
-    private ?IQuery $query = null;
-
-    private int $limit = 0;
-
-    private string $column = '';
-
-    private string $alias = '';
-
     private string $orderBy = '';
 
-    public function __construct(IQuery $query, int $limit, string $column, string $alias, string $orderBy)
+    public function __construct(private readonly ?IQuery $query, private readonly int $limit, private readonly string $column, private readonly string $alias, string $orderBy)
     {
-        $this->query = $query;
-        $this->limit = $limit;
-        $this->column = $column;
-        $this->alias = $alias;
         $this->orderBy = strtolower($orderBy);
     }
 

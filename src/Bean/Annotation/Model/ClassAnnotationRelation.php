@@ -8,20 +8,17 @@ use Imi\Bean\Annotation\Base;
 
 class ClassAnnotationRelation implements IAnnotationRelation
 {
-    /**
-     * 类名.
-     */
-    private string $class = '';
-
-    /**
-     * 注解.
-     */
-    private ?Base $annotation = null;
-
-    public function __construct(string $class, Base $annotation)
+    public function __construct(
+        /**
+         * 类名.
+         */
+        private readonly string $class,
+        /**
+         * 注解.
+         */
+        private readonly ?Base $annotation
+    )
     {
-        $this->class = $class;
-        $this->annotation = $annotation;
     }
 
     /**

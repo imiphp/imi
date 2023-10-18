@@ -12,18 +12,15 @@ use Imi\Util\Interfaces\IArrayable;
 class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, \Countable
 {
     /**
-     * 限定的数组列表成员类型.
-     */
-    private string $itemType = '';
-
-    /**
      * 数组列表.
      */
     private array $list = [];
 
-    public function __construct(string $itemType, array $list = [])
+    public function __construct(/**
+     * 限定的数组列表成员类型.
+     */
+    private readonly string $itemType, array $list = [])
     {
-        $this->itemType = $itemType;
         if ($list)
         {
             foreach ($list as $item)

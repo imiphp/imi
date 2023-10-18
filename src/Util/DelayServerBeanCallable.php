@@ -15,12 +15,6 @@ class DelayServerBeanCallable
 
     private ?IServer $serverInstance = null;
 
-    private string $beanName = '';
-
-    private string $methodName = '';
-
-    private array $constructArgs = [];
-
     private ?bool $returnsReference = null;
 
     private ?object $instance = null;
@@ -28,7 +22,7 @@ class DelayServerBeanCallable
     /**
      * @param string|IServer $server
      */
-    public function __construct($server, string $beanName, string $methodName, array $constructArgs = [])
+    public function __construct($server, private readonly string $beanName, private readonly string $methodName, private readonly array $constructArgs = [])
     {
         if (\is_string($server))
         {
@@ -40,9 +34,6 @@ class DelayServerBeanCallable
             $this->server = $server->getName();
             $this->serverInstance = $server;
         }
-        $this->beanName = $beanName;
-        $this->methodName = $methodName;
-        $this->constructArgs = $constructArgs;
     }
 
     public function getBeanName(): string

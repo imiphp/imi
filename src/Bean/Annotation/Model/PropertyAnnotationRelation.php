@@ -8,26 +8,21 @@ use Imi\Bean\Annotation\Base;
 
 class PropertyAnnotationRelation implements IAnnotationRelation
 {
-    /**
-     * 类名.
-     */
-    private string $class = '';
-
-    /**
-     * 属性名.
-     */
-    private string $property = '';
-
-    /**
-     * 注解.
-     */
-    private ?Base $annotation = null;
-
-    public function __construct(string $class, string $property, Base $annotation)
+    public function __construct(
+        /**
+         * 类名.
+         */
+        private readonly string $class,
+        /**
+         * 属性名.
+         */
+        private readonly string $property,
+        /**
+         * 注解.
+         */
+        private readonly ?Base $annotation
+    )
     {
-        $this->class = $class;
-        $this->property = $property;
-        $this->annotation = $annotation;
     }
 
     /**

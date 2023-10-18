@@ -21,11 +21,8 @@ class WhereCollector implements IWhereCollector
      */
     protected array $where = [];
 
-    protected IQuery $query;
-
-    public function __construct(IQuery $query)
+    public function __construct(protected IQuery $query)
     {
-        $this->query = $query;
     }
 
     /**

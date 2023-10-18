@@ -162,11 +162,6 @@ class Meta
     private array $sqlColumns = [];
 
     /**
-     * 是否为继承父类的模型.
-     */
-    private bool $inherit = false;
-
-    /**
      * 真实的模型类名.
      */
     private string $realModelClass = '';
@@ -188,9 +183,11 @@ class Meta
      */
     private bool $incrUpdate = false;
 
-    public function __construct(string $modelClass, bool $inherit = false)
+    public function __construct(string $modelClass, /**
+     * 是否为继承父类的模型.
+     */
+    private readonly bool $inherit = false)
     {
-        $this->inherit = $inherit;
         if ($inherit)
         {
             $realModelClass = get_parent_class($modelClass);
