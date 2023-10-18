@@ -18,7 +18,5 @@
 /phpstan-baseline export-ignore
 /phpstan-components.neon export-ignore
 /phpstan.neon export-ignore
-/phpstan.sh export-ignore
-/phpstan-v2.sh export-ignore
 /rector.php export-ignore
 /rector.sh export-ignore

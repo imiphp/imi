@@ -1,7 +1,8 @@
 #!/bin/bash
 
 __DIR__=$(cd `dirname $0`; pwd)
-cd $__DIR__
+cd "$__DIR__/.."
+__DIR__=$(pwd)
 
 components=(
   "core"
@@ -51,7 +52,7 @@ analyze_component() {
   PHPSTAN_ANALYSE_COMPONENT_NAME="$component" PHPSTAN_GENERATE_BASELINE="$gen_baseline" ./vendor/bin/phpstan analyse "${args[@]}"
 }
 
-gen_baseline="false"
+use_baseline="false"
 input_components=()
 
 while [[ $# -gt 0 ]]; do
