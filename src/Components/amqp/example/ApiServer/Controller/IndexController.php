@@ -6,7 +6,6 @@ namespace AMQPApp\ApiServer\Controller;
 
 use AMQPApp\AMQP\QueueTest\QueueTestMessage;
 use AMQPApp\AMQP\Test\TestMessage;
-use AMQPApp\AMQP\Test2\TestMessage2;
 use Imi\Controller\HttpController;
 use Imi\Queue\Facade\Queue;
 use Imi\Queue\Model\Message;
@@ -44,14 +43,9 @@ class IndexController extends HttpController
     {
         $message = new TestMessage();
         $message->setMemberId($memberId);
+        $message->setContent('memberId:' . $memberId);
         // @phpstan-ignore-next-line
         $r1 = RequestContext::getBean('TestPublisher')->publish($message);
-
-        $message2 = new TestMessage2();
-        $message2->setMemberId($memberId);
-        $message2->setContent('memberId:' . $memberId);
-        // @phpstan-ignore-next-line
-        $r2 = RequestContext::getBean('TestPublisher2')->publish($message2);
 
         $queueTestMessage = new QueueTestMessage();
         $queueTestMessage->setMemberId($memberId);
@@ -61,7 +55,6 @@ class IndexController extends HttpController
 
         return [
             'r1'    => $r1,
-            'r2'    => $r2,
         ];
     }
 
@@ -75,17 +68,15 @@ class IndexController extends HttpController
     public function consume($memberId)
     {
         $r1 = Redis::get($key1 = 'imi-amqp:consume:1:' . $memberId);
-        $r2 = Redis::get($key2 = 'imi-amqp:consume:2:' . $memberId);
-        $r3 = Redis::get($key3 = 'imi-amqp:consume:QueueTest:' . $memberId);
-        if (false !== $r1 && false !== $r2 && false !== $r3)
+        $r2 = Redis::get($key2 = 'imi-amqp:consume:QueueTest:' . $memberId);
+        if (false !== $r1 && false !== $r2)
         {
-            Redis::del($key1, $key2, $key3);
+            Redis::del($key1, $key2);
         }
 
         return [
             'r1' => $r1,
             'r2' => $r2,
-            'r3' => $r3,
         ];
     }
 }

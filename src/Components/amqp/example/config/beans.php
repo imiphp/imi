@@ -31,7 +31,6 @@ return [
             'QueueConsumer',
         ] : [
             'TestProcess1',
-            'TestProcess2',
             'QueueConsumer',
         ],
     ],

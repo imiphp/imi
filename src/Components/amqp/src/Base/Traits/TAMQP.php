@@ -17,7 +17,6 @@ use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Wire\AMQPTable;
 
 trait TAMQP
@@ -97,65 +96,7 @@ trait TAMQP
      */
     protected function getConnection(): AbstractConnection
     {
-        $poolName = null;
-        if (null === $this->poolName)
-        {
-            $connectionByPool = false;
-            $connectionAnnotation = $this->connectionAnnotation;
-            if ($connectionAnnotation)
-            {
-                if (null === $connectionAnnotation->poolName)
-                {
-                    if (!(null !== $connectionAnnotation->host && null !== $connectionAnnotation->port && null !== $connectionAnnotation->user && null !== $connectionAnnotation->password))
-                    {
-                        $connectionByPool = true;
-                    }
-                }
-                else
-                {
-                    $connectionByPool = true;
-                }
-            }
-            else
-            {
-                $connectionByPool = true;
-            }
-            if ($connectionByPool)
-            {
-                $poolName = $connectionAnnotation->poolName ?? $this->amqp->getDefaultPoolName();
-            }
-        }
-        else
-        {
-            $connectionByPool = true;
-            $poolName = $this->poolName;
-        }
-        if ($connectionByPool || $poolName)
-        {
-            return AMQPPool::getInstance($poolName);
-        }
-        elseif (isset($connectionAnnotation))
-        {
-            return new AMQPStreamConnection(
-                $connectionAnnotation->host,
-                $connectionAnnotation->port,
-                $connectionAnnotation->user,
-                $connectionAnnotation->password,
-                $connectionAnnotation->vhost,
-                $connectionAnnotation->insist,
-                $connectionAnnotation->loginMethod, $connectionAnnotation->loginResponse,
-                $connectionAnnotation->locale, $connectionAnnotation->connectionTimeout,
-                $connectionAnnotation->readWriteTimeout,
-                $connectionAnnotation->context,
-                $connectionAnnotation->keepalive,
-                $connectionAnnotation->heartbeat,
-                $connectionAnnotation->channelRpcTimeout
-            );
-        }
-        else
-        {
-            throw new \RuntimeException('Annotation @Connection does not found');
-        }
+        return AMQPPool::getInstance($this->poolName ?? $this->connectionAnnotation->poolName ?? null);
     }
 
     /**

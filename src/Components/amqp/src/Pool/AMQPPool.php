@@ -9,7 +9,8 @@ use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Connection\AMQPConnectionConfig;
+use PhpAmqpLib\Connection\AMQPConnectionFactory;
 
 /**
  * AMQP 客户端连接池.
@@ -41,8 +42,7 @@ class AMQPPool
                 throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
             }
 
-            /** @var AbstractConnection $connection */
-            $connection = App::newInstance($config['connectionClass'] ?? AMQPStreamConnection::class, $config['host'], (int) $config['port'], $config['user'], $config['password'], $config['vhost'] ?? '/', (bool) ($config['insist'] ?? false), $config['loginMethod'] ?? 'AMQPLAIN', $config['loginResponse'] ?? null, $config['locale'] ?? 'en_US', (float) ($config['connectionTimeout'] ?? 3.0), (float) ($config['readWriteTimeout'] ?? 3.0), $config['context'] ?? null, (bool) ($config['keepalive'] ?? false), (int) ($config['heartbeat'] ?? 0), (float) ($config['channelRpcTimeout'] ?? 0.0), $config['sslProtocol'] ?? null);
+            $connection = self::createInstanceFromConfig($config);
             if (!$connection->isConnected())
             {
                 throw new \RuntimeException(sprintf('AMQP %s connection failed', $poolName));
@@ -83,8 +83,7 @@ class AMQPPool
             $connection = App::get($requestContextKey);
             if (null === $connection || !$connection->isConnected())
             {
-                /** @var AbstractConnection $connection */
-                $connection = App::newInstance($config['connectionClass'] ?? AMQPStreamConnection::class, $config['host'], (int) $config['port'], $config['user'], $config['password'], $config['vhost'] ?? '/', (bool) ($config['insist'] ?? false), $config['loginMethod'] ?? 'AMQPLAIN', $config['loginResponse'] ?? null, $config['locale'] ?? 'en_US', (float) ($config['connectionTimeout'] ?? 3.0), (float) ($config['readWriteTimeout'] ?? 3.0), $config['context'] ?? null, (bool) ($config['keepalive'] ?? false), (int) ($config['heartbeat'] ?? 0), (float) ($config['channelRpcTimeout'] ?? 0.0), $config['sslProtocol'] ?? null);
+                $connection = self::createInstanceFromConfig($config);
                 if (!$connection->isConnected())
                 {
                     throw new \RuntimeException(sprintf('AMQP %s connection failed', $poolName));
@@ -94,6 +93,149 @@ class AMQPPool
 
             return $requestContext[$requestContextKey] = $connection;
         }
+    }
+
+    public static function createInstanceFromConfig(array $configArray): AbstractConnection
+    {
+        $config = new AMQPConnectionConfig();
+        if (isset($configArray['ioType']))
+        {
+            $config->setIoType($configArray['ioType']);
+        }
+        if (isset($configArray['host']))
+        {
+            $config->setHost($configArray['host']);
+        }
+        if (isset($configArray['port']))
+        {
+            $config->setPort($configArray['port']);
+        }
+        if (isset($configArray['user']))
+        {
+            $config->setUser($configArray['user']);
+        }
+        if (isset($configArray['password']))
+        {
+            $config->setPassword($configArray['password']);
+        }
+        if (isset($configArray['vhost']))
+        {
+            $config->setVhost($configArray['vhost']);
+        }
+        if (isset($configArray['insist']))
+        {
+            $config->setInsist($configArray['insist']);
+        }
+        if (isset($configArray['loginMethod']))
+        {
+            $config->setLoginMethod($configArray['loginMethod']);
+        }
+        if (isset($configArray['loginResponse']))
+        {
+            $config->setLoginResponse($configArray['loginResponse']);
+        }
+        if (isset($configArray['locale']))
+        {
+            $config->setLocale($configArray['locale']);
+        }
+        if (isset($configArray['connectionTimeout']))
+        {
+            $config->setConnectionTimeout($configArray['connectionTimeout']);
+        }
+        if (isset($configArray['readTimeout']))
+        {
+            $config->setReadTimeout($configArray['readTimeout']);
+        }
+        if (isset($configArray['writeTimeout']))
+        {
+            $config->setWriteTimeout($configArray['writeTimeout']);
+        }
+        if (isset($configArray['channelRPCTimeout']))
+        {
+            $config->setChannelRpcTimeout($configArray['channelRPCTimeout']);
+        }
+        if (isset($configArray['heartbeat']))
+        {
+            $config->setHeartbeat($configArray['heartbeat']);
+        }
+        if (isset($configArray['keepalive']))
+        {
+            $config->setKeepalive($configArray['keepalive']);
+        }
+        if (isset($configArray['isSecure']))
+        {
+            $config->setIsSecure($configArray['isSecure']);
+        }
+        if (isset($configArray['networkProtocol']))
+        {
+            $config->setNetworkProtocol($configArray['networkProtocol']);
+        }
+        if (isset($configArray['streamContext']))
+        {
+            $config->setStreamContext($configArray['streamContext']);
+        }
+        if (isset($configArray['sendBufferSize']))
+        {
+            $config->setSendBufferSize($configArray['sendBufferSize']);
+        }
+        if (isset($configArray['dispatchSignals']))
+        {
+            $config->enableSignalDispatch($configArray['dispatchSignals']);
+        }
+        if (isset($configArray['amqpProtocol']))
+        {
+            $config->setAMQPProtocol($configArray['amqpProtocol']);
+        }
+        if (isset($configArray['protocolStrictFields']))
+        {
+            $config->setProtocolStrictFields($configArray['protocolStrictFields']);
+        }
+        if (isset($configArray['sslCaCert']))
+        {
+            $config->setSslCaCert($configArray['sslCaCert']);
+        }
+        if (isset($configArray['sslCaPath']))
+        {
+            $config->setSslCaPath($configArray['sslCaPath']);
+        }
+        if (isset($configArray['sslCert']))
+        {
+            $config->setSslCert($configArray['sslCert']);
+        }
+        if (isset($configArray['sslKey']))
+        {
+            $config->setSslKey($configArray['sslKey']);
+        }
+        if (isset($configArray['sslVerify']))
+        {
+            $config->setSslVerify($configArray['sslVerify']);
+        }
+        if (isset($configArray['sslVerifyName']))
+        {
+            $config->setSslVerifyName($configArray['sslVerifyName']);
+        }
+        if (isset($configArray['sslPassPhrase']))
+        {
+            $config->setSslPassphrase($configArray['sslPassPhrase']);
+        }
+        if (isset($configArray['sslCiphers']))
+        {
+            $config->setSslCiphers($configArray['sslCiphers']);
+        }
+        if (isset($configArray['sslSecurityLevel']))
+        {
+            $config->setSslSecurityLevel($configArray['sslSecurityLevel']);
+        }
+        if (isset($configArray['connectionName']))
+        {
+            $config->setConnectionName($configArray['connectionName']);
+        }
+        if (isset($configArray['debugPackets']))
+        {
+            $config->setDebugPackets($configArray['debugPackets']);
+        }
+
+        return AMQPConnectionFactory::create($config);
     }
 
     /**
