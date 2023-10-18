@@ -99,7 +99,6 @@ return [
                 'user'            => 'guest',
                 'password'        => 'guest',
                 'keepalive'       => false, // 截止 Swoole 4.8 还有兼容问题，所以必须设为 false，不影响使用
-                'connectionClass' => \PhpAmqpLib\Connection\AMQPStreamConnection::class,
             ],
         ],
     ] : [],

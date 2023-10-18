@@ -93,6 +93,45 @@ Github: <https://github.com/imiphp/imi-amqp>
 ]
 ```
 
+#### 连接配置项
+
+| 属性名称 | 说明 |
+|-|-
+| host | 主机 |
+| port | 端口 |
+| user | 用户名 |
+| vhost | vhost，默认 `/` |
+| connectionTimeout | 连接超时 |
+| readTimeout | 读超时 |
+| writeTimeout | 写超时 |
+| channelRpcTimeout | 频道 RPC 超时时间，默认 `0.0` |
+| heartbeat | 心跳时间。如果不设置的情况，设置了连接池的心跳，就会设置为该值的 2 倍，否则设为`0` |
+| keepalive | keepalive，默认 `false` |
+| isSecure | 是否启用加密通信，默认 `false` |
+| ioType | io 类型，默认 `stream`，可选：`stream`、`socket` |
+| insist | insist |
+| loginMethod | 默认 `AMQPLAIN` |
+| loginResponse | loginResponse |
+| locale | 默认 `en_US` |
+| amqpProtocol | AMQP 协议，默认 `0.9.1` |
+| protocolStrictFields | 是否使用严格的 AMQP 0.9.1 字段类型。RabbitMQ 不支持这个。默认 `false` |
+| sendBufferSize | 发送缓冲区大小，默认 `0` |
+| sslCaCert | CA 证书内容 |
+| sslCaPath | CA 证书地址 |
+| sslCert | SSL 证书 |
+| sslKey | SSL 证书密钥 |
+| sslVerify | 是否验证 SSL 证书 |
+| sslVerifyName | SSL 证书验证名称 |
+| sslPassPhrase | SSL 证书密码短语 |
+| sslCiphers | SSL 密码 |
+| sslSecurityLevel | SSL 安全等级 |
+| isLazy | 是否懒加载，默认 `false`，不推荐修改 |
+| networkProtocol | 网络协议，默认 `tcp`，不推荐修改 |
+| streamContext | 流上下文，默认 `null`，不推荐修改 |
+| dispatchSignals | 无用项，默认 `true`，不推荐修改 |
+| connectionName | 连接名称，不推荐修改 |
+| debugPackets | 输出所有网络数据包以进行调试。，默认 `false`，不推荐修改 |
+
 ### 队列组件支持
 
 本组件额外实现了 [imiphp/imi-queue](https://github.com/imiphp/imi-queue) 的接口，可以用 Queue 组件的 API 进行调用。
@@ -167,25 +206,6 @@ Github: <https://github.com/imiphp/imi-amqp>
 这个写法仅 AMQP 有效，其它消息队列不能这么写。
 
 优点是可以完美利用 AMQP 特性，适合需要个性化定制的用户。
-
-#### 连接配置项
-
-| 属性名称 | 说明 |
-|-|-
-| host | 主机 |
-| port | 端口 |
-| user | 用户名 |
-| vhost | vhost，默认`/` |
-| insist | insist |
-| loginMethod | 默认`AMQPLAIN` |
-| loginResponse | loginResponse |
-| locale | 默认`en_US` |
-| connectionTimeout | 连接超时 |
-| readWriteTimeout | 读写超时 |
-| keepalive | keepalive，默认`false` |
-| heartbeat | 心跳时间。如果不设置的情况，设置了连接池的心跳，就会设置为该值的 2 倍，否则设为`0` |
-| channelRpcTimeout | 频道 RPC 超时时间，默认`0.0` |
-| sslProtocol | ssl 协议，默认`null` |
 
 #### 消息定义
 
