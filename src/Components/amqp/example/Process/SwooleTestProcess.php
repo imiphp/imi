@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AMQPApp\Process;
 
+use AMQPApp\AMQP\Test\TestConsumer;
 use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
 use Imi\Event\Event;
@@ -20,17 +21,8 @@ class SwooleTestProcess extends BaseProcess
 {
     /**
      * @Inject("TestConsumer")
-     *
-     * @var \AMQPApp\AMQP\Test\TestConsumer
      */
-    protected $testConsumer;
-
-    /**
-     * @Inject("TestConsumer2")
-     *
-     * @var \AMQPApp\AMQP\Test2\TestConsumer2
-     */
-    protected $testConsumer2;
+    protected TestConsumer $testConsumer;
 
     private bool $running = false;
 
@@ -38,12 +30,10 @@ class SwooleTestProcess extends BaseProcess
     {
         $this->running = true;
         $this->runConsumer($this->testConsumer);
-        $this->runConsumer($this->testConsumer2);
         $channel = new \Swoole\Coroutine\Channel();
         Event::on('IMI.PROCESS.END', function () use ($channel) {
             $this->running = false;
             $this->testConsumer->close();
-            $this->testConsumer2->close();
             $channel->push(1);
         }, ImiPriority::IMI_MAX);
         $channel->pop();

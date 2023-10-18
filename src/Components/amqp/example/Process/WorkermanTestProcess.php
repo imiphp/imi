@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AMQPApp\Process;
 
+use AMQPApp\AMQP\Test\TestConsumer;
 use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
 use Imi\Log\Log;
@@ -14,14 +15,12 @@ use Workerman\Worker;
 /**
  * @Process(name="TestProcess1")
  */
-class WorkermanTestProcess1 extends BaseProcess
+class WorkermanTestProcess extends BaseProcess
 {
     /**
      * @Inject("TestConsumer")
-     *
-     * @var \AMQPApp\AMQP\Test\TestConsumer
      */
-    protected $testConsumer;
+    protected TestConsumer $testConsumer;
 
     public function run(Worker $process): void
     {

@@ -16,7 +16,7 @@
 * [开始一个新项目](base/new.md)
 * [应用配置](base/config.md)
 * [常见问题](base/qa.md)
-* [v2.0-v2.1 升级指南](base/version/2.0-2.1.md)
+* [v2.1-v3.0升级指南](base/version/2.1-3.0.md)
 
 ## 框架核心
 

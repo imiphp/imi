@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Pool;
 
-use Imi\AMQP\Swoole\AMQPSwooleConnection;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\TUriResourceConfig;
@@ -37,20 +36,11 @@ class AMQPCoroutinePool extends BaseAsyncPool
     public function createNewResource(): IPoolResource
     {
         $config = $this->getNextResourceConfig();
-        if (isset($config['heartbeat']))
+        if (!isset($config['heartbeat']) && ($poolHeartbeatInterval = $this->getConfig()->getHeartbeatInterval()) > 0)
         {
-            $heartbeat = (int) $config['heartbeat'];
+            $config['heartbeat'] = (int) ($poolHeartbeatInterval * 2);
         }
-        elseif (($poolHeartbeatInterval = $this->getConfig()->getHeartbeatInterval()) > 0)
-        {
-            $heartbeat = (int) ($poolHeartbeatInterval * 2);
-        }
-        else
-        {
-            $heartbeat = 0;
-        }
-        $class = $config['connectionClass'] ?? AMQPSwooleConnection::class;
 
-        return BeanFactory::newInstance(AMQPResource::class, $this, new $class($config['host'], (int) $config['port'], $config['user'], $config['password'], $config['vhost'] ?? '/', (bool) ($config['insist'] ?? false), $config['loginMethod'] ?? 'AMQPLAIN', $config['loginResponse'] ?? null, $config['locale'] ?? 'en_US', (float) ($config['connectionTimeout'] ?? 3.0), (float) ($config['readWriteTimeout'] ?? 3.0), $config['context'] ?? null, (bool) ($config['keepalive'] ?? false), $heartbeat, (float) ($config['channelRpcTimeout'] ?? 0.0)));
+        return BeanFactory::newInstance(AMQPResource::class, $this, AMQPPool::createInstanceFromConfig($config));
     }
 }
