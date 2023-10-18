@@ -40,114 +40,114 @@ jobs:
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh core
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh core
 
       - name: Analyse access-control
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh access-control
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh access-control
 
       - name: Analyse amqp
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh amqp
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh amqp
 
       - name: Analyse apidoc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh apidoc
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh apidoc
 
       - name: Analyse fpm
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh fpm
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh fpm
 
       - name: Analyse grpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh grpc
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh grpc
 
       - name: Analyse jwt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh jwt
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh jwt
 
       - name: Analyse kafka
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh kafka
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh kafka
 
       - name: Analyse mqtt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh mqtt
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh mqtt
 
       - name: Analyse pgsql
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh pgsql
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh pgsql
 
       - name: Analyse queue
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh queue
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh queue
 
       - name: Analyse rate-limit
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh rate-limit
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh rate-limit
 
       - name: Analyse roadrunner
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh roadrunner
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh roadrunner
 
       - name: Analyse rpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh rpc
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh rpc
 
       - name: Analyse shared-memory
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh shared-memory
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh shared-memory
 
       - name: Analyse smarty
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh smarty
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh smarty
 
       - name: Analyse snowflake
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh snowflake
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh snowflake
 
       - name: Analyse swoole
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh swoole
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh swoole
 
       - name: Analyse swoole-tracker
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh swoole-tracker
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh swoole-tracker
 
       - name: Analyse workerman
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh workerman
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh workerman
 
       - name: Analyse workerman-gateway
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh workerman-gateway
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh workerman-gateway
 
       - name: Analyse macro
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh macro
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh macro
 
       - name: Analyse phar
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./phpstan.sh phar
+          docker exec ${ENV_SERVICE} ./phpstan-v2.sh phar

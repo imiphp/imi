@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 $component = getenv('PHPSTAN_ANALYSE_COMPONENT_NAME');
