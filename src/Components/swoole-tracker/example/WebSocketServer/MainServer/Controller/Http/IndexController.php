@@ -31,7 +31,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
         // 握手处理，什么都不做，框架会帮你做好
     }

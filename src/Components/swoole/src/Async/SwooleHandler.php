@@ -18,7 +18,7 @@ class SwooleHandler implements IAsyncHandler
     {
         $channel = new Channel();
         $result = new SwooleResult($channel);
-        imigo(static function () use ($callable, $channel) {
+        imigo(static function () use ($callable, $channel): void {
             try
             {
                 $channel->push([
@@ -45,7 +45,7 @@ class SwooleHandler implements IAsyncHandler
     {
         $channel = new Channel();
         $result = new SwooleResult($channel);
-        Coroutine::defer(static function () use ($callable, $channel) {
+        Coroutine::defer(static function () use ($callable, $channel): void {
             try
             {
                 $channel->push([
@@ -72,7 +72,7 @@ class SwooleHandler implements IAsyncHandler
     {
         $channel = new Channel();
         $result = new SwooleResult($channel);
-        Coroutine::defer(static fn () => imigo(static function () use ($callable, $channel) {
+        Coroutine::defer(static fn () => imigo(static function () use ($callable, $channel): void {
             try
             {
                 $channel->push([

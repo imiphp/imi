@@ -85,7 +85,7 @@ class ProcessManager
         self::$processes[$processName] = $worker = new WorkermanServerWorker();
         $worker->name = $processName;
         $worker->reloadable = false;
-        $worker->onWorkerStart = static function (Worker $worker) use ($args, $processName, $options) {
+        $worker->onWorkerStart = static function (Worker $worker) use ($args, $processName, $options): void {
             // 随机数播种
             mt_srand();
             Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
@@ -125,7 +125,7 @@ class ProcessManager
             {
                 Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
                 // 监听进程通讯
-                $callback = static function (array $data) {
+                $callback = static function (array $data): void {
                     $action = $data['action'] ?? null;
                     if (!$action)
                     {

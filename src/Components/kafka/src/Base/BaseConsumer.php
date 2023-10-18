@@ -62,7 +62,7 @@ abstract class BaseConsumer implements IConsumer
             {
                 if ($isSwoole)
                 {
-                    goWait(function () use ($message, $consumer) {
+                    goWait(function () use ($message, $consumer): void {
                         $this->consume($message);
                         $consumer->ack($message);
                     }, -1, true);

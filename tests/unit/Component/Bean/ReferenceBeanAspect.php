@@ -86,7 +86,7 @@ class ReferenceBeanAspect
      *
      * @return void
      */
-    public function afterReturning(AfterReturningJoinPoint $joinPoint)
+    public function afterReturning(AfterReturningJoinPoint $joinPoint): void
     {
         Log::info(sprintf('afterReturning ReferenceBean::%s()', $joinPoint->getMethod()));
     }
@@ -102,7 +102,7 @@ class ReferenceBeanAspect
      *
      * @return void
      */
-    public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
+    public function afterThrowing(AfterThrowingJoinPoint $joinPoint): void
     {
         Log::info(sprintf('afterThrowing ReferenceBean::%s()', $joinPoint->getMethod()));
     }

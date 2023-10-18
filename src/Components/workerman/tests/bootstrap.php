@@ -92,7 +92,7 @@ function startServer(): void
         echo "Starting {$name}...", \PHP_EOL;
         shell_exec("{$cmd}");
 
-        register_shutdown_function(static function () use ($name, $options) {
+        register_shutdown_function(static function () use ($name, $options): void {
             // stop server
             $cmd = $options['stop'];
             if ('\\' === \DIRECTORY_SEPARATOR)
@@ -117,6 +117,6 @@ function startServer(): void
 
 startServer();
 
-register_shutdown_function(static function () {
+register_shutdown_function(static function (): void {
     checkPorts([13000, 13002, 13003, 13004, 13005, 13006, 13007]);
 });

@@ -128,7 +128,7 @@ class Annotation
             $pattern = null;
         }
         $parser = $this->parser;
-        $this->loader->loadModuleAnnotations($namespace, static function (string $fileNamespace, string $fileName) use ($pattern, $parser) {
+        $this->loader->loadModuleAnnotations($namespace, static function (string $fileNamespace, string $fileName) use ($pattern, $parser): void {
             if ($pattern && 1 === preg_match($pattern, $fileNamespace))
             {
                 return;

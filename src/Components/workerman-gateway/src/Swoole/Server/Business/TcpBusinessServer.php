@@ -51,7 +51,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function __construct(string $name, array $config)
         {
             parent::__construct($name, $config);
-            Event::one('IMI.MAIN_SERVER.WORKER.START', function () {
+            Event::one('IMI.MAIN_SERVER.WORKER.START', function (): void {
                 if (!SwooleWorker::isTask())
                 {
                     $this->initGatewayWorker();
@@ -72,23 +72,23 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 }
             }
 
-            Coroutine::create(function () use ($workermanGatewayConfig) {
+            Coroutine::create(function () use ($workermanGatewayConfig): void {
                 $this->pool = $pool = new CoPool($workermanGatewayConfig['worker_coroutine_num'] ?? swoole_cpu_num(), $workermanGatewayConfig['channel']['size'] ?? 1024, TcpWorkerTask::class);
                 $pool->run();
                 $pool->wait();
             });
 
-            Coroutine::create(function () use ($workermanGatewayConfig) {
+            Coroutine::create(function () use ($workermanGatewayConfig): void {
                 $config = new GatewayWorkerConfig($workermanGatewayConfig);
 
                 // Gateway Worker
                 $client = new GatewayWorkerClient(($workermanGatewayConfig['workerName'] ?? $this->getName()) . ':' . Worker::getWorkerId(), $config);
                 // 异常处理
-                $client->onException = static function (\Throwable $th) {
+                $client->onException = static function (\Throwable $th): void {
                     Log::error($th);
                 };
                 // 网关消息
-                $client->onGatewayMessage = function (IGatewayClient $client, array $message) {
+                $client->onGatewayMessage = function (IGatewayClient $client, array $message): void {
                     $clientId = Context::addressToClientId($message['local_ip'], $message['local_port'], $message['connection_id']);
                     $this->pool->addTaskAsync([
                         'server'   => $this,

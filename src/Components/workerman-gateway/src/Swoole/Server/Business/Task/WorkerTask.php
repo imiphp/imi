@@ -32,10 +32,10 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        public function run(ITaskParam $param)
+        public function run(ITaskParam $param): void
         {
             $errorHandler = $this->errorHandler;
-            goWait(static function () use ($param, $errorHandler) {
+            goWait(static function () use ($param, $errorHandler): void {
                 $closeConnectionOnFail = false;
                 $cmd = null;
                 try

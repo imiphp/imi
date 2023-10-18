@@ -166,7 +166,7 @@ function checkPorts(array $ports, string $host = '127.0.0.1', int $tryCount = 30
 if (isCodeCoverage())
 {
     putenv('IMI_CODE_COVERAGE_NAME=' . getCodeCoverageName());
-    (static function () {
+    (static function (): void {
         $filter = new Filter();
         $filter->includeDirectory(\dirname(__DIR__) . '/src');
         $componentsDir = \dirname(__DIR__) . '/src/Components';
@@ -184,7 +184,7 @@ if (isCodeCoverage())
         $codeCoverage->start('imi');
 
         $stoped = false;
-        $shutdownCallback = static function () use ($codeCoverage, &$stoped) {
+        $shutdownCallback = static function () use ($codeCoverage, &$stoped): void {
             if (!$stoped)
             {
                 $stoped = true;

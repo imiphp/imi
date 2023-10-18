@@ -117,7 +117,7 @@ class ProcessManager
      */
     public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null, bool $runWithManager = false): callable
     {
-        return static function (Process $swooleProcess) use ($args, $name, $processOption, $alias, $runWithManager) {
+        return static function (Process $swooleProcess) use ($args, $name, $processOption, $alias, $runWithManager): void {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称
@@ -133,7 +133,7 @@ class ProcessManager
             mt_srand();
             Imi::loadRuntimeInfo(Imi::getCurrentModeRuntimePath('runtime'));
             $exitCode = 0;
-            $callable = static function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager) {
+            $callable = static function () use ($swooleProcess, $args, $name, $alias, $processOption, &$exitCode, $runWithManager): void {
                 if ($runWithManager)
                 {
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
@@ -143,7 +143,7 @@ class ProcessManager
                 // 正常退出
                 Event::on('IMI.PROCESS.END', static fn () => Signal::clear(), ImiPriority::IMI_MIN);
                 $processEnded = false;
-                imigo(static function () use ($name, $swooleProcess, &$processEnded) {
+                imigo(static function () use ($name, $swooleProcess, &$processEnded): void {
                     if (Signal::wait(\SIGTERM))
                     {
                         if ($processEnded)
@@ -160,7 +160,7 @@ class ProcessManager
                 });
                 if ($inCoroutine = Coroutine::isIn())
                 {
-                    Coroutine::defer(static function () use ($name, $swooleProcess, &$processEnded) {
+                    Coroutine::defer(static function () use ($name, $swooleProcess, &$processEnded): void {
                         if ($processEnded)
                         {
                             return;
@@ -330,7 +330,7 @@ class ProcessManager
      */
     public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): void
     {
-        Coroutine::create(static function () use ($name, $args, $redirectStdinStdout, $pipeType) {
+        Coroutine::create(static function () use ($name, $args, $redirectStdinStdout, $pipeType): void {
             static::run($name, $args, $redirectStdinStdout, $pipeType);
         });
     }

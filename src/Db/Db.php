@@ -102,7 +102,7 @@ class Db
                 App::set($requestContextKey, $db);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey) {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey): void {
                         /** @var IDb|null $db */
                         $db = App::get($requestContextKey);
                         if (!$db)

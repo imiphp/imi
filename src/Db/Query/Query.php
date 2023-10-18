@@ -1404,7 +1404,7 @@ abstract class Query implements IQuery
         $orderDirection = $options->getOrderDirection();
         if (null !== $orderDirection)
         {
-            $this->beforeBuildSqlCallbacks[] = function () use ($scoreFieldName, $options, $orderDirection) {
+            $this->beforeBuildSqlCallbacks[] = function () use ($scoreFieldName, $options, $orderDirection): void {
                 if (null === $scoreFieldName || '' === $scoreFieldName)
                 {
                     $this->orderRaw('(' . $options->toScoreSql($this) . ') ' . $orderDirection);

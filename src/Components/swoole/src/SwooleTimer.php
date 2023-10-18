@@ -15,7 +15,7 @@ class SwooleTimer implements ITimer
      */
     public function tick(int $ms, callable $callback): int
     {
-        return Timer::tick($ms, static function () use ($callback) {
+        return Timer::tick($ms, static function () use ($callback): void {
             try
             {
                 $callback();
@@ -32,7 +32,7 @@ class SwooleTimer implements ITimer
      */
     public function after(int $ms, callable $callback): int
     {
-        return Timer::after($ms, static function () use ($callback) {
+        return Timer::after($ms, static function () use ($callback): void {
             try
             {
                 $callback();

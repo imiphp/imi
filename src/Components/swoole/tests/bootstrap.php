@@ -271,14 +271,14 @@ function startServer(): void
     $callbacks = [];
     foreach ($servers as $name => $options)
     {
-        $callbacks[] = static function () use ($options, $name) {
+        $callbacks[] = static function () use ($options, $name): void {
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
             $code = ttyExec($cmd);
             if (0 === $code)
             {
-                register_shutdown_function(static function () use ($name, $options) {
+                register_shutdown_function(static function () use ($name, $options): void {
                     \Swoole\Runtime::enableCoroutine(false);
                     // stop server
                     $cmd = $options['stop'];
@@ -305,7 +305,7 @@ function startServer(): void
 
     batch($callbacks, 1200, max(swoole_cpu_num() - 1, 1));
 
-    register_shutdown_function(static function () {
+    register_shutdown_function(static function (): void {
         \Swoole\Runtime::enableCoroutine(false);
         checkPorts([13000, 13001, 13002, 13003, 13004, 13005, 13006, 13007, 13008, 13009, 13010]);
     });

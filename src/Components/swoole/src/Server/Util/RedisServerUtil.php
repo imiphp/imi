@@ -37,7 +37,7 @@ class RedisServerUtil extends LocalServerUtil
 
     public function __init(): void
     {
-        Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function () {
+        Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
             $this->subscribeEnable = false;
         });
         $this->startSubscribe();
@@ -293,14 +293,14 @@ class RedisServerUtil extends LocalServerUtil
 
     public function startSubscribe(): void
     {
-        Coroutine::create(function () {
+        Coroutine::create(function (): void {
             $redis = RedisManager::getInstance($this->redisName);
             while ($this->subscribeEnable)
             {
                 try
                 {
-                    $redis->subscribe([$this->channel], function ($redis, string $channel, string $msg) {
-                        Coroutine::create(function () use ($msg) {
+                    $redis->subscribe([$this->channel], function ($redis, string $channel, string $msg): void {
+                        Coroutine::create(function () use ($msg): void {
                             $data = json_decode($msg, true);
                             if (!isset($data['action'], $data['serverName']))
                             {

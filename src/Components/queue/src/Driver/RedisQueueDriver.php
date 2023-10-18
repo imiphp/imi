@@ -54,7 +54,7 @@ class RedisQueueDriver implements IQueueDriver
 
     public function __init(): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis): void {
             if ($redis->isCluster())
             {
                 $this->keyName = '{' . $this->name . '}';
@@ -319,7 +319,7 @@ class RedisQueueDriver implements IQueueDriver
             $keys[] = $this->getQueueKey($tmpQueueType);
         }
 
-        Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($keys) {
+        Redis::use(static function (\Imi\Redis\RedisHandler $redis) use ($keys): void {
             $redis->del(...$keys);
         }, $this->poolName, true);
     }

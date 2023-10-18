@@ -16,7 +16,7 @@ class WSTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
@@ -97,7 +97,7 @@ class WSTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
@@ -112,7 +112,7 @@ class WSTest extends BaseTest
 
     public function testMatchHttpRoute(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([

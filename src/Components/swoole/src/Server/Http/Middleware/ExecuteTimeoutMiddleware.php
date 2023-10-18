@@ -40,14 +40,14 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
         $context = RequestContext::getContext();
         $response = $context['response'];
         $server = $context['server'];
-        $timerId = Timer::after($this->maxExecuteTime, function () use ($request, $response, $server, $context) {
+        $timerId = Timer::after($this->maxExecuteTime, function () use ($request, $response, $server, $context): void {
             RequestContext::muiltiSet((array) $context);
             /** @var \Imi\Server\Http\Error\IExecuteTimeoutHandler $handler */
             $handler = $server->getBean($this->handler);
             // @phpstan-ignore-next-line
             $handler->handle($request, $response);
         });
-        Coroutine::defer(static function () use ($timerId) {
+        Coroutine::defer(static function () use ($timerId): void {
             Timer::del($timerId);
         });
 

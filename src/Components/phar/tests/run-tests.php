@@ -70,7 +70,7 @@ echo '> Composer install...', \PHP_EOL;
 ], $testProjectDir, [
     //     'COMPOSER_DISABLE_NETWORK' => '1', // 本地测试提升速度用
 ]))
-    ->mustRun(static function ($type, $buffer) {
+    ->mustRun(static function ($type, $buffer): void {
         echo $buffer;
     });
 
@@ -98,7 +98,7 @@ foreach ($testContainer as $container => $opt)
         '--no-interaction',
         '--no-ansi',
     ], $testProjectDir))
-        ->mustRun(static function ($type, $buffer) {
+        ->mustRun(static function ($type, $buffer): void {
             echo $buffer;
         });
 
@@ -112,7 +112,7 @@ foreach ($testContainer as $container => $opt)
             '--no-interaction',
             '--no-ansi',
         ], $testProjectDir))
-            ->mustRun(static function ($type, $buffer) {
+            ->mustRun(static function ($type, $buffer): void {
                 echo $buffer;
             });
     }
@@ -126,7 +126,7 @@ foreach ($testContainer as $container => $opt)
         '--no-ansi',
     ], $testProjectDir));
 
-    $testServer->start(static function ($type, $buffer) {
+    $testServer->start(static function ($type, $buffer): void {
         echo $buffer;
     });
     $testSuccess = false;

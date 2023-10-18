@@ -206,14 +206,14 @@ class CronManager implements ICronManager
             {
                 case CronTaskType::ALL_WORKER:
                 case CronTaskType::RANDOM_WORKER:
-                    $task = static function (string $id, $data) use ($class) {
+                    $task = static function (string $id, $data) use ($class): void {
                         /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);
                     };
                     break;
                 case CronTaskType::TASK:
-                    $task = static function (string $id, $data) use ($class) {
+                    $task = static function (string $id, $data) use ($class): void {
                         TaskManager::nPost('imiCronTask', [
                             'id'    => $id,
                             'data'  => $data,
@@ -222,7 +222,7 @@ class CronManager implements ICronManager
                     };
                     break;
                 case CronTaskType::PROCESS:
-                    $task = function (string $id, $data) use ($class) {
+                    $task = function (string $id, $data) use ($class): void {
                         ProcessManager::run('CronWorkerProcess', [
                             'id'         => $id,
                             'data'       => json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE),
@@ -232,7 +232,7 @@ class CronManager implements ICronManager
                     };
                     break;
                 case CronTaskType::CRON_PROCESS:
-                    return static fn (string $id, $data) => goWait(static function () use ($class, $id, $data) {
+                    return static fn (string $id, $data) => goWait(static function () use ($class, $id, $data): void {
                         /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);
@@ -248,7 +248,7 @@ class CronManager implements ICronManager
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
             }
-            $task = function (string $id, $data) use ($process) {
+            $task = function (string $id, $data) use ($process): void {
                 ProcessManager::run($process->name, [
                     'id'         => $id,
                     'data'       => json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE),
@@ -265,7 +265,7 @@ class CronManager implements ICronManager
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cronId, $class));
             }
-            $task = static function (string $id, $data) use ($taskAnnotation) {
+            $task = static function (string $id, $data) use ($taskAnnotation): void {
                 TaskManager::nPost($taskAnnotation->name, $data);
             };
         }

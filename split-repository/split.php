@@ -283,7 +283,7 @@ foreach ($storeRepoMap as $name => $urls)
                     $dir = \dirname($repoFilePath);
                     if (!is_dir($dir))
                     {
-                        mkdir($dir, 0777, true);
+                        mkdir($dir, 0o777, true);
                     }
                     file_put_contents($repoFilePath, file_get_contents($originFileName));
                     chdir($repoPath);

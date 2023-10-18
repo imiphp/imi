@@ -334,7 +334,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                     $score = -1;
                 }
 
-                Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message) {
+                Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message): void {
                     $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
                 }, $this->redisPoolName, true);
 
@@ -363,7 +363,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function clear($queueType = null): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($queueType) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($queueType): void {
             if (null === $queueType)
             {
                 $queueTypes = QueueType::getValues();
@@ -606,7 +606,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     protected function parseTimeoutMessages(int $count = 100): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($count) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($count): void {
             $result = $redis->evalEx(<<<'LUA'
             -- 查询消息ID
             local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])

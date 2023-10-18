@@ -89,7 +89,7 @@ class RedisStreamQueueDriver implements IQueueDriver
 
     public function __init(): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis): void {
             if ($redis->isCluster())
             {
                 $this->keyName = '{' . $this->name . '}';
@@ -211,7 +211,7 @@ class RedisStreamQueueDriver implements IQueueDriver
      */
     public function clear($queueType = null): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis): void {
             $redis->del($this->getQueueKey());
         }, $this->poolName, true);
     }

@@ -63,7 +63,7 @@ class Plugin
             '--app-namespace=Imi\\\\Dev',
         ];
         $process = self::createProcess($cmd);
-        $process->run(static function ($type, $buffer) {
+        $process->run(static function ($type, $buffer): void {
             echo $buffer;
         });
 
@@ -105,7 +105,7 @@ class Plugin
                 {
                     ++$running;
                     $output->writeln("[{$title}]");
-                    $process->start(static function ($type, $buffer) {
+                    $process->start(static function ($type, $buffer): void {
                         echo $buffer;
                     });
                 }

@@ -78,7 +78,7 @@ class Server extends Base implements ISwooleUdpServer
     {
         if ($event = ($this->config['events']['packet'] ?? true))
         {
-            $this->swoolePort->on('packet', \is_callable($event) ? $event : function (\Swoole\Server $server, string $data, array $clientInfo) {
+            $this->swoolePort->on('packet', \is_callable($event) ? $event : function (\Swoole\Server $server, string $data, array $clientInfo): void {
                 try
                 {
                     if (!Worker::isInited())
@@ -103,7 +103,7 @@ class Server extends Base implements ISwooleUdpServer
         }
         else
         {
-            $this->swoolePort->on('packet', static function () {
+            $this->swoolePort->on('packet', static function (): void {
             });
         }
     }

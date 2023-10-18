@@ -91,7 +91,7 @@ class DocTool extends BaseCommand
         $generator = new Generator($loggerInstance->getLogger());
 
         $processors = $generator->getProcessors();
-        array_unshift($processors, function (Analysis $analysis) use ($controllerClasses) {
+        array_unshift($processors, function (Analysis $analysis) use ($controllerClasses): void {
             $this->parseRoute($analysis, $controllerClasses);
         });
 
@@ -106,7 +106,7 @@ class DocTool extends BaseCommand
      *
      * @return void
      */
-    private function parseRoute(Analysis $analysis, array $controllerClasses)
+    private function parseRoute(Analysis $analysis, array $controllerClasses): void
     {
         // OpenApi 扫描
         $map = [];

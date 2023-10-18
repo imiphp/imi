@@ -24,7 +24,7 @@ class QueueTool extends BaseCommand
      *
      * @return void
      */
-    public function status(string $queue)
+    public function status(string $queue): void
     {
         fwrite(\STDOUT, json_encode(Queue::getQueue($queue)->status(), \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE) . \PHP_EOL);
     }
@@ -38,7 +38,7 @@ class QueueTool extends BaseCommand
      *
      * @return void
      */
-    public function restoreFail(string $queue)
+    public function restoreFail(string $queue): void
     {
         fwrite(\STDOUT, Queue::getQueue($queue)->restoreFailMessages() . \PHP_EOL);
     }
@@ -52,7 +52,7 @@ class QueueTool extends BaseCommand
      *
      * @return void
      */
-    public function restoreTimeout(string $queue)
+    public function restoreTimeout(string $queue): void
     {
         fwrite(\STDOUT, Queue::getQueue($queue)->restoreTimeoutMessages() . \PHP_EOL);
     }

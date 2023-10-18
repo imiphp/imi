@@ -29,7 +29,7 @@ class RoadRunnerApp extends BaseApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
-        Event::one('IMI.SCAN_APP', function () {
+        Event::one('IMI.SCAN_APP', function (): void {
             $this->onScanApp();
         });
     }

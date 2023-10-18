@@ -43,10 +43,10 @@ class SwooleLogger extends MonoLogger
                 return $record;
             });
             $this->logChannel = new Channel(Config::get('@app.logger.asyncQueueLength', 1024));
-            Coroutine::create(function () {
+            Coroutine::create(function (): void {
                 $this->__logProcessor();
             });
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END', 'IMI.QUICK_START_AFTER'], function () {
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END', 'IMI.QUICK_START_AFTER'], function (): void {
                 $this->asyncLogging = false;
                 $this->logChannel->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);

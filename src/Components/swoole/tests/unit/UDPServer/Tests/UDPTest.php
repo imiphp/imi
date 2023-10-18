@@ -16,7 +16,7 @@ class UDPTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $uri = new Uri($this->host);
             $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_UDP);
             $time = time();
@@ -33,7 +33,7 @@ class UDPTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $uri = new Uri($this->host);
             $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_UDP);
             $time = time();

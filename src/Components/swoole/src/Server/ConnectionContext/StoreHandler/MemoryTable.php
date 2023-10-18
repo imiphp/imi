@@ -63,7 +63,7 @@ class MemoryTable implements IHandler
     {
         if (0 === Worker::getWorkerId())
         {
-            $this->useRedis(function (RedisHandler $redis) {
+            $this->useRedis(function (RedisHandler $redis): void {
                 $key = $this->key;
                 $keys = (array) $key;
                 $count = 0;
@@ -133,7 +133,7 @@ class MemoryTable implements IHandler
      */
     public function delayDestroy(string $key, int $ttl): void
     {
-        Timer::after($ttl * 1000, function () use ($key) {
+        Timer::after($ttl * 1000, function () use ($key): void {
             $this->destroy($key);
         });
     }
@@ -181,12 +181,12 @@ class MemoryTable implements IHandler
      */
     public function bind(string $flag, $clientId): void
     {
-        $this->lock((string) $clientId, function () use ($flag, $clientId) {
+        $this->lock((string) $clientId, function () use ($flag, $clientId): void {
             $data = $this->read((string) $clientId);
             $data['__flag'] = $flag;
             $this->save((string) $clientId, $data);
         });
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId) {
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId): void {
             $redis->hSet($this->key . ':binder', $flag, $clientId);
         });
     }
@@ -199,7 +199,7 @@ class MemoryTable implements IHandler
         $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
         if ($result)
         {
-            $this->lock((string) $clientId, function () use ($flag, $clientId) {
+            $this->lock((string) $clientId, function () use ($flag, $clientId): void {
                 $data = $this->read((string) $clientId);
                 $data['__flag'] = $flag;
                 $this->save((string) $clientId, $data);
@@ -214,9 +214,9 @@ class MemoryTable implements IHandler
      */
     public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime) {
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime): void {
             $key = $this->key . ':binder';
-            $this->lock((string) $clientId, function () use ($flag, $clientId) {
+            $this->lock((string) $clientId, function () use ($flag, $clientId): void {
                 $data = $this->read((string) $clientId);
                 $data['__flag'] = $flag;
                 $this->save((string) $clientId, $data);

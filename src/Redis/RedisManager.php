@@ -92,7 +92,7 @@ class RedisManager
                 App::set($requestContextKey, $redis);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey) {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey): void {
                         /** @var RedisHandler|null $redis */
                         $redis = App::get($requestContextKey);
                         if (!$redis)

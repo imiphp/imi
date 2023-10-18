@@ -120,7 +120,7 @@ function startServer(): void
 
     if ('/' === \DIRECTORY_SEPARATOR)
     {
-        register_shutdown_function(static function () {
+        register_shutdown_function(static function (): void {
             echo 'Stoping WorkermanServers...', \PHP_EOL;
             if ('Darwin' === \PHP_OS)
             {
@@ -154,7 +154,7 @@ function runTestServer(string $name, array $options): void
 
     if (isset($options['stop']))
     {
-        register_shutdown_function(static function () use ($name, $options) {
+        register_shutdown_function(static function () use ($name, $options): void {
             // stop server
             $cmd = $options['stop'];
             if ('\\' === \DIRECTORY_SEPARATOR)
@@ -195,6 +195,6 @@ function runTestServer(string $name, array $options): void
 
 startServer();
 
-register_shutdown_function(static function () {
+register_shutdown_function(static function (): void {
     checkPorts([13000, 13002, 13004, 12900]);
 });

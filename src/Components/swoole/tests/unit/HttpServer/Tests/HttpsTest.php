@@ -38,7 +38,7 @@ class HttpsTest extends BaseTest
      *
      * @return void
      */
-    public function testOutsideController()
+    public function testOutsideController(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'testOutside');

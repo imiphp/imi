@@ -106,7 +106,7 @@ class SwooleWorkerHandler implements ISwooleWorker
             ], $mainServer, WorkerStartEventParam::class);
             $this->workerStartAppComplete = true;
         }
-        $func = static function () {
+        $func = static function (): void {
             if (ChannelContainer::hasChannel('workerInit'))
             {
                 ChannelContainer::removeChannel('workerInit');

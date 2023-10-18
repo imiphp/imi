@@ -42,7 +42,7 @@ class Server extends Base implements IUdpServer
     {
         parent::bindEvents();
 
-        $this->worker->onMessage = function (UdpConnection $connection, string $data) {
+        $this->worker->onMessage = function (UdpConnection $connection, string $data): void {
             try
             {
                 $requestContext = RequestContext::getContext();

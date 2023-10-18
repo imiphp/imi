@@ -9,8 +9,8 @@ if (!file_exists(__DIR__ . '/src'))
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PHP74Migration'            => true,
-        '@PHP74Migration:risky'      => true,
+        '@PHP81Migration'            => true,
+        '@PHP80Migration:risky'      => true,
         '@Symfony'                   => true,
         '@Symfony:risky'             => true,
         '@DoctrineAnnotation'        => true,
@@ -116,7 +116,6 @@ return (new PhpCsFixer\Config())
         'return_assignment'                => true,
         'explicit_string_variable'         => true,
         'heredoc_to_nowdoc'                => true,
-        'void_return'                      => false, // BUG:https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/6690
         // Symfony 冲突
         'braces_position'                  => [
             'control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end',

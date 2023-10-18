@@ -559,7 +559,7 @@ abstract class QueryCurdBaseTest extends BaseTest
 
         // Where 收集器
         $query = Db::query($this->poolName);
-        $result = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where) use ($id) {
+        $result = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where) use ($id): void {
             $where->where('id', '=', $id)->orWhereRaw('1=2');
         })->select();
         $record = $result->get();
@@ -573,7 +573,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         Assert::assertEquals('select * from `tb_article` where (`id` = :p1 or 1=2)', $result->getSql());
 
         $query = Db::query($this->poolName);
-        $sql = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where) {
+        $sql = $query->from($this->tableArticle)->whereBrackets(static function (IQuery $query, IWhereCollector $where): void {
             $where->where('where', '=', 1)
                     ->orWhere('orWhere', '=', 2)
                     ->whereBetween('whereBetween', 1, 2)

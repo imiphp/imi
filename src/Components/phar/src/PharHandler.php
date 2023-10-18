@@ -6,7 +6,7 @@ namespace Imi\Phar;
 
 use Imi\Bean\ReflectionUtil;
 
-(static function () {
+(static function (): void {
     $refMethod = new \ReflectionMethod(\Composer\XdebugHandler\XdebugHandler::class, 'check');
     $returnType = $refMethod->getReturnType();
     if ('void' === ReflectionUtil::getTypeCode($returnType))

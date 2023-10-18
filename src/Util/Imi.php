@@ -489,7 +489,7 @@ class Imi
         }
         if (!is_dir($cacheName))
         {
-            mkdir($cacheName, 0775, true);
+            mkdir($cacheName, 0o775, true);
         }
         $data = [];
         $data['imiVersion'] = App::getImiVersion();
@@ -590,7 +590,7 @@ class Imi
                     $tmpPath = self::getCurrentModeRuntimePath('tmp');
                     if (!is_dir($tmpPath))
                     {
-                        mkdir($tmpPath, 0755, true);
+                        mkdir($tmpPath, 0o755, true);
                     }
                 }
             }

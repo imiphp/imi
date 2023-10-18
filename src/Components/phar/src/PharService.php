@@ -155,7 +155,7 @@ class PharService
         $outputDir = \dirname($outputPhar);
         if (!is_dir($outputDir))
         {
-            mkdir($outputDir, 0755, true);
+            mkdir($outputDir, 0o755, true);
         }
 
         if (file_exists($outputPhar))
@@ -229,7 +229,7 @@ class PharService
                 $destFileName = $this->outputDir . \DIRECTORY_SEPARATOR . $value;
             }
             $destDir = \dirname($destFileName);
-            if (!is_dir($destDir) && !mkdir($destDir, 0755, true))
+            if (!is_dir($destDir) && !mkdir($destDir, 0o755, true))
             {
                 $this->output->writeln("<error>mkdir {$destDir} failed</error>");
 

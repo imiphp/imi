@@ -96,7 +96,7 @@ class DefaultContextManager implements IContextManager
 
     protected function bindAutoDestroy(): void
     {
-        register_shutdown_function(function () {
+        register_shutdown_function(function (): void {
             if ($this->contexts)
             {
                 foreach ($this->contexts as $flag => $_)

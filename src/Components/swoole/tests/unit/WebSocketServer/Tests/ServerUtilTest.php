@@ -13,7 +13,7 @@ class ServerUtilTest extends BaseTest
 {
     public function testGetServer(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $response = $http->get($this->host . 'serverUtil/getServer');
             $this->assertEquals([
@@ -26,7 +26,7 @@ class ServerUtilTest extends BaseTest
 
     public function testSendMessage(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $response = $http->get($this->host . 'serverUtil/sendMessage');
             $this->assertEquals([
@@ -42,7 +42,7 @@ class ServerUtilTest extends BaseTest
 
     public function testSend(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -148,7 +148,7 @@ class ServerUtilTest extends BaseTest
 
     public function testSendToGroup(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $dataStr = json_encode([
                 'data'  => 'test',
             ]);
@@ -249,7 +249,7 @@ class ServerUtilTest extends BaseTest
 
     public function testExists(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;
@@ -318,7 +318,7 @@ class ServerUtilTest extends BaseTest
 
     public function testClose(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;
@@ -388,7 +388,7 @@ class ServerUtilTest extends BaseTest
 
     public function testGetConnectionCount(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             do
             {
                 echo 'try get workerId 0', \PHP_EOL;

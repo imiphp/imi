@@ -249,7 +249,7 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * @param mixed $key
      */
-    public function __unset($key)
+    public function __unset($key): void
     {
         $this->remove($key);
     }

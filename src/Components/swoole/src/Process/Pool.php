@@ -57,7 +57,7 @@ class Pool
 
     protected function listenSigChild(): void
     {
-        Signal::waitCallback(\SIGCHLD, function () {
+        Signal::waitCallback(\SIGCHLD, function (): void {
             if ($this->workers)
             {
                 while ($result = Process::wait(false))
@@ -84,7 +84,7 @@ class Pool
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
         $this->masterPID = getmypid();
         $this->working = true;
@@ -95,7 +95,7 @@ class Pool
 
         $this->listenSigChild();
 
-        imigo(function () {
+        imigo(function (): void {
             if (Signal::wait(\SIGTERM))
             {
                 if ($this->workers)
@@ -209,7 +209,7 @@ class Pool
      *
      * @return void
      */
-    public function shutdown()
+    public function shutdown(): void
     {
         Process::kill($this->masterPID, \SIGTERM);
     }
@@ -219,7 +219,7 @@ class Pool
      *
      * @return void
      */
-    public function restartAllWorker()
+    public function restartAllWorker(): void
     {
         foreach ($this->workers as $worker)
         {
@@ -241,7 +241,7 @@ class Pool
      *
      * @return void
      */
-    public function restartWorker(...$workerIds)
+    public function restartWorker(...$workerIds): void
     {
         $workers = &$this->workers;
         foreach ($workerIds as $workerId)
@@ -272,7 +272,7 @@ class Pool
      *
      * @return void
      */
-    private function startWorker($workerId)
+    private function startWorker($workerId): void
     {
         $workers = &$this->workers;
         if (isset($workers[$workerId]))
@@ -283,8 +283,8 @@ class Pool
         Coroutine::set([
             'enable_deadlock_check' => false,
         ]);
-        $worker = new Process(function (Process $worker) use ($workerId) {
-            Process::signal(\SIGTERM, function () use ($worker, $workerId) {
+        $worker = new Process(function (Process $worker) use ($workerId): void {
+            Process::signal(\SIGTERM, function () use ($worker, $workerId): void {
                 $this->trigger('WorkerExit', [
                     'pool'      => $this,
                     'worker'    => $worker,
@@ -292,7 +292,7 @@ class Pool
                 ], $this, WorkerEventParam::class);
                 Event::exit();
             });
-            register_shutdown_function(function () use ($worker, $workerId) {
+            register_shutdown_function(function () use ($worker, $workerId): void {
                 $this->trigger('WorkerStop', [
                     'pool'      => $this,
                     'worker'    => $worker,
@@ -319,7 +319,7 @@ class Pool
             $workers[$workerId] = $worker;
             $this->workerIdMap[$pid] = $workerId;
 
-            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
+            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId): void {
                 $content = $worker->read();
                 if (false === $content || '' === $content)
                 {

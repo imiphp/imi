@@ -23,7 +23,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
     }
 
@@ -37,7 +37,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function login(string $username, int $password)
+    public function login(string $username, int $password): void
     {
     }
 
@@ -48,7 +48,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function multiMethod1(int $id, int $type, array $tags)
+    public function multiMethod1(int $id, int $type, array $tags): void
     {
     }
 
@@ -61,7 +61,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function multiMethod2(int $id, int $type, array $tags)
+    public function multiMethod2(int $id, int $type, array $tags): void
     {
     }
 
@@ -82,7 +82,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function register(string $username, int $password, string $birthday)
+    public function register(string $username, int $password, string $birthday): void
     {
     }
 
@@ -91,7 +91,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function get(int $id)
+    public function get(int $id): void
     {
     }
 }

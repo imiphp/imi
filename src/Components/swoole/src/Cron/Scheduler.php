@@ -47,7 +47,7 @@ class Scheduler extends \Imi\Cron\Scheduler
                 /**
                  * {@inheritDoc}
                  */
-                public function run(ITaskParam $param)
+                public function run(ITaskParam $param): void
                 {
                     /** @var \Imi\Cron\CronTask $task */
                     $task = $param->getData();

@@ -21,8 +21,8 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
     public function executeBeforeFirstTest(): void
     {
         $this->channel = $channel = new Channel(1);
-        Coroutine::create(static fn () => App::run('Imi\Swoole\Test\Component', SwooleApp::class, static function () use ($channel) {
-            PoolManager::use('maindb', static function (IPoolResource $resource, IDb $db) {
+        Coroutine::create(static fn () => App::run('Imi\Swoole\Test\Component', SwooleApp::class, static function () use ($channel): void {
+            PoolManager::use('maindb', static function (IPoolResource $resource, IDb $db): void {
                 $truncateList = [
                     'tb_article',
                     'tb_member',
