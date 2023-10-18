@@ -11,7 +11,7 @@
         "imiphp/imi-roadrunner": "3.0.9999"
     },
     "require-dev": {
-        "swoole/ide-helper": "^4.7",
+        "swoole/ide-helper": "~5.0",
         "imiphp/imi-phar": "3.0.9999",
         "friendsofphp/php-cs-fixer": "~3.13.0"
     },
