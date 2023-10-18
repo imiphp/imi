@@ -338,7 +338,7 @@ ticket | ticket | `null` |
 
 可选注解：`@Queue`、`@Exchange`、`@Connection`
 
-不配置 `@Connection` 注解，可以从连接池中获取连接
+不配置 `@Connection` 注解，从默认连接池中获取连接
 
 ```php
 <?php
@@ -354,7 +354,7 @@ use Imi\AMQP\Annotation\Connection;
 
 /**
  * @Bean("TestPublisher")
- * @Connection(host="127.0.0.1", port=5672, user="guest", password="guest")
+ * @Connection(poolName=null)
  * @Publisher(tag="tag-imi", queue="queue-imi-1", exchange="exchange-imi", routingKey="imi-1")
  * @Queue(name="queue-imi-1", routingKey="imi-1")
  * @Exchange(name="exchange-imi")
@@ -387,7 +387,7 @@ $testPublisher->publish($message);
 
 可选注解：`@Queue`、`@Exchange`、`@Connection`
 
-不配置 `@Connection` 注解，可以从连接池中获取连接
+不配置 `@Connection` 注解，从默认连接池中获取连接
 
 ```php
 <?php
@@ -407,7 +407,7 @@ use Imi\AMQP\Annotation\Connection;
  * 启动一个新连接消费
  * 
  * @Bean("TestConsumer")
- * @Connection(host="127.0.0.1", port=5672, user="guest", password="guest")
+ * @Connection(poolName=null)
  * @Consumer(tag="tag-imi", queue="queue-imi-1", message=\ImiApp\AMQP\Test\TestMessage::class)
  */
 class TestConsumer extends BaseConsumer
@@ -567,20 +567,6 @@ class TestProcess extends BaseProcess
 | 属性名称 | 说明 |
 |-|-
 | poolName | 不为 `null` 时，无视其他属性，直接用该连接池配置。默认为`null`，如果`host`、`port`、`user`、`password`都未设置，则获取默认的连接池。 |
-| host | 主机 |
-| port | 端口 |
-| user | 用户名 |
-| vhost | vhost，默认`/` |
-| insist | insist |
-| loginMethod | 默认`AMQPLAIN` |
-| loginResponse | loginResponse |
-| locale | 默认`en_US` |
-| connectionTimeout | 连接超时 |
-| readWriteTimeout | 读写超时 |
-| keepalive | keepalive，默认`false` |
-| heartbeat | 心跳时间，默认`0` |
-| channelRpcTimeout | 频道 RPC 超时时间，默认`0.0` |
-| sslProtocol | ssl 协议，默认`null` |
 
 ## 使用示例
 
