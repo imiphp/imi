@@ -19,7 +19,6 @@ class RabbitMQTest extends BaseTest
         $response = $http->get($this->host . 'publish?memberId=20180621');
         $this->assertEquals([
             'r1'    => true,
-            'r2'    => true,
         ], $response->json(true));
     }
 
@@ -27,9 +26,8 @@ class RabbitMQTest extends BaseTest
     {
         $http = new HttpRequest();
         $excepted = [
-            'r1'    => '{"memberId":20180621}',
-            'r2'    => '{"memberId":20180621,"content":"memberId:20180621"}',
-            'r3'    => '{"memberId":20180621}',
+            'r1'    => '{"memberId":20180621,"content":"memberId:20180621"}',
+            'r2'    => '{"memberId":20180621}',
         ];
         for ($i = 0; $i < 10; ++$i)
         {

@@ -17,7 +17,6 @@ use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Wire\AMQPTable;
 
 trait TAMQP
@@ -134,27 +133,9 @@ trait TAMQP
         {
             return AMQPPool::getInstance($poolName);
         }
-        elseif (isset($connectionAnnotation))
-        {
-            return new AMQPStreamConnection(
-                $connectionAnnotation->host,
-                $connectionAnnotation->port,
-                $connectionAnnotation->user,
-                $connectionAnnotation->password,
-                $connectionAnnotation->vhost,
-                $connectionAnnotation->insist,
-                $connectionAnnotation->loginMethod, $connectionAnnotation->loginResponse,
-                $connectionAnnotation->locale, $connectionAnnotation->connectionTimeout,
-                $connectionAnnotation->readWriteTimeout,
-                $connectionAnnotation->context,
-                $connectionAnnotation->keepalive,
-                $connectionAnnotation->heartbeat,
-                $connectionAnnotation->channelRpcTimeout
-            );
-        }
         else
         {
-            throw new \RuntimeException('Annotation @Connection does not found');
+            throw new \RuntimeException('Connection poolName must be set');
         }
     }
 
