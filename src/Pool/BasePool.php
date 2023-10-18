@@ -53,7 +53,7 @@ abstract class BasePool implements IPool
     public function __construct(/**
      * 池子名称.
      */
-    protected string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+        protected string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         if (null !== $config)
         {

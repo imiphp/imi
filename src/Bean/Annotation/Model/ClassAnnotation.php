@@ -46,8 +46,7 @@ class ClassAnnotation
          * 类名.
          */
         private readonly string $className
-    )
-    {
+    ) {
     }
 
     /**

@@ -434,8 +434,6 @@ class ImiArgvInput extends Input implements \Stringable
 
     /**
      * Returns a stringified representation of the args passed to the command.
-     *
-     * @return string
      */
     public function __toString(): string
     {

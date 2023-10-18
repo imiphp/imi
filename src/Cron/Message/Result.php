@@ -24,22 +24,23 @@ class Result implements IMessage
     public function __construct(/**
      * 动作.
      */
-    public string $action, /**
+        public string $action, /**
      * 定时任务ID.
      */
-    public string $id, /**
+        public string $id, /**
      * 是否成功
      */
-    public bool $success, /**
+        public bool $success, /**
      * 消息.
      */
-    public string $message)
+        public string $message)
     {
         $this->processType = App::get(ProcessAppContexts::PROCESS_TYPE);
-        $this->processId = match ($this->processType) {
+        $this->processId = match ($this->processType)
+        {
             ProcessType::WORKER, ProcessType::TASK_WORKER => (string) Worker::getWorkerId(),
             ProcessType::PROCESS => App::get(ProcessAppContexts::PROCESS_NAME) . '#' . Worker::getWorkerId(),
-            default => throw new \InvalidArgumentException(sprintf('Invalid process type %s', $this->processType)),
+            default              => throw new \InvalidArgumentException(sprintf('Invalid process type %s', $this->processType)),
         };
     }
 }

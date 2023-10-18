@@ -17,10 +17,12 @@ trait TRelation
         {
             return $poolName;
         }
-        return match ($poolName) {
-            RelationPoolName::PARENT => $parentModel::__getMeta()->getDbPoolName(),
+
+        return match ($poolName)
+        {
+            RelationPoolName::PARENT   => $parentModel::__getMeta()->getDbPoolName(),
             RelationPoolName::RELATION => $relationModel::__getMeta()->getDbPoolName(),
-            default => throw new \InvalidArgumentException(sprintf('Invalid poolName %s', $poolName)),
+            default                    => throw new \InvalidArgumentException(sprintf('Invalid poolName %s', $poolName)),
         };
     }
 }

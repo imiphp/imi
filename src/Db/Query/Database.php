@@ -21,8 +21,7 @@ class Database implements IDatabase
          * 别名.
          */
         protected ?string $alias = null
-    )
-    {
+    ) {
     }
 
     /**

@@ -268,7 +268,7 @@ class RedisHandler
     public function __construct(/**
      * redis 对象
      */
-    private $redis)
+        private $redis)
     {
         if (!$this->isCluster() && $redis->isConnected())
         {

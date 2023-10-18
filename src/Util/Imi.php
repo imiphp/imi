@@ -107,9 +107,11 @@ class Imi
         elseif (preg_match('/([^!<=]+)(!=|<>|=)(.+)/', $rule, $matches) > 0)
         {
             $value = $valueCallback($matches[1]);
-            return match ($matches[2]) {
+
+            return match ($matches[2])
+            {
                 '!=', '<>' => null !== $value && $value != $matches[3],
-                '=' => $value == $matches[3],
+                '='     => $value == $matches[3],
                 default => false,
             };
         }

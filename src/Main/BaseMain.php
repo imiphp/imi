@@ -29,7 +29,7 @@ abstract class BaseMain implements IMain
     public function __construct(/**
      * 模块名称.
      */
-    protected string $moduleName)
+        protected string $moduleName)
     {
         $this->__init();
     }

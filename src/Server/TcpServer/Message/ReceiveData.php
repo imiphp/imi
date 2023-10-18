@@ -28,10 +28,10 @@ class ReceiveData implements IReceiveData
     public function __construct(/**
      * 客户端连接的标识符.
      */
-    protected $clientId, /**
+        protected $clientId, /**
      * 接收到的数据.
      */
-    protected string $data)
+        protected string $data)
     {
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }

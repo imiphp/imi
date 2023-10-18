@@ -17,7 +17,6 @@ class KeyRule
          * @var string[]
          */
         public array $paramNames
-    )
-    {
+    ) {
     }
 }

@@ -283,13 +283,14 @@ class BeanProxy
      */
     private static function doAspect(string $className, string $method, string $pointType, callable $callback): void
     {
-        $items = match ($pointType) {
-            'Before' => AopManager::getBeforeItems($className, $method),
-            'After' => AopManager::getAfterItems($className, $method),
-            'Around' => AopManager::getAroundItems($className, $method),
+        $items = match ($pointType)
+        {
+            'Before'         => AopManager::getBeforeItems($className, $method),
+            'After'          => AopManager::getAfterItems($className, $method),
+            'Around'         => AopManager::getAroundItems($className, $method),
             'AfterReturning' => AopManager::getAfterReturningItems($className, $method),
-            'AfterThrowing' => AopManager::getAfterThrowingItems($className, $method),
-            default => throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType)),
+            'AfterThrowing'  => AopManager::getAfterThrowingItems($className, $method),
+            default          => throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType)),
         };
         if ($items)
         {

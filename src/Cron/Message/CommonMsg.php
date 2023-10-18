@@ -16,8 +16,7 @@ class CommonMsg implements IMessage
          * 从socket获取的返回信息.
          */
         protected $response = []
-    )
-    {
+    ) {
     }
 
     /**

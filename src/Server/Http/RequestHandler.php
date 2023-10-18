@@ -26,8 +26,7 @@ class RequestHandler implements RequestHandlerInterface
          * 中间件数组.
          */
         protected array $middlewares
-    )
-    {
+    ) {
     }
 
     /**

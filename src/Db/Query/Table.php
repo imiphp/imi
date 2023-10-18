@@ -29,8 +29,7 @@ class Table implements ITable
          * 表前缀.
          */
         protected string $prefix = ''
-    )
-    {
+    ) {
     }
 
     /**

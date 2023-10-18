@@ -34,13 +34,13 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     public function __construct(/**
      * 数据库操作对象
      */
-    protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result, /**
+        protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result, /**
      * 最后执行过的SQL语句.
      */
-    protected string $lastSql, /**
+        protected string $lastSql, /**
      * SQL 参数映射.
      */
-    protected ?array $sqlParamsMap = null)
+        protected ?array $sqlParamsMap = null)
     {
         $this->result = $result;
     }
@@ -188,12 +188,14 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
     {
         $result = $this->result;
-        return match ($fetchStyle) {
+
+        return match ($fetchStyle)
+        {
             \PDO::FETCH_ASSOC => $result->fetch_assoc(),
-            \PDO::FETCH_BOTH => $result->fetch_array(),
-            \PDO::FETCH_NUM => $result->fetch_array(\MYSQLI_NUM),
-            \PDO::FETCH_OBJ => $result->fetch_object(),
-            default => throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle)),
+            \PDO::FETCH_BOTH  => $result->fetch_array(),
+            \PDO::FETCH_NUM   => $result->fetch_array(\MYSQLI_NUM),
+            \PDO::FETCH_OBJ   => $result->fetch_object(),
+            default           => throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle)),
         };
     }
 

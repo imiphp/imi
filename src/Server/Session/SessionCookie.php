@@ -37,7 +37,6 @@ class SessionCookie
          * 设置为 TRUE 表示 PHP 发送 cookie 的时候会使用 httponly 标记。
          */
         public bool $httponly = false
-    )
-    {
+    ) {
     }
 }

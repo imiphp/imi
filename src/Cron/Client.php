@@ -34,7 +34,7 @@ class Client
     public function __construct(/**
      * 配置项.
      */
-    private readonly array $options = [])
+        private readonly array $options = [])
     {
         if (!isset($options['socketFile']))
         {

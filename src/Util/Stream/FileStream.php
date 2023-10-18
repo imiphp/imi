@@ -27,7 +27,7 @@ class FileStream implements StreamInterface, \Stringable
     public function __construct($uri, /**
      * 流访问类型.
      */
-    protected string $mode = StreamMode::READ_WRITE)
+        protected string $mode = StreamMode::READ_WRITE)
     {
         if (\is_string($uri))
         {

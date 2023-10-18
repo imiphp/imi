@@ -27,8 +27,7 @@ class Container implements ContainerInterface
          * @var array[]|callable[]
          */
         private array $binds = []
-    )
-    {
+    ) {
     }
 
     /**

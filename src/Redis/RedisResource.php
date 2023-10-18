@@ -17,7 +17,7 @@ class RedisResource extends BasePoolResource
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, /**
      * Redis 对象
      */
-    private ?RedisHandler $redis, array $config)
+        private ?RedisHandler $redis, array $config)
     {
         parent::__construct($pool);
 

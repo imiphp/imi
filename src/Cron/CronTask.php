@@ -37,36 +37,36 @@ class CronTask
     public function __construct(/**
      * 任务唯一ID.
      */
-    private readonly string $id, /**
+        private readonly string $id, /**
      * 任务类型.
      *
      * \Imi\Cron\Consts\CronTaskType 类常量
      */
-    private readonly string $type, $task, array $cronRules, /**
+        private readonly string $type, $task, array $cronRules, /**
      * 数据.
      */
-    private $data, /**
+        private $data, /**
      * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
      */
-    private readonly float $maxExecutionTime = 3, /**
+        private readonly float $maxExecutionTime = 3, /**
      * 定时任务唯一性设置
      * 当前实例唯一: current
      * 所有实例唯一: all
      * 不唯一: null.
      */
-    private readonly ?string $unique = null, /**
+        private readonly ?string $unique = null, /**
      * 用于锁的 `Redis` 连接池名.
      */
-    private readonly ?string $redisPool = null, /**
+        private readonly ?string $redisPool = null, /**
      * 获取锁超时时间，单位：秒.
      */
-    private readonly float $lockWaitTimeout = 3, /**
+        private readonly float $lockWaitTimeout = 3, /**
      * 每次启动服务强制执行.
      */
-    private readonly bool $force = false, /**
+        private readonly bool $force = false, /**
      * 是否记录成功日志.
      */
-    private readonly bool $successLog = true)
+        private readonly bool $successLog = true)
     {
         $this->task = $task;
         $this->cronRules = $this->parseCronRule($cronRules);

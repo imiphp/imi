@@ -24,8 +24,7 @@ class PacketHandler implements IPacketHandler
          * 中间件数组.
          */
         protected array $middlewares
-    )
-    {
+    ) {
     }
 
     /**

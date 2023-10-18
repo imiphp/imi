@@ -43,8 +43,7 @@ class PaginateResult implements IPaginateResult
          * 自定义选项.
          */
         protected array $options
-    )
-    {
+    ) {
     }
 
     /**

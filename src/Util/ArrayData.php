@@ -14,8 +14,7 @@ class ArrayData implements \ArrayAccess, \Countable
          * 数据.
          */
         protected array $__data
-    )
-    {
+    ) {
     }
 
     /**

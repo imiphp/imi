@@ -186,7 +186,7 @@ class Meta
     public function __construct(string $modelClass, /**
      * 是否为继承父类的模型.
      */
-    private readonly bool $inherit = false)
+        private readonly bool $inherit = false)
     {
         if ($inherit)
         {

@@ -21,8 +21,7 @@ class Order implements IOrder
          * 排序方向：asc/desc.
          */
         protected string $direction = 'asc'
-    )
-    {
+    ) {
     }
 
     /**

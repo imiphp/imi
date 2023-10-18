@@ -14,8 +14,7 @@ class MysqlFullTextOptions extends BaseFullTextOptions
          * 搜索修饰符.
          */
         protected string $searchModifier = ''
-    )
-    {
+    ) {
     }
 
     /**

@@ -23,10 +23,10 @@ class RouteItem
     public function __construct(/**
      * 注解.
      */
-    public ?TcpRoute $annotation, callable $callable, /**
+        public ?TcpRoute $annotation, callable $callable, /**
      * 其它配置项.
      */
-    public array $options = [])
+        public array $options = [])
     {
         $this->callable = $callable;
     }

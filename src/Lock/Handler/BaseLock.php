@@ -48,7 +48,7 @@ abstract class BaseLock implements ILockHandler
     public function __construct(/**
      * 锁的唯一 ID.
      */
-    protected string $id, array $options = [])
+        protected string $id, array $options = [])
     {
         if ($options)
         {

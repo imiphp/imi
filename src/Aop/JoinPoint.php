@@ -14,13 +14,13 @@ class JoinPoint
     public function __construct(/**
      * 切入点类型.
      */
-    protected string $type, /**
+        protected string $type, /**
      * 获取切入的方法名.
      */
-    protected string $method, array &$args, /**
+        protected string $method, array &$args, /**
      * 连接点所在的目标对象
      */
-    protected ?object $target)
+        protected ?object $target)
     {
         $this->args = &$args;
     }

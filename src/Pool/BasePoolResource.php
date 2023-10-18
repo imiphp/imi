@@ -17,8 +17,7 @@ abstract class BasePoolResource implements IPoolResource
          * 池子实例.
          */
         private readonly ?IPool $pool
-    )
-    {
+    ) {
     }
 
     /**

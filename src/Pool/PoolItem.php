@@ -39,7 +39,7 @@ class PoolItem
     public function __construct(/**
      * 资源对象
      */
-    protected ?IPoolResource $resource)
+        protected ?IPoolResource $resource)
     {
         $this->createTime = microtime(true);
     }

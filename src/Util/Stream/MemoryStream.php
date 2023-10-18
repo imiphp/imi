@@ -22,7 +22,7 @@ class MemoryStream implements StreamInterface, \Stringable
     public function __construct(/**
      * 内容.
      */
-    protected string $content = '')
+        protected string $content = '')
     {
         $this->size = \strlen($content);
     }

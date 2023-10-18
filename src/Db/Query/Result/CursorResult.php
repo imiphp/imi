@@ -27,7 +27,7 @@ class CursorResult implements \IteratorAggregate
     public function __construct($statement, /**
      * 查询结果类的类名，为null则为数组.
      */
-    protected ?string $modelClass = null)
+        protected ?string $modelClass = null)
     {
         if ($statement instanceof IStatement)
         {

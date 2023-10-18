@@ -38,7 +38,7 @@ class Result implements IResult
     public function __construct($statement, /**
      * 查询结果类的类名，为null则为数组.
      */
-    protected ?string $modelClass = null, ?bool $success = null)
+        protected ?string $modelClass = null, ?bool $success = null)
     {
         if ($statement instanceof IStatement)
         {

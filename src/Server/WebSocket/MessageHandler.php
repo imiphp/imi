@@ -24,8 +24,7 @@ class MessageHandler implements IMessageHandler
          * 中间件数组.
          */
         protected array $middlewares
-    )
-    {
+    ) {
     }
 
     /**

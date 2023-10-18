@@ -21,10 +21,10 @@ class FileEnumItem implements \Stringable
     public function __construct(/**
      * 路径.
      */
-    private readonly string $path, /**
+        private readonly string $path, /**
      * 文件名.
      */
-    private readonly string $fileName)
+        private readonly string $fileName)
     {
         $this->fullPath = File::path($path, $fileName);
     }

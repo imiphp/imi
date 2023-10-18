@@ -17,8 +17,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
          * 注解.
          */
         private readonly ?Base $annotation
-    )
-    {
+    ) {
     }
 
     /**

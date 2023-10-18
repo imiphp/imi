@@ -31,16 +31,16 @@ class UploadedFile implements UploadedFileInterface
     public function __construct(/**
      * 文件在客户端时的文件名.
      */
-    protected string $fileName, /**
+        protected string $fileName, /**
      * 文件mime类型.
      */
-    protected string $mediaType, $tmpFileName, /**
+        protected string $mediaType, $tmpFileName, /**
      * 文件大小，单位：字节
      */
-    protected int $size, /**
+        protected int $size, /**
      * 错误码
      */
-    protected int $error)
+        protected int $error)
     {
         if ($tmpFileName instanceof StreamInterface)
         {

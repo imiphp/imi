@@ -986,14 +986,15 @@ abstract class Model extends BaseModel
     {
         $microTime ??= microtime(true);
 
-        return match ($columnType) {
+        return match ($columnType)
+        {
             'date' => date('Y-m-d', (int) $microTime),
             'time' => date('H:i:s', (int) $microTime),
             'datetime', 'timestamp' => date('Y-m-d H:i:s', (int) $microTime),
-            'int' => (int) $microTime,
+            'int'    => (int) $microTime,
             'bigint' => (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy)),
-            'year' => (int) date('Y', (int) $microTime),
-            default => null,
+            'year'   => (int) date('Y', (int) $microTime),
+            default  => null,
         };
     }
 

@@ -18,8 +18,7 @@ class IPEndPoint implements \Stringable
          * 端口.
          */
         private readonly int $port
-    )
-    {
+    ) {
     }
 
     public function __toString(): string

@@ -22,10 +22,10 @@ class EventItem
      * 优先级
      * 越大越先执行.
      */
-    public int $priority = 0, /**
+        public int $priority = 0, /**
      * 是否为一次性事件.
      */
-    public bool $oneTime = false)
+        public bool $oneTime = false)
     {
         $this->callback = $callback;
     }

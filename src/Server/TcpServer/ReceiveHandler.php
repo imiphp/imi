@@ -24,8 +24,7 @@ class ReceiveHandler implements IReceiveHandler
          * 中间件数组.
          */
         protected array $middlewares
-    )
-    {
+    ) {
     }
 
     /**

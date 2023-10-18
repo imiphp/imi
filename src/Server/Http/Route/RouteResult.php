@@ -16,13 +16,13 @@ class RouteResult
     public function __construct(/**
      * 路由ID.
      */
-    public int $id, /**
+        public int $id, /**
      * 路由配置项.
      */
-    public ?RouteItem $routeItem, /**
+        public ?RouteItem $routeItem, /**
      * 参数.
      */
-    public array $params)
+        public array $params)
     {
         $this->callable = $routeItem->callable;
     }

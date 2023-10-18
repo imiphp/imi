@@ -27,10 +27,10 @@ abstract class BaseServer implements IServer
     public function __construct(/**
      * 服务器名称.
      */
-    protected string $name, /**
+        protected string $name, /**
      * 服务器配置.
      */
-    protected array $config)
+        protected array $config)
     {
         $this->container = $container = App::getContainer()->newSubContainer();
         $beans = $config['beans'] ?? [];

@@ -17,16 +17,16 @@ class ActionMethodItem
     public function __construct(/**
      * 参数名.
      */
-    protected string $name, /**
+        protected string $name, /**
      * 是否有默认值
      */
-    protected bool $hasDefault, /**
+        protected bool $hasDefault, /**
      * 默认值
      */
-    protected $default, /**
+        protected $default, /**
      * 是否允许为 null.
      */
-    protected bool $allowNull, ?\ReflectionType $type)
+        protected bool $allowNull, ?\ReflectionType $type)
     {
         if ($type instanceof \ReflectionNamedType)
         {

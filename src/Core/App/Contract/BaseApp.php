@@ -31,8 +31,7 @@ abstract class BaseApp implements IApp
          * 命名空间.
          */
         protected string $namespace
-    )
-    {
+    ) {
     }
 
     protected function __loadConfig(): void

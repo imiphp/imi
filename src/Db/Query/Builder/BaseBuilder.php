@@ -30,8 +30,7 @@ abstract class BaseBuilder implements IBuilder
          * IQuery 类.
          */
         protected ?IQuery $query
-    )
-    {
+    ) {
     }
 
     /**

@@ -20,13 +20,13 @@ class Where extends BaseWhere implements IWhere
     public function __construct(/**
      * 字段名.
      */
-    protected ?string $fieldName = null, /**
+        protected ?string $fieldName = null, /**
      * 比较符.
      */
-    protected ?string $operation = null, /**
+        protected ?string $operation = null, /**
      * 值
      */
-    protected $value = null, string $logicalOperator = LogicalOperator::AND)
+        protected $value = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->logicalOperator = $logicalOperator;
     }

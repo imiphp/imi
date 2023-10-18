@@ -52,8 +52,7 @@ class Group
          * 组中最大允许的客户端数量.
          */
         protected int $maxClients = -1
-    )
-    {
+    ) {
     }
 
     /**

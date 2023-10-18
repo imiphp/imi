@@ -22,10 +22,10 @@ class Pagination
     public function __construct(/**
      * 当前页码
      */
-    private int $page, /**
+        private int $page, /**
      * 每页显示数量.
      */
-    private int $count)
+        private int $count)
     {
         $this->calc();
     }
