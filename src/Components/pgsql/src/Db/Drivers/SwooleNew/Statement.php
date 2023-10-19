@@ -32,16 +32,19 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     protected string $lastInsertId = '';
 
-    public function __construct(/**
-     * 数据库操作对象
-     */
-    protected ?IPgsqlDb $db, protected ?PostgreSQLStatement $stmt, /**
-     * 最后执行过的SQL语句.
-     */
-    protected string $lastSql, /**
-     * SQL 参数映射.
-     */
-    protected ?array $sqlParamsMap = null, bool $isExecuted = false)
+    public function __construct(
+        /**
+         * 数据库操作对象
+         */
+        protected ?IPgsqlDb $db, protected ?PostgreSQLStatement $stmt,
+        /**
+         * 最后执行过的SQL语句.
+         */
+        protected string $lastSql,
+        /**
+         * SQL 参数映射.
+         */
+        protected ?array $sqlParamsMap = null, bool $isExecuted = false)
     {
         if ($isExecuted)
         {

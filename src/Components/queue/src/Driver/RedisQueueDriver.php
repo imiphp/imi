@@ -41,10 +41,11 @@ class RedisQueueDriver implements IQueueDriver
 
     private ?string $keyName = null;
 
-    public function __construct(/**
-     * 队列名称.
-     */
-    protected string $name, array $config = [])
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected string $name, array $config = [])
     {
         $this->traitConstruct($config);
     }
@@ -401,9 +402,10 @@ class RedisQueueDriver implements IQueueDriver
             foreach (QueueType::getValues() as $value)
             {
                 $data = QueueType::getData($value);
-                $count = match ($data['type']) {
-                    'list' => $redis->lLen($this->getQueueKey($value)),
-                    'zset' => $redis->zCard($this->getQueueKey($value)),
+                $count = match ($data['type'])
+                {
+                    'list'  => $redis->lLen($this->getQueueKey($value)),
+                    'zset'  => $redis->zCard($this->getQueueKey($value)),
                     default => throw new QueueException('Invalid type ' . $data['type']),
                 };
                 $status[strtolower(QueueType::getName($value))] = $count;

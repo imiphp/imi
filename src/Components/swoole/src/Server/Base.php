@@ -58,10 +58,11 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * {@inheritDoc}
      */
-    public function __construct(string $name, array $config, /**
-     * 是否为子服务器.
-     */
-    protected bool $isSubServer = false)
+    public function __construct(string $name, array $config,
+        /**
+         * 是否为子服务器.
+         */
+        protected bool $isSubServer = false)
     {
         parent::__construct($name, $config);
         if ($isSubServer)

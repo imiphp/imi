@@ -21,13 +21,15 @@ class ReceiveData implements IReceiveData
      */
     protected ?IPEndPoint $clientAddress = null;
 
-    public function __construct(/**
-     * 客户端连接的标识符.
-     */
-    protected int|string $clientId, /**
-     * Reactor线程ID.
-     */
-    protected int $reactorId, protected string $data)
+    public function __construct(
+        /**
+         * 客户端连接的标识符.
+         */
+        protected int|string $clientId,
+        /**
+         * Reactor线程ID.
+         */
+        protected int $reactorId, protected string $data)
     {
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }

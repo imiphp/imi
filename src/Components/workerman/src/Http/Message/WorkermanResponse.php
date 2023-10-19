@@ -25,19 +25,23 @@ class WorkermanResponse extends Response
 
     protected bool $emitterWritting = false;
 
-    public function __construct(/**
-     * Workerman 的 Worker 对象
-     */
-    protected ?Worker $worker, /**
-     * Workerman 连接对象
-     */
-    protected ?TcpConnection $connection, /**
-     * Workerman 的 http 响应对象
-     */
-    protected ?\Workerman\Protocols\Http\Response $workermanResponse = null, /**
-     * Workerman 的 http 请求对象
-     */
-    protected ?WorkermanRequest $request = null)
+    public function __construct(
+        /**
+         * Workerman 的 Worker 对象
+         */
+        protected ?Worker $worker,
+        /**
+         * Workerman 连接对象
+         */
+        protected ?TcpConnection $connection,
+        /**
+         * Workerman 的 http 响应对象
+         */
+        protected ?\Workerman\Protocols\Http\Response $workermanResponse = null,
+        /**
+         * Workerman 的 http 请求对象
+         */
+        protected ?WorkermanRequest $request = null)
     {
         parent::__construct();
     }

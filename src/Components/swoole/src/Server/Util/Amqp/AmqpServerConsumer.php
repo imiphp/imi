@@ -80,12 +80,13 @@ if (class_exists(\Imi\AMQP\Main::class))
                 $data = json_decode($message->getBody(), true);
                 $serverName = $data['serverName'];
                 RequestContext::set('server', $server = ServerManager::getServer($serverName));
-                match ($data['action'] ?? null) {
-                    'sendRawByFlag' => Server::sendRawByFlag($data['data'], $data['flag'], $serverName, false),
-                    'closeByFlag' => Server::closeByFlag($data['flag'], $serverName, false),
+                match ($data['action'] ?? null)
+                {
+                    'sendRawByFlag'  => Server::sendRawByFlag($data['data'], $data['flag'], $serverName, false),
+                    'closeByFlag'    => Server::closeByFlag($data['flag'], $serverName, false),
                     'sendRawToGroup' => Server::sendRawToGroup($data['group'], $data['data'], $serverName, false),
-                    'sendRawToAll' => Server::sendRawToAll($data['data'], $serverName, false),
-                    default => ConsumerResult::ACK,
+                    'sendRawToAll'   => Server::sendRawToAll($data['data'], $serverName, false),
+                    default          => ConsumerResult::ACK,
                 };
 
                 return ConsumerResult::ACK;

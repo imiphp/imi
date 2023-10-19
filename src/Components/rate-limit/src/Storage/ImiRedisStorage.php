@@ -27,7 +27,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
      * The Redis API needs to be connected yet. I.e. Redis::connect() was
      * called already.
      *
-     * @param string $key the resource name
+     * @param string                  $key   the resource name
      * @param \Imi\Redis\RedisHandler $redis the Redis API
      */
     public function __construct(private readonly string $key, private readonly RedisHandler $redis, int $timeout = 3)
@@ -38,8 +38,6 @@ final class ImiRedisStorage implements Storage, GlobalScope
 
     /**
      * @param float $microtime
-     *
-     * @return void
      */
     public function bootstrap($microtime): void
     {
@@ -61,9 +59,6 @@ final class ImiRedisStorage implements Storage, GlobalScope
         }
     }
 
-    /**
-     * @return void
-     */
     public function remove(): void
     {
         try
@@ -83,8 +78,6 @@ final class ImiRedisStorage implements Storage, GlobalScope
      * @SuppressWarnings(PHPMD)
      *
      * @param float $microtime
-     *
-     * @return void
      */
     public function setMicrotime($microtime): void
     {
@@ -134,9 +127,6 @@ final class ImiRedisStorage implements Storage, GlobalScope
         return $this->mutex;
     }
 
-    /**
-     * @return void
-     */
     public function letMicrotimeUnchanged(): void
     {
     }

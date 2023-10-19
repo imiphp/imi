@@ -87,10 +87,11 @@ class AMQPQueueDriver implements IQueueDriver
      */
     private array $args = [];
 
-    public function __construct(/**
-     * 队列名称.
-     */
-    protected string $name, array $config = [])
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected string $name, array $config = [])
     {
         $this->traitConstruct($config);
         $this->args = \func_get_args();

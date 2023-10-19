@@ -8,10 +8,11 @@ use Imi\Workerman\Process\Contract\IProcess;
 
 abstract class BaseProcess implements IProcess
 {
-    public function __construct(/**
-     * 数据.
-     */
-    protected array $data = [])
+    public function __construct(
+        /**
+         * 数据.
+         */
+        protected array $data = [])
     {
         if ($data)
         {

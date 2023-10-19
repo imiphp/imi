@@ -104,9 +104,10 @@ class ProtobufUtil
         }
         if ($message instanceof \Google\Protobuf\EnumValue)
         {
-            return match ($enumReturnType = ($options['enumReturnType'] ?? 'value')) {
+            return match ($enumReturnType = ($options['enumReturnType'] ?? 'value'))
+            {
                 'value' => $message->getNumber(),
-                'name' => $message->getName(),
+                'name'  => $message->getName(),
                 default => throw new \RuntimeException(sprintf('Unknown enumReturnType %s', $enumReturnType)),
             };
         }

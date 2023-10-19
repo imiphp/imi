@@ -28,10 +28,11 @@ class AMQPResource extends BasePoolResource
 
     private bool $closed = false;
 
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, /**
-     * AMQP 客户端.
-     */
-    private AbstractConnection $connection)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool,
+        /**
+         * AMQP 客户端.
+         */
+        private AbstractConnection $connection)
     {
         parent::__construct($pool);
         $this->closed = !$connection->isConnected();

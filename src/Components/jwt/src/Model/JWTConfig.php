@@ -59,8 +59,6 @@ class JWTConfig
      * 设为 true 则为当前时间
      * 设为 false 不设置
      * 其它值则直接写入.
-     *
-     * @var bool
      */
     private bool $issuedAt = true;
 

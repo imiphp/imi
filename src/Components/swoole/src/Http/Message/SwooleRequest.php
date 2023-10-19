@@ -25,8 +25,7 @@ class SwooleRequest extends Request
          * swoole的http请求对象
          */
         protected ?\Swoole\Http\Request $swooleRequest
-    )
-    {
+    ) {
     }
 
     /**

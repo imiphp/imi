@@ -15,8 +15,7 @@ class BeanTaskHandler implements ITaskHandler
          * 任务类类名.
          */
         private readonly string $taskHandlerClass
-    )
-    {
+    ) {
     }
 
     /**

@@ -13,13 +13,15 @@ class SwooleResponse extends Response
 {
     protected bool $emitterWritting = false;
 
-    public function __construct(/**
-     * 对应的服务器.
-     */
-    protected ?ISwooleServer $serverInstance, /**
-     * swoole响应对象
-     */
-    protected ?\Swoole\Http\Response $swooleResponse)
+    public function __construct(
+        /**
+         * 对应的服务器.
+         */
+        protected ?ISwooleServer $serverInstance,
+        /**
+         * swoole响应对象
+         */
+        protected ?\Swoole\Http\Response $swooleResponse)
     {
         parent::__construct();
     }

@@ -48,10 +48,11 @@ class QueueConfig
      */
     private string $consumer = '';
 
-    public function __construct(/**
-     * 队列名称.
-     */
-    private readonly string $name, array $data)
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        private readonly string $name, array $data)
     {
         if (isset($data['driver']))
         {

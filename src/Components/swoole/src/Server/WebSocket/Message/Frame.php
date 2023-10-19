@@ -22,10 +22,11 @@ class Frame implements ISwooleWebSocketFrame
      */
     protected $data;
 
-    public function __construct(/**
-     * swoole websocket frame.
-     */
-    protected ?\Swoole\WebSocket\Frame $frame)
+    public function __construct(
+        /**
+         * swoole websocket frame.
+         */
+        protected ?\Swoole\WebSocket\Frame $frame)
     {
         $this->data = RequestContext::getServerBean(DataParser::class)->decode($frame->data);
     }

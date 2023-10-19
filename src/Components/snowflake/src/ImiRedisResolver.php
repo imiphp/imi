@@ -30,8 +30,7 @@ class ImiRedisResolver implements SequenceResolver
          * 为 NULL 则使用默认连接池
          */
         protected ?string $redisPool = null
-    )
-    {
+    ) {
     }
 
     /**

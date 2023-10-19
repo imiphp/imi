@@ -26,16 +26,19 @@ class GrpcService implements IGrpcService
      */
     protected GrpcInterfaceManager $interfaceManager;
 
-    public function __construct(/**
-     * 客户端.
-     */
-    protected GrpcClient $client, /**
-     * 完整服务名称.
-     */
-    protected string $name, /**
-     * 服务接口.
-     */
-    protected ?string $interface = null)
+    public function __construct(
+        /**
+         * 客户端.
+         */
+        protected GrpcClient $client,
+        /**
+         * 完整服务名称.
+         */
+        protected string $name,
+        /**
+         * 服务接口.
+         */
+        protected ?string $interface = null)
     {
         if (preg_match('/^(.+)\.([^\.]+)$/', $name, $matches) > 0)
         {

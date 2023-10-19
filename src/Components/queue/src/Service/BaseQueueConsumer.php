@@ -28,8 +28,7 @@ abstract class BaseQueueConsumer
          * 队列名称.
          */
         protected ?string $name = null
-    )
-    {
+    ) {
     }
 
     /**

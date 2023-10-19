@@ -19,10 +19,11 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
      */
     private ?\SplQueue $queue = null;
 
-    public function __construct(/**
-     * 本地缓存的队列长度.
-     */
-    protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
+    public function __construct(
+        /**
+         * 本地缓存的队列长度.
+         */
+        protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
     {
         parent::__construct();
         $this->poolName = $poolName;

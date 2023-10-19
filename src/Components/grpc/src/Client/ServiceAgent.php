@@ -24,8 +24,7 @@ class ServiceAgent
          * 服务接口.
          */
         public string $interface
-    )
-    {
+    ) {
     }
 
     /**

@@ -27,8 +27,7 @@ class WorkermanRequest extends Request
          * 协议.
          */
         protected string $scheme = 'http'
-    )
-    {
+    ) {
     }
 
     /**

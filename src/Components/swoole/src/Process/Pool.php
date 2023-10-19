@@ -42,9 +42,6 @@ class Pool
      */
     private int $masterPID = 0;
 
-    /**
-     * @param int $workerNum
-     */
     public function __construct(private readonly int $workerNum)
     {
     }
@@ -75,8 +72,6 @@ class Pool
 
     /**
      * 启动进程池.
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -200,8 +195,6 @@ class Pool
 
     /**
      * 停止工作池.
-     *
-     * @return void
      */
     public function shutdown(): void
     {
@@ -210,8 +203,6 @@ class Pool
 
     /**
      * 重启所有工作进程.
-     *
-     * @return void
      */
     public function restartAllWorker(): void
     {
@@ -232,8 +223,6 @@ class Pool
      * 重启指定工作进程.
      *
      * @param int ...$workerIds
-     *
-     * @return void
      */
     public function restartWorker(...$workerIds): void
     {
@@ -263,8 +252,6 @@ class Pool
      * 启动工作进程.
      *
      * @param int $workerId
-     *
-     * @return void
      */
     private function startWorker($workerId): void
     {

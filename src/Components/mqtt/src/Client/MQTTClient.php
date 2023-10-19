@@ -67,10 +67,11 @@ class MQTTClient
         Packet::TYPE_PINGRESP   => 'ping',
     ];
 
-    public function __construct(array $config, /**
-     * 事件监听器.
-     */
-    private readonly IMQTTClientListener $listener)
+    public function __construct(array $config,
+        /**
+         * 事件监听器.
+         */
+        private readonly IMQTTClientListener $listener)
     {
         if (!isset($config['host']))
         {

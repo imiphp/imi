@@ -22,8 +22,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             protected ?ISwooleServer $serverInstance,
             protected string $clientId,
             protected array $data
-        )
-        {
+        ) {
         }
 
         /**

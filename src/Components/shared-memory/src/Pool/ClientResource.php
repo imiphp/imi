@@ -12,10 +12,11 @@ use Imi\SharedMemory\Client;
  */
 class ClientResource extends BasePoolResource
 {
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, /**
-     * 客户端对象
-     */
-    private readonly ?Client $client)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool,
+        /**
+         * 客户端对象
+         */
+        private readonly ?Client $client)
     {
         parent::__construct($pool);
     }

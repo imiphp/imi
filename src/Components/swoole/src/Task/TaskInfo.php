@@ -17,8 +17,7 @@ class TaskInfo
          * 任务参数.
          */
         private readonly TaskParam $param
-    )
-    {
+    ) {
     }
 
     public function getTaskHandler(): ITaskHandler

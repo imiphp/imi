@@ -41,10 +41,11 @@ class Member
 
     protected OperationService $operationService;
 
-    public function __construct(/**
-     * 用户 ID.
-     */
-    private readonly int $memberId)
+    public function __construct(
+        /**
+         * 用户 ID.
+         */
+        private readonly int $memberId)
     {
         $this->__autoInject();
         $this->memberService = App::getBean($this->memberServiceBean);

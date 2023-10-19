@@ -431,7 +431,9 @@ class ModelGenerate extends BaseCommand
         {
             $resultAfterExec = $default;
         }
-        return match ($type) {
+
+        return match ($type)
+        {
             'int', 'int2', 'int4', 'int8', 'smallint', 'bigint', 'smallserial', 'serial', 'bigserial', 'serial2', 'serial4', 'serial8' => (int) $resultAfterExec,
             'bool', 'boolean' => (bool) $resultAfterExec,
             'double', 'float4', 'float8' => (float) $resultAfterExec,

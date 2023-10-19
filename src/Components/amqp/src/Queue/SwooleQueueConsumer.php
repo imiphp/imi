@@ -22,10 +22,11 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
          */
         private ?Channel $resultChannel = null;
 
-        public function __construct(/**
-         * 本地缓存的队列长度.
-         */
-        protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
+        public function __construct(
+            /**
+             * 本地缓存的队列长度.
+             */
+            protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
         {
             parent::__construct();
             $this->poolName = $poolName;

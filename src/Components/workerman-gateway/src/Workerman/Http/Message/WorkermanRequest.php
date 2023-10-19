@@ -20,8 +20,7 @@ class WorkermanRequest extends Request
         protected ?Worker $worker,
         protected string $clientId,
         protected array $data
-    )
-    {
+    ) {
     }
 
     /**

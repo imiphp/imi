@@ -12,10 +12,11 @@ use longlang\phpkafka\Producer\Producer;
  */
 class KafkaResource extends BasePoolResource
 {
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, /**
-     * Kafka 生产者.
-     */
-    private readonly Producer $connection)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool,
+        /**
+         * Kafka 生产者.
+         */
+        private readonly Producer $connection)
     {
         parent::__construct($pool);
     }
