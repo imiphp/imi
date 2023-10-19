@@ -55,9 +55,9 @@ abstract class VirtualColumnBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -84,9 +84,9 @@ abstract class VirtualColumnBase extends Model
      *
      * @return static
      */
-    public function setAmount(?int $amount)
+    public function setAmount($amount)
     {
-        $this->amount = $amount;
+        $this->amount = null === $amount ? null : (int) $amount;
 
         return $this;
     }
@@ -119,7 +119,7 @@ abstract class VirtualColumnBase extends Model
      */
     public function setVirtualAmount($virtualAmount)
     {
-        $this->virtualAmount = $virtualAmount;
+        $this->virtualAmount = null === $virtualAmount ? null : $virtualAmount;
 
         return $this;
     }

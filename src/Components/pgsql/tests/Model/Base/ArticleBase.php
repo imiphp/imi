@@ -56,9 +56,9 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -85,13 +85,13 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setTitle(?string $title)
+    public function setTitle($title)
     {
         if (\is_string($title) && mb_strlen($title) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $title is 255');
         }
-        $this->title = $title;
+        $this->title = null === $title ? null : $title;
 
         return $this;
     }
@@ -118,9 +118,9 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setContent(?string $content)
+    public function setContent($content)
     {
-        $this->content = $content;
+        $this->content = null === $content ? null : $content;
 
         return $this;
     }
@@ -147,9 +147,9 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setTime(?string $time)
+    public function setTime($time)
     {
-        $this->time = $time;
+        $this->time = null === $time ? null : $time;
 
         return $this;
     }

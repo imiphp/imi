@@ -316,7 +316,7 @@ class ModelGenerate extends BaseCommand
             }
 
             $isPk = $field['ordinal_position'] > 0;
-            [$phpType, $phpDefinitionType] = $this->dbFieldTypeToPhp($field);
+            [$phpType, $phpDefinitionType, $typeConvert] = $this->dbFieldTypeToPhp($field);
             $data['fields'][] = [
                 'name'              => $field['attname'],
                 'varName'           => Text::toCamelName($field['attname']),
@@ -324,6 +324,7 @@ class ModelGenerate extends BaseCommand
                 'ndims'             => $field['attndims'],
                 'phpType'           => $phpType . '|null',
                 'phpDefinitionType' => $phpDefinitionType,
+                'typeConvert'       => $typeConvert,
                 'length'            => $length,
                 'accuracy'          => $accuracy,
                 'nullable'          => 'f' === $field['attnotnull'],
@@ -359,27 +360,27 @@ class ModelGenerate extends BaseCommand
     }
 
     public const DB_FIELD_TYPE_MAP = [
-        'int'         => ['int', '?int'],
-        'int2'        => ['int', '?int'],
-        'int4'        => ['int', '?int'],
-        'int8'        => ['int', '?int'],
-        'integer'     => ['int', '?int'],
-        'smallint'    => ['int', '?int'],
-        'bigint'      => ['int', '?int'],
-        'smallserial' => ['int', '?int'],
-        'serial'      => ['int', '?int'],
-        'bigserial'   => ['int', '?int'],
-        'serial2'     => ['int', '?int'],
-        'serial4'     => ['int', '?int'],
-        'serial8'     => ['int', '?int'],
-        'bool'        => ['bool', '?bool'],
-        'boolean'     => ['bool', '?bool'],
-        'double'      => ['float', '?float'],
-        'float4'      => ['float', '?float'],
-        'float8'      => ['float', '?float'],
+        'int'         => ['int', '?int', '(int)'],
+        'int2'        => ['int', '?int', '(int)'],
+        'int4'        => ['int', '?int', '(int)'],
+        'int8'        => ['int', '?int', '(int)'],
+        'integer'     => ['int', '?int', '(int)'],
+        'smallint'    => ['int', '?int', '(int)'],
+        'bigint'      => ['int', '?int', '(int)'],
+        'smallserial' => ['int', '?int', '(int)'],
+        'serial'      => ['int', '?int', '(int)'],
+        'bigserial'   => ['int', '?int', '(int)'],
+        'serial2'     => ['int', '?int', '(int)'],
+        'serial4'     => ['int', '?int', '(int)'],
+        'serial8'     => ['int', '?int', '(int)'],
+        'bool'        => ['bool', '?bool', '(bool)'],
+        'boolean'     => ['bool', '?bool', '(bool)'],
+        'double'      => ['float', '?float', '(float)'],
+        'float4'      => ['float', '?float', '(float)'],
+        'float8'      => ['float', '?float', '(float)'],
         'numeric'     => ['string|float|int', \PHP_VERSION_ID >= 80000 ? 'string|float|int|null' : '', ''],
-        'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
-        'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
+        'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', '', ''],
+        'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', '', ''],
     ];
 
     /**
@@ -399,11 +400,15 @@ class ModelGenerate extends BaseCommand
             $type = $field['typname'];
         }
 
-        $result = self::DB_FIELD_TYPE_MAP[$type] ?? ['string', '?string'];
+        $result = self::DB_FIELD_TYPE_MAP[$type] ?? ['string', '?string', ''];
         if ($isArray)
         {
-            $result[0] .= 'array';
-            $result[1] = '?array';
+            $count = $field['attndims'];
+            $result = [
+                str_repeat('array<', $count) . $result[0] . str_repeat('>', $count),
+                '?array',
+                '',
+            ];
         }
 
         return $result;

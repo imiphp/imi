@@ -55,9 +55,9 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -84,9 +84,9 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setParentId(?int $parentId)
+    public function setParentId($parentId)
     {
-        $this->parentId = $parentId;
+        $this->parentId = null === $parentId ? null : (int) $parentId;
 
         return $this;
     }
@@ -113,13 +113,13 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setName(?string $name)
+    public function setName($name)
     {
         if (\is_string($name) && mb_strlen($name) > 32)
         {
             throw new \InvalidArgumentException('The maximum length of $name is 32');
         }
-        $this->name = $name;
+        $this->name = null === $name ? null : $name;
 
         return $this;
     }
