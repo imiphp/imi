@@ -123,10 +123,6 @@ abstract class ArrayTestBase extends Model
      */
     public function setArr2($arr2)
     {
-        if (\is_string($arr2) && mb_strlen($arr2) > 255)
-        {
-            throw new \InvalidArgumentException('The maximum length of $arr2 is 255');
-        }
         $this->arr2 = null === $arr2 ? null : $arr2;
 
         return $this;

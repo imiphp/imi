@@ -83,7 +83,7 @@ else
      */
     public function set<?php echo ucfirst($field['varName']); ?>($<?php echo $field['varName']; ?>)
     {
-<?php if ($lengthCheck && $length = [
+<?php if ($lengthCheck && 0 === $field['ndims'] && $length = [
     'character'         => $field['length'],
     'char'              => $field['length'],
     'varchar'           => $field['length'],
