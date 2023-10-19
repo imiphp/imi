@@ -31,42 +31,43 @@ components=(
 
 analyze_component() {
   component="$1"
-  gen_baseline="$2"
-  echo "Analyzing: $component, Generate Baseline: $gen_baseline"
+  use_dry_run="$2"
+  original_dir=$(pwd)
+  echo "process: $component, dry-run: $use_dry_run"
 
   analyse_configuration=""
 
   args=()
-  args+=("--memory-limit" "1G")
 
   if [ "$component" != "core" ]; then
-    args+=("--configuration=phpstan-components.neon" "--autoload-file=src/Components/$component/vendor/autoload.php" "src/Components/$component")
+    cd "$__DIR__/src/Components/$component"
   fi
 
-  if [ "$gen_baseline" == "true" ]; then
-    args+=("--generate-baseline=./phpstan-baseline/baseline-$component.neon" "--allow-empty-baseline")
+  if [ "$use_dry_run" == "true" ]; then
+    args+=("--dry-run")
   fi
 
-  echo ./vendor/bin/phpstan analyse "${args[@]}"
+  "$__DIR__/vendor/bin/rector" process "${args[@]}"
 
-  PHPSTAN_ANALYSE_COMPONENT_NAME="$component" PHPSTAN_GENERATE_BASELINE="$gen_baseline" ./vendor/bin/phpstan analyse "${args[@]}"
+  cd "$original_dir"
+  sleep 1
 }
 
-use_baseline="false"
+use_dry_run="false"
 input_components=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --baseline)
-      use_baseline="true"
+    --dry-run)
+      use_dry_run="true"
       shift
       ;;
-    -b)
-      use_baseline="true"
+    -n)
+      use_dry_run="true"
       shift
       ;;
     *)
-      # 如果不是 --baseline 标志，将参数添加到 components 数组中
+      # 如果不是 --dry-run 标志，将参数添加到 components 数组中
       input_components+=("$1")
       shift
       ;;
@@ -76,13 +77,13 @@ done
 if [ ${#input_components[@]} -eq 0 ]; then
   # If no arguments are provided, analyze all components
   for component in "${components[@]}"; do
-    analyze_component "$component" "$use_baseline"
+    analyze_component "$component" "$use_dry_run"
   done
 else
   # Analyze the specified components provided as arguments
   for component in "${input_components[@]}"; do
     if [[ " ${components[@]} " =~ " $component " || "core" == "$component" ]]; then
-      analyze_component "$component" "$use_baseline"
+      analyze_component "$component" "$use_dry_run"
     else
       echo "Invalid component name: $component"
     fi
