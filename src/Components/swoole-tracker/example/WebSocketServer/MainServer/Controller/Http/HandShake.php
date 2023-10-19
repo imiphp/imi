@@ -26,8 +26,6 @@ class HandShake extends HttpController
      * @Action
      *
      * @Route("/testHandShake")
-     *
-     * @return void
      */
     public function index(): void
     {

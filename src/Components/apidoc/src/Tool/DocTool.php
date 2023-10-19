@@ -103,8 +103,6 @@ class DocTool extends BaseCommand
 
     /**
      * 处理路由.
-     *
-     * @return void
      */
     private function parseRoute(Analysis $analysis, array $controllerClasses): void
     {

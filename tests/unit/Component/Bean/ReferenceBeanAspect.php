@@ -83,8 +83,6 @@ class ReferenceBeanAspect
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
      *     }
      * )
-     *
-     * @return void
      */
     public function afterReturning(AfterReturningJoinPoint $joinPoint): void
     {
@@ -99,8 +97,6 @@ class ReferenceBeanAspect
      *         "Imi\Test\Component\Bean\ReferenceBean::*"
      *     }
      * )
-     *
-     * @return void
      */
     public function afterThrowing(AfterThrowingJoinPoint $joinPoint): void
     {

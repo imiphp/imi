@@ -30,8 +30,6 @@ class IndexController extends HttpController
 
     /**
      * @Action
-     *
-     * @return void
      */
     public function fail(): void
     {
