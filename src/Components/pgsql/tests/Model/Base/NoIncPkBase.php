@@ -55,9 +55,9 @@ abstract class NoIncPkBase extends Model
      *
      * @return static
      */
-    public function setAId(?int $aId)
+    public function setAId($aId)
     {
-        $this->aId = $aId;
+        $this->aId = null === $aId ? null : (int) $aId;
 
         return $this;
     }
@@ -84,9 +84,9 @@ abstract class NoIncPkBase extends Model
      *
      * @return static
      */
-    public function setBId(?int $bId)
+    public function setBId($bId)
     {
-        $this->bId = $bId;
+        $this->bId = null === $bId ? null : (int) $bId;
 
         return $this;
     }
@@ -113,13 +113,13 @@ abstract class NoIncPkBase extends Model
      *
      * @return static
      */
-    public function setValue(?string $value)
+    public function setValue($value)
     {
         if (\is_string($value) && mb_strlen($value) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $value is 255');
         }
-        $this->value = $value;
+        $this->value = null === $value ? null : $value;
 
         return $this;
     }

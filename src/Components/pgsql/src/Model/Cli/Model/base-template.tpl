@@ -81,8 +81,7 @@ else
 
      * @return static
      */
-    public function set<?php echo ucfirst($field['varName']); ?>(<?php if ($field['typeDefinition'] && $field['phpDefinitionType'])
-    { ?><?php echo $field['phpDefinitionType']; ?> <?php } ?>$<?php echo $field['varName']; ?>)
+    public function set<?php echo ucfirst($field['varName']); ?>($<?php echo $field['varName']; ?>)
     {
 <?php if ($lengthCheck && $length = [
     'character'         => $field['length'],
@@ -99,7 +98,7 @@ else
             throw new \InvalidArgumentException('The maximum length of $<?php echo $field['varName']; ?> is <?php echo $length; ?>');
         }
 <?php } ?>
-        $this-><?php echo $field['varName']; ?> = $<?php echo $field['varName']; ?>;
+        $this-><?php echo $field['varName']; ?> = null === $<?php echo $field['varName']; ?> ? null : <?php echo $field['typeConvert']; ?>$<?php echo $field['varName']; ?>;
         return $this;
     }
 
