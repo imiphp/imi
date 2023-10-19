@@ -9,11 +9,8 @@ use Workerman\Connection\TcpConnection;
 
 class WorkermanEmitHandler implements IEmitHandler
 {
-    private TcpConnection $connection;
-
-    public function __construct(TcpConnection $connection)
+    public function __construct(private readonly TcpConnection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function send(string $data): bool

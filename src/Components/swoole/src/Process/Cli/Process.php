@@ -31,7 +31,7 @@ class Process extends BaseCommand
      */
     public function start(string $name, ?bool $redirectStdinStdout, ?int $pipeType): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType): void {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType): never {
             $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
             $process->start();
             $result = \Swoole\Process::wait(true);

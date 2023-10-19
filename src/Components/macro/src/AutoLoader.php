@@ -12,8 +12,6 @@ use function Yurun\Macro\includeFile;
 
 class AutoLoader
 {
-    protected ClassLoader $composerClassLoader;
-
     protected bool $hasSwoole = false;
 
     protected int $loadingCount = 0;
@@ -32,9 +30,8 @@ class AutoLoader
      */
     protected string $outputDir = '';
 
-    public function __construct(ClassLoader $composerClassLoader)
+    public function __construct(protected ClassLoader $composerClassLoader)
     {
-        $this->composerClassLoader = $composerClassLoader;
         // @phpstan-ignore-next-line
         if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
         {

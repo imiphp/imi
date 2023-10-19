@@ -18,11 +18,8 @@ if (class_exists(\Imi\AMQP\Main::class))
      */
     class AmqpServerPublisher extends BasePublisher
     {
-        protected ?AmqpServerUtil $amqpServerUtil;
-
-        public function __construct(?AmqpServerUtil $amqpServerUtil = null)
+        public function __construct(protected ?AmqpServerUtil $amqpServerUtil = null)
         {
-            $this->amqpServerUtil = $amqpServerUtil;
             parent::__construct();
         }
 

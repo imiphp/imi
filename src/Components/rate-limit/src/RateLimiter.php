@@ -50,7 +50,7 @@ class RateLimiter
             }
             else
             {
-                return static::defaultCallback($name);
+                static::defaultCallback($name);
             }
         }
         else
@@ -90,7 +90,7 @@ class RateLimiter
 
             return true;
         }
-        catch (TimeoutException $ex)
+        catch (TimeoutException)
         {
             if ($callback)
             {
@@ -98,7 +98,7 @@ class RateLimiter
             }
             else
             {
-                return static::defaultCallback($name);
+                static::defaultCallback($name);
             }
         }
     }
@@ -126,10 +126,8 @@ class RateLimiter
      * 默认限流回调.
      *
      * @param string $name 限流器名称
-     *
-     * @return mixed
      */
-    public static function defaultCallback(string $name)
+    public static function defaultCallback(string $name): never
     {
         throw new RateLimitException(sprintf('%s Rate Limit', $name));
     }

@@ -17,13 +17,6 @@ use Swoole\Coroutine\PostgreSQLStatement;
  */
 class Statement extends PgsqlBaseStatement implements IPgsqlStatement
 {
-    protected ?PostgreSQLStatement $stmt = null;
-
-    /**
-     * 数据库操作对象
-     */
-    protected ?IPgsqlDb $db = null;
-
     /**
      * 绑定数据.
      */
@@ -35,26 +28,21 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     protected array $result = [];
 
     /**
-     * 最后执行过的SQL语句.
-     */
-    protected string $lastSql = '';
-
-    /**
-     * SQL 参数映射.
-     */
-    protected ?array $sqlParamsMap = null;
-
-    /**
      * 最后插入ID.
      */
     protected string $lastInsertId = '';
 
-    public function __construct(IPgsqlDb $db, PostgreSQLStatement $stmt, string $originSql, ?array $sqlParamsMap = null, bool $isExecuted = false)
+    public function __construct(/**
+     * 数据库操作对象
+     */
+    protected ?IPgsqlDb $db, protected ?PostgreSQLStatement $stmt, /**
+     * 最后执行过的SQL语句.
+     */
+    protected string $lastSql, /**
+     * SQL 参数映射.
+     */
+    protected ?array $sqlParamsMap = null, bool $isExecuted = false)
     {
-        $this->db = $db;
-        $this->stmt = $stmt;
-        $this->lastSql = $originSql;
-        $this->sqlParamsMap = $sqlParamsMap;
         if ($isExecuted)
         {
             if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))

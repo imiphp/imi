@@ -19,16 +19,10 @@ class BeforeRequest implements IRequestEventListener
     protected Dispatcher $dispatcher;
 
     /**
-     * @var \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server
-     */
-    protected ISwooleServer $server;
-
-    /**
      * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
      */
-    public function __construct(ISwooleServer $server)
+    public function __construct(protected ISwooleServer $server)
     {
-        $this->server = $server;
     }
 
     /**

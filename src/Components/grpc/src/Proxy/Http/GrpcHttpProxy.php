@@ -83,7 +83,7 @@ class GrpcHttpProxy
             // trailer
             $trailer = $http2Response->getHeaderLine(ResponseHeader::TRAILER);
             $response->setHeader(ResponseHeader::TRAILER, $trailer);
-            foreach (explode(',', $trailer) as $trailerItem)
+            foreach (explode(',', (string) $trailer) as $trailerItem)
             {
                 $trailerItem = trim($trailerItem);
                 if ('' === $trailerItem)

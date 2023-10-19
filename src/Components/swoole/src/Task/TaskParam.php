@@ -9,16 +9,10 @@ use Imi\Swoole\Task\Interfaces\ITaskParam;
 class TaskParam implements ITaskParam
 {
     /**
-     * @var mixed
-     */
-    protected $data = [];
-
-    /**
      * @param mixed $data
      */
-    public function __construct($data = [])
+    public function __construct(protected $data = [])
     {
-        $this->data = $data;
     }
 
     /**

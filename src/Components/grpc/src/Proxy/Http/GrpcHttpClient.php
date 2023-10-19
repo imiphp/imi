@@ -17,15 +17,9 @@ class GrpcHttpClient
 {
     protected HttpRequest $httpRequest;
 
-    protected string $url = '';
-
-    protected string $requestMethod = '';
-
-    public function __construct(string $url, string $requestMethod = RequestMethod::POST, ?int $timeout = null)
+    public function __construct(protected string $url, protected string $requestMethod = RequestMethod::POST, ?int $timeout = null)
     {
-        $this->url = $url;
         $this->httpRequest = $httpRequest = new HttpRequest();
-        $this->requestMethod = $requestMethod;
         if (null !== $timeout)
         {
             $httpRequest->timeout($timeout);

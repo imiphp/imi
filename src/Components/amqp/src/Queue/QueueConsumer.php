@@ -19,16 +19,12 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
      */
     private ?\SplQueue $queue = null;
 
-    /**
+    public function __construct(/**
      * 本地缓存的队列长度.
      */
-    protected int $queueLength = 0;
-
-    public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
+    protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
     {
         parent::__construct();
-
-        $this->queueLength = $queueLength;
         $this->poolName = $poolName;
 
         $list = [];
@@ -100,7 +96,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
 
             return $this->queue->pop() ?: null;
         }
-        catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
+        catch (\PhpAmqpLib\Exception\AMQPTimeoutException)
         {
         }
 

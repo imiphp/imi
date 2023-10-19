@@ -22,16 +22,12 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
          */
         private ?Channel $resultChannel = null;
 
-        /**
+        public function __construct(/**
          * 本地缓存的队列长度.
          */
-        protected int $queueLength = 0;
-
-        public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
+        protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
         {
             parent::__construct();
-
-            $this->queueLength = $queueLength;
             $this->poolName = $poolName;
 
             $list = [];
@@ -104,7 +100,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
 
                 return $this->resultChannel->pop(0.001) ?: null;
             }
-            catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
+            catch (\PhpAmqpLib\Exception\AMQPTimeoutException)
             {
             }
 

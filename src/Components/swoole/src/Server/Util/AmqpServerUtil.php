@@ -336,12 +336,8 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             return RequestContext::use(function (\ArrayObject $context) {
                 $key = static::class . ':' . $this->server->getName() . ':publisherClass';
-                if (isset($context[$key]))
-                {
-                    return $context[$key];
-                }
 
-                return $context[$key] = $this->server->getBean($this->publisherClass, $this);
+                return $context[$key] ?? ($context[$key] = $this->server->getBean($this->publisherClass, $this));
             });
         }
 

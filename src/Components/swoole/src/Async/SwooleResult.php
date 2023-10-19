@@ -11,13 +11,10 @@ use Swoole\Coroutine\Channel;
 
 class SwooleResult implements IAsyncResult
 {
-    private ?Channel $channel = null;
-
     private bool $isGeted = false;
 
-    public function __construct(Channel $channel)
+    public function __construct(private ?Channel $channel)
     {
-        $this->channel = $channel;
     }
 
     public function __destruct()

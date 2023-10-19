@@ -35,20 +35,17 @@ class RedisQueueDriver implements IQueueDriver
     protected string $prefix = 'imi:';
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 循环尝试 pop 的时间间隔，单位：秒.
      */
     protected float $timespan = 0.03;
 
     private ?string $keyName = null;
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(/**
+     * 队列名称.
+     */
+    protected string $name, array $config = [])
     {
-        $this->name = $name;
         $this->traitConstruct($config);
     }
 
@@ -404,17 +401,11 @@ class RedisQueueDriver implements IQueueDriver
             foreach (QueueType::getValues() as $value)
             {
                 $data = QueueType::getData($value);
-                switch ($data['type'])
-                {
-                    case 'list':
-                        $count = $redis->lLen($this->getQueueKey($value));
-                        break;
-                    case 'zset':
-                        $count = $redis->zCard($this->getQueueKey($value));
-                        break;
-                    default:
-                        throw new QueueException('Invalid type ' . $data['type']);
-                }
+                $count = match ($data['type']) {
+                    'list' => $redis->lLen($this->getQueueKey($value)),
+                    'zset' => $redis->zCard($this->getQueueKey($value)),
+                    default => throw new QueueException('Invalid type ' . $data['type']),
+                };
                 $status[strtolower(QueueType::getName($value))] = $count;
             }
 

@@ -60,9 +60,9 @@ class JWTConfig
      * 设为 false 不设置
      * 其它值则直接写入.
      *
-     * @var bool|mixed
+     * @var bool
      */
-    private $issuedAt = true;
+    private bool $issuedAt = true;
 
     /**
      * Token id.

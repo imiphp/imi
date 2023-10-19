@@ -10,14 +10,13 @@ use Imi\Swoole\Task\TaskParam;
 
 class BeanTaskHandler implements ITaskHandler
 {
-    /**
-     * 任务类类名.
-     */
-    private string $taskHandlerClass = '';
-
-    public function __construct(string $taskHandlerClass)
+    public function __construct(
+        /**
+         * 任务类类名.
+         */
+        private readonly string $taskHandlerClass
+    )
     {
-        $this->taskHandlerClass = $taskHandlerClass;
     }
 
     /**

@@ -38,11 +38,6 @@ class RedisStreamQueueDriver implements IQueueDriver
     protected string $prefix = 'imi:';
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 队列最大长度.
      *
      * 为0则不限制
@@ -81,9 +76,11 @@ class RedisStreamQueueDriver implements IQueueDriver
 
     private ?string $keyName = null;
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(/**
+     * 队列名称.
+     */
+    protected string $name, array $config = [])
     {
-        $this->name = $name;
         $this->traitConstruct($config);
     }
 

@@ -35,7 +35,7 @@ class Scheduler extends \Imi\Cron\Scheduler
     /**
      * 协程工作池.
      */
-    private CoPool $coPool;
+    private readonly CoPool $coPool;
 
     public function __construct()
     {

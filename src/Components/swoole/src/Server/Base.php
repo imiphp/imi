@@ -56,17 +56,14 @@ abstract class Base extends BaseServer implements ISwooleServer
     protected \Swoole\Server\Port $swoolePort;
 
     /**
-     * 是否为子服务器.
-     */
-    protected bool $isSubServer = false;
-
-    /**
      * {@inheritDoc}
      */
-    public function __construct(string $name, array $config, bool $isSubServer = false)
+    public function __construct(string $name, array $config, /**
+     * 是否为子服务器.
+     */
+    protected bool $isSubServer = false)
     {
         parent::__construct($name, $config);
-        $this->isSubServer = $isSubServer;
         if ($isSubServer)
         {
             $this->createSubServer();

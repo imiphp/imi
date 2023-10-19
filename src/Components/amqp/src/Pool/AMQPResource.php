@@ -18,27 +18,22 @@ use Swoole\Coroutine\Channel;
 class AMQPResource extends BasePoolResource
 {
     /**
-     * AMQP 客户端.
-     */
-    private AbstractConnection $connection;
-
-    /**
      * 重置状态的 Channel，重置中不为 null.
      *
      * 为兼容无 Swoole 的环境，所以声明为非强类型
      *
      * @noRector
-     *
-     * @var \Swoole\Coroutine\Channel|null
      */
-    private $resetingChannel = null;
+    private ?\Swoole\Coroutine\Channel $resetingChannel = null;
 
     private bool $closed = false;
 
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, AbstractConnection $connection)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool, /**
+     * AMQP 客户端.
+     */
+    private AbstractConnection $connection)
     {
         parent::__construct($pool);
-        $this->connection = $connection;
         $this->closed = !$connection->isConnected();
     }
 
@@ -75,7 +70,7 @@ class AMQPResource extends BasePoolResource
                 $this->connection->close();
             }
         }
-        catch (\Exception $e)
+        catch (\Exception)
         {
             return;
         }
@@ -118,7 +113,7 @@ class AMQPResource extends BasePoolResource
                 {
                     $channel->close();
                 }
-                catch (\Throwable $e)
+                catch (\Throwable)
                 {
                     /* Ignore closing errors */
                 }

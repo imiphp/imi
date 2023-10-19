@@ -176,7 +176,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function startBuildRuntimeTimer(): void
     {
-        $this->buildRuntimeTimerId = Timer::tick(1000, [$this, 'buildRuntimeTimer']);
+        $this->buildRuntimeTimerId = Timer::tick(1000, $this->buildRuntimeTimer(...));
     }
 
     /**

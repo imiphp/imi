@@ -58,7 +58,7 @@ class FpmResponse extends Response
         {
             foreach ($cookieParams as $cookie)
             {
-                setcookie($cookie['key'], $cookie['value'], ['expires' => $cookie['expire'] ?? 0, 'path' => $cookie['path'] ?? '/', 'domain' => $cookie['domain'] ?? '', 'secure' => $cookie['secure'] ?? false, 'httponly' => $cookie['httponly'] ?? false]);
+                setcookie($cookie['key'], (string) $cookie['value'], ['expires' => $cookie['expire'] ?? 0, 'path' => $cookie['path'] ?? '/', 'domain' => $cookie['domain'] ?? '', 'secure' => $cookie['secure'] ?? false, 'httponly' => $cookie['httponly'] ?? false]);
             }
         }
     }

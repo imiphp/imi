@@ -19,7 +19,7 @@ class OnPipeMessage implements IPipeMessageEventListener
      */
     public function handle(PipeMessageEventParam $e): void
     {
-        $data = json_decode($e->message, true);
+        $data = json_decode((string) $e->message, true);
         $action = $data['action'] ?? null;
         if (!$action)
         {

@@ -34,7 +34,7 @@ class FpmRequest extends Request
      */
     protected function initProtocolVersion(): void
     {
-        $this->protocolVersion = substr($_SERVER['SERVER_PROTOCOL'], 5);
+        $this->protocolVersion = substr((string) $_SERVER['SERVER_PROTOCOL'], 5);
     }
 
     /**

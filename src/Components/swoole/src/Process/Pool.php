@@ -18,11 +18,6 @@ class Pool
     use TEvent;
 
     /**
-     * 工作进程数量.
-     */
-    private int $workerNum = 0;
-
-    /**
      * 工作进程列表
      * 以 WorkerId 作为 Key.
      *
@@ -50,9 +45,8 @@ class Pool
     /**
      * @param int $workerNum
      */
-    public function __construct($workerNum)
+    public function __construct(private readonly int $workerNum)
     {
-        $this->workerNum = $workerNum;
     }
 
     protected function listenSigChild(): void

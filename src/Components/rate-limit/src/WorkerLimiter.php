@@ -37,7 +37,7 @@ class WorkerLimiter
             }
             else
             {
-                return static::defaultCallback($name);
+                static::defaultCallback($name);
             }
         }
         // 执行任务
@@ -95,7 +95,7 @@ class WorkerLimiter
                     }
                     else
                     {
-                        return static::defaultCallback($name);
+                        static::defaultCallback($name);
                     }
                 }
                 continue;
@@ -113,10 +113,8 @@ class WorkerLimiter
      * 默认限流回调.
      *
      * @param string $name 限流器名称
-     *
-     * @return mixed
      */
-    public static function defaultCallback(string $name)
+    public static function defaultCallback(string $name): never
     {
         throw new RateLimitException(sprintf('%s Worker Limit', $name));
     }
