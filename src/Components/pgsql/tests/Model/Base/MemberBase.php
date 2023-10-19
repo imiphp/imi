@@ -55,9 +55,9 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -85,13 +85,13 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setUsername(?string $username)
+    public function setUsername($username)
     {
         if (\is_string($username) && mb_strlen($username) > 32)
         {
             throw new \InvalidArgumentException('The maximum length of $username is 32');
         }
-        $this->username = $username;
+        $this->username = null === $username ? null : $username;
 
         return $this;
     }
@@ -119,13 +119,13 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setPassword(?string $password)
+    public function setPassword($password)
     {
         if (\is_string($password) && mb_strlen($password) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $password is 255');
         }
-        $this->password = $password;
+        $this->password = null === $password ? null : $password;
 
         return $this;
     }

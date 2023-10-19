@@ -54,9 +54,9 @@ abstract class TestJsonBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -90,7 +90,7 @@ abstract class TestJsonBase extends Model
      */
     public function setJsonData($jsonData)
     {
-        $this->jsonData = $jsonData;
+        $this->jsonData = null === $jsonData ? null : $jsonData;
 
         return $this;
     }

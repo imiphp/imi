@@ -55,9 +55,9 @@ abstract class TestSoftDeleteBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -84,13 +84,13 @@ abstract class TestSoftDeleteBase extends Model
      *
      * @return static
      */
-    public function setTitle(?string $title)
+    public function setTitle($title)
     {
         if (\is_string($title) && mb_strlen($title) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $title is 255');
         }
-        $this->title = $title;
+        $this->title = null === $title ? null : $title;
 
         return $this;
     }
@@ -117,9 +117,9 @@ abstract class TestSoftDeleteBase extends Model
      *
      * @return static
      */
-    public function setDeleteTime(?int $deleteTime)
+    public function setDeleteTime($deleteTime)
     {
-        $this->deleteTime = $deleteTime;
+        $this->deleteTime = null === $deleteTime ? null : (int) $deleteTime;
 
         return $this;
     }

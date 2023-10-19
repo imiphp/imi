@@ -64,9 +64,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -93,9 +93,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setDate(?string $date)
+    public function setDate($date)
     {
-        $this->date = $date;
+        $this->date = null === $date ? null : $date;
 
         return $this;
     }
@@ -122,9 +122,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTime(?string $time)
+    public function setTime($time)
     {
-        $this->time = $time;
+        $this->time = null === $time ? null : $time;
 
         return $this;
     }
@@ -151,9 +151,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimetz(?string $timetz)
+    public function setTimetz($timetz)
     {
-        $this->timetz = $timetz;
+        $this->timetz = null === $timetz ? null : $timetz;
 
         return $this;
     }
@@ -180,9 +180,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTime2(?string $time2)
+    public function setTime2($time2)
     {
-        $this->time2 = $time2;
+        $this->time2 = null === $time2 ? null : $time2;
 
         return $this;
     }
@@ -209,9 +209,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimetz2(?string $timetz2)
+    public function setTimetz2($timetz2)
     {
-        $this->timetz2 = $timetz2;
+        $this->timetz2 = null === $timetz2 ? null : $timetz2;
 
         return $this;
     }
@@ -238,9 +238,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamp(?string $timestamp)
+    public function setTimestamp($timestamp)
     {
-        $this->timestamp = $timestamp;
+        $this->timestamp = null === $timestamp ? null : $timestamp;
 
         return $this;
     }
@@ -267,9 +267,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamptz(?string $timestamptz)
+    public function setTimestamptz($timestamptz)
     {
-        $this->timestamptz = $timestamptz;
+        $this->timestamptz = null === $timestamptz ? null : $timestamptz;
 
         return $this;
     }
@@ -296,9 +296,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamp2(?string $timestamp2)
+    public function setTimestamp2($timestamp2)
     {
-        $this->timestamp2 = $timestamp2;
+        $this->timestamp2 = null === $timestamp2 ? null : $timestamp2;
 
         return $this;
     }
@@ -325,9 +325,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamptz2(?string $timestamptz2)
+    public function setTimestamptz2($timestamptz2)
     {
-        $this->timestamptz2 = $timestamptz2;
+        $this->timestamptz2 = null === $timestamptz2 ? null : $timestamptz2;
 
         return $this;
     }
@@ -354,9 +354,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setInt(?int $int)
+    public function setInt($int)
     {
-        $this->int = $int;
+        $this->int = null === $int ? null : (int) $int;
 
         return $this;
     }
@@ -383,9 +383,9 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setBigint(?int $bigint)
+    public function setBigint($bigint)
     {
-        $this->bigint = $bigint;
+        $this->bigint = null === $bigint ? null : (int) $bigint;
 
         return $this;
     }

@@ -54,9 +54,9 @@ abstract class PerformanceBase extends Model
      *
      * @return static
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null === $id ? null : (int) $id;
 
         return $this;
     }
@@ -83,13 +83,13 @@ abstract class PerformanceBase extends Model
      *
      * @return static
      */
-    public function setValue(?string $value)
+    public function setValue($value)
     {
         if (\is_string($value) && mb_strlen($value) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $value is 255');
         }
-        $this->value = $value;
+        $this->value = null === $value ? null : $value;
 
         return $this;
     }
