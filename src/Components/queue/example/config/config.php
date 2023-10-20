@@ -7,9 +7,6 @@ use Imi\Util\Imi;
 use function Imi\env;
 
 return [
-    // 项目根命名空间
-    'namespace'       => 'QueueApp',
-
     // 配置文件
     'configs'         => [
         'beans'        => __DIR__ . '/beans.php',

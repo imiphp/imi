@@ -5,8 +5,6 @@ declare(strict_types=1);
 $rootPath = \dirname(__DIR__) . \DIRECTORY_SEPARATOR;
 
 return [
-    // 项目根命名空间
-    'namespace'        => 'Imi\RoadRunner\Test\HttpServer',
     // 组件命名空间
     'components'       => [
         'RoadRunner' => 'Imi\RoadRunner',

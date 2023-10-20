@@ -182,14 +182,7 @@ class App
             }
             else
             {
-                // @deprecated 3.0
-                $appPath = self::get(AppContexts::APP_PATH) ?? $vendorParentPath;
-                $config = include $appPath . '/config/config.php';
-                if (!isset($config['namespace']))
-                {
-                    throw new \RuntimeException('imi cannot found your app namespace');
-                }
-                $namespace = $config['namespace'];
+                throw new \RuntimeException('imi cannot found your app namespace in composer.json');
             }
         }
 

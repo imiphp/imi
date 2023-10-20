@@ -5,9 +5,6 @@ declare(strict_types=1);
 use Imi\Swoole\Server\Type;
 
 return [
-    // 项目根命名空间
-    'namespace'         => 'ApiDocApp',
-
     // 配置文件
     'configs'           => [
         'beans'        => __DIR__ . '/beans.php',

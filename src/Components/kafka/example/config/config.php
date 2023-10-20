@@ -9,9 +9,6 @@ use function Imi\env;
 \defined('KAFKA_BOOTSTRAP_SERVERS') || \define('KAFKA_BOOTSTRAP_SERVERS', env('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
 
 return [
-    // 项目根命名空间
-    'namespace'         => 'KafkaApp',
-
     // 配置文件
     'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
