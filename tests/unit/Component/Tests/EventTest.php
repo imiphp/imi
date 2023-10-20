@@ -58,7 +58,7 @@ class EventTest extends BaseTest
 
         // 测试在事件中取消事件监听
         $return = null;
-        Event::one('IMITEST.EVENT.OFF', static function () use (&$return) {
+        Event::one('IMITEST.EVENT.OFF', static function () use (&$return): void {
             Event::off('IMITEST.EVENT.OFF');
             $return = 114514;
         });
