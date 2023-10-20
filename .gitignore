@@ -12,7 +12,6 @@ composer.lock
 /split-repository/vendor
 /.vscode
 *.pid
-*.macro.php
 /.phpbench
 /node_modules
 /tests/clover.xml

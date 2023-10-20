@@ -120,7 +120,6 @@ class HotUpdateProcess extends BaseProcess
             $this->defaultPath = Imi::getNamespacePaths(App::getNamespace());
         }
         $this->excludePaths[] = Imi::getRuntimePath();
-        $this->excludePaths[] = '*.macro.php';
         Log::info('Process [hotUpdate] start');
         $monitor = App::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;

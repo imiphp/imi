@@ -17,8 +17,7 @@
             "Imi\\JWT\\Test\\": "tests/"
         },
         "files": [
-            "../../../vendor/autoload.php",
-            "../macro/vendor/autoload.php"
+            "../../../vendor/autoload.php"
         ]
     },
     "scripts": {},

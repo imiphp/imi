@@ -26,7 +26,6 @@ components=(
   "swoole-tracker"
   "workerman"
   "workerman-gateway"
-  "macro"
 )
 
 analyze_component() {

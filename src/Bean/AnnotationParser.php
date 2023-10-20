@@ -1,7 +1,5 @@
 <?php
 
-# macro
-
 declare(strict_types=1);
 
 namespace Imi\Bean;
@@ -123,7 +121,6 @@ class AnnotationParser
     public function parseClass(\ReflectionClass $ref): void
     {
         $annotations = $this->getReader()->getClassAnnotations($ref);
-        # if PHP_VERSION_ID >= 80000
         if (
             \PHP_VERSION_ID >= 80000
             && $phpAnnotations = $this->getPHPClassAnnotations($ref))
@@ -137,7 +134,6 @@ class AnnotationParser
                 $annotations = $phpAnnotations;
             }
         }
-        # endif
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)

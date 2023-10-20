@@ -145,8 +145,3 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec -w /imi/src/Components/workerman-gateway ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
-
-      - name: Analyse macro
-        if: ${{ env.test_prepared && always() }}
-        run: |
-          docker exec -w /imi/src/Components/macro ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run

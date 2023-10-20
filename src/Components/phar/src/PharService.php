@@ -396,7 +396,6 @@ class PharService
         $finder->ignoreVCS(true);
 
         $finder->notName(Constant::CFG_FILE_NAME);
-        $finder->notName('*.macro.php');
         if ($this->hasBootstrapFile)
         {
             $finder->notName($this->bootstrap);
@@ -423,7 +422,7 @@ class PharService
             $finder = (new Finder())
                 ->files()
                 ->in($this->baseDir)
-                ->name(['*.php', '*.macro', 'composer.json'])
+                ->name(['*.php', 'composer.json'])
                 ->depth('== 0')
                 ->ignoreDotFiles(true)
                 ->ignoreVCS(true);
@@ -466,7 +465,7 @@ class PharService
             ->in($this->baseDir . \DIRECTORY_SEPARATOR . 'vendor')
             ->ignoreVCS(true);
 
-        $finder->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/', '*.macro.php']);
+        $finder->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/']);
         $finder->exclude([
             'doc',
             'test',

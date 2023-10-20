@@ -146,11 +146,6 @@ jobs:
         run: |
           docker exec ${ENV_SERVICE} ./dev/phpstan.sh workerman-gateway
 
-      - name: Analyse macro
-        if: ${{ env.test_prepared && always() }}
-        run: |
-          docker exec ${ENV_SERVICE} ./dev/phpstan.sh macro
-
       - name: Analyse phar
         if: ${{ env.test_prepared && always() }}
         run: |

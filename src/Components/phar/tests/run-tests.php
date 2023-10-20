@@ -12,7 +12,6 @@ const STARTUP_MAX_WAIT = 30;
 
 const LOCAL_REPOSITORIES = [
     'imiphp/imi'            => '',
-    'imiphp/imi-macro'      => 'src/Components/macro',
     'imiphp/imi-swoole'     => 'src/Components/swoole',
     'imiphp/imi-workerman'  => 'src/Components/workerman',
     'imiphp/imi-roadrunner' => 'src/Components/roadrunner',
