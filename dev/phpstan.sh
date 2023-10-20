@@ -6,7 +6,6 @@ __DIR__=$(pwd)
 
 components=(
 #  "core" 默认不处理
-  "access-control"
   "amqp"
   "apidoc"
   "fpm"

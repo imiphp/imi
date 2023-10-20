@@ -119,9 +119,6 @@ static $storeRepoMap = [
     'src/Components/workerman-gateway' => [
         'git@github.com:imiphp/imi-workerman-gateway',
     ],
-    'src/Components/access-control'    => [
-        'git@github.com:imiphp/imi-access-control',
-    ],
     'src/Components/amqp'              => [
         'git@github.com:imiphp/imi-amqp',
     ],

@@ -46,11 +46,6 @@ jobs:
         run: |
           docker exec ${ENV_SERVICE} ./dev/phpstan.sh core
 
-      - name: Analyse access-control
-        if: ${{ env.test_prepared && always() }}
-        run: |
-          docker exec ${ENV_SERVICE} ./dev/phpstan.sh access-control
-
       - name: Analyse amqp
         if: ${{ env.test_prepared && always() }}
         run: |
