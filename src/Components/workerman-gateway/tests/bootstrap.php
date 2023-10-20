@@ -131,7 +131,7 @@ function startServer(): void
                 $keyword = 'imi:master';
             }
             ttyExec(<<<CMD
-            kill `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`
+            kill -15 `ps -ef|grep "{$keyword}"|grep -v grep|awk '{print $2}'`
             CMD);
             echo 'WorkermanServers stoped!', \PHP_EOL, \PHP_EOL;
         });
