@@ -221,7 +221,6 @@
   * [AMQP](components/mq/amqp.md)
   * [Kafka](components/mq/kafka.md)
   * [JWT](components/httpserver/jwt.md)
-  * [权限控制](components/access-control.md)
   * [Smarty 模版引擎](components/smarty.md)
   * [限流](components/rate-limit.md)
   * [跨进程变量共享](components/shared-memory.md)
