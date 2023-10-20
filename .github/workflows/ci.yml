@@ -314,7 +314,7 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: pecl
           extensions: >
-            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, zip,
+            apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, zip, :opcache
             swoole-swoole/swoole-src@${{ matrix.swoole }}
         env:
           SWOOLE_CONFIGURE_OPTS: >
@@ -406,7 +406,7 @@ jobs:
         roadrunner: [2.7.*]
         extensions:
           [
-            "apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets",
+            "apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, :opcache",
           ]
     env:
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}\rr.exe
