@@ -9,11 +9,8 @@ use Swoole\Http\Response;
 
 class SwooleEmitHandler implements IEmitHandler
 {
-    private Response $response;
-
-    public function __construct(Response $response)
+    public function __construct(private readonly Response $response)
     {
-        $this->response = $response;
     }
 
     public function send(string $data): bool

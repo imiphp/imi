@@ -10,25 +10,19 @@ use Imi\Server\WebSocket\Message\IFrame;
 class MessageHandler implements IMessageHandler
 {
     /**
-     * 中间件数组.
-     *
-     * @var string[]|\Psr\Http\Server\MiddlewareInterface[]
-     */
-    protected array $middlewares = [];
-
-    /**
      * 当前执行第几个.
      */
     protected int $index = 0;
 
     /**
      * 构造方法.
-     *
-     * @param string[] $middlewares 中间件数组
      */
-    public function __construct(array $middlewares)
-    {
-        $this->middlewares = $middlewares;
+    public function __construct(
+        /**
+         * @var array<string|object> 中间件数组
+         */
+        protected array $middlewares
+    ) {
     }
 
     /**

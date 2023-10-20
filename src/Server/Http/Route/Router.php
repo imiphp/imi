@@ -102,7 +102,7 @@ class Router
                     if ($route[self::ROUTE_CASE_INSENSITIVE])
                     {
                         // @phpstan-ignore-next-line
-                        if (0 !== strcasecmp($requestPath, $route[self::ROUTE_PATH]))
+                        if (0 !== strcasecmp($requestPath, (string) $route[self::ROUTE_PATH]))
                         {
                             continue;
                         }

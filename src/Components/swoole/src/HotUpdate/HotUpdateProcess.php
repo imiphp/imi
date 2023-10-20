@@ -126,7 +126,7 @@ class HotUpdateProcess extends BaseProcess
         $time = 0;
         $this->initBuildRuntime();
         $this->startBuildRuntimeTimer();
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
             $this->running = false;
         }, \Imi\Util\ImiPriority::IMI_MIN);
         /** @phpstan-ignore-next-line */
@@ -176,7 +176,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function startBuildRuntimeTimer(): void
     {
-        $this->buildRuntimeTimerId = Timer::tick(1000, [$this, 'buildRuntimeTimer']);
+        $this->buildRuntimeTimerId = Timer::tick(1000, $this->buildRuntimeTimer(...));
     }
 
     /**
@@ -303,7 +303,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function closeBuildRuntime(): void
     {
-        $closePipes = static function (?array $buildRuntimePipes) {
+        $closePipes = static function (?array $buildRuntimePipes): void {
             if (null !== $buildRuntimePipes)
             {
                 foreach ($buildRuntimePipes as $pipe)

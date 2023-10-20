@@ -67,7 +67,7 @@ class CronProcess extends BaseProcess
         }
         $this->unixWorker = $worker = new WorkermanServerWorker('unix://' . $socketFile);
         $worker->protocol = \Imi\Workerman\Cron\Protocol\Frame::class;
-        $worker->onMessage = [$this, 'onUnixMessage'];
+        $worker->onMessage = $this->onUnixMessage(...);
         $worker->listen();
         $this->startSchedule();
     }
@@ -102,7 +102,7 @@ class CronProcess extends BaseProcess
      */
     protected function startSchedule(): void
     {
-        Timer::tick(1000, function () {
+        Timer::tick(1000, function (): void {
             $scheduler = $this->scheduler;
             foreach ($scheduler->schedule() as $task)
             {

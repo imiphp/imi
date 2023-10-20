@@ -118,7 +118,7 @@ class Server extends Base implements ISwooleWebSocketServer
      */
     protected function __bindEvents(): void
     {
-        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e) {
+        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e): void {
             // 内置事件监听
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         });
@@ -127,7 +127,7 @@ class Server extends Base implements ISwooleWebSocketServer
         $events = $this->config['events'] ?? null;
         if ($event = ($events['handshake'] ?? true))
         {
-            $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) use ($enableSyncConnect) {
+            $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) use ($enableSyncConnect): void {
                 try
                 {
                     if ($enableSyncConnect)
@@ -172,13 +172,13 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('handshake', static function () {
+            $this->swoolePort->on('handshake', static function (): void {
             });
         }
 
         if ($event = ($events['message'] ?? true))
         {
-            $this->swoolePort->on('message', \is_callable($event) ? $event : function (\Swoole\Server $server, \Swoole\WebSocket\Frame $frame) use ($enableSyncConnect) {
+            $this->swoolePort->on('message', \is_callable($event) ? $event : function (\Swoole\Server $server, \Swoole\WebSocket\Frame $frame) use ($enableSyncConnect): void {
                 try
                 {
                     if ($enableSyncConnect)
@@ -214,13 +214,13 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('message', static function () {
+            $this->swoolePort->on('message', static function (): void {
             });
         }
 
         if ($event = ($events['close'] ?? true))
         {
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) use ($enableSyncConnect) {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) use ($enableSyncConnect): void {
                 try
                 {
                     if ($enableSyncConnect)
@@ -252,13 +252,13 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('close', static function () {
+            $this->swoolePort->on('close', static function (): void {
             });
         }
 
         if ($event = ($events['request'] ?? true))
         {
-            $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
+            $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse): void {
                 try
                 {
                     if (!Worker::isInited())
@@ -291,13 +291,13 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('request', static function () {
+            $this->swoolePort->on('request', static function (): void {
             });
         }
 
         if ($event = ($events['disconnect'] ?? true))
         {
-            $this->swoolePort->on('disconnect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd) {
+            $this->swoolePort->on('disconnect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd): void {
                 try
                 {
                     RequestContext::muiltiSet([
@@ -316,7 +316,7 @@ class Server extends Base implements ISwooleWebSocketServer
         }
         else
         {
-            $this->swoolePort->on('disconnect', static function () {
+            $this->swoolePort->on('disconnect', static function (): void {
             });
         }
     }

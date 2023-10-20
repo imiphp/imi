@@ -166,7 +166,7 @@ trait TSoftDelete
      */
     public function hardDelete(): IResult
     {
-        $this->one(ModelEvents::BEFORE_DELETE, static function (BeforeDeleteEventParam $e) {
+        $this->one(ModelEvents::BEFORE_DELETE, static function (BeforeDeleteEventParam $e): void {
             $e->query->getOption()->where = [];
         });
 

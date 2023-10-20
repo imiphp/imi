@@ -38,11 +38,6 @@ class RedisStreamQueueDriver implements IQueueDriver
     protected string $prefix = 'imi:';
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 队列最大长度.
      *
      * 为0则不限制
@@ -81,15 +76,18 @@ class RedisStreamQueueDriver implements IQueueDriver
 
     private ?string $keyName = null;
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected string $name, array $config = [])
     {
-        $this->name = $name;
         $this->traitConstruct($config);
     }
 
     public function __init(): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis): void {
             if ($redis->isCluster())
             {
                 $this->keyName = '{' . $this->name . '}';
@@ -211,7 +209,7 @@ class RedisStreamQueueDriver implements IQueueDriver
      */
     public function clear($queueType = null): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis): void {
             $redis->del($this->getQueueKey());
         }, $this->poolName, true);
     }

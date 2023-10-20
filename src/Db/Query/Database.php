@@ -12,20 +12,16 @@ class Database implements IDatabase
 {
     use TRaw;
 
-    /**
-     * 数据库名.
-     */
-    protected ?string $database = null;
-
-    /**
-     * 别名.
-     */
-    protected ?string $alias = null;
-
-    public function __construct(?string $database = null, ?string $alias = null)
-    {
-        $this->database = $database;
-        $this->alias = $alias;
+    public function __construct(
+        /**
+         * 数据库名.
+         */
+        protected ?string $database = null,
+        /**
+         * 别名.
+         */
+        protected ?string $alias = null
+    ) {
     }
 
     /**

@@ -37,7 +37,7 @@ class Route extends Base implements \Stringable
      */
     protected ?string $defaultFieldName = 'url';
 
-    public function __toString()
+    public function __toString(): string
     {
         return http_build_query($this->toArray());
     }

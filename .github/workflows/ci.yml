@@ -12,6 +12,10 @@ on:
       - "README.md"
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}

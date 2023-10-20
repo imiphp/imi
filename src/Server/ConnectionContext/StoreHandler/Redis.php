@@ -95,7 +95,7 @@ class Redis implements IHandler
 
         if (0 === $workerId)
         {
-            $this->useRedis(function (RedisHandler $redis) use ($masterPID) {
+            $this->useRedis(function (RedisHandler $redis) use ($masterPID): void {
                 $this->initRedis($redis, $masterPID);
                 $this->startPing($redis);
             });
@@ -147,8 +147,8 @@ class Redis implements IHandler
         if ($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
+            $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, $this->pingTimer(...));
+            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
                 if ($this->timerId)
                 {
                     Timer::del($this->timerId);
@@ -163,7 +163,7 @@ class Redis implements IHandler
      */
     public function pingTimer(): void
     {
-        $this->useRedis(function (RedisHandler $redis) {
+        $this->useRedis(function (RedisHandler $redis): void {
             $this->ping($redis);
         });
     }
@@ -230,7 +230,7 @@ class Redis implements IHandler
         {
             $data = ($this->dataEncode)($data);
         }
-        $this->useRedis(function (RedisHandler $redis) use ($key, $data) {
+        $this->useRedis(function (RedisHandler $redis) use ($key, $data): void {
             $redis->hSet($this->getStoreKey(), $key, $data);
         });
     }
@@ -240,7 +240,7 @@ class Redis implements IHandler
      */
     public function destroy(string $key): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($key) {
+        $this->useRedis(function (RedisHandler $redis) use ($key): void {
             $redis->hDel($this->getStoreKey(), $key);
         });
     }
@@ -325,12 +325,12 @@ class Redis implements IHandler
      */
     public function bind(string $flag, $clientId): void
     {
-        $this->lock((string) $clientId, function () use ($flag, $clientId) {
+        $this->lock((string) $clientId, function () use ($flag, $clientId): void {
             $data = $this->read((string) $clientId);
             $data['__flag'] = $flag;
             $this->save((string) $clientId, $data);
         });
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId) {
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId): void {
             $redis->hSet($this->key . ':binder', $flag, $clientId);
         });
     }
@@ -343,7 +343,7 @@ class Redis implements IHandler
         $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
         if ($result)
         {
-            $this->lock((string) $clientId, function () use ($flag, $clientId) {
+            $this->lock((string) $clientId, function () use ($flag, $clientId): void {
                 $data = $this->read((string) $clientId);
                 $data['__flag'] = $flag;
                 $this->save((string) $clientId, $data);
@@ -358,9 +358,9 @@ class Redis implements IHandler
      */
     public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime) {
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime): void {
             $key = $this->key . ':binder';
-            $this->lock((string) $clientId, function () use ($flag, $clientId) {
+            $this->lock((string) $clientId, function () use ($flag, $clientId): void {
                 $data = $this->read((string) $clientId);
                 $data['__flag'] = $flag;
                 $this->save((string) $clientId, $data);
@@ -429,12 +429,12 @@ class Redis implements IHandler
 
     private function startDestroyTimer(): void
     {
-        Timer::tick(1000, function () {
+        Timer::tick(1000, function (): void {
             if ($keys = $this->destroyKeys)
             {
                 $this->destroyKeys = [];
                 $storeKey = $this->getStoreKey();
-                $this->useRedis(static function (RedisHandler $redis) use ($keys, $storeKey) {
+                $this->useRedis(static function (RedisHandler $redis) use ($keys, $storeKey): void {
                     foreach (array_chunk($keys, 1000) as $keysChunk)
                     {
                         $redis->hDel($storeKey, ...$keysChunk);

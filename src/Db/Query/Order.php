@@ -12,20 +12,16 @@ class Order implements IOrder
 {
     use TRaw;
 
-    /**
-     * 字段名.
-     */
-    protected string $fieldName = '';
-
-    /**
-     * 排序方向：asc/desc.
-     */
-    protected string $direction = '';
-
-    public function __construct(string $fieldName = '', string $direction = 'asc')
-    {
-        $this->fieldName = $fieldName;
-        $this->direction = $direction;
+    public function __construct(
+        /**
+         * 字段名.
+         */
+        protected string $fieldName = '',
+        /**
+         * 排序方向：asc/desc.
+         */
+        protected string $direction = 'asc'
+    ) {
     }
 
     /**

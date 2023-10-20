@@ -7,31 +7,25 @@ namespace Imi\Aop;
 class JoinPoint
 {
     /**
-     * 切入点类型.
-     */
-    protected string $type = '';
-
-    /**
-     * 获取切入的方法名.
-     */
-    protected string $method = '';
-
-    /**
      * 方法调用参数.
      */
     protected array $args = [];
 
-    /**
-     * 连接点所在的目标对象
-     */
-    protected ?object $target = null;
-
-    public function __construct(string $type, string $method, array &$args, object $target)
+    public function __construct(
+        /**
+         * 切入点类型.
+         */
+        protected string $type,
+        /**
+         * 获取切入的方法名.
+         */
+        protected string $method, array &$args,
+        /**
+         * 连接点所在的目标对象
+         */
+        protected ?object $target)
     {
-        $this->type = $type;
-        $this->method = $method;
         $this->args = &$args;
-        $this->target = $target;
     }
 
     /**

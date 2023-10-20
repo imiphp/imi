@@ -15,8 +15,8 @@
 /.markdownlint.json export-ignore
 /.php-cs-fixer.php export-ignore
 /package.json export-ignore
+/phpstan-baseline export-ignore
 /phpstan-components.neon export-ignore
 /phpstan.neon export-ignore
-/phpstan.sh export-ignore
 /rector.php export-ignore
 /rector.sh export-ignore

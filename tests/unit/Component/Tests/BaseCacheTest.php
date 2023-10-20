@@ -29,7 +29,7 @@ abstract class BaseCacheTest extends BaseTest
         {
             $this->markTestSkipped('Handler does not support TTL');
         }
-        $this->go(function () {
+        $this->go(function (): void {
             Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 1));
             Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
             sleep(2);
@@ -58,7 +58,7 @@ abstract class BaseCacheTest extends BaseTest
         {
             $this->markTestSkipped('Handler does not support TTL');
         }
-        $this->go(function () {
+        $this->go(function (): void {
             $values = [
                 'k1'    => 'v1',
                 'k2'    => 'v2',

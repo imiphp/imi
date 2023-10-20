@@ -18,7 +18,7 @@ class PHPUnitHook implements BeforeFirstTestHook, AfterLastTestHook
     public function executeBeforeFirstTest(): void
     {
         $this->channel = $channel = new Channel(1);
-        Coroutine::create(static fn () => App::run('KafkaApp', SwooleApp::class, static function () use ($channel) {
+        Coroutine::create(static fn () => App::run('KafkaApp', SwooleApp::class, static function () use ($channel): void {
             $channel->push(1);
             $channel->pop();
         }));

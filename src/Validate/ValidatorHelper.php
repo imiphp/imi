@@ -346,27 +346,18 @@ class ValidatorHelper
      */
     public static function compare($valueLeft, string $operation, $valueRight): bool
     {
-        switch ($operation)
+        return match ($operation)
         {
-            case '==':
-                return $valueLeft == $valueRight;
-            case '!=':
-                return $valueLeft != $valueRight;
-            case '===':
-                return $valueLeft === $valueRight;
-            case '!==':
-                return $valueLeft !== $valueRight;
-            case '<':
-                return $valueLeft < $valueRight;
-            case '<=':
-                return $valueLeft <= $valueRight;
-            case '>':
-                return $valueLeft > $valueRight;
-            case '>=':
-                return $valueLeft >= $valueRight;
-            default:
-                throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation));
-        }
+            '=='    => $valueLeft == $valueRight,
+            '!='    => $valueLeft != $valueRight,
+            '==='   => $valueLeft === $valueRight,
+            '!=='   => $valueLeft !== $valueRight,
+            '<'     => $valueLeft < $valueRight,
+            '<='    => $valueLeft <= $valueRight,
+            '>'     => $valueLeft > $valueRight,
+            '>='    => $valueLeft >= $valueRight,
+            default => throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation)),
+        };
     }
 
     /**

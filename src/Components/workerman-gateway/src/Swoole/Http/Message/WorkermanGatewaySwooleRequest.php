@@ -15,20 +15,14 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
 {
     class WorkermanGatewaySwooleRequest extends Request
     {
-        /**
-         * 对应的服务器.
-         */
-        protected ?ISwooleServer $serverInstance = null;
-
-        protected string $clientId = '';
-
-        protected array $data = [];
-
-        public function __construct(ISwooleServer $server, string $clientId, array $data)
-        {
-            $this->serverInstance = $server;
-            $this->clientId = $clientId;
-            $this->data = $data;
+        public function __construct(
+            /**
+             * 对应的服务器.
+             */
+            protected ?ISwooleServer $serverInstance,
+            protected string $clientId,
+            protected array $data
+        ) {
         }
 
         /**
@@ -36,7 +30,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
          */
         protected function initProtocolVersion(): void
         {
-            [, $this->protocolVersion] = explode('/', $this->data['server']['SERVER_PROTOCOL']);
+            [, $this->protocolVersion] = explode('/', (string) $this->data['server']['SERVER_PROTOCOL']);
         }
 
         /**
@@ -47,9 +41,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             $headers = [];
             foreach ($this->data['server'] as $name => $value)
             {
-                if (str_starts_with($name, 'HTTP_'))
+                if (str_starts_with((string) $name, 'HTTP_'))
                 {
-                    $headers[str_replace('_', '-', substr($name, 5))] = $value;
+                    $headers[str_replace('_', '-', substr((string) $name, 5))] = $value;
                 }
             }
             $this->mergeHeaders($headers);

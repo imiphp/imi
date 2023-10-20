@@ -99,11 +99,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 指定查询字段.
      *
-     * @param string ...$fields 查询字段
-     *
      * @return static
      */
-    public function field(string ...$fields): self;
+    public function field(mixed ...$fields): self;
 
     /**
      * 指定查询字段，使用SQL原生语句.

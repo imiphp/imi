@@ -51,7 +51,7 @@ trait TProcess
 
     public function getUnixSocketFile(): string
     {
-        return '/tmp/imi.process.' . md5(App::get(AppContexts::APP_PATH)) . '.' . spl_object_id($this) . '.sock';
+        return '/tmp/imi.process.' . md5((string) App::get(AppContexts::APP_PATH)) . '.' . spl_object_id($this) . '.sock';
     }
 
     public function createUnixSocketClient(): Client
@@ -80,10 +80,10 @@ trait TProcess
         else
         {
             $this->unixSocketClient = $client = $this->createUnixSocketClient();
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client) {
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client): void {
                 $client->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);
-            Coroutine::create(function () use ($client) {
+            Coroutine::create(function () use ($client): void {
                 while ($client->isConnected())
                 {
                     $data = $client->recv(1);
@@ -152,10 +152,10 @@ trait TProcess
             return;
         }
         $this->unixSocketRunning = true;
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
             $this->stopUnixSocketServer();
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
-        Coroutine::create(function () {
+        Coroutine::create(function (): void {
             $socketFile = $this->getUnixSocketFile();
             if (file_exists($socketFile))
             {
@@ -169,7 +169,7 @@ trait TProcess
                 'package_body_offset'   => 4,
             ]);
             // 接收到新的连接请求 并自动创建一个协程
-            $server->handle(function (Connection $conn) {
+            $server->handle(function (Connection $conn): void {
                 while ($this->unixSocketRunning)
                 {
                     // 接收数据

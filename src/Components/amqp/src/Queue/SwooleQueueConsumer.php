@@ -22,16 +22,13 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
          */
         private ?Channel $resultChannel = null;
 
-        /**
-         * 本地缓存的队列长度.
-         */
-        protected int $queueLength = 0;
-
-        public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
+        public function __construct(
+            /**
+             * 本地缓存的队列长度.
+             */
+            protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
         {
             parent::__construct();
-
-            $this->queueLength = $queueLength;
             $this->poolName = $poolName;
 
             $list = [];
@@ -104,7 +101,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
 
                 return $this->resultChannel->pop(0.001) ?: null;
             }
-            catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
+            catch (\PhpAmqpLib\Exception\AMQPTimeoutException)
             {
             }
 
@@ -121,7 +118,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 foreach ((array) $consumer->queue as $queueName)
                 {
                     $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
-                    $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
+                    $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass): void {
                         /** @var \Imi\AMQP\Message $messageInstance */
                         $messageInstance = new $messageClass();
                         $messageInstance->setAMQPMessage($message);
@@ -134,7 +131,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        protected function consume(IMessage $message)
+        protected function consume(IMessage $message): void
         {
             $this->resultChannel->push($message);
         }

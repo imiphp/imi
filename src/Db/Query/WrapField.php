@@ -9,17 +9,8 @@ use Imi\Db\Query\Interfaces\IWrapField;
 
 class WrapField extends Field implements IWrapField
 {
-    protected array $subFields = [];
-
-    protected string $wrapLeft = '';
-
-    protected string $wrapRight = '';
-
-    public function __construct(string $wrapLeft, array $subFields, string $wrapRight, ?string $alias = null)
+    public function __construct(protected string $wrapLeft, protected array $subFields, protected string $wrapRight, ?string $alias = null)
     {
-        $this->wrapLeft = $wrapLeft;
-        $this->subFields = $subFields;
-        $this->wrapRight = $wrapRight;
         $this->alias = $alias;
     }
 

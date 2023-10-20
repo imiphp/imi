@@ -18,32 +18,27 @@ class Join implements IJoin
      */
     protected ?Table $table = null;
 
-    /**
-     * 在 join b on a.id=b.id 中的 a.id.
-     */
-    protected ?string $left = null;
-
-    /**
-     * 在 join b on a.id=b.id 中的 =.
-     */
-    protected ?string $operation = null;
-
-    /**
-     * join b on a.id=b.id 中的 b.id.
-     */
-    protected ?string $right = null;
-
-    /**
-     * where条件.
-     */
-    protected ?IBaseWhere $where = null;
-
-    /**
-     * join类型，默认inner.
-     */
-    protected string $type = 'inner';
-
-    public function __construct(IQuery $query, ?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner')
+    public function __construct(IQuery $query, ?string $table = null,
+        /**
+         * 在 join b on a.id=b.id 中的 a.id.
+         */
+        protected ?string $left = null,
+        /**
+         * 在 join b on a.id=b.id 中的 =.
+         */
+        protected ?string $operation = null,
+        /**
+         * join b on a.id=b.id 中的 b.id.
+         */
+        protected ?string $right = null, ?string $tableAlias = null,
+        /**
+         * where条件.
+         */
+        protected ?IBaseWhere $where = null,
+        /**
+         * join类型，默认inner.
+         */
+        protected string $type = 'inner')
     {
         $this->table = $thisTable = new Table();
         if (null !== $table)
@@ -54,11 +49,6 @@ class Join implements IJoin
         {
             $thisTable->setAlias($tableAlias);
         }
-        $this->left = $left;
-        $this->operation = $operation;
-        $this->right = $right;
-        $this->where = $where;
-        $this->type = $type;
     }
 
     /**

@@ -8,14 +8,12 @@ use Imi\Swoole\Process\Contract\IProcess;
 
 abstract class BaseProcess implements IProcess
 {
-    /**
-     * 数据.
-     */
-    protected array $data = [];
-
-    public function __construct(array $data = [])
+    public function __construct(
+        /**
+         * 数据.
+         */
+        protected array $data = [])
     {
-        $this->data = $data;
         if ($data)
         {
             foreach ($data as $k => $v)

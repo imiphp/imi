@@ -10,16 +10,15 @@ use Imi\Pool\BasePoolResource;
 class RedisResource extends BasePoolResource
 {
     /**
-     * Redis 对象
-     */
-    private ?RedisHandler $redis = null;
-
-    /**
      * 连接配置.
      */
     private array $config = [];
 
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, RedisHandler $redis, array $config)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool,
+        /**
+         * Redis 对象
+         */
+        private ?RedisHandler $redis, array $config)
     {
         parent::__construct($pool);
 
@@ -31,8 +30,6 @@ class RedisResource extends BasePoolResource
         {
             $config['db'] = (int) $config['db'];
         }
-
-        $this->redis = $redis;
         $this->config = $config;
     }
 

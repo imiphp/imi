@@ -29,7 +29,7 @@ class TestConsumer extends BaseConsumer
      */
     protected function consume(IMessage $message)
     {
-        var_dump(__CLASS__, $message->getBody(), \get_class($message));
+        var_dump(__CLASS__, $message->getBody(), $message::class);
         Redis::set('imi-amqp:consume:1:' . $message->getMemberId(), $message->getBody());
 
         return ConsumerResult::ACK;

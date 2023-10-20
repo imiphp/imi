@@ -11,11 +11,6 @@ use Imi\Util\Socket\IPEndPoint;
 class Frame implements ISwooleWebSocketFrame
 {
     /**
-     * swoole websocket frame.
-     */
-    protected ?\Swoole\WebSocket\Frame $frame = null;
-
-    /**
      * 客户端地址
      */
     protected ?IPEndPoint $clientAddress = null;
@@ -27,9 +22,12 @@ class Frame implements ISwooleWebSocketFrame
      */
     protected $data;
 
-    public function __construct(\Swoole\Websocket\Frame $frame)
+    public function __construct(
+        /**
+         * swoole websocket frame.
+         */
+        protected ?\Swoole\WebSocket\Frame $frame)
     {
-        $this->frame = $frame;
         $this->data = RequestContext::getServerBean(DataParser::class)->decode($frame->data);
     }
 

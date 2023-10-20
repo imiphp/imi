@@ -15,30 +15,22 @@ class Where extends BaseWhere implements IWhere
     use TRaw;
 
     /**
-     * 字段名.
-     */
-    protected ?string $fieldName = null;
-
-    /**
-     * 比较符.
-     */
-    protected ?string $operation = null;
-
-    /**
-     * 值
-     *
-     * @var mixed
-     */
-    protected $value;
-
-    /**
      * @param mixed $value
      */
-    public function __construct(?string $fieldName = null, ?string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
+    public function __construct(
+        /**
+         * 字段名.
+         */
+        protected ?string $fieldName = null,
+        /**
+         * 比较符.
+         */
+        protected ?string $operation = null,
+        /**
+         * 值
+         */
+        protected $value = null, string $logicalOperator = LogicalOperator::AND)
     {
-        $this->fieldName = $fieldName;
-        $this->operation = $operation;
-        $this->value = $value;
         $this->logicalOperator = $logicalOperator;
     }
 

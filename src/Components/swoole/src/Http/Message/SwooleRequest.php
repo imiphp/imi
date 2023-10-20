@@ -14,24 +14,18 @@ use Imi\Util\Uri;
 class SwooleRequest extends Request
 {
     /**
-     * swoole的http请求对象
+     * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $serverInstance
      */
-    protected ?\Swoole\Http\Request $swooleRequest = null;
-
-    /**
-     * 对应的服务器.
-     *
-     * @var \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server
-     */
-    protected ?ISwooleServer $serverInstance = null;
-
-    /**
-     * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
-     */
-    public function __construct(ISwooleServer $server, \Swoole\Http\Request $request)
-    {
-        $this->swooleRequest = $request;
-        $this->serverInstance = $server;
+    public function __construct(
+        /**
+         * 对应的服务器.
+         */
+        protected ?ISwooleServer $serverInstance,
+        /**
+         * swoole的http请求对象
+         */
+        protected ?\Swoole\Http\Request $swooleRequest
+    ) {
     }
 
     /**
@@ -39,7 +33,7 @@ class SwooleRequest extends Request
      */
     protected function initProtocolVersion(): void
     {
-        [, $this->protocolVersion] = explode('/', $this->swooleRequest->server['server_protocol'], 2);
+        [, $this->protocolVersion] = explode('/', (string) $this->swooleRequest->server['server_protocol'], 2);
     }
 
     /**

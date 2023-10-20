@@ -12,17 +12,14 @@ use Imi\Util\Stream\StreamMode;
 
 class RoadRunnerResponse extends Response
 {
-    protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker = null;
-
     /**
      * 是否可写.
      */
     protected bool $isWritable = true;
 
-    public function __construct(?\Spiral\RoadRunner\Http\PSR7Worker $worker = null)
+    public function __construct(protected ?\Spiral\RoadRunner\Http\PSR7Worker $worker = null)
     {
         parent::__construct();
-        $this->worker = $worker;
     }
 
     /**
@@ -65,7 +62,7 @@ class RoadRunnerResponse extends Response
 
     protected function cookieArrayToHeader(array $cookie): string
     {
-        $header = rawurlencode($cookie['key']) . '=' . rawurlencode($cookie['value']);
+        $header = rawurlencode((string) $cookie['key']) . '=' . rawurlencode((string) $cookie['value']);
         if ($cookie['expire'] > 0)
         {
             $header .= '; Expires=' . gmdate(\DateTime::COOKIE, $cookie['expire']);

@@ -19,11 +19,6 @@ use Imi\Util\Imi;
 abstract class BaseApp implements IApp
 {
     /**
-     * 命名空间.
-     */
-    protected string $namespace = '';
-
-    /**
      * 应用模式的配置.
      */
     protected array $appConfig = [];
@@ -31,15 +26,18 @@ abstract class BaseApp implements IApp
     /**
      * 构造方法.
      */
-    public function __construct(string $namespace)
-    {
-        $this->namespace = $namespace;
+    public function __construct(
+        /**
+         * 命名空间.
+         */
+        protected string $namespace
+    ) {
     }
 
     protected function __loadConfig(): void
     {
         // 加载框架配置
-        Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
+        Config::addConfig('@imi', include \dirname((string) IMI_PATH) . '/config/config.php');
 
         $appPath = App::get(AppContexts::APP_PATH_PHYSICS);
         // @phpstan-ignore-next-line

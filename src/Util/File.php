@@ -79,7 +79,7 @@ class File
             && \Swoole\Coroutine::getCid() > -1)
         {
             $channel = new \Swoole\Coroutine\Channel(16);
-            Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames) {
+            Coroutine::create(static function () use ($channel, $dirPath, $pattern, $extensionNames): void {
                 if (false === static::enumFileSwoole($channel, $dirPath, $pattern, $extensionNames))
                 {
                     $channel->push(false);
@@ -234,7 +234,7 @@ class File
      * @param string $dir  目录路径
      * @param int    $mode 目录的权限
      */
-    public static function createDir(string $dir, int $mode = 0775): bool
+    public static function createDir(string $dir, int $mode = 0o775): bool
     {
         if ('' === $dir)
         {
@@ -260,7 +260,7 @@ class File
      * @param string $file 文件路径
      * @param int    $mode 文件的权限
      */
-    public static function createFile(string $file, string $content = '', int $mode = 0775): bool
+    public static function createFile(string $file, string $content = '', int $mode = 0o775): bool
     {
         if ('' === $file)
         {
@@ -307,7 +307,7 @@ class File
                 }
             }
         }
-        catch (\ErrorException $_)
+        catch (\ErrorException)
         {
             // 兼容警告转异常
             return true;

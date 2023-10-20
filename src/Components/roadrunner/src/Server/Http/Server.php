@@ -174,7 +174,7 @@ class Server extends BaseServer
                     $rrProcess->setTty(true);
                 }
             }
-            catch (\Throwable $th)
+            catch (\Throwable)
             {
             }
             /** @var Process|null $hotUpdateProcess */

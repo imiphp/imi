@@ -55,23 +55,6 @@ abstract class Query implements IQuery
     protected array $binds = [];
 
     /**
-     * 数据库操作对象
-     */
-    protected ?IDb $db = null;
-
-    /**
-     * 连接池名称.
-     */
-    protected ?string $poolName = null;
-
-    /**
-     * 查询结果类的类名，为null则为数组.
-     *
-     * @var class-string<Model>|null
-     */
-    protected ?string $modelClass = null;
-
-    /**
      * 查询类型.
      */
     protected ?int $queryType = null;
@@ -124,12 +107,23 @@ abstract class Query implements IQuery
      */
     protected array $beforeBuildSqlCallbacks = [];
 
-    public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
+    public function __construct(
+        /**
+         * 数据库操作对象
+         */
+        protected ?IDb $db = null,
+        /**
+         * 查询结果类的类名，为null则为数组.
+         *
+         * @var class-string<Model>|null
+         */
+        protected ?string $modelClass = null,
+        /**
+         * 连接池名称.
+         */
+        protected ?string $poolName = null, ?int $queryType = null, ?string $prefix = null)
     {
-        $this->db = $db;
         $this->isInitDb = (bool) $db;
-        $this->poolName = $poolName;
-        $this->modelClass = $modelClass;
         $this->queryType = $queryType ?? QueryType::WRITE;
         $this->isInitQueryType = null !== $queryType;
         if (null === $prefix)
@@ -296,7 +290,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function field(...$fields): self
+    public function field(mixed ...$fields): self
     {
         $option = $this->option;
         if (!isset($fields[1]) && \is_array($fields[0]))
@@ -909,9 +903,9 @@ abstract class Query implements IQuery
             $sql = (new $builderClass($this))->build();
             if ($alias)
             {
-                // @phpstan-ignore-next-line
                 $originBinds = $binds;
                 $binds = $this->binds;
+                // @phpstan-ignore-next-line todo 此处 $binds 为无效判断，已经利用 $alias 在前一个 if 中置空了。
                 if ($binds)
                 {
                     $this->binds = array_merge($originBinds, $binds);
@@ -1404,7 +1398,7 @@ abstract class Query implements IQuery
         $orderDirection = $options->getOrderDirection();
         if (null !== $orderDirection)
         {
-            $this->beforeBuildSqlCallbacks[] = function () use ($scoreFieldName, $options, $orderDirection) {
+            $this->beforeBuildSqlCallbacks[] = function () use ($scoreFieldName, $options, $orderDirection): void {
                 if (null === $scoreFieldName || '' === $scoreFieldName)
                 {
                     $this->orderRaw('(' . $options->toScoreSql($this) . ') ' . $orderDirection);

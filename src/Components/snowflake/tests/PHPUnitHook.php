@@ -12,7 +12,7 @@ class PHPUnitHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
-        App::run('Imi\Snowflake\Test', CliApp::class, static function () {
+        App::run('Imi\Snowflake\Test', CliApp::class, static function (): void {
         });
     }
 }

@@ -80,7 +80,7 @@ class Imi
             {
                 continue;
             }
-            $result = str_replace('{' . $k . '}', (string) $v, $result);
+            $result = str_replace('{' . $k . '}', (string) $v, (string) $result);
         }
 
         return $result;

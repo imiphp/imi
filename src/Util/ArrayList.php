@@ -12,18 +12,16 @@ use Imi\Util\Interfaces\IArrayable;
 class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, \Countable
 {
     /**
-     * 限定的数组列表成员类型.
-     */
-    private string $itemType = '';
-
-    /**
      * 数组列表.
      */
     private array $list = [];
 
-    public function __construct(string $itemType, array $list = [])
+    public function __construct(
+        /**
+         * 限定的数组列表成员类型.
+         */
+        private readonly string $itemType, array $list = [])
     {
-        $this->itemType = $itemType;
         if ($list)
         {
             foreach ($list as $item)
@@ -71,7 +69,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         if (!$value instanceof $this->itemType)
         {
             $type = \gettype($value);
-            throw new \InvalidArgumentException('ArrayList item must be an instance of ' . $this->itemType . ', ' . ('object' === $type ? \get_class($value) : $type) . ' given');
+            throw new \InvalidArgumentException('ArrayList item must be an instance of ' . $this->itemType . ', ' . ('object' === $type ? $value::class : $type) . ' given');
         }
         if (null === $offset)
         {

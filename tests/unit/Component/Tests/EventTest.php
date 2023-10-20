@@ -16,7 +16,7 @@ class EventTest extends BaseTest
 {
     public function testNormal(): void
     {
-        Event::on('IMITEST.EVENT.A', function (EventParam $e) {
+        Event::on('IMITEST.EVENT.A', function (EventParam $e): void {
             Assert::assertEquals('IMITEST.EVENT.A', $e->getEventName());
             Assert::assertEquals($this, $e->getTarget());
             $data = $e->getData();
@@ -34,7 +34,7 @@ class EventTest extends BaseTest
 
     public function testOne(): void
     {
-        Event::one('IMITEST.EVENT.B', function (EventParam $e) {
+        Event::one('IMITEST.EVENT.B', function (EventParam $e): void {
             Assert::assertEquals('IMITEST.EVENT.B', $e->getEventName());
             Assert::assertEquals($this, $e->getTarget());
             $data = $e->getData();
@@ -59,11 +59,11 @@ class EventTest extends BaseTest
 
     public function testOff(): void
     {
-        $callable1 = static function (EventParam $e) {
+        $callable1 = static function (EventParam $e): void {
             Assert::assertTrue(false);
         };
 
-        $callable2 = static function (EventParam $e) {
+        $callable2 = static function (EventParam $e): void {
             Assert::assertTrue(false);
         };
         Event::on('IMITEST.EVENT.C', $callable1);
@@ -100,7 +100,7 @@ class EventTest extends BaseTest
     public function testClassListener2(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
-        $testClass->on('test2', static function (EventParam $e) use ($testClass) {
+        $testClass->on('test2', static function (EventParam $e) use ($testClass): void {
             Assert::assertEquals('test2', $e->getEventName());
             Assert::assertEquals($testClass, $e->getTarget());
             $data = $e->getData();
@@ -114,7 +114,7 @@ class EventTest extends BaseTest
     public function testClassListenerOff(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
-        $callable = static function (EventParam $e) {
+        $callable = static function (EventParam $e): void {
             Assert::assertTrue(false);
         };
         $testClass->on('test3', $callable);

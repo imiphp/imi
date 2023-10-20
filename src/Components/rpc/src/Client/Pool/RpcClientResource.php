@@ -12,15 +12,13 @@ use Imi\Rpc\Client\IRpcClient;
  */
 class RpcClientResource extends BasePoolResource
 {
-    /**
-     * rpcClient对象
-     */
-    private ?IRpcClient $client = null;
-
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, IRpcClient $client)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool,
+        /**
+         * rpcClient对象
+         */
+        private readonly ?IRpcClient $client)
     {
         parent::__construct($pool);
-        $this->client = $client;
     }
 
     /**

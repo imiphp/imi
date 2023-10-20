@@ -63,10 +63,10 @@ return [
 
     // 构建配置
     'build'             => [
-        'before' => static function () {
+        'before' => static function (): void {
             // 构建前执行的代码
         },
-        'after'  => static function () {
+        'after'  => static function (): void {
             // 构建后执行的代码
         },
     ],

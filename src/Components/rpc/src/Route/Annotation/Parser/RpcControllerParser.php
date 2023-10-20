@@ -21,7 +21,7 @@ class RpcControllerParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
-        $eventName = 'IMI.RPC.ANNOTATION.PARSER:' . \get_class($annotation);
+        $eventName = 'IMI.RPC.ANNOTATION.PARSER:' . $annotation::class;
         Event::trigger($eventName, compact('annotation', 'className', 'target', 'targetName'), $this);
     }
 
@@ -37,7 +37,7 @@ class RpcControllerParser extends BaseParser
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
         foreach ($namespaces as &$namespace)
         {
-            if (!str_ends_with($namespace, '\\'))
+            if (!str_ends_with((string) $namespace, '\\'))
             {
                 $namespace .= '\\';
             }
@@ -49,7 +49,7 @@ class RpcControllerParser extends BaseParser
             $class = $option->getClass();
             foreach ($namespaces as $namespace)
             {
-                if (str_starts_with($class, $namespace))
+                if (str_starts_with($class, (string) $namespace))
                 {
                     $result[$class] = $option;
                     continue 2;

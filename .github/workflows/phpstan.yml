@@ -11,6 +11,10 @@ on:
       - "README.md"
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     runs-on: ubuntu-20.04
@@ -40,114 +44,114 @@ jobs:
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh core
 
       - name: Analyse access-control
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/access-control/vendor/autoload.php src/Components/access-control
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh access-control
 
       - name: Analyse amqp
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/amqp/vendor/autoload.php src/Components/amqp
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh amqp
 
       - name: Analyse apidoc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/apidoc/vendor/autoload.php src/Components/apidoc
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh apidoc
 
       - name: Analyse fpm
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/fpm/vendor/autoload.php src/Components/fpm
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh fpm
 
       - name: Analyse grpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/grpc/vendor/autoload.php src/Components/grpc
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh grpc
 
       - name: Analyse jwt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/jwt/vendor/autoload.php src/Components/jwt
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh jwt
 
       - name: Analyse kafka
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/kafka/vendor/autoload.php src/Components/kafka
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh kafka
 
       - name: Analyse mqtt
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/mqtt/vendor/autoload.php src/Components/mqtt
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh mqtt
 
       - name: Analyse pgsql
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/pgsql/vendor/autoload.php src/Components/pgsql
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh pgsql
 
       - name: Analyse queue
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/queue/vendor/autoload.php src/Components/queue
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh queue
 
       - name: Analyse rate-limit
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/rate-limit/vendor/autoload.php src/Components/rate-limit
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh rate-limit
 
       - name: Analyse roadrunner
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/roadrunner/vendor/autoload.php src/Components/roadrunner
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh roadrunner
 
       - name: Analyse rpc
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/rpc/vendor/autoload.php src/Components/rpc
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh rpc
 
       - name: Analyse shared-memory
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/shared-memory/vendor/autoload.php src/Components/shared-memory
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh shared-memory
 
       - name: Analyse smarty
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/smarty/vendor/autoload.php src/Components/smarty
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh smarty
 
       - name: Analyse snowflake
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/snowflake/vendor/autoload.php src/Components/snowflake
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh snowflake
 
       - name: Analyse swoole
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/swoole/vendor/autoload.php src/Components/swoole
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh swoole
 
       - name: Analyse swoole-tracker
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/swoole-tracker/vendor/autoload.php src/Components/swoole-tracker
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh swoole-tracker
 
       - name: Analyse workerman
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/workerman/vendor/autoload.php src/Components/workerman
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh workerman
 
       - name: Analyse workerman-gateway
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/workerman-gateway/vendor/autoload.php src/Components/workerman-gateway
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh workerman-gateway
 
       - name: Analyse macro
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/macro/vendor/autoload.php src/Components/macro
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh macro
 
       - name: Analyse phar
         if: ${{ env.test_prepared && always() }}
         run: |
-          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G --configuration=phpstan-components.neon --autoload-file=src/Components/phar/vendor/autoload.php src/Components/phar
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh phar

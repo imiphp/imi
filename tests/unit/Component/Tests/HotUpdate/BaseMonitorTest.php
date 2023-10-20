@@ -33,7 +33,7 @@ abstract class BaseMonitorTest extends BaseTest
         $this->assertEquals([$file], $monitor->getChangedFiles());
         $this->assertFalse($monitor->isChanged());
 
-        mkdir($excludePath, 0777, true);
+        mkdir($excludePath, 0o777, true);
         $this->assertFalse($monitor->isChanged());
 
         $file = $excludePath . \DIRECTORY_SEPARATOR . 'test1.txt';

@@ -10,18 +10,6 @@ namespace Imi\Cron;
 class CronTask
 {
     /**
-     * 任务唯一ID.
-     */
-    private string $id = '';
-
-    /**
-     * 任务类型.
-     *
-     * \Imi\Cron\Consts\CronTaskType 类常量
-     */
-    private string $type = '';
-
-    /**
      * 任务执行回调，可以是callable类型，也可以是 task、process 名.
      *
      * @var string|callable
@@ -36,49 +24,9 @@ class CronTask
     private array $cronRules = [];
 
     /**
-     * 数据.
-     *
-     * @var mixed
-     */
-    private $data;
-
-    /**
-     * 定时任务唯一性设置
-     * 当前实例唯一: current
-     * 所有实例唯一: all
-     * 不唯一: null.
-     */
-    private ?string $unique = null;
-
-    /**
-     * 用于锁的 `Redis` 连接池名.
-     */
-    private ?string $redisPool = null;
-
-    /**
-     * 获取锁超时时间，单位：秒.
-     */
-    private float $lockWaitTimeout = 0;
-
-    /**
-     * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
-     */
-    private float $maxExecutionTime = 0;
-
-    /**
      * 获取上一次运行时间.
      */
     private int $lastRunTime = -1;
-
-    /**
-     * 每次启动服务强制执行.
-     */
-    private bool $force = false;
-
-    /**
-     * 是否记录成功日志.
-     */
-    private bool $successLog = true;
 
     /**
      * 构造方法.
@@ -86,19 +34,51 @@ class CronTask
      * @param callable|string $task
      * @param mixed           $data
      */
-    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true)
+    public function __construct(
+        /**
+         * 任务唯一ID.
+         */
+        private readonly string $id,
+        /**
+         * 任务类型.
+         *
+         * \Imi\Cron\Consts\CronTaskType 类常量
+         */
+        private readonly string $type, $task, array $cronRules,
+        /**
+         * 数据.
+         */
+        private $data,
+        /**
+         * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
+         */
+        private readonly float $maxExecutionTime = 3,
+        /**
+         * 定时任务唯一性设置
+         * 当前实例唯一: current
+         * 所有实例唯一: all
+         * 不唯一: null.
+         */
+        private readonly ?string $unique = null,
+        /**
+         * 用于锁的 `Redis` 连接池名.
+         */
+        private readonly ?string $redisPool = null,
+        /**
+         * 获取锁超时时间，单位：秒.
+         */
+        private readonly float $lockWaitTimeout = 3,
+        /**
+         * 每次启动服务强制执行.
+         */
+        private readonly bool $force = false,
+        /**
+         * 是否记录成功日志.
+         */
+        private readonly bool $successLog = true)
     {
-        $this->id = $id;
-        $this->type = $type;
         $this->task = $task;
         $this->cronRules = $this->parseCronRule($cronRules);
-        $this->data = $data;
-        $this->unique = $unique;
-        $this->redisPool = $redisPool;
-        $this->lockWaitTimeout = $lockWaitTimeout;
-        $this->maxExecutionTime = $maxExecutionTime;
-        $this->force = $force;
-        $this->successLog = $successLog;
     }
 
     /**

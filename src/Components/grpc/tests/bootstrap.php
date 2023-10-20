@@ -32,10 +32,8 @@ function checkHttpServerStatus()
 
 /**
  * 开启服务器.
- *
- * @return void
  */
-function startServer()
+function startServer(): void
 {
     $dirname = \dirname(__DIR__);
     $servers = [
@@ -49,13 +47,13 @@ function startServer()
     $callbacks = [];
     foreach ($servers as $name => $options)
     {
-        $callbacks[] = static function () use ($options, $name) {
+        $callbacks[] = static function () use ($options, $name): void {
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
             shell_exec($cmd);
 
-            register_shutdown_function(static function () use ($name, $options) {
+            register_shutdown_function(static function () use ($name, $options): void {
                 \Swoole\Runtime::enableCoroutine(false);
                 // stop server
                 $cmd = $options['stop'];
@@ -76,7 +74,7 @@ function startServer()
     }
 
     batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
-    register_shutdown_function(static function () {
+    register_shutdown_function(static function (): void {
         checkPorts([8081]);
     });
 }

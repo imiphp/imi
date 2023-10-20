@@ -21,10 +21,8 @@ class TestTool
 
     /**
      * @Operation("test")
-     *
-     * @return void
      */
-    public function test()
+    public function test(): void
     {
         // ACOperation::create('文章新增');
         // ACOperation::create('文章更新');

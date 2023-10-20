@@ -49,7 +49,7 @@ class Local implements IHandler
     {
         if ($this->gcInteval > 0)
         {
-            Timer::tick((int) ($this->gcInteval * 1000), [$this, 'gc']);
+            Timer::tick((int) ($this->gcInteval * 1000), $this->gc(...));
         }
     }
 
@@ -86,7 +86,7 @@ class Local implements IHandler
      */
     public function delayDestroy(string $key, int $ttl): void
     {
-        Timer::after($ttl * 1000, function () use ($key) {
+        Timer::after($ttl * 1000, function () use ($key): void {
             $this->destroy($key);
         });
     }

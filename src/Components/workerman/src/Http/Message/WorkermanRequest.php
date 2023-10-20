@@ -13,29 +13,21 @@ use Workerman\Worker;
 
 class WorkermanRequest extends Request
 {
-    /**
-     * Workerman 的 http 请求对象
-     */
-    protected ?\Workerman\Protocols\Http\Request $workermanRequest = null;
-
-    /**
-     * Workerman 的 Worker 对象
-     */
-    protected ?Worker $worker = null;
-
-    /**
-     * 协议.
-     */
-    protected string $scheme = '';
-
-    protected ?TcpConnection $connection = null;
-
-    public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request, string $scheme = 'http')
-    {
-        $this->workermanRequest = $request;
-        $this->worker = $worker;
-        $this->connection = $connection;
-        $this->scheme = $scheme;
+    public function __construct(
+        /**
+         * Workerman 的 Worker 对象
+         */
+        protected ?Worker $worker,
+        protected ?TcpConnection $connection,
+        /**
+         * Workerman 的 http 请求对象
+         */
+        protected ?\Workerman\Protocols\Http\Request $workermanRequest,
+        /**
+         * 协议.
+         */
+        protected string $scheme = 'http'
+    ) {
     }
 
     /**

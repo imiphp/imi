@@ -153,7 +153,7 @@ class ConnectionContext
         }
         $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
-        $result = $store->lock($clientIdStr, static function () use ($store, $name, $value, $clientIdStr) {
+        $result = $store->lock($clientIdStr, static function () use ($store, $name, $value, $clientIdStr): void {
             $data = $store->read($clientIdStr);
             $data[$name] = $value;
             $store->save($clientIdStr, $data);
@@ -181,7 +181,7 @@ class ConnectionContext
         }
         $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
-        $result = $store->lock($clientIdStr, static function () use ($store, $data, $clientIdStr) {
+        $result = $store->lock($clientIdStr, static function () use ($store, $data, $clientIdStr): void {
             $storeData = $store->read($clientIdStr);
             foreach ($data as $name => $value)
             {
@@ -213,7 +213,7 @@ class ConnectionContext
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
-        $store->lock($clientIdStr, static function () use ($callable, $store, $clientIdStr) {
+        $store->lock($clientIdStr, static function () use ($callable, $store, $clientIdStr): void {
             $data = $store->read($clientIdStr);
             $result = $callable($data);
             if ($result)

@@ -1007,9 +1007,9 @@ class Query
                         $tmpRow[$keysMap[$key]] = $value;
                     }
                 }
-                elseif (str_starts_with($key, $table))
+                elseif (str_starts_with((string) $key, $table))
                 {
-                    $keysMap[$key] = $realKey = substr($key, $tableLength);
+                    $keysMap[$key] = $realKey = substr((string) $key, $tableLength);
                     $tmpRow[$realKey] = $value;
                 }
                 else

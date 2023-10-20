@@ -12,11 +12,6 @@ use Imi\Server\WebSocket\Route\Annotation\WSConfig;
 class RouteItem
 {
     /**
-     * 注解.
-     */
-    public ?Route $annotation = null;
-
-    /**
      * 回调.
      *
      * @var callable
@@ -33,27 +28,24 @@ class RouteItem
      */
     public ?WSConfig $wsConfig = null;
 
-    /**
-     * 其它配置项.
-     */
-    public array $options = [];
-
-    /**
-     * 视图注解.
-     */
-    public ?View $view = null;
-
-    /**
-     * 视图配置注解.
-     */
-    public ?BaseViewOption $viewOption = null;
-
-    public function __construct(Route $annotation, callable $callable, View $view, ?BaseViewOption $viewOption = null, array $options = [])
+    public function __construct(
+        /**
+         * 注解.
+         */
+        public ?Route $annotation, callable $callable,
+        /**
+         * 视图注解.
+         */
+        public ?View $view,
+        /**
+         * 视图配置注解.
+         */
+        public ?BaseViewOption $viewOption = null,
+        /**
+         * 其它配置项.
+         */
+        public array $options = [])
     {
-        $this->annotation = $annotation;
         $this->callable = $callable;
-        $this->view = $view;
-        $this->viewOption = $viewOption;
-        $this->options = $options;
     }
 }

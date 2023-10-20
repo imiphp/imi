@@ -26,7 +26,7 @@ class WorkerStart implements IWorkerStartEventListener
     {
         if (0 === Worker::getWorkerId())
         {
-            goWait(static function () {
+            goWait(static function (): void {
                 sleep(1);
                 $cron = new Cron();
                 $cron->id = 'CronRandomWorkerTest';

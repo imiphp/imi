@@ -11,15 +11,12 @@ use PHPUnit\Framework\TestCase;
 
 class JWTTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testJWT()
+    public function testJWT(): void
     {
         $data = [
             'memberId'  => 19260817,
         ];
-        $token = JWT::getToken($data, null, static function (Builder $builder) {
+        $token = JWT::getToken($data, null, static function (Builder $builder): void {
             if (3 === JWT::getJwtPackageVersion())
             {
                 $builder->expiresAt(strtotime('1926-08-17'));
@@ -44,10 +41,7 @@ class JWTTest extends TestCase
         $token2 = JWT::parseToken($tokenStr, null, true); // 验证
     }
 
-    /**
-     * @return void
-     */
-    public function testJWTValidation()
+    public function testJWTValidation(): void
     {
         $excepted = [
             'memberId'  => 19260817,
@@ -59,10 +53,7 @@ class JWTTest extends TestCase
         $this->assertEquals(json_encode($excepted), json_encode($data));
     }
 
-    /**
-     * @return void
-     */
-    public function testJWTValidateFail()
+    public function testJWTValidateFail(): void
     {
         $this->expectException(\Imi\JWT\Exception\InvalidTokenException::class);
         /** @var \Imi\JWT\Test\Test\A $a */

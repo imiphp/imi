@@ -37,8 +37,8 @@ class ErrorLog
         error_reporting($this->level);
         register_shutdown_function([$this, 'onShutdown']);
         // @phpstan-ignore-next-line
-        set_error_handler([$this, 'onError'], $this->catchLevel);
-        set_exception_handler([$this, 'onException']);
+        set_error_handler($this->onError(...), $this->catchLevel);
+        set_exception_handler($this->onException(...));
     }
 
     /**
@@ -50,33 +50,13 @@ class ErrorLog
         {
             throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
         }
-        switch ($errno)
+        $method = match ($errno)
         {
-            case \E_ERROR:
-            case \E_PARSE:
-            case \E_CORE_ERROR:
-            case \E_COMPILE_ERROR:
-            case \E_USER_ERROR:
-            case \E_RECOVERABLE_ERROR:
-                $method = 'error';
-                break;
-            case \E_WARNING:
-            case \E_CORE_WARNING:
-            case \E_COMPILE_WARNING:
-            case \E_USER_WARNING:
-                $method = 'warning';
-                break;
-            case \E_NOTICE:
-            case \E_USER_NOTICE:
-                $method = 'notice';
-                break;
-            case \E_STRICT:
-            case \E_DEPRECATED:
-            case \E_USER_DEPRECATED:
-            default:
-                $method = 'info';
-                break;
-        }
+            \E_ERROR, \E_PARSE, \E_CORE_ERROR, \E_COMPILE_ERROR, \E_USER_ERROR, \E_RECOVERABLE_ERROR => 'error',
+            \E_WARNING, \E_CORE_WARNING, \E_COMPILE_WARNING, \E_USER_WARNING => 'warning',
+            \E_NOTICE, \E_USER_NOTICE => 'notice',
+            default => 'info',
+        };
         Log::$method($errstr);
     }
 

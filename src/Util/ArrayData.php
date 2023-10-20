@@ -9,14 +9,12 @@ namespace Imi\Util;
  */
 class ArrayData implements \ArrayAccess, \Countable
 {
-    /**
-     * 数据.
-     */
-    protected array $__data = [];
-
-    public function __construct(array $data)
-    {
-        $this->__data = $data;
+    public function __construct(
+        /**
+         * 数据.
+         */
+        protected array $__data
+    ) {
     }
 
     /**
@@ -249,7 +247,7 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * @param mixed $key
      */
-    public function __unset($key)
+    public function __unset($key): void
     {
         $this->remove($key);
     }

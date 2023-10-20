@@ -14,26 +14,6 @@ use Workerman\Worker;
 class WorkermanResponse extends Response
 {
     /**
-     * Workerman 的 http 响应对象
-     */
-    protected ?\Workerman\Protocols\Http\Response $workermanResponse = null;
-
-    /**
-     * Workerman 的 http 请求对象
-     */
-    protected ?WorkermanRequest $request = null;
-
-    /**
-     * Workerman 的 Worker 对象
-     */
-    protected ?Worker $worker = null;
-
-    /**
-     * Workerman 连接对象
-     */
-    protected ?TcpConnection $connection = null;
-
-    /**
      * 响应头是否可写.
      */
     protected bool $isHeaderWritable = true;
@@ -45,12 +25,24 @@ class WorkermanResponse extends Response
 
     protected bool $emitterWritting = false;
 
-    public function __construct(Worker $worker, TcpConnection $connection, ?\Workerman\Protocols\Http\Response $response = null, ?WorkermanRequest $request = null)
+    public function __construct(
+        /**
+         * Workerman 的 Worker 对象
+         */
+        protected ?Worker $worker,
+        /**
+         * Workerman 连接对象
+         */
+        protected ?TcpConnection $connection,
+        /**
+         * Workerman 的 http 响应对象
+         */
+        protected ?\Workerman\Protocols\Http\Response $workermanResponse = null,
+        /**
+         * Workerman 的 http 请求对象
+         */
+        protected ?WorkermanRequest $request = null)
     {
-        $this->workermanResponse = $response;
-        $this->worker = $worker;
-        $this->connection = $connection;
-        $this->request = $request;
         parent::__construct();
     }
 

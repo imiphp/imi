@@ -17,16 +17,6 @@ use Imi\Util\Text;
 class Statement extends PgsqlBaseStatement implements IPgsqlStatement
 {
     /**
-     * @var mixed
-     */
-    protected $queryResult;
-
-    /**
-     * 数据库操作对象
-     */
-    protected ?IPgsqlDb $db = null;
-
-    /**
      * 绑定数据.
      */
     protected array $bindValues = [];
@@ -37,21 +27,6 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     protected array $result = [];
 
     /**
-     * 最后执行过的SQL语句.
-     */
-    protected string $lastSql = '';
-
-    /**
-     * SQL 参数映射.
-     */
-    protected ?array $sqlParamsMap = null;
-
-    /**
-     * statement 名字.
-     */
-    protected ?string $statementName = null;
-
-    /**
      * 最后插入ID.
      */
     protected string $lastInsertId = '';
@@ -59,13 +34,24 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * @param mixed $queryResult
      */
-    public function __construct(IPgsqlDb $db, $queryResult, string $originSql, ?string $statementName = null, ?array $sqlParamsMap = null)
+    public function __construct(
+        /**
+         * 数据库操作对象
+         */
+        protected ?IPgsqlDb $db, protected $queryResult,
+        /**
+         * 最后执行过的SQL语句.
+         */
+        protected string $lastSql,
+        /**
+         * statement 名字.
+         */
+        protected ?string $statementName = null,
+        /**
+         * SQL 参数映射.
+         */
+        protected ?array $sqlParamsMap = null)
     {
-        $this->db = $db;
-        $this->queryResult = $queryResult;
-        $this->lastSql = $originSql;
-        $this->statementName = $statementName;
-        $this->sqlParamsMap = $sqlParamsMap;
         if ($queryResult)
         {
             /** @var \Swoole\Coroutine\PostgreSQL $pgDb */

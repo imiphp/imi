@@ -12,23 +12,6 @@ use Imi\Util\Socket\IPEndPoint;
 class ReceiveData implements IReceiveData
 {
     /**
-     * 客户端连接的标识符.
-     *
-     * @var string|int
-     */
-    protected $clientId;
-
-    /**
-     * Reactor线程ID.
-     */
-    protected int $reactorId = 0;
-
-    /**
-     * 接收到的数据.
-     */
-    protected string $data = '';
-
-    /**
      * 接收到的数据.
      */
     protected ?Packet $formatData = null;
@@ -38,15 +21,16 @@ class ReceiveData implements IReceiveData
      */
     protected ?IPEndPoint $clientAddress = null;
 
-    /**
-     * @param string|int $clientId
-     * @param mixed      $data
-     */
-    public function __construct($clientId, int $reactorId, $data)
+    public function __construct(
+        /**
+         * 客户端连接的标识符.
+         */
+        protected int|string $clientId,
+        /**
+         * Reactor线程ID.
+         */
+        protected int $reactorId, protected string $data)
     {
-        $this->clientId = $clientId;
-        $this->reactorId = $reactorId;
-        $this->data = $data;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }
 

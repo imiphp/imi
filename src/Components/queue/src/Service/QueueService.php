@@ -99,11 +99,7 @@ class QueueService
             $name = $config->getName();
         }
         $queueInstances = &$this->queueInstances;
-        if (isset($queueInstances[$name]))
-        {
-            return $queueInstances[$name];
-        }
 
-        return $queueInstances[$name] = App::newInstance($config->getDriver(), $name, $config->getConfig());
+        return $queueInstances[$name] ?? ($queueInstances[$name] = App::newInstance($config->getDriver(), $name, $config->getConfig()));
     }
 }

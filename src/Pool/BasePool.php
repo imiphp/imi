@@ -12,11 +12,6 @@ use Imi\Util\ArrayUtil;
 abstract class BasePool implements IPool
 {
     /**
-     * 池子名称.
-     */
-    protected string $name = '';
-
-    /**
      * 池子存储.
      *
      * @var \Imi\Pool\PoolItem[]
@@ -55,9 +50,12 @@ abstract class BasePool implements IPool
     /**
      * @param mixed $resourceConfig
      */
-    public function __construct(string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    public function __construct(
+        /**
+         * 池子名称.
+         */
+        protected string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
-        $this->name = $name;
         if (null !== $config)
         {
             $this->config = $config;

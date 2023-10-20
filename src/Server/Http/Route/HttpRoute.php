@@ -55,27 +55,27 @@ class HttpRoute
         $checkCallables = [];
         if (null !== $annotation->paramsGet)
         {
-            $checkCallables[] = [self::class, 'checkParamsGet'];
+            $checkCallables[] = self::checkParamsGet(...);
         }
         if (null !== $annotation->paramsPost)
         {
-            $checkCallables[] = [self::class, 'checkParamsPost'];
+            $checkCallables[] = self::checkParamsPost(...);
         }
         if (null !== $annotation->paramsBody)
         {
-            $checkCallables[] = [self::class, 'checkParamsBody'];
+            $checkCallables[] = self::checkParamsBody(...);
         }
         if (null !== $annotation->header)
         {
-            $checkCallables[] = [self::class, 'checkHeader'];
+            $checkCallables[] = self::checkHeader(...);
         }
         if (null !== $annotation->requestMime)
         {
-            $checkCallables[] = [self::class, 'checkRequestMime'];
+            $checkCallables[] = self::checkRequestMime(...);
         }
         if (null !== $annotation->domain)
         {
-            $checkCallables[] = [self::class, 'checkDomain'];
+            $checkCallables[] = self::checkDomain(...);
         }
         if (null === $annotation)
         {

@@ -26,7 +26,7 @@ class Random
      */
     public static function float(float $min = \PHP_INT_MIN, float $max = \PHP_INT_MAX, ?int $precision = null): float
     {
-        $result = $min + mt_rand() / mt_getrandmax() * ($max - $min);
+        $result = $min + random_int(0, mt_getrandmax()) / mt_getrandmax() * ($max - $min);
         if (null !== $precision)
         {
             return round($result, $precision);
@@ -50,12 +50,12 @@ class Random
      */
     public static function text(string $chars, int $min, ?int $max = null): string
     {
-        $length = mt_rand($min, $max ?? $min);
+        $length = random_int($min, $max ?? $min);
         $charLength = mb_strlen($chars);
         $result = '';
         for ($i = 0; $i < $length; ++$i)
         {
-            $result .= mb_substr($chars, mt_rand(1, $charLength) - 1, 1);
+            $result .= mb_substr($chars, random_int(1, $charLength) - 1, 1);
         }
 
         return $result;
@@ -66,12 +66,12 @@ class Random
      */
     public static function bytes(string $bytes, int $min, ?int $max = null): string
     {
-        $length = mt_rand($min, $max ?? $min);
+        $length = random_int($min, $max ?? $min);
         $charLength = \strlen($bytes);
         $result = str_repeat(' ', $length);
         for ($i = 0; $i < $length; ++$i)
         {
-            $result[$i] = $bytes[mt_rand(1, $charLength) - 1];
+            $result[$i] = $bytes[random_int(1, $charLength) - 1];
         }
 
         return $result;

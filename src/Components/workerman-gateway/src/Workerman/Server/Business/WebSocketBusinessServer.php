@@ -50,7 +50,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::one('IMI.WORKERMAN.SERVER.WORKER_START', function () {
+        Event::one('IMI.WORKERMAN.SERVER.WORKER_START', function (): void {
             $this->bindBusinessEvents();
         });
     }
@@ -70,7 +70,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
 
         $property = $refClass->getProperty('_eventOnConnect');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId) {
+        $property->setValue($worker, function (string $clientId): void {
             RequestContext::muiltiSet([
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -88,7 +88,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
 
         $property = $refClass->getProperty('_eventOnWebSocketConnect');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId, array $data) {
+        $property->setValue($worker, function (string $clientId, array $data): void {
             try
             {
                 $request = new WorkermanRequest($this->worker, $clientId, $data);
@@ -117,7 +117,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
 
         $property = $refClass->getProperty('_eventOnClose');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId) {
+        $property->setValue($worker, function (string $clientId): void {
             RequestContext::muiltiSet([
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -131,7 +131,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
 
         $property = $refClass->getProperty('_eventOnMessage');
         $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId, $data) {
+        $property->setValue($worker, function (string $clientId, $data): void {
             try
             {
                 RequestContext::muiltiSet([

@@ -14,13 +14,6 @@ class ImiRedisResolver implements SequenceResolver
      */
     protected string $prefix = '';
 
-    /**
-     * Redis 连接池名称.
-     *
-     * 为 NULL 则使用默认连接池
-     */
-    protected ?string $redisPool = null;
-
     public const SEQUENCE_LUA = <<<'LUA'
     if(redis.call('exists',KEYS[1])<1 and redis.call('psetex',KEYS[1],ARGV[2],ARGV[1]))
     then
@@ -30,9 +23,14 @@ class ImiRedisResolver implements SequenceResolver
     end
     LUA;
 
-    public function __construct(?string $redisPool = null)
-    {
-        $this->redisPool = $redisPool;
+    public function __construct(
+        /**
+         * Redis 连接池名称.
+         *
+         * 为 NULL 则使用默认连接池
+         */
+        protected ?string $redisPool = null
+    ) {
     }
 
     /**

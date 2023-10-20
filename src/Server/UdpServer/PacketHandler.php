@@ -10,25 +10,19 @@ use Imi\Server\UdpServer\Message\IPacketData;
 class PacketHandler implements IPacketHandler
 {
     /**
-     * 中间件数组.
-     *
-     * @var string[]|\Imi\Server\UdpServer\Middleware\IMiddleware[]
-     */
-    protected array $middlewares = [];
-
-    /**
      * 当前执行第几个.
      */
     protected int $index = 0;
 
     /**
      * 构造方法.
-     *
-     * @param string[] $middlewares 中间件数组
      */
-    public function __construct(array $middlewares)
-    {
-        $this->middlewares = $middlewares;
+    public function __construct(
+        /**
+         * @var array<string|object> 中间件数组
+         */
+        protected array $middlewares
+    ) {
     }
 
     /**

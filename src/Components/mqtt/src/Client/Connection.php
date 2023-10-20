@@ -13,26 +13,6 @@ use BinSoul\Net\Mqtt\Message;
 class Connection extends DefaultConnection
 {
     /**
-     * 主机地址
-     */
-    private string $host = '';
-
-    /**
-     * 端口号.
-     */
-    private int $port = 0;
-
-    /**
-     * 超时时间，单位：秒.
-     */
-    private ?float $timeout = null;
-
-    /**
-     * Ping 时间间隔，为 NULL 则不自动 Ping.
-     */
-    private ?float $pingTimespan = null;
-
-    /**
      * 使用 SSL 连接.
      */
     private bool $ssl = false;
@@ -76,10 +56,22 @@ class Connection extends DefaultConnection
      * {@inheritDoc}
      */
     public function __construct(
-        string $host,
-        int $port,
-        ?float $timeout = null,
-        ?float $pingTimespan = null,
+        /**
+         * 主机地址
+         */
+        private string $host,
+        /**
+         * 端口号.
+         */
+        private int $port,
+        /**
+         * 超时时间，单位：秒.
+         */
+        private ?float $timeout = null,
+        /**
+         * Ping 时间间隔，为 NULL 则不自动 Ping.
+         */
+        private ?float $pingTimespan = null,
         string $username = '',
         #[\SensitiveParameter]
         string $password = '',
@@ -90,10 +82,6 @@ class Connection extends DefaultConnection
         bool $clean = true
     ) {
         parent::__construct($username, $password, $will, $clientId, $keepAlive, $protocol, $clean);
-        $this->host = $host;
-        $this->port = $port;
-        $this->timeout = $timeout;
-        $this->pingTimespan = $pingTimespan;
     }
 
     /**

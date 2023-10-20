@@ -106,7 +106,7 @@ trait TLockableParser
             };
         }
 
-        if (!$locker->lock(static function () use ($taskCallable, &$result) {
+        if (!$locker->lock(static function () use ($taskCallable, &$result): void {
             // 执行原方法
             $result = $taskCallable();
         }, $afterLockCallable))

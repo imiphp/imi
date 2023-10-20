@@ -41,16 +41,11 @@ class MQTTClient
     private Connection $connection;
 
     /**
-     * 事件监听器.
-     */
-    private IMQTTClientListener $listener;
-
-    /**
      * 已连接状态
      */
     private bool $connected = false;
 
-    private DefaultPacketFactory $packetFactory;
+    private readonly DefaultPacketFactory $packetFactory;
 
     /**
      * Ping 定时器ID.
@@ -72,7 +67,11 @@ class MQTTClient
         Packet::TYPE_PINGRESP   => 'ping',
     ];
 
-    public function __construct(array $config, IMQTTClientListener $listener)
+    public function __construct(array $config,
+        /**
+         * 事件监听器.
+         */
+        private readonly IMQTTClientListener $listener)
     {
         if (!isset($config['host']))
         {
@@ -83,7 +82,6 @@ class MQTTClient
             throw new \InvalidArgumentException('MQTTClient config must have "port"');
         }
         $this->packetFactory = App::getBean(\BinSoul\Net\Mqtt\DefaultPacketFactory::class);
-        $this->listener = $listener;
         if ($configWill = $config['will'] ?? null)
         {
             $will = new Message($configWill['topic'] ?? '', $configWill['payload'] ?? '', $configWill['qosLevel'] ?? 0, $configWill['retain'] ?? false, $configWill['duplicate'] ?? false);
@@ -339,7 +337,7 @@ class MQTTClient
         }
         else
         {
-            throw new SendException(sprintf('Send %s failed! error: [%s]%s', Imi::getClassShortName(\get_class($packet)), $client->errCode, $client->errMsg));
+            throw new SendException(sprintf('Send %s failed! error: [%s]%s', Imi::getClassShortName($packet::class), $client->errCode, $client->errMsg));
         }
     }
 
@@ -378,7 +376,7 @@ class MQTTClient
         $pingTimespan = $this->connection->getPingTimespan();
         if ($pingTimespan > 0)
         {
-            $this->pingTimerId = Timer::tick((int) ($pingTimespan * 1000), [$this, 'ping']);
+            $this->pingTimerId = Timer::tick((int) ($pingTimespan * 1000), $this->ping(...));
         }
         while ($this->connected)
         {

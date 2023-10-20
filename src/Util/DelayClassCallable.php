@@ -9,21 +9,12 @@ use Imi\Bean\ReflectionContainer;
 
 class DelayClassCallable
 {
-    private string $className = '';
-
-    private string $methodName = '';
-
-    private array $constructArgs = [];
-
     private ?bool $returnsReference = null;
 
     private ?object $instance = null;
 
-    public function __construct(string $className, string $methodName, array $constructArgs = [])
+    public function __construct(private readonly string $className, private readonly string $methodName, private readonly array $constructArgs = [])
     {
-        $this->className = $className;
-        $this->methodName = $methodName;
-        $this->constructArgs = $constructArgs;
     }
 
     public function getClassName(): string

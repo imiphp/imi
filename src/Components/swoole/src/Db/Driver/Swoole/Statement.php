@@ -15,21 +15,9 @@ use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     /**
-     * Statement.
-     *
-     * @var \Swoole\Coroutine\MySQL\Statement|array
-     */
-    protected $statement;
-
-    /**
      * 数据.
      */
     protected array $data = [];
-
-    /**
-     * 数据库操作对象
-     */
-    protected ?IMysqlDb $db = null;
 
     /**
      * 绑定数据.
@@ -42,28 +30,30 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     protected array $result = [];
 
     /**
-     * 最后执行过的SQL语句.
-     */
-    protected string $lastSql = '';
-
-    /**
-     * SQL 参数映射.
-     */
-    protected ?array $sqlParamsMap = null;
-
-    /**
      * @param \Swoole\Coroutine\MySQL\Statement|array $statement
      */
-    public function __construct(IMysqlDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(
+        /**
+         * 数据库操作对象
+         */
+        protected ?IMysqlDb $db,
+        /**
+         * Statement.
+         */
+        protected $statement,
+        /**
+         * 最后执行过的SQL语句.
+         */
+        protected string $lastSql,
+        /**
+         * SQL 参数映射.
+         */
+        protected ?array $sqlParamsMap = null)
     {
-        $this->db = $db;
-        $this->statement = $statement;
         if (\is_array($statement))
         {
             $this->result = $statement;
         }
-        $this->lastSql = $originSql;
-        $this->sqlParamsMap = $sqlParamsMap;
     }
 
     /**

@@ -11,22 +11,18 @@ use Imi\Util\Http\Consts\StatusCode;
 
 class SwooleResponse extends Response
 {
-    /**
-     * swoole响应对象
-     */
-    protected ?\Swoole\Http\Response $swooleResponse = null;
-
-    /**
-     * 对应的服务器.
-     */
-    protected ?ISwooleServer $serverInstance = null;
-
     protected bool $emitterWritting = false;
 
-    public function __construct(ISwooleServer $server, \Swoole\Http\Response $response)
+    public function __construct(
+        /**
+         * 对应的服务器.
+         */
+        protected ?ISwooleServer $serverInstance,
+        /**
+         * swoole响应对象
+         */
+        protected ?\Swoole\Http\Response $swooleResponse)
     {
-        $this->swooleResponse = $response;
-        $this->serverInstance = $server;
         parent::__construct();
     }
 

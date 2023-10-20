@@ -33,12 +33,8 @@ class Driver extends PgsqlBase
     protected function buildDSN(): string
     {
         $option = $this->option;
-        if (isset($option['dsn']))
-        {
-            return $option['dsn'];
-        }
 
-        return 'pgsql:'
+        return $option['dsn'] ?? 'pgsql:'
                  . 'host=' . ($option['host'] ?? '127.0.0.1')
                  . ';port=' . ($option['port'] ?? '5432')
                  . ';dbname=' . ($option['database'] ?? 'database')

@@ -31,7 +31,7 @@ class FileMTime extends BaseMonitor
     {
         $includePaths = &$this->includePaths;
 
-        $excludePaths = array_map([Imi::class, 'parseRule'], $this->excludePaths);
+        $excludePaths = array_map(Imi::parseRule(...), $this->excludePaths);
 
         $this->excludeRule = $excludeRule = '/^(?!((' . implode(')|(', $excludePaths) . ')))/';
 
@@ -42,7 +42,7 @@ class FileMTime extends BaseMonitor
                 foreach ($enumResult as $file)
                 {
                     $fullPath = $file->getFullPath();
-                    if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
+                    if ('' !== $excludeRule && !preg_match($excludeRule, (string) $fullPath))
                     {
                         $file->setContinue(false);
                         continue;
@@ -93,7 +93,7 @@ class FileMTime extends BaseMonitor
                     foreach ($enumResult as $file)
                     {
                         $fullPath = $file->getFullPath();
-                        if ('' !== $excludeRule && !preg_match($excludeRule, $fullPath))
+                        if ('' !== $excludeRule && !preg_match($excludeRule, (string) $fullPath))
                         {
                             $file->setContinue(false);
                             continue;

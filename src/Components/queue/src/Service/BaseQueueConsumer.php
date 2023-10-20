@@ -19,18 +19,16 @@ abstract class BaseQueueConsumer
     protected QueueService $imiQueue;
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 是否正在工作.
      */
     protected bool $working = false;
 
-    public function __construct(?string $name = null)
-    {
-        $this->name = $name;
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected ?string $name = null
+    ) {
     }
 
     /**

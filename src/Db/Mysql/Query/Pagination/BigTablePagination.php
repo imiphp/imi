@@ -12,17 +12,8 @@ use Imi\Util\Pagination;
 
 class BigTablePagination
 {
-    protected IQuery $query;
-
-    protected string $idField = '';
-
-    protected bool $cleanWhere = true;
-
-    public function __construct(IQuery $query, string $idField = 'id', bool $cleanWhere = true)
+    public function __construct(protected IQuery $query, protected string $idField = 'id', protected bool $cleanWhere = true)
     {
-        $this->query = $query;
-        $this->idField = $idField;
-        $this->cleanWhere = $cleanWhere;
     }
 
     public function getQuery(): IQuery

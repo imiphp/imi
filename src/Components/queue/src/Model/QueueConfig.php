@@ -7,11 +7,6 @@ namespace Imi\Queue\Model;
 class QueueConfig
 {
     /**
-     * 队列名称.
-     */
-    private string $name = '';
-
-    /**
      * 使用的队列驱动.
      */
     private string $driver = 'RedisQueueDriver';
@@ -53,9 +48,12 @@ class QueueConfig
      */
     private string $consumer = '';
 
-    public function __construct(string $name, array $data)
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        private readonly string $name, array $data)
     {
-        $this->name = $name;
         if (isset($data['driver']))
         {
             $this->driver = $data['driver'];

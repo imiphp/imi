@@ -8,7 +8,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputDefinition;
 
-class ImiArgvInput extends Input
+class ImiArgvInput extends Input implements \Stringable
 {
     private array $tokens = [];
     private array $parsed = [];
@@ -71,7 +71,7 @@ class ImiArgvInput extends Input
             {
                 $parseOptions = false;
             }
-            elseif ($parseOptions && str_starts_with($token, '--'))
+            elseif ($parseOptions && str_starts_with((string) $token, '--'))
             {
                 $this->parseLongOption($token);
             }
@@ -335,14 +335,14 @@ class ImiArgvInput extends Input
         {
             if ($token && '-' === $token[0])
             {
-                if (str_contains($token, '=') || !isset($this->tokens[$i + 1]))
+                if (str_contains((string) $token, '=') || !isset($this->tokens[$i + 1]))
                 {
                     continue;
                 }
 
                 // If it's a long option, consider that everything after "--" is the option name.
                 // Otherwise, use the last char (if it's a short option set, only the last one can take a value with space separator)
-                $name = '-' === $token[1] ? substr($token, 2) : substr($token, -1);
+                $name = '-' === $token[1] ? substr((string) $token, 2) : substr((string) $token, -1);
                 if (!isset($this->options[$name]) && !$this->definition->hasShortcut($name))
                 {
                     // noop
@@ -385,8 +385,8 @@ class ImiArgvInput extends Input
                 // Options with values:
                 //   For long options, test for '--option=' at beginning
                 //   For short options, test for '-o' at beginning
-                $leading = str_starts_with($value, '--') ? $value . '=' : $value;
-                if ($token === $value || '' !== $leading && str_starts_with($token, (string) $leading))
+                $leading = str_starts_with((string) $value, '--') ? $value . '=' : $value;
+                if ($token === $value || '' !== $leading && str_starts_with((string) $token, (string) $leading))
                 {
                     return true;
                 }
@@ -421,10 +421,10 @@ class ImiArgvInput extends Input
                 // Options with values:
                 //   For long options, test for '--option=' at beginning
                 //   For short options, test for '-o' at beginning
-                $leading = str_starts_with($value, '--') ? $value . '=' : $value;
-                if ('' !== $leading && str_starts_with($token, $leading))
+                $leading = str_starts_with((string) $value, '--') ? $value . '=' : $value;
+                if ('' !== $leading && str_starts_with((string) $token, (string) $leading))
                 {
-                    return substr($token, \strlen($leading));
+                    return substr((string) $token, \strlen((string) $leading));
                 }
             }
         }
@@ -434,10 +434,8 @@ class ImiArgvInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $tokens = array_map(function (string $token): string {
             if (preg_match('{^(-[^=]+=)(.+)}', $token, $match))

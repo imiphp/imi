@@ -449,17 +449,14 @@ abstract class RedisModel extends BaseModel
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
-        switch ($redisEntity->storage)
+
+        return match ($redisEntity->storage)
         {
-            case RedisStorageMode::STRING:
-                return static::__getRedis($this)->del($this->__getKey()) > 0;
-            case RedisStorageMode::HASH:
-                return static::__getRedis($this)->hDel($this->__getKey(), $this->__getMember()) > 0;
-            case RedisStorageMode::HASH_OBJECT:
-                return static::__getRedis($this)->del($this->__getKey()) > 0;
-            default:
-                throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
-        }
+            RedisStorageMode::STRING      => static::__getRedis($this)->del($this->__getKey()) > 0,
+            RedisStorageMode::HASH        => static::__getRedis($this)->hDel($this->__getKey(), $this->__getMember()) > 0,
+            RedisStorageMode::HASH_OBJECT => static::__getRedis($this)->del($this->__getKey()) > 0,
+            default                       => throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage)),
+        };
     }
 
     /**

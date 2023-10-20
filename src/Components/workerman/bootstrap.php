@@ -7,7 +7,7 @@ namespace Imi\Workerman;
 use Imi\App;
 use Imi\Event\Event;
 
-return static function () {
+return static function (): void {
     $path = null;
 
     if (\defined('IMI_IN_PHAR') && IMI_IN_PHAR)
@@ -16,7 +16,7 @@ return static function () {
     }
     elseif (!class_exists(\Imi\App::class))
     {
-        (static function () use (&$path) {
+        (static function () use (&$path): void {
             foreach ([
                 $_SERVER['PWD'] ?? null,
                 getcwd(),

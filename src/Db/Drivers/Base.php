@@ -11,14 +11,12 @@ abstract class Base implements IDb
 {
     use THashCode;
 
-    /**
-     * 连接配置.
-     */
-    protected array $option = [];
-
-    public function __construct(array $option = [])
-    {
-        $this->option = $option;
+    public function __construct(
+        /**
+         * 连接配置.
+         */
+        protected array $option = []
+    ) {
     }
 
     /**

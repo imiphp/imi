@@ -35,10 +35,8 @@ class HttpsTest extends BaseTest
 
     /**
      * 控制器指定 server 测试.
-     *
-     * @return void
      */
-    public function testOutsideController()
+    public function testOutsideController(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'testOutside');

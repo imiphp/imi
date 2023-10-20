@@ -195,7 +195,7 @@ class ModelGenerate extends BaseCommand
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
-            if ($usePrefix = ('' !== $tablePrefix && str_starts_with($table, $tablePrefix)))
+            if ($usePrefix = ('' !== $tablePrefix && str_starts_with((string) $table, (string) $tablePrefix)))
             {
                 $tableName = Text::ltrimText($table, $tablePrefix);
             }
@@ -276,7 +276,7 @@ class ModelGenerate extends BaseCommand
     {
         foreach ($prefixs as $prefix)
         {
-            $prefixLen = \strlen($prefix);
+            $prefixLen = \strlen((string) $prefix);
             if (substr($table, 0, $prefixLen) === $prefix)
             {
                 $table = substr($table, $prefixLen);
@@ -320,7 +320,7 @@ class ModelGenerate extends BaseCommand
             $data['fields'][] = [
                 'name'              => $field['attname'],
                 'varName'           => Text::toCamelName($field['attname']),
-                'type'              => $type = ('_' === $field['typname'][0] ? substr($field['typname'], 1) : $field['typname']),
+                'type'              => $type = ('_' === $field['typname'][0] ? substr((string) $field['typname'], 1) : $field['typname']),
                 'ndims'             => $field['attndims'],
                 'phpType'           => $phpType . '|null',
                 'phpDefinitionType' => $phpDefinitionType,
@@ -392,7 +392,7 @@ class ModelGenerate extends BaseCommand
         $isArray = $field['typelem'] > 0;
         if ($isArray)
         {
-            $type = substr($field['typname'], 1);
+            $type = substr((string) $field['typname'], 1);
         }
         else
         {
@@ -427,38 +427,18 @@ class ModelGenerate extends BaseCommand
             $result = Db::query($poolName)->execute('select ' . $default);
             $resultAfterExec = $result->getScalar();
         }
-        catch (\Throwable $_)
+        catch (\Throwable)
         {
             $resultAfterExec = $default;
         }
-        switch ($type)
+
+        return match ($type)
         {
-            case 'int':
-            case 'int2':
-            case 'int4':
-            case 'int8':
-            case 'smallint':
-            case 'bigint':
-            case 'smallserial':
-            case 'serial':
-            case 'bigserial':
-            case 'serial2':
-            case 'serial4':
-            case 'serial8':
-                return (int) $resultAfterExec;
-            case 'bool':
-            case 'boolean':
-                return (bool) $resultAfterExec;
-            case 'double':
-            case 'float4':
-            case 'float8':
-                return (float) $resultAfterExec;
-            case 'varchar':
-            case 'char':
-            case 'text':
-                return (string) $resultAfterExec;
-            default:
-                return null;
-        }
+            'int', 'int2', 'int4', 'int8', 'smallint', 'bigint', 'smallserial', 'serial', 'bigserial', 'serial2', 'serial4', 'serial8' => (int) $resultAfterExec,
+            'bool', 'boolean' => (bool) $resultAfterExec,
+            'double', 'float4', 'float8' => (float) $resultAfterExec,
+            'varchar', 'char', 'text' => (string) $resultAfterExec,
+            default => null,
+        };
     }
 }

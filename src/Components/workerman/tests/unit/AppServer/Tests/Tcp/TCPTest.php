@@ -14,7 +14,7 @@ class TCPTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $fp = stream_socket_client($this->host);
             $this->assertIsResource($fp);
             $name = 'imitest';
@@ -41,7 +41,7 @@ class TCPTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $fp = stream_socket_client($this->host);
             $this->assertIsResource($fp);
             $sendContent = json_encode([

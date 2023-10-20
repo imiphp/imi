@@ -13,7 +13,7 @@ class PoolTest extends BaseTest
 {
     public function testPoolResource(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $object = RequestContext::getBean(PoolTestClass::class);
             $this->assertInstanceOf(DbResource::class, $object->db);
         });

@@ -19,17 +19,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
     /**
      * The mutex.
      */
-    private PHPRedisMutex $mutex;
-
-    /**
-     * The redis API.
-     */
-    private RedisHandler $redis;
-
-    /**
-     * The key.
-     */
-    private string $key = '';
+    private readonly PHPRedisMutex $mutex;
 
     /**
      * Sets the connected Redis API.
@@ -37,23 +27,19 @@ final class ImiRedisStorage implements Storage, GlobalScope
      * The Redis API needs to be connected yet. I.e. Redis::connect() was
      * called already.
      *
-     * @param string                  $name  the resource name
+     * @param string                  $key   the resource name
      * @param \Imi\Redis\RedisHandler $redis the Redis API
      */
-    public function __construct(string $name, RedisHandler $redis, int $timeout = 3)
+    public function __construct(private readonly string $key, private readonly RedisHandler $redis, int $timeout = 3)
     {
-        $this->key = $name;
-        $this->redis = $redis;
         // @phpstan-ignore-next-line
-        $this->mutex = new PHPRedisMutex([$redis], $name, $timeout);
+        $this->mutex = new PHPRedisMutex([$redis], $key, $timeout);
     }
 
     /**
      * @param float $microtime
-     *
-     * @return void
      */
-    public function bootstrap($microtime)
+    public function bootstrap($microtime): void
     {
         $this->setMicrotime($microtime);
     }
@@ -73,10 +59,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
         }
     }
 
-    /**
-     * @return void
-     */
-    public function remove()
+    public function remove(): void
     {
         try
         {
@@ -95,10 +78,8 @@ final class ImiRedisStorage implements Storage, GlobalScope
      * @SuppressWarnings(PHPMD)
      *
      * @param float $microtime
-     *
-     * @return void
      */
-    public function setMicrotime($microtime)
+    public function setMicrotime($microtime): void
     {
         try
         {
@@ -146,10 +127,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
         return $this->mutex;
     }
 
-    /**
-     * @return void
-     */
-    public function letMicrotimeUnchanged()
+    public function letMicrotimeUnchanged(): void
     {
     }
 }

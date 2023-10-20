@@ -39,7 +39,7 @@ class Server extends BaseCommand
      */
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
-        (function () use ($name, $workerNum, $d) {
+        (function () use ($name, $workerNum, $d): void {
             $this->outStartupInfo();
             if (Config::get('@app.server.checkPoolResource', false) && !PoolManager::checkPoolResource())
             {

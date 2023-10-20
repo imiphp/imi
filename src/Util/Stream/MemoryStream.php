@@ -10,11 +10,6 @@ use Psr\Http\Message\StreamInterface;
 class MemoryStream implements StreamInterface, \Stringable
 {
     /**
-     * 内容.
-     */
-    protected string $content = '';
-
-    /**
      * 大小.
      */
     protected int $size = 0;
@@ -24,9 +19,12 @@ class MemoryStream implements StreamInterface, \Stringable
      */
     protected int $position = 0;
 
-    public function __construct(string $content = '')
+    public function __construct(
+        /**
+         * 内容.
+         */
+        protected string $content = '')
     {
-        $this->content = $content;
         $this->size = \strlen($content);
     }
 

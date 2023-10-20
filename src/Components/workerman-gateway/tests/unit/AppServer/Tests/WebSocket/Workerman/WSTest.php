@@ -17,7 +17,7 @@ class WSTest extends BaseTest
      */
     public function test(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
             sleep(1);
@@ -61,7 +61,7 @@ class WSTest extends BaseTest
 
     public function testNotFound(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
             sleep(1);
@@ -77,7 +77,7 @@ class WSTest extends BaseTest
 
     public function testMatchHttpRoute(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
             sleep(1);

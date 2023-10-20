@@ -8,14 +8,12 @@ use Imi\Swoole\Process\Contract\IPoolProcess;
 
 abstract class BasePoolProcess implements IPoolProcess
 {
-    /**
-     * 数据.
-     */
-    protected array $data = [];
-
-    public function __construct(array $data = [])
+    public function __construct(
+        /**
+         * 数据.
+         */
+        protected array $data = [])
     {
-        $this->data = $data;
         if ($data)
         {
             foreach ($data as $k => $v)

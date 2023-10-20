@@ -986,24 +986,16 @@ abstract class Model extends BaseModel
     {
         $microTime ??= microtime(true);
 
-        switch ($columnType)
+        return match ($columnType)
         {
-            case 'date':
-                return date('Y-m-d', (int) $microTime);
-            case 'time':
-                return date('H:i:s', (int) $microTime);
-            case 'datetime':
-            case 'timestamp':
-                return date('Y-m-d H:i:s', (int) $microTime);
-            case 'int':
-                return (int) $microTime;
-            case 'bigint':
-                return (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy));
-            case 'year':
-                return (int) date('Y', (int) $microTime);
-            default:
-                return null;
-        }
+            'date' => date('Y-m-d', (int) $microTime),
+            'time' => date('H:i:s', (int) $microTime),
+            'datetime', 'timestamp' => date('Y-m-d H:i:s', (int) $microTime),
+            'int'    => (int) $microTime,
+            'bigint' => (int) ($microTime * (true === $timeAccuracy ? 1000 : $timeAccuracy)),
+            'year'   => (int) date('Y', (int) $microTime),
+            default  => null,
+        };
     }
 
     /**

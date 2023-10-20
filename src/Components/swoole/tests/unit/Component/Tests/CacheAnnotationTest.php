@@ -19,7 +19,7 @@ class CacheAnnotationTest extends BaseTest
      */
     public function testCacheableTTL(): void
     {
-        $this->go(static function () {
+        $this->go(static function (): void {
             /** @var \Imi\Swoole\Test\Component\Cache\Classes\TestCacheAnnotation $test */
             $test = App::getBean('TestCacheAnnotation');
             $id = 1;
@@ -46,7 +46,7 @@ class CacheAnnotationTest extends BaseTest
 
     public function testCacheableLock(): void
     {
-        $this->go(static function () {
+        $this->go(static function (): void {
             /** @var \Imi\Swoole\Test\Component\Cache\Classes\TestCacheAnnotation $test */
             $test = App::getBean('TestCacheAnnotation');
             $id = 1;
@@ -74,7 +74,7 @@ class CacheAnnotationTest extends BaseTest
             {
                 $throwables[] = null;
                 $index = $i;
-                Coroutine::create(static function () use (&$throwables, $index, $test, $id, $channel) {
+                Coroutine::create(static function () use (&$throwables, $index, $test, $id, $channel): void {
                     try
                     {
                         $result2 = $test->testCacheableLock($id);

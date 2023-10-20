@@ -90,10 +90,8 @@ class KafkaPool
 
     /**
      * 释放连接实例.
-     *
-     * @return void
      */
-    public static function release(Producer $client)
+    public static function release(Producer $client): void
     {
         $resource = RequestContext::get('poolResources.' . spl_object_id($client));
         if (null !== $resource)

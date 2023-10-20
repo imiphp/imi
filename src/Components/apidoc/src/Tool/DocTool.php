@@ -91,7 +91,7 @@ class DocTool extends BaseCommand
         $generator = new Generator($loggerInstance->getLogger());
 
         $processors = $generator->getProcessors();
-        array_unshift($processors, function (Analysis $analysis) use ($controllerClasses) {
+        array_unshift($processors, function (Analysis $analysis) use ($controllerClasses): void {
             $this->parseRoute($analysis, $controllerClasses);
         });
 
@@ -103,10 +103,8 @@ class DocTool extends BaseCommand
 
     /**
      * 处理路由.
-     *
-     * @return void
      */
-    private function parseRoute(Analysis $analysis, array $controllerClasses)
+    private function parseRoute(Analysis $analysis, array $controllerClasses): void
     {
         // OpenApi 扫描
         $map = [];
@@ -121,7 +119,7 @@ class DocTool extends BaseCommand
             $context = $annotation->_context;
             /** @var \OpenApi\Annotations\AbstractAnnotation $annotation */
             $className = $context->namespace . '\\' . $context->class;
-            $map[$className][$context->method][\get_class($annotation)][] = $annotation;
+            $map[$className][$context->method][$annotation::class][] = $annotation;
             if ($annotation instanceof Info)
             {
                 $info = $annotation;

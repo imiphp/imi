@@ -7,26 +7,22 @@ namespace Imi\Server\TcpServer\Route;
 class RouteResult
 {
     /**
-     * 路由配置项.
-     */
-    public RouteItem $routeItem;
-
-    /**
-     * 参数.
-     */
-    public array $params = [];
-
-    /**
      * 回调.
      *
      * @var callable
      */
     public $callable;
 
-    public function __construct(RouteItem $routeItem, array $params = [])
+    public function __construct(
+        /**
+         * 路由配置项.
+         */
+        public RouteItem $routeItem,
+        /**
+         * 参数.
+         */
+        public array $params = [])
     {
-        $this->routeItem = $routeItem;
-        $this->params = $params;
         $this->callable = $routeItem->callable;
     }
 }

@@ -22,7 +22,7 @@ class CustomSessionIdTest extends BaseTest
 
     public function testSetGetDelete(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
             $response = $http->get($this->host . 'session/login');
             $sessionId = $response->getCookie('imisid');
@@ -48,7 +48,7 @@ class CustomSessionIdTest extends BaseTest
 
     public function testOnce(): void
     {
-        $this->go(function () {
+        $this->go(function (): void {
             $http = new HttpRequest();
 
             $response = $http->get($this->host . 'session/verifySms?vcode=1234');

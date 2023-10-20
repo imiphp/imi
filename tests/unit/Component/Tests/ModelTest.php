@@ -835,7 +835,7 @@ class ModelTest extends BaseTest
     public function testNotBean(): void
     {
         $record = Article2::newInstance();
-        $this->assertEquals(Article2::class, \get_class($record));
+        $this->assertEquals(Article2::class, $record::class);
         $record->memberId = 1024;
         $record->title = __CLASS__;
         $record->content = __FUNCTION__;
@@ -844,7 +844,7 @@ class ModelTest extends BaseTest
 
         $record = Article2::find($record->id);
         $this->assertNotNull($record);
-        $this->assertEquals(Article2::class, \get_class($record));
+        $this->assertEquals(Article2::class, $record::class);
     }
 
     public function testReferenceProperty(): void

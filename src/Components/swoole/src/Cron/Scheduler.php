@@ -35,7 +35,7 @@ class Scheduler extends \Imi\Cron\Scheduler
     /**
      * 协程工作池.
      */
-    private CoPool $coPool;
+    private readonly CoPool $coPool;
 
     public function __construct()
     {
@@ -47,7 +47,7 @@ class Scheduler extends \Imi\Cron\Scheduler
                 /**
                  * {@inheritDoc}
                  */
-                public function run(ITaskParam $param)
+                public function run(ITaskParam $param): void
                 {
                     /** @var \Imi\Cron\CronTask $task */
                     $task = $param->getData();

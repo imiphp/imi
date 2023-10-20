@@ -13,11 +13,8 @@ class WhereFullText extends BaseWhere implements IWhereFullText
 {
     use TRaw;
 
-    protected ?IFullTextOptions $options = null;
-
-    public function __construct(?IFullTextOptions $options = null, string $logicalOperator = 'AND')
+    public function __construct(protected ?IFullTextOptions $options = null, string $logicalOperator = 'AND')
     {
-        $this->options = $options;
         $this->logicalOperator = $logicalOperator;
     }
 

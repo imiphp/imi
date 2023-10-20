@@ -9,11 +9,6 @@ use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
 class RouteItem
 {
     /**
-     * 注解.
-     */
-    public ?UdpRoute $annotation = null;
-
-    /**
      * 回调.
      *
      * @var callable
@@ -25,15 +20,16 @@ class RouteItem
      */
     public array $middlewares = [];
 
-    /**
-     * 其它配置项.
-     */
-    public array $options = [];
-
-    public function __construct(UdpRoute $annotation, callable $callable, array $options = [])
+    public function __construct(
+        /**
+         * 注解.
+         */
+        public ?UdpRoute $annotation, callable $callable,
+        /**
+         * 其它配置项.
+         */
+        public array $options = [])
     {
-        $this->annotation = $annotation;
         $this->callable = $callable;
-        $this->options = $options;
     }
 }

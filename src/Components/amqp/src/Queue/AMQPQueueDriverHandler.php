@@ -30,11 +30,6 @@ class AMQPQueueDriverHandler implements IQueueDriver
     protected ?string $poolName = null;
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 支持消息删除功能.
      *
      * 依赖 Redis
@@ -135,9 +130,12 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     private string $timeoutQueueName = '';
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected string $name, array $config = [])
     {
-        $this->name = $name;
         $this->traitConstruct($config);
 
         $exchangeName = 'imi-' . $name;
@@ -334,7 +332,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                     $score = -1;
                 }
 
-                Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message) {
+                Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message): void {
                     $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
                 }, $this->redisPoolName, true);
 
@@ -363,7 +361,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     public function clear($queueType = null): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($queueType) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($queueType): void {
             if (null === $queueType)
             {
                 $queueTypes = QueueType::getValues();
@@ -405,7 +403,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                             break;
                     }
                 }
-                catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+                catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException)
                 {
                 }
             }
@@ -470,7 +468,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 }
                 $ready = (int) $result[1];
             }
-            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException)
             {
                 $ready = 0;
             }
@@ -494,7 +492,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                     $fail += $failReady;
                 }
             }
-            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException)
             {
             }
             $status['fail'] = $fail;
@@ -511,7 +509,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                     [, $timeoutReady] = $result;
                     $status['timeout'] = $timeoutReady;
                 }
-                catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+                catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException)
                 {
                     $status['timeout'] = 0;
                 }
@@ -531,7 +529,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 }
                 [, $delayReady] = $result;
             }
-            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException $e)
+            catch (\PhpAmqpLib\Exception\AMQPProtocolChannelException)
             {
                 $delayReady = 0;
             }
@@ -606,7 +604,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
      */
     protected function parseTimeoutMessages(int $count = 100): void
     {
-        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($count) {
+        Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($count): void {
             $result = $redis->evalEx(<<<'LUA'
             -- 查询消息ID
             local messages = redis.call('zrevrangebyscore', KEYS[1], ARGV[1], 0, 'limit', 0, ARGV[2])

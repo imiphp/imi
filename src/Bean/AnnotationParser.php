@@ -646,14 +646,14 @@ class AnnotationParser
         // 类
         foreach ($classAnnotations as $annotation)
         {
-            $annotationClassName = \get_class($annotation);
+            $annotationClassName = $annotation::class;
             if ($this->hasParser($annotationClassName))
             {
                 $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
             }
             else
             {
-                $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className) {
+                $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className): void {
                     if ($this->hasParser($annotationClassName))
                     {
                         $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
@@ -667,14 +667,14 @@ class AnnotationParser
         {
             foreach ($annotations as $annotation)
             {
-                $annotationClassName = \get_class($annotation);
+                $annotationClassName = $annotation::class;
                 if ($this->hasParser($annotationClassName))
                 {
                     $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
                 }
                 else
                 {
-                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $propName) {
+                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $propName): void {
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
@@ -689,14 +689,14 @@ class AnnotationParser
         {
             foreach ($annotations as $annotation)
             {
-                $annotationClassName = \get_class($annotation);
+                $annotationClassName = $annotation::class;
                 if ($this->hasParser($annotationClassName))
                 {
                     $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
                 }
                 else
                 {
-                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $methodName) {
+                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $methodName): void {
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
@@ -711,14 +711,14 @@ class AnnotationParser
         {
             foreach ($annotations as $annotation)
             {
-                $annotationClassName = \get_class($annotation);
+                $annotationClassName = $annotation::class;
                 if ($this->hasParser($annotationClassName))
                 {
                     $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CONST, $constName);
                 }
                 else
                 {
-                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $constName) {
+                    $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $constName): void {
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CONST, $constName);

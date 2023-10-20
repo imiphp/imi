@@ -49,7 +49,7 @@ class RoadRunnerRequest extends Request
     {
         $result = parent::withParsedBody($data);
         $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-        if (MediaType::APPLICATION_FORM_URLENCODED === $contentType || str_starts_with($contentType, MediaType::MULTIPART_FORM_DATA))
+        if (MediaType::APPLICATION_FORM_URLENCODED === $contentType || str_starts_with((string) $contentType, MediaType::MULTIPART_FORM_DATA))
         {
             $result->post = $_POST = $data;
         }

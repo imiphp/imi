@@ -28,7 +28,7 @@ abstract class BaseTest extends \Imi\Test\BaseTest
             }
             $throwable = null;
             $time = microtime(true);
-            goWait(static function () use ($callable, &$throwable) {
+            goWait(static function () use ($callable, &$throwable): void {
                 try
                 {
                     $callable();

@@ -13,20 +13,14 @@ use Workerman\Worker;
 
 class WorkermanRequest extends Request
 {
-    /**
-     * Workerman 的 Worker 对象
-     */
-    protected ?Worker $worker = null;
-
-    protected string $clientId = '';
-
-    protected array $data = [];
-
-    public function __construct(Worker $worker, string $clientId, array $data)
-    {
-        $this->worker = $worker;
-        $this->clientId = $clientId;
-        $this->data = $data;
+    public function __construct(
+        /**
+         * Workerman 的 Worker 对象
+         */
+        protected ?Worker $worker,
+        protected string $clientId,
+        protected array $data
+    ) {
     }
 
     /**
@@ -34,7 +28,7 @@ class WorkermanRequest extends Request
      */
     protected function initProtocolVersion(): void
     {
-        [, $this->protocolVersion] = explode('/', $this->data['server']['SERVER_PROTOCOL']);
+        [, $this->protocolVersion] = explode('/', (string) $this->data['server']['SERVER_PROTOCOL']);
     }
 
     /**
@@ -45,9 +39,9 @@ class WorkermanRequest extends Request
         $headers = [];
         foreach ($this->data['server'] as $name => $value)
         {
-            if (str_starts_with($name, 'HTTP_'))
+            if (str_starts_with((string) $name, 'HTTP_'))
             {
-                $headers[str_replace('_', '-', substr($name, 5))] = $value;
+                $headers[str_replace('_', '-', substr((string) $name, 5))] = $value;
             }
         }
         $this->mergeHeaders($headers);

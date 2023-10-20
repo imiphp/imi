@@ -16,21 +16,19 @@ class PacketData implements IPacketData
     protected ?IPEndPoint $clientAddress = null;
 
     /**
-     * 数据内容.
-     */
-    protected string $data = '';
-
-    /**
      * 接收到的数据.
      *
      * @var mixed
      */
     protected $formatData;
 
-    public function __construct(string $remoteIp, int $remotePort, string $data)
+    public function __construct(string $remoteIp, int $remotePort,
+        /**
+         * 数据内容.
+         */
+        protected string $data)
     {
         $this->clientAddress = new IPEndPoint($remoteIp, $remotePort);
-        $this->data = $data;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }
 

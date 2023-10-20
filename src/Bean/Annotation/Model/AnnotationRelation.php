@@ -105,7 +105,7 @@ class AnnotationRelation
     public function addClassRelation(ClassAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
-        $class = \get_class($annotation);
+        $class = $annotation::class;
         if (!isset($this->classRelations[$class]) && isset($this->cache['classRelations'][$class]))
         {
             $this->classRelations[$class] = unserialize($this->cache['classRelations'][$class]);
@@ -137,7 +137,7 @@ class AnnotationRelation
     public function addMethodRelation(MethodAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
-        $class = \get_class($annotation);
+        $class = $annotation::class;
         if (!isset($this->methodRelations[$class]) && isset($this->cache['methodRelations'][$class]))
         {
             $this->methodRelations[$class] = unserialize($this->cache['methodRelations'][$class]);
@@ -169,7 +169,7 @@ class AnnotationRelation
     public function addPropertyRelation(PropertyAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
-        $class = \get_class($annotation);
+        $class = $annotation::class;
         if (!isset($this->propertyRelations[$class]) && isset($this->cache['propertyRelations'][$class]))
         {
             $this->propertyRelations[$class] = unserialize($this->cache['propertyRelations'][$class]);
@@ -201,7 +201,7 @@ class AnnotationRelation
     public function addConstantRelation(ConstantAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
-        $class = \get_class($annotation);
+        $class = $annotation::class;
         if (!isset($this->constantRelations[$class]) && isset($this->cache['constantRelations'][$class]))
         {
             $this->constantRelations[$class] = unserialize($this->cache['constantRelations'][$class]);

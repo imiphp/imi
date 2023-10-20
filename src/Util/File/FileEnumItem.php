@@ -9,16 +9,6 @@ use Imi\Util\File;
 class FileEnumItem implements \Stringable
 {
     /**
-     * 路径.
-     */
-    private string $path = '';
-
-    /**
-     * 文件名.
-     */
-    private string $fileName = '';
-
-    /**
      * 完整路径.
      */
     private string $fullPath = '';
@@ -28,10 +18,16 @@ class FileEnumItem implements \Stringable
      */
     private bool $continue = true;
 
-    public function __construct(string $path, string $fileName)
+    public function __construct(
+        /**
+         * 路径.
+         */
+        private readonly string $path,
+        /**
+         * 文件名.
+         */
+        private readonly string $fileName)
     {
-        $this->path = $path;
-        $this->fileName = $fileName;
         $this->fullPath = File::path($path, $fileName);
     }
 

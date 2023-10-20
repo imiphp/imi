@@ -10,11 +10,6 @@ use Imi\Cron\Message\IMessage;
 class Client
 {
     /**
-     * 配置项.
-     */
-    private array $options = [];
-
-    /**
      * socket 文件路径.
      *
      * 不支持 samba 文件共享
@@ -36,9 +31,12 @@ class Client
     /**
      * 构造方法.
      */
-    public function __construct(array $options = [])
+    public function __construct(
+        /**
+         * 配置项.
+         */
+        private readonly array $options = [])
     {
-        $this->options = $options;
         if (!isset($options['socketFile']))
         {
             throw new \InvalidArgumentException('You must set the "socketFile" option');

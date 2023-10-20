@@ -121,9 +121,9 @@ class TestTransaction
     private function __listen(): void
     {
         $transaction = Db::getInstance()->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
     }
 }

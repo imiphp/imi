@@ -12,11 +12,6 @@ use Imi\Rpc\Client\IRpcClient;
 class GrpcService implements IGrpcService
 {
     /**
-     * 客户端.
-     */
-    protected GrpcClient $client;
-
-    /**
      * 包名.
      */
     protected string $package = '';
@@ -27,25 +22,24 @@ class GrpcService implements IGrpcService
     protected string $serviceName = '';
 
     /**
-     * 完整服务名称.
-     */
-    protected string $name = '';
-
-    /**
-     * 服务接口.
-     */
-    protected ?string $interface = null;
-
-    /**
      * @Inject("GrpcInterfaceManager")
      */
     protected GrpcInterfaceManager $interfaceManager;
 
-    public function __construct(GrpcClient $client, string $name, ?string $interface = null)
+    public function __construct(
+        /**
+         * 客户端.
+         */
+        protected GrpcClient $client,
+        /**
+         * 完整服务名称.
+         */
+        protected string $name,
+        /**
+         * 服务接口.
+         */
+        protected ?string $interface = null)
     {
-        $this->client = $client;
-        $this->name = $name;
-        $this->interface = $interface;
         if (preg_match('/^(.+)\.([^\.]+)$/', $name, $matches) > 0)
         {
             $this->package = $matches[1];

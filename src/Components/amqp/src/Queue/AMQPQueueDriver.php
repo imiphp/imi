@@ -37,11 +37,6 @@ class AMQPQueueDriver implements IQueueDriver
     protected ?string $poolName = null;
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 支持消息删除功能.
      *
      * 依赖 Redis
@@ -92,9 +87,12 @@ class AMQPQueueDriver implements IQueueDriver
      */
     private array $args = [];
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected string $name, array $config = [])
     {
-        $this->name = $name;
         $this->traitConstruct($config);
         $this->args = \func_get_args();
     }

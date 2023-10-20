@@ -23,9 +23,9 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         try
         {
@@ -41,15 +41,15 @@ class TransactionTest extends BaseTest
         }
         $this->assertEmptyEvents($transaction);
 
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         // 在事务中，不自动提交事务
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
@@ -76,9 +76,9 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         try
         {
@@ -94,15 +94,15 @@ class TransactionTest extends BaseTest
         }
         $this->assertEmptyEvents($transaction);
 
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         // 在事务中，不自动提交事务
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
@@ -128,14 +128,14 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
@@ -175,14 +175,14 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
@@ -229,14 +229,14 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
@@ -262,14 +262,14 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
@@ -310,9 +310,9 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         try
         {
@@ -328,15 +328,15 @@ class TransactionTest extends BaseTest
         }
         $this->assertEmptyEvents($transaction);
 
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         // 在事务中，不自动提交事务
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
         try
@@ -362,9 +362,9 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
 
         try
@@ -403,14 +403,14 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 
@@ -450,14 +450,14 @@ class TransactionTest extends BaseTest
         $object = $this->getObject();
         $db = Db::getInstance();
         $transaction = $db->getTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $db->beginTransaction();
-        $transaction->onTransactionCommit(static function () {
+        $transaction->onTransactionCommit(static function (): void {
         });
-        $transaction->onTransactionRollback(static function () {
+        $transaction->onTransactionRollback(static function (): void {
         });
         $this->assertEquals(1, $transaction->getTransactionLevels());
 

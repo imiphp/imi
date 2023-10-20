@@ -31,7 +31,7 @@ class ProtobufUtil
         }
         else
         {
-            $ref = ReflectionContainer::getMethodReflection(\get_class($message), 'mergeFromJsonArray');
+            $ref = ReflectionContainer::getMethodReflection($message::class, 'mergeFromJsonArray');
             $ref->setAccessible(true);
             $ref->invoke($message, $data, $ignoreUnknown);
         }
@@ -104,15 +104,12 @@ class ProtobufUtil
         }
         if ($message instanceof \Google\Protobuf\EnumValue)
         {
-            switch ($enumReturnType = ($options['enumReturnType'] ?? 'value'))
+            return match ($enumReturnType = ($options['enumReturnType'] ?? 'value'))
             {
-                case 'value':
-                    return $message->getNumber();
-                case 'name':
-                    return $message->getName();
-                default:
-                    throw new \RuntimeException(sprintf('Unknown enumReturnType %s', $enumReturnType));
-            }
+                'value' => $message->getNumber(),
+                'name'  => $message->getName(),
+                default => throw new \RuntimeException(sprintf('Unknown enumReturnType %s', $enumReturnType)),
+            };
         }
         if ($message instanceof \Google\Protobuf\GPBEmpty)
         {
@@ -174,7 +171,7 @@ class ProtobufUtil
             /** @var DescriptorPool $pool */
             $pool = DescriptorPool::getGeneratedPool();
             /** @var Descriptor $desc */
-            $desc = $pool->getDescriptorByClassName(\get_class($message));
+            $desc = $pool->getDescriptorByClassName($message::class);
             $result = [];
             /** @var FieldDescriptor $field */
             foreach ($desc->getField() as $field)

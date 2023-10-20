@@ -14,11 +14,6 @@ class Member
     use TAutoInject;
 
     /**
-     * 用户 ID.
-     */
-    private int $memberId;
-
-    /**
      * 角色列表.
      *
      * @var \Imi\AC\Model\Role[]
@@ -46,12 +41,15 @@ class Member
 
     protected OperationService $operationService;
 
-    public function __construct(int $memberId)
+    public function __construct(
+        /**
+         * 用户 ID.
+         */
+        private readonly int $memberId)
     {
         $this->__autoInject();
         $this->memberService = App::getBean($this->memberServiceBean);
         $this->operationService = App::getBean($this->operationServiceBean);
-        $this->memberId = $memberId;
         $this->updateRoles();
         $this->updateOperations();
     }

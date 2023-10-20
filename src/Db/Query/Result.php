@@ -28,11 +28,6 @@ class Result implements IResult
     protected bool $isSuccess = false;
 
     /**
-     * 查询结果类的类名，为null则为数组.
-     */
-    protected ?string $modelClass = null;
-
-    /**
      * 记录列表.
      */
     protected array $statementRecords = [];
@@ -40,9 +35,12 @@ class Result implements IResult
     /**
      * @param \Imi\Db\Interfaces\IStatement|bool $statement
      */
-    public function __construct($statement, ?string $modelClass = null, ?bool $success = null)
+    public function __construct($statement,
+        /**
+         * 查询结果类的类名，为null则为数组.
+         */
+        protected ?string $modelClass = null, ?bool $success = null)
     {
-        $this->modelClass = $modelClass;
         if ($statement instanceof IStatement)
         {
             $this->statement = $statement;

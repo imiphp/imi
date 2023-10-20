@@ -27,7 +27,7 @@ class Env
         {
             return $result;
         }
-        $lower = strtolower($result);
+        $lower = strtolower((string) $result);
         if ('null' === $lower)
         {
             return null;
@@ -69,10 +69,10 @@ class Env
                 }
                 break;
             case 'array':
-                $value = json_decode($result, true);
+                $value = json_decode((string) $result, true);
                 if (\JSON_ERROR_NONE !== json_last_error())
                 {
-                    $value = explode(',', $result);
+                    $value = explode(',', (string) $result);
                     // @phpstan-ignore-next-line
                     if (false === $value)
                     {
@@ -93,7 +93,7 @@ class Env
         {
             return $default;
         }
-        if ('null' === strtolower($result))
+        if ('null' === strtolower((string) $result))
         {
             return null;
         }
@@ -108,7 +108,7 @@ class Env
         {
             return $default;
         }
-        if ('null' === strtolower($result))
+        if ('null' === strtolower((string) $result))
         {
             return null;
         }
@@ -128,7 +128,7 @@ class Env
         {
             return $default;
         }
-        if ('null' === strtolower($result))
+        if ('null' === strtolower((string) $result))
         {
             return null;
         }
@@ -153,7 +153,7 @@ class Env
         {
             return $default;
         }
-        $lower = strtolower($result);
+        $lower = strtolower((string) $result);
         if ('null' === $lower)
         {
             return null;
@@ -184,13 +184,13 @@ class Env
         }
         try
         {
-            $value = json_decode($result, $associative, $depth, $flags);
+            $value = json_decode((string) $result, $associative, $depth, $flags);
             if (!$value && \JSON_ERROR_NONE !== json_last_error())
             {
                 throw new \InvalidArgumentException(sprintf('Invalid json value %s', $result));
             }
         }
-        catch (\JsonException $je)
+        catch (\JsonException)
         {
             throw new \InvalidArgumentException(sprintf('Invalid json value %s', $result));
         }
@@ -209,12 +209,12 @@ class Env
         {
             return $default;
         }
-        if ('null' === strtolower($result))
+        if ('null' === strtolower((string) $result))
         {
             return null;
         }
         // @phpstan-ignore-next-line
-        if ('' === $result || false === ($value = explode($separator, $result, $limit)))
+        if ('' === $result || false === ($value = explode($separator, (string) $result, $limit)))
         {
             throw new \InvalidArgumentException(sprintf('Invalid list value %s', $result));
         }

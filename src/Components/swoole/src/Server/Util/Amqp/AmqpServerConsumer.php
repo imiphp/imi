@@ -26,11 +26,8 @@ if (class_exists(\Imi\AMQP\Main::class))
      */
     class AmqpServerConsumer extends BaseConsumer
     {
-        protected ?AmqpServerUtil $amqpServerUtil;
-
-        public function __construct(?AmqpServerUtil $amqpServerUtil = null)
+        public function __construct(protected ?AmqpServerUtil $amqpServerUtil = null)
         {
-            $this->amqpServerUtil = $amqpServerUtil;
             parent::__construct();
         }
 
@@ -83,21 +80,14 @@ if (class_exists(\Imi\AMQP\Main::class))
                 $data = json_decode($message->getBody(), true);
                 $serverName = $data['serverName'];
                 RequestContext::set('server', $server = ServerManager::getServer($serverName));
-                switch ($data['action'] ?? null)
+                match ($data['action'] ?? null)
                 {
-                    case 'sendRawByFlag':
-                        Server::sendRawByFlag($data['data'], $data['flag'], $serverName, false);
-                        break;
-                    case 'closeByFlag':
-                        Server::closeByFlag($data['flag'], $serverName, false);
-                        break;
-                    case 'sendRawToGroup':
-                        Server::sendRawToGroup($data['group'], $data['data'], $serverName, false);
-                        break;
-                    case 'sendRawToAll':
-                        Server::sendRawToAll($data['data'], $serverName, false);
-                        break;
-                }
+                    'sendRawByFlag'  => Server::sendRawByFlag($data['data'], $data['flag'], $serverName, false),
+                    'closeByFlag'    => Server::closeByFlag($data['flag'], $serverName, false),
+                    'sendRawToGroup' => Server::sendRawToGroup($data['group'], $data['data'], $serverName, false),
+                    'sendRawToAll'   => Server::sendRawToAll($data['data'], $serverName, false),
+                    default          => ConsumerResult::ACK,
+                };
 
                 return ConsumerResult::ACK;
             }

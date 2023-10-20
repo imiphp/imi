@@ -12,11 +12,6 @@ use Imi\Pool\Interfaces\IPoolResource;
 class PoolItem
 {
     /**
-     * 资源对象
-     */
-    protected ?IPoolResource $resource = null;
-
-    /**
      * 被使用的次数.
      */
     protected int $usageCount = 0;
@@ -41,9 +36,12 @@ class PoolItem
      */
     protected float $lastReleaseTime = 0;
 
-    public function __construct(IPoolResource $resource)
+    public function __construct(
+        /**
+         * 资源对象
+         */
+        protected ?IPoolResource $resource)
     {
-        $this->resource = $resource;
         $this->createTime = microtime(true);
     }
 

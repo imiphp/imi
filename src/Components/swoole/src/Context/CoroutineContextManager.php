@@ -35,7 +35,7 @@ class CoroutineContextManager implements IContextManager
             if (!($context['__bindDestroy'] ?? false))
             {
                 $context['__bindDestroy'] = true;
-                Coroutine::defer([$this, '__destroy']);
+                Coroutine::defer($this->__destroy(...));
             }
             if ($data)
             {
@@ -92,7 +92,7 @@ class CoroutineContextManager implements IContextManager
             if (!($context['__bindDestroy'] ?? false))
             {
                 $context['__bindDestroy'] = true;
-                Coroutine::defer([$this, '__destroy']);
+                Coroutine::defer($this->__destroy(...));
             }
 
             return $context;

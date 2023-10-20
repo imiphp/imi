@@ -12,50 +12,38 @@ use Imi\Db\Query\Interfaces\IResult;
 class PaginateResult implements IPaginateResult
 {
     /**
-     * 数据库查询结构.
-     */
-    protected ?IResult $result = null;
-
-    /**
      * 数组数据.
      */
     protected ?array $arrayData = null;
 
-    /**
-     * 页码
-     */
-    protected int $page = 0;
-
-    /**
-     * 查询几条记录.
-     */
-    protected int $limit = 0;
-
-    /**
-     * 记录总数.
-     */
-    protected ?int $total = null;
-
-    /**
-     * 总页数.
-     */
-    protected ?int $pageCount = null;
-
-    /**
-     * 自定义选项.
-     */
-    protected array $options = [];
-
     protected ?array $data = null;
 
-    public function __construct(IResult $result, int $page, int $limit, ?int $total, ?int $pageCount, array $options)
-    {
-        $this->result = $result;
-        $this->page = $page;
-        $this->limit = $limit;
-        $this->total = $total;
-        $this->options = $options;
-        $this->pageCount = $pageCount;
+    public function __construct(
+        /**
+         * 数据库查询结构.
+         */
+        protected ?IResult $result,
+        /**
+         * 页码
+         */
+        protected int $page,
+        /**
+         * 查询几条记录.
+         */
+        protected int $limit,
+        /**
+         * 记录总数.
+         */
+        protected ?int $total,
+        /**
+         * 总页数.
+         */
+        protected ?int $pageCount,
+        /**
+         * 自定义选项.
+         */
+        protected array $options
+    ) {
     }
 
     /**

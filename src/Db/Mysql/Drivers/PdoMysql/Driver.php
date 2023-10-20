@@ -33,12 +33,8 @@ class Driver extends MysqlBase
     protected function buildDSN(): string
     {
         $option = $this->option;
-        if (isset($option['dsn']))
-        {
-            return $option['dsn'];
-        }
 
-        return 'mysql:'
+        return $option['dsn'] ?? 'mysql:'
                  . 'host=' . ($option['host'] ?? '127.0.0.1')
                  . ';port=' . ($option['port'] ?? '3306')
                  . ';dbname=' . ($option['database'] ?? '')

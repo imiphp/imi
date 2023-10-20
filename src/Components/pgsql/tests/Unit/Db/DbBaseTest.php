@@ -200,7 +200,7 @@ abstract class DbBaseTest extends TestCase
     public function testTransUseCommit(): void
     {
         $id = null;
-        Db::transUse(static function (IDb $db) use (&$id) {
+        Db::transUse(static function (IDb $db) use (&$id): void {
             Assert::assertTrue($db->inTransaction());
             $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
             Assert::assertEquals(1, $result);
@@ -226,7 +226,7 @@ abstract class DbBaseTest extends TestCase
         $id = null;
         try
         {
-            Db::transUse(static function (IDb $db) use (&$id) {
+            Db::transUse(static function (IDb $db) use (&$id): void {
                 Assert::assertTrue($db->inTransaction());
                 $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
                 Assert::assertEquals(1, $result);
@@ -253,7 +253,7 @@ abstract class DbBaseTest extends TestCase
         Assert::assertTrue($db->inTransaction());
         $this->assertEquals(1, $db->getTransactionLevels());
         $r1 = false;
-        $db->getTransaction()->onTransactionRollback(static function () use (&$r1) {
+        $db->getTransaction()->onTransactionRollback(static function () use (&$r1): void {
             $r1 = true;
         });
 
@@ -274,7 +274,7 @@ abstract class DbBaseTest extends TestCase
         Assert::assertTrue($db->inTransaction());
         $this->assertEquals(1, $db->getTransactionLevels());
         $r1 = false;
-        $db->getTransaction()->onTransactionCommit(static function () use (&$r1) {
+        $db->getTransaction()->onTransactionCommit(static function () use (&$r1): void {
             $r1 = true;
         });
         $db->commit();

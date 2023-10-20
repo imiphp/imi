@@ -9,20 +9,16 @@ namespace Imi\Util\Socket;
  */
 class IPEndPoint implements \Stringable
 {
-    /**
-     * 地址
-     */
-    private string $address = '';
-
-    /**
-     * 端口.
-     */
-    private int $port = 0;
-
-    public function __construct(string $address, int $port)
-    {
-        $this->address = $address;
-        $this->port = $port;
+    public function __construct(
+        /**
+         * 地址
+         */
+        private readonly string $address,
+        /**
+         * 端口.
+         */
+        private readonly int $port
+    ) {
     }
 
     public function __toString(): string

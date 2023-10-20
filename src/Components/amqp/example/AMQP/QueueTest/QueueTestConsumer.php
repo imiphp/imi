@@ -20,7 +20,7 @@ class QueueTestConsumer extends BaseQueueConsumer
      */
     protected function consume(IMessage $message, IQueueDriver $queue): void
     {
-        var_dump(__CLASS__, $message->getMessage(), \get_class($message));
+        var_dump(__CLASS__, $message->getMessage(), $message::class);
         $queueTestMessage = QueueTestMessage::fromMessage($message->getMessage());
         Redis::set('imi-amqp:consume:QueueTest:' . $queueTestMessage->getMemberId(), $message->getMessage());
 

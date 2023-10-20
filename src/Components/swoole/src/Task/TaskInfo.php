@@ -8,20 +8,16 @@ use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
 class TaskInfo
 {
-    /**
-     * 任务执行器.
-     */
-    private ITaskHandler $taskHandler;
-
-    /**
-     * 任务参数.
-     */
-    private TaskParam $param;
-
-    public function __construct(ITaskHandler $taskHandler, TaskParam $param)
-    {
-        $this->taskHandler = $taskHandler;
-        $this->param = $param;
+    public function __construct(
+        /**
+         * 任务执行器.
+         */
+        private readonly ITaskHandler $taskHandler,
+        /**
+         * 任务参数.
+         */
+        private readonly TaskParam $param
+    ) {
     }
 
     public function getTaskHandler(): ITaskHandler

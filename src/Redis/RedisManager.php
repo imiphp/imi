@@ -92,7 +92,7 @@ class RedisManager
                 App::set($requestContextKey, $redis);
                 if (($heartbeatInterval = $config['heartbeatInterval'] ?? 0) > 0)
                 {
-                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey) {
+                    Timer::tick((int) ($heartbeatInterval * 1000), static function () use ($requestContextKey): void {
                         /** @var RedisHandler|null $redis */
                         $redis = App::get($requestContextKey);
                         if (!$redis)
@@ -126,7 +126,7 @@ class RedisManager
                 $redis->reconnect();
             }
         }
-        catch (\Throwable $th)
+        catch (\Throwable)
         {
             $redis->reconnect();
         }
@@ -173,7 +173,7 @@ class RedisManager
         if (!$redis->isCluster())
         {
             $host = $config['host'] ?? '127.0.0.1';
-            if (str_contains($host, '/'))
+            if (str_contains((string) $host, '/'))
             {
                 // unix socket
                 $redis->connect($host);

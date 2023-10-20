@@ -6,28 +6,8 @@ namespace Imi\Server\Http\Message\Emitter;
 
 class SseMessageEvent implements \Stringable
 {
-    public ?string $data = null;
-
-    public ?string $event = null;
-
-    public ?string $id = null;
-
-    public ?int $retry = null;
-
-    public ?string $comment = null;
-
-    public function __construct(
-        ?string $data = null,
-        ?string $event = null,
-        ?string $id = null,
-        ?int $retry = null,
-        ?string $comment = null
-    ) {
-        $this->id = $id;
-        $this->event = $event;
-        $this->data = $data;
-        $this->retry = $retry;
-        $this->comment = $comment;
+    public function __construct(public ?string $data = null, public ?string $event = null, public ?string $id = null, public ?int $retry = null, public ?string $comment = null)
+    {
     }
 
     public function __toString(): string

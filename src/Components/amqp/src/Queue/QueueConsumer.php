@@ -19,16 +19,13 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
      */
     private ?\SplQueue $queue = null;
 
-    /**
-     * 本地缓存的队列长度.
-     */
-    protected int $queueLength = 0;
-
-    public function __construct(int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
+    public function __construct(
+        /**
+         * 本地缓存的队列长度.
+         */
+        protected int $queueLength, array $exchanges, array $queues, array $consumers, ?string $poolName = null)
     {
         parent::__construct();
-
-        $this->queueLength = $queueLength;
         $this->poolName = $poolName;
 
         $list = [];
@@ -100,7 +97,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
 
             return $this->queue->pop() ?: null;
         }
-        catch (\PhpAmqpLib\Exception\AMQPTimeoutException $te)
+        catch (\PhpAmqpLib\Exception\AMQPTimeoutException)
         {
         }
 
@@ -117,7 +114,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
             foreach ((array) $consumer->queue as $queueName)
             {
                 $messageClass = $consumer->message ?? \Imi\AMQP\Message::class;
-                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass) {
+                $this->channel->basic_consume($queueName, $consumer->tag, false, false, false, false, function (\PhpAmqpLib\Message\AMQPMessage $message) use ($messageClass): void {
                     /** @var \Imi\AMQP\Message $messageInstance */
                     $messageInstance = new $messageClass();
                     $messageInstance->setAMQPMessage($message);
@@ -130,7 +127,7 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     /**
      * {@inheritDoc}
      */
-    protected function consume(IMessage $message)
+    protected function consume(IMessage $message): void
     {
         $this->queue->push($message);
     }

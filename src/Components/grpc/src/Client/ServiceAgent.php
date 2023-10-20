@@ -11,26 +11,20 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
  */
 class ServiceAgent
 {
-    /**
-     * 连接池名称.
-     */
-    public ?string $poolName = null;
-
-    /**
-     * 服务名称.
-     */
-    public string $serviceName = '';
-
-    /**
-     * 服务接口.
-     */
-    public string $interface = '';
-
-    public function __construct(?string $poolName, string $serviceName, string $interface)
-    {
-        $this->poolName = $poolName;
-        $this->serviceName = $serviceName;
-        $this->interface = $interface;
+    public function __construct(
+        /**
+         * 连接池名称.
+         */
+        public ?string $poolName,
+        /**
+         * 服务名称.
+         */
+        public string $serviceName,
+        /**
+         * 服务接口.
+         */
+        public string $interface
+    ) {
     }
 
     /**

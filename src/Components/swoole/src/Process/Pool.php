@@ -18,11 +18,6 @@ class Pool
     use TEvent;
 
     /**
-     * 工作进程数量.
-     */
-    private int $workerNum = 0;
-
-    /**
      * 工作进程列表
      * 以 WorkerId 作为 Key.
      *
@@ -47,17 +42,13 @@ class Pool
      */
     private int $masterPID = 0;
 
-    /**
-     * @param int $workerNum
-     */
-    public function __construct($workerNum)
+    public function __construct(private readonly int $workerNum)
     {
-        $this->workerNum = $workerNum;
     }
 
     protected function listenSigChild(): void
     {
-        Signal::waitCallback(\SIGCHLD, function () {
+        Signal::waitCallback(\SIGCHLD, function (): void {
             if ($this->workers)
             {
                 while ($result = Process::wait(false))
@@ -81,10 +72,8 @@ class Pool
 
     /**
      * 启动进程池.
-     *
-     * @return void
      */
-    public function start()
+    public function start(): void
     {
         $this->masterPID = getmypid();
         $this->working = true;
@@ -95,7 +84,7 @@ class Pool
 
         $this->listenSigChild();
 
-        imigo(function () {
+        imigo(function (): void {
             if (Signal::wait(\SIGTERM))
             {
                 if ($this->workers)
@@ -206,20 +195,16 @@ class Pool
 
     /**
      * 停止工作池.
-     *
-     * @return void
      */
-    public function shutdown()
+    public function shutdown(): void
     {
         Process::kill($this->masterPID, \SIGTERM);
     }
 
     /**
      * 重启所有工作进程.
-     *
-     * @return void
      */
-    public function restartAllWorker()
+    public function restartAllWorker(): void
     {
         foreach ($this->workers as $worker)
         {
@@ -238,10 +223,8 @@ class Pool
      * 重启指定工作进程.
      *
      * @param int ...$workerIds
-     *
-     * @return void
      */
-    public function restartWorker(...$workerIds)
+    public function restartWorker(...$workerIds): void
     {
         $workers = &$this->workers;
         foreach ($workerIds as $workerId)
@@ -269,10 +252,8 @@ class Pool
      * 启动工作进程.
      *
      * @param int $workerId
-     *
-     * @return void
      */
-    private function startWorker($workerId)
+    private function startWorker($workerId): void
     {
         $workers = &$this->workers;
         if (isset($workers[$workerId]))
@@ -283,8 +264,8 @@ class Pool
         Coroutine::set([
             'enable_deadlock_check' => false,
         ]);
-        $worker = new Process(function (Process $worker) use ($workerId) {
-            Process::signal(\SIGTERM, function () use ($worker, $workerId) {
+        $worker = new Process(function (Process $worker) use ($workerId): void {
+            Process::signal(\SIGTERM, function () use ($worker, $workerId): void {
                 $this->trigger('WorkerExit', [
                     'pool'      => $this,
                     'worker'    => $worker,
@@ -292,7 +273,7 @@ class Pool
                 ], $this, WorkerEventParam::class);
                 Event::exit();
             });
-            register_shutdown_function(function () use ($worker, $workerId) {
+            register_shutdown_function(function () use ($worker, $workerId): void {
                 $this->trigger('WorkerStop', [
                     'pool'      => $this,
                     'worker'    => $worker,
@@ -319,7 +300,7 @@ class Pool
             $workers[$workerId] = $worker;
             $this->workerIdMap[$pid] = $workerId;
 
-            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
+            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId): void {
                 $content = $worker->read();
                 if (false === $content || '' === $content)
                 {

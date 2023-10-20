@@ -7,11 +7,6 @@ namespace Imi\Bean\Annotation\Model;
 class ClassAnnotation
 {
     /**
-     * 类名.
-     */
-    private string $className = '';
-
-    /**
      * 类注解列表.
      *
      * @var \Imi\Bean\Annotation\Base[]
@@ -46,9 +41,12 @@ class ClassAnnotation
      */
     private array $methodParameterAnnotations = [];
 
-    public function __construct(string $className)
-    {
-        $this->className = $className;
+    public function __construct(
+        /**
+         * 类名.
+         */
+        private readonly string $className
+    ) {
     }
 
     /**

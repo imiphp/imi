@@ -12,13 +12,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 class RequestHandler implements RequestHandlerInterface
 {
     /**
-     * 中间件数组.
-     *
-     * @var string[]
-     */
-    protected array $middlewares = [];
-
-    /**
      * 当前执行第几个.
      */
     protected int $index = 0;
@@ -28,9 +21,12 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @param string[] $middlewares 中间件数组
      */
-    public function __construct(array $middlewares)
-    {
-        $this->middlewares = $middlewares;
+    public function __construct(
+        /**
+         * 中间件数组.
+         */
+        protected array $middlewares
+    ) {
     }
 
     /**

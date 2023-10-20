@@ -32,11 +32,6 @@ class KafkaQueueDriver implements IQueueDriver
     protected ?string $poolName = null;
 
     /**
-     * 队列名称.
-     */
-    protected string $name = '';
-
-    /**
      * 分组ID.
      */
     public ?string $groupId = null;
@@ -46,9 +41,12 @@ class KafkaQueueDriver implements IQueueDriver
      */
     private array $consumers = [];
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(
+        /**
+         * 队列名称.
+         */
+        protected string $name, array $config = [])
     {
-        $this->name = $name;
         $this->traitConstruct($config);
     }
 

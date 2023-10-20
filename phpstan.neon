@@ -21,32 +21,35 @@ parameters:
         - vendor/autoload.php
         - split-repository/vendor/autoload.php
 
-    treatPhpDocTypesAsCertain: false
+#    treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
-        - '#is never read, only written#'
-        - '#expects class-string<\S+>, string given#'
-        - '#Unable to resolve the template type T in call to method#'
-        - '#PHPDoc tag @return with type T\|null is not subtype of native type#'
-        - '#expects class-string<.+>|null, string given#'
-        - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
-        - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
-        - '#Unsafe usage of new static\(\).+#'
-        - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
-        - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
-        - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
-        - '#Imi\\Swoole\\Util\\Coroutine#'
-        - '#Imi\\Swoole\\Process\\Process#'
-        - '#IMI_PATH#'
         -
-            message: '#Method \S+ has no return typehint specified.#'
-            paths:
-                - tests/unit/**Test.php
+            message: '#expects class-string<\S+>, string given#'
+            reportUnmatched: true
         -
-            message: '#(Extending|Creating new|Calling) \S+ is not covered by backward compatibility promise\. The (class|method) might change in a minor PHPStan version\.#'
-            paths:
-                - dev/PHPStan/FileFinder.php
+            message: '#Unable to resolve the template type T in call to method#'
+            reportUnmatched: true
+        -
+            message: '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
+            path: 'tests/unit/Component/Tests/*'
+            reportUnmatched: true
+        -
+            message: '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
+            path: 'tests/unit/Component/Tests/*'
+            reportUnmatched: true
+        -
+            message: '#Unsafe usage of new static\(\).+#'
+            reportUnmatched: true
+        -
+            message: '#unknown class Imi\\Swoole\\Util\\Coroutine#'
+            reportUnmatched: true
+        -
+            message: '#Constant IMI_PATH not found#'
+            reportUnmatched: true
 services:
+includes:
+    - phpstan-baseline/baseline-core.neon

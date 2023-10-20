@@ -52,7 +52,11 @@ function getRectorConfigCallback(string $path): callable
             \Rector\Php71\Rector\FuncCall\CountOnNullRector::class,
             \Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector::class,
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
-            \Rector\Php70\Rector\FuncCall\RandomFunctionRector::class,
+
+            // 存在兼容问题
+            \Rector\Php80\Rector\FunctionLike\MixedTypeRector::class, // todo 给接口参数加了`mixed`但没给实现加类型，导致静态分析报错
+            \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // todo 调整包含默认参的参数顺序，会导致代码被破坏
+            \Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector::class, // 无法正确处理继承覆盖的情况
         ]);
 
         $rectorConfig->bootstrapFiles([
@@ -63,7 +67,7 @@ function getRectorConfigCallback(string $path): callable
             $path . '/src',
         ]);
 
-        $rectorConfig->sets([LevelSetList::UP_TO_PHP_74]);
+        $rectorConfig->sets([LevelSetList::UP_TO_PHP_81]);
     };
 }
 
@@ -167,7 +171,7 @@ function checkPorts(array $ports, string $host = '127.0.0.1', int $tryCount = 30
 if (isCodeCoverage())
 {
     putenv('IMI_CODE_COVERAGE_NAME=' . getCodeCoverageName());
-    (static function () {
+    (static function (): void {
         $filter = new Filter();
         $filter->includeDirectory(\dirname(__DIR__) . '/src');
         $componentsDir = \dirname(__DIR__) . '/src/Components';
@@ -185,7 +189,7 @@ if (isCodeCoverage())
         $codeCoverage->start('imi');
 
         $stoped = false;
-        $shutdownCallback = static function () use ($codeCoverage, &$stoped) {
+        $shutdownCallback = static function () use ($codeCoverage, &$stoped): void {
             if (!$stoped)
             {
                 $stoped = true;

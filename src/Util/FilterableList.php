@@ -12,30 +12,26 @@ use Imi\Util\Interfaces\IArrayable;
 class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, \Countable
 {
     /**
-     * 模式
-     * allow-白名单
-     * deny-黑名单.
-     */
-    private string $mode = '';
-
-    /**
-     * 字段名数组.
-     *
-     * 为null则不过滤
-     *
-     * @var string[]|null
-     */
-    private ?array $fields = null;
-
-    /**
      * 数组列表.
      */
     private array $list = [];
 
-    public function __construct(array $list = [], ?array $fields = null, string $mode = 'allow')
+    public function __construct(array $list = [],
+        /**
+         * 字段名数组.
+         *
+         * 为null则不过滤
+         *
+         * @var string[]|null
+         */
+        private readonly ?array $fields = null,
+        /**
+         * 模式
+         * allow-白名单
+         * deny-黑名单.
+         */
+        private readonly string $mode = 'allow')
     {
-        $this->mode = $mode;
-        $this->fields = $fields;
         $this->list = $this->parseList($list);
     }
 

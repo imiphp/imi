@@ -20,36 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImiCommand extends Command
 {
-    /**
-     * 命令名称分割符.
-     */
-    protected string $separator = '/';
-
-    /**
-     * 命令名称.
-     */
-    protected ?string $commandName = null;
-
-    /**
-     * 命令动作名称.
-     */
-    protected string $actionName = '';
-
-    /**
-     * 类名.
-     */
-    protected string $className = '';
-
-    /**
-     * 方法名.
-     */
-    protected string $methodName = '';
-
-    /**
-     * 是否启用动态参数支持.
-     */
-    protected bool $dynamicOptions = false;
-
     protected InputInterface $input;
 
     protected OutputInterface $output;
@@ -88,15 +58,32 @@ class ImiCommand extends Command
         return $this->methodName;
     }
 
-    public function __construct(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false, string $separator = '/')
+    public function __construct(
+        /**
+         * 命令名称.
+         */
+        protected ?string $commandName,
+        /**
+         * 命令动作名称.
+         */
+        protected string $actionName,
+        /**
+         * 类名.
+         */
+        protected string $className,
+        /**
+         * 方法名.
+         */
+        protected string $methodName,
+        /**
+         * 是否启用动态参数支持.
+         */
+        protected bool $dynamicOptions = false,
+        /**
+         * 命令名称分割符.
+         */
+        protected string $separator = '/')
     {
-        $this->separator = $separator;
-        $this->commandName = $commandName;
-        $this->actionName = $actionName;
-        $this->className = $className;
-        $this->methodName = $methodName;
-        $this->dynamicOptions = $dynamicOptions;
-
         $actionName = '' === $actionName ? $methodName : $actionName;
 
         if (null === $commandName)
@@ -344,13 +331,13 @@ class ImiCommand extends Command
             case ArgType::ARRAY:
                 if (!\is_array($value))
                 {
-                    $value = explode(',', $value);
+                    $value = explode(',', (string) $value);
                 }
                 break;
             case ArgType::ARRAY_EX:
                 if (\is_array($value) && !isset($value[1]) && isset($value[0]))
                 {
-                    $value = explode(',', $value[0]);
+                    $value = explode(',', (string) $value[0]);
                 }
                 break;
         }

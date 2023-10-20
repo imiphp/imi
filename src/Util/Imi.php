@@ -107,16 +107,13 @@ class Imi
         elseif (preg_match('/([^!<=]+)(!=|<>|=)(.+)/', $rule, $matches) > 0)
         {
             $value = $valueCallback($matches[1]);
-            switch ($matches[2])
+
+            return match ($matches[2])
             {
-                case '!=':
-                case '<>':
-                    return null !== $value && $value != $matches[3];
-                case '=':
-                    return $value == $matches[3];
-                default:
-                    return false; // @codeCoverageIgnore
-            }
+                '!=', '<>' => null !== $value && $value != $matches[3],
+                '='     => $value == $matches[3],
+                default => false,
+            };
         }
         else
         {
@@ -249,7 +246,7 @@ class Imi
                 if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
-                    $refClass = ReflectionContainer::getClassReflection(\get_class($main));
+                    $refClass = ReflectionContainer::getClassReflection($main::class);
                     $path = \dirname($refClass->getFileName());
                     $result = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
                     if (is_dir($result))
@@ -313,7 +310,7 @@ class Imi
                 if (str_starts_with($namespace, $mainNamespace))
                 {
                     $namespaceSubPath = substr($namespace, $len);
-                    $refClass = ReflectionContainer::getClassReflection(\get_class($main));
+                    $refClass = ReflectionContainer::getClassReflection($main::class);
                     $path = \dirname($refClass->getFileName());
                     $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
                 }
@@ -356,7 +353,7 @@ class Imi
      */
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
-        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME'])) . ' ' . escapeshellarg($commandName);
+        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg((string) (App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']))) . ' ' . escapeshellarg($commandName);
         $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
@@ -489,7 +486,7 @@ class Imi
         }
         if (!is_dir($cacheName))
         {
-            mkdir($cacheName, 0775, true);
+            mkdir($cacheName, 0o775, true);
         }
         $data = [];
         $data['imiVersion'] = App::getImiVersion();
@@ -590,7 +587,7 @@ class Imi
                     $tmpPath = self::getCurrentModeRuntimePath('tmp');
                     if (!is_dir($tmpPath))
                     {
-                        mkdir($tmpPath, 0755, true);
+                        mkdir($tmpPath, 0o755, true);
                     }
                 }
             }
@@ -672,7 +669,7 @@ class Imi
                 break;
             }
         }
-        $result = trim($name, '"');
+        $result = trim((string) $name, '"');
         if (isset($matches['version']))
         {
             $version = '';
@@ -685,7 +682,7 @@ class Imi
             }
             if ('' !== $version)
             {
-                $result .= ' ' . trim($version, '"');
+                $result .= ' ' . trim((string) $version, '"');
             }
         }
 

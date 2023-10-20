@@ -112,7 +112,7 @@ class Annotation
             }
             $ignoredPaths = array_merge($ignoredPaths, $config['appIgnorePaths'] ?? []);
         }
-        $ignoredPaths = array_map([Imi::class, 'parseRule'], $ignoredPaths);
+        $ignoredPaths = array_map(Imi::parseRule(...), $ignoredPaths);
         $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . ')))/';
         if ($ignoredNamespaces)
         {
@@ -128,7 +128,7 @@ class Annotation
             $pattern = null;
         }
         $parser = $this->parser;
-        $this->loader->loadModuleAnnotations($namespace, static function (string $fileNamespace, string $fileName) use ($pattern, $parser) {
+        $this->loader->loadModuleAnnotations($namespace, static function (string $fileNamespace, string $fileName) use ($pattern, $parser): void {
             if ($pattern && 1 === preg_match($pattern, $fileNamespace))
             {
                 return;
@@ -147,7 +147,7 @@ class Annotation
      */
     public static function toComments(Annotation\Base $annotation, bool $skipDefaultValue = true): string
     {
-        $result = '@' . Imi::getClassShortName(\get_class($annotation));
+        $result = '@' . Imi::getClassShortName($annotation::class);
         $properties = [];
         if ($skipDefaultValue)
         {
