@@ -49,7 +49,7 @@ vendor/bin/imi-phar build xxx
 
     // 参与打包的文件
     // 可选值：
-    //   - '*'自动包含根目录下的 *.php、*.macro 文件。（默认）
+    //   - '*'自动包含根目录下的 *.php 文件。（默认）
     //   - 空数组不包含任何文件。
     //   - 定义数组并填入文件名（仅限于当前目录下的文件）。
     'files'        => '*',
@@ -225,7 +225,7 @@ return [
 ### 内置过滤器(vendor)
 
 ```php
-->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/', '*.macro.php'])
+->notName(['/LICENSE|.*\\.md|.*\\.dist|Makefile/'])
 ->exclude([
     'doc',
     'test',

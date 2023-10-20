@@ -1,7 +1,5 @@
 <?php
 
-# macro
-
 declare(strict_types=1);
 
 namespace Imi\Util;
@@ -73,7 +71,6 @@ class File
      */
     public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
-        # if \extension_loaded('swoole')
         if (
             \defined('SWOOLE_VERSION')
             && \Swoole\Coroutine::getCid() > -1)
@@ -97,18 +94,13 @@ class File
         }
         else
         {
-            # endif
-
             $result = self::enumFileSync($dirPath, $pattern, $extensionNames);
             yield from $result;
             if (false === $result->getReturn())
             {
                 return false;
             }
-
-            # if \extension_loaded('swoole')
         }
-        # endif
     }
 
     /**

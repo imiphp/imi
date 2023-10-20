@@ -5,7 +5,6 @@
     "require": {
         "php": ">=8.1",
         "imiphp/imi": "3.0.9999",
-        "imiphp/imi-macro": "3.0.9999",
         "imiphp/imi-workerman": "3.0.9999",
         "imiphp/imi-swoole": "3.0.9999",
         "imiphp/imi-roadrunner": "3.0.9999"

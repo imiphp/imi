@@ -167,9 +167,6 @@ static $storeRepoMap = [
     'src/Components/roadrunner'        => [
         'git@github.com:imiphp/imi-roadrunner',
     ],
-    'src/Components/macro'             => [
-        'git@github.com:imiphp/imi-macro',
-    ],
     'src/Components/phar'              => [
         'git@github.com:imiphp/imi-phar',
     ],
