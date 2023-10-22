@@ -30,9 +30,6 @@ IMI_MACRO_LOCK_FILE_DIR | 宏定义文件锁目录。当项目文件放置在，
 ```php
 <?php
 return [
-    // 项目命名空间，即将在 imi 3.0 废弃，改为 composer.json 中配置，详见下文
-    'namespace' => 'ImiApp',
-
     // 加载子配置文件，可以使用 \Imi\Config::get('@app.别名1.xxx') 获取
     'configs'    =>    [
         "别名1"    =>    '配置文件路径1',

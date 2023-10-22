@@ -7,9 +7,6 @@ use function Imi\env;
 \defined('AMQP_SERVER_HOST') || \define('AMQP_SERVER_HOST', env('AMQP_SERVER_HOST', '127.0.0.1'));
 
 return [
-    // 项目根命名空间
-    'namespace'         => 'Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil',
-
     // 配置文件
     'configs'           => [
         'beans'        => __DIR__ . '/beans.php',

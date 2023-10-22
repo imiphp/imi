@@ -7,9 +7,6 @@ use Imi\Server\WebSocket\Enum\NonControlFrameType;
 use function Imi\env;
 
 return [
-    // 项目根命名空间
-    'namespace'         => 'Imi\WorkermanGateway\Test\AppServer',
-
     // 配置文件
     'configs'           => [
         'beans'        => __DIR__ . '/beans.php',

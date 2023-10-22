@@ -7,9 +7,6 @@ use Imi\Grpc\Client\GrpcClient;
 use function Imi\env;
 
 return [
-    // 项目根命名空间
-    'namespace'         => 'GrpcApp',
-
     // 配置文件
     'configs'           => [
         'beans'        => __DIR__ . '/beans.php',
