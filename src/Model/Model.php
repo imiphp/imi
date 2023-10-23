@@ -949,7 +949,7 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ($column->updateTime && !$isInsert && (empty($object[$dbFieldName]) || ($object[$dbFieldName] && ($originData[$dbFieldName] ?? null) === $object[$dbFieldName])))
+            if ($column->updateTime && !$isInsert && (empty($object[$dbFieldName]) || (($originData[$dbFieldName] ?? null) === $object[$dbFieldName])))
             {
                 $microTime ??= microtime(true);
                 $value = static::parseDateTime($columnType, $column->updateTime, $microTime);

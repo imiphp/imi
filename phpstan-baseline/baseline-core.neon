@@ -16,21 +16,6 @@ parameters:
 			path: ../src/Db/Query/Query.php
 
 		-
-			message: "#^Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../src/Model/Model.php
-
-		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../src/Model/Model.php
-
-		-
-			message: "#^PHPDoc tag @return with type T\\|null is not subtype of native type Imi\\\\Bean\\\\Annotation\\\\Base\\|null\\.$#"
-			count: 1
-			path: ../src/Model/ModelManager.php
-
-		-
 			message: "#^Parameter \\#2 \\$class of static method Imi\\\\Server\\\\ServerManager\\:\\:getServer\\(\\) expects class\\-string\\<Imi\\\\Server\\\\Contract\\\\IServer\\>\\|null, string given\\.$#"
 			count: 1
 			path: ../src/Server/Group/Listener/GroupRestore.php
