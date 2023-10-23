@@ -150,57 +150,37 @@ class ModelGenerate extends BaseCommand
                 continue;
             }
             $className = $this->getClassName($table, $prefix);
-            if (isset($configData['relation'][$table]))
+            $hasResult = false;
+            $withRecords = false;
+            $fileName = '';
+            $modelNamespace = '';
+            $tableConfig = null;
+            // 按命名空间指定
+            foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
             {
-                // 按表指定，下个大版本即将废弃 @deprecated 3.0
-                $configItem = $configData['relation'][$table];
-                $modelNamespace = $configItem['namespace'] ?? $namespace;
-                $path = Imi::getNamespacePath($modelNamespace, true);
-                if (null === $path)
+                if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
                 {
-                    $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
-                    exit(255);
-                }
-                File::createDir($path);
-                $basePath = $path . '/Base';
-                File::createDir($basePath);
-                $fileName = File::path($path, $className . '.php');
-                $withRecords = $configItem['withRecords'] ?? false;
-            }
-            else
-            {
-                $hasResult = false;
-                $withRecords = false;
-                $fileName = '';
-                $modelNamespace = '';
-                $tableConfig = null;
-                // 按命名空间指定
-                foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
-                {
-                    if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
+                    $modelNamespace = $namespaceName;
+                    $path = Imi::getNamespacePath($modelNamespace, true);
+                    if (null === $path)
                     {
-                        $modelNamespace = $namespaceName;
-                        $path = Imi::getNamespacePath($modelNamespace, true);
-                        if (null === $path)
-                        {
-                            $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
-                            exit(255);
-                        }
-                        File::createDir($path);
-                        $basePath = $path . '/Base';
-                        File::createDir($basePath);
-                        $fileName = File::path($path, $className . '.php');
-                        $hasResult = true;
-                        $withRecords = ($tableConfig['withRecords'] ?? null) ?? \in_array($table, $namespaceItem['withRecords'] ?? []);
-                        break;
+                        $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
+                        exit(255);
                     }
+                    File::createDir($path);
+                    $basePath = $path . '/Base';
+                    File::createDir($basePath);
+                    $fileName = File::path($path, $className . '.php');
+                    $hasResult = true;
+                    $withRecords = ($tableConfig['withRecords'] ?? null) ?? \in_array($table, $namespaceItem['withRecords'] ?? []);
+                    break;
                 }
-                if (!$hasResult)
-                {
-                    $modelNamespace = $namespace;
-                    $fileName = File::path($modelPath, $className . '.php');
-                    $basePath = $baseModelPath;
-                }
+            }
+            if (!$hasResult)
+            {
+                $modelNamespace = $namespace;
+                $fileName = File::path($modelPath, $className . '.php');
+                $basePath = $baseModelPath;
             }
             if (false === $override && is_file($fileName))
             {
@@ -276,7 +256,7 @@ class ModelGenerate extends BaseCommand
             $typeDefinitions = [];
             foreach ($fields as $field)
             {
-                $typeDefinitions[$field['Field']] = ($tableConfig['fields'][$field['Field']]['typeDefinition'] ?? null) ?? ($configData['relation'][$table]['fields'][$field['Field']]['typeDefinition'] ?? true);
+                $typeDefinitions[$field['Field']] = ($tableConfig['fields'][$field['Field']]['typeDefinition'] ?? null) ?? true;
             }
             $pks = $query->execute(sprintf('SHOW KEYS FROM `%s`.`%s` where Key_name = \'PRIMARY\'', $database, $table))->getArray();
             $pks = ArrayUtil::columnToKey($pks, 'Column_name');
@@ -431,7 +411,7 @@ class ModelGenerate extends BaseCommand
         'year'      => ['int|null', '?int', '(int)'],
         'double'    => ['float|null', '?float', '(float)'],
         'float'     => ['float|null', '?float', '(float)'],
-        'decimal'   => ['string|float|int|null', \PHP_VERSION_ID >= 80000 ? 'string|float|int|null' : '', ''],
+        'decimal'   => ['string|float|int|null', 'string|float|int|null', ''],
         'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|object|array|null', '', ''],
         'set'       => ['array|null', '?array', ''],
     ];
