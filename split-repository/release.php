@@ -128,9 +128,6 @@ static $storeRepoMap = [
     'src/Components/grpc'              => [
         'git@github.com:imiphp/imi-grpc',
     ],
-    'src/Components/hprose'            => [
-        'git@github.com:imiphp/imi-hprose',
-    ],
     'src/Components/jwt'               => [
         'git@github.com:imiphp/imi-jwt',
     ],
