@@ -17,9 +17,9 @@ use Workerman\Worker;
 class WorkermanTestProcess extends BaseProcess
 {
     /**
-     * @Inject("TestConsumer")
+     * @Inject("TestConsumerWorkerman")
      *
-     * @var \KafkaApp\Kafka\Test\TestConsumer
+     * @var \KafkaApp\Kafka\Test\TestConsumerWorkerman
      */
     protected $testConsumer;
 
