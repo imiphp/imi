@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -15,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\VirtualColumn.name", default="tb_virtual_column"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\VirtualColumn.poolName"))
+ * @Table(name="tb_virtual_column", usePrefix=false, id={"id"}, dbPoolName=null)
  *
  * @property int|null              $id
  * @property int|null              $amount
@@ -95,17 +94,13 @@ abstract class VirtualColumnBase extends Model
      * virtual_amount.
      *
      * @Column(name="virtual_amount", type="numeric", length=10, accuracy=2, nullable=false, default="((amount)::numeric / (100)::numeric)", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=true)
-     *
-     * @var string|float|int|null
      */
-    protected $virtualAmount = null;
+    protected string|float|int|null $virtualAmount = null;
 
     /**
      * 获取 virtualAmount.
-     *
-     * @return string|float|int|null
      */
-    public function getVirtualAmount()
+    public function getVirtualAmount(): string|float|int|null
     {
         return $this->virtualAmount;
     }

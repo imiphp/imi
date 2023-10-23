@@ -90,36 +90,6 @@ imi 支持两种自定义模型生成目标的配置方式。
 ]
 ```
 
-#### 按表指定-MySQL
-
-项目配置文件：
-
-```php
-[
-    'tools'  =>  [
-        'generate/model'    =>  [
-            'relation'  =>  [
-                '表名1'   =>  [
-                    'namespace' =>  '生成到的命名空间',
-                    // 是否备份记录，不建议所有表都备份数据，一般用于字典表、默认数据等情况
-                    'withRecords' => true,
-                    'fields' => [
-                        '字段名' => [
-                            'typeDefinition' => false,
-                        ],
-                    ],
-                ],
-                '表名2'   =>  [
-                    'namespace' =>  '生成到的命名空间',
-                ],
-            ],
-        ],
-    ],
-]
-```
-
-> 即将废弃，推荐使用 `按命名空间指定`
-
 ### 生成模型事件-MySQL
 
 在生成模型时，会触发以下事件：
@@ -296,34 +266,6 @@ vendor/bin/imi-cli generate/pgModel "命名空间"
 这时候，模型文件必然不能生成在同一个命名空间下。
 
 imi 支持两种自定义模型生成目标的配置方式。
-
-#### 按表指定-PostgreSQL
-
-项目配置文件：
-
-```php
-[
-    'tools'  =>  [
-        'generate/model'    =>  [
-            'relation'  =>  [
-                '表名1'   =>  [
-                    'namespace' =>  '生成到的命名空间',
-                    // 是否备份记录，不建议所有表都备份数据，一般用于字典表、默认数据等情况
-                    'withRecords' => true,
-                    'fields' => [
-                        '字段名' => [
-                            'typeDefinition' => false,
-                        ],
-                    ],
-                ],
-                '表名2'   =>  [
-                    'namespace' =>  '生成到的命名空间',
-                ],
-            ],
-        ],
-    ],
-]
-```
 
 #### 按命名空间指定-PostgreSQL
 

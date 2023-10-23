@@ -142,52 +142,34 @@ class ModelGenerate extends BaseCommand
                 continue;
             }
             $className = $this->getClassName($table, $prefix);
-            if (isset($configData['relation'][$table]))
+            $hasResult = false;
+            $fileName = '';
+            $modelNamespace = '';
+            $tableConfig = null;
+            foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
             {
-                $configItem = $configData['relation'][$table];
-                $modelNamespace = $configItem['namespace'] ?? $namespace;
-                $path = Imi::getNamespacePath($modelNamespace, true);
-                if (null === $path)
+                if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
                 {
-                    $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
-                    exit(255);
-                }
-                File::createDir($path);
-                $basePath = $path . '/Base';
-                File::createDir($basePath);
-                $fileName = File::path($path, $className . '.php');
-            }
-            else
-            {
-                $hasResult = false;
-                $fileName = '';
-                $modelNamespace = '';
-                $tableConfig = null;
-                foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
-                {
-                    if (($tableConfig = ($namespaceItem['tables'][$table] ?? null)) || \in_array($table, $namespaceItem['tables'] ?? []))
+                    $modelNamespace = $namespaceName;
+                    $path = Imi::getNamespacePath($modelNamespace, true);
+                    if (null === $path)
                     {
-                        $modelNamespace = $namespaceName;
-                        $path = Imi::getNamespacePath($modelNamespace, true);
-                        if (null === $path)
-                        {
-                            $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
-                            exit(255);
-                        }
-                        File::createDir($path);
-                        $basePath = $path . '/Base';
-                        File::createDir($basePath);
-                        $fileName = File::path($path, $className . '.php');
-                        $hasResult = true;
-                        break;
+                        $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
+                        exit(255);
                     }
+                    File::createDir($path);
+                    $basePath = $path . '/Base';
+                    File::createDir($basePath);
+                    $fileName = File::path($path, $className . '.php');
+                    $hasResult = true;
+                    break;
                 }
-                if (!$hasResult)
-                {
-                    $modelNamespace = $namespace;
-                    $fileName = File::path($modelPath, $className . '.php');
-                    $basePath = $baseModelPath;
-                }
+            }
+            if (!$hasResult)
+            {
+                $modelNamespace = $namespace;
+                $fileName = File::path($modelPath, $className . '.php');
+                $basePath = $baseModelPath;
             }
             if (false === $override && is_file($fileName))
             {
@@ -236,7 +218,12 @@ class ModelGenerate extends BaseCommand
             order by attnum
             ;
             SQL)->getArray();
-            $this->parseFields($poolName, $fields, $data, 'v' === $item['relkind'], $table, $configData);
+            $typeDefinitions = [];
+            foreach ($fields as $field)
+            {
+                $typeDefinitions[$field['attname']] = ($tableConfig['fields'][$field['attname']]['typeDefinition'] ?? null) ?? true;
+            }
+            $this->parseFields($poolName, $fields, $data, 'v' === $item['relkind'], $table, $typeDefinitions);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
@@ -290,7 +277,7 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理字段信息.
      */
-    private function parseFields(?string $poolName, array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
+    private function parseFields(?string $poolName, array $fields, ?array &$data, bool $isView, string $table, ?array $typeDefinitions): void
     {
         foreach ($fields as $field)
         {
@@ -334,7 +321,7 @@ class ModelGenerate extends BaseCommand
                 'primaryKeyIndex'   => $primaryKeyIndex = ($field['ordinal_position'] ?? 0) - 1,
                 'isAutoIncrement'   => '' !== $field['attidentity'],
                 'comment'           => $field['description'] ?? '',
-                'typeDefinition'    => $config['relation'][$table]['fields'][$field['attname']]['typeDefinition'] ?? true,
+                'typeDefinition'    => $typeDefinitions[$field['attname']],
                 'ref'               => \in_array($type, ['json', 'jsonb']),
                 'virtual'           => 's' === $field['attgenerated'],
             ];
@@ -378,7 +365,7 @@ class ModelGenerate extends BaseCommand
         'double'      => ['float', '?float', '(float)'],
         'float4'      => ['float', '?float', '(float)'],
         'float8'      => ['float', '?float', '(float)'],
-        'numeric'     => ['string|float|int', \PHP_VERSION_ID >= 80000 ? 'string|float|int|null' : '', ''],
+        'numeric'     => ['string|float|int', 'string|float|int|null', ''],
         'json'        => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', '', ''],
         'jsonb'       => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', '', ''],
     ];

@@ -274,82 +274,14 @@ class ModelTest extends BaseTest
 
     public function testQueryAlias(): void
     {
-        /** @var Member $member */
-        $member = Member::query(null, null, null, 'a1')
-            ->field('a1.username')
+        $result = Member::query(null, null, null, 'a1')
             ->where('a1.id', '=', 1)
-            ->select()
-            ->get();
+            ->find();
+        $this->assertInstanceOf(Member::class, $result);
         $this->assertEquals([
-            'username'  => '1',
-        ], $member->toArray());
-    }
-
-    public function testQuerySetField(): void
-    {
-        /** @var Member $member */
-        $member = Member::query()->field('username')->where('id', '=', 1)->select()->get();
-        $this->assertEquals([
-            'username'  => '1',
-        ], $member->toArray());
-
-        $member = Member::newInstance(['username' => 'test']);
-        $member->password = 'password';
-        $member->insert();
-        $id = $member->id;
-        $this->assertEquals([
-            'id'        => $id,
-            'username'  => 'test',
-        ], $member->toArray());
-
-        $member = Member::find($id);
-        $this->assertEquals([
-            'id'        => $id,
-            'username'  => 'test',
-        ], $member->toArray());
-        $this->assertEquals('password', $member->password);
-    }
-
-    public function testBatchUpdate(): void
-    {
-        $count1 = Member::count();
-        $this->assertGreaterThan(0, $count1);
-
-        $result = Member::updateBatch([
-            'password'  => '123',
-        ]);
-        $this->assertEquals($count1, $result->getAffectedRows());
-
-        $list = Member::query()->select()->getColumn('password');
-        $list = array_unique($list);
-        $this->assertEquals(['123'], $list);
-    }
-
-    public function testBatchDelete(): void
-    {
-        $count1 = Member::count();
-        $this->assertGreaterThan(0, $count1);
-
-        $maxId = Member::max('id');
-        $this->assertGreaterThan(0, $count1);
-
-        // delete max id
-        $result = Member::deleteBatch([
-            'id'    => $maxId,
-        ]);
-        $this->assertTrue($result->isSuccess());
-        $this->assertEquals(1, $result->getAffectedRows());
-
-        $count2 = Member::count();
-        $this->assertEquals($count1 - 1, $count2);
-
-        // all delete
-        $result = Member::deleteBatch();
-        $this->assertTrue($result->isSuccess());
-        $this->assertEquals($count1 - 1, $result->getAffectedRows());
-
-        $count3 = Member::count();
-        $this->assertEquals(0, $count3);
+            'id'       => 1,
+            'username' => '1',
+        ], $result->toArray());
     }
 
     /**
@@ -459,13 +391,6 @@ class ModelTest extends BaseTest
         $record2 = TestJson::find($record->id);
         $this->assertNotNull($record2);
         $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
-
-        $record2->update([
-            'json_data->a' => 111,
-        ]);
-        $record2 = TestJson::find($record->id);
-        $this->assertNotNull($record2);
-        $this->assertEquals(['a' => 111, 'b' => 2, 'c' => 3], $record2->jsonData->toArray());
     }
 
     public function testSoftDelete(): void
@@ -586,7 +511,7 @@ class ModelTest extends BaseTest
             'json_data' => [4, 5, 6],
         ]], TestJson::convertListToArray($list));
 
-        $record = TestJsonNotCamel::query()->field('id', 'json_data')->where('id', '=', $id)->select()->get();
+        $record = TestJsonNotCamel::query()->where('id', '=', $id)->select()->get();
         $this->assertEquals([
             'id'        => $id,
             'json_data' => [4, 5, 6],

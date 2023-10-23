@@ -11,9 +11,8 @@
         'Imi\Pgsql\Test\Model\Article' => [
             'name' => 'tb_article', // 覆盖注解中定义的表名，还支持：数据库名.表名
             'dbPoolName' => null, // 覆盖注解中定义的连接池名
+            'prefix' => null, // 覆盖注解中定义的表名前缀
         ],
     ],
 ]
 ```
-
-> 覆盖表名、连接池名的特性，请更新到 imi v2.0.10 及更高版本，重新生成模型基类后有效

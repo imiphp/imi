@@ -16,7 +16,6 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
-use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
@@ -392,19 +391,14 @@ abstract class Model extends BaseModel
 
     /**
      * 插入记录.
-     *
-     * @param mixed $data
      */
-    public function insert($data = null): IResult
+    public function insert(): IResult
     {
-        if (null === $data)
-        {
-            $data = self::parseSaveData(iterator_to_array($this), 'insert', $this);
-        }
-        elseif (!$data instanceof \ArrayAccess)
-        {
-            $data = new LazyArrayObject($data);
-        }
+        return $this->__insert(self::parseSaveData(iterator_to_array($this), 'insert', $this));
+    }
+
+    protected function __insert(mixed $data): IResult
+    {
         $query = static::query();
         $meta = $this->__meta;
         $isBean = $meta->isBean();
@@ -447,34 +441,15 @@ abstract class Model extends BaseModel
 
     /**
      * 更新记录.
-     *
-     * @param mixed $data
      */
-    public function update($data = null): IResult
+    public function update(): IResult
     {
-        if (null === $data)
-        {
-            $data = self::parseSaveData(iterator_to_array($this), 'update', $this);
-            $isDataEmpty = 0 === $data->count();
-        }
-        else
-        {
-            if (!$data instanceof \ArrayAccess)
-            {
-                $data = new LazyArrayObject($data);
-                $isDataEmpty = 0 === $data->count();
-            }
-            else
-            {
-                $isDataEmpty = true;
-                foreach ($data as $_)
-                {
-                    $isDataEmpty = false;
-                    break;
-                }
-            }
-        }
-        if ($isDataEmpty)
+        return $this->__update(self::parseSaveData(iterator_to_array($this), 'update', $this));
+    }
+
+    protected function __update(mixed $data): IResult
+    {
+        if (!$data || ($data instanceof \Countable && 0 === $data->count()))
         {
             return new Result(true, null, true);
         }
@@ -535,67 +510,6 @@ abstract class Model extends BaseModel
     }
 
     /**
-     * 批量更新.
-     *
-     * @deprecated 3.0
-     *
-     * @param mixed          $data
-     * @param array|callable $where
-     */
-    public static function updateBatch($data, $where = null): ?IResult
-    {
-        $class = static::__getRealClassName();
-        if (Update::hasUpdateRelation($class))
-        {
-            $query = static::dbQuery();
-            if ($where)
-            {
-                self::parseWhere($query, $where);
-            }
-
-            $list = $query->select()->getArray();
-
-            if ($list)
-            {
-                foreach ($list as $row)
-                {
-                    $model = static::createFromRecord($row);
-                    $model->set($data);
-                    $model->update();
-                }
-            }
-
-            return null;
-        }
-        else
-        {
-            $query = static::query();
-            if ($where)
-            {
-                self::parseWhere($query, $where);
-            }
-
-            $updateData = self::parseSaveData($data, 'update');
-
-            // 更新前
-            Event::trigger($class . ':' . ModelEvents::BEFORE_BATCH_UPDATE, [
-                'data'  => $updateData,
-                'query' => $query,
-            ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
-
-            $result = $query->update($updateData);
-
-            // 更新后
-            Event::trigger($class . ':' . ModelEvents::AFTER_BATCH_UPDATE, [
-                'data'   => $updateData,
-                'result' => $result,
-            ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
-
-            return $result;
-        }
-    }
-
-    /**
      * 保存记录.
      */
     public function save(): IResult
@@ -633,11 +547,11 @@ abstract class Model extends BaseModel
 
         if (true === $recordExists)
         {
-            $result = $this->update($data);
+            $result = $this->__update($data);
         }
         elseif (false === $recordExists)
         {
-            $result = $this->insert($data);
+            $result = $this->__insert($data);
         }
         else
         {
@@ -768,37 +682,6 @@ abstract class Model extends BaseModel
         }
 
         return $list;
-    }
-
-    /**
-     * 批量删除.
-     *
-     * @deprecated 3.0
-     *
-     * @param array|callable $where
-     */
-    public static function deleteBatch($where = null): IResult
-    {
-        $realClassName = static::__getRealClassName();
-        $query = static::query();
-        if ($where)
-        {
-            self::parseWhere($query, $where);
-        }
-
-        // 删除前
-        Event::trigger($realClassName . ':' . ModelEvents::BEFORE_BATCH_DELETE, [
-            'query' => $query,
-        ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
-
-        $result = $query->delete();
-
-        // 删除后
-        Event::trigger($realClassName . ':' . ModelEvents::AFTER_BATCH_DELETE, [
-            'result' => $result,
-        ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
-
-        return $result;
     }
 
     /**
@@ -1066,7 +949,7 @@ abstract class Model extends BaseModel
             }
             $columnType = $column->type;
             // 字段自动更新时间
-            if ($column->updateTime && !$isInsert && (empty($object[$dbFieldName]) || ($object[$dbFieldName] && ($originData[$dbFieldName] ?? null) === $object[$dbFieldName])))
+            if ($column->updateTime && !$isInsert && (empty($object[$dbFieldName]) || (($originData[$dbFieldName] ?? null) === $object[$dbFieldName])))
             {
                 $microTime ??= microtime(true);
                 $value = static::parseDateTime($columnType, $column->updateTime, $microTime);

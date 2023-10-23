@@ -15,11 +15,6 @@ use Imi\Model\Event\Param\AfterQueryEventParam;
 class ModelQueryResult extends Result
 {
     /**
-     * 是否设置模型序列化字段.
-     */
-    protected bool $isSetSerializedFields = false;
-
-    /**
      * 关联查询预加载字段.
      */
     protected ?array $with = null;
@@ -71,14 +66,7 @@ class ModelQueryResult extends Result
                 }
                 else
                 {
-                    if ($this->isSetSerializedFields)
-                    {
-                        $serializedFields = $this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($record));
-                    }
-                    else
-                    {
-                        $serializedFields = $meta->getParsedSerializableFieldNames();
-                    }
+                    $serializedFields = $meta->getParsedSerializableFieldNames();
                     foreach ($with as $k => $v)
                     {
                         if (\is_string($k))
@@ -106,10 +94,6 @@ class ModelQueryResult extends Result
                 if ($withField)
                 {
                     $object->__setSerializedFields($withField);
-                }
-                elseif ($this->isSetSerializedFields)
-                {
-                    $object->__setSerializedFields($this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($record)));
                 }
             }
             if ($meta->isBean())
@@ -176,14 +160,7 @@ class ModelQueryResult extends Result
                 }
                 else
                 {
-                    if ($this->isSetSerializedFields)
-                    {
-                        $serializedFields = $this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($statementRecords[0]));
-                    }
-                    else
-                    {
-                        $serializedFields = $meta->getParsedSerializableFieldNames();
-                    }
+                    $serializedFields = $meta->getParsedSerializableFieldNames();
                     foreach ($with as $k => $v)
                     {
                         if (\is_string($k))
@@ -200,10 +177,6 @@ class ModelQueryResult extends Result
             elseif ($withField)
             {
                 $serializedFields = $withField;
-            }
-            elseif ($this->isSetSerializedFields)
-            {
-                $serializedFields = $this->parseFieldNames($meta->getSerializableFieldNames(), array_keys($statementRecords[0]));
             }
             else
             {
@@ -253,26 +226,6 @@ class ModelQueryResult extends Result
     }
 
     /**
-     * Get 是否设置模型序列化字段.
-     */
-    public function getIsSetSerializedFields(): bool
-    {
-        return $this->isSetSerializedFields;
-    }
-
-    /**
-     * Set 是否设置模型序列化字段.
-     *
-     * @param bool $isSetSerializedFields 是否设置模型序列化字段
-     */
-    public function setIsSetSerializedFields(bool $isSetSerializedFields): self
-    {
-        $this->isSetSerializedFields = $isSetSerializedFields;
-
-        return $this;
-    }
-
-    /**
      * Get 关联查询预加载字段.
      */
     public function getWith(): ?array
@@ -306,19 +259,5 @@ class ModelQueryResult extends Result
         $this->withField = $withField;
 
         return $this;
-    }
-
-    private function parseFieldNames(array $serializableFieldNames, array $fieldNames): array
-    {
-        foreach ($fieldNames as &$name)
-        {
-            // @deprecated 3.0 将废弃动态字段名
-            if (!isset($serializableFieldNames[$name]) && false !== ($index = array_search($name, $serializableFieldNames)))
-            {
-                $name = $index;
-            }
-        }
-
-        return $fieldNames;
     }
 }

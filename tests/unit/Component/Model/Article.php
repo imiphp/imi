@@ -99,14 +99,14 @@ class Article extends ArticleBase
      *
      * @JsonNotNull
      *
-     * @var Article|null
+     * @var ArticleEx|null
      */
     protected $queryRelationsList;
 
     /**
      * Get the value of queryRelationsList.
      *
-     * @return Article|null
+     * @return ArticleEx|null
      */
     public function getQueryRelationsList()
     {
@@ -116,7 +116,7 @@ class Article extends ArticleBase
     /**
      * Set the value of queryRelationsList.
      *
-     * @param Article|null $queryRelationsList
+     * @param ArticleEx|null $queryRelationsList
      *
      * @return self
      */
