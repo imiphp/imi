@@ -391,19 +391,14 @@ abstract class Model extends BaseModel
 
     /**
      * 插入记录.
-     *
-     * @param mixed $data
      */
-    public function insert($data = null): IResult
+    public function insert(): IResult
     {
-        if (null === $data)
-        {
-            $data = self::parseSaveData(iterator_to_array($this), 'insert', $this);
-        }
-        elseif (!$data instanceof \ArrayAccess)
-        {
-            $data = new LazyArrayObject($data);
-        }
+        return $this->__insert(self::parseSaveData(iterator_to_array($this), 'insert', $this));
+    }
+
+    protected function __insert(mixed $data): IResult
+    {
         $query = static::query();
         $meta = $this->__meta;
         $isBean = $meta->isBean();
@@ -446,34 +441,15 @@ abstract class Model extends BaseModel
 
     /**
      * 更新记录.
-     *
-     * @param mixed $data
      */
-    public function update($data = null): IResult
+    public function update(): IResult
     {
-        if (null === $data)
-        {
-            $data = self::parseSaveData(iterator_to_array($this), 'update', $this);
-            $isDataEmpty = 0 === $data->count();
-        }
-        else
-        {
-            if (!$data instanceof \ArrayAccess)
-            {
-                $data = new LazyArrayObject($data);
-                $isDataEmpty = 0 === $data->count();
-            }
-            else
-            {
-                $isDataEmpty = true;
-                foreach ($data as $_)
-                {
-                    $isDataEmpty = false;
-                    break;
-                }
-            }
-        }
-        if ($isDataEmpty)
+        return $this->__update(self::parseSaveData(iterator_to_array($this), 'update', $this));
+    }
+
+    protected function __update(mixed $data): IResult
+    {
+        if (!$data || ($data instanceof \Countable && 0 === $data->count()))
         {
             return new Result(true, null, true);
         }
@@ -571,11 +547,11 @@ abstract class Model extends BaseModel
 
         if (true === $recordExists)
         {
-            $result = $this->update($data);
+            $result = $this->__update($data);
         }
         elseif (false === $recordExists)
         {
-            $result = $this->insert($data);
+            $result = $this->__insert($data);
         }
         else
         {
