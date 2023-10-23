@@ -452,48 +452,6 @@ class ModelTest extends BaseTest
         ], Member::convertListToArray($list));
     }
 
-    public function testBatchUpdate(): void
-    {
-        $count1 = Member::count();
-        $this->assertGreaterThan(0, $count1);
-
-        $result = Member::updateBatch([
-            'password' => '123',
-        ]);
-        $this->assertEquals($count1, $result->getAffectedRows());
-
-        $list = Member::query()->select()->getColumn('password');
-        $list = array_unique($list);
-        $this->assertEquals(['123'], $list);
-    }
-
-    public function testBatchDelete(): void
-    {
-        $count1 = Member::count();
-        $this->assertGreaterThan(0, $count1);
-
-        $maxId = Member::max('id');
-        $this->assertGreaterThan(0, $count1);
-
-        // delete max id
-        $result = Member::deleteBatch([
-            'id' => $maxId,
-        ]);
-        $this->assertTrue($result->isSuccess());
-        $this->assertEquals(1, $result->getAffectedRows());
-
-        $count2 = Member::count();
-        $this->assertEquals($count1 - 1, $count2);
-
-        // all delete
-        $result = Member::deleteBatch();
-        $this->assertTrue($result->isSuccess());
-        $this->assertEquals($count1 - 1, $result->getAffectedRows());
-
-        $count3 = Member::count();
-        $this->assertEquals(0, $count3);
-    }
-
     /**
      * @param CreateTime|UpdateTime $record
      */

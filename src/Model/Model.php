@@ -16,7 +16,6 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
-use Imi\Model\Relation\Update;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
@@ -535,67 +534,6 @@ abstract class Model extends BaseModel
     }
 
     /**
-     * 批量更新.
-     *
-     * @deprecated 3.0
-     *
-     * @param mixed          $data
-     * @param array|callable $where
-     */
-    public static function updateBatch($data, $where = null): ?IResult
-    {
-        $class = static::__getRealClassName();
-        if (Update::hasUpdateRelation($class))
-        {
-            $query = static::dbQuery();
-            if ($where)
-            {
-                self::parseWhere($query, $where);
-            }
-
-            $list = $query->select()->getArray();
-
-            if ($list)
-            {
-                foreach ($list as $row)
-                {
-                    $model = static::createFromRecord($row);
-                    $model->set($data);
-                    $model->update();
-                }
-            }
-
-            return null;
-        }
-        else
-        {
-            $query = static::query();
-            if ($where)
-            {
-                self::parseWhere($query, $where);
-            }
-
-            $updateData = self::parseSaveData($data, 'update');
-
-            // 更新前
-            Event::trigger($class . ':' . ModelEvents::BEFORE_BATCH_UPDATE, [
-                'data'  => $updateData,
-                'query' => $query,
-            ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
-
-            $result = $query->update($updateData);
-
-            // 更新后
-            Event::trigger($class . ':' . ModelEvents::AFTER_BATCH_UPDATE, [
-                'data'   => $updateData,
-                'result' => $result,
-            ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
-
-            return $result;
-        }
-    }
-
-    /**
      * 保存记录.
      */
     public function save(): IResult
@@ -768,37 +706,6 @@ abstract class Model extends BaseModel
         }
 
         return $list;
-    }
-
-    /**
-     * 批量删除.
-     *
-     * @deprecated 3.0
-     *
-     * @param array|callable $where
-     */
-    public static function deleteBatch($where = null): IResult
-    {
-        $realClassName = static::__getRealClassName();
-        $query = static::query();
-        if ($where)
-        {
-            self::parseWhere($query, $where);
-        }
-
-        // 删除前
-        Event::trigger($realClassName . ':' . ModelEvents::BEFORE_BATCH_DELETE, [
-            'query' => $query,
-        ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
-
-        $result = $query->delete();
-
-        // 删除后
-        Event::trigger($realClassName . ':' . ModelEvents::AFTER_BATCH_DELETE, [
-            'result' => $result,
-        ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
-
-        return $result;
     }
 
     /**
