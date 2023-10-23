@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -16,7 +15,7 @@ use Imi\Model\Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\NoIncPk.name", default="tb_no_inc_pk"), usePrefix=false, id={"a_id", "b_id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\NoIncPk.poolName"))
+ * @Table(name="tb_no_inc_pk", usePrefix=false, id={"a_id", "b_id"}, dbPoolName=null)
  *
  * @DDL(sql="CREATE TABLE `tb_no_inc_pk` (   `a_id` int(10) unsigned NOT NULL,   `b_id` int(10) unsigned NOT NULL,   `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,   PRIMARY KEY (`a_id`,`b_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci")
  *

@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -16,9 +15,13 @@ use <?php echo $baseClassName; ?> as Model;
  * <?php echo $tableComment; ?> 基类.
  *
  * @Entity(camel=<?php echo var_export($entity, true); ?>, bean=<?php echo var_export($bean, true); ?>, incrUpdate=<?php echo var_export($incrUpdate, true); ?>)
- * @Table(name=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.name", default="<?php echo $table['name']; ?>"), usePrefix=<?php var_export($table['usePrefix']); ?><?php if (isset($table['id'][0]))
- { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=@ConfigValue(name="@app.models.<?php echo $namespace; ?>\<?php echo $className; ?>.poolName"<?php if (null !== $poolName)
- {?>, default="<?php echo $poolName; ?>"<?php }?>))
+ * @Table(name="<?php echo $table['name']; ?>", usePrefix=<?php var_export($table['usePrefix']); ?><?php if (isset($table['id'][0]))
+ { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=<?php if (null === $poolName)
+ { ?>null<?php }
+ else
+ {
+     echo '"', $poolName, '"';
+ }?>)
  *
 <?php foreach ($fields as $field)
 { ?>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -16,7 +15,7 @@ use Imi\Model\Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.name", default="tb_polymorphic"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Polymorphic.poolName"))
+ * @Table(name="tb_polymorphic", usePrefix=false, id={"id"}, dbPoolName=null)
  *
  * @DDL(sql="CREATE TABLE `tb_polymorphic` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL,   `to_one` int(10) unsigned NOT NULL DEFAULT '0',   `to_many` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_one` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_many` int(10) unsigned NOT NULL DEFAULT '0',   `many_to_many` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  *

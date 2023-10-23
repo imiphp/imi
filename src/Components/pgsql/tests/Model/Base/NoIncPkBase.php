@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -15,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\NoIncPk.name", default="tb_no_inc_pk"), usePrefix=false, id={"a_id", "b_id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\NoIncPk.poolName"))
+ * @Table(name="tb_no_inc_pk", usePrefix=false, id={"a_id", "b_id"}, dbPoolName=null)
  *
  * @property int|null    $aId
  * @property int|null    $bId

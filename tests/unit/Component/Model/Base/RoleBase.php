@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -16,7 +15,7 @@ use Imi\Model\Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.name", default="tb_role"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Role.poolName"))
+ * @Table(name="tb_role", usePrefix=false, id={"id"}, dbPoolName=null)
  *
  * @DDL(sql="CREATE TABLE `tb_role` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; insert into `tb_role` values(1,'a'); insert into `tb_role` values(2,'b'); insert into `tb_role` values(3,'c'); insert into `tb_role` values(4,'d'); insert into `tb_role` values(5,'e'); ")
  *

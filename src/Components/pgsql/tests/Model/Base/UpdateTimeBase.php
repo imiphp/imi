@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
@@ -15,7 +14,7 @@ use Imi\Pgsql\Model\PgModel as Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.name", default="tb_update_time"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\UpdateTime.poolName"))
+ * @Table(name="tb_update_time", usePrefix=false, id={"id"}, dbPoolName=null)
  *
  * @property int|null    $id
  * @property string|null $date

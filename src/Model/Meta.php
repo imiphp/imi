@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Config;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\ExtractProperty;
@@ -197,6 +198,7 @@ class Meta
         {
             $realModelClass = $modelClass;
         }
+        $modelConfig = Config::get('@app.models.' . $realModelClass);
         $this->realModelClass = $realModelClass;
         $this->className = $modelClass;
         $annotations = AnnotationManager::getClassAnnotations($realModelClass, [
@@ -226,10 +228,10 @@ class Meta
         $serializables = $this->serializables = $annotations[Serializables::class];
         if ($table)
         {
-            $this->dbPoolName = $table->dbPoolName;
+            $this->dbPoolName = $modelConfig['poolName'] ?? $table->dbPoolName;
             $this->id = $id = (array) $table->id;
-            $this->setTableName($table->name);
-            $this->usePrefix = $table->usePrefix;
+            $this->setTableName($modelConfig['name'] ?? $table->name);
+            $this->usePrefix = $modelConfig['prefix'] ?? $table->usePrefix;
         }
         else
         {

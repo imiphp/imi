@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Config\Annotation\ConfigValue;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
@@ -16,7 +15,7 @@ use Imi\Model\Model;
  *
  * @Entity(camel=true, bean=true, incrUpdate=false)
  *
- * @Table(name=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.name", default="tb_tree"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Test\Component\Model\Tree.poolName"))
+ * @Table(name="tb_tree", usePrefix=false, id={"id"}, dbPoolName=null)
  *
  * @DDL(sql="CREATE TABLE `tb_tree` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL,   `name` varchar(32) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT; insert into `tb_tree` values(1,0,'a'); insert into `tb_tree` values(2,0,'b'); insert into `tb_tree` values(3,0,'c'); insert into `tb_tree` values(4,1,'a-1'); insert into `tb_tree` values(5,1,'a-2'); insert into `tb_tree` values(6,4,'a-1-1'); insert into `tb_tree` values(7,4,'a-1-2'); insert into `tb_tree` values(8,2,'b-1'); insert into `tb_tree` values(9,2,'b-2'); ")
  *
