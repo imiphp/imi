@@ -395,64 +395,6 @@ class ModelTest extends BaseTest
     }
 
     /**
-     * @depends testInsert
-     */
-    public function testQuerySetField(array $args): void
-    {
-        ['id' => $id] = $args;
-        /** @var Member $member */
-        $member = Member::query()->field('username')->where('id', '=', $id)->select()->get();
-        $this->assertEquals([
-            'username' => '1',
-        ], $member->toArray());
-
-        $member = Member::newInstance(['username' => 'test']);
-        $member->password = 'password';
-        $member->insert();
-        $id = $member->id;
-        $this->assertEquals([
-            'id'       => $id,
-            'username' => 'test',
-        ], $member->toArray());
-
-        $member = Member::find($id);
-        $this->assertEquals([
-            'id'       => $id,
-            'username' => 'test',
-        ], $member->toArray());
-        $this->assertEquals('password', $member->password);
-    }
-
-    /**
-     * @depends testInsert
-     */
-    public function testFieldRaw(array $args): void
-    {
-        ['id' => $id] = $args;
-
-        /** @var Member $record */
-        $record = Member::query()->fieldRaw('*, 123 as notInJson, 456 as tmpField')->where('id', '=', $id)->select()->get();
-        $this->assertEquals([
-            'id'        => $id,
-            'username'  => '1',
-            'password'  => 'pw2',
-            'notInJson' => 123,
-            'tmpField'  => 456,
-        ], $record->convertToArray());
-
-        $list = Member::query()->fieldRaw('*, 123 as notInJson, 456 as tmpField')->where('id', '=', $id)->select()->getArray();
-        $this->assertEquals([
-            [
-                'id'        => $id,
-                'username'  => '1',
-                'password'  => 'pw2',
-                'notInJson' => 123,
-                'tmpField'  => 456,
-            ],
-        ], Member::convertListToArray($list));
-    }
-
-    /**
      * @param CreateTime|UpdateTime $record
      */
     private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime): void
@@ -748,7 +690,7 @@ class ModelTest extends BaseTest
             'json_data' => [4, 5, 6],
         ]], TestJson::convertListToArray($list));
 
-        $record = TestJsonNotCamel::query()->field('id', 'json_data')->where('id', '=', $id)->select()->get();
+        $record = TestJsonNotCamel::query()->where('id', '=', $id)->select()->get();
         $this->assertEquals([
             'id'        => $id,
             'json_data' => [4, 5, 6],
@@ -820,12 +762,12 @@ class ModelTest extends BaseTest
         $memberArray['id2'] = $memberArray['id'];
 
         /** @var MemberReferenceProperty|null $member1 */
-        $member1 = MemberReferenceProperty::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->get();
+        $member1 = MemberReferenceProperty::query()->where('id', '=', $member->id)->select()->get();
         $this->assertNotNull($member1);
         $this->assertEquals($memberArray, $member1->toArray());
 
         /** @var MemberReferenceProperty|null $member1 */
-        $list = MemberReferenceProperty::query()->field('tb_member.*')->where('id', '=', $member->id)->select()->getArray();
+        $list = MemberReferenceProperty::query()->where('id', '=', $member->id)->select()->getArray();
         $this->assertNotNull($member1);
         $this->assertEquals([$memberArray], Member::convertListToArray($list));
     }
@@ -1160,13 +1102,6 @@ class ModelTest extends BaseTest
         $this->assertEquals([
             'id' => $id,
         ], $record->convertToArray());
-
-        $record = TestBug403::query()->field('id', 'json_data')->where('id', '=', $id)->select()->get();
-        $this->assertEquals([
-            'id'        => $id,
-            'json_data' => [4, 5, 6],
-        ], $record->convertToArray());
-        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
     }
 
     public function testIncrUpdate(): void

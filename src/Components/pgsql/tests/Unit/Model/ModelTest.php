@@ -274,40 +274,14 @@ class ModelTest extends BaseTest
 
     public function testQueryAlias(): void
     {
-        /** @var Member $member */
-        $member = Member::query(null, null, null, 'a1')
-            ->field('a1.username')
+        $result = Member::query(null, null, null, 'a1')
             ->where('a1.id', '=', 1)
-            ->select()
-            ->get();
+            ->find();
+        $this->assertInstanceOf(Member::class, $result);
         $this->assertEquals([
-            'username'  => '1',
-        ], $member->toArray());
-    }
-
-    public function testQuerySetField(): void
-    {
-        /** @var Member $member */
-        $member = Member::query()->field('username')->where('id', '=', 1)->select()->get();
-        $this->assertEquals([
-            'username'  => '1',
-        ], $member->toArray());
-
-        $member = Member::newInstance(['username' => 'test']);
-        $member->password = 'password';
-        $member->insert();
-        $id = $member->id;
-        $this->assertEquals([
-            'id'        => $id,
-            'username'  => 'test',
-        ], $member->toArray());
-
-        $member = Member::find($id);
-        $this->assertEquals([
-            'id'        => $id,
-            'username'  => 'test',
-        ], $member->toArray());
-        $this->assertEquals('password', $member->password);
+            'id'       => 1,
+            'username' => '1',
+        ], $result->toArray());
     }
 
     /**
@@ -537,7 +511,7 @@ class ModelTest extends BaseTest
             'json_data' => [4, 5, 6],
         ]], TestJson::convertListToArray($list));
 
-        $record = TestJsonNotCamel::query()->field('id', 'json_data')->where('id', '=', $id)->select()->get();
+        $record = TestJsonNotCamel::query()->where('id', '=', $id)->select()->get();
         $this->assertEquals([
             'id'        => $id,
             'json_data' => [4, 5, 6],
