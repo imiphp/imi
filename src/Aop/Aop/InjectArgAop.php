@@ -15,7 +15,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 
 /**
- * @Aspect(Imi\Util\ImiPriority::IMI_MAX)
+ * @Aspect(priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class InjectArgAop
 {
