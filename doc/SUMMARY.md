@@ -141,7 +141,6 @@
 
 ## RPC 服务
 
-* [Hprose](components/rpc/hprose.md)
 * [gRPC](components/rpc/grpc.md)
   * [gRPC 服务开发](components/rpc/grpc.md)
   * [Protobuf](components/rpc/grpc-protobuf.md)
@@ -215,7 +214,6 @@
   * [PostgreSQL](components/db/pgsql.md)
   * [MQTT](components/mqtt/server.md)
   * [gRPC](components/rpc/grpc.md)
-  * [Hprose](components/rpc/hprose.md)
   * [消息队列](components/mq/redis.md)
   * [AMQP](components/mq/amqp.md)
   * [Kafka](components/mq/kafka.md)
