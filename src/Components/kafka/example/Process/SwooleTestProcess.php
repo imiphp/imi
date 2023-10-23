@@ -19,9 +19,9 @@ use Imi\Util\ImiPriority;
 class SwooleTestProcess extends BaseProcess
 {
     /**
-     * @Inject("TestConsumer")
+     * @Inject("TestConsumerSwoole")
      *
-     * @var \KafkaApp\Kafka\Test\TestConsumer
+     * @var \KafkaApp\Kafka\Test\TestConsumerSwoole
      */
     protected $testConsumer;
 
