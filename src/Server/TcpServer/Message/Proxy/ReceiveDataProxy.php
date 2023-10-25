@@ -17,7 +17,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
 #[
-    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: 'Imi\\Server\\TcpServer\\Message\\IReceiveData', name: 'receiveData'),
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\TcpServer\Message\IReceiveData::class, name: 'receiveData'),
     \Imi\Bean\Annotation\Bean(name: 'TcpReceiveDataProxy', recursion: false)
 ]
 class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\TcpServer\Message\IReceiveData

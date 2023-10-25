@@ -15,7 +15,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
 #[
-    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: 'Imi\\Server\\UdpServer\\Message\\IPacketData', name: 'packetData'),
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\UdpServer\Message\IPacketData::class, name: 'packetData'),
     \Imi\Bean\Annotation\Bean(name: 'UdpPacketDataProxy', recursion: false)
 ]
 class PacketDataProxy extends BaseRequestContextProxy implements \Imi\Server\UdpServer\Message\IPacketData

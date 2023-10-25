@@ -119,7 +119,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
  */
 #[
-    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: 'Imi\\Server\\Http\\Message\\Contract\\IHttpRequest', name: 'request'),
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\Http\Message\Contract\IHttpRequest::class, name: 'request'),
     \Imi\Bean\Annotation\Bean(name: 'HttpRequestProxy', recursion: false)
 ]
 class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpRequest

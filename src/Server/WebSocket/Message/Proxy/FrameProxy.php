@@ -21,7 +21,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
 #[
-    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: 'Imi\\Server\\WebSocket\\Message\\IFrame', name: 'frame'),
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\WebSocket\Message\IFrame::class, name: 'frame'),
     \Imi\Bean\Annotation\Bean(name: 'WebSocketFrameProxy', recursion: false)
 ]
 class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocket\Message\IFrame
