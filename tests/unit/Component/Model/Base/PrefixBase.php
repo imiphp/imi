@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * prefix 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="prefix", usePrefix=true, id={"id"}, dbPoolName="dbPrefix")
- *
- * @DDL(sql="CREATE TABLE `tb_prefix` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   `delete_time` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $name
  * @property int|null    $deleteTime
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'prefix', dbPoolName: 'dbPrefix', id: [
+        'id',
+    ], usePrefix: true),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_prefix` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `name` varchar(255) NOT NULL,   `delete_time` int(10) unsigned NOT NULL DEFAULT \'0\',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1')
+]
 abstract class PrefixBase extends Model
 {
     /**
@@ -37,9 +36,10 @@ abstract class PrefixBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -57,7 +57,7 @@ abstract class PrefixBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -66,9 +66,10 @@ abstract class PrefixBase extends Model
 
     /**
      * name.
-     *
-     * @Column(name="name", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'name', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $name = null;
 
     /**
@@ -86,7 +87,7 @@ abstract class PrefixBase extends Model
      *
      * @return static
      */
-    public function setName($name)
+    public function setName(mixed $name): self
     {
         if (\is_string($name) && mb_strlen($name) > 255)
         {
@@ -99,9 +100,10 @@ abstract class PrefixBase extends Model
 
     /**
      * delete_time.
-     *
-     * @Column(name="delete_time", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'delete_time', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $deleteTime = 0;
 
     /**
@@ -119,7 +121,7 @@ abstract class PrefixBase extends Model
      *
      * @return static
      */
-    public function setDeleteTime($deleteTime)
+    public function setDeleteTime(mixed $deleteTime): self
     {
         $this->deleteTime = null === $deleteTime ? null : (int) $deleteTime;
 

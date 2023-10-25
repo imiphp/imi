@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_unused 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_unused", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_unused` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null $id
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_unused', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_unused` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8')
+]
 abstract class UnusedBase extends Model
 {
     /**
@@ -35,9 +34,10 @@ abstract class UnusedBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -55,7 +55,7 @@ abstract class UnusedBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 

@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_member_role_relation 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_member_role_relation", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_member_role_relation` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL DEFAULT '0',   `member_id` int(10) unsigned NOT NULL,   `role_id` int(10) unsigned NOT NULL,   PRIMARY KEY (`id`),   KEY `member_id` (`member_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null $id
  * @property int|null $type
  * @property int|null $memberId
  * @property int|null $roleId
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_member_role_relation', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_member_role_relation` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL DEFAULT \'0\',   `member_id` int(10) unsigned NOT NULL,   `role_id` int(10) unsigned NOT NULL,   PRIMARY KEY (`id`),   KEY `member_id` (`member_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8')
+]
 abstract class MemberRoleRelationBase extends Model
 {
     /**
@@ -38,9 +37,10 @@ abstract class MemberRoleRelationBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -58,7 +58,7 @@ abstract class MemberRoleRelationBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -67,9 +67,10 @@ abstract class MemberRoleRelationBase extends Model
 
     /**
      * type.
-     *
-     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'type', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $type = 0;
 
     /**
@@ -87,7 +88,7 @@ abstract class MemberRoleRelationBase extends Model
      *
      * @return static
      */
-    public function setType($type)
+    public function setType(mixed $type): self
     {
         $this->type = null === $type ? null : (int) $type;
 
@@ -96,9 +97,10 @@ abstract class MemberRoleRelationBase extends Model
 
     /**
      * member_id.
-     *
-     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'member_id', type: 'int', length: 10, nullable: false, unsigned: true)
+    ]
     protected ?int $memberId = null;
 
     /**
@@ -116,7 +118,7 @@ abstract class MemberRoleRelationBase extends Model
      *
      * @return static
      */
-    public function setMemberId($memberId)
+    public function setMemberId(mixed $memberId): self
     {
         $this->memberId = null === $memberId ? null : (int) $memberId;
 
@@ -125,9 +127,10 @@ abstract class MemberRoleRelationBase extends Model
 
     /**
      * role_id.
-     *
-     * @Column(name="role_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'role_id', type: 'int', length: 10, nullable: false, unsigned: true)
+    ]
     protected ?int $roleId = null;
 
     /**
@@ -145,7 +148,7 @@ abstract class MemberRoleRelationBase extends Model
      *
      * @return static
      */
-    public function setRoleId($roleId)
+    public function setRoleId(mixed $roleId): self
     {
         $this->roleId = null === $roleId ? null : (int) $roleId;
 

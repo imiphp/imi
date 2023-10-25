@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_member 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_member", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_member` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `username` varchar(32) NOT NULL COMMENT '用户名',   `password` varchar(255) NOT NULL COMMENT '密码',   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $username 用户名
  * @property string|null $password 密码
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_member', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_member` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `username` varchar(32) NOT NULL COMMENT \'用户名\',   `password` varchar(255) NOT NULL COMMENT \'密码\',   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT')
+]
 abstract class MemberBase extends Model
 {
     /**
@@ -37,9 +36,10 @@ abstract class MemberBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -57,7 +57,7 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -67,9 +67,10 @@ abstract class MemberBase extends Model
     /**
      * 用户名.
      * username.
-     *
-     * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'username', type: 'varchar', length: 32, nullable: false)
+    ]
     protected ?string $username = null;
 
     /**
@@ -87,7 +88,7 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setUsername($username)
+    public function setUsername(mixed $username): self
     {
         if (\is_string($username) && mb_strlen($username) > 32)
         {
@@ -101,9 +102,10 @@ abstract class MemberBase extends Model
     /**
      * 密码.
      * password.
-     *
-     * @Column(name="password", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'password', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $password = null;
 
     /**
@@ -121,7 +123,7 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setPassword($password)
+    public function setPassword(mixed $password): self
     {
         if (\is_string($password) && mb_strlen($password) > 255)
         {

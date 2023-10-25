@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_test_field_name 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_test_field_name", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_test_field_name` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `Abc_Def` varchar(255) NOT NULL,   `ABC_XYZ` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $abcDef
  * @property string|null $aBCXYZ
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_test_field_name', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_test_field_name` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `Abc_Def` varchar(255) NOT NULL,   `ABC_XYZ` varchar(255) NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1')
+]
 abstract class TestFieldNameBase extends Model
 {
     /**
@@ -37,9 +36,10 @@ abstract class TestFieldNameBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -57,7 +57,7 @@ abstract class TestFieldNameBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -66,9 +66,10 @@ abstract class TestFieldNameBase extends Model
 
     /**
      * Abc_Def.
-     *
-     * @Column(name="Abc_Def", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'Abc_Def', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $abcDef = null;
 
     /**
@@ -86,7 +87,7 @@ abstract class TestFieldNameBase extends Model
      *
      * @return static
      */
-    public function setAbcDef($abcDef)
+    public function setAbcDef(mixed $abcDef): self
     {
         if (\is_string($abcDef) && mb_strlen($abcDef) > 255)
         {
@@ -99,9 +100,10 @@ abstract class TestFieldNameBase extends Model
 
     /**
      * ABC_XYZ.
-     *
-     * @Column(name="ABC_XYZ", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'ABC_XYZ', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $aBCXYZ = null;
 
     /**
@@ -119,7 +121,7 @@ abstract class TestFieldNameBase extends Model
      *
      * @return static
      */
-    public function setABCXYZ($aBCXYZ)
+    public function setABCXYZ(mixed $aBCXYZ): self
     {
         if (\is_string($aBCXYZ) && mb_strlen($aBCXYZ) > 255)
         {

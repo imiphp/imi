@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_tree 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_tree", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_tree` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL,   `name` varchar(32) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT; insert into `tb_tree` values(1,0,'a'); insert into `tb_tree` values(2,0,'b'); insert into `tb_tree` values(3,0,'c'); insert into `tb_tree` values(4,1,'a-1'); insert into `tb_tree` values(5,1,'a-2'); insert into `tb_tree` values(6,4,'a-1-1'); insert into `tb_tree` values(7,4,'a-1-2'); insert into `tb_tree` values(8,2,'b-1'); insert into `tb_tree` values(9,2,'b-2'); ")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property int|null    $parentId
  * @property string|null $name
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_tree', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_tree` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL,   `name` varchar(32) NOT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT; insert into `tb_tree` values(1,0,\'a\'); insert into `tb_tree` values(2,0,\'b\'); insert into `tb_tree` values(3,0,\'c\'); insert into `tb_tree` values(4,1,\'a-1\'); insert into `tb_tree` values(5,1,\'a-2\'); insert into `tb_tree` values(6,4,\'a-1-1\'); insert into `tb_tree` values(7,4,\'a-1-2\'); insert into `tb_tree` values(8,2,\'b-1\'); insert into `tb_tree` values(9,2,\'b-2\'); ')
+]
 abstract class TreeBase extends Model
 {
     /**
@@ -37,9 +36,10 @@ abstract class TreeBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -57,7 +57,7 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -66,9 +66,10 @@ abstract class TreeBase extends Model
 
     /**
      * parent_id.
-     *
-     * @Column(name="parent_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'parent_id', type: 'int', length: 10, nullable: false, unsigned: true)
+    ]
     protected ?int $parentId = null;
 
     /**
@@ -86,7 +87,7 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setParentId($parentId)
+    public function setParentId(mixed $parentId): self
     {
         $this->parentId = null === $parentId ? null : (int) $parentId;
 
@@ -95,9 +96,10 @@ abstract class TreeBase extends Model
 
     /**
      * name.
-     *
-     * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'name', type: 'varchar', length: 32, nullable: false)
+    ]
     protected ?string $name = null;
 
     /**
@@ -115,7 +117,7 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setName($name)
+    public function setName(mixed $name): self
     {
         if (\is_string($name) && mb_strlen($name) > 32)
         {

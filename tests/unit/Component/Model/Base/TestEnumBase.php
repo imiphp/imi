@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_test_enum 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_test_enum", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_test_enum` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value1` enum('a','b','c','''test''') NOT NULL DEFAULT '''test''',   `value2` enum('1','2','3') NOT NULL DEFAULT '1',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $value1
  * @property string|null $value2
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_test_enum', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_test_enum` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `value1` enum(\'a\',\'b\',\'c\',\'\'\'test\'\'\') NOT NULL DEFAULT \'\'\'test\'\'\',   `value2` enum(\'1\',\'2\',\'3\') NOT NULL DEFAULT \'1\',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8')
+]
 abstract class TestEnumBase extends Model
 {
     /**
@@ -37,9 +36,10 @@ abstract class TestEnumBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -57,7 +57,7 @@ abstract class TestEnumBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -66,9 +66,10 @@ abstract class TestEnumBase extends Model
 
     /**
      * value1.
-     *
-     * @Column(name="value1", type="enum", length=0, accuracy=0, nullable=false, default="'test'", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'value1', type: 'enum', length: 0, nullable: false, default: '\'test\'')
+    ]
     protected ?string $value1 = '\'test\'';
 
     /**
@@ -86,7 +87,7 @@ abstract class TestEnumBase extends Model
      *
      * @return static
      */
-    public function setValue1($value1)
+    public function setValue1(mixed $value1): self
     {
         $this->value1 = null === $value1 ? null : (string) $value1;
 
@@ -95,9 +96,10 @@ abstract class TestEnumBase extends Model
 
     /**
      * value2.
-     *
-     * @Column(name="value2", type="enum", length=0, accuracy=0, nullable=false, default="1", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'value2', type: 'enum', length: 0, nullable: false, default: '1')
+    ]
     protected ?string $value2 = '1';
 
     /**
@@ -115,7 +117,7 @@ abstract class TestEnumBase extends Model
      *
      * @return static
      */
-    public function setValue2($value2)
+    public function setValue2(mixed $value2): self
     {
         $this->value2 = null === $value2 ? null : (string) $value2;
 

@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_article 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_article", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT '0',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property int|null    $memberId
@@ -25,6 +17,13 @@ use Imi\Model\Model;
  * @property string|null $content
  * @property string|null $time
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_article', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT \'0\',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT')
+]
 abstract class ArticleBase extends Model
 {
     /**
@@ -39,9 +38,10 @@ abstract class ArticleBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -59,7 +59,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -68,9 +68,10 @@ abstract class ArticleBase extends Model
 
     /**
      * member_id.
-     *
-     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'member_id', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $memberId = 0;
 
     /**
@@ -88,7 +89,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setMemberId($memberId)
+    public function setMemberId(mixed $memberId): self
     {
         $this->memberId = null === $memberId ? null : (int) $memberId;
 
@@ -97,9 +98,10 @@ abstract class ArticleBase extends Model
 
     /**
      * title.
-     *
-     * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'title', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $title = null;
 
     /**
@@ -117,7 +119,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setTitle($title)
+    public function setTitle(mixed $title): self
     {
         if (\is_string($title) && mb_strlen($title) > 255)
         {
@@ -130,9 +132,10 @@ abstract class ArticleBase extends Model
 
     /**
      * content.
-     *
-     * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'content', type: 'mediumtext', length: 0, nullable: false)
+    ]
     protected ?string $content = null;
 
     /**
@@ -150,7 +153,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setContent($content)
+    public function setContent(mixed $content): self
     {
         if (\is_string($content) && mb_strlen($content) > 16777215)
         {
@@ -163,9 +166,10 @@ abstract class ArticleBase extends Model
 
     /**
      * time.
-     *
-     * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'time', type: 'timestamp', length: 0, nullable: false, default: 'CURRENT_TIMESTAMP')
+    ]
     protected ?string $time = null;
 
     /**
@@ -183,7 +187,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setTime($time)
+    public function setTime(mixed $time): self
     {
         $this->time = null === $time ? null : (string) $time;
 

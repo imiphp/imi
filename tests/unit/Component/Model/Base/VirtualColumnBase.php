@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_virtual_column 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_virtual_column", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_virtual_column` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `amount` int(11) NOT NULL,   `virtual_amount` decimal(10,2) GENERATED ALWAYS AS ((`amount` / 100)) VIRTUAL NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null              $id
  * @property int|null              $amount
  * @property string|float|int|null $virtualAmount
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_virtual_column', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_virtual_column` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `amount` int(11) NOT NULL,   `virtual_amount` decimal(10,2) GENERATED ALWAYS AS ((`amount` / 100)) VIRTUAL NOT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci')
+]
 abstract class VirtualColumnBase extends Model
 {
     /**
@@ -37,9 +36,10 @@ abstract class VirtualColumnBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -57,7 +57,7 @@ abstract class VirtualColumnBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -66,9 +66,10 @@ abstract class VirtualColumnBase extends Model
 
     /**
      * amount.
-     *
-     * @Column(name="amount", type="int", length=11, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'amount', type: 'int', length: 11, nullable: false)
+    ]
     protected ?int $amount = null;
 
     /**
@@ -86,7 +87,7 @@ abstract class VirtualColumnBase extends Model
      *
      * @return static
      */
-    public function setAmount($amount)
+    public function setAmount(mixed $amount): self
     {
         $this->amount = null === $amount ? null : (int) $amount;
 
@@ -95,9 +96,10 @@ abstract class VirtualColumnBase extends Model
 
     /**
      * virtual_amount.
-     *
-     * @Column(name="virtual_amount", type="decimal", length=10, accuracy=2, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=true)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'virtual_amount', type: 'decimal', length: 10, nullable: false, accuracy: 2, virtual: true)
+    ]
     protected string|float|int|null $virtualAmount = null;
 
     /**
@@ -115,7 +117,7 @@ abstract class VirtualColumnBase extends Model
      *
      * @return static
      */
-    public function setVirtualAmount($virtualAmount)
+    public function setVirtualAmount(mixed $virtualAmount): self
     {
         $this->virtualAmount = null === $virtualAmount ? null : $virtualAmount;
 

@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_no_inc_pk 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_no_inc_pk", usePrefix=false, id={"a_id", "b_id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_no_inc_pk` (   `a_id` int(10) unsigned NOT NULL,   `b_id` int(10) unsigned NOT NULL,   `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,   PRIMARY KEY (`a_id`,`b_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $aId
  * @property int|null    $bId
  * @property string|null $value
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_no_inc_pk', id: [
+        'a_id',
+        'b_id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_no_inc_pk` (   `a_id` int(10) unsigned NOT NULL,   `b_id` int(10) unsigned NOT NULL,   `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,   PRIMARY KEY (`a_id`,`b_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci')
+]
 abstract class NoIncPkBase extends Model
 {
     /**
@@ -37,9 +37,10 @@ abstract class NoIncPkBase extends Model
 
     /**
      * a_id.
-     *
-     * @Column(name="a_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'a_id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, unsigned: true)
+    ]
     protected ?int $aId = null;
 
     /**
@@ -57,7 +58,7 @@ abstract class NoIncPkBase extends Model
      *
      * @return static
      */
-    public function setAId($aId)
+    public function setAId(mixed $aId): self
     {
         $this->aId = null === $aId ? null : (int) $aId;
 
@@ -66,9 +67,10 @@ abstract class NoIncPkBase extends Model
 
     /**
      * b_id.
-     *
-     * @Column(name="b_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'b_id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 1, unsigned: true)
+    ]
     protected ?int $bId = null;
 
     /**
@@ -86,7 +88,7 @@ abstract class NoIncPkBase extends Model
      *
      * @return static
      */
-    public function setBId($bId)
+    public function setBId(mixed $bId): self
     {
         $this->bId = null === $bId ? null : (int) $bId;
 
@@ -95,9 +97,10 @@ abstract class NoIncPkBase extends Model
 
     /**
      * value.
-     *
-     * @Column(name="value", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'value', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $value = null;
 
     /**
@@ -115,7 +118,7 @@ abstract class NoIncPkBase extends Model
      *
      * @return static
      */
-    public function setValue($value)
+    public function setValue(mixed $value): self
     {
         if (\is_string($value) && mb_strlen($value) > 255)
         {

@@ -25,12 +25,12 @@ return (new PhpCsFixer\Config())
         'concat_space' => [
             'spacing' => 'one',
         ],
-        'fopen_flags'                  => false,
-        'protected_to_private'         => false,
-        'native_function_invocation'   => true,
-        'native_constant_invocation'   => true,
-        'combine_nested_dirname'       => true,
-        'single_quote'                 => true,
+        'fopen_flags'                   => false,
+        'protected_to_private'          => false,
+        'native_function_invocation'    => true,
+        'native_constant_invocation'    => true,
+        'combine_nested_dirname'        => true,
+        'single_quote'                  => true,
         'single_space_around_construct' => [
             'constructs_followed_by_a_single_space' => [
                 'abstract',
@@ -121,10 +121,9 @@ return (new PhpCsFixer\Config())
             'control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end',
         ],
         'nullable_type_declaration_for_default_null_value' => false,
-        'no_superfluous_phpdoc_tags'       => [
-            'allow_mixed' => true,
+        'no_superfluous_phpdoc_tags'                       => [
+            'allow_mixed'         => true,
             'allow_unused_params' => false,
-            'remove_inheritdoc' => false,
         ],
         'no_null_property_initialization'  => false,
     ])
