@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Server\WebSocket\Message\Proxy;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @Bean(name="WebSocketFrameProxy", recursion=false, instanceType="singleton")
- *
- * @RequestContextProxy(class="Imi\Server\WebSocket\Message\IFrame", name="frame")
- *
  * @method        int|string                  getClientId()
  * @method static int|string                  getClientId()
  * @method        string                      getData()
@@ -26,6 +20,10 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method        \Imi\Util\Socket\IPEndPoint getClientAddress()
  * @method static \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
+#[
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: 'Imi\\Server\\WebSocket\\Message\\IFrame', name: 'frame'),
+    \Imi\Bean\Annotation\Bean(name: 'WebSocketFrameProxy', recursion: false)
+]
 class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocket\Message\IFrame
 {
     /**
