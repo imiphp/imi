@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * tb_article 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_article", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $title
  * @property string|null $content
  * @property string|null $time
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_article', id: [
+        'id',
+    ])
+]
 abstract class ArticleBase extends Model
 {
     /**
@@ -35,9 +36,10 @@ abstract class ArticleBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -55,7 +57,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -64,9 +66,10 @@ abstract class ArticleBase extends Model
 
     /**
      * title.
-     *
-     * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'title', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $title = null;
 
     /**
@@ -84,7 +87,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setTitle($title)
+    public function setTitle(mixed $title): self
     {
         if (\is_string($title) && mb_strlen($title) > 255)
         {
@@ -97,9 +100,10 @@ abstract class ArticleBase extends Model
 
     /**
      * content.
-     *
-     * @Column(name="content", type="text", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'content', type: 'text', nullable: false)
+    ]
     protected ?string $content = null;
 
     /**
@@ -117,7 +121,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setContent($content)
+    public function setContent(mixed $content): self
     {
         $this->content = null === $content ? null : $content;
 
@@ -126,9 +130,10 @@ abstract class ArticleBase extends Model
 
     /**
      * time.
-     *
-     * @Column(name="time", type="timestamp", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'time', type: 'timestamp', length: 6, nullable: false)
+    ]
     protected ?string $time = null;
 
     /**
@@ -146,7 +151,7 @@ abstract class ArticleBase extends Model
      *
      * @return static
      */
-    public function setTime($time)
+    public function setTime(mixed $time): self
     {
         $this->time = null === $time ? null : $time;
 

@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * tb_performance 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_performance", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $value
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_performance', id: [
+        'id',
+    ])
+]
 abstract class PerformanceBase extends Model
 {
     /**
@@ -33,9 +34,10 @@ abstract class PerformanceBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -53,7 +55,7 @@ abstract class PerformanceBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -62,9 +64,10 @@ abstract class PerformanceBase extends Model
 
     /**
      * value.
-     *
-     * @Column(name="value", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'value', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $value = null;
 
     /**
@@ -82,7 +85,7 @@ abstract class PerformanceBase extends Model
      *
      * @return static
      */
-    public function setValue($value)
+    public function setValue(mixed $value): self
     {
         if (\is_string($value) && mb_strlen($value) > 255)
         {

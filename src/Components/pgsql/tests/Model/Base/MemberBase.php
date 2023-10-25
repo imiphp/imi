@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * tb_member 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_member", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $username 用户名
  * @property string|null $password 密码
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_member', id: [
+        'id',
+    ])
+]
 abstract class MemberBase extends Model
 {
     /**
@@ -34,9 +35,10 @@ abstract class MemberBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -54,7 +56,7 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -64,9 +66,10 @@ abstract class MemberBase extends Model
     /**
      * 用户名.
      * username.
-     *
-     * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="''::character varying", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'username', type: 'varchar', length: 32, nullable: false, default: '\'\'::character varying')
+    ]
     protected ?string $username = '';
 
     /**
@@ -84,7 +87,7 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setUsername($username)
+    public function setUsername(mixed $username): self
     {
         if (\is_string($username) && mb_strlen($username) > 32)
         {
@@ -98,9 +101,10 @@ abstract class MemberBase extends Model
     /**
      * 密码.
      * password.
-     *
-     * @Column(name="password", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'password', type: 'varchar', length: 255, nullable: false)
+    ]
     protected ?string $password = null;
 
     /**
@@ -118,7 +122,7 @@ abstract class MemberBase extends Model
      *
      * @return static
      */
-    public function setPassword($password)
+    public function setPassword(mixed $password): self
     {
         if (\is_string($password) && mb_strlen($password) > 255)
         {

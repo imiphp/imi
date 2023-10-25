@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * test 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_test_json", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null                             $id
  * @property \Imi\Util\LazyArrayObject|array|null $jsonData json数据
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_test_json', id: [
+        'id',
+    ])
+]
 abstract class TestJsonBase extends Model
 {
     /**
@@ -33,9 +34,10 @@ abstract class TestJsonBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -53,7 +55,7 @@ abstract class TestJsonBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -64,10 +66,11 @@ abstract class TestJsonBase extends Model
      * json数据.
      * json_data.
      *
-     * @Column(name="json_data", type="json", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
-     *
      * @var \Imi\Util\LazyArrayObject|array|null
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'json_data', type: 'json', nullable: false)
+    ]
     protected $jsonData = null;
 
     /**
@@ -87,7 +90,7 @@ abstract class TestJsonBase extends Model
      *
      * @return static
      */
-    public function setJsonData($jsonData)
+    public function setJsonData(mixed $jsonData): self
     {
         $this->jsonData = null === $jsonData ? null : $jsonData;
 

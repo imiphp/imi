@@ -225,6 +225,11 @@ class ModelGenerate extends BaseCommand
             }
             $this->parseFields($poolName, $fields, $data, 'v' === $item['relkind'], $table, $typeDefinitions);
 
+            $data['classAttributeCode'] = \Imi\Bean\Util\AnnotationUtil::generateAttributesCode([
+                new \Imi\Model\Annotation\Entity(camel: $data['entity'], bean: $data['bean'], incrUpdate: $data['incrUpdate']),
+                new \Imi\Model\Annotation\Table(name: $data['table']['name'], usePrefix: $data['table']['usePrefix'], id: $data['table']['id'], dbPoolName: $data['poolName']),
+            ]);
+
             $baseFileName = File::path($basePath, $className . 'Base.php');
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
             {
@@ -304,7 +309,7 @@ class ModelGenerate extends BaseCommand
 
             $isPk = $field['ordinal_position'] > 0;
             [$phpType, $phpDefinitionType, $typeConvert] = $this->dbFieldTypeToPhp($field);
-            $data['fields'][] = [
+            $fieldData = [
                 'name'              => $field['attname'],
                 'varName'           => Text::toCamelName($field['attname']),
                 'type'              => $type = ('_' === $field['typname'][0] ? substr((string) $field['typname'], 1) : $field['typname']),
@@ -325,6 +330,10 @@ class ModelGenerate extends BaseCommand
                 'ref'               => \in_array($type, ['json', 'jsonb']),
                 'virtual'           => 's' === $field['attgenerated'],
             ];
+            $fieldData['attributesCode'] = \Imi\Bean\Util\AnnotationUtil::generateAttributesCode([
+                new \Imi\Model\Annotation\Column(name: $fieldData['name'], type: $fieldData['type'], length: $fieldData['length'], accuracy: $fieldData['accuracy'], nullable: $fieldData['nullable'], default: $fieldData['default'], isPrimaryKey: $fieldData['isPrimaryKey'], primaryKeyIndex: $fieldData['primaryKeyIndex'], isAutoIncrement: $fieldData['isAutoIncrement'], ndims: $fieldData['ndims'], virtual: $fieldData['virtual']),
+            ]);
+            $data['fields'][] = $fieldData;
             if ($isPk)
             {
                 $data['table']['id'][$primaryKeyIndex] = $field['attname'];

@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * tb_array_test 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_array_test", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null                  $id
  * @property array<int>|null           $arr1
  * @property array<array<string>>|null $arr2
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_array_test', id: [
+        'id',
+    ])
+]
 abstract class ArrayTestBase extends Model
 {
     /**
@@ -34,9 +35,10 @@ abstract class ArrayTestBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -54,7 +56,7 @@ abstract class ArrayTestBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -64,10 +66,11 @@ abstract class ArrayTestBase extends Model
     /**
      * arr1.
      *
-     * @Column(name="arr1", type="int8", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=1, virtual=false)
-     *
      * @var array<int>|null
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'arr1', type: 'int8', nullable: false, ndims: 1)
+    ]
     protected ?array $arr1 = null;
 
     /**
@@ -87,7 +90,7 @@ abstract class ArrayTestBase extends Model
      *
      * @return static
      */
-    public function setArr1($arr1)
+    public function setArr1(mixed $arr1): self
     {
         $this->arr1 = null === $arr1 ? null : $arr1;
 
@@ -97,10 +100,11 @@ abstract class ArrayTestBase extends Model
     /**
      * arr2.
      *
-     * @Column(name="arr2", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=2, virtual=false)
-     *
      * @var array<array<string>>|null
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'arr2', type: 'varchar', length: 255, nullable: false, ndims: 2)
+    ]
     protected ?array $arr2 = null;
 
     /**
@@ -120,7 +124,7 @@ abstract class ArrayTestBase extends Model
      *
      * @return static
      */
-    public function setArr2($arr2)
+    public function setArr2(mixed $arr2): self
     {
         $this->arr2 = null === $arr2 ? null : $arr2;
 

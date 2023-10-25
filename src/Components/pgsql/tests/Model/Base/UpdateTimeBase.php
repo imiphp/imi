@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * tb_update_time 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_update_time", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $date
@@ -29,6 +24,12 @@ use Imi\Pgsql\Model\PgModel as Model;
  * @property int|null    $int
  * @property int|null    $bigint
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_update_time', id: [
+        'id',
+    ])
+]
 abstract class UpdateTimeBase extends Model
 {
     /**
@@ -43,9 +44,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -63,7 +65,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -72,9 +74,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * date.
-     *
-     * @Column(name="date", type="date", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'date', type: 'date', nullable: false)
+    ]
     protected ?string $date = null;
 
     /**
@@ -92,7 +95,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setDate($date)
+    public function setDate(mixed $date): self
     {
         $this->date = null === $date ? null : $date;
 
@@ -101,9 +104,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * time.
-     *
-     * @Column(name="time", type="time", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'time', type: 'time', length: 6, nullable: false)
+    ]
     protected ?string $time = null;
 
     /**
@@ -121,7 +125,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTime($time)
+    public function setTime(mixed $time): self
     {
         $this->time = null === $time ? null : $time;
 
@@ -130,9 +134,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timetz.
-     *
-     * @Column(name="timetz", type="timetz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timetz', type: 'timetz', length: 6, nullable: false)
+    ]
     protected ?string $timetz = null;
 
     /**
@@ -150,7 +155,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimetz($timetz)
+    public function setTimetz(mixed $timetz): self
     {
         $this->timetz = null === $timetz ? null : $timetz;
 
@@ -159,9 +164,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * time2.
-     *
-     * @Column(name="time2", type="time", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'time2', type: 'time', length: 6, nullable: false)
+    ]
     protected ?string $time2 = null;
 
     /**
@@ -179,7 +185,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTime2($time2)
+    public function setTime2(mixed $time2): self
     {
         $this->time2 = null === $time2 ? null : $time2;
 
@@ -188,9 +194,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timetz2.
-     *
-     * @Column(name="timetz2", type="timetz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timetz2', type: 'timetz', length: 6, nullable: false)
+    ]
     protected ?string $timetz2 = null;
 
     /**
@@ -208,7 +215,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimetz2($timetz2)
+    public function setTimetz2(mixed $timetz2): self
     {
         $this->timetz2 = null === $timetz2 ? null : $timetz2;
 
@@ -217,9 +224,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timestamp.
-     *
-     * @Column(name="timestamp", type="timestamp", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timestamp', type: 'timestamp', length: 6, nullable: false)
+    ]
     protected ?string $timestamp = null;
 
     /**
@@ -237,7 +245,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamp($timestamp)
+    public function setTimestamp(mixed $timestamp): self
     {
         $this->timestamp = null === $timestamp ? null : $timestamp;
 
@@ -246,9 +254,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timestamptz.
-     *
-     * @Column(name="timestamptz", type="timestamptz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timestamptz', type: 'timestamptz', length: 6, nullable: false)
+    ]
     protected ?string $timestamptz = null;
 
     /**
@@ -266,7 +275,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamptz($timestamptz)
+    public function setTimestamptz(mixed $timestamptz): self
     {
         $this->timestamptz = null === $timestamptz ? null : $timestamptz;
 
@@ -275,9 +284,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timestamp2.
-     *
-     * @Column(name="timestamp2", type="timestamp", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timestamp2', type: 'timestamp', length: 6, nullable: false)
+    ]
     protected ?string $timestamp2 = null;
 
     /**
@@ -295,7 +305,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamp2($timestamp2)
+    public function setTimestamp2(mixed $timestamp2): self
     {
         $this->timestamp2 = null === $timestamp2 ? null : $timestamp2;
 
@@ -304,9 +314,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timestamptz2.
-     *
-     * @Column(name="timestamptz2", type="timestamptz", length=6, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timestamptz2', type: 'timestamptz', length: 6, nullable: false)
+    ]
     protected ?string $timestamptz2 = null;
 
     /**
@@ -324,7 +335,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamptz2($timestamptz2)
+    public function setTimestamptz2(mixed $timestamptz2): self
     {
         $this->timestamptz2 = null === $timestamptz2 ? null : $timestamptz2;
 
@@ -333,9 +344,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * int.
-     *
-     * @Column(name="int", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'int', type: 'int4', nullable: false)
+    ]
     protected ?int $int = null;
 
     /**
@@ -353,7 +365,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setInt($int)
+    public function setInt(mixed $int): self
     {
         $this->int = null === $int ? null : (int) $int;
 
@@ -362,9 +374,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * bigint.
-     *
-     * @Column(name="bigint", type="int8", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'bigint', type: 'int8', nullable: false)
+    ]
     protected ?int $bigint = null;
 
     /**
@@ -382,7 +395,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setBigint($bigint)
+    public function setBigint(mixed $bigint): self
     {
         $this->bigint = null === $bigint ? null : (int) $bigint;
 

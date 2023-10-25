@@ -6,22 +6,12 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use <?php echo $baseClassName; ?> as Model;
 
 /**
  * <?php echo $tableComment; ?> 基类.
  *
- * @Entity(camel=<?php echo var_export($entity, true); ?>, bean=<?php echo var_export($bean, true); ?>, incrUpdate=<?php echo var_export($incrUpdate, true); ?>)
- * @Table(name="<?php echo $table['name']; ?>", usePrefix=<?php var_export($table['usePrefix']); ?><?php if (isset($table['id'][0]))
- { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php } ?>, dbPoolName=<?php if (null === $poolName)
- { ?>null<?php }
- else
- {
-     echo '"', $poolName, '"';
- }?>)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
 <?php foreach ($fields as $field)
 { ?>
@@ -29,6 +19,8 @@ use <?php echo $baseClassName; ?> as Model;
 
 <?php } ?>
  */
+<?php echo $classAttributeCode; ?>
+
 abstract class <?php echo $className; ?>Base extends Model
 {
     /**
@@ -56,10 +48,11 @@ else
      * <?php echo $field['name']; ?>
 
 <?php } ?>
-     * @Column(name="<?php echo $field['name']; ?>", type="<?php echo $field['type']; ?>", length=<?php echo $field['length']; ?>, accuracy=<?php echo $field['accuracy']; ?>, nullable=<?php echo json_encode($field['nullable']); ?>, default="<?php echo $field['default']; ?>", isPrimaryKey=<?php echo json_encode($field['isPrimaryKey']); ?>, primaryKeyIndex=<?php echo $field['primaryKeyIndex']; ?>, isAutoIncrement=<?php echo json_encode($field['isAutoIncrement']); ?>, ndims=<?php echo $field['ndims']; ?>, virtual=<?php var_export($field['virtual']); ?>)
      * @var <?php echo $field['phpType']; ?>
 
      */
+    <?php echo $field['attributesCode']; ?>
+
     protected <?php if ($field['typeDefinition'] && $field['phpDefinitionType'])
     { ?><?php echo $field['phpDefinitionType']; ?> <?php } ?>$<?php echo $field['varName']; ?> = <?php var_export($field['defaultValue']); ?>;
 
@@ -84,7 +77,7 @@ else
 
      * @return static
      */
-    public function set<?php echo ucfirst($field['varName']); ?>($<?php echo $field['varName']; ?>)
+    public function set<?php echo ucfirst($field['varName']); ?>(mixed $<?php echo $field['varName']; ?>): self
     {
 <?php if ($lengthCheck && 0 === $field['ndims'] && $length = [
     'character'         => $field['length'],
