@@ -11,9 +11,8 @@ use <?php echo $namespace; ?>\Base\<?php echo $className; ?>Base;
 
 /**
  * <?php echo $tableComment; ?>.
- *
- * @Inherit
  */
+#[Inherit]
 class <?php echo $className; ?> extends <?php echo $className; ?>Base
 {
 
