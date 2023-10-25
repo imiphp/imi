@@ -433,7 +433,7 @@ abstract class Model extends BaseModel
             // 子模型插入
             ModelRelationManager::insertModel($this);
         }
-        $this->__originData = [...$this->__originData, ...ObjectArrayHelper::toArray($data)];
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
         $this->__recordExists = true;
 
         return $result;
@@ -504,7 +504,7 @@ abstract class Model extends BaseModel
             ModelRelationManager::updateModel($this);
         }
 
-        $this->__originData = [...$this->__originData, ...ObjectArrayHelper::toArray($data)];
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
 
         return $result;
     }
@@ -572,7 +572,7 @@ abstract class Model extends BaseModel
                 $this[$autoIncrementField] = $result->getLastInsertId();
             }
         }
-        $this->__originData = [...$this->__originData, ...ObjectArrayHelper::toArray($data)];
+        $this->__originData = array_merge($this->__originData, ObjectArrayHelper::toArray($data));
         $this->__recordExists = true;
 
         if ($isBean)
@@ -655,7 +655,7 @@ abstract class Model extends BaseModel
         }
         else
         {
-            $this->__serializedFields = [...$this->__fieldNames, ...$names];
+            $this->__serializedFields = array_merge($this->__fieldNames, $names);
         }
     }
 
@@ -677,7 +677,7 @@ abstract class Model extends BaseModel
             }
             else
             {
-                $__serializedFields = [...$model->__fieldNames, ...$names];
+                $__serializedFields = array_merge($model->__fieldNames, $names);
             }
         }
 

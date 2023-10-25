@@ -68,7 +68,7 @@ class HttpRouteInit implements IEventListener
                 /** @var Middleware $middleware */
                 foreach (AnnotationManager::getClassAnnotations($className, Middleware::class) as $middleware)
                 {
-                    $classMiddlewares = [...$classMiddlewares, ...$this->getMiddlewares($middleware->middlewares, $name)];
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $_)
                 {
@@ -99,11 +99,11 @@ class HttpRouteInit implements IEventListener
                         /** @var Middleware $middleware */
                         foreach ($annotations[Middleware::class] as $middleware)
                         {
-                            $methodMiddlewares = [...$methodMiddlewares, ...$this->getMiddlewares($middleware->middlewares, $name)];
+                            $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                         }
                     }
                     // 最终中间件
-                    $middlewares = array_values(array_unique([...$classMiddlewares, ...$methodMiddlewares]));
+                    $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
 
                     /** @var Route[] $routes */
                     foreach ($routes as $routeItem)

@@ -113,7 +113,7 @@ class Server implements \ArrayAccess, \JsonSerializable
         }
         if ($serverParams)
         {
-            return [...$this->defaultServer, ...array_change_key_case($serverParams, \CASE_UPPER)];
+            return array_merge($this->defaultServer, array_change_key_case($serverParams, \CASE_UPPER));
         }
         else
         {
