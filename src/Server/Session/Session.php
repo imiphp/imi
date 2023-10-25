@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Server\Session;
 
-use Imi\Facade\Annotation\Facade;
 use Imi\Facade\BaseFacade;
 
 /**
- * @Facade(class="SessionManager", request=true, args={})
- *
  * @method static void                                        start(?string $sessionId = NULL)
  * @method static void                                        close()
  * @method static void                                        destroy()
@@ -31,6 +28,9 @@ use Imi\Facade\BaseFacade;
  * @method static bool                                        isChanged()
  * @method static bool                                        isNewSession()
  */
+#[
+    \Imi\Facade\Annotation\Facade(class: 'SessionManager', request: true)
+]
 class Session extends BaseFacade
 {
 }
