@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Util;
 
-use Imi\Bean\Util\AnnotationUtil;
+use Imi\Bean\Util\AttributeUtil;
 use Imi\Test\BaseTest;
 
-class AnnotationUtilTest extends BaseTest
+class AttributeUtilTest extends BaseTest
 {
     public function testGenerateAttributesCode(): void
     {
@@ -32,14 +32,14 @@ class AnnotationUtilTest extends BaseTest
                 new \Imi\Test\Component\Tests\Util\Attr1(id: 'c')
             ])
         ]
-        CODE, AnnotationUtil::generateAttributesCode($attributes));
+        CODE, AttributeUtil::generateAttributesCode($attributes));
     }
 
     public function testGenerateAttributesCodeNotAttr(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Class Imi\Test\Component\Tests\Util\NotAttr does not an Attribute');
-        AnnotationUtil::generateAttributesCode(new NotAttr());
+        AttributeUtil::generateAttributesCode(new NotAttr());
     }
 }
 

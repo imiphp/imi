@@ -263,7 +263,7 @@ class ModelGenerate extends BaseCommand
 
             $this->parseFields($fields, $pks, $data, $typeDefinitions);
 
-            $data['classAttributeCode'] = \Imi\Bean\Util\AnnotationUtil::generateAttributesCode([
+            $data['classAttributeCode'] = \Imi\Bean\Util\AttributeUtil::generateAttributesCode([
                 new \Imi\Model\Annotation\Entity(camel: $data['camel'], bean: $data['bean'], incrUpdate: $data['incrUpdate']),
                 new \Imi\Model\Annotation\Table(name: $data['table']['name'], usePrefix: $data['table']['usePrefix'], id: $data['table']['id'], dbPoolName: $data['poolName']),
                 new \Imi\Model\Annotation\DDL(sql: $data['ddl']),
@@ -354,7 +354,7 @@ class ModelGenerate extends BaseCommand
                 'unsigned'          => $unsigned,
                 'virtual'           => str_contains((string) $field['Extra'], 'VIRTUAL GENERATED'),
             ];
-            $fieldData['attributesCode'] = \Imi\Bean\Util\AnnotationUtil::generateAttributesCode([
+            $fieldData['attributesCode'] = \Imi\Bean\Util\AttributeUtil::generateAttributesCode([
                 new \Imi\Model\Annotation\Column(name: $fieldData['name'], type: $fieldData['type'], length: $fieldData['length'], accuracy: $fieldData['accuracy'], nullable: $fieldData['nullable'], default: $fieldData['default'], isPrimaryKey: $fieldData['isPrimaryKey'], primaryKeyIndex: $fieldData['primaryKeyIndex'], isAutoIncrement: $fieldData['isAutoIncrement'], unsigned: $fieldData['unsigned'], virtual: $fieldData['virtual']),
             ]);
             $data['fields'][] = $fieldData;

@@ -6,7 +6,7 @@ namespace Imi\Bean\Util;
 
 use Imi\Util\Traits\TStaticClass;
 
-class AnnotationUtil
+class AttributeUtil
 {
     use TStaticClass;
 

@@ -225,7 +225,7 @@ class ModelGenerate extends BaseCommand
             }
             $this->parseFields($poolName, $fields, $data, 'v' === $item['relkind'], $table, $typeDefinitions);
 
-            $data['classAttributeCode'] = \Imi\Bean\Util\AnnotationUtil::generateAttributesCode([
+            $data['classAttributeCode'] = \Imi\Bean\Util\AttributeUtil::generateAttributesCode([
                 new \Imi\Model\Annotation\Entity(camel: $data['entity'], bean: $data['bean'], incrUpdate: $data['incrUpdate']),
                 new \Imi\Model\Annotation\Table(name: $data['table']['name'], usePrefix: $data['table']['usePrefix'], id: $data['table']['id'], dbPoolName: $data['poolName']),
             ]);
@@ -330,7 +330,7 @@ class ModelGenerate extends BaseCommand
                 'ref'               => \in_array($type, ['json', 'jsonb']),
                 'virtual'           => 's' === $field['attgenerated'],
             ];
-            $fieldData['attributesCode'] = \Imi\Bean\Util\AnnotationUtil::generateAttributesCode([
+            $fieldData['attributesCode'] = \Imi\Bean\Util\AttributeUtil::generateAttributesCode([
                 new \Imi\Model\Annotation\Column(name: $fieldData['name'], type: $fieldData['type'], length: $fieldData['length'], accuracy: $fieldData['accuracy'], nullable: $fieldData['nullable'], default: $fieldData['default'], isPrimaryKey: $fieldData['isPrimaryKey'], primaryKeyIndex: $fieldData['primaryKeyIndex'], isAutoIncrement: $fieldData['isAutoIncrement'], ndims: $fieldData['ndims'], virtual: $fieldData['virtual']),
             ]);
             $data['fields'][] = $fieldData;
