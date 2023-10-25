@@ -39,6 +39,6 @@ final class Parser implements ParserInterface
     {
         /* @var \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[],string> */
         // @phpstan-ignore-next-line
-        return array_reduce($entries, static fn (Result $result, string $raw) => $result->flatMap(static fn (array $entries) => EntryParser::parse($raw)->map(static fn (Entry $entry) => array_merge($entries, [$entry]))), Success::create([]));
+        return array_reduce($entries, static fn (Result $result, string $raw) => $result->flatMap(static fn (array $entries) => EntryParser::parse($raw)->map(static fn (Entry $entry) => [...$entries, $entry])), Success::create([]));
     }
 }

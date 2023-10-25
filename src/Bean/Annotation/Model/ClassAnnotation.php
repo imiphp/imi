@@ -66,7 +66,7 @@ class ClassAnnotation
      */
     public function addClassAnnotations(array $classAnnotations): self
     {
-        $this->classAnnotations = array_merge($this->classAnnotations, $classAnnotations);
+        $this->classAnnotations = [...$this->classAnnotations, ...$classAnnotations];
 
         return $this;
     }

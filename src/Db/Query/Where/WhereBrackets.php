@@ -76,7 +76,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
                     {
                         $result .= ' ' . $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query);
                     }
-                    $binds = array_merge($binds, $callResultItem->getBinds());
+                    $binds = [...$binds, ...$callResultItem->getBinds()];
                 }
                 else
                 {
@@ -93,7 +93,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         elseif ($callResult instanceof IBaseWhere)
         {
             $result = $callResult->toStringWithoutLogic($query);
-            $binds = array_merge($binds, $callResult->getBinds());
+            $binds = [...$binds, ...$callResult->getBinds()];
 
             return '(' . $result . ')';
         }

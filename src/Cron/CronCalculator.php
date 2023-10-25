@@ -301,7 +301,7 @@ class CronCalculator
         }
         rsort($negatives, \SORT_NUMERIC);
 
-        return array_values(array_merge($list, $negatives));
+        return array_values([...$list, ...$negatives]);
     }
 
     /**
