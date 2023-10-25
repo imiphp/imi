@@ -14,8 +14,6 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("METHOD")
  *
- * @Parser("Imi\Server\Http\Parser\ControllerParser")
- *
  * @property string|null          $url                  请求地址规则
  * @property bool|null            $ignoreCase           忽略请求地址大小写；null-取HttpRoute中默认值；true-忽略大小写；false-严格判断
  * @property bool|null            $autoEndSlash         智能尾部斜杠，无论是否存在都匹配
@@ -30,6 +28,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|string[]|null $responseMime         返回的mime类型；只有当请求头Accept中包含，才可以返回；支持字符串和字符串数组
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Server\Http\Parser\ControllerParser::class)]
 class Route extends Base implements \Stringable
 {
     /**

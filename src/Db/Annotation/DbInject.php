@@ -12,8 +12,6 @@ use Imi\Db\Query\QueryType;
 /**
  * 连接池对象注入.
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -21,6 +19,7 @@ use Imi\Db\Query\QueryType;
  * @property int $queryType 查询类型
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class DbInject extends RequestInject
 {
     public function __construct(?array $__data = null, string $name = '', array $args = [], int $queryType = QueryType::WRITE)

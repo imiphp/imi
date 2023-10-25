@@ -9,9 +9,7 @@ use Imi\Server\WebSocket\Error\IWSRouteNotFoundHandler;
 use Imi\Server\WebSocket\IMessageHandler;
 use Imi\Server\WebSocket\Message\IFrame;
 
-/**
- * @Bean("WSRouteNotFound")
- */
+#[Bean(name: 'WSRouteNotFound')]
 class RouteNotFound implements IWSRouteNotFoundHandler
 {
     /**

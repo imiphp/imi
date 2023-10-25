@@ -11,22 +11,14 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Bean\BeanFactory;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AroundAop
 {
     /**
-     * @Around
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Aop\Classes\TestAroundClass::test"
-     *     }
-     * )
-     *
      * @return mixed
      */
+    #[Around]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestAroundClass::test'])]
     public function injectAroundAop(AroundJoinPoint $joinPoint)
     {
         Assert::assertEquals([1], $joinPoint->getArgs());

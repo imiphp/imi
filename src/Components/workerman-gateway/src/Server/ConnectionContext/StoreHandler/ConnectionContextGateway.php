@@ -11,9 +11,8 @@ use Imi\Timer\Timer;
 
 /**
  * Workerman Gateway 连接上下文处理器.
- *
- * @Bean("ConnectionContextGateway")
  */
+#[Bean(name: 'ConnectionContextGateway')]
 class ConnectionContextGateway implements IHandler
 {
     /**

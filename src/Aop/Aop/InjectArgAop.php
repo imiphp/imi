@@ -9,30 +9,20 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\InjectArg;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 
-/**
- * @Aspect(Imi\Util\ImiPriority::IMI_MAX)
- */
+#[Aspect(priority: 19940312)]
 class InjectArgAop
 {
     /**
      * 方法参数注入.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         InjectArg::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Aop\\Annotation\\InjectArg'])]
+    #[Around]
     public function parse(AroundJoinPoint $joinPoint)
     {
         $class = BeanFactory::getObjectClass($joinPoint->getTarget());

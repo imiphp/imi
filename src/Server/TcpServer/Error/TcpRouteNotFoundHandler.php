@@ -11,9 +11,8 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
  * TCP 未匹配路由时的处理器.
- *
- * @Bean("TcpRouteNotFoundHandler")
  */
+#[Bean(name: 'TcpRouteNotFoundHandler')]
 class TcpRouteNotFoundHandler implements ITcpRouteNotFoundHandler
 {
     /**

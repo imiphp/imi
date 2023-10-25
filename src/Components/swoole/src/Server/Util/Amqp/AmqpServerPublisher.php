@@ -13,9 +13,7 @@ use Imi\Swoole\Server\Util\AmqpServerUtil;
 
 if (class_exists(\Imi\AMQP\Main::class))
 {
-    /**
-     * @Bean(name="AmqpServerPublisher", env="swoole")
-     */
+    #[Bean(name: 'AmqpServerPublisher', env: 'swoole')]
     class AmqpServerPublisher extends BasePublisher
     {
         public function __construct(protected ?AmqpServerUtil $amqpServerUtil = null)

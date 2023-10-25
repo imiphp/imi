@@ -10,9 +10,7 @@ use Imi\Event\IEventListener;
 use Imi\Test\Component\Event\Classes\TestClass;
 use PHPUnit\Framework\Assert;
 
-/**
- * @ClassEventListener(className="Imi\Test\Component\Event\Classes\TestClass", eventName="test1")
- */
+#[ClassEventListener(className: \Imi\Test\Component\Event\Classes\TestClass::class, eventName: 'test1')]
 class ClassEventTestListener implements IEventListener
 {
     /**

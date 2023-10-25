@@ -21,9 +21,7 @@ use Imi\Worker;
 
 if (class_exists(\Imi\AMQP\Main::class))
 {
-    /**
-     * @Bean(name="AmqpServerConsumer", env="swoole")
-     */
+    #[Bean(name: 'AmqpServerConsumer', env: 'swoole')]
     class AmqpServerConsumer extends BaseConsumer
     {
         public function __construct(protected ?AmqpServerUtil $amqpServerUtil = null)

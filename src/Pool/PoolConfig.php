@@ -9,9 +9,8 @@ use Imi\Pool\Interfaces\IPoolConfig;
 
 /**
  * 池子配置.
- *
- * @Bean("PoolConfig")
  */
+#[Bean(name: 'PoolConfig')]
 class PoolConfig implements IPoolConfig
 {
     /**

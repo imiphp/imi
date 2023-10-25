@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\TestFieldNameBase;
 
 /**
  * tb_test_field_name.
- *
- * @Inherit
  */
+#[Inherit]
 class TestFieldName extends TestFieldNameBase
 {
 }

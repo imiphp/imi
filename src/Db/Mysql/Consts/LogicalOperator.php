@@ -11,33 +11,21 @@ class LogicalOperator extends BaseEnum
 {
     use \Imi\Util\Traits\TStaticClass;
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const AND = 'and';
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const OR = 'or';
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const XOR = 'xor';
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const AND_NOT = 'and not';
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const OR_NOT = 'or not';
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const XOR_NOT = 'xor not';
 }

@@ -12,21 +12,18 @@ use Imi\Model\RedisModel;
 /**
  * Test.
  *
- * @Entity
- *
- * @RedisEntity(key="imi:redisModel:test1", member="{name}", storage="hash")
- *
  * @property int    $id
  * @property string $name
  * @property int    $age
  */
+#[Entity]
+#[RedisEntity(key: 'imi:redisModel:test1', member: '{name}', storage: 'hash')]
 class TestRedisHashModel extends RedisModel
 {
     /**
      * id.
-     *
-     * @Column(name="id")
      */
+    #[Column(name: 'id')]
     protected int $id;
 
     /**
@@ -53,9 +50,8 @@ class TestRedisHashModel extends RedisModel
 
     /**
      * name.
-     *
-     * @Column(name="name")
      */
+    #[Column(name: 'name')]
     protected string $name;
 
     /**
@@ -82,9 +78,8 @@ class TestRedisHashModel extends RedisModel
 
     /**
      * age.
-     *
-     * @Column(name="age")
      */
+    #[Column(name: 'age')]
     protected int $age;
 
     /**

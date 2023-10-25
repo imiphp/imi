@@ -14,12 +14,11 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Server\Http\Parser\ControllerParser")
- *
  * @property string|null          $prefix 路由前缀
  * @property string|string[]|null $server 指定当前控制器允许哪些服务器使用；支持字符串或数组，默认为 null 则不限制
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Server\Http\Parser\ControllerParser::class)]
 class Controller extends Base
 {
     /**

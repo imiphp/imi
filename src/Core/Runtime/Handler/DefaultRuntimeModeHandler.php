@@ -8,9 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Core\Runtime\Contract\IRuntimeModeHandler;
 use Imi\Event\Event;
 
-/**
- * @Bean("DefaultRuntimeModeHandler")
- */
+#[Bean(name: 'DefaultRuntimeModeHandler')]
 class DefaultRuntimeModeHandler implements IRuntimeModeHandler
 {
     /**

@@ -10,9 +10,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Util\ImiPriority;
 
-/**
- * @Listener(eventName="IMI.APP_RUN", priority=ImiPriority::IMI_MAX, one=true)
- */
+#[Listener(eventName: 'IMI.APP_RUN', priority: 19940312, one: true)]
 class WorkerStart implements IEventListener
 {
     /**

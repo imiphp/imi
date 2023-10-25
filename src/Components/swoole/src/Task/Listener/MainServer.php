@@ -9,9 +9,7 @@ use Imi\Swoole\Server\Event\Listener\ITaskEventListener;
 use Imi\Swoole\Server\Event\Param\TaskEventParam;
 use Imi\Swoole\Task\TaskInfo;
 
-/**
- * @Listener("IMI.MAIN_SERVER.TASK")
- */
+#[Listener(eventName: 'IMI.MAIN_SERVER.TASK')]
 class MainServer implements ITaskEventListener
 {
     /**

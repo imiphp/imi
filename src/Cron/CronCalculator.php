@@ -8,9 +8,8 @@ use Imi\Bean\Annotation\Bean;
 
 /**
  * 定时规则计算器.
- *
- * @Bean("CronCalculator")
  */
+#[Bean(name: 'CronCalculator')]
 class CronCalculator
 {
     /**

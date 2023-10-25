@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Aop\Classes;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("TestAfterReturningClass")
- */
+#[Bean(name: 'TestAfterReturningClass')]
 class TestAfterReturningClass
 {
     public function test(int $id): int

@@ -14,18 +14,15 @@ use Imi\Worker;
 
 /**
  * 数据收发测试.
- *
- * @WSController
  */
+#[WSController]
 class TestController extends WebSocketController
 {
     /**
      * 登录.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"action": "login"})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'login'])]
     public function login(\stdClass $data): array
     {
         ConnectionContext::set('username', $data->username);
@@ -48,11 +45,9 @@ class TestController extends WebSocketController
 
     /**
      * 重连.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"action": "reconnect"})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'reconnect'])]
     public function reconnect(\stdClass $data): array
     {
         ConnectionContext::restore($data->token);
@@ -65,11 +60,9 @@ class TestController extends WebSocketController
 
     /**
      * 发送消息.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"action": "send"})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'send'])]
     public function send(\stdClass $data): void
     {
         $message = ConnectionContext::get('username') . ':' . $data->message;
@@ -78,11 +71,9 @@ class TestController extends WebSocketController
 
     /**
      * 连接信息.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"action": "info"})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'info'])]
     public function info(): array
     {
         return [
@@ -93,11 +84,9 @@ class TestController extends WebSocketController
 
     /**
      * 多级参数的路由定位.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"a.b.c": "test1"})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['a.b.c' => 'test1'])]
     public function test1(\stdClass $data): array
     {
         return ['data' => $data];
@@ -105,11 +94,9 @@ class TestController extends WebSocketController
 
     /**
      * 多个参数条件的路由定位.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"a": "1", "b": 2})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['a' => '1', 'b' => 2])]
     public function test2(\stdClass $data): array
     {
         return ['data' => $data];
@@ -117,22 +104,18 @@ class TestController extends WebSocketController
 
     /**
      * 测试重复路由警告.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"duplicated": 1})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['duplicated' => 1])]
     public function duplicated1(): void
     {
     }
 
     /**
      * 测试重复路由警告.
-     *
-     * @WSAction
-     *
-     * @WSRoute({"duplicated": 1})
      */
+    #[WSAction]
+    #[WSRoute(condition: ['duplicated' => 1])]
     public function duplicated2(): void
     {
     }

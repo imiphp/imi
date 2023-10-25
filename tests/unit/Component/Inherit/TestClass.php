@@ -7,40 +7,29 @@ namespace Imi\Test\Component\Inherit;
 use Imi\Bean\Annotation\Inherit;
 use Imi\Model\Annotation\Table;
 
-/**
- * @Inherit(annotation="Imi\Bean\Annotation\Bean")
- *
- * @Table
- */
+#[Inherit(annotation: 'Imi\\Bean\\Annotation\\Bean')]
+#[Table]
 class TestClass extends ParentClass
 {
     /**
-     * @Inherit({"Imi\Model\Annotation\Column"})
-     *
      * @var int
      */
+    #[Inherit(annotation: ['Imi\\Model\\Annotation\\Column'])]
     public $id;
 
     /**
-     * @Inherit
-     *
      * @var int
      */
+    #[Inherit]
     public $id2;
 
-    /**
-     * @Inherit("")
-     */
+    #[Inherit(annotation: '')]
     public const CCC = 1;
 
-    /**
-     * @Inherit
-     */
+    #[Inherit]
     public const CCC2 = 1;
 
-    /**
-     * @Inherit({"Imi\Aop\Annotation\FilterArg"})
-     */
+    #[Inherit(annotation: ['Imi\\Aop\\Annotation\\FilterArg'])]
     public function test(): void
     {
     }
@@ -49,9 +38,7 @@ class TestClass extends ParentClass
     {
     }
 
-    /**
-     * @Inherit
-     */
+    #[Inherit]
     public function test3(): void
     {
     }

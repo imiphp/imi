@@ -14,11 +14,10 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
- *
  * @property string|string[]|null $server 指定当前控制器允许哪些服务器使用；支持字符串或数组，默认为 null 则不限制
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Server\TcpServer\Parser\TcpControllerParser::class)]
 class TcpController extends Base
 {
     /**

@@ -12,28 +12,22 @@ use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 
 /**
  * 数据收发测试.
- *
- * @WSController(route="/test")
  */
+#[WSController(route: '/test')]
 class Test2Controller extends WebSocketController
 {
     /**
-     * @WSAction
-     *
-     * @WSRoute({"action": "test"})
-     *
      * @param mixed $data
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'test'])]
     public function test($data): array
     {
         return ['data' => $data];
     }
 
-    /**
-     * @WSAction
-     *
-     * @WSRoute({"action": "contextTest"})
-     */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'contextTest'])]
     public function contextTest(): array
     {
         $key = 'test_remember';

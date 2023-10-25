@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\ArticleExBase;
 
 /**
  * tb_article_ex.
- *
- * @Inherit
  */
+#[Inherit]
 class ArticleEx extends ArticleExBase
 {
 }

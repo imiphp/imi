@@ -9,9 +9,8 @@ use Imi\Pgsql\Test\Model\Base\PerformanceBase;
 
 /**
  * tb_performance.
- *
- * @Inherit
  */
+#[Inherit]
 class Performance extends PerformanceBase
 {
 }

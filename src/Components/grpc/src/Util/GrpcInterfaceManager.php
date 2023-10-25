@@ -11,9 +11,7 @@ use Imi\Bean\ReflectionUtil;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\DocBlock;
 
-/**
- * @Bean(name="GrpcInterfaceManager", recursion=false)
- */
+#[Bean(name: 'GrpcInterfaceManager', recursion: false)]
 class GrpcInterfaceManager
 {
     /**

@@ -11,57 +11,42 @@ use Imi\Server\Http\Route\Annotation\Route;
 
 /**
  * @OA\Info(title="My First API", version="0.1")
- *
- * @Controller("/")
  */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @Action
-     *
-     * @Route("/")
-     */
+    #[Action]
+    #[Route(url: '/')]
     public function index(): void
     {
     }
 
     /**
-     * @Action
-     *
-     * @Route(url="login", method="POST")
-     *
      * @param string $username 用户名
      * @param int    $password 密码
      */
+    #[Action]
+    #[Route(url: 'login', method: 'POST')]
     public function login(string $username, int $password): void
     {
     }
 
-    /**
-     * @Action
-     *
-     * @Route(method={"GET", "POST"})
-     */
+    #[Action]
+    #[Route(method: ['GET', 'POST'])]
     public function multiMethod1(int $id, int $type, array $tags): void
     {
     }
 
     /**
-     * @Action
-     *
-     * @Route(method={"PUT", "POST"})
-     *
      * @param int[] $tags 标签
      */
+    #[Action]
+    #[Route(method: ['PUT', 'POST'])]
     public function multiMethod2(int $id, int $type, array $tags): void
     {
     }
 
     /**
-     * @Action
-     *
-     * @Route("register")
-     *
      * @OA\Get(
      *     path="/register",
      *
@@ -72,13 +57,13 @@ class IndexController extends HttpController
      * @param int    $password 密码
      * @param string $birthday 生日
      */
+    #[Action]
+    #[Route(url: 'register')]
     public function register(string $username, int $password, string $birthday): void
     {
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function get(int $id): void
     {
     }

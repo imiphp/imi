@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\MemberRoleRelationBase;
 
 /**
  * tb_member_role_relation.
- *
- * @Inherit
  */
+#[Inherit]
 class MemberRoleRelation extends MemberRoleRelationBase
 {
 }

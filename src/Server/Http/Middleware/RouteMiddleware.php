@@ -15,19 +15,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/**
- * @Bean(name="RouteMiddleware", recursion=false)
- */
+#[Bean(name: 'RouteMiddleware', recursion: false)]
 class RouteMiddleware implements MiddlewareInterface
 {
-    /**
-     * @ServerInject("HttpRoute")
-     */
+    #[ServerInject(name: 'HttpRoute')]
     protected HttpRoute $route;
 
-    /**
-     * @ServerInject("HttpNotFoundHandler")
-     */
+    #[ServerInject(name: 'HttpNotFoundHandler')]
     protected IHttpNotFoundHandler $notFoundHandler;
 
     /**

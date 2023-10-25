@@ -9,16 +9,13 @@ use Imi\Db\Annotation\DbInject;
 use Imi\Db\Interfaces\IDb;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Bean("TestInjectDb")
- */
+#[Bean(name: 'TestInjectDb')]
 class TestInjectDb
 {
     /**
-     * @DbInject
-     *
      * @var \Imi\Db\Interfaces\IDb
      */
+    #[DbInject]
     protected $db;
 
     public function test(): void

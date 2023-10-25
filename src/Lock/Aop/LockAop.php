@@ -8,14 +8,11 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Lock\Annotation\Lockable;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class LockAop
 {
     use TLockableParser;
@@ -23,17 +20,10 @@ class LockAop
     /**
      * 处理方法加锁
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\Lock\Annotation\Lockable::class,
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Lock\\Annotation\\Lockable'])]
+    #[Around]
     public function parseLock(AroundJoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();

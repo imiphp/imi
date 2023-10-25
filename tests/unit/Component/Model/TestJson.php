@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\TestJsonBase;
 
 /**
  * tb_test_json.
- *
- * @Inherit
  */
+#[Inherit]
 class TestJson extends TestJsonBase
 {
 }

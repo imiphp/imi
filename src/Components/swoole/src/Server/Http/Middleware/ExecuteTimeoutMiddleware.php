@@ -15,9 +15,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * 当单个请求超过最大执行时间，触发超时处理.
- *
- * @Bean(name="ExecuteTimeoutMiddleware", env="swoole")
  */
+#[Bean(name: 'ExecuteTimeoutMiddleware', env: 'swoole')]
 class ExecuteTimeoutMiddleware implements MiddlewareInterface
 {
     /**

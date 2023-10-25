@@ -15,9 +15,8 @@ use Imi\Worker;
 
 /**
  * UDP 服务器类.
- *
- * @Bean(name="UdpServer", env="swoole")
  */
+#[Bean(name: 'UdpServer', env: 'swoole')]
 class Server extends Base implements ISwooleUdpServer
 {
     /**

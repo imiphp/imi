@@ -9,26 +9,19 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Enum\Annotation\EnumItem;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Bean("TestAnnotation")
- */
+#[Bean(name: 'TestAnnotation')]
 class TestAnnotation
 {
-    /**
-     * @EnumItem("test")
-     */
+    #[EnumItem(text: 'test')]
     public const CONST_VALUE = 1;
 
     /**
-     * @Inject("ErrorLog")
-     *
      * @var \Imi\Log\ErrorLog
      */
+    #[Inject(name: 'ErrorLog')]
     protected $errorLog;
 
-    /**
-     * @Route("/testAnnotation")
-     */
+    #[Route(url: '/testAnnotation')]
     public function test(): void
     {
     }

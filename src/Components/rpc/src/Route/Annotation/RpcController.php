@@ -15,12 +15,11 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcController;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
- *
  * @property string               $prefix 路由前缀
  * @property string|string[]|null $server 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制。
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
+#[Parser(className: \Imi\Rpc\Route\Annotation\Parser\RpcControllerParser::class)]
 class RpcController extends Base implements IRpcController
 {
     /**

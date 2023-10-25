@@ -7,14 +7,10 @@ namespace Imi\Server\Session;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Annotation\ServerInject;
 
-/**
- * @Bean(name="SessionConfig", recursion=false)
- */
+#[Bean(name: 'SessionConfig', recursion: false)]
 class SessionConfig
 {
-    /**
-     * @ServerInject("SessionCookie")
-     */
+    #[ServerInject(name: 'SessionCookie')]
     public SessionCookie $cookie;
 
     public function __construct(

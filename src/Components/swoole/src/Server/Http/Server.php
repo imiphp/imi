@@ -23,13 +23,11 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
 use Imi\Worker;
-use Swoole\Http\Server as HttpServer;
 
 /**
  * Http 服务器类.
- *
- * @Bean(name="HttpServer", env="swoole")
  */
+#[Bean(name: 'HttpServer', env: 'swoole')]
 class Server extends Base implements ISwooleHttpServer
 {
     /**

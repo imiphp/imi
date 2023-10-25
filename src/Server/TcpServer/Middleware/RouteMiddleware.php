@@ -12,19 +12,13 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\Route\TcpRoute;
 
-/**
- * @Bean(name="TCPRouteMiddleware", recursion=false)
- */
+#[Bean(name: 'TCPRouteMiddleware', recursion: false)]
 class RouteMiddleware implements IMiddleware
 {
-    /**
-     * @ServerInject("TcpRoute")
-     */
+    #[ServerInject(name: 'TcpRoute')]
     protected TcpRoute $route;
 
-    /**
-     * @ServerInject("TcpRouteNotFoundHandler")
-     */
+    #[ServerInject(name: 'TcpRouteNotFoundHandler')]
     protected ITcpRouteNotFoundHandler $notFoundHandler;
 
     /**

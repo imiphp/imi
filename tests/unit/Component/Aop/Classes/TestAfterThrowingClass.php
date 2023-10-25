@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Aop\Classes;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("TestAfterThrowingClass")
- */
+#[Bean(name: 'TestAfterThrowingClass')]
 class TestAfterThrowingClass
 {
     public function testCancelThrow(): void

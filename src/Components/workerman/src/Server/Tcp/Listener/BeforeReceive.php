@@ -12,9 +12,8 @@ use Imi\Server\TcpServer\Message\ReceiveData;
 
 /**
  * Receive事件前置处理.
- *
- * @Listener(eventName="IMI.WORKERMAN.SERVER.TCP.MESSAGE", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.TCP.MESSAGE', priority: 19940312)]
 class BeforeReceive implements IEventListener
 {
     /**

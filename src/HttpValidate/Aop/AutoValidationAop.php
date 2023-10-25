@@ -8,32 +8,22 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Server\Session\Session;
 use Imi\Util\ClassObject;
 use Imi\Validate\Validator;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AutoValidationAop
 {
     /**
      * 验证 Http 参数.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\HttpValidate\Annotation\HttpValidation::class
-     *     }
-     * )
-     *
-     * @Before
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\HttpValidate\\Annotation\\HttpValidation'])]
+    #[Before]
     public function validateHttp(JoinPoint $joinPoint)
     {
         $controller = $joinPoint->getTarget();

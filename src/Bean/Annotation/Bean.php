@@ -11,14 +11,13 @@ namespace Imi\Bean\Annotation;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Bean\Parser\BeanParser")
- *
  * @property string|null       $name         Bean名称，留空则为当前类名（包含完整命名空间）
  * @property string            $instanceType 实例化类型，默认为单例模式
  * @property bool              $recursion    是否启用递归特性
  * @property string|array|null $env          限制生效的环境，为 null 时则不限制
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[\Imi\Bean\Annotation\Parser(className: \Imi\Bean\Parser\BeanParser::class)]
 class Bean extends Base
 {
     /**

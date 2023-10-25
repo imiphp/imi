@@ -11,8 +11,6 @@ use Imi\Bean\Annotation\Inherit;
  * 对象注入
  * 使用：App::getBean().
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -21,6 +19,7 @@ use Imi\Bean\Annotation\Inherit;
  * @property array  $args Bean实例化参数
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class Inject extends BaseInjectValue
 {
     /**

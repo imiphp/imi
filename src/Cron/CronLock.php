@@ -9,9 +9,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Cron\Consts\UniqueLevel;
 use Imi\Util\Process\ProcessAppContexts;
 
-/**
- * @Bean("CronLock")
- */
+#[Bean(name: 'CronLock')]
 class CronLock
 {
     /**

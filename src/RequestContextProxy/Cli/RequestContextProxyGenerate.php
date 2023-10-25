@@ -13,27 +13,22 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
-use Imi\Tool\ArgType;
 use Imi\Util\File;
 use Imi\Util\Imi;
 
-/**
- * @Command("generate")
- */
+#[Command(name: 'generate')]
 class RequestContextProxyGenerate
 {
     /**
      * 生成请求上下文代理类.
-     *
-     * @CommandAction("requestContextProxy")
-     *
-     * @Option(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
-     * @Option(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
-     * @Option(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
-     * @Option(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
-     * @Option(name="interface", type=ArgType::STRING, default=null, comments="生成的目标类要实现的接口")
-     * @Option(name="recursion", type=ArgType::BOOL, default=true, comments="是否启用 Bean 递归特性")
      */
+    #[CommandAction(name: 'requestContextProxy')]
+    #[Option(name: 'target', type: 'string', required: true, comments: '生成的目标类')]
+    #[Option(name: 'class', type: 'string', required: true, comments: '要绑定的代理类名')]
+    #[Option(name: 'name', type: 'string', required: true, comments: '请求上下文中的名称')]
+    #[Option(name: 'bean', type: 'string', comments: '生成的目标类的 Bean 名称')]
+    #[Option(name: 'interface', type: 'string', comments: '生成的目标类要实现的接口')]
+    #[Option(name: 'recursion', type: 'boolean', default: true, comments: '是否启用 Bean 递归特性')]
     public function generate(string $target, string $class, string $name, ?string $bean, ?string $interface, bool $recursion): void
     {
         if (class_exists($class) || interface_exists($class))

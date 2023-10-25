@@ -19,20 +19,16 @@ use Imi\Test\Component\Model\Base\PolymorphicBase;
 
 /**
  * tb_polymorphic.
- *
- * @Inherit
  */
+#[Inherit]
 class Polymorphic extends PolymorphicBase
 {
     /**
-     * @PolymorphicOneToOne(model="Article", type="title", typeValue="PolymorphicOneToOne")
-     *
-     * @JoinFrom("one_to_one")
-     *
-     * @JoinTo("member_id")
-     *
      * @var Article|null
      */
+    #[PolymorphicOneToOne(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToOne')]
+    #[JoinFrom(field: 'one_to_one')]
+    #[JoinTo(field: 'member_id')]
     protected $oneToOneResult;
 
     /**
@@ -60,14 +56,11 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicOneToMany(model="Article", type="title", typeValue="PolymorphicOneToMany")
-     *
-     * @JoinFrom("one_to_many")
-     *
-     * @JoinTo("member_id")
-     *
      * @var Article[]|null
      */
+    #[PolymorphicOneToMany(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToMany')]
+    #[JoinFrom(field: 'one_to_many')]
+    #[JoinTo(field: 'member_id')]
     protected $oneToManyResult = null;
 
     /**
@@ -95,14 +88,11 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicManyToMany(model="Role", middle="MemberRoleRelation", rightMany="manyToManyResultList", type="type", typeValue=1)
-     *
-     * @JoinToMiddle(field="many_to_many", middleField="member_id")
-     *
-     * @JoinFromMiddle(middleField="role_id", field="id")
-     *
      * @var MemberRoleRelation|null
      */
+    #[PolymorphicManyToMany(model: 'Role', middle: 'MemberRoleRelation', rightMany: 'manyToManyResultList', type: 'type', typeValue: 1)]
+    #[JoinToMiddle(field: 'many_to_many', middleField: 'member_id')]
+    #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
     protected $manyToManyResult = null;
 
     /**
@@ -130,10 +120,9 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @Column(virtual=true)
-     *
      * @var Role[]|null
      */
+    #[Column(virtual: true)]
     protected $manyToManyResultList;
 
     /**
@@ -161,11 +150,10 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicToOne(model="Member", modelField="id", type="type", typeValue=1, field="to_one")
-     * @PolymorphicToOne(model="Article", modelField="id", type="type", typeValue=2, field="to_one")
-     *
      * @var Member|Article|null
      */
+    #[PolymorphicToOne(model: 'Member', modelField: 'id', type: 'type', typeValue: 1, field: 'to_one')]
+    #[PolymorphicToOne(model: 'Article', modelField: 'id', type: 'type', typeValue: 2, field: 'to_one')]
     protected $toOneResult;
 
     /**
@@ -193,10 +181,9 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicToMany(model="Role", modelField="id", type="type", typeValue=6, field="to_many", middle="MemberRoleRelation", middleLeftField="role_id", middleRightField="member_id")
-     *
      * @var Role[]|null
      */
+    #[PolymorphicToMany(model: 'Role', modelField: 'id', type: 'type', typeValue: 6, field: 'to_many', middle: 'MemberRoleRelation', middleLeftField: 'role_id', middleRightField: 'member_id')]
     protected $toManyResult;
 
     /**
@@ -224,14 +211,11 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicOneToOne(model="Article", type="title", typeValue="PolymorphicOneToOne", with=true)
-     *
-     * @JoinFrom("one_to_one")
-     *
-     * @JoinTo("member_id")
-     *
      * @var Article|null
      */
+    #[PolymorphicOneToOne(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToOne', with: true)]
+    #[JoinFrom(field: 'one_to_one')]
+    #[JoinTo(field: 'member_id')]
     protected $oneToOneResultWith;
 
     /**
@@ -259,14 +243,11 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicOneToMany(model="Article", type="title", typeValue="PolymorphicOneToMany", with=true)
-     *
-     * @JoinFrom("one_to_many")
-     *
-     * @JoinTo("member_id")
-     *
      * @var Article[]|null
      */
+    #[PolymorphicOneToMany(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToMany', with: true)]
+    #[JoinFrom(field: 'one_to_many')]
+    #[JoinTo(field: 'member_id')]
     protected $oneToManyResultWith = null;
 
     /**
@@ -294,14 +275,11 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicManyToMany(model="Role", middle="MemberRoleRelation", rightMany="manyToManyResultListWith", type="type", typeValue=1, with=true)
-     *
-     * @JoinToMiddle(field="many_to_many", middleField="member_id")
-     *
-     * @JoinFromMiddle(middleField="role_id", field="id")
-     *
      * @var MemberRoleRelation|null
      */
+    #[PolymorphicManyToMany(model: 'Role', middle: 'MemberRoleRelation', rightMany: 'manyToManyResultListWith', type: 'type', typeValue: 1, with: true)]
+    #[JoinToMiddle(field: 'many_to_many', middleField: 'member_id')]
+    #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
     protected $manyToManyResultWith = null;
 
     /**
@@ -329,10 +307,9 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @Column(virtual=true)
-     *
      * @var Role[]|null
      */
+    #[Column(virtual: true)]
     protected $manyToManyResultListWith;
 
     /**
@@ -360,11 +337,10 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicToOne(model="Member", modelField="id", type="type", typeValue=1, field="to_one", with=true)
-     * @PolymorphicToOne(model="Article", modelField="id", type="type", typeValue=2, field="to_one", with=true)
-     *
      * @var Member|Article|null
      */
+    #[PolymorphicToOne(model: 'Member', modelField: 'id', type: 'type', typeValue: 1, field: 'to_one', with: true)]
+    #[PolymorphicToOne(model: 'Article', modelField: 'id', type: 'type', typeValue: 2, field: 'to_one', with: true)]
     protected $toOneResultWith;
 
     /**
@@ -392,10 +368,9 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @PolymorphicToMany(model="Role", modelField="id", type="type", typeValue=6, field="to_many", middle="MemberRoleRelation", middleLeftField="role_id", middleRightField="member_id", with=true)
-     *
      * @var Role[]|null
      */
+    #[PolymorphicToMany(model: 'Role', modelField: 'id', type: 'type', typeValue: 6, field: 'to_many', middle: 'MemberRoleRelation', middleLeftField: 'role_id', middleRightField: 'member_id', with: true)]
     protected $toManyResultWith;
 
     /**

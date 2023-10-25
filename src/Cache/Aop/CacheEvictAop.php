@@ -8,7 +8,6 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\CacheEvict;
@@ -16,9 +15,7 @@ use Imi\Cache\CacheManager;
 use Imi\Config;
 use Imi\Util\ClassObject;
 
-/**
- * @Aspect(priority=1023)
- */
+#[Aspect(priority: 1023)]
 class CacheEvictAop
 {
     use TCacheAopHelper;
@@ -26,17 +23,10 @@ class CacheEvictAop
     /**
      * 处理 CacheEvict 注解.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\Cache\Annotation\CacheEvict::class,
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Cache\\Annotation\\CacheEvict'])]
+    #[Around]
     public function parseCacheEvict(AroundJoinPoint $joinPoint)
     {
         $class = BeanFactory::getObjectClass($joinPoint->getTarget());

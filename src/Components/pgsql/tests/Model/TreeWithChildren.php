@@ -11,22 +11,18 @@ use Imi\Model\Tree\Annotation\TreeModel;
 
 /**
  * Tree.
- *
- * @Entity
- *
- * @TreeModel
- *
- * @Table(name="tb_tree", id={"id"})
  */
+#[Entity]
+#[TreeModel]
+#[Table(name: 'tb_tree', id: ['id'])]
 class TreeWithChildren extends Tree
 {
     /**
      * 子节点集合.
      *
-     * @Column(virtual=true)
-     *
      * @var static[]
      */
+    #[Column(virtual: true)]
     protected array $children = [];
 
     /**

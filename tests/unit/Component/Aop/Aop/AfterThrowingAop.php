@@ -11,20 +11,11 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\BeanFactory;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AfterThrowingAop
 {
-    /**
-     * @AfterThrowing
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::testCancelThrow"
-     *     }
-     * )
-     */
+    #[AfterThrowing]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestAfterThrowingClass::testCancelThrow'])]
     public function injectAfterThrowingAopCancelThrow(AfterThrowingJoinPoint $joinPoint): void
     {
         Assert::assertEquals([], $joinPoint->getArgs());
@@ -38,15 +29,8 @@ class AfterThrowingAop
         $joinPoint->cancelThrow();
     }
 
-    /**
-     * @AfterThrowing
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::testNotCancelThrow"
-     *     }
-     * )
-     */
+    #[AfterThrowing]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestAfterThrowingClass::testNotCancelThrow'])]
     public function injectAfterThrowingAopNotCancelThrow(AfterThrowingJoinPoint $joinPoint): void
     {
         Assert::assertEquals([], $joinPoint->getArgs());

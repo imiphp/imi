@@ -9,9 +9,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 
-/**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START", one=true)
- */
+#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', one: true)]
 class SuperGlobals implements IWorkerStartEventListener
 {
     /**

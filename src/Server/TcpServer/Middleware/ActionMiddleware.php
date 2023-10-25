@@ -10,9 +10,7 @@ use Imi\Server\TcpServer\Controller\TcpController;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
-/**
- * @Bean("TCPActionMiddleware")
- */
+#[Bean(name: 'TCPActionMiddleware')]
 class ActionMiddleware implements IMiddleware
 {
     /**

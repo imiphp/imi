@@ -19,14 +19,11 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
 {
     /**
      * Workerman 队列消费进程.
-     *
-     * @Process(name="QueueConsumer")
      */
+    #[Process(name: 'QueueConsumer')]
     class WorkermanQueueConsumerProcess extends BaseProcess
     {
-        /**
-         * @Inject("imiQueue")
-         */
+        #[Inject(name: 'imiQueue')]
         protected QueueService $imiQueue;
 
         public function run(Worker $worker): void

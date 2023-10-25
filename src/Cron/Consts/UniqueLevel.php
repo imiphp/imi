@@ -14,13 +14,9 @@ class UniqueLevel extends BaseEnum
 {
     use \Imi\Util\Traits\TStaticClass;
 
-    /**
-     * @EnumItem("当前实例唯一")
-     */
+    #[EnumItem(text: '当前实例唯一')]
     public const CURRENT = 'current';
 
-    /**
-     * @EnumItem("所有实例唯一")
-     */
+    #[EnumItem(text: '所有实例唯一')]
     public const ALL = 'all';
 }

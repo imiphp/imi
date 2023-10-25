@@ -14,13 +14,12 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("METHOD")
  *
- * @Parser("Imi\Cli\Parser\ToolParser")
- *
  * @property string|null $name           操作名称
  * @property string|null $description    操作描述
  * @property bool        $dynamicOptions 是否启用动态参数支持
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class CommandAction extends Base
 {
     /**

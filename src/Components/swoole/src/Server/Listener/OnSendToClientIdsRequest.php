@@ -14,9 +14,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给指定连接-请求
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendToClientIdsRequest")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendToClientIdsRequest')]
 class OnSendToClientIdsRequest implements IEventListener
 {
     /**

@@ -14,8 +14,6 @@ use function Imi\env;
  *
  * 支持在注解中为属性动态赋值
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -24,6 +22,7 @@ use function Imi\env;
  * @property mixed  $default 配置不存在时，返回的默认值
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class EnvValue extends BaseInjectValue
 {
     /**

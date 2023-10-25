@@ -14,9 +14,7 @@ use Imi\Swoole\Server\Event\Listener\IAppInitEventListener;
 use Imi\Swoole\Server\Traits\TServerPortInfo;
 use Imi\Util\Imi;
 
-/**
- * @Listener(eventName="IMI.APP.INIT", one=true)
- */
+#[Listener(eventName: 'IMI.APP.INIT', one: true)]
 class AppInit implements IAppInitEventListener
 {
     use TServerPortInfo;

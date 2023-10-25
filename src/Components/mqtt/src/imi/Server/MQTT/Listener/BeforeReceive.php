@@ -14,9 +14,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * Receive事件前置处理.
- *
- * @ClassEventListener(className="Imi\Server\MQTT\Server", eventName="receive", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
+#[ClassEventListener(className: \Imi\Server\MQTT\Server::class, eventName: 'receive', priority: 19940312)]
 class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
 {
     /**

@@ -10,11 +10,8 @@ use Imi\Cron\Util\CronUtil;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\Contract\IProcess;
 
-/**
- * @Cron(id="TaskProcess1", second="3n")
- *
- * @Process("TaskProcess1")
- */
+#[Cron(id: 'TaskProcess1', second: '3n')]
+#[Process(name: 'TaskProcess1')]
 class TaskProcess implements IProcess
 {
     public function run(\Swoole\Process $process): void

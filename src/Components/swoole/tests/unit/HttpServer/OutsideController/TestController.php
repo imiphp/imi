@@ -9,16 +9,11 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller(server="main")
- */
+#[Controller(server: 'main')]
 class TestController extends HttpController
 {
-    /**
-     * @Action
-     *
-     * @Route("/testOutside")
-     */
+    #[Action]
+    #[Route(url: '/testOutside')]
     public function testOutside(): array
     {
         return [

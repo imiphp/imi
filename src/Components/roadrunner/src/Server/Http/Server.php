@@ -25,9 +25,7 @@ use Symfony\Component\Yaml\Yaml;
 use function Imi\cmd;
 use function Imi\ttyExec;
 
-/**
- * @Bean("RoadRunnerHttpServer")
- */
+#[Bean(name: 'RoadRunnerHttpServer')]
 class Server extends BaseServer
 {
     protected \Spiral\RoadRunner\Worker $worker;

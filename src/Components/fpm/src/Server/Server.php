@@ -18,9 +18,7 @@ use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Protocol;
 use Imi\Util\Socket\IPEndPoint;
 
-/**
- * @Bean("FpmHttpServer")
- */
+#[Bean(name: 'FpmHttpServer')]
 class Server extends BaseServer
 {
     /**

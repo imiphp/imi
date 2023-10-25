@@ -15,9 +15,7 @@ use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
 
-/**
- * @Bean("WorkermanGatewayTcpBusinessServer")
- */
+#[Bean(name: 'WorkermanGatewayTcpBusinessServer')]
 class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
 {
     /**

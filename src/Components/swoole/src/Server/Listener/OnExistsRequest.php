@@ -14,9 +14,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * 连接是否存在-请求
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.existsRequest")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.existsRequest')]
 class OnExistsRequest implements IEventListener
 {
     /**

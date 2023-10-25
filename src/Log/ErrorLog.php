@@ -7,9 +7,7 @@ namespace Imi\Log;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Traits\TBeanRealClass;
 
-/**
- * @Bean("ErrorLog")
- */
+#[Bean(name: 'ErrorLog')]
 class ErrorLog
 {
     use TBeanRealClass;

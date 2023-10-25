@@ -11,68 +11,55 @@ use Imi\Async\AsyncResult;
 use Imi\Async\Contract\IAsyncResult;
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("AsyncTester")
- */
+#[Bean(name: 'AsyncTester')]
 class AsyncTester
 {
-    /**
-     * @Async
-     */
+    #[Async]
     public function testAsync1(float $a, float $b): IAsyncResult
     {
         return new AsyncResult($a + $b);
     }
 
     /**
-     * @Async
-     *
      * @return float|IAsyncResult
      */
+    #[Async]
     public function testAsync2(float $a, float $b)
     {
         return $a + $b;
     }
 
-    /**
-     * @Defer
-     */
+    #[Defer]
     public function testDefer1(float $a, float $b): IAsyncResult
     {
         return new AsyncResult($a + $b);
     }
 
     /**
-     * @Defer
-     *
      * @return float|IAsyncResult
      */
+    #[Defer]
     public function testDefer2(float $a, float $b)
     {
         return $a + $b;
     }
 
-    /**
-     * @DeferAsync
-     */
+    #[DeferAsync]
     public function testDeferAsync1(float $a, float $b): IAsyncResult
     {
         return new AsyncResult($a + $b);
     }
 
     /**
-     * @DeferAsync
-     *
      * @return float|IAsyncResult
      */
+    #[DeferAsync]
     public function testDeferAsync2(float $a, float $b)
     {
         return $a + $b;
     }
 
-    /**
-     * @Async
-     */
+    #[Async]
     public function testException(): IAsyncResult
     {
         throw new \RuntimeException('gg');

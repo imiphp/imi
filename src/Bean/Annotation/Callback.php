@@ -9,8 +9,6 @@ use Imi\Aop\Annotation\BaseInjectValue;
 /**
  * 回调注解.
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -19,6 +17,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * @property string        $method 方法名
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Imi\Bean\Annotation\Inherit]
 class Callback extends BaseInjectValue
 {
     /**

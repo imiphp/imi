@@ -12,10 +12,9 @@ use Imi\Test\Component\Inject\Classes\TestTAutoInject;
 use PHPUnit\Framework\Assert;
 
 /**
- * @Bean
- *
  * @testdox Inject
  */
+#[Bean]
 class InjectTest extends BaseTest
 {
     public function testInject(): void

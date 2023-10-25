@@ -13,44 +13,37 @@ use Imi\Config\Annotation\ConfigValue;
 use Imi\Config\Annotation\EnvValue;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Bean("TestInjectValueLogicXXX")
- */
+#[Bean(name: 'TestInjectValueLogicXXX')]
 class TestInjectValueLogic
 {
     /**
-     * @ConfigValue("@app.imi-framework")
-     *
      * @var string
      */
+    #[ConfigValue(name: '@app.imi-framework')]
     protected $imi;
 
     /**
-     * @ConstValue("PHP_VERSION")
-     *
      * @var string
      */
+    #[ConstValue(name: 'PHP_VERSION')]
     protected $phpVersion;
 
     /**
-     * @Callback(class="A", method="test")
-     *
      * @var callable
      */
+    #[Callback(class: 'A', method: 'test')]
     protected $callable;
 
     /**
-     * @CallableValue("phpversion")
-     *
      * @var callable
      */
+    #[CallableValue(callable: 'phpversion')]
     protected $callableResult;
 
     /**
-     * @EnvValue("yurun")
-     *
      * @var mixed
      */
+    #[EnvValue(name: 'yurun')]
     protected $yurun;
 
     public function test(): void

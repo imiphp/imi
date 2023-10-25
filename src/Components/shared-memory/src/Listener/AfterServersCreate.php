@@ -9,9 +9,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Process\ProcessManager;
 
-/**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", one=true)
- */
+#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', one: true)]
 class AfterServersCreate implements IEventListener
 {
     /**

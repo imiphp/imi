@@ -11,9 +11,8 @@ use Imi\Pgsql\Db\Util\SqlUtil;
 
 /**
  * PDO Pgsql驱动.
- *
- * @Bean("PdoPgsqlDriver")
  */
+#[Bean(name: 'PdoPgsqlDriver')]
 class Driver extends PgsqlBase
 {
     use TPdoDriver {

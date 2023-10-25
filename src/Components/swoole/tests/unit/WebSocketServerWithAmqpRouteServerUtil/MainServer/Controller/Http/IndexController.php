@@ -13,43 +13,31 @@ use Imi\Server\WebSocket\Route\Annotation\WSConfig;
 
 /**
  * 测试.
- *
- * @Controller
- *
- * @View(renderType="html")
  */
+#[Controller]
+#[View(renderType: 'html')]
 class IndexController extends HttpController
 {
-    /**
-     * @Action
-     *
-     * @Route("/")
-     *
-     * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
-     */
+    #[Action]
+    #[Route(url: '/')]
+    #[WSConfig(parserClass: \Imi\Server\DataParser\JsonObjectParser::class)]
     public function index(): void
     {
         // 握手处理，什么都不做，框架会帮你做好
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/test2")
-     *
-     * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
-     */
+    #[Action]
+    #[Route(url: '/test2')]
+    #[WSConfig(parserClass: \Imi\Server\DataParser\JsonObjectParser::class)]
     public function test2(): void
     {
     }
 
     /**
-     * @Action
-     *
-     * @Route("/http")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/http')]
     public function http()
     {
         $response = $this->response;

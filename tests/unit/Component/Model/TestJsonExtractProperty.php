@@ -13,27 +13,20 @@ use Imi\Test\Component\Model\Base\TestJsonBase;
 /**
  * tb_test_json.
  *
- * @Inherit
- *
- * @Entity(camel=false)
- *
  * @property \Imi\Util\LazyArrayObject|array $jsonData json数据
  * @property int|null                        $userId
  * @property int|null                        $userId2
  */
+#[Inherit]
+#[Entity(camel: false)]
 class TestJsonExtractProperty extends TestJsonBase
 {
-    /**
-     * @Inherit
-     *
-     * @ExtractProperty(fieldName="ex.userId")
-     * @ExtractProperty(fieldName="ex.userId", alias="userId2")
-     */
+    #[Inherit]
+    #[ExtractProperty(fieldName: 'ex.userId')]
+    #[ExtractProperty(fieldName: 'ex.userId', alias: 'userId2')]
     protected $jsonData = null;
 
-    /**
-     * @Column(virtual=true)
-     */
+    #[Column(virtual: true)]
     protected ?int $userId = null;
 
     public function getUserId(): ?int
@@ -48,9 +41,7 @@ class TestJsonExtractProperty extends TestJsonBase
         return $this;
     }
 
-    /**
-     * @Column(virtual=true)
-     */
+    #[Column(virtual: true)]
     protected ?int $userId2 = null;
 
     public function getUserId2(): ?int

@@ -23,10 +23,9 @@ use function Yurun\Swoole\Coroutine\goWait;
 if (\Imi\Util\Imi::checkAppType('swoole'))
 {
     /**
-     * @Partial(\Imi\Queue\Service\BaseQueueConsumer::class)
-     *
      * @property \Imi\Queue\Service\QueueService $imiQueue
      */
+    #[Partial(class: \Imi\Queue\Service\BaseQueueConsumer::class)]
     trait SwooleBaseQueueConsumerPartial
     {
         /**

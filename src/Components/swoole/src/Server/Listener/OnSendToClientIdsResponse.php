@@ -11,9 +11,8 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 
 /**
  * 发送给指定连接-响应.
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendToClientIdsResponse")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendToClientIdsResponse')]
 class OnSendToClientIdsResponse implements IEventListener
 {
     /**

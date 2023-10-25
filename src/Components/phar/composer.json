@@ -19,7 +19,9 @@
         "files": []
     },
     "autoload-dev": {
-        "psr-4": {},
+        "psr-4": {
+            "ImiApp\\": "tests/project"
+        },
         "files": []
     },
     "scripts": {

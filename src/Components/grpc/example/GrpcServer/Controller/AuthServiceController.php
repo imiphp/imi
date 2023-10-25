@@ -11,18 +11,15 @@ use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 
-/**
- * @Controller("/grpc.AuthService/")
- */
+#[Controller(prefix: '/grpc.AuthService/')]
 class AuthServiceController extends HttpController implements AuthServiceInterface
 {
     /**
      * Method <code>login</code>.
      *
-     * @Action
-     *
      * @return \Grpc\LoginResponse
      */
+    #[Action]
     public function login(LoginRequest $request)
     {
         $response = new LoginResponse();

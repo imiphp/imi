@@ -25,9 +25,7 @@ use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Protocols\Websocket;
 
-/**
- * @Bean("WorkermanWebSocketServer")
- */
+#[Bean(name: 'WorkermanWebSocketServer')]
 class Server extends Base implements IWebSocketServer
 {
     /**

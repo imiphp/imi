@@ -19,9 +19,7 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
 use Imi\Util\Uri;
 
-/**
- * @Bean(name="WSRoute", recursion=false)
- */
+#[Bean(name: 'WSRoute', recursion: false)]
 class WSRoute implements IRoute
 {
     /**
@@ -31,9 +29,7 @@ class WSRoute implements IRoute
      */
     protected array $rules = [];
 
-    /**
-     * @ServerInject("HttpRoute")
-     */
+    #[ServerInject(name: 'HttpRoute')]
     protected HttpRoute $httpRoute;
 
     /**

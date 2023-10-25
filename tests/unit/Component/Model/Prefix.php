@@ -11,11 +11,9 @@ use Imi\Test\Component\Model\Base\PrefixBase;
 
 /**
  * prefix.
- *
- * @Inherit
- *
- * @SoftDelete
  */
+#[Inherit]
+#[SoftDelete(field: 'delete_time')]
 class Prefix extends PrefixBase
 {
     use TSoftDelete;

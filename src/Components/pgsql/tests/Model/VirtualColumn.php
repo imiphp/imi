@@ -9,9 +9,8 @@ use Imi\Pgsql\Test\Model\Base\VirtualColumnBase;
 
 /**
  * tb_virtual_column.
- *
- * @Inherit
  */
+#[Inherit]
 class VirtualColumn extends VirtualColumnBase
 {
 }

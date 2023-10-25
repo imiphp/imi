@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Bean;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean(name="BeanC", env={"cli"})
- */
+#[Bean(name: 'BeanC', env: ['cli'])]
 class BeanC
 {
 }

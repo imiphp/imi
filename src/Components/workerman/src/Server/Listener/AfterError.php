@@ -8,13 +8,11 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
-use Imi\Util\ImiPriority;
 
 /**
  * Error事件后置处理.
- *
- * @Listener(eventName="IMI.WORKERMAN.SERVER.ERROR", priority=ImiPriority::MIN)
  */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.ERROR', priority: (-9223372036854775807 - 1))]
 class AfterError implements IEventListener
 {
     /**

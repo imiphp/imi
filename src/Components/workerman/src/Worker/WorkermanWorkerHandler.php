@@ -10,9 +10,7 @@ use Imi\Workerman\Contract\IWorkermanWorker;
 use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Worker;
 
-/**
- * @Bean("WorkermanWorkerHandler")
- */
+#[Bean(name: 'WorkermanWorkerHandler')]
 class WorkermanWorkerHandler implements IWorkermanWorker
 {
     /**

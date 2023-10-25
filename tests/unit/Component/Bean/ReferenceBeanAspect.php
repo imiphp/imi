@@ -17,50 +17,28 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
 use Imi\Log\Log;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class ReferenceBeanAspect
 {
-    /**
-     * @Before
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Bean\ReferenceBean::*"
-     *     }
-     * )
-     */
+    #[Before]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ReferenceBean::*'])]
     public function before(JoinPoint $joinPoint): void
     {
         Log::info(sprintf('before ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
-    /**
-     * @After
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Bean\ReferenceBean::*"
-     *     }
-     * )
-     */
+    #[After]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ReferenceBean::*'])]
     public function after(JoinPoint $joinPoint): void
     {
         Log::info(sprintf('after ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
     /**
-     * @Around
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Bean\ReferenceBean::*"
-     *     }
-     * )
-     *
      * @return mixed
      */
+    #[Around]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ReferenceBean::*'])]
     public function &around(AroundJoinPoint $joinPoint)
     {
         Log::info(sprintf('around ReferenceBean::%s()', $joinPoint->getMethod()));
@@ -75,29 +53,15 @@ class ReferenceBeanAspect
         return $joinPoint->proceed(null, true);
     }
 
-    /**
-     * @AfterReturning
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Bean\ReferenceBean::*"
-     *     }
-     * )
-     */
+    #[AfterReturning]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ReferenceBean::*'])]
     public function afterReturning(AfterReturningJoinPoint $joinPoint): void
     {
         Log::info(sprintf('afterReturning ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
-    /**
-     * @AfterThrowing
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Bean\ReferenceBean::*"
-     *     }
-     * )
-     */
+    #[AfterThrowing]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ReferenceBean::*'])]
     public function afterThrowing(AfterThrowingJoinPoint $joinPoint): void
     {
         Log::info(sprintf('afterThrowing ReferenceBean::%s()', $joinPoint->getMethod()));

@@ -11,20 +11,11 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\BeanFactory;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AfterReturningAop
 {
-    /**
-     * @AfterReturning
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Aop\Classes\TestAfterReturningClass::test"
-     *     }
-     * )
-     */
+    #[AfterReturning]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestAfterReturningClass::test'])]
     public function injectAfterReturningAop(AfterReturningJoinPoint $joinPoint): void
     {
         Assert::assertEquals([1], $joinPoint->getArgs());

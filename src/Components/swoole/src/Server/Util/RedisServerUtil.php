@@ -18,9 +18,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 
-/**
- * @Bean(name="RedisServerUtil", env="swoole", recursion=false)
- */
+#[Bean(name: 'RedisServerUtil', env: 'swoole', recursion: false)]
 class RedisServerUtil extends LocalServerUtil
 {
     /**

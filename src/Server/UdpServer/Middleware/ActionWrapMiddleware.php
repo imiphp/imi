@@ -10,9 +10,7 @@ use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 use Imi\Server\UdpServer\PacketHandler;
 
-/**
- * @Bean("UDPActionWrapMiddleware")
- */
+#[Bean(name: 'UDPActionWrapMiddleware')]
 class ActionWrapMiddleware implements IMiddleware
 {
     /**

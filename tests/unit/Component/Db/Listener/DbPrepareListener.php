@@ -11,9 +11,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
-/**
- * @Listener("IMI.DB.PREPARE")
- */
+#[Listener(eventName: 'IMI.DB.PREPARE')]
 class DbPrepareListener implements IEventListener
 {
     /**

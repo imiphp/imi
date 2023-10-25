@@ -14,9 +14,8 @@ use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
  * 发送给分组中的连接-请求
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawToGroupRequest")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawToGroupRequest')]
 class OnSendRawToGroupRequest implements IEventListener
 {
     /**

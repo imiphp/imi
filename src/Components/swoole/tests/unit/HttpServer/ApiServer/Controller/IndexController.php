@@ -27,25 +27,20 @@ use Imi\Validate\Annotation\Required;
 use Psr\Http\Message\UploadedFileInterface;
 use Swoole\Coroutine;
 
-/**
- * @Controller(prefix="/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Inject("TestService")
-     *
      * @var \Imi\Swoole\Test\HttpServer\Modules\Test\Service\TestService
      */
+    #[Inject(name: 'TestService')]
     protected $testService;
 
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         $response = RequestContext::get('response');
@@ -54,11 +49,8 @@ class IndexController extends HttpController
         return $response;
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/route/{id}")
-     */
+    #[Action]
+    #[Route(url: '/route/{id}')]
     public function route(int $id): array
     {
         return [
@@ -66,15 +58,10 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @Route(autoEndSlash=true)
-     *
-     * @View(renderType="html")
-     *
-     * @HtmlView(template="html")
-     */
+    #[Action]
+    #[Route(autoEndSlash: true)]
+    #[View(renderType: 'html')]
+    #[HtmlView(template: 'html')]
     public function html(int $time): array
     {
         return [
@@ -82,13 +69,9 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @View(renderType="html")
-     *
-     * @HtmlView(baseDir="index/")
-     */
+    #[Action]
+    #[View(renderType: 'html')]
+    #[HtmlView(baseDir: 'index/')]
     public function html2(int $time): array
     {
         return [
@@ -97,10 +80,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function renderHtml1()
     {
         return $this->__render('test/a', [
@@ -109,10 +91,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function renderHtml2()
     {
         return $this->__render(\dirname(__DIR__, 2) . '/template/b.html', [
@@ -120,9 +101,7 @@ class IndexController extends HttpController
         ]);
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function json(int $time): array
     {
         return [
@@ -131,9 +110,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function info(): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -151,9 +128,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function superGlobalsInfo(): array
     {
         return [
@@ -168,12 +143,11 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param string $get
      * @param string $post
      * @param mixed  $default
      */
+    #[Action]
     public function info2($get, $post, $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -186,13 +160,12 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param string $get
      * @param string $post
      * @param string $parsedBody
      * @param mixed  $default
      */
+    #[Action]
     public function info3($get, $post, $parsedBody, $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -207,10 +180,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function cookie()
     {
         return RequestContext::get('response')->withCookie('a', '1')
@@ -224,10 +196,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function headers()
     {
         return RequestContext::get('response')->withHeader('a', '1')
@@ -238,47 +209,37 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
-     * @Route("/middleware")
-     *
-     * @Middleware(\Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware1::class)
-     * @Middleware({
-     *     \Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware2::class,
-     *     \Imi\Swoole\Test\HttpServer\ApiServer\Middleware\Middleware3::class
-     * })
-     * @Middleware("@test")
-     *
      * @return array
      */
+    #[Action]
+    #[Route(url: '/middleware')]
+    #[Middleware(middlewares: 'Imi\\Swoole\\Test\\HttpServer\\ApiServer\\Middleware\\Middleware1')]
+    #[Middleware(middlewares: ['Imi\\Swoole\\Test\\HttpServer\\ApiServer\\Middleware\\Middleware2', 'Imi\\Swoole\\Test\\HttpServer\\ApiServer\\Middleware\\Middleware3'])]
+    #[Middleware(middlewares: '@test')]
     public function middleware()
     {
         return [];
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function redirect()
     {
         return RequestContext::get('response')->redirect('/', StatusCode::MOVED_PERMANENTLY);
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function download(?string $contentType = null, ?string $outputFileName = null)
     {
         return RequestContext::get('response')->sendFile(__FILE__, $contentType, $outputFileName);
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function upload(): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -299,9 +260,7 @@ class IndexController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function upload2(UploadedFileInterface $file): array
     {
         return [
@@ -315,9 +274,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function executeTimeout(): array
     {
         Coroutine::sleep(2);
@@ -327,11 +284,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
-     */
+    #[Action]
+    #[Route(url: '/a/{id:[0-9]{1,3}}/{page:\\d+}')]
     public function regularExpression1(int $id, int $page): array
     {
         return [
@@ -340,11 +294,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/a/{name:[a-zA-Z]+}/{page}")
-     */
+    #[Action]
+    #[Route(url: '/a/{name:[a-zA-Z]+}/{page}')]
     public function regularExpression2(string $name, int $page): array
     {
         return [
@@ -353,9 +304,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function singletonRequest(): array
     {
         return [
@@ -370,10 +319,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function singletonResponse1()
     {
         $response = ResponseProxy::__getProxyInstance();
@@ -382,19 +330,14 @@ class IndexController extends HttpController
         return $response;
     }
 
-    /**
-     * @Action
-     *
-     * @View(renderType="html")
-     */
+    #[Action]
+    #[View(renderType: 'html')]
     public function singletonResponse2(): void
     {
         ResponseProxy::__setProxyInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function process(): array
     {
         $process = ProcessManager::getProcessWithManager('CronProcess');
@@ -404,22 +347,16 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @Route(url="/type/{id}/{name}/{page}")
-     */
+    #[Action]
+    #[Route(url: '/type/{id}/{name}/{page}')]
     public function type(int $id, string $name, int $page): array
     {
         return compact('id', 'name', 'page');
     }
 
-    /**
-     * @Action
-     *
-     * @ExtractData(name="$get.id", to="id2")
-     * @ExtractData(name="$get.id", to="id3")
-     */
+    #[Action]
+    #[ExtractData(name: '$get.id', to: 'id2')]
+    #[ExtractData(name: '$get.id', to: 'id3')]
     public function extractData(int $id, int $id2, string $id3): array
     {
         return [
@@ -429,12 +366,9 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @RequestParam(name="$get.id", param="id2")
-     * @RequestParam(name="$get.id3", param="id3", required=false, default="imi 666")
-     */
+    #[Action]
+    #[RequestParam(name: '$get.id', param: 'id2')]
+    #[RequestParam(name: '$get.id3', param: 'id3', required: false, default: 'imi 666')]
     public function requestParam1(int $id, int $id2, string $id3): array
     {
         return [
@@ -444,9 +378,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function requestParam2(
         int $id,
         #[RequestParam(name: '$get.id')]
@@ -463,55 +395,45 @@ class IndexController extends HttpController
 
     /**
      * 测试重复路由警告.
-     *
-     * @Action
-     *
-     * @Route("/duplicated")
      */
+    #[Action]
+    #[Route(url: '/duplicated')]
     public function duplicated1(): void
     {
     }
 
     /**
      * 测试重复路由警告.
-     *
-     * @Action
-     *
-     * @Route("/duplicated")
      */
+    #[Action]
+    #[Route(url: '/duplicated')]
     public function duplicated2(): void
     {
     }
 
     /**
      * 忽略大小写.
-     *
-     * @Action
-     *
-     * @Route(ignoreCase=true)
      */
+    #[Action]
+    #[Route(ignoreCase: true)]
     public function ignoreCase(): void
     {
     }
 
     /**
      * 测试 domain.
-     *
-     * @Action
-     *
-     * @Route(domain="localhost")
      */
+    #[Action]
+    #[Route(domain: 'localhost')]
     public function domain(): void
     {
     }
 
     /**
      * 测试 domain2.
-     *
-     * @Action
-     *
-     * @Route(domain="local{value}")
      */
+    #[Action]
+    #[Route(domain: 'local{value}')]
     public function domain2(string $value): array
     {
         return [
@@ -521,9 +443,8 @@ class IndexController extends HttpController
 
     /**
      * SSE.
-     *
-     * @Action
      */
+    #[Action]
     public function sse(): void
     {
         $this->response->setResponseBodyEmitter(new class() extends SseEmitter {
@@ -542,22 +463,15 @@ class IndexController extends HttpController
         });
     }
 
-    /**
-     * @Action
-     *
-     * @HttpValidation
-     */
+    #[Action]
+    #[HttpValidation]
     public function validateNone(): void
     {
     }
 
-    /**
-     * @Action
-     *
-     * @HttpValidation
-     *
-     * @Required(name="$get.id")
-     */
+    #[Action]
+    #[HttpValidation]
+    #[Required(name: '$get.id', exception: 'InvalidArgumentException', exCode: 0)]
     public function validate(int $id = 0): array
     {
         return [

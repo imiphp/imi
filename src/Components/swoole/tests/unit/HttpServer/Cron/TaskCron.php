@@ -10,11 +10,8 @@ use Imi\Swoole\Task\Annotation\Task;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
 use Imi\Swoole\Task\TaskParam;
 
-/**
- * @Cron(id="TaskCron", second="3n", data={"id": "TaskCron"})
- *
- * @Task("CronTask1")
- */
+#[Cron(id: 'TaskCron', second: '3n', data: ['id' => 'TaskCron'])]
+#[Task(name: 'CronTask1')]
 class TaskCron implements ITaskHandler
 {
     /**

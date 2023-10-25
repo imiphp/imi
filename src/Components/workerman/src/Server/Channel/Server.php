@@ -7,9 +7,7 @@ namespace Imi\Workerman\Server\Channel;
 use Imi\Bean\Annotation\Bean;
 use Workerman\Worker;
 
-/**
- * @Bean("WorkermanChannelServer")
- */
+#[Bean(name: 'WorkermanChannelServer')]
 class Server extends \Imi\Workerman\Server\Tcp\Server
 {
     /**

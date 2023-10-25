@@ -12,9 +12,8 @@ use Imi\Queue\Model\QueueConfig;
 
 /**
  * 队列的服务层类.
- *
- * @Bean("imiQueue")
  */
+#[Bean(name: 'imiQueue')]
 class QueueService
 {
     /**

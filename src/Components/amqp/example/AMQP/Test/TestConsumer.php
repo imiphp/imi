@@ -13,11 +13,9 @@ use Imi\Redis\Redis;
 
 /**
  * 使用连接池中的连接消费.
- *
- * @Bean("TestConsumer")
- *
- * @Consumer(tag="tag-imi", queue="queue-imi-2", message=\AMQPApp\AMQP\Test\TestMessage::class)
  */
+#[Bean(name: 'TestConsumer')]
+#[Consumer(tag: 'tag-imi', queue: 'queue-imi-2', message: 'AMQPApp\\AMQP\\Test\\TestMessage')]
 class TestConsumer extends BaseConsumer
 {
     /**

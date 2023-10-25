@@ -10,18 +10,14 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller("/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         $response = RequestContext::get('response');

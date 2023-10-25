@@ -9,16 +9,13 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Swoole\Util\MemoryTableManager;
 
-/**
- * @Controller("/memoryTable/")
- */
+#[Controller(prefix: '/memoryTable/')]
 class MemoryTableController extends HttpController
 {
     /**
      * 设置行的数据.
-     *
-     * @Action
      */
+    #[Action]
     public function setAndGet(): array
     {
         $key = '1';
@@ -35,9 +32,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 删除行的数据.
-     *
-     * @Action
      */
+    #[Action]
     public function del(): array
     {
         $key = '2';
@@ -55,9 +51,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 行数据是否存在.
-     *
-     * @Action
      */
+    #[Action]
     public function exist(): array
     {
         $key = '2';
@@ -74,9 +69,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 原子自增.
-     *
-     * @Action
      */
+    #[Action]
     public function incr(): array
     {
         $key = '3';
@@ -94,9 +88,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 原子自减.
-     *
-     * @Action
      */
+    #[Action]
     public function decr(): array
     {
         $key = '4';
@@ -114,9 +107,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 获取表行数.
-     *
-     * @Action
      */
+    #[Action]
     public function count(): array
     {
         return [
@@ -126,9 +118,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 设置行的数据.
-     *
-     * @Action
      */
+    #[Action]
     public function lockCallableSetAndGet(): ?array
     {
         $result = null;
@@ -149,9 +140,8 @@ class MemoryTableController extends HttpController
 
     /**
      * 设置行的数据.
-     *
-     * @Action
      */
+    #[Action]
     public function lockSetAndGet(): array
     {
         MemoryTableManager::lock('t1');

@@ -11,14 +11,11 @@ use Imi\Model\Annotation\Column;
  * Member.
  *
  * @property int|null $id2
- *
- * @Inherit
  */
+#[Inherit]
 class MemberReferenceProperty extends Member
 {
-    /**
-     * @Column(virtual=true, reference="id")
-     */
+    #[Column(virtual: true, reference: 'id')]
     protected ?int $id2;
 
     public function getId2(): ?int

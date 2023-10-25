@@ -14,9 +14,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * 解决：使用 application/json 请求时，浏览器会先发送一个 OPTIONS 请求
- *
- * @Bean("OptionsMiddleware")
  */
+#[Bean(name: 'OptionsMiddleware')]
 class OptionsMiddleware implements MiddlewareInterface
 {
     /**

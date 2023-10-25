@@ -18,9 +18,7 @@ use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 
-/**
- * @Bean("WorkermanGatewayWebSocketBusinessServer")
- */
+#[Bean(name: 'WorkermanGatewayWebSocketBusinessServer')]
 class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
 {
     /**

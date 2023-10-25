@@ -9,9 +9,7 @@ use Imi\ConnectionContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
-/**
- * @Listener("IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT")
- */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT')]
 class WorkermanOnOpen implements IEventListener
 {
     /**

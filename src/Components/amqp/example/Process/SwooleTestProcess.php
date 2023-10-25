@@ -14,14 +14,10 @@ use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\ImiPriority;
 
-/**
- * @Process(name="TestProcess")
- */
+#[Process(name: 'TestProcess')]
 class SwooleTestProcess extends BaseProcess
 {
-    /**
-     * @Inject("TestConsumer")
-     */
+    #[Inject(name: 'TestConsumer')]
     protected TestConsumer $testConsumer;
 
     private bool $running = false;

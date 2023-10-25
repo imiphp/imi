@@ -11,20 +11,15 @@ use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\HtmlView;
 use Imi\Util\Stream\MemoryStream;
 
-/**
- * @Controller("/")
- *
- * @HtmlView(baseDir="index/")
- */
+#[Controller(prefix: '/')]
+#[HtmlView(baseDir: 'index/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         return $this->response

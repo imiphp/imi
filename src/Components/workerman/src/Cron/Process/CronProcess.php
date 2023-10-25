@@ -7,7 +7,6 @@ namespace Imi\Workerman\Cron\Process;
 use Imi\Aop\Annotation\Inject;
 use Imi\Cron\Contract\ICronManager;
 use Imi\Cron\Contract\IScheduler;
-use Imi\Cron\CronManager;
 use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\RemoveCron;
@@ -21,19 +20,14 @@ use Workerman\Worker;
 
 /**
  * 定时任务进程.
- *
- * @Process(name="CronProcess")
  */
+#[Process(name: 'CronProcess')]
 class CronProcess extends BaseProcess
 {
-    /**
-     * @Inject("CronScheduler")
-     */
+    #[Inject(name: 'CronScheduler')]
     protected IScheduler $scheduler;
 
-    /**
-     * @Inject("CronManager")
-     */
+    #[Inject(name: 'CronManager')]
     protected ICronManager $cronManager;
 
     /**

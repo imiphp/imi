@@ -8,34 +8,21 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
-use Imi\Async\Annotation\Async;
-use Imi\Async\Annotation\Defer;
-use Imi\Async\Annotation\DeferAsync;
 use Imi\Async\Contract\IAsyncResult;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\ReflectionContainer;
 use Imi\Bean\ReflectionUtil;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AsyncAop
 {
     /**
      * 异步执行.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         Async::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Async\\Annotation\\Async'])]
+    #[Around]
     public function parseAsync(AroundJoinPoint $joinPoint)
     {
         $result = \Imi\Async\Async::exec(static fn () => $joinPoint->proceed());
@@ -50,17 +37,10 @@ class AsyncAop
     /**
      * 延后执行.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         Defer::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Async\\Annotation\\Defer'])]
+    #[Around]
     public function parseDefer(AroundJoinPoint $joinPoint)
     {
         $result = \Imi\Async\Async::defer(static fn () => $joinPoint->proceed());
@@ -75,17 +55,10 @@ class AsyncAop
     /**
      * 延后执行.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         DeferAsync::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Async\\Annotation\\DeferAsync'])]
+    #[Around]
     public function parseDeferAsync(AroundJoinPoint $joinPoint)
     {
         $result = \Imi\Async\Async::deferAsync(static fn () => $joinPoint->proceed());

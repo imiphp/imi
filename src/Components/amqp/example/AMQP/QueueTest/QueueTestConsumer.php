@@ -10,9 +10,7 @@ use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Service\BaseQueueConsumer;
 use Imi\Redis\Redis;
 
-/**
- * @Bean("QueueTestConsumer")
- */
+#[Bean(name: 'QueueTestConsumer')]
 class QueueTestConsumer extends BaseQueueConsumer
 {
     /**

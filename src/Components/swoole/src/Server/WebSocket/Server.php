@@ -26,13 +26,11 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
 use Imi\Worker;
-use Swoole\WebSocket\Server as WebSocketServer;
 
 /**
  * WebSocket 服务器类.
- *
- * @Bean(name="WebSocketServer", env="swoole")
  */
+#[Bean(name: 'WebSocketServer', env: 'swoole')]
 class Server extends Base implements ISwooleWebSocketServer
 {
     /**

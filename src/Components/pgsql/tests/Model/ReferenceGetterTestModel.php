@@ -9,17 +9,15 @@ use Imi\Model\Annotation\Entity;
 use Imi\Pgsql\Test\Model\Base\TreeBase;
 
 /**
- * @Entity
- *
  * @property int[] $list
  */
+#[Entity]
 class ReferenceGetterTestModel extends TreeBase
 {
     /**
-     * @Column(virtual=true)
-     *
      * @var int[]
      */
+    #[Column(virtual: true)]
     protected array $list = [];
 
     /**

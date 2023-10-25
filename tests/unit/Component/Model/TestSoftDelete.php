@@ -11,11 +11,9 @@ use Imi\Test\Component\Model\Base\TestSoftDeleteBase;
 
 /**
  * tb_test_soft_delete.
- *
- * @Inherit
- *
- * @SoftDelete
  */
+#[Inherit]
+#[SoftDelete(field: 'delete_time')]
 class TestSoftDelete extends TestSoftDeleteBase
 {
     use TSoftDelete;

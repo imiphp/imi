@@ -9,9 +9,8 @@ use Imi\Pgsql\Test\Model\Base\NoIncPkBase;
 
 /**
  * tb_no_inc_pk.
- *
- * @Inherit
  */
+#[Inherit]
 class NoIncPk extends NoIncPkBase
 {
 }

@@ -13,9 +13,7 @@ use Imi\Server\Http\SuperGlobals\Request;
 use Imi\Server\Http\SuperGlobals\Server;
 use Imi\Server\Http\SuperGlobals\Session;
 
-/**
- * @Bean("SuperGlobals")
- */
+#[Bean(name: 'SuperGlobals')]
 class SuperGlobals
 {
     /**

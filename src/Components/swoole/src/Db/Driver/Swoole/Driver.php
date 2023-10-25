@@ -19,9 +19,8 @@ use Swoole\Coroutine\MySQL;
  * Swoole Coroutine MySQL 驱动.
  *
  * @deprecated 3.0
- *
- * @Bean("SwooleMysqlDriver")
  */
+#[Bean(name: 'SwooleMysqlDriver')]
 class Driver extends MysqlBase
 {
     /**

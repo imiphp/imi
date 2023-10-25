@@ -12,10 +12,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("CLASS")
- *
- * @Parser("Imi\Cli\Parser\ToolParser")
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class Tool extends Command
 {
     /**

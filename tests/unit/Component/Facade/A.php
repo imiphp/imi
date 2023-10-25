@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Facade;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("FacadeA")
- */
+#[Bean(name: 'FacadeA')]
 class A
 {
     /**

@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\TestEnumBase;
 
 /**
  * tb_test_enum.
- *
- * @Inherit
  */
+#[Inherit]
 class TestEnum extends TestEnumBase
 {
 }

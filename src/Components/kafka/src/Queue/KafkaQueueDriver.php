@@ -17,9 +17,8 @@ use longlang\phpkafka\Consumer\Consumer;
 
 /**
  * Kafka 队列驱动.
- *
- * @Bean("KafkaQueueDriver")
  */
+#[Bean(name: 'KafkaQueueDriver')]
 class KafkaQueueDriver implements IQueueDriver
 {
     use TDataToProperty{

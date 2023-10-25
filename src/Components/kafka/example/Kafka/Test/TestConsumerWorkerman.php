@@ -10,11 +10,8 @@ use Imi\Kafka\Base\BaseConsumer;
 use Imi\Redis\Redis;
 use longlang\phpkafka\Consumer\ConsumeMessage;
 
-/**
- * @Bean("TestConsumerWorkerman")
- *
- * @Consumer(topic="queue-imi-1", groupId="test-consumer-workerman")
- */
+#[Bean(name: 'TestConsumerWorkerman')]
+#[Consumer(topic: 'queue-imi-1', groupId: 'test-consumer-workerman')]
 class TestConsumerWorkerman extends BaseConsumer
 {
     /**

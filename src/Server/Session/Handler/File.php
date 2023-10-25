@@ -7,9 +7,7 @@ namespace Imi\Server\Session\Handler;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
 
-/**
- * @Bean(name="SessionFile", recursion=false)
- */
+#[Bean(name: 'SessionFile', recursion: false)]
 class File extends Base
 {
     /**

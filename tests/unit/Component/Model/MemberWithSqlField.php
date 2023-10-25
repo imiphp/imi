@@ -12,29 +12,23 @@ use Imi\Test\Component\Model\Base\MemberBase;
 
 /**
  * Member.
- *
- * @Inherit
- *
- * @Serializables(mode="deny", fields={"password"})
  */
+#[Inherit]
+#[Serializables(mode: 'deny', fields: ['password'])]
 class MemberWithSqlField extends MemberBase
 {
     /**
-     * @Column(name="a", virtual=true)
-     *
-     * @Sql("1+1")
-     *
      * @var int
      */
+    #[Column(name: 'a', virtual: true)]
+    #[Sql(sql: '1+1')]
     public $test1;
 
     /**
-     * @Column(virtual=true)
-     *
-     * @Sql("2+2")
-     *
      * @var int
      */
+    #[Column(virtual: true)]
+    #[Sql(sql: '2+2')]
     public $test2;
 
     /**

@@ -20,9 +20,8 @@ if (class_exists(PostgreSQL::class, false))
 {
     /**
      * Swoole Coroutine PostgreSQL 驱动.
-     *
-     * @Bean("SwooleNewPgsqlDriver")
      */
+    #[Bean(name: 'SwooleNewPgsqlDriver')]
     class Driver extends PgsqlBase
     {
         /**

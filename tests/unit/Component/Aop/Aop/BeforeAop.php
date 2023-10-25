@@ -11,20 +11,11 @@ use Imi\Aop\JoinPoint;
 use Imi\Bean\BeanFactory;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class BeforeAop
 {
-    /**
-     * @Before
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Aop\Classes\TestBeforeClass::test"
-     *     }
-     * )
-     */
+    #[Before]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestBeforeClass::test'])]
     public function injectBefore(JoinPoint $joinPoint): void
     {
         Assert::assertEquals([1], $joinPoint->getArgs());

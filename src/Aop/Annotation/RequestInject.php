@@ -11,8 +11,6 @@ use Imi\RequestContext;
  * 属性注入
  * 使用：RequestContext::getBean().
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -21,6 +19,7 @@ use Imi\RequestContext;
  * @property array  $args Bean实例化参数
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class RequestInject extends BaseInjectValue
 {
     /**

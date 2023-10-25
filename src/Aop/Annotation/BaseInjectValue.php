@@ -9,9 +9,8 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 注入值注解基类.
- *
- * @Parser("\Imi\Bean\Parser\BeanParser")
  */
+#[Parser(className: \Imi\Bean\Parser\BeanParser::class)]
 abstract class BaseInjectValue extends Base
 {
     /**

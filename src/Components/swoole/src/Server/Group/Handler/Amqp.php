@@ -8,9 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Group\Handler\Local;
 
-/**
- * @Bean(name="GroupAmqp", env="swoole")
- */
+#[Bean(name: 'GroupAmqp', env: 'swoole')]
 class Amqp extends Local
 {
     /**

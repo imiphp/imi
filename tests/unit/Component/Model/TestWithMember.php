@@ -15,32 +15,25 @@ use Imi\Test\Component\Model\Base\TestWithMemberBase;
 /**
  * 测试 with member.
  *
- * @Inherit
- *
  * @property MemberSerializable|null $member
  */
+#[Inherit]
 class TestWithMember extends TestWithMemberBase
 {
     /**
      * member_id.
-     *
-     * @Inherit
-     *
-     * @Serializable(false)
      */
+    #[Inherit]
+    #[Serializable(allow: false)]
     protected ?int $memberId = null;
 
     /**
-     * @OneToOne(model=MemberSerializable::class)
-     *
-     * @JoinFrom("member_id")
-     *
-     * @JoinTo("id")
-     *
-     * @AutoSelect(false)
-     *
      * @var MemberSerializable|null
      */
+    #[OneToOne(model: 'Imi\\Test\\Component\\Model\\MemberSerializable')]
+    #[JoinFrom(field: 'member_id')]
+    #[JoinTo(field: 'id')]
+    #[AutoSelect(status: false)]
     protected $member = null;
 
     /**

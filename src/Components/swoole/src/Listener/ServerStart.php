@@ -10,9 +10,7 @@ use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
 use Imi\Swoole\Server\Traits\TServerPortInfo;
 
-/**
- * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START", one=true)
- */
+#[Listener(eventName: 'IMI.MAIN_SERVER.MANAGER.START', one: true)]
 class ServerStart implements IManagerStartEventListener
 {
     use TServerPortInfo;

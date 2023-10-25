@@ -12,18 +12,15 @@ use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
 
 /**
  * 数据收发测试.
- *
- * @TcpController
  */
+#[TcpController]
 class TestController extends \Imi\Server\TcpServer\Controller\TcpController
 {
     /**
      * 登录.
-     *
-     * @TcpAction
-     *
-     * @TcpRoute({"action": "login"})
      */
+    #[TcpAction]
+    #[TcpRoute(condition: ['action' => 'login'])]
     public function login(\stdClass $data): array
     {
         ConnectionContext::set('username', $data->username);
@@ -36,11 +33,9 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
 
     /**
      * 发送消息.
-     *
-     * @TcpAction
-     *
-     * @TcpRoute({"action": "send"})
      */
+    #[TcpAction]
+    #[TcpRoute(condition: ['action' => 'send'])]
     public function send(\stdClass $data): void
     {
         $message = [
@@ -54,22 +49,18 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
 
     /**
      * 测试重复路由警告.
-     *
-     * @TcpAction
-     *
-     * @TcpRoute({"duplicated": "1"})
      */
+    #[TcpAction]
+    #[TcpRoute(condition: ['duplicated' => '1'])]
     public function duplicated1(): void
     {
     }
 
     /**
      * 测试重复路由警告.
-     *
-     * @TcpAction
-     *
-     * @TcpRoute({"duplicated": "1"})
      */
+    #[TcpAction]
+    #[TcpRoute(condition: ['duplicated' => '1'])]
     public function duplicated2(): void
     {
     }

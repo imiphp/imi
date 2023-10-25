@@ -11,9 +11,8 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 
 /**
  * 发送给所有 Worker 进程的连接-响应.
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawToAllResponse")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawToAllResponse')]
 class OnSendRawToAllResponse implements IEventListener
 {
     /**

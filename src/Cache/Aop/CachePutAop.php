@@ -8,7 +8,6 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\CachePut;
@@ -16,9 +15,7 @@ use Imi\Cache\CacheManager;
 use Imi\Config;
 use Imi\Util\ClassObject;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class CachePutAop
 {
     use TCacheAopHelper;
@@ -26,17 +23,10 @@ class CachePutAop
     /**
      * 处理 CachePut 注解.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\Cache\Annotation\CachePut::class,
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: 2, allow: ['Imi\\Cache\\Annotation\\CachePut'])]
+    #[Around]
     public function parseCachePut(AroundJoinPoint $joinPoint)
     {
         $methodReturn = $joinPoint->proceed();

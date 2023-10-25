@@ -9,14 +9,10 @@ use Imi\Pool\PoolManager;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 
-/**
- * @Process("PoolTest2")
- */
+#[Process(name: 'PoolTest2')]
 class PoolTest2Process extends BaseProcess
 {
-    /**
-     * @PoolClean(mode="deny", list={"maindb"})
-     */
+    #[PoolClean(mode: 'deny', list: ['maindb'])]
     public function run(\Swoole\Process $process): void
     {
         $result = [];

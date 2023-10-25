@@ -14,14 +14,13 @@ use Imi\Util\ArrayUtil;
 /**
  * 逻辑组.
  *
- * @Bean("ServerGroup")
- *
  * @method array send(string $data, int $extraData = 0)
  * @method array sendfile(string $filename, int $offset =0, int $length = 0)
  * @method array sendwait(string $send_dat)
  * @method array push(string $data, int $opcode = 1, bool $finish = true)
  * @method array close(bool $reset = false)
  */
+#[Bean(name: 'ServerGroup')]
 class Group
 {
     /**

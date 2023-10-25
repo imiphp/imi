@@ -18,7 +18,7 @@ use Imi\Util\ObjectArrayHelper;
 trait TLockableParser
 {
     /**
-     * 处理 @Lockable 注解.
+     * 处理           注解.
      *
      * @param object                        $object
      * @param string                        $method
@@ -29,6 +29,7 @@ trait TLockableParser
      *
      * @return mixed
      */
+    #[Lockable]
     public function parseLockable($object, $method, $args, $lockable, $taskCallable, $afterLock = null)
     {
         $class = BeanFactory::getObjectClass($object);

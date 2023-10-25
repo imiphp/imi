@@ -10,15 +10,10 @@ use Imi\AMQP\Annotation\Queue;
 use Imi\AMQP\Base\BasePublisher;
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("TestPublisher")
- *
- * @Publisher(queue="queue-imi-2", exchange="exchange-imi", routingKey="imi-2")
- *
- * @Queue(name="queue-imi-2", routingKey="imi-2")
- *
- * @Exchange(name="exchange-imi")
- */
+#[Bean(name: 'TestPublisher')]
+#[Publisher(queue: 'queue-imi-2', exchange: 'exchange-imi', routingKey: 'imi-2')]
+#[Queue(name: 'queue-imi-2', routingKey: 'imi-2')]
+#[Exchange(name: 'exchange-imi')]
 class TestPublisher extends BasePublisher
 {
 }

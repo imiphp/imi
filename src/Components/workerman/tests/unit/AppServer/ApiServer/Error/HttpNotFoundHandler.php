@@ -11,9 +11,7 @@ use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Util\Stream\MemoryStream;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/**
- * @Bean("MyHttpNotFoundHandler")
- */
+#[Bean(name: 'MyHttpNotFoundHandler')]
 class HttpNotFoundHandler implements IHttpNotFoundHandler
 {
     /**

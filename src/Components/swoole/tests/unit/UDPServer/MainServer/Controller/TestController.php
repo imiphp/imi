@@ -11,18 +11,15 @@ use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
 
 /**
  * 数据收发测试.
- *
- * @UdpController
  */
+#[UdpController]
 class TestController extends \Imi\Server\UdpServer\Controller\UdpController
 {
     /**
      * 登录.
-     *
-     * @UdpAction
-     *
-     * @UdpRoute({"action": "hello"})
      */
+    #[UdpAction]
+    #[UdpRoute(condition: ['action' => 'hello'])]
     public function hello(): array
     {
         $data = $this->data->getFormatData();
@@ -35,22 +32,18 @@ class TestController extends \Imi\Server\UdpServer\Controller\UdpController
 
     /**
      * 测试重复路由警告.
-     *
-     * @UdpAction
-     *
-     * @UdpRoute({"duplicated": "1"})
      */
+    #[UdpAction]
+    #[UdpRoute(condition: ['duplicated' => '1'])]
     public function duplicated1(): void
     {
     }
 
     /**
      * 测试重复路由警告.
-     *
-     * @UdpAction
-     *
-     * @UdpRoute({"duplicated": "1"})
      */
+    #[UdpAction]
+    #[UdpRoute(condition: ['duplicated' => '1'])]
     public function duplicated2(): void
     {
     }

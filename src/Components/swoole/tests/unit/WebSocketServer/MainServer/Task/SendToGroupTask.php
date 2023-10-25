@@ -10,9 +10,7 @@ use Imi\Swoole\Task\Annotation\Task;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
 use Imi\Swoole\Task\TaskParam;
 
-/**
- * @Task("SendToGroupTask")
- */
+#[Task(name: 'SendToGroupTask')]
 class SendToGroupTask implements ITaskHandler
 {
     /**

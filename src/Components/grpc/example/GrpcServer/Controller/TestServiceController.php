@@ -10,18 +10,15 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\Http\Consts\RequestHeader;
 
-/**
- * @Controller("/grpc.TestService/")
- */
+#[Controller(prefix: '/grpc.TestService/')]
 class TestServiceController extends HttpController implements TestServiceInterface
 {
     /**
      * Method <code>test</code>.
      *
-     * @Action
-     *
      * @return \Grpc\TestRequest
      */
+    #[Action]
     public function test(\Grpc\TestRequest $request)
     {
         $trailers = 'grpc-status, grpc-message, test';

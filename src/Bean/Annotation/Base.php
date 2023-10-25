@@ -43,9 +43,10 @@ abstract class Base extends LazyArrayObject
             {
                 continue;
             }
-            if (isset($__args[$i - 1]))
+            $key = (int) ($i - 1);
+            if (\array_key_exists($key, $__args))
             {
-                $data[$name] = $__args[$i - 1];
+                $data[$name] = $__args[$key];
             }
             else
             {

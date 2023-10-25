@@ -11,9 +11,8 @@ use Imi\Timer\Contract\ITimer;
  * 默认定时器，无定时功能，立即执行.
  *
  * @codeCoverageIgnore
- *
- * @Bean("DefaultTimer")
  */
+#[Bean(name: 'DefaultTimer')]
 class DefaultTimer implements ITimer
 {
     /**

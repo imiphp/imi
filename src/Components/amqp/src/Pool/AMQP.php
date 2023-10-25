@@ -6,9 +6,7 @@ namespace Imi\AMQP\Pool;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("AMQP")
- */
+#[Bean(name: 'AMQP')]
 class AMQP
 {
     /**

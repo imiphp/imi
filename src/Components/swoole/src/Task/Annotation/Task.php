@@ -15,12 +15,11 @@ use Imi\Swoole\Task\TaskParam;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Swoole\Task\Parser\TaskParser")
- *
  * @property string $name       任务名称
  * @property string $paramClass 参数类
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Swoole\Task\Parser\TaskParser::class)]
 class Task extends Base
 {
     /**

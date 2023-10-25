@@ -9,9 +9,8 @@ use Imi\Pgsql\Test\Model\Base\ArticleBase;
 
 /**
  * tb_article.
- *
- * @Inherit
  */
+#[Inherit]
 class Article extends ArticleBase
 {
 }

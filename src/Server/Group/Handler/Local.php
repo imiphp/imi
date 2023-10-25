@@ -8,9 +8,8 @@ use Imi\Bean\Annotation\Bean;
 
 /**
  * 分组本地驱动.
- *
- * @Bean("GroupLocal")
  */
+#[Bean(name: 'GroupLocal')]
 class Local implements IGroupHandler
 {
     /**

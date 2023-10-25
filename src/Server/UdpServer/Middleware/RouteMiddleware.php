@@ -12,19 +12,13 @@ use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 use Imi\Server\UdpServer\Route\UdpRoute;
 
-/**
- * @Bean(name="UDPRouteMiddleware", recursion=false)
- */
+#[Bean(name: 'UDPRouteMiddleware', recursion: false)]
 class RouteMiddleware implements IMiddleware
 {
-    /**
-     * @ServerInject("UdpRoute")
-     */
+    #[ServerInject(name: 'UdpRoute')]
     protected UdpRoute $route;
 
-    /**
-     * @ServerInject("UdpRouteNotFoundHandler")
-     */
+    #[ServerInject(name: 'UdpRouteNotFoundHandler')]
     protected IUdpRouteNotFoundHandler $notFoundHandler;
 
     /**

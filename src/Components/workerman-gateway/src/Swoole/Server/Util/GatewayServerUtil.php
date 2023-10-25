@@ -12,9 +12,7 @@ use Imi\WorkermanGateway\Server\Util\TGatewayServerUtil;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
 {
-    /**
-     * @Bean("SwooleGatewayServerUtil")
-     */
+    #[Bean(name: 'SwooleGatewayServerUtil')]
     class GatewayServerUtil implements ISwooleServerUtil
     {
         use TGatewayServerUtil;

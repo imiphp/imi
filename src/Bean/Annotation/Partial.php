@@ -11,11 +11,10 @@ namespace Imi\Bean\Annotation;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Bean\Parser\PartialParser")
- *
  * @property string $class 注入类名
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[\Imi\Bean\Annotation\Parser(className: \Imi\Bean\Parser\PartialParser::class)]
 class Partial extends Base
 {
     /**

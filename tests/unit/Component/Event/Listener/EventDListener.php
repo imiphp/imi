@@ -10,9 +10,7 @@ use Imi\Event\IEventListener;
 use Imi\Test\Component\Tests\EventTest;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Listener("IMITEST.EVENT.D")
- */
+#[Listener(eventName: 'IMITEST.EVENT.D')]
 class EventDListener implements IEventListener
 {
     /**

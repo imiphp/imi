@@ -8,9 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Util\DateTime;
 use Imi\Util\ExpiredStorage;
 
-/**
- * @Bean("MemoryCache")
- */
+#[Bean(name: 'MemoryCache')]
 class Memory extends Base
 {
     protected static ?ExpiredStorage $storage = null;

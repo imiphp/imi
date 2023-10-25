@@ -9,9 +9,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Util\MemoryTableManager;
 
-/**
- * @Listener(eventName="IMI.SWOOLE.SERVER.BEFORE_START", one=true)
- */
+#[Listener(eventName: 'IMI.SWOOLE.SERVER.BEFORE_START', one: true)]
 class Init implements IEventListener
 {
     /**

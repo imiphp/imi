@@ -14,8 +14,6 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Swoole\Process\Parser\ProcessParser")
- *
  * @property string $name                进程名称
  * @property bool   $redirectStdinStdout 重定向子进程的标准输入和输出；启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。
  * @property int    $pipeType            管道类型；启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0
@@ -23,6 +21,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool   $co                  自动开启协程
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Swoole\Process\Parser\ProcessParser::class)]
 class Process extends Base
 {
     /**

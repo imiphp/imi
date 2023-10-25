@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\UnusedBase;
 
 /**
  * tb_unused.
- *
- * @Inherit
  */
+#[Inherit]
 class Unused extends UnusedBase
 {
 }

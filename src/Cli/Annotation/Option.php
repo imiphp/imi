@@ -14,8 +14,6 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("METHOD")
  *
- * @Parser("Imi\Cli\Parser\ToolParser")
- *
  * @property string      $name     参数名称
  * @property string|null $shortcut 短名称
  * @property string|null $type     参数类型
@@ -25,6 +23,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string      $to       将参数值绑定到指定名称的参数
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class Option extends Base
 {
     /**

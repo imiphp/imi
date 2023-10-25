@@ -14,18 +14,14 @@ use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 use KafkaApp\Kafka\QueueTest\QueueTestMessage;
 
-/**
- * @Controller("/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         $this->response->getBody()->write('imi');
@@ -34,10 +30,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function publish(int $memberId = 19260817)
     {
         $producer = KafkaPool::getInstance();
@@ -57,10 +52,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function consume(int $memberId)
     {
         $r1 = Redis::get($key1 = 'imi-kafka:consume:1:' . $memberId);

@@ -13,18 +13,13 @@ use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * 手动握手测试，不会触发框架内置的握手处理.
- *
- * @Controller
- *
- * @View(renderType="html")
  */
+#[Controller]
+#[View(renderType: 'html')]
 class HandShake extends HttpController
 {
-    /**
-     * @Action
-     *
-     * @Route("/test")
-     */
+    #[Action]
+    #[Route(url: '/test')]
     public function index(): void
     {
         // 手动握手处理

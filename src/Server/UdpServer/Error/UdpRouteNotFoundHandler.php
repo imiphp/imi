@@ -11,9 +11,8 @@ use Imi\Server\UdpServer\Message\IPacketData;
 
 /**
  * UDP 未匹配路由时的处理器.
- *
- * @Bean("UdpRouteNotFoundHandler")
  */
+#[Bean(name: 'UdpRouteNotFoundHandler')]
 class UdpRouteNotFoundHandler implements IUdpRouteNotFoundHandler
 {
     /**
