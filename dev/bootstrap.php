@@ -52,6 +52,7 @@ function getRectorConfigCallback(string $path): callable
             \Rector\Php71\Rector\FuncCall\CountOnNullRector::class,
             \Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector::class,
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
+            \Rector\Php74\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector::class, // 性能很差
 
             // 存在兼容问题
             \Rector\Php80\Rector\FunctionLike\MixedTypeRector::class, // todo 给接口参数加了`mixed`但没给实现加类型，导致静态分析报错
