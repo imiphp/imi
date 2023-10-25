@@ -27,6 +27,9 @@ use Imi\Bean\Annotation\Base;
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Lockable extends Base
 {
+    /**
+     * @param callable|array|null $afterLock
+     */
     public function __construct(
         ?array $__data = null,
         ?string $id = null,
