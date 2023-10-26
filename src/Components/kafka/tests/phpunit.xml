@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="./bootstrap.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+    bootstrap="./bootstrap.php"
+    colors="true">
     <testsuites>
         <testsuite name="Kafka">
             <directory>Kafka</directory>
@@ -17,14 +12,11 @@
         </testsuite>
     </testsuites>
     <extensions>
-        <extension class="Imi\Kafka\Test\PHPUnitHook" />
+        <bootstrap class="Imi\Kafka\Test\PHPUnitHook" />
     </extensions>
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">../src</directory>
         </include>
-        <report>
-            <clover outputFile="clover.xml"/>
-        </report>
-    </coverage>
+    </source>
 </phpunit>
