@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests\Util\Stream;
 use Imi\Test\BaseTest;
 use Psr\Http\Message\StreamInterface;
 
-abstract class BaseStreamTest extends BaseTest
+abstract class BaseStreamTestCase extends BaseTest
 {
     protected string $initContent = 'imi is very niu bi';
 

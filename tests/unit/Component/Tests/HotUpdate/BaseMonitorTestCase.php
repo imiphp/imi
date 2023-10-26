@@ -8,7 +8,7 @@ use Imi\HotUpdate\Monitor\IMonitor;
 use Imi\Test\BaseTest;
 use Imi\Util\File;
 
-abstract class BaseMonitorTest extends BaseTest
+abstract class BaseMonitorTestCase extends BaseTest
 {
     public function test(): void
     {

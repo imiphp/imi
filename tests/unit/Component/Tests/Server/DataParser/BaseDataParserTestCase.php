@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests\Server\DataParser;
 use Imi\Server\DataParser\IParser;
 use Imi\Test\BaseTest;
 
-abstract class BaseDataParserTest extends BaseTest
+abstract class BaseDataParserTestCase extends BaseTest
 {
     public function test(): void
     {

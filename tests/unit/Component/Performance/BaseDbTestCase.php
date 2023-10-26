@@ -9,7 +9,7 @@ use Imi\Db\Db;
 use Imi\Log\Log;
 use Imi\Test\BaseTest;
 
-abstract class BaseDbTest extends BaseTest
+abstract class BaseDbTestCase extends BaseTest
 {
     abstract public function getPoolName(): string;
 

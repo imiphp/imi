@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests;
 /**
  * @testdox Redis Lock
  */
-class LockRedisTest extends BaseLockTest
+class LockRedisTest extends BaseLockTestCase
 {
     protected ?string $lockConfigId = 'redis';
 

@@ -21,7 +21,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @testdox QueryCurd
  */
-abstract class QueryCurdBaseTest extends BaseTest
+abstract class QueryCurdBaseTestCase extends BaseTest
 {
     /**
      * 连接池名.

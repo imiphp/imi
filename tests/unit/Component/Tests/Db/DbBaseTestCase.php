@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @testdox Db
  */
-abstract class DbBaseTest extends BaseTest
+abstract class DbBaseTestCase extends BaseTest
 {
     /**
      * 连接池名.

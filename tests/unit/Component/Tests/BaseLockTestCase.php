@@ -9,7 +9,7 @@ use Imi\RequestContext;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 
-abstract class BaseLockTest extends BaseTest
+abstract class BaseLockTestCase extends BaseTest
 {
     protected ?string $lockConfigId = null;
 

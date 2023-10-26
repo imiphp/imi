@@ -1,72 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
-         backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         verbose="true">
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+    colors="true">
     <testsuites>
-        <testsuite name="Components">
+        <testsuite name="test">
             <directory>unit/Component/Tests</directory>
-        </testsuite>
-        <testsuite name="Performance">
-            <directory>unit/Component/Performance</directory>
-        </testsuite>
-        <testsuite name="validate">
-            <file>unit/Component/Tests/ValidatorAnnotationTest.php</file>
-            <file>unit/Component/Tests/ValidatorHelperTest.php</file>
-        </testsuite>
-        <testsuite name="db">
-            <directory>unit/Component/Tests/Db</directory>
-        </testsuite>
-        <testsuite name="model">
-            <file>unit/Component/Tests/ModelRelationTest.php</file>
-            <file>unit/Component/Tests/ModelTest.php</file>
-            <file>unit/Component/Tests/RedisModelTest.php</file>
-            <file>unit/Component/Tests/RedisModelHashTest.php</file>
-            <file>unit/Component/Tests/RedisModelHashObjectTest.php</file>
-            <file>unit/Component/Tests/TreeModelTest.php</file>
-        </testsuite>
-        <testsuite name="util">
-            <directory>unit/Component/Tests/Util</directory>
-        </testsuite>
-        <testsuite name="cache">
-            <file>unit/Component/Tests/CacheApcuTest.php</file>
-            <file>unit/Component/Tests/CacheFile1Test.php</file>
-            <file>unit/Component/Tests/CacheFile2Test.php</file>
-            <file>unit/Component/Tests/CacheFile3Test.php</file>
-            <file>unit/Component/Tests/CacheMemoryTest.php</file>
-            <file>unit/Component/Tests/CacheRedisHashTest.php</file>
-            <file>unit/Component/Tests/CacheRedisTest.php</file>
-            <file>unit/Component/Tests/CacheRequestContextTest.php</file>
-        </testsuite>
-        <testsuite name="bean">
-            <file>unit/Component/Tests/BeanTest.php</file>
-            <file>unit/Component/Tests/AopTest.php</file>
-        </testsuite>
-        <testsuite name="cron">
-            <directory>unit/Component/Tests/Cron</directory>
         </testsuite>
     </testsuites>
     <extensions>
-        <extension class="Imi\Test\Component\PHPUnitHook" />
+        <bootstrap class="Imi\Test\Component\PHPUnitHook" />
     </extensions>
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">../src</directory>
         </include>
         <exclude>
             <directory suffix=".php">../src/Components</directory>
         </exclude>
-        <report>
-            <clover outputFile="clover.xml"/>
-            <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
-            <php outputFile="coverage.php"/>
-        </report>
-    </coverage>
+    </source>
 </phpunit>

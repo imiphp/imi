@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests;
 /**
  * @testdox Cache RedisHash Handler
  */
-class CacheRedisHashTest extends BaseCacheTest
+class CacheRedisHashTest extends BaseCacheTestCase
 {
     protected string $cacheName = 'redisHash';
 

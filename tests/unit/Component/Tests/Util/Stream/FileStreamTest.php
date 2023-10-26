@@ -8,7 +8,7 @@ use Imi\Util\Stream\FileStream;
 use Imi\Util\Stream\StreamMode;
 use Psr\Http\Message\StreamInterface;
 
-class FileStreamTest extends BaseStreamTest
+class FileStreamTest extends BaseStreamTestCase
 {
     protected string $initContent = '';
 

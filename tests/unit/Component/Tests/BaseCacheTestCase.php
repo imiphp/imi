@@ -8,7 +8,7 @@ use Imi\Cache\CacheManager;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 
-abstract class BaseCacheTest extends BaseTest
+abstract class BaseCacheTestCase extends BaseTest
 {
     protected string $cacheName;
 

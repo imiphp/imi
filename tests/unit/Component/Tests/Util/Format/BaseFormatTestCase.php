@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests\Util\Format;
 
 use Imi\Test\BaseTest;
 
-abstract class BaseFormatTest extends BaseTest
+abstract class BaseFormatTestCase extends BaseTest
 {
     public const DATA = [
         'name'     => 'imi',

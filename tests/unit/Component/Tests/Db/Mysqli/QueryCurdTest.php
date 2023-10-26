@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Db\Mysqli;
 
-use Imi\Test\Component\Tests\Db\QueryCurdBaseTest;
+use Imi\Test\Component\Tests\Db\QueryCurdBaseTestCase;
 
 /**
  * @testdox Mysqli MySQL QueryCurd
  */
-class QueryCurdTest extends QueryCurdBaseTest
+class QueryCurdTest extends QueryCurdBaseTestCase
 {
     /**
      * 连接池名.
