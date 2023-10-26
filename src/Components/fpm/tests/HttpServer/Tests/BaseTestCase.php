@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Imi\Fpm\Test\Web\Tests;
+namespace Imi\Fpm\Test\HttpServer\Tests;
 
 use function Imi\env;
 
-abstract class BaseTest extends \Imi\Fpm\Test\BaseTest
+abstract class BaseTestCase extends \Imi\Fpm\Test\BaseTest
 {
     /**
      * 请求主机.
