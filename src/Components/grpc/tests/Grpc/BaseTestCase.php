@@ -6,7 +6,7 @@ namespace Imi\Grpc\Test;
 
 use PHPUnit\Framework\TestCase;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTestCase extends TestCase
 {
     public const DATA = [
         'int'       => 1,

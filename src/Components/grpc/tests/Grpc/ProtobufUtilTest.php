@@ -9,7 +9,7 @@ use Grpc\LoginRequest;
 use Grpc\TestRequest;
 use Imi\Grpc\Util\ProtobufUtil;
 
-class ProtobufUtilTest extends BaseTest
+class ProtobufUtilTest extends BaseTestCase
 {
     public function testSetMessageData(): TestRequest
     {
