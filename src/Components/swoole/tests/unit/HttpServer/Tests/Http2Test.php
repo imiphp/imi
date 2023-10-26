@@ -13,9 +13,9 @@ use function Imi\env;
  */
 class Http2Test extends BaseTest
 {
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    public function __construct(string $name)
     {
-        parent::__construct($name, $data, $dataName);
+        parent::__construct($name);
         $this->host = env('HTTP_HTTP2_TEST_SERVER_HOST', 'https://127.0.0.1:13007/');
     }
 

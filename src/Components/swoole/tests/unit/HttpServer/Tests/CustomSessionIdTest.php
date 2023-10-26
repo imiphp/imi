@@ -14,9 +14,9 @@ use function Imi\env;
  */
 class CustomSessionIdTest extends BaseTest
 {
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    public function __construct(string $name)
     {
-        parent::__construct($name, $data, $dataName);
+        parent::__construct($name);
         $this->host = env('HTTP_SESSION_TEST_SERVER_HOST', 'http://127.0.0.1:13005/');
     }
 
