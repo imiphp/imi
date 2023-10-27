@@ -13,6 +13,25 @@ class PgModel extends Model
 {
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
 
+    protected static array $__fieldInitParsers = [
+        'json'  => 'parseJsonInitValue',
+        'jsonb' => 'parseJsonInitValue',
+        'list'  => 'parseListInitValue',
+        'set'   => 'parseSetInitValue',
+    ];
+
+    protected static array $__fieldSaveParsers = [
+        'json'  => 'parseJsonSaveValue',
+        'jsonb' => 'parseJsonSaveValue',
+        'list'  => 'parseListSaveValue',
+        'set'   => 'parseSetSaveValue',
+    ];
+
+    protected static array $_fieldParseNullTypes = [
+        'json',
+        'jsonb',
+    ];
+
     /**
      * @param bool|int $timeAccuracy 推荐最大精度6位（微秒），部分系统能提供9位精度（纳秒）
      *
