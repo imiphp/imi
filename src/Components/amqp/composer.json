@@ -8,7 +8,6 @@
         "php-amqplib/php-amqplib": "^3.5"
     },
     "require-dev": {
-        "swoole/ide-helper": "~5.0"
     },
     "autoload": {
         "psr-4": {
