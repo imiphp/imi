@@ -121,7 +121,7 @@ abstract class Model extends BaseModel
                     $fieldAnnotation = null;
                 }
                 /** @var Column|null $fieldAnnotation */
-                if ($fieldAnnotation && isset(static::$__fieldInitParsers[$columnType = $fieldAnnotation->type]))
+                if ($fieldAnnotation && isset(static::$__fieldInitParsers[$columnType = $fieldAnnotation->type]) && \is_string($v))
                 {
                     $v = self::{static::$__fieldInitParsers[$columnType]}($k, $v, $fieldAnnotation, $meta);
                 }
