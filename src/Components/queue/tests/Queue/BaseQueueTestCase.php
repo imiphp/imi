@@ -9,7 +9,7 @@ use Imi\Queue\Model\Message;
 use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Channel;
 
-abstract class BaseQueueTest extends BaseTest
+abstract class BaseQueueTestCase extends BaseTestCase
 {
     abstract protected function getDriver(): IQueueDriver;
 

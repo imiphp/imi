@@ -7,7 +7,7 @@ namespace Imi\Queue\Test\Queue;
 use Imi\App;
 use Imi\Queue\Driver\IQueueDriver;
 
-class RedisQueueTest extends BaseQueueTest
+class RedisQueueTest extends BaseQueueTestCase
 {
     protected function getDriver(): IQueueDriver
     {
