@@ -6,7 +6,7 @@ namespace Imi\Workerman\Test\AppServer\Tests\Http;
 
 use function Imi\env;
 
-abstract class BaseTest extends \Imi\Workerman\Test\BaseTest
+abstract class BaseTestCase extends \Imi\Workerman\Test\BaseTestCase
 {
     /**
      * 请求主机.

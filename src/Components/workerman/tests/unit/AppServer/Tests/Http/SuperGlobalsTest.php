@@ -11,7 +11,7 @@ use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 /**
  * @testdox SuperGlobalsTest
  */
-class SuperGlobalsTest extends BaseTest
+class SuperGlobalsTest extends BaseTestCase
 {
     /**
      * test.
