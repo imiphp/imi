@@ -8,7 +8,6 @@
         "doctrine/annotations": "^1.7"
     },
     "require-dev": {
-        "yurunsoft/ide-helper": "~1.0",
         "swoole/ide-helper": "~5.0"
     },
     "autoload": {
@@ -28,11 +27,6 @@
     },
     "scripts": {},
     "extra": {
-        "ide-helper": {
-            "list": [
-                "redis"
-            ]
-        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
