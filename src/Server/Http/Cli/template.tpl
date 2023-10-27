@@ -1,27 +1,24 @@
-<?='<?php'; ?>
+<?php declare(strict_types=1);
+echo '<?php'; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
-use Imi\Controller\HttpController;
+use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 
-/**
- * @Controller("<?= $prefix; ?>")
- * @View(renderType="<?= $render; ?>")
- */
-class <?= $name; ?> extends HttpController
+<?php echo $classAttributesCode; ?>
+
+class <?php echo $name; ?> extends HttpController
 {
     /**
      * index
-     * 
-     * @Action
-     * @return void
      */
-    public function index()
+    #[Action]
+    public function index(): array
     {
         return ['success'=>true];
     }

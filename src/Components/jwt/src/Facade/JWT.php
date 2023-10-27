@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\JWT\Facade;
 
-use Imi\Facade\Annotation\Facade;
 use Imi\Facade\BaseFacade;
 
 /**
- * @Facade(class="JWT", request=false, args={})
- *
  * @method static void                          __init()
  * @method static \Imi\JWT\Model\JWTConfig[]    getList()
  * @method static string|null                   getDefault()
@@ -21,6 +18,9 @@ use Imi\Facade\BaseFacade;
  * @method static void                          validate(?string $name, \Lcobucci\JWT\Token $token)
  * @method static int                           getJwtPackageVersion()
  */
+#[
+    \Imi\Facade\Annotation\Facade(class: 'JWT')
+]
 class JWT extends BaseFacade
 {
 }

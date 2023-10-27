@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Facade\Cli;
 
-use Imi\Bean\Annotation;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionUtil;
+use Imi\Bean\Util\AttributeUtil;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -58,7 +58,7 @@ class FacadeGenerate extends BaseCommand
             throw new \RuntimeException(sprintf('Get namespace %s path failed', $namespace));
         }
         $fileName = File::path($fileName, $shortClassName . '.php');
-        $facadeAnnotation = Annotation::toComments(new Facade([
+        $facadeAttribute = AttributeUtil::generateAttributesCode(new Facade([
             'class'     => $class,
             'request'   => $request,
         ]));
@@ -144,7 +144,7 @@ class FacadeGenerate extends BaseCommand
             $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
         // @phpstan-ignore-next-line
-        $content = (static function () use ($namespace, $facadeAnnotation, $methods, $shortClassName): string {
+        $content = (static function () use ($namespace, $facadeAttribute, $methods, $shortClassName): string {
             ob_start();
             include __DIR__ . '/template.tpl';
 

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Util\Co;
 
-use Imi\Facade\Annotation\Facade;
 use Imi\Facade\BaseFacade;
 
 /**
- * @Facade(class="Yurun\Swoole\CoPool\ChannelContainer", request=false, args={})
- *
  * @method static bool                      push(string $id, $data, float $timeout = -1.0)
  * @method static mixed                     pop(string $id, float $timeout = -1.0)
  * @method static mixed                     finallyPop(string $id, float $timeout = -1.0)
@@ -22,6 +19,9 @@ use Imi\Facade\BaseFacade;
  * @method static bool                      hasChannel(string $id)
  * @method static void                      removeChannel(string $id)
  */
+#[
+    \Imi\Facade\Annotation\Facade(class: \Yurun\Swoole\CoPool\ChannelContainer::class)
+]
 class ChannelContainer extends BaseFacade
 {
 }

@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_polymorphic 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_polymorphic", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_polymorphic` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL,   `to_one` int(10) unsigned NOT NULL DEFAULT '0',   `to_many` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_one` int(10) unsigned NOT NULL DEFAULT '0',   `one_to_many` int(10) unsigned NOT NULL DEFAULT '0',   `many_to_many` int(10) unsigned NOT NULL DEFAULT '0',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null $id
  * @property int|null $type
@@ -27,6 +19,13 @@ use Imi\Model\Model;
  * @property int|null $oneToMany
  * @property int|null $manyToMany
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_polymorphic', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_polymorphic` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `type` int(10) unsigned NOT NULL,   `to_one` int(10) unsigned NOT NULL DEFAULT \'0\',   `to_many` int(10) unsigned NOT NULL DEFAULT \'0\',   `one_to_one` int(10) unsigned NOT NULL DEFAULT \'0\',   `one_to_many` int(10) unsigned NOT NULL DEFAULT \'0\',   `many_to_many` int(10) unsigned NOT NULL DEFAULT \'0\',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8')
+]
 abstract class PolymorphicBase extends Model
 {
     /**
@@ -41,9 +40,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -61,7 +61,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -70,9 +70,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * type.
-     *
-     * @Column(name="type", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'type', type: 'int', length: 10, nullable: false, unsigned: true)
+    ]
     protected ?int $type = null;
 
     /**
@@ -90,7 +91,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setType($type)
+    public function setType(mixed $type): self
     {
         $this->type = null === $type ? null : (int) $type;
 
@@ -99,9 +100,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * to_one.
-     *
-     * @Column(name="to_one", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'to_one', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $toOne = 0;
 
     /**
@@ -119,7 +121,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setToOne($toOne)
+    public function setToOne(mixed $toOne): self
     {
         $this->toOne = null === $toOne ? null : (int) $toOne;
 
@@ -128,9 +130,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * to_many.
-     *
-     * @Column(name="to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'to_many', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $toMany = 0;
 
     /**
@@ -148,7 +151,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setToMany($toMany)
+    public function setToMany(mixed $toMany): self
     {
         $this->toMany = null === $toMany ? null : (int) $toMany;
 
@@ -157,9 +160,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * one_to_one.
-     *
-     * @Column(name="one_to_one", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'one_to_one', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $oneToOne = 0;
 
     /**
@@ -177,7 +181,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setOneToOne($oneToOne)
+    public function setOneToOne(mixed $oneToOne): self
     {
         $this->oneToOne = null === $oneToOne ? null : (int) $oneToOne;
 
@@ -186,9 +190,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * one_to_many.
-     *
-     * @Column(name="one_to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'one_to_many', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $oneToMany = 0;
 
     /**
@@ -206,7 +211,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setOneToMany($oneToMany)
+    public function setOneToMany(mixed $oneToMany): self
     {
         $this->oneToMany = null === $oneToMany ? null : (int) $oneToMany;
 
@@ -215,9 +220,10 @@ abstract class PolymorphicBase extends Model
 
     /**
      * many_to_many.
-     *
-     * @Column(name="many_to_many", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'many_to_many', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+    ]
     protected ?int $manyToMany = 0;
 
     /**
@@ -235,7 +241,7 @@ abstract class PolymorphicBase extends Model
      *
      * @return static
      */
-    public function setManyToMany($manyToMany)
+    public function setManyToMany(mixed $manyToMany): self
     {
         $this->manyToMany = null === $manyToMany ? null : (int) $manyToMany;
 

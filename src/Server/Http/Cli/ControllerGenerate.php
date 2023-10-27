@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Cli;
 
+use Imi\Bean\Util\AttributeUtil;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\View\Annotation\View;
 use Imi\Util\File;
 use Imi\Util\Imi;
 
@@ -37,7 +40,11 @@ class ControllerGenerate extends BaseCommand
         {
             $prefix = '/' . $name . '/';
         }
-        $data = compact('name', 'namespace', 'prefix', 'render', 'override');
+        $classAttributesCode = AttributeUtil::generateAttributesCode([
+            new Controller(prefix: $prefix),
+            new View(renderType: $render),
+        ]);
+        $data = compact('name', 'namespace', 'prefix', 'render', 'override', 'classAttributesCode');
         if ($rest)
         {
             $content = $this->renderTemplate($data, 'restTemplate');

@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_update_time 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_update_time", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_update_time` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `date` date DEFAULT NULL,   `time` time DEFAULT NULL,   `datetime` datetime DEFAULT NULL,   `timestamp` timestamp NULL DEFAULT NULL,   `int` int(11) DEFAULT NULL,   `bigint` bigint(20) DEFAULT NULL,   `bigint_second` bigint(20) DEFAULT NULL,   `year` year(4) DEFAULT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property string|null $date
@@ -29,6 +21,13 @@ use Imi\Model\Model;
  * @property int|null    $bigintSecond
  * @property int|null    $year
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_update_time', id: [
+        'id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_update_time` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `date` date DEFAULT NULL,   `time` time DEFAULT NULL,   `datetime` datetime DEFAULT NULL,   `timestamp` timestamp NULL DEFAULT NULL,   `int` int(11) DEFAULT NULL,   `bigint` bigint(20) DEFAULT NULL,   `bigint_second` bigint(20) DEFAULT NULL,   `year` year(4) DEFAULT NULL,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT')
+]
 abstract class UpdateTimeBase extends Model
 {
     /**
@@ -43,9 +42,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -63,7 +63,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -72,9 +72,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * date.
-     *
-     * @Column(name="date", type="date", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'date', type: 'date', length: 0)
+    ]
     protected ?string $date = null;
 
     /**
@@ -92,7 +93,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setDate($date)
+    public function setDate(mixed $date): self
     {
         $this->date = null === $date ? null : (string) $date;
 
@@ -101,9 +102,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * time.
-     *
-     * @Column(name="time", type="time", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'time', type: 'time', length: 0)
+    ]
     protected ?string $time = null;
 
     /**
@@ -121,7 +123,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTime($time)
+    public function setTime(mixed $time): self
     {
         $this->time = null === $time ? null : (string) $time;
 
@@ -130,9 +132,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * datetime.
-     *
-     * @Column(name="datetime", type="datetime", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'datetime', type: 'datetime', length: 0)
+    ]
     protected ?string $datetime = null;
 
     /**
@@ -150,7 +153,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setDatetime($datetime)
+    public function setDatetime(mixed $datetime): self
     {
         $this->datetime = null === $datetime ? null : (string) $datetime;
 
@@ -159,9 +162,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * timestamp.
-     *
-     * @Column(name="timestamp", type="timestamp", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'timestamp', type: 'timestamp', length: 0)
+    ]
     protected ?string $timestamp = null;
 
     /**
@@ -179,7 +183,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setTimestamp($timestamp)
+    public function setTimestamp(mixed $timestamp): self
     {
         $this->timestamp = null === $timestamp ? null : (string) $timestamp;
 
@@ -188,9 +192,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * int.
-     *
-     * @Column(name="int", type="int", length=11, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'int', type: 'int', length: 11)
+    ]
     protected ?int $int = null;
 
     /**
@@ -208,7 +213,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setInt($int)
+    public function setInt(mixed $int): self
     {
         $this->int = null === $int ? null : (int) $int;
 
@@ -217,9 +222,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * bigint.
-     *
-     * @Column(name="bigint", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'bigint', type: 'bigint', length: 20)
+    ]
     protected ?int $bigint = null;
 
     /**
@@ -237,7 +243,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setBigint($bigint)
+    public function setBigint(mixed $bigint): self
     {
         $this->bigint = null === $bigint ? null : (int) $bigint;
 
@@ -246,9 +252,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * bigint_second.
-     *
-     * @Column(name="bigint_second", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'bigint_second', type: 'bigint', length: 20)
+    ]
     protected ?int $bigintSecond = null;
 
     /**
@@ -266,7 +273,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setBigintSecond($bigintSecond)
+    public function setBigintSecond(mixed $bigintSecond): self
     {
         $this->bigintSecond = null === $bigintSecond ? null : (int) $bigintSecond;
 
@@ -275,9 +282,10 @@ abstract class UpdateTimeBase extends Model
 
     /**
      * year.
-     *
-     * @Column(name="year", type="year", length=4, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'year', type: 'year', length: 4)
+    ]
     protected ?int $year = null;
 
     /**
@@ -295,7 +303,7 @@ abstract class UpdateTimeBase extends Model
      *
      * @return static
      */
-    public function setYear($year)
+    public function setYear(mixed $year): self
     {
         $this->year = null === $year ? null : (int) $year;
 

@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Message\Proxy;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @Bean(name="HttpRequestProxy", recursion=false, instanceType="singleton")
- *
- * @RequestContextProxy(class="Imi\Server\Http\Message\Contract\IHttpRequest", name="request")
- *
  * @method        \Imi\Util\Socket\IPEndPoint              getClientAddress()
  * @method static \Imi\Util\Socket\IPEndPoint              getClientAddress()
  * @method        mixed                                    getServerParam(string $name, mixed $default = NULL)
@@ -124,6 +118,10 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method        \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
  * @method static \Psr\Http\Message\UriInterface           getAppUri(?string $serverName = NULL)
  */
+#[
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\Http\Message\Contract\IHttpRequest::class, name: 'request'),
+    \Imi\Bean\Annotation\Bean(name: 'HttpRequestProxy', recursion: false)
+]
 class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpRequest
 {
     /**

@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\DDL;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Model\Model;
 
 /**
  * tb_article_ex 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_article_ex", usePrefix=false, id={"article_id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_article_ex` (   `article_id` int(10) unsigned NOT NULL,   `data` json DEFAULT NULL,   PRIMARY KEY (`article_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null                                    $articleId
  * @property \Imi\Util\LazyArrayObject|object|array|null $data
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_article_ex', id: [
+        'article_id',
+    ]),
+    \Imi\Model\Annotation\DDL(sql: 'CREATE TABLE `tb_article_ex` (   `article_id` int(10) unsigned NOT NULL,   `data` json DEFAULT NULL,   PRIMARY KEY (`article_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8')
+]
 abstract class ArticleExBase extends Model
 {
     /**
@@ -36,9 +35,10 @@ abstract class ArticleExBase extends Model
 
     /**
      * article_id.
-     *
-     * @Column(name="article_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'article_id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, unsigned: true)
+    ]
     protected ?int $articleId = null;
 
     /**
@@ -56,7 +56,7 @@ abstract class ArticleExBase extends Model
      *
      * @return static
      */
-    public function setArticleId($articleId)
+    public function setArticleId(mixed $articleId): self
     {
         $this->articleId = null === $articleId ? null : (int) $articleId;
 
@@ -66,10 +66,11 @@ abstract class ArticleExBase extends Model
     /**
      * data.
      *
-     * @Column(name="data", type="json", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     *
      * @var \Imi\Util\LazyArrayObject|object|array|null
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'data', type: 'json', length: 0)
+    ]
     protected $data = null;
 
     /**
@@ -89,7 +90,7 @@ abstract class ArticleExBase extends Model
      *
      * @return static
      */
-    public function setData($data)
+    public function setData(mixed $data): self
     {
         $this->data = null === $data ? null : $data;
 

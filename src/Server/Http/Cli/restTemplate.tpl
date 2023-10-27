@@ -1,43 +1,40 @@
-<?='<?php'; ?>
+<?php declare(strict_types=1);
+echo '<?php'; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
-use Imi\Controller\HttpController;
+use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 
-/**
- * @Controller("<?= $prefix; ?>")
- * @View(renderType="<?= $render; ?>")
- */
-class <?= $name; ?> extends HttpController
+<?php echo $classAttributesCode; ?>
+
+class <?php echo $name; ?> extends HttpController
 {
     /**
      * query
-     * 
-     * @Action
-     * @Route(url="", method={"GET"})
-     * @return void
      */
-    public function query()
+    #[
+        Action,
+        Route(url: '', method=['GET'])
+    ]
+    public function query(): array
     {
         return [1, 2, 3];
     }
     
     /**
      * find
-     * 
-     * @Action
-     * @Route(url="./{id}", method={"GET"})
-     * 
-     * @param int $id
-     * @return void
      */
-    public function find($id)
+    #[
+        Action,
+        Route(url: './{id}', method=['GET'])
+    ]
+    public function find(int $id): array
     {
         return [
             'id'	=>	$id,
@@ -46,12 +43,12 @@ class <?= $name; ?> extends HttpController
 
     /**
      * create
-     * 
-     * @Action
-     * @Route(url="", method={"POST"})
-     * @return void
      */
-    public function create()
+    #[
+        Action,
+        Route(url: '', method=['POST'])
+    ]
+    public function create(): array
     {
         return [
             'operation'	=>	'create',
@@ -62,14 +59,12 @@ class <?= $name; ?> extends HttpController
 
     /**
      * update
-     * 
-     * @Action
-     * @Route(url="./{id}", method={"PUT"})
-     * 
-     * @param int $id
-     * @return void
      */
-    public function update($id)
+    #[
+        Action,
+        Route(url: './{id}', method=['PUT'])
+    ]
+    public function update(int $id): array
     {
         return [
             'id'		=>	$id,
@@ -80,14 +75,12 @@ class <?= $name; ?> extends HttpController
 
     /**
      * delete
-     * 
-     * @Action
-     * @Route(url="./{id}", method={"DELETE"})
-     * 
-     * @param int $id
-     * @return void
      */
-    public function delete($id)
+    #[
+        Action,
+        Route(url: './{id}', method=['DELETE'])
+    ]
+    public function delete(int $id): array
     {
         return [
             'id'		=>	$id,

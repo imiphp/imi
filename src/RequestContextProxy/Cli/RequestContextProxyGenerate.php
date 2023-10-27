@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\RequestContextProxy\Cli;
 
-use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionUtil;
+use Imi\Bean\Util\AttributeUtil;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
@@ -60,21 +60,19 @@ class RequestContextProxyGenerate
             throw new \RuntimeException(sprintf('Get namespace %s path failed', $namespace));
         }
         $fileName = File::path($fileName, $shortClassName . '.php');
-        $requestContextProxyAnnotation = Annotation::toComments(new RequestContextProxy([
+        $attributes = [];
+        $attributes[] = new RequestContextProxy([
             'class' => $class,
             'name'  => $name,
-        ]));
-        if (null === $bean)
+        ]);
+        if (null !== $bean)
         {
-            $beanAnnotation = null;
-        }
-        else
-        {
-            $beanAnnotation = Annotation::toComments(new Bean([
+            $attributes[] = new Bean([
                 'name'      => $bean,
                 'recursion' => $recursion,
-            ]));
+            ]);
         }
+        $classAttributesCode = AttributeUtil::generateAttributesCode($attributes);
         $refClass = new \ReflectionClass($fromClass);
         $methods = [];
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
@@ -208,7 +206,7 @@ class RequestContextProxyGenerate
             }
         }
         // @phpstan-ignore-next-line
-        $content = (static function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation, $interface, $methodCodes): string {
+        $content = (static function () use ($namespace, $classAttributesCode, $methods, $shortClassName, $interface, $methodCodes): string {
             ob_start();
             include __DIR__ . '/template.tpl';
 

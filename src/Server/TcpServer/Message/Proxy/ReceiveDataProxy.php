@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Server\TcpServer\Message\Proxy;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @Bean(name="TcpReceiveDataProxy", recursion=false, instanceType="singleton")
- *
- * @RequestContextProxy(class="Imi\Server\TcpServer\Message\IReceiveData", name="receiveData")
- *
  * @method        int|string                  getClientId()
  * @method static int|string                  getClientId()
  * @method        string                      getData()
@@ -22,6 +16,10 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method        \Imi\Util\Socket\IPEndPoint getClientAddress()
  * @method static \Imi\Util\Socket\IPEndPoint getClientAddress()
  */
+#[
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\TcpServer\Message\IReceiveData::class, name: 'receiveData'),
+    \Imi\Bean\Annotation\Bean(name: 'TcpReceiveDataProxy', recursion: false)
+]
 class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\TcpServer\Message\IReceiveData
 {
     /**

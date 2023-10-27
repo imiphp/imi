@@ -1,21 +1,23 @@
-<?='<?php'; ?>
+<?php declare(strict_types=1);
+echo '<?php'; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
 use Imi\Facade\BaseFacade;
-use Imi\Facade\Annotation\Facade;
 
 /**
- * <?=$facadeAnnotation; ?>
-<?php foreach ($methods as $item):?>
+<?php foreach ($methods as $item)
+{ ?>
 
- * <?=$item; ?>
-<?php endforeach; ?>
+ * <?php echo $item; ?>
+<?php } ?>
 
  */
-class <?= $shortClassName; ?> extends BaseFacade
+<?php echo $facadeAttribute; ?>
+
+class <?php echo $shortClassName; ?> extends BaseFacade
 {
 
 }

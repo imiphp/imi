@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Message\Proxy;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @Bean(name="HttpResponseProxy", recursion=false, instanceType="singleton")
- *
- * @RequestContextProxy(class="Imi\Server\Http\Message\Contract\IHttpResponse", name="response")
- *
  * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     redirect(string $url, int $status = 302)
  * @method static \Imi\Server\Http\Message\Contract\IHttpResponse                     redirect(string $url, int $status = 302)
  * @method        \Imi\Server\Http\Message\Contract\IHttpResponse                     send()
@@ -88,6 +82,10 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method        \Imi\Util\Http\Contract\IMessage                                    setBody(\Psr\Http\Message\StreamInterface $body)
  * @method static \Imi\Util\Http\Contract\IMessage                                    setBody(\Psr\Http\Message\StreamInterface $body)
  */
+#[
+    \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\Http\Message\Contract\IHttpResponse::class, name: 'response'),
+    \Imi\Bean\Annotation\Bean(name: 'HttpResponseProxy', recursion: false)
+]
 class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpResponse
 {
     /**

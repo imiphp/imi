@@ -241,16 +241,16 @@ class ModelGenerate extends BaseCommand
                     'id'        => [],
                     'usePrefix' => $usePrefix,
                 ],
-                'fields'        => [],
-                'camel'         => $entity,
-                'bean'          => $tableConfig['bean'] ?? $bean,
-                'incrUpdate'    => $tableConfig['incrUpdate'] ?? $incrUpdate,
-                'poolName'      => $poolName,
-                'ddl'           => $ddl,
-                'rawDDL'        => $rawDDL,
-                'ddlDecode'     => $ddlDecodeTmp ?? ('' === $ddlDecode ? null : $ddlDecode),
-                'tableComment'  => $tableComment,
-                'lengthCheck'   => $lengthCheck,
+                'fields'             => [],
+                'camel'              => $entity,
+                'bean'               => $tableConfig['bean'] ?? $bean,
+                'incrUpdate'         => $tableConfig['incrUpdate'] ?? $incrUpdate,
+                'poolName'           => $poolName,
+                'ddl'                => $ddl,
+                'rawDDL'             => $rawDDL,
+                'ddlDecode'          => $ddlDecodeTmp ?? ('' === $ddlDecode ? null : $ddlDecode),
+                'tableComment'       => $tableComment,
+                'lengthCheck'        => $lengthCheck,
             ];
             $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
             $typeDefinitions = [];
@@ -262,6 +262,12 @@ class ModelGenerate extends BaseCommand
             $pks = ArrayUtil::columnToKey($pks, 'Column_name');
 
             $this->parseFields($fields, $pks, $data, $typeDefinitions);
+
+            $data['classAttributeCode'] = \Imi\Bean\Util\AttributeUtil::generateAttributesCode([
+                new \Imi\Model\Annotation\Entity(camel: $data['camel'], bean: $data['bean'], incrUpdate: $data['incrUpdate']),
+                new \Imi\Model\Annotation\Table(name: $data['table']['name'], usePrefix: $data['table']['usePrefix'], id: $data['table']['id'], dbPoolName: $data['poolName']),
+                new \Imi\Model\Annotation\DDL(sql: $data['ddl']),
+            ]);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
 
@@ -327,7 +333,7 @@ class ModelGenerate extends BaseCommand
             $this->parseFieldType($field['Type'], $typeName, $length, $accuracy, $unsigned);
             $isPk = isset($pks[$field['Field']]);
             [$phpType, $phpDefinitionType, $typeConvert] = $this->dbFieldTypeToPhp($typeName);
-            $data['fields'][] = [
+            $fieldData = [
                 'name'              => $field['Field'],
                 'varName'           => Text::toCamelName($field['Field']),
                 'type'              => $typeName,
@@ -348,6 +354,10 @@ class ModelGenerate extends BaseCommand
                 'unsigned'          => $unsigned,
                 'virtual'           => str_contains((string) $field['Extra'], 'VIRTUAL GENERATED'),
             ];
+            $fieldData['attributesCode'] = \Imi\Bean\Util\AttributeUtil::generateAttributesCode([
+                new \Imi\Model\Annotation\Column(name: $fieldData['name'], type: $fieldData['type'], length: $fieldData['length'], accuracy: $fieldData['accuracy'], nullable: $fieldData['nullable'], default: $fieldData['default'], isPrimaryKey: $fieldData['isPrimaryKey'], primaryKeyIndex: $fieldData['primaryKeyIndex'], isAutoIncrement: $fieldData['isAutoIncrement'], unsigned: $fieldData['unsigned'], virtual: $fieldData['virtual']),
+            ]);
+            $data['fields'][] = $fieldData;
             if ($isPk)
             {
                 $data['table']['id'][$primaryKeyIndex] = $field['Field'];

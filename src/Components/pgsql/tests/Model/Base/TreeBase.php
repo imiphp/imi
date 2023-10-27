@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test\Model\Base;
 
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\Entity;
-use Imi\Model\Annotation\Table;
 use Imi\Pgsql\Model\PgModel as Model;
 
 /**
  * tb_tree 基类.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_tree", usePrefix=false, id={"id"}, dbPoolName=null)
+ * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null    $id
  * @property int|null    $parentId
  * @property string|null $name
  */
+#[
+    \Imi\Model\Annotation\Entity(),
+    \Imi\Model\Annotation\Table(name: 'tb_tree', id: [
+        'id',
+    ])
+]
 abstract class TreeBase extends Model
 {
     /**
@@ -34,9 +35,10 @@ abstract class TreeBase extends Model
 
     /**
      * id.
-     *
-     * @Column(name="id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'id', type: 'int4', nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)
+    ]
     protected ?int $id = null;
 
     /**
@@ -54,7 +56,7 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -63,9 +65,10 @@ abstract class TreeBase extends Model
 
     /**
      * parent_id.
-     *
-     * @Column(name="parent_id", type="int4", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'parent_id', type: 'int4', nullable: false)
+    ]
     protected ?int $parentId = null;
 
     /**
@@ -83,7 +86,7 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setParentId($parentId)
+    public function setParentId(mixed $parentId): self
     {
         $this->parentId = null === $parentId ? null : (int) $parentId;
 
@@ -92,9 +95,10 @@ abstract class TreeBase extends Model
 
     /**
      * name.
-     *
-     * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
      */
+    #[
+        \Imi\Model\Annotation\Column(name: 'name', type: 'varchar', length: 32, nullable: false)
+    ]
     protected ?string $name = null;
 
     /**
@@ -112,7 +116,7 @@ abstract class TreeBase extends Model
      *
      * @return static
      */
-    public function setName($name)
+    public function setName(mixed $name): self
     {
         if (\is_string($name) && mb_strlen($name) > 32)
         {
