@@ -6,8 +6,11 @@ namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Bean\Util\AttributeUtil;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Tests\Annotation\Attr1;
+use Imi\Test\Component\Tests\Annotation\Attr2;
+use Imi\Test\Component\Tests\Annotation\NotAttr;
 
-class AttributeUtilTest extends BaseTest
+class AnnotationUtilTest extends BaseTest
 {
     public function testGenerateAttributesCode(): void
     {
@@ -18,18 +21,18 @@ class AttributeUtilTest extends BaseTest
                 new Attr1(id: 'c'),
             ]),
         ];
-        $this->assertEquals(<<<'CODE'
+        $this->assertStringEqualsStringIgnoringLineEndings(<<<'CODE'
         #[
-            \Imi\Test\Component\Tests\Util\Attr1(),
-            \Imi\Test\Component\Tests\Util\Attr2(attr1: [
-                new \Imi\Test\Component\Tests\Util\Attr1(id: 'a\\1', arr: [
+            \Imi\Test\Component\Tests\Annotation\Attr1(),
+            \Imi\Test\Component\Tests\Annotation\Attr2(attr1: [
+                new \Imi\Test\Component\Tests\Annotation\Attr1(id: 'a\\1', arr: [
                     1,
                     2,
                     3
                 ])
             ], attr1s: [
-                new \Imi\Test\Component\Tests\Util\Attr1(id: 'b'),
-                new \Imi\Test\Component\Tests\Util\Attr1(id: 'c')
+                new \Imi\Test\Component\Tests\Annotation\Attr1(id: 'b'),
+                new \Imi\Test\Component\Tests\Annotation\Attr1(id: 'c')
             ])
         ]
         CODE, AttributeUtil::generateAttributesCode($attributes));
@@ -38,30 +41,7 @@ class AttributeUtilTest extends BaseTest
     public function testGenerateAttributesCodeNotAttr(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Class Imi\Test\Component\Tests\Util\NotAttr does not an Attribute');
+        $this->expectExceptionMessage('Class Imi\Test\Component\Tests\Annotation\NotAttr does not an Attribute');
         AttributeUtil::generateAttributesCode(new NotAttr());
     }
-}
-
-#[\Attribute()]
-class Attr1
-{
-    public function __construct(public string $id = '', public array $arr = [])
-    {
-    }
-}
-
-#[\Attribute()]
-class Attr2
-{
-    /**
-     * @param Attr1[] $attr1s
-     */
-    public function __construct(public Attr1 $attr1, public array $attr1s)
-    {
-    }
-}
-
-class NotAttr
-{
 }
