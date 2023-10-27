@@ -32,13 +32,19 @@ jobs:
 
       - name: Prepare
         run: |
+          echo "::group::Env prepare"
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
+          echo "::endgroup::"
+          echo "::group::Env info"
           docker exec ${ENV_SERVICE} php -v
           docker exec ${ENV_SERVICE} php -m
           docker exec ${ENV_SERVICE} php --ri swoole
           docker exec ${ENV_SERVICE} composer -V
+          echo "::endgroup::"
+          echo "::group::Composer install"
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
+          echo "::endgroup::"
           echo "test_prepared=1" >> $GITHUB_ENV
 
       - name: Analyse core
