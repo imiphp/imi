@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests\HotUpdate;
 use Imi\HotUpdate\Monitor\IMonitor;
 use Imi\HotUpdate\Monitor\Inotify;
 
-class InotifyTest extends BaseMonitorTest
+class InotifyTest extends BaseMonitorTestCase
 {
     public static function setUpBeforeClass(): void
     {

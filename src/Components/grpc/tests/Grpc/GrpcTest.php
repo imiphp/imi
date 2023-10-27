@@ -9,7 +9,7 @@ use Imi\Grpc\Enum\GrpcStatus;
 use Imi\Grpc\Proxy\Http\GrpcHttpClient;
 use Yurun\Util\HttpRequest;
 
-class GrpcTest extends BaseTest
+class GrpcTest extends BaseTestCase
 {
     public function testGrpc(): void
     {

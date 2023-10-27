@@ -6,12 +6,12 @@ namespace Imi\Swoole\Test\Component\Tests;
 
 use Imi\App;
 use Imi\Async\Exception\AsyncTimeoutException;
-use Imi\Swoole\Test\BaseTest;
+use Imi\Swoole\Test\BaseTestCase;
 use Imi\Swoole\Test\Component\Async\AsyncTester;
 
 use function Yurun\Swoole\Coroutine\goWait;
 
-class AsyncTest extends BaseTest
+class AsyncTest extends BaseTestCase
 {
     public function testAsync(): void
     {

@@ -11,7 +11,7 @@ use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 /**
  * @testdox HttpRequest
  */
-class RequestTest extends BaseTest
+class RequestTest extends BaseTestCase
 {
     /**
      * route.

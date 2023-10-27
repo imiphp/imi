@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket\Workerman;
 
-use Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket\BaseTest;
+use Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket\BaseTestCase;
 use Wrench\Client;
 use Yurun\Util\HttpRequest;
 
 /**
  * @testdox Imi\WorkermanGateway\Server\Server
  */
-class ServerUtilTest extends BaseTest
+class ServerUtilTest extends BaseTestCase
 {
     public function testGetServer(): void
     {

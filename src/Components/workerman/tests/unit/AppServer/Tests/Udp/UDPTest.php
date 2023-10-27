@@ -7,7 +7,7 @@ namespace Imi\Workerman\Test\AppServer\Tests\Udp;
 /**
  * @testdox UDP
  */
-class UDPTest extends BaseTest
+class UDPTest extends BaseTestCase
 {
     /**
      * @testdox test

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket\Workerman;
 
-use Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket\BaseTest;
+use Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket\BaseTestCase;
 use Wrench\Client;
 
 /**
  * @testdox WebSocket
  */
-class WSTest extends BaseTest
+class WSTest extends BaseTestCase
 {
     /**
      * @testdox test

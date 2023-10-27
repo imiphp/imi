@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests;
 
-class CacheApcuTest extends BaseCacheTest
+class CacheApcuTest extends BaseCacheTestCase
 {
     protected string $cacheName = 'apcu';
 

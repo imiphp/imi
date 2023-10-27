@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests\Util\Format;
 
 use Imi\Util\Format\PhpSerialize;
 
-class PhpSerializeTest extends BaseFormatTest
+class PhpSerializeTest extends BaseFormatTestCase
 {
     protected string $class = PhpSerialize::class;
 }

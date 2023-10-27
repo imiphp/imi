@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Db\Pdo;
 
-use Imi\Test\Component\Tests\Db\QueryCurdBaseTest;
+use Imi\Test\Component\Tests\Db\QueryCurdBaseTestCase;
 
 /**
  * @testdox PdoQueryCurd
  */
-class QueryCurdTest extends QueryCurdBaseTest
+class QueryCurdTest extends QueryCurdBaseTestCase
 {
     /**
      * 连接池名.

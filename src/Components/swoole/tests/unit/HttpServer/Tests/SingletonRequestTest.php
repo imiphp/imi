@@ -9,7 +9,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox SingletonRequestTest
  */
-class SingletonRequestTest extends BaseTest
+class SingletonRequestTest extends BaseTestCase
 {
     /**
      * $_GET.

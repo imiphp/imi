@@ -7,7 +7,7 @@ namespace Imi\Workerman\Test\AppServer\Tests\Tcp;
 /**
  * @testdox TCP
  */
-class TCPTest extends BaseTest
+class TCPTest extends BaseTestCase
 {
     /**
      * @testdox test

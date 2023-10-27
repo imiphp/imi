@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Performance;
 /**
  * @testdox Performance:PDO
  */
-class PdoDbTest extends BaseDbTest
+class PdoDbTest extends BaseDbTestCase
 {
     public function getPoolName(): string
     {

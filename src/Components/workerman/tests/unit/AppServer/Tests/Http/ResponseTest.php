@@ -11,7 +11,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox HttpResponse
  */
-class ResponseTest extends BaseTest
+class ResponseTest extends BaseTestCase
 {
     /**
      * Middleware.

@@ -9,7 +9,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox SingletonResponseTest
  */
-class SingletonResponseTest extends BaseTest
+class SingletonResponseTest extends BaseTestCase
 {
     /**
      * Response1.

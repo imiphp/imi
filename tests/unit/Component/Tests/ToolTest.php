@@ -41,7 +41,7 @@ class ToolTest extends BaseTest
         $this->assertEquals($code, $process->getExitCode(), $process->getCommandLine());
     }
 
-    public function boolProvider(): \Generator
+    public static function boolProvider(): \Generator
     {
         yield ['', [true, true, true, false, false, false]];
         yield ['--a1', [true, true, true, false, false, false]];
@@ -97,7 +97,7 @@ class ToolTest extends BaseTest
         );
     }
 
-    public function argumentProvider(): \Generator
+    public static function argumentProvider(): \Generator
     {
         yield ['', ['', '', '']];
         yield ['imi', ['imi', 'imi', 'imi']];
@@ -144,7 +144,7 @@ class ToolTest extends BaseTest
         );
     }
 
-    public function negatableProvider(): \Generator
+    public static function negatableProvider(): \Generator
     {
         yield ['', [false, false]];
         yield ['--test', [true, true]];

@@ -11,16 +11,23 @@ use Imi\Event\Event;
 use Imi\Event\EventParam;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
-use PHPUnit\Runner\BeforeFirstTestHook;
+use PHPUnit\Runner\Extension\Extension;
+use PHPUnit\Runner\Extension\Facade;
+use PHPUnit\Runner\Extension\ParameterCollection;
+use PHPUnit\TextUI\Configuration\Configuration;
 
-class PHPUnitHook implements BeforeFirstTestHook
+class PHPUnitHook implements Extension
 {
-    public function executeBeforeFirstTest(): void
+    public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         Event::on('IMI.APP_RUN', static function (EventParam $param): void {
             $param->stopPropagation();
+            if (file_exists($file = __DIR__ . '/.runtime/test'))
+            {
+                shell_exec("rm -rf {$file}");
+            }
             PoolManager::use('maindb', static function (IPoolResource $resource, IDb $db): void {
-                $truncateList = [
+                foreach ([
                     'tb_article',
                     'tb_article2',
                     'tb_article_ex',
@@ -38,8 +45,7 @@ class PHPUnitHook implements BeforeFirstTestHook
                     'tb_virtual_column',
                     'tb_test_field_name',
                     'tb_no_inc_pk',
-                ];
-                foreach ($truncateList as $table)
+                ] as $table)
                 {
                     $db->exec('TRUNCATE ' . $table);
                 }

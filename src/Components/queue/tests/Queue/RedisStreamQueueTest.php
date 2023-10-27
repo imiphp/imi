@@ -8,7 +8,7 @@ use Imi\App;
 use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Model\Message;
 
-class RedisStreamQueueTest extends BaseQueueTest
+class RedisStreamQueueTest extends BaseQueueTestCase
 {
     protected function getDriver(): IQueueDriver
     {

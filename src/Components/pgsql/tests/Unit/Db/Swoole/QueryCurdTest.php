@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Imi\Pgsql\Test\Unit\Db\Swoole;
 
 use Imi\Pgsql\Test\TSwoolePgTest;
-use Imi\Pgsql\Test\Unit\Db\QueryCurdBaseTest;
+use Imi\Pgsql\Test\Unit\Db\QueryCurdBaseTestCase;
 
 /**
  * @testdox SwooleQueryCurd
  */
-class QueryCurdTest extends QueryCurdBaseTest
+class QueryCurdTest extends QueryCurdBaseTestCase
 {
     use TSwoolePgTest;
 

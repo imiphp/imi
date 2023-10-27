@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Imi\MQTT\Test;
+namespace Imi\MQTT\Test\MQTT;
 
 use BinSoul\Net\Mqtt\Packet;
 use Imi\MQTT\Client\MQTTClient;
+use Imi\MQTT\Test\TestClientListener;
 use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Channel;
 
-class MQTTTest extends BaseTest
+class MQTTTest extends BaseTestCase
 {
     public function testMQTT(): void
     {

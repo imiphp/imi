@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests\Util\Stream;
 use Imi\Util\Stream\MemoryStream;
 use Psr\Http\Message\StreamInterface;
 
-class MemoryStreamTest extends BaseStreamTest
+class MemoryStreamTest extends BaseStreamTestCase
 {
     public function test(): void
     {

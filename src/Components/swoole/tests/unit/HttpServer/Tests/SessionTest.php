@@ -10,7 +10,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox HttpSession FileHandler
  */
-class SessionTest extends BaseTest
+class SessionTest extends BaseTestCase
 {
     public function testSetGetDelete(): void
     {

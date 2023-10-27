@@ -12,11 +12,11 @@ use function Imi\env;
 /**
  * @testdox Https
  */
-class HttpsTest extends BaseTest
+class HttpsTest extends BaseTestCase
 {
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    public function __construct(string $name)
     {
-        parent::__construct($name, $data, $dataName);
+        parent::__construct($name);
         $this->host = env('HTTP_HTTPS_TEST_SERVER_HOST', 'https://127.0.0.1:13006/');
     }
 

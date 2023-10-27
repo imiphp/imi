@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Fpm\Test\Web\Tests;
+namespace Imi\Fpm\Test\HttpServer\Tests;
 
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\StatusCode;
@@ -11,7 +11,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox HttpResponse
  */
-class ResponseTest extends BaseTest
+class ResponseTest extends BaseTestCase
 {
     /**
      * Middleware.

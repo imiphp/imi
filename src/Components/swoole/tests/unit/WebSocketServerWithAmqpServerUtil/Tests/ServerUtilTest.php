@@ -9,7 +9,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox Imi\Swoole\Server\Server
  */
-class ServerUtilTest extends BaseTest
+class ServerUtilTest extends BaseTestCase
 {
     public function testGetServer(): void
     {

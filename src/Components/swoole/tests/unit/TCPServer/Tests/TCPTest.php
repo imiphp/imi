@@ -9,7 +9,7 @@ use Imi\Util\Uri;
 /**
  * @testdox TCP
  */
-class TCPTest extends BaseTest
+class TCPTest extends BaseTestCase
 {
     /**
      * @testdox test

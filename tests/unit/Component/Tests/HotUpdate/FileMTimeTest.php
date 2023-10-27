@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests\HotUpdate;
 use Imi\HotUpdate\Monitor\FileMTime;
 use Imi\HotUpdate\Monitor\IMonitor;
 
-class FileMTimeTest extends BaseMonitorTest
+class FileMTimeTest extends BaseMonitorTestCase
 {
     protected function getMonitor(array $includePaths, array $excludePaths = []): IMonitor
     {

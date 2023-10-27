@@ -6,7 +6,7 @@ namespace Imi\Kafka\Test\Kafka;
 
 use Yurun\Util\HttpRequest;
 
-class KafkaMQTest extends BaseTest
+class KafkaMQTest extends BaseTestCase
 {
     /**
      * @var string

@@ -10,7 +10,7 @@ use PHPUnit\Framework\Assert;
 /**
  * @testdox Cache File2 Handler
  */
-class CacheFile2Test extends BaseCacheTest
+class CacheFile2Test extends BaseCacheTestCase
 {
     protected string $cacheName = 'file2';
 

@@ -7,13 +7,13 @@ namespace Imi\Swoole\Test\Component\Tests;
 use Imi\Pool\PoolManager;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
-use Imi\Swoole\Test\BaseTest;
+use Imi\Swoole\Test\BaseTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
  * @testdox RedisManager
  */
-class RedisManagerTest extends BaseTest
+class RedisManagerTest extends BaseTestCase
 {
     public function testDefaultPoolName(): void
     {

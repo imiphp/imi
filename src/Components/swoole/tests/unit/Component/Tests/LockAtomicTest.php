@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\Component\Tests;
 
-use Imi\Test\Component\Tests\BaseLockTest;
+use Imi\Test\Component\Tests\BaseLockTestCase;
 
 /**
  * @testdox Atomic Lock
  */
-class LockAtomicTest extends BaseLockTest
+class LockAtomicTest extends BaseLockTestCase
 {
     protected ?string $lockConfigId = 'atomic';
 

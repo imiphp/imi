@@ -9,7 +9,7 @@ use Wrench\Client;
 /**
  * @testdox WebSocket
  */
-class WSTest extends BaseTest
+class WSTest extends BaseTestCase
 {
     /**
      * @testdox test

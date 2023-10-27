@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Fpm\Test\Web\Tests;
+namespace Imi\Fpm\Test\HttpServer\Tests;
 
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Uri;
@@ -12,7 +12,7 @@ use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
 /**
  * @testdox HttpRequest
  */
-class RequestTest extends BaseTest
+class RequestTest extends BaseTestCase
 {
     /**
      * route.

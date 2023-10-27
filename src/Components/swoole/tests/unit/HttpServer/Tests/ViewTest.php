@@ -10,7 +10,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox Http View
  */
-class ViewTest extends BaseTest
+class ViewTest extends BaseTestCase
 {
     public function testHtml(): void
     {

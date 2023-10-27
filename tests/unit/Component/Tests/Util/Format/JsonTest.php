@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests\Util\Format;
 
 use Imi\Util\Format\Json;
 
-class JsonTest extends BaseFormatTest
+class JsonTest extends BaseFormatTestCase
 {
     protected string $class = Json::class;
 }

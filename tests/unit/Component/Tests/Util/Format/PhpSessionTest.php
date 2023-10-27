@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests\Util\Format;
 
 use Imi\Util\Format\PhpSession;
 
-class PhpSessionTest extends BaseFormatTest
+class PhpSessionTest extends BaseFormatTestCase
 {
     protected string $class = PhpSession::class;
 }

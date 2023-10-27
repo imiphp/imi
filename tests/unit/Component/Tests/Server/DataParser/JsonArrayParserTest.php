@@ -7,7 +7,7 @@ namespace Imi\Test\Component\Tests\Server\DataParser;
 use Imi\Server\DataParser\IParser;
 use Imi\Server\DataParser\JsonArrayParser;
 
-class JsonArrayParserTest extends BaseDataParserTest
+class JsonArrayParserTest extends BaseDataParserTestCase
 {
     protected function getParser(): IParser
     {

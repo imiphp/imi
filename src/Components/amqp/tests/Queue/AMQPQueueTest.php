@@ -7,7 +7,7 @@ namespace Imi\AMQP\Test\Queue;
 use Imi\App;
 use Imi\Queue\Driver\IQueueDriver;
 
-class AMQPQueueTest extends BaseQueueTest
+class AMQPQueueTest extends BaseQueueTestCase
 {
     protected function getDriver(string $name = 'imi-amqp-queue-test'): IQueueDriver
     {

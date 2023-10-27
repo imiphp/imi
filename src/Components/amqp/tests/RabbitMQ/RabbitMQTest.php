@@ -6,7 +6,7 @@ namespace Imi\AMQP\Test\RabbitMQ;
 
 use Yurun\Util\HttpRequest;
 
-class RabbitMQTest extends BaseTest
+class RabbitMQTest extends BaseTestCase
 {
     /**
      * @var string

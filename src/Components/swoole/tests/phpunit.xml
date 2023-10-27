@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="./bootstrap.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         verbose="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+    bootstrap="./bootstrap.php"
+    colors="true">
     <testsuites>
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
@@ -39,15 +33,12 @@
             <directory>unit/Component/Performance</directory>
         </testsuite>
     </testsuites>
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">../src</directory>
         </include>
-        <report>
-            <clover outputFile="clover.xml"/>
-        </report>
-    </coverage>
+    </source>
     <extensions>
-        <extension class="Imi\Swoole\Test\Component\PHPUnitHook" />
+        <bootstrap class="Imi\Swoole\Test\Component\PHPUnitHook" />
     </extensions>
 </phpunit>
