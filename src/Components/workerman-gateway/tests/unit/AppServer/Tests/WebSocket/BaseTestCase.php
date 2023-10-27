@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Test\AppServer\Tests\WebSocket;
 
-abstract class BaseTest extends \Imi\WorkermanGateway\Test\BaseTest
+abstract class BaseTestCase extends \Imi\WorkermanGateway\Test\BaseTestCase
 {
     /**
      * WebSocket 服务请求主机.
