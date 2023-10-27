@@ -7,7 +7,7 @@ namespace Imi\Kafka\Test\Queue;
 use Imi\App;
 use Imi\Queue\Driver\IQueueDriver;
 
-class KafkaQueueTest extends BaseQueueTest
+class KafkaQueueTest extends BaseQueueTestCase
 {
     protected function getDriver(): IQueueDriver
     {

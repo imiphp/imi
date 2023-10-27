@@ -9,7 +9,7 @@ use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Model\Message;
 use PHPUnit\Framework\TestCase;
 
-abstract class BaseQueueTest extends TestCase
+abstract class BaseQueueTestCase extends TestCase
 {
     /**
      * @return KafkaQueueDriver

@@ -6,6 +6,6 @@ namespace Imi\Kafka\Test\Kafka;
 
 use PHPUnit\Framework\TestCase;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTestCase extends TestCase
 {
 }
