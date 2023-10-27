@@ -11,11 +11,14 @@ use Imi\Event\EventParam;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use Imi\Swoole\SwooleApp;
-use PHPUnit\Runner\BeforeFirstTestHook;
+use PHPUnit\Runner\Extension\Extension;
+use PHPUnit\Runner\Extension\Facade;
+use PHPUnit\Runner\Extension\ParameterCollection;
+use PHPUnit\TextUI\Configuration\Configuration;
 
-class PHPUnitHook implements BeforeFirstTestHook
+class PHPUnitHook implements Extension
 {
-    public function executeBeforeFirstTest(): void
+    public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         Event::on('IMI.APP_RUN', static function (EventParam $param): void {
             $param->stopPropagation();

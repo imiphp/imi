@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @testdox QueryCurd
  */
-abstract class QueryCurdBaseTest extends TestCase
+abstract class QueryCurdBaseTestCase extends TestCase
 {
     /**
      * 连接池名.

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @testdox Db
  */
-abstract class DbBaseTest extends TestCase
+abstract class DbBaseTestCase extends TestCase
 {
     /**
      * 连接池名.
