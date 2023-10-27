@@ -20,6 +20,7 @@ class AnnotationUtilTest extends BaseTest
                 new Attr1(id: 'b'),
                 new Attr1(id: 'c'),
             ]),
+            new Attr2(),
         ];
         $this->assertStringEqualsStringIgnoringLineEndings(<<<'CODE'
         #[
@@ -33,9 +34,16 @@ class AnnotationUtilTest extends BaseTest
             ], attr1s: [
                 new \Imi\Test\Component\Tests\Annotation\Attr1(id: 'b'),
                 new \Imi\Test\Component\Tests\Annotation\Attr1(id: 'c')
-            ])
+            ]),
+            \Imi\Test\Component\Tests\Annotation\Attr2()
         ]
         CODE, AttributeUtil::generateAttributesCode($attributes));
+
+        $this->assertStringEqualsStringIgnoringLineEndings(<<<'CODE'
+        #[
+            \Imi\Test\Component\Tests\Annotation\Attr1()
+        ]
+        CODE, AttributeUtil::generateAttributesCode(new Attr1()));
     }
 
     public function testGenerateAttributesCodeNotAttr(): void
