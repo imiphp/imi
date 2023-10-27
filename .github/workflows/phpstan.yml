@@ -28,7 +28,7 @@ jobs:
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Prepare
         run: |
