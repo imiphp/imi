@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\WebSocketServer\Tests;
 
-abstract class BaseTest extends \Imi\Swoole\Test\BaseTest
+abstract class BaseTestCase extends \Imi\Swoole\Test\BaseTestCase
 {
     /**
      * 请求主机.

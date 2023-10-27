@@ -9,7 +9,7 @@ use Imi\Util\Uri;
 /**
  * @testdox UDP
  */
-class UDPTest extends BaseTest
+class UDPTest extends BaseTestCase
 {
     /**
      * @testdox test

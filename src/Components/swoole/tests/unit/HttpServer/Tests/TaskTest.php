@@ -10,7 +10,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox Task
  */
-class TaskTest extends BaseTest
+class TaskTest extends BaseTestCase
 {
     public function testTask(): void
     {

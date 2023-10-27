@@ -12,7 +12,7 @@ use function Imi\env;
 /**
  * @testdox Https
  */
-class HttpsTest extends BaseTest
+class HttpsTest extends BaseTestCase
 {
     public function __construct(string $name)
     {

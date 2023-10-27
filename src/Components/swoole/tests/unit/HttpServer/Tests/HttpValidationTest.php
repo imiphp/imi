@@ -6,7 +6,7 @@ namespace Imi\Swoole\Test\HttpServer\Tests;
 
 use Yurun\Util\HttpRequest;
 
-class HttpValidationTest extends BaseTest
+class HttpValidationTest extends BaseTestCase
 {
     public function test(): void
     {

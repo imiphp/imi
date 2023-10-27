@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Test\WebSocketServerWithAmqpServerUtil\Tests;
+namespace Imi\Swoole\Test\WebSocketServerWithAmqpRouteServerUtil\Tests;
 
 use function Imi\env;
 
-abstract class BaseTest extends \Imi\Swoole\Test\BaseTest
+abstract class BaseTestCase extends \Imi\Swoole\Test\BaseTestCase
 {
     /**
      * 请求主机.
      *
      * @var string
      */
-    protected $host = 'ws://127.0.0.1:13009/';
+    protected $host = 'ws://127.0.0.1:13010/';
 
     protected function setUp(): void
     {

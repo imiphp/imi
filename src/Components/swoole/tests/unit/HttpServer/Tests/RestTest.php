@@ -9,7 +9,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox Rest
  */
-class RestTest extends BaseTest
+class RestTest extends BaseTestCase
 {
     public function testQuery(): void
     {

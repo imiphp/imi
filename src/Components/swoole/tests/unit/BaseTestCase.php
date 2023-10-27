@@ -6,7 +6,7 @@ namespace Imi\Swoole\Test;
 
 use function Yurun\Swoole\Coroutine\goWait;
 
-abstract class BaseTest extends \Imi\Test\BaseTest
+abstract class BaseTestCase extends \Imi\Test\BaseTest
 {
     public const PERFORMANCE_COUNT = 1000;
 

@@ -9,7 +9,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox Process
  */
-class ProcessTest extends BaseTest
+class ProcessTest extends BaseTestCase
 {
     /**
      * 测试 PoolClean 注解，mode=allow.

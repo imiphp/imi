@@ -10,7 +10,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox MemoryTable
  */
-class MemoryTableTest extends BaseTest
+class MemoryTableTest extends BaseTestCase
 {
     public function testSetAndGet(): void
     {

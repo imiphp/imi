@@ -11,7 +11,7 @@ use function Imi\env;
 /**
  * @testdox Http2
  */
-class Http2Test extends BaseTest
+class Http2Test extends BaseTestCase
 {
     public function __construct(string $name)
     {

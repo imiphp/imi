@@ -6,10 +6,10 @@ namespace Imi\Swoole\Test\Component\Tests;
 
 use Imi\Db\Pool\DbResource;
 use Imi\RequestContext;
-use Imi\Swoole\Test\BaseTest;
+use Imi\Swoole\Test\BaseTestCase;
 use Imi\Swoole\Test\Component\Pool\PoolTestClass;
 
-class PoolTest extends BaseTest
+class PoolTest extends BaseTestCase
 {
     public function testPoolResource(): void
     {

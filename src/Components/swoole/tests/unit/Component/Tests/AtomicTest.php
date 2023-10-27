@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\Component\Tests;
 
-use Imi\Swoole\Test\BaseTest;
+use Imi\Swoole\Test\BaseTestCase;
 use Imi\Swoole\Util\AtomicManager;
 use PHPUnit\Framework\Assert;
 
 /**
  * @testdox Atomic
  */
-class AtomicTest extends BaseTest
+class AtomicTest extends BaseTestCase
 {
     public function testGetAndSet(): void
     {

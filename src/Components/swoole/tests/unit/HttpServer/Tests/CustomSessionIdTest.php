@@ -12,7 +12,7 @@ use function Imi\env;
 /**
  * @testdox HttpSession custom sessionid
  */
-class CustomSessionIdTest extends BaseTest
+class CustomSessionIdTest extends BaseTestCase
 {
     public function __construct(string $name)
     {
