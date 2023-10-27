@@ -43,9 +43,9 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
@@ -125,9 +125,9 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
@@ -196,7 +196,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup Services
         shell: bash
         run: |
@@ -216,17 +216,23 @@ jobs:
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         run: |
+          echo "::group::Composer install"
           composer update --prefer-dist --no-progress
+          echo "::endgroup::"
+          echo "::group::Kafka prepare"
           .github/prepare-kafka.sh
+          echo "::endgroup::"
+          echo "::group::Table Init"
           docker exec mysql mysql -uroot -p -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';flush privileges;"
           tests/db/install-db.sh
           docker exec postgres psql -d db_imi_test -U root -f /imi/.github/pgsql.sql
+          echo "::endgroup::"
           echo "test_prepared=1" >> $GITHUB_ENV
 
       - name: Test
@@ -293,7 +299,7 @@ jobs:
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup MySQL
         uses: shogo82148/actions-setup-mysql@v1
         with:
@@ -334,15 +340,21 @@ jobs:
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
       - name: Prepare
         run: |
+          echo "::group::Env prepare"
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          echo "::endgroup::"
+          echo "::group::Composer install"
           composer update --prefer-dist --no-progress
+          echo "::endgroup::"
+          echo "::group::Table Init"
           tests/db/install-db.sh
+          echo "::endgroup::"
 
       - name: Install RoadRunner
         run: |
@@ -414,7 +426,7 @@ jobs:
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup MySQL
         uses: shogo82148/actions-setup-mysql@v1
@@ -441,9 +453,15 @@ jobs:
 
       - name: Prepare
         run: |
+          Write-Output "::group::Env prepare"
           mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          Write-Output "::endgroup::"
+          Write-Output "::group::Composer install"
           composer update --prefer-dist --no-progress
+          Write-Output "::endgroup::"
+          Write-Output "::group::Table Init"
           php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
+          Write-Output "::endgroup::"
 
       - name: Install RoadRunner
         run: |

@@ -7,8 +7,6 @@
         "binsoul/net-mqtt": "^0.8.0"
     },
     "require-dev": {
-        "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "~5.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,11 +32,6 @@
         "post-update-cmd": "Imi\\MQTT\\Dev\\Dev::postUpdate"
     },
     "extra": {
-        "ide-helper": {
-            "list": [
-                "redis"
-            ]
-        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

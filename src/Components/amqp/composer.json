@@ -8,8 +8,6 @@
         "php-amqplib/php-amqplib": "^3.5"
     },
     "require-dev": {
-        "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "~5.0"
     },
     "autoload": {
         "psr-4": {
@@ -36,11 +34,6 @@
         "post-update-cmd": "Imi\\AMQP\\Dev\\Dev::postUpdate"
     },
     "extra": {
-        "ide-helper": {
-            "list": [
-                "redis"
-            ]
-        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
