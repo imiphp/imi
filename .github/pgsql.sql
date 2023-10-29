@@ -61,6 +61,19 @@ CACHE 1
 ;
 
 -- ----------------------------
+-- Records of tb_tree
+-- ----------------------------
+INSERT INTO "public"."tb_tree" VALUES (1, 0, 'a');
+INSERT INTO "public"."tb_tree" VALUES (2, 0, 'b');
+INSERT INTO "public"."tb_tree" VALUES (3, 0, 'c');
+INSERT INTO "public"."tb_tree" VALUES (4, 1, 'a-1');
+INSERT INTO "public"."tb_tree" VALUES (5, 1, 'a-2');
+INSERT INTO "public"."tb_tree" VALUES (6, 4, 'a-1-1');
+INSERT INTO "public"."tb_tree" VALUES (7, 4, 'a-1-2');
+INSERT INTO "public"."tb_tree" VALUES (8, 2, 'b-1');
+INSERT INTO "public"."tb_tree" VALUES (9, 2, 'b-2');
+
+-- ----------------------------
 -- Table structure for tb_test_soft_delete
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."tb_test_soft_delete";
