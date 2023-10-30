@@ -18,7 +18,8 @@ use Imi\Pgsql\Model\PgModel as Model;
  * @Table(name=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestJson.name", default="tb_test_json"), usePrefix=false, id={"id"}, dbPoolName=@ConfigValue(name="@app.models.Imi\Pgsql\Test\Model\TestJson.poolName"))
  *
  * @property int|null                             $id
- * @property \Imi\Util\LazyArrayObject|array|null $jsonData json数据
+ * @property \Imi\Util\LazyArrayObject|array|null $jsonData  json数据
+ * @property \Imi\Util\LazyArrayObject|array|null $jsonbData jsonb数据
  */
 abstract class TestJsonBase extends Model
 {
@@ -91,6 +92,40 @@ abstract class TestJsonBase extends Model
     public function setJsonData($jsonData)
     {
         $this->jsonData = null === $jsonData ? null : $jsonData;
+
+        return $this;
+    }
+
+    /**
+     * jsonb数据.
+     * jsonb_data.
+     *
+     * @Column(name="jsonb_data", type="jsonb", length=-1, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, ndims=0, virtual=false)
+     *
+     * @var \Imi\Util\LazyArrayObject|array|null
+     */
+    protected $jsonbData = null;
+
+    /**
+     * 获取 jsonbData - jsonb数据.
+     *
+     * @return \Imi\Util\LazyArrayObject|array|null
+     */
+    public function &getJsonbData()
+    {
+        return $this->jsonbData;
+    }
+
+    /**
+     * 赋值 jsonbData - jsonb数据.
+     *
+     * @param \Imi\Util\LazyArrayObject|array|null $jsonbData jsonb_data
+     *
+     * @return static
+     */
+    public function setJsonbData($jsonbData)
+    {
+        $this->jsonbData = null === $jsonbData ? null : $jsonbData;
 
         return $this;
     }

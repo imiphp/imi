@@ -17,6 +17,9 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Relation\Update;
+use Imi\Model\Traits\TJsonValue;
+use Imi\Model\Traits\TListValue;
+use Imi\Model\Traits\TSetValue;
 use Imi\Util\Imi;
 use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
@@ -26,6 +29,10 @@ use Imi\Util\ObjectArrayHelper;
  */
 abstract class Model extends BaseModel
 {
+    use TJsonValue;
+    use TListValue;
+    use TSetValue;
+
     public const DEFAULT_QUERY_CLASS = ModelQuery::class;
 
     /**
@@ -46,6 +53,22 @@ abstract class Model extends BaseModel
      * 动态模型集合.
      */
     protected static array $__forks = [];
+
+    protected static array $__fieldInitParsers = [
+        'json' => 'parseJsonInitValue',
+        'list' => 'parseListInitValue',
+        'set'  => 'parseSetInitValue',
+    ];
+
+    protected static array $__fieldSaveParsers = [
+        'json' => 'parseJsonSaveValue',
+        'list' => 'parseListSaveValue',
+        'set'  => 'parseSetSaveValue',
+    ];
+
+    protected static array $_fieldParseNullTypes = [
+        'json',
+    ];
 
     /**
      * 设置给字段的 SQL 值集合.
@@ -97,100 +120,10 @@ abstract class Model extends BaseModel
                 {
                     $fieldAnnotation = null;
                 }
-                if ($fieldAnnotation && \is_string($v))
+                /** @var Column|null $fieldAnnotation */
+                if ($fieldAnnotation && isset(static::$__fieldInitParsers[$columnType = $fieldAnnotation->type]) && \is_string($v))
                 {
-                    switch ($fieldAnnotation->type)
-                    {
-                        case 'json':
-                            $fieldsJsonDecode ??= $meta->getFieldsJsonDecode();
-                            if (isset($fieldsJsonDecode[$k][0]))
-                            {
-                                $realJsonDecode = $fieldsJsonDecode[$k][0];
-                            }
-                            else
-                            {
-                                $realJsonDecode = ($jsonDecode ??= ($meta->getJsonDecode() ?? false));
-                            }
-                            if ($realJsonDecode)
-                            {
-                                $value = json_decode($v, $realJsonDecode->associative, $realJsonDecode->depth, $realJsonDecode->flags);
-                            }
-                            else
-                            {
-                                $value = json_decode($v, true);
-                            }
-                            if (\JSON_ERROR_NONE === json_last_error())
-                            {
-                                if ($realJsonDecode)
-                                {
-                                    /** @var \Imi\Model\Annotation\JsonDecode $realJsonDecode */
-                                    $wrap = $realJsonDecode->wrap;
-                                    if ('' !== $wrap && (\is_array($value) || \is_object($value)))
-                                    {
-                                        $classExists = class_exists($wrap);
-                                        if ($realJsonDecode->arrayWrap)
-                                        {
-                                            $v = [];
-                                            foreach ($value as $key => $_value)
-                                            {
-                                                if ($classExists)
-                                                {
-                                                    $v[$key] = new $wrap($_value);
-                                                }
-                                                else
-                                                {
-                                                    $v[$key] = $wrap($_value);
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if ($classExists)
-                                            {
-                                                $v = new $wrap($value);
-                                            }
-                                            else
-                                            {
-                                                $v = $wrap($value);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        $v = $value;
-                                    }
-                                }
-                                elseif (\is_array($value) || \is_object($value))
-                                {
-                                    $v = new LazyArrayObject($value);
-                                }
-                                else
-                                {
-                                    $v = $value;
-                                }
-                            }
-                            break;
-                        case 'list':
-                            if ('' === $v)
-                            {
-                                $v = [];
-                            }
-                            elseif (null !== $fieldAnnotation->listSeparator)
-                            {
-                                $v = '' === $fieldAnnotation->listSeparator ? [] : explode($fieldAnnotation->listSeparator, $v);
-                            }
-                            break;
-                        case 'set':
-                            if ('' === $v)
-                            {
-                                $v = [];
-                            }
-                            else
-                            {
-                                $v = explode(',', $v);
-                            }
-                            break;
-                    }
+                    $v = self::{static::$__fieldInitParsers[$columnType]}($k, $v, $fieldAnnotation, $meta);
                 }
                 $this[$k] = $v;
             }
@@ -1124,45 +1057,13 @@ abstract class Model extends BaseModel
                 }
                 $value = null;
             }
-            if (null === $value && !$column->nullable && 'json' !== $columnType)
+            if (null === $value && !$column->nullable && !\in_array($columnType, static::$_fieldParseNullTypes))
             {
                 continue;
             }
-            switch ($columnType)
+            if (isset(static::$__fieldSaveParsers[$columnType]))
             {
-                case 'json':
-                    $fieldsJsonEncode ??= $meta->getFieldsJsonEncode();
-                    if (isset($fieldsJsonEncode[$name][0]))
-                    {
-                        $realJsonEncode = $fieldsJsonEncode[$name][0];
-                    }
-                    else
-                    {
-                        $realJsonEncode = ($jsonEncode ??= ($meta->getJsonEncode() ?? false));
-                    }
-                    if (null === $value && $column->nullable)
-                    {
-                        // 当字段允许`null`时，使用原生`null`存储
-                        $value = null;
-                    }
-                    elseif ($realJsonEncode)
-                    {
-                        $value = json_encode($value, $realJsonEncode->flags, $realJsonEncode->depth);
-                    }
-                    else
-                    {
-                        $value = json_encode($value, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
-                    }
-                    break;
-                case 'list':
-                    if (null !== $value && null !== $column->listSeparator)
-                    {
-                        $value = implode($column->listSeparator, $value);
-                    }
-                    break;
-                case 'set':
-                    $value = implode(',', $value);
-                    break;
+                $value = self::{static::$__fieldSaveParsers[$columnType]}($name, $value, $column, $meta);
             }
             if ($incrUpdate && (!$isInsert || $isSaveUpdate) && ((\array_key_exists($dbFieldName, $originData) && $originData[$dbFieldName] === $value) || (\array_key_exists($name, $originData) && $originData[$name] === $value)))
             {
