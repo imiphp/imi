@@ -12,7 +12,8 @@ use Imi\Pgsql\Model\PgModel as Model;
  * 此文件是自动生成，请勿手动修改此文件！
  *
  * @property int|null                             $id
- * @property \Imi\Util\LazyArrayObject|array|null $jsonData json数据
+ * @property \Imi\Util\LazyArrayObject|array|null $jsonData  json数据
+ * @property \Imi\Util\LazyArrayObject|array|null $jsonbData jsonb数据
  */
 #[
     \Imi\Model\Annotation\Entity(),
@@ -93,6 +94,41 @@ abstract class TestJsonBase extends Model
     public function setJsonData(mixed $jsonData): self
     {
         $this->jsonData = null === $jsonData ? null : $jsonData;
+
+        return $this;
+    }
+
+    /**
+     * jsonb数据.
+     * jsonb_data.
+     *
+     * @var \Imi\Util\LazyArrayObject|array|null
+     */
+    #[
+        \Imi\Model\Annotation\Column(name: 'jsonb_data', type: 'jsonb', nullable: false)
+    ]
+    protected $jsonbData = null;
+
+    /**
+     * 获取 jsonbData - jsonb数据.
+     *
+     * @return \Imi\Util\LazyArrayObject|array|null
+     */
+    public function &getJsonbData()
+    {
+        return $this->jsonbData;
+    }
+
+    /**
+     * 赋值 jsonbData - jsonb数据.
+     *
+     * @param \Imi\Util\LazyArrayObject|array|null $jsonbData jsonb_data
+     *
+     * @return static
+     */
+    public function setJsonbData(mixed $jsonbData): self
+    {
+        $this->jsonbData = null === $jsonbData ? null : $jsonbData;
 
         return $this;
     }

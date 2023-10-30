@@ -310,16 +310,19 @@ abstract class QueryCurdBaseTestCase extends TestCase
     {
         $query = Db::query($this->poolName);
         $jsonStr = '{"uid": "' . ($uid = uniqid('', true)) . '", "name": "aaa", "list1": [{"id": 1}]}';
+        $jsonbStr = 'null';
         // 插入数据
         $insertResult = $query->from('tb_test_json')->insert([
-            'json_data' => $jsonStr,
+            'json_data'  => $jsonStr,
+            'jsonb_data' => $jsonbStr,
         ]);
         $id = $insertResult->getLastInsertId();
         // 查询条件
         $result = $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->select();
         $this->assertEquals([
-            'id'        => $id,
-            'json_data' => $jsonStr,
+            'id'         => $id,
+            'json_data'  => $jsonStr,
+            'jsonb_data' => $jsonbStr,
         ], $result->get());
         $this->assertEquals($this->expectedTestJsonSelectSql, $result->getSql());
         // 更新数据
@@ -331,8 +334,9 @@ abstract class QueryCurdBaseTestCase extends TestCase
         ]);
         $result = $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->order('json_data->uid')->select();
         $this->assertEquals([
-            'id'        => $id,
-            'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',
+            'id'         => $id,
+            'json_data'  => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',
+            'jsonb_data' => $jsonbStr,
         ], $result->get());
     }
 
