@@ -21,7 +21,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
     /**
      * Swoole 队列消费进程.
      */
-    #[Process(name: 'QueueConsumer', unique: true, co: fasle)]
+    #[Process(name: 'QueueConsumer', unique: true, co: false)]
     class SwooleQueueConsumerProcess extends BaseProcess
     {
         #[Inject(name: 'imiQueue')]

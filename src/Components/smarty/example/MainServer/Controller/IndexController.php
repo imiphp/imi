@@ -8,6 +8,7 @@ use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
 
 #[Controller(prefix: '/')]
@@ -18,7 +19,8 @@ class IndexController extends HttpController
      */
     #[Action]
     #[Route(url: '/')]
-    #[View(renderType: 'html', template: 'index')]
+    #[View(renderType: 'html')]
+    #[HtmlView(template: 'index')]
     public function index()
     {
         $datetime = date('Y-m-d H:i:s');
@@ -32,7 +34,8 @@ class IndexController extends HttpController
      * @return mixed
      */
     #[Action]
-    #[View(renderType: 'html', template: 'test')]
+    #[View(renderType: 'html')]
+    #[HtmlView(template: 'test')]
     public function test()
     {
         return [
