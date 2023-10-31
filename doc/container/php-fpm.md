@@ -60,9 +60,6 @@ imi v2.0 版本开始，支持运行在 PHP-FPM 环境中。
 ```php
 return [
     'imi' => [
-        'annotation' => [
-            'cache' => true, // 启用注解解析文件缓存；修改代码不生效时，修改注解需要删除 `.runtime/annotation` 目录缓存
-        ],
         'bean' => [
             'fileCache' => true, // 启用 bean 文件缓存；修改代码不生效时，需要删除 `.runtime/classes` 目录缓存
         ],
