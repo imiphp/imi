@@ -1,38 +1,22 @@
 <?php
 
 declare(strict_types=1);
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
 
 namespace Imi\Bean\Util;
+
+use const T_NS_SEPARATOR;
 
 /**
  * Parses a file for namespaces/use/class declarations.
  *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Christian Kaps <christian.kaps@mohiva.com>
+ * @source https://github.com/doctrine/annotations/blob/2.0.x/lib/Doctrine/Common/Annotations/TokenParser.php
  */
 class TokenParser
 {
     /**
      * The token list.
      *
-     * @var array
+     * @phpstan-var list<mixed[]>
      */
     private $tokens;
 
@@ -50,10 +34,7 @@ class TokenParser
      */
     private $pointer = 0;
 
-    /**
-     * @param string $contents
-     */
-    public function __construct($contents)
+    public function __construct(string $contents)
     {
         $this->tokens = token_get_all($contents);
 
@@ -75,17 +56,18 @@ class TokenParser
      * @param bool $docCommentIsComment If TRUE then a doc comment is considered a comment and skipped.
      *                                  If FALSE then only whitespace and normal comments are skipped.
      *
-     * @return array|null the token if exists, null otherwise
+     * @return mixed[]|string|null the token if exists, null otherwise
      */
-    public function next($docCommentIsComment = true)
+    public function next(bool $docCommentIsComment = true)
     {
         for ($i = $this->pointer; $i < $this->numTokens; ++$i)
         {
             ++$this->pointer;
-            if (\T_WHITESPACE === $this->tokens[$i][0]
+            if (
+                \T_WHITESPACE === $this->tokens[$i][0]
                 || \T_COMMENT === $this->tokens[$i][0]
-                || ($docCommentIsComment && \T_DOC_COMMENT === $this->tokens[$i][0]))
-            {
+                || ($docCommentIsComment && \T_DOC_COMMENT === $this->tokens[$i][0])
+            ) {
                 continue;
             }
 
@@ -98,7 +80,7 @@ class TokenParser
     /**
      * Parses a single use statement.
      *
-     * @return array a list with all found class names for a use statement
+     * @return array<string, string> a list with all found class names for a use statement
      */
     public function parseUseStatement()
     {
@@ -118,8 +100,10 @@ class TokenParser
             {
                 $alias = $token[1];
             }
-            elseif (\PHP_VERSION_ID >= 80000 && (\T_NAME_QUALIFIED === $token[0] || \T_NAME_FULLY_QUALIFIED === $token[0]))
-            {
+            elseif (
+                \PHP_VERSION_ID >= 80000
+                && (\T_NAME_QUALIFIED === $token[0] || \T_NAME_FULLY_QUALIFIED === $token[0])
+            ) {
                 $class .= $token[1];
 
                 $classSplit = explode('\\', $token[1]);
@@ -170,9 +154,9 @@ class TokenParser
      *
      * @param string $namespaceName the namespace name of the reflected class
      *
-     * @return array a list with all found use statements
+     * @return array<string, string> a list with all found use statements
      */
-    public function parseUseStatements($namespaceName)
+    public function parseUseStatements(string $namespaceName)
     {
         $statements = [];
         while ($token = $this->next())
@@ -182,7 +166,8 @@ class TokenParser
                 $statements = array_merge($statements, $this->parseUseStatement());
                 continue;
             }
-            if (\T_NAMESPACE !== $token[0] || $this->parseNamespace() != $namespaceName)
+
+            if (\T_NAMESPACE !== $token[0] || $this->parseNamespace() !== $namespaceName)
             {
                 continue;
             }
@@ -204,11 +189,12 @@ class TokenParser
     public function parseNamespace()
     {
         $name = '';
-        while (($token = $this->next()) && (\T_STRING === $token[0] || \T_NS_SEPARATOR === $token[0] || (
-            \PHP_VERSION_ID >= 80000
-            && (\T_NAME_QUALIFIED === $token[0] || \T_NAME_FULLY_QUALIFIED === $token[0])
-        )))
-        {
+        while (
+            ($token = $this->next()) && (\T_STRING === $token[0] || \T_NS_SEPARATOR === $token[0] || (
+                \PHP_VERSION_ID >= 80000
+                && (\T_NAME_QUALIFIED === $token[0] || \T_NAME_FULLY_QUALIFIED === $token[0])
+            ))
+        ) {
             $name .= $token[1];
         }
 

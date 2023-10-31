@@ -2,65 +2,48 @@
 
 declare(strict_types=1);
 
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
-
 namespace Imi\Bean\Util;
 
 /**
  * Parses a file for namespaces/use/class declarations.
  *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Christian Kaps <christian.kaps@mohiva.com>
+ * @source https://github.com/doctrine/annotations/blob/2.0.x/lib/Doctrine/Common/Annotations/PhpParser.php
  */
 final class PhpParser
 {
     /**
-     * Parses a class.
+     * Parse a class or function for use statements.
      *
-     * @param \ReflectionClass $class a <code>ReflectionClass</code> object
+     * @param \ReflectionClass|\ReflectionFunction $reflection
      *
-     * @return array a list with use statements in the form (Alias => FQN)
+     * @psalm-return array<string, string> a list with use statements in the form (Alias => FQN).
      */
-    public function parseClass(\ReflectionClass $class)
+    public function parseUseStatements($reflection): array
     {
-        if (method_exists($class, 'getUseStatements'))
+        if (method_exists($reflection, 'getUseStatements'))
         {
-            return $class->getUseStatements();
+            return $reflection->getUseStatements();
         }
 
-        if (false === $filename = $class->getFileName())
+        $filename = $reflection->getFileName();
+
+        if (false === $filename)
         {
             return [];
         }
 
-        $content = $this->getFileContent($filename, $class->getStartLine());
+        $content = $this->getFileContent($filename, $reflection->getStartLine());
 
         if (null === $content)
         {
             return [];
         }
 
-        $namespace = preg_quote($class->getNamespaceName());
+        $namespace = preg_quote($reflection->getNamespaceName());
         $content = preg_replace('/^.*?(\bnamespace\s+' . $namespace . '\s*[;{].*)$/s', '\\1', $content);
         $tokenizer = new TokenParser('<?php ' . $content);
 
-        return $tokenizer->parseUseStatements($class->getNamespaceName());
+        return $tokenizer->parseUseStatements($reflection->getNamespaceName());
     }
 
     /**
@@ -71,7 +54,7 @@ final class PhpParser
      *
      * @return string|null the content of the file or null if the file does not exist
      */
-    private function getFileContent($filename, $lineNumber)
+    private function getFileContent(string $filename, $lineNumber)
     {
         if (!is_file($filename))
         {
@@ -83,7 +66,7 @@ final class PhpParser
         $file = new \SplFileObject($filename);
         while (!$file->eof())
         {
-            if ($lineCnt++ == $lineNumber)
+            if ($lineCnt++ === $lineNumber)
             {
                 break;
             }
