@@ -8,15 +8,15 @@ use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Inherit;
 
 /**
- * 注入队列对象
+ * 队列类型的结构类型.
  *
  * @Annotation
  *
- * @Target({"PROPERTY", "ANNOTATION"})
+ * @Target({"CONST"})
  *
  * @property string $type
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 #[Inherit]
 class QueueTypeStructType extends Base
 {

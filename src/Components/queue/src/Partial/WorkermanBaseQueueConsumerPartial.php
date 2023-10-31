@@ -17,7 +17,7 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
     /**
      * @property \Imi\Queue\Service\QueueService $imiQueue
      */
-    #[Partial(class: Imi\Queue\Service\BaseQueueConsumer::class)]
+    #[Partial(class: \Imi\Queue\Service\BaseQueueConsumer::class)]
     trait WorkermanBaseQueueConsumerPartial
     {
         /**
