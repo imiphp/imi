@@ -73,7 +73,7 @@ class BeanParser extends BaseParser
                         {
                             $name = trim($tag->__toString(), '\\ \t\n\r\0\x0B');
                             $phpParser = new PhpParser();
-                            $uses = $phpParser->parseClass(ReflectionContainer::getClassReflection($className));
+                            $uses = $phpParser->parseUseStatements(ReflectionContainer::getClassReflection($className));
                             $lowerName = strtolower($name);
                             if (isset($uses[$lowerName]))
                             {

@@ -18,21 +18,17 @@ class TokenParser
      *
      * @phpstan-var list<mixed[]>
      */
-    private $tokens;
+    private array $tokens;
 
     /**
      * The number of tokens.
-     *
-     * @var int
      */
-    private $numTokens;
+    private readonly int $numTokens;
 
     /**
      * The current array pointer.
-     *
-     * @var int
      */
-    private $pointer = 0;
+    private int $pointer = 0;
 
     public function __construct(string $contents)
     {
@@ -45,6 +41,7 @@ class TokenParser
         // getDocBlock() on said class to return our long lost doc_comment. Argh.
         // To workaround, cause the parser to parse an empty docblock. Sure getDocBlock() will return this, but at least
         // it's harmless to us.
+        // @phpstan-ignore-next-line
         token_get_all("<?php\n/**\n *\n */");
 
         $this->numTokens = \count($this->tokens);
@@ -106,7 +103,7 @@ class TokenParser
             ) {
                 $class .= $token[1];
 
-                $classSplit = explode('\\', $token[1]);
+                $classSplit = explode('\\', (string) $token[1]);
                 $alias = $classSplit[\count($classSplit) - 1];
             }
             elseif (\T_NS_SEPARATOR === $token[0])
@@ -121,14 +118,14 @@ class TokenParser
             }
             elseif (',' === $token)
             {
-                $statements[strtolower($alias)] = $groupRoot . $class;
+                $statements[strtolower((string) $alias)] = $groupRoot . $class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
             }
             elseif (';' === $token)
             {
-                $statements[strtolower($alias)] = $groupRoot . $class;
+                $statements[strtolower((string) $alias)] = $groupRoot . $class;
                 break;
             }
             elseif ('{' === $token)
