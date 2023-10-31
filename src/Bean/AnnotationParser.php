@@ -12,10 +12,6 @@ use Imi\Config;
 use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
 use Imi\Util\File;
-use Imi\Util\Imi;
-use Yurun\Doctrine\Common\Annotations\AnnotationReader;
-use Yurun\Doctrine\Common\Annotations\FileCacheReader;
-use Yurun\Doctrine\Common\Annotations\Reader;
 
 /**
  * 注解处理类.
@@ -44,11 +40,6 @@ class AnnotationParser
     private array $files = [];
 
     /**
-     * 注解读取器.
-     */
-    private ?Reader $reader = null;
-
-    /**
      * 初始化时后的 get_included_files() 值
      */
     private array $initIncludeFiles = [];
@@ -62,7 +53,6 @@ class AnnotationParser
     {
         $this->initIncludeFiles = get_included_files();
         $this->enableAnnotationCache = Config::get('@app.imi.annotation.cache', false);
-        AnnotationReader::addGlobalIgnoredName('noRector');
     }
 
     public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
@@ -120,20 +110,7 @@ class AnnotationParser
      */
     public function parseClass(\ReflectionClass $ref): void
     {
-        $annotations = $this->getReader()->getClassAnnotations($ref);
-        if (
-            \PHP_VERSION_ID >= 80000
-            && $phpAnnotations = $this->getPHPClassAnnotations($ref))
-        {
-            if ($annotations)
-            {
-                $annotations = array_merge($annotations, $phpAnnotations);
-            }
-            else
-            {
-                $annotations = $phpAnnotations;
-            }
-        }
+        $annotations = $this->getPHPClassAnnotations($ref);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -217,18 +194,7 @@ class AnnotationParser
     {
         $className = $ref->getName();
         $methodName = $method->getName();
-        $annotations = $this->getReader()->getMethodAnnotations($method);
-        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPMethodAnnotations($method))
-        {
-            if ($annotations)
-            {
-                $annotations = array_merge($annotations, $phpAnnotations);
-            }
-            else
-            {
-                $annotations = $phpAnnotations;
-            }
-        }
+        $annotations = $this->getPHPMethodAnnotations($method);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -309,18 +275,7 @@ class AnnotationParser
      */
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop): void
     {
-        $annotations = $this->getReader()->getPropertyAnnotations($prop);
-        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
-        {
-            if ($annotations)
-            {
-                $annotations = array_merge($annotations, $phpAnnotations);
-            }
-            else
-            {
-                $annotations = $phpAnnotations;
-            }
-        }
+        $annotations = $this->getPHPPropertyAnnotations($prop);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -402,18 +357,7 @@ class AnnotationParser
      */
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const): void
     {
-        $annotations = $this->getReader()->getConstantAnnotations($const);
-        if (\PHP_VERSION_ID >= 80000 && $phpAnnotations = $this->getPHPConstantAnnotations($const))
-        {
-            if ($annotations)
-            {
-                $annotations = array_merge($annotations, $phpAnnotations);
-            }
-            else
-            {
-                $annotations = $phpAnnotations;
-            }
-        }
+        $annotations = $this->getPHPConstantAnnotations($const);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -483,10 +427,6 @@ class AnnotationParser
 
     public function parseMethodParameters(\ReflectionClass $ref, \ReflectionMethod $reflectionMethod): void
     {
-        if (\PHP_VERSION_ID < 80000)
-        {
-            return;
-        }
         foreach ($reflectionMethod->getParameters() as $reflectionParameter)
         {
             $this->parseMethodParameter($ref, $reflectionMethod, $reflectionParameter);
@@ -819,25 +759,6 @@ class AnnotationParser
     {
         $this->files = $data[0];
         $this->classes = $data[1];
-    }
-
-    /**
-     * Get 注解读取器.
-     */
-    private function getReader(): Reader
-    {
-        if (isset($this->reader))
-        {
-            return $this->reader;
-        }
-        if ($this->enableAnnotationCache)
-        {
-            return $this->reader = new FileCacheReader(new AnnotationReader(), Imi::getRuntimePath('annotation'));
-        }
-        else
-        {
-            return $this->reader = new AnnotationReader();
-        }
     }
 
     /**

@@ -19,8 +19,7 @@
         "symfony/polyfill-php81": "^1.23",
         "symfony/polyfill-php82": "^1.26",
         "symfony/process": "^5.1|^6.0",
-        "vlucas/phpdotenv": "~5.5",
-        "yurunsoft/doctrine-annotations": "^1.73.0"
+        "vlucas/phpdotenv": "~5.5"
     },
     "require-dev": {
         "composer/semver": "^3.3.2",

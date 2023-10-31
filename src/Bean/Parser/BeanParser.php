@@ -10,10 +10,10 @@ use Imi\Aop\Annotation\RequestInject;
 use Imi\App;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionContainer;
+use Imi\Bean\Util\PhpParser;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Util\DocBlock;
 use Imi\Util\Imi;
-use Yurun\Doctrine\Common\Annotations\PhpParser;
 
 class BeanParser extends BaseParser
 {
