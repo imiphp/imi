@@ -22,7 +22,7 @@ class LockAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Lock\\Annotation\\Lockable'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Lock\Annotation\Lockable::class])]
     #[Around]
     public function parseLock(AroundJoinPoint $joinPoint)
     {

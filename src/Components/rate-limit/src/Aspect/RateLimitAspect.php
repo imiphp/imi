@@ -22,7 +22,7 @@ class RateLimitAspect
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\RateLimit\\Annotation\\RateLimit'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\RateLimit\Annotation\RateLimit::class])]
     #[Around]
     public function parse(AroundJoinPoint $joinPoint)
     {

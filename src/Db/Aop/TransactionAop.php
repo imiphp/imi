@@ -24,7 +24,7 @@ class TransactionAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Db\\Annotation\\Transaction'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Db\Annotation\Transaction::class])]
     #[Around]
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {

@@ -23,7 +23,7 @@ class AutoValidationAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION_CONSTRUCT, allow: ['Imi\\Validate\\Annotation\\AutoValidation'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION_CONSTRUCT, allow: [\Imi\Validate\Annotation\AutoValidation::class])]
     #[After]
     public function validateConstruct(JoinPoint $joinPoint)
     {
@@ -70,7 +70,7 @@ class AutoValidationAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Validate\\Annotation\\AutoValidation'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Validate\Annotation\AutoValidation::class])]
     #[Around]
     public function validateMethod(AroundJoinPoint $joinPoint)
     {

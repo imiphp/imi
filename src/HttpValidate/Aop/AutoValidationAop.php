@@ -22,7 +22,7 @@ class AutoValidationAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\HttpValidate\\Annotation\\HttpValidation'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\HttpValidate\Annotation\HttpValidation::class])]
     #[Before]
     public function validateHttp(JoinPoint $joinPoint)
     {

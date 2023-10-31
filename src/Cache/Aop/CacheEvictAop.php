@@ -25,7 +25,7 @@ class CacheEvictAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Cache\\Annotation\\CacheEvict'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Cache\Annotation\CacheEvict::class])]
     #[Around]
     public function parseCacheEvict(AroundJoinPoint $joinPoint)
     {

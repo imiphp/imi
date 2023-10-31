@@ -21,7 +21,7 @@ class PoolCleanAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Pool\\Annotation\\PoolClean'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Pool\Annotation\PoolClean::class])]
     #[Before]
     public function parse(JoinPoint $joinPoint)
     {

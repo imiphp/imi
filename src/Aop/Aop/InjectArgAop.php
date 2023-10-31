@@ -21,7 +21,7 @@ class InjectArgAop
      *
      * @return mixed
      */
-    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Aop\\Annotation\\InjectArg'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Aop\Annotation\InjectArg::class])]
     #[Around]
     public function parse(AroundJoinPoint $joinPoint)
     {

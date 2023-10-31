@@ -28,7 +28,7 @@ class ModelGenerate extends BaseCommand
      */
     #[CommandAction(name: 'pgModel')]
     #[Argument(name: 'namespace', type: \Imi\Cli\ArgType::STRING, required: true, comments: '生成的Model所在命名空间')]
-    #[Argument(name: 'baseClass', type: \Imi\Cli\ArgType::STRING, default: 'Imi\\Pgsql\\Model\\PgModel', comments: '生成的Model所继承的基类,默认\\Imi\\Model\\Model,可选')]
+    #[Argument(name: 'baseClass', type: \Imi\Cli\ArgType::STRING, default: \Imi\Pgsql\Model\PgModel::class, comments: '生成的Model所继承的基类,默认\\Imi\\Model\\Model,可选')]
     #[Option(name: 'database', type: \Imi\Cli\ArgType::STRING, comments: '数据库名，不传则取连接池默认配置的库名')]
     #[Option(name: 'poolName', type: \Imi\Cli\ArgType::STRING, comments: '连接池名称，不传则取默认连接池')]
     #[Option(name: 'prefix', type: \Imi\Cli\ArgType::ARRAY, default: [], comments: '传值则去除该表前缀，以半角逗号分隔多个前缀')]
