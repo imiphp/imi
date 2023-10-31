@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\ClassEventListener;
 /**
  * Close事件前置处理.
  */
-#[ClassEventListener(className: \Imi\Server\MQTT\Server::class, eventName: 'close', priority: 19940312)]
+#[ClassEventListener(className: \Imi\Server\MQTT\Server::class, eventName: 'close', priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeClose extends \Imi\Swoole\Server\TcpServer\Listener\BeforeClose
 {
 }

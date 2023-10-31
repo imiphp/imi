@@ -41,7 +41,7 @@ class UpdateTime extends UpdateTimeBase
     /**
      * int.
      */
-    #[Column(name: 'int', type: 'int', length: 11, default: '', updateTime: true)]
+    #[Column(name: 'int', type: \Imi\Cli\ArgType::INT, length: 11, default: '', updateTime: true)]
     protected ?int $int = null;
 
     /**

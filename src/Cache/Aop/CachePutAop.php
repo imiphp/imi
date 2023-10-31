@@ -25,7 +25,7 @@ class CachePutAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Cache\\Annotation\\CachePut'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Cache\\Annotation\\CachePut'])]
     #[Around]
     public function parseCachePut(AroundJoinPoint $joinPoint)
     {

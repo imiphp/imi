@@ -23,9 +23,9 @@ class FacadeGenerate extends BaseCommand
      * 生成门面类.
      */
     #[CommandAction(name: 'facade', description: '生成门面类')]
-    #[Argument(name: 'facadeClass', type: 'string', required: true, comments: '生成的门面类')]
-    #[Argument(name: 'class', type: 'string', required: true, comments: '要绑定的类')]
-    #[Option(name: 'request', type: 'boolean', default: false, comments: '是否请求上下文门面')]
+    #[Argument(name: 'facadeClass', type: \Imi\Cli\ArgType::STRING, required: true, comments: '生成的门面类')]
+    #[Argument(name: 'class', type: \Imi\Cli\ArgType::STRING, required: true, comments: '要绑定的类')]
+    #[Option(name: 'request', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否请求上下文门面')]
     public function generate(string $facadeClass, string $class, bool $request): void
     {
         if (class_exists($class))

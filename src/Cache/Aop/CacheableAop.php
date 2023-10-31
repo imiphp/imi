@@ -27,7 +27,7 @@ class CacheableAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Cache\\Annotation\\Cacheable'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Cache\\Annotation\\Cacheable'])]
     #[Around]
     public function parseCacheable(AroundJoinPoint $joinPoint)
     {

@@ -38,7 +38,7 @@ abstract class VirtualColumnBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -68,7 +68,7 @@ abstract class VirtualColumnBase extends Model
      * amount.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'amount', type: 'int', length: 11, nullable: false)
+        \Imi\Model\Annotation\Column(name: 'amount', type: \Imi\Cli\ArgType::INT, length: 11, nullable: false)
     ]
     protected ?int $amount = null;
 

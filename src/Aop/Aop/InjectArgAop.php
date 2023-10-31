@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 
-#[Aspect(priority: 19940312)]
+#[Aspect(priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class InjectArgAop
 {
     /**
@@ -21,7 +21,7 @@ class InjectArgAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Aop\\Annotation\\InjectArg'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Aop\\Annotation\\InjectArg'])]
     #[Around]
     public function parse(AroundJoinPoint $joinPoint)
     {

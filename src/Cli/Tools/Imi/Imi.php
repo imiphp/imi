@@ -23,8 +23,8 @@ class Imi extends BaseCommand
      * 构建框架预加载缓存.
      */
     #[CommandAction(name: 'buildImiRuntime', description: '构建框架预加载缓存')]
-    #[Option(name: 'file', type: 'string', comments: '可以指定生成到目标文件')]
-    #[Option(name: 'runtimeMode', type: 'string', comments: '指定运行时模式')]
+    #[Option(name: 'file', type: \Imi\Cli\ArgType::STRING, comments: '可以指定生成到目标文件')]
+    #[Option(name: 'runtimeMode', type: \Imi\Cli\ArgType::STRING, comments: '指定运行时模式')]
     public function buildImiRuntime(?string $file, ?string $runtimeMode = null): void
     {
         if (null === $file)
@@ -39,7 +39,7 @@ class Imi extends BaseCommand
      * 清除框架预加载缓存.
      */
     #[CommandAction(name: 'clearImiRuntime', description: '清除框架预加载缓存')]
-    #[Option(name: 'runtimeMode', type: 'string', comments: '指定运行时模式')]
+    #[Option(name: 'runtimeMode', type: \Imi\Cli\ArgType::STRING, comments: '指定运行时模式')]
     public function clearImiRuntime(?string $runtimeMode = null): void
     {
         $file = ImiUtil::getModeRuntimePath($runtimeMode, 'imi-runtime');
@@ -58,9 +58,9 @@ class Imi extends BaseCommand
      */
     #[PoolClean]
     #[CommandAction(name: 'buildRuntime', description: '构建项目预加载缓存')]
-    #[Option(name: 'changedFilesFile', type: 'string', comments: '保存改变的文件列表的文件，一行一个')]
-    #[Option(name: 'confirm', type: 'boolean', default: false, comments: '是否等待输入y后再构建')]
-    #[Option(name: 'runtimeMode', type: 'string', comments: '指定运行时模式')]
+    #[Option(name: 'changedFilesFile', type: \Imi\Cli\ArgType::STRING, comments: '保存改变的文件列表的文件，一行一个')]
+    #[Option(name: 'confirm', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否等待输入y后再构建')]
+    #[Option(name: 'runtimeMode', type: \Imi\Cli\ArgType::STRING, comments: '指定运行时模式')]
     public function buildRuntime(?string $changedFilesFile, bool $confirm, ?string $runtimeMode = null): void
     {
         if (null !== $runtimeMode)
@@ -95,7 +95,7 @@ class Imi extends BaseCommand
      * 清除项目预加载缓存.
      */
     #[CommandAction(name: 'clearRuntime', description: '清除项目预加载缓存')]
-    #[Option(name: 'runtimeMode', type: 'string', comments: '指定运行时模式')]
+    #[Option(name: 'runtimeMode', type: \Imi\Cli\ArgType::STRING, comments: '指定运行时模式')]
     public function clearRuntime(?string $runtimeMode = null): void
     {
         $file = \Imi\Util\Imi::getModeRuntimePath($runtimeMode, 'runtime');

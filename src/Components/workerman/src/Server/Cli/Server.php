@@ -29,9 +29,9 @@ class Server extends BaseCommand
      * 开启服务
      */
     #[CommandAction(name: 'start', description: '启动 workerman 服务')]
-    #[Option(name: 'name', type: 'string', comments: '要启动的服务器名')]
-    #[Option(name: 'workerNum', type: 'int', comments: '工作进程数量')]
-    #[Option(name: 'daemon', shortcut: 'd', type: 'boolean', default: false, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式')]
+    #[Option(name: 'name', type: \Imi\Cli\ArgType::STRING, comments: '要启动的服务器名')]
+    #[Option(name: 'workerNum', type: \Imi\Cli\ArgType::INT, comments: '工作进程数量')]
+    #[Option(name: 'daemon', shortcut: 'd', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式')]
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
         (function () use ($name, $workerNum, $d): void {

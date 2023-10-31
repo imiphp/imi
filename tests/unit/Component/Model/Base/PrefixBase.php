@@ -38,7 +38,7 @@ abstract class PrefixBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -102,7 +102,7 @@ abstract class PrefixBase extends Model
      * delete_time.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'delete_time', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'delete_time', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $deleteTime = 0;
 

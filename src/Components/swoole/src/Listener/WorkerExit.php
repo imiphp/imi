@@ -9,7 +9,7 @@ use Imi\Swoole\Server\Event\Listener\IWorkerExitEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Imi\Timer\Timer;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.EXIT', priority: -19940312)]
+#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.EXIT', priority: \Imi\Util\ImiPriority::IMI_MIN)]
 class WorkerExit implements IWorkerExitEventListener
 {
     /**

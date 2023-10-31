@@ -12,6 +12,7 @@ use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\JoinFrom;
 use Imi\Model\Annotation\Relation\JoinTo;
 use Imi\Model\Annotation\Relation\OneToOne;
+use Imi\Model\Enum\RelationPoolName;
 use Imi\Test\Component\Model\Base\ArticleBase;
 
 /**
@@ -51,7 +52,7 @@ class Article extends ArticleBase
         return $this;
     }
 
-    #[OneToOne(model: 'ArticleEx', with: true, poolName: 2)]
+    #[OneToOne(model: 'ArticleEx', with: true, poolName: RelationPoolName::RELATION)]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'article_id')]
     protected ?ArticleEx $exWith = null;

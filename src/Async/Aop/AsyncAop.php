@@ -21,7 +21,7 @@ class AsyncAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Async\\Annotation\\Async'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Async\\Annotation\\Async'])]
     #[Around]
     public function parseAsync(AroundJoinPoint $joinPoint)
     {
@@ -39,7 +39,7 @@ class AsyncAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Async\\Annotation\\Defer'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Async\\Annotation\\Defer'])]
     #[Around]
     public function parseDefer(AroundJoinPoint $joinPoint)
     {
@@ -57,7 +57,7 @@ class AsyncAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Async\\Annotation\\DeferAsync'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Async\\Annotation\\DeferAsync'])]
     #[Around]
     public function parseDeferAsync(AroundJoinPoint $joinPoint)
     {

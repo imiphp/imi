@@ -29,7 +29,7 @@ class ArticleId extends Model
     /**
      * id.
      */
-    #[Column(name: 'id', type: 'int', length: 10, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)]
+    #[Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)]
     #[Id]
     protected ?int $id = null;
 
@@ -58,7 +58,7 @@ class ArticleId extends Model
     /**
      * member_id.
      */
-    #[Column(name: 'member_id', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)]
+    #[Column(name: 'member_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)]
     protected ?int $memberId = 0;
 
     /**

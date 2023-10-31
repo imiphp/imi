@@ -27,7 +27,7 @@ class JWTValidationAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\JWT\\Annotation\\JWTValidation'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\JWT\\Annotation\\JWTValidation'])]
     #[Around]
     public function around(AroundJoinPoint $joinPoint)
     {

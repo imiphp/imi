@@ -41,7 +41,7 @@ class CreateTime extends CreateTimeBase
     /**
      * int.
      */
-    #[Column(name: 'int', type: 'int', length: 11, default: '', createTime: true)]
+    #[Column(name: 'int', type: \Imi\Cli\ArgType::INT, length: 11, default: '', createTime: true)]
     protected ?int $int = null;
 
     /**

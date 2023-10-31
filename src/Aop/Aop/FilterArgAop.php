@@ -21,7 +21,7 @@ class FilterArgAop
      *
      * @return mixed
      */
-    #[PointCut(type: 2, allow: ['Imi\\Aop\\Annotation\\FilterArg'])]
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: ['Imi\\Aop\\Annotation\\FilterArg'])]
     #[Before]
     public function parse(JoinPoint $joinPoint)
     {

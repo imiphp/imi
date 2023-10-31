@@ -11,7 +11,7 @@ use Imi\Cron\Annotation\Cron;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
-#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', priority: -19940312, one: true)]
+#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
 class Init implements IEventListener
 {
     /**

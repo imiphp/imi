@@ -38,8 +38,8 @@ class DocTool extends BaseCommand
      * 生成 API 接口文档.
      */
     #[CommandAction(name: 'api')]
-    #[Argument(name: 'to', type: 'string', required: true, comments: '生成到的目标文件名')]
-    #[Option(name: 'namespace', type: 'string', comments: '指定扫描的命名空间，多个用半角逗号分隔')]
+    #[Argument(name: 'to', type: \Imi\Cli\ArgType::STRING, required: true, comments: '生成到的目标文件名')]
+    #[Option(name: 'namespace', type: \Imi\Cli\ArgType::STRING, comments: '指定扫描的命名空间，多个用半角逗号分隔')]
     public function api(string $to, ?string $namespace): void
     {
         $directory = $controllerClasses = [];

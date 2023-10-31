@@ -17,7 +17,7 @@ use Imi\Model\RedisModel;
  * @property int    $age
  */
 #[Entity]
-#[RedisEntity(key: 'imi:redisModel:testWithFormatter', member: '{name}', storage: 'hash')]
+#[RedisEntity(key: 'imi:redisModel:testWithFormatter', member: '{name}', storage: \Imi\Model\Enum\RedisStorageMode::HASH)]
 class TestRedisHashWithFormatterModel extends RedisModel
 {
     /**

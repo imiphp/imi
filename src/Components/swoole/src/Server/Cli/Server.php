@@ -29,8 +29,8 @@ class Server extends BaseCommand
      * @param string|bool $d
      */
     #[CommandAction(name: 'start', description: '启动 swoole 服务')]
-    #[Option(name: 'workerNum', type: 'int', comments: '工作进程数量')]
-    #[Option(name: 'daemon', shortcut: 'd', type: 'mixed', comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件')]
+    #[Option(name: 'workerNum', type: \Imi\Cli\ArgType::INT, comments: '工作进程数量')]
+    #[Option(name: 'daemon', shortcut: 'd', type: \Imi\Cli\ArgType::MIXED, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件')]
     public function start(?int $workerNum, $d): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($workerNum, $d): void {
@@ -121,7 +121,7 @@ class Server extends BaseCommand
      * 重启 Worker 进程，不会导致连接断开，可以让项目文件更改生效.
      */
     #[CommandAction(name: 'reload', description: '重载 swoole 服务')]
-    #[Option(name: 'runtime', type: 'boolean', default: false, comments: '是否更新运行时缓存')]
+    #[Option(name: 'runtime', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否更新运行时缓存')]
     public function reload(bool $runtime): void
     {
         if ($runtime)

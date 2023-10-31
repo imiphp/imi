@@ -21,8 +21,8 @@ class Server extends BaseCommand
      * 启动 php 内置服务器.
      */
     #[CommandAction(name: 'start', description: '启动 php 内置服务器')]
-    #[Option(name: 'host', type: 'string', default: '0.0.0.0', comments: '主机名')]
-    #[Option(name: 'port', type: 'int', default: 8080, comments: '端口')]
+    #[Option(name: 'host', type: \Imi\Cli\ArgType::STRING, default: '0.0.0.0', comments: '主机名')]
+    #[Option(name: 'port', type: \Imi\Cli\ArgType::INT, default: 8080, comments: '端口')]
     public function start(string $host, int $port): void
     {
         if (\function_exists('pcntl_signal'))

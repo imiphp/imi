@@ -19,7 +19,7 @@ class TestTool extends BaseCommand
      * 测试.
      */
     #[CommandAction(name: 'test')]
-    #[Option(name: 'code', type: 'int', default: 0)]
+    #[Option(name: 'code', type: \Imi\Cli\ArgType::INT, default: 0)]
     public function test(int $code): void
     {
         var_dump($code);
@@ -27,8 +27,8 @@ class TestTool extends BaseCommand
     }
 
     #[CommandAction(name: 'testBool', dynamicOptions: true)]
-    #[Option(name: 'a1', shortcut: 'a', type: 'boolean', default: true, to: 'x')]
-    #[Option(name: 'b2', shortcut: 'b', type: 'boolean', default: false, to: 'y')]
+    #[Option(name: 'a1', shortcut: 'a', type: \Imi\Cli\ArgType::BOOLEAN, default: true, to: 'x')]
+    #[Option(name: 'b2', shortcut: 'b', type: \Imi\Cli\ArgType::BOOLEAN, default: false, to: 'y')]
     public function testBool(bool $a1, bool $b2, bool $x, bool $y): void
     {
         var_dump($a1, $x);
@@ -38,7 +38,7 @@ class TestTool extends BaseCommand
     }
 
     #[CommandAction(name: 'testArgument', dynamicOptions: true)]
-    #[Argument(name: 'content', type: 'string', default: '', to: 'content2')]
+    #[Argument(name: 'content', type: \Imi\Cli\ArgType::STRING, default: '', to: 'content2')]
     public function testArgument(string $content, string $content2): void
     {
         var_dump($content, $content2);
@@ -46,7 +46,7 @@ class TestTool extends BaseCommand
     }
 
     #[CommandAction(name: 'testNegatable')]
-    #[Option(name: 'test', shortcut: 't', type: 'boolean_negatable', default: false)]
+    #[Option(name: 'test', shortcut: 't', type: \Imi\Cli\ArgType::BOOLEAN_NEGATABLE, default: false)]
     public function testNegatable(bool $test): void
     {
         var_dump($test);

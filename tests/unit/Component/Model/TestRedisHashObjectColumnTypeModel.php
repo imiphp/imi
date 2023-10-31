@@ -13,7 +13,7 @@ use Imi\Model\RedisModel;
  * Test.
  */
 #[Entity]
-#[RedisEntity(key: 'imi:redisModel:typeColumn', storage: 'hash_object')]
+#[RedisEntity(key: 'imi:redisModel:typeColumn', storage: \Imi\Model\Enum\RedisStorageMode::HASH_OBJECT)]
 class TestRedisHashObjectColumnTypeModel extends RedisModel
 {
     #[Column(type: 'json')]

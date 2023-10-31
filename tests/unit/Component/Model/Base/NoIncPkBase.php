@@ -39,7 +39,7 @@ abstract class NoIncPkBase extends Model
      * a_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'a_id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'a_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, unsigned: true)
     ]
     protected ?int $aId = null;
 
@@ -69,7 +69,7 @@ abstract class NoIncPkBase extends Model
      * b_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'b_id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 1, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'b_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 1, unsigned: true)
     ]
     protected ?int $bId = null;
 

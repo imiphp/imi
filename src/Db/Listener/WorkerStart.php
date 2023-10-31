@@ -11,7 +11,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Util\ImiPriority;
 
-#[Listener(eventName: 'IMI.APP_RUN', priority: 19940312, one: true)]
+#[Listener(eventName: 'IMI.APP_RUN', priority: \Imi\Util\ImiPriority::IMI_MAX, one: true)]
 class WorkerStart implements IEventListener
 {
     /**
