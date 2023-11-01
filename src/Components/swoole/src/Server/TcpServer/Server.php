@@ -17,9 +17,8 @@ use Imi\Worker;
 
 /**
  * TCP 服务器类.
- *
- * @Bean(name="TcpServer", env="swoole")
  */
+#[Bean(name: 'TcpServer', env: 'swoole')]
 class Server extends Base implements ISwooleTcpServer
 {
     /**

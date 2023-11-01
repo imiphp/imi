@@ -9,18 +9,14 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller("/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         $this->response->getBody()->write('imi niubi');
@@ -28,9 +24,7 @@ class IndexController extends HttpController
         return $this->response;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function fail(): void
     {
         throw new \RuntimeException('test gg');

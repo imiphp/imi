@@ -7,9 +7,7 @@ namespace Imi\Server\WebSocket\Error;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 
-/**
- * @Bean("WebSocketErrorHandler")
- */
+#[Bean(name: 'WebSocketErrorHandler')]
 class ErrorHandler implements IErrorHandler
 {
     protected ?string $handler = null;

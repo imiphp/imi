@@ -12,9 +12,7 @@ use Imi\Event\IEventListener;
 use Imi\Log\Log;
 use Imi\Pool\PoolManager;
 
-/**
- * @Listener(eventName="IMI.CHECK_POOL_RESOURCE")
- */
+#[Listener(eventName: 'IMI.CHECK_POOL_RESOURCE')]
 class CheckPoolResource implements IEventListener
 {
     /**

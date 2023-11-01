@@ -6,30 +6,27 @@ namespace Imi\SwooleTracker\Example\WebSocketServer\MainServer\Controller;
 
 use Imi\ConnectionContext;
 use Imi\Controller\WebSocketController;
-use Imi\Server\Route\Annotation\WebSocket\WSAction;
-use Imi\Server\Route\Annotation\WebSocket\WSController;
-use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
-use Imi\Server\Route\Annotation\WebSocket\WSRoute;
 use Imi\Server\Server;
+use Imi\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Server\WebSocket\Route\Annotation\WSMiddleware;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 
 /**
  * 数据收发测试.
- *
- * @WSController
  */
+#[WSController]
 class TestController extends WebSocketController
 {
     /**
      * 登录.
      *
-     * @WSAction
-     *
-     * @WSRoute({"action": "login"})
-     *
      * @param mixed $data
      *
      * @return mixed
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'login'])]
     public function login($data)
     {
         ConnectionContext::set('username', $data->username);
@@ -41,14 +38,11 @@ class TestController extends WebSocketController
     /**
      * 发送消息.
      *
-     * @WSAction
-     *
-     * @WSRoute({"action": "send"})
-     *
-     * @WSMiddleware(Imi\SwooleTracker\Example\WebSocketServer\MainServer\Middleware\Test::class)
-     *
      * @param mixed $data
      */
+    #[WSAction]
+    #[WSRoute(condition: ['action' => 'send'])]
+    #[WSMiddleware(middlewares: 'Imi\\SwooleTracker\\Example\\WebSocketServer\\MainServer\\Middleware\\Test')]
     public function send($data): void
     {
         $message = ConnectionContext::get('username') . ':' . $data->message;
@@ -58,14 +52,12 @@ class TestController extends WebSocketController
     /**
      * 多级参数的路由定位.
      *
-     * @WSAction
-     *
-     * @WSRoute({"a.b.c": "test1"})
-     *
      * @param mixed $data
      *
      * @return mixed
      */
+    #[WSAction]
+    #[WSRoute(condition: ['a.b.c' => 'test1'])]
     public function test1($data)
     {
         return ['data' => $data];
@@ -74,14 +66,12 @@ class TestController extends WebSocketController
     /**
      * 多个参数条件的路由定位.
      *
-     * @WSAction
-     *
-     * @WSRoute({"a": "1", "b": 2})
-     *
      * @param mixed $data
      *
      * @return mixed
      */
+    #[WSAction]
+    #[WSRoute(condition: ['a' => '1', 'b' => 2])]
     public function test2($data)
     {
         return ['data' => $data];

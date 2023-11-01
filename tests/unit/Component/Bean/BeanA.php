@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Bean;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("BeanA")
- */
+#[Bean(name: 'BeanA')]
 class BeanA
 {
 }

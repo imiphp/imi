@@ -14,9 +14,8 @@ use Imi\Util\ImiPriority;
 
 /**
  * Close事件后置处理.
- *
- * @Listener(eventName="IMI.WORKERMAN.SERVER.CLOSE", priority=ImiPriority::MIN)
  */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.CLOSE', priority: ImiPriority::MIN)]
 class AfterClose implements IEventListener
 {
     use TConnectionContextRelease;

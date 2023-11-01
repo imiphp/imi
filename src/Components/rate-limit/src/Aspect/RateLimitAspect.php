@@ -8,32 +8,22 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\RateLimit\Annotation\BlockingConsumer;
 use Imi\RateLimit\Annotation\RateLimit;
 use Imi\RateLimit\RateLimiter;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class RateLimitAspect
 {
     /**
      * 处理限流
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         RateLimit::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\RateLimit\Annotation\RateLimit::class])]
+    #[Around]
     public function parse(AroundJoinPoint $joinPoint)
     {
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());

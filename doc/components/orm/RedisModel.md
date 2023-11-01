@@ -24,16 +24,18 @@ use Imi\Model\Annotation\RedisEntity;
 
 /**
  * Test
- * @Entity
- * @RedisEntity(poolName="redis", key="{id}-{name}")
  */
+#[
+    Entity,
+    RedisEntity(poolName: 'redis', key: '{id}-{name}')
+]
 class TestRedisModel extends RedisModel
 {
-	/**
-	 * id
-	 * @Column(name="id")
-	 * @var int
-	 */
+    /**
+     * id
+     * @var int
+     */
+    #[Column(name: 'id')]
     protected $id;
 
     /**
@@ -53,65 +55,65 @@ class TestRedisModel extends RedisModel
      */
     public function setId($id)
     {
-    	$this->id = $id;
-		return $this;
-	}
+        $this->id = $id;
+        return $this;
+    }
 
-	/**
-	 * name
-	 * @Column(name="name")
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * name
+     * @var string
+     */
+    #[Column(name: 'name')]
+    protected $name;
 
-	/**
-	 * 获取 name
-	 *
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * 获取 name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * 赋值 name
-	 * @param string $name name
-	 * @return static
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-		return $this;
-	}
+    /**
+     * 赋值 name
+     * @param string $name name
+     * @return static
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
-	/**
-	 * age
-	 * @Column(name="age")
-	 * @var string
-	 */
-	protected $age;
+    /**
+     * age
+     * @var string
+     */
+    #[Column(name: 'age')]
+    protected $age;
 
-	/**
-	 * 获取 age
-	 *
-	 * @return string
-	 */
-	public function getAge()
-	{
-		return $this->age;
-	}
+    /**
+     * 获取 age
+     *
+     * @return string
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
 
-	/**
-	 * 赋值 age
-	 * @param string $age age
-	 * @return static
-	 */
-	public function setAge($age)
-	{
-		$this->age = $age;
-		return $this;
-	}
+    /**
+     * 赋值 age
+     * @param string $age age
+     * @return static
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+        return $this;
+    }
 }
 ```
 
@@ -173,8 +175,8 @@ $model2 = TestRedisModel::find('123-imi');
 
 // 读取-传参数组成
 $model3 = TestRedisModel::find([
-	'id'	=>	'123',
-	'name'	=>	'imi'
+    'id'    =>    '123',
+    'name'    =>    'imi'
 ]);
 ```
 
@@ -182,12 +184,12 @@ $model3 = TestRedisModel::find([
 
 ```php
 $list = TestRedisModel::select('kkk', '123-imi', [
-	'id'	=>	'123',
-	'name'	=>	'imi'
+    'id'    =>    '123',
+    'name'    =>    'imi'
 ]);
 foreach($list as $item)
 {
-	var_dump($item->toArray());
+    var_dump($item->toArray());
 }
 ```
 
@@ -226,7 +228,7 @@ $model2->safeDelete();
 // 删除键为key和123-imi的数据
 // 123-imi是以RedisEntity中定义为准
 TestRedisModel::deleteBatch('kkk', [
-	'id'	=>	'123',
-	'name'	=>	'imi'
+    'id'    =>    '123',
+    'name'    =>    'imi'
 ]);
 ```

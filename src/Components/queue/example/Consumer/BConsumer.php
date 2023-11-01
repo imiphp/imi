@@ -10,9 +10,7 @@ use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Service\BaseQueueConsumer;
 
-/**
- * @Bean("BConsumer")
- */
+#[Bean(name: 'BConsumer')]
 class BConsumer extends BaseQueueConsumer
 {
     /**

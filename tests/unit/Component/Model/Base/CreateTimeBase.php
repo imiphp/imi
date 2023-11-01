@@ -44,7 +44,7 @@ abstract class CreateTimeBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -194,7 +194,7 @@ abstract class CreateTimeBase extends Model
      * int.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'int', type: 'int', length: 11)
+        \Imi\Model\Annotation\Column(name: 'int', type: \Imi\Cli\ArgType::INT, length: 11)
     ]
     protected ?int $int = null;
 

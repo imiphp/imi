@@ -12,9 +12,7 @@ use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
-/**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", one=true)
- */
+#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', one: true)]
 class OnServerCreateAfter implements IEventListener
 {
     /**

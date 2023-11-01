@@ -11,9 +11,8 @@ use Imi\Db\Mysql\Util\SqlUtil;
 
 /**
  * PDO MySQL驱动.
- *
- * @Bean("PdoMysqlDriver")
  */
+#[Bean(name: 'PdoMysqlDriver')]
 class Driver extends MysqlBase
 {
     use TPdoDriver {

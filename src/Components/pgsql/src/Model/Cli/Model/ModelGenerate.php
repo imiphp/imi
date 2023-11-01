@@ -8,7 +8,6 @@ use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
-use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Config;
 use Imi\Db\Db;
@@ -17,37 +16,31 @@ use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 
-/**
- * @Command("generate")
- */
+#[Command(name: 'generate')]
 class ModelGenerate extends BaseCommand
 {
     /**
      * Postgresql 模型生成.
-     *
      * 如果设置了`include`或`exclude`，则按照相应规则过滤表。
-     *
-     * @CommandAction("pgModel")
-     *
-     * @Argument(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
-     * @Argument(name="baseClass", type=ArgType::STRING, default="Imi\Pgsql\Model\PgModel", comments="生成的Model所继承的基类,默认\Imi\Model\Model,可选")
-     *
-     * @Option(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
-     * @Option(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
-     * @Option(name="prefix", type=ArgType::ARRAY, default={}, comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
-     * @Option(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
-     * @Option(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
-     * @Option(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false")
-     * @Option(name="config", type=ArgType::STRING, default=true, comments="配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true")
-     * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
-     * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
-     * @Option(name="lengthCheck", type=ArgType::BOOLEAN, default=false, comments="是否检查字符串字段长度,可选")
-     * @Option(name="bean", type=ArgType::BOOL, comments="模型对象是否作为 bean 类使用", default=true)
-     * @Option(name="incrUpdate", type=ArgType::BOOL, comments="模型是否启用增量更新", default=false)
      *
      * @param string|bool $override
      * @param string|bool $config
      */
+    #[CommandAction(name: 'pgModel')]
+    #[Argument(name: 'namespace', type: \Imi\Cli\ArgType::STRING, required: true, comments: '生成的Model所在命名空间')]
+    #[Argument(name: 'baseClass', type: \Imi\Cli\ArgType::STRING, default: \Imi\Pgsql\Model\PgModel::class, comments: '生成的Model所继承的基类,默认\\Imi\\Model\\Model,可选')]
+    #[Option(name: 'database', type: \Imi\Cli\ArgType::STRING, comments: '数据库名，不传则取连接池默认配置的库名')]
+    #[Option(name: 'poolName', type: \Imi\Cli\ArgType::STRING, comments: '连接池名称，不传则取默认连接池')]
+    #[Option(name: 'prefix', type: \Imi\Cli\ArgType::ARRAY, default: [], comments: '传值则去除该表前缀，以半角逗号分隔多个前缀')]
+    #[Option(name: 'include', type: \Imi\Cli\ArgType::ARRAY, default: [], comments: '要包含的表名，以半角逗号分隔')]
+    #[Option(name: 'exclude', type: \Imi\Cli\ArgType::ARRAY, default: [], comments: '要排除的表名，以半角逗号分隔')]
+    #[Option(name: 'override', type: \Imi\Cli\ArgType::STRING, default: false, comments: '是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false')]
+    #[Option(name: 'config', type: \Imi\Cli\ArgType::STRING, default: true, comments: '配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true')]
+    #[Option(name: 'basePath', type: \Imi\Cli\ArgType::STRING, comments: '指定命名空间对应的基准路径，可选')]
+    #[Option(name: 'entity', type: \Imi\Cli\ArgType::BOOLEAN, default: true, comments: '序列化时是否使用驼峰命名(true or false),默认true,可选')]
+    #[Option(name: 'lengthCheck', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否检查字符串字段长度,可选')]
+    #[Option(name: 'bean', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型对象是否作为 bean 类使用', default: true)]
+    #[Option(name: 'incrUpdate', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型是否启用增量更新', default: false)]
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $lengthCheck, bool $bean, bool $incrUpdate): void
     {
         $db = Db::getInstance($poolName);
@@ -381,8 +374,7 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 数据库字段类型转PHP的字段类型.
-     *
-     * 返回格式：[显示类型，定义类型]
+     * 返回格式：[显示类型，定义类型].
      */
     private function dbFieldTypeToPhp(array $field): array
     {

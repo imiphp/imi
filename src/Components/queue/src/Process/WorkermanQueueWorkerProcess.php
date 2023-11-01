@@ -13,9 +13,8 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
 {
     /**
      * Workerman 队列消费进程.
-     *
-     * @Process(name="WorkermanQueueWorker")
      */
+    #[Process(name: 'WorkermanQueueWorker')]
     class WorkermanQueueWorkerProcess extends BaseProcess
     {
         public function run(Worker $worker): void

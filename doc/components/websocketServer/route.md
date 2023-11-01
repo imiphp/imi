@@ -8,21 +8,21 @@
 
 ```php
 return [
-	'beans'	=>	[
-		// 配置 http 为了握手，仅 Swoole、Workerman 需要，如果不需要手动判断握手，可以不配置该项
+    'beans'    =>    [
+        // 配置 http 为了握手，仅 Swoole、Workerman 需要，如果不需要手动判断握手，可以不配置该项
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [
                 'HandShakeMiddleware',
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
-		],
-		// WebSocket 配置
-		'WebSocketDispatcher'	=>	[
-			'middlewares'	=>	[
-				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+        ],
+        // WebSocket 配置
+        'WebSocketDispatcher'    =>    [
+            'middlewares'    =>    [
+                \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 

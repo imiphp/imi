@@ -11,14 +11,10 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\Http\MessageUtil;
 
-/**
- * @Controller(prefix="/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @Action
-     */
+    #[Action]
     public function info(): array
     {
         ConnectionContext::use(static function (array $context) {

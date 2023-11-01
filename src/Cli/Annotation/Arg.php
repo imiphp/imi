@@ -12,10 +12,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  *
  * @Target("METHOD")
- *
- * @Parser("Imi\Cli\Parser\ToolParser")
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class Arg extends Option
 {
     /**

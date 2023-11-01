@@ -10,31 +10,21 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 use Imi\Validate\Validator;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AutoValidationAop
 {
     /**
      * 类构造方法-自动验证支持
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION_CONSTRUCT,
-     *     allow={
-     *         \Imi\Validate\Annotation\AutoValidation::class
-     *     }
-     * )
-     *
-     * @After
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION_CONSTRUCT, allow: [\Imi\Validate\Annotation\AutoValidation::class])]
+    #[After]
     public function validateConstruct(JoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();
@@ -78,17 +68,10 @@ class AutoValidationAop
     /**
      * 方法调用-自动验证支持
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\Validate\Annotation\AutoValidation::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Validate\Annotation\AutoValidation::class])]
+    #[Around]
     public function validateMethod(AroundJoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();

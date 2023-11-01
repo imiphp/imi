@@ -11,8 +11,6 @@ use Imi\Rpc\Annotation\RpcService;
 /**
  * gRPC 服务对象注入.
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -20,6 +18,7 @@ use Imi\Rpc\Annotation\RpcService;
  * @property string|null $interface 服务接口
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class GrpcService extends RpcService
 {
     public function __construct(?array $__data = null, string $name = '', array $args = [], ?string $poolName = null, ?string $serviceName = null, ?string $interface = null)

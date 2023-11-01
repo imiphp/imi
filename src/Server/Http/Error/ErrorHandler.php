@@ -7,9 +7,7 @@ namespace Imi\Server\Http\Error;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 
-/**
- * @Bean("HttpErrorHandler")
- */
+#[Bean(name: 'HttpErrorHandler')]
 class ErrorHandler implements IErrorHandler
 {
     protected string $handler = JsonErrorHandler::class;

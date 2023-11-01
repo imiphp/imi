@@ -12,9 +12,7 @@ use Imi\Db\Event\Param\DbPrepareEventParam;
 use Imi\Event\Event;
 use Imi\Util\DelayBeanCallable;
 
-/**
- * @Bean(name="DbQueryLog", recursion=false)
- */
+#[Bean(name: 'DbQueryLog', recursion: false)]
 class DbQueryLog
 {
     /**

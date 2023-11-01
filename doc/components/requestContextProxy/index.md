@@ -33,10 +33,10 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 
 /**
- * @RequestContextProxy(class="Imi\Test\Component\RequestContextProxy\A", name="testRequestContextProxyA")
  * @method mixed add($a, $b)
  * @method static mixed add($a, $b)
  */
+#[RequestContextProxy(class: \Imi\Test\Component\RequestContextProxy\A::class, name: 'testRequestContextProxyA')]
 class RequestContextProxyA extends BaseRequestContextProxy
 {
 

@@ -11,23 +11,17 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller("/proxy/")
- */
+#[Controller(prefix: '/proxy/')]
 class ProxyController extends HttpController
 {
-    /**
-     * @Inject("GrpcHttpProxy")
-     */
+    #[Inject(name: 'GrpcHttpProxy')]
     protected GrpcHttpProxy $grpcHttpProxy;
 
     /**
-     * @Action
-     *
-     * @Route("grpc/{service}/{method}")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: 'grpc/{service}/{method}')]
     public function proxy(string $service, string $method)
     {
         return $this->grpcHttpProxy->proxy('grpc', $this->request, $this->response, $service, $method);

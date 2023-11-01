@@ -19,18 +19,14 @@ use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
 use Imi\Util\Stream\MemoryStream;
 
-/**
- * @Controller(prefix="/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         $response = RequestContext::get('response');
@@ -39,11 +35,8 @@ class IndexController extends HttpController
         return $response;
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/route/{id}")
-     */
+    #[Action]
+    #[Route(url: '/route/{id}')]
     public function route(int $id): array
     {
         return [
@@ -51,15 +44,10 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @Route(autoEndSlash=true)
-     *
-     * @View(renderType="html")
-     *
-     * @HtmlView(template="html")
-     */
+    #[Action]
+    #[Route(autoEndSlash: true)]
+    #[View(renderType: 'html')]
+    #[HtmlView(template: 'html')]
     public function html(int $time): array
     {
         return [
@@ -67,13 +55,9 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @View(renderType="html")
-     *
-     * @HtmlView(baseDir="index/")
-     */
+    #[Action]
+    #[View(renderType: 'html')]
+    #[HtmlView(baseDir: 'index/')]
     public function html2(int $time): array
     {
         return [
@@ -82,10 +66,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function renderHtml1()
     {
         return $this->__render('test/a', [
@@ -94,10 +77,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function renderHtml2()
     {
         return $this->__render(\dirname(__DIR__, 2) . '/template/b.html', [
@@ -106,10 +88,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function info()
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -127,9 +108,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function superGlobalsInfo(): array
     {
         return [
@@ -143,9 +122,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function info2(string $get, string $post, int $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -158,12 +135,11 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param mixed $get
      * @param mixed $post
      * @param mixed $parsedBody
      */
+    #[Action]
     public function info3($get, $post, $parsedBody, int $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -178,10 +154,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function cookie()
     {
         return RequestContext::get('response')->withCookie('a', '1')
@@ -195,10 +170,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function headers()
     {
         return RequestContext::get('response')->withHeader('a', '1')
@@ -208,46 +182,35 @@ class IndexController extends HttpController
                                          ->withoutHeader('c');
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/middleware")
-     *
-     * @Middleware(\Imi\Fpm\Test\Web\Middleware\Middleware1::class)
-     * @Middleware({
-     *     \Imi\Fpm\Test\Web\Middleware\Middleware2::class,
-     *     \Imi\Fpm\Test\Web\Middleware\Middleware3::class
-     * })
-     * @Middleware("@test")
-     */
+    #[Action]
+    #[Route(url: '/middleware')]
+    #[Middleware(middlewares: 'Imi\\Fpm\\Test\\Web\\Middleware\\Middleware1')]
+    #[Middleware(middlewares: ['Imi\\Fpm\\Test\\Web\\Middleware\\Middleware2', 'Imi\\Fpm\\Test\\Web\\Middleware\\Middleware3'])]
+    #[Middleware(middlewares: '@test')]
     public function middleware(): array
     {
         return [];
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function redirect()
     {
         return RequestContext::get('response')->redirect('/', StatusCode::MOVED_PERMANENTLY);
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function download(?string $contentType = null, ?string $outputFileName = null)
     {
         return RequestContext::get('response')->sendFile(__FILE__, $contentType, $outputFileName);
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function upload(): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
@@ -268,11 +231,8 @@ class IndexController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
-     */
+    #[Action]
+    #[Route(url: '/a/{id:[0-9]{1,3}}/{page:\\d+}')]
     public function regularExpression1(int $id, int $page): array
     {
         return [
@@ -281,11 +241,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     *
-     * @Route("/a/{name:[a-zA-Z]+}/{page}")
-     */
+    #[Action]
+    #[Route(url: '/a/{name:[a-zA-Z]+}/{page}')]
     public function regularExpression2(string $name, int $page): array
     {
         return [
@@ -294,9 +251,7 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function singletonRequest(): array
     {
         return [
@@ -311,10 +266,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function singletonResponse1()
     {
         $response = ResponseProxy::__getProxyInstance();
@@ -323,23 +277,18 @@ class IndexController extends HttpController
         return $response;
     }
 
-    /**
-     * @Action
-     *
-     * @View(renderType="html")
-     */
+    #[Action]
+    #[View(renderType: 'html')]
     public function singletonResponse2(): void
     {
         ResponseProxy::__setProxyInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
 
     /**
-     * @Action
-     *
-     * @Route(url="/type/{id}/{name}/{page}")
-     *
      * @return array
      */
+    #[Action]
+    #[Route(url: '/type/{id}/{name}/{page}')]
     public function type(int $id, string $name, int $page)
     {
         return compact('id', 'name', 'page');
@@ -347,31 +296,26 @@ class IndexController extends HttpController
 
     /**
      * 测试重复路由警告.
-     *
-     * @Action
-     *
-     * @Route("/duplicated")
      */
+    #[Action]
+    #[Route(url: '/duplicated')]
     public function duplicated1(): void
     {
     }
 
     /**
      * 测试重复路由警告.
-     *
-     * @Action
-     *
-     * @Route("/duplicated")
      */
+    #[Action]
+    #[Route(url: '/duplicated')]
     public function duplicated2(): void
     {
     }
 
     /**
      * SSE.
-     *
-     * @Action
      */
+    #[Action]
     public function sse(): void
     {
         $this->response->setResponseBodyEmitter(new class() extends SseEmitter {

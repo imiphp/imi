@@ -12,13 +12,9 @@ use Imi\Enum\BaseEnum;
  */
 class TsRank extends BaseEnum
 {
-    /**
-     * @EnumItem(text="ts_rank")
-     */
+    #[EnumItem(text: 'ts_rank')]
     public const TS_RANK = 'ts_rank';
 
-    /**
-     * @EnumItem(text="ts_rank_cd")
-     */
+    #[EnumItem(text: 'ts_rank_cd')]
     public const TS_RANK_CD = 'ts_rank_cd';
 }

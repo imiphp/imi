@@ -35,14 +35,13 @@ use Imi\Bean\Annotation\Parser;
  * 示例注解
  * @Annotation
  * @Target("METHOD")
- * @Parser("\Imi\Bean\Parser\NullParser")
  *
  * // 下面是IDE提示注释
  * @property string $name 随便定义的属性
  * @property int $age 随便定义的属性
  */
-// 下面的是原生注解定义
 #[\Attribute(\Attribute::TARGET_METHOD)]
+#[Parser(className: \Imi\Bean\Parser\NullParser::class)]
 class MyAnnotation extends Base
 {
     /**
@@ -84,11 +83,6 @@ use ImiApp\Annotation\MyAnnotation;
 #[Bean(['Test'])]
 class Test
 {
-    /**
-     * @MyAnnotation("a")
-     * @MyAnnotation(name="b", age=11)
-     */
-    // 下面是原生注解用法
     #[MyAnnotation(name: 'a')]
     #[MyAnnotation(name: 'b', age: 11)]
     public function aaa()
@@ -113,22 +107,17 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\PointCutType;
 use Imi\Aop\AroundJoinPoint;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class TransactionAop
 {
     /**
      * 自动事务支持
-     * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             \ImiApp\Annotation\MyAnnotation::class
-     *         }
-     * )
-     * @Around
      * @return mixed
      */
+    #[
+        PointCut(type: PointCutType::ANNOTATION, allow: [\ImiApp\Annotation\MyAnnotation::class]),
+        Around
+    ]
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {
         // 前置操作

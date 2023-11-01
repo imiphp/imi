@@ -12,10 +12,9 @@ class TestTAutoInject
     use TAutoInject;
 
     /**
-     * @Inject("TestInjectValue")
-     *
      * @var \Imi\Test\Component\Inject\Classes\TestInjectValue
      */
+    #[Inject(name: 'TestInjectValue')]
     protected $testInjectValue;
 
     public function getTestInjectValue(): TestInjectValue

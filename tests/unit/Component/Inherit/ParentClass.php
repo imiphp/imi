@@ -12,64 +12,44 @@ use Imi\Enum\Annotation\EnumItem;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
-/**
- * @Entity
- *
- * @Bean
- */
+#[Entity]
+#[Bean]
 class ParentClass
 {
     /**
-     * @Column
-     *
-     * @Callback(class="Test", method="test")
-     *
      * @var int
      */
+    #[Column]
+    #[Callback(class: 'Test', method: 'test')]
     public $id;
 
     /**
-     * @Column
-     *
-     * @Callback(class="Test", method="test")
-     *
      * @var int
      */
+    #[Column]
+    #[Callback(class: 'Test', method: 'test')]
     public $id2;
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const CCC = 1;
 
-    /**
-     * @EnumItem
-     */
+    #[EnumItem]
     public const CCC2 = 1;
 
-    /**
-     * @FilterArg
-     *
-     * @Transaction
-     */
+    #[FilterArg]
+    #[Transaction]
     public function test(): void
     {
     }
 
-    /**
-     * @FilterArg
-     *
-     * @Transaction
-     */
+    #[FilterArg]
+    #[Transaction]
     public function test2(): void
     {
     }
 
-    /**
-     * @FilterArg
-     *
-     * @Transaction
-     */
+    #[FilterArg]
+    #[Transaction]
     public function test3(): void
     {
     }

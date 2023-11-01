@@ -62,17 +62,7 @@
 ## 用法示例
 
 ```php
-/*
- * @Cacheable(
- *   key="index:{page}",
- *   ttl=10,
- *   lockable=@Lockable(
- *     id="index:{page}",
- *     waitTimeout=999999,
- *   ),
- *   preventBreakdown=true,
- * )
- */
+#[Cacheable(key: 'index:{page}', ttl: 10, lockable: new Lockable(id: 'index:{page}', waitTimeout: 999999), preventBreakdown: true)]
 ```
 
 ### @DbInject

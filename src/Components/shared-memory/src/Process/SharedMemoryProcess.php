@@ -10,9 +10,7 @@ use Imi\Swoole\Process\BaseProcess;
 use Imi\Util\Imi;
 use Yurun\Swoole\SharedMemory\Server;
 
-/**
- * @Process(name="sharedMemory", unique=true)
- */
+#[Process(name: 'sharedMemory', unique: true)]
 class SharedMemoryProcess extends BaseProcess
 {
     public function run(\Swoole\Process $process): void

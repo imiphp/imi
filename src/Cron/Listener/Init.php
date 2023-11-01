@@ -10,11 +10,8 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\ImiPriority;
 
-/**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER", priority=ImiPriority::IMI_MIN, one=true)
- */
+#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
 class Init implements IEventListener
 {
     /**

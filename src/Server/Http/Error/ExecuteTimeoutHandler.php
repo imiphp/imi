@@ -12,9 +12,8 @@ use Imi\Util\Stream\MemoryStream;
 
 /**
  * 执行超时处理器.
- *
- * @Bean("ExecuteTimeoutHandler")
  */
+#[Bean(name: 'ExecuteTimeoutHandler')]
 class ExecuteTimeoutHandler implements IExecuteTimeoutHandler
 {
     /**

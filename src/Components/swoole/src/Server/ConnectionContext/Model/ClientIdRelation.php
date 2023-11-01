@@ -10,23 +10,20 @@ use Imi\Swoole\Model\MemoryTableModel;
 
 /**
  * clientId关联表，主键为clientId.
- *
- * @MemoryTable(name="imiClientIdRelation")
  */
+#[MemoryTable(name: 'imiClientIdRelation')]
 class ClientIdRelation extends MemoryTableModel
 {
     /**
      * worker进程ID.
-     *
-     * @Column(name="workerId", type="int")
      */
+    #[Column(name: 'workerId', type: \Imi\Cli\ArgType::INT)]
     protected int $workerId = 0;
 
     /**
      * 服务器名.
-     *
-     * @Column(name="serverName", type="string", length=128)
      */
+    #[Column(name: 'serverName', type: \Imi\Cli\ArgType::STRING, length: 128)]
     protected string $serverName = '';
 
     /**

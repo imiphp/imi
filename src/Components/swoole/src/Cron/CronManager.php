@@ -26,9 +26,8 @@ use function Yurun\Swoole\Coroutine\goWait;
 
 /**
  * 定时任务管理器.
- *
- * @Bean(name="CronManager", recursion=false)
  */
+#[Bean(name: 'CronManager', recursion: false)]
 class CronManager implements ICronManager
 {
     /**

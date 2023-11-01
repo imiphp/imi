@@ -12,23 +12,19 @@ use Imi\Event\IEventListener;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
-/**
- * @Listener("IMI.PIPE_MESSAGE.cronTask")
- */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.cronTask')]
 class WorkerPartPipeMessage implements IEventListener
 {
     /**
-     * @Inject("CronManager")
-     *
      * @var \Imi\Cron\CronManager
      */
+    #[Inject(name: 'CronManager')]
     protected $cronManager;
 
     /**
-     * @Inject("CronWorker")
-     *
      * @var \Imi\Cron\CronWorker
      */
+    #[Inject(name: 'CronWorker')]
     protected $cronWorker;
 
     /**

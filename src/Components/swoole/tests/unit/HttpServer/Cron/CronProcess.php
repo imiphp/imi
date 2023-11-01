@@ -7,9 +7,7 @@ namespace Imi\Swoole\Test\HttpServer\Cron;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Contract\ICronTask;
 
-/**
- * @Cron(id="CronProcess1", second="3n", type="process")
- */
+#[Cron(id: 'CronProcess1', second: '3n', type: \Imi\Swoole\Cron\Consts\CronTaskType::PROCESS)]
 class CronProcess implements ICronTask
 {
     /**

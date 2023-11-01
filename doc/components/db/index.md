@@ -272,9 +272,7 @@ Db::getInstance()->rollBack();
 ```php
 use Imi\Db\Annotation\Transaction;
 
-/**
- * @Transaction
- */
+#[Transaction]
 public function create()
 {
     // 你的代码，抛异常就回滚，没异常就提交
@@ -973,8 +971,8 @@ Db::query()->table('tb_test')->aggregate('test', 'id');
 ```php
 // insert into tb_test(name, age) values('yurun', 666)
 $result = Db::query()->table('tb_test')->insert([
-    'name'  =>	'yurun',
-    'age'	=>	666,
+    'name'  =>    'yurun',
+    'age'    =>    666,
 ]);
 
 // insert into tb_test values('yurun', 666)
@@ -1002,8 +1000,8 @@ $result->getAffectedRows(); // 获取影响行数
 ```php
 $query = Db::query()->table('tb_test');
 $sql = $query->buildInsertSql([
-    'name'  =>	'yurun',
-    'age'	=>	666,
+    'name'  =>    'yurun',
+    'age'    =>    666,
 ]); // 构建 SQL
 $binds = $query->getBinds(); // 获取预处理绑定的值
 ```
@@ -1053,8 +1051,8 @@ $binds = $query->getBinds(); // 获取预处理绑定的值
 ```php
 // update tb_test set name = 'yurun', age = 666 where id = 1
 $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
-    'name'	=>	'yurun',
-    'age'	=>	666,
+    'name'    =>    'yurun',
+    'age'    =>    666,
     // JSON 类型参数
     'field1->name'        => 'bbb', // 修改 name
     'field1->list2'       => [1, 2, 3], // 修改 list2，支持数组、对象
@@ -1071,8 +1069,8 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
 ```php
 $query = Db::query()->table('tb_test')->where('id', '=', 1);
 $sql = $query->buildUpdateSql([
-    'name'	=>	'yurun',
-    'age'	=>	666,
+    'name'    =>    'yurun',
+    'age'    =>    666,
     // JSON 类型参数
     'field1->name'        => 'bbb', // 修改 name
     'field1->list2'       => [1, 2, 3], // 修改 list2，支持数组、对象
@@ -1088,9 +1086,9 @@ $binds = $query->getBinds(); // 获取预处理绑定的值
 ```php
 // replace into tb_test set id = 1, name = 'yurun', age = 666
 $result = Db::query()->table('tb_test')->replace([
-    'id'	=>	1,
-    'name'	=>	'yurun',
-    'age'	=>	666,
+    'id'    =>    1,
+    'name'    =>    'yurun',
+    'age'    =>    666,
 ]);
 ```
 
@@ -1101,9 +1099,9 @@ $result = Db::query()->table('tb_test')->replace([
 ```php
 $query = Db::query()->table('tb_test');
 $sql = $query->buildReplaceSql([
-    'id'	=>	1,
-    'name'	=>	'yurun',
-    'age'	=>	666,
+    'id'    =>    1,
+    'name'    =>    'yurun',
+    'age'    =>    666,
 ]); // 构建 SQL
 $binds = $query->getBinds(); // 获取预处理绑定的值
 ```
@@ -1204,8 +1202,8 @@ $result = Db::query()->whereRaw('id = :val')->bindValue(':val', 123);
 
 // 批量绑定
 $result = Db::query()->bindValues([
-    ':name'	=>	'yurun',
-    ':age'	=>	666,
+    ':name'    =>    'yurun',
+    ':age'    =>    666,
 ])->execute('select * from tb_test where name = :name and age = :age');
 ```
 

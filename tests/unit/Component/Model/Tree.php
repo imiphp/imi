@@ -11,11 +11,9 @@ use Imi\Test\Component\Model\Base\TreeBase;
 
 /**
  * Tree.
- *
- * @Inherit
- *
- * @TreeModel
  */
+#[Inherit]
+#[TreeModel]
 class Tree extends TreeBase
 {
     use TTreeModel;

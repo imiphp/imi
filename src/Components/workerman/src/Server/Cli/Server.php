@@ -9,7 +9,6 @@ use Imi\Cache\CacheManager;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
-use Imi\Cli\ArgType;
 use Imi\Cli\CliApp;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\ImiCommand;
@@ -23,20 +22,16 @@ use Imi\Workerman\Server\Server as WorkermanServerUtil;
 use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Worker;
 
-/**
- * @Command("workerman")
- */
+#[Command(name: 'workerman')]
 class Server extends BaseCommand
 {
     /**
      * 开启服务
-     *
-     * @CommandAction(name="start", description="启动 workerman 服务")
-     *
-     * @Option(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
-     * @Option(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
-     * @Option(name="daemon", shortcut="d", type=ArgType::BOOL, required=false, default=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式")
      */
+    #[CommandAction(name: 'start', description: '启动 workerman 服务')]
+    #[Option(name: 'name', type: \Imi\Cli\ArgType::STRING, comments: '要启动的服务器名')]
+    #[Option(name: 'workerNum', type: \Imi\Cli\ArgType::INT, comments: '工作进程数量')]
+    #[Option(name: 'daemon', shortcut: 'd', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式')]
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
         (function () use ($name, $workerNum, $d): void {
@@ -134,9 +129,8 @@ class Server extends BaseCommand
 
     /**
      * 停止服务
-     *
-     * @CommandAction(name="stop", description="停止 workerman 服务")
      */
+    #[CommandAction(name: 'stop', description: '停止 workerman 服务')]
     public function stop(): void
     {
         WorkermanServerUtil::initWorkermanWorker();

@@ -12,20 +12,16 @@ use Imi\Test\Component\Model\Base\MemberBase;
 
 /**
  * Member.
- *
- * @Inherit
- *
- * @Serializables(mode="deny", fields={"password"})
  */
+#[Inherit]
+#[Serializables(mode: 'deny', fields: ['password'])]
 class Member extends MemberBase
 {
     /**
-     * @Column(virtual=true)
-     *
-     * @JsonNotNull
-     *
      * @var null
      */
+    #[Column(virtual: true)]
+    #[JsonNotNull]
     protected $notInJson = null;
 
     /**

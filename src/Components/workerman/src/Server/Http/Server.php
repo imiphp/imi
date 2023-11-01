@@ -19,9 +19,7 @@ use Imi\Workerman\Server\Protocol\WorkermanHttp;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Protocols\Http\Response;
 
-/**
- * @Bean("WorkermanHttpServer")
- */
+#[Bean(name: 'WorkermanHttpServer')]
 class Server extends Base
 {
     /**

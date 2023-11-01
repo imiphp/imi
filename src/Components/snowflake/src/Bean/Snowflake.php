@@ -6,9 +6,7 @@ namespace Imi\Snowflake\Bean;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("Snowflake")
- */
+#[Bean(name: 'Snowflake')]
 class Snowflake
 {
     /**

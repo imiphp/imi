@@ -37,7 +37,7 @@ abstract class TestWithMemberBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -67,7 +67,7 @@ abstract class TestWithMemberBase extends Model
      * member_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'member_id', type: 'int', length: 10, nullable: false, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'member_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, unsigned: true)
     ]
     protected ?int $memberId = null;
 

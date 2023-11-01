@@ -11,14 +11,11 @@ use Imi\Workerman\Server\Server;
 
 /**
  * 服务器工具类.
- *
- * @Controller("/serverUtil/")
  */
+#[Controller(prefix: '/serverUtil/')]
 class ServerUtilController extends HttpController
 {
-    /**
-     * @Action
-     */
+    #[Action]
     public function getServer(): array
     {
         $result = [];
@@ -32,9 +29,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function sendMessage(): array
     {
         $data = [
@@ -51,9 +46,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function send(string $flag): array
     {
         $data = [
@@ -70,9 +63,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function sendToGroup(): array
     {
         $data = [
@@ -87,9 +78,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function close(string $flag): array
     {
         return [

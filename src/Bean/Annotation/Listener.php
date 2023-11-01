@@ -11,13 +11,12 @@ namespace Imi\Bean\Annotation;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Bean\Parser\ListenerParser")
- *
  * @property string $eventName 事件名
  * @property int    $priority  优先级，越大越先执行
  * @property bool   $one       事件仅触发一次
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[\Imi\Bean\Annotation\Parser(className: \Imi\Bean\Parser\ListenerParser::class)]
 class Listener extends Base
 {
     /**

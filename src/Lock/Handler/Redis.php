@@ -11,11 +11,9 @@ use Imi\Redis\RedisManager;
 
 /**
  * Redis + Lua 实现的分布式锁，需要 Redis >= 2.6.0.
- *
- * Lua脚本来自：https://blog.csdn.net/hry2015/article/details/74937375
- *
- * @Bean("RedisLock")
+ * Lua脚本来自：https://blog.csdn.net/hry2015/article/details/74937375.
  */
+#[Bean(name: 'RedisLock')]
 class Redis extends BaseLock
 {
     /**

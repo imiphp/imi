@@ -10,18 +10,15 @@ use Imi\Test\Component\Model\Base\MemberBase;
 
 /**
  * tb_member.
- *
- * @Inherit
  */
+#[Inherit]
 class MemberSerializable extends MemberBase
 {
     /**
      * 密码.
      * password.
-     *
-     * @Inherit
-     *
-     * @Serializable(false)
      */
+    #[Inherit]
+    #[Serializable(allow: false)]
     protected ?string $password = null;
 }

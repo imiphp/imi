@@ -11,9 +11,8 @@ use Imi\RequestContext;
 
 /**
  * Message事件前置处理.
- *
- * @Listener(eventName="IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeMessage implements IEventListener
 {
     /**

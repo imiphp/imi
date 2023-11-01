@@ -14,8 +14,8 @@
 
 ```php
 $testModel = TestModel::newInstance([
-    'a'	=>	'abc',
-    'b'	=>	'def',
+    'a'    =>    'abc',
+    'b'    =>    'def',
 ]);
 ```
 
@@ -24,8 +24,8 @@ $testModel = TestModel::newInstance([
 ```php
 $testModel = TestModel::newInstance();
 $testModel->set([
-    'a'	=>	'abc',
-    'b'	=>	'def',
+    'a'    =>    'abc',
+    'b'    =>    'def',
 ]);
 ```
 
@@ -236,7 +236,7 @@ $list = TestModel::select();
 
 // 带 where 条件的查询，id = 1
 $list = TestModel::select([
-    'id'	=>	1
+    'id'    =>    1
 ]);
 
 // where 回调条件
@@ -421,7 +421,7 @@ TestModel::sum('id');
 ```php
 // update tb_test set a = 'abc' where id > 5
 TestModel::updateBatch([
-        'a'	=> 'abc',
+        'a'    => 'abc',
     ], [
         'id' => ['>', 5]
     ]);

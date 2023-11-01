@@ -8,22 +8,19 @@ use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
 
-/**
- * @Controller("/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
-     * @View(renderType="html", template="index")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
+    #[View(renderType: 'html')]
+    #[HtmlView(template: 'index')]
     public function index()
     {
         $datetime = date('Y-m-d H:i:s');
@@ -34,12 +31,11 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
-     * @View(renderType="html", template="test")
-     *
      * @return mixed
      */
+    #[Action]
+    #[View(renderType: 'html')]
+    #[HtmlView(template: 'test')]
     public function test()
     {
         return [
@@ -48,10 +44,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function ping()
     {
         $this->response->getBody()->write('pong');

@@ -11,8 +11,6 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
 /**
  * RPC 服务对象注入.
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -21,6 +19,7 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
  * @property string|null $serviceName 服务名称
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class RpcService extends Inject
 {
     public function __construct(?array $__data = null, string $name = '', array $args = [], ?string $poolName = null, ?string $serviceName = null)

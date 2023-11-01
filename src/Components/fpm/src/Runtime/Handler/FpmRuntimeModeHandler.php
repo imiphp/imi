@@ -10,9 +10,7 @@ use Imi\Config;
 use Imi\Core\Runtime\Contract\IRuntimeModeHandler;
 use Imi\Event\Event;
 
-/**
- * @Bean("FpmRuntimeModeHandler")
- */
+#[Bean(name: 'FpmRuntimeModeHandler')]
 class FpmRuntimeModeHandler implements IRuntimeModeHandler
 {
     /**

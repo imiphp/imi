@@ -19,25 +19,16 @@ use Imi\RequestContext;
 use Imi\Util\ClassObject;
 use Imi\Util\Http\Consts\RequestHeader;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class JWTValidationAop
 {
     /**
      * 环绕注入.
      *
-     * @PointCut(
-     *     type=\Imi\Aop\PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\JWT\Annotation\JWTValidation::class,
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\JWT\Annotation\JWTValidation::class])]
+    #[Around]
     public function around(AroundJoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();

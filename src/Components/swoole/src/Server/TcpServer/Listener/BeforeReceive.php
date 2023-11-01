@@ -13,9 +13,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * Receive事件前置处理.
- *
- * @ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server", eventName="receive", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\TcpServer\Server::class, eventName: 'receive', priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeReceive implements IReceiveEventListener
 {
     /**

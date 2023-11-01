@@ -13,16 +13,13 @@ use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\ImiPriority;
 
-/**
- * @Process(name="TestProcess")
- */
+#[Process(name: 'TestProcess')]
 class SwooleTestProcess extends BaseProcess
 {
     /**
-     * @Inject("TestConsumerSwoole")
-     *
      * @var \KafkaApp\Kafka\Test\TestConsumerSwoole
      */
+    #[Inject(name: 'TestConsumerSwoole')]
     protected $testConsumer;
 
     private bool $running = false;

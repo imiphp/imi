@@ -16,10 +16,9 @@ use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 
 /**
- * @Bean(name="CronScheduler", recursion=false)
- *
- * 定时任务调度器
+ * 定时任务调度器.
  */
+#[Bean(name: 'CronScheduler', recursion: false)]
 class Scheduler extends \Imi\Cron\Scheduler
 {
     /**

@@ -8,10 +8,9 @@ use Imi\Facade\Annotation\Facade;
 use Imi\Facade\BaseFacade;
 
 /**
- * @Facade("FacadeA")
- *
  * @method static mixed add($a, $b)
  */
+#[Facade(class: 'FacadeA')]
 class FacadeA extends BaseFacade
 {
 }

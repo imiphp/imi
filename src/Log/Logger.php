@@ -10,9 +10,7 @@ use Imi\Config;
 use Imi\Util\ClassObject;
 use Monolog\Handler\FormattableHandlerInterface;
 
-/**
- * @Bean("Logger")
- */
+#[Bean(name: 'Logger')]
 class Logger
 {
     /**

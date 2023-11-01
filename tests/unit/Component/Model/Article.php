@@ -18,25 +18,18 @@ use Imi\Test\Component\Model\Base\ArticleBase;
 /**
  * Article.
  *
- * @Inherit
- *
- * @Entity(camel=false)
- *
  * @property ArticleEx|null $ex
  * @property ArticleEx|null $exWith
  * @property ArticleEx|null $queryRelationsList
  */
+#[Inherit]
+#[Entity(camel: false)]
 class Article extends ArticleBase
 {
-    /**
-     * @OneToOne(model="ArticleEx", poolName=RelationPoolName::PARENT)
-     *
-     * @JoinFrom("id")
-     *
-     * @JoinTo("article_id")
-     *
-     * @AutoSave
-     */
+    #[OneToOne(model: 'ArticleEx')]
+    #[JoinFrom(field: 'id')]
+    #[JoinTo(field: 'article_id')]
+    #[AutoSave]
     protected ?ArticleEx $ex = null;
 
     /**
@@ -59,13 +52,9 @@ class Article extends ArticleBase
         return $this;
     }
 
-    /**
-     * @OneToOne(model="ArticleEx", with=true, poolName=RelationPoolName::RELATION)
-     *
-     * @JoinFrom("id")
-     *
-     * @JoinTo("article_id")
-     */
+    #[OneToOne(model: 'ArticleEx', with: true, poolName: RelationPoolName::RELATION)]
+    #[JoinFrom(field: 'id')]
+    #[JoinTo(field: 'article_id')]
     protected ?ArticleEx $exWith = null;
 
     /**
@@ -89,18 +78,13 @@ class Article extends ArticleBase
     }
 
     /**
-     * @OneToOne(model="ArticleEx", poolName="maindb")
-     *
-     * @JoinFrom("id")
-     *
-     * @JoinTo("article_id")
-     *
-     * @AutoSelect(false)
-     *
-     * @JsonNotNull
-     *
      * @var ArticleEx|null
      */
+    #[OneToOne(model: 'ArticleEx', poolName: 'maindb')]
+    #[JoinFrom(field: 'id')]
+    #[JoinTo(field: 'article_id')]
+    #[AutoSelect(status: false)]
+    #[JsonNotNull]
     protected $queryRelationsList;
 
     /**

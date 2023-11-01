@@ -12,9 +12,7 @@ use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Contract\IWorkermanServerUtil;
 use Workerman\Connection\TcpConnection;
 
-/**
- * @Bean(name="LocalServerUtil", env="workerman")
- */
+#[Bean(name: 'LocalServerUtil', env: 'workerman')]
 class LocalServerUtil implements IWorkermanServerUtil
 {
     /**

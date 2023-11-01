@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Imi\Test\Component\Partial\Partial
-;
+namespace Imi\Test\Component\Partial\Partial;
 
 use Imi\Bean\Annotation\Partial;
 
-/**
- * @Partial(Imi\Test\Component\Partial\Classes\PartialClassA::class)
- */
+#[Partial(class: \Imi\Test\Component\Partial\Classes\PartialClassA::class)]
 trait TPartialClassA1
 {
     public int $test2Value = 2;

@@ -12,9 +12,8 @@ use Imi\Util\ImiPriority;
 
 /**
  * Error事件后置处理.
- *
- * @Listener(eventName="IMI.WORKERMAN.SERVER.ERROR", priority=ImiPriority::MIN)
  */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.ERROR', priority: ImiPriority::MIN)]
 class AfterError implements IEventListener
 {
     /**

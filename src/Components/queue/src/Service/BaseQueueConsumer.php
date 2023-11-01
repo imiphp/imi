@@ -13,9 +13,7 @@ use Imi\Queue\Driver\IQueueDriver;
  */
 abstract class BaseQueueConsumer
 {
-    /**
-     * @Inject("imiQueue")
-     */
+    #[Inject(name: 'imiQueue')]
     protected QueueService $imiQueue;
 
     /**

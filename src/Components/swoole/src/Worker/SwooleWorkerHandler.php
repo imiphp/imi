@@ -15,9 +15,7 @@ use Imi\Swoole\Util\Coroutine;
 
 use function Swoole\Coroutine\defer;
 
-/**
- * @Bean("SwooleWorkerHandler")
- */
+#[Bean(name: 'SwooleWorkerHandler')]
 class SwooleWorkerHandler implements ISwooleWorker
 {
     /**

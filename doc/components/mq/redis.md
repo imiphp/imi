@@ -96,9 +96,7 @@ use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Driver\IQueueDriver;
 use Imi\Queue\Service\BaseQueueConsumer;
 
-/**
- * @Bean("AConsumer")
- */
+#[Bean(name: 'AConsumer')]
 class AConsumer extends BaseQueueConsumer
 {
     /**

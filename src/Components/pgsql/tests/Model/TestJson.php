@@ -9,9 +9,8 @@ use Imi\Pgsql\Test\Model\Base\TestJsonBase;
 
 /**
  * test.
- *
- * @Inherit
  */
+#[Inherit]
 class TestJson extends TestJsonBase
 {
 }

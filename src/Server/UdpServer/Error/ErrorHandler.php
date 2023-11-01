@@ -7,9 +7,7 @@ namespace Imi\Server\UdpServer\Error;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 
-/**
- * @Bean("UdpErrorHandler")
- */
+#[Bean(name: 'UdpErrorHandler')]
 class ErrorHandler implements IErrorHandler
 {
     protected ?string $handler = null;

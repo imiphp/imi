@@ -23,14 +23,10 @@ use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/**
- * @Bean(name="ActionMiddleware", recursion=false)
- */
+#[Bean(name: 'ActionMiddleware', recursion: false)]
 class ActionMiddleware implements MiddlewareInterface
 {
-    /**
-     * @ServerInject("View")
-     */
+    #[ServerInject(name: 'View')]
     protected View $view;
 
     /**

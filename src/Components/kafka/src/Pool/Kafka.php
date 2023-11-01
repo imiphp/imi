@@ -6,9 +6,7 @@ namespace Imi\Kafka\Pool;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("Kafka")
- */
+#[Bean(name: 'Kafka')]
 class Kafka
 {
     /**

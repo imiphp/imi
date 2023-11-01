@@ -13,9 +13,7 @@ use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Workerman\Server\Base;
 use Workerman\Connection\TcpConnection;
 
-/**
- * @Bean("WorkermanTcpServer")
- */
+#[Bean(name: 'WorkermanTcpServer')]
 class Server extends Base implements ITcpServer
 {
     /**

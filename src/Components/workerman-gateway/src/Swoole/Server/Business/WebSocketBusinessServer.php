@@ -22,9 +22,7 @@ use Yurun\Swoole\CoPool\CoPool;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
 {
-    /**
-     * @Bean("SwooleGatewayWebSocketBusinessServer")
-     */
+    #[Bean(name: 'SwooleGatewayWebSocketBusinessServer')]
     class WebSocketBusinessServer extends \Imi\Swoole\Server\WebSocket\Server
     {
         /**

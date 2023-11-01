@@ -9,8 +9,6 @@ use Imi\Bean\Annotation\Inherit;
 /**
  * 回调注解，返回该回调的返回值
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -18,6 +16,7 @@ use Imi\Bean\Annotation\Inherit;
  * @property callable $callable 回调
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class CallableValue extends BaseInjectValue
 {
     /**

@@ -26,9 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-/**
- * @Bean
- */
+#[Bean]
 class TestMiddleware implements MiddlewareInterface
 {
     /**
@@ -55,11 +53,11 @@ class TestMiddleware implements MiddlewareInterface
 
 ```php
 return [
-    'beans'	=>	[
+    'beans'    =>    [
         // 中间件
-        'HttpDispatcher'	=>	[
+        'HttpDispatcher'    =>    [
             'middleware' => true, // 默认启用中间件，一旦设为 false，无论是全局还是局部中间件都不生效，可以提升性能
-            'middlewares'	=>	[
+            'middlewares'    =>    [
                 // 中间件
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
             ],
@@ -78,20 +76,20 @@ class Index extends HttpController
     /**
      * PHP 原生模版引擎演示
      * 访问：http://127.0.0.1:8080/
-     * 
-     * @Action
-     * @Route(url="/")
-     * @View(template="index")
-     * 
-     * 单个中间件，浏览器 F12 看Response Header：
-     * @Middleware(\ImiDemo\HttpDemo\Middlewares\PoweredBy::class)
      * @return void
      */
+    #[
+        Action,
+        Route(url: '/'),
+        View(template: 'index'),
+        // 单个中间件，浏览器 F12 看Response Header：
+        Middleware(middlewares: \ImiDemo\HttpDemo\Middlewares\PoweredBy::class)
+    ]
     public function index()
     {
         return [
-            'title'		=>	'hello imi',
-            'content'	=>	'imi is very six',
+            'title'        =>    'hello imi',
+            'content'    =>    'imi is very six',
         ];
     }
 
@@ -99,16 +97,16 @@ class Index extends HttpController
      * 无@View注解，不用写代码，也可以渲染模版
      * 访问：http://127.0.0.1:8080/Index/test
      * 
-     * @Action
-     * 
-     * 多个中间件，浏览器 F12 看Response Header：
-     * @Middleware({
-     * \ImiDemo\HttpDemo\Middlewares\PoweredBy::class,
-     * \ImiDemo\HttpDemo\Middlewares\Test::class
-     * })
-     * 
      * @return void
      */
+    #[
+        Action,
+        // 多个中间件，浏览器 F12 看Response Header：
+        Middleware(middlewares: [
+            \ImiDemo\HttpDemo\Middlewares\PoweredBy::class,
+            \ImiDemo\HttpDemo\Middlewares\Test::class
+        ])
+    ]
     public function test()
     {
 

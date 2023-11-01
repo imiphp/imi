@@ -48,8 +48,6 @@ mysql> desc tb_comment;
 ```php
 /**
  * Article
- * @Entity
- * @Table(name="tb_article", id={"id"})
  * @property int $id
  * @property string $title
  * @property string $content
@@ -57,102 +55,107 @@ mysql> desc tb_comment;
  * @property \Imi\Util\ArrayList $taggables
  * @property \Imi\Util\ArrayList $tags
  */
+#[
+    Entity,
+    Table(name: 'tb_tags', id: ['id'])
+]
 class Article extends Model
 {
-	/**
-	 * id
-	 * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-	 * @var int
-	 */
-	protected $id;
+    /**
+     * id
+     * @var int
+     */
+    #[Column(name: 'id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)]
+    protected $id;
 
-	/**
-	 * 获取 id
-	 *
-	 * @return int
-	 */ 
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * 获取 id
+     *
+     * @return int
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * 赋值 id
-	 * @param int $id id
-	 * @return static
-	 */ 
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
-	}
+    /**
+     * 赋值 id
+     * @param int $id id
+     * @return static
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
-	/**
-	 * title
-	 * @Column(name="title", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-	 * @var string
-	 */
-	protected $title;
+    /**
+     * title
+     * @var string
+     */
+    #[Column(name: 'title', type: 'varchar', length: 32, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: -1, isAutoIncrement: true)]
+    protected $title;
 
-	/**
-	 * 获取 title
-	 *
-	 * @return string
-	 */ 
-	public function getTitle()
-	{
-		return $this->title;
-	}
+    /**
+     * 获取 title
+     *
+     * @return string
+     */ 
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * 赋值 title
-	 * @param string $title title
-	 * @return static
-	 */ 
-	public function setTitle($title)
-	{
-		$this->title = $title;
-		return $this;
-	}
+    /**
+     * 赋值 title
+     * @param string $title title
+     * @return static
+     */ 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 
-	/**
-	 * content
-	 * @Column(name="content", type="text", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-	 * @var string
-	 */
-	protected $content;
+    /**
+     * content
+     * @var string
+     */
+    #[Column(name: 'content', type: 'text', length: 0, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: -1, isAutoIncrement: true)]
+    protected $content;
 
-	/**
-	 * 获取 content
-	 *
-	 * @return string
-	 */ 
-	public function getContent()
-	{
-		return $this->content;
-	}
+    /**
+     * 获取 content
+     *
+     * @return string
+     */ 
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	/**
-	 * 赋值 content
-	 * @param string $content content
-	 * @return static
-	 */ 
-	public function setContent($content)
-	{
-		$this->content = $content;
-		return $this;
-	}
+    /**
+     * 赋值 content
+     * @param string $content content
+     * @return static
+     */ 
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
 
-	/**
+    /**
      * 评论
      * 
-     * @PolymorphicOneToMany(model=ImiDemo\HttpDemo\MainServer\Model\Comment::class, type="type", typeValue=1)
-     * @JoinTo("relation_id")
-     * @AutoSave(orphanRemoval=true)
-     * @AutoDelete
-     *
      * @var \Imi\Util\ArrayList
      */
+    #[
+        PolymorphicOneToMany(model: ImiDemo\HttpDemo\MainServer\Model\Comment::class, type: 'type', typeValue: 1),
+        JoinTo(field: 'relation_id'),
+        AutoSave(orphanRemoval: true),
+        AutoDelete
+    ]
     protected $comments;
 
     /**
@@ -177,8 +180,8 @@ class Article extends Model
         $this->comments = $comments;
 
         return $this;
-	}
-	
+    }
+    
 }
 ```
 
@@ -189,126 +192,128 @@ class Article extends Model
 ```php
 /**
  * Comment
- * @Entity
- * @Table(name="tb_comment", id={"id"})
  * @property int $id
  * @property string $content
  * @property int $type
  * @property int $relationId
  */
+#[
+    Entity,
+    Table(name: 'tb_comment', id: ['id'])
+]
 class Comment extends Model
 {
-	/**
-	 * id
-	 * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-	 * @var int
-	 */
-	protected $id;
+    /**
+     * id
+     * @var int
+     */
+    #[Column(name: 'id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)]
+    protected $id;
 
-	/**
-	 * 获取 id
-	 *
-	 * @return int
-	 */ 
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * 获取 id
+     *
+     * @return int
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * 赋值 id
-	 * @param int $id id
-	 * @return static
-	 */ 
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
-	}
+    /**
+     * 赋值 id
+     * @param int $id id
+     * @return static
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
-	/**
-	 * content
-	 * @Column(name="content", type="text", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-	 * @var string
-	 */
-	protected $content;
+    /**
+     * content
+     * @var string
+     */
+    #[Column(name: 'content', type: 'text', length: 0, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
+    protected $content;
 
-	/**
-	 * 获取 content
-	 *
-	 * @return string
-	 */ 
-	public function getContent()
-	{
-		return $this->content;
-	}
+    /**
+     * 获取 content
+     *
+     * @return string
+     */ 
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	/**
-	 * 赋值 content
-	 * @param string $content content
-	 * @return static
-	 */ 
-	public function setContent($content)
-	{
-		$this->content = $content;
-		return $this;
-	}
+    /**
+     * 赋值 content
+     * @param string $content content
+     * @return static
+     */ 
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
 
-	/**
-	 * type
-	 * @Column(name="type", type="tinyint", length=4, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-	 * @var int
-	 */
-	protected $type;
+    /**
+     * type
+     * @var int
+     */
+    #[Column(name: 'type', type: 'tinyint', length: 4, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
+    protected $type;
 
-	/**
-	 * 获取 type
-	 *
-	 * @return int
-	 */ 
-	public function getType()
-	{
-		return $this->type;
-	}
+    /**
+     * 获取 type
+     *
+     * @return int
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
 
-	/**
-	 * 赋值 type
-	 * @param int $type type
-	 * @return static
-	 */ 
-	public function setType($type)
-	{
-		$this->type = $type;
-		return $this;
-	}
+    /**
+     * 赋值 type
+     * @param int $type type
+     * @return static
+     */ 
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
 
-	/**
-	 * relation_id
-	 * @Column(name="relation_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-	 * @var int
-	 */
-	protected $relationId;
+    /**
+     * relation_id
+     * @var int
+     */
+    #[Column(name: 'relation_id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
+    protected $relationId;
 
-	/**
-	 * 获取 relationId
-	 *
-	 * @return int
-	 */ 
-	public function getRelationId()
-	{
-		return $this->relationId;
-	}
+    /**
+     * 获取 relationId
+     *
+     * @return int
+     */ 
+    public function getRelationId()
+    {
+        return $this->relationId;
+    }
 
-	/**
-	 * 赋值 relationId
-	 * @param int $relationId relation_id
-	 * @return static
-	 */ 
-	public function setRelationId($relationId)
-	{
-		$this->relationId = $relationId;
-		return $this;
-	}
+    /**
+     * 赋值 relationId
+     * @param int $relationId relation_id
+     * @return static
+     */ 
+    public function setRelationId($relationId)
+    {
+        $this->relationId = $relationId;
+        return $this;
+    }
 
 }
 ```

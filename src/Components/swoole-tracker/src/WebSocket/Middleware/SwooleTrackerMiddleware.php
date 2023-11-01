@@ -11,9 +11,7 @@ use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
 
-/**
- * @Bean(name="SwooleTrackerWebSocketMiddleware", recursion=false)
- */
+#[Bean(name: 'SwooleTrackerWebSocketMiddleware', recursion: false)]
 class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
 {
     /**

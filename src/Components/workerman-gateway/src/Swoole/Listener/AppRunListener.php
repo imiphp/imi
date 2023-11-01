@@ -12,9 +12,7 @@ use Imi\Event\IEventListener;
 
 if (\Imi\Util\Imi::checkAppType('swoole'))
 {
-    /**
-     * @Listener(eventName="IMI.APP_RUN", one=true)
-     */
+    #[Listener(eventName: 'IMI.APP_RUN', one: true)]
     class AppRunListener implements IEventListener
     {
         /**

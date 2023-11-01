@@ -11,9 +11,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Workerman\Util\Imi;
 
-/**
- * @Listener(eventName="IMI.WORKERMAN.SERVER.WORKER_START", priority=Imi\Util\ImiPriority::IMI_MAX, one=true)
- */
+#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WORKER_START', priority: \Imi\Util\ImiPriority::IMI_MAX, one: true)]
 class OnWorkerStart implements IEventListener
 {
     /**

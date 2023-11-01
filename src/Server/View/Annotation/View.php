@@ -14,13 +14,12 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target({"CLASS", "METHOD"})
  *
- * @Parser("Imi\Server\View\Parser\ViewParser")
- *
  * @property string              $renderType 渲染类型
  * @property mixed               $data       附加数据
  * @property BaseViewOption|null $option     视图配置注解
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+#[Parser(className: \Imi\Server\View\Parser\ViewParser::class)]
 class View extends Base
 {
     /**

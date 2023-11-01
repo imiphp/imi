@@ -15,9 +15,8 @@ use Imi\Worker;
 
 /**
  * 连接上下文存储处理器-MemoryTable.
- *
- * @Bean(name="ConnectionContextMemoryTable", env="swoole", recursion=false)
  */
+#[Bean(name: 'ConnectionContextMemoryTable', env: 'swoole', recursion: false)]
 class MemoryTable implements IHandler
 {
     /**

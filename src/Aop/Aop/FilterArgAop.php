@@ -9,30 +9,20 @@ use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\FilterArg;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class FilterArgAop
 {
     /**
      * 过滤方法参数.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         FilterArg::class
-     *     }
-     * )
-     *
-     * @Before
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Aop\Annotation\FilterArg::class])]
+    #[Before]
     public function parse(JoinPoint $joinPoint)
     {
         $class = BeanFactory::getObjectClass($joinPoint->getTarget());

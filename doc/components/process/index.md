@@ -15,8 +15,8 @@ use Imi\Swoole\Process\Annotation\Process;
 
 /**
  * 定义进程tp1
- * @Process("tp1")
  */
+#[Process(name: 'tp1')]
 class TestProcess extends BaseProcess
 {
     public function run(\Swoole\Process $process): void
@@ -97,9 +97,9 @@ ProcessManager::create($name, $args = [], $redirectStdinStdout = null, $pipeType
  * 不返回\Swoole\Process对象实例
  * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
  * array(
- * 	'code' => 0,
- * 	'signal' => 0,
- * 	'output' => '',
+ *     'code' => 0,
+ *     'signal' => 0,
+ *     'output' => '',
  * );
  *
  * @param string $name
@@ -118,9 +118,9 @@ ProcessManager::run($name, $args = [], $redirectStdinStdout = null, $pipeType = 
  * 运行进程，创建一个协程执行进程，无法获取进程执行结果
  * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
  * array(
- * 	'code' => 0,
- * 	'signal' => 0,
- * 	'output' => '',
+ *     'code' => 0,
+ *     'signal' => 0,
+ *     'output' => '',
  * );
  *
  * @param string $name

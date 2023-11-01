@@ -7,9 +7,9 @@ namespace Imi\Server\MQTT;
 use Imi\Bean\Annotation\Bean;
 
 /**
- * @Bean(name="MQTTServer", env="swoole")
  * MQTT 服务器类.
  */
+#[Bean(name: 'MQTTServer', env: 'swoole')]
 class Server extends \Imi\Swoole\Server\TcpServer\Server
 {
     /**

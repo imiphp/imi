@@ -15,11 +15,10 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("CONST")
  *
- * @Parser("Imi\Enum\Annotation\Parser\EnumParser")
- *
  * @property string $text 文本描述
  */
 #[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
+#[Parser(className: \Imi\Enum\Annotation\Parser\EnumParser::class)]
 class EnumItem extends Base
 {
     /**

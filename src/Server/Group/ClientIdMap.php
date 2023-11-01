@@ -8,9 +8,8 @@ use Imi\Bean\Annotation\Bean;
 
 /**
  * clientId与所有服务器的分组关系.
- *
- * @Bean("ClientIdMap")
  */
+#[Bean(name: 'ClientIdMap')]
 class ClientIdMap
 {
     /**

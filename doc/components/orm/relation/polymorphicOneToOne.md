@@ -48,8 +48,6 @@ mysql> desc tb_avatar;
 ```php
 /**
  * User
- * @Entity
- * @Table(name="tb_user", id={"id"})
  * @property int $id
  * @property string $username
  * @property \ImiDemo\HttpDemo\MainServer\Model\UserEx $ex
@@ -57,18 +55,23 @@ mysql> desc tb_avatar;
  * @property \Imi\Util\ArrayList $role
  * @property \ImiDemo\HttpDemo\MainServer\Model\Avatar $avatar
  */
+#[
+    Entity,
+    Table(name: 'tb_user', id: ['id'])
+]
 class User extends Model
 {
     /**
      * 头像
      * 
-     * @PolymorphicOneToOne(model=ImiDemo\HttpDemo\MainServer\Model\Avatar::class, type="type", typeValue=1)
-     * @JoinTo("relation_id")
-     * @AutoSave
-     * @AutoDelete
-     *
      * @var \ImiDemo\HttpDemo\MainServer\Model\Avatar
      */
+    #[
+        PolymorphicOneToOne(model: ImiDemo\HttpDemo\MainServer\Model\Avatar::class, type: 'type', typeValue: 1),
+        JoinTo(field: 'relation_id'),
+        AutoSave,
+        AutoDelete
+    ]
     protected $avatar;
 
     /**
@@ -105,20 +108,22 @@ class User extends Model
 ```php
 /**
  * Avatar
- * @Entity
- * @Table(name="tb_avatar", id={"id"})
  * @property int $id
  * @property int $type
  * @property int $relationId
  * @property string $url
  */
+#[
+    Entity,
+    Table(name: 'tb_avatar', id: ['id'])
+]
 class Avatar extends Model
 {
     /**
      * id
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
      * @var int
      */
+    #[Column(name: 'id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)]
     protected $id;
 
     /**
@@ -144,9 +149,9 @@ class Avatar extends Model
 
     /**
      * type
-     * @Column(name="type", type="tinyint", length=4, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var int
      */
+    #[Column(name: 'type', type: 'tinyint', length: 4, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: -1, isAutoIncrement: false)]
     protected $type;
 
     /**
@@ -172,9 +177,9 @@ class Avatar extends Model
 
     /**
      * relation_id
-     * @Column(name="relation_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var int
      */
+    #[Column(name: 'relation_id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: -1, isAutoIncrement: false)]
     protected $relationId;
 
     /**
@@ -200,9 +205,9 @@ class Avatar extends Model
 
     /**
      * url
-     * @Column(name="url", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var string
      */
+    #[Column(name: 'url', type: 'varchar', length: 255, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
     protected $url;
 
     /**
@@ -229,11 +234,12 @@ class Avatar extends Model
     /**
      * 对应用户
      * 
-     * @PolymorphicToOne(model=ImiDemo\HttpDemo\MainServer\Model\User::class, modelField="id", type="type", typeValue=1, field="relation_id")
-     * @AutoSelect(false)
-     *
      * @var \ImiDemo\HttpDemo\MainServer\Model\User
      */
+    #[
+        PolymorphicToOne(model: \ImiDemo\HttpDemo\MainServer\Model\User::class, modelField: 'id', type: 'type', typeValue: 1, field: 'relation_id'),
+        AutoSelect(status: false)
+    ]
     protected $user;
 
     /**
@@ -263,11 +269,12 @@ class Avatar extends Model
     /**
      * 对应用户
      * 
-     * @PolymorphicToOne(model=ImiDemo\HttpDemo\MainServer\Model\Team::class, modelField="id", type="type", typeValue=2, field="relation_id")
-     * @AutoSelect(false)
-     *
      * @var \ImiDemo\HttpDemo\MainServer\Model\Team
      */
+    #[
+        PolymorphicToOne(model: \ImiDemo\HttpDemo\MainServer\Model\Team::class, modelField: 'id', type: 'type', typeValue: 2, field: 'relation_id'),
+        AutoSelect(status: false)
+    ]
     protected $team;
 
     /**
@@ -297,12 +304,13 @@ class Avatar extends Model
     /**
      * 对应用户
      * 
-     * @PolymorphicToOne(model=ImiDemo\HttpDemo\MainServer\Model\User::class, modelField="id", type="type", typeValue=1, field="relation_id")
-     * @PolymorphicToOne(model=ImiDemo\HttpDemo\MainServer\Model\Team::class, modelField="id", type="type", typeValue=2, field="relation_id")
-     * @AutoSelect(false)
-     *
      * @var \ImiDemo\HttpDemo\MainServer\Model\User|\ImiDemo\HttpDemo\MainServer\Model\Team
      */
+    #[
+        PolymorphicToOne(model: \ImiDemo\HttpDemo\MainServer\Model\User::class, modelField: 'id', type: 'type', typeValue: 1, field: 'relation_id'),
+        PolymorphicToOne(model: \ImiDemo\HttpDemo\MainServer\Model\Team::class, modelField: 'id', type: 'type', typeValue: 2, field: 'relation_id'),
+        AutoSelect(status: false)
+    ]
     protected $relationModel;
 
     /**

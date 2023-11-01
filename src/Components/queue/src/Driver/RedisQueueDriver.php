@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Queue\Driver;
 
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Queue\Annotation\QueueTypeStructType;
 use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Enum\QueueType;
 use Imi\Queue\Exception\QueueException;
@@ -15,9 +17,8 @@ use Imi\Util\Traits\TDataToProperty;
 
 /**
  * Redis 队列驱动.
- *
- * @Bean(name="RedisQueueDriver", recursion=false)
  */
+#[Bean(name: 'RedisQueueDriver', recursion: false)]
 class RedisQueueDriver implements IQueueDriver
 {
     use TDataToProperty{
@@ -399,14 +400,19 @@ class RedisQueueDriver implements IQueueDriver
     {
         return Redis::use(function (\Imi\Redis\RedisHandler $redis) {
             $status = [];
-            foreach (QueueType::getValues() as $value)
+            foreach (QueueType::getMap() as $key => $value)
             {
-                $data = QueueType::getData($value);
-                $count = match ($data['type'])
+                /** @var QueueTypeStructType|null $queueTypeStructTypeAnnotation */
+                $queueTypeStructTypeAnnotation = AnnotationManager::getConstantAnnotations(QueueType::class, $key, QueueTypeStructType::class, onlyFirst: true);
+                if (!$queueTypeStructTypeAnnotation)
+                {
+                    throw new \RuntimeException(sprintf('Unknown QueueTypeStructType of %s::%s', QueueType::class, $key));
+                }
+                $count = match ($queueTypeStructTypeAnnotation->type)
                 {
                     'list'  => $redis->lLen($this->getQueueKey($value)),
                     'zset'  => $redis->zCard($this->getQueueKey($value)),
-                    default => throw new QueueException('Invalid type ' . $data['type']),
+                    default => throw new QueueException('Invalid type ' . $queueTypeStructTypeAnnotation->type),
                 };
                 $status[strtolower(QueueType::getName($value))] = $count;
             }

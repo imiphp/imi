@@ -13,9 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/**
- * @Bean(name="HandShakeMiddleware", env="workerman")
- */
+#[Bean(name: 'HandShakeMiddleware', env: 'workerman')]
 class HandShakeMiddleware implements MiddlewareInterface
 {
     /**

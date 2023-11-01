@@ -99,15 +99,17 @@ use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * 一个简单的控制器
- * @Controller
  */
+#[Controller]
 class Index extends HttpController
 {
     /**
      * 一个动作
-     * @Action
-     * @Route(url="/")
      */
+    #[
+        Action,
+        Route(url: '/')
+    ]
     public function index()
     {
         $this->response->getBody()->write('hello imi!');

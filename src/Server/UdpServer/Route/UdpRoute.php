@@ -11,9 +11,7 @@ use Imi\Server\UdpServer\Route\Annotation\UdpRoute as UdpRouteAnnotation;
 use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\ObjectArrayHelper;
 
-/**
- * @Bean("UdpRoute")
- */
+#[Bean(name: 'UdpRoute')]
 class UdpRoute implements IRoute
 {
     /**

@@ -10,9 +10,7 @@ use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 use Imi\Server\UdpServer\Middleware\IMiddleware;
 
-/**
- * @Bean
- */
+#[Bean]
 class Test implements IMiddleware
 {
     /**

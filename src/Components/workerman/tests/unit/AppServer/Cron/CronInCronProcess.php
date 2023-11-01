@@ -7,9 +7,7 @@ namespace Imi\Workerman\Test\AppServer\Cron;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Contract\ICronTask;
 
-/**
- * @Cron(id="CronInCronProcess", second="3n", type="cron_process")
- */
+#[Cron(id: 'CronInCronProcess', second: '3n', type: \Imi\Cron\Consts\CronTaskType::CRON_PROCESS)]
 class CronInCronProcess implements ICronTask
 {
     /**

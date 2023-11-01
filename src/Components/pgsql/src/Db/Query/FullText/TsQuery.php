@@ -12,23 +12,15 @@ use Imi\Enum\BaseEnum;
  */
 class TsQuery extends BaseEnum
 {
-    /**
-     * @EnumItem(text="to_tsquery")
-     */
+    #[EnumItem(text: 'to_tsquery')]
     public const TO_TSQUERY = 'to_tsquery';
 
-    /**
-     * @EnumItem(text="plainto_tsquery")
-     */
+    #[EnumItem(text: 'plainto_tsquery')]
     public const PLAINTO_TSQUERY = 'plainto_tsquery';
 
-    /**
-     * @EnumItem(text="phraseto_tsquery")
-     */
+    #[EnumItem(text: 'phraseto_tsquery')]
     public const PHRASETO_TSQUERY = 'phraseto_tsquery';
 
-    /**
-     * @EnumItem(text="websearch_to_tsquery")
-     */
+    #[EnumItem(text: 'websearch_to_tsquery')]
     public const WEBSEARCH_TO_TSQUERY = 'websearch_to_tsquery';
 }

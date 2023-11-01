@@ -12,9 +12,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * Close事件前置处理.
- *
- * @ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server", eventName="close", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\TcpServer\Server::class, eventName: 'close', priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeClose implements ICloseEventListener
 {
     /**

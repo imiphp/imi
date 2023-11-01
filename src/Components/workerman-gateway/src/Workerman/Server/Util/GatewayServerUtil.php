@@ -10,9 +10,7 @@ use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Contract\IWorkermanServerUtil;
 use Imi\WorkermanGateway\Server\Util\TGatewayServerUtil;
 
-/**
- * @Bean("WorkermanGatewayServerUtil")
- */
+#[Bean(name: 'WorkermanGatewayServerUtil')]
 class GatewayServerUtil implements IWorkermanServerUtil
 {
     use TGatewayServerUtil;

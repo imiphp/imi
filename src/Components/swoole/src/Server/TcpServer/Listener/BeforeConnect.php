@@ -13,9 +13,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * Connect事件前置处理.
- *
- * @ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server", eventName="connect", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\TcpServer\Server::class, eventName: 'connect', priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeConnect implements IConnectEventListener
 {
     /**

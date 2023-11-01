@@ -7,9 +7,7 @@ namespace Imi\Server\TcpServer\Error;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 
-/**
- * @Bean("TcpErrorHandler")
- */
+#[Bean(name: 'TcpErrorHandler')]
 class ErrorHandler implements IErrorHandler
 {
     protected ?string $handler = null;

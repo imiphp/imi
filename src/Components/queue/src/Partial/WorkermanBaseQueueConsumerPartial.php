@@ -15,10 +15,9 @@ use Imi\Queue\Event\Param\ConsumerBeforePopParam;
 if (\Imi\Util\Imi::checkAppType('workerman'))
 {
     /**
-     * @Partial(Imi\Queue\Service\BaseQueueConsumer::class)
-     *
      * @property \Imi\Queue\Service\QueueService $imiQueue
      */
+    #[Partial(class: \Imi\Queue\Service\BaseQueueConsumer::class)]
     trait WorkermanBaseQueueConsumerPartial
     {
         /**

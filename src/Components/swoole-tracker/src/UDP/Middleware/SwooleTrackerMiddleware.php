@@ -11,9 +11,7 @@ use Imi\Server\UdpServer\Message\IPacketData;
 use Imi\Server\UdpServer\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
 
-/**
- * @Bean(name="SwooleTrackerUDPMiddleware", recursion=false)
- */
+#[Bean(name: 'SwooleTrackerUDPMiddleware', recursion: false)]
 class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
 {
     /**

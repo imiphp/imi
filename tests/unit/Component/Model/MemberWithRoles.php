@@ -14,26 +14,21 @@ use Imi\Model\Annotation\Relation\ManyToMany;
 /**
  * Member.
  *
- * @Inherit
- *
  * @property MemberRoleRelation[]|null $roleRelations
  * @property Role[]|null               $roles
  * @property MemberRoleRelation[]|null $roleRelationsWith
  * @property Role[]|null               $rolesWith
  */
+#[Inherit]
 class MemberWithRoles extends Member
 {
     /**
-     * @ManyToMany(model="Role", middle="MemberRoleRelation", rightMany="roles")
-     *
-     * @JoinToMiddle(field="id", middleField="member_id")
-     *
-     * @JoinFromMiddle(middleField="role_id", field="id")
-     *
-     * @AutoSave
-     *
      * @var MemberRoleRelation[]|null
      */
+    #[ManyToMany(model: 'Role', middle: 'MemberRoleRelation', rightMany: 'roles')]
+    #[JoinToMiddle(field: 'id', middleField: 'member_id')]
+    #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
+    #[AutoSave]
     protected $roleRelations = null;
 
     /**
@@ -61,10 +56,9 @@ class MemberWithRoles extends Member
     }
 
     /**
-     * @Column(virtual=true)
-     *
      * @var Role[]|null
      */
+    #[Column(virtual: true)]
     protected $roles;
 
     /**
@@ -92,16 +86,12 @@ class MemberWithRoles extends Member
     }
 
     /**
-     * @ManyToMany(model="Role", middle="MemberRoleRelation", rightMany="rolesWith", with=true)
-     *
-     * @JoinToMiddle(field="id", middleField="member_id")
-     *
-     * @JoinFromMiddle(middleField="role_id", field="id")
-     *
-     * @AutoSave
-     *
      * @var MemberRoleRelation[]|null
      */
+    #[ManyToMany(model: 'Role', middle: 'MemberRoleRelation', rightMany: 'rolesWith', with: true)]
+    #[JoinToMiddle(field: 'id', middleField: 'member_id')]
+    #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
+    #[AutoSave]
     protected $roleRelationsWith = null;
 
     /**
@@ -129,10 +119,9 @@ class MemberWithRoles extends Member
     }
 
     /**
-     * @Column(virtual=true)
-     *
      * @var Role[]|null
      */
+    #[Column(virtual: true)]
     protected $rolesWith;
 
     /**

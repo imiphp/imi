@@ -257,9 +257,7 @@ $swooleRequest = $this->request->getSwooleRequest();
 imi `v2.1.47` 新增支持 `\Psr\Http\Message\UploadedFileInterface` 类型参数，可以直接获取上传的文件，并且 imi 底层会帮你做是否上传和成功的验证，失败会自动抛出异常。
 
 ```php
-/**
- * @Action
- */
+#[Action]
 public function requestParam1(string $string, int $int, float $float, bool $bool, \Psr\Http\Message\UploadedFileInterface $file): array
 {
     // 本地保存文件，$saveFileName 请改为自己的路径规则
@@ -303,12 +301,11 @@ imi `v2.1.27` 引入的新注解。
 **代码示例：**
 
 ```php
-/**
- * @Action
- *
- * @RequestParam(name="$get.id", param="id2")
- * @RequestParam(name="$get.id3", param="id3", required=false, default="imi 666")
- */
+#[
+    Action,
+    RequestParam(name: '$get.id', param: 'id2'),
+    RequestParam(name: '$get.id3', param: 'id3', required: false, default: 'imi 666')
+]
 public function requestParam1(int $id, int $id2, string $id3): array
 {
     return [
@@ -318,9 +315,7 @@ public function requestParam1(int $id, int $id2, string $id3): array
     ];
 }
 
-/**
- * @Action
- */
+#[Action]
 public function requestParam2(
     int $id,
     #[RequestParam(name: '$get.id')]
@@ -346,14 +341,14 @@ public function requestParam2(
 /**
  * http参数验证测试
  * 
- * @Action
- * 
- * @ExtractData(name="$get.id", to="id")
- * @ExtractData(name="$get.name", to="name")
- * @ExtractData(name="$get.age", to="age")
- *
  * @return void
  */
+#[
+    Action,
+    ExtractData(name: '$get.id', to: 'id'),
+    ExtractData(name: '$get.name', to: 'name'),
+    ExtractData(name: '$get.age', to: 'age'),
+]
 public function httpValidation($id, $name, $age)
 {
     return compact('id', 'name', 'age');

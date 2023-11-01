@@ -10,9 +10,7 @@ use Imi\Server\DataParser\DataParser;
 use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Server\UdpServer\Message\IPacketData;
 
-/**
- * @Bean(name="UdpDispatcher", recursion=false)
- */
+#[Bean(name: 'UdpDispatcher', recursion: false)]
 class Dispatcher
 {
     /**

@@ -11,14 +11,11 @@ use Imi\Cron\Util\CronUtil;
 
 /**
  * 定时任务工作类.
- *
- * @Bean("CronWorker")
  */
+#[Bean(name: 'CronWorker')]
 class CronWorker
 {
-    /**
-     * @Inject("CronManager")
-     */
+    #[Inject(name: 'CronManager')]
     protected ICronManager $cronManager;
 
     /**

@@ -11,13 +11,12 @@ namespace Imi\Bean\Annotation;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Bean\Parser\ClassEventParser")
- *
  * @property string $className 类名
  * @property string $eventName 事件名
  * @property int    $priority  优先级，越大越先执行
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[\Imi\Bean\Annotation\Parser(className: \Imi\Bean\Parser\ClassEventParser::class)]
 class ClassEventListener extends Base
 {
     public function __construct(?array $__data = null, string $className = '', string $eventName = '', int $priority = 0)

@@ -6,9 +6,7 @@ namespace Imi\Cache\Handler;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("ApcuCache")
- */
+#[Bean(name: 'ApcuCache')]
 class Apcu extends Base
 {
     /**

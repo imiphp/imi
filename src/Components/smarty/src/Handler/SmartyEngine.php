@@ -12,9 +12,9 @@ use Imi\Server\View\Engine\IEngine;
 use Imi\Util\Imi;
 
 /**
- * @Bean("SmartyEngine")
- * Smarty 模版引擎
+ * Smarty 模版引擎.
  */
+#[Bean(name: 'SmartyEngine')]
 class SmartyEngine implements IEngine
 {
     /**

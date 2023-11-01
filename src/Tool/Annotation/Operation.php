@@ -13,10 +13,9 @@ use Imi\Cli\Annotation\CommandAction;
  * @Annotation
  *
  * @Target("METHOD")
- *
- * @Parser("Imi\Cli\Parser\ToolParser")
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class Operation extends CommandAction
 {
     /**

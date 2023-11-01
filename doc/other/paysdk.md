@@ -71,8 +71,8 @@ imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动�
 ```php
 /**
  * 这是一个在控制器中的动作方法
- * @Action
  */
+#[Action]
 public function test()
 {
     $payNotify = new class extends \Yurun\PaySDK\Weixin\Notify\Pay

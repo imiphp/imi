@@ -14,20 +14,18 @@ namespace Imi\Server\UdpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean
- */
+#[Bean]
 class RouteMiddleware implements IMiddleware
 {
-	/**
-	 * 处理方法
-	 *
-	 * @param IReceiveData $data
-	 * @param IReceiveHandler $handle
-	 * @return void
-	 */
-	public function process(IPacketData $data, IPacketHandler $handler)
-	{
+    /**
+     * 处理方法
+     *
+     * @param IReceiveData $data
+     * @param IReceiveHandler $handle
+     * @return void
+     */
+    public function process(IPacketData $data, IPacketHandler $handler)
+    {
         // 前置处理
         
         // 先执行其它中间件
@@ -36,7 +34,7 @@ class RouteMiddleware implements IMiddleware
         // 后置处理
         
         return $result;
-	}
+    }
 
 }
 ```
@@ -45,15 +43,15 @@ class RouteMiddleware implements IMiddleware
 
 ```php
 return [
-	'beans'	=>	[
-		// 中间件
-		'UdpDispatcher'	=>	[
-			'middlewares'	=>	[
-				// 中间件
-				\Imi\Server\Udp\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+    'beans'    =>    [
+        // 中间件
+        'UdpDispatcher'    =>    [
+            'middlewares'    =>    [
+                // 中间件
+                \Imi\Server\Udp\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -72,25 +70,27 @@ use Imi\Server\UdpServer\Route\Annotation\UdpController;
 
 /**
  * 数据收发测试
- * @UdpController
  */
+#[UdpController]
 class Test extends \Imi\Controller\UdpController
 {
-	/**
-	 * 登录
-	 * 
-	 * @UdpAction
-	 * @UdpRoute({"action"="hello"})
-	 * @UdpMiddleware(XXX::class)
-	 * @UdpMiddleware({XXX::class,XXX2::class})
-	 * @return void
-	 */
-	public function hello()
-	{
-		return [
-			'time'	=>	date($this->data->getFormatData()->format),
-		];
-	}
+    /**
+     * 登录
+     * 
+     * @return void
+     */
+    #[
+        UdpAction,
+        UdpRoute(condition: ['action' => 'login']),
+        UdpMiddleware(middlewares: XXX::class),
+        UdpMiddleware(middlewares: [XXX::class, XXX2::class])
+    ]
+    public function hello()
+    {
+        return [
+            'time'    =>    date($this->data->getFormatData()->format),
+        ];
+    }
 
 }
 
@@ -104,11 +104,11 @@ class Test extends \Imi\Controller\UdpController
 
 ```php
 return [
-	'middleware'    =>  [
+    'middleware'    =>  [
         'groups'    =>  [
-			// 组名
+            // 组名
             'test'  =>  [
-				// 中间件列表
+                // 中间件列表
                 \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
             ],
         ],

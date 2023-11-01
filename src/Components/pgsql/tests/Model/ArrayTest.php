@@ -9,9 +9,8 @@ use Imi\Pgsql\Test\Model\Base\ArrayTestBase;
 
 /**
  * tb_array_test.
- *
- * @Inherit
  */
+#[Inherit]
 class ArrayTest extends ArrayTestBase
 {
 }

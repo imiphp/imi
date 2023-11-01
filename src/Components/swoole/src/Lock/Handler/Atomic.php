@@ -11,9 +11,8 @@ use Imi\Timer\Timer;
 
 /**
  * Atomic 实现的多进程单机锁，注意会阻塞进程，只推荐在自定义进程、进程池中使用.
- *
- * @Bean("AtomicLock")
  */
+#[Bean(name: 'AtomicLock')]
 class Atomic extends BaseLock
 {
     /**

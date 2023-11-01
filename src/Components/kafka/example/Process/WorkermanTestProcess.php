@@ -11,16 +11,13 @@ use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
 use Workerman\Worker;
 
-/**
- * @Process(name="TestProcess")
- */
+#[Process(name: 'TestProcess')]
 class WorkermanTestProcess extends BaseProcess
 {
     /**
-     * @Inject("TestConsumerWorkerman")
-     *
      * @var \KafkaApp\Kafka\Test\TestConsumerWorkerman
      */
+    #[Inject(name: 'TestConsumerWorkerman')]
     protected $testConsumer;
 
     public function run(Worker $process): void

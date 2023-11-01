@@ -9,25 +9,20 @@ use Imi\AppContexts;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
-use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Util\File;
 
 use function Imi\ttyExec;
 
-/**
- * @Command("fpm")
- */
+#[Command(name: 'fpm')]
 class Server extends BaseCommand
 {
     /**
      * 启动 php 内置服务器.
-     *
-     * @CommandAction(name="start", description="启动 php 内置服务器")
-     *
-     * @Option(name="host", type=ArgType::STRING, default="0.0.0.0", comments="主机名")
-     * @Option(name="port", type=ArgType::INT, default=8080, comments="端口")
      */
+    #[CommandAction(name: 'start', description: '启动 php 内置服务器')]
+    #[Option(name: 'host', type: \Imi\Cli\ArgType::STRING, default: '0.0.0.0', comments: '主机名')]
+    #[Option(name: 'port', type: \Imi\Cli\ArgType::INT, default: 8080, comments: '端口')]
     public function start(string $host, int $port): void
     {
         if (\function_exists('pcntl_signal'))

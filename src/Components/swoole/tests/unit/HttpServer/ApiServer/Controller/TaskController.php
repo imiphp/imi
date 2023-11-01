@@ -12,14 +12,10 @@ use Imi\Swoole\Task\TaskManager;
 use Imi\Swoole\Task\TaskParam;
 use Imi\Swoole\Test\HttpServer\Task\TestTask;
 
-/**
- * @Controller("/task/")
- */
+#[Controller(prefix: '/task/')]
 class TaskController extends HttpController
 {
-    /**
-     * @Action
-     */
+    #[Action]
     public function test(): array
     {
         $data = [

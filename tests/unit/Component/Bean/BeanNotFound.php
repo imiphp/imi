@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Bean;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean(name="BeanNotFound", env="notfound")
- */
+#[Bean(name: 'BeanNotFound', env: 'notfound')]
 class BeanNotFound
 {
 }

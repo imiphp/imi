@@ -9,8 +9,6 @@ use Imi\Pool\Annotation\PoolResource;
 
 class PoolTestClass
 {
-    /**
-     * @PoolResource("maindb")
-     */
+    #[PoolResource(name: 'maindb')]
     public DbResource $db;
 }

@@ -22,9 +22,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-/**
- * @Listener(eventName="IMI.INITED", priority=PHP_INT_MAX)
- */
+#[Listener(eventName: 'IMI.INITED', priority: PHP_INT_MAX)]
 class Init implements IEventListener
 {
     /**
@@ -80,7 +78,7 @@ Event::off('事件名', $callable);
 
 ```php
 Event::on(['e1', 'e2'], function(){
-	// 事件回调
+    // 事件回调
 });
 ```
 
@@ -119,19 +117,19 @@ use Imi\Swoole\Server\Event\Listener\IRequestEventListener;
 
 /**
  * request事件前置处理
- * @ClassEventListener(className="Imi\Swoole\Server\Http\Server",eventName="request",priority=PHP_INT_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\Http\Server::class, eventName: 'request', priority: PHP_INT_MAX)]
 class BeforeRequest implements IRequestEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param RequestEventParam $e
-	 * @return void
-	 */
-	public function handle(RequestEventParam $e): void
-	{
-		// ...
-	}
+    /**
+     * 事件处理方法
+     * @param RequestEventParam $e
+     * @return void
+     */
+    public function handle(RequestEventParam $e): void
+    {
+        // ...
+    }
 }
 ```
 
@@ -149,12 +147,12 @@ class BeforeRequest implements IRequestEventListener
 
 ```php
 $object->on('事件名', function(){
-	// 事件回调
+    // 事件回调
 });
 
 $priority = 0;
 $object->on('事件名', function(){
-	// 事件回调
+    // 事件回调
 }, $priority);
 
 // 监听只触发一次

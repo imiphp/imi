@@ -11,11 +11,9 @@ use Imi\Pgsql\Test\Model\Base\TreeBase;
 
 /**
  * tb_tree.
- *
- * @Inherit
- *
- * @TreeModel
  */
+#[Inherit]
+#[TreeModel]
 class Tree extends TreeBase
 {
     use TTreeModel;

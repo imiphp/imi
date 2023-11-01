@@ -10,9 +10,7 @@ use Imi\Server\WebSocket\Controller\WebSocketController;
 use Imi\Server\WebSocket\IMessageHandler;
 use Imi\Server\WebSocket\Message\IFrame;
 
-/**
- * @Bean("WebSocketActionMiddleware")
- */
+#[Bean(name: 'WebSocketActionMiddleware')]
 class ActionMiddleware implements IMiddleware
 {
     /**

@@ -21,9 +21,7 @@ class GrpcService implements IGrpcService
      */
     protected string $serviceName = '';
 
-    /**
-     * @Inject("GrpcInterfaceManager")
-     */
+    #[Inject(name: 'GrpcInterfaceManager')]
     protected GrpcInterfaceManager $interfaceManager;
 
     public function __construct(

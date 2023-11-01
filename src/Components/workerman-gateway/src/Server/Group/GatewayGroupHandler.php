@@ -10,9 +10,8 @@ use Imi\Server\Group\Handler\IGroupHandler;
 
 /**
  * 分组 Workerman Gateway 驱动.
- *
- * @Bean("GroupGateway")
  */
+#[Bean(name: 'GroupGateway')]
 class GatewayGroupHandler implements IGroupHandler
 {
     /**

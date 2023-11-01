@@ -8,9 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Cache\InvalidArgumentException;
 use Imi\Redis\Redis;
 
-/**
- * @Bean("RedisHashCache")
- */
+#[Bean(name: 'RedisHashCache')]
 class RedisHash extends Base
 {
     public const GET_MULTIPLE_SCRIPT = <<<'SCRIPT'

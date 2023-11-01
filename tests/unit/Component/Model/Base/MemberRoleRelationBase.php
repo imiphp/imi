@@ -39,7 +39,7 @@ abstract class MemberRoleRelationBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -69,7 +69,7 @@ abstract class MemberRoleRelationBase extends Model
      * type.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'type', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'type', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $type = 0;
 
@@ -99,7 +99,7 @@ abstract class MemberRoleRelationBase extends Model
      * member_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'member_id', type: 'int', length: 10, nullable: false, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'member_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, unsigned: true)
     ]
     protected ?int $memberId = null;
 
@@ -129,7 +129,7 @@ abstract class MemberRoleRelationBase extends Model
      * role_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'role_id', type: 'int', length: 10, nullable: false, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'role_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, unsigned: true)
     ]
     protected ?int $roleId = null;
 

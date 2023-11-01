@@ -57,22 +57,19 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller("/proxy/")
- */
+#[Controller(prefix: '/proxy/')]
 class ProxyController extends HttpController
 {
-    /**
-     * @Inject("GrpcHttpProxy")
-     */
+    #[Inject(name: 'GrpcHttpProxy')]
     protected GrpcHttpProxy $grpcHttpProxy;
 
     /**
-     * @Action
-     * @Route("grpc/{service}/{method}")
-     *
      * @return mixed
      */
+    #[
+        Action,
+        Route(url: 'grpc/{service}/{method}')
+    ]
     public function proxy(string $service, string $method)
     {
         // 这里的 grpc 是连接池名称，换成你自己的
@@ -102,8 +99,8 @@ curl --location --request POST -X POST "http://127.0.0.1:8080/proxy/grpc/grpc.Au
 
 ```js
 {
-	"success": true,
-	"error": ""
+    "success": true,
+    "error": ""
 }
 ```
 

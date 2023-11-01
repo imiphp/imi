@@ -15,27 +15,22 @@ use Imi\Model\Model;
 /**
  * Article.
  *
- * @Entity(camel=true, bean=true, incrUpdate=false)
- *
- * @Table(name="tb_article", usePrefix=false, id={"id"}, dbPoolName=null)
- *
- * @DDL(sql="CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT '0',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='@article'", decode="")
- *
  * @property int|null    $id
  * @property int|null    $memberId
  * @property string|null $title
  * @property string|null $content
  * @property string|null $time
  */
+#[Entity]
+#[Table(name: 'tb_article', id: ['id'])]
+#[DDL(sql: 'CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `member_id` int(10) unsigned NOT NULL DEFAULT \'0\',   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE,   KEY `member_id` (`member_id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT=\'@article\'', decode: '')]
 class ArticleId extends Model
 {
     /**
      * id.
-     *
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true, unsigned=true, virtual=false)
-     *
-     * @Id
      */
+    #[Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)]
+    #[Id]
     protected ?int $id = null;
 
     /**
@@ -62,9 +57,8 @@ class ArticleId extends Model
 
     /**
      * member_id.
-     *
-     * @Column(name="member_id", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=true, virtual=false)
      */
+    #[Column(name: 'member_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)]
     protected ?int $memberId = 0;
 
     /**
@@ -91,11 +85,9 @@ class ArticleId extends Model
 
     /**
      * title.
-     *
-     * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     *
-     * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name": "test1"})
      */
+    #[Column(name: 'title', type: 'varchar', length: 255, nullable: false, default: '')]
+    #[Id(index: false, generator: 'Imi\\Snowflake\\Model\\SnowflakeGenerator', generatorOptions: ['name' => 'test1'])]
     protected ?string $title = null;
 
     /**
@@ -126,11 +118,9 @@ class ArticleId extends Model
 
     /**
      * content.
-     *
-     * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     *
-     * @Id(index=false, generator=\Imi\Snowflake\Model\SnowflakeGenerator::class, generatorOptions={"name": "test1"})
      */
+    #[Column(name: 'content', type: 'mediumtext', length: 0, nullable: false, default: '')]
+    #[Id(index: false, generator: 'Imi\\Snowflake\\Model\\SnowflakeGenerator', generatorOptions: ['name' => 'test1'])]
     protected ?string $content = null;
 
     /**
@@ -161,11 +151,9 @@ class ArticleId extends Model
 
     /**
      * time.
-     *
-     * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, unsigned=false, virtual=false)
-     *
-     * @Serializable(false)
      */
+    #[Column(name: 'time', type: 'timestamp', length: 0, nullable: false, default: 'CURRENT_TIMESTAMP')]
+    #[Serializable(allow: false)]
     protected ?string $time = null;
 
     /**

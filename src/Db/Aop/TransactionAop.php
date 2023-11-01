@@ -8,7 +8,6 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Annotation\RollbackType;
@@ -17,25 +16,16 @@ use Imi\Db\Annotation\TransactionType;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class TransactionAop
 {
     /**
      * 自动事务支持
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         Transaction::class
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Db\Annotation\Transaction::class])]
+    #[Around]
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();

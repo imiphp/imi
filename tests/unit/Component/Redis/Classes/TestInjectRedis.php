@@ -9,16 +9,13 @@ use Imi\Redis\Annotation\RedisInject;
 use Imi\Redis\RedisHandler;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Bean("TestInjectRedis")
- */
+#[Bean(name: 'TestInjectRedis')]
 class TestInjectRedis
 {
     /**
-     * @RedisInject
-     *
      * @var RedisHandler
      */
+    #[RedisInject]
     protected $redis;
 
     public function test(): void

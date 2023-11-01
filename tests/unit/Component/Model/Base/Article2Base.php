@@ -40,7 +40,7 @@ abstract class Article2Base extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -70,7 +70,7 @@ abstract class Article2Base extends Model
      * member_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'member_id', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'member_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $memberId = 0;
 

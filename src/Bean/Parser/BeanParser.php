@@ -10,10 +10,10 @@ use Imi\Aop\Annotation\RequestInject;
 use Imi\App;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionContainer;
+use Imi\Bean\Util\PhpParser;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Util\DocBlock;
 use Imi\Util\Imi;
-use Yurun\Doctrine\Common\Annotations\PhpParser;
 
 class BeanParser extends BaseParser
 {
@@ -73,7 +73,7 @@ class BeanParser extends BaseParser
                         {
                             $name = trim($tag->__toString(), '\\ \t\n\r\0\x0B');
                             $phpParser = new PhpParser();
-                            $uses = $phpParser->parseClass(ReflectionContainer::getClassReflection($className));
+                            $uses = $phpParser->parseUseStatements(ReflectionContainer::getClassReflection($className));
                             $lowerName = strtolower($name);
                             if (isset($uses[$lowerName]))
                             {

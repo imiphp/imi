@@ -15,11 +15,8 @@ use Imi\Swoole\Util\Imi as SwooleImiUtil;
 use Imi\Timer\Timer;
 use Imi\Util\Imi;
 
-/**
- * @Bean(name="hotUpdate", env="swoole")
- *
- * @Process(name="hotUpdate", unique=true)
- */
+#[Bean(name: 'hotUpdate', env: 'swoole')]
+#[Process(name: 'hotUpdate', unique: true)]
 class HotUpdateProcess extends BaseProcess
 {
     public const DESCRIPTORSPEC = [
@@ -103,9 +100,7 @@ class HotUpdateProcess extends BaseProcess
 
     private bool $running = false;
 
-    /**
-     * @PoolClean
-     */
+    #[PoolClean]
     public function run(\Swoole\Process $process): void
     {
         if (!$this->status)

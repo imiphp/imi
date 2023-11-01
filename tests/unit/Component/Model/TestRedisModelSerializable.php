@@ -13,23 +13,19 @@ use Imi\Model\RedisModel;
 /**
  * Test.
  *
- * @Entity
- *
- * @RedisEntity(key="serializable-{id}-{name}")
- *
- * @Serializables(mode="allow", fields={"id", "name"})
- *
  * @property int    $id
  * @property string $name
  * @property int    $age
  */
+#[Entity]
+#[RedisEntity(key: 'serializable-{id}-{name}')]
+#[Serializables(mode: 'allow', fields: ['id', 'name'])]
 class TestRedisModelSerializable extends RedisModel
 {
     /**
      * id.
-     *
-     * @Column(name="id")
      */
+    #[Column(name: 'id')]
     protected int $id;
 
     /**
@@ -56,9 +52,8 @@ class TestRedisModelSerializable extends RedisModel
 
     /**
      * name.
-     *
-     * @Column(name="name")
      */
+    #[Column(name: 'name')]
     protected string $name;
 
     /**
@@ -85,9 +80,8 @@ class TestRedisModelSerializable extends RedisModel
 
     /**
      * age.
-     *
-     * @Column(name="age")
      */
+    #[Column(name: 'age')]
     protected int $age;
 
     /**

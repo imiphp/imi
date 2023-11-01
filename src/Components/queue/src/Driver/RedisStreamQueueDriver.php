@@ -16,11 +16,9 @@ use Imi\Util\Traits\TDataToProperty;
 
 /**
  * Redis Stream 队列驱动.
- *
- * 要求 Redis >= 5.0
- *
- * @Bean(name="RedisStreamQueueDriver", recursion=false)
+ * 要求 Redis >= 5.0.
  */
+#[Bean(name: 'RedisStreamQueueDriver', recursion: false)]
 class RedisStreamQueueDriver implements IQueueDriver
 {
     use TDataToProperty{

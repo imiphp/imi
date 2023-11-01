@@ -8,7 +8,6 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Cache\Annotation\Cacheable;
@@ -17,9 +16,7 @@ use Imi\Config;
 use Imi\Lock\Aop\TLockableParser;
 use Imi\Util\ClassObject;
 
-/**
- * @Aspect(priority=1024)
- */
+#[Aspect(priority: 1024)]
 class CacheableAop
 {
     use TCacheAopHelper;
@@ -28,17 +25,10 @@ class CacheableAop
     /**
      * 处理 Cacheable 注解.
      *
-     * @PointCut(
-     *     type=PointCutType::ANNOTATION,
-     *     allow={
-     *         \Imi\Cache\Annotation\Cacheable::class,
-     *     }
-     * )
-     *
-     * @Around
-     *
      * @return mixed
      */
+    #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Cache\Annotation\Cacheable::class])]
+    #[Around]
     public function parseCacheable(AroundJoinPoint $joinPoint)
     {
         $target = $joinPoint->getTarget();

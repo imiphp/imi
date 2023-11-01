@@ -9,9 +9,7 @@ use Imi\Util\DateTime;
 use Imi\Util\File as FileUtil;
 use Imi\Util\Stream\StreamMode;
 
-/**
- * @Bean("FileCache")
- */
+#[Bean(name: 'FileCache')]
 class File extends Base
 {
     /**

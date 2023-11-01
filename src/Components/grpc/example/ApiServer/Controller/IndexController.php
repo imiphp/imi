@@ -11,25 +11,20 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller("/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @GrpcService(serviceName="grpc.AuthService", interface=\Grpc\AuthServiceInterface::class)
-     *
      * @var \Grpc\AuthServiceInterface
      */
+    #[GrpcService(serviceName: 'grpc.AuthService', interface: 'Grpc\\AuthServiceInterface')]
     protected $authService;
 
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         return $this->response;
@@ -38,13 +33,12 @@ class IndexController extends HttpController
     /**
      * 测试登录.
      *
-     * @Action
-     *
      * @param string $phone
      * @param string $password
      *
      * @return mixed
      */
+    #[Action]
     public function testLogin($phone, $password)
     {
         $request = new LoginRequest();

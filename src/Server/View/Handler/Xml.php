@@ -8,15 +8,13 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\View\Annotation\BaseViewOption;
 use Imi\Server\View\Annotation\View;
-use Imi\Server\View\Annotation\XmlView;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\ResponseHeader;
 
 /**
  * Xml视图处理器.
- *
- * @Bean("XmlView")
  */
+#[Bean(name: 'XmlView')]
 class Xml implements IHandler
 {
     /**

@@ -9,9 +9,7 @@ use Imi\RequestContext as ImiRequestContext;
 use Imi\Util\DateTime;
 use Imi\Util\ExpiredStorage;
 
-/**
- * @Bean("RequestContextCache")
- */
+#[Bean(name: 'RequestContextCache')]
 class RequestContext extends Base
 {
     /**

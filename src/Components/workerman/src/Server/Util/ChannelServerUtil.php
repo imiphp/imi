@@ -7,9 +7,7 @@ namespace Imi\Workerman\Server\Util;
 use Channel\Client;
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("ChannelServerUtil")
- */
+#[Bean(name: 'ChannelServerUtil')]
 class ChannelServerUtil extends AbstractDistributedServerUtil
 {
     /**

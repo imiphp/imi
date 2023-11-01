@@ -4,28 +4,25 @@ declare(strict_types=1);
 
 namespace Imi\SwooleTracker\Example\TCPServer\TCPServer\Controller;
 
-use Imi\Server\Route\Annotation\Tcp\TcpAction;
-use Imi\Server\Route\Annotation\Tcp\TcpController;
-use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Server\TcpServer\Route\Annotation\TcpAction;
+use Imi\Server\TcpServer\Route\Annotation\TcpController;
+use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
 
 /**
  * 数据收发测试.
- *
- * @TcpController
  */
+#[TcpController]
 class IndexController extends \Imi\Controller\TcpController
 {
     /**
      * 发送消息.
      *
-     * @TcpAction
-     *
-     * @TcpRoute({"action": "send"})
-     *
      * @param mixed $data
      *
      * @return mixed
      */
+    #[TcpAction]
+    #[TcpRoute(condition: ['action' => 'send'])]
     public function send($data)
     {
         $address = $this->data->getClientAddress();

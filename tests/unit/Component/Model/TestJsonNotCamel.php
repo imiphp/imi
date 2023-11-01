@@ -11,12 +11,10 @@ use Imi\Test\Component\Model\Base\TestJsonBase;
 /**
  * tb_test_json.
  *
- * @Inherit
- *
- * @Entity(camel=false)
- *
  * @property \Imi\Util\LazyArrayObject|array $jsonData json数据
  */
+#[Inherit]
+#[Entity(camel: false)]
 class TestJsonNotCamel extends TestJsonBase
 {
 }

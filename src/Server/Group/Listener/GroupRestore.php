@@ -11,9 +11,7 @@ use Imi\Server\ConnectionContext\Event\Param\ConnectionContextRestoreParam;
 use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\ServerManager;
 
-/**
- * @Listener(eventName="IMI.CONNECT_CONTEXT.RESTORE")
- */
+#[Listener(eventName: 'IMI.CONNECT_CONTEXT.RESTORE')]
 class GroupRestore implements IConnectionContextRestoreListener
 {
     /**

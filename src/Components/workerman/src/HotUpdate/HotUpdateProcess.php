@@ -13,11 +13,8 @@ use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
 use Workerman\Worker;
 
-/**
- * @Bean(name="hotUpdate", env="workerman")
- *
- * @Process(name="hotUpdate")
- */
+#[Bean(name: 'hotUpdate', env: 'workerman')]
+#[Process(name: 'hotUpdate')]
 class HotUpdateProcess extends BaseProcess
 {
     public const DESCRIPTORSPEC = [

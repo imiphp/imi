@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Util\Imi;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("TestPropertyClass")
- */
+#[Bean(name: 'TestPropertyClass')]
 class TestPropertyClass
 {
     protected int $a = 1;

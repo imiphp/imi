@@ -8,9 +8,7 @@ use Imi\Swoole\Task\Annotation\Task;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
 use Imi\Swoole\Task\TaskParam;
 
-/**
- * @Task("Test1")
- */
+#[Task(name: 'Test1')]
 class TestTask implements ITaskHandler
 {
     /**

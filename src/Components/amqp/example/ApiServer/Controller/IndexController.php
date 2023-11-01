@@ -15,18 +15,14 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 
-/**
- * @Controller("/")
- */
+#[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
     /**
-     * @Action
-     *
-     * @Route("/")
-     *
      * @return mixed
      */
+    #[Action]
+    #[Route(url: '/')]
     public function index()
     {
         $this->response->getBody()->write('imi');
@@ -35,10 +31,9 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @return mixed
      */
+    #[Action]
     public function publish(int $memberId = 19260817)
     {
         $message = new TestMessage();
@@ -59,12 +54,11 @@ class IndexController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param int $memberId
      *
      * @return mixed
      */
+    #[Action]
     public function consume($memberId)
     {
         $r1 = Redis::get($key1 = 'imi-amqp:consume:1:' . $memberId);

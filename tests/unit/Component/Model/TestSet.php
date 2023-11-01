@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\TestSetBase;
 
 /**
  * tb_test_set.
- *
- * @Inherit
  */
+#[Inherit]
 class TestSet extends TestSetBase
 {
 }

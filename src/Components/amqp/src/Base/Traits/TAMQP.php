@@ -21,9 +21,7 @@ use PhpAmqpLib\Wire\AMQPTable;
 
 trait TAMQP
 {
-    /**
-     * @Inject("AMQP")
-     */
+    #[Inject(name: 'AMQP')]
     protected AMQP $amqp;
 
     /**

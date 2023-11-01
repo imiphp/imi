@@ -7,14 +7,10 @@ namespace Imi\Swoole\Test\Component\Lock\Classes;
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Annotation\Lockable;
 
-/**
- * @Bean("TestLockAnnotation")
- */
+#[Bean(name: 'TestLockAnnotation')]
 class TestLockAnnotation
 {
-    /**
-     * @Lockable(id="锁ID", afterLock={"$this", "check"})
-     */
+    #[Lockable(id: '锁ID', afterLock: ['$this', 'check'])]
     public function index(): int
     {
         return 1;
@@ -25,9 +21,7 @@ class TestLockAnnotation
         return 2;
     }
 
-    /**
-     * @Lockable(id="锁ID", afterLock={"$this", "check2"})
-     */
+    #[Lockable(id: '锁ID', afterLock: ['$this', 'check2'])]
     public function index2(): int
     {
         return 3;
@@ -37,9 +31,7 @@ class TestLockAnnotation
     {
     }
 
-    /**
-     * @Lockable(id="锁ID")
-     */
+    #[Lockable(id: '锁ID')]
     public function test(): int
     {
         usleep(100000);

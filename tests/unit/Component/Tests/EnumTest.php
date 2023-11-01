@@ -17,7 +17,6 @@ class EnumTest extends BaseTest
     {
         $data = TestEnum::getData(TestEnum::A);
         Assert::assertEquals('甲', $data['text'] ?? null);
-        Assert::assertEquals('a1', $data['other'] ?? null);
 
         Assert::assertEquals('B', TestEnum::getName(TestEnum::B));
         Assert::assertEquals([

@@ -38,7 +38,7 @@ abstract class TreeBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -68,7 +68,7 @@ abstract class TreeBase extends Model
      * parent_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'parent_id', type: 'int', length: 10, nullable: false, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'parent_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, unsigned: true)
     ]
     protected ?int $parentId = null;
 

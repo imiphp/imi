@@ -10,9 +10,7 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\ReceiveHandler;
 
-/**
- * @Bean("TCPActionWrapMiddleware")
- */
+#[Bean(name: 'TCPActionWrapMiddleware')]
 class ActionWrapMiddleware implements IMiddleware
 {
     /**

@@ -15,23 +15,25 @@ use Imi\Server\TcpServer\Route\Annotation\TcpController;
 
 /**
  * 数据收发测试
- * @TcpController
  */
+#[TcpController]
 class Test extends \Imi\Controller\TcpController
 {
-	/**
-	 * 登录
-	 * 
-	 * @TcpAction
-	 * @TcpRoute({"action"="login"})
-	 * @return void
-	 */
-	public function login($data)
-	{
-		ConnectionContext::set('username', $data->username);
-		$this->server->joinGroup('g1', $this->data->getClientId());
-		return ['action'=>'login', 'success'=>true];
-	}
+    /**
+     * 登录
+     * 
+     * @return void
+     */
+    #[
+        TcpAction,
+        TcpRoute(condition: ['action' => 'login'])
+    ]
+    public function login($data)
+    {
+        ConnectionContext::set('username', $data->username);
+        $this->server->joinGroup('g1', $this->data->getClientId());
+        return ['action'=>'login', 'success'=>true];
+    }
 }
 ```
 

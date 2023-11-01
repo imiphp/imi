@@ -18,9 +18,7 @@ use Imi\Swoole\SwooleWorker;
 use Imi\Util\Imi;
 use Imi\Worker;
 
-/**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START", priority=Imi\Util\ImiPriority::IMI_MIN, one=true)
- */
+#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
 class AfterWorkerStart implements IWorkerStartEventListener
 {
     /**

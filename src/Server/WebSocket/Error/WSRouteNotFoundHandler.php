@@ -11,9 +11,8 @@ use Imi\Server\WebSocket\Message\IFrame;
 
 /**
  * WebSocket 未匹配路由时的处理器.
- *
- * @Bean("WSRouteNotFoundHandler")
  */
+#[Bean(name: 'WSRouteNotFoundHandler')]
 class WSRouteNotFoundHandler implements IWSRouteNotFoundHandler
 {
     /**

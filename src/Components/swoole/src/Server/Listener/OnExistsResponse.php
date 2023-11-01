@@ -11,9 +11,8 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 
 /**
  * 连接是否存在-响应.
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.existsResponse")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.existsResponse')]
 class OnExistsResponse implements IEventListener
 {
     /**

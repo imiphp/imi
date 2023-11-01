@@ -9,13 +9,10 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
 use Imi\Swoole\Util\Imi as SwooleImi;
-use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
-/**
- * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START", priority=Imi\Util\ImiPriority::IMI_MAX, one=true)
- */
+#[Listener(eventName: 'IMI.MAIN_SERVER.MANAGER.START', priority: \Imi\Util\ImiPriority::IMI_MAX, one: true)]
 class OnManagerStart implements IManagerStartEventListener
 {
     /**

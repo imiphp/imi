@@ -11,13 +11,12 @@ use Imi\Pool\PoolManager;
 /**
  * 连接池对象注入.
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class PoolResource extends RequestInject
 {
     /**

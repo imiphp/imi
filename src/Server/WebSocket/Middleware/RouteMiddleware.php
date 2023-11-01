@@ -12,19 +12,13 @@ use Imi\Server\WebSocket\IMessageHandler;
 use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\Route\WSRoute;
 
-/**
- * @Bean(name="WebSocketRouteMiddleware", recursion=false)
- */
+#[Bean(name: 'WebSocketRouteMiddleware', recursion: false)]
 class RouteMiddleware implements IMiddleware
 {
-    /**
-     * @ServerInject("WSRoute")
-     */
+    #[ServerInject(name: 'WSRoute')]
     protected WSRoute $route;
 
-    /**
-     * @ServerInject("WSRouteNotFoundHandler")
-     */
+    #[ServerInject(name: 'WSRouteNotFoundHandler')]
     protected IWSRouteNotFoundHandler $notFoundHandler;
 
     /**

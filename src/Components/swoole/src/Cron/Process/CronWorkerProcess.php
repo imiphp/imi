@@ -12,9 +12,8 @@ use Imi\Swoole\Process\BaseProcess;
 
 /**
  * 定时任务工作进程.
- *
- * @Process(name="CronWorkerProcess")
  */
+#[Process(name: 'CronWorkerProcess')]
 class CronWorkerProcess extends BaseProcess
 {
     public function run(\Swoole\Process $process): void

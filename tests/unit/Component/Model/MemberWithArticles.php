@@ -12,22 +12,18 @@ use Imi\Model\Annotation\Relation\OneToMany;
 /**
  * Member.
  *
- * @Inherit
- *
  * @property Article[]|null $articles
  * @property Article[]|null $articlesWith
  */
+#[Inherit]
 class MemberWithArticles extends Member
 {
     /**
-     * @OneToMany("Article")
-     *
-     * @JoinFrom("id")
-     *
-     * @JoinTo("member_id")
-     *
      * @var Article[]|null
      */
+    #[OneToMany(model: 'Article')]
+    #[JoinFrom(field: 'id')]
+    #[JoinTo(field: 'member_id')]
     protected $articles = null;
 
     /**
@@ -55,14 +51,11 @@ class MemberWithArticles extends Member
     }
 
     /**
-     * @OneToMany(model="Article", with=true)
-     *
-     * @JoinFrom("id")
-     *
-     * @JoinTo("member_id")
-     *
      * @var Article[]|null
      */
+    #[OneToMany(model: 'Article', with: true)]
+    #[JoinFrom(field: 'id')]
+    #[JoinTo(field: 'member_id')]
     protected $articlesWith = null;
 
     /**

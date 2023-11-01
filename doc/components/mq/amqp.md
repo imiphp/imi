@@ -352,13 +352,13 @@ use Imi\AMQP\Annotation\Exchange;
 use Imi\AMQP\Annotation\Publisher;
 use Imi\AMQP\Annotation\Connection;
 
-/**
- * @Bean("TestPublisher")
- * @Connection(poolName=null)
- * @Publisher(tag="tag-imi", queue="queue-imi-1", exchange="exchange-imi", routingKey="imi-1")
- * @Queue(name="queue-imi-1", routingKey="imi-1")
- * @Exchange(name="exchange-imi")
- */
+#[
+    Bean(name: 'TestPublisher'),
+    Connection(poolName: null),
+    Publisher(tag: 'tag-imi', queue: 'queue-imi-1', exchange: 'exchange-imi', routingKey: 'imi-1'),
+    Queue(name: 'queue-imi-1', routingKey: 'imi-1'),
+    Exchange(name: 'exchange-imi')
+]
 class TestPublisher extends BasePublisher
 {
 
@@ -405,11 +405,12 @@ use Imi\AMQP\Annotation\Connection;
 
 /**
  * 启动一个新连接消费
- * 
- * @Bean("TestConsumer")
- * @Connection(poolName=null)
- * @Consumer(tag="tag-imi", queue="queue-imi-1", message=\ImiApp\AMQP\Test\TestMessage::class)
  */
+#[
+    Bean(name: 'TestConsumer'),
+    Connection(poolName: null),
+    Consumer(tag: "tag-imi", queue: "queue-imi-1", message: \ImiApp\AMQP\Test\TestMessage::class)
+]
 class TestConsumer extends BaseConsumer
 {
     /**
@@ -444,23 +445,19 @@ use Imi\Swoole\Process\BaseProcess;
 use Imi\Aop\Annotation\Inject;
 use Imi\Swoole\Process\Annotation\Process;
 
-/**
- * @Process(name="TestProcess")
- */
+#[Process(name: 'TestProcess')]
 class TestProcess extends BaseProcess
 {
     /**
-     * @Inject("TestConsumer")
-     *
      * @var \ImiApp\AMQP\Test\TestConsumer
      */
+    #[Inject(name: 'TestConsumer')]
     protected $testConsumer;
 
     /**
-     * @Inject("TestConsumer2")
-     *
      * @var \ImiApp\AMQP\Test2\TestConsumer2
      */
+    #[Inject(name: 'TestConsumer2')]
     protected $testConsumer2;
 
     public function run(\Swoole\Process $process): void
@@ -598,75 +595,44 @@ use Imi\Log\Log;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 use PhpAmqpLib\Message\AMQPMessage;
 
-/**
- * @Bean("PayNotifyConsumer")
- *
- * @Exchange(name="exchange-pay-notify")
- *
- * @Queue(name="pay-notify", arguments={"x-dead-letter-exchange"="exchange-pay-notify-dead"})
- *
- * @Exchange(name="exchange-pay-notify-step-1")
- *
- * @Queue(name="pay-notify-step-1", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=15000})
- *
- * @Exchange(name="exchange-pay-notify-step-2")
- *
- * @Queue(name="pay-notify-step-2", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=15000})
- *
- * @Exchange(name="exchange-pay-notify-step-3")
- *
- * @Queue(name="pay-notify-step-3", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=30000})
- *
- * @Exchange(name="exchange-pay-notify-step-4")
- *
- * @Queue(name="pay-notify-step-4", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=180000})
- *
- * @Exchange(name="exchange-pay-notify-step-5")
- *
- * @Queue(name="pay-notify-step-5", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=600000})
- *
- * @Exchange(name="exchange-pay-notify-step-6")
- *
- * @Queue(name="pay-notify-step-6", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=1200000})
- *
- * @Exchange(name="exchange-pay-notify-step-7")
- *
- * @Queue(name="pay-notify-step-7", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=1800000})
- *
- * @Exchange(name="exchange-pay-notify-step-8")
- *
- * @Queue(name="pay-notify-step-8", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=1800000})
- *
- * @Exchange(name="exchange-pay-notify-step-9")
- *
- * @Queue(name="pay-notify-step-9", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=1800000})
- *
- * @Exchange(name="exchange-pay-notify-step-10")
- *
- * @Queue(name="pay-notify-step-10", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=3600000})
- *
- * @Exchange(name="exchange-pay-notify-step-11")
- *
- * @Queue(name="pay-notify-step-11", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=10800000})
- *
- * @Exchange(name="exchange-pay-notify-step-12")
- *
- * @Queue(name="pay-notify-step-12", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=10800000})
- *
- * @Exchange(name="exchange-pay-notify-step-13")
- *
- * @Queue(name="pay-notify-step-13", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=10800000})
- *
- * @Exchange(name="exchange-pay-notify-step-14")
- *
- * @Queue(name="pay-notify-step-14", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=21600000})
- *
- * @Exchange(name="exchange-pay-notify-step-15")
- *
- * @Queue(name="pay-notify-step-15", arguments={"x-dead-letter-exchange"="exchange-pay-notify", "x-message-ttl"=21600000})
- *
- * @Consumer(tag="payNotify", queue="pay-notify", exchange="exchange-pay-notify", message=\PayService\Module\Pay\AMQP\PayNotify\PayNotifyMessage::class)
- */
+#[
+    Bean(name: 'PayNotifyConsumer'),
+    Exchange(name: 'exchange-pay-notify'),
+    Queue(name: 'pay-notify', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify-dead']),
+
+    Exchange(name: 'exchange-pay-notify-step-1'),
+    Queue(name: 'pay-notify-step-1', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 15000]),
+    Exchange(name: 'exchange-pay-notify-step-2'),
+    Queue(name: 'pay-notify-step-2', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 15000]),
+    Exchange(name: 'exchange-pay-notify-step-3'),
+    Queue(name: 'pay-notify-step-3', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 30000]),
+    Exchange(name: 'exchange-pay-notify-step-4'),
+    Queue(name: 'pay-notify-step-4', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 180000]),
+    Exchange(name: 'exchange-pay-notify-step-5'),
+    Queue(name: 'pay-notify-step-5', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 600000]),
+    Exchange(name: 'exchange-pay-notify-step-6'),
+    Queue(name: 'pay-notify-step-6', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 1200000]),
+    Exchange(name: 'exchange-pay-notify-step-7'),
+    Queue(name: 'pay-notify-step-7', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 1800000]),
+    Exchange(name: 'exchange-pay-notify-step-8'),
+    Queue(name: 'pay-notify-step-8', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 1800000]),
+    Exchange(name: 'exchange-pay-notify-step-9'),
+    Queue(name: 'pay-notify-step-9', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 1800000]),
+    Exchange(name: 'exchange-pay-notify-step-10'),
+    Queue(name: 'pay-notify-step-10', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 3600000]),
+    Exchange(name: 'exchange-pay-notify-step-11'),
+    Queue(name: 'pay-notify-step-11', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 10800000]),
+    Exchange(name: 'exchange-pay-notify-step-12'),
+    Queue(name: 'pay-notify-step-12', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 10800000]),
+    Exchange(name: 'exchange-pay-notify-step-13'),
+    Queue(name: 'pay-notify-step-13', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 10800000]),
+    Exchange(name: 'exchange-pay-notify-step-14'),
+    Queue(name: 'pay-notify-step-14', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 21600000]),
+    Exchange(name: 'exchange-pay-notify-step-15'),
+    Queue(name: 'pay-notify-step-15', arguments: ['x-dead-letter-exchange' => 'exchange-pay-notify', 'x-message-ttl' => 21600000]),
+
+    Consumer(tag: 'payNotify', queue: 'pay-notify', exchange: 'exchange-pay-notify', message: \PayService\Module\Pay\AMQP\PayNotify\PayNotifyMessage::class),
+]
 class PayNotifyConsumer extends BaseConsumer
 {
     /**

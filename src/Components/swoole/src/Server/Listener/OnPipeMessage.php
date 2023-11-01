@@ -9,9 +9,7 @@ use Imi\Event\Event;
 use Imi\Swoole\Server\Event\Listener\IPipeMessageEventListener;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 
-/**
- * @Listener("IMI.MAIN_SERVER.PIPE_MESSAGE")
- */
+#[Listener(eventName: 'IMI.MAIN_SERVER.PIPE_MESSAGE')]
 class OnPipeMessage implements IPipeMessageEventListener
 {
     /**

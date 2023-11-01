@@ -14,9 +14,7 @@ use Imi\Workerman\Server\Base;
 use Imi\Workerman\Server\Udp\Message\PacketData;
 use Workerman\Connection\UdpConnection;
 
-/**
- * @Bean("WorkermanUdpServer")
- */
+#[Bean(name: 'WorkermanUdpServer')]
 class Server extends Base implements IUdpServer
 {
     /**

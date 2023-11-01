@@ -9,11 +9,9 @@ use Imi\Util\ArrayUtil;
 
 /**
  * 进程管理器，管理跟随服务自动启动的进程.
- *
- * 本类的操作仅在 manager 进程中有效
- *
- * @Bean("AutoRunProcessManager")
+ * 本类的操作仅在 manager 进程中有效.
  */
+#[Bean(name: 'AutoRunProcessManager')]
 class AutoRunProcessManager
 {
     /**

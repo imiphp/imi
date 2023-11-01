@@ -12,11 +12,10 @@ use Imi\Model\Annotation\Relation\Relation;
 /**
  * Member.
  *
- * @Inherit
- *
  * @property array|null $relation
  * @property array|null $relationNoWith
  */
+#[Inherit]
 class MemberWithRelation extends Member
 {
     public bool $inserted = false;
@@ -29,13 +28,9 @@ class MemberWithRelation extends Member
 
     public bool $noWithQueryed = false;
 
-    /**
-     * @Relation
-     *
-     * @AutoSave
-     *
-     * @AutoDelete
-     */
+    #[Relation]
+    #[AutoSave]
+    #[AutoDelete]
     public ?array $relation = null;
 
     public function getRelation(): ?array
@@ -80,9 +75,7 @@ class MemberWithRelation extends Member
         }
     }
 
-    /**
-     * @Relation(with=false)
-     */
+    #[Relation(with: false)]
     public ?array $relationNoWith = null;
 
     public function getRelationNoWith(): ?array

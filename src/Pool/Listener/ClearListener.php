@@ -9,9 +9,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Pool\PoolManager;
 
-/**
- * @Listener(eventName="IMI.COMMAND.AFTER")
- */
+#[Listener(eventName: 'IMI.COMMAND.AFTER')]
 class ClearListener implements IEventListener
 {
     /**

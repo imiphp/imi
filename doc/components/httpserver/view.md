@@ -19,23 +19,27 @@ use Imi\Server\View\Annotation\View;
 
 /**
  * 一个简单的控制器
- * @Controller
- * @View(renderType="json")
- * @HtmlView(baseDir="index/")
  */
+#[
+    Controller,
+    View(renderType: 'json'),
+    HtmlView(baseDir: 'index/')
+]
 class Index extends HttpController
 {
        /**
         * 一个动作
-        * @Action
-        * @Route(url="/")
-        * @View(renderType="html")
-        * @HtmlView(template="index")
         */
+        #[
+            Action,
+            Route(url: '/'),
+            View(renderType: 'html'),
+            HtmlView(template: 'index')
+        ]
         public function index()
         {
             $this->response->getBody()->write('hello imi!');
-			return $this->response;
+            return $this->response;
         }
 }
 ```
@@ -49,21 +53,21 @@ class Index extends HttpController
 ## json
 
 ```php
-/**
- * @Action
- * @View(renderType="json")
- */
+#[
+    Action,
+    View(renderType: 'json')
+]
 public function index()
 {
-	// 数组
-	$jsonData = [
-		'id'	=>	1,
-		'name'	=>	'imi',
-	];
-	// 对象
-	// $jsonData = new stdClass;
-	// $jsonData->name = 'imi';
-	return $jsonData;
+    // 数组
+    $jsonData = [
+        'id'    =>    1,
+        'name'    =>    'imi',
+    ];
+    // 对象
+    // $jsonData = new stdClass;
+    // $jsonData->name = 'imi';
+    return $jsonData;
 }
 ```
 
@@ -71,33 +75,33 @@ public function index()
 
 ```php
 return [
-	'beans'		=>	[
-		'JsonView'	=>	[
-			// json_encode 的参数值配置
-			'options'	=>	\JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
-			'depth'		=>	512,
-		]
-	]
+    'beans'        =>    [
+        'JsonView'    =>    [
+            // json_encode 的参数值配置
+            'options'    =>    \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
+            'depth'        =>    512,
+        ]
+    ]
 ];
 ```
 
 ## xml
 
 ```php
-/**
- * @Action
- * @View(renderType="xml")
- */
+#[
+    Action,
+    View(renderType: 'xml')
+]
 public function index()
 {
-	// DOMDocument
-	$xml = new \DOMDocument();
-	$xml->loadXML($xmlString);
-	
-	// SimpleXMLElement
-	$xml = \simplexml_load_string($xmlString);
-	
-	return $xml;
+    // DOMDocument
+    $xml = new \DOMDocument();
+    $xml->loadXML($xmlString);
+    
+    // SimpleXMLElement
+    $xml = \simplexml_load_string($xmlString);
+    
+    return $xml;
 }
 ```
 
@@ -107,17 +111,17 @@ public function index()
 
 ```php
 return [
-	'beans'		=>	[
-		'HtmlView'	=>	[
-			'templatePath'	=>	'模版文件根路径',
-			// 支持的模版文件扩展名，优先级按先后顺序
-			// 'fileSuffixs'		=>	[
-				'tpl',
-				'html',
-				'php'
-			],
-		]
-	]
+    'beans'        =>    [
+        'HtmlView'    =>    [
+            'templatePath'    =>    '模版文件根路径',
+            // 支持的模版文件扩展名，优先级按先后顺序
+            // 'fileSuffixs'        =>    [
+                'tpl',
+                'html',
+                'php'
+            ],
+        ]
+    ]
 ];
 ```
 
@@ -126,30 +130,28 @@ return [
 #### 通过注解配置
 
 ```php
-/**
- * @Action
- * @View(renderType="html")
- * @HtmlView(template="a/b")
- */
+#[
+    Action,
+    View(renderType: 'html'),
+    HtmlView(template: 'a/b')
+]
 public function index()
 {
-	return [
-		'content'	=>	'hello imi',
-	];
+    return [
+        'content'    =>    'hello imi',
+    ];
 }
 ```
 
 #### 语句动态渲染
 
 ```php
-/**
- * @Action
- */
+#[Action]
 public function index()
 {
-	return $this->__render('a/b', [
-		'content'	=>	'hello imi',
-	]);
+    return $this->__render('a/b', [
+        'content'    =>    'hello imi',
+    ]);
 }
 ```
 
@@ -178,10 +180,10 @@ return $this->response;
 
 ```php
 return new \Imi\Server\View\Annotation\View([
-	'template'	=>	'index',
-	'renderType'=>	'html',
-	'data'		=>	[
-		'name'	=>	'imi',
-	],
+    'template'    =>    'index',
+    'renderType'=>    'html',
+    'data'        =>    [
+        'name'    =>    'imi',
+    ],
 ]);
 ```

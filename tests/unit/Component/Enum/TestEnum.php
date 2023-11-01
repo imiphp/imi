@@ -9,18 +9,12 @@ use Imi\Enum\BaseEnum;
 
 class TestEnum extends BaseEnum
 {
-    /**
-     * @EnumItem(text="甲", other="a1")
-     */
+    #[EnumItem(text: '甲')]
     public const A = 1;
 
-    /**
-     * @EnumItem(text="乙", other="b2")
-     */
+    #[EnumItem(text: '乙')]
     public const B = 2;
 
-    /**
-     * @EnumItem(text="丙", other="c3")
-     */
+    #[EnumItem(text: '丙')]
     public const C = 3;
 }

@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\RoleBase;
 
 /**
  * tb_role.
- *
- * @Inherit
  */
+#[Inherit]
 class Role extends RoleBase
 {
 }

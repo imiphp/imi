@@ -14,11 +14,10 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("METHOD")
  *
- * @Parser("Imi\Server\UdpServer\Parser\UdpControllerParser")
- *
  * @property array $condition 条件
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Server\UdpServer\Parser\UdpControllerParser::class)]
 class UdpRoute extends Base implements \Stringable
 {
     /**

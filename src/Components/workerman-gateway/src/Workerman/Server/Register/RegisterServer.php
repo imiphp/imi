@@ -7,9 +7,7 @@ namespace Imi\WorkermanGateway\Workerman\Server\Register;
 use GatewayWorker\Register;
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("WorkermanGatewayRegisterServer")
- */
+#[Bean(name: 'WorkermanGatewayRegisterServer')]
 class RegisterServer extends \Imi\Workerman\Server\Tcp\Server
 {
     /**

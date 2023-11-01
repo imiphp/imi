@@ -20,23 +20,23 @@ use Imi\Server\TcpServer\Message\ReceiveData;
 
 /**
  * Receive事件前置处理
- * @ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server",eventName="receive",priority=PHP_INT_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\TcpServer\Server::class, eventName: 'receive', priority: PHP_INT_MAX)]
 class BeforeReceive implements IReceiveEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param ReceiveEventParam $e
-	 * @return void
-	 */
-	public function handle(ReceiveEventParam $e): void
-	{
-		// 如果服务器名不是主服务器就返回
-		if('main' === $e->server->getName())
-		{
-			return;
-		}
-		var_dump($e->data);
-	}
+    /**
+     * 事件处理方法
+     * @param ReceiveEventParam $e
+     * @return void
+     */
+    public function handle(ReceiveEventParam $e): void
+    {
+        // 如果服务器名不是主服务器就返回
+        if('main' === $e->server->getName())
+        {
+            return;
+        }
+        var_dump($e->data);
+    }
 }
 ```

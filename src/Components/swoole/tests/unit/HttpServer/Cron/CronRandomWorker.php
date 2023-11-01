@@ -7,9 +7,7 @@ namespace Imi\Swoole\Test\HttpServer\Cron;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Contract\ICronTask;
 
-/**
- * @Cron(id="CronRandomWorker", second="3n", type="random_worker")
- */
+#[Cron(id: 'CronRandomWorker', second: '3n', type: \Imi\Swoole\Cron\Consts\CronTaskType::RANDOM_WORKER)]
 class CronRandomWorker implements ICronTask
 {
     /**

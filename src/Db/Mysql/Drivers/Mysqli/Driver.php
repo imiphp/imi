@@ -17,9 +17,8 @@ use mysqli;
 
 /**
  * mysqli MySQL驱动.
- *
- * @Bean("MysqliDriver")
  */
+#[Bean(name: 'MysqliDriver')]
 class Driver extends MysqlBase
 {
     /**

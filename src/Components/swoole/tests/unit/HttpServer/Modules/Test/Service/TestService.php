@@ -6,9 +6,7 @@ namespace Imi\Swoole\Test\HttpServer\Modules\Test\Service;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("TestService")
- */
+#[Bean(name: 'TestService')]
 class TestService
 {
     /**

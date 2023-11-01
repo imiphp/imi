@@ -13,9 +13,7 @@ use Imi\Server\WebSocket\Enum\NonControlFrameType;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Protocols\Websocket;
 
-/**
- * @Bean("WorkermanGatewayGatewayServer")
- */
+#[Bean(name: 'WorkermanGatewayGatewayServer')]
 class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
 {
     /**

@@ -11,9 +11,7 @@ use Imi\Server\TcpServer\Route\Annotation\TcpRoute as TcpRouteAnnotation;
 use Imi\Util\DelayServerBeanCallable;
 use Imi\Util\ObjectArrayHelper;
 
-/**
- * @Bean("TcpRoute")
- */
+#[Bean(name: 'TcpRoute')]
 class TcpRoute implements IRoute
 {
     /**

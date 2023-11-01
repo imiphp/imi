@@ -11,16 +11,12 @@ use Imi\Model\RedisModel;
 
 /**
  * Test.
- *
- * @Entity
- *
- * @RedisEntity(key="imi:redisModel:typeColumn", storage="hash_object")
  */
+#[Entity]
+#[RedisEntity(key: 'imi:redisModel:typeColumn', storage: \Imi\Model\Enum\RedisStorageMode::HASH_OBJECT)]
 class TestRedisHashObjectColumnTypeModel extends RedisModel
 {
-    /**
-     * @Column(type="json")
-     */
+    #[Column(type: 'json')]
     protected array $json = [];
 
     public function getJson(): array
@@ -35,9 +31,7 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
         return $this;
     }
 
-    /**
-     * @Column(type="json", arrayWrap=true)
-     */
+    #[Column(type: 'json')]
     protected array $jsonArray = [];
 
     public function getJsonArray(): array
@@ -52,9 +46,7 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
         return $this;
     }
 
-    /**
-     * @Column(type="list", listSeparator=",")
-     */
+    #[Column(type: 'list', listSeparator: ',')]
     protected array $list = [];
 
     public function getList(): array
@@ -69,9 +61,7 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
         return $this;
     }
 
-    /**
-     * @Column(type="set")
-     */
+    #[Column(type: 'set')]
     protected array $set = [];
 
     public function getSet(): array

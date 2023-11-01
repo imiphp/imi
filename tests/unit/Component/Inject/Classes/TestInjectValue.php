@@ -8,23 +8,19 @@ use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Bean;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Bean("TestInjectValue")
- */
+#[Bean(name: 'TestInjectValue')]
 class TestInjectValue
 {
     /**
-     * @Inject("TestInjectValueLogicXXX")
-     *
      * @var \Imi\Test\Component\Inject\Classes\TestInjectValueLogic
      */
+    #[Inject(name: 'TestInjectValueLogicXXX')]
     protected $testLogic;
 
     /**
-     * @Inject
-     *
      * @var TestInjectValueLogic
      */
+    #[Inject]
     protected $testLogic2;
 
     public function test(): void

@@ -12,14 +12,10 @@ use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
 use Workerman\Worker;
 
-/**
- * @Process(name="TestProcess1")
- */
+#[Process(name: 'TestProcess1')]
 class WorkermanTestProcess extends BaseProcess
 {
-    /**
-     * @Inject("TestConsumer")
-     */
+    #[Inject(name: 'TestConsumer')]
     protected TestConsumer $testConsumer;
 
     public function run(Worker $process): void

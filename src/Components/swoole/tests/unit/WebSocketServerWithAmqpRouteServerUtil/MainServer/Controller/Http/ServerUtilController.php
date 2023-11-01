@@ -14,14 +14,11 @@ use Imi\Worker;
 
 /**
  * 服务器工具类.
- *
- * @Controller("/serverUtil/")
  */
+#[Controller(prefix: '/serverUtil/')]
 class ServerUtilController extends HttpController
 {
-    /**
-     * @Action
-     */
+    #[Action]
     public function info(): array
     {
         return [
@@ -30,9 +27,7 @@ class ServerUtilController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function getServer(): array
     {
         $result = [];
@@ -46,9 +41,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function sendMessage(): array
     {
         $result = [];
@@ -62,9 +55,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function send(array $clientIds, string $flag): array
     {
         $data = [
@@ -87,9 +78,7 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function sendToGroup(string $group): array
     {
         $data = [
@@ -108,10 +97,9 @@ class ServerUtilController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param int|string $clientId
      */
+    #[Action]
     public function exists($clientId, string $flag): array
     {
         return [
@@ -121,10 +109,9 @@ class ServerUtilController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param int|string $clientId
      */
+    #[Action]
     public function close($clientId, string $flag): array
     {
         return [

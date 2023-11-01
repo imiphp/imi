@@ -9,9 +9,7 @@ use Imi\Server\TcpServer\Error\ITcpRouteNotFoundHandler;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
-/**
- * @Bean("RouteNotFound")
- */
+#[Bean(name: 'RouteNotFound')]
 class RouteNotFound implements ITcpRouteNotFoundHandler
 {
     /**

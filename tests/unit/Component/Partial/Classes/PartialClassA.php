@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Partial\Classes;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("PartialClassA")
- */
+#[Bean(name: 'PartialClassA')]
 class PartialClassA
 {
     public function test1(): int

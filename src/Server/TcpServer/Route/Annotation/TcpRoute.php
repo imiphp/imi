@@ -14,11 +14,10 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("METHOD")
  *
- * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
- *
  * @property array $condition 条件
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Server\TcpServer\Parser\TcpControllerParser::class)]
 class TcpRoute extends Base implements \Stringable
 {
     /**

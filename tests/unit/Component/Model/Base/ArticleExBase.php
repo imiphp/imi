@@ -37,7 +37,7 @@ abstract class ArticleExBase extends Model
      * article_id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'article_id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'article_id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, unsigned: true)
     ]
     protected ?int $articleId = null;
 

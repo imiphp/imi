@@ -6,16 +6,14 @@ namespace Imi\Test\Component\Db\Classes;
 
 use Imi\Db\Annotation\RollbackType;
 use Imi\Db\Annotation\Transaction;
-use Imi\Db\Annotation\TransactionType;
 use Imi\Db\Db;
 
 class TestTransaction
 {
     /**
      * 事务嵌套.
-     *
-     * @Transaction(type=TransactionType::NESTING)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::NESTING)]
     public function nestingCommit(): void
     {
         $this->__listen();
@@ -23,9 +21,8 @@ class TestTransaction
 
     /**
      * 事务嵌套.
-     *
-     * @Transaction(type=TransactionType::NESTING)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::NESTING)]
     public function nestingCommit2(): void
     {
         $this->__listen();
@@ -34,9 +31,8 @@ class TestTransaction
 
     /**
      * 事务嵌套.
-     *
-     * @Transaction(type=TransactionType::NESTING)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::NESTING)]
     public function nestingRollback(): void
     {
         $this->__listen();
@@ -45,9 +41,8 @@ class TestTransaction
 
     /**
      * 事务嵌套.
-     *
-     * @Transaction(type=TransactionType::NESTING)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::NESTING)]
     public function nestingRollback2(): void
     {
         $this->__listen();
@@ -56,9 +51,8 @@ class TestTransaction
 
     /**
      * 该方法必须在事务中被调用.
-     *
-     * @Transaction(type=TransactionType::REQUIREMENT)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::REQUIREMENT)]
     public function requirementCommit(): void
     {
         $this->__listen();
@@ -66,9 +60,8 @@ class TestTransaction
 
     /**
      * 该方法必须在事务中被调用.
-     *
-     * @Transaction(type=TransactionType::REQUIREMENT)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::REQUIREMENT)]
     public function requirementRollback(): void
     {
         $this->__listen();
@@ -77,9 +70,8 @@ class TestTransaction
 
     /**
      * 如果当前不在事务中则开启事务
-     *
-     * @Transaction(type=TransactionType::AUTO)
      */
+    #[Transaction]
     public function autoCommit(): void
     {
         $this->__listen();
@@ -87,9 +79,8 @@ class TestTransaction
 
     /**
      * 如果当前不在事务中则开启事务
-     *
-     * @Transaction(type=TransactionType::AUTO)
      */
+    #[Transaction]
     public function autoRollback(): void
     {
         $this->__listen();
@@ -98,9 +89,8 @@ class TestTransaction
 
     /**
      * 回滚1层事务
-     *
-     * @Transaction(type=TransactionType::NESTING, rollbackType=RollbackType::PART, rollbackLevels=1)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::NESTING, rollbackType: RollbackType::PART)]
     public function rollbackPart1(): void
     {
         $this->__listen();
@@ -109,9 +99,8 @@ class TestTransaction
 
     /**
      * 回滚所有事务
-     *
-     * @Transaction(type=TransactionType::NESTING, rollbackType=RollbackType::PART, rollbackLevels=null)
      */
+    #[Transaction(type: \Imi\Db\Annotation\TransactionType::NESTING, rollbackType: RollbackType::PART, rollbackLevels: null)]
     public function rollbackPartAll(): void
     {
         $this->__listen();

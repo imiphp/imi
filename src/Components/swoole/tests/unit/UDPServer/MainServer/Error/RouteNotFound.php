@@ -9,9 +9,7 @@ use Imi\Server\UdpServer\Error\IUdpRouteNotFoundHandler;
 use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 
-/**
- * @Bean("RouteNotFound")
- */
+#[Bean(name: 'RouteNotFound')]
 class RouteNotFound implements IUdpRouteNotFoundHandler
 {
     /**

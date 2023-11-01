@@ -42,7 +42,7 @@ abstract class PolymorphicBase extends Model
      * id.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'id', type: 'int', length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'id', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true, unsigned: true)
     ]
     protected ?int $id = null;
 
@@ -72,7 +72,7 @@ abstract class PolymorphicBase extends Model
      * type.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'type', type: 'int', length: 10, nullable: false, unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'type', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, unsigned: true)
     ]
     protected ?int $type = null;
 
@@ -102,7 +102,7 @@ abstract class PolymorphicBase extends Model
      * to_one.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'to_one', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'to_one', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $toOne = 0;
 
@@ -132,7 +132,7 @@ abstract class PolymorphicBase extends Model
      * to_many.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'to_many', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'to_many', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $toMany = 0;
 
@@ -162,7 +162,7 @@ abstract class PolymorphicBase extends Model
      * one_to_one.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'one_to_one', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'one_to_one', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $oneToOne = 0;
 
@@ -192,7 +192,7 @@ abstract class PolymorphicBase extends Model
      * one_to_many.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'one_to_many', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'one_to_many', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $oneToMany = 0;
 
@@ -222,7 +222,7 @@ abstract class PolymorphicBase extends Model
      * many_to_many.
      */
     #[
-        \Imi\Model\Annotation\Column(name: 'many_to_many', type: 'int', length: 10, nullable: false, default: '0', unsigned: true)
+        \Imi\Model\Annotation\Column(name: 'many_to_many', type: \Imi\Cli\ArgType::INT, length: 10, nullable: false, default: '0', unsigned: true)
     ]
     protected ?int $manyToMany = 0;
 

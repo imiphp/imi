@@ -8,13 +8,13 @@
 
 ```php
 return [
-	'beans'	=>	[
-		'TcpDispatcher'	=>	[
-			'middlewares'	=>	[
-				\Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+    'beans'    =>    [
+        'TcpDispatcher'    =>    [
+            'middlewares'    =>    [
+                \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 

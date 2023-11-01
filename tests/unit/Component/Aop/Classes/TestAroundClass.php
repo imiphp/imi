@@ -6,9 +6,7 @@ namespace Imi\Test\Component\Aop\Classes;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("TestAroundClass")
- */
+#[Bean(name: 'TestAroundClass')]
 class TestAroundClass
 {
     public function test(int $id): int

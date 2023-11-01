@@ -9,14 +9,10 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Session\Session;
 
-/**
- * @Controller("/session/")
- */
+#[Controller(prefix: '/session/')]
 class SessionController extends HttpController
 {
-    /**
-     * @Action
-     */
+    #[Action]
     public function status(): array
     {
         $username = Session::get('auth.username');
@@ -37,9 +33,7 @@ class SessionController extends HttpController
         return $data;
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function login(): array
     {
         Session::set('auth.username', 'admin');
@@ -49,17 +43,13 @@ class SessionController extends HttpController
         ];
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function logout(): void
     {
         Session::delete('auth');
     }
 
-    /**
-     * @Action
-     */
+    #[Action]
     public function sendSms(): array
     {
         Session::set('vcode', '1234');
@@ -70,10 +60,9 @@ class SessionController extends HttpController
     }
 
     /**
-     * @Action
-     *
      * @param string $vcode
      */
+    #[Action]
     public function verifySms($vcode = ''): array
     {
         $storeVcode = Session::once('vcode');

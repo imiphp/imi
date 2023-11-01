@@ -14,25 +14,18 @@ use Imi\Cron\Message\Result;
 use Imi\Log\Log;
 
 /**
- * @Bean("CronScheduler")
- *
- * 定时任务调度器
+ * 定时任务调度器.
  */
+#[Bean(name: 'CronScheduler')]
 class Scheduler implements IScheduler
 {
-    /**
-     * @Inject("CronManager")
-     */
+    #[Inject(name: 'CronManager')]
     protected ICronManager $cronManager;
 
-    /**
-     * @Inject("CronCalculator")
-     */
+    #[Inject(name: 'CronCalculator')]
     protected CronCalculator $cronCalculator;
 
-    /**
-     * @Inject("CronLock")
-     */
+    #[Inject(name: 'CronLock')]
     protected CronLock $cronLock;
 
     /**

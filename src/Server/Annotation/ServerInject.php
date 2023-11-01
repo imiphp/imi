@@ -13,8 +13,6 @@ use Imi\RequestContext;
  * 服务器容器对象注入
  * 使用：RequestContext::getServerBean().
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -23,6 +21,7 @@ use Imi\RequestContext;
  * @property array  $args Bean实例化参数
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class ServerInject extends BaseInjectValue
 {
     /**

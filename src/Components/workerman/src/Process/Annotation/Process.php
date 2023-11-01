@@ -14,11 +14,10 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Target("CLASS")
  *
- * @Parser("Imi\Workerman\Process\Parser\ProcessParser")
- *
  * @property string $name 进程名称
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+#[Parser(className: \Imi\Workerman\Process\Parser\ProcessParser::class)]
 class Process extends Base
 {
     /**

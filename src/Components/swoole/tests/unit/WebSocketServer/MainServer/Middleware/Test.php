@@ -10,9 +10,7 @@ use Imi\Server\WebSocket\IMessageHandler;
 use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\Middleware\IMiddleware;
 
-/**
- * @Bean
- */
+#[Bean]
 class Test implements IMiddleware
 {
     /**

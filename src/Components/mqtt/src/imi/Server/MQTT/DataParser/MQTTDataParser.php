@@ -11,14 +11,10 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\DataParser\IParser;
 use Imi\Server\MQTT\Exception\InvalidReceiveData;
 
-/**
- * @Bean(recursion=false)
- */
+#[Bean(recursion: false)]
 class MQTTDataParser implements IParser
 {
-    /**
-     * @Inject(\BinSoul\Net\Mqtt\DefaultPacketFactory::class)
-     */
+    #[Inject(name: \BinSoul\Net\Mqtt\DefaultPacketFactory::class)]
     protected DefaultPacketFactory $packetFactory;
 
     /**

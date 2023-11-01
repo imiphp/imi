@@ -14,9 +14,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给指定标识-请求
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawByFlagRequest")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawByFlagRequest')]
 class OnSendRawByFlagRequest implements IEventListener
 {
     /**

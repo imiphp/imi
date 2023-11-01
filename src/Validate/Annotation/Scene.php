@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Base;
  * @property string $name   场景名称
  * @property array  $fields 需要验证的字段名列表
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Scene extends Base
 {
     public function __construct(?array $__data = null, string $name = '', array $fields = [])

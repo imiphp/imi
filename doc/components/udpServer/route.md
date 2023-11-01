@@ -8,13 +8,13 @@
 
 ```php
 return [
-	'beans'	=>	[
-		'UdpDispatcher'	=>	[
-			'middlewares'	=>	[
-				\Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+    'beans'    =>    [
+        'UdpDispatcher'    =>    [
+            'middlewares'    =>    [
+                \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 

@@ -13,30 +13,30 @@ AOP 的概念通过搜索引擎一定是看烦了，而且看了也没什么大�
 ```php
 abstract class ParentClass
 {
-	public function test()
-	{
-		$this->__beforeTest();
-		// 做一些事情...
-		echo 'Parent->test()', PHP_EOL;
-		$this->__afterTest();
-	}
+    public function test()
+    {
+        $this->__beforeTest();
+        // 做一些事情...
+        echo 'Parent->test()', PHP_EOL;
+        $this->__afterTest();
+    }
 
-	public abstract function __beforeTest();
+    public abstract function __beforeTest();
 
-	public abstract function __afterTest();
+    public abstract function __afterTest();
 }
 
 class Child extends ParentClass
 {
-	public function __beforeTest()
-	{
-		echo 'Child->__beforeTest()', PHP_EOL;
-	}
+    public function __beforeTest()
+    {
+        echo 'Child->__beforeTest()', PHP_EOL;
+    }
 
-	public function __afterTest()
-	{
-		echo 'Child->__afterTest()', PHP_EOL;
-	}
+    public function __afterTest()
+    {
+        echo 'Child->__afterTest()', PHP_EOL;
+    }
 }
 
 $child = new Child;
@@ -148,27 +148,25 @@ use Imi\Aop\Annotation\After;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class Pool
 {
-	/**
-	 * @PointCut(
-	 * 		allow={
-	 * 			"Imi\*Pool*::getResource",
-	 * 			"Imi\*Pool*::release",
-	 * 		}
-	 * )
-	 * @After
-	 * @param JoinPoint $a
-	 * @return void
-	 */
-	public function test(JoinPoint $joinPoint)
-	{
-		echo $joinPoint->getType() . ' ' . get_parent_class($joinPoint->getTarget()) . '::' . $joinPoint->getMethod() . '(): ' . $joinPoint->getTarget()->getFree() . '/' . $joinPoint->getTarget()->getCount() . PHP_EOL;
-		var_dump('args:', $joinPoint->getArgs());
-	}
+    /**
+     * @param JoinPoint $a
+     * @return void
+     */
+    #[
+        PointCut(allow: [
+            'Imi\*Pool*::getResource',
+            'Imi\*Pool*::release',
+        ]),
+        After
+    ]
+    public function test(JoinPoint $joinPoint)
+    {
+        echo $joinPoint->getType() . ' ' . get_parent_class($joinPoint->getTarget()) . '::' . $joinPoint->getMethod() . '(): ' . $joinPoint->getTarget()->getFree() . '/' . $joinPoint->getTarget()->getCount() . PHP_EOL;
+        var_dump('args:', $joinPoint->getArgs());
+    }
 }
 ```
 
@@ -192,25 +190,20 @@ after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 可参考`imi\src\Db\Aop\TransactionAop.php`文件：
 
 ```php
-/**
- * @Aspect
- */
+#[Aspect]
 class TransactionAop
 {
     /**
      * 自动事务支持
-     * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             Transaction::class
-     *         }
-     * )
-     * @Around
      * @return mixed
      */
+    #[
+        PointCut(type: PointCutType::ANNOTATION, allow: [Transaction::class]),
+        Around
+    ]
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {
-	}
+    }
 }
 ```
 
@@ -227,14 +220,14 @@ use Imi\Aop\JoinPoint;
 
 class Test
 {
-	/**
-	 * @param JoinPoint $a
-	 * @return void
-	 */
-	public function test(JoinPoint $joinPoint)
-	{
-		echo $joinPoint->getType() . ' ' . get_parent_class($joinPoint->getTarget()) . '::' . $joinPoint->getMethod() . '(): ' . $joinPoint->getTarget()->getFree() . '/' . $joinPoint->getTarget()->getCount() . PHP_EOL;
-	}
+    /**
+     * @param JoinPoint $a
+     * @return void
+     */
+    public function test(JoinPoint $joinPoint)
+    {
+        echo $joinPoint->getType() . ' ' . get_parent_class($joinPoint->getTarget()) . '::' . $joinPoint->getMethod() . '(): ' . $joinPoint->getTarget()->getFree() . '/' . $joinPoint->getTarget()->getCount() . PHP_EOL;
+    }
 }
 ```
 
@@ -245,25 +238,25 @@ class Test
 ```php
 <?php
 return [
-	// 类名
-	\Test\Test::class	=>	[
-		// 固定写法methods
-		'methods'	=>	[
-			// 方法名
-			'test'	=>	[
-				// 指定切入点
-				'pointCut'	=>	[
-					'allow'	=>	[
-						"Imi\*Pool*::getResource",
-						"Imi\*Pool*::release",
-					]
-				],
-				'after'	=>	[
-					
-				]
-			]
-		]
-	],
+    // 类名
+    \Test\Test::class    =>    [
+        // 固定写法methods
+        'methods'    =>    [
+            // 方法名
+            'test'    =>    [
+                // 指定切入点
+                'pointCut'    =>    [
+                    'allow'    =>    [
+                        "Imi\*Pool*::getResource",
+                        "Imi\*Pool*::release",
+                    ]
+                ],
+                'after'    =>    [
+                    
+                ]
+            ]
+        ]
+    ],
 ];
 ```
 
@@ -285,102 +278,90 @@ use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Aop\Annotation\AfterReturning;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class Test
 {
-	/**
-	 * 前置操作
-	 * @PointCut(
-	 *         allow={
-	 *             "ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 *         }
-	 * )
-	 * @Before
-	 * @param JoinPoint $a
-	 * @return void
-	 */
-	public function before(JoinPoint $joinPoint)
-	{
-		// 修改参数
-		// $joinPoint->setArgs(/*参数数组*/);
-		echo 'getScore()-before', PHP_EOL;
-	}
+    /**
+     * 前置操作
+     * @param JoinPoint $a
+     * @return void
+     */
+    #[
+        PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+        Before
+    ]
+    public function before(JoinPoint $joinPoint)
+    {
+        // 修改参数
+        // $joinPoint->setArgs(/*参数数组*/);
+        echo 'getScore()-before', PHP_EOL;
+    }
 
-	/**
-	 * 后置操作
-	 * @PointCut(
-	 *         allow={
-	 *             "ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 *         }
-	 * )
-	 * @After
-	 * @param JoinPoint $a
-	 * @return void
-	 */
-	public function after(JoinPoint $joinPoint)
-	{
-		echo 'getScore()-after', PHP_EOL;
-	}
+    /**
+     * 后置操作
+     * @param JoinPoint $a
+     * @return void
+     */
+    #[
+        PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+        After
+    ]
+    public function after(JoinPoint $joinPoint)
+    {
+        echo 'getScore()-after', PHP_EOL;
+    }
 
-	/**
-	 * 环绕
-	 * @PointCut(
-	 * 		allow={
-	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore1",
-	 * 		}
-	 * )
-	 * @Around
-	 * @return mixed
-	 */
-	public function around(AroundJoinPoint $joinPoint)
-	{
-		var_dump('调用前');
-		// 执行原方法，获取返回值
-		$result = $joinPoint->proceed();
+    /**
+     * 环绕
+     * @return mixed
+     */
+    #[
+        PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore1']),
+        Around
+    ]
+    public function around(AroundJoinPoint $joinPoint)
+    {
+        var_dump('调用前');
+        // 执行原方法，获取返回值
+        $result = $joinPoint->proceed();
         // 执行原方法，获取返回值（方法返回值是引用返回时）
         // $result = $joinPoint->proceed(null, true);
-		var_dump('调用后');
-		return 'value'; // 无视原方法调用后的返回值，强制返回一个其它值
-		return $result; // 返回原方法返回值
-	}
+        var_dump('调用后');
+        return 'value'; // 无视原方法调用后的返回值，强制返回一个其它值
+        return $result; // 返回原方法返回值
+    }
 
-	/**
-	 * 返回值
-	 * @PointCut(
-	 * 		allow={
-	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 * 		}
-	 * )
-	 * @AfterReturning
-	 * @param AfterReturningJoinPoint $joinPoint
-	 * @return void
-	 */
-	public function afterReturning(AfterReturningJoinPoint $joinPoint)
-	{
-		$joinPoint->setReturnValue('修改返回值');
-	}
+    /**
+     * 返回值
+     * @param AfterReturningJoinPoint $joinPoint
+     * @return void
+     */
+    #[
+        PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+        AfterReturning
+    ]
+    public function afterReturning(AfterReturningJoinPoint $joinPoint)
+    {
+        $joinPoint->setReturnValue('修改返回值');
+    }
 
-	/**
-	 * 异常捕获
-	 * @PointCut(
-	 * 		allow={
-	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 * 		}
-	 * )
-	 * @AfterThrowing
-	 * @param AfterThrowingJoinPoint $joinPoint
-	 * @return void
-	 */
-	public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
-	{
-		// 异常不会被继续抛出，也不会记录日志
-		$joinPoint->cancelThrow();
-		var_dump('异常捕获:' . $joinPoint->getThrowable()->getMessage());
-		// 如有需要，可以手动记录下日志：
-		\Imi\Log\Log::error($joinPoint->getThrowable());
-	}
+    /**
+     * 异常捕获
+     * @param AfterThrowingJoinPoint $joinPoint
+     * @return void
+     */
+    #[
+        PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+        AfterThrowing
+    ]
+    public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
+    {
+        // 异常不会被继续抛出，也不会记录日志
+        $joinPoint->cancelThrow();
+        var_dump('异常捕获:' . $joinPoint->getThrowable()->getMessage());
+        // 如有需要，可以手动记录下日志：
+        \Imi\Log\Log::error($joinPoint->getThrowable());
+    }
 }
 
 ```
@@ -394,30 +375,30 @@ namespace Test;
 
 class TestClass
 {
-	/**
-	 * 某Model对象
-	 * @Inject("XXX\Model\User")
-	 */
-	protected $model;
-	
-	/**
-	 * 某Model对象，通过注释类型注入
-	 * @Inject
-	 * 
-	 * @var XXX\Model\User
-	 */
-	protected $model2;
-	
-	/**
-	 * 某Model对象，类型声明注入
-	 * @Inject
-	 */
-	protected XXX\Model\User $model3;
+    /**
+     * 某Model对象
+     */
+    #[Inject(name: \XXX\Model\User::class)]
+    protected $model;
+    
+    /**
+     * 某Model对象，通过注释类型注入
+     * 
+     * @var XXX\Model\User
+     */
+    #[Inject]
+    protected $model2;
+    
+    /**
+     * 某Model对象，类型声明注入
+     */
+    #[Inject]
+    protected XXX\Model\User $model3;
 
-	public function test()
-	{
-		var_dump($model->toArray());
-	}
+    public function test()
+    {
+        var_dump($model->toArray());
+    }
 }
 
 $testClass = App::getBean('Test\TestClass');
@@ -437,12 +418,10 @@ use Imi\Aop\Annotation\Inject;
 
 class Test
 {
-	use Imi\Bean\Traits\TAutoInject;
+    use Imi\Bean\Traits\TAutoInject;
 
-	/**
-	 * @Inject("XXX")
-	 */
-	public $xxx;
+    #[Inject(name: 'XXX')]
+    public $xxx;
 }
 
 $test = new Test;
@@ -458,20 +437,18 @@ use Imi\Aop\Annotation\Inject;
 
 class Test
 {
-	use Imi\Bean\Traits\TAutoInject;
+    use Imi\Bean\Traits\TAutoInject;
 
-	/**
-	 * @Inject("XXX")
-	 */
-	public $xxx;
+    #[Inject(name: 'XXX')]
+    public $xxx;
 
-	private $value;
+    private $value;
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         $this->__autoInject(); // 手动调用 __autoInject() 方法
-		$this->value = 123;
-	}
+        $this->value = 123;
+    }
 }
 
 $test = new Test;
@@ -482,14 +459,15 @@ $test->xxx; // 会被自动注入，不用手动初始化
 
 ```php
 /**
- * @InjectArg(name="a", value="123")
- * @InjectArg(name="b", value=@Inject("\ImiDemo\HttpDemo\MainServer\Model\User"))
- *
  * @return void
  */
+#[
+    InjectArg(name: 'a', value: '123'),
+    InjectArg(name: 'b', value: new Inject(name: \ImiDemo\HttpDemo\MainServer\Model\User::class))
+]
 public function test($a, $b)
 {
-	var_dump($a, $b);
+    var_dump($a, $b);
 }
 ```
 

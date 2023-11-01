@@ -10,9 +10,7 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\Middleware\IMiddleware;
 
-/**
- * @Bean
- */
+#[Bean]
 class Test implements IMiddleware
 {
     /**

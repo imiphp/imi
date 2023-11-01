@@ -17,25 +17,24 @@ use Imi\Swoole\Server\Event\Listener\IMessageEventListener;
 /**
  * 监听message事件，可以自己做处理
  * 如果不需要默认的处理方式，在配置文件中，把WebSocketDispatcher-middlewares下的中间件去除
- * 
- * @ClassEventListener(className="Imi\Swoole\Server\WebSocket\Server",eventName="message")
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\WebSocket\Server::class, eventName: 'message')]
 class OnMessage implements IMessageEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param MessageEventParam $e
-	 * @return void
-	 */
-	public function handle(MessageEventParam $e): void
-	{
-		// 如果服务器名不是主服务器就返回
-		if('main' !== $e->getTarget()->getName())
-		{
-			return;
-		}
-		var_dump($e->frame->data);
-		// $e->server->getSwooleServer()->push($e->frame->fd, '返回信息');
-	}
+    /**
+     * 事件处理方法
+     * @param MessageEventParam $e
+     * @return void
+     */
+    public function handle(MessageEventParam $e): void
+    {
+        // 如果服务器名不是主服务器就返回
+        if('main' !== $e->getTarget()->getName())
+        {
+            return;
+        }
+        var_dump($e->frame->data);
+        // $e->server->getSwooleServer()->push($e->frame->fd, '返回信息');
+    }
 }
 ```

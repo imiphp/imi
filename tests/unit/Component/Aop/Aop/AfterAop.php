@@ -11,20 +11,11 @@ use Imi\Aop\JoinPoint;
 use Imi\Bean\BeanFactory;
 use PHPUnit\Framework\Assert;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class AfterAop
 {
-    /**
-     * @After
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Aop\Classes\TestAfterClass::test"
-     *     }
-     * )
-     */
+    #[After]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestAfterClass::test'])]
     public function injectAfterAop(JoinPoint $joinPoint): void
     {
         Assert::assertEquals([1], $joinPoint->getArgs());

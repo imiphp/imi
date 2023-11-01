@@ -9,9 +9,8 @@ use Imi\Test\Component\Model\Base\PerformanceBase;
 
 /**
  * Performance.
- *
- * @Inherit
  */
+#[Inherit]
 class Performance extends PerformanceBase
 {
 }

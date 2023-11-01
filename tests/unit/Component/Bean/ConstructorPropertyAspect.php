@@ -10,20 +10,11 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\JoinPoint;
 use Imi\Log\Log;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class ConstructorPropertyAspect
 {
-    /**
-     * @After
-     *
-     * @PointCut(
-     *     allow={
-     *         "Imi\Test\Component\Bean\ConstructorPropertyBean::__construct"
-     *     }
-     * )
-     */
+    #[After]
+    #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ConstructorPropertyBean::__construct'])]
     public function injectAfterAop(JoinPoint $joinPoint): void
     {
         Log::info('after ConstructorPropertyBean::__construct()');

@@ -15,9 +15,7 @@ use Imi\Util\Imi;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Uri;
 
-/**
- * @Bean(name="HttpRoute", recursion=false)
- */
+#[Bean(name: 'HttpRoute', recursion: false)]
 class HttpRoute
 {
     private ?Router $router = null;

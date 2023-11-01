@@ -14,9 +14,8 @@ use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给所有 Worker 进程的连接-请求
- *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawToAllRequest")
  */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawToAllRequest')]
 class OnSendRawToAllRequest implements IEventListener
 {
     /**

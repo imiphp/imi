@@ -11,13 +11,11 @@
 ### 声明关联的属性
 
 ```php
-/**
- * @Relation
- *
- * @AutoSave
- *
- * @AutoDelete
- */
+#[
+    Relation,
+    AutoSave,
+    AutoDelete
+]
 public ?array $relation = null;
 
 public function getRelation(): ?array

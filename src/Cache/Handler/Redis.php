@@ -8,9 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Redis\Redis as ImiRedis;
 use Imi\Util\DateTime;
 
-/**
- * @Bean("RedisCache")
- */
+#[Bean(name: 'RedisCache')]
 class Redis extends Base
 {
     /**

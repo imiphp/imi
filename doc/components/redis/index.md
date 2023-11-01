@@ -61,17 +61,17 @@ return [
                 // 'mode' => \Imi\Redis\Enum\RedisMode::STANDALONE,
 
                 // --- Tcp 连接参数示范 ---
-                // 'host'	=>	'127.0.0.1',
-                // 'port'	=>	6379,
+                // 'host'    =>    '127.0.0.1',
+                // 'port'    =>    6379,
                 // --- Unix Socket 连接参数示范（仅支持单机模式） ---
-                // 'host'	=>	'/var/run/redis/redis-server.sock',
+                // 'host'    =>    '/var/run/redis/redis-server.sock',
 
                 // 是否自动序列化变量
-                // 'serialize'	=>	true,
+                // 'serialize'    =>    true,
                 // 密码
-                // 'password'	=>	null,
+                // 'password'    =>    null,
                 // 第几个库
-                // 'db'	=>	0,
+                // 'db'    =>    0,
 
                 // --- 哨兵模式配置 ---
                 'mode' => \Imi\Redis\Enum\RedisMode::SENTINEL,
@@ -118,23 +118,23 @@ return [
 <?php
 
 return [
-    'redis'	=>	[
-        'defaultPool'	=>	'alias1', // 默认连接名
-        'quickFromRequestContext'	=>	true, // 从当前上下文中获取公用连接
+    'redis'    =>    [
+        'defaultPool'    =>    'alias1', // 默认连接名
+        'quickFromRequestContext'    =>    true, // 从当前上下文中获取公用连接
         'connections'   => [
             'alias1' => [
                 // --- Tcp 连接参数示范 ---
-                // 'host'	=>	'127.0.0.1',
-                // 'port'	=>	6379,
+                // 'host'    =>    '127.0.0.1',
+                // 'port'    =>    6379,
                 // --- Unix Socket 连接参数示范（仅支持单机模式） ---
-                // 'host'	=>	'/var/run/redis/redis-server.sock',
+                // 'host'    =>    '/var/run/redis/redis-server.sock',
 
                 // 是否自动序列化变量
-                // 'serialize'	=>	true,
+                // 'serialize'    =>    true,
                 // 密码
-                // 'password'	=>	null,
+                // 'password'    =>    null,
                 // 第几个库
-                // 'db'	=>	0,
+                // 'db'    =>    0,
                 // 当获取资源时，是否检查状态
                 // 'checkStateWhenGetResource' => true,
                 // 心跳时间间隔，单位：秒

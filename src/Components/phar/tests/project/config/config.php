@@ -151,14 +151,14 @@ return [
         // FPM、Workerman 下用
         'connections'   => [
             'redis' => [
-                'host'	      => '127.0.0.1',
-                'port'	      => 6379,
+                'host'      => '127.0.0.1',
+                'port'      => 6379,
                 // 是否自动序列化变量
-                'serialize'	 => true,
+                'serialize' => true,
                 // 密码
-                'password'	  => null,
+                'password'  => null,
                 // 第几个库
-                'db'	        => 0,
+                'db'        => 0,
             ],
         ],
     ],

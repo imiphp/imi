@@ -13,13 +13,12 @@ use Imi\Redis\RedisManager;
  *
  * {@inheritdoc}
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class RedisInject extends RequestInject
 {
     /**

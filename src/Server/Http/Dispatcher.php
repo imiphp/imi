@@ -13,9 +13,7 @@ use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Middleware\ActionMiddleware;
 use Imi\Server\Http\Middleware\RouteMiddleware;
 
-/**
- * @Bean(name="HttpDispatcher", recursion=false)
- */
+#[Bean(name: 'HttpDispatcher', recursion: false)]
 class Dispatcher
 {
     /**
@@ -30,14 +28,10 @@ class Dispatcher
      */
     protected bool $middleware = true;
 
-    /**
-     * @ServerInject("RouteMiddleware")
-     */
+    #[ServerInject(name: 'RouteMiddleware')]
     protected RouteMiddleware $routeMiddleware;
 
-    /**
-     * @ServerInject("ActionMiddleware")
-     */
+    #[ServerInject(name: 'ActionMiddleware')]
     protected ActionMiddleware $actionMiddleware;
 
     /**

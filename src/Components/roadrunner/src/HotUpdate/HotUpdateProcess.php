@@ -11,9 +11,7 @@ use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Util\Imi;
 
-/**
- * @Bean(name="hotUpdate", env="cli")
- */
+#[Bean(name: 'hotUpdate', env: 'cli')]
 class HotUpdateProcess
 {
     public const DESCRIPTORSPEC = [

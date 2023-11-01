@@ -11,8 +11,6 @@ use Imi\Bean\Annotation\Inherit;
  *
  * 支持在注解中为属性动态赋值
  *
- * @Inherit
- *
  * @Annotation
  *
  * @Target({"PROPERTY", "ANNOTATION"})
@@ -21,6 +19,7 @@ use Imi\Bean\Annotation\Inherit;
  * @property mixed  $default 常量不存在时，返回的默认值
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Inherit]
 class ConstValue extends BaseInjectValue
 {
     /**
