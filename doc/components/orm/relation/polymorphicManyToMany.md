@@ -59,8 +59,8 @@ mysql> desc tb_taggables;
  * @property \Imi\Util\ArrayList $tags
  */
 #[
-	Entity,
-	Table(name: 'tb_user', id: ['id'])
+    Entity,
+    Table(name: 'tb_user', id: ['id'])
 ]
 class Article extends Model
 {
@@ -101,41 +101,41 @@ class Article extends Model
      */
     public function setTaggables(\Imi\Util\ArrayList $taggables)
     {
-    	$this->taggables = $taggables;
+        $this->taggables = $taggables;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * 关联标签
-	 *
-	 * @var \Imi\Util\ArrayList
-	 */
-	protected $tags;
+    /**
+     * 关联标签
+     *
+     * @var \Imi\Util\ArrayList
+     */
+    protected $tags;
 
-	/**
-	 * Get 关联标签
-	 *
-	 * @return  \Imi\Util\ArrayList
-	 */
-	public function getTags()
-	{
-		return $this->tags;
-	}
+    /**
+     * Get 关联标签
+     *
+     * @return  \Imi\Util\ArrayList
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 
-	/**
-	 * Set 关联标签
-	 *
-	 * @param  \Imi\Util\ArrayList  $tags  关联标签
-	 *
-	 * @return  self
-	 */
-	public function setTags($tags)
-	{
-		$this->tags = $tags;
+    /**
+     * Set 关联标签
+     *
+     * @param  \Imi\Util\ArrayList  $tags  关联标签
+     *
+     * @return  self
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
 
-		return $this;
-	}
+        return $this;
+    }
 }
 ```
 
@@ -148,14 +148,14 @@ class Article extends Model
  * @property string $name
  */
 #[
-	Entity,
-	Table(name: 'tb_tags', id: ['id'])
+    Entity,
+    Table(name: 'tb_tags', id: ['id'])
 ]
 class Tags extends Model
 {
     // 省略其它……
 
-	/**
+    /**
      * 拥有本标签的文章列表
      *
      * @var \Imi\Util\ArrayList
@@ -190,9 +190,9 @@ class Tags extends Model
         $this->articles = $articles;
 
         return $this;
-	}
+    }
 
-	/**
+    /**
      * 拥有本标签的书籍列表
      *
      * @var \Imi\Util\ArrayList
@@ -227,7 +227,7 @@ class Tags extends Model
         $this->books = $books;
 
         return $this;
-	}
+    }
 
 }
 ```

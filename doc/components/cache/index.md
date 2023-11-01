@@ -11,9 +11,9 @@ imi 中的缓存，符合PSR-16规范。使用时需要先配置驱动和实例�
 ```php
 <?php
 return [
-	'cache'	=>	[
-		'default'	=>	'alias1',
-	],
+    'cache'    =>    [
+        'default'    =>    'alias1',
+    ],
 ];
 ```
 
@@ -35,8 +35,8 @@ Imi\Cache\CacheManager::set('缓存名称', 'key', 'value', $ttl);
 
 ```php
 $values = [
-	'k1'	=>	'v1',
-	'k2'	=>	'v2',
+    'k1'    =>    'v1',
+    'k2'    =>    'v2',
 ];
 Imi\Cache\CacheManager::setMultiple('缓存名称', $values);
 

@@ -29,24 +29,24 @@ imi v1.0.20 新增支持开发 Http2 服务。
 
 ```php
 // 主服务器配置
-'mainServer'    =>	[
+'mainServer'    =>    [
     // 指定服务器命名空间
-    'namespace'	=>  'ImiDemo\HttpDemo\MainServer',
+    'namespace'    =>  'ImiDemo\HttpDemo\MainServer',
     // 服务器类型(http/WebSocket/TcpServer/UdpServer)
     'type'      =>  \Imi\Swoole\Server\Type::HTTP,
     // 监听的IP地址，可选
     'host'      =>  '0.0.0.0',
     // 监听的端口
-    'port'		=>	8080,
+    'port'        =>    8080,
     // 参考 swoole mode，可选
-    'mode'		=>	SWOOLE_BASE,
+    'mode'        =>    SWOOLE_BASE,
     // 参考 swoole sockType，可选
-    'sockType'	=>	SWOOLE_SOCK_TCP,
+    'sockType'    =>    SWOOLE_SOCK_TCP,
     // 服务器配置，参数用法同\Swoole\Server->set($configs)
-    'configs'	=>	[
-        'reactor_num'	    => 8,
-        'worker_num'	    => 8,
-        'task_worker_num'	=> 16,
+    'configs'    =>    [
+        'reactor_num'        => 8,
+        'worker_num'        => 8,
+        'task_worker_num'    => 16,
         'open_http2_protocol'   =>  true, // 启用 http2
     ],
 ],
@@ -59,19 +59,19 @@ imi v1.0.20 新增支持开发 Http2 服务。
     // 子服务器（端口监听）配置
     'subServers'    =>    [
         // 子服务器别名
-        'alias1'	=>	[
+        'alias1'    =>    [
             // 指定服务器命名空间
-            'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
+            'namespace'    =>    'ImiDemo\HttpDemo\MainServer',
             // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-            'type'		=>	\Imi\Swoole\Server\Type::HTTP,
+            'type'        =>    \Imi\Swoole\Server\Type::HTTP,
             // 监听的IP地址，可选
-            'host'		=>	'0.0.0.0',
+            'host'        =>    '0.0.0.0',
             // 监听的端口
-            'port'		=>	8080,
+            'port'        =>    8080,
             // 参考 swoole sockType，可选
-            'sockType'	=>	SWOOLE_SOCK_TCP,
+            'sockType'    =>    SWOOLE_SOCK_TCP,
             // 服务器配置，参数用法同\Swoole\Server->set($configs)
-            'configs'	=>	[
+            'configs'    =>    [
                 'open_http2_protocol'   =>  true, // 启用 http2
             ],
         ],

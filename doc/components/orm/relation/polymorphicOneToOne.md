@@ -56,8 +56,8 @@ mysql> desc tb_avatar;
  * @property \ImiDemo\HttpDemo\MainServer\Model\Avatar $avatar
  */
 #[
-	Entity,
-	Table(name: 'tb_user', id: ['id'])
+    Entity,
+    Table(name: 'tb_user', id: ['id'])
 ]
 class User extends Model
 {
@@ -114,8 +114,8 @@ class User extends Model
  * @property string $url
  */
 #[
-	Entity,
-	Table(name: 'tb_avatar', id: ['id'])
+    Entity,
+    Table(name: 'tb_avatar', id: ['id'])
 ]
 class Avatar extends Model
 {

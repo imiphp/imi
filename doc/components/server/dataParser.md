@@ -28,7 +28,7 @@
     // 子服务器（端口监听）配置
     'subServers' => [
         // 子服务器别名
-        'alias1'	=>	[
+        'alias1'    =>    [
             // 指定服务器命名空间
             'namespace'  => 'ImiDemo\HttpDemo\MainServer',
             // 服务器类型(http/WebSocket/TcpServer/UdpServer)

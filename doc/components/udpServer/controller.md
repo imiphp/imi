@@ -19,21 +19,21 @@ use Imi\Server\UdpServer\Route\Annotation\UdpController;
 #[UdpController]
 class Test extends \Imi\Controller\UdpController
 {
-	/**
-	 * 登录
-	 * 
-	 * @return void
-	 */
-	#[
-		UdpAction,
-		UdpRoute(condition: ['action' => 'hello'])
-	]
-	public function hello()
-	{
-		return [
-			'time'	=>	date($this->data->getFormatData()->format),
-		];
-	}
+    /**
+     * 登录
+     * 
+     * @return void
+     */
+    #[
+        UdpAction,
+        UdpRoute(condition: ['action' => 'hello'])
+    ]
+    public function hello()
+    {
+        return [
+            'time'    =>    date($this->data->getFormatData()->format),
+        ];
+    }
 
 }
 ```

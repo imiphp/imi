@@ -99,8 +99,8 @@ curl --location --request POST -X POST "http://127.0.0.1:8080/proxy/grpc/grpc.Au
 
 ```js
 {
-	"success": true,
-	"error": ""
+    "success": true,
+    "error": ""
 }
 ```
 

@@ -28,81 +28,81 @@
  * @property \Imi\Util\ArrayList $role
  */
 #[
-	Entity,
-	Table(name: 'tb_user', id: ['id'])
+    Entity,
+    Table(name: 'tb_user', id: ['id'])
 ]
 class User extends Model
 {
-	/**
-	 * @var \Imi\Util\ArrayList
-	 */
-	#[
-		ManyToMany(model: 'Role', middle: 'UserRole', rightMany: 'role'),
-		JoinToMiddle(field: 'id', middleField: 'user_id'),
-		JoinFromMiddle(middleField: 'role_id', field: 'id'),
-		AutoInsert,
-		AutoUpdate,
-		AutoSave,
-		AutoDelete
-	]
-	protected $userRole;
-	
-	/**
-	 * Get the value of userRole
-	 *
-	 * @return  \Imi\Util\ArrayList
-	 */ 
-	public function getUserRole()
-	{
-		return $this->userRole;
-	}
+    /**
+     * @var \Imi\Util\ArrayList
+     */
+    #[
+        ManyToMany(model: 'Role', middle: 'UserRole', rightMany: 'role'),
+        JoinToMiddle(field: 'id', middleField: 'user_id'),
+        JoinFromMiddle(middleField: 'role_id', field: 'id'),
+        AutoInsert,
+        AutoUpdate,
+        AutoSave,
+        AutoDelete
+    ]
+    protected $userRole;
+    
+    /**
+     * Get the value of userRole
+     *
+     * @return  \Imi\Util\ArrayList
+     */ 
+    public function getUserRole()
+    {
+        return $this->userRole;
+    }
 
-	/**
-	 * Set the value of userRole
-	 *
-	 * @param  \Imi\Util\ArrayList  $userRole
-	 *
-	 * @return  self
-	 */ 
-	public function setUserRole($userRole)
-	{
-		$this->userRole = $userRole;
+    /**
+     * Set the value of userRole
+     *
+     * @param  \Imi\Util\ArrayList  $userRole
+     *
+     * @return  self
+     */ 
+    public function setUserRole($userRole)
+    {
+        $this->userRole = $userRole;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Imi\Util\ArrayList
-	 */
-	protected $role;
+    /**
+     * 
+     *
+     * @var \Imi\Util\ArrayList
+     */
+    protected $role;
 
-	/**
-	 * Get the value of role
-	 *
-	 * @return  \ImiDemo\HttpDemo\MainServer\Model\ArrayList[]
-	 */ 
-	public function getRole()
-	{
-		return $this->role;
-	}
+    /**
+     * Get the value of role
+     *
+     * @return  \ImiDemo\HttpDemo\MainServer\Model\ArrayList[]
+     */ 
+    public function getRole()
+    {
+        return $this->role;
+    }
 
-	/**
-	 * Set the value of role
-	 *
-	 * @param  \ImiDemo\HttpDemo\MainServer\Model\ArrayList[]  $role
-	 *
-	 * @return  self
-	 */ 
-	public function setRole($role)
-	{
-		$this->role = $role;
+    /**
+     * Set the value of role
+     *
+     * @param  \ImiDemo\HttpDemo\MainServer\Model\ArrayList[]  $role
+     *
+     * @return  self
+     */ 
+    public function setRole($role)
+    {
+        $this->role = $role;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	// 其它这边省略……
+    // 其它这边省略……
 }
 ```
 
@@ -123,9 +123,9 @@ var_dump($model->role);
 $list = UserWithFriend::select();
 foreach($list as $item)
 {
-	// 可以取到关联关系及右侧模型数据
-	var_dump($item->userRole);
-	var_dump($item->role);
+    // 可以取到关联关系及右侧模型数据
+    var_dump($item->userRole);
+    var_dump($item->role);
 }
 ```
 
@@ -137,8 +137,8 @@ $user->username = Random::letterAndNumber(6, 16);
 $user->ex->intro = '这个人很懒，什么也没留下';
 // 插入关联关系
 $user->userRole->append(
-	UserRole::newInstance(['role_id'=>1]), 
-	UserRole::newInstance(['role_id'=>2])
+    UserRole::newInstance(['role_id'=>1]), 
+    UserRole::newInstance(['role_id'=>2])
 );
 $result = $user->insert();
 ```
@@ -151,7 +151,7 @@ $user->ex->intro = '这个人很懒，什么也没留下-' . date('Y-m-d H:i:s')
 $user->userRole->clear();
 // 更新关联关系
 $user->userRole->append(
-	UserRole::newInstance(['role_id'=>998])
+    UserRole::newInstance(['role_id'=>998])
 );
 $result = $user->update();
 ```
@@ -168,6 +168,6 @@ $user = UserWithFriend::find(1);
 $result = $user->delete();
 if($result->isSuccess())
 {
-	echo 'success';
+    echo 'success';
 }
 ```

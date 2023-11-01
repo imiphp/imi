@@ -26,41 +26,41 @@
  * @property \Imi\Util\ArrayList $role
  */
 #[
-	Entity,
-	Table(name: 'tb_user', id: ['id'])
+    Entity,
+    Table(name: 'tb_user', id: ['id'])
 ]
 class User extends Model
 {
-	#[
-		OneToOne(model: 'UserEx')
-		JoinFrom(field: 'id')
-		JoinTo(field: 'user_id')
-		AutoSave
-		AutoDelete
-	]
-	protected ?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex = null;
+    #[
+        OneToOne(model: 'UserEx')
+        JoinFrom(field: 'id')
+        JoinTo(field: 'user_id')
+        AutoSave
+        AutoDelete
+    ]
+    protected ?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex = null;
 
-	/**
-	 * Get the value of ex
-	 */ 
-	public function getEx(): ?\ImiDemo\HttpDemo\MainServer\Model\UserEx
-	{
-		return $this->ex;
-	}
+    /**
+     * Get the value of ex
+     */ 
+    public function getEx(): ?\ImiDemo\HttpDemo\MainServer\Model\UserEx
+    {
+        return $this->ex;
+    }
 
-	/**
-	 * Set the value of ex
-	 *
-	 * @return  self
-	 */ 
-	public function setEx(?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex)
-	{
-		$this->ex = $ex;
+    /**
+     * Set the value of ex
+     *
+     * @return  self
+     */ 
+    public function setEx(?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex)
+    {
+        $this->ex = $ex;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	// 其它这边省略……
+    // 其它这边省略……
 ```
 
 ## 查询
@@ -78,7 +78,7 @@ var_dump($model->ex); // ex数据可以直接取到，是UserEx实例
 $list = User::select();
 foreach($list as $item)
 {
-	var_dump($item->ex); // ex数据可以直接取到，是UserEx实例
+    var_dump($item->ex); // ex数据可以直接取到，是UserEx实例
 }
 ```
 
@@ -120,6 +120,6 @@ $user = User::find(1);
 $result = $user->delete();
 if($result->isSuccess())
 {
-	echo 'success';
+    echo 'success';
 }
 ```

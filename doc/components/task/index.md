@@ -27,10 +27,10 @@ class Test implements ITaskHandler
      * @return mixed
      */
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
-	{
-		// 投递任务时的数据
-		$data = $param->getData();
-	}
+    {
+        // 投递任务时的数据
+        $data = $param->getData();
+    }
 
     /**
      * 任务结束时触发.
@@ -38,9 +38,9 @@ class Test implements ITaskHandler
      * @param mixed $data
      */
     public function finish(\Swoole\Server $server, int $taskId, $data): void
-	{
-		
-	}
+    {
+        
+    }
 }
 ```
 
@@ -52,12 +52,12 @@ class Test implements ITaskHandler
 
 ```php
 TaskManager::post(new TaskInfo(
-	// 上面定义的类的实例
-	new TestTask,
-	// 执行任务的参数，构造方法可以接收一个数组
-	new TaskParam([
-		'time'	=>	time(),
-	])
+    // 上面定义的类的实例
+    new TestTask,
+    // 执行任务的参数，构造方法可以接收一个数组
+    new TaskParam([
+        'time'    =>    time(),
+    ])
 ));
 ```
 
@@ -67,12 +67,12 @@ TaskManager::post(new TaskInfo(
 
 ```php
 TaskManager::postWait(new TaskInfo(
-	// 上面定义的类的实例
-	new TestTask,
-	// 执行任务的参数，构造方法可以接收一个数组
-	new TaskParam([
-		'time'	=>	time(),
-	])),
+    // 上面定义的类的实例
+    new TestTask,
+    // 执行任务的参数，构造方法可以接收一个数组
+    new TaskParam([
+        'time'    =>    time(),
+    ])),
     // 最长等待时间，单位：秒
     0.5
 );
@@ -84,12 +84,12 @@ TaskManager::postWait(new TaskInfo(
 
 ```php
 TaskManager::postCo([new TaskInfo(
-	// 上面定义的类的实例
-	new TestTask,
-	// 执行任务的参数，构造方法可以接收一个数组
-	new TaskParam([
-		'time'	=>	time(),
-	])
+    // 上面定义的类的实例
+    new TestTask,
+    // 执行任务的参数，构造方法可以接收一个数组
+    new TaskParam([
+        'time'    =>    time(),
+    ])
 )],
 // 最长等待时间，单位：秒
 0.5);
@@ -118,10 +118,10 @@ class Test implements ITaskHandler
      * @return mixed
      */
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
-	{
-		// 投递任务时的数据
-		$data = $param->getData();
-	}
+    {
+        // 投递任务时的数据
+        $data = $param->getData();
+    }
 
     /**
      * 任务结束时触发.
@@ -129,9 +129,9 @@ class Test implements ITaskHandler
      * @param mixed $data
      */
     public function finish(\Swoole\Server $server, int $taskId, $data): void
-	{
-		
-	}
+    {
+        
+    }
 }
 ```
 
@@ -147,7 +147,7 @@ TaskManager::nPost(
 'testTask'
 // 任务参数
 , [
-	'time'	=>	time(),
+    'time'    =>    time(),
 ]
 );
 ```
@@ -158,14 +158,14 @@ TaskManager::nPost(
 
 ```php
 TaskManager::nPostWait(
-	// 任务名称
-	'testTask'
-	// 任务参数
-	, [
-		'time'	=>	time(),
-	]
-	// 最长等待时间，单位：秒
-	0.5
+    // 任务名称
+    'testTask'
+    // 任务参数
+    , [
+        'time'    =>    time(),
+    ]
+    // 最长等待时间，单位：秒
+    0.5
 );
 ```
 
@@ -175,8 +175,8 @@ TaskManager::nPostWait(
 
 ```php
 TaskManager::postCo([
-	['testTask', ['time'=>time()]],
-	['testTask', ['time'=>time()]],
+    ['testTask', ['time'=>time()]],
+    ['testTask', ['time'=>time()]],
 ],
 // 最长等待时间，单位：秒
 0.5);

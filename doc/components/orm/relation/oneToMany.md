@@ -27,46 +27,46 @@
  * @property \Imi\Util\ArrayList $friends
  */
 #[
-	Entity,
-	Table(name: 'tb_user', id: ['id'])
+    Entity,
+    Table(name: 'tb_user', id: ['id'])
 ]
 class UserWithFriend extends User
 {
-	/**
-	 * @var \Imi\Util\ArrayList
-	 */
-	#[
-		OneToMany(model: 'UserFriend')
-		JoinTo(field: 'user_id')
-		AutoInsert
-		AutoUpdate(orphanRemoval: true)
-		AutoDelete
-	]
-	protected $friends;
+    /**
+     * @var \Imi\Util\ArrayList
+     */
+    #[
+        OneToMany(model: 'UserFriend')
+        JoinTo(field: 'user_id')
+        AutoInsert
+        AutoUpdate(orphanRemoval: true)
+        AutoDelete
+    ]
+    protected $friends;
 
-	/**
-	 * Get the value of friends
-	 *
-	 * @return  \ImiDemo\HttpDemo\MainServer\Model\UserFriend[]
-	 */ 
-	public function getFriends()
-	{
-		return $this->friends;
-	}
+    /**
+     * Get the value of friends
+     *
+     * @return  \ImiDemo\HttpDemo\MainServer\Model\UserFriend[]
+     */ 
+    public function getFriends()
+    {
+        return $this->friends;
+    }
 
-	/**
-	 * Set the value of friends
-	 *
-	 * @param  \ImiDemo\HttpDemo\MainServer\Model\UserFriend[]  $friends
-	 *
-	 * @return  self
-	 */ 
-	public function setFriends($friends)
-	{
-		$this->friends = $friends;
+    /**
+     * Set the value of friends
+     *
+     * @param  \ImiDemo\HttpDemo\MainServer\Model\UserFriend[]  $friends
+     *
+     * @return  self
+     */ 
+    public function setFriends($friends)
+    {
+        $this->friends = $friends;
 
-		return $this;
-	}
+        return $this;
+    }
 
 }
 ```
@@ -86,7 +86,7 @@ var_dump($model->friends); // friends数据可以直接取到，是UserFriend实
 $list = UserWithFriend::select();
 foreach($list as $item)
 {
-	var_dump($item->friends); // friends数据可以直接取到，是UserFriend实例
+    var_dump($item->friends); // friends数据可以直接取到，是UserFriend实例
 }
 ```
 
@@ -99,8 +99,8 @@ $user->username = 'Yurun';
 $user->ex->intro = '这个人很懒，什么也没留下';
 // 在朋友关系列表中增加2项
 $user->friends->append(
-	UserFriend::newInstance(['friend_user_id'=>1]), 
-	UserFriend::newInstance(['friend_user_id'=>2])
+    UserFriend::newInstance(['friend_user_id'=>1]), 
+    UserFriend::newInstance(['friend_user_id'=>2])
 );
 $result = $user->insert();
 ```
@@ -119,15 +119,15 @@ $user->ex->intro = '这个人很懒，什么也没留下-' . date('Y-m-d H:i:s')
 // $ids = ObjectArrayHelper::column($updateItems, 'friend_user_id');
 // foreach(array_diff($friendIds, $ids) as $id)
 // {
-// 	$user->friends->append(UserFriend::newInstance([
-// 		'friend_user_id'	=>	$id,
-// 	]));
+//     $user->friends->append(UserFriend::newInstance([
+//         'friend_user_id'    =>    $id,
+//     ]));
 // }
 
 // 下面的是简单的增加两项关联
 $user->friends->append(
-	UserFriend::newInstance(['friend_user_id'=>1]), 
-	UserFriend::newInstance(['friend_user_id'=>2])
+    UserFriend::newInstance(['friend_user_id'=>1]), 
+    UserFriend::newInstance(['friend_user_id'=>2])
 );
 
 $result = $user->update();
@@ -145,6 +145,6 @@ $user = UserWithFriend::find(1);
 $result = $user->delete();
 if($result->isSuccess())
 {
-	echo 'success';
+    echo 'success';
 }
 ```

@@ -17,15 +17,15 @@ use Imi\Bean\Annotation\Bean;
 #[Bean]
 class RouteMiddleware implements IMiddleware
 {
-	/**
-	 * 处理方法
-	 *
-	 * @param IReceiveData $data
-	 * @param IReceiveHandler $handle
-	 * @return void
-	 */
-	public function process(IReceiveData $data, IReceiveHandler $handler)
-	{
+    /**
+     * 处理方法
+     *
+     * @param IReceiveData $data
+     * @param IReceiveHandler $handle
+     * @return void
+     */
+    public function process(IReceiveData $data, IReceiveHandler $handler)
+    {
         // 前置处理
         
         // 先执行其它中间件
@@ -34,7 +34,7 @@ class RouteMiddleware implements IMiddleware
         // 后置处理
         
         return $result;
-	}
+    }
 
 }
 ```
@@ -43,15 +43,15 @@ class RouteMiddleware implements IMiddleware
 
 ```php
 return [
-	'beans'	=>	[
-		// 中间件
-		'TcpDispatcher'	=>	[
-			'middlewares'	=>	[
-				// 中间件
-				\Imi\Server\Tcp\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+    'beans'    =>    [
+        // 中间件
+        'TcpDispatcher'    =>    [
+            'middlewares'    =>    [
+                // 中间件
+                \Imi\Server\Tcp\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -74,20 +74,20 @@ use Imi\Server\TcpServer\Route\Annotation\TcpController;
 #[TcpController]
 class Test extends \Imi\Controller\TcpController
 {
-	/**
-	 * 登录
-	 * 
-	 * @return void
-	 */
-	#[
-		TcpAction,
-		TcpRoute(condition: ['action' => 'login']),
-		TcpMiddleware(middlewares: XXX::class),
-		TcpMiddleware(middlewares: [XXX::class, XXX2::class])
-	]
-	public function login($data)
-	{
-	}
+    /**
+     * 登录
+     * 
+     * @return void
+     */
+    #[
+        TcpAction,
+        TcpRoute(condition: ['action' => 'login']),
+        TcpMiddleware(middlewares: XXX::class),
+        TcpMiddleware(middlewares: [XXX::class, XXX2::class])
+    ]
+    public function login($data)
+    {
+    }
 }
 ```
 
@@ -99,11 +99,11 @@ class Test extends \Imi\Controller\TcpController
 
 ```php
 return [
-	'middleware'    =>  [
+    'middleware'    =>  [
         'groups'    =>  [
-			// 组名
+            // 组名
             'test'  =>  [
-				// 中间件列表
+                // 中间件列表
                 \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
             ],
         ],

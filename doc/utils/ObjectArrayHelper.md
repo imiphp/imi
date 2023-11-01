@@ -18,7 +18,7 @@ $data = [
         'b' =>  [
             'c' =>  '111',
         ],
-	],
+    ],
 ];
 // 也可以是任意对象及数组的混合用法，如：
 $data = new \stdClass;
@@ -69,8 +69,8 @@ var_dump(ObjectArrayHelper::exists($data, 'a.b.c2'));
 
 ```php
 $data = [
-	'id'	=>	1,
-	'name'	=>	'imi',
+    'id'    =>    1,
+    'name'    =>    'imi',
 ];
 // $data = new stdClass;
 // $data->id = 1;

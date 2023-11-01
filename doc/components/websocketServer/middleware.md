@@ -21,15 +21,15 @@ use Imi\Server\WebSocket\IMessageHandler;
 #[Bean]
 class RouteMiddleware implements IMiddleware
 {
-	/**
-	 * 处理方法
-	 *
-	 * @param IFrame $frame
-	 * @param IMessageHandler $handler
-	 * @return void
-	 */
+    /**
+     * 处理方法
+     *
+     * @param IFrame $frame
+     * @param IMessageHandler $handler
+     * @return void
+     */
     public function process(IFrame $frame, IMessageHandler $handler)
-	{
+    {
         // 前置处理
         
         // 先执行其它中间件
@@ -38,7 +38,7 @@ class RouteMiddleware implements IMiddleware
         // 后置处理
         
         return $result;
-	}
+    }
 
 }
 ```
@@ -47,15 +47,15 @@ class RouteMiddleware implements IMiddleware
 
 ```php
 return [
-	'beans'	=>	[
-		// 中间件
-		'WebSocketDispatcher'	=>	[
-			'middlewares'	=>	[
-				// 中间件
-				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+    'beans'    =>    [
+        // 中间件
+        'WebSocketDispatcher'    =>    [
+            'middlewares'    =>    [
+                // 中间件
+                \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -80,20 +80,20 @@ use Imi\Server\WebSocket\Route\Annotation\WSMiddleware;
 #[WSController]
 class Test extends WebSocketController
 {
-	/**
-	 * test
-	 * 
-	 * @return void
-	 */
-	#[
-		WSAction,
-		WSRoute(condition: ['action' => 'login']),
-		WSMiddleware(middlewares: XXX::class),
-		WSMiddleware(middlewares: [XXX::class,XXX2::class]),
-	]
-	public function test($data)
-	{
-	}
+    /**
+     * test
+     * 
+     * @return void
+     */
+    #[
+        WSAction,
+        WSRoute(condition: ['action' => 'login']),
+        WSMiddleware(middlewares: XXX::class),
+        WSMiddleware(middlewares: [XXX::class,XXX2::class]),
+    ]
+    public function test($data)
+    {
+    }
 }
 ```
 
@@ -105,11 +105,11 @@ class Test extends WebSocketController
 
 ```php
 return [
-	'middleware'    =>  [
+    'middleware'    =>  [
         'groups'    =>  [
-			// 组名
+            // 组名
             'test'  =>  [
-				// 中间件列表
+                // 中间件列表
                 \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
             ],
         ],

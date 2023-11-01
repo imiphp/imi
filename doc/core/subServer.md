@@ -19,23 +19,23 @@ http 和 WebSocket 同时做在一个项目中，代码之间没有隔阂，可�
     // 子服务器（端口监听）配置
     'subServers'    =>    [
         // 子服务器别名
-        'alias1'	=>	[
+        'alias1'    =>    [
             // 指定服务器命名空间
-            'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
+            'namespace'    =>    'ImiDemo\HttpDemo\MainServer',
             // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-            'type'		=>	\Imi\Swoole\Server\Type::HTTP,
+            'type'        =>    \Imi\Swoole\Server\Type::HTTP,
             // 监听的IP地址，可选
-            'host'		=>	'0.0.0.0',
+            'host'        =>    '0.0.0.0',
             // 监听的端口
-            'port'		=>	8080,
+            'port'        =>    8080,
             // 参考 swoole sockType，可选
-            'sockType'	=>	SWOOLE_SOCK_TCP,
+            'sockType'    =>    SWOOLE_SOCK_TCP,
             // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP、WebSocket 且 SWOOLE_BASE 模式有效
             'syncConnect' => true,
             'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::TEXT, // 配置 WebSocket 纯文本通信协议
             // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::BINARY, // 配置 WebSocket 二进制通信协议
             // 服务器配置，参数用法同\Swoole\Server->set($configs)
-            'configs'	=>	[
+            'configs'    =>    [
             ],
             // 容器绑定
             'beans' => [
@@ -100,8 +100,8 @@ return [
     '别名1' => [],
 
     // bean扫描目录，指定命名空间，建议省略
-    // 'beanScan'	=>	[
-    // 	'ImiDemo\WebSocketDemo\Listener',
+    // 'beanScan'    =>    [
+    //     'ImiDemo\WebSocketDemo\Listener',
     // ],
 ];
 ```

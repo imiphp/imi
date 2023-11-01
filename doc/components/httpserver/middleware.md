@@ -53,11 +53,11 @@ class TestMiddleware implements MiddlewareInterface
 
 ```php
 return [
-    'beans'	=>	[
+    'beans'    =>    [
         // 中间件
-        'HttpDispatcher'	=>	[
+        'HttpDispatcher'    =>    [
             'middleware' => true, // 默认启用中间件，一旦设为 false，无论是全局还是局部中间件都不生效，可以提升性能
-            'middlewares'	=>	[
+            'middlewares'    =>    [
                 // 中间件
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
             ],
@@ -88,8 +88,8 @@ class Index extends HttpController
     public function index()
     {
         return [
-            'title'		=>	'hello imi',
-            'content'	=>	'imi is very six',
+            'title'        =>    'hello imi',
+            'content'    =>    'imi is very six',
         ];
     }
 

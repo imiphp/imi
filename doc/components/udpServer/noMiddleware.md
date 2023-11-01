@@ -24,20 +24,20 @@ use Imi\Swoole\Server\Event\Listener\IPacketEventListener;
 #[ClassEventListener(className: \Imi\Swoole\Server\UdpServer\Server::class, eventName: 'packet', priority: PHP_INT_MAX)]
 class BeforePacket implements IPacketEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param PacketEventParam $e
-	 * @return void
-	 */
-	public function handle(PacketEventParam $e): void
-	{
-		// 如果服务器名不是主服务器就返回
-		if('main' !== $e->getTarget()->getName())
-		{
-			return;
-		}
-		var_dump($e->data);
+    /**
+     * 事件处理方法
+     * @param PacketEventParam $e
+     * @return void
+     */
+    public function handle(PacketEventParam $e): void
+    {
+        // 如果服务器名不是主服务器就返回
+        if('main' !== $e->getTarget()->getName())
+        {
+            return;
+        }
+        var_dump($e->data);
 
-	}
+    }
 }
 ```

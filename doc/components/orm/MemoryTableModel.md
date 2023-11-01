@@ -25,19 +25,19 @@ class MTest extends MemoryTableModel
     /**
      * @var string
      */
-	#[Column(name: 'str', type: 'string', length: 128)]
+    #[Column(name: 'str', type: 'string', length: 128)]
     protected $str;
 
     /**
      * @var int
      */
-	#[Column(name: 'int', type: 'int')]
+    #[Column(name: 'int', type: 'int')]
     protected $int;
 
     /**
      * @var float
      */
-	#[Column(name: 'float', type: 'float')]
+    #[Column(name: 'float', type: 'float')]
     protected $float;
 
     /**
@@ -48,69 +48,69 @@ class MTest extends MemoryTableModel
     public function getStr()
     {
         return $this->str;
-	}
+    }
 
-	/**
-	 * Set the value of str
-	 *
-	 * @param  string  $str
-	 *
-	 * @return  self
-	 */
-	public function setStr(string $str)
-	{
-		$this->str = $str;
+    /**
+     * Set the value of str
+     *
+     * @param  string  $str
+     *
+     * @return  self
+     */
+    public function setStr(string $str)
+    {
+        $this->str = $str;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the value of int
-	 *
-	 * @return  int
-	 */
-	public function getInt()
-	{
-		return $this->int;
-	}
+    /**
+     * Get the value of int
+     *
+     * @return  int
+     */
+    public function getInt()
+    {
+        return $this->int;
+    }
 
-	/**
-	 * Set the value of int
-	 *
-	 * @param  int  $int
-	 *
-	 * @return  self
-	 */
-	public function setInt(int $int)
-	{
-		$this->int = $int;
+    /**
+     * Set the value of int
+     *
+     * @param  int  $int
+     *
+     * @return  self
+     */
+    public function setInt(int $int)
+    {
+        $this->int = $int;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the value of float
-	 *
-	 * @return  float
-	 */
-	public function getFloat()
-	{
-		return $this->float;
-	}
+    /**
+     * Get the value of float
+     *
+     * @return  float
+     */
+    public function getFloat()
+    {
+        return $this->float;
+    }
 
-	/**
-	 * Set the value of float
-	 *
-	 * @param  float  $float
-	 *
-	 * @return  self
-	 */
-	public function setFloat(float $float)
-	{
-		$this->float = $float;
+    /**
+     * Set the value of float
+     *
+     * @param  float  $float
+     *
+     * @return  self
+     */
+    public function setFloat(float $float)
+    {
+        $this->float = $float;
 
-		return $this;
-	}
+        return $this;
+    }
 }
 ```
 

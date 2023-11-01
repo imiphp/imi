@@ -490,8 +490,8 @@ select `tb_member`.*,(1+1) as `a`,(2+2) as `test2` from `tb_member` where `id`=:
     ExtractProperty(fieldName: 'ex.userId', alias: 'userId2')
 ]
 protected $xxx = [
-    'ex'    =>	[
-        'userId'	=>	123,
+    'ex'    =>    [
+        'userId'    =>    123,
     ],
 ];
 ```

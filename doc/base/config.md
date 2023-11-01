@@ -41,8 +41,8 @@ return [
     '别名1' => [],
 
     // bean扫描目录，指定命名空间，建议省略
-    // 'beanScan'	=>	[
-    // 	'ImiDemo\WebSocketDemo\Listener',
+    // 'beanScan'    =>    [
+    //     'ImiDemo\WebSocketDemo\Listener',
     // ],
 
     // 日志配置，详见日志文档
@@ -128,19 +128,19 @@ return [
         'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
     ],
     // 主服务器配置
-    'mainServer'	=>	[
+    'mainServer'    =>    [
         // 指定服务器命名空间
-        'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
+        'namespace'    =>    'ImiDemo\HttpDemo\MainServer',
         // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-        'type'		=>	\Imi\Swoole\Server\Type::HTTP,
+        'type'        =>    \Imi\Swoole\Server\Type::HTTP,
         // 监听的IP地址，可选
-        'host'		=>	'0.0.0.0',
+        'host'        =>    '0.0.0.0',
         // 监听的端口
-        'port'		=>	8080,
+        'port'        =>    8080,
         // 参考 swoole mode，可选
-        'mode'		=>	SWOOLE_BASE,
+        'mode'        =>    SWOOLE_BASE,
         // 参考 swoole sockType，可选
-        'sockType'	=>	SWOOLE_SOCK_TCP,
+        'sockType'    =>    SWOOLE_SOCK_TCP,
         // 同步连接，当连接事件执行完后，才执行 receive 事件。仅 TCP、WebSocket 且 SWOOLE_BASE 模式有效
         'syncConnect' => true,
         // 服务器配置，参数用法同\Swoole\Server->set($configs)
@@ -149,10 +149,10 @@ return [
         // 参考: http://wiki.swoole.com/#/http_server?id=%e9%85%8d%e7%bd%ae%e9%80%89%e9%a1%b9
         'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::TEXT, // 配置 WebSocket 纯文本通信协议
         // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::BINARY, // 配置 WebSocket 二进制通信协议
-        'configs'	=>	[
-            'reactor_num'	    => 8,
-            'worker_num'	    => 8,
-            'task_worker_num'	=> 16,
+        'configs'    =>    [
+            'reactor_num'        => 8,
+            'worker_num'        => 8,
+            'task_worker_num'    => 16,
             // Swoole 错误日志文件。如果不设置或为null则自动记录到 .runtime/swoole/swoole.log。如果设为 false 不记录 Swoole 错误日志。
             // 'log_file' => '',
         ],
@@ -164,7 +164,7 @@ return [
     // 子服务器（端口监听）配置
     'subServers'    =>    [
         // 子服务器别名
-        'alias1'	=>	[
+        'alias1'    =>    [
             // 这里同主服务器配置
         ]
     ],
