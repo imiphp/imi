@@ -19,19 +19,23 @@ use Imi\Server\View\Annotation\View;
 
 /**
  * 一个简单的控制器
- * @Controller
- * @View(renderType="json")
- * @HtmlView(baseDir="index/")
  */
+#[
+	Controller,
+	View(renderType: 'json'),
+	HtmlView(baseDir: 'index/')
+]
 class Index extends HttpController
 {
        /**
         * 一个动作
-        * @Action
-        * @Route(url="/")
-        * @View(renderType="html")
-        * @HtmlView(template="index")
         */
+		#[
+			Action,
+			Route(url: '/'),
+			View(renderType: 'html'),
+			HtmlView(template: 'index')
+		]
         public function index()
         {
             $this->response->getBody()->write('hello imi!');
@@ -49,10 +53,10 @@ class Index extends HttpController
 ## json
 
 ```php
-/**
- * @Action
- * @View(renderType="json")
- */
+#[
+	Action,
+	View(renderType: 'json')
+]
 public function index()
 {
 	// 数组
@@ -84,10 +88,10 @@ return [
 ## xml
 
 ```php
-/**
- * @Action
- * @View(renderType="xml")
- */
+#[
+	Action,
+	View(renderType: 'xml')
+]
 public function index()
 {
 	// DOMDocument
@@ -126,11 +130,11 @@ return [
 #### 通过注解配置
 
 ```php
-/**
- * @Action
- * @View(renderType="html")
- * @HtmlView(template="a/b")
- */
+#[
+	Action,
+	View(renderType: 'html'),
+	HtmlView(template: 'a/b')
+]
 public function index()
 {
 	return [
@@ -142,9 +146,7 @@ public function index()
 #### 语句动态渲染
 
 ```php
-/**
- * @Action
- */
+#[Action]
 public function index()
 {
 	return $this->__render('a/b', [

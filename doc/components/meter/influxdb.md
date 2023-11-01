@@ -209,9 +209,7 @@ use Imi\Meter\Annotation\Summary;
 use Imi\Meter\Annotation\Timed;
 use Imi\Meter\Enum\TimeUnit;
 
-/**
- * @Gauged(name="test_memory_usage", description="memory usage", tags={"workerId"="{returnValue.workerId}"}, value="{returnValue.memory}")
- */
+#[Gauged(name: 'test_memory_usage', description: 'memory usage', tags: ['workerId' => '{returnValue.workerId}'], value: '{returnValue.memory}')]
 public function recordMemoryUsage(): array
 {
     return [
@@ -220,9 +218,7 @@ public function recordMemoryUsage(): array
     ];
 }
 
-/**
- * @Timed(name="test_timed", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS)
- */
+#[Timed(name: 'test_timed', description: 'memory usage', baseTimeUnit: TimeUnit::MILLI_SECONDS)]
 public function testTimed(): int
 {
     $ms = mt_rand(10, 1000);
@@ -231,9 +227,7 @@ public function testTimed(): int
     return $ms;
 }
 
-/**
- * @Timed(name="test_timed_histogram", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS, options={"histogram"=true})
- */
+#[Timed(name: 'test_timed_histogram', description: 'memory usage', baseTimeUnit: TimeUnit::MILLI_SECONDS, options: ['histogram' => true])]
 public function testTimedHistogram(): int
 {
     $ms = mt_rand(10, 1000);
@@ -242,17 +236,13 @@ public function testTimedHistogram(): int
     return $ms;
 }
 
-/**
- * @Histogram(name="test_histogram", baseTimeUnit=TimeUnit::MILLI_SECONDS)
- */
+#[Histogram(name: 'test_histogram', baseTimeUnit: TimeUnit::MILLI_SECONDS)]
 public function testHistogram(): int
 {
     return mt_rand(10, 1000);
 }
 
-/**
- * @Summary(name="test_summary", baseTimeUnit=TimeUnit::MILLI_SECONDS)
- */
+#[Summary(name: 'test_summary', baseTimeUnit: TimeUnit::MILLI_SECONDS)]
 public function testSummary(): int
 {
     return mt_rand(10, 1000);

@@ -21,28 +21,30 @@
 ```php
 /**
  * User
- * @Entity
- * @Table(name="tb_user", id={"id"})
  * @property int $id
  * @property string $username
  * @property \ImiDemo\HttpDemo\MainServer\Model\UserEx $ex
  * @property \Imi\Util\ArrayList $userRole
  * @property \Imi\Util\ArrayList $role
  */
+#[
+	Entity,
+	Table(name: 'tb_user', id: ['id'])
+]
 class User extends Model
 {
 	/**
-	 * @ManyToMany(model="Role", middle="UserRole", rightMany="role")
-	 * @JoinToMiddle(field="id", middleField="user_id")
-	 * @JoinFromMiddle(middleField="role_id", field="id")
-	 * 
-	 * @AutoInsert
-	 * @AutoUpdate
-	 * @AutoSave
-	 * @AutoDelete
-	 *
 	 * @var \Imi\Util\ArrayList
 	 */
+	#[
+		ManyToMany(model: 'Role', middle: 'UserRole', rightMany: 'role'),
+		JoinToMiddle(field: 'id', middleField: 'user_id'),
+		JoinFromMiddle(middleField: 'role_id', field: 'id'),
+		AutoInsert,
+		AutoUpdate,
+		AutoSave,
+		AutoDelete
+	]
 	protected $userRole;
 	
 	/**

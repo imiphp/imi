@@ -20,8 +20,8 @@ use Imi\Swoole\Server\Event\Listener\IPacketEventListener;
 
 /**
  * Packet事件前置处理
- * @ClassEventListener(className="Imi\Server\UdpServer\Server",eventName="packet",priority=PHP_INT_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\UdpServer\Server::class, eventName: 'packet', priority: PHP_INT_MAX)]
 class BeforePacket implements IPacketEventListener
 {
 	/**

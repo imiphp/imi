@@ -18,17 +18,19 @@ use Imi\Server\WebSocket\Route\Annotation\WSController;
 
 /**
  * 数据收发测试
- * @WSController
  */
+#[WSController]
 class Test extends WebSocketController
 {
 	/**
 	 * 登录
 	 * 
-	 * @WSAction
-	 * @WSRoute({"action"="login"})
 	 * @return void
 	 */
+	#[
+		WSAction,
+		WSRoute(condition: ['action' => 'login'])
+	]
 	public function login($data)
 	{
 		ConnectionContext::set('username', $data->username);

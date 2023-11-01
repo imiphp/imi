@@ -12,9 +12,7 @@ namespace XinchengApi\api\ProcessPool;
 
 use Imi\Swoole\Process\Annotation\ProcessPool;
 
-/**
- * @ProcessPool(name="进程名称")
- */
+#[ProcessPool(name: '进程名称')]
 class Sms extends \Imi\Swoole\Process\BasePoolProcess
 {
 	public function run(\Swoole\Process\Pool $pool, int $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey)

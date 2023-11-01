@@ -34,41 +34,41 @@ use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
-/**
- * 定义为实体
- * @Entity
- * 指定实体为test，复合主键id和a
- * @Table(name="test", id={"id", "a"})
- */
+#[
+    // 定义为实体
+    Entity,
+    // 指定实体为test，复合主键id和a
+    Table(name: 'test', id: ['id', 'a'])
+]
 class Test extends Model
 {
     /**
      * ID
      * 字段id，类型int，长度10，是主键，第0个主键，是自增字段
-     * @Column(name="id", type="int", length=10, isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
      * @var int
      */
+    #[Column(name: 'id', type: 'int', length: 10, isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)]
     protected $id;
 
     /**
      * aaa
-     * @Column(name="a", type="string", length=255, isPrimaryKey=true, primaryKeyIndex=1)
      * @var string
      */
+    #[Column(name: 'a', type: 'string', length: 255, isPrimaryKey: true, primaryKeyIndex: 1)]
     protected $a;
 
     /**
      * bbb
-     * @Column(name="b", type="string", length=255)
      * @var string
      */
+    #[Column(name: 'b', type: 'string', length: 255)]
     protected $b;
 
     /**
      * ccc
-     * @Column(name="c", type="string", length=255)
      * @var string
      */
+    #[Column(name: 'c', type: 'string', length: 255)]
     protected $c;
 
     /**
@@ -228,20 +228,22 @@ class Test extends Model
 ```php
 /**
  * ArticleBase
- * @Entity
- * @Table(name="tb_article", id={"id"})
- * @DDL("CREATE TABLE `tb_article` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `content` mediumtext NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
  * @property int $id
  * @property string $title
  * @property string $content
  * @property string $time
  */
+#[
+    Entity,
+    Table(name: 'tb_article', id: ['id']),
+    DDL(sql='CREATE TABLE `tb_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT')
+]
 abstract class ArticleBase extends Model
 {
 }
@@ -356,26 +358,29 @@ use Imi\Test\Component\Model\Base\MemberBase;
 
 /**
  * Member.
- *
- * @Inherit
- * @Serializables(mode="deny", fields={"password"})
  */
+#[
+    Inherit,
+    Serializables(mode: 'deny', fields: ['password'])
+]
 class MemberWithSqlField extends MemberBase
 {
     /**
-     * @Column(name="a", virtual=true)
-     * @Sql("1+1")
-     *
      * @var int
      */
+    #[
+        Column(name: 'a', virtual: true),
+        Sql(sql: '1+1')
+    ]
     public $test1;
 
     /**
-     * @Column(virtual=true)
-     * @Sql("2+2")
-     *
      * @var int
      */
+    #[
+        Column(virtual: true),
+        Sql(sql: '2+2')
+    ]
     public $test2;
 
     /**
@@ -481,9 +486,9 @@ select `tb_member`.*,(1+1) as `a`,(2+2) as `test2` from `tb_member` where `id`=:
 支持多级提取到当前模型中的`userId2`：
 
 ```php
-/**
- * @ExtractProperty(fieldName="ex.userId", alias="userId2")
- */
+#[
+    ExtractProperty(fieldName: 'ex.userId', alias: 'userId2')
+]
 protected $xxx = [
     'ex'    =>	[
         'userId'	=>	123,

@@ -32,9 +32,11 @@
 ```php
 /**
  * Test
- * @Entity
- * @Table(name="tb_test", id={"id", "a"})
  */
+#[
+    Entity,
+    Table(name: 'tb_test', id: ['id', 'a'])
+]
 class Test extends Model
 {
     public function __init(array $data = [], bool $queryRelation = true): void
@@ -62,8 +64,8 @@ use Imi\Model\Event\Listener\IBeforeInsertEventListener;
 
 /**
  * 插入前处理
- * @ClassEventListener(className="\XXX\Model\Test",eventName=\Imi\Model\Event\ModelEvents::BEFORE_INSERT)
  */
+#[ClassEventListener(className: \XXX\Model\Test::class, eventName: \Imi\Model\Event\ModelEvents::BEFORE_INSERT)]
 class BeforeInsert implements IBeforeInsertEventListener
 {
     /**
@@ -112,9 +114,7 @@ namespace XXX\Listener;
 use Imi\Model\Event\Param\BeforeBatchUpdateEventParam;
 use Imi\Model\Event\Listener\IBeforeBatchUpdateEventListener;
 
-/**
- * @Listener("XXX\Model\Test:BeforeBatchUpdate")
- */
+#[Listener(eventName: 'XXX\Model\Test:BeforeBatchUpdate')]
 class BeforeBatchUpdate implements IBeforeBatchUpdateEventListener
 {
     /**

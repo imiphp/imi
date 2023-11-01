@@ -14,9 +14,7 @@ namespace Imi\Test\Component\Facade;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("FacadeA")
- */
+#[Bean(name: 'FacadeA')]
 class A
 {
     public function add($a, $b)
@@ -37,9 +35,9 @@ use Imi\Facade\BaseFacade;
 use Imi\Facade\Annotation\Facade;
 
 /**
- * @Facade("FacadeA")
  * @method mixed add($a, $b)
  */
+#[Facade(class: 'FacadeA')]
 class FacadeA extends BaseFacade
 {
 

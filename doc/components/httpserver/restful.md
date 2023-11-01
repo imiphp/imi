@@ -16,18 +16,18 @@ use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 
-/**
- * @Controller(prefix="/rest")
- */
+#[Controller(prefix: '/rest')]
 class Rest extends HttpController
 {
 	/**
 	 * query
 	 * 
-	 * @Action
-	 * @Route(url="", method={"GET"})
 	 * @return void
 	 */
+	#[
+		Action,
+		Route(url: '', method: ['GET'])
+	]
 	public function query()
 	{
 		return [1, 2, 3];
@@ -36,12 +36,13 @@ class Rest extends HttpController
 	/**
 	 * find
 	 * 
-	 * @Action
-	 * @Route(url="./{id}", method={"GET"})
-	 * 
 	 * @param int $id
 	 * @return void
 	 */
+	#[
+		Action,
+		Route(url: './{id}', method: ['GET'])
+	]
 	public function find($id)
 	{
 		return [
@@ -52,10 +53,12 @@ class Rest extends HttpController
 	/**
 	 * create
 	 * 
-	 * @Action
-	 * @Route(url="", method={"POST"})
 	 * @return void
 	 */
+	#[
+		Action,
+		Route(url: '', method: ['POST'])
+	]
 	public function create()
 	{
 		return [
@@ -68,12 +71,13 @@ class Rest extends HttpController
 	/**
 	 * update
 	 * 
-	 * @Action
-	 * @Route(url="./{id}", method={"PUT"})
-	 * 
 	 * @param int $id
 	 * @return void
 	 */
+	#[
+		Action,
+		Route(url: './{id}', method: ['PUT'])
+	]
 	public function update($id)
 	{
 		return [
@@ -86,12 +90,13 @@ class Rest extends HttpController
 	/**
 	 * delete
 	 * 
-	 * @Action
-	 * @Route(url="./{id}", method={"DELETE"})
-	 * 
 	 * @param int $id
 	 * @return void
 	 */
+	#[
+		Action,
+		Route(url: './{id}', method: ['DELETE'])
+	]
 	public function delete($id)
 	{
 		return [

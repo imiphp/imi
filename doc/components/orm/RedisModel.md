@@ -24,16 +24,18 @@ use Imi\Model\Annotation\RedisEntity;
 
 /**
  * Test
- * @Entity
- * @RedisEntity(poolName="redis", key="{id}-{name}")
  */
+#[
+	Entity,
+	RedisEntity(poolName: 'redis', key: '{id}-{name}')
+]
 class TestRedisModel extends RedisModel
 {
 	/**
 	 * id
-	 * @Column(name="id")
 	 * @var int
 	 */
+	#[Column(name: 'id')]
     protected $id;
 
     /**
@@ -59,9 +61,9 @@ class TestRedisModel extends RedisModel
 
 	/**
 	 * name
-	 * @Column(name="name")
 	 * @var string
 	 */
+	#[Column(name: 'name')]
 	protected $name;
 
 	/**
@@ -87,9 +89,9 @@ class TestRedisModel extends RedisModel
 
 	/**
 	 * age
-	 * @Column(name="age")
 	 * @var string
 	 */
+	#[Column(name: 'age')]
 	protected $age;
 
 	/**

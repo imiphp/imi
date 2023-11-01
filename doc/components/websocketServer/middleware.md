@@ -18,9 +18,7 @@ use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\MessageHandler;
 use Imi\Server\WebSocket\IMessageHandler;
 
-/**
- * @Bean
- */
+#[Bean]
 class RouteMiddleware implements IMiddleware
 {
 	/**
@@ -78,19 +76,21 @@ use Imi\Server\WebSocket\Route\Annotation\WSMiddleware;
 
 /**
  * 数据收发测试
- * @WSController
  */
+#[WSController]
 class Test extends WebSocketController
 {
 	/**
 	 * test
 	 * 
-	 * @WSAction
-	 * @WSRoute({"action"="login"})
-	 * @WSMiddleware(XXX::class)
-	 * @WSMiddleware({XXX::class,XXX2::class})
 	 * @return void
 	 */
+	#[
+		WSAction,
+		WSRoute(condition: ['action' => 'login']),
+		WSMiddleware(middlewares: XXX::class),
+		WSMiddleware(middlewares: [XXX::class,XXX2::class]),
+	]
 	public function test($data)
 	{
 	}

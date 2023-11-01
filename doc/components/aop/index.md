@@ -148,22 +148,20 @@ use Imi\Aop\Annotation\After;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class Pool
 {
 	/**
-	 * @PointCut(
-	 * 		allow={
-	 * 			"Imi\*Pool*::getResource",
-	 * 			"Imi\*Pool*::release",
-	 * 		}
-	 * )
-	 * @After
 	 * @param JoinPoint $a
 	 * @return void
 	 */
+	#[
+		PointCut(allow: [
+			'Imi\*Pool*::getResource',
+			'Imi\*Pool*::release',
+		]),
+		After
+	]
 	public function test(JoinPoint $joinPoint)
 	{
 		echo $joinPoint->getType() . ' ' . get_parent_class($joinPoint->getTarget()) . '::' . $joinPoint->getMethod() . '(): ' . $joinPoint->getTarget()->getFree() . '/' . $joinPoint->getTarget()->getCount() . PHP_EOL;
@@ -192,22 +190,17 @@ after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 可参考`imi\src\Db\Aop\TransactionAop.php`文件：
 
 ```php
-/**
- * @Aspect
- */
+#[Aspect]
 class TransactionAop
 {
     /**
      * 自动事务支持
-     * @PointCut(
-     *         type=PointCutType::ANNOTATION,
-     *         allow={
-     *             Transaction::class
-     *         }
-     * )
-     * @Around
      * @return mixed
      */
+	#[
+		PointCut(type: PointCutType::ANNOTATION, allow: [Transaction::class]),
+		Around
+	]
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {
 	}
@@ -285,22 +278,18 @@ use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Aop\Annotation\AfterReturning;
 
-/**
- * @Aspect
- */
+#[Aspect]
 class Test
 {
 	/**
 	 * 前置操作
-	 * @PointCut(
-	 *         allow={
-	 *             "ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 *         }
-	 * )
-	 * @Before
 	 * @param JoinPoint $a
 	 * @return void
 	 */
+	#[
+		PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+		Before
+	]
 	public function before(JoinPoint $joinPoint)
 	{
 		// 修改参数
@@ -310,15 +299,13 @@ class Test
 
 	/**
 	 * 后置操作
-	 * @PointCut(
-	 *         allow={
-	 *             "ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 *         }
-	 * )
-	 * @After
 	 * @param JoinPoint $a
 	 * @return void
 	 */
+	#[
+		PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+		After
+	]
 	public function after(JoinPoint $joinPoint)
 	{
 		echo 'getScore()-after', PHP_EOL;
@@ -326,14 +313,12 @@ class Test
 
 	/**
 	 * 环绕
-	 * @PointCut(
-	 * 		allow={
-	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore1",
-	 * 		}
-	 * )
-	 * @Around
 	 * @return mixed
 	 */
+	#[
+		PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore1']),
+		Around
+	]
 	public function around(AroundJoinPoint $joinPoint)
 	{
 		var_dump('调用前');
@@ -348,15 +333,13 @@ class Test
 
 	/**
 	 * 返回值
-	 * @PointCut(
-	 * 		allow={
-	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 * 		}
-	 * )
-	 * @AfterReturning
 	 * @param AfterReturningJoinPoint $joinPoint
 	 * @return void
 	 */
+	#[
+		PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+		AfterReturning
+	]
 	public function afterReturning(AfterReturningJoinPoint $joinPoint)
 	{
 		$joinPoint->setReturnValue('修改返回值');
@@ -364,15 +347,13 @@ class Test
 
 	/**
 	 * 异常捕获
-	 * @PointCut(
-	 * 		allow={
-	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
-	 * 		}
-	 * )
-	 * @AfterThrowing
 	 * @param AfterThrowingJoinPoint $joinPoint
 	 * @return void
 	 */
+	#[
+		PointCut(allow: ['ImiDemo\HttpDemo\MainServer\Model\Goods::getScore']),
+		AfterThrowing
+	]
 	public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
 	{
 		// 异常不会被继续抛出，也不会记录日志
@@ -396,22 +377,22 @@ class TestClass
 {
 	/**
 	 * 某Model对象
-	 * @Inject("XXX\Model\User")
 	 */
+	#[Inject(name: \XXX\Model\User::class)]
 	protected $model;
 	
 	/**
 	 * 某Model对象，通过注释类型注入
-	 * @Inject
 	 * 
 	 * @var XXX\Model\User
 	 */
+	#[Inject]
 	protected $model2;
 	
 	/**
 	 * 某Model对象，类型声明注入
-	 * @Inject
 	 */
+	#[Inject]
 	protected XXX\Model\User $model3;
 
 	public function test()
@@ -439,9 +420,7 @@ class Test
 {
 	use Imi\Bean\Traits\TAutoInject;
 
-	/**
-	 * @Inject("XXX")
-	 */
+	#[Inject(name: 'XXX')]
 	public $xxx;
 }
 
@@ -460,9 +439,7 @@ class Test
 {
 	use Imi\Bean\Traits\TAutoInject;
 
-	/**
-	 * @Inject("XXX")
-	 */
+	#[Inject(name: 'XXX')]
 	public $xxx;
 
 	private $value;
@@ -482,11 +459,12 @@ $test->xxx; // 会被自动注入，不用手动初始化
 
 ```php
 /**
- * @InjectArg(name="a", value="123")
- * @InjectArg(name="b", value=@Inject("\ImiDemo\HttpDemo\MainServer\Model\User"))
- *
  * @return void
  */
+#[
+	InjectArg(name: 'a', value: '123'),
+	InjectArg(name: 'b', value: new Inject(name: \ImiDemo\HttpDemo\MainServer\Model\User::class))
+]
 public function test($a, $b)
 {
 	var_dump($a, $b);

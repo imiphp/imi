@@ -109,9 +109,7 @@ use Imi\Swoole\Task\TaskParam;
 use Imi\Swoole\Task\Annotation\Task;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
-/**
- * @Task("testTask")
- */
+#[Task(name: 'testTask')]
 class Test implements ITaskHandler
 {
     /**

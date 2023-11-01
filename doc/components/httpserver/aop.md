@@ -26,23 +26,19 @@ use Imi\Util\Http\Consts\ResponseHeader;
 
 /**
  * 拦截控制器动作请求 Demo
- * 
- * @Aspect
  */
+#[Aspect]
 class Fuck
 {
     /**
      * 直接获取 Response 对象，强行输出
-     * 
-     * @PointCut(
-     *         allow={
-     *             "ImiApp\ApiServer\Controller\IndexController::fuck1",
-     *         }
-     * )
-     * @Around
      *
      * @return void
      */
+    #[
+        PointCut(allow: 'ImiApp\ApiServer\Controller\IndexController::fuck1'),
+        Around
+    ]
     public function fuck1(AroundJoinPoint $joinPoint)
     {
         /** @var \Imi\Server\Http\Message\Response $response */
@@ -63,15 +59,12 @@ class Fuck
     /**
      * 强行修改返回值
      * 
-     * @PointCut(
-     *         allow={
-     *             "ImiApp\ApiServer\Controller\IndexController::fuck2",
-     *         }
-     * )
-     * @Around
-     *
      * @return void
      */
+    #[
+        PointCut(allow: 'ImiApp\ApiServer\Controller\IndexController::fuck2'),
+        Around
+    ]
     public function fuck2(AroundJoinPoint $joinPoint)
     {
         // 如果需要执行原动作方法，可以去掉注释

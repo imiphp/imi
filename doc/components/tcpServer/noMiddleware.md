@@ -20,8 +20,8 @@ use Imi\Server\TcpServer\Message\ReceiveData;
 
 /**
  * Receive事件前置处理
- * @ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server",eventName="receive",priority=PHP_INT_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\TcpServer\Server::class, eventName: 'receive', priority: PHP_INT_MAX)]
 class BeforeReceive implements IReceiveEventListener
 {
 	/**

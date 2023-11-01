@@ -14,9 +14,7 @@ namespace Imi\Server\UdpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean
- */
+#[Bean]
 class RouteMiddleware implements IMiddleware
 {
 	/**
@@ -72,19 +70,21 @@ use Imi\Server\UdpServer\Route\Annotation\UdpController;
 
 /**
  * 数据收发测试
- * @UdpController
  */
+#[UdpController]
 class Test extends \Imi\Controller\UdpController
 {
 	/**
 	 * 登录
 	 * 
-	 * @UdpAction
-	 * @UdpRoute({"action"="hello"})
-	 * @UdpMiddleware(XXX::class)
-	 * @UdpMiddleware({XXX::class,XXX2::class})
 	 * @return void
 	 */
+	#[
+		UdpAction,
+		UdpRoute(condition: ['action' => 'login']),
+		UdpMiddleware(middlewares: XXX::class),
+		UdpMiddleware(middlewares: [XXX::class, XXX2::class])
+	]
 	public function hello()
 	{
 		return [

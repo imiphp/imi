@@ -125,10 +125,10 @@ use Imi\Kafka\Base\BaseConsumer;
 use Imi\Redis\Redis;
 use longlang\phpkafka\Consumer\ConsumeMessage;
 
-/**
- * @Bean("TestConsumer")
- * @Consumer(topic="queue-imi-1", groupId="test-consumer")
- */
+#[
+    Bean(name: 'TestConsumer'),
+    Consumer(topic: 'queue-imi-1', groupId='test-consumer')
+]
 class TestConsumer extends BaseConsumer
 {
     /**
@@ -154,16 +154,13 @@ use Imi\Kafka\Contract\IConsumer;
 use Imi\Process\Annotation\Process;
 use Imi\Process\BaseProcess;
 
-/**
- * @Process(name="TestProcess")
- */
+#[Process(name: 'TestProcess')]
 class TestProcess extends BaseProcess
 {
     /**
-     * @Inject("TestConsumer")
-     *
      * @var \ImiApp\Kafka\Test\TestConsumer
      */
+    #[Inject(name: 'TestConsumer')]
     protected $testConsumer;
 
     public function run(\Swoole\Process $process): void

@@ -21,24 +21,27 @@
 ```php
 /**
  * User
- * @Entity
- * @Table(name="tb_user", id={"id"})
  * @property int $id
  * @property string $username
  * @property \ImiDemo\HttpDemo\MainServer\Model\UserEx $ex
  * @property \Imi\Util\ArrayList $friends
  */
+#[
+	Entity,
+	Table(name: 'tb_user', id: ['id'])
+]
 class UserWithFriend extends User
 {
 	/**
-	 * @OneToMany("UserFriend")
-	 * @JoinTo("user_id")
-	 * @AutoInsert(true)
-	 * @AutoUpdate(orphanRemoval=true)
-	 * @AutoDelete(true)
-	 *
 	 * @var \Imi\Util\ArrayList
 	 */
+	#[
+		OneToMany(model: 'UserFriend')
+		JoinTo(field: 'user_id')
+		AutoInsert
+		AutoUpdate(orphanRemoval: true)
+		AutoDelete
+	]
 	protected $friends;
 
 	/**

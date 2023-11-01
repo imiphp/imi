@@ -19,27 +19,25 @@ use Imi\Swoole\Model\MemoryTableModel;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\MemoryTable;
 
-/**
- * @MemoryTable(name="test")
- */
+#[MemoryTable(name: 'test')]
 class MTest extends MemoryTableModel
 {
     /**
-     * @Column(name="str",type="string",length=128)
      * @var string
      */
+	#[Column(name: 'str', type: 'string', length: 128)]
     protected $str;
 
     /**
-     * @Column(name="int",type="int")
      * @var int
      */
+	#[Column(name: 'int', type: 'int')]
     protected $int;
 
     /**
-     * @Column(name="float",type="float")
      * @var float
      */
+	#[Column(name: 'float', type: 'float')]
     protected $float;
 
     /**

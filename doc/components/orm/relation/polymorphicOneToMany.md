@@ -48,8 +48,6 @@ mysql> desc tb_comment;
 ```php
 /**
  * Article
- * @Entity
- * @Table(name="tb_article", id={"id"})
  * @property int $id
  * @property string $title
  * @property string $content
@@ -57,13 +55,17 @@ mysql> desc tb_comment;
  * @property \Imi\Util\ArrayList $taggables
  * @property \Imi\Util\ArrayList $tags
  */
+#[
+	Entity,
+	Table(name: 'tb_tags', id: ['id'])
+]
 class Article extends Model
 {
 	/**
 	 * id
-	 * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
 	 * @var int
 	 */
+	#[Column(name: 'id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)]
 	protected $id;
 
 	/**
@@ -89,9 +91,9 @@ class Article extends Model
 
 	/**
 	 * title
-	 * @Column(name="title", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
 	 * @var string
 	 */
+	#[Column(name: 'title', type: 'varchar', length: 32, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: -1, isAutoIncrement: true)]
 	protected $title;
 
 	/**
@@ -117,9 +119,9 @@ class Article extends Model
 
 	/**
 	 * content
-	 * @Column(name="content", type="text", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
 	 * @var string
 	 */
+	#[Column(name: 'content', type: 'text', length: 0, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: -1, isAutoIncrement: true)]
 	protected $content;
 
 	/**
@@ -146,13 +148,14 @@ class Article extends Model
 	/**
      * 评论
      * 
-     * @PolymorphicOneToMany(model=ImiDemo\HttpDemo\MainServer\Model\Comment::class, type="type", typeValue=1)
-     * @JoinTo("relation_id")
-     * @AutoSave(orphanRemoval=true)
-     * @AutoDelete
-     *
      * @var \Imi\Util\ArrayList
      */
+    #[
+        PolymorphicOneToMany(model: ImiDemo\HttpDemo\MainServer\Model\Comment::class, type: 'type', typeValue: 1),
+        JoinTo(field: 'relation_id'),
+		AutoSave(orphanRemoval: true),
+		AutoDelete
+    ]
     protected $comments;
 
     /**
@@ -189,20 +192,22 @@ class Article extends Model
 ```php
 /**
  * Comment
- * @Entity
- * @Table(name="tb_comment", id={"id"})
  * @property int $id
  * @property string $content
  * @property int $type
  * @property int $relationId
  */
+#[
+	Entity,
+	Table(name: 'tb_comment', id: ['id'])
+]
 class Comment extends Model
 {
 	/**
 	 * id
-	 * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
 	 * @var int
 	 */
+	#[Column(name: 'id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: true, primaryKeyIndex: 0, isAutoIncrement: true)]
 	protected $id;
 
 	/**
@@ -228,9 +233,9 @@ class Comment extends Model
 
 	/**
 	 * content
-	 * @Column(name="content", type="text", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
 	 * @var string
 	 */
+	#[Column(name: 'content', type: 'text', length: 0, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
 	protected $content;
 
 	/**
@@ -256,9 +261,9 @@ class Comment extends Model
 
 	/**
 	 * type
-	 * @Column(name="type", type="tinyint", length=4, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
 	 * @var int
 	 */
+	#[Column(name: 'type', type: 'tinyint', length: 4, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
 	protected $type;
 
 	/**
@@ -284,9 +289,9 @@ class Comment extends Model
 
 	/**
 	 * relation_id
-	 * @Column(name="relation_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
 	 * @var int
 	 */
+	#[Column(name: 'relation_id', type: 'int', length: 10, accuracy: 0, nullable: false, default: '', isPrimaryKey: false, primaryKeyIndex: -1, isAutoIncrement: false)]
 	protected $relationId;
 
 	/**

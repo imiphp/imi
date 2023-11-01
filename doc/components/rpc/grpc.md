@@ -126,19 +126,16 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
 标准 gRPC Url 格式为：`http://host:port/{package}.{service}/{method}`
 
 ```php
-/**
- * @Controller("/grpc.AuthService/")
- */
+#[Controller(prefix: '/grpc.AuthService/')]
 class AuthServiceController extends HttpController implements AuthServiceInterface
 {
     /**
      * Method <code>login</code>
      *
-     * @Action
-     * 
      * @param \Grpc\LoginRequest $request
      * @return \Grpc\LoginResponse
      */
+    #[Action]
     public function login(\Grpc\LoginRequest $request)
     {
         $response = new LoginResponse;
@@ -204,17 +201,15 @@ use Imi\Grpc\Client\Annotation\GrpcService;
 class Test
 {
     /**
-     * @RpcClient()
-     *
      * @var \Imi\Rpc\Client\IRpcClient
      */
+    #[RpcClient]
     protected $rpcClient;
 
     /**
-     * @GrpcService(serviceName="grpc.AuthService", interface=\Grpc\AuthServiceInterface::class)
-     *
      * @var \Grpc\AuthServiceInterface
      */
+    #[GrpcService(serviceName: 'grpc.AuthService', interface: \Grpc\AuthServiceInterface::class)]
     protected $authService;
 
     public function aaa()

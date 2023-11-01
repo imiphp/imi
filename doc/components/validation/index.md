@@ -113,10 +113,10 @@ class TestValidate
 {
     public $abc = 'imi niubi!';
 
-    /**
-     * @AutoValidation
-     * @Condition(name="argName", callable={"$this", "validate"}, args={"{:value}", "{:data}", "{name}", "{:data.a}", {":data.$this.abc"}})
-     */
+    #[
+        AutoValidation,
+        Condition(name: 'argName', callable: ['$this', 'validate'], args: ['{:value}', '{:data}', '{name}', '{:data.a}', [':data.$this.abc']])
+    ]
     public function test($a, $b)
     {
 
@@ -306,26 +306,30 @@ imi 支持在类、属性上使用 `@AutoValidation` 注解，当构造方法执
 如下代码，写在类上的注解以及属性上的注解，都因为加了`@AutoValidation` 注解，所以在构造方法执行完成后，会自动进行验证，验证失败则抛出异常。
 
 ```php
-/**
- * @Bean("ValidatorTest")
- * 
- * @AutoValidation
- * 
- * 
- * @InList(name="in", list={1, 2, 3}, message="{:value} 不在列表内")
- * @Integer(name="int", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
- * @Required(name="required", message="{name}为必须参数")
- * @Number(name="number", min=0.01, max=999.99, accuracy=2, message="数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
- * @Text(name="text", min=6, max=12, message="{name}参数长度必须>={min} && <={max}")
- * @Condition(name="my", callable="\ImiDemo\HttpDemo\MainServer\Validator\Test::myValidate", args={"{:value}"}, message="{name}值必须为1")
- */
+#[
+    Bean(name: 'ValidatorTest'),
+    AutoValidation,
+    Compare(name: 'compare', operation: '<', value: 0, exception: 'InvalidArgumentException', exCode: 0),
+    Decimal(name: 'decimal', min: 1, max: 10, accuracy: 2, exception: 'InvalidArgumentException', exCode: 0),
+    InEnum(name: 'enum', enum: 'Imi\\Test\\Component\\Enum\\TestEnum', exception: 'InvalidArgumentException', exCode: 0),
+    InList(name: 'in', list: [1, 2, 3], message: '{:value} 不在列表内', exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'int', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0),
+    Required(name: 'required', message: '{name}为必须参数', exception: 'InvalidArgumentException', exCode: 0),
+    Number(name: 'number', min: 0.01, max: 999.99, accuracy: 2, message: '数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}', exception: 'InvalidArgumentException', exCode: 0),
+    Text(name: 'text', min: 6, max: 12, message: '{name}参数长度必须>={min} && <={max}', exception: 'InvalidArgumentException', exCode: 0),
+    Text(name: 'chars', char: true, min: 6, max: 12, message: '{name}参数长度必须>={min} && <={max}', exception: 'InvalidArgumentException', exCode: 0),
+    Compare(name: 'validateValue', value: new ValidateValue(value: '{:data.compare}'), exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'optional', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}', optional: true, exception: 'InvalidArgumentException', exCode: 0),
+    Regex(name: 'regex', pattern: '/^\\d+$/', exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'list1.*.id', min: 0, max: 10, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'list2.*', min: 0, max: 10, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0)
+]
 class Test
 {
     /**
-     * @Decimal(min=-0.01, max=999.99, accuracy=2, message="小数必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
-     *
      * @var float
      */
+    #[Decimal(min: -0.01, max: 999.99, accuracy: 2, message: '小数必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}')]
     public $decimal;
 
     public function __construct($data = [], $rules = null)
@@ -350,17 +354,17 @@ class Test
 
 ```php
 /**
- * @AutoValidation
- * 
- * @Required(name="id", message="用户ID为必传参数")
- * @Integer(name="id", min=1, message="用户ID不符合规则")
- * @Required(name="name", message="用户姓名为必传参数")
- * @Text(name="name", min=2, message="用户姓名长度不得少于2位")
- *
  * @param int $id
  * @param string $name
  * @return void
  */
+#[
+    AutoValidation,
+    Required(name: 'id', message: '用户ID为必传参数')
+    Integer(name: 'id', min: 1, message: '用户ID不符合规则')
+    Required(name: 'name', message: '用户姓名为必传参数')
+    Text(name: 'name', min: 2, message: '用户姓名长度不得少于2位')
+]
 public function test222($id, $name)
 {
     var_dump($id, $name);
@@ -372,23 +376,30 @@ public function test222($id, $name)
 你也可以自己定义一个专门用于验证的类，将数据传入该类，手动调用验证方法。
 
 ```php
-/**
- * @Bean("ValidatorTest")
- * 
- * @InList(name="in", list={1, 2, 3}, message="{:value} 不在列表内")
- * @Integer(name="int", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
- * @Required(name="required", message="{name}为必须参数")
- * @Number(name="number", min=0.01, max=999.99, accuracy=2, message="数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
- * @Text(name="text", min=6, max=12, message="{name}参数长度必须>={min} && <={max}")
- * @Condition(name="my", callable="\ImiDemo\HttpDemo\MainServer\Validator\Test::myValidate", args={"{:value}"}, message="{name}值必须为1")
- */
+#[
+    Bean(name: 'ValidatorTest'),
+    AutoValidation,
+    Compare(name: 'compare', operation: '<', value: 0, exception: 'InvalidArgumentException', exCode: 0),
+    Decimal(name: 'decimal', min: 1, max: 10, accuracy: 2, exception: 'InvalidArgumentException', exCode: 0),
+    InEnum(name: 'enum', enum: 'Imi\\Test\\Component\\Enum\\TestEnum', exception: 'InvalidArgumentException', exCode: 0),
+    InList(name: 'in', list: [1, 2, 3], message: '{:value} 不在列表内', exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'int', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0),
+    Required(name: 'required', message: '{name}为必须参数', exception: 'InvalidArgumentException', exCode: 0),
+    Number(name: 'number', min: 0.01, max: 999.99, accuracy: 2, message: '数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}', exception: 'InvalidArgumentException', exCode: 0),
+    Text(name: 'text', min: 6, max: 12, message: '{name}参数长度必须>={min} && <={max}', exception: 'InvalidArgumentException', exCode: 0),
+    Text(name: 'chars', char: true, min: 6, max: 12, message: '{name}参数长度必须>={min} && <={max}', exception: 'InvalidArgumentException', exCode: 0),
+    Compare(name: 'validateValue', value: new ValidateValue(value: '{:data.compare}'), exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'optional', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}', optional: true, exception: 'InvalidArgumentException', exCode: 0),
+    Regex(name: 'regex', pattern: '/^\\d+$/', exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'list1.*.id', min: 0, max: 10, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0),
+    Integer(name: 'list2.*', min: 0, max: 10, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0)
+]
 class Test extends Validator
 {
     /**
-     * @Decimal(min=-0.01, max=999.99, accuracy=2, message="小数必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
-     *
      * @var float
      */
+    #[Decimal(min: -0.01, max: 999.99, accuracy: 2, message: '小数必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}')]
     public $decimal;
 
     public function __construct($data = [], $rules = null)
@@ -465,13 +476,13 @@ use Imi\Validate\Annotation\Scene;
 use Imi\Validate\Annotation\Decimal;
 use Imi\Validate\Annotation\Integer;
 
-/**
- * @Decimal(name="decimal", min=1, max=10, accuracy=2)
- * @Integer(name="int", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
- * @Scene(name="a", fields={"decimal"})
- * @Scene(name="b", fields={"int"})
- * @Scene(name="c", fields={"decimal", "int"})
- */
+#[
+    Decimal(name: 'decimal', min: 1, max: 10, accuracy: 2),
+    Integer(name: 'int', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}'),
+    Scene(name: 'a', fields: {'decimal'}),
+    Scene(name: 'b', fields: {'int'}),
+    Scene(name: 'c', fields: {'decimal', 'int'})
+]
 class TestSceneAnnotationValidator extends Validator
 {
 
@@ -488,10 +499,10 @@ use Imi\Validate\Validator;
 use Imi\Validate\Annotation\Decimal;
 use Imi\Validate\Annotation\Integer;
 
-/**
- * @Decimal(name="decimal", min=1, max=10, accuracy=2)
- * @Integer(name="int", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
- */
+#[
+    Decimal(name: 'decimal', min: 1, max: 10, accuracy: 2),
+    Integer(name: 'int', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}'),
+]
 class TestSceneValidator extends Validator
 {
     /**

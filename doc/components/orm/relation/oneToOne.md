@@ -19,23 +19,25 @@
 ```php
 /**
  * User
- * @Entity
- * @Table(name="tb_user", id={"id"})
  * @property int $id
  * @property string $username
  * @property \ImiDemo\HttpDemo\MainServer\Model\UserEx $ex
  * @property \Imi\Util\ArrayList $userRole
  * @property \Imi\Util\ArrayList $role
  */
+#[
+	Entity,
+	Table(name: 'tb_user', id: ['id'])
+]
 class User extends Model
 {
-	/**
-	 * @OneToOne("UserEx")
-	 * @JoinFrom("id")
-	 * @JoinTo("user_id")
-	 * @AutoSave(true)
-	 * @AutoDelete
-	 */
+	#[
+		OneToOne(model: 'UserEx')
+		JoinFrom(field: 'id')
+		JoinTo(field: 'user_id')
+		AutoSave
+		AutoDelete
+	]
 	protected ?\ImiDemo\HttpDemo\MainServer\Model\UserEx $ex = null;
 
 	/**

@@ -272,9 +272,7 @@ Db::getInstance()->rollBack();
 ```php
 use Imi\Db\Annotation\Transaction;
 
-/**
- * @Transaction
- */
+#[Transaction]
 public function create()
 {
     // 你的代码，抛异常就回滚，没异常就提交

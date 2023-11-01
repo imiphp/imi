@@ -14,9 +14,7 @@ namespace Imi\Server\TcpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean
- */
+#[Bean]
 class RouteMiddleware implements IMiddleware
 {
 	/**
@@ -72,19 +70,21 @@ use Imi\Server\TcpServer\Route\Annotation\TcpController;
 
 /**
  * 数据收发测试
- * @TcpController
  */
+#[TcpController]
 class Test extends \Imi\Controller\TcpController
 {
 	/**
 	 * 登录
 	 * 
-	 * @TcpAction
-	 * @TcpRoute({"action"="login"})
-	 * @TcpMiddleware(XXX::class)
-	 * @TcpMiddleware({XXX::class,XXX2::class})
 	 * @return void
 	 */
+	#[
+		TcpAction,
+		TcpRoute(condition: ['action' => 'login']),
+		TcpMiddleware(middlewares: XXX::class),
+		TcpMiddleware(middlewares: [XXX::class, XXX2::class])
+	]
 	public function login($data)
 	{
 	}

@@ -32,10 +32,12 @@ use Imi\Test\Component\Model\Base\TreeBase;
 
 /**
  * Tree
- * @Entity
- * @TreeModel(parentField="parent_id", childrenField="children")
- * @Table(name="tb_tree", id={"id"})
  */
+#[
+    Entity,
+    TreeModel(parentField: 'parent_id', childrenField: 'children'),
+    Table(name: 'tb_tree', id: ['id'])
+]
 class Tree extends TreeBase // TreeBase 为通过 generate/model 工具生成出来的基类
 {
     use TTreeModel;
@@ -43,10 +45,9 @@ class Tree extends TreeBase // TreeBase 为通过 generate/model 工具生成出
     /**
      * 子节点集合
      * 
-     * @Column(virtual=true)
-     *
      * @var static[]
      */
+    #[Column(virtual: true)]
     protected $children = [];
 
     /**

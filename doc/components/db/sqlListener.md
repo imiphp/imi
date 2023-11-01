@@ -37,9 +37,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
-/**
- * @Listener("IMI.DB.EXECUTE")
- */
+#[Listener(eventName: 'IMI.DB.EXECUTE')]
 class DbExecuteListener implements IEventListener
 {
     /**
@@ -85,9 +83,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
-/**
- * @Listener("IMI.DB.PREPARE")
- */
+#[Listener(eventName: 'IMI.DB.PREPARE')]
 class DbPrepareListener implements IEventListener
 {
     /**

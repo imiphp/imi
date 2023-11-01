@@ -186,9 +186,7 @@ public $unlockException = false;
 ```php
 class Test
 {
-    /**
-     * @Lockable(id="锁ID", afterLock={"$this", "check"})
-     */
+    #[Lockable(id: '锁ID', afterLock: ['$this', 'check'])]
     public function index()
     {
         return 1;
@@ -199,9 +197,7 @@ class Test
         return 2;
     }
 
-    /**
-     * @Lockable(id="锁ID", afterLock={"$this", "check2"})
-     */
+    #[Lockable(id: '锁ID', afterLock: ['$this', 'check2'])]
     public function index2()
     {
         return 3;

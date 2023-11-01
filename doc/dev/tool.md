@@ -63,16 +63,14 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Contract\BaseCommand;
 
-/**
- * @Command("test")
- */
+#[Command(name: 'test')]
 class Test extends BaseCommand
 {
-    /**
-     * @CommandAction(name="hello", description="Hello world")
-     * @Argument(name="content", type=\Imi\Cli\ArgType::STRING)
-     * @Option(name="username", type=\Imi\Cli\ArgType::STRING, default="默认值")
-     */
+    #[
+        CommandAction(name: 'hello', description: 'Hello world'),
+        Argument(name: 'content', type: \Imi\Cli\ArgType::STRING),
+        Option(name: 'username', type: \Imi\Cli\ArgType::STRING, default='默认值')
+    ]
     public function hello(string $content, string $username): void
     {
         echo "{$username}: {$content}", PHP_EOL;

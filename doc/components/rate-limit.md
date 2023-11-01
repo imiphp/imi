@@ -49,12 +49,12 @@
 /**
  * 限制每秒同时访问 3 次
  * 
- * @Action
- * 
- * @RateLimit(name="test1", capacity=3)
- *
  * @return void
  */
+#[
+    Action,
+    RateLimit(name: 'test1', capacity: 3)
+]
 public function test1()
 {
     return [
@@ -65,13 +65,13 @@ public function test1()
 /**
  * 限制每秒同时访问 1 次，等待解除限制后继续执行，超时时间为 1 秒
  * 
- * @Action
- * 
- * @RateLimit(name="test2", capacity=1)
- * @BlockingConsumer(1)
- *
  * @return void
  */
+#[
+    Action,
+    RateLimit(name: 'test2', capacity: 1),
+    BlockingConsumer
+]
 public function test2()
 {
     return [
@@ -84,12 +84,12 @@ public function test2()
  * 
  * 自定义处理限制
  * 
- * @Action
- * 
- * @RateLimit(name="test3", capacity=1000, fill=1, unit="millisecond", deduct=500, callback="\ImiDemo\HttpDemo\Util\RateLimitParser::parse")
- *
  * @return void
  */
+#[
+    Action,
+    RateLimit(name: 'test3', capacity: 1000, fill: 1, unit: 'millisecond', deduct: 500, callback: '\ImiDemo\HttpDemo\Util\RateLimitParser::parse')
+]
 public function test3()
 {
     return [
@@ -102,10 +102,9 @@ public function test3()
  * 
  * 总容量为 1000，每毫秒填充 1，每次调用扣除 500
  *
- * @Action
- * 
  * @return void
  */
+#[Action]
 public function test4()
 {
     if(true !== $result = RateLimiter::limit('test4', 1000, function(){
@@ -127,10 +126,9 @@ public function test4()
  * 
  * 限制每秒同时访问 1 次，等待解除限制后继续执行，超时时间为 1 秒
  *
- * @Action
- * 
  * @return void
  */
+#[Action]
 public function test5()
 {
     if(true !== $result = RateLimiter::limitBlock('test5', 1, function(){

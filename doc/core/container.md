@@ -53,9 +53,7 @@ $object = $container->get('XXX');
 <?php
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("XXX")
- */
+#[Bean(name: 'XXX')]
 class Test
 {
 
@@ -139,9 +137,7 @@ $object = $container->get('XXX');
 <?php
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("XXX")
- */
+#[Bean(name: 'XXX')]
 class Test
 {
 
@@ -200,9 +196,7 @@ $object = $container->get('XXX');
 <?php
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("XXX")
- */
+#[Bean(name: 'XXX')]
 class Test
 {
 
@@ -287,18 +281,15 @@ $object = \Imi\App::newInstance('XXX', 1, 2, 3); // 支持实例化参数
 ```php
 namespace Test;
 
-/**
- * 下面两种写法相同（注意实际不要写多个 Bean 注解）
- * @Bean("MyTest")
- * @Bean(name="MyTest")
- *
- * 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
- * @Bean(name="MyTest", instanceType=\Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion=false)
- *
- * 下面是限制生效的环境，支持一个或多个
- * @Bean(name="MyTest", env="swoole")
- * @Bean(name="MyTest", env={"swoole", "workerman"})
- */
+// 智能
+#[Bean()]
+// 指定名称
+#[Bean(name: 'MyTest')]
+// 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
+#[Bean(instanceType: \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion: false)]
+// 下面是限制生效的环境，支持一个或多个
+#[Bean(env: 'swoole')]
+#[Bean(env: ['swoole', 'workerman'])]
 class ABCDEFG
 {
     public function __construct($id)
@@ -354,20 +345,22 @@ use Imi\Model\Annotation\Entity;
 
 /**
  * ArticleBase
- * @Entity
- * @Table(name="tb_article", id={"id"})
  * @property int $id
  * @property string $title
  * @property string $content
  * @property string $time
  */
+#[
+    Entity,
+    Table(name: 'tb_article', id=["id"])
+]
 abstract class ArticleBase extends Model
 {
     /**
      * id
-     * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
      * @var int
      */
+    #[Column(name: 'id', type: 'int', length=10, accuracy=0, nullable=false, default='', isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)]
     protected $id;
 
     /**
@@ -393,9 +386,9 @@ abstract class ArticleBase extends Model
 
     /**
      * title
-     * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var string
      */
+    #[Column(name: 'title', type: 'varchar', length=255, accuracy=0, nullable=false, default='', isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)]
     protected $title;
 
     /**
@@ -421,9 +414,9 @@ abstract class ArticleBase extends Model
 
     /**
      * content
-     * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var string
      */
+    #[Column(name: 'content', type: 'mediumtext', length=0, accuracy=0, nullable=false, default='', isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)]
     protected $content;
 
     /**
@@ -449,9 +442,9 @@ abstract class ArticleBase extends Model
 
     /**
      * time
-     * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var string
      */
+    #[Column(name: 'time', type: 'timestamp', length=0, accuracy=0, nullable=false, default='CURRENT_TIMESTAMP', isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)]
     protected $time;
 
     /**
@@ -489,8 +482,8 @@ use Imi\Test\Component\Model\Base\ArticleBase;
 
 /**
  * Article
- * @Inherit
  */
+#[Inherit]
 class Article extends ArticleBase
 {
 

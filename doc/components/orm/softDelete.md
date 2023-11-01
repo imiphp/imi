@@ -20,10 +20,11 @@ use Imi\Test\Component\Model\Base\TestSoftDeleteBase;
 
 /**
  * tb_test_soft_delete.
- *
- * @Inherit
- * @SoftDelete
  */
+#[
+    Inherit,
+    SoftDelete
+]
 class TestSoftDelete extends TestSoftDeleteBase
 {
     use TSoftDelete;

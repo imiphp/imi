@@ -30,22 +30,20 @@
 /**
  * http参数验证测试
  * 
- * @Action
- * 
- * @HttpValidation
- * 
- * @Required(name="$get.id", message="用户ID为必传参数")
- * @Integer(name="$get.id", min=1, message="用户ID不符合规则")
- * @Required(name="$get.name", message="用户姓名为必传参数")
- * @Text(name="$get.name", min=2, message="用户姓名长度不得少于2位")
- * @Required(name="$get.age")
- * 
- * @ExtractData(name="$get.id", to="id")
- * @ExtractData(name="$get.name", to="name")
- * @ExtractData(name="$get.age", to="age")
- *
  * @return void
  */
+#[
+    Action,
+    HttpValidation,
+    Required(name: '$get.id', message: '用户ID为必传参数'),
+    Integer(name: '$get.id', min: 1, message: '用户ID不符合规则'),
+    Required(name: '$get.name', message: '用户姓名为必传参数'),
+    Text(name: '$get.name', min: 2, message: '用户姓名长度不得少于2位'),
+    Required(name: '$get.age'),
+    ExtractData(name: '$get.id', to: 'id'),
+    ExtractData(name: '$get.name', to: 'name'),
+    ExtractData(name: '$get.age', to: 'age'),
+]
 public function httpValidation($id, $name, $age = -1)
 {
     return compact('id', 'name', 'age');

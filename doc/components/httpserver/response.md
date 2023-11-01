@@ -74,9 +74,7 @@ public function sendFile(string $filename, ?string $contentType = null, ?string 
 **例：**
 
 ```php
-/**
- * @Action
- */
+#[Action]
 public function downloadFile()
 {
     $this->response->sendFile(__FILE__); // 下载当前文件，实际上你可以指定服务器上的文件
@@ -88,9 +86,7 @@ public function downloadFile()
 一般可用于二维码场景
 
 ```php
-/**
- * @Action
- */
+#[Action]
 public function image()
 {
     // 生成图片

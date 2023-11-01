@@ -20,9 +20,7 @@ namespace Imi\Test\Component\Partial\Classes;
 
 use Imi\Bean\Annotation\Bean;
 
-/**
- * @Bean("PartialClassA")
- */
+#[Bean(name: 'PartialClassA')]
 class PartialClassA
 {
     public function test1()
@@ -42,9 +40,7 @@ namespace Imi\Test\Component\Partial\Partial
 {
     use Imi\Bean\Annotation\Partial;
 
-    /**
-     * @Partial(Imi\Test\Component\Partial\Classes\PartialClassA::class)
-     */
+    #[Partial(class: \Imi\Test\Component\Partial\Classes\PartialClassA::class)]
     trait TPartialClassA1
     {
         public $test2Value = 2;

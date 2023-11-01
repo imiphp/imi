@@ -47,9 +47,7 @@ namespace Imi\Test\HttpServer\Cron;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Contract\ICronTask;
 
-/**
- * @Cron(id="CronRandomWorker", second="3n", type="random_worker")
- */
+#[Cron(id: 'CronRandomWorker', second: '3n', type: 'random_worker')]
 class CronRandomWorker implements ICronTask
 {
     /**
@@ -99,10 +97,10 @@ use Imi\Swoole\Task\Annotation\Task;
 use Imi\Cron\Util\CronUtil;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
-/**
- * @Cron(id="TaskCron", second="3n", data={"id":"TaskCron"})
- * @Task("CronTask1")
- */
+#[
+    Cron(id: 'TaskCron', second: '3n', data: ['id' => 'TaskCron']),
+    Task(name: 'CronTask1')
+]
 class TaskCron implements ITaskHandler
 {
     /**
@@ -145,10 +143,10 @@ use Imi\Cron\Util\CronUtil;
 use Imi\Swoole\Process\Annotation\Process;
 use Swoole\Event;
 
-/**
- * @Cron(id="CronProcess1", second="3n")
- * @Process("CronProcess1")
- */
+#[
+    Cron(id: 'CronProcess1', second: '3n'),
+    Process(name: 'CronProcess1')
+]
 class TaskProcess implements IProcess
 {
     public function run(\Swoole\Process $process): void

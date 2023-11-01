@@ -207,9 +207,7 @@ use Imi\Meter\Annotation\Summary;
 use Imi\Meter\Annotation\Timed;
 use Imi\Meter\Enum\TimeUnit;
 
-/**
- * @Gauged(name="test_memory_usage", description="memory usage", tags={"workerId"="{returnValue.workerId}"}, value="{returnValue.memory}")
- */
+#[Gauged(name: 'test_memory_usage', description: 'memory usage', tags: ['workerId' => '{returnValue.workerId}'], value: '{returnValue.memory}')]
 public function recordMemoryUsage(): array
 {
     return [
@@ -218,9 +216,7 @@ public function recordMemoryUsage(): array
     ];
 }
 
-/**
- * @Timed(name="test_timed", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS, options={"quantiles"={0.1, 0.5, 0.99}})
- */
+#[Timed(name: 'test_timed', description: 'memory usage', baseTimeUnit: TimeUnit::MILLI_SECONDS, options: ['quantiles' => [0.1, 0.5, 0.99]])]
 public function testTimed(): int
 {
     $ms = mt_rand(10, 1000);
@@ -229,9 +225,7 @@ public function testTimed(): int
     return $ms;
 }
 
-/**
- * @Timed(name="test_timed_histogram", description="memory usage", baseTimeUnit=TimeUnit::MILLI_SECONDS, options={"histogram"=true, "buckets"={50, 100, 300, 600, 800, 1000}})
- */
+#[Timed(name: 'test_timed_histogram', description: 'memory usage', baseTimeUnit: TimeUnit::MILLI_SECONDS, options: ['histogram' => true, 'buckets' => [50, 100, 300, 600, 800, 1000]])]
 public function testTimedHistogram(): int
 {
     $ms = mt_rand(10, 1000);
@@ -240,17 +234,13 @@ public function testTimedHistogram(): int
     return $ms;
 }
 
-/**
- * @Histogram(name="test_histogram", baseTimeUnit=TimeUnit::MILLI_SECONDS, buckets={50, 100, 300, 600, 800, 1000})
- */
+#[Histogram(name: 'test_histogram', baseTimeUnit: TimeUnit::MILLI_SECONDS, buckets: [50, 100, 300, 600, 800, 1000])]
 public function testHistogram(): int
 {
     return mt_rand(10, 1000);
 }
 
-/**
- * @Summary(name="test_summary", baseTimeUnit=TimeUnit::MILLI_SECONDS, percentile={0.1, 0.5, 0.99})
- */
+#[Summary(name: 'test_summary', baseTimeUnit: TimeUnit::MILLI_SECONDS, percentile: [0.1, 0.5, 0.99])]
 public function testSummary(): int
 {
     return mt_rand(10, 1000);

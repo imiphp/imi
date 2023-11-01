@@ -17,14 +17,10 @@ use Imi\Enum\Annotation\EnumItem;
 
 class Status extends BaseEnum
 {
-    /**
-     * @EnumItem("正确")
-     */
+    #[EnumItem(text: '正确')]
     const YES = 1;
 
-    /**
-     * @EnumItem("错误")
-     */
+    #[EnumItem(text: '错误')]
     const NO = 0;
 }
 ```

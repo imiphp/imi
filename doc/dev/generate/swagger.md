@@ -57,39 +57,38 @@ use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * @OA\Info(title="My First API", version="0.1")
- * @Controller("/")
  */
+#[Controller(prefix: '/')]
 class IndexController extends SingletonHttpController
 {
     /**
-     * @Action
-     * @Route("/")
-     * 
-     *
      * @return void
      */
+    #[
+        Action,
+        Route(url: '/')
+    ]
     public function index()
     {
 
     }
 
     /**
-     * @Action
-     * @Route(url="login", method="POST")
-     *
      * @param string $username 用户名
      * @param integer $password 密码
      * 
      * @return void
      */
+    #[
+        Action,
+        Route(url: 'login', method: 'POST')
+    ]
     public function login(string $username, int $password)
     {
 
     }
 
     /**
-     * @Action
-     * @Route("register")
      * @OA\Get(
      *     path="/register",
      *     @OA\Response(response="200", description="An example resource")
@@ -101,6 +100,10 @@ class IndexController extends SingletonHttpController
      * 
      * @return void
      */
+    #[
+        Action,
+        Route(url: 'register')
+    ]
     public function register(string $username, int $password
     , string $birthday)
     {
@@ -108,11 +111,10 @@ class IndexController extends SingletonHttpController
     }
 
     /**
-     * @Action
-     *
      * @param int $id
      * @return void
      */
+    #[Action]
     public function get(int $id)
     {
 

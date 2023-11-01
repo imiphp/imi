@@ -41,9 +41,8 @@ use Imi\Server\Http\Message\Emitter\SseMessageEvent;
 
 /**
  * SSE.
- *
- * @Action
  */
+#[Action]
 public function sse(): void
 {
     $this->response->setResponseBodyEmitter(new class() extends SseEmitter {

@@ -107,17 +107,7 @@ Imi\Cache\CacheManager::clear('缓存名称');
 防止缓存击穿：
 
 ```php
-/*
- * @Cacheable(
- *   key="index:{page}",
- *   ttl=10,
- *   lockable=@Lockable(
- *     id="index:{page}",
- *     waitTimeout=999999,
- *   ),
- *   preventBreakdown=true,
- * )
- */
+#[Cacheable(key: 'index:{page}', ttl: 10, lockable: new Lockable(id: 'index:{page}', waitTimeout: 999999), preventBreakdown: true)]
 ```
 
 `lockable` 用法请参考 [Lock](/v3.0/components/lock/index.html)

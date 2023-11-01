@@ -22,9 +22,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-/**
- * @Listener(eventName="IMI.INITED", priority=PHP_INT_MAX)
- */
+#[Listener(eventName: 'IMI.INITED', priority: PHP_INT_MAX)]
 class Init implements IEventListener
 {
     /**
@@ -119,8 +117,8 @@ use Imi\Swoole\Server\Event\Listener\IRequestEventListener;
 
 /**
  * request事件前置处理
- * @ClassEventListener(className="Imi\Swoole\Server\Http\Server",eventName="request",priority=PHP_INT_MAX)
  */
+#[ClassEventListener(className: \Imi\Swoole\Server\Http\Server::class, eventName: 'request', priority: PHP_INT_MAX)]
 class BeforeRequest implements IRequestEventListener
 {
 	/**

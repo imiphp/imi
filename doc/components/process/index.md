@@ -15,8 +15,8 @@ use Imi\Swoole\Process\Annotation\Process;
 
 /**
  * 定义进程tp1
- * @Process("tp1")
  */
+#[Process(name: 'tp1')]
 class TestProcess extends BaseProcess
 {
     public function run(\Swoole\Process $process): void

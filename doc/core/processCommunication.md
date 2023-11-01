@@ -47,9 +47,7 @@ use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
 
-/**
- * @Listener(eventName="IMI.PROCESS.PIPE_MESSAGE")
- */
+#[Listener(eventName: 'IMI.PROCESS.PIPE_MESSAGE')]
 class MyListener implements IEventListener
 {
     /**
@@ -118,9 +116,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-/**
- * @Listener("IMI.PIPE_MESSAGE.test")
- */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.test')]
 class TestMessage implements IEventListener
 {
     /**
@@ -191,9 +187,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
 
-/**
- * @Listener("IMI.PIPE_MESSAGE.testRequest")
- */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.testRequest')]
 class TestRequestMessage implements IEventListener
 {
     /**
@@ -232,9 +226,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\Util\Co\ChannelContainer;
 
-/**
- * @Listener("IMI.PIPE_MESSAGE.testResponse")
- */
+#[Listener(eventName: 'IMI.PIPE_MESSAGE.testResponse')]
 class TestResponseMessage implements IEventListener
 {
     /**

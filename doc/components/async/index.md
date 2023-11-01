@@ -54,9 +54,7 @@ use Imi\Bean\Annotation\Bean;
 
 class AsyncTester
 {
-    /**
-     * @Async
-     */
+    #[Async]
     public function test1(): void
     {
         // 这里的代码是异步执行的
@@ -96,9 +94,8 @@ class AsyncTester
 {
     /**
      * 如果一定要声明方法返回值类型，必须声明为 IAsyncResult
-     * 
-     * @Async
      */
+    #[Async]
     public function test2(float $a, float $b): IAsyncResult
     {
         return new AsyncResult($a + $b);
@@ -106,11 +103,10 @@ class AsyncTester
 
     /**
      * 不声明方法返回值类型也可以
-     * 
-     * @Async
      *
      * @return float|IAsyncResult
      */
+    #[Async]
     public function test3(float $a, float $b)
     {
         return $a + $b;

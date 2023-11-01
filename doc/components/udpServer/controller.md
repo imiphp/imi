@@ -15,17 +15,19 @@ use Imi\Server\UdpServer\Route\Annotation\UdpController;
 
 /**
  * 数据收发测试
- * @UdpController
  */
+#[UdpController]
 class Test extends \Imi\Controller\UdpController
 {
 	/**
 	 * 登录
 	 * 
-	 * @UdpAction
-	 * @UdpRoute({"action"="hello"})
 	 * @return void
 	 */
+	#[
+		UdpAction,
+		UdpRoute(condition: ['action' => 'hello'])
+	]
 	public function hello()
 	{
 		return [
