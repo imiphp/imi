@@ -53,7 +53,7 @@ class ImiInit implements IEventListener
                         {
                             $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst((string) $annotationName);
                         }
-                        $annotations[] = new $annotationClassName($annotationArgs);
+                        $annotations[] = new $annotationClassName(...$annotationArgs);
                     }
                     AnnotationManager::addMethodAnnotations($className, $methodName, ...$annotations);
                 }
@@ -72,7 +72,7 @@ class ImiInit implements IEventListener
                         {
                             $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst((string) $annotationName);
                         }
-                        $annotations[] = new $annotationClassName($annotationArgs);
+                        $annotations[] = new $annotationClassName(...$annotationArgs);
                     }
                     AnnotationManager::addPropertyAnnotations($className, $propName, ...$annotations);
                 }

@@ -1231,10 +1231,10 @@ class ModelTest extends BaseTest
 
     public function testAnnotationDDL(): void
     {
-        $ddl = new DDL(null, '1+1');
+        $ddl = new DDL('1+1');
         $this->assertEquals('1+1', $ddl->getRawSql());
 
-        $ddl = new DDL(null, '1+1', static fn (string $sql): string => '2' . $sql);
+        $ddl = new DDL('1+1', static fn (string $sql): string => '2' . $sql);
         $this->assertEquals('21+1', $ddl->getRawSql());
     }
 

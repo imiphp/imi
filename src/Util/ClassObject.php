@@ -190,4 +190,13 @@ class ClassObject
 
         return new $class(...self::convertKVToArray($constructor->getParameters(), $args));
     }
+
+    /**
+     * 获取对象公开属性值
+     */
+    public static function getPublicProperties(?object $object): array
+    {
+        // 套一层是为了避免 get_object_vars() 作用域问题，可以只返回 public 属性
+        return get_object_vars($object);
+    }
 }

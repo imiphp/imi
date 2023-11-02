@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation;
 
+use Imi\Util\ClassObject;
+
 /**
  * 注解基类.
  */
@@ -37,6 +39,6 @@ abstract class Base implements \JsonSerializable
      */
     public function toArray(): array
     {
-        return (array) $this;
+        return ClassObject::getPublicProperties($this);
     }
 }

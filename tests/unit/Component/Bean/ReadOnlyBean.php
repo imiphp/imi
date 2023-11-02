@@ -16,7 +16,7 @@ if (\PHP_VERSION_ID >= 80200)
 
     if (!class_exists(ReadOnlyBean::class, false))
     {
-        #[Bean(['ReadOnlyBean'])]
+        #[Bean('ReadOnlyBean')]
         readonly class ReadOnlyBean
         {
             public function test(): string
