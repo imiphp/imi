@@ -10,28 +10,22 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcController;
 
 /**
  * RPC 控制器注解.
- *
- * @Annotation
- *
- * @Target("CLASS")
- *
- * @property string               $prefix 路由前缀
- * @property string|string[]|null $server 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制。
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 #[Parser(className: \Imi\Rpc\Route\Annotation\Parser\RpcControllerParser::class)]
 class RpcController extends Base implements IRpcController
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'prefix';
-
-    /**
-     * @param string|string[]|null $server
-     */
-    public function __construct(?array $__data = null, string $prefix = '', $server = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 路由前缀
+         */
+        public string $prefix = '',
+        /**
+         * 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制。
+         *
+         * @var string|string[]|null
+         */
+        public $server = null
+    ) {
     }
 }

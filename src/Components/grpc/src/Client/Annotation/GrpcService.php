@@ -10,20 +10,21 @@ use Imi\Rpc\Annotation\RpcService;
 
 /**
  * gRPC 服务对象注入.
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property string|null $interface 服务接口
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]
 class GrpcService extends RpcService
 {
-    public function __construct(?array $__data = null, string $name = '', array $args = [], ?string $poolName = null, ?string $serviceName = null, ?string $interface = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        public string $name = '',
+        public array $args = [],
+        public ?string $poolName = null,
+        public ?string $serviceName = null,
+        /**
+         * 服务接口.
+         */
+        public ?string $interface = null
+    ) {
     }
 
     /**

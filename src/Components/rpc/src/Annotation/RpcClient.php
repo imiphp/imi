@@ -10,20 +10,19 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
 
 /**
  * RPC 客户端注入.
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property string|null $poolName 连接池名称
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]
 class RpcClient extends Inject
 {
-    public function __construct(?array $__data = null, string $name = '', array $args = [], ?string $poolName = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        public string $name = '',
+        public array $args = [],
+        /**
+         * 连接池名称.
+         */
+        public ?string $poolName = null
+    ) {
     }
 
     /**
