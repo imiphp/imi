@@ -4,26 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Validate\Annotation;
 
-use Imi\Bean\Annotation;
-
 /**
  * 必选参数.
- *
- * @Annotation
- *
- * @Target({"CLASS", "METHOD", "PROPERTY"})
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Required extends Condition
 {
     /**
-     * @param callable $callable
+     * @param array|callable $callable
      */
-    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Util\ObjectArrayHelper::exists', array $args = [
-        '{:data}',
-        '{name}',
-    ], ?string $exception = null, ?int $exCode = null)
+    public function __construct(public ?string $name = null, public bool $optional = false, public mixed $default = null, public bool $inverseResult = false, public string $message = '{name} validate failed', public $callable = '\\Imi\\Util\\ObjectArrayHelper::exists', public array $args = ['{:data}', '{name}'], public ?string $exception = null, public ?int $exCode = null)
     {
-        parent::__construct(...\func_get_args());
     }
 }

@@ -9,24 +9,16 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 进程注解.
- *
- * @Annotation
- *
- * @Target("CLASS")
- *
- * @property string $name 进程名称
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Workerman\Process\Parser\ProcessParser::class)]
 class Process extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    public function __construct(?array $__data = null, string $name = '')
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 进程名称.
+         */
+        public string $name = ''
+    ) {
     }
 }

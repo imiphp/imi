@@ -9,27 +9,28 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 进程池注解.
- *
- * @Annotation
- *
- * @Target("CLASS")
- *
- * @property string      $name        进程池名称
- * @property int         $workerNum   进程数量
- * @property int         $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
- * @property string|null $msgQueueKey 消息队列key
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Swoole\Process\Parser\ProcessPoolParser::class)]
 class ProcessPool extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    public function __construct(?array $__data = null, string $name = '', int $workerNum = 1, int $ipcType = 0, ?string $msgQueueKey = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 进程池名称.
+         */
+        public string $name = '',
+        /**
+         * 进程数量.
+         */
+        public int $workerNum = 1,
+        /**
+         * 进程间通信的模式，默认为0表示不使用任何进程间通信特性.
+         */
+        public int $ipcType = 0,
+        /**
+         * 消息队列key.
+         */
+        public ?string $msgQueueKey = null
+    ) {
     }
 }

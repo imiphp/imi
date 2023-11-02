@@ -4,95 +4,41 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation;
 
-use Imi\Aop\Annotation\BaseInjectValue;
-use Imi\Bean\ReflectionContainer;
-use Imi\Util\LazyArrayObject;
+use Imi\Util\ClassObject;
 
 /**
  * 注解基类.
  */
-abstract class Base extends LazyArrayObject
+abstract class Base implements \JsonSerializable
 {
-    /**
-     * 只传一个参数时的参数名.
-     */
-    protected ?string $defaultFieldName = null;
-
     /**
      * 注解别名.
      *
-     * @var string|string[]
+     * @var string|string[]|null
      */
-    protected $__alias;
+    protected string|array|null $__alias = null;
 
     /**
-     * @param mixed ...$__args
+     * @return string|string[]|null
      */
-    public function __construct(?array $__data = null, ...$__args)
-    {
-        $data = $__data ?? [];
-        $params = ReflectionContainer::getClassReflection(static::class)->getConstructor()->getParameters();
-        foreach ($params as $i => $param)
-        {
-            $name = $param->name;
-            if ('__data' === $name || '__args' === $name)
-            {
-                continue;
-            }
-            if ($__data && \array_key_exists($name, $__data))
-            {
-                continue;
-            }
-            $key = (int) ($i - 1);
-            if (\array_key_exists($key, $__args))
-            {
-                $data[$name] = $__args[$key];
-            }
-            else
-            {
-                $data[$name] = $param->getDefaultValue();
-            }
-        }
-        $defaultFieldName = $this->defaultFieldName;
-        if ($__data && null !== $defaultFieldName && 'value' !== $defaultFieldName && 1 === \count($__data))
-        {
-            if (\array_key_exists('value', $__data))
-            {
-                // 只传一个参数处理
-                $data[$defaultFieldName] = $__data['value'];
-                unset($data['value']);
-            }
-            elseif (isset($params[1]) && array_is_list($__data))
-            {
-                $data[$params[1]->name] = $__data[0];
-            }
-        }
-
-        parent::__construct($data);
-    }
-
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function &offsetGet($offset)
-    {
-        $value = parent::offsetGet($offset);
-        if ($value instanceof BaseInjectValue)
-        {
-            $value = $value->getRealValue();
-        }
-
-        return $value;
-    }
-
-    /**
-     * @return string|string[]
-     */
-    public function getAlias()
+    public function getAlias(): string|array|null
     {
         return $this->__alias;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize(): mixed
+    {
+        return $this;
+    }
+
+    /**
+     * 将当前对象作为数组返回.
+     */
+    public function toArray(): array
+    {
+        return ClassObject::getPublicProperties($this);
     }
 }

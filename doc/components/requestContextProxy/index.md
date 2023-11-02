@@ -44,7 +44,7 @@ class RequestContextProxyA extends BaseRequestContextProxy
 
 ```
 
-> 继承 `Imi\RequestContextProxy\BaseRequestContextProxy` 类，然后使用`@RequestContextProxy`注解类定义绑定到上下文的名称。
+> 继承 `Imi\RequestContextProxy\BaseRequestContextProxy` 类，然后使用`RequestContextProxy`注解类定义绑定到上下文的名称。
 
 使用方式：
 
@@ -64,7 +64,7 @@ $a->add(2, 3); // 5
 RequestContextProxyA::__setProxyInstance($a);
 ```
 
-## @RequestContextProxy 注解
+## RequestContextProxy 注解
 
 ```php
 class RequestContextProxy extends Base

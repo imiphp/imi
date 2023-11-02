@@ -8,7 +8,7 @@
 
 一对一关联会用到的注解：
 
-`@OneToOne`、`@JoinFrom`、`@JoinTo`、`@AutoSelect`、`@AutoInsert`、`@AutoUpdate`、`@AutoSave`、`@AutoDelete`
+`OneToOne`、`JoinFrom`、`JoinTo`、`AutoSelect`、`AutoInsert`、`AutoUpdate`、`AutoSave`、`AutoDelete`
 
 如 imi-demo 中代码所示，定义了一个`$ex`属性，这个属性关联`UserEx`模型。
 

@@ -8,24 +8,23 @@ use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
  * 回调注解.
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property string|object $class  类名，或者传入对象
- * @property string        $method 方法名
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[\Imi\Bean\Annotation\Inherit]
 class Callback extends BaseInjectValue
 {
-    /**
-     * @param string|object $class
-     */
-    public function __construct(?array $__data = null, $class = null, string $method = '')
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 类名，或者传入对象
+         *
+         * @var string|object
+         */
+        public $class = null,
+        /**
+         * 方法名.
+         */
+        public string $method = ''
+    ) {
     }
 
     /**

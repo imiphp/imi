@@ -10,7 +10,7 @@
 
 引入 `trait`：`Imi\Model\Tree\TTreeModel`
 
-类上加上 `@TreeModel` 注解，类：`Imi\Model\Tree\Annotation\TreeModel`
+类上加上 `TreeModel` 注解，类：`Imi\Model\Tree\Annotation\TreeModel`
 
 | 属性名称 | 说明 |
 | ------------ | ------------ |
@@ -136,7 +136,7 @@ $parentItemList = $item->getParents();
 
 #### getAssocList
 
-获取关联列表，`@TreeModel`注解中配置的`childrenField`属性生效，放入配置的属性中
+获取关联列表，`TreeModel`注解中配置的`childrenField`属性生效，放入配置的属性中
 
 ```php
 $list = Tree::getAssocList(); // 所有数据

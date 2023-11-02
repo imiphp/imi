@@ -32,9 +32,9 @@ class TestProcess extends BaseProcess
 
 因为我们有些进程是用不到，或者不需要所有进程池的。进程池资源连着也是浪费，所以提供一个注解，用以释放。
 
-在 `run()` 方法上使用 `@PoolClean` 注解即可，类：`Imi\Pool\Annotation\PoolClean`
+在 `run()` 方法上使用 `PoolClean` 注解即可，类：`Imi\Pool\Annotation\PoolClean`
 
-`@PoolClean` 参数：
+`PoolClean` 参数：
 
 `mode` 模式，allow-白名单，deny-黑名单
 
@@ -42,7 +42,7 @@ class TestProcess extends BaseProcess
 
 ### 注解
 
-#### @Process
+#### Process
 
 ```php
 /**
@@ -157,11 +157,11 @@ public static function runWithManager($name, $args = [], $redirectStdinStdout = 
 [
     'AutoRunProcessManager' =>  [
         'processes' =>  [
-            // 方式一：最简单用法，@Process 注解定义的进程名称
+            // 方式一：最简单用法，Process 注解定义的进程名称
             'XXXProcess',
             // 方式二：支持指定参数
             'A' =>  [
-                'process'   =>  'XXXProcess', // @Process 注解定义的进程名称
+                'process'   =>  'XXXProcess', // Process 注解定义的进程名称
                 'args'      =>  ['id' => 123],
             ],
         ],

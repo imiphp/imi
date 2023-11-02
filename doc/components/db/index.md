@@ -259,13 +259,18 @@ Db::getInstance()->rollBack();
 
 **自动事务处理：**
 
-`@Transaction` 注解，类：`Imi\Db\Annotation\Transaction`
+`Transaction` 注解，类：`Imi\Db\Annotation\Transaction`
 
 这个注解可以加在任意方法上，在方法调用前开启事务，在方法中抛出异常时回滚事务，方法成功返回时提交事务。
 
-`@Transaction`
-
-`@Transaction(autoCommit="自动提交事务true/false，默认为true")`
+```php
+#[
+    Transaction, // 默认
+    Transaction(
+        autoCommit: true, // 自动提交事务，默认 true
+    )
+]
+```
 
 例：
 
@@ -283,19 +288,30 @@ public function create()
 
 * 如果当前不在事务中则开启事务（默认）
 
-`@Transaction(type=TransactionType::AUTO)`
+```php
+#[Transaction(type: TransactionType::AUTO)]
+```
 
 * 事务嵌套
 
-`@Transaction(type=TransactionType::NESTING)`
+```php
+#[Transaction(type: TransactionType::NESTING)]
+```
 
 * 该方法必须在事务中被调用
 
-`@Transaction(type=TransactionType::REQUIREMENT)`
+```php
+#[Transaction(type: TransactionType::REQUIREMENT)]
+```
 
 **部分回滚：**
 
-`@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1；当 $rollbackType 为 RollbackType::PART 时有效。设为null则全部回滚")`
+```php
+#[Transaction(
+    rollbackType: RollbackType::PART,
+    rollbackLevels: 1 // 回滚层数，默认为1；当 $rollbackType 为 RollbackType::PART 时有效。设为null则全部回滚
+)]
+```
 
 **事务监听：**
 

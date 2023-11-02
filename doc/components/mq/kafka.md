@@ -189,7 +189,7 @@ class TestProcess extends BaseProcess
 
 ### 注解说明
 
-### @Consumer
+### Consumer
 
 消费者注解
 

@@ -119,7 +119,7 @@ class TestRedisModel extends RedisModel
 
 需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法。
 
-### @RedisEntity
+### RedisEntity
 
 指定当前类为Redis实体类
 
@@ -153,7 +153,7 @@ hash 模式，使用 hset/hget 存序列化后的对象
 
 hash 对象模式，使用 hset/hget，将对象存到一个 key 中，member 为字段名
 
-#### @Column
+#### Column
 
 Redis模型中只有 `name`、`type` 和 `listSeparator` 生效。
 

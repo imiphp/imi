@@ -8,22 +8,21 @@ use Imi\Bean\Annotation\Base;
 
 /**
  * 方法参数注入.
- *
- * @Annotation
- *
- * @Target("METHOD")
- *
- * @property string $name  参数名
- * @property mixed  $value 注入的值
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class InjectArg extends Base
 {
-    /**
-     * @param mixed $value
-     */
-    public function __construct(?array $__data = null, string $name = '', $value = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 参数名.
+         */
+        public string $name = '',
+        /**
+         * 注入的值
+         *
+         * @var mixed
+         */
+        public $value = null
+    ) {
     }
 }

@@ -10,26 +10,21 @@ use Imi\RequestContext;
 /**
  * 属性注入
  * 使用：RequestContext::getBean().
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property string $name Bean名称或类名
- * @property array  $args Bean实例化参数
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]
 class RequestInject extends BaseInjectValue
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    public function __construct(?array $__data = null, string $name = '', array $args = [])
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * Bean名称或类名.
+         */
+        public string $name = '',
+        /**
+         * Bean实例化参数.
+         */
+        public array $args = []
+    ) {
     }
 
     /**

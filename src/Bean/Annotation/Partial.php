@@ -6,24 +6,16 @@ namespace Imi\Bean\Annotation;
 
 /**
  * 局部类型（Partial）注解.
- *
- * @Annotation
- *
- * @Target("CLASS")
- *
- * @property string $class 注入类名
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 #[\Imi\Bean\Annotation\Parser(className: \Imi\Bean\Parser\PartialParser::class)]
 class Partial extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'class';
-
-    public function __construct(?array $__data = null, string $class = '')
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 注入类名.
+         */
+        public string $class = ''
+    ) {
     }
 }

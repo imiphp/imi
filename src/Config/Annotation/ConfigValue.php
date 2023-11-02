@@ -12,29 +12,23 @@ use Imi\Config;
  * 从配置中读取值
  *
  * 支持在注解中为属性动态赋值
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property string $name    配置名，支持@app、@currentServer等用法
- * @property mixed  $default 配置不存在时，返回的默认值
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]
 class ConfigValue extends BaseInjectValue
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    /**
-     * @param mixed $default
-     */
-    public function __construct(?array $__data = null, string $name = '', $default = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 配置名，支持@app、@currentServer等用法.
+         */
+        public string $name = '',
+        /**
+         * 配置不存在时，返回的默认值
+         *
+         * @var mixed
+         */
+        public $default = null
+    ) {
     }
 
     /**

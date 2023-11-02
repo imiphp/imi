@@ -4,7 +4,7 @@
 
 因为种种原因，现在大部分场景下，我们开发删除功能时，都不会将记录物理删除。
 
-使用模型软删除功能非常简单，只需要在模型类中引入 trait `Imi\Model\SoftDelete\Traits\TSoftDelete`，并且在类上加上注解 `@SoftDelete`
+使用模型软删除功能非常简单，只需要在模型类中引入 trait `Imi\Model\SoftDelete\Traits\TSoftDelete`，并且在类上加上注解 `SoftDelete`
 
 ## 示例
 
@@ -33,7 +33,7 @@ class TestSoftDelete extends TestSoftDeleteBase
 
 ## 注解
 
-### @SoftDelete
+### SoftDelete
 
 软删除
 
@@ -52,7 +52,7 @@ imi 模型软删除，默认逻辑是非删除状态字段值为 `0`，删除后
 
 你也可以自行定义字段名、默认值、删除后的值。
 
-字段名、默认值可以通过 `@SoftDelete` 进行设置。
+字段名、默认值可以通过 `SoftDelete` 进行设置。
 
 删除后的值可以通过覆盖模型类中的 `__generateSoftDeleteValue()` 方法实现：
 

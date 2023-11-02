@@ -10,10 +10,6 @@ use Imi\Pool\PoolManager;
 
 /**
  * 连接池对象注入.
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]

@@ -8,33 +8,33 @@ imi v2.0.7 起开始支持在方法上声明注解，让这个方法可以以异
 
 ## 注解
 
-### @Async
+### Async
 
-imi v2.0.7 支持在方法上使用 `@Async` 注解，让这个方法被正常调用时是异步调用。
+imi v2.0.7 支持在方法上使用 `Async` 注解，让这个方法被正常调用时是异步调用。
 
-`@Async` 注解类：`\Imi\Async\Annotation\Async`
+`Async` 注解类：`\Imi\Async\Annotation\Async`
 
 在 Swoole 下，方法被调用时，会立即创建一个协程并执行，只有协程挂起时，才会继续执行当前代码。
 
-### @Defer
+### Defer
 
 imi v2.1.45 起支持。
 
-`@Defer` 注解类：`\Imi\Async\Annotation\Defer`
+`Defer` 注解类：`\Imi\Async\Annotation\Defer`
 
 在 Swoole 下，会在协程关闭之前 (即协程函数执行完毕时) 进行调用，就算抛出了异常，已注册的 `defer` 也会被执行。
 
-### @DeferAsync
+### DeferAsync
 
 imi v2.1.45 起支持。
 
-`@DeferAsync` 注解类：`\Imi\Async\Annotation\DeferAsync`
+`DeferAsync` 注解类：`\Imi\Async\Annotation\DeferAsync`
 
 在 Swoole 下，会在协程关闭之前 (即协程函数执行完毕时) 进行调用，调用时会创建一个协程并立即执行，代码所在上下文是一个新的协程。
 
 ## 使用示例
 
-`@Async`、`@Defer` 和 `@DeferAsync` 的使用方法完全一致，仅执行顺序不同。
+`Async`、`Defer` 和 `DeferAsync` 的使用方法完全一致，仅执行顺序不同。
 
 ### 异步执行无返回值
 

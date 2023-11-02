@@ -41,7 +41,7 @@ class Init implements IEventListener
 
 类必须实现`IEventListener`接口和`public function handle(EventParam $e): void`方法。
 
-然后在类上写`@Listener`注解。
+然后在类上写`Listener`注解。
 
 **注解参数说明：**
 
@@ -137,7 +137,7 @@ class BeforeRequest implements IRequestEventListener
 
 类必须实现对应接口和`handle()`方法，每个类的事件定义不同。
 
-然后在类上写`@ClassEventListener`注解。注解参数如下：
+然后在类上写`ClassEventListener`注解。注解参数如下：
 
 * `className`类名
 * `eventName`要监听的事件名称

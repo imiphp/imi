@@ -77,9 +77,7 @@ class HttpRoute
         }
         if (null === $annotation)
         {
-            $annotation = new RouteAnnotation([
-                'url' => $path,
-            ]);
+            $annotation = new RouteAnnotation(url: $path);
         }
         $routeItem = new RouteItem($annotation, $callable, $view, $viewOption, $options);
         if (isset($options['middlewares']))

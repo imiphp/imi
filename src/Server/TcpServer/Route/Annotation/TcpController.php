@@ -9,27 +9,18 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * Tcp 控制器注解.
- *
- * @Annotation
- *
- * @Target("CLASS")
- *
- * @property string|string[]|null $server 指定当前控制器允许哪些服务器使用；支持字符串或数组，默认为 null 则不限制
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Server\TcpServer\Parser\TcpControllerParser::class)]
 class TcpController extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'prefix';
-
-    /**
-     * @param string|string[]|null $server
-     */
-    public function __construct(?array $__data = null, $server = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 指定当前控制器允许哪些服务器使用；支持字符串或数组，默认为 null 则不限制.
+         *
+         * @var string|string[]|null
+         */
+        public $server = null
+    ) {
     }
 }

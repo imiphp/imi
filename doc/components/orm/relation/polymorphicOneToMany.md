@@ -37,7 +37,7 @@ mysql> desc tb_comment;
 
 一对多关联会用到的注解：
 
-`@PolymorphicOneToMany`、`@PolymorphicToOne`、`@JoinFrom`、`@JoinTo`、`@AutoSelect`、`@AutoInsert`、`@AutoUpdate`、`@AutoSave`、`@AutoDelete`
+`PolymorphicOneToMany`、`PolymorphicToOne`、`JoinFrom`、`JoinTo`、`AutoSelect`、`AutoInsert`、`AutoUpdate`、`AutoSave`、`AutoDelete`
 
 如 imi-demo 中代码所示，`Article`定义了一个`$comments`属性，这个属性关联`Comment`模型。
 

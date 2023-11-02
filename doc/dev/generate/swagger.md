@@ -123,7 +123,7 @@ class IndexController extends SingletonHttpController
 }
 ```
 
-imi-apidoc 会根据 `@Route` 注解、`@param` 注释，自动补足相关信息。让你不必为每个接口都书写 Swagger 注解，提升开发效率。
+imi-apidoc 会根据 `Route` 注解、`@param` 注释，自动补足相关信息。让你不必为每个接口都书写 Swagger 注解，提升开发效率。
 
 当然，如果希望更加个性化的信息设置，还是要自己去书写的！
 

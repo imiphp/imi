@@ -9,10 +9,6 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * WebSocket 动作注解.
- *
- * @Annotation
- *
- * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
 #[Parser(className: \Imi\Server\WebSocket\Parser\WSControllerParser::class)]

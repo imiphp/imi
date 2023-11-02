@@ -11,20 +11,19 @@ use Imi\Db\Query\QueryType;
 
 /**
  * 连接池对象注入.
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property int $queryType 查询类型
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]
 class DbInject extends RequestInject
 {
-    public function __construct(?array $__data = null, string $name = '', array $args = [], int $queryType = QueryType::WRITE)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        public string $name = '',
+        public array $args = [],
+        /**
+         * 查询类型.
+         */
+        public int $queryType = QueryType::WRITE
+    ) {
     }
 
     /**

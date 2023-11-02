@@ -10,10 +10,6 @@ use Imi\Bean\Annotation\Inherit;
 
 /**
  * 注入队列对象
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]

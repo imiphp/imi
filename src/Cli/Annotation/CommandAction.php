@@ -9,26 +9,24 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 命令行动作注解.
- *
- * @Annotation
- *
- * @Target("METHOD")
- *
- * @property string|null $name           操作名称
- * @property string|null $description    操作描述
- * @property bool        $dynamicOptions 是否启用动态参数支持
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class CommandAction extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    public function __construct(?array $__data = null, ?string $name = null, ?string $description = null, bool $dynamicOptions = false)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 操作名称.
+         */
+        public ?string $name = null,
+        /**
+         * 操作描述.
+         */
+        public ?string $description = null,
+        /**
+         * 是否启用动态参数支持
+         */
+        public bool $dynamicOptions = false
+    ) {
     }
 }

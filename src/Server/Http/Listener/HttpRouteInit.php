@@ -87,9 +87,7 @@ class HttpRouteInit implements IEventListener
                     else
                     {
                         $routes = [
-                            new Route([
-                                'url' => $methodName,
-                            ]),
+                            new Route(url: $methodName),
                         ];
                     }
                     // 方法中间件

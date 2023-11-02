@@ -56,16 +56,10 @@ class RequestContextProxyGenerate
         }
         $fileName = File::path($fileName, $shortClassName . '.php');
         $attributes = [];
-        $attributes[] = new RequestContextProxy([
-            'class' => $class,
-            'name'  => $name,
-        ]);
+        $attributes[] = new RequestContextProxy(class: $class, name: $name);
         if (null !== $bean)
         {
-            $attributes[] = new Bean([
-                'name'      => $bean,
-                'recursion' => $recursion,
-            ]);
+            $attributes[] = new Bean(name: $bean, recursion: $recursion);
         }
         $classAttributesCode = AttributeUtil::generateAttributesCode($attributes);
         $refClass = new \ReflectionClass($fromClass);

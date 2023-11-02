@@ -6,7 +6,7 @@
 
 ### 注解
 
-在属性上声明注解 `@Relation` (`Imi\Model\Annotation\Relation\Relation`) 使用自定义关联。
+在属性上声明注解 `Relation` (`Imi\Model\Annotation\Relation\Relation`) 使用自定义关联。
 
 ### 声明关联的属性
 
@@ -31,17 +31,17 @@ public function setRelation(?array $relation): self
 }
 ```
 
-* `@Relation` 是必选项
+* `Relation` 是必选项
 
-* `@AutoSave` 可启用 `insert` 和 `update` 处理
+* `AutoSave` 可启用 `insert` 和 `update` 处理
 
-* `@AutoInsert` 可单独启用 `insert` 处理
+* `AutoInsert` 可单独启用 `insert` 处理
 
-* `@AutoUpdate` 可单独启用 `update` 处理
+* `AutoUpdate` 可单独启用 `update` 处理
 
-* `@AutoDelete` 可启用 `delete` 处理
+* `AutoDelete` 可启用 `delete` 处理
 
-* `@AutoSelect` 可启用 `query` 处理，默认开启无需设置
+* `AutoSelect` 可启用 `query` 处理，默认开启无需设置
 
 ### 实现自定义关联
 

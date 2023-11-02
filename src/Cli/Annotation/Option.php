@@ -9,33 +9,42 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 可选项参数注解.
- *
- * @Annotation
- *
- * @Target("METHOD")
- *
- * @property string      $name     参数名称
- * @property string|null $shortcut 短名称
- * @property string|null $type     参数类型
- * @property mixed       $default  默认值
- * @property bool        $required 是否是必选参数
- * @property string      $comments 注释
- * @property string      $to       将参数值绑定到指定名称的参数
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Cli\Parser\ToolParser::class)]
 class Option extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    /**
-     * @param mixed $default
-     */
-    public function __construct(?array $__data = null, string $name = '', ?string $shortcut = null, ?string $type = null, $default = null, bool $required = false, string $comments = '', string $to = '')
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 参数名称.
+         */
+        public string $name = '',
+        /**
+         * 短名称.
+         */
+        public ?string $shortcut = null,
+        /**
+         * 参数类型.
+         */
+        public ?string $type = null,
+        /**
+         * 默认值
+         *
+         * @var mixed
+         */
+        public $default = null,
+        /**
+         * 是否是必选参数.
+         */
+        public bool $required = false,
+        /**
+         * 注释.
+         */
+        public string $comments = '',
+        /**
+         * 将参数值绑定到指定名称的参数.
+         */
+        public string $to = ''
+    ) {
     }
 }

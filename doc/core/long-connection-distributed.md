@@ -45,12 +45,12 @@ imi v2.0 开始，新增了支持 RabbitMQ 或其他支持 AMQP 协议的消息�
 'beans' => [
     'AmqpServerUtil' => [
         // 'amqpName' => null, // amqp 连接名称
-        // 交换机配置，同 AMQP 组件的 @Exchange 注解参数
+        // 交换机配置，同 AMQP 组件的 Exchange 注解参数
         'exchangeConfig' => [
             'name' => 'imi_server_util_test', // 交换机名
             'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::FANOUT, // fanout 模式
         ],
-        // 队列配置，同 AMQP 组件的 @Queue 注解参数
+        // 队列配置，同 AMQP 组件的 Queue 注解参数
         'queueConfig' => [
             'name'    => 'imi_server_util_', // 每个进程中的队列名前缀，如果是多实例部署，请设为不同的
             'durable' => false, // 非持久化
@@ -90,12 +90,12 @@ imi v2.0 开始，新增了支持 RabbitMQ 或其他支持 AMQP 协议的消息�
     ],
     'AmqpServerUtil' => [
         // 'amqpName' => null, // amqp 连接名称
-        // 交换机配置，同 AMQP 组件的 @Exchange 注解参数
+        // 交换机配置，同 AMQP 组件的 Exchange 注解参数
         'exchangeConfig' => [
             'name' => 'imi_server_util_test', // 交换机名
             'type' => \PhpAmqpLib\Exchange\AMQPExchangeType::DIRECT, // direct 模式
         ],
-        // 队列配置，同 AMQP 组件的 @Queue 注解参数
+        // 队列配置，同 AMQP 组件的 Queue 注解参数
         'queueConfig' => [
             'name'    => 'imi_server_util_', // 每个进程中的队列名前缀，如果是多实例部署，请设为不同的
             'durable' => false, // 非持久化

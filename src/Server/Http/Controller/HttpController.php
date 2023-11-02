@@ -48,12 +48,6 @@ abstract class HttpController
      */
     protected function __render(string $template, array $data = []): View
     {
-        return new View([
-            'renderType' => 'html',
-            'data'       => $data,
-            'option'     => new HtmlView([
-                'template' => $template,
-            ]),
-        ]);
+        return new View(renderType: 'html', data: $data, option: new HtmlView(template: $template));
     }
 }

@@ -40,11 +40,11 @@ class Test extends WebSocketController
 }
 ```
 
-首先控制器类必须有`@WSController`注解，对应动作必须有`@WSAction`和`@WSRoute`注解。
+首先控制器类必须有`WSController`注解，对应动作必须有`WSAction`和`WSRoute`注解。
 
 ## 注解
 
-### @WSController
+### WSController
 
 注释目标：类
 
@@ -58,41 +58,41 @@ class Test extends WebSocketController
 通常：
 
 ```php
-@WSController
+#[WSController]
 ```
 
 指定匹配 http 路由：
 
 ```php
 // 只有握手 /test 这个路径才可以触发该 WebSocket 动作
-@WSController(route="/test")
+#[WSController(route: "/test")]
 ```
 
-### @WSRoute
+### WSRoute
 
 指定 WebSocket 路由解析规则。
 
 ```php
 // 解析 $data['action'] === 'login'
-@WSRoute({"action"="login"})
+#[WSRoute(["action" => "login"])]
 // 解析 $data['a']['b']['c'] === 'login'
-@WSRoute({"a.b.c"="login"})
+#[WSRoute(["a.b.c" => "login"])]
 // 解析 $data['a'] == '1' && $data['b'] == '2'
-@WSRoute({"a"="1", "b"="2"})
+#[WSRoute(["a" => "1", "b" => "2"])]
 ```
 
 当然对象也是支持的：
 
 ```php
 // 解析 $data->a->b->c === 'login'
-@WSRoute({"a.b.c"="login"})
+#[WSRoute(["a.b.c" => "login"])]
 ```
 
 指定匹配 http 路由：
 
 ```php
 // 只有握手 /test 这个路径才可以触发该 WebSocket 动作
-@WSRoute(condition={"action"="login"}, route="/test")
+#[WSRoute(condition: ["action" => "login"], route: "/test")]
 ```
 
 路由匹配成功，就会执行这个动作。
@@ -101,7 +101,7 @@ class Test extends WebSocketController
 
 ### 响应当前这个请求
 
-直接在方法中返回一个数组或对象，在Http 控制器中`@WSConfig`中设定的处理器，就会把这个转为对应数据响应给客户端。
+直接在方法中返回一个数组或对象，在Http 控制器中`WSConfig`中设定的处理器，就会把这个转为对应数据响应给客户端。
 
 ```php
 return ['success'=>true];

@@ -278,13 +278,13 @@ public function requestParam1(string $string, int $int, float $float, bool $bool
 
 imi `v2.1.27` 引入的新注解。
 
-`@RequestParam` 注解的 `name` 是指定参数来源。
+`RequestParam` 注解的 `name` 是指定参数来源。
 
 你可以使用`$get`、`$post`、`$body`、`$headers`、`$cookie`、`$session`后面跟上`.参数名`指定参数，其中`$get`和`$post`自然不用多说，这`$body`的用处就是，比如参数是以`json`为`body`传给你的，他会自动给你`json_decode`，你用`$body`就可以指定了。
 
 ---
 
-`@RequestParam` 注释注解写法支持写在方法上。
+`RequestParam` 注释注解写法支持写在方法上。
 
 `#[RequestParam()]` PHP 原生注解写法支持写在方法和方法参数上。
 

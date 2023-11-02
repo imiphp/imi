@@ -44,7 +44,7 @@ mysql> desc tb_taggables;
 
 多对多关联会用到的注解：
 
-`@PolymorphicManyToMany`、`@PolymorphicToMany`、`@JoinFromMiddle`、`@JoinToMiddle`、`@AutoSelect`、`@AutoInsert`、`@AutoUpdate`、`@AutoSave`、`@AutoDelete`
+`PolymorphicManyToMany`、`PolymorphicToMany`、`JoinFromMiddle`、`JoinToMiddle`、`AutoSelect`、`AutoInsert`、`AutoUpdate`、`AutoSave`、`AutoDelete`
 
 ### Article 模型
 

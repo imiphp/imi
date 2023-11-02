@@ -10,10 +10,6 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcAction;
 
 /**
  * RPC 动作注解.
- *
- * @Annotation
- *
- * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
 #[Parser(className: \Imi\Rpc\Route\Annotation\Parser\RpcControllerParser::class)]

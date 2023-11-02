@@ -118,7 +118,7 @@ imi-influxdb 基础配置和使用说明详见：[链接](/v3.0/components/influ
 
 ##### 注解
 
-###### @Counted
+###### Counted
 
 类名：`\Imi\Meter\Annotation\Counted`
 
@@ -134,7 +134,7 @@ imi-influxdb 基础配置和使用说明详见：[链接](/v3.0/components/influ
 | description | `string` |  | 描述 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-###### @Gauged
+###### Gauged
 
 类名：`\Imi\Meter\Annotation\Gauged`
 
@@ -152,7 +152,7 @@ imi-influxdb 基础配置和使用说明详见：[链接](/v3.0/components/influ
 | operation | `int` | `\Imi\Meter\Enum\GaugeOperation::SET` | 操作类型。设置`GaugeOperation::SET`；增加`GaugeOperation::INCREMENT`；减少`GaugeOperation::DECREMENT` |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-###### @Timed
+###### Timed
 
 类名：`\Imi\Meter\Annotation\Timed`
 
@@ -168,7 +168,7 @@ imi-influxdb 基础配置和使用说明详见：[链接](/v3.0/components/influ
 | baseTimeUnit | `int` | `\Imi\Meter\Enum\TimeUnit::NANO_SECOND` | 基础时间单位，默认纳秒，可以使用 `\Imi\Meter\Enum\TimeUnit::XXX` 常量设置。 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-###### @Histogram
+###### Histogram
 
 类名：`\Imi\Meter\Annotation\Histogram`
 
@@ -184,7 +184,7 @@ imi-influxdb 基础配置和使用说明详见：[链接](/v3.0/components/influ
 | value | `string/float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-###### @Summary
+###### Summary
 
 类名：`\Imi\Meter\Annotation\Summary`
 

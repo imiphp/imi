@@ -44,9 +44,9 @@ class Index extends HttpController
 }
 ```
 
-如上代码所示，`@View`和`@HtmlView`注解可以写在类和方法的注释中。
+如上代码所示，`View`和`HtmlView`注解可以写在类和方法的注释中。
 
-`@HtmlView`注解的`baseDir`属性是模板基础路径，`/`开头为绝对路径。
+`HtmlView`注解的`baseDir`属性是模板基础路径，`/`开头为绝对路径。
 
 类注解代表针对所有动作设定的视图配置，在单个方法上写注解，会覆盖类注解对应的配置。
 
@@ -176,7 +176,7 @@ $this->response->getBody()->write('hello world');
 return $this->response;
 ```
 
-你还可以直接返回`@View`的注解类实例：
+你还可以直接返回`View`的注解类实例：
 
 ```php
 return new \Imi\Server\View\Annotation\View([

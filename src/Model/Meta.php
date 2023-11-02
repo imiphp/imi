@@ -297,7 +297,7 @@ class Meta
             {
                 if (!isset($fields[$name]))
                 {
-                    $fields[$name] = new Column(['virtual' => true]);
+                    $fields[$name] = new Column(virtual: true);
                 }
             }
         }

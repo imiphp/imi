@@ -105,7 +105,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 
 #### 注解
 
-##### @Counted
+##### Counted
 
 类名：`\Imi\Meter\Annotation\Counted`
 
@@ -121,7 +121,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | description | `string` |  | 描述 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-##### @Gauged
+##### Gauged
 
 类名：`\Imi\Meter\Annotation\Gauged`
 
@@ -139,7 +139,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | operation | `int` | `\Imi\Meter\Enum\GaugeOperation::SET` | 操作类型。设置`GaugeOperation::SET`；增加`GaugeOperation::INCREMENT`；减少`GaugeOperation::DECREMENT` |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-##### @Timed
+##### Timed
 
 类名：`\Imi\Meter\Annotation\Timed`
 
@@ -166,7 +166,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 ]
 ```
 
-##### @Histogram
+##### Histogram
 
 类名：`\Imi\Meter\Annotation\Histogram`
 
@@ -182,7 +182,7 @@ imi-prometheus：<https://github.com/imiphp/imi-prometheus>
 | value | `string/float` | `{returnValue}` | 写入的值；`{returnValue}` 表示方法返回值；`{returnValue.xxx}` 表示方法返回值的属性值；`{params.0}` 表示方法参数值；`{params.0.xxx}` 表示方法参数值的属性值；也可以是固定的 `float` 值 |
 | options | `array` | `[]` | 额外参数，每个驱动不同 |
 
-##### @Summary
+##### Summary
 
 类名：`\Imi\Meter\Annotation\Summary`
 

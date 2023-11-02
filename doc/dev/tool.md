@@ -6,7 +6,7 @@ imi 的命令行工具使用注解来定义
 
 ## 注解
 
-### @Command
+### Command
 
 `Imi\Cli\Annotation\Command`，写在类上，用于定义工具名称
 
@@ -16,7 +16,7 @@ imi 的命令行工具使用注解来定义
 | description | 操作描述 |
 | separator | 定义命令名称分割符，默认：`/` |
 
-### @CommandAction
+### CommandAction
 
 `Imi\Cli\Annotation\CommandAction`，写在方法上，用于定义工具动作名称
 
@@ -25,7 +25,7 @@ imi 的命令行工具使用注解来定义
 | name | 工具动作名称 |
 | co | 是否自动开启协程，默认为`true` |
 
-### @Argument
+### Argument
 
 `Imi\Cli\Annotation\Argument`，写在方法上，可以有多个，用于定义工具参数
 
@@ -38,7 +38,7 @@ imi 的命令行工具使用注解来定义
 | comments | 注释 |
 | to | 将参数值绑定到指定名称的参数 |
 
-### @Option
+### Option
 
 `Imi\Cli\Annotation\Option`，写在方法上，可以有多个，用于可选项参数
 

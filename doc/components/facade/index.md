@@ -44,7 +44,7 @@ class FacadeA extends BaseFacade
 }
 ```
 
-> 继承 `Imi\Facade\BaseFacade` 类，然后使用`@Facade`注解类定义绑定到哪个类。
+> 继承 `Imi\Facade\BaseFacade` 类，然后使用`Facade`注解类定义绑定到哪个类。
 
 使用：
 
@@ -53,7 +53,7 @@ use Imi\Test\Component\Facade\FacadeA;
 FacadeA::add(1, 2); // 3
 ```
 
-## @Facade 注解
+## Facade 注解
 
 ```php
 class Facade extends Base

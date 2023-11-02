@@ -8,25 +8,19 @@ use Imi\Bean\Annotation\Inherit;
 
 /**
  * 回调注解，返回该回调的返回值
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
- *
- * @property callable $callable 回调
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]
 class CallableValue extends BaseInjectValue
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'callable';
-
-    public function __construct(?array $__data = null, callable $callable = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 回调.
+         *
+         * @var callable
+         */
+        public $callable = null
+    ) {
     }
 
     /**

@@ -28,7 +28,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             /** @var AmqpServerUtil $amqpServerUtil */
             $amqpServerUtil = ($this->amqpServerUtil ??= RequestContext::getServerBean('AmqpServerUtil'));
-            $this->exchanges = [new Exchange($amqpServerUtil->getExchangeConfig())];
+            $this->exchanges = [new Exchange(...$amqpServerUtil->getExchangeConfig())];
             $this->poolName = $amqpServerUtil->getAmqpName() ?? AMQPPool::getDefaultPoolName();
         }
     }

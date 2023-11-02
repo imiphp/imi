@@ -85,7 +85,7 @@ Uncaught ErrorException: Swoole\Server::task(): task method can't be executed wi
 ],
 ```
 
-与异步任务写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
+与异步任务写法基本一致，多了`Cron`注解，并且需要**上报任务完成**！
 
 ```php
 <?php
@@ -129,7 +129,7 @@ class TaskCron implements ITaskHandler
 
 #### Process 任务
 
-与进程写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
+与进程写法基本一致，多了`Cron`注解，并且需要**上报任务完成**！
 
 ```php
 <?php
@@ -188,15 +188,15 @@ class TaskProcess implements IProcess
 
 #### 注解设定
 
-注解 `@Cron`，类 `Imi\Cron\Annotation\Cron`
+注解 `Cron`，类 `Imi\Cron\Annotation\Cron`
 
-`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="", force=false, delayMin=0, delayMax=0, successLog=true)`
+`#[Cron(id: "任务唯一ID", type: "", year: "", month: "", day: "", hour: "", minute: "", second: "", unique: null, redisPool: "", lockWaitTimeout: "", maxExecutionTime: "", force: false, delayMin: 0, delayMax: 0, successLog: true)]`
 
 ##### 属性
 
 **id:**
 
-使用`@Cron`注解时的任务唯一ID。如果是 `Task`、`Process`，默认使用 `Task` 或 `Process` + 名称。
+使用`Cron`注解时的任务唯一ID。如果是 `Task`、`Process`，默认使用 `Task` 或 `Process` + 名称。
 
 **type:**
 
@@ -389,7 +389,7 @@ class TaskProcess implements IProcess
                 // 定时配置
                 'cron'     =>  [
                     // 支持多个条件去触发
-                    // 规则同 @Cron 注解
+                    // 规则同 Cron 注解
                     [
                         'year'  =>  '',
                         'month' =>  '',

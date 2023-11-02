@@ -94,7 +94,7 @@ class Index extends HttpController
     }
 
     /**
-     * 无@View注解，不用写代码，也可以渲染模版
+     * 无View注解，不用写代码，也可以渲染模版
      * 访问：http://127.0.0.1:8080/Index/test
      * 
      * @return void
@@ -114,7 +114,7 @@ class Index extends HttpController
 }
 ```
 
-如上代码，`index()`方法中的`@Middleware`是设置单个。`test()`方法中的是设置多个中间件。具体请看`imi-demo`项目代码。
+如上代码，`index()`方法中的`Middleware`是设置单个。`test()`方法中的是设置多个中间件。具体请看`imi-demo`项目代码。
 
 ### 中间件分组
 
@@ -134,7 +134,7 @@ return [
 ];
 ```
 
-使用：`@Middleware("@test")`
+使用：`Middleware("@test")`
 
 ## 注入修改核心动作中间件
 

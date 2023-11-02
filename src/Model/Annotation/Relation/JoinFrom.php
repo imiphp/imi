@@ -8,23 +8,15 @@ use Imi\Bean\Annotation\Base;
 
 /**
  * 关联左侧字段.
- *
- * @Annotation
- *
- * @Target("PROPERTY")
- *
- * @property string|null $field 字段名
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class JoinFrom extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'field';
-
-    public function __construct(?array $__data = null, ?string $field = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 字段名.
+         */
+        public ?string $field = null
+    ) {
     }
 }

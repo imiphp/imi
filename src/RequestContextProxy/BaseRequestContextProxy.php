@@ -32,11 +32,11 @@ abstract class BaseRequestContextProxy
         $currentClass = self::__getRealClassName();
         if (isset($cache[$currentClass]))
         {
-            /** @var RequestContextProxy $cacheItem */
             $cacheItem = $cache[$currentClass];
         }
         else
         {
+            /** @var RequestContextProxy|null $cacheItem */
             $cacheItem = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class, true, true);
             if (!$cacheItem)
             {
@@ -59,11 +59,11 @@ abstract class BaseRequestContextProxy
         $currentClass = self::__getRealClassName();
         if (isset($cache[$currentClass]))
         {
-            /** @var RequestContextProxy $cacheItem */
             $cacheItem = $cache[$currentClass];
         }
         else
         {
+            /** @var RequestContextProxy|null $cacheItem */
             $cacheItem = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class, true, true);
             if (!$cacheItem)
             {
@@ -84,10 +84,7 @@ abstract class BaseRequestContextProxy
         {
             throw new \RuntimeException(sprintf('RequestContextProxy %s already exists', $proxyClass));
         }
-        $cache[$proxyClass] = new RequestContextProxy([
-            'class' => $bindClass,
-            'name'  => $name,
-        ]);
+        $cache[$proxyClass] = new RequestContextProxy(class: $bindClass, name: $name);
     }
 
     /**

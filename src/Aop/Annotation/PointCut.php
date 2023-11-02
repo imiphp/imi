@@ -9,20 +9,23 @@ use Imi\Bean\Annotation\Base;
 
 /**
  * 切入点.
- *
- * @Annotation
- *
- * @Target("METHOD")
- *
- * @property int   $type  切入点类型，PointCutType::XXX
- * @property array $allow 允许的切入点
- * @property array $deny  不允许的切入点，即使包含中有的，也可以被排除
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
 class PointCut extends Base
 {
-    public function __construct(?array $__data = null, int $type = PointCutType::METHOD, array $allow = [], array $deny = [])
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 切入点类型，PointCutType::XXX.
+         */
+        public int $type = PointCutType::METHOD,
+        /**
+         * 允许的切入点.
+         */
+        public array $allow = [],
+        /**
+         * 不允许的切入点，即使包含中有的，也可以被排除.
+         */
+        public array $deny = []
+    ) {
     }
 }

@@ -37,6 +37,7 @@ abstract class BaseFacade
         }
         else
         {
+            /** @var Facade|null $cacheItem */
             $cacheItem = AnnotationManager::getClassAnnotations(static::class, Facade::class, true, true);
             if (!$cacheItem)
             {
@@ -66,10 +67,7 @@ abstract class BaseFacade
         {
             throw new \RuntimeException(sprintf('Facade %s already exists', $facadeClass));
         }
-        $cache[$facadeClass] = new Facade([
-            'class' => $bindClass,
-            'args'  => $args,
-        ]);
+        $cache[$facadeClass] = new Facade(class: $bindClass, args: $args);
     }
 
     /**
