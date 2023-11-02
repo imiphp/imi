@@ -12,10 +12,6 @@ use Imi\Redis\RedisManager;
  * 连接池对象注入.
  *
  * {@inheritdoc}
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 #[Inherit]

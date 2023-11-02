@@ -9,29 +9,26 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 视图注解.
- *
- * @Annotation
- *
- * @Target({"CLASS", "METHOD"})
- *
- * @property string              $renderType 渲染类型
- * @property mixed               $data       附加数据
- * @property BaseViewOption|null $option     视图配置注解
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 #[Parser(className: \Imi\Server\View\Parser\ViewParser::class)]
 class View extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'renderType';
-
-    /**
-     * @param mixed $data
-     */
-    public function __construct(?array $__data = null, string $renderType = 'json', $data = [], ?BaseViewOption $option = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 渲染类型.
+         */
+        public string $renderType = 'json',
+        /**
+         * 附加数据.
+         *
+         * @var mixed
+         */
+        public $data = [],
+        /**
+         * 视图配置注解.
+         */
+        public ?BaseViewOption $option = null
+    ) {
     }
 }

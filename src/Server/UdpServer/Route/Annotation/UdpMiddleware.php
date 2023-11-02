@@ -9,27 +9,18 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * Udp 中间件注解.
- *
- * @Annotation
- *
- * @Target({"CLASS", "METHOD"})
- *
- * @property string|string[]|null $middlewares 中间件类或数组
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Server\UdpServer\Parser\UdpControllerParser::class)]
 class UdpMiddleware extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'middlewares';
-
-    /**
-     * @param string|string[]|null $middlewares
-     */
-    public function __construct(?array $__data = null, $middlewares = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 中间件类或数组.
+         *
+         * @var string|string[]|null
+         */
+        public $middlewares = null
+    ) {
     }
 }

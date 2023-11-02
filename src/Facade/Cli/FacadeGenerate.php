@@ -52,10 +52,7 @@ class FacadeGenerate extends BaseCommand
             throw new \RuntimeException(sprintf('Get namespace %s path failed', $namespace));
         }
         $fileName = File::path($fileName, $shortClassName . '.php');
-        $facadeAttribute = AttributeUtil::generateAttributesCode(new Facade([
-            'class'     => $class,
-            'request'   => $request,
-        ]));
+        $facadeAttribute = AttributeUtil::generateAttributesCode(new Facade(class: $class, request: $request));
         $refClass = new \ReflectionClass($fromClass);
         $methods = [];
         foreach ($refClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)

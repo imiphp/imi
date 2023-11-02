@@ -4,32 +4,39 @@ declare(strict_types=1);
 
 namespace Imi\Validate\Annotation;
 
-use Imi\Bean\Annotation;
-
 /**
  * 文本验证
- *
- * @Annotation
- *
- * @Target({"CLASS", "METHOD", "PROPERTY"})
- *
- * @property bool     $char 是否为字符模式，默认为 false；设为 true 则使用字符判断长度；设为 false 则使用字节判断长度
- * @property int      $min  最短长度
- * @property int|null $max  最长长度，为null则不限制长度
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Text extends Condition
 {
-    /**
-     * @param callable $callable
-     */
-    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::text', array $args = [
-        '{:value}',
-        '{min}',
-        '{max}',
-        '{char}',
-    ], ?string $exception = null, ?int $exCode = null, bool $char = false, int $min = 0, ?int $max = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        public ?string $name = null,
+        public bool $optional = false,
+        public mixed $default = null,
+        public bool $inverseResult = false,
+        public string $message = '{name} validate failed',
+        /**
+         * 验证回调.
+         *
+         * @var array|callable
+         */
+        public $callable = '\\Imi\\Validate\\ValidatorHelper::text',
+        public array $args = ['{:value}', '{min}', '{max}', '{char}'],
+        public ?string $exception = null,
+        public ?int $exCode = null,
+        /**
+         * 是否为字符模式，默认为 false；设为 true 则使用字符判断长度；设为 false 则使用字节判断长度.
+         */
+        public bool $char = false,
+        /**
+         * 最短长度.
+         */
+        public int $min = 0,
+        /**
+         * 最长长度，为null则不限制长度.
+         */
+        public ?int $max = null
+    ) {
     }
 }

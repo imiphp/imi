@@ -37,6 +37,7 @@ abstract class BaseFacade
         }
         else
         {
+            /** @var Facade|null $cacheItem */
             $cacheItem = AnnotationManager::getClassAnnotations(static::class, Facade::class, true, true);
             if (!$cacheItem)
             {

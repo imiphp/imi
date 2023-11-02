@@ -4,28 +4,31 @@ declare(strict_types=1);
 
 namespace Imi\Validate\Annotation;
 
-use Imi\Bean\Annotation;
-
 /**
  * 列表验证
- *
- * @Annotation
- *
- * @Target({"CLASS", "METHOD", "PROPERTY"})
- *
- * @property array $list 列表
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class InList extends Condition
 {
-    /**
-     * @param callable $callable
-     */
-    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::in', array $args = [
-        '{:value}',
-        '{list}',
-    ], ?string $exception = null, ?int $exCode = null, array $list = [])
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        public ?string $name = null,
+        public bool $optional = false,
+        public mixed $default = null,
+        public bool $inverseResult = false,
+        public string $message = '{name} validate failed',
+        /**
+         * 验证回调.
+         *
+         * @var array|callable
+         */
+        public $callable = '\\Imi\\Validate\\ValidatorHelper::in',
+        public array $args = ['{:value}', '{list}'],
+        public ?string $exception = null,
+        public ?int $exCode = null,
+        /**
+         * 列表.
+         */
+        public array $list = []
+    ) {
     }
 }

@@ -10,20 +10,20 @@ use Imi\Bean\Annotation\Parser;
 /**
  * WebSocket 配置注解
  * 写在 http 控制器的动作方法.
- *
- * @Annotation
- *
- * @Target("METHOD")
- *
- * @property string|null $parserClass 处理器类
- * @property bool        $wsOnly      该动作仅作为 websocket 动作，握手失败则返回 400 错误
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
 #[Parser(className: \Imi\Server\Http\Parser\ControllerParser::class)]
 class WSConfig extends Base
 {
-    public function __construct(?array $__data = null, ?string $parserClass = null, bool $wsOnly = true)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 处理器类.
+         */
+        public ?string $parserClass = null,
+        /**
+         * 该动作仅作为 websocket 动作，握手失败则返回 400 错误.
+         */
+        public bool $wsOnly = true
+    ) {
     }
 }

@@ -4,30 +4,35 @@ declare(strict_types=1);
 
 namespace Imi\Validate\Annotation;
 
-use Imi\Bean\Annotation;
-
 /**
  * 整数验证
- *
- * @Annotation
- *
- * @Target({"CLASS", "METHOD", "PROPERTY"})
- *
- * @property int|null $min 最小值，为null不限制
- * @property int|null $max 最大值，为null不限制
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Integer extends Condition
 {
-    /**
-     * @param callable $callable
-     */
-    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::int', array $args = [
-        '{:value}',
-        '{min}',
-        '{max}',
-    ], ?string $exception = null, ?int $exCode = null, ?int $min = null, ?int $max = null)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        public ?string $name = null,
+        public bool $optional = false,
+        public mixed $default = null,
+        public bool $inverseResult = false,
+        public string $message = '{name} validate failed',
+        /**
+         * 验证回调.
+         *
+         * @var array|callable
+         */
+        public $callable = '\\Imi\\Validate\\ValidatorHelper::int',
+        public array $args = ['{:value}', '{min}', '{max}'],
+        public ?string $exception = null,
+        public ?int $exCode = null,
+        /**
+         * 最小值，为null不限制.
+         */
+        public ?int $min = null,
+        /**
+         * 最大值，为null不限制.
+         */
+        public ?int $max = null
+    ) {
     }
 }
