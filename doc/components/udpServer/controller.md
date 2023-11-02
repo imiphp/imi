@@ -38,11 +38,11 @@ class Test extends \Imi\Controller\UdpController
 }
 ```
 
-首先控制器类必须有`@UdpController`注解，对应动作必须有`@UdpAction`和`@UdpRoute`注解。
+首先控制器类必须有`UdpController`注解，对应动作必须有`UdpAction`和`UdpRoute`注解。
 
 ## 注解
 
-### @UdpController
+### UdpController
 
 注释目标：类
 
@@ -52,24 +52,24 @@ class Test extends \Imi\Controller\UdpController
 | ------------ | ------------ 
 | server | 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制 |
 
-### @UdpRoute
+### UdpRoute
 
 指定 Udp 路由解析规则。
 
 ```php
 // 解析 $data['action'] === 'login'
-@TcpRoute({"action"="login"})
+#[UdpRoute(["action" => "login"])]
 // 解析 $data['a']['b']['c'] === 'login'
-@TcpRoute({"a.b.c"="login"})
+#[UdpRoute(["a.b.c" => "login"])]
 // 解析 $data['a'] == '1' && $data['b'] == '2'
-@TcpRoute({"a"="1", "b"="2"})
+#[UdpRoute(["a" => "1", "b" => "2"])]
 ```
 
 当然对象也是支持的：
 
 ```php
 // 解析 $data->a->b->c === 'login'
-@TcpRoute({"a.b.c"="login"})
+#[UdpRoute(["a.b.c" => "login"])]
 ```
 
 路由匹配成功，就会执行这个动作。

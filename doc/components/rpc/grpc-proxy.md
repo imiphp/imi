@@ -78,7 +78,7 @@ class ProxyController extends HttpController
 }
 ```
 
-> `@Controller("/proxy/")` 和 `@Route("grpc/{service}/{method}")` 的路由都是可以自己定义的，这里仅仅作为演示用。
+> `Controller("/proxy/")` 和 `Route("grpc/{service}/{method}")` 的路由都是可以自己定义的，这里仅仅作为演示用。
 
 ## 客户端
 

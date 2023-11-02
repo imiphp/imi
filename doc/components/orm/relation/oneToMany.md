@@ -10,11 +10,11 @@
 
 一对多关联会用到的注解：
 
-`@OneToMany`、`@JoinFrom`、`@JoinTo`、`@AutoSelect`、`@AutoInsert`、`@AutoUpdate`、`@AutoSave`、`@AutoDelete`
+`OneToMany`、`JoinFrom`、`JoinTo`、`AutoSelect`、`AutoInsert`、`AutoUpdate`、`AutoSave`、`AutoDelete`
 
 如 imi-demo 中代码所示，`UserWithFriend`继承`User`。类定义了一个`$friends`属性，这个属性关联`UserFriend`模型。
 
-`User`中`id`与`UserFriend`中`user_id`关联，你可能会发现没有`@JoinFrom`注解，没有的话默认取左侧模型的主键。
+`User`中`id`与`UserFriend`中`user_id`关联，你可能会发现没有`JoinFrom`注解，没有的话默认取左侧模型的主键。
 
 允许自动查询、插入、更新、删除时，自动处理`UserFriend`模型数据，当更新时，会删除不存在的数据。
 

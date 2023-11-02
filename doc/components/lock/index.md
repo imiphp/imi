@@ -94,7 +94,7 @@ $lock->lock(); // 使用方法参考下面的“实例化使用方法”
 
 ## 注解使用
 
-`@Lockable`
+`Lockable`
 
 > 无需在配置中预定义
 
@@ -178,7 +178,7 @@ public $unlockException = false;
 只指定id，其它全部默认值
 
 ```php
-@Lockable(id="锁ID")
+#[Lockable(id: '锁ID')]
 ```
 
 定义执行任务前的操作：

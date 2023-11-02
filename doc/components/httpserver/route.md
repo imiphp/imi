@@ -39,7 +39,7 @@ return [
 
 ## 注解说明
 
-### @Controller
+### Controller
 
 类名：`\Imi\Server\Http\Route\Annotation\Controller`
 
@@ -52,7 +52,7 @@ return [
 | prefix | 动作配置的访问地址前缀，如果动作配置的访问地址规则以`/`开始，则本属性无效 |
 | server | 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制。主服务器名是:`main` |
 
-### @Route
+### Route
 
 类名：`\Imi\Server\Http\Route\Annotation\Route`
 
@@ -62,7 +62,7 @@ return [
 
 | 属性名称 | 说明 |
 | ------------ | ------------ 
-| url | 请求地址规则。<br>以`/`开头则忽视`@Controller`中的`prefix`<br>为空或以`./`开头则在`@Controller`中的`prefix`后加上路由定义<br>支持代入`{name}`形式占位符，匹配出来的值可以作为参数传入动作<br>支持正则写法：`{id:\d+}` |
+| url | 请求地址规则。<br>以`/`开头则忽视`Controller`中的`prefix`<br>为空或以`./`开头则在`Controller`中的`prefix`后加上路由定义<br>支持代入`{name}`形式占位符，匹配出来的值可以作为参数传入动作<br>支持正则写法：`{id:\d+}` |
 | method | 如果设置了`method`，则请求方法必须在`method`列表中才可以进到动作。<br>支持字符串和数组。如：`"GET"`或`{"GET", "POST"}` |
 | domain | 判断域名，只有符合条件才允许访问。<br>支持字符串和数组，支持`{name}`形式占位符，可以作为参数传入动作 |
 | paramsGet | 判断`GET`参数，只有符合条件才允许访问。<br>可以是字符串或数组。<br>`id=100`必须包含id，并且值为100<br>`id!=100`或`id<>100`必须包含id，并且值不为100<br>`id`必须包含id参数<br>`!id`必须不包含id参数</br>`["id" => "\d+"]`支持正则</br> |
@@ -74,7 +74,7 @@ return [
 | ignoreCase | 忽略请求地址大小写<br>`null`-取HttpRoute中默认值<br>`true`-忽略大小写<br>`false`-严格判断 |
 | autoEndSlash | 智能尾部斜杠，无论是否存在都匹配<br>`null`-取HttpRoute中默认值<br>`true`-忽略大小写<br>`false`-严格判断 |
 
-### @Action
+### Action
 
 类名：`\Imi\Server\Http\Route\Annotation\Action`
 

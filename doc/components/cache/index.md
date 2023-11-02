@@ -94,7 +94,7 @@ Imi\Cache\CacheManager::clear('缓存名称');
 
 首先来认识一下 `imi` 中的缓存注解吧！
 
-### @Cacheable
+### Cacheable
 
 调用方法前检测是否存在缓存，如果存在直接返回；不存在则执行方法体，然后将返回值存入缓存
 
@@ -102,7 +102,15 @@ Imi\Cache\CacheManager::clear('缓存名称');
 
 基本用法：
 
-`@Cacheable(name="缓存器名，为null则取cache.default配置", key="缓存键名，支持{id}、{data.name}、{:args}(所有参数的hash值)形式，代入参数，如果为null，则使用类名+方法名+全部参数，序列化后hash", ttl="超时时间，单位秒", lockable="Lock 注解，在调用方法体前后加锁", hashMethod="md5")`
+```php
+#[Cacheable(
+    name: '', // 缓存器名，为null则取cache.default配置
+    key: '', // 缓存键名，支持{id}、{data.name}、{:args}(所有参数的hash值)形式，代入参数，如果为null，则使用类名+方法名+全部参数，序列化后hash
+    ttl: 60, // 超时时间，单位秒
+    lockable: new Lockable(id: 'index:{page}', waitTimeout: 999999), // Lock 注解，在调用方法体前后加锁
+    hashMethod: 'md5' // 哈希方法
+)]
+```
 
 防止缓存击穿：
 
@@ -116,7 +124,7 @@ Imi\Cache\CacheManager::clear('缓存名称');
 
 如果 `preventBreakdown` 设为 `true`，并且`lockable`中也设定了`afterLock`，优先级为：`afterLock > 缓存检测`
 
-### @CacheEvict
+### CacheEvict
 
 缓存驱逐注解，方法体执行时，将指定缓存清除
 
@@ -124,13 +132,17 @@ Imi\Cache\CacheManager::clear('缓存名称');
 
 在方法执行前删除缓存：
 
-`@CacheEvict(name="同上", key="同上", beforeInvocation=true, hashMethod="md5")`
+```php
+#[CacheEvict(name: '同上', key: '同上', beforeInvocation: true, hashMethod: 'md5')]
+```
 
 在方法执行后删除缓存：
 
-`@CacheEvict(name="同上", key="同上", hashMethod="md5")`
+```php
+#[CacheEvict(name: '同上', key: '同上', hashMethod: 'md5')]
+```
 
-### @CachePut
+### CachePut
 
 方法体执行后，将返回值存入缓存
 
@@ -138,11 +150,15 @@ Imi\Cache\CacheManager::clear('缓存名称');
 
 将方法返回值全部写入缓存：
 
-`@CachePut(name="同上", key="同上", ttl="同上", hashMethod="md5")`
+```php
+#[CachePut(name: '同上', key: '同上', ttl: 60, hashMethod: 'md5')]
+```
 
 将方法返回值的一部分写入缓存：
 
-`@CachePut(name="同上", key="同上", ttl="同上", value="a.b", hashMethod="md5")`
+```php
+#[CachePut(name: '同上', key: '同上', ttl: 60, value: 'a.b', hashMethod: 'md5')]
+```
 
 上面的注解，如果方法返回值为：
 

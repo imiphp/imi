@@ -33,8 +33,6 @@ use Imi\Bean\Annotation\Parser;
 
 /**
  * 示例注解
- * @Annotation
- * @Target("METHOD")
  *
  * // 下面是IDE提示注释
  * @property string $name 随便定义的属性
@@ -64,11 +62,7 @@ class MyAnnotation extends Base
 
 写在类上的：
 
-`@Annotation`注解，表示当前类是注解类。
-
-`@Target`注解，表示当前注解可以写在什么上面。可选：`CLASS`、`METHOD`、`PROPERTY`、`CONST`。支持传多个的写法：`@Target({"CLASS", "METHOD", "PROPERTY", "CONST"})`
-
-`@Parser`注解，指定扫描注解时候的处理器，可以不写该注解，或者填写`"\Imi\Bean\Parser\NullParser"`即可，详见下文[编写处理器](#编写处理器)
+`Parser`注解，指定扫描注解时候的处理器，可以不写该注解，或者填写`"\Imi\Bean\Parser\NullParser"`即可，详见下文[编写处理器](#编写处理器)
 
 ## 注解使用
 

@@ -6,7 +6,7 @@ imi 提供了基本数据类型的验证，以及可扩展的验证方法，这�
 
 ## 注解
 
-### @Condition
+### Condition
 
 通用验证条件，传入回调进行验证
 
@@ -102,8 +102,8 @@ public $exCode = null;
 
 * `"is_int"`、
 * `"XXX::check"`、
-* `{@Inject("BeanName"), "methodName"}`
-* `{"$this", "methodName"}`指定当前对象中的方法，但Http验证器中无法使用。
+* `[new Inject("BeanName"), "methodName"]`
+* `["$this", "methodName"]`指定当前对象中的方法，但Http验证器中无法使用。
 * 方法必须是`public`或`protected`。
 
 `args` 是回调方法参数，例子：
@@ -123,11 +123,11 @@ class TestValidate
     }
 
     /**
-     * 本方法参数，由 @Condition 的 args 决定
+     * 本方法参数，由 Condition 的 args 决定
      * $value 是当前验证参数对应的值，也就是 test() 方法中，$a 参数值
      * $data 是集合了 test() 方法中所有参数的数组
      * 你可以用 $data['b'] 获取 $b 参数值
-     * $name 代表是 @Condition 中的 name 参数，同理可以取到注解中的其它参数值
+     * $name 代表是 Condition 中的 name 参数，同理可以取到注解中的其它参数值
      * $a 就是指定传入 test() 方法中 $a 参数值
      * $vvv 就是指定 test() 方法所在类对象中的 $abc 属性值
      */
@@ -145,147 +145,147 @@ class TestValidate
 
 `exception`和`exCode`可以设定验证失败时抛出的异常类及异常编码，默认为`\InvalidArgumentException`类。
 
-除了`callable`和`args`以外，其它参数都可以作为其它验证条件注解（如：`@Required` 等）的参数
+除了`callable`和`args`以外，其它参数都可以作为其它验证条件注解（如：`Required` 等）的参数
 
-### @Required
+### Required
 
 判断值是否存在
 
-### @Text
+### Text
 
 文本验证
 
 #### 字节验证
 
-必须>=6位长度字节，最长不限制：
+必须>: 6位长度字节，最长不限制：
 
-`@Text(min=6)`
+`#[Text(min: 6)]`
 
-字节长度必须>=6 && <=12：
+字节长度必须>: 6 && <: 12：
 
-`@Text(min=6, max=12)`
+`#[Text(min: 6, max: 12)]`
 
 > PHP 中，UTF-8 编码的中文字，每个字节长度为 3
 
 #### 字符验证
 
-必须>=6位长度字符，最长不限制：
+必须>: 6位长度字符，最长不限制：
 
-`@Text(char=true, min=6)`
+`#[Text(char: true, min: 6)]`
 
-字符长度必须>=6 && <=12：
+字符长度必须>: 6 && <: 12：
 
-`@Text(char=true, min=6, max=12)`
+`#[Text(char: true, min: 6, max: 12)]`
 
 > 一个字母是一个字符，一个中文也是一个字符
 
-### @Integer
+### Integer
 
 整数验证
 
 验证必须为整数：
 
-`@Integer`
+`#[Integer`
 
-验证必须为>=1024的整数：
+验证必须为>: 1024的整数：
 
-`@Integer(min=1024)`
+`#[Integer(min: 1024)]`
 
-验证必须为<=1024的整数：
+验证必须为<: 1024的整数：
 
-`@Integer(max=1024)`
+`#[Integer(max: 1024)]`
 
-验证必须为>=1 && <=10的整数：
+验证必须为>: 1 && <: 10的整数：
 
-`@Integer(min=1, max=10)`
+`#[Integer(min: 1, max: 10)]`
 
-### @Decimal
+### Decimal
 
 小数验证
 
 验证必须为小数：
 
-`@Decimal`
+`#[Decimal`
 
-验证必须为>=10.24的小数：
+验证必须为>: 10.24的小数：
 
-`@Decimal(min=10.24)`
+`#[Decimal(min: 10.24)]`
 
-验证必须为<=10.24的小数：
+验证必须为<: 10.24的小数：
 
-`@Decimal(max=10.24)`
+`#[Decimal(max: 10.24)]`
 
-验证必须为>=1 && <=10.24的小数：
+验证必须为>: 1 && <: 10.24的小数：
 
-`@Decimal(min=1, max=10.24)`
+`#[Decimal(min: 1, max: 10.24)]`
 
 > 传入`1`，结果为`false`
 > 
 > 传入`1.0`，结果为`true`
 
-### @Number
+### Number
 
 数值验证，允许是整数或者小数
 
 验证必须为数值：
 
-`@Decimal`
+`#[Decimal`
 
-验证必须为>=10.24的数值：
+验证必须为>: 10.24的数值：
 
-`@Decimal(min=10.24)`
+`#[Decimal(min: 10.24)]`
 
-验证必须为<=10.24的数值：
+验证必须为<: 10.24的数值：
 
-`@Decimal(max=10.24)`
+`#[Decimal(max: 10.24)]`
 
-验证必须为>=1 && <=10.24的数值：
+验证必须为>: 1 && <: 10.24的数值：
 
-`@Decimal(min=1, max=10.24)`
+`#[Decimal(min: 1, max: 10.24)]`
 
 > 传入`1`，结果为`true`
 > 
 > 传入`1.0`，结果为`true`
 > 
-### @InList
+### InList
 
 列表验证，判断值是否存在于列表中
 
-`@InList(list={1, 2, 3})`
+`#[InList(list: {1, 2, 3})]`
 
 相当于：
 
 ```php
-$result = in_array($value, [1, 2, 3]);
+$result :  in_array($value, [1, 2, 3]);
 ```
 
-### @Compare
+### Compare
 
 比较验证注解
 
-`@Compare(name="参数名", value="被比较值", operation="比较符，如：==")`
+`#[Compare(name: "参数名", value: "被比较值", operation: "比较符，如：: : ")]`
 
-`value` 可以直接传值，也可以配合 `@ValidateValue` 注解使用。
+`value` 可以直接传值，也可以配合 `ValidateValue` 注解使用。
 
-`operation` 允许使用：`==、!=、===、!==、<、<=、>、>=`
+`operation` 允许使用：`: : 、!: 、: : : 、!: : 、<、<: 、>、>: `
 
-### @ValidateValue
+### ValidateValue
 
 指定验证时的值注解
 
-`@Compare(name="id", value=@ValidateValue("{:data.id}"), operation="==")`
+`#[Compare(name: "id", value: @ValidateValue("{:data.id}"), operation: ": : ")]`
 
-### @InEnum
+### InEnum
 
 用于验证值是否存在于枚举列表中
 
-`@InEnum(name="type", enum="EnumClass")`
+`#[InEnum(name: "type", enum: "EnumClass")]`
 
-### @Regex
+### Regex
 
 正则验证
 
-`@Regex(name="regex", pattern="/\d+/")`
+`#[Regex(name: "regex", pattern: "/\d+/")]`
 
 ## 可选验证
 
@@ -293,17 +293,17 @@ $result = in_array($value, [1, 2, 3]);
 
 用法是需要作为可选验证的注解，`optional`属性设为`true`即可。
 
-`@Text(name="a", "min"=1, optional=true)`
+`#[Text(name: "a", "min": 1, optional: true)]`
 
 ## 自动验证
 
-注解：`@AutoValidation`
+注解：`AutoValidation`
 
 ### 验证类属性
 
-imi 支持在类、属性上使用 `@AutoValidation` 注解，当构造方法执行完毕后，触发验证。验证失败抛出异常。
+imi 支持在类、属性上使用 `AutoValidation` 注解，当构造方法执行完毕后，触发验证。验证失败抛出异常。
 
-如下代码，写在类上的注解以及属性上的注解，都因为加了`@AutoValidation` 注解，所以在构造方法执行完成后，会自动进行验证，验证失败则抛出异常。
+如下代码，写在类上的注解以及属性上的注解，都因为加了`AutoValidation` 注解，所以在构造方法执行完成后，会自动进行验证，验证失败则抛出异常。
 
 ```php
 #[
@@ -350,7 +350,7 @@ class Test
 
 ### 验证方法参数
 
-在 imi 中，如果你在方法上使用 `@AutoValidation` 注解，当方法被调用前，会触发验证操作，验证失败则抛出异常。验证的参数是传入方法的参数，如下代码，验证通过则进入方法体中，验证失败会抛出异常。
+在 imi 中，如果你在方法上使用 `AutoValidation` 注解，当方法被调用前，会触发验证操作，验证失败则抛出异常。验证的参数是传入方法的参数，如下代码，验证通过则进入方法体中，验证失败会抛出异常。
 
 ```php
 /**

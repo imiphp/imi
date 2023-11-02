@@ -10,155 +10,155 @@
 
 这里列出定义模型关联关系所需的注解，所有关联模型的注解，命名空间为`Imi\Model\Annotation\Relation`
 
-### @OneToOne
+### OneToOne
 
 一对一关系声明
 
 **用法：**
 
-`@OneToOne("模型类名")`
+`#[OneToOne("模型类名")]`
 
-`@OneToOne(model="模型类名")`
+`#[OneToOne(model: "模型类名")]`
 
 查询时指定字段：
 
-`@OneToOne(model="模型类名", fields={"指定查询时字段"})`
+`#[OneToOne(model: "模型类名", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@OneToOne(model="模型类名", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[OneToOne(model: "模型类名", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@OneToOne(model="模型类名", withSoftDelete=true)`
+`#[OneToOne(model: "模型类名", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
 描述的字段模型，使用父模型连接池名称（默认）：
 
-`@OneToOne(model="模型类名", poolName=\Imi\Model\Enum\RelationPoolName::PARENT)`
+`#[OneToOne(model: "模型类名", poolName: \Imi\Model\Enum\RelationPoolName::PARENT)]`
 
 描述的字段模型，使用被关联的模型本身的连接池配置：
 
-`@OneToOne(model="模型类名", poolName=\Imi\Model\Enum\RelationPoolName::RELATION)`
+`#[OneToOne(model: "模型类名", poolName: \Imi\Model\Enum\RelationPoolName::RELATION)]`
 
 描述的字段模型，指定连接池名字：
 
-`@OneToOne(model="模型类名", poolName="连接池名")`
+`#[OneToOne(model: "模型类名", poolName: "连接池名")]`
 
-### @OneToMany
+### OneToMany
 
 一对多关系声明
 
 **用法：**
 
-`@OneToMany("模型类名")`
+`OneToMany("模型类名")]`
 
-`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", limit=null)`
+`#[OneToMany(model: "模型类名", order: "排序规则字符串，例：age desc, id desc", limit: null)]`
 
 查询时指定字段：
 
-`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
+`#[OneToMany(model: "模型类名", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[OneToMany(model: "模型类名", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@OneToMany(model="模型类名", withSoftDelete=true)`
+`#[OneToMany(model: "模型类名", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
-### @ManyToMany
+### ManyToMany
 
 多对多关系声明
 
 **用法：**
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", limit=null)`
+`#[ManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", order: "排序规则字符串，例：age desc, id desc", limit: null)]`
 
 查询时指定字段：
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
+`#[ManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[ManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", withSoftDelete=true)`
+`#[ManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
-### @PolymorphicOneToOne
+### PolymorphicOneToOne
 
 多态一对一关系声明
 
 **用法：**
 
-`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值")`
+`#[PolymorphicOneToOne(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值")]`
 
 查询时指定字段：
 
-`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"})`
+`#[PolymorphicOneToOne(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[PolymorphicOneToOne(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", withSoftDelete=true)`
+`#[PolymorphicOneToOne(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
-### @PolymorphicOneToMany
+### PolymorphicOneToMany
 
 多态一对多关系声明
 
 **用法：**
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", limit=null)`
+`#[PolymorphicOneToMany(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", limit: null)]`
 
 查询时指定字段：
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
+`#[PolymorphicOneToMany(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[PolymorphicOneToMany(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", withSoftDelete=true)`
+`#[PolymorphicOneToMany(model: "关联模型", type: "多态类型字段名", typeValue: "多态类型值", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
-### @PolymorphicManyToMany
+### PolymorphicManyToMany
 
 多态多对多关系声明
 
 **用法：**
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", limit=null)`
+`#[PolymorphicManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", limit: null)]`
 
 查询时指定字段：
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"})`
+`#[PolymorphicManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[PolymorphicManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", withSoftDelete=true)`
+`#[PolymorphicManyToMany(model: "关联模型", middle: "中间模型类名", rightMany: "属性名，赋值为关联的模型对象列表", type: "多态类型字段名", typeValue: "多态类型值", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
-### @PolymorphicToOne
+### PolymorphicToOne
 
 用于多态一对一、一对多关联被关联的模型中使用，查询对应的左侧模型
 
@@ -166,23 +166,23 @@
 
 **用法：**
 
-`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值")`
+`#[PolymorphicToOne(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值")]`
 
 查询时指定字段：
 
-`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"})`
+`#[PolymorphicToOne(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", fields: {"指定查询时字段"})]`
 
 预加载，减少查询次数：
 
-`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"指定查询时字段"}, with=true, withFields={"指定序列化字段"})`
+`#[PolymorphicToOne(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", fields: {"指定查询时字段"}, with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", withSoftDelete=true)`
+`#[PolymorphicToOne(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
-### @PolymorphicToMany
+### PolymorphicToMany
 
 用于多态多对多关联被关联的模型中使用，查询对应的左侧模型列表
 
@@ -190,19 +190,19 @@
 
 **用法：**
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", limit=null, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段")`
+`#[PolymorphicToMany(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", limit: null, middleLeftField: "中间表与模型类的关联字段", middleRightField: "中间表与当前类的关联字段")]`
 
 查询时指定字段：
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段")`
+`#[PolymorphicToMany(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"}, middleLeftField: "中间表与模型类的关联字段", middleRightField: "中间表与当前类的关联字段")]`
 
 预加载，减少查询次数：
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"指定查询时字段"}, middleLeftField="中间表与模型类的关联字段", middleRightField="中间表与当前类的关联字段", with=true, withFields={"指定序列化字段"})`
+`#[PolymorphicToMany(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", order: "排序规则字符串，例：age desc, id desc", fields: {"指定查询时字段"}, middleLeftField: "中间表与模型类的关联字段", middleRightField: "中间表与当前类的关联字段", with: true, withFields: {"指定序列化字段"})]`
 
 查询结果包含被软删除的数据：
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", withSoftDelete=true)`
+`#[PolymorphicToMany(model: "关联模型", modelField: "关联的模型用于关联的字段", field: "当前模型用于关联的字段", type: "多态类型字段名", typeValue: "多态类型值", withSoftDelete: true)]`
 
 > 仅查询有效，非软删除模型请勿设置为 `true`
 
@@ -210,43 +210,43 @@
 
 自定义关联注解
 
-### @JoinFrom
+### JoinFrom
 
 一对一、一对多声明中，指定左表与右表关联用的字段名
 
 **用法：**
 
-`@JoinFrom("字段名")`
+`#[JoinFrom("字段名")]`
 
-`@JoinFrom(field="字段名")`
+`#[JoinFrom(field: "字段名")]`
 
-### @JoinTo
+### JoinTo
 
 一对一、一对多声明中，指定右表与左表关联用的字段名
 
 **用法：**
 
-`@JoinTo("字段名")`
+`#[JoinTo("字段名")]`
 
-`@JoinTo(field="字段名")`
+`#[JoinTo(field: "字段名")]`
 
-### @JoinToMiddle
+### JoinToMiddle
 
 多对多声明中，指定左侧模型关联到中间表模型
 
 **用法：**
 
-`@JoinToMiddle(field="左侧关联字段", middleField="中间表关联字段")`
+`#[JoinToMiddle(field: "左侧关联字段", middleField: "中间表关联字段")]`
 
-### @JoinFromMiddle
+### JoinFromMiddle
 
 多对多声明中，指定中间表模型关联到右侧模型
 
 **用法：**
 
-`@JoinFromMiddle(field="右侧关联字段", middleField="中间表关联字段")`
+`#[JoinFromMiddle(field: "右侧关联字段", middleField: "中间表关联字段")]`
 
-### @AutoSelect
+### AutoSelect
 
 指定模型查询（find、select）时，该关联属性是否自动查询出关联数据。
 
@@ -254,15 +254,15 @@
 
 **用法：**
 
-`@AutoSelect`
+`#[AutoSelect`
 
-`@AutoSelect(true)`
+`#[AutoSelect(true)]`
 
 是否总是显示该属性，如果为false，在为null时序列化为数组或json不显示该属性。默认为true
 
-`@AutoSelect(alwaysShow=false)`
+`#[AutoSelect(alwaysShow: false)]`
 
-### @AutoInsert
+### AutoInsert
 
 指定模型插入（insert、save）时，该关联属性是否自动插入关联数据。
 
@@ -270,13 +270,13 @@
 
 **用法：**
 
-`@AutoInsert`
+`#[AutoInsert`
 
-`@AutoInsert(true)`
+`#[AutoInsert(true)]`
 
-`@AutoInsert(false)`
+`#[AutoInsert(false)]`
 
-### @AutoUpdate
+### AutoUpdate
 
 指定模型更新（update、save）时，该关联属性是否自动更新关联数据。
 
@@ -286,15 +286,15 @@
 
 **用法：**
 
-`@AutoUpdate`
+`#[AutoUpdate`
 
-`@AutoUpdate(true)`
+`#[AutoUpdate(true)]`
 
-`@AutoUpdate(false)`
+`#[AutoUpdate(false)]`
 
-`@AutoUpdate(orphanRemoval=true)`
+`#[AutoUpdate(orphanRemoval: true)]`
 
-### @AutoSave
+### AutoSave
 
 指定模型保存（save）时，该关联属性是否自动保存关联数据。
 
@@ -304,15 +304,15 @@
 
 **用法：**
 
-`@AutoSave`
+`#[AutoSave`
 
-`@AutoSave(true)`
+`#[AutoSave(true)]`
 
-`@AutoSave(false)`
+`#[AutoSave(false)]`
 
-`@AutoSave(orphanRemoval=true)`
+`#[AutoSave(orphanRemoval: true)]`
 
-### @AutoDelete
+### AutoDelete
 
 指定模型删除（delete）时，该关联属性是否自动删除关联数据。
 
@@ -320,17 +320,17 @@
 
 **用法：**
 
-`@AutoDelete`
+`#[AutoDelete]`
 
-`@AutoDelete(true)`
+`#[AutoDelete(true)]`
 
-`@AutoDelete(false)`
+`#[AutoDelete(false)]`
 
 ## 方法
 
 ### 查询指定关联
 
-使用关联模型时，你可以设置注解`@AutoSelect(false)`，让它不自动查询。在之后想要用到的时候，再手动查询。
+使用关联模型时，你可以设置注解`AutoSelect(false)`，让它不自动查询。在之后想要用到的时候，再手动查询。
 
 ```php
 $model->queryRelations('属性名');

@@ -29,4 +29,4 @@ $model->setUserAge(1);
 
 模型序列化后的字段默认为驼峰格式，如：数据库字段为`user_age`，序列化后为`userAge`。
 
-可以使用注解，设置为使用原数据库字段名：`@Entity(camel=false)`
+可以使用注解，设置为使用原数据库字段名：`#Entity(camel: false)`

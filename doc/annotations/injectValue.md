@@ -8,7 +8,7 @@
 
 ## 注解说明
 
-### @ConstValue
+### ConstValue
 
 从常量中读取值
 
@@ -17,7 +17,7 @@
 | name | 常量名 |
 | default | 常量不存在时，返回的默认值 |
 
-### @ConfigValue
+### ConfigValue
 
 从配置中读取值
 
@@ -26,7 +26,7 @@
 | name | 配置名，支持`@app`、`@currentServer`等用法 |
 | default | 配置不存在时，返回的默认值 |
 
-### @EnvValue
+### EnvValue
 
 从环境变量中读取值
 
@@ -35,7 +35,7 @@
 | name | 环境变量名称 |
 | default | 配置不存在时，返回的默认值 |
 
-### @Inject
+### Inject
 
 对象注入，使用：`App::getBean()`
 
@@ -44,19 +44,19 @@
 | name | Bean名称或类名 |
 | args | Bean实例化参数 |
 
-### @RequestInject
+### RequestInject
 
 对象注入，使用：`RequestContext::getBean()`
 
-同`@Inject`
+同`Inject`
 
-### @Callback
+### Callback
 
 回调注解
 
 | 属性名称 | 说明 |
 | ------------ | ------------ 
-| class | 类名，或者传入对象，比如可以使用 `@Inject`、`@RequestInject` 再次值注入 |
+| class | 类名，或者传入对象，比如可以使用 `Inject`、`RequestInject` 再次值注入 |
 | method | 方法名 |
 
 ## 用法示例
@@ -65,7 +65,7 @@
 #[Cacheable(key: 'index:{page}', ttl: 10, lockable: new Lockable(id: 'index:{page}', waitTimeout: 999999), preventBreakdown: true)]
 ```
 
-### @DbInject
+### DbInject
 
 注入数据库对象
 
@@ -74,7 +74,7 @@
 | name | 连接池名，如果为`null`则取配置`@app.db.defaultPool` |
 | queryType | 查询类型，影响读写分离逻辑。可选：`QueryType::READ`/`QueryType::WRITE`，默认为`QueryType::WRITE` |
 
-### @RedisInject
+### RedisInject
 
 注入Redis对象
 
@@ -82,7 +82,7 @@
 | ------------ | ------------ 
 | name | 连接池名，如果为`null`则取配置`@app.redis.defaultPool` |
 
-### @PoolResource
+### PoolResource
 
 注入连接池资源
 

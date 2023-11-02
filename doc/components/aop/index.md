@@ -101,25 +101,25 @@ ANNOTATION_CONSTRUCT | 带有注解的类的构造方法 | 4
 
 imi 支持的通知点有：
 
-#### @Before
+#### Before
 
-前置操作，注意与`@Around`区别。
+前置操作，注意与`Around`区别。
 
-#### @After
+#### After
 
 后置操作
 
-#### @Around
+#### Around
 
 环绕操作。先触发环绕操作，在前置操作前和后置操作后，都可以做一些事情。
 
-与`@Before`区别：`@Around`先于`@Before`执行，并可以完全不让原方法运行，可用于请求拦截等操作。
+与`Before`区别：`Around`先于`Before`执行，并可以完全不让原方法运行，可用于请求拦截等操作。
 
-#### @AfterReturning
+#### AfterReturning
 
 在原方法返回后触发，可以修改返回值
 
-#### @AfterThrowing
+#### AfterThrowing
 
 在抛出异常后触发，允许设置`allow`和`deny`，设置允许和拒绝捕获的异常类
 
@@ -127,11 +127,11 @@ imi 支持的通知点有：
 
 ### 正常执行时
 
-@Around → @Before → `$joinPoint->proceed()`→ @After → @AfterReturning → @Around
+Around → Before → `$joinPoint->proceed()`→ After → AfterReturning → Around
 
 ### 有异常抛出时
 
-@Around → @Before → 抛出异常 → @AfterThrowing
+Around → Before → 抛出异常 → AfterThrowing
 
 ## 使用方法
 
@@ -179,11 +179,11 @@ after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 
 类名、方法名和命名空间没有要求。
 
-类注释中必须写`@Aspect`表明是一个切面类
+类注释中必须写`Aspect`表明是一个切面类
 
-方法中写`@PointCut`表示指定切入点，支持通配符
+方法中写`PointCut`表示指定切入点，支持通配符
 
-`@After`代表在该方法调用后触发
+`After`代表在该方法调用后触发
 
 ### 注入带有注解的方法
 
@@ -368,7 +368,7 @@ class Test
 
 ### 属性注入
 
-如下代码例子，定义一个类，使用`@Inject`注解来注释属性，在通过`getBean()`实例化时，会自动给被注释的属性赋值相应的实例对象。
+如下代码例子，定义一个类，使用`Inject`注解来注释属性，在通过`getBean()`实例化时，会自动给被注释的属性赋值相应的实例对象。
 
 ```php
 namespace Test;

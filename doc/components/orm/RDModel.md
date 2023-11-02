@@ -148,7 +148,7 @@ foreach ($list2 as $row)
 
 ### 查询时指定字段
 
-请使用 `@Sql` 注解建模，参考文档：[链接](/v3.0/components/orm/RDModel/definition.html#@Sql)
+请使用 `Sql` 注解建模，参考文档：[链接](/v3.0/components/orm/RDModel/definition.html#Sql)
 
 不推荐的写法：
 
@@ -156,7 +156,7 @@ foreach ($list2 as $row)
 TestModel::query()->field('*')->fieldRaw('123 as value')->select()->getArray();
 ```
 
-> 上述写法会导致默认的 `@Serializable` 和 `@Serializables` 注解的序列化配置失效，慎用！
+> 上述写法会导致默认的 `Serializable` 和 `Serializables` 注解的序列化配置失效，慎用！
 
 ### 判断记录是否存在
 
@@ -475,7 +475,7 @@ $arrayList = TestModel::convertListToArray($list, false); // 不过滤
 
 ### 手动获取/设置模型序列化字段
 
-默认情况下，根据 `@Column` 注解定义字段，`@Serializable`、`@Serializables` 干预序列化（toArray、json_encode）后的字段。
+默认情况下，根据 `Column` 注解定义字段，`Serializable`、`Serializables` 干预序列化（toArray、json_encode）后的字段。
 
 现在你也可以手动干预了，示例如下：
 

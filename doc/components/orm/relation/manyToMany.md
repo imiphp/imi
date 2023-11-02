@@ -8,7 +8,7 @@
 
 多对多关联会用到的注解：
 
-`@ManyToMany`、`@JoinFromMiddle`、`@JoinToMiddle`、`@AutoSelect`、`@AutoInsert`、`@AutoUpdate`、`@AutoSave`、`@AutoDelete`
+`ManyToMany`、`JoinFromMiddle`、`JoinToMiddle`、`AutoSelect`、`AutoInsert`、`AutoUpdate`、`AutoSave`、`AutoDelete`
 
 如 imi-demo 中代码所示，类定义了一个`$userRole`属性和`$role`属性。
 

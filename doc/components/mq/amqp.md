@@ -334,11 +334,11 @@ ticket | ticket | `null` |
 
 #### 发布者定义
 
-必选注解：`@Publisher`
+必选注解：`Publisher`
 
-可选注解：`@Queue`、`@Exchange`、`@Connection`
+可选注解：`Queue`、`Exchange`、`Connection`
 
-不配置 `@Connection` 注解，从默认连接池中获取连接
+不配置 `Connection` 注解，从默认连接池中获取连接
 
 ```php
 <?php
@@ -376,18 +376,18 @@ $message->setContent('imi niubi');
 // 发布消息
 /** @var \ImiApp\AMQP\Test\TestPublisher $testPublisher */
 $testPublisher = \Imi\RequestContext::getBean('TestPublisher');
-// 请勿使用 App::getBean()、@Inject 等全局单例注入
+// 请勿使用 App::getBean()、Inject 等全局单例注入
 // $testPublisher = App::getBean('TestPublisher');
 $testPublisher->publish($message);
 ```
 
 ### 消费者定义
 
-必选注解：`@Consumer`
+必选注解：`Consumer`
 
-可选注解：`@Queue`、`@Exchange`、`@Connection`
+可选注解：`Queue`、`Exchange`、`Connection`
 
-不配置 `@Connection` 注解，从默认连接池中获取连接
+不配置 `Connection` 注解，从默认连接池中获取连接
 
 ```php
 <?php
@@ -500,7 +500,7 @@ class TestProcess extends BaseProcess
 
 #### 注解说明
 
-#### @Publisher
+#### Publisher
 
 发布者注解
 
@@ -510,7 +510,7 @@ class TestProcess extends BaseProcess
 | exchange | 交换机名称 |
 | routingKey | 路由键 |
 
-#### @Consumer
+#### Consumer
 
 消费者注解
 
@@ -525,7 +525,7 @@ class TestProcess extends BaseProcess
 | immediate | immediate标志位 |
 | ticket | ticket |
 
-#### @Queue
+#### Queue
 
 队列注解
 
@@ -541,7 +541,7 @@ class TestProcess extends BaseProcess
 | arguments | 参数 |
 | ticket | ticket |
 
-#### @Exchange
+#### Exchange
 
 交换机注解
 
@@ -557,7 +557,7 @@ class TestProcess extends BaseProcess
 | arguments | 参数 |
 | ticket | ticket |
 
-#### @Connection
+#### Connection
 
 连接注解
 

@@ -157,7 +157,7 @@ class A
 }
 ```
 
-**@JWTValidation:**
+**JWTValidation:**
 
 JWT 验证注解
 

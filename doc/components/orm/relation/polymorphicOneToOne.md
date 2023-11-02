@@ -37,7 +37,7 @@ mysql> desc tb_avatar;
 
 多态一对一关联会用到的注解：
 
-`@PolymorphicOneToOne`、`@PolymorphicToOne`、`@JoinFrom`、`@JoinTo`、`@AutoSelect`、`@AutoInsert`、`@AutoUpdate`、`@AutoSave`、`@AutoDelete`
+`PolymorphicOneToOne`、`PolymorphicToOne`、`JoinFrom`、`JoinTo`、`AutoSelect`、`AutoInsert`、`AutoUpdate`、`AutoSave`、`AutoDelete`
 
 如 imi-demo 中代码所示，定义了一个`$avatar`属性，这个属性关联`Avatar`模型。
 
@@ -101,7 +101,7 @@ class User extends Model
 }
 ```
 
-`@PolymorphicOneToOne`注解中，`type`代表在`Avatar`模型中的字段名，`typeValue`代表匹配的值。
+`PolymorphicOneToOne`注解中，`type`代表在`Avatar`模型中的字段名，`typeValue`代表匹配的值。
 
 ### Avatar 模型
 

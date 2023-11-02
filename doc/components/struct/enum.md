@@ -6,7 +6,7 @@
 
 ## 枚举类定义
 
-继承`Imi\Enum\BaseEnum`类，然后在类常量上面写上注解`@EnumItem`，参数是当前常量的文字说明。
+继承`Imi\Enum\BaseEnum`类，然后在类常量上面写上注解`EnumItem`，参数是当前常量的文字说明。
 
 ```php
 <?php
@@ -34,7 +34,7 @@ Status::getValue('YES');
 // 根据值获得文字说明
 Status::getText(Status::YES);
 
-// 根据值获得 @EnumItem 注解对象
+// 根据值获得 EnumItem 注解对象
 Status::getData(Status::YES);
 
 // 获取枚举类中所有名称
