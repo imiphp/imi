@@ -31,21 +31,21 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
         $list = [];
         foreach ($exchanges as $exchange)
         {
-            $list[] = new Exchange($exchange);
+            $list[] = new Exchange(...$exchange);
         }
         $this->exchanges = $list;
 
         $list = [];
         foreach ($queues as $queue)
         {
-            $list[] = new Queue($queue);
+            $list[] = new Queue(...$queue);
         }
         $this->queues = $list;
 
         $list = [];
         foreach ($consumers as $consumer)
         {
-            $list[] = new Consumer($consumer);
+            $list[] = new Consumer(...$consumer);
         }
         $this->consumers = $list;
 

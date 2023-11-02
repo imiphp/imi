@@ -20,21 +20,21 @@ class QueuePublisher extends BasePublisher
         $list = [];
         foreach ($exchanges as $exchange)
         {
-            $list[] = new Exchange($exchange);
+            $list[] = new Exchange(...$exchange);
         }
         $this->exchanges = $list;
 
         $list = [];
         foreach ($queues as $queue)
         {
-            $list[] = new Queue($queue);
+            $list[] = new Queue(...$queue);
         }
         $this->queues = $list;
 
         $list = [];
         foreach ($publishers as $publisher)
         {
-            $list[] = new Publisher($publisher);
+            $list[] = new Publisher(...$publisher);
         }
         $this->publishers = $list;
     }

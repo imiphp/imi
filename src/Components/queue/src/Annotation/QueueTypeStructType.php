@@ -9,19 +9,12 @@ use Imi\Bean\Annotation\Inherit;
 
 /**
  * 队列类型的结构类型.
- *
- * @Annotation
- *
- * @Target({"CONST"})
- *
- * @property string $type
  */
 #[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 #[Inherit]
 class QueueTypeStructType extends Base
 {
-    public function __construct(?array $__data = null, string $type = '')
+    public function __construct(public string $type = '')
     {
-        parent::__construct(...\func_get_args());
     }
 }
