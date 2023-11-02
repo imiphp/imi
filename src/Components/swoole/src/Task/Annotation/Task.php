@@ -10,25 +10,20 @@ use Imi\Swoole\Task\TaskParam;
 
 /**
  * 任务注解.
- *
- * @Annotation
- *
- * @Target("CLASS")
- *
- * @property string $name       任务名称
- * @property string $paramClass 参数类
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 #[Parser(className: \Imi\Swoole\Task\Parser\TaskParser::class)]
 class Task extends Base
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected ?string $defaultFieldName = 'name';
-
-    public function __construct(?array $__data = null, string $name = '', string $paramClass = TaskParam::class)
-    {
-        parent::__construct(...\func_get_args());
+    public function __construct(
+        /**
+         * 任务名称.
+         */
+        public string $name = '',
+        /**
+         * 参数类.
+         */
+        public string $paramClass = TaskParam::class
+    ) {
     }
 }
