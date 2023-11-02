@@ -56,18 +56,18 @@ class Test extends \Imi\Controller\UdpController
 
 ```php
 // 解析 $data['action'] === 'login'
-@TcpRoute({"action"="login"})
+@UdpRoute({"action"="login"})
 // 解析 $data['a']['b']['c'] === 'login'
-@TcpRoute({"a.b.c"="login"})
+@UdpRoute({"a.b.c"="login"})
 // 解析 $data['a'] == '1' && $data['b'] == '2'
-@TcpRoute({"a"="1", "b"="2"})
+@UdpRoute({"a"="1", "b"="2"})
 ```
 
 当然对象也是支持的：
 
 ```php
 // 解析 $data->a->b->c === 'login'
-@TcpRoute({"a.b.c"="login"})
+@UdpRoute({"a.b.c"="login"})
 ```
 
 路由匹配成功，就会执行这个动作。

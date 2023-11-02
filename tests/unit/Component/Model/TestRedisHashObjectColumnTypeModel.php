@@ -36,7 +36,7 @@ class TestRedisHashObjectColumnTypeModel extends RedisModel
     }
 
     /**
-     * @Column(type="json", arrayWrap=true)
+     * @Column(type="json")
      */
     protected array $jsonArray = [];
 
