@@ -131,7 +131,6 @@ return (new PhpCsFixer\Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
-            ->notPath('src/Components/swoole/src/Util/Coroutine.typed.php') // 兼容 Swoole 5.0，需要 PHP >= 8.0
             ->notPath('src/Components/grpc/example/grpc')
     )
 ;
