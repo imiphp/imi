@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Util;
 
-trait TCoroutine
+class Coroutine extends \Swoole\Coroutine
 {
-    use \Imi\Util\Traits\TStaticClass;
-
     /**
      * 判断当前是否在协程中运行.
      */
@@ -18,27 +16,9 @@ trait TCoroutine
 
     /**
      * 创建一个新的协程，并立即执行。
-     *
-     * @param mixed ...$params
-     *
-     * @return int|bool
      */
-    public static function create(callable $callable, ...$params)
+    public static function create(callable $callable, mixed ...$params): int|false
     {
         return imigo($callable, ...$params);
-    }
-}
-
-// @phpstan-ignore-next-line
-if (\SWOOLE_VERSION_ID >= 50000)
-{
-    include __DIR__ . '/Coroutine.typed.php';
-}
-// @phpstan-ignore-next-line
-else
-{
-    class Coroutine extends \Swoole\Coroutine
-    {
-        use TCoroutine;
     }
 }

@@ -65,11 +65,13 @@ class MemoryTableManager
             }
             if (\is_array($option))
             {
+                // @phpstan-ignore-next-line
                 if (isset($option['class']))
                 {
                     $object = new $option['class']();
                     $option = $object->getOption($option);
                 }
+                // @phpstan-ignore-next-line
                 $table = new \Swoole\Table($option['size'] ?? 1024, $option['conflictProportion'] ?? 0.2);
                 foreach ($option['columns'] as $column)
                 {
