@@ -30,9 +30,6 @@ parameters:
             message: '#Unable to resolve the template type T in call to method#'
             reportUnmatched: false
         -
-            message: "#^Unsafe usage of new static\\(\\)\\.$#"
-            reportUnmatched: false
-        -
             message: '#Swoole\\Coroutine\\\S+ not found#'
             reportUnmatched: false
         -
