@@ -179,7 +179,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setOption($option): self
+    public function setOption(QueryOption $option): self
     {
         $this->dbParamInc = 0;
         $this->option = $option;
@@ -814,7 +814,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function alias(string $name, $callable = null): self
+    public function alias(string $name, ?callable $callable = null): self
     {
         $aliasMap = &static::$aliasMap;
         if (!isset($aliasMap[$name]))

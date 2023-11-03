@@ -17,7 +17,7 @@ class SharedMemory
      *
      * @param string $poolName 连接池名称
      */
-    public static function getNewInstance($poolName = null): Client
+    public static function getNewInstance(string $poolName = null): Client
     {
         return PoolManager::getResource($poolName ?? static::getDefaultPoolName())->getInstance();
     }
@@ -27,7 +27,7 @@ class SharedMemory
      *
      * @param string $poolName 连接池名称
      */
-    public static function getInstance($poolName = null): Client
+    public static function getInstance(string $poolName = null): Client
     {
         return PoolManager::getRequestContextResource($poolName ?? static::getDefaultPoolName())->getInstance();
     }

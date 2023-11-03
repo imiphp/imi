@@ -285,11 +285,9 @@ class MemoryTable implements IHandler
     /**
      * 使用redis.
      *
-     * @param callable $callback
-     *
      * @return mixed
      */
-    private function useRedis($callback)
+    private function useRedis(callable $callback)
     {
         return Redis::use(function (RedisHandler $redis) use ($callback) {
             if (null !== $this->redisDb)

@@ -22,11 +22,10 @@ class Test
     public $c;
 
     /**
-     * @param mixed  $a
-     * @param mixed  $b
-     * @param string $c
+     * @param mixed $a
+     * @param mixed $b
      */
-    public function __construct($a, $b, $c = 'imi.com')
+    public function __construct($a, $b, string $c = 'imi.com')
     {
         $this->a = $a;
         $this->b = $b;
@@ -34,11 +33,10 @@ class Test
     }
 
     /**
-     * @param mixed  $a
-     * @param mixed  $b
-     * @param string $c
+     * @param mixed $a
+     * @param mixed $b
      */
-    public function imi($a, $b, $c = 'imi.com'): void
+    public function imi($a, $b, string $c = 'imi.com'): void
     {
     }
 

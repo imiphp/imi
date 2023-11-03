@@ -100,11 +100,9 @@ class Article extends ArticleBase
     /**
      * Set the value of queryRelationsList.
      *
-     * @param ArticleEx|null $queryRelationsList
-     *
      * @return self
      */
-    public function setQueryRelationsList($queryRelationsList)
+    public function setQueryRelationsList(?ArticleEx $queryRelationsList)
     {
         $this->queryRelationsList = $queryRelationsList;
 

@@ -10,8 +10,6 @@ interface IMysqlDb extends IDb
 {
     /**
      * 检查错误码是否为掉线
-     *
-     * @param int $code
      */
-    public function checkCodeIsOffline($code): bool;
+    public function checkCodeIsOffline(mixed $code): bool;
 }

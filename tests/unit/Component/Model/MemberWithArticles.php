@@ -43,7 +43,7 @@ class MemberWithArticles extends Member
      *
      * @return self
      */
-    public function setArticles($articles)
+    public function setArticles(?array $articles)
     {
         $this->articles = $articles;
 
@@ -75,7 +75,7 @@ class MemberWithArticles extends Member
      *
      * @return self
      */
-    public function setArticlesWith($articlesWith)
+    public function setArticlesWith(?array $articlesWith)
     {
         $this->articlesWith = $articlesWith;
 

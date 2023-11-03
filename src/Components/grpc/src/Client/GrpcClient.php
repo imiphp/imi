@@ -59,7 +59,7 @@ class GrpcClient implements IRpcClient
      *
      * @param array $options 配置
      */
-    public function __construct($options)
+    public function __construct(array $options)
     {
         if (!isset($options['url']))
         {

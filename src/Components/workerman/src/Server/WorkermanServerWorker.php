@@ -129,7 +129,7 @@ class WorkermanServerWorker extends Worker
      *
      * @return bool
      */
-    protected static function checkMasterIsAlive($master_pid)
+    protected static function checkMasterIsAlive(mixed $master_pid)
     {
         if (empty($master_pid))
         {

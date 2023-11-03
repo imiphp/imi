@@ -9,7 +9,7 @@ class PhpSerialize implements IFormat
     /**
      * {@inheritDoc}
      */
-    public function encode($data): string
+    public function encode(mixed $data): string
     {
         return serialize($data);
     }

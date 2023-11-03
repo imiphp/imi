@@ -9,7 +9,7 @@ class PhpSession implements IFormat
     /**
      * {@inheritDoc}
      */
-    public function encode($data): string
+    public function encode(mixed $data): string
     {
         $result = '';
         foreach ($data as $k => $v)

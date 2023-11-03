@@ -25,11 +25,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 设置操作记录.
      *
-     * @param QueryOption $option
-     *
      * @return static
      */
-    public function setOption($option): self;
+    public function setOption(QueryOption $option): self;
 
     /**
      * 获取数据库操作对象
@@ -495,13 +493,11 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 查询器别名.
      *
-     * @param callable|null $callable
-     *
      * @deprecated 3.0
      *
      * @return static
      */
-    public function alias(string $name, $callable = null): self;
+    public function alias(string $name, ?callable $callable = null): self;
 
     /**
      * 加锁

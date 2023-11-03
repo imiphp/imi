@@ -65,10 +65,7 @@ class RedisManagerTest extends BaseTestCase
         Assert::assertEquals(1, $pool->getFree());
     }
 
-    /**
-     * @param \Imi\Redis\RedisHandler $redisHandler
-     */
-    private function assertRedisHandler($redisHandler): void
+    private function assertRedisHandler(RedisHandler $redisHandler): void
     {
         Assert::assertInstanceOf(RedisHandler::class, $redisHandler);
         $time = time();

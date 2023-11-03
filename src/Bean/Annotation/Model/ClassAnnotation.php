@@ -74,11 +74,9 @@ class ClassAnnotation
     /**
      * Get 方法注解列表.
      *
-     * @param string|null $methodName
-     *
      * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
-    public function getMethodAnnotations($methodName = null): array
+    public function getMethodAnnotations(?string $methodName = null): array
     {
         if (null === $methodName)
         {

@@ -34,10 +34,7 @@ trait TProcess
         return $this->write($message);
     }
 
-    /**
-     * @param int|null $exitCode
-     */
-    public function exit($exitCode = 0): void
+    public function exit(?int $exitCode = 0): void
     {
         if ($this->pid > 0)
         {

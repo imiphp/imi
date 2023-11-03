@@ -45,7 +45,7 @@ class TestList extends TestListBase
      *
      * @return static
      */
-    public function setList($list): self
+    public function setList(mixed $list): self
     {
         $this->list = $list;
 

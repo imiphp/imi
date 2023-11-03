@@ -30,7 +30,7 @@ class JsonObjectParser implements IParser
     /**
      * {@inheritDoc}
      */
-    public function encode($data): string
+    public function encode(mixed $data): string
     {
         return json_encode($data, $this->options, $this->depth);
     }

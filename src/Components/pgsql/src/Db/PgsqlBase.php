@@ -32,7 +32,7 @@ abstract class PgsqlBase extends Base implements IPgsqlDb
      *
      * @see http://www.postgres.cn/docs/13/errcodes-appendix.html
      */
-    public function checkCodeIsOffline($code): bool
+    public function checkCodeIsOffline(mixed $code): bool
     {
         return null === $code || '57P01' === $code;
     }

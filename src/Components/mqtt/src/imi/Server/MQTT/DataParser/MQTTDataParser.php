@@ -22,7 +22,7 @@ class MQTTDataParser implements IParser
      *
      * @param \BinSoul\Net\Mqtt\Packet $data
      */
-    public function encode($data): string
+    public function encode(mixed $data): string
     {
         $packageStream = new PacketStream();
         $data->write($packageStream);

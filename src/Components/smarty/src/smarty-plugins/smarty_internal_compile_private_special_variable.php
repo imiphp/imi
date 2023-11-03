@@ -23,7 +23,7 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
      *
      * @throws \SmartyCompilerException
      */
-    public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, mixed $parameter)
+    public function compile(array $args, Smarty_Internal_TemplateCompilerBase $compiler, mixed $parameter)
     {
         $compiled_ref = null;
         $_index = preg_split("/\]\[/", substr((string) $parameter, 1, \strlen((string) $parameter) - 2));

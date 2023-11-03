@@ -8,10 +8,8 @@ interface IFormat
 {
     /**
      * 编码为存储格式.
-     *
-     * @param mixed $data
      */
-    public function encode($data): string;
+    public function encode(mixed $data): string;
 
     /**
      * 解码为php变量.

@@ -126,6 +126,9 @@ return (new PhpCsFixer\Config())
             'allow_unused_params' => false,
         ],
         'no_null_property_initialization'  => false,
+        'phpdoc_to_param_type'             => [
+            'scalar_types' => true,
+        ],
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

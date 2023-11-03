@@ -48,7 +48,7 @@ class MemberWithRoles extends Member
      *
      * @return self
      */
-    public function setRoleRelations($roleRelations)
+    public function setRoleRelations(?array $roleRelations)
     {
         $this->roleRelations = $roleRelations;
 
@@ -78,7 +78,7 @@ class MemberWithRoles extends Member
      *
      * @return self
      */
-    public function setRoles($roles)
+    public function setRoles(?array $roles)
     {
         $this->roles = $roles;
 
@@ -111,7 +111,7 @@ class MemberWithRoles extends Member
      *
      * @return self
      */
-    public function setRoleRelationsWith($roleRelationsWith)
+    public function setRoleRelationsWith(?array $roleRelationsWith)
     {
         $this->roleRelationsWith = $roleRelationsWith;
 
@@ -141,7 +141,7 @@ class MemberWithRoles extends Member
      *
      * @return self
      */
-    public function setRolesWith($rolesWith)
+    public function setRolesWith(?array $rolesWith)
     {
         $this->rolesWith = $rolesWith;
 
