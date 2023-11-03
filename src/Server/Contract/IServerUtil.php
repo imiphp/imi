@@ -18,7 +18,7 @@ interface IServerUtil
      * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function send(mixed $data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int;
+    public function send(mixed $data, int|string|array|null $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
@@ -29,7 +29,7 @@ interface IServerUtil
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendByFlag(mixed $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int;
+    public function sendByFlag(mixed $data, array|string|null $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
@@ -38,7 +38,7 @@ interface IServerUtil
      * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function sendRaw(string $data, int|string|array|null $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
@@ -47,7 +47,7 @@ interface IServerUtil
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int;
+    public function sendRawByFlag(string $data, $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给所有客户端.
@@ -78,7 +78,7 @@ interface IServerUtil
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendToGroup($groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function sendToGroup(string|array $groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给分组中的所有客户端，支持一个或多个（数组）.
@@ -89,7 +89,7 @@ interface IServerUtil
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function sendRawToGroup(string|array $groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 关闭一个或多个连接.
@@ -97,7 +97,7 @@ interface IServerUtil
      * @param int|int[]|string|string[]|null $clientId
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function close(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 关闭一个或多个指定标记的连接.
@@ -105,14 +105,14 @@ interface IServerUtil
      * @param string|string[]|null $flag
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function closeByFlag(string|array|null $flag, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 连接是否存在.
      *
      * @param string|int|null $clientId
      */
-    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool;
+    public function exists(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool;
 
     /**
      * 指定标记的连接是否存在.

@@ -35,7 +35,7 @@ class WSRoute implements IRoute
     /**
      * {@inheritDoc}
      */
-    public function parse($data): ?RouteResult
+    public function parse(mixed $data): ?RouteResult
     {
         $router = $this->httpRoute->getRouter();
         /** @var \Psr\Http\Message\ServerRequestInterface|null $request */

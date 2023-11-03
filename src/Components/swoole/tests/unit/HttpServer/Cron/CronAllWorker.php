@@ -13,7 +13,7 @@ class CronAllWorker implements ICronTask
     /**
      * {@inheritDoc}
      */
-    public function run(string $id, $data): void
+    public function run(string $id, mixed $data): void
     {
         var_dump('all');
     }

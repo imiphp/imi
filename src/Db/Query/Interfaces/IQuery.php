@@ -260,11 +260,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 绑定预处理参数.
      *
-     * @param string|int $name
-     *
      * @return static
      */
-    public function bindValue($name, mixed $value, int $dataType = \PDO::PARAM_STR): self;
+    public function bindValue(string|int $name, mixed $value, int $dataType = \PDO::PARAM_STR): self;
 
     /**
      * 批量绑定预处理参数.

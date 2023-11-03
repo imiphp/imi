@@ -325,7 +325,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
+    public function where(string $fieldName, string $operation, mixed $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->where[] = new Where($fieldName, $operation, $value, $logicalOperator);
 
@@ -538,7 +538,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
+    public function having(string $fieldName, string $operation, mixed $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->having[] = new Having($fieldName, $operation, $value, $logicalOperator);
 
@@ -582,7 +582,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self
+    public function bindValue(string|int $name, mixed $value, int $dataType = \PDO::PARAM_STR): self
     {
         $this->binds[$name] = $value;
 
@@ -761,7 +761,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setField(string $fieldName, $value): self
+    public function setField(string $fieldName, mixed $value): self
     {
         $this->option->saveData[$fieldName] = $value;
 
@@ -1244,7 +1244,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function value(string $field, $default = null)
+    public function value(string $field, mixed $default = null)
     {
         $result = $this
             ->limit(1)

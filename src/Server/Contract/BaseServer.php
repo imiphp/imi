@@ -69,7 +69,7 @@ abstract class BaseServer implements IServer
     /**
      * {@inheritDoc}
      */
-    public function getBean(string $name, ...$params)
+    public function getBean(string $name, mixed ...$params): mixed
     {
         $context = RequestContext::getContext();
         $server = $context['server'] ?? null;
@@ -90,7 +90,7 @@ abstract class BaseServer implements IServer
     /**
      * {@inheritDoc}
      */
-    public function callServerMethod(string $methodName, ...$args)
+    public function callServerMethod(string $methodName, mixed ...$args): mixed
     {
         return null;
     }

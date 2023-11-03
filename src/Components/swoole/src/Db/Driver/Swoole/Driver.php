@@ -324,7 +324,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return null;
     }
@@ -332,7 +332,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return true;
     }

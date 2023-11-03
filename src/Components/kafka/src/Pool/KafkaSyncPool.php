@@ -18,7 +18,7 @@ class KafkaSyncPool extends BaseSyncPool
     use TKafkaPool;
     use TUriResourceConfig;
 
-    public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, mixed $resourceConfig = null)
     {
         parent::__construct($name, $config, $resourceConfig);
         $this->initUriResourceConfig();

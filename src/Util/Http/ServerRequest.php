@@ -393,7 +393,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getAttribute(string $name, $default = null)
+    public function getAttribute(string $name, mixed $default = null): mixed
     {
         $attributes = $this->attributes;
         if (\array_key_exists($name, $attributes))

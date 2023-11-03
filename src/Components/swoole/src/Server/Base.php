@@ -159,7 +159,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * {@inheritDoc}
      */
-    public function callServerMethod(string $methodName, ...$args)
+    public function callServerMethod(string $methodName, mixed ...$args): mixed
     {
         $server = $this->swooleServer;
         if (!method_exists($server, $methodName))

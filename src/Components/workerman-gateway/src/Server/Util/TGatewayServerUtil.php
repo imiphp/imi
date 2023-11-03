@@ -19,7 +19,7 @@ trait TGatewayServerUtil
      * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function send(mixed $data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
+    public function send(mixed $data, int|string|array|null $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -41,7 +41,7 @@ trait TGatewayServerUtil
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendByFlag(mixed $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendByFlag(mixed $data, array|string|null $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -62,7 +62,7 @@ trait TGatewayServerUtil
      * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRaw(string $data, int|string|array|null $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $clientId)
         {
@@ -80,7 +80,7 @@ trait TGatewayServerUtil
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawByFlag(string $data, $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $flag)
         {
@@ -136,7 +136,7 @@ trait TGatewayServerUtil
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendToGroup($groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendToGroup(string|array $groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -158,7 +158,7 @@ trait TGatewayServerUtil
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawToGroup(string|array $groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         Gateway::sendToGroup($groupName, $data, null);
 
@@ -171,7 +171,7 @@ trait TGatewayServerUtil
      * @param int|int[]|string|string[]|null $clientId
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function close(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $count = 0;
         if (null === $clientId)
@@ -202,7 +202,7 @@ trait TGatewayServerUtil
      * @param string|string[]|null $flag
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function closeByFlag(string|array|null $flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $flag)
         {
@@ -227,7 +227,7 @@ trait TGatewayServerUtil
      *
      * @param string|int|null $clientId
      */
-    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    public function exists(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
         return (bool) Gateway::isOnline($clientId);
     }

@@ -17,9 +17,9 @@ class ChunkResult extends BaseChunkResult
     }
 
     /**
-     * @return \Traversable|\Generator|iterable<int, IResult>
+     * @return \Traversable<int, IResult>
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         $lastId = null;
 

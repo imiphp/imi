@@ -9,45 +9,30 @@ use Imi\RequestContext;
 
 class Cookie implements \ArrayAccess, \JsonSerializable
 {
-    /**
-     * @param int|string $offset
-     */
-    public function offsetSet($offset, mixed $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         Log::warning('imi does not support to assign values to $_COOKIE');
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return null !== $request->getCookie($offset);
+        return null !== $request->getCookie($key);
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
         Log::warning('imi does not support to unset values from $_COOKIE');
     }
 
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $key): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return $request->getCookie($offset);
+        return $request->getCookie($key);
     }
 
     public function __debugInfo(): array
@@ -58,8 +43,7 @@ class Cookie implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');

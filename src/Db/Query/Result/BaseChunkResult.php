@@ -6,8 +6,7 @@ namespace Imi\Db\Query\Result;
 
 abstract class BaseChunkResult implements \IteratorAggregate
 {
-    #[\ReturnTypeWillChange]
-    abstract public function getIterator();
+    abstract public function getIterator(): \Traversable;
 
     public function each(): \Generator
     {

@@ -42,7 +42,7 @@ interface IServer extends IEvent
      *
      * @return T
      */
-    public function getBean(string $name, mixed ...$params);
+    public function getBean(string $name, mixed ...$params): mixed;
 
     /**
      * 是否为长连接服务
@@ -71,10 +71,8 @@ interface IServer extends IEvent
 
     /**
      * 调用服务器方法.
-     *
-     * @return mixed
      */
-    public function callServerMethod(string $methodName, mixed ...$args);
+    public function callServerMethod(string $methodName, mixed ...$args): mixed;
 
     /**
      * 获取客户端地址

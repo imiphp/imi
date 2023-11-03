@@ -66,10 +66,9 @@ class CursorResult implements \IteratorAggregate
     }
 
     /**
-     * @return \Traversable<int, array|Model>|\Generator|iterable<int, array|Model>
+     * @return \Traversable<int, array|Model>
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         if (!$this->isSuccess)
         {

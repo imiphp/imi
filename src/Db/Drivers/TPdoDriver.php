@@ -341,7 +341,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return $this->instance->getAttribute($attribute);
     }
@@ -349,7 +349,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return $this->instance->setAttribute($attribute, $value);
     }

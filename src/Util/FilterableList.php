@@ -35,21 +35,17 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         $this->list = $this->parseList($list);
     }
 
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists(mixed $key): bool
     {
-        return isset($this->list[$offset]);
+        return isset($this->list[$key]);
     }
 
-    /**
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function &offsetGet(mixed $offset)
+    public function &offsetGet(mixed $key): mixed
     {
         $list = &$this->list;
-        if (isset($list[$offset]))
+        if (isset($list[$key]))
         {
-            $value = &$list[$offset];
+            $value = &$list[$key];
         }
         else
         {
@@ -59,38 +55,30 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         return $value;
     }
 
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         $values = $this->parseList([$value]);
-        if (null === $offset)
+        if (null === $key)
         {
             $this->list[] = $values[0];
         }
         else
         {
-            $this->list[$offset] = $values[0];
+            $this->list[$key] = $values[0];
         }
     }
 
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset(mixed $key): void
     {
-        unset($this->list[$offset]);
+        unset($this->list[$key]);
     }
 
-    /**
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return current($this->list);
     }
 
-    /**
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         return key($this->list);
     }
@@ -123,8 +111,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }

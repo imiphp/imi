@@ -237,35 +237,31 @@ class ArrayData implements \ArrayAccess, \Countable
         $this->remove($key);
     }
 
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
-        if (null === $offset)
+        if (null === $key)
         {
             $this->__data[] = $value;
         }
         else
         {
-            $this->setVal($offset, $value);
+            $this->setVal($key, $value);
         }
     }
 
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists(mixed $key): bool
     {
-        return null !== $this->get($offset, null);
+        return null !== $this->get($key, null);
     }
 
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset(mixed $key): void
     {
-        $this->remove($offset);
+        $this->remove($key);
     }
 
-    /**
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function &offsetGet(mixed $offset)
+    public function &offsetGet(mixed $key): mixed
     {
-        return $this->get($offset);
+        return $this->get($key);
     }
 
     public function &getRawData(): array

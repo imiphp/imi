@@ -113,7 +113,7 @@ class ConnectionContext
      *
      * @return mixed
      */
-    public static function get(?string $name = null, mixed $default = null, $clientId = null, ?string $serverName = null)
+    public static function get(?string $name = null, mixed $default = null, int|string|array|null $clientId = null, ?string $serverName = null)
     {
         if (!$clientId)
         {
@@ -139,7 +139,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function set(?string $name, mixed $value, $clientId = null, ?string $serverName = null): void
+    public static function set(?string $name, mixed $value, int|string|array|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -167,7 +167,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function muiltiSet(array $data, $clientId = null, ?string $serverName = null): void
+    public static function muiltiSet(array $data, int|string|array|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -198,7 +198,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function use(callable $callable, $clientId = null, ?string $serverName = null): void
+    public static function use(callable $callable, int|string|array|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -228,7 +228,7 @@ class ConnectionContext
      *
      * @return mixed
      */
-    public static function remember(string $key, \Closure $closure, $clientId = null, ?string $serverName = null)
+    public static function remember(string $key, \Closure $closure, int|string|array|null $clientId = null, ?string $serverName = null)
     {
         static::use(static function (array $ctx) use ($key, $closure, &$result) {
             if (isset($ctx[$key]))
@@ -282,7 +282,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function bind(string $flag, $clientId = null, ?string $serverName = null): void
+    public static function bind(string $flag, int|string|array|null $clientId = null, ?string $serverName = null): void
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
@@ -294,7 +294,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function bindNx(string $flag, $clientId = null, ?string $serverName = null): bool
+    public static function bindNx(string $flag, int|string|array|null $clientId = null, ?string $serverName = null): bool
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);

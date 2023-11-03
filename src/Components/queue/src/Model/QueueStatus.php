@@ -81,8 +81,7 @@ class QueueStatus implements \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = [];
         // @phpstan-ignore-next-line

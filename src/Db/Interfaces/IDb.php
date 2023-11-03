@@ -80,10 +80,8 @@ interface IDb extends IHashCode
 
     /**
      * 取回一个数据库连接的属性.
-     *
-     * @return mixed
      */
-    public function getAttribute(mixed $attribute);
+    public function getAttribute(mixed $attribute): mixed;
 
     /**
      * 设置属性.

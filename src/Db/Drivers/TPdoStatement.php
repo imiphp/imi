@@ -53,25 +53,25 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = 0, $driverData = null): bool
+    public function bindColumn(string|int $column, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        return $this->statement->bindColumn($column, $param, $type, $maxLen, $driverData);
+        return $this->statement->bindColumn($column, $param, $type, $maxLength, $driverOptions);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, $driverOptions = null): bool
+    public function bindParam(string|int $param, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        return $this->statement->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
+        return $this->statement->bindParam($param, $variable, $type, $maxLength, $driverOptions);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
+    public function bindValue(string|int $param, mixed $value, int $type = \PDO::PARAM_STR): bool
     {
-        return $this->statement->bindValue($parameter, $value, $dataType);
+        return $this->statement->bindValue($param, $value, $type);
     }
 
     /**
@@ -179,7 +179,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
+    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, mixed $fetchArgument = null, array $ctorArgs = []): array
     {
         if (null === $fetchArgument)
         {
@@ -214,7 +214,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return $this->statement->getAttribute($attribute);
     }
@@ -222,7 +222,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return $this->statement->setAttribute($attribute, $value);
     }
@@ -269,18 +269,13 @@ trait TPdoStatement
     /**
      * @return mixed|false
      */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         // @phpstan-ignore-next-line
         return current($this->statement);
     }
 
-    /**
-     * @return int|string|null
-     */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         // @phpstan-ignore-next-line
         return key($this->statement);

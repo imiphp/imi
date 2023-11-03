@@ -24,7 +24,7 @@ class UdpRoute implements IRoute
     /**
      * {@inheritDoc}
      */
-    public function parse($data): ?RouteResult
+    public function parse(mixed $data): ?RouteResult
     {
         foreach ($this->rules as $item)
         {

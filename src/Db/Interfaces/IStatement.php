@@ -14,17 +14,17 @@ interface IStatement extends \Iterator
     /**
      * 绑定一列到一个 PHP 变量.
      */
-    public function bindColumn(mixed $column, mixed &$param, ?int $type = null, ?int $maxLen = 0, mixed $driverData = null): bool;
+    public function bindColumn(string|int $column, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool;
 
     /**
      * 绑定一个参数到指定的变量名.
      */
-    public function bindParam(mixed $parameter, mixed &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, mixed $driverOptions = null): bool;
+    public function bindParam(string|int $param, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool;
 
     /**
      * 把一个值绑定到一个参数.
      */
-    public function bindValue(mixed $parameter, mixed $value, int $dataType = \PDO::PARAM_STR): bool;
+    public function bindValue(string|int $param, mixed $value, int $type = \PDO::PARAM_STR): bool;
 
     /**
      * 关闭游标，使语句能再次被执行。
@@ -88,10 +88,8 @@ interface IStatement extends \Iterator
 
     /**
      * 检索一个语句属性.
-     *
-     * @return mixed
      */
-    public function getAttribute(mixed $attribute);
+    public function getAttribute(mixed $attribute): mixed;
 
     /**
      * 设置属性.
