@@ -21,7 +21,6 @@ parameters:
         - vendor/autoload.php
         - split-repository/vendor/autoload.php
 
-#    treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
@@ -49,6 +48,11 @@ parameters:
             reportUnmatched: true
         -
             message: '#Constant IMI_PATH not found#'
+            reportUnmatched: true
+
+        # 用 __call() 实现，并且在类注释中使用 phpdoc 声明方法
+        -
+            message: '#Creating callable from a non-native method#'
             reportUnmatched: true
 services:
 includes:

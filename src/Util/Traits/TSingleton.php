@@ -39,6 +39,7 @@ trait TSingleton
             }
             else
             {
+                // @phpstan-ignore-next-line
                 return $instances[static::class] = new static(...$args);
             }
         }
@@ -46,6 +47,7 @@ trait TSingleton
         {
             if (null === static::$__instance)
             {
+                // @phpstan-ignore-next-line
                 static::$__instance = new static(...$args);
             }
 

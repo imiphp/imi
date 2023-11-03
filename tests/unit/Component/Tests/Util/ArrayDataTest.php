@@ -45,10 +45,13 @@ class ArrayDataTest extends BaseTest
 
         $this->assertEquals(6, $data->length());
         $this->assertCount(6, $data);
-        foreach ($data as $k => $v)
+        $count = 0;
+        foreach ($rawData as $k => $v)
         {
-            $this->assertEquals($rawData[$k], $v);
+            $this->assertEquals($data[$k], $v);
+            ++$count;
         }
+        $this->assertEquals(6, $count);
 
         $this->assertEquals('imi', $data->name);
         $this->assertEquals($data->name, $data['name']);

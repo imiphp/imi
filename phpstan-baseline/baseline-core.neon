@@ -1,16 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Cannot access constant class on array\\<Imi\\\\Bean\\\\Annotation\\\\Base\\>\\|Imi\\\\Bean\\\\Annotation\\\\Base\\.$#"
-			count: 1
-			path: ../src/Bean/AnnotationParser.php
-
-		-
-			message: "#^Creating callable from a non\\-native method Imi\\\\Redis\\\\RedisHandler\\:\\:_serialize\\(\\)\\.$#"
-			count: 4
-			path: ../src/Cache/Handler/RedisHash.php
-
-		-
 			message: "#^If condition is always false\\.$#"
 			count: 3
 			path: ../src/Db/Query/Query.php
@@ -19,8 +9,3 @@ parameters:
 			message: "#^Parameter \\#2 \\$class of static method Imi\\\\Server\\\\ServerManager\\:\\:getServer\\(\\) expects class\\-string\\<Imi\\\\Server\\\\Contract\\\\IServer\\>\\|null, string given\\.$#"
 			count: 1
 			path: ../src/Server/Group/Listener/GroupRestore.php
-
-		-
-			message: "#^Argument of an invalid type Imi\\\\Util\\\\ArrayData supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../tests/unit/Component/Tests/Util/ArrayDataTest.php

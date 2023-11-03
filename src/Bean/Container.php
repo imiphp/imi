@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Exception\ContainerException;
 use Psr\Container\ContainerInterface;
 
-class Container implements ContainerInterface
+final class Container implements ContainerInterface
 {
     /**
      * Bean 对象们.

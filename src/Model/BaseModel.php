@@ -146,6 +146,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
+            // @phpstan-ignore-next-line
             return new static(...$args);
         }
     }
