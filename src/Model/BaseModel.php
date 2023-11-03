@@ -342,10 +342,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function &__get(string $name)
+    public function &__get(string $name): mixed
     {
         return $this[$name];
     }

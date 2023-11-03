@@ -23,7 +23,7 @@ class PhpSession implements IFormat
     /**
      * {@inheritDoc}
      */
-    public function decode(string $data)
+    public function decode(string $data): mixed
     {
         $result = [];
         $offset = 0;

@@ -16,10 +16,8 @@ class ObjectArrayHelper
      * 获取值
      *
      * @param array|object $object
-     *
-     * @return mixed
      */
-    public static function get(&$object, string $name, mixed $default = null)
+    public static function get(&$object, string $name, mixed $default = null): mixed
     {
         if ('' !== $name)
         {

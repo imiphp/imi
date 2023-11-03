@@ -254,10 +254,7 @@ class Redis
 {
     use \Imi\Util\Traits\TStaticClass;
 
-    /**
-     * @return mixed
-     */
-    public static function __callStatic(string $name, array $arguments)
+    public static function __callStatic(string $name, array $arguments): mixed
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
@@ -273,10 +270,8 @@ class Redis
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有 1 个参数：$instance(操作实例对象，\Imi\Redis\RedisHandler 类型)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function use(callable $callable, ?string $poolName = null, bool $forceUse = false)
+    public static function use(callable $callable, ?string $poolName = null, bool $forceUse = false): mixed
     {
         $poolName = RedisManager::parsePoolName($poolName);
         if (!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true) || !PoolManager::exists($poolName))
@@ -291,10 +286,8 @@ class Redis
 
     /**
      * scan.
-     *
-     * @return mixed
      */
-    public static function scan(?int &$iterator, ?string $pattern = null, int $count = 0)
+    public static function scan(?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
@@ -310,10 +303,8 @@ class Redis
 
     /**
      * hscan.
-     *
-     * @return mixed
      */
-    public static function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
+    public static function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
@@ -329,10 +320,8 @@ class Redis
 
     /**
      * sscan.
-     *
-     * @return mixed
      */
-    public static function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
+    public static function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
@@ -348,10 +337,8 @@ class Redis
 
     /**
      * zscan.
-     *
-     * @return mixed
      */
-    public static function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
+    public static function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {

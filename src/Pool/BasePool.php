@@ -286,7 +286,7 @@ abstract class BasePool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function getResourceConfig()
+    public function getResourceConfig(): mixed
     {
         return $this->resourceConfig;
     }
@@ -309,10 +309,8 @@ abstract class BasePool implements IPool
 
     /**
      * 获取下一个资源配置.
-     *
-     * @return mixed
      */
-    protected function getNextResourceConfig()
+    protected function getNextResourceConfig(): mixed
     {
         $resourceConfig = &$this->resourceConfig;
         if (!isset($resourceConfig[1]))

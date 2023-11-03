@@ -23,10 +23,8 @@ interface ISessionHandler
 
     /**
      * 读取session.
-     *
-     * @return mixed
      */
-    public function read(string $sessionId);
+    public function read(string $sessionId): mixed;
 
     /**
      * 写入session.

@@ -16,10 +16,8 @@ interface IRoute
 
     /**
      * 获取缺省的路由注解.
-     *
-     * @return \Imi\Rpc\Route\Annotation\Contract\IRpcRoute
      */
-    public function getDefaultRouteAnnotation(string $className, string $methodName, IRpcController $controllerAnnotation, array $options = []);
+    public function getDefaultRouteAnnotation(string $className, string $methodName, IRpcController $controllerAnnotation, array $options = []): IRpcRoute;
 
     /**
      * 路由解析处理.

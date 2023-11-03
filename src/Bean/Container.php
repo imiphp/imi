@@ -33,15 +33,14 @@ final class Container implements ContainerInterface
     /**
      * 从容器中获取实例对象，如果不存在则实例化.
      *
-     * @param string $id        标识符
-     * @param mixed  ...$params
+     * @param string $id 标识符
      *
      * @return mixed entry
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function get(string $id, ...$params)
+    public function get(string $id, mixed ...$params): mixed
     {
         return self::__newInstance($id, $params, true);
     }
@@ -51,12 +50,10 @@ final class Container implements ContainerInterface
      *
      * @param string $id 标识符
      *
-     * @return mixed entry
-     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function newInstance(string $id, mixed ...$params)
+    public function newInstance(string $id, mixed ...$params): mixed
     {
         return self::__newInstance($id, $params, false);
     }
@@ -64,12 +61,10 @@ final class Container implements ContainerInterface
     /**
      * @param string $id 标识符
      *
-     * @return mixed
-     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    private function __newInstance(string $id, array $params, bool $allowStore)
+    private function __newInstance(string $id, array $params, bool $allowStore): mixed
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $beanObjects = &$this->beanObjects;
@@ -187,12 +182,10 @@ final class Container implements ContainerInterface
      *
      * @param string $id 标识符
      *
-     * @return mixed entry
-     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function getSingleton(string $id, mixed ...$params)
+    public function getSingleton(string $id, mixed ...$params): mixed
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;

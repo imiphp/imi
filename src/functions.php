@@ -70,10 +70,8 @@ namespace
      * 获取环境变量值
      *
      * @deprecated 3.0
-     *
-     * @return mixed
      */
-    function imiGetEnv(?string $varname = null, mixed $default = null)
+    function imiGetEnv(?string $varname = null, mixed $default = null): mixed
     {
         return Env::get($varname, $default);
     }
@@ -105,9 +103,9 @@ namespace Imi
      *
      * @codeCoverageIgnore
      *
-     * @param string|array $commands
+     * @param string|string[] $commands
      */
-    function ttyExec($commands, ?float $timeout = null, ?Process &$process = null): int
+    function ttyExec(string|array $commands, ?float $timeout = null, ?Process &$process = null): int
     {
         if (\is_array($commands))
         {
@@ -135,10 +133,8 @@ namespace Imi
 
     /**
      * 获取环境变量值
-     *
-     * @return mixed
      */
-    function env(?string $varname = null, mixed $default = null)
+    function env(?string $varname = null, mixed $default = null): mixed
     {
         return Env::get($varname, $default);
     }

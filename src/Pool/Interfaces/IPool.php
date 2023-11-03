@@ -83,8 +83,6 @@ interface IPool
 
     /**
      * 获得资源配置.
-     *
-     * @return mixed
      */
-    public function getResourceConfig();
+    public function getResourceConfig(): mixed;
 }

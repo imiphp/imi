@@ -22,10 +22,8 @@ class WorkerLimiter
      * @param float|null    $timeout  超时时间，单位：秒;为 null 不限制
      * @param callable|null $callback 触发限流的回调
      * @param string|null   $poolName 连接池名称，留空取默认 redis 连接池
-     *
-     * @return mixed
      */
-    public static function call(callable $callable, string $name, int $max, ?float $timeout = null, ?callable $callback = null, ?string $poolName = null)
+    public static function call(callable $callable, string $name, int $max, ?float $timeout = null, ?callable $callback = null, ?string $poolName = null): mixed
     {
         // 加锁
         $workerId = WorkerLimiterLock::lock($name, $max, $timeout, $poolName);
@@ -58,10 +56,8 @@ class WorkerLimiter
      * @param float|null    $blockingTimeout 等待重试超时时间，单位：秒;为 null 不限制
      * @param callable|null $callback        触发限流的回调
      * @param string|null   $poolName        连接池名称，留空取默认 redis 连接池
-     *
-     * @return mixed
      */
-    public static function callBlock(callable $callable, string $name, int $max, ?float $timeout = null, ?float $blockingTimeout = null, ?callable $callback = null, ?string $poolName = null)
+    public static function callBlock(callable $callable, string $name, int $max, ?float $timeout = null, ?float $blockingTimeout = null, ?callable $callback = null, ?string $poolName = null): mixed
     {
         if (null === $blockingTimeout)
         {

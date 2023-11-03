@@ -48,10 +48,8 @@ class SharedMemory
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function use(string $objectName, callable $callable, ?string $poolName = null)
+    public static function use(string $objectName, callable $callable, ?string $poolName = null): mixed
     {
         return PoolManager::use($poolName ?? static::getDefaultPoolName(), static function ($resource, Client $client) use ($objectName, $callable) {
             $object = $client->getObject($objectName);

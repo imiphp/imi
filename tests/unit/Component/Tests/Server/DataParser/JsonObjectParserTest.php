@@ -14,10 +14,7 @@ class JsonObjectParserTest extends BaseDataParserTestCase
         return new JsonObjectParser();
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getDecodeData()
+    protected function getDecodeData(): mixed
     {
         $object = new \stdClass();
         $object->name = 'imi';

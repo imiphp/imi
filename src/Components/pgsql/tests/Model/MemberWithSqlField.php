@@ -33,10 +33,8 @@ class MemberWithSqlField extends MemberBase
 
     /**
      * Set the value of test1.
-     *
-     * @return self
      */
-    public function setTest1(int $test1)
+    public function setTest1(int $test1): self
     {
         $this->test1 = $test1;
 
@@ -45,20 +43,16 @@ class MemberWithSqlField extends MemberBase
 
     /**
      * Get the value of test1.
-     *
-     * @return int
      */
-    public function getTest1()
+    public function getTest1(): int
     {
         return $this->test1;
     }
 
     /**
      * Set the value of test2.
-     *
-     * @return self
      */
-    public function setTest2(int $test2)
+    public function setTest2(int $test2): self
     {
         $this->test2 = $test2;
 
@@ -67,10 +61,8 @@ class MemberWithSqlField extends MemberBase
 
     /**
      * Get the value of test2.
-     *
-     * @return int
      */
-    public function getTest2()
+    public function getTest2(): int
     {
         return $this->test2;
     }

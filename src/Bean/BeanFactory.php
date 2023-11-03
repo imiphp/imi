@@ -35,7 +35,7 @@ class BeanFactory
      *
      * @return T
      */
-    public static function newInstance(string $class, mixed ...$args)
+    public static function newInstance(string $class, mixed ...$args): mixed
     {
         $object = self::newInstanceNoInit($class, ...$args);
         static::initInstance($object, $args);
@@ -52,7 +52,7 @@ class BeanFactory
      *
      * @return T
      */
-    public static function newInstanceNoInit(string $class, mixed ...$args)
+    public static function newInstanceNoInit(string $class, mixed ...$args): mixed
     {
         $classNameMap = &self::$classNameMap;
         if (isset($classNameMap[$class]))
@@ -98,7 +98,7 @@ class BeanFactory
      *
      * @return T
      */
-    public static function newInstanceEx(string $class, array $args = [])
+    public static function newInstanceEx(string $class, array $args = []): mixed
     {
         $object = self::newInstanceExNoInit($class, $args, $resultArgs);
         static::initInstance($object, $resultArgs);
@@ -115,7 +115,7 @@ class BeanFactory
      *
      * @return T
      */
-    public static function newInstanceExNoInit(string $class, array $args, ?array &$resultArgs = [])
+    public static function newInstanceExNoInit(string $class, array $args, ?array &$resultArgs = []): mixed
     {
         $resultArgs = [];
         foreach (ReflectionContainer::getClassReflection($class)->getConstructor()->getParameters() as $param)
@@ -447,10 +447,8 @@ class BeanFactory
 
     /**
      * 获取对象类名.
-     *
-     * @param string|object $object
      */
-    public static function getObjectClass($object): string
+    public static function getObjectClass(object|string $object): string
     {
         if (\is_object($object))
         {

@@ -17,10 +17,8 @@ interface IQuery extends IBaseWhereCollector
 {
     /**
      * 获取所有操作的记录.
-     *
-     * @return QueryOption
      */
-    public function getOption();
+    public function getOption(): QueryOption;
 
     /**
      * 设置操作记录.
@@ -288,17 +286,13 @@ interface IQuery extends IBaseWhereCollector
      * 查询首条记录.
      *
      * @param string|null $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return mixed
      */
-    public function find(?string $className = null);
+    public function find(?string $className = null): mixed;
 
     /**
      * 查询首条记录指定字段的值
-     *
-     * @return mixed
      */
-    public function value(string $field, mixed $default = null);
+    public function value(string $field, mixed $default = null): mixed;
 
     /**
      * 得到某个列的数组.
@@ -326,10 +320,8 @@ interface IQuery extends IBaseWhereCollector
      * 查询所有记录，返回分块迭代器.
      *
      * @deprecated 3.0
-     *
-     * @return mixed
      */
-    public function chunkEach(int $count, string $column, ?string $alias = null);
+    public function chunkEach(int $count, string $column, ?string $alias = null): mixed;
 
     /**
      * 分页查询.
@@ -443,10 +435,8 @@ interface IQuery extends IBaseWhereCollector
 
     /**
      * 聚合函数.
-     *
-     * @return mixed
      */
-    public function aggregate(string $functionName, string $fieldName);
+    public function aggregate(string $functionName, string $fieldName): mixed;
 
     /**
      * 设置update/insert/replace数据.
@@ -510,10 +500,8 @@ interface IQuery extends IBaseWhereCollector
 
     /**
      * 设置结果集类名.
-     *
-     * @return static
      */
-    public function setResultClass(string $resultClass);
+    public function setResultClass(string $resultClass): self;
 
     /**
      * 获取结果集类名.

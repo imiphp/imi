@@ -164,7 +164,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function getInstance(): ?PostgreSQL
+        public function getInstance(): PostgreSQL
         {
             return $this->instance;
         }
@@ -252,7 +252,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function errorCode()
+        public function errorCode(): mixed
         {
             if ($this->instance)
             {

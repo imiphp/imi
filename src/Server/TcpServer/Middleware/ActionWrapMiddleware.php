@@ -21,7 +21,7 @@ class ActionWrapMiddleware implements IMiddleware
     /**
      * {@inheritDoc}
      */
-    public function process(IReceiveData $data, IReceiveHandler $handler)
+    public function process(IReceiveData $data, IReceiveHandler $handler): mixed
     {
         // 获取路由结果
         $result = RequestContext::get('routeResult');

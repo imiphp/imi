@@ -78,10 +78,8 @@ class GrpcService implements IGrpcService
      *
      * @param string $method 方法名
      * @param array  $args   参数
-     *
-     * @return mixed
      */
-    public function call(string $method, array $args = [])
+    public function call(string $method, array $args = []): mixed
     {
         $streamId = $this->send($method, $args[0] ?? null);
         if (!$streamId)
@@ -97,10 +95,8 @@ class GrpcService implements IGrpcService
      *
      * @param string $name      方法名
      * @param array  $arguments 参数
-     *
-     * @return mixed
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         return $this->call($name, $arguments);
     }

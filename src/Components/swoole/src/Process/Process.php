@@ -23,10 +23,8 @@ trait TProcess
 
     /**
      * 发送消息.
-     *
-     * @return mixed
      */
-    public function sendMessage(string $action, array $data = [])
+    public function sendMessage(string $action, array $data = []): mixed
     {
         $data['a'] = $action;
         $message = json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);

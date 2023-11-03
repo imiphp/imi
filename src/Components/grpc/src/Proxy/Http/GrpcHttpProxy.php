@@ -24,10 +24,7 @@ class GrpcHttpProxy
     #[Inject(name: 'GrpcInterfaceManager')]
     protected GrpcInterfaceManager $grpcInterfaceManager;
 
-    /**
-     * @return mixed
-     */
-    public function proxy(string $poolName, IHttpRequest $request, IHttpResponse $response, string $serviceName, string $methodName, ?float $timeout = null)
+    public function proxy(string $poolName, IHttpRequest $request, IHttpResponse $response, string $serviceName, string $methodName, ?float $timeout = null): mixed
     {
         try
         {

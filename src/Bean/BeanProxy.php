@@ -23,10 +23,8 @@ class BeanProxy
 {
     /**
      * 魔术方法.
-     *
-     * @return mixed
      */
-    public static function &call(object $object, string $className, string $method, callable $callback, array &$args, bool $returnsReference = false)
+    public static function &call(object $object, string $className, string $method, callable $callback, array &$args, bool $returnsReference = false): mixed
     {
         try
         {
@@ -241,10 +239,8 @@ class BeanProxy
 
     /**
      * 正常请求
-     *
-     * @return mixed
      */
-    private static function &callOrigin(object $object, string $className, string $method, array &$args, callable $callback, bool $returnsReference)
+    private static function &callOrigin(object $object, string $className, string $method, array &$args, callable $callback, bool $returnsReference): mixed
     {
         // before
         self::doAspect($className, $method, 'Before', static function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args): void {
@@ -304,10 +300,8 @@ class BeanProxy
 
     /**
      * 获取注入类属性的值
-     *
-     * @return mixed
      */
-    public static function getInjectValue(string $className, string $propertyName)
+    public static function getInjectValue(string $className, string $propertyName): mixed
     {
         [$annotations, $configs] = static::getInjects($className);
         if (isset($configs[$propertyName]))

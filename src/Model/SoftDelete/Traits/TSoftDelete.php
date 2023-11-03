@@ -21,10 +21,8 @@ trait TSoftDelete
 {
     /**
      * 生成软删除字段的值
-     *
-     * @return mixed
      */
-    public function __generateSoftDeleteValue()
+    public function __generateSoftDeleteValue(): mixed
     {
         return time();
     }

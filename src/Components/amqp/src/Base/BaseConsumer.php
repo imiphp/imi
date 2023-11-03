@@ -158,8 +158,6 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 消费任务
-     *
-     * @return mixed
      */
-    abstract protected function consume(IMessage $message);
+    abstract protected function consume(IMessage $message): mixed;
 }

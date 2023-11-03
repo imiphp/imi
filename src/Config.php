@@ -139,10 +139,8 @@ class Config
 
     /**
      * 获取配置值
-     *
-     * @return mixed
      */
-    public static function get(string $name, mixed $default = null)
+    public static function get(string $name, mixed $default = null): mixed
     {
         if ('cli' === \PHP_SAPI)
         {

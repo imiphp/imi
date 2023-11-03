@@ -118,7 +118,7 @@ trait TModelQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkEach(int $count, string $column, ?string $alias = null)
+    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
     {
         $this->queryPreProcess();
 

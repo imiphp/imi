@@ -12,10 +12,8 @@ class A
     /**
      * @param mixed $a
      * @param mixed $b
-     *
-     * @return mixed
      */
-    public function add($a, $b)
+    public function add($a, $b): mixed
     {
         return $a + $b;
     }

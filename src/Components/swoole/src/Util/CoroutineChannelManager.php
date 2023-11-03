@@ -85,10 +85,8 @@ class CoroutineChannelManager
      * pop方法无需传入任何参数
      * 当通道内有数据时自动将数据弹出并还原为PHP变量
      * 当通道内没有任何数据时pop会失败并返回false.
-     *
-     * @return mixed
      */
-    public static function pop(string $name, float $timeout = 0)
+    public static function pop(string $name, float $timeout = 0): mixed
     {
         return static::getInstance($name)->pop($timeout);
     }

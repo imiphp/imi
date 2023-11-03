@@ -32,7 +32,7 @@ class ConstValue extends BaseInjectValue
     /**
      * {@inheritDoc}
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return \defined($this->name) ? \constant($this->name) : $this->default;
     }

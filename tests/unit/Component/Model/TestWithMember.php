@@ -38,20 +38,16 @@ class TestWithMember extends TestWithMemberBase
 
     /**
      * Get the value of member.
-     *
-     * @return MemberSerializable|null
      */
-    public function getMember()
+    public function getMember(): ?MemberSerializable
     {
         return $this->member;
     }
 
     /**
      * Set the value of member.
-     *
-     * @return self
      */
-    public function setMember(?MemberSerializable $member)
+    public function setMember(?MemberSerializable $member): self
     {
         $this->member = $member;
 

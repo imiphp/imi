@@ -19,7 +19,7 @@ class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
     /**
      * {@inheritDoc}
      */
-    public function decode(string $data)
+    public function decode(string $data): mixed
     {
         return json_decode(substr($data, 4));
     }

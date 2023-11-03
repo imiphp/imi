@@ -19,10 +19,8 @@ class CommonMsg implements IMessage
 
     /**
      * 设置返回信息.
-     *
-     * @return \Imi\Cron\Message\CommonMsg
      */
-    public function setResponse(mixed $response = [])
+    public function setResponse(mixed $response = []): self
     {
         $this->response = $response;
 
@@ -31,10 +29,8 @@ class CommonMsg implements IMessage
 
     /**
      * 获取返回信息.
-     *
-     * @return mixed
      */
-    public function getResponse()
+    public function getResponse(): mixed
     {
         return $this->response;
     }

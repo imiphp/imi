@@ -6,6 +6,8 @@ namespace Imi\Cache\Aop;
 
 use Imi\Aop\JoinPoint;
 use Imi\Bean\BeanFactory;
+use Imi\Cache\Annotation\Cacheable;
+use Imi\Cache\Annotation\CacheEvict;
 use Imi\Cache\Annotation\CachePut;
 use Imi\Util\ObjectArrayHelper;
 
@@ -13,10 +15,8 @@ trait TCacheAopHelper
 {
     /**
      * 获取缓存key.
-     *
-     * @param \Imi\Cache\Annotation\Cacheable|\Imi\Cache\Annotation\CacheEvict|\Imi\Cache\Annotation\CachePut $cacheable
      */
-    protected function getKey(JoinPoint $joinPoint, array $args, $cacheable): string
+    protected function getKey(JoinPoint $joinPoint, array $args, Cacheable|CacheEvict|CachePut $cacheable): string
     {
         if ('' === $cacheable->key)
         {
@@ -55,10 +55,8 @@ trait TCacheAopHelper
 
     /**
      * 获取缓存值
-     *
-     * @return mixed
      */
-    protected function getValue(CachePut $cachePut, mixed $value)
+    protected function getValue(CachePut $cachePut, mixed $value): mixed
     {
         if (null === $cachePut->value)
         {

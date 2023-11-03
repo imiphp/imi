@@ -139,7 +139,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?\PDO
+    public function getInstance(): \PDO
     {
         return $this->instance;
     }
@@ -263,7 +263,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         if ($this->lastStmt)
         {

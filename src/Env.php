@@ -10,10 +10,7 @@ class Env
 {
     use \Imi\Util\Traits\TStaticClass;
 
-    /**
-     * @return mixed
-     */
-    public static function get(?string $varname = null, mixed $default = null)
+    public static function get(?string $varname = null, mixed $default = null): mixed
     {
         $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
         if (false === $result)
@@ -168,12 +165,7 @@ class Env
         throw new \InvalidArgumentException(sprintf('Invalid bool value %s', $result));
     }
 
-    /**
-     * @param array|object|null $default
-     *
-     * @return array|object|null
-     */
-    public static function json(?string $varname = null, $default = null, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR)
+    public static function json(?string $varname = null, mixed $default = null, ?bool $associative = true, int $depth = 512, int $flags = \JSON_THROW_ON_ERROR): mixed
     {
         $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
         if (false === $result)

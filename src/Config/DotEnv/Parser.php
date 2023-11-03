@@ -21,7 +21,7 @@ final class Parser implements ParserInterface
      *
      * @throws \Dotenv\Exception\InvalidFileException
      */
-    public function parse(string $content)
+    public function parse(string $content): array
     {
         return Regex::split("/(\r\n|\n|\r)/", $content)->mapError(static fn () => 'Could not split into separate lines.')->flatMap(static fn (array $lines) => self::process(Lines::process($lines)))->mapError(static function (string $error): never {
             throw new InvalidFileException(sprintf('Failed to parse dotenv file. %s', $error));
@@ -35,7 +35,7 @@ final class Parser implements ParserInterface
      *
      * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[],string>
      */
-    private static function process(array $entries)
+    private static function process(array $entries): Result
     {
         /* @var \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry[],string> */
         // @phpstan-ignore-next-line

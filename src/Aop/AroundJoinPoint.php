@@ -21,10 +21,8 @@ class AroundJoinPoint extends JoinPoint
 
     /**
      * 调用下一个方法.
-     *
-     * @return mixed
      */
-    public function &proceed(?array $args = null, bool $returnsReference = false)
+    public function &proceed(?array $args = null, bool $returnsReference = false): mixed
     {
         if (null === $args)
         {

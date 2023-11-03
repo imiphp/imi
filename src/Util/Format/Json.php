@@ -17,7 +17,7 @@ class Json implements IFormat
     /**
      * {@inheritDoc}
      */
-    public function decode(string $data)
+    public function decode(string $data): mixed
     {
         return json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
     }

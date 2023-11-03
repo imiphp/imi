@@ -34,7 +34,7 @@ class ConfigValue extends BaseInjectValue
     /**
      * {@inheritDoc}
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return Config::get($this->name, $this->default);
     }

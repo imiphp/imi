@@ -33,20 +33,16 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * Get the value of oneToOneResult.
-     *
-     * @return Article|null
      */
-    public function getOneToOneResult()
+    public function getOneToOneResult(): ?Article
     {
         return $this->oneToOneResult;
     }
 
     /**
      * Set the value of oneToOneResult.
-     *
-     * @return self
      */
-    public function setOneToOneResult(?Article $oneToOneResult)
+    public function setOneToOneResult(?Article $oneToOneResult): self
     {
         $this->oneToOneResult = $oneToOneResult;
 
@@ -66,7 +62,7 @@ class Polymorphic extends PolymorphicBase
      *
      * @return Article[]|null
      */
-    public function getOneToManyResult()
+    public function getOneToManyResult(): ?array
     {
         return $this->oneToManyResult;
     }
@@ -75,10 +71,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of oneToManyResult.
      *
      * @param Article[]|null $oneToManyResult
-     *
-     * @return self
      */
-    public function setOneToManyResult(?array $oneToManyResult)
+    public function setOneToManyResult(?array $oneToManyResult): self
     {
         $this->oneToManyResult = $oneToManyResult;
 
@@ -95,20 +89,16 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * Get the value of manyToManyResult.
-     *
-     * @return MemberRoleRelation|null
      */
-    public function getManyToManyResult()
+    public function getManyToManyResult(): ?MemberRoleRelation
     {
         return $this->manyToManyResult;
     }
 
     /**
      * Set the value of manyToManyResult.
-     *
-     * @return self
      */
-    public function setManyToManyResult(?MemberRoleRelation $manyToManyResult)
+    public function setManyToManyResult(?MemberRoleRelation $manyToManyResult): self
     {
         $this->manyToManyResult = $manyToManyResult;
 
@@ -126,7 +116,7 @@ class Polymorphic extends PolymorphicBase
      *
      * @return Role[]|null
      */
-    public function getManyToManyResultList()
+    public function getManyToManyResultList(): ?array
     {
         return $this->manyToManyResultList;
     }
@@ -135,10 +125,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of manyToManyResultList.
      *
      * @param Role[]|null $manyToManyResultList
-     *
-     * @return self
      */
-    public function setManyToManyResultList(?array $manyToManyResultList)
+    public function setManyToManyResultList(?array $manyToManyResultList): self
     {
         $this->manyToManyResultList = $manyToManyResultList;
 
@@ -166,10 +154,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toOneResult.
      *
      * @param Member|Article|null $toOneResult
-     *
-     * @return self
      */
-    public function setToOneResult($toOneResult)
+    public function setToOneResult($toOneResult): self
     {
         $this->toOneResult = $toOneResult;
 
@@ -187,7 +173,7 @@ class Polymorphic extends PolymorphicBase
      *
      * @return Role[]|null
      */
-    public function getToManyResult()
+    public function getToManyResult(): ?array
     {
         return $this->toManyResult;
     }
@@ -196,10 +182,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toManyResult.
      *
      * @param Role[]|null $toManyResult
-     *
-     * @return self
      */
-    public function setToManyResult(?array $toManyResult)
+    public function setToManyResult(?array $toManyResult): self
     {
         $this->toManyResult = $toManyResult;
 
@@ -216,20 +200,16 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * Get the value of oneToOneResultWith.
-     *
-     * @return Article|null
      */
-    public function getOneToOneResultWith()
+    public function getOneToOneResultWith(): ?Article
     {
         return $this->oneToOneResultWith;
     }
 
     /**
      * Set the value of oneToOneResultWith.
-     *
-     * @return self
      */
-    public function setOneToOneResultWith(?Article $oneToOneResultWith)
+    public function setOneToOneResultWith(?Article $oneToOneResultWith): self
     {
         $this->oneToOneResultWith = $oneToOneResultWith;
 
@@ -249,7 +229,7 @@ class Polymorphic extends PolymorphicBase
      *
      * @return Article[]|null
      */
-    public function getOneToManyResultWith()
+    public function getOneToManyResultWith(): ?array
     {
         return $this->oneToManyResultWith;
     }
@@ -258,10 +238,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of oneToManyResultWith.
      *
      * @param Article[]|null $oneToManyResultWith
-     *
-     * @return self
      */
-    public function setOneToManyResultWith(?array $oneToManyResultWith)
+    public function setOneToManyResultWith(?array $oneToManyResultWith): self
     {
         $this->oneToManyResultWith = $oneToManyResultWith;
 
@@ -278,20 +256,16 @@ class Polymorphic extends PolymorphicBase
 
     /**
      * Get the value of manyToManyResultWith.
-     *
-     * @return MemberRoleRelation|null
      */
-    public function getManyToManyResultWith()
+    public function getManyToManyResultWith(): ?MemberRoleRelation
     {
         return $this->manyToManyResultWith;
     }
 
     /**
      * Set the value of manyToManyResultWith.
-     *
-     * @return self
      */
-    public function setManyToManyResultWith(?MemberRoleRelation $manyToManyResultWith)
+    public function setManyToManyResultWith(?MemberRoleRelation $manyToManyResultWith): self
     {
         $this->manyToManyResultWith = $manyToManyResultWith;
 
@@ -309,7 +283,7 @@ class Polymorphic extends PolymorphicBase
      *
      * @return Role[]|null
      */
-    public function getManyToManyResultListWith()
+    public function getManyToManyResultListWith(): ?array
     {
         return $this->manyToManyResultListWith;
     }
@@ -318,10 +292,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of manyToManyResultListWith.
      *
      * @param Role[]|null $manyToManyResultListWith
-     *
-     * @return self
      */
-    public function setManyToManyResultListWith(?array $manyToManyResultListWith)
+    public function setManyToManyResultListWith(?array $manyToManyResultListWith): self
     {
         $this->manyToManyResultListWith = $manyToManyResultListWith;
 
@@ -349,10 +321,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toOneResultWith.
      *
      * @param Member|Article|null $toOneResultWith
-     *
-     * @return self
      */
-    public function setToOneResultWith($toOneResultWith)
+    public function setToOneResultWith($toOneResultWith): self
     {
         $this->toOneResultWith = $toOneResultWith;
 
@@ -370,7 +340,7 @@ class Polymorphic extends PolymorphicBase
      *
      * @return Role[]|null
      */
-    public function getToManyResultWith()
+    public function getToManyResultWith(): ?array
     {
         return $this->toManyResultWith;
     }
@@ -379,10 +349,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toManyResultWith.
      *
      * @param Role[]|null $toManyResultWith
-     *
-     * @return self
      */
-    public function setToManyResultWith(?array $toManyResultWith)
+    public function setToManyResultWith(?array $toManyResultWith): self
     {
         $this->toManyResultWith = $toManyResultWith;
 

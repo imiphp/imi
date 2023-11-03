@@ -36,7 +36,7 @@ class MemberWithRoles extends Member
      *
      * @return MemberRoleRelation[]|null
      */
-    public function getRoleRelations()
+    public function getRoleRelations(): ?array
     {
         return $this->roleRelations;
     }
@@ -45,10 +45,8 @@ class MemberWithRoles extends Member
      * Set the value of roleRelation.
      *
      * @param MemberRoleRelation[]|null $roleRelations
-     *
-     * @return self
      */
-    public function setRoleRelations(?array $roleRelations)
+    public function setRoleRelations(?array $roleRelations): self
     {
         $this->roleRelations = $roleRelations;
 
@@ -66,7 +64,7 @@ class MemberWithRoles extends Member
      *
      * @return Role[]|null
      */
-    public function getRoles()
+    public function getRoles(): ?array
     {
         return $this->roles;
     }
@@ -75,10 +73,8 @@ class MemberWithRoles extends Member
      * Set the value of roles.
      *
      * @param Role[]|null $roles
-     *
-     * @return self
      */
-    public function setRoles(?array $roles)
+    public function setRoles(?array $roles): self
     {
         $this->roles = $roles;
 
@@ -99,7 +95,7 @@ class MemberWithRoles extends Member
      *
      * @return MemberRoleRelation[]|null
      */
-    public function getRoleRelationsWith()
+    public function getRoleRelationsWith(): ?array
     {
         return $this->roleRelationsWith;
     }
@@ -108,10 +104,8 @@ class MemberWithRoles extends Member
      * Set the value of roleRelation.
      *
      * @param MemberRoleRelation[]|null $roleRelationsWith
-     *
-     * @return self
      */
-    public function setRoleRelationsWith(?array $roleRelationsWith)
+    public function setRoleRelationsWith(?array $roleRelationsWith): self
     {
         $this->roleRelationsWith = $roleRelationsWith;
 
@@ -129,7 +123,7 @@ class MemberWithRoles extends Member
      *
      * @return Role[]|null
      */
-    public function getRolesWith()
+    public function getRolesWith(): ?array
     {
         return $this->rolesWith;
     }
@@ -138,10 +132,8 @@ class MemberWithRoles extends Member
      * Set the value of rolesWith.
      *
      * @param Role[]|null $rolesWith
-     *
-     * @return self
      */
-    public function setRolesWith(?array $rolesWith)
+    public function setRolesWith(?array $rolesWith): self
     {
         $this->rolesWith = $rolesWith;
 

@@ -42,10 +42,8 @@ class Article extends ArticleBase
 
     /**
      * Set the value of ex.
-     *
-     * @return self
      */
-    public function setEx(?ArticleEx $ex)
+    public function setEx(?ArticleEx $ex): self
     {
         $this->ex = $ex;
 
@@ -67,10 +65,8 @@ class Article extends ArticleBase
 
     /**
      * Set the value of ex.
-     *
-     * @return self
      */
-    public function setExWith(?ArticleEx $exWith)
+    public function setExWith(?ArticleEx $exWith): self
     {
         $this->exWith = $exWith;
 
@@ -89,20 +85,16 @@ class Article extends ArticleBase
 
     /**
      * Get the value of queryRelationsList.
-     *
-     * @return ArticleEx|null
      */
-    public function getQueryRelationsList()
+    public function getQueryRelationsList(): ?ArticleEx
     {
         return $this->queryRelationsList;
     }
 
     /**
      * Set the value of queryRelationsList.
-     *
-     * @return self
      */
-    public function setQueryRelationsList(?ArticleEx $queryRelationsList)
+    public function setQueryRelationsList(?ArticleEx $queryRelationsList): self
     {
         $this->queryRelationsList = $queryRelationsList;
 

@@ -67,7 +67,7 @@ class Frame implements IFrame
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return $this->formatData;
     }

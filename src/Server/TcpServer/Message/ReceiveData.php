@@ -57,7 +57,7 @@ class ReceiveData implements IReceiveData
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return $this->formatData;
     }

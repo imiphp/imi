@@ -45,10 +45,8 @@ class ActionMethodItem
 
     /**
      * Get 默认值
-     *
-     * @return mixed
      */
-    public function getDefault()
+    public function getDefault(): mixed
     {
         return $this->default;
     }

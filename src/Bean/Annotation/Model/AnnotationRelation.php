@@ -364,7 +364,7 @@ class AnnotationRelation
      *
      * @param string|string[] $className
      */
-    public function removeClassRelation($className): void
+    public function removeClassRelation(string|array $className): void
     {
         $classRelations = &$this->classRelations;
         $className = (array) $className;
@@ -392,7 +392,7 @@ class AnnotationRelation
      *
      * @param string|string[] $methodName
      */
-    public function removeMethodRelation(string $className, $methodName): void
+    public function removeMethodRelation(string $className, string|array $methodName): void
     {
         $methodRelations = &$this->methodRelations;
         $methodName = (array) $methodName;
@@ -420,7 +420,7 @@ class AnnotationRelation
      *
      * @param string|string[] $propertyName
      */
-    public function removePropertyRelation(string $className, $propertyName): void
+    public function removePropertyRelation(string $className, string|array $propertyName): void
     {
         $propertyRelations = &$this->propertyRelations;
         $propertyName = (array) $propertyName;
@@ -448,7 +448,7 @@ class AnnotationRelation
      *
      * @param string|string[] $constantName
      */
-    public function removeConstantRelation(string $className, $constantName): void
+    public function removeConstantRelation(string $className, string|array $constantName): void
     {
         $constantRelations = &$this->constantRelations;
         $constantName = (array) $constantName;

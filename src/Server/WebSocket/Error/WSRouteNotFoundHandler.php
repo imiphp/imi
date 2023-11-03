@@ -23,11 +23,13 @@ class WSRouteNotFoundHandler implements IWSRouteNotFoundHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IFrame $frame, IMessageHandler $handler)
+    public function handle(IFrame $frame, IMessageHandler $handler): mixed
     {
         if (null !== $this->handler)
         {
             return App::getBean($this->handler)->handle($frame, $handler);
         }
+
+        return null;
     }
 }

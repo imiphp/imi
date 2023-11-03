@@ -695,7 +695,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function aggregate(string $functionName, string $fieldName)
+    public function aggregate(string $functionName, string $fieldName): mixed
     {
         $field = new Field();
         $field->useRaw();
@@ -722,7 +722,7 @@ abstract class Query implements IQuery
      *
      * @return T
      */
-    protected function executeEx(string $sql, string $resultClass)
+    protected function executeEx(string $sql, string $resultClass): mixed
     {
         try
         {
@@ -843,7 +843,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setResultClass(string $resultClass)
+    public function setResultClass(string $resultClass): self
     {
         $this->resultClass = $resultClass;
 
@@ -1234,7 +1234,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function find(?string $className = null)
+    public function find(?string $className = null): mixed
     {
         return $this->limit(1)
             ->select()
@@ -1244,7 +1244,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function value(string $field, mixed $default = null)
+    public function value(string $field, mixed $default = null): mixed
     {
         $result = $this
             ->limit(1)
@@ -1317,10 +1317,8 @@ abstract class Query implements IQuery
 
     /**
      * 查询所有记录，返回分块迭代器.
-     *
-     * @return mixed
      */
-    public function chunkEach(int $count, string $column, ?string $alias = null)
+    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
     {
         return $this->chunkById($count, $column, $alias)->each();
     }

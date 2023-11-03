@@ -53,10 +53,8 @@ interface IDb extends IHashCode
 
     /**
      * 返回错误码
-     *
-     * @return mixed
      */
-    public function errorCode();
+    public function errorCode(): mixed;
 
     /**
      * 返回错误信息.
@@ -115,10 +113,8 @@ interface IDb extends IHashCode
 
     /**
      * 获取原对象实例.
-     *
-     * @return object
      */
-    public function getInstance();
+    public function getInstance(): object;
 
     /**
      * Get 事务管理.

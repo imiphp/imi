@@ -7,10 +7,7 @@ use function Yurun\Swoole\Coroutine\batch;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
-/**
- * @return bool
- */
-function checkHttpServerStatus()
+function checkHttpServerStatus(): bool
 {
     for ($i = 0; $i < 60; ++$i)
     {

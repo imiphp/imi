@@ -23,11 +23,13 @@ class TcpRouteNotFoundHandler implements ITcpRouteNotFoundHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IReceiveData $data, IReceiveHandler $handler)
+    public function handle(IReceiveData $data, IReceiveHandler $handler): mixed
     {
         if (null !== $this->handler)
         {
             return App::getBean($this->handler)->handle($data, $handler);
         }
+
+        return null;
     }
 }

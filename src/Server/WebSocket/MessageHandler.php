@@ -28,7 +28,7 @@ class MessageHandler implements IMessageHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IFrame $frame)
+    public function handle(IFrame $frame): mixed
     {
         $middlewares = &$this->middlewares;
         $index = &$this->index;

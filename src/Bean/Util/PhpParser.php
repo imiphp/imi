@@ -14,11 +14,9 @@ final class PhpParser
     /**
      * Parse a class or function for use statements.
      *
-     * @param \ReflectionClass|\ReflectionFunction $reflection
-     *
      * @psalm-return array<string, string> a list with use statements in the form (Alias => FQN).
      */
-    public function parseUseStatements($reflection): array
+    public function parseUseStatements(\ReflectionClass|\ReflectionFunction $reflection): array
     {
         if (method_exists($reflection, 'getUseStatements'))
         {
@@ -54,7 +52,7 @@ final class PhpParser
      *
      * @return string|null the content of the file or null if the file does not exist
      */
-    private function getFileContent(string $filename, int $lineNumber)
+    private function getFileContent(string $filename, int $lineNumber): ?string
     {
         if (!is_file($filename))
         {

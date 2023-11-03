@@ -8,8 +8,6 @@ interface ITaskParam
 {
     /**
      * 获取数据.
-     *
-     * @return mixed
      */
-    public function getData();
+    public function getData(): mixed;
 }

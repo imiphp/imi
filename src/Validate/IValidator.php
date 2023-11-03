@@ -43,10 +43,8 @@ interface IValidator
      * Set 场景定义.
      *
      * @param array|null $scene 场景定义
-     *
-     * @return self
      */
-    public function setScene(?array $scene);
+    public function setScene(?array $scene): self;
 
     /**
      * Get 当前场景.
@@ -57,10 +55,8 @@ interface IValidator
      * Set 当前场景.
      *
      * @param string|null $currentScene 当前场景
-     *
-     * @return self
      */
-    public function setCurrentScene(?string $currentScene);
+    public function setCurrentScene(?string $currentScene): self;
 
     /**
      * 获得所有注解校验规则.

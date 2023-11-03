@@ -52,10 +52,8 @@ class ReceiveData implements IReceiveData
 
     /**
      * 获取格式化后的数据，一般是数组或对象
-     *
-     * @return \BinSoul\Net\Mqtt\Packet
      */
-    public function getFormatData()
+    public function getFormatData(): Packet
     {
         return $this->formatData;
     }

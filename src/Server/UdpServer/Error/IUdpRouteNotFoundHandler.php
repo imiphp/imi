@@ -14,8 +14,6 @@ interface IUdpRouteNotFoundHandler
 {
     /**
      * 处理方法.
-     *
-     * @return mixed
      */
-    public function handle(IPacketData $data, IPacketHandler $handler);
+    public function handle(IPacketData $data, IPacketHandler $handler): mixed;
 }

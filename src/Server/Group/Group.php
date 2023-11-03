@@ -214,10 +214,8 @@ class Group
 
     /**
      * 魔术方法，返回数组，clientId=>执行结果.
-     *
-     * @return array
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): array
     {
         $server = $this->server;
         $methodIsCheck = \in_array($name, self::CHECK_METHODS);

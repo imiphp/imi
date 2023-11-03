@@ -298,10 +298,8 @@ class ImiCommand extends Command
 
     /**
      * 处理参数值
-     *
-     * @return mixed
      */
-    private function parseArgValue(mixed $value, array $option)
+    private function parseArgValue(mixed $value, array $option): mixed
     {
         if ($value === $option['default'])
         {

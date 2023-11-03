@@ -93,7 +93,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         return $this->statement->errorCode();
     }
@@ -171,7 +171,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
+    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed
     {
         return $this->statement->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
     }
@@ -198,15 +198,15 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchColumn($columnKey = 0)
+    public function fetchColumn(int $column = 0): mixed
     {
-        return $this->statement->fetchColumn($columnKey);
+        return $this->statement->fetchColumn($column);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null)
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null): mixed
     {
         return $this->statement->fetchObject($className, $ctorArgs);
     }
@@ -261,7 +261,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function getInstance()
+    public function getInstance(): object
     {
         return $this->statement;
     }

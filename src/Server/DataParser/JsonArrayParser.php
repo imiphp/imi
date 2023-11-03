@@ -38,7 +38,7 @@ class JsonArrayParser implements IParser
     /**
      * {@inheritDoc}
      */
-    public function decode(string $data)
+    public function decode(string $data): mixed
     {
         return json_decode($data, true, $this->depth, $this->options);
     }

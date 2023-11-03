@@ -26,7 +26,7 @@ class AsyncResult implements IAsyncResult
     /**
      * {@inheritDoc}
      */
-    public function get(?float $timeout = null)
+    public function get(?float $timeout = null): mixed
     {
         $this->isGeted = true;
         $result = $this->result;

@@ -16,7 +16,7 @@ class CronTask implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId): void
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId): mixed
     {
         $success = false;
         $message = '';
@@ -40,6 +40,8 @@ class CronTask implements ITaskHandler
         {
             CronUtil::reportCronResult($id, $success, $message);
         }
+
+        return null;
     }
 
     /**

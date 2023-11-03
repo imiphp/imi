@@ -29,10 +29,8 @@ class RateLimiter
      * @param string        $unit     单位时间，默认为：秒(second)，支持：microsecond、millisecond、second、minute、hour、day、week、month、year
      * @param int           $deduct   每次扣除数量，默认为1
      * @param string|null   $poolName 连接池名称，留空取默认 redis 连接池
-     *
-     * @return mixed
      */
-    public static function limit(string $name, int $capacity, ?callable $callback = null, ?int $fill = null, string $unit = 'second', int $deduct = 1, ?string $poolName = null)
+    public static function limit(string $name, int $capacity, ?callable $callback = null, ?int $fill = null, string $unit = 'second', int $deduct = 1, ?string $poolName = null): mixed
     {
         if (null === $fill)
         {
@@ -70,10 +68,8 @@ class RateLimiter
      * @param string        $unit            单位时间，默认为：秒(second)，支持：microsecond、millisecond、second、minute、hour、day、week、month、year
      * @param int           $deduct          每次扣除数量，默认为1
      * @param string|null   $poolName        连接池名称，留空取默认 redis 连接池
-     *
-     * @return mixed
      */
-    public static function limitBlock(string $name, int $capacity, ?callable $callback = null, ?int $blockingTimeout = null, ?int $fill = null, string $unit = 'second', int $deduct = 1, ?string $poolName = null)
+    public static function limitBlock(string $name, int $capacity, ?callable $callback = null, ?int $blockingTimeout = null, ?int $fill = null, string $unit = 'second', int $deduct = 1, ?string $poolName = null): mixed
     {
         if (null === $fill)
         {

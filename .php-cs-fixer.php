@@ -129,6 +129,9 @@ return (new PhpCsFixer\Config())
         'phpdoc_to_param_type'             => [
             'scalar_types' => true,
         ],
+        'phpdoc_to_return_type' => [
+            'scalar_types' => true,
+        ],
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

@@ -33,10 +33,7 @@ class DbQueryLog
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function aopExecute(AroundJoinPoint $joinPoint)
+    public function aopExecute(AroundJoinPoint $joinPoint): mixed
     {
         [$sql] = $joinPoint->getArgs();
         $bindValues = [];
@@ -66,10 +63,7 @@ class DbQueryLog
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function aopPrepare(AroundJoinPoint $joinPoint)
+    public function aopPrepare(AroundJoinPoint $joinPoint): mixed
     {
         [$sql] = $joinPoint->getArgs();
         try
@@ -90,10 +84,7 @@ class DbQueryLog
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function aopStatementExecute(AroundJoinPoint $joinPoint)
+    public function aopStatementExecute(AroundJoinPoint $joinPoint): mixed
     {
         /** @var \Imi\Db\Interfaces\IStatement $statement */
         $statement = $joinPoint->getTarget();

@@ -113,7 +113,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         return \is_array($this->statement) ? $this->db->errorCode() : $this->statement->errno;
     }
@@ -226,7 +226,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
+    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed
     {
         $result = current($this->result);
         if ($result)
@@ -248,19 +248,19 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchColumn($columnKey = 0)
+    public function fetchColumn(int $column = 0): mixed
     {
         $row = current($this->result);
         if ($row)
         {
             next($this->result);
-            if (isset($row[$columnKey]))
+            if (isset($row[$column]))
             {
-                return $row[$columnKey];
+                return $row[$column];
             }
-            elseif (is_numeric($columnKey))
+            elseif (is_numeric($column))
             {
-                return array_values($row)[$columnKey] ?? null;
+                return array_values($row)[$column] ?? null;
             }
         }
 
@@ -270,7 +270,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null)
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null): mixed
     {
         $row = current($this->result);
         if (false === $row)
@@ -350,7 +350,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function getInstance()
+    public function getInstance(): object
     {
         return $this->statement;
     }

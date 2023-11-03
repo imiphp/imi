@@ -50,10 +50,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
         $this->setMicrotime($microtime);
     }
 
-    /**
-     * @return bool
-     */
-    public function isBootstrapped()
+    public function isBootstrapped(): bool
     {
         try
         {
@@ -108,10 +105,8 @@ final class ImiRedisStorage implements Storage, GlobalScope
 
     /**
      * @SuppressWarnings(PHPMD)
-     *
-     * @return float
      */
-    public function getMicrotime()
+    public function getMicrotime(): float
     {
         try
         {
@@ -129,10 +124,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
         }
     }
 
-    /**
-     * @return PHPRedisMutex
-     */
-    public function getMutex()
+    public function getMutex(): PHPRedisMutex
     {
         return $this->mutex;
     }

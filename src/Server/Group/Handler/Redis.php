@@ -313,10 +313,8 @@ class Redis implements IGroupHandler
 
     /**
      * 使用redis.
-     *
-     * @return mixed
      */
-    private function useRedis(callable $callback)
+    private function useRedis(callable $callback): mixed
     {
         return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
             if (null !== $this->redisDb && !$redis->isCluster())

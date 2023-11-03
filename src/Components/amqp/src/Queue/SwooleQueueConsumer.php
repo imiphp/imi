@@ -131,9 +131,11 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        protected function consume(IMessage $message): void
+        protected function consume(IMessage $message): mixed
         {
             $this->resultChannel->push($message);
+
+            return null;
         }
     }
 }

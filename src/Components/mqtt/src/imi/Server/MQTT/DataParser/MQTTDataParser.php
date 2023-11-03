@@ -32,10 +32,8 @@ class MQTTDataParser implements IParser
 
     /**
      * 解码为php变量.
-     *
-     * @return \BinSoul\Net\Mqtt\Packet
      */
-    public function decode(string $data)
+    public function decode(string $data): \BinSoul\Net\Mqtt\Packet
     {
         if (!isset($data[0]))
         {

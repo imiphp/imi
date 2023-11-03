@@ -85,10 +85,8 @@ trait TServerGroup
 
     /**
      * 调用组方法.
-     *
-     * @return mixed
      */
-    public function groupCall(string $groupName, string $methodName, mixed ...$args)
+    public function groupCall(string $groupName, string $methodName, mixed ...$args): mixed
     {
         return $this->createGroup($groupName)->{$methodName}(...$args);
     }

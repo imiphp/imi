@@ -9,10 +9,7 @@ use Imi\Model\IdGenerator\Contract\IIdGenerator;
 
 class UUIDGenerator implements IIdGenerator
 {
-    /**
-     * @return mixed
-     */
-    public function generate(?BaseModel $model, array $options = [])
+    public function generate(?BaseModel $model, array $options = []): mixed
     {
         switch ($type = $options['type'] ?? UUIDGeneratorType::RANDOM)
         {

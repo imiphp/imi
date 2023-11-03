@@ -41,10 +41,7 @@ class ExpiredStorage
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function get(string $key, mixed $default = null, ?ExpiredStorageItem &$item = null)
+    public function get(string $key, mixed $default = null, ?ExpiredStorageItem &$item = null): mixed
     {
         if (isset($this->data[$key]))
         {
@@ -112,10 +109,7 @@ final class ExpiredStorageItem
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

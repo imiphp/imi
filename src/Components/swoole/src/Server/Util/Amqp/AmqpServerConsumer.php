@@ -68,10 +68,8 @@ if (class_exists(\Imi\AMQP\Main::class))
 
         /**
          * {@inheritDoc}
-         *
-         * @return mixed
          */
-        protected function consume(IMessage $message)
+        protected function consume(IMessage $message): mixed
         {
             try
             {

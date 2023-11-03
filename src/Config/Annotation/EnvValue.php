@@ -35,7 +35,7 @@ class EnvValue extends BaseInjectValue
     /**
      * {@inheritDoc}
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return env($this->name, $this->default);
     }

@@ -43,7 +43,7 @@ class PacketData implements IPacketData
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return $this->formatData;
     }

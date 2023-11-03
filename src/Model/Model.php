@@ -734,10 +734,8 @@ abstract class Model extends BaseModel
 
     /**
      * 聚合函数.
-     *
-     * @return mixed
      */
-    public static function aggregate(string $functionName, string $fieldName, ?callable $queryCallable = null)
+    public static function aggregate(string $functionName, string $fieldName, ?callable $queryCallable = null): mixed
     {
         $query = static::query();
         if (null !== $queryCallable)

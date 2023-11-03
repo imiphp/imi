@@ -36,7 +36,7 @@ class SwooleResult implements IAsyncResult
     /**
      * {@inheritDoc}
      */
-    public function get(?float $timeout = null)
+    public function get(?float $timeout = null): mixed
     {
         $this->isGeted = true;
         $channel = $this->channel;

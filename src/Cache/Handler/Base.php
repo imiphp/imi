@@ -49,10 +49,8 @@ abstract class Base implements CacheInterface
 
     /**
      * 读出解码
-     *
-     * @return mixed
      */
-    protected function decode(string $data)
+    protected function decode(string $data): mixed
     {
         if (null === $this->formatHandlerClass)
         {

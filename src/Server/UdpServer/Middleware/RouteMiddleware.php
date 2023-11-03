@@ -24,7 +24,7 @@ class RouteMiddleware implements IMiddleware
     /**
      * {@inheritDoc}
      */
-    public function process(IPacketData $data, IPacketHandler $handler)
+    public function process(IPacketData $data, IPacketHandler $handler): mixed
     {
         // 路由解析
         $result = $this->route->parse($data->getFormatData());

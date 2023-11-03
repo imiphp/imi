@@ -38,10 +38,8 @@ interface IStatement extends \Iterator
 
     /**
      * 返回错误码
-     *
-     * @return mixed
      */
-    public function errorCode();
+    public function errorCode(): mixed;
 
     /**
      * 返回错误信息.
@@ -60,10 +58,8 @@ interface IStatement extends \Iterator
 
     /**
      * 从结果集中获取下一行.
-     *
-     * @return mixed
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0);
+    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed;
 
     /**
      * 返回一个包含结果集中所有行的数组.
@@ -72,19 +68,13 @@ interface IStatement extends \Iterator
 
     /**
      * 从结果集中的下一行返回单独的一列。
-     *
-     * @param int|string $columnKey
-     *
-     * @return mixed
      */
-    public function fetchColumn($columnKey = 0);
+    public function fetchColumn(int $column = 0): mixed;
 
     /**
      * 获取下一行并作为一个对象返回。
-     *
-     * @return mixed
      */
-    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null);
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null): mixed;
 
     /**
      * 检索一个语句属性.
@@ -113,10 +103,8 @@ interface IStatement extends \Iterator
 
     /**
      * 获取原对象实例.
-     *
-     * @return object
      */
-    public function getInstance();
+    public function getInstance(): object;
 
     /**
      * 获取数据库操作对象

@@ -23,10 +23,7 @@ class MemberReferenceProperty extends Member
         return $this->id2;
     }
 
-    /**
-     * @return self
-     */
-    public function setId2(?int $id2)
+    public function setId2(?int $id2): self
     {
         $this->id2 = $id2;
 

@@ -38,10 +38,7 @@ class DelayBeanCallable
         return $this->returnsReference ??= ReflectionContainer::getMethodReflection(BeanFactory::getObjectClass($this->getInstance()), $this->methodName)->returnsReference();
     }
 
-    /**
-     * @return mixed
-     */
-    public function &__invoke(mixed ...$args)
+    public function &__invoke(mixed ...$args): mixed
     {
         if ($this->returnsReference())
         {

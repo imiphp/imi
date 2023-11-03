@@ -13,8 +13,6 @@ interface IFormat
 
     /**
      * 解码为php变量.
-     *
-     * @return mixed
      */
-    public function decode(string $data);
+    public function decode(string $data): mixed;
 }

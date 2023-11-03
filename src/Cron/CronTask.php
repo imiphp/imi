@@ -134,10 +134,8 @@ class CronTask
 
     /**
      * Get 数据.
-     *
-     * @return mixed
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }

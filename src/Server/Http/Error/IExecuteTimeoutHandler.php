@@ -12,8 +12,5 @@ use Imi\Server\Http\Message\Contract\IHttpResponse;
  */
 interface IExecuteTimeoutHandler
 {
-    /**
-     * @return mixed
-     */
-    public function handle(IHttpRequest $request, IHttpResponse $response);
+    public function handle(IHttpRequest $request, IHttpResponse $response): mixed;
 }

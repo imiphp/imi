@@ -143,7 +143,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?\mysqli
+    public function getInstance(): \mysqli
     {
         return $this->instance;
     }
@@ -231,7 +231,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         if ($this->lastStmt)
         {

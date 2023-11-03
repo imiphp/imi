@@ -15,8 +15,6 @@ abstract class BaseInjectValue extends Base
 {
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    abstract public function getRealValue();
+    abstract public function getRealValue(): mixed;
 }

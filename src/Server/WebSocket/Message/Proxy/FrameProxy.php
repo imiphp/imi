@@ -45,7 +45,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return self::__getProxyInstance()->getFormatData(...\func_get_args());
     }

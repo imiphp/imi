@@ -431,8 +431,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 获取服务器初始化需要的配置.
-     *
-     * @return array
      */
-    abstract protected function getServerInitConfig();
+    abstract protected function getServerInitConfig(): array;
 }

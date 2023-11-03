@@ -41,7 +41,7 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return self::__getProxyInstance()->getFormatData(...\func_get_args());
     }

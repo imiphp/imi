@@ -17,10 +17,7 @@ abstract class BaseQueueTestCase extends TestCase
 {
     abstract protected function getDriver(string $name = 'imi-amqp-queue-test'): IQueueDriver;
 
-    /**
-     * @return mixed
-     */
-    protected function go(callable $callback)
+    protected function go(callable $callback): mixed
     {
         if (Imi::checkAppType('swoole'))
         {

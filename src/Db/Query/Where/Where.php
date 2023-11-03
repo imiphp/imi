@@ -60,7 +60,7 @@ class Where extends BaseWhere implements IWhere
     /**
      * {@inheritDoc}
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

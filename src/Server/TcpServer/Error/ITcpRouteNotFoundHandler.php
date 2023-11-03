@@ -14,8 +14,6 @@ interface ITcpRouteNotFoundHandler
 {
     /**
      * 处理方法.
-     *
-     * @return mixed
      */
-    public function handle(IReceiveData $data, IReceiveHandler $handler);
+    public function handle(IReceiveData $data, IReceiveHandler $handler): mixed;
 }

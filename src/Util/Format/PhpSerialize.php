@@ -17,7 +17,7 @@ class PhpSerialize implements IFormat
     /**
      * {@inheritDoc}
      */
-    public function decode(string $data)
+    public function decode(string $data): mixed
     {
         return unserialize($data);
     }

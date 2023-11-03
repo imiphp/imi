@@ -20,7 +20,7 @@ use Imi\Facade\BaseFacade;
  * @method static void                      removeChannel(string $id)
  */
 #[
-    \Imi\Facade\Annotation\Facade(class: \Yurun\Swoole\CoPool\ChannelContainer::class)
+    \Imi\Facade\Annotation\Facade(class: 'Yurun\\Swoole\\CoPool\\ChannelContainer')
 ]
 class ChannelContainer extends BaseFacade
 {

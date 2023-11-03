@@ -16,10 +16,8 @@ interface IService
      *
      * @param string $method 方法名
      * @param array  $args   参数
-     *
-     * @return mixed
      */
-    public function call(string $method, array $args = []);
+    public function call(string $method, array $args = []): mixed;
 
     /**
      * 获取客户端对象

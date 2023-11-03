@@ -15,7 +15,7 @@ class TaskParam implements ITaskParam
     /**
      * {@inheritDoc}
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }

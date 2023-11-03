@@ -19,10 +19,8 @@ abstract class BaseEnum
 
     /**
      * 获取值
-     *
-     * @return mixed
      */
-    public static function getValue(string $name)
+    public static function getValue(string $name): mixed
     {
         return \constant(static::class . '::' . $name);
     }

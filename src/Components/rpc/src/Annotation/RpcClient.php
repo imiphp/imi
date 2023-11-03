@@ -27,10 +27,8 @@ class RpcClient extends Inject
 
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return RpcClientPool::getInstance($this->poolName);
     }

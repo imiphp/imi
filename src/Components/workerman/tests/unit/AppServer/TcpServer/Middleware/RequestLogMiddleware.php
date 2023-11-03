@@ -15,7 +15,7 @@ class RequestLogMiddleware implements IMiddleware
     /**
      * {@inheritDoc}
      */
-    public function process(IReceiveData $data, IReceiveHandler $handler)
+    public function process(IReceiveData $data, IReceiveHandler $handler): mixed
     {
         Log::info('Server: ' . RequestContext::getServer()->getName() . ', Url: ' . var_export($data->getFormatData(), true));
 

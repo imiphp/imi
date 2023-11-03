@@ -157,7 +157,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?MySQL
+    public function getInstance(): MySQL
     {
         return $this->instance;
     }
@@ -245,7 +245,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         if ($this->lastStmt && $this->lastStmt instanceof \Swoole\Coroutine\MySQL\Statement)
         {

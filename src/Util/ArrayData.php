@@ -79,10 +79,8 @@ class ArrayData implements \ArrayAccess, \Countable
      * 获取数据.
      *
      * @param string|array|null $name
-     *
-     * @return mixed
      */
-    public function &get($name = null, mixed $default = false)
+    public function &get($name = null, mixed $default = false): mixed
     {
         if (null === $name)
         {
@@ -214,10 +212,7 @@ class ArrayData implements \ArrayAccess, \Countable
         return isset($this->__data[$name]);
     }
 
-    /**
-     * @return mixed
-     */
-    public function &__get(mixed $key)
+    public function &__get(mixed $key): mixed
     {
         return $this->get($key);
     }

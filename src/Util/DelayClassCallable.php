@@ -37,10 +37,7 @@ class DelayClassCallable
         return $this->returnsReference ??= ReflectionContainer::getMethodReflection($this->className, $this->methodName)->returnsReference();
     }
 
-    /**
-     * @return mixed
-     */
-    public function &__invoke(mixed ...$args)
+    public function &__invoke(mixed ...$args): mixed
     {
         if ($this->returnsReference())
         {

@@ -68,10 +68,8 @@ class TaskManager
     /**
      * 投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
-     *
-     * @return mixed
      */
-    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1)
+    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1): mixed
     {
         $server = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         $result = $server->taskwait($taskInfo, $timeout, $workerId);
@@ -83,10 +81,8 @@ class TaskManager
     /**
      * 使用任务名称投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
-     *
-     * @return mixed
      */
-    public static function nPostWait(string $name, mixed $data, float $timeout, int $workerId = -1)
+    public static function nPostWait(string $name, mixed $data, float $timeout, int $workerId = -1): mixed
     {
         return static::postWait(self::getTaskInfo($name, $data), $timeout, $workerId);
     }

@@ -28,10 +28,8 @@ class TestList extends TestListBase
      * 获取 list.
      *
      * @phpstan-ignore-next-line
-     *
-     * @return array|null
      */
-    public function getList()
+    public function getList(): ?array
     {
         return $this->list;
     }

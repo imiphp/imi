@@ -54,7 +54,7 @@ class RedisResource extends BasePoolResource
     /**
      * {@inheritDoc}
      */
-    public function getInstance()
+    public function getInstance(): mixed
     {
         return $this->redis;
     }

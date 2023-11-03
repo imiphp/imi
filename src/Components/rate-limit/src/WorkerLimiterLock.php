@@ -12,10 +12,7 @@ class WorkerLimiterLock
 {
     use \Imi\Util\Traits\TStaticClass;
 
-    /**
-     * @return mixed
-     */
-    public static function lock(string $name, int $max, ?float $timeout, ?string $poolName = null)
+    public static function lock(string $name, int $max, ?float $timeout, ?string $poolName = null): mixed
     {
         $now = microtime(true);
         $args = [
@@ -73,10 +70,7 @@ class WorkerLimiterLock
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public static function unlock(string $name, int $workerId, ?string $poolName = null)
+    public static function unlock(string $name, int $workerId, ?string $poolName = null): mixed
     {
         $args = [
             '{' . $name . '}',     // 名称

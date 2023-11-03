@@ -75,7 +75,7 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function setProperties(array $properties)
+    public function setProperties(array $properties): self
     {
         $this->properties = $properties;
 
@@ -167,7 +167,7 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function getBodyData()
+    public function getBodyData(): mixed
     {
         return $this->bodyData;
     }

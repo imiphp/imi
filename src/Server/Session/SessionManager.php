@@ -179,10 +179,8 @@ class SessionManager
 
     /**
      * 获取Session值
-     *
-     * @return mixed
      */
-    public function get(?string $name = null, mixed $default = null)
+    public function get(?string $name = null, mixed $default = null): mixed
     {
         if (null === $name)
         {
@@ -215,10 +213,8 @@ class SessionManager
 
     /**
      * 获取一次值后将该值删除，可用于验证码等一次性功能.
-     *
-     * @return mixed
      */
-    public function once(string $name, mixed $default = null)
+    public function once(string $name, mixed $default = null): mixed
     {
         $name = $this->parseName($name);
         $value = $this->get($name, $default);

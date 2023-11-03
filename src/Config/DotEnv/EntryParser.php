@@ -41,7 +41,7 @@ final class EntryParser
      *
      * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry,string>
      */
-    public static function parse(string $entry)
+    public static function parse(string $entry): Result
     {
         return self::splitStringIntoParts($entry)->flatMap(static function (array $parts) {
             [$name, $value] = $parts;
@@ -60,7 +60,7 @@ final class EntryParser
      *
      * @return \GrahamCampbell\ResultType\Result<array{string,string|null},string>
      */
-    private static function splitStringIntoParts(string $line)
+    private static function splitStringIntoParts(string $line): Result
     {
         /** @var array{string,string|null} */
         $result = Str::pos($line, '=')->map(static fn () => array_map('trim', explode('=', $line, 2)))->getOrElse([$line, null]);
@@ -82,7 +82,7 @@ final class EntryParser
      *
      * @return \GrahamCampbell\ResultType\Result<string,string>
      */
-    private static function parseName(string $name)
+    private static function parseName(string $name): Result
     {
         if (Str::len($name) > 8 && 'export' === Str::substr($name, 0, 6) && ctype_space(Str::substr($name, 6, 1)))
         {
@@ -104,10 +104,8 @@ final class EntryParser
 
     /**
      * Is the given variable name quoted?
-     *
-     * @return bool
      */
-    private static function isQuotedName(string $name)
+    private static function isQuotedName(string $name): bool
     {
         if (Str::len($name) < 3)
         {
@@ -122,10 +120,8 @@ final class EntryParser
 
     /**
      * Is the given variable name valid?
-     *
-     * @return bool
      */
-    private static function isValidName(string $name)
+    private static function isValidName(string $name): bool
     {
         return Regex::matches('~\A[a-zA-Z0-9_.@\-]+\z~', $name)->success()->getOrElse(false);
     }
@@ -140,7 +136,7 @@ final class EntryParser
      *
      * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Value,string>
      */
-    private static function parseValue(string $value)
+    private static function parseValue(string $value): Result
     {
         if ('' === trim($value))
         {
@@ -162,7 +158,7 @@ final class EntryParser
      *
      * @return \GrahamCampbell\ResultType\Result<array{string,bool,int},string>
      */
-    private static function processToken(int $state, string $token)
+    private static function processToken(int $state, string $token): Result
     {
         switch ($state)
         {
@@ -302,10 +298,8 @@ final class EntryParser
 
     /**
      * Generate a friendly error message.
-     *
-     * @return string
      */
-    private static function getErrorMessage(string $cause, string $subject)
+    private static function getErrorMessage(string $cause, string $subject): string
     {
         return sprintf(
             'Encountered %s at [%s].',
