@@ -58,10 +58,8 @@ class WSRoute implements IRoute
 
     /**
      * 增加路由规则，直接使用注解方式.
-     *
-     * @param mixed $callable
      */
-    public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, array $options = []): void
+    public function addRuleAnnotation(WSRouteAnnotation $annotation, mixed $callable, array $options = []): void
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))

@@ -19,10 +19,9 @@ class Log
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed                         $level
      * @param string|\Stringable|\Throwable $message
      */
-    public static function log($level, $message, array $context = [], ?string $channelName = null): void
+    public static function log(mixed $level, $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->log($level, $message, $context);
     }

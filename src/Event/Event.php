@@ -25,7 +25,7 @@ class Event
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
      */
-    public static function on($name, $callback, int $priority = 0): void
+    public static function on($name, mixed $callback, int $priority = 0): void
     {
         static::getInstance()->__on($name, $callback, $priority);
     }
@@ -37,7 +37,7 @@ class Event
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
      */
-    public static function one($name, $callback, int $priority = 0): void
+    public static function one($name, mixed $callback, int $priority = 0): void
     {
         static::getInstance()->__one($name, $callback, $priority);
     }

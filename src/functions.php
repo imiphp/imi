@@ -71,11 +71,9 @@ namespace
      *
      * @deprecated 3.0
      *
-     * @param mixed $default
-     *
      * @return mixed
      */
-    function imiGetEnv(?string $varname = null, $default = null)
+    function imiGetEnv(?string $varname = null, mixed $default = null)
     {
         return Env::get($varname, $default);
     }
@@ -138,19 +136,14 @@ namespace Imi
     /**
      * 获取环境变量值
      *
-     * @param mixed $default
-     *
      * @return mixed
      */
-    function env(?string $varname = null, $default = null)
+    function env(?string $varname = null, mixed $default = null)
     {
         return Env::get($varname, $default);
     }
 
-    /**
-     * @param mixed $values
-     */
-    function dump(...$values): void
+    function dump(mixed ...$values): void
     {
         ob_start();
         var_dump(...$values);

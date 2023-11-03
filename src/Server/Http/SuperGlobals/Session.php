@@ -10,9 +10,8 @@ class Session implements \ArrayAccess, \JsonSerializable
 {
     /**
      * @param int|string $offset
-     * @param mixed      $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         ImiSession::set($offset, $value);
     }

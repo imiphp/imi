@@ -16,11 +16,10 @@ class ObjectArrayHelper
      * 获取值
      *
      * @param array|object $object
-     * @param mixed        $default
      *
      * @return mixed
      */
-    public static function get(&$object, string $name, $default = null)
+    public static function get(&$object, string $name, mixed $default = null)
     {
         if ('' !== $name)
         {
@@ -68,9 +67,8 @@ class ObjectArrayHelper
      * 设置值
      *
      * @param array|object $object
-     * @param mixed        $value
      */
-    public static function set(&$object, string $name, $value): void
+    public static function set(&$object, string $name, mixed $value): void
     {
         if ('' === $name)
         {

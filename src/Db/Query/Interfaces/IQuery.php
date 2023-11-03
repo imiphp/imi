@@ -232,11 +232,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 设置 having 条件.
      *
-     * @param mixed $value
-     *
      * @return static
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = 'and'): self;
+    public function having(string $fieldName, string $operation, mixed $value, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 having 条件，用原生语句.
@@ -263,11 +261,10 @@ interface IQuery extends IBaseWhereCollector
      * 绑定预处理参数.
      *
      * @param string|int $name
-     * @param mixed      $value
      *
      * @return static
      */
-    public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self;
+    public function bindValue($name, mixed $value, int $dataType = \PDO::PARAM_STR): self;
 
     /**
      * 批量绑定预处理参数.
@@ -303,11 +300,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 查询首条记录指定字段的值
      *
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public function value(string $field, $default = null);
+    public function value(string $field, mixed $default = null);
 
     /**
      * 得到某个列的数组.
@@ -469,11 +464,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 设置update/insert/replace的字段.
      *
-     * @param mixed $value
-     *
      * @return static
      */
-    public function setField(string $fieldName, $value): self;
+    public function setField(string $fieldName, mixed $value): self;
 
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入.

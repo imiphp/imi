@@ -21,12 +21,11 @@ class CronWorker
     /**
      * 执行任务
      *
-     * @param mixed                $data
      * @param string|callable|null $task
      *
      * @return mixed
      */
-    public function exec(string $id, $data, $task, string $type)
+    public function exec(string $id, mixed $data, $task, string $type)
     {
         $message = '';
         $success = false;

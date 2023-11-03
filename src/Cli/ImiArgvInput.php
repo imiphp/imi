@@ -228,11 +228,9 @@ class ImiArgvInput extends Input implements \Stringable
     /**
      * Adds a short option value.
      *
-     * @param mixed $value
-     *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function addShortOption(string $shortcut, $value): void
+    private function addShortOption(string $shortcut, mixed $value): void
     {
         if (!$this->definition->hasShortcut($shortcut))
         {
@@ -252,11 +250,9 @@ class ImiArgvInput extends Input implements \Stringable
     /**
      * Adds a long option value.
      *
-     * @param mixed $value
-     *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function addLongOption(string $name, $value): void
+    private function addLongOption(string $name, mixed $value): void
     {
         if (!$this->definition->hasOption($name))
         {

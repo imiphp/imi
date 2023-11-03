@@ -32,7 +32,6 @@ class CronTask
      * 构造方法.
      *
      * @param callable|string $task
-     * @param mixed           $data
      */
     public function __construct(
         /**
@@ -48,7 +47,7 @@ class CronTask
         /**
          * 数据.
          */
-        private $data,
+        private readonly mixed $data,
         /**
          * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
          */

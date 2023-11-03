@@ -342,12 +342,11 @@ class Validator implements IValidator
     }
 
     /**
-     * @param mixed        $data
      * @param string|array $argName
      *
      * @return mixed
      */
-    protected function eachValue($data, $argName, ?bool &$hasValue = null)
+    protected function eachValue(mixed $data, $argName, ?bool &$hasValue = null)
     {
         if (\is_array($argName))
         {
@@ -396,12 +395,10 @@ class Validator implements IValidator
      * 获取参数值
      *
      * @param array|object $data
-     * @param mixed        $arg
-     * @param mixed        $value
      *
      * @return mixed
      */
-    protected function getArgValue($data, $arg, Condition $annotation, bool $includeAnnotationProperty = true, bool $hasValue = false, $value = null)
+    protected function getArgValue($data, mixed $arg, Condition $annotation, bool $includeAnnotationProperty = true, bool $hasValue = false, mixed $value = null)
     {
         if (!\is_string($arg))
         {

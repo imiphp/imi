@@ -16,11 +16,9 @@ class AfterReturningJoinPoint extends JoinPoint
     /**
      * 设置返回值
      *
-     * @param mixed $value
-     *
      * @return mixed
      */
-    public function setReturnValue($value)
+    public function setReturnValue(mixed $value)
     {
         $this->returnValue = $value;
     }

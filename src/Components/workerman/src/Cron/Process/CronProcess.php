@@ -66,10 +66,7 @@ class CronProcess extends BaseProcess
         $this->startSchedule();
     }
 
-    /**
-     * @param mixed $data
-     */
-    public function onUnixMessage(ConnectionInterface $connection, $data): void
+    public function onUnixMessage(ConnectionInterface $connection, mixed $data): void
     {
         $result = unserialize($data);
         if ($result instanceof Result)

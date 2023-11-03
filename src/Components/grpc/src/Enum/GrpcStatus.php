@@ -12,6 +12,11 @@ class GrpcStatus
     use \Imi\Util\Traits\TStaticClass;
 
     /**
+     * No Response.
+     */
+    public const NO_RESPONSE = -1;
+
+    /**
      * Not an error; returned on success.
      */
     public const OK = 0;

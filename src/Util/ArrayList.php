@@ -31,21 +31,16 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->list[$offset]);
     }
 
     /**
-     * @param mixed $offset
-     *
      * @return mixed
      */
     #[\ReturnTypeWillChange]
-    public function &offsetGet($offset)
+    public function &offsetGet(mixed $offset)
     {
         $list = &$this->list;
         if (isset($list[$offset]))
@@ -60,11 +55,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         return $value;
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (!$value instanceof $this->itemType)
         {
@@ -81,10 +72,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->list[$offset]);
     }
@@ -143,10 +131,8 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * 从数组列表中移除.
-     *
-     * @param mixed ...$value
      */
-    public function remove(...$value): void
+    public function remove(mixed ...$value): void
     {
         $this->list = ArrayUtil::remove($this->list, ...$value);
     }
@@ -161,10 +147,8 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * 加入数组列表.
-     *
-     * @param mixed ...$value
      */
-    public function append(...$value): void
+    public function append(mixed ...$value): void
     {
         foreach ($value as $row)
         {

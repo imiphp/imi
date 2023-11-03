@@ -14,9 +14,6 @@ class Where extends BaseWhere implements IWhere
 {
     use TRaw;
 
-    /**
-     * @param mixed $value
-     */
     public function __construct(
         /**
          * 字段名.
@@ -29,7 +26,7 @@ class Where extends BaseWhere implements IWhere
         /**
          * 值
          */
-        protected $value = null, string $logicalOperator = LogicalOperator::AND)
+        protected mixed $value = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->logicalOperator = $logicalOperator;
     }

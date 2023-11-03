@@ -15,12 +15,11 @@ trait TGatewayServerUtil
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed                          $data
      * @param int|int[]|string|string[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
+    public function send(mixed $data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -38,12 +37,11 @@ trait TGatewayServerUtil
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed                $data
      * @param string|string[]|null $flag         为 null 时，则发送给当前连接
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendByFlag(mixed $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -98,11 +96,10 @@ trait TGatewayServerUtil
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed       $data
      * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendToAll(mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -136,11 +133,10 @@ trait TGatewayServerUtil
      * 数据将会通过处理器编码
      *
      * @param string|string[] $groupName
-     * @param mixed           $data
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendToGroup($groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())

@@ -74,10 +74,8 @@ class CoroutineChannelManager
      * $data必须为非空变量，如空字符串、空数组、0、null、false
      * 写入成功返回true
      * 通道的空间不足时写入失败并返回false.
-     *
-     * @param mixed $data
      */
-    public static function push(string $name, $data): bool
+    public static function push(string $name, mixed $data): bool
     {
         return static::getInstance($name)->push($data);
     }

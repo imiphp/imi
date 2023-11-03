@@ -47,14 +47,11 @@ abstract class BasePool implements IPool
      */
     protected string $poolItemClass = PoolItem::class;
 
-    /**
-     * @param mixed $resourceConfig
-     */
     public function __construct(
         /**
          * 池子名称.
          */
-        protected string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+        protected string $name, Interfaces\IPoolConfig $config = null, mixed $resourceConfig = null)
     {
         if (null !== $config)
         {

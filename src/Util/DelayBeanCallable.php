@@ -39,11 +39,9 @@ class DelayBeanCallable
     }
 
     /**
-     * @param mixed ...$args
-     *
      * @return mixed
      */
-    public function &__invoke(...$args)
+    public function &__invoke(mixed ...$args)
     {
         if ($this->returnsReference())
         {

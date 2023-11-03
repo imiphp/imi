@@ -51,10 +51,8 @@ class CliManager
 
     /**
      * 增加参数注解.
-     *
-     * @param mixed $default
      */
-    public static function addArgument(?string $commandName, string $actionName, string $argumentName, ?string $type = null, $default = null, bool $required = false, string $comments = '', string $to = ''): void
+    public static function addArgument(?string $commandName, string $actionName, string $argumentName, ?string $type = null, mixed $default = null, bool $required = false, string $comments = '', string $to = ''): void
     {
         self::$map['arguments'][$commandName][$actionName][$argumentName] = [
             'argumentName' => $argumentName,
@@ -68,10 +66,8 @@ class CliManager
 
     /**
      * 增加可选参数注解.
-     *
-     * @param mixed $default
      */
-    public static function addOption(?string $commandName, string $actionName, string $optionName, ?string $shortcut = null, ?string $type = null, $default = null, bool $required = false, string $comments = '', string $to = ''): void
+    public static function addOption(?string $commandName, string $actionName, string $optionName, ?string $shortcut = null, ?string $type = null, mixed $default = null, bool $required = false, string $comments = '', string $to = ''): void
     {
         self::$map['options'][$commandName][$actionName][$optionName] = [
             'optionName' => $optionName,

@@ -15,10 +15,8 @@ abstract class BaseBuilder implements IBuilder
 
     /**
      * 生成SQL语句.
-     *
-     * @param mixed $args
      */
-    public static function buildSql(IQuery $query, ...$args): string
+    public static function buildSql(IQuery $query, mixed ...$args): string
     {
         $builder = new static($query);
 

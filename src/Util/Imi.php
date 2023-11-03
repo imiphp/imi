@@ -125,9 +125,8 @@ class Imi
      * 检查验证比较值集.
      *
      * @param string|array $rules
-     * @param mixed        $value
      */
-    public static function checkCompareValues($rules, $value): bool
+    public static function checkCompareValues($rules, mixed $value): bool
     {
         foreach ((array) $rules as $rule)
         {
@@ -144,9 +143,8 @@ class Imi
      * 检查验证比较值
      *
      * @param string|array $rule
-     * @param mixed        $value
      */
-    public static function checkCompareValue($rule, $value): bool
+    public static function checkCompareValue($rule, mixed $value): bool
     {
         if (isset($rule[0]) && '!' === $rule[0])
         {

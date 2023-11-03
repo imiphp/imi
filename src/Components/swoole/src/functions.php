@@ -9,10 +9,8 @@ if (!\function_exists('\imigo'))
 {
     /**
      * 启动一个协程，自动创建和销毁上下文.
-     *
-     * @param mixed $args
      */
-    function imigo(callable $callable, ...$args): int
+    function imigo(callable $callable, mixed ...$args): int
     {
         $callable = imiCallable($callable);
 
@@ -34,11 +32,9 @@ if (\extension_loaded('swoole'))
     if (!\function_exists('\go'))
     {
         /**
-         * @param mixed ...$params
-         *
          * @return int|false
          */
-        function go(callable $func, ...$params)
+        function go(callable $func, mixed ...$params)
         {
             return Coroutine::create($func, ...$params);
         }

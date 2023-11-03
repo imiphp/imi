@@ -209,10 +209,9 @@ class MemoryTableManager
     /**
      * 设置行的数据.
      *
-     * @param string $name  表名
-     * @param mixed  $value
+     * @param string $name 表名
      */
-    public static function set(string $name, string $key, $value): bool
+    public static function set(string $name, string $key, mixed $value): bool
     {
         return static::getInstance($name)->set($key, $value);
     }

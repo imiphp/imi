@@ -49,15 +49,14 @@ final class Container implements ContainerInterface
     /**
      * 每次调用都实例化返回新的对象.
      *
-     * @param string $id        标识符
-     * @param mixed  ...$params
+     * @param string $id 标识符
      *
      * @return mixed entry
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function newInstance(string $id, ...$params)
+    public function newInstance(string $id, mixed ...$params)
     {
         return self::__newInstance($id, $params, false);
     }
@@ -186,15 +185,14 @@ final class Container implements ContainerInterface
      *
      * 此方法实例化的对象，AOP、注解等都对它不产生作用
      *
-     * @param string $id        标识符
-     * @param mixed  ...$params
+     * @param string $id 标识符
      *
      * @return mixed entry
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function getSingleton(string $id, ...$params)
+    public function getSingleton(string $id, mixed ...$params)
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;

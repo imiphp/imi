@@ -432,11 +432,9 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理字段默认值
      *
-     * @param mixed $default
-     *
      * @return mixed
      */
-    private function parseFieldDefaultValue(string $type, $default)
+    private function parseFieldDefaultValue(string $type, mixed $default)
     {
         if (null === $default)
         {

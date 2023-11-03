@@ -392,11 +392,9 @@ class RedisHandler
     /**
      * scan.
      *
-     * @param mixed $strNode
-     *
      * @return mixed
      */
-    public function scan(?int &$iterator, ?string $pattern = null, int $count = 0, $strNode = null)
+    public function scan(?int &$iterator, ?string $pattern = null, int $count = 0, mixed $strNode = null)
     {
         if (null === $strNode)
         {
@@ -553,11 +551,10 @@ class RedisHandler
      *
      * @param float|string $lng
      * @param float|string $lat
-     * @param mixed        ...$other_triples_and_options
      *
      * @return mixed
      */
-    public function geoadd(string $key, $lng, $lat, string $member, ...$other_triples_and_options)
+    public function geoadd(string $key, $lng, $lat, string $member, mixed ...$other_triples_and_options)
     {
         $redis = $this->redis;
         $serializer = $redis->getOption(\Redis::OPT_SERIALIZER);

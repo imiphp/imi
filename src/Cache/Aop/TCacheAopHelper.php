@@ -56,11 +56,9 @@ trait TCacheAopHelper
     /**
      * 获取缓存值
      *
-     * @param mixed $value
-     *
      * @return mixed
      */
-    protected function getValue(CachePut $cachePut, $value)
+    protected function getValue(CachePut $cachePut, mixed $value)
     {
         if (null === $cachePut->value)
         {

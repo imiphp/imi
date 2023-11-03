@@ -109,12 +109,11 @@ class ConnectionContext
     /**
      * 获取上下文数据.
      *
-     * @param mixed           $default
      * @param int|string|null $clientId
      *
      * @return mixed
      */
-    public static function get(?string $name = null, $default = null, $clientId = null, ?string $serverName = null)
+    public static function get(?string $name = null, mixed $default = null, $clientId = null, ?string $serverName = null)
     {
         if (!$clientId)
         {
@@ -138,10 +137,9 @@ class ConnectionContext
     /**
      * 设置上下文数据.
      *
-     * @param mixed           $value
      * @param int|string|null $clientId
      */
-    public static function set(?string $name, $value, $clientId = null, ?string $serverName = null): void
+    public static function set(?string $name, mixed $value, $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {

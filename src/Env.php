@@ -11,11 +11,9 @@ class Env
     use \Imi\Util\Traits\TStaticClass;
 
     /**
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public static function get(?string $varname = null, $default = null)
+    public static function get(?string $varname = null, mixed $default = null)
     {
         $result = $_ENV[$varname] ?? $_SERVER[$varname] ?? getenv($varname);
         if (false === $result)

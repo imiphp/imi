@@ -367,11 +367,9 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     }
 
     /**
-     * @param mixed $value
-     *
      * @return mixed
      */
-    protected function parseValue($value)
+    protected function parseValue(mixed $value)
     {
         if (\is_bool($value))
         {

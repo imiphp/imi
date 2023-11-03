@@ -104,10 +104,7 @@ class UpdateBuilder extends BaseBuilder
         return $sql;
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected function parseValueParam(string $valueParam, $value): string
+    protected function parseValueParam(string $valueParam, mixed $value): string
     {
         if (\is_bool($value))
         {

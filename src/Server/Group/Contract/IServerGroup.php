@@ -40,11 +40,9 @@ interface IServerGroup
     /**
      * 调用组方法.
      *
-     * @param mixed ...$args
-     *
      * @return mixed
      */
-    public function groupCall(string $groupName, string $methodName, ...$args);
+    public function groupCall(string $groupName, string $methodName, mixed ...$args);
 
     /**
      * 获取所有组列表.

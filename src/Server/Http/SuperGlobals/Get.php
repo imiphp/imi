@@ -11,9 +11,8 @@ class Get implements \ArrayAccess, \JsonSerializable
 {
     /**
      * @param int|string $offset
-     * @param mixed      $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         Log::warning('imi does not support to assign values to $_GET');
     }

@@ -57,10 +57,8 @@ abstract class BaseFacade
 
     /**
      * 绑定门面.
-     *
-     * @param mixed ...$args
      */
-    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, ...$args): void
+    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, mixed ...$args): void
     {
         $cache = &self::$cache;
         if (isset($cache[$facadeClass]))

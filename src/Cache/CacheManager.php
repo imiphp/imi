@@ -103,7 +103,7 @@ class CacheManager
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *                                                   MUST be thrown if the $key string is not a legal value
      */
-    public static function get($name, $key, $default = null)
+    public static function get($name, $key, mixed $default = null)
     {
         return static::getInstance($name)->get($key, $default);
     }
@@ -123,7 +123,7 @@ class CacheManager
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *                                                   MUST be thrown if the $key string is not a legal value
      */
-    public static function set($name, $key, $value, $ttl = null)
+    public static function set($name, $key, mixed $value, $ttl = null)
     {
         return static::getInstance($name)->set($key, $value, $ttl);
     }
@@ -169,7 +169,7 @@ class CacheManager
      *                                                   MUST be thrown if $keys is neither an array nor a Traversable,
      *                                                   or if any of the $keys are not a legal value
      */
-    public static function getMultiple($name, $keys, $default = null)
+    public static function getMultiple($name, $keys, mixed $default = null)
     {
         return static::getInstance($name)->getMultiple($keys, $default);
     }

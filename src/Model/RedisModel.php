@@ -281,11 +281,9 @@ abstract class RedisModel extends BaseModel
     /**
      * 查询多条记录.
      *
-     * @param mixed $conditions
-     *
      * @return static[]
      */
-    public static function select(...$conditions): array
+    public static function select(mixed ...$conditions): array
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
@@ -531,10 +529,8 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 批量删除.
-     *
-     * @param mixed ...$conditions
      */
-    public static function deleteBatch(...$conditions): int
+    public static function deleteBatch(mixed ...$conditions): int
     {
         if (!$conditions)
         {

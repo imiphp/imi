@@ -71,10 +71,8 @@ class ServerManager
 
     /**
      * 创建服务器对象
-     *
-     * @param mixed $args
      */
-    public static function createServer(string $name, array $config, ...$args): IServer
+    public static function createServer(string $name, array $config, mixed ...$args): IServer
     {
         // 创建服务器对象前置操作
         Event::trigger('IMI.SERVER.CREATE.BEFORE', [

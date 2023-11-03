@@ -81,19 +81,14 @@ interface IDb extends IHashCode
     /**
      * 取回一个数据库连接的属性.
      *
-     * @param mixed $attribute
-     *
      * @return mixed
      */
-    public function getAttribute($attribute);
+    public function getAttribute(mixed $attribute);
 
     /**
      * 设置属性.
-     *
-     * @param mixed $attribute
-     * @param mixed $value
      */
-    public function setAttribute($attribute, $value): bool;
+    public function setAttribute(mixed $attribute, mixed $value): bool;
 
     /**
      * 检查是否在一个事务内.
@@ -149,8 +144,6 @@ interface IDb extends IHashCode
 
     /**
      * 检查错误码是否为掉线
-     *
-     * @param mixed $code
      */
-    public function checkCodeIsOffline($code): bool;
+    public function checkCodeIsOffline(mixed $code): bool;
 }

@@ -32,11 +32,10 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T> $class
-     * @param mixed           ...$args
      *
      * @return T
      */
-    public static function newInstance(string $class, ...$args)
+    public static function newInstance(string $class, mixed ...$args)
     {
         $object = self::newInstanceNoInit($class, ...$args);
         static::initInstance($object, $args);
@@ -50,11 +49,10 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T> $class
-     * @param mixed           ...$args
      *
      * @return T
      */
-    public static function newInstanceNoInit(string $class, ...$args)
+    public static function newInstanceNoInit(string $class, mixed ...$args)
     {
         $classNameMap = &self::$classNameMap;
         if (isset($classNameMap[$class]))

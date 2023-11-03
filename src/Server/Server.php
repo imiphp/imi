@@ -29,12 +29,11 @@ class Server
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed                          $data
      * @param int|int[]|string|string[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
+    public static function send(mixed $data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
         return static::getInstance($serverName)->send($data, $clientId, $serverName, $toAllWorkers);
     }
@@ -44,12 +43,11 @@ class Server
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed                $data
      * @param string|string[]|null $flag         为 null 时，则发送给当前连接
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public static function sendByFlag(mixed $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         return static::getInstance($serverName)->sendByFlag($data, $flag, $serverName, $toAllWorkers);
     }
@@ -83,11 +81,10 @@ class Server
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed       $data
      * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function sendToAll(mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         return static::getInstance($serverName)->sendToAll($data, $serverName, $toAllWorkers);
     }
@@ -111,11 +108,10 @@ class Server
      * 数据将会通过处理器编码
      *
      * @param string|string[] $groupName
-     * @param mixed           $data
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function sendToGroup($groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         return static::getInstance($serverName)->sendToGroup($groupName, $data, $serverName, $toAllWorkers);
     }

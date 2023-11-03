@@ -9,11 +9,9 @@ interface IBaseWhereCollector
     /**
      * 设置 where 条件，一般用于 =、>、<、like等.
      *
-     * @param mixed $value
-     *
      * @return static
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = 'and'): self;
+    public function where(string $fieldName, string $operation, mixed $value, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 where 条件，用原生语句.
@@ -58,51 +56,37 @@ interface IBaseWhereCollector
     /**
      * where between $begin end $end.
      *
-     * @param mixed $begin
-     * @param mixed $end
-     *
      * @return static
      */
-    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = 'and'): self;
+    public function whereBetween(string $fieldName, mixed $begin, mixed $end, string $logicalOperator = 'and'): self;
 
     /**
      * or where between $begin end $end.
      *
-     * @param mixed $begin
-     * @param mixed $end
-     *
      * @return static
      */
-    public function orWhereBetween(string $fieldName, $begin, $end): self;
+    public function orWhereBetween(string $fieldName, mixed $begin, mixed $end): self;
 
     /**
      * where not between $begin end $end.
      *
-     * @param mixed $begin
-     * @param mixed $end
-     *
      * @return static
      */
-    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = 'and'): self;
+    public function whereNotBetween(string $fieldName, mixed $begin, mixed $end, string $logicalOperator = 'and'): self;
 
     /**
      * or where not between $begin end $end.
      *
-     * @param mixed $begin
-     * @param mixed $end
-     *
      * @return static
      */
-    public function orWhereNotBetween(string $fieldName, $begin, $end): self;
+    public function orWhereNotBetween(string $fieldName, mixed $begin, mixed $end): self;
 
     /**
      * 设置 where or 条件.
      *
-     * @param mixed $value
-     *
      * @return static
      */
-    public function orWhere(string $fieldName, string $operation, $value): self;
+    public function orWhere(string $fieldName, string $operation, mixed $value): self;
 
     /**
      * 设置 where or 条件，用原生语句.

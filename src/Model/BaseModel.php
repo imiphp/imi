@@ -133,11 +133,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 实例化当前类.
      *
-     * @param mixed ...$args
-     *
      * @return static
      */
-    public static function newInstance(...$args): object
+    public static function newInstance(mixed ...$args): object
     {
         if (static::__getMeta()->isBean())
         {
@@ -266,9 +264,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * @param int|string $offset
-     * @param mixed      $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         $meta = $this->__meta;
         $fields = $meta->getFields();
@@ -369,10 +366,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $this[$name];
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this[$name] = $value;
     }

@@ -11,10 +11,7 @@ class AsyncResult implements IAsyncResult
 {
     private bool $isGeted = false;
 
-    /**
-     * @param mixed $result
-     */
-    public function __construct(private $result = null, private readonly bool $isException = false)
+    public function __construct(private mixed $result = null, private readonly bool $isException = false)
     {
     }
 

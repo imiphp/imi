@@ -31,14 +31,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     protected string $lastInsertId = '';
 
-    /**
-     * @param mixed $queryResult
-     */
     public function __construct(
         /**
          * 数据库操作对象
          */
-        protected ?IPgsqlDb $db, protected $queryResult,
+        protected ?IPgsqlDb $db, protected mixed $queryResult,
         /**
          * 最后执行过的SQL语句.
          */
@@ -389,11 +386,9 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     }
 
     /**
-     * @param mixed $value
-     *
      * @return mixed
      */
-    protected function parseValue($value)
+    protected function parseValue(mixed $value)
     {
         if (\is_bool($value))
         {

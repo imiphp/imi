@@ -39,11 +39,10 @@ interface IServer extends IEvent
      * @template T
      *
      * @param class-string<T> $name
-     * @param mixed           ...$params
      *
      * @return T
      */
-    public function getBean(string $name, ...$params);
+    public function getBean(string $name, mixed ...$params);
 
     /**
      * 是否为长连接服务
@@ -73,11 +72,9 @@ interface IServer extends IEvent
     /**
      * 调用服务器方法.
      *
-     * @param mixed ...$args
-     *
      * @return mixed
      */
-    public function callServerMethod(string $methodName, ...$args);
+    public function callServerMethod(string $methodName, mixed ...$args);
 
     /**
      * 获取客户端地址

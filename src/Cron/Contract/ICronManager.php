@@ -21,9 +21,8 @@ interface ICronManager
      * 增加定时任务
      *
      * @param callable|string $task
-     * @param mixed           $data
      */
-    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void;
+    public function addCron(string $id, ?string $type, $task, array $cronRules, mixed $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void;
 
     /**
      * 移除定时任务

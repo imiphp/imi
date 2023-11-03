@@ -833,10 +833,8 @@ abstract class Model extends BaseModel
 
     /**
      * 处理where条件.
-     *
-     * @param mixed $where
      */
-    private static function parseWhere(IQuery $query, $where): void
+    private static function parseWhere(IQuery $query, mixed $where): void
     {
         if (\is_callable($where))
         {

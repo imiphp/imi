@@ -314,10 +314,8 @@ trait TPdoStatement
 
     /**
      * 根据值类型获取PDO数据类型.
-     *
-     * @param mixed $value
      */
-    protected function getDataTypeByValue($value): int
+    protected function getDataTypeByValue(mixed $value): int
     {
         if (null === $value)
         {

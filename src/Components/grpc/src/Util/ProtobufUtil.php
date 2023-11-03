@@ -188,11 +188,9 @@ class ProtobufUtil
     }
 
     /**
-     * @param mixed $value
-     *
      * @return mixed
      */
-    public static function parseFieldValue(FieldDescriptor $field, $value, array $options = [])
+    public static function parseFieldValue(FieldDescriptor $field, mixed $value, array $options = [])
     {
         if (null === $value)
         {
