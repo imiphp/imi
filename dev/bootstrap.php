@@ -53,10 +53,10 @@ function getRectorConfigCallback(string $path): callable
             \Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector::class,
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
             \Rector\Php74\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector::class, // 性能很差
+            \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // 调整包含默认值的参数顺序，会导致代码被破坏
 
             // 存在兼容问题
             \Rector\Php80\Rector\FunctionLike\MixedTypeRector::class, // todo 给接口参数加了`mixed`但没给实现加类型，导致静态分析报错
-            \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // todo 调整包含默认参的参数顺序，会导致代码被破坏
             \Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector::class, // 无法正确处理继承覆盖的情况
         ]);
 

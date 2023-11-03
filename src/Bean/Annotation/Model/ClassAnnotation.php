@@ -182,7 +182,7 @@ class ClassAnnotation
      *
      * @param \Imi\Bean\Annotation\Base[] $methodParameterAnnotations 方法参数注解列表
      */
-    public function addMethodParameterAnnotations(string $methodName, string $parameterName = null, array $methodParameterAnnotations): self
+    public function addMethodParameterAnnotations(string $methodName, string $parameterName, array $methodParameterAnnotations = []): self
     {
         $this->methodParameterAnnotations[$methodName][$parameterName] = array_merge($this->constantAnnotations[$methodName][$parameterName] ?? [], $methodParameterAnnotations);
 
