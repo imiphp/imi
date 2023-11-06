@@ -1,0 +1,59 @@
+name: daily-image-build
+
+on:
+  schedule:
+    - cron: "0 16 * * *" # 这个值是 UTC 时间，每天北京时间 0 点执行
+  push:
+    paths:
+      - ".github/workflows/daily-image-build.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/daily-image-build.yml"
+
+#permissions:
+#  contents: read
+#  packages: write
+
+jobs:
+  build-image:
+    name: Linux Build-Image-${{ matrix.image.tag }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - {tag: php8.2-swoole-5.1, version: 5.1-php8.2}
+          - {tag: php8.1-swoole-5.1, version: 5.1-php8.1}
+          - {tag: php8.2-swoole-5.0, version: 5.0-php8.2}
+          - {tag: php8.1-swoole-5.0, version: 5.0-php8.1}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test
+        run: |
+          ls -lah .
+          ls -lah ./.github
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/imi-swoole
+          tags: |
+            type=raw,${{ matrix.image.tag }}
+      - name: Log in to Github
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./.github
+          file: ./.github/swoole.dockerfile
+          build-args: |
+            SWOOLE_DOCKER_VERSION=${{ matrix.image.version }}
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
