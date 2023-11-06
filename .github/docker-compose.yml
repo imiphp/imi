@@ -153,14 +153,10 @@ services:
 
   swoole-only:
     container_name: "swoole-only"
-    build:
-      context: .
-      dockerfile: swoole.dockerfile
-      args:
-        SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
-        POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
+    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole:${IMAGE_VERSION}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
+      - "/tmp/base_cache:/tmp/base_cache:rw"
       - "/tmp/composer:/root/.composer/cache/files:rw"
       - "/tmp/phpstan:/tmp/phpstan:rw"
     working_dir: /imi
