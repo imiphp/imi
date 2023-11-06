@@ -67,10 +67,8 @@ class Imi
 
     /**
      * 检查验证比较规则集.
-     *
-     * @param string|array $rules
      */
-    public static function checkCompareRules($rules, callable $valueCallback): bool
+    public static function checkCompareRules(string|array $rules, callable $valueCallback): bool
     {
         foreach ((array) $rules as $fieldName => $rule)
         {
@@ -123,10 +121,8 @@ class Imi
 
     /**
      * 检查验证比较值集.
-     *
-     * @param string|array $rules
      */
-    public static function checkCompareValues($rules, mixed $value): bool
+    public static function checkCompareValues(string|array $rules, mixed $value): bool
     {
         foreach ((array) $rules as $rule)
         {
@@ -141,10 +137,8 @@ class Imi
 
     /**
      * 检查验证比较值
-     *
-     * @param string|array $rule
      */
-    public static function checkCompareValue($rule, mixed $value): bool
+    public static function checkCompareValue(string|array $rule, mixed $value): bool
     {
         if (isset($rule[0]) && '!' === $rule[0])
         {

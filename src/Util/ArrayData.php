@@ -19,10 +19,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 设置数据.
-     *
-     * @param string|array $name
      */
-    public function set($name, mixed $value = null, bool $merge = true): bool
+    public function set(string|array $name, mixed $value = null, bool $merge = true): bool
     {
         if (\is_array($name))
         {
@@ -47,10 +45,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 设置数据.
-     *
-     * @param string|array $name
      */
-    public function setVal($name, mixed $value = null): bool
+    public function setVal(string|array $name, mixed $value = null): bool
     {
         if (\is_string($name))
         {
@@ -77,10 +73,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 获取数据.
-     *
-     * @param string|array|null $name
      */
-    public function &get($name = null, mixed $default = false): mixed
+    public function &get(string|array|null $name = null, mixed $default = false): mixed
     {
         if (null === $name)
         {
@@ -140,10 +134,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 删除数据.
-     *
-     * @param string|array $name
      */
-    public function remove($name): bool
+    public function remove(string|array $name): bool
     {
         if (!\is_array($name))
         {

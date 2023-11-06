@@ -78,10 +78,8 @@ class TcpRoute implements IRoute
 
     /**
      * 检查条件是否匹配.
-     *
-     * @param array|object $data
      */
-    private function checkCondition($data, TcpRouteAnnotation $annotation): bool
+    private function checkCondition(array|object $data, TcpRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

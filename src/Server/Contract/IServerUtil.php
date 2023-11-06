@@ -109,10 +109,8 @@ interface IServerUtil
 
     /**
      * 连接是否存在.
-     *
-     * @param string|int|null $clientId
      */
-    public function exists(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool;
+    public function exists(int|string|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool;
 
     /**
      * 指定标记的连接是否存在.

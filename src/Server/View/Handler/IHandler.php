@@ -10,8 +10,5 @@ use Imi\Server\View\Annotation\View;
 
 interface IHandler
 {
-    /**
-     * @param mixed $data
-     */
-    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse;
+    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, mixed $data, IHttpResponse $response): IHttpResponse;
 }

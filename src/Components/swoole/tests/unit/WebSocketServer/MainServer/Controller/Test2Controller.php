@@ -16,12 +16,9 @@ use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 #[WSController(route: '/test')]
 class Test2Controller extends WebSocketController
 {
-    /**
-     * @param mixed $data
-     */
     #[WSAction]
     #[WSRoute(condition: ['action' => 'test'])]
-    public function test($data): array
+    public function test(mixed $data): array
     {
         return ['data' => $data];
     }

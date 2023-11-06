@@ -32,7 +32,7 @@ class TestMessage extends Message
     /**
      * {@inheritDoc}
      */
-    public function setBodyData($data): self
+    public function setBodyData(mixed $data): self
     {
         foreach ($data as $k => $v)
         {

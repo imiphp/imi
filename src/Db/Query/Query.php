@@ -442,7 +442,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function orderRaw($raw, array $binds = []): self
+    public function orderRaw(string|array $raw, array $binds = []): self
     {
         $optionOrder = &$this->option->order;
         if (\is_array($raw))
@@ -751,7 +751,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setData($data): self
+    public function setData(array $data): self
     {
         $this->option->saveData = $data;
 
@@ -833,7 +833,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function lock($value): self
+    public function lock(int|string|bool|null $value): self
     {
         $this->option->lock = $value;
 
@@ -931,7 +931,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildInsertSql($data = null): string
+    public function buildInsertSql(array|object|null $data = null): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1000,7 +1000,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildBatchInsertSql($data = null): string
+    public function buildBatchInsertSql(array|object|null $data = null): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1019,7 +1019,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildUpdateSql($data = null): string
+    public function buildUpdateSql(array|object|null $data = null): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1090,7 +1090,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildReplaceSql($data = null, array $uniqueFields = []): string
+    public function buildReplaceSql(array|object|null $data = null, array $uniqueFields = []): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1326,7 +1326,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function insert($data = null): IResult
+    public function insert(array|object|null $data = null): IResult
     {
         return $this->execute($this->buildInsertSql($data));
     }
@@ -1334,7 +1334,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function batchInsert($data = null): IResult
+    public function batchInsert(array|object|null $data = null): IResult
     {
         return $this->execute($this->buildBatchInsertSql($data));
     }
@@ -1342,7 +1342,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function update($data = null): IResult
+    public function update(array|object|null $data = null): IResult
     {
         return $this->execute($this->buildUpdateSql($data));
     }
@@ -1350,7 +1350,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function replace($data = null, array $uniqueFields = []): IResult
+    public function replace(array|object|null $data = null, array $uniqueFields = []): IResult
     {
         return $this->execute($this->buildReplaceSql($data, $uniqueFields));
     }

@@ -36,10 +36,8 @@ class SendToGroupTask implements ITaskHandler
 
     /**
      * 任务结束时触发.
-     *
-     * @param mixed $data
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data): void
+    public function finish(\Swoole\Server $server, int $taskId, mixed $data): void
     {
     }
 }

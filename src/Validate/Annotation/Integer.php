@@ -18,10 +18,8 @@ class Integer extends Condition
         public string $message = '{name} validate failed',
         /**
          * 验证回调.
-         *
-         * @var array|callable
          */
-        public $callable = '\\Imi\\Validate\\ValidatorHelper::int',
+        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::int',
         public array $args = ['{:value}', '{min}', '{max}'],
         public ?string $exception = null,
         public ?int $exCode = null,

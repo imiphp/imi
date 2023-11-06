@@ -13,10 +13,8 @@ class MonoLogger extends Logger
 {
     /**
      * {@inheritDoc}
-     *
-     * @param mixed $args
      */
-    public function __construct(...$args)
+    public function __construct(mixed ...$args)
     {
         parent::__construct(...$args);
 

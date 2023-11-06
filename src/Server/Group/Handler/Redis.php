@@ -214,7 +214,7 @@ class Redis implements IGroupHandler
     /**
      * {@inheritDoc}
      */
-    public function joinGroup(string $groupName, $clientId): bool
+    public function joinGroup(string $groupName, int|string $clientId): bool
     {
         $key = $this->getGroupNameKey($groupName);
 
@@ -224,7 +224,7 @@ class Redis implements IGroupHandler
     /**
      * {@inheritDoc}
      */
-    public function leaveGroup(string $groupName, $clientId): bool
+    public function leaveGroup(string $groupName, int|string $clientId): bool
     {
         $key = $this->getGroupNameKey($groupName);
 
@@ -234,7 +234,7 @@ class Redis implements IGroupHandler
     /**
      * {@inheritDoc}
      */
-    public function isInGroup(string $groupName, $clientId): bool
+    public function isInGroup(string $groupName, int|string $clientId): bool
     {
         $key = $this->getGroupNameKey($groupName);
 

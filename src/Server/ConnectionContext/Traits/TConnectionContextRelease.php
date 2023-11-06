@@ -12,10 +12,7 @@ use Imi\RequestContext;
  */
 trait TConnectionContextRelease
 {
-    /**
-     * @param int|string $clientId
-     */
-    public function release($clientId): void
+    public function release(int|string $clientId): void
     {
         $groups = ConnectionContext::get('__groups', [], $clientId);
 

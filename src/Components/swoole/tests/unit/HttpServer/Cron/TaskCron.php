@@ -27,7 +27,7 @@ class TaskCron implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data): void
+    public function finish(\Swoole\Server $server, int $taskId, mixed $data): void
     {
     }
 }

@@ -94,10 +94,8 @@ class Group
 
     /**
      * 加入组.
-     *
-     * @param int|string $clientId
      */
-    public function join($clientId): void
+    public function join(int|string $clientId): void
     {
         $groupName = $this->groupName;
         if ($this->getHandler()->joinGroup($groupName, $clientId))
@@ -119,10 +117,8 @@ class Group
 
     /**
      * 离开组.
-     *
-     * @param int|string $clientId
      */
-    public function leave($clientId): void
+    public function leave(int|string $clientId): void
     {
         $groupName = $this->groupName;
         if ($this->getHandler()->leaveGroup($groupName, $clientId))
@@ -147,10 +143,8 @@ class Group
 
     /**
      * 连接是否存在于组里.
-     *
-     * @param int|string $clientId
      */
-    public function isInGroup($clientId): bool
+    public function isInGroup(int|string $clientId): bool
     {
         return $this->getHandler()->isInGroup($this->groupName, $clientId);
     }

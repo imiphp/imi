@@ -361,11 +361,9 @@ abstract class Model extends BaseModel
     /**
      * 查询多条记录.
      *
-     * @param array|callable|null $where
-     *
      * @return static[]
      */
-    public static function select($where = null): array
+    public static function select(array|callable|null $where = null): array
     {
         $realClassName = static::__getRealClassName();
         $query = static::query();
@@ -879,11 +877,8 @@ abstract class Model extends BaseModel
 
     /**
      * 处理保存的数据.
-     *
-     * @param object|array $data
-     * @param static|null  $object
      */
-    private static function parseSaveData($data, string $type, ?self $object = null): LazyArrayObject
+    private static function parseSaveData(object|array $data, string $type, ?self $object = null): LazyArrayObject
     {
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();

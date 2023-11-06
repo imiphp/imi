@@ -16,11 +16,7 @@ class TestArrayListItem
      */
     public $name;
 
-    /**
-     * @param mixed $id
-     * @param mixed $name
-     */
-    public function __construct($id, $name)
+    public function __construct(mixed $id, mixed $name)
     {
         $this->id = $id;
         $this->name = $name;

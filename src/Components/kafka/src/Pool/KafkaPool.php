@@ -174,10 +174,8 @@ class KafkaPool
 
     /**
      * 使用连接池配置创建消费者.
-     *
-     * @param string|array|null $topic
      */
-    public static function createConsumer(?string $poolName = null, $topic = null, array $config = []): Consumer
+    public static function createConsumer(?string $poolName = null, string|array|null $topic = null, array $config = []): Consumer
     {
         if (Imi::checkAppType('swoole'))
         {

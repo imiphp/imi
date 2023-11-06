@@ -393,7 +393,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         $clientInfo = $this->swooleServer->getClientInfo($clientId);
         if (false === $clientInfo)

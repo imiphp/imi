@@ -23,10 +23,8 @@ interface IMessage
 
     /**
      * 设置主体数据.
-     *
-     * @param mixed $data
      */
-    public function setBodyData($data): self;
+    public function setBodyData(mixed $data): self;
 
     /**
      * 获取主体数据.

@@ -29,13 +29,11 @@ class RestController extends HttpController
     /**
      * find.
      *
-     * @param int $id
-     *
      * @return array
      */
     #[Action]
     #[Route(url: './{id}', method: ['GET'])]
-    public function find($id)
+    public function find(int $id)
     {
         return [
             'id' => $id,
@@ -45,13 +43,11 @@ class RestController extends HttpController
     /**
      * create.
      *
-     * @param string $name
-     *
      * @return array
      */
     #[Action]
     #[Route(url: '', method: ['POST'])]
-    public function create($name)
+    public function create(string $name)
     {
         return [
             'operation' => 'create',
@@ -63,14 +59,11 @@ class RestController extends HttpController
     /**
      * update.
      *
-     * @param int    $id
-     * @param string $name
-     *
      * @return array
      */
     #[Action]
     #[Route(url: './{id}', method: ['PUT'])]
-    public function update($id, $name)
+    public function update(int $id, string $name)
     {
         return [
             'id'        => $id,
@@ -83,13 +76,11 @@ class RestController extends HttpController
     /**
      * delete.
      *
-     * @param int $id
-     *
      * @return array
      */
     #[Action]
     #[Route(url: './{id}', method: ['DELETE'])]
-    public function delete($id)
+    public function delete(int $id)
     {
         return [
             'id'        => $id,

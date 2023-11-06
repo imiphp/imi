@@ -21,10 +21,7 @@ class CursorResult implements \IteratorAggregate
      */
     protected bool $isSuccess = false;
 
-    /**
-     * @param \Imi\Db\Interfaces\IStatement|bool $statement
-     */
-    public function __construct($statement,
+    public function __construct(IStatement|bool $statement,
         /**
          * 查询结果类的类名，为null则为数组.
          */

@@ -178,7 +178,7 @@ class MemoryTable implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function bind(string $flag, $clientId): void
+    public function bind(string $flag, int|string $clientId): void
     {
         $this->lock((string) $clientId, function () use ($flag, $clientId): void {
             $data = $this->read((string) $clientId);
@@ -193,7 +193,7 @@ class MemoryTable implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function bindNx(string $flag, $clientId): bool
+    public function bindNx(string $flag, int|string $clientId): bool
     {
         $result = $this->useRedis(fn (RedisHandler $redis) => $redis->hSetNx($this->key . ':binder', $flag, $clientId));
         if ($result)
@@ -211,7 +211,7 @@ class MemoryTable implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
+    public function unbind(string $flag, int|string $clientId, ?int $keepTime = null): void
     {
         $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime): void {
             $key = $this->key . ':binder';
@@ -255,7 +255,7 @@ class MemoryTable implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function getFlagByClientId($clientId): ?string
+    public function getFlagByClientId(int|string $clientId): ?string
     {
         return $this->read((string) $clientId)['__flag'] ?? null;
     }

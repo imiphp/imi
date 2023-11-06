@@ -20,7 +20,7 @@ class Xml implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
+    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, mixed $data, IHttpResponse $response): IHttpResponse
     {
         $response->setHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
         if ($data instanceof \DOMDocument)

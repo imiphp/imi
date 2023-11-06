@@ -15,7 +15,7 @@ interface ISwooleServerUtil extends IServerUtil
      *
      * @param int|int[]|null $workerId
      */
-    public function sendMessage(string $action, array $data = [], $workerId = null): int;
+    public function sendMessage(string $action, array $data = [], int|array|null $workerId = null): int;
 
     /**
      * 发送消息给 Worker 进程.
@@ -24,5 +24,5 @@ interface ISwooleServerUtil extends IServerUtil
      *
      * @param int|int[]|null $workerId
      */
-    public function sendMessageRaw(string $message, $workerId = null): int;
+    public function sendMessageRaw(string $message, int|array|null $workerId = null): int;
 }

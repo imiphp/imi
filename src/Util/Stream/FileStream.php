@@ -24,7 +24,7 @@ class FileStream implements StreamInterface, \Stringable
     /**
      * @param string|resource|Uri $uri
      */
-    public function __construct($uri,
+    public function __construct(mixed $uri,
         /**
          * 流访问类型.
          */

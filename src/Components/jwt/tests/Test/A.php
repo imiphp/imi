@@ -11,25 +11,19 @@ use Imi\JWT\Annotation\JWTValidation;
 class A
 {
     /**
-     * @param \Lcobucci\JWT\Token $token
-     * @param \stdClass           $data
-     *
      * @return array
      */
     #[JWTValidation(tokenParam: 'token', dataParam: 'data')]
-    public function test($token = null, $data = null)
+    public function test(?\Lcobucci\JWT\Token $token = null, ?\stdClass $data = null)
     {
         return [$token, $data];
     }
 
     /**
-     * @param \Lcobucci\JWT\Token $token
-     * @param \stdClass           $data
-     *
      * @return array
      */
     #[JWTValidation(name: 'b', tokenParam: 'token', dataParam: 'data')]
-    public function testFail($token = null, $data = null)
+    public function testFail(?\Lcobucci\JWT\Token $token = null, ?\stdClass $data = null)
     {
         return [$token, $data];
     }

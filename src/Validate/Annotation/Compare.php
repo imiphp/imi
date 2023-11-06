@@ -18,10 +18,8 @@ class Compare extends Condition
         public string $message = '{name} validate failed',
         /**
          * 验证回调.
-         *
-         * @var array|callable
          */
-        public $callable = '\\Imi\\Validate\\ValidatorHelper::compare',
+        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::compare',
         public array $args = ['{:value}', '{operation}', '{value}'],
         public ?string $exception = null,
         public ?int $exCode = null,

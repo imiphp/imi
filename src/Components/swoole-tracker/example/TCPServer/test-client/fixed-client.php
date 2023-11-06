@@ -40,10 +40,7 @@ Swoole\Coroutine\run(static function (): void {
     }
 });
 
-/**
- * @param mixed $data
- */
-function sendData(Client $client, $data): mixed
+function sendData(Client $client, string $data): mixed
 {
     $data = pack('N', \strlen($data)) . $data;
 

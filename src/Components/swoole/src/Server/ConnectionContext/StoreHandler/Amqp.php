@@ -14,7 +14,7 @@ class Amqp extends Local
     /**
      * {@inheritDoc}
      */
-    public function bind(string $flag, $clientId): void
+    public function bind(string $flag, int|string $clientId): void
     {
         $needBind = !$this->getClientIdByFlag($flag);
         parent::bind($flag, $clientId);
@@ -29,7 +29,7 @@ class Amqp extends Local
     /**
      * {@inheritDoc}
      */
-    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
+    public function unbind(string $flag, int|string $clientId, ?int $keepTime = null): void
     {
         parent::unbind($flag, $clientId, $keepTime);
         if (!$this->getClientIdByFlag($flag))

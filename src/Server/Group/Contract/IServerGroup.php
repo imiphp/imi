@@ -25,17 +25,13 @@ interface IServerGroup
 
     /**
      * 加入组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
      */
-    public function joinGroup(string $groupName, $clientId): void;
+    public function joinGroup(string $groupName, int|string $clientId): void;
 
     /**
      * 离开组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
      */
-    public function leaveGroup(string $groupName, $clientId): void;
+    public function leaveGroup(string $groupName, int|string $clientId): void;
 
     /**
      * 调用组方法.

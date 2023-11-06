@@ -30,8 +30,6 @@ class CronTask
 
     /**
      * 构造方法.
-     *
-     * @param callable|string $task
      */
     public function __construct(
         /**
@@ -43,7 +41,7 @@ class CronTask
          *
          * \Imi\Cron\Consts\CronTaskType 类常量
          */
-        private readonly string $type, $task, array $cronRules,
+        private readonly string $type, callable|string $task, array $cronRules,
         /**
          * 数据.
          */

@@ -29,7 +29,7 @@ class DotEnv
      * @param string|string[]      $paths
      * @param string|string[]|null $names
      */
-    public static function create(RepositoryInterface $repository, $paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null): \Dotenv\Dotenv
+    public static function create(RepositoryInterface $repository, string|array $paths, string|array|null $names = null, bool $shortCircuit = true, string $fileEncoding = null): \Dotenv\Dotenv
     {
         $builder = null === $names ? StoreBuilder::createWithDefaultName() : StoreBuilder::createWithNoNames();
 

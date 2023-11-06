@@ -10,6 +10,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Event\Event;
+use Imi\Model\BaseModel;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\BeforeDeleteEventParam;
@@ -27,10 +28,7 @@ trait TSoftDelete
         return time();
     }
 
-    /**
-     * @param string|object $object
-     */
-    public static function __getSoftDeleteAnnotation($object = null): SoftDelete
+    public static function __getSoftDeleteAnnotation(string|BaseModel|null $object = null): SoftDelete
     {
         if ($object)
         {

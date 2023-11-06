@@ -29,9 +29,6 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
      */
     protected array $result = [];
 
-    /**
-     * @param \Swoole\Coroutine\MySQL\Statement|array $statement
-     */
     public function __construct(
         /**
          * 数据库操作对象
@@ -40,7 +37,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * Statement.
          */
-        protected $statement,
+        protected \Swoole\Coroutine\MySQL\Statement|array $statement,
         /**
          * 最后执行过的SQL语句.
          */

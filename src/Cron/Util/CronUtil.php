@@ -43,10 +43,8 @@ class CronUtil
 
     /**
      * 增加 Cron 任务
-     *
-     * @param callable|string $task
      */
-    public static function addCron(Cron $cron, $task): void
+    public static function addCron(Cron $cron, callable|string $task): void
     {
         $client = new Client([
             // @phpstan-ignore-next-line

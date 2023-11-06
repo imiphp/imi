@@ -97,10 +97,8 @@ class WSRoute implements IRoute
 
     /**
      * 检查条件是否匹配.
-     *
-     * @param array|object $data
      */
-    private function checkCondition($data, WSRouteAnnotation $annotation): bool
+    private function checkCondition(array|object $data, WSRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

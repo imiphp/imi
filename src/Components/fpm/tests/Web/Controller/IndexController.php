@@ -65,33 +65,24 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function renderHtml1()
+    public function renderHtml1(): mixed
     {
         return $this->__render('test/a', [
             'name'  => 'yurun',
         ]);
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function renderHtml2()
+    public function renderHtml2(): mixed
     {
         return $this->__render(\dirname(__DIR__, 2) . '/template/b.html', [
             'name'  => 'imi',
         ]);
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function info()
+    public function info(): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -134,13 +125,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @param mixed $get
-     * @param mixed $post
-     * @param mixed $parsedBody
-     */
     #[Action]
-    public function info3($get, $post, $parsedBody, int $default = 19260817): array
+    public function info3(mixed $get, mixed $post, mixed $parsedBody, int $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -153,11 +139,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function cookie()
+    public function cookie(): mixed
     {
         return RequestContext::get('response')->withCookie('a', '1')
                                             ->withCookie('b', '2', time() + 1)
@@ -169,11 +152,8 @@ class IndexController extends HttpController
         ;
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function headers()
+    public function headers(): mixed
     {
         return RequestContext::get('response')->withHeader('a', '1')
                                          ->withAddedHeader('a', '11')
@@ -192,11 +172,8 @@ class IndexController extends HttpController
         return [];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function redirect()
+    public function redirect(): mixed
     {
         return RequestContext::get('response')->redirect('/', StatusCode::MOVED_PERMANENTLY);
     }
@@ -265,11 +242,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function singletonResponse1()
+    public function singletonResponse1(): mixed
     {
         $response = ResponseProxy::__getProxyInstance();
         $response->getBody()->write('imi niubi-1');

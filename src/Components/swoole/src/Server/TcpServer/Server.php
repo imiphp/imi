@@ -227,7 +227,7 @@ class Server extends Base implements ISwooleTcpServer
     /**
      * {@inheritDoc}
      */
-    public function send($clientId, string $data): bool
+    public function send(int|string $clientId, string $data): bool
     {
         return $this->getSwooleServer()->send((int) $clientId, $data);
     }

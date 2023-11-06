@@ -59,11 +59,11 @@ trait TTreeModel
      *
      * 非递归实现，相比递归实现性能更高，更省内存
      *
-     * @param mixed|array|null $parentId
-     * @param bool             $includeParentId 包含父级ID
-     * @param int              $limitLevel      限制层级
+     * @param mixed|mixed[]|null $parentId
+     * @param bool               $includeParentId 包含父级ID
+     * @param int                $limitLevel      限制层级
      */
-    public function getChildrenIds($parentId = null, bool $includeParentId = false, int $limitLevel = -1): array
+    public function getChildrenIds(mixed $parentId = null, bool $includeParentId = false, int $limitLevel = -1): array
     {
         $idField = self::__getIdField();
         if (\is_array($parentId))
@@ -117,9 +117,9 @@ trait TTreeModel
     /**
      * 获取一级子节点的ID们.
      *
-     * @param mixed|array|null $parentId
+     * @param mixed|mixed[]|null $parentId
      */
-    public function getChildIds($parentId = null): array
+    public function getChildIds(mixed $parentId = null): array
     {
         $idField = self::__getIdField();
 
@@ -129,11 +129,11 @@ trait TTreeModel
     /**
      * 获取子成员对象列表，可以指定层级，默认无限级.
      *
-     * @param mixed|array|null $parentId
+     * @param mixed|mixed[]|null $parentId
      *
      * @return static[]
      */
-    public function getChildrenList($parentId = null, int $limitLevel = -1): array
+    public function getChildrenList(mixed $parentId = null, int $limitLevel = -1): array
     {
         $ids = $this->getChildrenIds($parentId, false, $limitLevel);
         if (!$ids)

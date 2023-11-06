@@ -76,8 +76,6 @@ interface IServer extends IEvent
 
     /**
      * 获取客户端地址
-     *
-     * @param string|int $clientId
      */
-    public function getClientAddress($clientId): IPEndPoint;
+    public function getClientAddress(int|string $clientId): IPEndPoint;
 }

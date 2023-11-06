@@ -6,21 +6,17 @@ namespace Imi\Swoole\Http\Message;
 
 use Imi\Server\Http\Message\Request;
 use Imi\Swoole\Server\Base;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
 class SwooleRequest extends Request
 {
-    /**
-     * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $serverInstance
-     */
     public function __construct(
         /**
          * 对应的服务器.
          */
-        protected ?ISwooleServer $serverInstance,
+        protected \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server|null $serverInstance,
         /**
          * swoole的http请求对象
          */

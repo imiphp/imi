@@ -15,10 +15,8 @@ class ClassObject
 
     /**
      * 是否是匿名类对象
-     *
-     * @param object|string $object
      */
-    public static function isAnymous($object): bool
+    public static function isAnymous(object|string $object): bool
     {
         if (!\is_string($object))
         {

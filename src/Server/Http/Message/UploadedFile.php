@@ -25,9 +25,6 @@ class UploadedFile implements UploadedFileInterface
      */
     protected bool $isMoved = false;
 
-    /**
-     * @param string|StreamInterface $tmpFileName
-     */
     public function __construct(
         /**
          * 文件在客户端时的文件名.
@@ -36,7 +33,7 @@ class UploadedFile implements UploadedFileInterface
         /**
          * 文件mime类型.
          */
-        protected string $mediaType, $tmpFileName,
+        protected string $mediaType, string|StreamInterface $tmpFileName,
         /**
          * 文件大小，单位：字节
          */

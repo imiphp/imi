@@ -262,14 +262,11 @@ class RedisHandler
      */
     private $auth = null;
 
-    /**
-     * @param \Redis|\RedisCluster $redis
-     */
     public function __construct(
         /**
          * redis 对象
          */
-        private $redis)
+        private \Redis|\RedisCluster $redis)
     {
         if (!$this->isCluster() && $redis->isConnected())
         {
@@ -527,11 +524,8 @@ class RedisHandler
      * 如下链接，官方认为这不算 BUG，所以这里做了一个兼容处理
      *
      * @see https://github.com/phpredis/phpredis/issues/1549
-     *
-     * @param float|string $lng
-     * @param float|string $lat
      */
-    public function geoadd(string $key, $lng, $lat, string $member, mixed ...$other_triples_and_options): mixed
+    public function geoadd(string $key, float|string $lng, float|string $lat, string $member, mixed ...$other_triples_and_options): mixed
     {
         $redis = $this->redis;
         $serializer = $redis->getOption(\Redis::OPT_SERIALIZER);

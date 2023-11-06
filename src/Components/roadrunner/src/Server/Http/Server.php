@@ -328,7 +328,7 @@ class Server extends BaseServer
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         return new IPEndPoint($_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT'] ?? 0);
     }

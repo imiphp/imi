@@ -33,13 +33,10 @@ class IndexController extends HttpController
     /**
      * 测试登录.
      *
-     * @param string $phone
-     * @param string $password
-     *
      * @return mixed
      */
     #[Action]
-    public function testLogin($phone, $password)
+    public function testLogin(string $phone, string $password)
     {
         $request = new LoginRequest();
         $request->setPhone($phone);

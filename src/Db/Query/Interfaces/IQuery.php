@@ -183,11 +183,9 @@ interface IQuery extends IBaseWhereCollector
      * 1. id desc, age asc
      * 2. ['id'=>'desc', 'age'] // 缺省asc.
      *
-     * @param string|array $raw
-     *
      * @return static
      */
-    public function orderRaw($raw, array $binds = []): self;
+    public function orderRaw(string|array $raw, array $binds = []): self;
 
     /**
      * 设置分页
@@ -330,60 +328,44 @@ interface IQuery extends IBaseWhereCollector
 
     /**
      * 构建插入语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildInsertSql($data = null): string;
+    public function buildInsertSql(array|object|null $data = null): string;
 
     /**
      * 插入记录.
-     *
-     * @param array|object|null $data
      */
-    public function insert($data = null): IResult;
+    public function insert(array|object|null $data = null): IResult;
 
     /**
      * 构建批量插入语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildBatchInsertSql($data = null): string;
+    public function buildBatchInsertSql(array|object|null $data = null): string;
 
     /**
      * 批量插入数据
      * 以首个成员作为字段标准.
-     *
-     * @param array|object|null $data
      */
-    public function batchInsert($data = null): IResult;
+    public function batchInsert(array|object|null $data = null): IResult;
 
     /**
      * 构建更新语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildUpdateSql($data = null): string;
+    public function buildUpdateSql(array|object|null $data = null): string;
 
     /**
      * 更新数据.
-     *
-     * @param array|object|null $data
      */
-    public function update($data = null): IResult;
+    public function update(array|object|null $data = null): IResult;
 
     /**
      * 构建替换语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildReplaceSql($data = null, array $uniqueFields = []): string;
+    public function buildReplaceSql(array|object|null $data = null, array $uniqueFields = []): string;
 
     /**
      * 替换数据（Replace）.
-     *
-     * @param array|object|null $data
      */
-    public function replace($data = null, array $uniqueFields = []): IResult;
+    public function replace(array|object|null $data = null, array $uniqueFields = []): IResult;
 
     /**
      * 构建删除语句.
@@ -441,11 +423,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 设置update/insert/replace数据.
      *
-     * @param array|\Imi\Db\Query\Interfaces\IQuery $data
-     *
      * @return static
      */
-    public function setData($data): self;
+    public function setData(array $data): self;
 
     /**
      * 设置update/insert/replace的字段.
@@ -492,11 +472,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 加锁
      *
-     * @param int|string|bool|null $value
-     *
      * @return static
      */
-    public function lock($value): self;
+    public function lock(int|string|bool|null $value): self;
 
     /**
      * 设置结果集类名.

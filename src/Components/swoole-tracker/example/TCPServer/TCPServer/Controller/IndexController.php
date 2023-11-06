@@ -16,14 +16,10 @@ class IndexController extends \Imi\Controller\TcpController
 {
     /**
      * 发送消息.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
     #[TcpAction]
     #[TcpRoute(condition: ['action' => 'send'])]
-    public function send($data)
+    public function send(mixed $data): array
     {
         $address = $this->data->getClientAddress();
         $message = '[' . $address->getAddress() . ':' . $address->getPort() . ']: ' . $data->message;

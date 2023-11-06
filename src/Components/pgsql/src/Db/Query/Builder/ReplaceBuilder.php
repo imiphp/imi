@@ -6,7 +6,7 @@ namespace Imi\Pgsql\Db\Query\Builder;
 
 class ReplaceBuilder extends InsertBuilder
 {
-    public function build(...$args): string
+    public function build(mixed ...$args): string
     {
         [, $uniqueFields] = $args;
         if (!$uniqueFields)

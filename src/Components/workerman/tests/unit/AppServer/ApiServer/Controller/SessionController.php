@@ -51,11 +51,8 @@ class SessionController extends HttpController
         Session::set('vcode', '1234');
     }
 
-    /**
-     * @param string $vcode
-     */
     #[Action]
-    public function verifySms($vcode = ''): array
+    public function verifySms(string $vcode = ''): array
     {
         $storeVcode = Session::once('vcode');
 

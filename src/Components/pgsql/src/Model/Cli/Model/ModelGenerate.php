@@ -22,9 +22,6 @@ class ModelGenerate extends BaseCommand
     /**
      * Postgresql 模型生成.
      * 如果设置了`include`或`exclude`，则按照相应规则过滤表。
-     *
-     * @param string|bool $override
-     * @param string|bool $config
      */
     #[CommandAction(name: 'pgModel')]
     #[Argument(name: 'namespace', type: \Imi\Cli\ArgType::STRING, required: true, comments: '生成的Model所在命名空间')]
@@ -41,7 +38,7 @@ class ModelGenerate extends BaseCommand
     #[Option(name: 'lengthCheck', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否检查字符串字段长度,可选')]
     #[Option(name: 'bean', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型对象是否作为 bean 类使用', default: true)]
     #[Option(name: 'incrUpdate', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型是否启用增量更新', default: false)]
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $lengthCheck, bool $bean, bool $incrUpdate): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, string|bool $override, string|bool $config, ?string $basePath, bool $entity, bool $lengthCheck, bool $bean, bool $incrUpdate): void
     {
         $db = Db::getInstance($poolName);
         $tablePrefix = $db->getOption()['prefix'] ?? '';

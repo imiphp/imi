@@ -407,7 +407,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         /** @var TcpConnection|null $connection */
         $connection = $this->worker->connections[$clientId] ?? null;

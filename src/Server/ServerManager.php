@@ -54,7 +54,7 @@ class ServerManager
      *
      * @template T of IServer
      *
-     * @param class-string<T>|null $class
+     * @param class-string<T> $class
      *
      * @return T|null
      */

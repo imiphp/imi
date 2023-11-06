@@ -53,11 +53,8 @@ class ValidatorHelper
 
     /**
      * 数值验证，允许整数和小数.
-     *
-     * @param float|int|null $min
-     * @param float|int|null $max
      */
-    public static function number(mixed $value, $min = null, $max = null, ?int $accuracy = null): bool
+    public static function number(mixed $value, string|float|int|null $min = null, string|float|int|null $max = null, ?int $accuracy = null): bool
     {
         if (!is_numeric($value))
         {
@@ -213,68 +210,48 @@ class ValidatorHelper
 
     /**
      * 在两个数之间，不包含这2个数字.
-     *
-     * @param float|int $value
-     * @param float|int $max
-     * @param float|int $min
      */
-    public static function between($value, $min, $max): bool
+    public static function between(string|float|int $value, string|float|int $min, string|float|int $max): bool
     {
         return $value > $min && $value < $max;
     }
 
     /**
      * 在两个数之间，包含这2个数字.
-     *
-     * @param float|int $value
-     * @param float|int $max
-     * @param float|int $min
      */
-    public static function betweenEqual($value, $min, $max): bool
+    public static function betweenEqual(string|float|int $value, string|float|int $min, string|float|int $max): bool
     {
         return $value >= $min && $value <= $max;
     }
 
     /**
      * 小于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function lt($value, $num): bool
+    public static function lt(string|float|int $value, string|float|int $num): bool
     {
         return $value < $num;
     }
 
     /**
      * 小于等于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function ltEqual($value, $num): bool
+    public static function ltEqual(string|float|int $value, string|float|int $num): bool
     {
         return $value <= $num;
     }
 
     /**
      * 大于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function gt($value, $num): bool
+    public static function gt(string|float|int $value, string|float|int $num): bool
     {
         return $value > $num;
     }
 
     /**
      * 大于等于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function gtEqual($value, $num): bool
+    public static function gtEqual(string|float|int $value, string|float|int $num): bool
     {
         return $value >= $num;
     }
@@ -316,10 +293,8 @@ class ValidatorHelper
 
     /**
      * 值在范围内.
-     *
-     * @param string|array $list
      */
-    public static function in(mixed $value, $list): bool
+    public static function in(mixed $value, string|array $list): bool
     {
         if (!\is_array($list))
         {
@@ -331,10 +306,8 @@ class ValidatorHelper
 
     /**
      * 值不在范围内.
-     *
-     * @param string|array $list
      */
-    public static function notIn(mixed $value, $list): bool
+    public static function notIn(mixed $value, string|array $list): bool
     {
         if (!\is_array($list))
         {
@@ -373,11 +346,9 @@ class ValidatorHelper
         /**
          * 计算身份证校验码，根据国家标准GB 11643-1999.
          *
-         * @param string $idcard_base
-         *
          * @return int|false
          */
-        $idcard_verify_number = static function () use (&$id_card) {
+        $idcard_verify_number = static function () use (&$id_card): string|bool {
             if (17 !== \strlen($id_card))
             {
                 return false;
@@ -393,9 +364,8 @@ class ValidatorHelper
                 $checksum += (int) $id_card[$i] * $factor[$i];
             }
             $mod = $checksum % 11;
-            $verify_number = $verify_number_list[$mod];
 
-            return $verify_number;
+            return $verify_number_list[$mod];
         };
         /**
          * 18位身份证校验码有效性检查.

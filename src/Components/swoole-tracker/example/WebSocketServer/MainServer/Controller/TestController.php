@@ -20,14 +20,10 @@ class TestController extends WebSocketController
 {
     /**
      * 登录.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
     #[WSAction]
     #[WSRoute(condition: ['action' => 'login'])]
-    public function login($data)
+    public function login(mixed $data): mixed
     {
         ConnectionContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getClientId());
@@ -37,13 +33,11 @@ class TestController extends WebSocketController
 
     /**
      * 发送消息.
-     *
-     * @param mixed $data
      */
     #[WSAction]
     #[WSRoute(condition: ['action' => 'send'])]
     #[WSMiddleware(middlewares: 'Imi\\SwooleTracker\\Example\\WebSocketServer\\MainServer\\Middleware\\Test')]
-    public function send($data): void
+    public function send(mixed $data): void
     {
         $message = ConnectionContext::get('username') . ':' . $data->message;
         Server::sendToGroup('g1', $message);
@@ -51,28 +45,20 @@ class TestController extends WebSocketController
 
     /**
      * 多级参数的路由定位.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
     #[WSAction]
     #[WSRoute(condition: ['a.b.c' => 'test1'])]
-    public function test1($data)
+    public function test1(mixed $data): mixed
     {
         return ['data' => $data];
     }
 
     /**
      * 多个参数条件的路由定位.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
     #[WSAction]
     #[WSRoute(condition: ['a' => '1', 'b' => 2])]
-    public function test2($data)
+    public function test2(mixed $data): mixed
     {
         return ['data' => $data];
     }

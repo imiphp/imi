@@ -19,10 +19,7 @@ class DelayServerBeanCallable
 
     private ?object $instance = null;
 
-    /**
-     * @param string|IServer $server
-     */
-    public function __construct($server, private readonly string $beanName, private readonly string $methodName, private readonly array $constructArgs = [])
+    public function __construct(string|IServer $server, private readonly string $beanName, private readonly string $methodName, private readonly array $constructArgs = [])
     {
         if (\is_string($server))
         {

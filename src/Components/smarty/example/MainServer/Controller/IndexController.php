@@ -43,11 +43,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function ping()
+    public function ping(): mixed
     {
         $this->response->getBody()->write('pong');
 

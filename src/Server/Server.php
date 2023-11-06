@@ -136,7 +136,7 @@ class Server
      * @param int|int[]|string|string[]|null $clientId
      * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function close(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         return static::getInstance($serverName)->close($clientId, $serverName, $toAllWorkers);
     }
@@ -147,17 +147,15 @@ class Server
      * @param string|string[]|null $flag
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function closeByFlag(string|array|null $flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         return static::getInstance($serverName)->closeByFlag($flag, $serverName, $toAllWorkers);
     }
 
     /**
      * 连接是否存在.
-     *
-     * @param string|int|null $clientId
      */
-    public static function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    public static function exists(int|string|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
         return static::getInstance($serverName)->exists($clientId, $serverName, $toAllWorkers);
     }

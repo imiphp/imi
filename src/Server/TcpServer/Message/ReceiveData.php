@@ -22,14 +22,11 @@ class ReceiveData implements IReceiveData
      */
     protected ?IPEndPoint $clientAddress = null;
 
-    /**
-     * @param int|string $clientId
-     */
     public function __construct(
         /**
          * 客户端连接的标识符.
          */
-        protected $clientId,
+        protected int|string $clientId,
         /**
          * 接收到的数据.
          */

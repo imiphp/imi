@@ -539,10 +539,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * Get 元数据.
-     *
-     * @param string|object $object
      */
-    public static function __getMeta($object = null): Meta
+    public static function __getMeta(string|self|null $object = null): Meta
     {
         if ($object)
         {

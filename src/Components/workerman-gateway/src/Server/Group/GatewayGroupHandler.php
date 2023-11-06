@@ -47,7 +47,7 @@ class GatewayGroupHandler implements IGroupHandler
     /**
      * {@inheritDoc}
      */
-    public function joinGroup(string $groupName, $clientId): bool
+    public function joinGroup(string $groupName, int|string $clientId): bool
     {
         Gateway::joinGroup($clientId, $groupName);
 
@@ -57,7 +57,7 @@ class GatewayGroupHandler implements IGroupHandler
     /**
      * {@inheritDoc}
      */
-    public function leaveGroup(string $groupName, $clientId): bool
+    public function leaveGroup(string $groupName, int|string $clientId): bool
     {
         Gateway::leaveGroup($clientId, $groupName);
 
@@ -67,7 +67,7 @@ class GatewayGroupHandler implements IGroupHandler
     /**
      * {@inheritDoc}
      */
-    public function isInGroup(string $groupName, $clientId): bool
+    public function isInGroup(string $groupName, int|string $clientId): bool
     {
         return isset(Gateway::getClientIdListByGroup($groupName)[$clientId]);
     }

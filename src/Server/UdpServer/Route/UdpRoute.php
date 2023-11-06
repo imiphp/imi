@@ -78,10 +78,8 @@ class UdpRoute implements IRoute
 
     /**
      * 检查条件是否匹配.
-     *
-     * @param array|object $data
      */
-    private function checkCondition($data, UdpRouteAnnotation $annotation): bool
+    private function checkCondition(array|object $data, UdpRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

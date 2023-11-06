@@ -15,8 +15,6 @@ interface IBuilder
 
     /**
      * 生成SQL语句.
-     *
-     * @param mixed $args
      */
-    public function build(...$args): string;
+    public function build(mixed ...$args): string;
 }

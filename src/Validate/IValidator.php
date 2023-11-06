@@ -8,17 +8,13 @@ interface IValidator
 {
     /**
      * 设置验证器中的数据.
-     *
-     * @param array|object $data
      */
-    public function setData(&$data): void;
+    public function setData(array|object &$data): void;
 
     /**
      * 获取验证器中的数据.
-     *
-     * @return array|object
      */
-    public function getData();
+    public function getData(): array|object;
 
     /**
      * 设置校验规则.

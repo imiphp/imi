@@ -19,10 +19,8 @@ class ProtobufUtil
 {
     /**
      * 向 Grpc Message 对象设置值，每次设置前会清空所有的值
-     *
-     * @param array|object $data
      */
-    public static function setMessageData(Message $message, $data, bool $ignoreUnknown = false): void
+    public static function setMessageData(Message $message, array|object $data, bool $ignoreUnknown = false): void
     {
         $message->clear();
         if (\is_object($data))
@@ -39,10 +37,8 @@ class ProtobufUtil
 
     /**
      * 实例化并初始化一个消息.
-     *
-     * @param array|object $data
      */
-    public static function newMessage(string $messageClass, $data): Message
+    public static function newMessage(string $messageClass, array|object $data): Message
     {
         $message = new $messageClass();
         self::setMessageData($message, $data, true);
@@ -71,7 +67,7 @@ class ProtobufUtil
      *
      * @param Message|\Traversable|mixed $message
      */
-    public static function getMessageValue($message, array $options = []): mixed
+    public static function getMessageValue(mixed $message, array $options = []): mixed
     {
         if ($message instanceof \Google\Protobuf\Any)
         {

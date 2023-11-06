@@ -51,7 +51,7 @@ class Html implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
+    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, mixed $data, IHttpResponse $response): IHttpResponse
     {
         if (!$viewOption instanceof HtmlView)
         {

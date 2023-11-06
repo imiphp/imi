@@ -51,10 +51,7 @@ class GrpcInterfaceManager
         }
     }
 
-    /**
-     * @param string|\ReflectionClass $interface
-     */
-    public function bind($interface, ?string $serviceName = null): void
+    public function bind(string|\ReflectionClass $interface, ?string $serviceName = null): void
     {
         if (\is_string($interface))
         {
@@ -104,10 +101,7 @@ class GrpcInterfaceManager
         $this->interfaces[$interfaceName] = $interfaceItem;
     }
 
-    /**
-     * @param string|\ReflectionClass $interface
-     */
-    public function parseServiceNameByInterface($interface): ?string
+    public function parseServiceNameByInterface(string|\ReflectionClass $interface): ?string
     {
         if (\is_string($interface))
         {

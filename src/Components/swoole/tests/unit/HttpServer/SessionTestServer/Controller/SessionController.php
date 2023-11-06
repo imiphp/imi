@@ -59,11 +59,8 @@ class SessionController extends HttpController
         ];
     }
 
-    /**
-     * @param string $vcode
-     */
     #[Action]
-    public function verifySms($vcode = ''): array
+    public function verifySms(string $vcode = ''): array
     {
         $storeVcode = Session::once('vcode');
 

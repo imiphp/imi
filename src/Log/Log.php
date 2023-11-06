@@ -18,20 +18,16 @@ class Log
 
     /**
      * Logs with an arbitrary level.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function log(mixed $level, $message, array $context = [], ?string $channelName = null): void
+    public static function log(mixed $level, string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->log($level, $message, $context);
     }
 
     /**
      * System is unusable.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function emergency($message, array $context = [], ?string $channelName = null): void
+    public static function emergency(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->emergency($message, $context);
     }
@@ -41,10 +37,8 @@ class Log
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function alert($message, array $context = [], ?string $channelName = null): void
+    public static function alert(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->alert($message, $context);
     }
@@ -53,10 +47,8 @@ class Log
      * Critical conditions.
      *
      * Example: Application component unavailable, unexpected exception.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function critical($message, array $context = [], ?string $channelName = null): void
+    public static function critical(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->critical($message, $context);
     }
@@ -64,10 +56,8 @@ class Log
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function error($message, array $context = [], ?string $channelName = null): void
+    public static function error(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->error($message, $context);
     }
@@ -77,20 +67,16 @@ class Log
      *
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function warning($message, array $context = [], ?string $channelName = null): void
+    public static function warning(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->warning($message, $context);
     }
 
     /**
      * Normal but significant events.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function notice($message, array $context = [], ?string $channelName = null): void
+    public static function notice(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->notice($message, $context);
     }
@@ -99,20 +85,16 @@ class Log
      * Interesting events.
      *
      * Example: User logs in, SQL logs.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function info($message, array $context = [], ?string $channelName = null): void
+    public static function info(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->info($message, $context);
     }
 
     /**
      * Detailed debug information.
-     *
-     * @param string|\Stringable|\Throwable $message
      */
-    public static function debug($message, array $context = [], ?string $channelName = null): void
+    public static function debug(string|\Stringable|\Throwable $message, array $context = [], ?string $channelName = null): void
     {
         self::get($channelName)->debug($message, $context);
     }

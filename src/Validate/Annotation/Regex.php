@@ -18,10 +18,8 @@ class Regex extends Condition
         public string $message = '{name} validate failed',
         /**
          * 验证回调.
-         *
-         * @var array|callable
          */
-        public $callable = '\\Imi\\Validate\\ValidatorHelper::regex',
+        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::regex',
         public array $args = ['{:value}', '{pattern}'],
         public ?string $exception = null,
         public ?int $exCode = null,

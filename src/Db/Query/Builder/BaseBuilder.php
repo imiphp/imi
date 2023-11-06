@@ -34,7 +34,7 @@ abstract class BaseBuilder implements IBuilder
     /**
      * {@inheritDoc}
      */
-    public function build(...$args): string
+    public function build(mixed ...$args): string
     {
         $this->params = [];
 

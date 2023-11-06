@@ -12,7 +12,7 @@ class SelectBuilder extends BaseBuilder
     /**
      * {@inheritDoc}
      */
-    public function build(...$args): string
+    public function build(mixed ...$args): string
     {
         parent::build(...$args);
         $query = $this->query;
@@ -38,10 +38,8 @@ class SelectBuilder extends BaseBuilder
 
     /**
      * lock.
-     *
-     * @param int|string|bool|null $lock
      */
-    public function parseLock($lock): string
+    public function parseLock(int|string|bool|null $lock): string
     {
         if (null === $lock || false === $lock)
         {

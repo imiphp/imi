@@ -6,10 +6,7 @@ namespace Imi\Swoole\Server\TcpServer\Message;
 
 class ReceiveData extends \Imi\Server\TcpServer\Message\ReceiveData
 {
-    /**
-     * @param int|string $clientId
-     */
-    public function __construct($clientId,
+    public function __construct(int|string $clientId,
         /**
          * Reactor线程ID.
          */
