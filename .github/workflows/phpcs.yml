@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lowercase Repo Owner
+      - name: Prepare#1
         run: |
           echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
           mkdir -p /tmp/base_cache/composer

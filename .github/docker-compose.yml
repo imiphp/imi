@@ -154,6 +154,8 @@ services:
   swoole-only:
     container_name: "swoole-only"
     image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole:${IMAGE_VERSION}
+    environment:
+      RUNNING_CI_RECTOR_CACHE_DIR: ${RUNNING_CI_RECTOR_CACHE_DIR}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/base_cache:/tmp/base_cache:rw"

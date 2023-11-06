@@ -47,7 +47,7 @@ analyze_component() {
 
   echo ./vendor/bin/phpstan analyse "${args[@]}"
 
-  PHPSTAN_ANALYSE_COMPONENT_NAME="$component" PHPSTAN_GENERATE_BASELINE="$gen_baseline" ./vendor/bin/phpstan analyse "${args[@]}"
+  PHPSTAN_ANALYSE_COMPONENT_NAME="$component" PHPSTAN_GENERATE_BASELINE="$gen_baseline" ./vendor/bin/phpstan analyse "${args[@]}" -vvv
 }
 
 use_baseline="false"

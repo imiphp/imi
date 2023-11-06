@@ -30,7 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lowercase Repo Owner
+      - name: Prepare#1
         run: |
           echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
           mkdir -p /tmp/base_cache/composer
@@ -44,15 +44,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-composer-
-
-      - name: Cache phpstan
-        uses: actions/cache@v3
-        with:
-          path: /tmp/base_cache/phpstan
-          key: ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/phpstan.neon', '**/phpstan-components.neon', '**/phpstan-baseline/*.neon') }}
-          restore-keys: |
-            ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-
-            ${{ runner.os }}-phpstan-
 
       - name: Prepare
         run: |
@@ -73,6 +64,15 @@ jobs:
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
           echo "::endgroup::"
           echo "test_prepared=1" >> $GITHUB_ENV
+
+      - name: Cache phpstan
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/phpstan
+          key: ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/phpstan.neon', '**/phpstan-components.neon', '**/phpstan-baseline/*.neon', '**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-phpstan-
 
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}
