@@ -16,24 +16,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tests:
-    runs-on: ubuntu-20.04
+  phpstan:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        swoole-docker: [5.0-php8.1]
+        swoole-docker: [php8.1-swoole-5.0]
     env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole-docker }}
-      POSTGRESQL_VERSION: ""
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      IMAGE_VERSION: ${{ matrix.swoole-docker }}
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Lowercase Repo Owner
+        run: |
+          echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
+          mkdir -p /tmp/base_cache/composer
+          mkdir -p /tmp/base_cache/phpstan
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/composer
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-composer-
+
+      - name: Cache phpstan
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/phpstan
+          key: ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/phpstan.neon', '**/phpstan-components.neon', '**/phpstan-baseline/*.neon') }}
+          restore-keys: |
+            ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-phpstan-
+
       - name: Prepare
         run: |
           echo "::group::Env prepare"
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} rm -rf /tmp/phpstan
+          docker exec ${ENV_SERVICE} ln -sf /tmp/base_cache/phpstan /tmp
           echo "::endgroup::"
           echo "::group::Env info"
           docker exec ${ENV_SERVICE} php -v
@@ -42,6 +68,7 @@ jobs:
           docker exec ${ENV_SERVICE} composer -V
           echo "::endgroup::"
           echo "::group::Composer install"
+          docker exec ${ENV_SERVICE} composer config --global cache-files-dir /tmp/base_cache/composer
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
           echo "::endgroup::"
@@ -151,3 +178,11 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./dev/phpstan.sh phar
+
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker exec ${ENV_SERVICE} ls -lha /tmp
+          docker exec ${ENV_SERVICE} ls -lha /tmp/phpstan
+          docker exec ${ENV_SERVICE} ls -lha /tmp/base_cache
+          docker exec ${ENV_SERVICE} ls -lha /tmp/base_cache/phpstan
