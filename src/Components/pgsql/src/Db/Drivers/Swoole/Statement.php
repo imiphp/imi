@@ -343,9 +343,6 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         return $this;
     }
 
-    /**
-     * @return mixed|false
-     */
     public function current(): mixed
     {
         return current($this->result);

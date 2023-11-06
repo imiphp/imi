@@ -10,20 +10,14 @@ use Imi\JWT\Annotation\JWTValidation;
 #[Bean(name: 'A')]
 class A
 {
-    /**
-     * @return array
-     */
     #[JWTValidation(tokenParam: 'token', dataParam: 'data')]
-    public function test(?\Lcobucci\JWT\Token $token = null, ?\stdClass $data = null)
+    public function test(?\Lcobucci\JWT\Token $token = null, ?\stdClass $data = null): array
     {
         return [$token, $data];
     }
 
-    /**
-     * @return array
-     */
     #[JWTValidation(name: 'b', tokenParam: 'token', dataParam: 'data')]
-    public function testFail(?\Lcobucci\JWT\Token $token = null, ?\stdClass $data = null)
+    public function testFail(?\Lcobucci\JWT\Token $token = null, ?\stdClass $data = null): array
     {
         return [$token, $data];
     }

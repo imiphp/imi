@@ -380,10 +380,8 @@ class ConnectionContext
 
     /**
      * 获取当前连接号.
-     *
-     * @return int|string|null
      */
-    public static function getClientId()
+    public static function getClientId(): int|string|null
     {
         return RequestContext::get('clientId');
     }

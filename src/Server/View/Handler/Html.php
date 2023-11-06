@@ -69,10 +69,8 @@ class Html implements IHandler
 
     /**
      * 获取模版文件真实路径，失败返回false.
-     *
-     * @return string|bool
      */
-    protected function getTemplateFilePath(HtmlView $viewOption)
+    protected function getTemplateFilePath(HtmlView $viewOption): string|bool
     {
         if (null !== $viewOption->template)
         {

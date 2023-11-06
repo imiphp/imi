@@ -21,12 +21,10 @@ class TransactionAop
 {
     /**
      * 自动事务支持
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Db\Annotation\Transaction::class])]
     #[Around]
-    public function parseTransaction(AroundJoinPoint $joinPoint)
+    public function parseTransaction(AroundJoinPoint $joinPoint): mixed
     {
         $target = $joinPoint->getTarget();
         $method = $joinPoint->getMethod();

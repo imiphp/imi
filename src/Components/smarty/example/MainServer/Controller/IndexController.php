@@ -14,14 +14,11 @@ use Imi\Server\View\Annotation\View;
 #[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
     #[View(renderType: 'html')]
     #[HtmlView(template: 'index')]
-    public function index()
+    public function index(): array
     {
         $datetime = date('Y-m-d H:i:s');
 
@@ -30,13 +27,10 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
     #[View(renderType: 'html')]
     #[HtmlView(template: 'test')]
-    public function test()
+    public function test(): array
     {
         return [
             'content'   => 'imi nb',

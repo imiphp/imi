@@ -63,7 +63,7 @@ class MQTTController extends BaseMQTTController
      *
      * @return \BinSoul\Net\Mqtt\Packet\PublishAckPacket|\BinSoul\Net\Mqtt\Packet\PublishReceivedPacket|\BinSoul\Net\Mqtt\Packet\PublishReleasePacket|\BinSoul\Net\Mqtt\Packet\PublishCompletePacket|null
      */
-    public function publish(PublishRequestPacket $request, ReceiveData $receiveData)
+    public function publish(PublishRequestPacket $request, ReceiveData $receiveData): mixed
     {
         switch ($request->getTopic())
         {

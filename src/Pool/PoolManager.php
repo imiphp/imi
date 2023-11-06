@@ -205,10 +205,8 @@ class PoolManager
 
     /**
      * 尝试获取资源，获取到则返回资源，没有获取到返回false.
-     *
-     * @return IPoolResource|bool
      */
-    public static function tryGetResource(string $name)
+    public static function tryGetResource(string $name): IPoolResource|bool
     {
         $resource = static::getInstance($name)->tryGetResource();
         if ($resource)

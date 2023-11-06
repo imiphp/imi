@@ -46,10 +46,8 @@ class TaskManager
     /**
      * 投递异步任务
      * 调用成功返回任务ID，失败返回false.
-     *
-     * @return int|bool
      */
-    public static function post(TaskInfo $taskInfo, int $workerId = -1)
+    public static function post(TaskInfo $taskInfo, int $workerId = -1): int|bool
     {
         return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
     }
@@ -57,10 +55,8 @@ class TaskManager
     /**
      * 使用任务名称投递异步任务
      * 调用成功返回任务ID，失败返回false.
-     *
-     * @return int|bool
      */
-    public static function nPost(string $name, mixed $data, int $workerId = -1)
+    public static function nPost(string $name, mixed $data, int $workerId = -1): int|bool
     {
         return static::post(self::getTaskInfo($name, $data), $workerId);
     }

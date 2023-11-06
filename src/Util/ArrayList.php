@@ -108,8 +108,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * json 序列化.
-     *
-     * @return array
      */
     public function jsonSerialize(): mixed
     {

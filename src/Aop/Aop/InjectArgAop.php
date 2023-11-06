@@ -18,12 +18,10 @@ class InjectArgAop
 {
     /**
      * 方法参数注入.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Aop\Annotation\InjectArg::class])]
     #[Around]
-    public function parse(AroundJoinPoint $joinPoint)
+    public function parse(AroundJoinPoint $joinPoint): mixed
     {
         $class = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();

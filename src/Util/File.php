@@ -17,10 +17,8 @@ class File
 
     /**
      * 枚举文件.
-     *
-     * @return \RecursiveIteratorIterator|array
      */
-    public static function enum(string $dirPath)
+    public static function enum(string $dirPath): \RecursiveIteratorIterator|array
     {
         if (!is_dir($dirPath))
         {
@@ -33,10 +31,8 @@ class File
 
     /**
      * 遍历文件和目录.
-     *
-     * @return \RecursiveIteratorIterator|\ArrayIterator
      */
-    public static function enumAll(string $dirPath)
+    public static function enumAll(string $dirPath): \RecursiveIteratorIterator|\ArrayIterator
     {
         if (!is_dir($dirPath))
         {
@@ -49,10 +45,8 @@ class File
 
     /**
      * 枚举php文件.
-     *
-     * @return \RegexIterator|\ArrayIterator
      */
-    public static function enumPHPFile(string $dirPath, string $pattern = '/^.+\.php$/i')
+    public static function enumPHPFile(string $dirPath, string $pattern = '/^.+\.php$/i'): \RegexIterator|\ArrayIterator
     {
         if (!is_dir($dirPath))
         {
@@ -346,10 +340,8 @@ class File
      * 如果目录不存在自动创建多级目录.
      *
      * @param resource $context
-     *
-     * @return int|false
      */
-    public static function putContents(string $fileName, string $data, int $flags = 0, $context = null)
+    public static function putContents(string $fileName, string $data, int $flags = 0, $context = null): int|false
     {
         $dir = \dirname($fileName);
         if (!static::createDir($dir))

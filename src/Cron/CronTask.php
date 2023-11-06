@@ -112,10 +112,8 @@ class CronTask
 
     /**
      * Get 任务执行回调，可以是callable类型，也可以是 task、process 名.
-     *
-     * @return string|callable
      */
-    public function getTask()
+    public function getTask(): string|callable
     {
         return $this->task;
     }

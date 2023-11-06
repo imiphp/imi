@@ -22,12 +22,10 @@ class CachePutAop
 
     /**
      * 处理 CachePut 注解.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Cache\Annotation\CachePut::class])]
     #[Around]
-    public function parseCachePut(AroundJoinPoint $joinPoint)
+    public function parseCachePut(AroundJoinPoint $joinPoint): mixed
     {
         $methodReturn = $joinPoint->proceed();
         $method = $joinPoint->getMethod();

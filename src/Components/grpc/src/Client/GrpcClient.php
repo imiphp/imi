@@ -152,10 +152,8 @@ class GrpcClient implements IRpcClient
      * 发送请求
      *
      * $metadata 格式：['key' => ['value']]
-     *
-     * @return int|bool
      */
-    public function send(string $package, string $service, string $name, \Google\Protobuf\Internal\Message $message, array $metadata = [])
+    public function send(string $package, string $service, string $name, \Google\Protobuf\Internal\Message $message, array $metadata = []): int|bool
     {
         if (!$this->isConnected())
         {

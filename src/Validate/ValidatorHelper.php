@@ -345,8 +345,6 @@ class ValidatorHelper
         $id_card = (string) $id_card;
         /**
          * 计算身份证校验码，根据国家标准GB 11643-1999.
-         *
-         * @return int|false
          */
         $idcard_verify_number = static function () use (&$id_card): string|bool {
             if (17 !== \strlen($id_card))

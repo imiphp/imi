@@ -34,12 +34,9 @@ class ReferenceBeanAspect
         Log::info(sprintf('after ReferenceBean::%s()', $joinPoint->getMethod()));
     }
 
-    /**
-     * @return mixed
-     */
     #[Around]
     #[PointCut(allow: ['Imi\\Test\\Component\\Bean\\ReferenceBean::*'])]
-    public function &around(AroundJoinPoint $joinPoint)
+    public function &around(AroundJoinPoint $joinPoint): mixed
     {
         Log::info(sprintf('around ReferenceBean::%s()', $joinPoint->getMethod()));
 

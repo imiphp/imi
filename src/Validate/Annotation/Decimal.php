@@ -19,7 +19,7 @@ class Decimal extends Condition
         /**
          * 验证回调.
          */
-        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::decimal',
+        public string|array|null $callable = '\\Imi\\Validate\\ValidatorHelper::decimal',
         public array $args = ['{:value}', '{min}', '{max}', '{accuracy}'],
         public ?string $exception = null,
         public ?int $exCode = null,

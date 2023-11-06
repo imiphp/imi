@@ -346,10 +346,7 @@ class HotUpdateProcess extends BaseProcess
         }
     }
 
-    /**
-     * @return array|bool
-     */
-    public function getProcess()
+    public function getProcess(): array|bool
     {
         return $this->process;
     }

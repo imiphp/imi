@@ -114,10 +114,8 @@ class Client
 
     /**
      * 接收结果.
-     *
-     * @return \Imi\Cron\Message\CommonMsg|bool
      */
-    public function recv()
+    public function recv(): CommonMsg|bool
     {
         if (!$this->connected || !$this->connect())
         {

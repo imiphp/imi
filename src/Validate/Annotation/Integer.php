@@ -19,7 +19,7 @@ class Integer extends Condition
         /**
          * 验证回调.
          */
-        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::int',
+        public string|array|null $callable = '\\Imi\\Validate\\ValidatorHelper::int',
         public array $args = ['{:value}', '{min}', '{max}'],
         public ?string $exception = null,
         public ?int $exCode = null,

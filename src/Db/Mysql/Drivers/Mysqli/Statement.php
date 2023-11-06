@@ -307,9 +307,6 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         return $this->statement;
     }
 
-    /**
-     * @return mixed|false
-     */
     public function current(): mixed
     {
         throw new DbException('Not support current()');

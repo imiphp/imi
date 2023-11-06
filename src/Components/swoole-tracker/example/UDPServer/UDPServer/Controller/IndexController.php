@@ -16,12 +16,10 @@ class IndexController extends \Imi\Controller\UdpController
 {
     /**
      * 登录.
-     *
-     * @return mixed
      */
     #[UdpAction]
     #[UdpRoute(condition: ['action' => 'hello'])]
-    public function hello()
+    public function hello(): array
     {
         return [
             'time'    => date($this->data->getFormatData()->format),

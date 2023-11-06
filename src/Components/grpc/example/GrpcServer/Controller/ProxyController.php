@@ -17,12 +17,9 @@ class ProxyController extends HttpController
     #[Inject(name: 'GrpcHttpProxy')]
     protected GrpcHttpProxy $grpcHttpProxy;
 
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: 'grpc/{service}/{method}')]
-    public function proxy(string $service, string $method)
+    public function proxy(string $service, string $method): mixed
     {
         return $this->grpcHttpProxy->proxy('grpc', $this->request, $this->response, $service, $method);
     }

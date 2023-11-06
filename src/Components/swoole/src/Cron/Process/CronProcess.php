@@ -84,10 +84,8 @@ class CronProcess extends BaseProcess
 
     /**
      * 一个返回数据的socket通道.
-     *
-     * @return int|false
      */
-    protected function answerClient(Connection $conn, mixed $msg)
+    protected function answerClient(Connection $conn, mixed $msg): int|false
     {
         if (!$msg instanceof IMessage)
         {

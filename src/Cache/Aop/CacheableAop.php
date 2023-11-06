@@ -24,12 +24,10 @@ class CacheableAop
 
     /**
      * 处理 Cacheable 注解.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Cache\Annotation\Cacheable::class])]
     #[Around]
-    public function parseCacheable(AroundJoinPoint $joinPoint)
+    public function parseCacheable(AroundJoinPoint $joinPoint): mixed
     {
         $target = $joinPoint->getTarget();
         $class = BeanFactory::getObjectClass($target);

@@ -266,9 +266,6 @@ trait TPdoStatement
         return $this->statement;
     }
 
-    /**
-     * @return mixed|false
-     */
     public function current(): mixed
     {
         // @phpstan-ignore-next-line

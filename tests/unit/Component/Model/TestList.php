@@ -28,8 +28,10 @@ class TestList extends TestListBase
      * 获取 list.
      *
      * @phpstan-ignore-next-line
+     *
+     * @return array|null
      */
-    public function getList(): ?array
+    public function getList()
     {
         return $this->list;
     }
@@ -43,7 +45,7 @@ class TestList extends TestListBase
      *
      * @return static
      */
-    public function setList(mixed $list): self
+    public function setList($list): self
     {
         $this->list = $list;
 

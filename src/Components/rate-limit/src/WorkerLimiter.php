@@ -110,7 +110,7 @@ class WorkerLimiter
      *
      * @param string $name 限流器名称
      */
-    public static function defaultCallback(string $name): never
+    public static function defaultCallback(string $name): void
     {
         throw new RateLimitException(sprintf('%s Worker Limit', $name));
     }

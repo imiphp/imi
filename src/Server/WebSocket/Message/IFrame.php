@@ -10,10 +10,8 @@ interface IFrame
 {
     /**
      * 获取客户端的socket id.
-     *
-     * @return int|string
      */
-    public function getClientId();
+    public function getClientId(): int|string;
 
     /**
      * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.

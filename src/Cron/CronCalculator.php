@@ -337,10 +337,8 @@ class CronCalculator
 
     /**
      * 处理 2n、3n……格式.
-     *
-     * @return int|false
      */
-    private function parseN(CronRule $cronRule, int $lastTime)
+    private function parseN(CronRule $cronRule, int $lastTime): int|false
     {
         if ($lastTime < 0)
         {

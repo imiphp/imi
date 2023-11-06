@@ -12,12 +12,9 @@ use Imi\Server\Http\Route\Annotation\Route;
 #[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         $this->response->getBody()->write('imi niubi');
 

@@ -24,11 +24,9 @@ trait TSingleton
     /**
      * 获取单例对象
      *
-     * @param array ...$args
-     *
      * @return static
      */
-    public static function getInstance(...$args): object
+    public static function getInstance(mixed ...$args): object
     {
         if (static::isChildClassSingleton())
         {

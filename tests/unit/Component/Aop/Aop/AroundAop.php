@@ -14,12 +14,9 @@ use PHPUnit\Framework\Assert;
 #[Aspect]
 class AroundAop
 {
-    /**
-     * @return mixed
-     */
     #[Around]
     #[PointCut(allow: ['Imi\\Test\\Component\\Aop\\Classes\\TestAroundClass::test'])]
-    public function injectAroundAop(AroundJoinPoint $joinPoint)
+    public function injectAroundAop(AroundJoinPoint $joinPoint): mixed
     {
         Assert::assertEquals([1], $joinPoint->getArgs());
         Assert::assertEquals('test', $joinPoint->getMethod());

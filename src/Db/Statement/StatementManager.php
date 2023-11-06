@@ -128,10 +128,8 @@ class StatementManager
      * 返回数组则代表获取成功
      * 返回 null 代表没有缓存
      * 返回 false 代表当前缓存不可用
-     *
-     * @return array|bool|null
      */
-    public static function get(IDb $db, string $sql)
+    public static function get(IDb $db, string $sql): array|bool|null
     {
         $hashCode = $db->hashCode();
         if (!isset(self::$statements[$hashCode][$sql]))

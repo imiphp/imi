@@ -19,7 +19,7 @@ class InEnum extends Condition
         /**
          * 验证回调.
          */
-        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::inEnum',
+        public string|array|null $callable = '\\Imi\\Validate\\ValidatorHelper::inEnum',
         public array $args = ['{:value}', '{enum}'],
         public ?string $exception = null,
         public ?int $exCode = null,

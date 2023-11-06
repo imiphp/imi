@@ -14,12 +14,10 @@ class RestController extends HttpController
 {
     /**
      * query.
-     *
-     * @return array
      */
     #[Action]
     #[Route(url: '', method: ['GET'])]
-    public function query()
+    public function query(): array
     {
         return [
             'list' => [1, 2, 3],
@@ -28,12 +26,10 @@ class RestController extends HttpController
 
     /**
      * find.
-     *
-     * @return array
      */
     #[Action]
     #[Route(url: './{id}', method: ['GET'])]
-    public function find(int $id)
+    public function find(int $id): array
     {
         return [
             'id' => $id,
@@ -42,12 +38,10 @@ class RestController extends HttpController
 
     /**
      * create.
-     *
-     * @return array
      */
     #[Action]
     #[Route(url: '', method: ['POST'])]
-    public function create(string $name)
+    public function create(string $name): array
     {
         return [
             'operation' => 'create',
@@ -58,12 +52,10 @@ class RestController extends HttpController
 
     /**
      * update.
-     *
-     * @return array
      */
     #[Action]
     #[Route(url: './{id}', method: ['PUT'])]
-    public function update(int $id, string $name)
+    public function update(int $id, string $name): array
     {
         return [
             'id'        => $id,
@@ -75,12 +67,10 @@ class RestController extends HttpController
 
     /**
      * delete.
-     *
-     * @return array
      */
     #[Action]
     #[Route(url: './{id}', method: ['DELETE'])]
-    public function delete(int $id)
+    public function delete(int $id): array
     {
         return [
             'id'        => $id,

@@ -19,7 +19,7 @@ class Text extends Condition
         /**
          * 验证回调.
          */
-        public array|callable $callable = '\\Imi\\Validate\\ValidatorHelper::text',
+        public string|array|null $callable = '\\Imi\\Validate\\ValidatorHelper::text',
         public array $args = ['{:value}', '{min}', '{max}', '{char}'],
         public ?string $exception = null,
         public ?int $exCode = null,

@@ -108,8 +108,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * json 序列化.
-     *
-     * @return array
      */
     public function jsonSerialize(): mixed
     {

@@ -19,12 +19,10 @@ class RateLimitAspect
 {
     /**
      * 处理限流
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\RateLimit\Annotation\RateLimit::class])]
     #[Around]
-    public function parse(AroundJoinPoint $joinPoint)
+    public function parse(AroundJoinPoint $joinPoint): mixed
     {
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();

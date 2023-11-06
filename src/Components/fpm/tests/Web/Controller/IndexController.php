@@ -22,12 +22,9 @@ use Imi\Util\Stream\MemoryStream;
 #[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         $response = RequestContext::get('response');
         $response->getBody()->write('imi');
@@ -178,11 +175,8 @@ class IndexController extends HttpController
         return RequestContext::get('response')->redirect('/', StatusCode::MOVED_PERMANENTLY);
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function download(?string $contentType = null, ?string $outputFileName = null)
+    public function download(?string $contentType = null, ?string $outputFileName = null): mixed
     {
         return RequestContext::get('response')->sendFile(__FILE__, $contentType, $outputFileName);
     }
@@ -258,12 +252,9 @@ class IndexController extends HttpController
         ResponseProxy::__setProxyInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
 
-    /**
-     * @return array
-     */
     #[Action]
     #[Route(url: '/type/{id}/{name}/{page}')]
-    public function type(int $id, string $name, int $page)
+    public function type(int $id, string $name, int $page): array
     {
         return compact('id', 'name', 'page');
     }

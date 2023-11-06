@@ -51,10 +51,8 @@ interface ICronManager
 
     /**
      * 获取任务回调.
-     *
-     * @return string|callable
      */
-    public function getTaskCallable(string $cronId, string $class, ?string &$cronType);
+    public function getTaskCallable(string $cronId, string $class, ?string &$cronType): string|callable;
 
     /**
      * socket 文件路径.

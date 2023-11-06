@@ -352,9 +352,6 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         return $this->statement;
     }
 
-    /**
-     * @return mixed|false
-     */
     public function current(): mixed
     {
         return current($this->result);

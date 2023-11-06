@@ -38,7 +38,7 @@ class Condition extends Base
         /**
          * 验证回调.
          */
-        public array|callable $callable = null,
+        public string|array|null $callable = null,
         /**
          * 参数名数组；支持代入{:value}原始值；支持代入{:data}所有数据；支持代入{:data.xxx}所有数据中的某项；支持以{name}这样的形式，代入注解参数值；如果没有{}，则原样传值
          */

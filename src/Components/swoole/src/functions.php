@@ -31,10 +31,7 @@ if (\extension_loaded('swoole'))
 {
     if (!\function_exists('\go'))
     {
-        /**
-         * @return int|false
-         */
-        function go(callable $func, mixed ...$params)
+        function go(callable $func, mixed ...$params): int|false
         {
             return Coroutine::create($func, ...$params);
         }

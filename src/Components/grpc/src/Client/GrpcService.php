@@ -57,10 +57,8 @@ class GrpcService implements IGrpcService
      * 发送请求
      * 成功返回 streamId
      * $metadata 格式：['key' => ['value']].
-     *
-     * @return int|bool
      */
-    public function send(string $method, \Google\Protobuf\Internal\Message $message, array $metadata = [])
+    public function send(string $method, \Google\Protobuf\Internal\Message $message, array $metadata = []): int|bool
     {
         return $this->client->send($this->package, $this->serviceName, $method, $message, $metadata);
     }

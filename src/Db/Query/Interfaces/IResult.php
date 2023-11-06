@@ -15,10 +15,8 @@ interface IResult
 
     /**
      * 获取最后插入的ID.
-     *
-     * @return int|string
      */
-    public function getLastInsertId();
+    public function getLastInsertId(): int|string;
 
     /**
      * 获取影响行数.

@@ -75,8 +75,10 @@ abstract class TestListBase extends Model
 
     /**
      * 获取 list.
+     *
+     * @return string|null
      */
-    public function getList(): ?string
+    public function getList()
     {
         return $this->list;
     }

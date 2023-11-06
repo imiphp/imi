@@ -22,12 +22,10 @@ class CacheEvictAop
 
     /**
      * 处理 CacheEvict 注解.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Cache\Annotation\CacheEvict::class])]
     #[Around]
-    public function parseCacheEvict(AroundJoinPoint $joinPoint)
+    public function parseCacheEvict(AroundJoinPoint $joinPoint): mixed
     {
         $class = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();

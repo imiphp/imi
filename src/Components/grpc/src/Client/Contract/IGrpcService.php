@@ -12,10 +12,8 @@ interface IGrpcService extends IService
      * 发送请求
      * 成功返回 streamId
      * $metadata 格式：['key' => ['value']].
-     *
-     * @return int|bool
      */
-    public function send(string $method, \Google\Protobuf\Internal\Message $message, array $metadata = []);
+    public function send(string $method, \Google\Protobuf\Internal\Message $message, array $metadata = []): int|bool;
 
     /**
      * 接收响应结果.

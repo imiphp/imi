@@ -27,10 +27,8 @@ class DateTime
      *
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @return string|int
      */
-    public static function getYesterday(?string $format = null, ?int $timestamp = null)
+    public static function getYesterday(?string $format = null, ?int $timestamp = null): string|int
     {
         if (null === $timestamp)
         {
@@ -50,10 +48,8 @@ class DateTime
      *
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @return string|int
      */
-    public static function getTomorrow(?string $format = null, ?int $timestamp = null)
+    public static function getTomorrow(?string $format = null, ?int $timestamp = null): string|int
     {
         if (null === $timestamp)
         {
@@ -74,10 +70,8 @@ class DateTime
      * 可传入 $weekNo 指定周几，周一到周日为1-7，不传则取时间戳对应周几
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @return string|int
      */
-    public static function getNextWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
+    public static function getNextWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null): string|int
     {
         if (null === $timestamp)
         {
@@ -99,10 +93,8 @@ class DateTime
      * 可传入 $weekNo 指定周几，周一到周日为1-7，不传则取时间戳对应周几
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @return string|int
      */
-    public static function getPrevWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
+    public static function getPrevWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null): string|int
     {
         if (null === $timestamp)
         {
@@ -128,10 +120,8 @@ class DateTime
      * @deprecated 3.0 错误的方法命名，请使用 getPrevWeek()
      *
      * @codeCoverageIgnore
-     *
-     * @return string|int
      */
-    public static function getLastWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
+    public static function getLastWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null): string|int
     {
         return static::getPrevWeek($weekNo, $format, $timestamp);
     }

@@ -33,12 +33,9 @@ class IndexController extends HttpController
     {
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/http')]
-    public function http()
+    public function http(): mixed
     {
         $response = $this->response;
         $response->getBody()->write('http');
