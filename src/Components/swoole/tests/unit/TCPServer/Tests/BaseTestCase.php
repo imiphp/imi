@@ -8,8 +8,6 @@ abstract class BaseTestCase extends \Imi\Swoole\Test\BaseTestCase
 {
     /**
      * 请求主机.
-     *
-     * @var string
      */
-    protected $host = 'tcp://127.0.0.1:13003/';
+    protected string $host = 'tcp://127.0.0.1:13003/';
 }

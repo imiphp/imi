@@ -139,8 +139,6 @@ class IndexController extends HttpController
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        var_dump(__METHOD__, $get, $post);
-
         return [
             'get'       => $request->get(),
             'post'      => $request->post(),

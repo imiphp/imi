@@ -23,17 +23,13 @@ abstract class QueryCurdBaseTestCase extends TestCase
 
     /**
      * 测试 whereEx 的 SQL.
-     *
-     * @var string
      */
-    protected $expectedTestWhereExSql;
+    protected string $expectedTestWhereExSql;
 
     /**
      * 测试 JSON 查询的 SQL.
-     *
-     * @var string
      */
-    protected $expectedTestJsonSelectSql;
+    protected string $expectedTestJsonSelectSql;
 
     public function testSelectGet(): void
     {

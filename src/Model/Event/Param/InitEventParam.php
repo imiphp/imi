@@ -10,15 +10,11 @@ class InitEventParam extends EventParam
 {
     /**
      * 模型.
-     *
-     * @var \Imi\Model\BaseModel
      */
-    public $model;
+    public \Imi\Model\BaseModel $model;
 
     /**
      * 初始化数据.
-     *
-     * @var array
      */
-    public $data;
+    public array $data;
 }

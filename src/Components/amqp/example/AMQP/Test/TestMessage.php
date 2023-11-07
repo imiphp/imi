@@ -10,17 +10,13 @@ class TestMessage extends Message
 {
     /**
      * 用户ID.
-     *
-     * @var int
      */
-    private $memberId;
+    private int $memberId;
 
     /**
      * 内容.
-     *
-     * @var string
      */
-    private $content;
+    private string $content;
 
     public function __construct()
     {

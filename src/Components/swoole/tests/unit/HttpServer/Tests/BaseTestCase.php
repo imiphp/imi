@@ -10,10 +10,8 @@ abstract class BaseTestCase extends \Imi\Swoole\Test\BaseTestCase
 {
     /**
      * 请求主机.
-     *
-     * @var string
      */
-    protected $host;
+    protected string $host;
 
     public function __construct(string $name)
     {

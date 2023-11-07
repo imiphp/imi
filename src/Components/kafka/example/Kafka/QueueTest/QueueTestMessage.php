@@ -12,10 +12,8 @@ class QueueTestMessage
 
     /**
      * 用户ID.
-     *
-     * @var int
      */
-    protected $memberId;
+    protected int $memberId;
 
     /**
      * Get 用户ID.

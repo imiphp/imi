@@ -10,22 +10,16 @@ class AfterInsertEventParam extends EventParam
 {
     /**
      * 模型.
-     *
-     * @var \Imi\Model\BaseModel
      */
-    public $model;
+    public \Imi\Model\BaseModel $model;
 
     /**
      * 初始化数据.
-     *
-     * @var \Imi\Util\LazyArrayObject
      */
-    public $data;
+    public \Imi\Util\LazyArrayObject $data;
 
     /**
      * 查询结果.
-     *
-     * @var \Imi\Db\Query\Interfaces\IResult
      */
-    public $result;
+    public \Imi\Db\Query\Interfaces\IResult $result;
 }

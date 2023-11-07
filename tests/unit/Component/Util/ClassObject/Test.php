@@ -16,10 +16,7 @@ class Test
      */
     public $b;
 
-    /**
-     * @var string
-     */
-    public $c;
+    public string $c;
 
     public function __construct(mixed $a, mixed $b, string $c = 'imi.com')
     {

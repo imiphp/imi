@@ -13,5 +13,5 @@ class AfterSelectEventParam extends EventParam
      *
      * @var \Imi\Model\BaseModel[]
      */
-    public $result;
+    public array $result;
 }

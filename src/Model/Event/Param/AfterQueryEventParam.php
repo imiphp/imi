@@ -10,8 +10,6 @@ class AfterQueryEventParam extends EventParam
 {
     /**
      * 模型.
-     *
-     * @var \Imi\Model\BaseModel
      */
-    public $model;
+    public \Imi\Model\BaseModel $model;
 }

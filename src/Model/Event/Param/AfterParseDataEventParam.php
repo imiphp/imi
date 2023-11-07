@@ -24,8 +24,6 @@ class AfterParseDataEventParam extends EventParam
 
     /**
      * 处理结果.
-     *
-     * @var \Imi\Util\LazyArrayObject
      */
-    public $result;
+    public \Imi\Util\LazyArrayObject $result;
 }
