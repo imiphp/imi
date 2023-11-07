@@ -32,7 +32,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
          */
         protected ?IMysqlDb $db,
         protected ?\mysqli_stmt $statement,
-        protected \mysqli_result|bool $result,
+        protected \mysqli_result|bool|null $result,
         /**
          * 最后执行过的SQL语句.
          */
@@ -41,8 +41,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
          * SQL 参数映射.
          */
         protected ?array $sqlParamsMap = null
-    )
-    {
+    ) {
     }
 
     /**

@@ -26,7 +26,7 @@ class Polymorphic extends PolymorphicBase
     #[PolymorphicOneToOne(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToOne')]
     #[JoinFrom(field: 'one_to_one')]
     #[JoinTo(field: 'member_id')]
-    protected ?Article $oneToOneResult;
+    protected ?Article $oneToOneResult = null;
 
     /**
      * Get the value of oneToOneResult.
