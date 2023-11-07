@@ -18,13 +18,6 @@ use Imi\Util\Process\ProcessType;
 class WorkerPartPipeMessage implements IEventListener
 {
     /**
-     * @Inject("CronManager")
-     *
-     * @var \Imi\Cron\CronManager
-     */
-    protected $cronManager;
-
-    /**
      * @Inject("CronWorker")
      *
      * @var \Imi\Cron\CronWorker
