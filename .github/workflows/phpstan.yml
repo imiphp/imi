@@ -67,10 +67,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/base_cache/phpstan
-          key: ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/phpstan.neon', '**/phpstan-components.neon', '**/phpstan-baseline/*.neon', '**/composer.lock') }}
+          key: ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/phpstan.neon', '**/phpstan-components.neon', '**/phpstan-baseline/*.neon', '**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-phpstan-${{ env.IMAGE_VERSION }}-
-            ${{ runner.os }}-phpstan-
+            ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-phpstan-v2-
 
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}
