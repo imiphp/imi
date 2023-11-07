@@ -37,7 +37,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository_owner }}/imi-swoole
+            ghcr.io/${{ github.repository_owner }}/imi-swoole-test
           tags: |
             type=raw,${{ matrix.image.tag }}
       - name: Log in to Github
