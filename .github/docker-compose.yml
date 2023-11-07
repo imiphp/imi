@@ -111,6 +111,7 @@ services:
       - shared-volume:/tmp/docker
     working_dir: /imi
     command: tail -f /dev/null
+    tty: true
 
   php:
     container_name: "php"
@@ -155,3 +156,4 @@ services:
       - "/tmp/base_cache/phpstan:/tmp/phpstan:rw"
     working_dir: /imi
     command: tail -f /dev/null
+    tty: true
