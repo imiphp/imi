@@ -1,4 +1,4 @@
-name: daily-image-build
+name: Daily Images Build
 
 on:
   schedule:
@@ -6,16 +6,20 @@ on:
   push:
     paths:
       - ".github/workflows/daily-image-build.yml"
+      - ".github/swoole.dockerfile"
+      - ".github/php.dockerfile"
   pull_request:
     paths:
       - ".github/workflows/daily-image-build.yml"
+      - ".github/swoole.dockerfile"
+      - ".github/php.dockerfile"
 
-#permissions:
-#  contents: read
-#  packages: write
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  build-image:
+  build-swoole:
     name: Linux Build-Image-${{ matrix.image.tag }}
     runs-on: ubuntu-latest
     strategy:
@@ -28,10 +32,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Test
-        run: |
-          ls -lah .
-          ls -lah ./.github
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
