@@ -81,6 +81,35 @@ abstract class DbBaseTest extends BaseTest
         ];
     }
 
+    public function testReplace(): void
+    {
+        ['id' => $id] = $this->testInsert();
+
+        $data = [
+            'id'        => $id,
+            'title'     => 'title1',
+            'content'   => 'content2',
+            'time'      => '2019-06-22 00:00:00',
+            'member_id' => 1,
+        ];
+
+        $query = Db::query($this->poolName);
+        $query->from('tb_article')->replace($data);
+        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        Assert::assertEquals($data, $record);
+
+        $data = [
+            'id'        => $id,
+            'title'     => 'title3',
+            'content'   => 'content4',
+            'time'      => '2019-06-23 00:00:00',
+            'member_id' => 2,
+        ];
+        $query->from('tb_article')->replace($data);
+        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        Assert::assertEquals($data, $record);
+    }
+
     /**
      * @depends testInsert
      */

@@ -222,6 +222,52 @@ abstract class QueryCurdBaseTest extends TestCase
         ];
     }
 
+    public function testReplace(): void
+    {
+        ['id' => $id] = $this->testInsert();
+
+        $data = [
+            'id'        => $id,
+            'title'     => 'title1',
+            'content'   => 'content2',
+            'time'      => '2019-06-22 00:00:00',
+        ];
+
+        $query = Db::query($this->poolName);
+        try
+        {
+            $query->from('tb_article')->replace($data);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('pgsql replace must set unique fields', $e->getMessage());
+        }
+        $query->from('tb_article')->replace($data, ['id']);
+        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        Assert::assertEquals($data, $record);
+
+        $data = [
+            'id'        => $id,
+            'title'     => 'title3',
+            'content'   => 'content4',
+            'time'      => '2019-06-23 00:00:00',
+        ];
+        $query->from('tb_article')->replace($data, ['id']);
+        $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
+        Assert::assertEquals($data, $record);
+
+        try
+        {
+            $query->from('tb_article')->replace(array_values($data), ['id']);
+            $this->assertTrue(false);
+        }
+        catch (\InvalidArgumentException $e)
+        {
+            $this->assertEquals('replace() only supports key-value arrays', $e->getMessage());
+        }
+    }
+
     public function testUpdate(): void
     {
         $data = [
