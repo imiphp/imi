@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Db\Query\Builder;
 
-use Imi\Db\Query\QueryOption;
 use Imi\Util\ArrayUtil;
 
 class InsertBuilder extends BaseBuilder
@@ -14,7 +13,6 @@ class InsertBuilder extends BaseBuilder
         parent::build(...$args);
         $query = $this->query;
         $params = &$this->params;
-        /** @var QueryOption $option */
         $option = $query->getOption();
         [$data] = $args;
         if (null === $data)

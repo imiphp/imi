@@ -176,6 +176,22 @@ class ModelTest extends BaseTest
             'bId'   => 2,
             'value' => 'yurun',
         ], $record3->toArray());
+
+        $record4 = NoIncPk::newInstance();
+        $record4->setAId(1);
+        $record4->setBId(2);
+        $record4->setValue('yurun2');
+        $record4->save();
+        $record5 = NoIncPk::find([
+            'a_id' => 1,
+            'b_id' => 2,
+        ]);
+        $this->assertNotNull($record5);
+        $this->assertEquals([
+            'aId'   => 1,
+            'bId'   => 2,
+            'value' => 'yurun2',
+        ], $record5->toArray());
     }
 
     public function testDelete(): void
