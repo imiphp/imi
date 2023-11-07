@@ -90,7 +90,7 @@ services:
 
   swoole:
     container_name: "swoole"
-    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole:${IMAGE_VERSION}
+    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole-test:${IMAGE_VERSION}
     depends_on:
       - shared-tmp
       - mysql
@@ -146,7 +146,7 @@ services:
 
   swoole-only:
     container_name: "swoole-only"
-    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole:${IMAGE_VERSION}
+    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole-test:${IMAGE_VERSION}
     environment:
       RUNNING_CI_RECTOR_CACHE_DIR: ${RUNNING_CI_RECTOR_CACHE_DIR}
     volumes:
