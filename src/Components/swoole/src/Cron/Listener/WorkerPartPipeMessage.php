@@ -15,9 +15,6 @@ use Imi\Util\Process\ProcessType;
 #[Listener(eventName: 'IMI.PIPE_MESSAGE.cronTask')]
 class WorkerPartPipeMessage implements IEventListener
 {
-    #[Inject(name: 'CronManager')]
-    protected \Imi\Cron\CronManager $cronManager;
-
     #[Inject(name: 'CronWorker')]
     protected \Imi\Cron\CronWorker $cronWorker;
 
