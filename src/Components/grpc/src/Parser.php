@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Grpc;
 
 use Google\Protobuf\Internal\Message;
+use Imi\Grpc\Enum\GrpcStatus;
 
 /**
  * gRPC 包处理类.
@@ -86,7 +87,7 @@ class Parser
         if (!$response)
         {
             // @phpstan-ignore-next-line
-            return ['No response', GRPC_ERROR_NO_RESPONSE, $response];
+            return ['No response', GrpcStatus::NO_RESPONSE, $response];
         }
         elseif (200 !== $response->statusCode)
         {
