@@ -82,7 +82,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function bindColumn(string|int $column, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$column] = $param;
+        $this->bindValues[$column] = $column;
 
         return true;
     }
@@ -92,7 +92,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function bindParam(string|int $param, mixed &$var, int $type = PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$parameter] = $variable;
+        $this->bindValues[$param] = $var;
 
         return true;
     }
@@ -102,11 +102,11 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function bindValue(string|int $param, mixed $value, int $type = \PDO::PARAM_STR): bool
     {
-        if (\is_int($parameter))
+        if (\is_int($param))
         {
-            --$parameter;
+            --$param;
         }
-        $this->bindValues[$parameter] = $this->parseValue($value);
+        $this->bindValues[$param] = $this->parseValue($value);
 
         return true;
     }

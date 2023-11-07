@@ -31,7 +31,7 @@ class MemberWithArticles extends Member
      *
      * @return Article[]|null
      */
-    public function getArticles(): ?array
+    public function getArticles(): ?iterable
     {
         return $this->articles;
     }
@@ -41,7 +41,7 @@ class MemberWithArticles extends Member
      *
      * @param Article[]|null $articles
      */
-    public function setArticles(?array $articles): self
+    public function setArticles(?iterable $articles): self
     {
         $this->articles = $articles;
 
@@ -61,7 +61,7 @@ class MemberWithArticles extends Member
      *
      * @return Article[]|null
      */
-    public function getArticlesWith(): ?array
+    public function getArticlesWith(): ?iterable
     {
         return $this->articlesWith;
     }
@@ -71,7 +71,7 @@ class MemberWithArticles extends Member
      *
      * @param Article[]|null $articlesWith
      */
-    public function setArticlesWith(?array $articlesWith): self
+    public function setArticlesWith(?iterable $articlesWith): self
     {
         $this->articlesWith = $articlesWith;
 

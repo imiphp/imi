@@ -133,7 +133,7 @@ abstract class BaseAsyncPool extends BasePool
     /**
      * {@inheritDoc}
      */
-    public function tryGetResource()
+    public function tryGetResource(): IPoolResource|bool
     {
         if ($this->getFree() <= 0)
         {

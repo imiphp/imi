@@ -48,7 +48,7 @@ class Frame implements IFrame
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): int|string
     {
         return $this->clientId;
     }

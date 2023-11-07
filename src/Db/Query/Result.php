@@ -72,7 +72,7 @@ class Result implements IResult
     /**
      * {@inheritDoc}
      */
-    public function getLastInsertId()
+    public function getLastInsertId(): int|string
     {
         if (!$this->isSuccess)
         {

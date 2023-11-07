@@ -196,7 +196,7 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
-    public function getTaskCallable(string $cronId, string $class, ?string &$cronType)
+    public function getTaskCallable(string $cronId, string $class, ?string &$cronType): string|callable
     {
         $task = $class;
         if (is_subclass_of($class, ICronTask::class))

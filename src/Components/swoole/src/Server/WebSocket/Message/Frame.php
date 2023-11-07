@@ -34,7 +34,7 @@ class Frame implements ISwooleWebSocketFrame
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): int|string
     {
         return $this->frame->fd;
     }

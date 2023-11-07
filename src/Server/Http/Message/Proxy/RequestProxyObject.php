@@ -375,7 +375,7 @@ class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\
     /**
      * {@inheritDoc}
      */
-    public function getAttribute(string $name, mixed $default = null): mixed
+    public function getAttribute(string $name, $default = null)
     {
         return self::__getProxyInstance()->getAttribute($name, $default);
     }

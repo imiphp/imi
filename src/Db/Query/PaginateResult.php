@@ -57,7 +57,7 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
-    public function getLastInsertId()
+    public function getLastInsertId(): int|string
     {
         return $this->result->getLastInsertId();
     }

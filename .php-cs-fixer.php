@@ -138,5 +138,8 @@ return (new PhpCsFixer\Config())
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
             ->notPath('src/Components/grpc/example/grpc')
+            ->notPath('tests/unit/Component/Model/Base')
+            ->notPath('tests/unit/Component/Model/Base')
+            ->notPath('src/Components/pgsql/tests/Model/Base')
     )
 ;

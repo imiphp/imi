@@ -20,7 +20,7 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 设置数据.
      */
-    public function set(string|array $name, mixed $value = null, bool $merge = true): bool
+    public function set(string|int|array $name, mixed $value = null, bool $merge = true): bool
     {
         if (\is_array($name))
         {
@@ -46,7 +46,7 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 设置数据.
      */
-    public function setVal(string|array $name, mixed $value = null): bool
+    public function setVal(string|int|array $name, mixed $value = null): bool
     {
         if (\is_string($name))
         {
@@ -74,7 +74,7 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 获取数据.
      */
-    public function &get(string|array|null $name = null, mixed $default = false): mixed
+    public function &get(string|int|array|null $name = null, mixed $default = false): mixed
     {
         if (null === $name)
         {
@@ -135,7 +135,7 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 删除数据.
      */
-    public function remove(string|array $name): bool
+    public function remove(string|int|array $name): bool
     {
         if (!\is_array($name))
         {
@@ -199,29 +199,29 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 键名对应的值是否存在.
      */
-    public function exists(string $name): bool
+    public function exists(string|int $name): bool
     {
         return isset($this->__data[$name]);
     }
 
-    public function &__get(mixed $key): mixed
+    public function &__get(mixed $name): mixed
     {
-        return $this->get($key);
+        return $this->get($name);
     }
 
-    public function __set(mixed $key, mixed $value): void
+    public function __set(mixed $name, mixed $value): void
     {
-        $this->set($key, $value);
+        $this->set($name, $value);
     }
 
-    public function __isset(mixed $key): bool
+    public function __isset(mixed $name): bool
     {
-        return null !== $this->get($key, null);
+        return null !== $this->get($name, null);
     }
 
-    public function __unset(mixed $key): void
+    public function __unset(mixed $name): void
     {
-        $this->remove($key);
+        $this->remove($name);
     }
 
     public function offsetSet(mixed $key, mixed $value): void

@@ -7,8 +7,8 @@ namespace Imi\Server\TcpServer\Message\Proxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @method        int|string                  getClientId()
- * @method static int|string                  getClientId()
+ * @method        string|int                  getClientId()
+ * @method static string|int                  getClientId()
  * @method        string                      getData()
  * @method static string                      getData()
  * @method        mixed                       getFormatData()
@@ -25,7 +25,7 @@ class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\Tc
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): string|int
     {
         return self::__getProxyInstance()->getClientId(...\func_get_args());
     }

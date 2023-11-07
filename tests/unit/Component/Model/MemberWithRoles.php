@@ -36,7 +36,7 @@ class MemberWithRoles extends Member
      *
      * @return MemberRoleRelation[]|null
      */
-    public function getRoleRelations(): ?array
+    public function getRoleRelations(): ?iterable
     {
         return $this->roleRelations;
     }
@@ -46,7 +46,7 @@ class MemberWithRoles extends Member
      *
      * @param MemberRoleRelation[]|null $roleRelations
      */
-    public function setRoleRelations(?array $roleRelations): self
+    public function setRoleRelations(?iterable $roleRelations): self
     {
         $this->roleRelations = $roleRelations;
 
@@ -64,7 +64,7 @@ class MemberWithRoles extends Member
      *
      * @return Role[]|null
      */
-    public function getRoles(): ?array
+    public function getRoles(): ?iterable
     {
         return $this->roles;
     }
@@ -74,7 +74,7 @@ class MemberWithRoles extends Member
      *
      * @param Role[]|null $roles
      */
-    public function setRoles(?array $roles): self
+    public function setRoles(?iterable $roles): self
     {
         $this->roles = $roles;
 
@@ -95,7 +95,7 @@ class MemberWithRoles extends Member
      *
      * @return MemberRoleRelation[]|null
      */
-    public function getRoleRelationsWith(): ?array
+    public function getRoleRelationsWith(): ?iterable
     {
         return $this->roleRelationsWith;
     }
@@ -105,7 +105,7 @@ class MemberWithRoles extends Member
      *
      * @param MemberRoleRelation[]|null $roleRelationsWith
      */
-    public function setRoleRelationsWith(?array $roleRelationsWith): self
+    public function setRoleRelationsWith(?iterable $roleRelationsWith): self
     {
         $this->roleRelationsWith = $roleRelationsWith;
 
@@ -123,7 +123,7 @@ class MemberWithRoles extends Member
      *
      * @return Role[]|null
      */
-    public function getRolesWith(): ?array
+    public function getRolesWith(): ?iterable
     {
         return $this->rolesWith;
     }
@@ -133,7 +133,7 @@ class MemberWithRoles extends Member
      *
      * @param Role[]|null $rolesWith
      */
-    public function setRolesWith(?array $rolesWith): self
+    public function setRolesWith(?iterable $rolesWith): self
     {
         $this->rolesWith = $rolesWith;
 

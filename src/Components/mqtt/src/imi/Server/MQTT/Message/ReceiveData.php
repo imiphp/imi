@@ -37,7 +37,7 @@ class ReceiveData implements IReceiveData
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): int|string
     {
         return $this->clientId;
     }

@@ -68,12 +68,8 @@ class Server implements \ArrayAccess, \JsonSerializable
             return $serverParams[$key];
         }
         $lowerOffset = strtolower((string) $key);
-        if (isset($serverParams[$lowerOffset]))
-        {
-            return $serverParams[$lowerOffset];
-        }
 
-        return null;
+        return $serverParams[$lowerOffset] ?? null;
     }
 
     public function __debugInfo(): array
