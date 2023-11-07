@@ -139,6 +139,8 @@ class IndexController extends HttpController
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
+        var_dump(__METHOD__, $get, $post);
+
         return [
             'get'       => $request->get(),
             'post'      => $request->post(),
@@ -146,7 +148,7 @@ class IndexController extends HttpController
     }
 
     #[Action]
-    public function info3(string $get, string $post, string $parsedBody, mixed $default = 19260817): array
+    public function info3(mixed $get, mixed $post, mixed $parsedBody, mixed $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');

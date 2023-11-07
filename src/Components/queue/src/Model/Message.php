@@ -69,7 +69,7 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function setWorkingTimeout(float $workingTimeout): void
+    public function setWorkingTimeout(float|string $workingTimeout): void
     {
         $this->workingTimeout = (float) $workingTimeout;
     }

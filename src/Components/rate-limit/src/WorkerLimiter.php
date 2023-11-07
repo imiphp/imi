@@ -35,7 +35,7 @@ class WorkerLimiter
             }
             else
             {
-                static::defaultCallback($name);
+                return static::defaultCallback($name);
             }
         }
         // 执行任务
@@ -91,7 +91,7 @@ class WorkerLimiter
                     }
                     else
                     {
-                        static::defaultCallback($name);
+                        return static::defaultCallback($name);
                     }
                 }
                 continue;
@@ -110,7 +110,7 @@ class WorkerLimiter
      *
      * @param string $name 限流器名称
      */
-    public static function defaultCallback(string $name): void
+    public static function defaultCallback(string $name): mixed
     {
         throw new RateLimitException(sprintf('%s Worker Limit', $name));
     }

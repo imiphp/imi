@@ -37,7 +37,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * Statement.
          */
-        protected \Swoole\Coroutine\MySQL\Statement|array $statement,
+        protected \Swoole\Coroutine\MySQL\Statement|array|bool $statement,
         /**
          * 最后执行过的SQL语句.
          */

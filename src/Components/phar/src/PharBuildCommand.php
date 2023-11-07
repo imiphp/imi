@@ -18,7 +18,7 @@ class PharBuildCommand extends Command
     /**
      * {@inheritDoc}
      */
-    protected function configure(): mixed
+    protected function configure(): void
     {
         $container = implode('、', Constant::CONTAINER_SET);
         $this
