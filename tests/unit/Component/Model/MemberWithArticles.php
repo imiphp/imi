@@ -24,7 +24,7 @@ class MemberWithArticles extends Member
     #[OneToMany(model: 'Article')]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'member_id')]
-    protected $articles = null;
+    protected ?iterable $articles = null;
 
     /**
      * Get the value of articles.
@@ -54,7 +54,7 @@ class MemberWithArticles extends Member
     #[OneToMany(model: 'Article', with: true)]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'member_id')]
-    protected $articlesWith = null;
+    protected ?iterable $articlesWith = null;
 
     /**
      * Get the value of articles.

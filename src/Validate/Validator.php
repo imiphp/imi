@@ -21,10 +21,8 @@ class Validator implements IValidator
 
     /**
      * 验证器中的数据.
-     *
-     * @var array|object
      */
-    protected $data;
+    protected array|object $data;
 
     /**
      * 第一条失败信息.

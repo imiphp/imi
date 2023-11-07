@@ -11,17 +11,11 @@ use PHPUnit\Framework\Assert;
 #[Bean(name: 'TestInjectValue')]
 class TestInjectValue
 {
-    /**
-     * @var \Imi\Test\Component\Inject\Classes\TestInjectValueLogic
-     */
     #[Inject(name: 'TestInjectValueLogicXXX')]
-    protected $testLogic;
+    protected \Imi\Test\Component\Inject\Classes\TestInjectValueLogic $testLogic;
 
-    /**
-     * @var TestInjectValueLogic
-     */
     #[Inject]
-    protected $testLogic2;
+    protected TestInjectValueLogic $testLogic2;
 
     public function test(): void
     {

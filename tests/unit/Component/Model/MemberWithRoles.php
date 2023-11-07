@@ -29,7 +29,7 @@ class MemberWithRoles extends Member
     #[JoinToMiddle(field: 'id', middleField: 'member_id')]
     #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
     #[AutoSave]
-    protected $roleRelations = null;
+    protected ?iterable $roleRelations = null;
 
     /**
      * Get the value of roleRelation.
@@ -57,7 +57,7 @@ class MemberWithRoles extends Member
      * @var Role[]|null
      */
     #[Column(virtual: true)]
-    protected $roles;
+    protected ?iterable $roles = null;
 
     /**
      * Get the value of roles.
@@ -88,7 +88,7 @@ class MemberWithRoles extends Member
     #[JoinToMiddle(field: 'id', middleField: 'member_id')]
     #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
     #[AutoSave]
-    protected $roleRelationsWith = null;
+    protected ?iterable $roleRelationsWith = null;
 
     /**
      * Get the value of roleRelation.
@@ -116,7 +116,7 @@ class MemberWithRoles extends Member
      * @var Role[]|null
      */
     #[Column(virtual: true)]
-    protected $rolesWith;
+    protected ?iterable $rolesWith = null;
 
     /**
      * Get the value of rolesWith.

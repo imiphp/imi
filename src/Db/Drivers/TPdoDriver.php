@@ -25,10 +25,8 @@ trait TPdoDriver
 
     /**
      * Statement.
-     *
-     * @var \PDOStatement|bool|null
      */
-    protected $lastStmt = null;
+    protected \PDOStatement|bool|null $lastStmt = null;
 
     /**
      * 是否缓存 Statement.

@@ -17,10 +17,8 @@ class Frame implements ISwooleWebSocketFrame
 
     /**
      * 格式化后的数据.
-     *
-     * @var mixed
      */
-    protected $data;
+    protected mixed $data;
 
     public function __construct(
         /**

@@ -27,14 +27,11 @@ class TestWithMember extends TestWithMemberBase
     #[Serializable(allow: false)]
     protected ?int $memberId = null;
 
-    /**
-     * @var MemberSerializable|null
-     */
     #[OneToOne(model: 'Imi\\Test\\Component\\Model\\MemberSerializable')]
     #[JoinFrom(field: 'member_id')]
     #[JoinTo(field: 'id')]
     #[AutoSelect(status: false)]
-    protected $member = null;
+    protected ?MemberSerializable $member = null;
 
     /**
      * Get the value of member.

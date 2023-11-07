@@ -16,10 +16,8 @@ class CloseEventParam extends EventParam
 
     /**
      * 客户端连接的标识符.
-     *
-     * @var int|string
      */
-    public $clientId = 0;
+    public int|string $clientId = 0;
 
     /**
      * 来自那个reactor线程.

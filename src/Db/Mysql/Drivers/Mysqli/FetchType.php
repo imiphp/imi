@@ -10,23 +10,11 @@ class FetchType
 {
     use TStaticClass;
 
-    /**
-     * @var int
-     */
     public const FETCH_ASSOC = 2;
 
-    /**
-     * @var int
-     */
     public const FETCH_NUM = 3;
 
-    /**
-     * @var int
-     */
     public const FETCH_BOTH = 4;
 
-    /**
-     * @var int
-     */
     public const FETCH_OBJ = 5;
 }

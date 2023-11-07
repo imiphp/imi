@@ -257,10 +257,8 @@ class RedisHandler
 
     /**
      * 登录凭证
-     *
-     * @var mixed
      */
-    private $auth = null;
+    private mixed $auth = null;
 
     public function __construct(
         /**

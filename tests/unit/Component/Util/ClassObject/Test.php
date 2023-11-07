@@ -6,15 +6,9 @@ namespace Imi\Test\Component\Util\ClassObject;
 
 class Test
 {
-    /**
-     * @var mixed
-     */
-    public $a;
+    public mixed $a;
 
-    /**
-     * @var mixed
-     */
-    public $b;
+    public mixed $b;
 
     public string $c;
 

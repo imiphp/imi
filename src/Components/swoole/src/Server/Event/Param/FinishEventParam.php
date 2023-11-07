@@ -21,8 +21,6 @@ class FinishEventParam extends EventParam
 
     /**
      * 任务数据.
-     *
-     * @var mixed
      */
-    public $data;
+    public mixed $data;
 }

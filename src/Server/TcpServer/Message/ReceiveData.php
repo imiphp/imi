@@ -12,10 +12,8 @@ class ReceiveData implements IReceiveData
 {
     /**
      * 接收到的数据.
-     *
-     * @var mixed
      */
-    protected $formatData;
+    protected mixed $formatData;
 
     /**
      * 客户端地址

@@ -17,11 +17,6 @@ use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     /**
-     * @var \mysqli_result|false
-     */
-    protected $result;
-
-    /**
      * 数据.
      */
     protected array $data = [];
@@ -35,7 +30,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * 数据库操作对象
          */
-        protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result,
+        protected ?IMysqlDb $db,
+        protected ?\mysqli_stmt $statement,
+        protected \mysqli_result|bool $result,
         /**
          * 最后执行过的SQL语句.
          */
@@ -43,9 +40,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * SQL 参数映射.
          */
-        protected ?array $sqlParamsMap = null)
+        protected ?array $sqlParamsMap = null
+    )
     {
-        $this->result = $result;
     }
 
     /**

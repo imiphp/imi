@@ -17,25 +17,16 @@ class PharService
     protected string $outputPhar = '';
     protected string $baseDir = '';
 
-    /**
-     * @var array|string
-     */
-    protected $files = [];
+    protected array|string $files = [];
 
-    /**
-     * @var array|string
-     */
-    protected $dirs = [];
+    protected array|string $dirs = [];
     protected array $excludeDirs = [];
     protected array $excludeFiles = [];
 
     protected array $finder = [];
     protected int $compression = \Phar::NONE;
 
-    /**
-     * @var bool|Finder
-     */
-    protected $vendorScan = true;
+    protected bool|Finder $vendorScan = true;
     /**
      * @var array{hash: string, branch: string, tag: string}|null
      */

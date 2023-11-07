@@ -33,17 +33,13 @@ class Driver extends MysqlBase
 
     /**
      * Statement.
-     *
-     * @var \mysqli_stmt|false|null
      */
-    protected $lastStmt = null;
+    protected \mysqli_stmt|bool|null $lastStmt = null;
 
     /**
      * result.
-     *
-     * @var \mysqli_result|bool|null
      */
-    protected $lastResult = null;
+    protected \mysqli_result|bool|null $lastResult = null;
 
     /**
      * 是否缓存 Statement.

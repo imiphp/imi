@@ -22,10 +22,8 @@ class PipeMessageEventParam extends EventParam
 
     /**
      * 数据，可以是任意PHP类型.
-     *
-     * @var mixed
      */
-    public $data = null;
+    public mixed $data = null;
 
     /**
      * 连接对象，仅其它进程发给当前进程才有.

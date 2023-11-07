@@ -86,10 +86,7 @@ class ExpiredStorage
 
 final class ExpiredStorageItem
 {
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     private float $ttl = 0;
 

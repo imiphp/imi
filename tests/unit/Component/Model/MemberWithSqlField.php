@@ -17,19 +17,13 @@ use Imi\Test\Component\Model\Base\MemberBase;
 #[Serializables(mode: 'deny', fields: ['password'])]
 class MemberWithSqlField extends MemberBase
 {
-    /**
-     * @var int
-     */
     #[Column(name: 'a', virtual: true)]
     #[Sql(sql: '1+1')]
-    public $test1;
+    public int $test1;
 
-    /**
-     * @var int
-     */
     #[Column(virtual: true)]
     #[Sql(sql: '2+2')]
-    public $test2;
+    public int $test2;
 
     /**
      * Set the value of test1.

@@ -12,10 +12,8 @@ class Frame implements IFrame
 {
     /**
      * 格式化后的数据.
-     *
-     * @var mixed
      */
-    protected $formatData;
+    protected mixed $formatData;
 
     /**
      * 客户端地址

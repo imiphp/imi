@@ -10,17 +10,13 @@ class AfterParseDataEventParam extends EventParam
 {
     /**
      * 处理前的数据.
-     *
-     * @var object|array
      */
-    public $data;
+    public object|array $data;
 
     /**
      * 对象或模型类名.
-     *
-     * @var object|string
      */
-    public $object;
+    public object|string $object;
 
     /**
      * 处理结果.

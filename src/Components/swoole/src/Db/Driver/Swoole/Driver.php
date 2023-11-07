@@ -35,10 +35,8 @@ class Driver extends MysqlBase
 
     /**
      * Statement.
-     *
-     * @var \Swoole\Coroutine\MySQL\Statement|array|null
      */
-    protected $lastStmt = null;
+    protected \Swoole\Coroutine\MySQL\Statement|array|null $lastStmt = null;
 
     /**
      * 是否缓存 Statement.

@@ -73,15 +73,12 @@ class Article extends ArticleBase
         return $this;
     }
 
-    /**
-     * @var ArticleEx|null
-     */
     #[OneToOne(model: 'ArticleEx', poolName: 'maindb')]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'article_id')]
     #[AutoSelect(status: false)]
     #[JsonNotNull]
-    protected $queryRelationsList;
+    protected ?ArticleEx $queryRelationsList = null;
 
     /**
      * Get the value of queryRelationsList.

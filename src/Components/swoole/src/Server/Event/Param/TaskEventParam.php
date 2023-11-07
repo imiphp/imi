@@ -27,17 +27,13 @@ class TaskEventParam extends EventParam
 
     /**
      * 任务数据.
-     *
-     * @var mixed
      */
-    public $data;
+    public mixed $data;
 
     /**
      * 任务的类型 taskwait,task,taskCo,taskWaitMulti 可能使用不同的 flags.
-     *
-     * @var mixed
      */
-    public $flags;
+    public mixed $flags;
 
     /**
      * task 对象

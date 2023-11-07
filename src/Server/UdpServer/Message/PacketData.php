@@ -17,10 +17,8 @@ class PacketData implements IPacketData
 
     /**
      * 接收到的数据.
-     *
-     * @var mixed
      */
-    protected $formatData;
+    protected mixed $formatData;
 
     public function __construct(string $remoteIp, int $remotePort,
         /**

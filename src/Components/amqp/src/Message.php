@@ -15,10 +15,8 @@ class Message implements IMessage
 {
     /**
      * 主体内容.
-     *
-     * @var mixed
      */
-    protected $bodyData;
+    protected mixed $bodyData;
 
     /**
      * 配置属性.

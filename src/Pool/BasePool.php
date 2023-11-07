@@ -27,10 +27,8 @@ abstract class BasePool implements IPool
 
     /**
      * 资源配置.
-     *
-     * @var mixed
      */
-    protected $resourceConfig;
+    protected mixed $resourceConfig;
 
     /**
      * 当前配置序号.

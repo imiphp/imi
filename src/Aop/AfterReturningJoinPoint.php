@@ -8,10 +8,8 @@ class AfterReturningJoinPoint extends JoinPoint
 {
     /**
      * 返回值
-     *
-     * @var mixed
      */
-    private $returnValue;
+    private mixed $returnValue;
 
     /**
      * 设置返回值

@@ -27,10 +27,8 @@ trait TPdoStatement
 
     /**
      * 最后插入ID.
-     *
-     * @var int|string
      */
-    protected $lastInsertId = '';
+    protected int|string $lastInsertId = '';
 
     public function __construct(IDb $db, \PDOStatement $statement, bool $isExecuted = false)
     {
