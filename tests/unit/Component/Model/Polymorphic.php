@@ -136,7 +136,7 @@ class Polymorphic extends PolymorphicBase
 
     #[PolymorphicToOne(model: 'Member', modelField: 'id', type: 'type', typeValue: 1, field: 'to_one')]
     #[PolymorphicToOne(model: 'Article', modelField: 'id', type: 'type', typeValue: 2, field: 'to_one')]
-    protected Member|Article|null $toOneResult;
+    protected Member|Article|null $toOneResult = null;
 
     /**
      * Get the value of toOneResult.
