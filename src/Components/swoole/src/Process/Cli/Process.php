@@ -25,7 +25,7 @@ class Process extends BaseCommand
     #[Option(name: 'pipeType', type: \Imi\Cli\ArgType::INT, comments: '管道类型，启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0')]
     public function start(string $name, ?bool $redirectStdinStdout, ?int $pipeType): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType): void {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType): never {
             $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
             $process->start();
             $result = \Swoole\Process::wait(true);
