@@ -64,10 +64,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/base_cache/rector
-          key: ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          key: ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-${{ github.run_id }}
           restore-keys: | 
             ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-
-            ${{ runner.os }}-rector-
 
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}

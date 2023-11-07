@@ -45,6 +45,18 @@ jobs:
             ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-composer-
 
+      - name: Cache phpstan
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/phpstan
+          key: ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-
+
+      - name: Recover All composer.lock
+        run: |
+          [ -f /tmp/base_cache/phpstan/composer_lock.zip ] && unzip /tmp/base_cache/phpstan/composer_lock.zip -d "${GITHUB_WORKSPACE}" || echo "No composer_lock.zip" || true
+
       - name: Prepare2
         run: |
           echo "::group::Env prepare"
@@ -62,15 +74,6 @@ jobs:
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
           echo "::endgroup::"
           echo "test_prepared=1" >> $GITHUB_ENV
-
-      - name: Cache phpstan
-        uses: actions/cache@v3
-        with:
-          path: /tmp/base_cache/phpstan
-          key: ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/phpstan.neon', '**/phpstan-components.neon', '**/phpstan-baseline/*.neon', '**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-
-            ${{ runner.os }}-phpstan-v2-
 
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}
@@ -176,3 +179,18 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./dev/phpstan.sh phar
+
+      - name: Save All composer.lock And autoloader-suffix
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          cd "${GITHUB_WORKSPACE}"
+          find . -type f \( -name "composer.lock" -o -wholename "*/vendor/autoload.php" \) -exec zip /tmp/base_cache/phpstan/composer_lock.zip {} +
+
+      - name: Upload cache files (debug)
+        if: ${{ false }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpstan-cache
+          path: |
+            /tmp/base_cache/phpstan
+            !/tmp/base_cache/phpstan/cache/PHPStan/
