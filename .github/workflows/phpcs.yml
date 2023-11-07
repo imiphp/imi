@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare#1
+      - name: Prepare1
         run: |
           echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
           mkdir -p /tmp/base_cache/composer
@@ -50,7 +50,7 @@ jobs:
             ${{ runner.os }}-phpcsfixer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-phpcsfixer-
 
-      - name: Prepare
+      - name: Prepare2
         run: |
           echo "::group::Env prepare"
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}

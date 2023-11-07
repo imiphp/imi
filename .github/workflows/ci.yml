@@ -52,7 +52,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-composer-
-      - name: Prepare
+      - name: Prepare2
         uses: ./.github/actions/ci-prepare
         with:
           env: ${{ env.ENV_SERVICE }}
@@ -128,7 +128,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Prepare#1
+      - name: Prepare1
         run: |
           echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
           mkdir -p /tmp/base_cache/composer
@@ -140,7 +140,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-composer-
-      - name: Prepare
+      - name: Prepare2
         uses: ./.github/actions/ci-prepare
         with:
           env: ${{ env.ENV_SERVICE }}
