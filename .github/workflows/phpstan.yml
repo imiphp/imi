@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/base_cache/composer
-          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-composer-
@@ -49,8 +49,6 @@ jobs:
         run: |
           echo "::group::Env prepare"
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
-          docker exec ${ENV_SERVICE} rm -rf /tmp/phpstan
-          docker exec ${ENV_SERVICE} ln -sf /tmp/base_cache/phpstan /tmp
           echo "::endgroup::"
           echo "::group::Env info"
           docker exec ${ENV_SERVICE} php -v
@@ -178,11 +176,3 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} ./dev/phpstan.sh phar
-
-      - name: Test
-        if: ${{ env.test_prepared && always() }}
-        run: |
-          docker exec ${ENV_SERVICE} ls -lha /tmp
-          docker exec ${ENV_SERVICE} ls -lha /tmp/phpstan
-          docker exec ${ENV_SERVICE} ls -lha /tmp/base_cache
-          docker exec ${ENV_SERVICE} ls -lha /tmp/base_cache/phpstan

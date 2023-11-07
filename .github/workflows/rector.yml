@@ -37,7 +37,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/base_cache/composer
-          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-composer-
@@ -64,7 +64,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/base_cache/rector
-          key: ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
           restore-keys: | 
             ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-
             ${{ runner.os }}-rector-

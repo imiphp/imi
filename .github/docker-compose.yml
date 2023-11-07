@@ -152,5 +152,6 @@ services:
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/base_cache:/tmp/base_cache:rw"
+      - "/tmp/base_cache/phpstan:/tmp/phpstan:rw"
     working_dir: /imi
     command: tail -f /dev/null

@@ -147,7 +147,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.PHP_VERSION }}-${{ env.SWOOLE_VERSION }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ env.PHP_VERSION }}-${{ env.SWOOLE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-composer-${{ env.PHP_VERSION }}-${{ env.SWOOLE_VERSION }}-
             ${{ runner.os }}-composer-
