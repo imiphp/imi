@@ -35,11 +35,13 @@ class AfterWorkerStart implements IWorkerStartEventListener
 
             ImiCommand::getOutput()->writeln('<info>App Inited</info>');
         }
+        $originServer = RequestContext::get('server');
         foreach (ServerManager::getServers() as $name => $server)
         {
             RequestContext::set('server', $server);
             Server::getInstance($name);
         }
+        RequestContext::set('server', $originServer);
         $httpRouteInit = new HttpRouteInit();
         $httpRouteInit->handle($e);
     }

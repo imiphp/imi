@@ -80,10 +80,7 @@ abstract class BaseServer implements IServer
         }
         finally
         {
-            if ($server)
-            {
-                $context['server'] = $server;
-            }
+            $context['server'] = $server;
         }
     }
 

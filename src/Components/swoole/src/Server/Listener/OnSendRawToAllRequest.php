@@ -7,8 +7,6 @@ namespace Imi\Swoole\Server\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\RequestContext;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
 
@@ -27,7 +25,6 @@ class OnSendRawToAllRequest implements IEventListener
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $serverName = $data['serverName'];
-        RequestContext::set('server', ServerManager::getServer($serverName));
         $result = Server::sendRawToAll($data['data'], $serverName, false);
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {

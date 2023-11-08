@@ -40,6 +40,7 @@ class TcpRouteInit implements IEventListener
     {
         $controllerParser = TcpControllerParser::getInstance();
         $context = RequestContext::getContext();
+        $originServer = $context['server'] ?? null;
         foreach (ServerManager::getServers(ITcpServer::class) as $name => $server)
         {
             $context['server'] = $server;
@@ -96,5 +97,6 @@ class TcpRouteInit implements IEventListener
             }
             unset($context['server']);
         }
+        $context['server'] = $originServer;
     }
 }
