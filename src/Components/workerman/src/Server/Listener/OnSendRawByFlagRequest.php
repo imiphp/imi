@@ -26,7 +26,6 @@ class OnSendRawByFlagRequest implements IEventListener
     {
         $data = $e->getData();
         ['data' => $data, 'flag' => $flag, 'serverName' => $serverName] = $data['data'];
-        RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */
         $serverUtil = App::getBean(LocalServerUtil::class);

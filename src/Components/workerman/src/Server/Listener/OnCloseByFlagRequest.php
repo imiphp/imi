@@ -26,7 +26,6 @@ class OnCloseByFlagRequest implements IEventListener
     {
         $data = $e->getData();
         ['flag' => $flag, 'serverName' => $serverName] = $data['data'];
-        RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */
         $serverUtil = App::getBean(LocalServerUtil::class);

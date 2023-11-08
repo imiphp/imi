@@ -37,6 +37,7 @@ class AppInit implements IAppInitEventListener
                 $this->outputServerInfo();
             }
         }
+        $originServer = RequestContext::get('server');
         foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {
             if ($server->isLongConnection())
@@ -52,6 +53,7 @@ class AppInit implements IAppInitEventListener
                 }
             }
         }
+        RequestContext::set('server', $originServer);
         if ($serverStart ?? false)
         {
             Log::info('Server start');

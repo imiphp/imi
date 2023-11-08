@@ -28,7 +28,6 @@ class OnSendToGroupsRequest implements IEventListener
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $serverName = $data['serverName'];
-        RequestContext::set('server', ServerManager::getServer($serverName));
         $result = Server::sendRawToGroup($data['groups'], $data['data'], $serverName, false);
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {

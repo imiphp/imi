@@ -41,72 +41,66 @@ class UdpRouteInit implements IEventListener
         $controllerParser = UdpControllerParser::getInstance();
         $context = RequestContext::getContext();
         $originServer = $context['server'] ?? null;
-        try
+        foreach (ServerManager::getServers() as $name => $server)
         {
-            foreach (ServerManager::getServers() as $name => $server)
+            if (Protocol::UDP !== $server->getProtocol())
             {
-                if (Protocol::UDP !== $server->getProtocol())
+                continue;
+            }
+            $context['server'] = $server;
+            /** @var \Imi\Server\UdpServer\Route\UdpRoute $route */
+            $route = $server->getBean('UdpRoute');
+            foreach ($controllerParser->getByServer($name) as $className => $classItem)
+            {
+                /** @var \Imi\Server\UdpServer\Route\Annotation\UdpController $classAnnotation */
+                $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
                 {
                     continue;
                 }
-                $context['server'] = $server;
-                /** @var \Imi\Server\UdpServer\Route\UdpRoute $route */
-                $route = $server->getBean('UdpRoute');
-                foreach ($controllerParser->getByServer($name) as $className => $classItem)
+                // 类中间件
+                $classMiddlewares = [];
+                /** @var UdpMiddleware $middleware */
+                foreach (AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) as $middleware)
                 {
-                    /** @var \Imi\Server\UdpServer\Route\Annotation\UdpController $classAnnotation */
-                    $classAnnotation = $classItem->getAnnotation();
-                    if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                }
+                foreach (AnnotationManager::getMethodsAnnotations($className, UdpAction::class) as $methodName => $methodItem)
+                {
+                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                        UdpRoute::class,
+                        UdpMiddleware::class,
+                    ]);
+                    /** @var UdpRoute[] $routes */
+                    $routes = $annotations[UdpRoute::class];
+                    if (!$routes)
                     {
-                        continue;
+                        throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
                     }
-                    // 类中间件
-                    $classMiddlewares = [];
+                    // 方法中间件
+                    $methodMiddlewares = [];
                     /** @var UdpMiddleware $middleware */
-                    foreach (AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) as $middleware)
+                    foreach ($annotations[UdpMiddleware::class] as $middleware)
                     {
-                        $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
-                    foreach (AnnotationManager::getMethodsAnnotations($className, UdpAction::class) as $methodName => $methodItem)
-                    {
-                        $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
-                            UdpRoute::class,
-                            UdpMiddleware::class,
-                        ]);
-                        /** @var UdpRoute[] $routes */
-                        $routes = $annotations[UdpRoute::class];
-                        if (!$routes)
-                        {
-                            throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
-                        }
-                        // 方法中间件
-                        $methodMiddlewares = [];
-                        /** @var UdpMiddleware $middleware */
-                        foreach ($annotations[UdpMiddleware::class] as $middleware)
-                        {
-                            $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
-                        }
-                        // 最终中间件
-                        $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
+                    // 最终中间件
+                    $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
 
-                        foreach ($routes as $routeItem)
-                        {
-                            $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
-                                'middlewares' => $middlewares,
-                            ]);
-                        }
+                    foreach ($routes as $routeItem)
+                    {
+                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
+                            'middlewares' => $middlewares,
+                        ]);
                     }
                 }
-                if (0 === Worker::getWorkerId())
-                {
-                    $route->checkDuplicateRoutes();
-                }
-                unset($context['server']);
             }
+            if (0 === Worker::getWorkerId())
+            {
+                $route->checkDuplicateRoutes();
+            }
+            unset($context['server']);
         }
-        finally
-        {
-            $context['server'] = $originServer;
-        }
+        $context['server'] = $originServer;
     }
 }

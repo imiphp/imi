@@ -45,155 +45,149 @@ class HttpRouteInit implements IEventListener
         $controllerParser = ControllerParser::getInstance();
         $context = RequestContext::getContext();
         $originServer = $context['server'] ?? null;
-        try
+        foreach (ServerManager::getServers() as $name => $server)
         {
-            foreach (ServerManager::getServers() as $name => $server)
+            if (!\in_array($server->getProtocol(), [Protocol::HTTP, Protocol::WEBSOCKET]))
             {
-                if (!\in_array($server->getProtocol(), [Protocol::HTTP, Protocol::WEBSOCKET]))
+                continue;
+            }
+            $context['server'] = $server;
+            /** @var HttpRoute $route */
+            $route = $server->getBean('HttpRoute');
+            $autoEndSlash = $route->getAutoEndSlash();
+            foreach ($controllerParser->getByServer($name) as $className => $classItem)
+            {
+                /** @var \Imi\Server\Http\Route\Annotation\Controller $classAnnotation */
+                $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
                 {
                     continue;
                 }
-                $context['server'] = $server;
-                /** @var HttpRoute $route */
-                $route = $server->getBean('HttpRoute');
-                $autoEndSlash = $route->getAutoEndSlash();
-                foreach ($controllerParser->getByServer($name) as $className => $classItem)
+                // 类中间件
+                $classMiddlewares = [];
+                /** @var Middleware $middleware */
+                foreach (AnnotationManager::getClassAnnotations($className, Middleware::class) as $middleware)
                 {
-                    /** @var \Imi\Server\Http\Route\Annotation\Controller $classAnnotation */
-                    $classAnnotation = $classItem->getAnnotation();
-                    if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                }
+                foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $_)
+                {
+                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                        Route::class,
+                        Middleware::class,
+                        ExtractData::class,
+                        WSConfig::class,
+                        RequestParam::class,
+                    ]);
+                    $routeAnnotations = $annotations[Route::class];
+                    if ($routeAnnotations)
                     {
-                        continue;
+                        $routes = $routeAnnotations;
                     }
-                    // 类中间件
-                    $classMiddlewares = [];
-                    /** @var Middleware $middleware */
-                    foreach (AnnotationManager::getClassAnnotations($className, Middleware::class) as $middleware)
+                    else
                     {
-                        $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        $routes = [
+                            new Route([
+                                'url' => $methodName,
+                            ]),
+                        ];
                     }
-                    foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $_)
+                    // 方法中间件
+                    $methodMiddlewares = [];
+                    if ($annotations[Middleware::class])
                     {
-                        $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
-                            Route::class,
-                            Middleware::class,
-                            ExtractData::class,
-                            WSConfig::class,
-                            RequestParam::class,
-                        ]);
-                        $routeAnnotations = $annotations[Route::class];
-                        if ($routeAnnotations)
+                        /** @var Middleware $middleware */
+                        foreach ($annotations[Middleware::class] as $middleware)
                         {
-                            $routes = $routeAnnotations;
+                            $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                         }
-                        else
-                        {
-                            $routes = [
-                                new Route([
-                                    'url' => $methodName,
-                                ]),
-                            ];
-                        }
-                        // 方法中间件
-                        $methodMiddlewares = [];
-                        if ($annotations[Middleware::class])
-                        {
-                            /** @var Middleware $middleware */
-                            foreach ($annotations[Middleware::class] as $middleware)
-                            {
-                                $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
-                            }
-                        }
-                        // 最终中间件
-                        $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
+                    }
+                    // 最终中间件
+                    $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
 
-                        /** @var Route[] $routes */
-                        foreach ($routes as $routeItem)
+                    /** @var Route[] $routes */
+                    foreach ($routes as $routeItem)
+                    {
+                        if (null === $routeItem->url)
                         {
-                            if (null === $routeItem->url)
+                            $routeItem->url = $methodName;
+                        }
+                        $prefix = $classAnnotation->prefix;
+                        if ('' != $prefix)
+                        {
+                            if (!isset($routeItem->url[0]) || '/' !== $routeItem->url[0])
                             {
-                                $routeItem->url = $methodName;
-                            }
-                            $prefix = $classAnnotation->prefix;
-                            if ('' != $prefix)
-                            {
-                                if (!isset($routeItem->url[0]) || '/' !== $routeItem->url[0])
+                                if (isset($routeItem->url[1]) && str_starts_with($routeItem->url, './'))
                                 {
-                                    if (isset($routeItem->url[1]) && str_starts_with($routeItem->url, './'))
-                                    {
-                                        $prefixHasSlash = '/' === ($prefix[-1] ?? '');
-                                        $routeItem->url = $prefix . substr($routeItem->url, $prefixHasSlash ? 2 : 1);
-                                    }
-                                    else
-                                    {
-                                        $routeItem->url = $prefix . $routeItem->url;
-                                    }
+                                    $prefixHasSlash = '/' === ($prefix[-1] ?? '');
+                                    $routeItem->url = $prefix . substr($routeItem->url, $prefixHasSlash ? 2 : 1);
+                                }
+                                else
+                                {
+                                    $routeItem->url = $prefix . $routeItem->url;
                                 }
                             }
-                            $extractData = [];
-                            // @deprecated 3.0
-                            if ($annotations[ExtractData::class])
+                        }
+                        $extractData = [];
+                        // @deprecated 3.0
+                        if ($annotations[ExtractData::class])
+                        {
+                            /** @var ExtractData $item */
+                            foreach ($annotations[ExtractData::class] as $item)
                             {
-                                /** @var ExtractData $item */
-                                foreach ($annotations[ExtractData::class] as $item)
-                                {
-                                    $extractData[$item->to] = [
-                                        'name'     => $item->name,
-                                        'default'  => $item->default,
-                                        'required' => false,
-                                    ];
-                                }
+                                $extractData[$item->to] = [
+                                    'name'     => $item->name,
+                                    'default'  => $item->default,
+                                    'required' => false,
+                                ];
                             }
-                            if ($annotations[RequestParam::class])
+                        }
+                        if ($annotations[RequestParam::class])
+                        {
+                            /** @var RequestParam $item */
+                            foreach ($annotations[RequestParam::class] as $item)
                             {
-                                /** @var RequestParam $item */
-                                foreach ($annotations[RequestParam::class] as $item)
-                                {
-                                    $extractData[$item->param] = [
-                                        'name'     => $item->name,
-                                        'default'  => $item->default,
-                                        'required' => $item->required,
-                                    ];
-                                }
+                                $extractData[$item->param] = [
+                                    'name'     => $item->name,
+                                    'default'  => $item->default,
+                                    'required' => $item->required,
+                                ];
                             }
-                            if ($methodRequestParamAnnotations = AnnotationManager::getMethodParametersAnnotations($className, $methodName, RequestParam::class))
+                        }
+                        if ($methodRequestParamAnnotations = AnnotationManager::getMethodParametersAnnotations($className, $methodName, RequestParam::class))
+                        {
+                            foreach ($methodRequestParamAnnotations as $paramName => $requestParams)
                             {
-                                foreach ($methodRequestParamAnnotations as $paramName => $requestParams)
-                                {
-                                    $item = $requestParams[0];
-                                    $extractData[$paramName] = [
-                                        'name'     => $item->name,
-                                        'default'  => $item->default,
-                                        'required' => $item->required,
-                                    ];
-                                }
+                                $item = $requestParams[0];
+                                $extractData[$paramName] = [
+                                    'name'     => $item->name,
+                                    'default'  => $item->default,
+                                    'required' => $item->required,
+                                ];
                             }
-                            $routeCallable = new DelayServerBeanCallable($server, $className, $methodName);
-                            $options = [
-                                'middlewares'   => $middlewares,
-                                'wsConfig'      => $annotations[WSConfig::class][0] ?? null,
-                                'extractData'   => $extractData,
-                            ];
+                        }
+                        $routeCallable = new DelayServerBeanCallable($server, $className, $methodName);
+                        $options = [
+                            'middlewares'   => $middlewares,
+                            'wsConfig'      => $annotations[WSConfig::class][0] ?? null,
+                            'extractData'   => $extractData,
+                        ];
+                        $route->addRuleAnnotation($routeItem, $routeCallable, $options);
+                        if (($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && !str_ends_with($routeItem->url, '/'))
+                        {
+                            $routeItem = clone $routeItem;
+                            $routeItem->url .= '/';
                             $route->addRuleAnnotation($routeItem, $routeCallable, $options);
-                            if (($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && !str_ends_with($routeItem->url, '/'))
-                            {
-                                $routeItem = clone $routeItem;
-                                $routeItem->url .= '/';
-                                $route->addRuleAnnotation($routeItem, $routeCallable, $options);
-                            }
                         }
                     }
                 }
-                if (0 === Worker::getWorkerId())
-                {
-                    $route->checkDuplicateRoutes();
-                }
-                unset($context['server']);
             }
+            if (0 === Worker::getWorkerId())
+            {
+                $route->checkDuplicateRoutes();
+            }
+            unset($context['server']);
         }
-        finally
-        {
-            $context['server'] = $originServer;
-        }
+        $context['server'] = $originServer;
     }
 }

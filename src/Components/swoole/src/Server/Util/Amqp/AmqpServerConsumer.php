@@ -82,7 +82,6 @@ if (class_exists(\Imi\AMQP\Main::class))
             {
                 $data = json_decode($message->getBody(), true);
                 $serverName = $data['serverName'];
-                RequestContext::set('server', $server = ServerManager::getServer($serverName));
                 switch ($data['action'] ?? null)
                 {
                     case 'sendRawByFlag':

@@ -26,7 +26,6 @@ class OnSendRawToGroupRequest implements IEventListener
     {
         $data = $e->getData();
         ['data' => $data, 'groupName' => $groupName, 'serverName' => $serverName] = $data['data'];
-        RequestContext::set('server', ServerManager::getServer($serverName));
 
         /** @var LocalServerUtil $serverUtil */
         $serverUtil = App::getBean(LocalServerUtil::class);
