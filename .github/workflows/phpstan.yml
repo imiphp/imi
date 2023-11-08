@@ -47,6 +47,7 @@ jobs:
 
       - name: Cache phpstan
         uses: actions/cache@v3
+        if: ${{ false }}
         with:
           path: /tmp/base_cache/phpstan
           key: ${{ runner.os }}-phpstan-v2-${{ env.IMAGE_VERSION }}-${{ github.run_id }}
