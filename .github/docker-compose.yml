@@ -90,6 +90,7 @@ services:
 
   swoole:
     container_name: "swoole"
+    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole-test:${IMAGE_VERSION}
     depends_on:
       - shared-tmp
       - mysql
@@ -105,19 +106,12 @@ services:
       AMQP_SERVER_HOST: "rabbitmq"
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
       GITHUB_TOKEN: ${GITHUB_TOKEN}
-    build:
-      context: .
-      dockerfile: swoole.dockerfile
-      args:
-        SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
-        ROADRUNNER_DOCKER_VERSION: ${ROADRUNNER_DOCKER_VERSION}
-        POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
-      - "/tmp/composer:/root/.composer/cache/files:rw"
       - shared-volume:/tmp/docker
     working_dir: /imi
     command: tail -f /dev/null
+    tty: true
 
   php:
     container_name: "php"
@@ -153,15 +147,13 @@ services:
 
   swoole-only:
     container_name: "swoole-only"
-    build:
-      context: .
-      dockerfile: swoole.dockerfile
-      args:
-        SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
-        POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
+    image: ghcr.io/${REPOSITORY_OWNER}/imi-swoole-test:${IMAGE_VERSION}
+    environment:
+      RUNNING_CI_RECTOR_CACHE_DIR: ${RUNNING_CI_RECTOR_CACHE_DIR}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
-      - "/tmp/composer:/root/.composer/cache/files:rw"
-      - "/tmp/phpstan:/tmp/phpstan:rw"
+      - "/tmp/base_cache:/tmp/base_cache:rw"
+      - "/tmp/base_cache/phpstan:/tmp/phpstan:rw"
     working_dir: /imi
     command: tail -f /dev/null
+    tty: true

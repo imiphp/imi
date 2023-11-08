@@ -26,6 +26,8 @@ parameters:
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
 
+    resultCachePath: %tmpDir%/resultCache-imi-3-core.php
+
     ignoreErrors:
         -
             message: '#expects class-string<\S+>, string given#'

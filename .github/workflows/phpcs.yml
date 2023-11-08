@@ -17,16 +17,40 @@ concurrency:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
-      SWOOLE_DOCKER_VERSION: 5.0-php8.1
-      POSTGRESQL_VERSION: ""
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      IMAGE_VERSION: php8.1-swoole-5.0
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare
+      - name: Prepare1
+        run: |
+          echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
+          mkdir -p /tmp/base_cache/composer
+          mkdir -p /tmp/base_cache/phpcsfixer
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/composer
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-composer-
+
+      - name: Cache phpcsfixer
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/phpcsfixer
+          key: ${{ runner.os }}-phpcsfixer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/.php-cs-fixer.php') }}
+          restore-keys: |
+            ${{ runner.os }}-phpcsfixer-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-phpcsfixer-
+
+      - name: Prepare2
         run: |
           echo "::group::Env prepare"
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
@@ -36,9 +60,10 @@ jobs:
           docker exec ${ENV_SERVICE} composer -V
           echo "::endgroup::"
           echo "::group::Composer install"
+          docker exec ${ENV_SERVICE} composer config --global cache-files-dir /tmp/base_cache/composer
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
           echo "::endgroup::"
 
       - name: Coding Standards Tests
-        run: docker exec ${ENV_SERVICE} ./vendor/bin/php-cs-fixer fix --dry-run --diff -vvv
+        run: docker exec ${ENV_SERVICE} ./vendor/bin/php-cs-fixer fix --dry-run --diff -vvv --cache-file=/tmp/base_cache/phpcsfixer/.php-cs-fixer.cache

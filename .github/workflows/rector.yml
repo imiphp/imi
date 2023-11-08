@@ -17,20 +17,32 @@ concurrency:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole-docker: [5.0-php8.1]
+    runs-on: ubuntu-latest
     env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole-docker }}
-      POSTGRESQL_VERSION: ""
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      IMAGE_VERSION: php8.1-swoole-5.0
       ENV_SERVICE: swoole-only
+      RUNNING_CI_RECTOR_CACHE_DIR: /tmp/base_cache/rector
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare
+      - name: Prepare1
+        run: |
+          echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
+          mkdir -p /tmp/base_cache/composer
+          mkdir -p /tmp/base_cache/rector
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/composer
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-composer-
+
+      - name: Prepare2
         run: |
           echo "::group::Env prepare"
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
@@ -42,10 +54,19 @@ jobs:
           docker exec ${ENV_SERVICE} composer -V
           echo "::endgroup::"
           echo "::group::Composer install"
+          docker exec ${ENV_SERVICE} composer config --global cache-files-dir /tmp/base_cache/composer
           docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
           echo "::endgroup::"
           echo "test_prepared=1" >> $GITHUB_ENV
+
+      - name: Cache Rector
+        uses: actions/cache@v3
+        with:
+          path: /tmp/base_cache/rector
+          key: ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-${{ github.run_id }}
+          restore-keys: | 
+            ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-
 
       - name: Analyse core
         if: ${{ env.test_prepared && always() }}

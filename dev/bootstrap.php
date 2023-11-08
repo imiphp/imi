@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Imi\Event\Event;
 use Imi\Util\Uri;
+use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -69,6 +70,14 @@ function getRectorConfigCallback(string $path): callable
         ]);
 
         $rectorConfig->sets([LevelSetList::UP_TO_PHP_81]);
+
+        $cacheDir = @getenv('RUNNING_CI_RECTOR_CACHE_DIR');
+
+        if ($cacheDir && is_dir($cacheDir) && is_writable($cacheDir))
+        {
+            $rectorConfig->cacheClass(FileCacheStorage::class);
+            $rectorConfig->cacheDirectory($cacheDir);
+        }
     };
 }
 

@@ -105,6 +105,7 @@ jobs:
           --health-retries=3
     env:
       TEST_TYPE: ${{ matrix.testType }}
+      PHP_VERSION: 8.2
       SWOOLE_VERSION: v5.0.3
       ROADRUNNER_VERSION: 2.7.*
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
@@ -127,7 +128,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: ${{ env.PHP_VERSION }}
           tools: pecl
           coverage: xdebug
           extensions: >
@@ -146,8 +147,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ env.PHP_VERSION }}-${{ env.SWOOLE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.PHP_VERSION }}-${{ env.SWOOLE_VERSION }}-
+            ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           printf "127.0.0.1\tkafka1\n" | sudo tee -a /etc/hosts

@@ -17,26 +17,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
+  ci-linux:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         swoole:
-          - version: 5.1-php8.2
-            postgresql_version: ""
-          - version: 5.1-php8.1
-            postgresql_version: ""
-          - version: 5.0-php8.2
-            postgresql_version: ""
-          - version: 5.0-php8.1
-            postgresql_version: ""
+          - version: php8.2-swoole-5.1
+          - version: php8.1-swoole-5.1
+          - version: php8.2-swoole-5.0
+          - version: php8.1-swoole-5.0
         roadrunner: [2.7.*]
     env:
       ENV_SERVICE: swoole
-      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      IMAGE_VERSION: ${{ matrix.swoole.version }}
       MYSQL_DOCKER_VERSION: "8.0"
       REDIS_SERVER_HOST: redis
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
@@ -44,12 +40,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Prepare1
+        run: |
+          echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
+          mkdir -p /tmp/base_cache/composer
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
-      - name: Prepare
+          path: /tmp/base_cache/composer
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-composer-
+      - name: Prepare2
         uses: ./.github/actions/ci-prepare
         with:
           env: ${{ env.ENV_SERVICE }}
@@ -107,18 +110,17 @@ jobs:
 
   ci-unix:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         swoole:
-          - version: 5.1-php8.2
-            postgresql_version: ""
+          - version: php8.2-swoole-5.1
         roadrunner: [2.7.*]
     env:
       ENV_SERVICE: swoole
-      POSTGRESQL_VERSION: ${{ matrix.swoole.postgresql_version }}
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole.version }}
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      IMAGE_VERSION: ${{ matrix.swoole.version }}
       MYSQL_DOCKER_VERSION: "8.0"
       REDIS_SERVER_HOST: /tmp/docker/redis.sock
       ROADRUNNER_DOCKER_VERSION: ${{ matrix.roadrunner }}
@@ -126,12 +128,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Prepare1
+        run: |
+          echo "REPOSITORY_OWNER=${REPOSITORY_OWNER,,}" >>${GITHUB_ENV}
+          mkdir -p /tmp/base_cache/composer
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole.version }}-${{ hashFiles('/composer.json') }}
-      - name: Prepare
+          path: /tmp/base_cache/composer
+          key: ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.IMAGE_VERSION }}-
+            ${{ runner.os }}-composer-
+      - name: Prepare2
         uses: ./.github/actions/ci-prepare
         with:
           env: ${{ env.ENV_SERVICE }}
@@ -186,7 +195,7 @@ jobs:
 
   ci-swoole-cli:
     name: Swoole-cli-${{ matrix.swoole-cli }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -219,7 +228,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.swoole-cli }}-${{ hashFiles('/composer.json') }}
+          key: ${{ runner.os }}-composer-swoole-cli-${{ matrix.swoole-cli }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-swoole-cli-${{ matrix.swoole-cli }}-
+            ${{ runner.os }}-composer-swoole-cli-
+            ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           echo "::group::Composer install"
@@ -343,7 +356,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('*/composer.json', 'src/Components/*/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-versions }}-
+            ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           echo "::group::Env prepare"
