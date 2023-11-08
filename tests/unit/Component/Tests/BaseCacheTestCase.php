@@ -35,8 +35,9 @@ abstract class BaseCacheTestCase extends BaseTest
 
         $this->go(function (): void {
             usleep(1_100_000);
+            clearstatcache();
             Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
-        }, null, 3);
+        }, null, 5);
     }
 
     public function testSetMultiple(): void
@@ -71,11 +72,12 @@ abstract class BaseCacheTestCase extends BaseTest
 
         $this->go(function () use ($values): void {
             usleep(1_100_000);
+            clearstatcache();
             Assert::assertEquals([
                 'k1'    => 'none',
                 'k2'    => 'none',
             ], CacheManager::getMultiple($this->cacheName, array_keys_string($values), 'none'));
-        }, null, 3);
+        }, null, 5);
     }
 
     public function testDelete(): void
