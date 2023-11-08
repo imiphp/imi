@@ -40,61 +40,69 @@ class TcpRouteInit implements IEventListener
     {
         $controllerParser = TcpControllerParser::getInstance();
         $context = RequestContext::getContext();
-        foreach (ServerManager::getServers(ITcpServer::class) as $name => $server)
+        $originServer = $context['server'] ?? null;
+        try
         {
-            $context['server'] = $server;
-            /** @var \Imi\Server\TcpServer\Route\TcpRoute $route */
-            $route = $server->getBean('TcpRoute');
-            foreach ($controllerParser->getByServer($name) as $className => $classItem)
+            foreach (ServerManager::getServers(ITcpServer::class) as $name => $server)
             {
-                // 类中间件
-                /** @var \Imi\Server\TcpServer\Route\Annotation\TcpController $classAnnotation */
-                $classAnnotation = $classItem->getAnnotation();
-                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                $context['server'] = $server;
+                /** @var \Imi\Server\TcpServer\Route\TcpRoute $route */
+                $route = $server->getBean('TcpRoute');
+                foreach ($controllerParser->getByServer($name) as $className => $classItem)
                 {
-                    continue;
-                }
-                $classMiddlewares = [];
-                /** @var TcpMiddleware $middleware */
-                foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) as $middleware)
-                {
-                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
-                }
-                foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $_)
-                {
-                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
-                        TcpRoute::class,
-                        TcpMiddleware::class,
-                    ]);
-                    /** @var TcpRoute[] $routes */
-                    $routes = $annotations[TcpRoute::class];
-                    if (!$routes)
+                    // 类中间件
+                    /** @var \Imi\Server\TcpServer\Route\Annotation\TcpController $classAnnotation */
+                    $classAnnotation = $classItem->getAnnotation();
+                    if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
                     {
-                        throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
+                        continue;
                     }
-                    // 方法中间件
-                    $methodMiddlewares = [];
+                    $classMiddlewares = [];
                     /** @var TcpMiddleware $middleware */
-                    foreach ($annotations[TcpMiddleware::class] as $middleware)
+                    foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) as $middleware)
                     {
-                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
-                    // 最终中间件
-                    $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
-
-                    foreach ($routes as $routeItem)
+                    foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $_)
                     {
-                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
-                            'middlewares' => $middlewares,
+                        $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                            TcpRoute::class,
+                            TcpMiddleware::class,
                         ]);
+                        /** @var TcpRoute[] $routes */
+                        $routes = $annotations[TcpRoute::class];
+                        if (!$routes)
+                        {
+                            throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
+                        }
+                        // 方法中间件
+                        $methodMiddlewares = [];
+                        /** @var TcpMiddleware $middleware */
+                        foreach ($annotations[TcpMiddleware::class] as $middleware)
+                        {
+                            $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        }
+                        // 最终中间件
+                        $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
+
+                        foreach ($routes as $routeItem)
+                        {
+                            $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
+                                'middlewares' => $middlewares,
+                            ]);
+                        }
                     }
                 }
+                if (0 === Worker::getWorkerId())
+                {
+                    $route->checkDuplicateRoutes();
+                }
+                unset($context['server']);
             }
-            if (0 === Worker::getWorkerId())
-            {
-                $route->checkDuplicateRoutes();
-            }
-            unset($context['server']);
+        }
+        finally
+        {
+            $context['server'] = $originServer;
         }
     }
 }

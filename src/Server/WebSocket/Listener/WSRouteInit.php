@@ -40,71 +40,79 @@ class WSRouteInit implements IEventListener
     {
         $controllerParser = WSControllerParser::getInstance();
         $context = RequestContext::getContext();
-        foreach (ServerManager::getServers() as $name => $server)
+        $originServer = $context['server'] ?? null;
+        try
         {
-            if (Protocol::WEBSOCKET !== $server->getProtocol())
+            foreach (ServerManager::getServers() as $name => $server)
             {
-                continue;
-            }
-            $context['server'] = $server;
-            /** @var \Imi\Server\WebSocket\Route\WSRoute $route */
-            $route = $server->getBean('WSRoute');
-            foreach ($controllerParser->getByServer($name) as $className => $classItem)
-            {
-                /** @var \Imi\Server\WebSocket\Route\Annotation\WSController $classAnnotation */
-                $classAnnotation = $classItem->getAnnotation();
-                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                if (Protocol::WEBSOCKET !== $server->getProtocol())
                 {
                     continue;
                 }
-                // 类中间件
-                $classMiddlewares = [];
-                /** @var WSMiddleware $middleware */
-                foreach (AnnotationManager::getClassAnnotations($className, WSMiddleware::class) as $middleware)
+                $context['server'] = $server;
+                /** @var \Imi\Server\WebSocket\Route\WSRoute $route */
+                $route = $server->getBean('WSRoute');
+                foreach ($controllerParser->getByServer($name) as $className => $classItem)
                 {
-                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
-                }
-                foreach (AnnotationManager::getMethodsAnnotations($className, WSAction::class) as $methodName => $_)
-                {
-                    $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
-                        WSRoute::class,
-                        WSMiddleware::class,
-                    ]);
-                    /** @var \Imi\Server\WebSocket\Route\Annotation\WSRoute[] $routes */
-                    $routes = $annotations[WSRoute::class];
-                    if (!$routes)
+                    /** @var \Imi\Server\WebSocket\Route\Annotation\WSController $classAnnotation */
+                    $classAnnotation = $classItem->getAnnotation();
+                    if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
                     {
-                        throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
+                        continue;
                     }
-                    // 方法中间件
-                    $methodMiddlewares = [];
+                    // 类中间件
+                    $classMiddlewares = [];
                     /** @var WSMiddleware $middleware */
-                    foreach ($annotations[WSMiddleware::class] as $middleware)
+                    foreach (AnnotationManager::getClassAnnotations($className, WSMiddleware::class) as $middleware)
                     {
-                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
-                    // 最终中间件
-                    $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
-
-                    foreach ($routes as $routeItem)
+                    foreach (AnnotationManager::getMethodsAnnotations($className, WSAction::class) as $methodName => $_)
                     {
-                        $routeItem = clone $routeItem;
-                        // 方法上的 @WSRoute 未设置 route，则使用 @WSController 中的
-                        if (null === $routeItem->route)
-                        {
-                            $routeItem->route = $classAnnotation->route;
-                        }
-                        $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
-                            'middlewares' => $middlewares,
+                        $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
+                            WSRoute::class,
+                            WSMiddleware::class,
                         ]);
+                        /** @var \Imi\Server\WebSocket\Route\Annotation\WSRoute[] $routes */
+                        $routes = $annotations[WSRoute::class];
+                        if (!$routes)
+                        {
+                            throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
+                        }
+                        // 方法中间件
+                        $methodMiddlewares = [];
+                        /** @var WSMiddleware $middleware */
+                        foreach ($annotations[WSMiddleware::class] as $middleware)
+                        {
+                            $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
+                        }
+                        // 最终中间件
+                        $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
+
+                        foreach ($routes as $routeItem)
+                        {
+                            $routeItem = clone $routeItem;
+                            // 方法上的 @WSRoute 未设置 route，则使用 @WSController 中的
+                            if (null === $routeItem->route)
+                            {
+                                $routeItem->route = $classAnnotation->route;
+                            }
+                            $route->addRuleAnnotation($routeItem, new DelayServerBeanCallable($server, $className, $methodName), [
+                                'middlewares' => $middlewares,
+                            ]);
+                        }
                     }
                 }
+                if (0 === Worker::getWorkerId())
+                {
+                    $route->checkDuplicateRoutes();
+                }
+                unset($context['server']);
             }
-            if (0 === Worker::getWorkerId())
-            {
-                $route->checkDuplicateRoutes();
-            }
-            unset($context['server']);
+        }
+        finally
+        {
+            $context['server'] = $originServer;
         }
     }
 }
