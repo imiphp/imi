@@ -8,8 +8,6 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\RequestContext;
-use Imi\Server\ServerManager;
 use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**

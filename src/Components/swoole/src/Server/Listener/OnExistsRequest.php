@@ -7,8 +7,6 @@ namespace Imi\Swoole\Server\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\RequestContext;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
 

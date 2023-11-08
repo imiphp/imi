@@ -15,7 +15,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Server;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Util\AmqpServerUtil;
 use Imi\Worker;
 
