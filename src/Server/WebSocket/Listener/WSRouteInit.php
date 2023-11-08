@@ -40,6 +40,7 @@ class WSRouteInit implements IEventListener
     {
         $controllerParser = WSControllerParser::getInstance();
         $context = RequestContext::getContext();
+        $originServer = $context['server'] ?? null;
         foreach (ServerManager::getServers() as $name => $server)
         {
             if (Protocol::WEBSOCKET !== $server->getProtocol())
@@ -106,5 +107,6 @@ class WSRouteInit implements IEventListener
             }
             unset($context['server']);
         }
+        $context['server'] = $originServer;
     }
 }

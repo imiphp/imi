@@ -40,6 +40,7 @@ class UdpRouteInit implements IEventListener
     {
         $controllerParser = UdpControllerParser::getInstance();
         $context = RequestContext::getContext();
+        $originServer = $context['server'] ?? null;
         foreach (ServerManager::getServers() as $name => $server)
         {
             if (Protocol::UDP !== $server->getProtocol())
@@ -100,5 +101,6 @@ class UdpRouteInit implements IEventListener
             }
             unset($context['server']);
         }
+        $context['server'] = $originServer;
     }
 }

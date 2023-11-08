@@ -188,9 +188,6 @@ class HttpRouteInit implements IEventListener
             }
             unset($context['server']);
         }
-        if ($originServer)
-        {
-            $context['server'] = $originServer;
-        }
+        $context['server'] = $originServer;
     }
 }

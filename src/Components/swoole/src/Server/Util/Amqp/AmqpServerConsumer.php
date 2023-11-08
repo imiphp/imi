@@ -15,7 +15,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Server;
-use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Util\AmqpServerUtil;
 use Imi\Worker;
 
@@ -82,7 +81,6 @@ if (class_exists(\Imi\AMQP\Main::class))
             {
                 $data = json_decode($message->getBody(), true);
                 $serverName = $data['serverName'];
-                RequestContext::set('server', $server = ServerManager::getServer($serverName));
                 switch ($data['action'] ?? null)
                 {
                     case 'sendRawByFlag':
