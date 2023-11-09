@@ -111,6 +111,35 @@ else
 {
     echo 'Not found!', \PHP_EOL;
 }
+foreach ([
+    'websocket',
+    'register',
+    'gateway',
+    'http',
+] as $serviceName)
+{
+    $fileName = \dirname(__DIR__) . '/src/Components/workerman-gateway/tests/unit/AppServer/logs/' . $serviceName . '.log';
+    echo 'File: ', $fileName, \PHP_EOL;
+    if (is_file($fileName))
+    {
+        echo file_get_contents($fileName), \PHP_EOL;
+    }
+    else
+    {
+        echo 'Not found!', \PHP_EOL;
+    }
+
+    $fileName = \dirname(__DIR__) . '/src/Components/workerman-gateway/tests/unit/AppServer/logs/' . $serviceName . '.error.log';
+    echo 'File: ', $fileName, \PHP_EOL;
+    if (is_file($fileName))
+    {
+        echo file_get_contents($fileName), \PHP_EOL;
+    }
+    else
+    {
+        echo 'Not found!', \PHP_EOL;
+    }
+}
 
 echo '[RoadRunner]', \PHP_EOL;
 $fileName = \dirname(__DIR__) . '/src/Components/roadrunner/tests/unit/HttpServer/logs/cli.log';

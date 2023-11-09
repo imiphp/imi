@@ -177,19 +177,20 @@ function runTestServer(string $name, array $options): void
         {
             $checkStatuses = [$options['checkStatus']];
         }
-        foreach ($checkStatuses as $checkStatus)
+        foreach ($checkStatuses as $i => $checkStatus)
         {
             if ($checkStatus())
             {
-                echo "{$name} started!", \PHP_EOL;
-
-                return;
+                var_export($checkStatus);
+                echo ' OK', \PHP_EOL;
+                unset($checkStatuses[$i]);
             }
             else
             {
                 throw new \RuntimeException("{$name} start failed");
             }
         }
+        echo "{$name} started!", \PHP_EOL;
     }
 }
 
