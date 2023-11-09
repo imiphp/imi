@@ -236,6 +236,7 @@ jobs:
       - name: Prepare
         run: |
           echo "::group::Composer install"
+          composer config -g process-timeout 600
           composer update --prefer-dist --no-progress
           echo "::endgroup::"
           echo "::group::Kafka prepare"
