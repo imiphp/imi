@@ -7,7 +7,6 @@ namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
 use Imi\Aop\Annotation\Inject;
 use Imi\HttpValidate\Annotation\HttpValidation;
 use Imi\RequestContext;
-use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Annotation\RequestParam;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Message\Emitter\SseEmitter;
@@ -314,18 +313,6 @@ class IndexController extends HttpController
     public function type(int $id, string $name, int $page): array
     {
         return compact('id', 'name', 'page');
-    }
-
-    #[Action]
-    #[ExtractData(name: '$get.id', to: 'id2')]
-    #[ExtractData(name: '$get.id', to: 'id3')]
-    public function extractData(int $id, int $id2, string $id3): array
-    {
-        return [
-            'id'  => $id,
-            'id2' => $id2,
-            'id3' => $id3,
-        ];
     }
 
     #[Action]
