@@ -11,7 +11,7 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\Middleware\IMiddleware;
 use Imi\SwooleTracker\BaseMiddleware;
 
-#[Bean(name: 'SwooleTrackerTCPMiddleware', recursion: false)]
+#[Bean(name: 'SwooleTrackerTCPMiddleware')]
 class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
 {
     /**

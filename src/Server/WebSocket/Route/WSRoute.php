@@ -19,7 +19,7 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
 use Imi\Util\Uri;
 
-#[Bean(name: 'WSRoute', recursion: false)]
+#[Bean(name: 'WSRoute')]
 class WSRoute implements IRoute
 {
     /**

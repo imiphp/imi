@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * http 未匹配路由时的处理器.
  */
-#[Bean(name: 'HttpNotFoundHandler', recursion: false)]
+#[Bean(name: 'HttpNotFoundHandler')]
 class HttpNotFoundHandler implements IHttpNotFoundHandler
 {
     /**

@@ -13,7 +13,7 @@ use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Middleware\ActionMiddleware;
 use Imi\Server\Http\Middleware\RouteMiddleware;
 
-#[Bean(name: 'HttpDispatcher', recursion: false)]
+#[Bean(name: 'HttpDispatcher')]
 class Dispatcher
 {
     /**

@@ -12,7 +12,7 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 use Imi\Server\TcpServer\Route\TcpRoute;
 
-#[Bean(name: 'TCPRouteMiddleware', recursion: false)]
+#[Bean(name: 'TCPRouteMiddleware')]
 class RouteMiddleware implements IMiddleware
 {
     #[ServerInject(name: 'TcpRoute')]

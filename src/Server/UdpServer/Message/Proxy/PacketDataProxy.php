@@ -16,7 +16,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  */
 #[
     \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\UdpServer\Message\IPacketData::class, name: 'packetData'),
-    \Imi\Bean\Annotation\Bean(name: 'UdpPacketDataProxy', recursion: false)
+    \Imi\Bean\Annotation\Bean(name: 'UdpPacketDataProxy')
 ]
 class PacketDataProxy extends BaseRequestContextProxy implements \Imi\Server\UdpServer\Message\IPacketData
 {

@@ -18,7 +18,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  */
 #[
     \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\TcpServer\Message\IReceiveData::class, name: 'receiveData'),
-    \Imi\Bean\Annotation\Bean(name: 'TcpReceiveDataProxy', recursion: false)
+    \Imi\Bean\Annotation\Bean(name: 'TcpReceiveDataProxy')
 ]
 class ReceiveDataProxy extends BaseRequestContextProxy implements \Imi\Server\TcpServer\Message\IReceiveData
 {

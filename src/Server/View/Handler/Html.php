@@ -16,7 +16,7 @@ use Imi\Util\File;
 /**
  * Html视图处理器.
  */
-#[Bean(name: 'HtmlView', recursion: false)]
+#[Bean(name: 'HtmlView')]
 class Html implements IHandler
 {
     /**

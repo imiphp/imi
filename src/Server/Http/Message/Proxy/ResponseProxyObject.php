@@ -84,7 +84,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  */
 #[
     \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\Http\Message\Contract\IHttpResponse::class, name: 'response'),
-    \Imi\Bean\Annotation\Bean(name: 'HttpResponseProxy', recursion: false)
+    \Imi\Bean\Annotation\Bean(name: 'HttpResponseProxy')
 ]
 class ResponseProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpResponse
 {

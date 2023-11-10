@@ -11,7 +11,7 @@ use Imi\Server\Session\Handler\ISessionHandler;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Random;
 
-#[Bean(name: 'SessionManager', recursion: false)]
+#[Bean(name: 'SessionManager')]
 class SessionManager
 {
     /**

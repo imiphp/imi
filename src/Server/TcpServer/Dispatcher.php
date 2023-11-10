@@ -10,7 +10,7 @@ use Imi\Server\DataParser\DataParser;
 use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
-#[Bean(name: 'TcpDispatcher', recursion: false)]
+#[Bean(name: 'TcpDispatcher')]
 class Dispatcher
 {
     /**

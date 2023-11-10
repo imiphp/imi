@@ -17,7 +17,7 @@ use Imi\Util\Traits\TDataToProperty;
 /**
  * Redis 队列驱动.
  */
-#[Bean(name: 'RedisQueueDriver', recursion: false)]
+#[Bean(name: 'RedisQueueDriver')]
 class RedisQueueDriver implements IQueueDriver
 {
     use TDataToProperty{
