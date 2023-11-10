@@ -36,7 +36,7 @@ class ErrorLog
         register_shutdown_function([$this, 'onShutdown']);
         // @phpstan-ignore-next-line
         set_error_handler($this->onError(...), $this->catchLevel);
-        set_exception_handler($this->onException(...));
+        set_exception_handler(static fn (\Throwable $th) => Log::error($th));
     }
 
     /**
@@ -82,15 +82,5 @@ class ErrorLog
         {
             echo $th->getMessage(), ' ', $th->getFile(), ':', $th->getLine(), \PHP_EOL;
         }
-    }
-
-    /**
-     * 致命错误.
-     *
-     * @deprecated 3.0
-     */
-    public function onException(\Throwable $th): void
-    {
-        Log::error($th);
     }
 }
