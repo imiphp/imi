@@ -1316,14 +1316,6 @@ abstract class Query implements IQuery
     }
 
     /**
-     * 查询所有记录，返回分块迭代器.
-     */
-    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
-    {
-        return $this->chunkById($count, $column, $alias)->each();
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function insert(array|object|null $data = null): IResult

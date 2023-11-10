@@ -116,16 +116,6 @@ trait TModelQuery
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
-    {
-        $this->queryPreProcess();
-
-        return parent::chunkEach($count, $column, $alias);
-    }
-
-    /**
      * 执行SQL语句.
      */
     public function execute(string $sql): IResult

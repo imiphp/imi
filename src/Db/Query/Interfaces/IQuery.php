@@ -315,13 +315,6 @@ interface IQuery extends IBaseWhereCollector
     public function chunkByOffset(int $count): ChunkByOffsetResult;
 
     /**
-     * 查询所有记录，返回分块迭代器.
-     *
-     * @deprecated 3.0
-     */
-    public function chunkEach(int $count, string $column, ?string $alias = null): mixed;
-
-    /**
      * 分页查询.
      */
     public function paginate(int $page, int $count, array $options = []): IPaginateResult;
