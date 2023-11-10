@@ -9,10 +9,7 @@ use Imi\Model\Meta;
 
 trait TListValue
 {
-    /**
-     * @param mixed $value
-     */
-    protected static function parseListInitValue(string $name, $value, Column $fieldAnnotation, Meta $meta): mixed
+    protected static function parseListInitValue(string $name, mixed $value, Column $fieldAnnotation, Meta $meta): mixed
     {
         if ('' === $value)
         {
@@ -20,16 +17,13 @@ trait TListValue
         }
         elseif (null !== $fieldAnnotation->listSeparator)
         {
-            return '' === $fieldAnnotation->listSeparator ? [] : explode($fieldAnnotation->listSeparator, $value);
+            return '' === $fieldAnnotation->listSeparator ? [] : explode($fieldAnnotation->listSeparator, (string) $value);
         }
 
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected static function parseListSaveValue(string $name, $value, Column $fieldAnnotation, Meta $meta): mixed
+    protected static function parseListSaveValue(string $name, mixed $value, Column $fieldAnnotation, Meta $meta): mixed
     {
         if (null !== $value && null !== $fieldAnnotation->listSeparator)
         {
