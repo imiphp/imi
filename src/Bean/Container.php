@@ -140,7 +140,7 @@ final class Container implements ContainerInterface
                 }
                 elseif (class_exists($id))
                 {
-                    $object = BeanFactory::newInstanceNoInit($id, ...$params);
+                    $object = BeanFactory::newInstance($id, ...$params);
                 }
                 else
                 {
