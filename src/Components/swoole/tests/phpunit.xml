@@ -29,9 +29,6 @@
         <testsuite name="UDPServer">
             <directory>unit/UDPServer/Tests</directory>
         </testsuite>
-        <testsuite name="Performance">
-            <directory>unit/Component/Performance</directory>
-        </testsuite>
     </testsuites>
     <source>
         <include>

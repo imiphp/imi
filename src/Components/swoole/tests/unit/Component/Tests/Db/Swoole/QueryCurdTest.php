@@ -14,7 +14,7 @@ class QueryCurdTest extends QueryCurdBaseTestCase
     /**
      * 连接池名.
      */
-    protected ?string $poolName = 'swooleMysql';
+    protected ?string $poolName = 'maindb';
 
     /**
      * 测试 whereEx 的 SQL.
