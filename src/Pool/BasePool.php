@@ -262,13 +262,6 @@ abstract class BasePool implements IPool
     abstract protected function buildQueue(): void;
 
     /**
-     * 创建资源.
-     *
-     * @deprecated 3.0 建议使用 createNewResource()
-     */
-    abstract protected function createResource(): IPoolResource;
-
-    /**
      * 把资源加入队列.
      */
     abstract protected function push(IPoolResource $resource): void;
@@ -276,10 +269,7 @@ abstract class BasePool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function createNewResource(): IPoolResource
-    {
-        return $this->createResource();
-    }
+    abstract public function createNewResource(): IPoolResource;
 
     /**
      * {@inheritDoc}
