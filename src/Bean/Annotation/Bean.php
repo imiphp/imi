@@ -32,7 +32,7 @@ class Bean extends Base
         /**
          * 是否启用递归特性.
          */
-        public bool $recursion = true,
+        public bool $recursion = false,
         /**
          * 限制生效的环境，为 null 时则不限制.
          *
