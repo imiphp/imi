@@ -18,12 +18,6 @@
 
 在 HTTP 验证器场景下，不推荐在验证注解上指定 `default` 参数，而是应该直接给方法参数加上默认值。
 
-## ExtractData
-
-还有一个`ExtractData`注解，它可以把`get/post/body`中的参数导出到`action`方法的参数中。
-
-`ExtractData`注解可以独立使用，不依赖`HttpValidation`注解，但只能在控制器中使用。
-
 ## 示例
 
 ```php
@@ -40,9 +34,6 @@
     Required(name: '$get.name', message: '用户姓名为必传参数'),
     Text(name: '$get.name', min: 2, message: '用户姓名长度不得少于2位'),
     Required(name: '$get.age'),
-    ExtractData(name: '$get.id', to: 'id'),
-    ExtractData(name: '$get.name', to: 'name'),
-    ExtractData(name: '$get.age', to: 'age'),
 ]
 public function httpValidation($id, $name, $age = -1)
 {
