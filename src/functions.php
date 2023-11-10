@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace
 {
-    use Imi\Env;
     use Imi\RequestContext;
     use Imi\Swoole\Util\Coroutine;
 
@@ -64,16 +63,6 @@ namespace
         {
             return $resultCallable;
         }
-    }
-
-    /**
-     * 获取环境变量值
-     *
-     * @deprecated 3.0
-     */
-    function imiGetEnv(?string $varname = null, mixed $default = null): mixed
-    {
-        return Env::get($varname, $default);
     }
 }
 
