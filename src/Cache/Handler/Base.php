@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Cache\Handler;
 
 use Imi\App;
-use Imi\Cache\InvalidArgumentException;
 use Imi\RequestContext;
 use Psr\SimpleCache\CacheInterface;
 
@@ -63,28 +62,6 @@ abstract class Base implements CacheInterface
         else
         {
             return App::getBean($this->formatHandlerClass)->decode($data);
-        }
-    }
-
-    /**
-     * 检查key格式.
-     *
-     * @deprecated 3.0
-     */
-    protected function checkKey(string $key): void
-    {
-    }
-
-    /**
-     * 检查值是否是数组或Traversable.
-     *
-     * @deprecated 3.0
-     */
-    protected function checkArrayOrTraversable(mixed $values): void
-    {
-        if (!\is_array($values) && !$values instanceof \Traversable)
-        {
-            throw new InvalidArgumentException('Invalid keys');
         }
     }
 }

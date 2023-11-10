@@ -111,8 +111,6 @@ class RedisHash extends Base
      */
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        $this->checkArrayOrTraversable($keys);
-
         $keysMembers = [];
         foreach ($keys as $key)
         {
@@ -152,8 +150,6 @@ class RedisHash extends Base
      */
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkArrayOrTraversable($values);
-
         if ($values instanceof \Traversable)
         {
             $_setValues = clone $values;
@@ -193,8 +189,6 @@ class RedisHash extends Base
      */
     public function deleteMultiple(iterable $keys): bool
     {
-        $this->checkArrayOrTraversable($keys);
-
         $keysMembers = [];
         foreach ($keys as $key)
         {

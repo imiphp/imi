@@ -31,7 +31,6 @@ class Redis extends Base
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        $this->checkKey($key);
         $result = ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->get($this->parseKey($key)), $this->poolName, true);
         if (false === $result)
         {
@@ -48,7 +47,6 @@ class Redis extends Base
      */
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkKey($key);
         // ttl 支持 \DateInterval 格式
         if ($ttl instanceof \DateInterval)
         {
@@ -63,8 +61,6 @@ class Redis extends Base
      */
     public function delete(string $key): bool
     {
-        $this->checkKey($key);
-
         return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->del($this->parseKey($key)) > 0, $this->poolName, true);
     }
 
@@ -81,7 +77,6 @@ class Redis extends Base
      */
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        $this->checkArrayOrTraversable($keys);
         foreach ($keys as &$key)
         {
             $key = $this->parseKey($key);
@@ -111,7 +106,6 @@ class Redis extends Base
      */
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkArrayOrTraversable($values);
         if ($values instanceof \Traversable)
         {
             $setValues = clone $values;
@@ -158,8 +152,6 @@ class Redis extends Base
      */
     public function deleteMultiple(iterable $keys): bool
     {
-        $this->checkArrayOrTraversable($keys);
-
         foreach ($keys as &$key)
         {
             $key = $this->parseKey($key);
@@ -173,8 +165,6 @@ class Redis extends Base
      */
     public function has(string $key): bool
     {
-        $this->checkKey($key);
-
         return (bool) ImiRedis::use(fn (\Imi\Redis\RedisHandler $redis) => $redis->exists($this->parseKey($key)), $this->poolName, true);
     }
 
