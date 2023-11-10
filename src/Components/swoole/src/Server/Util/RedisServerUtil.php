@@ -68,7 +68,7 @@ class RedisServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendByFlag(mixed $data, array|string|null $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
@@ -84,7 +84,7 @@ class RedisServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawByFlag(string $data, $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $flag)
         {
@@ -164,7 +164,7 @@ class RedisServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function closeByFlag(string|array|null $flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $flag)
         {

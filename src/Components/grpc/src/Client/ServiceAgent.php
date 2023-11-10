@@ -27,10 +27,7 @@ class ServiceAgent
     ) {
     }
 
-    /**
-     * @return mixed
-     */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         /** @var GrpcClient $client */
         $client = RpcClientPool::getInstance($this->poolName);

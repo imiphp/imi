@@ -10,10 +10,7 @@ class TestClass
 {
     use TEvent;
 
-    /**
-     * @return mixed
-     */
-    public function test1()
+    public function test1(): mixed
     {
         $return = null;
         $this->trigger('test1', [
@@ -24,10 +21,7 @@ class TestClass
         return $return;
     }
 
-    /**
-     * @return mixed
-     */
-    public function test2()
+    public function test2(): mixed
     {
         $return = null;
         $this->trigger('test2', [
@@ -38,10 +32,7 @@ class TestClass
         return $return;
     }
 
-    /**
-     * @return mixed
-     */
-    public function test3()
+    public function test3(): mixed
     {
         $return = null;
         $this->trigger('test3', [

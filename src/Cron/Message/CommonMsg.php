@@ -8,25 +8,19 @@ class CommonMsg implements IMessage
 {
     /**
      * 初始化.
-     *
-     * @param mixed $response
      */
     public function __construct(
         /**
          * 从socket获取的返回信息.
          */
-        protected $response = []
+        protected mixed $response = []
     ) {
     }
 
     /**
      * 设置返回信息.
-     *
-     * @param mixed $response
-     *
-     * @return \Imi\Cron\Message\CommonMsg
      */
-    public function setResponse($response = [])
+    public function setResponse(mixed $response = []): self
     {
         $this->response = $response;
 
@@ -35,10 +29,8 @@ class CommonMsg implements IMessage
 
     /**
      * 获取返回信息.
-     *
-     * @return mixed
      */
-    public function getResponse()
+    public function getResponse(): mixed
     {
         return $this->response;
     }

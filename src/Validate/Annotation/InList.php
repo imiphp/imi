@@ -18,10 +18,8 @@ class InList extends Condition
         public string $message = '{name} validate failed',
         /**
          * 验证回调.
-         *
-         * @var array|callable
          */
-        public $callable = '\\Imi\\Validate\\ValidatorHelper::in',
+        public string|array|null $callable = '\\Imi\\Validate\\ValidatorHelper::in',
         public array $args = ['{:value}', '{list}'],
         public ?string $exception = null,
         public ?int $exCode = null,

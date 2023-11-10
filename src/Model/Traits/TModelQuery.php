@@ -118,7 +118,7 @@ trait TModelQuery
     /**
      * {@inheritDoc}
      */
-    public function chunkEach(int $count, string $column, ?string $alias = null)
+    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
     {
         $this->queryPreProcess();
 
@@ -146,10 +146,8 @@ trait TModelQuery
 
     /**
      * 关联查询预加载.
-     *
-     * @param string|array|null $field
      */
-    public function with($field): self
+    public function with(string|array|null $field): self
     {
         $this->with = null === $field ? null : (array) $field;
 
@@ -159,11 +157,9 @@ trait TModelQuery
     /**
      * 指定查询出的模型可序列化的字段.
      *
-     * @param string $fields
-     *
      * @return static
      */
-    public function withField(...$fields): self
+    public function withField(string ...$fields): self
     {
         $this->withField = $fields;
 

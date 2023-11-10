@@ -24,7 +24,7 @@ class TcpRoute implements IRoute
     /**
      * {@inheritDoc}
      */
-    public function parse($data): ?RouteResult
+    public function parse(mixed $data): ?RouteResult
     {
         foreach ($this->rules as $item)
         {
@@ -39,10 +39,8 @@ class TcpRoute implements IRoute
 
     /**
      * 增加路由规则，直接使用注解方式.
-     *
-     * @param mixed $callable
      */
-    public function addRuleAnnotation(TcpRouteAnnotation $annotation, $callable, array $options = []): void
+    public function addRuleAnnotation(TcpRouteAnnotation $annotation, mixed $callable, array $options = []): void
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))
@@ -80,10 +78,8 @@ class TcpRoute implements IRoute
 
     /**
      * 检查条件是否匹配.
-     *
-     * @param array|object $data
      */
-    private function checkCondition($data, TcpRouteAnnotation $annotation): bool
+    private function checkCondition(array|object $data, TcpRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

@@ -159,7 +159,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * {@inheritDoc}
      */
-    public function callServerMethod(string $methodName, ...$args)
+    public function callServerMethod(string $methodName, mixed ...$args): mixed
     {
         $server = $this->swooleServer;
         if (!method_exists($server, $methodName))
@@ -393,7 +393,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         $clientInfo = $this->swooleServer->getClientInfo($clientId);
         if (false === $clientInfo)
@@ -431,8 +431,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 获取服务器初始化需要的配置.
-     *
-     * @return array
      */
-    abstract protected function getServerInitConfig();
+    abstract protected function getServerInitConfig(): array;
 }

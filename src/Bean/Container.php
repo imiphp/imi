@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Exception\ContainerException;
 use Psr\Container\ContainerInterface;
 
-class Container implements ContainerInterface
+final class Container implements ContainerInterface
 {
     /**
      * Bean 对象们.
@@ -33,15 +33,14 @@ class Container implements ContainerInterface
     /**
      * 从容器中获取实例对象，如果不存在则实例化.
      *
-     * @param string $id        标识符
-     * @param mixed  ...$params
+     * @param string $id 标识符
      *
      * @return mixed entry
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function get(string $id, ...$params)
+    public function get(string $id, mixed ...$params): mixed
     {
         return self::__newInstance($id, $params, true);
     }
@@ -49,15 +48,12 @@ class Container implements ContainerInterface
     /**
      * 每次调用都实例化返回新的对象.
      *
-     * @param string $id        标识符
-     * @param mixed  ...$params
-     *
-     * @return mixed entry
+     * @param string $id 标识符
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function newInstance(string $id, ...$params)
+    public function newInstance(string $id, mixed ...$params): mixed
     {
         return self::__newInstance($id, $params, false);
     }
@@ -65,12 +61,10 @@ class Container implements ContainerInterface
     /**
      * @param string $id 标识符
      *
-     * @return mixed
-     *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    private function __newInstance(string $id, array $params, bool $allowStore)
+    private function __newInstance(string $id, array $params, bool $allowStore): mixed
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $beanObjects = &$this->beanObjects;
@@ -186,15 +180,12 @@ class Container implements ContainerInterface
      *
      * 此方法实例化的对象，AOP、注解等都对它不产生作用
      *
-     * @param string $id        标识符
-     * @param mixed  ...$params
-     *
-     * @return mixed entry
+     * @param string $id 标识符
      *
      * @throws \Psr\Container\NotFoundExceptionInterface  没有找到对象
      * @throws \Psr\Container\ContainerExceptionInterface 检索时出错
      */
-    public function getSingleton(string $id, ...$params)
+    public function getSingleton(string $id, mixed ...$params): mixed
     {
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;

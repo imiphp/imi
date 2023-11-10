@@ -20,8 +20,6 @@ class TableGenerate extends BaseCommand
     /**
      * 根据模型中 DDL 注解定义，生成表.
      * 注意，本工具是删除重建表，会丢失数据，生产环境慎重使用！
-     *
-     * @param string|bool $override
      */
     #[CommandAction(name: 'table', description: '表生成')]
     #[Option(name: 'namespace', type: \Imi\Cli\ArgType::STRING, comments: '模型所在命名空间，支持半角逗号分隔传多个，默认不传则为全部')]
@@ -30,7 +28,7 @@ class TableGenerate extends BaseCommand
     #[Option(name: 'include', type: \Imi\Cli\ArgType::ARRAY_EX, default: [], comments: '要包含的表名，以半角逗号分隔')]
     #[Option(name: 'exclude', type: \Imi\Cli\ArgType::ARRAY_EX, default: [], comments: '要排除的表名，以半角逗号分隔')]
     #[Option(name: 'override', type: \Imi\Cli\ArgType::STRING, default: false, comments: '是否覆盖已存在的表，请慎重！true-全覆盖;false-不覆盖;默认缺省状态为false')]
-    public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, $override): void
+    public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, string|bool $override): void
     {
         Event::trigger('IMI.GENERATE_MODEL.BEFORE');
         $override = (bool) json_decode((string) $override, false);

@@ -27,10 +27,8 @@ abstract class BasePool implements IPool
 
     /**
      * 资源配置.
-     *
-     * @var mixed
      */
-    protected $resourceConfig;
+    protected mixed $resourceConfig;
 
     /**
      * 当前配置序号.
@@ -47,14 +45,11 @@ abstract class BasePool implements IPool
      */
     protected string $poolItemClass = PoolItem::class;
 
-    /**
-     * @param mixed $resourceConfig
-     */
     public function __construct(
         /**
          * 池子名称.
          */
-        protected string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+        protected string $name, Interfaces\IPoolConfig $config = null, mixed $resourceConfig = null)
     {
         if (null !== $config)
         {
@@ -289,7 +284,7 @@ abstract class BasePool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function getResourceConfig()
+    public function getResourceConfig(): mixed
     {
         return $this->resourceConfig;
     }
@@ -312,10 +307,8 @@ abstract class BasePool implements IPool
 
     /**
      * 获取下一个资源配置.
-     *
-     * @return mixed
      */
-    protected function getNextResourceConfig()
+    protected function getNextResourceConfig(): mixed
     {
         $resourceConfig = &$this->resourceConfig;
         if (!isset($resourceConfig[1]))

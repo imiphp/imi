@@ -104,7 +104,7 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
-    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true): void
+    public function addCron(string $id, ?string $type, callable|string $task, array $cronRules, mixed $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true): void
     {
         if (isset($this->tasks[$id]))
         {
@@ -196,7 +196,7 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
-    public function getTaskCallable(string $cronId, string $class, ?string &$cronType)
+    public function getTaskCallable(string $cronId, string $class, ?string &$cronType): string|callable
     {
         $task = $class;
         if (is_subclass_of($class, ICronTask::class))

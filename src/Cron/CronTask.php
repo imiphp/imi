@@ -30,9 +30,6 @@ class CronTask
 
     /**
      * 构造方法.
-     *
-     * @param callable|string $task
-     * @param mixed           $data
      */
     public function __construct(
         /**
@@ -44,11 +41,11 @@ class CronTask
          *
          * \Imi\Cron\Consts\CronTaskType 类常量
          */
-        private readonly string $type, $task, array $cronRules,
+        private readonly string $type, callable|string $task, array $cronRules,
         /**
          * 数据.
          */
-        private $data,
+        private readonly mixed $data,
         /**
          * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
          */
@@ -115,10 +112,8 @@ class CronTask
 
     /**
      * Get 任务执行回调，可以是callable类型，也可以是 task、process 名.
-     *
-     * @return string|callable
      */
-    public function getTask()
+    public function getTask(): string|callable
     {
         return $this->task;
     }
@@ -135,10 +130,8 @@ class CronTask
 
     /**
      * Get 数据.
-     *
-     * @return mixed
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }

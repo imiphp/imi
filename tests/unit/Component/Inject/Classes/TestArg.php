@@ -12,13 +12,9 @@ use PHPUnit\Framework\Assert;
 #[Bean(name: 'TestArg')]
 class TestArg
 {
-    /**
-     * @param int    $id
-     * @param string $phpVersion
-     */
     #[FilterArg(name: 'id', filter: 'intval')]
     #[InjectArg(name: 'phpVersion', value: \PHP_VERSION)]
-    public function test($id, $phpVersion = null): void
+    public function test(int $id, ?string $phpVersion = null): void
     {
         Assert::assertTrue(\is_int($id));
         Assert::assertEquals(\PHP_VERSION, $phpVersion);

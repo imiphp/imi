@@ -8,7 +8,7 @@ use Imi\Db\Query\QueryOption;
 
 class DeleteBuilder extends BaseBuilder
 {
-    public function build(...$args): string
+    public function build(mixed ...$args): string
     {
         parent::build(...$args);
         $query = $this->query;

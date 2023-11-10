@@ -36,12 +36,9 @@ class IndexController extends HttpController
     #[Inject(name: 'TestService')]
     protected $testService;
 
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         $response = RequestContext::get('response');
         $response->getBody()->write('imi');
@@ -79,22 +76,16 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function renderHtml1()
+    public function renderHtml1(): mixed
     {
         return $this->__render('test/a', [
             'name'  => 'yurun',
         ]);
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function renderHtml2()
+    public function renderHtml2(): mixed
     {
         return $this->__render(\dirname(__DIR__, 2) . '/template/b.html', [
             'name'  => 'imi',
@@ -142,13 +133,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @param string $get
-     * @param string $post
-     * @param mixed  $default
-     */
     #[Action]
-    public function info2($get, $post, $default = 19260817): array
+    public function info2(string $get, string $post, mixed $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -159,14 +145,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @param string $get
-     * @param string $post
-     * @param string $parsedBody
-     * @param mixed  $default
-     */
     #[Action]
-    public function info3($get, $post, $parsedBody, $default = 19260817): array
+    public function info3(mixed $get, mixed $post, mixed $parsedBody, mixed $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -179,11 +159,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function cookie()
+    public function cookie(): mixed
     {
         return RequestContext::get('response')->withCookie('a', '1')
                                             ->withCookie('b', '2', time() + 1)
@@ -195,11 +172,8 @@ class IndexController extends HttpController
         ;
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function headers()
+    public function headers(): mixed
     {
         return RequestContext::get('response')->withHeader('a', '1')
                                          ->withAddedHeader('a', '11')
@@ -208,33 +182,24 @@ class IndexController extends HttpController
                                          ->withoutHeader('c');
     }
 
-    /**
-     * @return array
-     */
     #[Action]
     #[Route(url: '/middleware')]
     #[Middleware(middlewares: 'Imi\\Swoole\\Test\\HttpServer\\ApiServer\\Middleware\\Middleware1')]
     #[Middleware(middlewares: ['Imi\\Swoole\\Test\\HttpServer\\ApiServer\\Middleware\\Middleware2', 'Imi\\Swoole\\Test\\HttpServer\\ApiServer\\Middleware\\Middleware3'])]
     #[Middleware(middlewares: '@test')]
-    public function middleware()
+    public function middleware(): array
     {
         return [];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function redirect()
+    public function redirect(): mixed
     {
         return RequestContext::get('response')->redirect('/', StatusCode::MOVED_PERMANENTLY);
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function download(?string $contentType = null, ?string $outputFileName = null)
+    public function download(?string $contentType = null, ?string $outputFileName = null): mixed
     {
         return RequestContext::get('response')->sendFile(__FILE__, $contentType, $outputFileName);
     }
@@ -318,11 +283,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function singletonResponse1()
+    public function singletonResponse1(): mixed
     {
         $response = ResponseProxy::__getProxyInstance();
         $response->getBody()->write('imi niubi-1');

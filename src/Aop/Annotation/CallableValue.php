@@ -26,7 +26,7 @@ class CallableValue extends BaseInjectValue
     /**
      * {@inheritDoc}
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return ($this->callable)();
     }

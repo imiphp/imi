@@ -29,10 +29,8 @@ class GrpcService extends RpcService
 
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return BeanFactory::newInstance(\Imi\Grpc\Client\ServiceAgent::class, $this->poolName, $this->serviceName, $this->interface);
     }

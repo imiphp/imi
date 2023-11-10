@@ -29,9 +29,6 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
      */
     protected array $result = [];
 
-    /**
-     * @param \Swoole\Coroutine\MySQL\Statement|array $statement
-     */
     public function __construct(
         /**
          * 数据库操作对象
@@ -40,7 +37,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * Statement.
          */
-        protected $statement,
+        protected \Swoole\Coroutine\MySQL\Statement|array|bool $statement,
         /**
          * 最后执行过的SQL语句.
          */
@@ -67,9 +64,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = 0, $driverData = null): bool
+    public function bindColumn(string|int $column, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$column] = $param;
+        $this->bindValues[$column] = $var;
 
         return true;
     }
@@ -77,9 +74,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, $driverOptions = null): bool
+    public function bindParam(string|int $param, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$parameter] = $variable;
+        $this->bindValues[$param] = $var;
 
         return true;
     }
@@ -87,9 +84,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
+    public function bindValue(string|int $param, mixed $value, int $type = \PDO::PARAM_STR): bool
     {
-        $this->bindValues[$parameter] = $value;
+        $this->bindValues[$param] = $value;
 
         return true;
     }
@@ -113,7 +110,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         return \is_array($this->statement) ? $this->db->errorCode() : $this->statement->errno;
     }
@@ -226,7 +223,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
+    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed
     {
         $result = current($this->result);
         if ($result)
@@ -240,7 +237,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
+    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, mixed $fetchArgument = null, array $ctorArgs = []): array
     {
         return $this->result;
     }
@@ -248,19 +245,19 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchColumn($columnKey = 0)
+    public function fetchColumn(int $column = 0): mixed
     {
         $row = current($this->result);
         if ($row)
         {
             next($this->result);
-            if (isset($row[$columnKey]))
+            if (isset($row[$column]))
             {
-                return $row[$columnKey];
+                return $row[$column];
             }
-            elseif (is_numeric($columnKey))
+            elseif (is_numeric($column))
             {
-                return array_values($row)[$columnKey] ?? null;
+                return array_values($row)[$column] ?? null;
             }
         }
 
@@ -270,7 +267,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null)
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null): mixed
     {
         $row = current($this->result);
         if (false === $row)
@@ -294,7 +291,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return null;
     }
@@ -302,7 +299,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return true;
     }
@@ -350,25 +347,17 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function getInstance()
+    public function getInstance(): object
     {
         return $this->statement;
     }
 
-    /**
-     * @return mixed|false
-     */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return current($this->result);
     }
 
-    /**
-     * @return int|string|null
-     */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         return key($this->result);
     }

@@ -17,7 +17,7 @@ class TaskCron implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId): mixed
     {
         CronUtil::reportCronResult($param->getData()['id'], true, '');
 
@@ -27,7 +27,7 @@ class TaskCron implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data): void
+    public function finish(\Swoole\Server $server, int $taskId, mixed $data): void
     {
     }
 }

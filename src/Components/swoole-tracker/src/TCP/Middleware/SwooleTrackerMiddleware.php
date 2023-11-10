@@ -33,7 +33,7 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
     /**
      * {@inheritDoc}
      */
-    public function process(IReceiveData $data, IReceiveHandler $handler)
+    public function process(IReceiveData $data, IReceiveHandler $handler): mixed
     {
         $funcName = ($this->nameHandler)($data);
         // @phpstan-ignore-next-line

@@ -8,10 +8,7 @@ require \dirname(__DIR__) . '/vendor/autoload.php';
 
 \Swoole\Runtime::enableCoroutine();
 
-/**
- * @return bool
- */
-function checkMQTTServerStatus()
+function checkMQTTServerStatus(): bool
 {
     $serverStarted = false;
     for ($i = 0; $i < 60; ++$i)

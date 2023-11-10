@@ -17,11 +17,6 @@ use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     /**
-     * @var \mysqli_result|false
-     */
-    protected $result;
-
-    /**
      * 数据.
      */
     protected array $data = [];
@@ -35,7 +30,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * 数据库操作对象
          */
-        protected ?IMysqlDb $db, protected ?\mysqli_stmt $statement, ?\mysqli_result $result,
+        protected ?IMysqlDb $db,
+        protected ?\mysqli_stmt $statement,
+        protected \mysqli_result|bool|null $result,
         /**
          * 最后执行过的SQL语句.
          */
@@ -43,9 +40,8 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         /**
          * SQL 参数映射.
          */
-        protected ?array $sqlParamsMap = null)
-    {
-        $this->result = $result;
+        protected ?array $sqlParamsMap = null
+    ) {
     }
 
     /**
@@ -59,9 +55,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = 0, $driverData = null): bool
+    public function bindColumn(string|int $column, mixed &$var, int $type = 0, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$column] = $param;
+        $this->bindValues[$column] = $var;
 
         return true;
     }
@@ -69,9 +65,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, $driverOptions = null): bool
+    public function bindParam(string|int $param, mixed &$var, int $type = 0, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$parameter] = $variable;
+        $this->bindValues[$param] = $var;
 
         return true;
     }
@@ -79,9 +75,9 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
+    public function bindValue(string|int $param, mixed $value, int $type = 0): bool
     {
-        $this->bindValues[$parameter] = $value;
+        $this->bindValues[$param] = $value;
 
         return true;
     }
@@ -105,7 +101,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         return $this->statement->errno ?? $this->db->errorCode();
     }
@@ -188,35 +184,35 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
+    public function fetch(int $fetchStyle = FetchType::FETCH_ASSOC, int $cursorOrientation = 0, int $cursorOffset = 0): mixed
     {
         $result = $this->result;
 
         return match ($fetchStyle)
         {
-            \PDO::FETCH_ASSOC => $result->fetch_assoc(),
-            \PDO::FETCH_BOTH  => $result->fetch_array(),
-            \PDO::FETCH_NUM   => $result->fetch_array(\MYSQLI_NUM),
-            \PDO::FETCH_OBJ   => $result->fetch_object(),
-            default           => throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle)),
+            FetchType::FETCH_ASSOC => $result->fetch_assoc(),
+            FetchType::FETCH_BOTH  => $result->fetch_array(),
+            FetchType::FETCH_NUM   => $result->fetch_array(\MYSQLI_NUM),
+            FetchType::FETCH_OBJ   => $result->fetch_object(),
+            default                => throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle)),
         };
     }
 
     /**
      * {@inheritDoc}
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
+    public function fetchAll(int $fetchStyle = FetchType::FETCH_ASSOC, mixed $fetchArgument = null, array $ctorArgs = []): array
     {
         $result = $this->result;
         switch ($fetchStyle)
         {
-            case \PDO::FETCH_ASSOC:
+            case FetchType::FETCH_ASSOC:
                 return $result->fetch_all(\MYSQLI_ASSOC);
-            case \PDO::FETCH_BOTH:
+            case FetchType::FETCH_BOTH:
                 return $result->fetch_all(\MYSQLI_BOTH);
-            case \PDO::FETCH_NUM:
+            case FetchType::FETCH_NUM:
                 return $result->fetch_all(\MYSQLI_NUM);
-            case \PDO::FETCH_OBJ:
+            case FetchType::FETCH_OBJ:
                 $return = [];
                 foreach ($result->fetch_all(\MYSQLI_ASSOC) as $item)
                 {
@@ -232,17 +228,17 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchColumn($columnKey = 0)
+    public function fetchColumn(int $column = 0): mixed
     {
         $row = $this->result->fetch_array(\MYSQLI_BOTH);
 
-        return $row[$columnKey] ?? null;
+        return $row[$column] ?? null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null)
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null): mixed
     {
         return $this->result->fetch_object();
     }
@@ -250,7 +246,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return null;
     }
@@ -258,7 +254,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return true;
     }
@@ -302,25 +298,17 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function getInstance()
+    public function getInstance(): object
     {
         return $this->statement;
     }
 
-    /**
-     * @return mixed|false
-     */
-    #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         throw new DbException('Not support current()');
     }
 
-    /**
-     * @return int|string|null
-     */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         throw new DbException('Not support key()');
     }

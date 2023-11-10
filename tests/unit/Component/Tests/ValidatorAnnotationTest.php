@@ -17,10 +17,7 @@ use Imi\Test\Component\Validate\Classes\TestValidator;
  */
 class ValidatorAnnotationTest extends BaseTest
 {
-    /**
-     * @var \Imi\Test\Component\Validate\Classes\TestValidator
-     */
-    private $tester;
+    private \Imi\Test\Component\Validate\Classes\TestValidator $tester;
 
     private array $data = [];
 

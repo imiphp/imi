@@ -159,7 +159,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     /**
      * {@inheritDoc}
      */
-    public function push($clientId, string $data, int $opcode = 1): bool
+    public function push(int|string $clientId, string $data, int $opcode = 1): bool
     {
         return Server::sendRaw($data, $clientId, $this->getName()) > 0;
     }
@@ -167,7 +167,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         $session = Gateway::getSession($clientId);
 

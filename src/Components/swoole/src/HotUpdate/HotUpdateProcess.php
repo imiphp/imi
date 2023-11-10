@@ -59,7 +59,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @var string[]|bool
      */
-    protected $process = false;
+    protected array|bool $process = false;
 
     /**
      * 是否开启热更新，默认开启.
@@ -346,10 +346,7 @@ class HotUpdateProcess extends BaseProcess
         }
     }
 
-    /**
-     * @return array|bool
-     */
-    public function getProcess()
+    public function getProcess(): array|bool
     {
         return $this->process;
     }

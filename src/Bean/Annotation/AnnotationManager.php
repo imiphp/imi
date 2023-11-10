@@ -320,11 +320,9 @@ class AnnotationManager
      * 获取类注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string|array|null $annotationClassName
-     *
      * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
-    public static function getClassAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
+    public static function getClassAnnotations(string $className, string|array|null $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -419,11 +417,9 @@ class AnnotationManager
      * 获取指定方法注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string|array|null $annotationClassName
-     *
      * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
-    public static function getMethodAnnotations(string $className, string $methodName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
+    public static function getMethodAnnotations(string $className, string $methodName, string|array|null $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -518,11 +514,9 @@ class AnnotationManager
      * 获取指定属性注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string|array|null $annotationClassName
-     *
      * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
-    public static function getPropertyAnnotations(string $className, string $propertyName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
+    public static function getPropertyAnnotations(string $className, string $propertyName, string|array|null $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -617,11 +611,9 @@ class AnnotationManager
      * 获取指定常量注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string|array|null $annotationClassName
-     *
      * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
-    public static function getConstantAnnotations(string $className, string $constantName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
+    public static function getConstantAnnotations(string $className, string $constantName, string|array|null $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -716,11 +708,9 @@ class AnnotationManager
      * 获取指定方法参数注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string|array|null $annotationClassName
-     *
      * @return array|\Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]|null
      */
-    public static function getMethodParameterAnnotations(string $className, string $methodName, string $parameterName, $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
+    public static function getMethodParameterAnnotations(string $className, string $methodName, string $parameterName, string|array|null $annotationClassName = null, bool $autoAnalysis = true, bool $onlyFirst = false)
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -813,10 +803,8 @@ class AnnotationManager
 
     /**
      * 获取一个类中所有包含指定注解的方法.
-     *
-     * @param string|array|null $annotationClassName
      */
-    public static function getMethodsAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getMethodsAnnotations(string $className, string|array|null $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -888,10 +876,8 @@ class AnnotationManager
 
     /**
      * 获取一个类中所有包含指定注解的属性.
-     *
-     * @param string|array|null $annotationClassName
      */
-    public static function getPropertiesAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getPropertiesAnnotations(string $className, string|array|null $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -963,10 +949,8 @@ class AnnotationManager
 
     /**
      * 获取一个类中所有包含指定注解的常量.
-     *
-     * @param string|array|null $annotationClassName
      */
-    public static function getConstantsAnnotations(string $className, $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getConstantsAnnotations(string $className, string|array|null $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -1038,10 +1022,8 @@ class AnnotationManager
 
     /**
      * 获取方法参数注解.
-     *
-     * @param string|array|null $annotationClassName
      */
-    public static function getMethodParametersAnnotations(string $className, string $methodName, $annotationClassName = null, bool $autoAnalysis = true): array
+    public static function getMethodParametersAnnotations(string $className, string $methodName, string|array|null $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &self::$annotations;
         if (!isset($staticAnnotations[$className]))

@@ -19,12 +19,10 @@ class LockAop
 
     /**
      * 处理方法加锁
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Lock\Annotation\Lockable::class])]
     #[Around]
-    public function parseLock(AroundJoinPoint $joinPoint)
+    public function parseLock(AroundJoinPoint $joinPoint): mixed
     {
         $target = $joinPoint->getTarget();
         $method = $joinPoint->getMethod();

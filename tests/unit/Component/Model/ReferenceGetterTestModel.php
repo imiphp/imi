@@ -30,10 +30,8 @@ class ReferenceGetterTestModel extends TreeBase
 
     /**
      * @param int[] $list
-     *
-     * @return self
      */
-    public function setList(array $list)
+    public function setList(array $list): self
     {
         $this->list = $list;
 

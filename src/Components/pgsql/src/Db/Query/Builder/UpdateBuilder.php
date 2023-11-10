@@ -11,7 +11,7 @@ use Imi\Db\Query\QueryOption;
  */
 class UpdateBuilder extends BaseBuilder
 {
-    public function build(...$args): string
+    public function build(mixed ...$args): string
     {
         parent::build(...$args);
         $query = $this->query;
@@ -104,10 +104,7 @@ class UpdateBuilder extends BaseBuilder
         return $sql;
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected function parseValueParam(string $valueParam, $value): string
+    protected function parseValueParam(string $valueParam, mixed $value): string
     {
         if (\is_bool($value))
         {

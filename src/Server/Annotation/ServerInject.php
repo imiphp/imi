@@ -31,10 +31,8 @@ class ServerInject extends BaseInjectValue
 
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         if ($server = RequestContext::getServer())
         {

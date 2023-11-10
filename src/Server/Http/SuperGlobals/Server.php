@@ -17,21 +17,14 @@ class Server implements \ArrayAccess, \JsonSerializable
     ) {
     }
 
-    /**
-     * @param int|string $offset
-     * @param mixed      $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
-        $this->defaultServer[$offset] = $value;
+        $this->defaultServer[$key] = $value;
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
-        if (isset($this->defaultServer[$offset]))
+        if (isset($this->defaultServer[$key]))
         {
             return true;
         }
@@ -45,7 +38,7 @@ class Server implements \ArrayAccess, \JsonSerializable
         {
             $serverParams = &$this->defaultServer;
         }
-        if (isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+        if (isset($serverParams[$key]) || isset($serverParams[strtolower((string) $key)]))
         {
             return true;
         }
@@ -53,21 +46,12 @@ class Server implements \ArrayAccess, \JsonSerializable
         return false;
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
         Log::warning('imi does not support to unset values from $_SERVER');
     }
 
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $key): mixed
     {
         /** @var \Imi\Server\Http\Message\Request|null $request */
         $request = RequestContext::get('request');
@@ -79,15 +63,13 @@ class Server implements \ArrayAccess, \JsonSerializable
         {
             $serverParams = &$this->defaultServer;
         }
-        if (isset($serverParams[$offset]))
+        if (isset($serverParams[$key]))
         {
-            return $serverParams[$offset];
+            return $serverParams[$key];
         }
-        $lowerOffset = strtolower($offset);
-        if (isset($serverParams[$lowerOffset]))
-        {
-            return $serverParams[$lowerOffset];
-        }
+        $lowerOffset = strtolower((string) $key);
+
+        return $serverParams[$lowerOffset] ?? null;
     }
 
     public function __debugInfo(): array
@@ -98,8 +80,7 @@ class Server implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         /** @var \Imi\Server\Http\Message\Request|null $request */
         $request = RequestContext::get('request');

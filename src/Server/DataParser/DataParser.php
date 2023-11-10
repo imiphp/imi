@@ -17,12 +17,8 @@ class DataParser
 {
     /**
      * 编码为存储格式.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
-    public function encode($data, ?string $serverName = null)
+    public function encode(mixed $data, ?string $serverName = null): mixed
     {
         $parserClass = $this->getParserClass($serverName);
         if (null === $parserClass)
@@ -41,12 +37,8 @@ class DataParser
 
     /**
      * 解码为php变量.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
-    public function decode($data, ?string $serverName = null)
+    public function decode(mixed $data, ?string $serverName = null): mixed
     {
         $parserClass = $this->getParserClass($serverName);
         if (null === $parserClass)

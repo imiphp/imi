@@ -56,7 +56,7 @@ class Annotation
      *
      * @param string|string[] $namespaces
      */
-    public function initByNamespace($namespaces, bool $isApp = false): void
+    public function initByNamespace(string|array $namespaces, bool $isApp = false): void
     {
         foreach ((array) $namespaces as $namespace)
         {

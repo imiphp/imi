@@ -171,7 +171,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function getInstance(): ?PostgreSQL
+        public function getInstance(): PostgreSQL
         {
             return $this->instance;
         }
@@ -259,7 +259,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function errorCode()
+        public function errorCode(): mixed
         {
             if ($this->instance)
             {
@@ -333,7 +333,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function getAttribute($attribute)
+        public function getAttribute(mixed $attribute): mixed
         {
             return null;
         }
@@ -341,7 +341,7 @@ if (class_exists(PostgreSQL::class, false))
         /**
          * {@inheritDoc}
          */
-        public function setAttribute($attribute, $value): bool
+        public function setAttribute(mixed $attribute, mixed $value): bool
         {
             return true;
         }

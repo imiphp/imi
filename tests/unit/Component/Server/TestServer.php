@@ -56,10 +56,8 @@ class TestServer extends BaseServer
 
     /**
      * 获取客户端地址
-     *
-     * @param string|int $clientId
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         return new IPEndPoint('127.0.0.1', 0);
     }

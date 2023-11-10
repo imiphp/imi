@@ -20,21 +20,17 @@ class ClientIdMap
     /**
      * 获取clientId绑定的所有的组.
      *
-     * @param int|string $clientId
-     *
      * @return \Imi\Server\Group\Group[]
      */
-    public function getGroups($clientId): array
+    public function getGroups(int|string $clientId): array
     {
         return $this->map[$clientId] ?? [];
     }
 
     /**
      * 增加clientId关联关系.
-     *
-     * @param int|string $clientId
      */
-    public function joinGroup($clientId, Group $group): void
+    public function joinGroup(int|string $clientId, Group $group): void
     {
         $map = &$this->map;
         if (!\in_array($group, $map[$clientId] ?? []))
@@ -45,10 +41,8 @@ class ClientIdMap
 
     /**
      * 移除clientId关联关系.
-     *
-     * @param int|string $clientId
      */
-    public function leaveGroup($clientId, Group $group): void
+    public function leaveGroup(int|string $clientId, Group $group): void
     {
         $map = &$this->map;
         $index = array_search($group, $map[$clientId] ?? []);
@@ -60,10 +54,8 @@ class ClientIdMap
 
     /**
      * 将clientId从所有组中移除.
-     *
-     * @param int|string $clientId
      */
-    public function leaveAll($clientId): void
+    public function leaveAll(int|string $clientId): void
     {
         $map = $this->map[$clientId] ?? [];
         if ($map)

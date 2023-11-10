@@ -11,8 +11,6 @@ interface ICronTask
 {
     /**
      * 执行任务
-     *
-     * @param mixed $data
      */
-    public function run(string $id, $data): void;
+    public function run(string $id, mixed $data): void;
 }

@@ -34,7 +34,7 @@ class HandShakeMiddleware implements MiddlewareInterface
         {
             /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
             $routeResult = $requestContext['routeResult'] ?? null;
-            if ($routeResult->routeItem->wsConfig['wsOnly'] ?? false)
+            if ($routeResult->routeItem->wsConfig->wsOnly ?? false)
             {
                 $response = $response->setStatus(StatusCode::BAD_REQUEST);
             }

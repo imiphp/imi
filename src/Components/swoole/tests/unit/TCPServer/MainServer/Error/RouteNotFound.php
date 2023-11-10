@@ -15,7 +15,7 @@ class RouteNotFound implements ITcpRouteNotFoundHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IReceiveData $data, IReceiveHandler $handler)
+    public function handle(IReceiveData $data, IReceiveHandler $handler): mixed
     {
         return 'gg';
     }

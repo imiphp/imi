@@ -21,10 +21,7 @@ class CursorResult implements \IteratorAggregate
      */
     protected bool $isSuccess = false;
 
-    /**
-     * @param \Imi\Db\Interfaces\IStatement|bool $statement
-     */
-    public function __construct($statement,
+    public function __construct(IStatement|bool $statement,
         /**
          * 查询结果类的类名，为null则为数组.
          */
@@ -66,10 +63,9 @@ class CursorResult implements \IteratorAggregate
     }
 
     /**
-     * @return \Traversable<int, array|Model>|\Generator|iterable<int, array|Model>
+     * @return \Traversable<int, array|Model>
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         if (!$this->isSuccess)
         {

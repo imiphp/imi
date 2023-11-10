@@ -21,10 +21,8 @@ class Validator implements IValidator
 
     /**
      * 验证器中的数据.
-     *
-     * @var array|object
      */
-    protected $data;
+    protected array|object $data;
 
     /**
      * 第一条失败信息.
@@ -91,7 +89,7 @@ class Validator implements IValidator
     /**
      * {@inheritDoc}
      */
-    public function setData(&$data): void
+    public function setData(array|object &$data): void
     {
         $this->data = &$data;
     }
@@ -99,7 +97,7 @@ class Validator implements IValidator
     /**
      * {@inheritDoc}
      */
-    public function getData()
+    public function getData(): array|object
     {
         return $this->data;
     }
@@ -183,10 +181,9 @@ class Validator implements IValidator
     /**
      * 内部验证方法.
      *
-     * @param array|object $data
-     * @param bool         $break 遇到验证失败是否中断
+     * @param bool $break 遇到验证失败是否中断
      */
-    protected function __validateAll(&$data, bool $break): bool
+    protected function __validateAll(array|object &$data, bool $break): bool
     {
         $thisMessage = &$this->message;
         $thisResults = &$this->results;
@@ -237,10 +234,8 @@ class Validator implements IValidator
 
     /**
      * 组建消息.
-     *
-     * @param array|object $data
      */
-    protected function buildMessage($data, Condition $annotation): string
+    protected function buildMessage(array|object $data, Condition $annotation): string
     {
         $message = $annotation->message;
         if (str_contains($message, '{:value}'))
@@ -277,10 +272,8 @@ class Validator implements IValidator
 
     /**
      * 验证
-     *
-     * @param array|object $data
      */
-    protected function validateByAnnotation($data, Condition $annotation): bool
+    protected function validateByAnnotation(array|object $data, Condition $annotation): bool
     {
         $callable = $annotation->callable;
         if (\is_array($callable) && isset($callable[0]))
@@ -341,13 +334,7 @@ class Validator implements IValidator
         return true;
     }
 
-    /**
-     * @param mixed        $data
-     * @param string|array $argName
-     *
-     * @return mixed
-     */
-    protected function eachValue($data, $argName, ?bool &$hasValue = null)
+    protected function eachValue(mixed $data, string|array $argName, ?bool &$hasValue = null): mixed
     {
         if (\is_array($argName))
         {
@@ -394,14 +381,8 @@ class Validator implements IValidator
 
     /**
      * 获取参数值
-     *
-     * @param array|object $data
-     * @param mixed        $arg
-     * @param mixed        $value
-     *
-     * @return mixed
      */
-    protected function getArgValue($data, $arg, Condition $annotation, bool $includeAnnotationProperty = true, bool $hasValue = false, $value = null)
+    protected function getArgValue(array|object $data, mixed $arg, Condition $annotation, bool $includeAnnotationProperty = true, bool $hasValue = false, mixed $value = null): mixed
     {
         if (!\is_string($arg))
         {

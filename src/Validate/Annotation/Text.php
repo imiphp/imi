@@ -18,10 +18,8 @@ class Text extends Condition
         public string $message = '{name} validate failed',
         /**
          * 验证回调.
-         *
-         * @var array|callable
          */
-        public $callable = '\\Imi\\Validate\\ValidatorHelper::text',
+        public string|array|null $callable = '\\Imi\\Validate\\ValidatorHelper::text',
         public array $args = ['{:value}', '{min}', '{max}', '{char}'],
         public ?string $exception = null,
         public ?int $exCode = null,

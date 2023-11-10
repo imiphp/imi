@@ -35,10 +35,8 @@ class EnumManager
 
     /**
      * 获得枚举项.
-     *
-     * @param mixed $value
      */
-    public static function getEnumItem(string $className, $value): ?array
+    public static function getEnumItem(string $className, mixed $value): ?array
     {
         return self::$map['options'][$className][$value] ?? null;
     }

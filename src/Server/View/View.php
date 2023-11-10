@@ -42,10 +42,7 @@ class View
      */
     protected array $handlers = [];
 
-    /**
-     * @param mixed $data
-     */
-    public function render(ViewAnnotation $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
+    public function render(ViewAnnotation $viewAnnotation, ?BaseViewOption $viewOption, mixed $data, IHttpResponse $response): IHttpResponse
     {
         $handlers = &$this->handlers;
         $renderType = $viewAnnotation->renderType;

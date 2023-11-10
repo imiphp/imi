@@ -19,11 +19,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 设置数据.
-     *
-     * @param string|array $name
-     * @param mixed        $value
      */
-    public function set($name, $value = null, bool $merge = true): bool
+    public function set(string|int|array $name, mixed $value = null, bool $merge = true): bool
     {
         if (\is_array($name))
         {
@@ -48,11 +45,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 设置数据.
-     *
-     * @param string|array $name
-     * @param mixed        $value
      */
-    public function setVal($name, $value = null): bool
+    public function setVal(string|int|array $name, mixed $value = null): bool
     {
         if (\is_string($name))
         {
@@ -79,13 +73,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 获取数据.
-     *
-     * @param string|array|null $name
-     * @param mixed             $default
-     *
-     * @return mixed
      */
-    public function &get($name = null, $default = false)
+    public function &get(string|int|array|null $name = null, mixed $default = false): mixed
     {
         if (null === $name)
         {
@@ -145,10 +134,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 删除数据.
-     *
-     * @param string|array $name
      */
-    public function remove($name): bool
+    public function remove(string|int|array $name): bool
     {
         if (!\is_array($name))
         {
@@ -212,87 +199,56 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 键名对应的值是否存在.
      */
-    public function exists(string $name): bool
+    public function exists(string|int $name): bool
     {
         return isset($this->__data[$name]);
     }
 
-    /**
-     * @param mixed $key
-     *
-     * @return mixed
-     */
-    public function &__get($key)
+    public function &__get(mixed $name): mixed
     {
-        return $this->get($key);
+        return $this->get($name);
     }
 
-    /**
-     * @param mixed $key
-     * @param mixed $value
-     */
-    public function __set($key, $value): void
+    public function __set(mixed $name, mixed $value): void
     {
-        $this->set($key, $value);
+        $this->set($name, $value);
     }
 
-    /**
-     * @param mixed $key
-     */
-    public function __isset($key): bool
+    public function __isset(mixed $name): bool
     {
-        return null !== $this->get($key, null);
+        return null !== $this->get($name, null);
     }
 
-    /**
-     * @param mixed $key
-     */
-    public function __unset($key): void
+    public function __unset(mixed $name): void
     {
-        $this->remove($key);
+        $this->remove($name);
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
-        if (null === $offset)
+        if (null === $key)
         {
             $this->__data[] = $value;
         }
         else
         {
-            $this->setVal($offset, $value);
+            $this->setVal($key, $value);
         }
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
-        return null !== $this->get($offset, null);
+        return null !== $this->get($key, null);
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
-        $this->remove($offset);
+        $this->remove($key);
     }
 
-    /**
-     * @param mixed $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function &offsetGet($offset)
+    public function &offsetGet(mixed $key): mixed
     {
-        return $this->get($offset);
+        return $this->get($key);
     }
 
     public function &getRawData(): array

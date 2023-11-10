@@ -230,10 +230,8 @@ class Db
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function use(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
+    public static function use(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE): mixed
     {
         $poolName = self::parsePoolName($poolName, $queryType);
 
@@ -251,10 +249,8 @@ class Db
      * 使用回调来使用池子中的资源，无需手动释放，自动开启/提交/回滚事务
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
+    public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE): mixed
     {
         $poolName = self::parsePoolName($poolName, $queryType);
         if (PoolManager::exists($poolName))
@@ -271,10 +267,8 @@ class Db
      * 使用回调来使用当前上下文中的资源，无需手动释放，自动开启/提交/回滚事务
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function transContext(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
+    public static function transContext(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE): mixed
     {
         $db = static::getInstance($poolName, $queryType);
 
@@ -283,10 +277,8 @@ class Db
 
     /**
      * 事务处理，自动开启/提交/回滚事务
-     *
-     * @return mixed
      */
-    public static function trans(IDb $db, callable $callable)
+    public static function trans(IDb $db, callable $callable): mixed
     {
         try
         {

@@ -22,10 +22,8 @@ class TestConsumer extends BaseConsumer
      * 消费任务
      *
      * @param \AMQPApp\AMQP\Test\TestMessage $message
-     *
-     * @return mixed
      */
-    protected function consume(IMessage $message)
+    protected function consume(IMessage $message): mixed
     {
         var_dump(__CLASS__, $message->getBody(), $message::class);
         Redis::set('imi-amqp:consume:1:' . $message->getMemberId(), $message->getBody());

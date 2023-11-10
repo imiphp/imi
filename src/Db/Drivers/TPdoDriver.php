@@ -25,10 +25,8 @@ trait TPdoDriver
 
     /**
      * Statement.
-     *
-     * @var \PDOStatement|bool|null
      */
-    protected $lastStmt = null;
+    protected \PDOStatement|bool|null $lastStmt = null;
 
     /**
      * 是否缓存 Statement.
@@ -139,7 +137,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?\PDO
+    public function getInstance(): \PDO
     {
         return $this->instance;
     }
@@ -263,7 +261,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         if ($this->lastStmt)
         {
@@ -341,7 +339,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return $this->instance->getAttribute($attribute);
     }
@@ -349,7 +347,7 @@ trait TPdoDriver
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return $this->instance->setAttribute($attribute, $value);
     }

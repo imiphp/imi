@@ -16,19 +16,13 @@ use Imi\Model\Annotation\Entity;
 #[Bean]
 class ParentClass
 {
-    /**
-     * @var int
-     */
     #[Column]
     #[Callback(class: 'Test', method: 'test')]
-    public $id;
+    public int $id;
 
-    /**
-     * @var int
-     */
     #[Column]
     #[Callback(class: 'Test', method: 'test')]
-    public $id2;
+    public int $id2;
 
     #[EnumItem]
     public const CCC = 1;

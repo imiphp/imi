@@ -10,15 +10,11 @@ class AfterFindEventParam extends EventParam
 {
     /**
      * 主键值们.
-     *
-     * @var array
      */
-    public $ids;
+    public array $ids;
 
     /**
      * 模型.
-     *
-     * @var \Imi\Model\BaseModel
      */
-    public $model;
+    public \Imi\Model\BaseModel $model;
 }

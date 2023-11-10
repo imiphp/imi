@@ -62,7 +62,7 @@ abstract class BaseSyncPool extends BasePool
     /**
      * {@inheritDoc}
      */
-    public function tryGetResource()
+    public function tryGetResource(): IPoolResource|bool
     {
         if ($this->getFree() <= 0)
         {

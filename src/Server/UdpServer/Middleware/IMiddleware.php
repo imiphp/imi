@@ -9,8 +9,5 @@ use Imi\Server\UdpServer\Message\IPacketData;
 
 interface IMiddleware
 {
-    /**
-     * @return mixed
-     */
-    public function process(IPacketData $data, IPacketHandler $handler);
+    public function process(IPacketData $data, IPacketHandler $handler): mixed;
 }

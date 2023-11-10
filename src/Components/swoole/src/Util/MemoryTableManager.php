@@ -65,11 +65,13 @@ class MemoryTableManager
             }
             if (\is_array($option))
             {
+                // @phpstan-ignore-next-line
                 if (isset($option['class']))
                 {
                     $object = new $option['class']();
                     $option = $object->getOption($option);
                 }
+                // @phpstan-ignore-next-line
                 $table = new \Swoole\Table($option['size'] ?? 1024, $option['conflictProportion'] ?? 0.2);
                 foreach ($option['columns'] as $column)
                 {
@@ -207,10 +209,9 @@ class MemoryTableManager
     /**
      * 设置行的数据.
      *
-     * @param string $name  表名
-     * @param mixed  $value
+     * @param string $name 表名
      */
-    public static function set(string $name, string $key, $value): bool
+    public static function set(string $name, string $key, mixed $value): bool
     {
         return static::getInstance($name)->set($key, $value);
     }
@@ -219,10 +220,8 @@ class MemoryTableManager
      * 获取一行数据.
      *
      * @param string $name 表名
-     *
-     * @return mixed
      */
-    public static function get(string $name, string $key, ?string $field = null)
+    public static function get(string $name, string $key, ?string $field = null): mixed
     {
         if (null === $field)
         {
@@ -262,10 +261,8 @@ class MemoryTableManager
      *
      * @param string    $name   表名
      * @param int|float $incrby 增量，默认为1。如果列为整形，$incrby必须为int型，如果列为浮点型，$incrby必须为float类型
-     *
-     * @return number
      */
-    public static function incr(string $name, string $key, string $column, $incrby = 1)
+    public static function incr(string $name, string $key, string $column, float|int $incrby = 1): float|int
     {
         return static::getInstance($name)->incr($key, $column, $incrby);
     }
@@ -275,10 +272,8 @@ class MemoryTableManager
      *
      * @param string    $name   表名
      * @param int|float $incrby 减量，默认为1。如果列为整形，$incrby必须为int型，如果列为浮点型，$incrby必须为float类型
-     *
-     * @return number
      */
-    public static function decr(string $name, string $key, string $column, $incrby = 1)
+    public static function decr(string $name, string $key, string $column, float|int $incrby = 1): float|int
     {
         return static::getInstance($name)->decr($key, $column, $incrby);
     }

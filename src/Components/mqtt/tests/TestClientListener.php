@@ -12,30 +12,15 @@ use Imi\MQTT\Client\Contract\IMQTTClientListener;
 
 class TestClientListener implements IMQTTClientListener
 {
-    /**
-     * @var \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket
-     */
-    private $connectACKResult;
+    private \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket $connectACKResult;
 
-    /**
-     * @var array
-     */
-    private $publishResults;
+    private array $publishResults;
 
-    /**
-     * @var \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket
-     */
-    private $subscribeACKResult;
+    private \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket $subscribeACKResult;
 
-    /**
-     * @var \BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket
-     */
-    private $unsubscribeACKResult;
+    private \BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket $unsubscribeACKResult;
 
-    /**
-     * @var \BinSoul\Net\Mqtt\Packet\PingResponsePacket
-     */
-    private $pingResult;
+    private \BinSoul\Net\Mqtt\Packet\PingResponsePacket $pingResult;
 
     /**
      * {@inheritDoc}

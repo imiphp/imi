@@ -11,17 +11,11 @@ use Imi\Model\Annotation\Table;
 #[Table]
 class TestClass extends ParentClass
 {
-    /**
-     * @var int
-     */
     #[Inherit(annotation: ['Imi\\Model\\Annotation\\Column'])]
-    public $id;
+    public int $id;
 
-    /**
-     * @var int
-     */
     #[Inherit]
-    public $id2;
+    public int $id2;
 
     #[Inherit(annotation: '')]
     public const CCC = 1;

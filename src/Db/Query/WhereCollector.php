@@ -36,7 +36,7 @@ class WhereCollector implements IWhereCollector
     /**
      * {@inheritDoc}
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
+    public function where(string $fieldName, string $operation, mixed $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->where[] = new Where($fieldName, $operation, $value, $logicalOperator);
 

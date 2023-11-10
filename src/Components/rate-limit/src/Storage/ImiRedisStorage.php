@@ -37,17 +37,20 @@ final class ImiRedisStorage implements Storage, GlobalScope
     }
 
     /**
-     * @param float $microtime
+     * Bootstraps the storage.
+     *
+     * @param float $microtime the timestamp
+     *
+     * @throws StorageException bootstrapping failed
+     *
+     * @internal
      */
-    public function bootstrap($microtime): void
+    public function bootstrap(mixed $microtime): void
     {
         $this->setMicrotime($microtime);
     }
 
-    /**
-     * @return bool
-     */
-    public function isBootstrapped()
+    public function isBootstrapped(): bool
     {
         try
         {
@@ -75,11 +78,15 @@ final class ImiRedisStorage implements Storage, GlobalScope
     }
 
     /**
-     * @SuppressWarnings(PHPMD)
+     * Stores a timestamp.
      *
-     * @param float $microtime
+     * @param float $microtime the timestamp
+     *
+     * @throws StorageException writing to the storage failed
+     *
+     * @internal
      */
-    public function setMicrotime($microtime): void
+    public function setMicrotime(mixed $microtime): void
     {
         try
         {
@@ -98,10 +105,8 @@ final class ImiRedisStorage implements Storage, GlobalScope
 
     /**
      * @SuppressWarnings(PHPMD)
-     *
-     * @return float
      */
-    public function getMicrotime()
+    public function getMicrotime(): float
     {
         try
         {
@@ -119,10 +124,7 @@ final class ImiRedisStorage implements Storage, GlobalScope
         }
     }
 
-    /**
-     * @return PHPRedisMutex
-     */
-    public function getMutex()
+    public function getMutex(): PHPRedisMutex
     {
         return $this->mutex;
     }

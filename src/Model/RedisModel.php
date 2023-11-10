@@ -52,10 +52,7 @@ abstract class RedisModel extends BaseModel
      */
     protected ?int $__ttl = null;
 
-    /**
-     * @param string|object|null $object
-     */
-    public static function __getRedisEntity($object = null): ?RedisEntity
+    public static function __getRedisEntity(string|self|null $object = null): ?RedisEntity
     {
         if (null === $object)
         {
@@ -228,11 +225,9 @@ abstract class RedisModel extends BaseModel
     /**
      * 查找一条记录.
      *
-     * @param string|array $condition
-     *
      * @return static|null
      */
-    public static function find($condition = []): ?self
+    public static function find(string|array $condition = []): ?self
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
@@ -281,11 +276,9 @@ abstract class RedisModel extends BaseModel
     /**
      * 查询多条记录.
      *
-     * @param mixed $conditions
-     *
      * @return static[]
      */
-    public static function select(...$conditions): array
+    public static function select(mixed ...$conditions): array
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = static::__getRedisEntity(static::__getRealClassName());
@@ -531,10 +524,8 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 批量删除.
-     *
-     * @param mixed ...$conditions
      */
-    public static function deleteBatch(...$conditions): int
+    public static function deleteBatch(mixed ...$conditions): int
     {
         if (!$conditions)
         {
@@ -596,10 +587,8 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 生成key.
-     *
-     * @param string|array $condition
      */
-    public static function generateKey($condition = []): string
+    public static function generateKey(string|array $condition = []): string
     {
         if (\is_string($condition))
         {
@@ -624,10 +613,8 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 生成member.
-     *
-     * @param string|array $condition
      */
-    public static function generateMember($condition = []): string
+    public static function generateMember(string|array $condition = []): string
     {
         if (\is_string($condition))
         {
@@ -671,8 +658,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 获取Redis操作对象
-     *
-     * @param static|null $redisModel
      */
     public static function __getRedis(?self $redisModel = null): RedisHandler
     {
@@ -720,10 +705,8 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 获取键.
-     *
-     * @param string|object|null $object
      */
-    public static function __getKeyRule($object = null): KeyRule
+    public static function __getKeyRule(string|self|null $object = null): KeyRule
     {
         if (null === $object)
         {
@@ -751,10 +734,8 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 获取Member.
-     *
-     * @param string|object|null $object
      */
-    public static function __getMemberRule($object = null): KeyRule
+    public static function __getMemberRule(string|self|null $object = null): KeyRule
     {
         if (null === $object)
         {

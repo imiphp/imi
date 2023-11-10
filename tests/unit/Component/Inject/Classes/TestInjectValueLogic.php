@@ -16,17 +16,11 @@ use PHPUnit\Framework\Assert;
 #[Bean(name: 'TestInjectValueLogicXXX')]
 class TestInjectValueLogic
 {
-    /**
-     * @var string
-     */
     #[ConfigValue(name: '@app.imi-framework')]
-    protected $imi;
+    protected string $imi;
 
-    /**
-     * @var string
-     */
     #[ConstValue(name: 'PHP_VERSION')]
-    protected $phpVersion;
+    protected string $phpVersion;
 
     /**
      * @var callable
@@ -40,11 +34,8 @@ class TestInjectValueLogic
     #[CallableValue(callable: 'phpversion')]
     protected $callableResult;
 
-    /**
-     * @var mixed
-     */
     #[EnvValue(name: 'yurun')]
-    protected $yurun;
+    protected mixed $yurun;
 
     public function test(): void
     {

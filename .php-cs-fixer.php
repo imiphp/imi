@@ -126,12 +126,23 @@ return (new PhpCsFixer\Config())
             'allow_unused_params' => false,
         ],
         'no_null_property_initialization'  => false,
+        'phpdoc_to_param_type'             => [
+            'scalar_types' => true,
+        ],
+        'phpdoc_to_return_type' => [
+            'scalar_types' => true,
+        ],
+        'phpdoc_to_property_type' => [
+            'scalar_types' => true,
+        ],
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
-            ->notPath('src/Components/swoole/src/Util/Coroutine.typed.php') // 兼容 Swoole 5.0，需要 PHP >= 8.0
             ->notPath('src/Components/grpc/example/grpc')
+            ->notPath('tests/unit/Component/Model/Base')
+            ->notPath('tests/unit/Component/Model/Base')
+            ->notPath('src/Components/pgsql/tests/Model/Base')
     )
 ;

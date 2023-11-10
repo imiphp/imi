@@ -47,10 +47,8 @@ class DbExecuteEventParam extends EventParam
 
     /**
      * 执行方法的结果.
-     *
-     * @var mixed
      */
-    public $result;
+    public mixed $result;
 
     /**
      * 执行过程中是否有抛出异常.

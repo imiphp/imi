@@ -74,10 +74,8 @@ class CoroutineChannelManager
      * $data必须为非空变量，如空字符串、空数组、0、null、false
      * 写入成功返回true
      * 通道的空间不足时写入失败并返回false.
-     *
-     * @param mixed $data
      */
-    public static function push(string $name, $data): bool
+    public static function push(string $name, mixed $data): bool
     {
         return static::getInstance($name)->push($data);
     }
@@ -87,10 +85,8 @@ class CoroutineChannelManager
      * pop方法无需传入任何参数
      * 当通道内有数据时自动将数据弹出并还原为PHP变量
      * 当通道内没有任何数据时pop会失败并返回false.
-     *
-     * @return mixed
      */
-    public static function pop(string $name, float $timeout = 0)
+    public static function pop(string $name, float $timeout = 0): mixed
     {
         return static::getInstance($name)->pop($timeout);
     }

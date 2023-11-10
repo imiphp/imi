@@ -13,11 +13,8 @@ use Imi\Lock\Annotation\Lockable;
 #[Bean(name: 'TestCacheAnnotation')]
 class TestCacheAnnotation
 {
-    /**
-     * @return array|int
-     */
     #[Cacheable(key: 'test:{id}')]
-    public function testCacheable(int $id)
+    public function testCacheable(int $id): array|int
     {
         return [
             'id'    => $id,

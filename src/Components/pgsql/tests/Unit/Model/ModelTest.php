@@ -284,10 +284,7 @@ class ModelTest extends BaseTest
         ], $result->toArray());
     }
 
-    /**
-     * @param UpdateTime $record
-     */
-    private static function assertAutoCreateOrUpdateTime($record, array $fields, float $startMicroTime): void
+    private static function assertAutoCreateOrUpdateTime(UpdateTime $record, array $fields, float $startMicroTime): void
     {
         /** @phpstan-ignore-next-line */
         $parseDateTimeFun = (static fn (?string $columnType, $timeAccuracy, float $microTime) => PgModel::parseDateTime($columnType, $timeAccuracy, $microTime))->bindTo(null, PgModel::class);

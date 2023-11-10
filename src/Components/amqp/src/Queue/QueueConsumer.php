@@ -127,8 +127,10 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     /**
      * {@inheritDoc}
      */
-    protected function consume(IMessage $message): void
+    protected function consume(IMessage $message): mixed
     {
         $this->queue->push($message);
+
+        return null;
     }
 }

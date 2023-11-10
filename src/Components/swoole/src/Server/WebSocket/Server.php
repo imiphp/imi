@@ -354,7 +354,7 @@ class Server extends Base implements ISwooleWebSocketServer
     /**
      * {@inheritDoc}
      */
-    public function push($clientId, string $data, int $opcode = 1): bool
+    public function push(int|string $clientId, string $data, int $opcode = 1): bool
     {
         // @phpstan-ignore-next-line
         return $this->getSwooleServer()->push($clientId, $data, $opcode);

@@ -65,32 +65,24 @@ trait TServerGroup
 
     /**
      * 加入组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
      */
-    public function joinGroup(string $groupName, $clientId): void
+    public function joinGroup(string $groupName, int|string $clientId): void
     {
         $this->createGroup($groupName)->join($clientId);
     }
 
     /**
      * 离开组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
      */
-    public function leaveGroup(string $groupName, $clientId): void
+    public function leaveGroup(string $groupName, int|string $clientId): void
     {
         $this->createGroup($groupName)->leave($clientId);
     }
 
     /**
      * 调用组方法.
-     *
-     * @param mixed ...$args
-     *
-     * @return mixed
      */
-    public function groupCall(string $groupName, string $methodName, ...$args)
+    public function groupCall(string $groupName, string $methodName, mixed ...$args): mixed
     {
         return $this->createGroup($groupName)->{$methodName}(...$args);
     }

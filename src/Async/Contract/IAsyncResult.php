@@ -13,8 +13,6 @@ interface IAsyncResult
      * 获取异步返回结果.
      *
      * 默认不超时无限等待，超时则会抛出异常
-     *
-     * @return mixed
      */
-    public function get(?float $timeout = null);
+    public function get(?float $timeout = null): mixed;
 }

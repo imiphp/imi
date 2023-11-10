@@ -133,11 +133,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 实例化当前类.
      *
-     * @param mixed ...$args
-     *
      * @return static
      */
-    public static function newInstance(...$args): object
+    public static function newInstance(mixed ...$args): object
     {
         if (static::__getMeta()->isBean())
         {
@@ -146,6 +144,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
+            // @phpstan-ignore-next-line
             return new static(...$args);
         }
     }
@@ -163,26 +162,23 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $model;
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
-        if (isset($this->__originData[$offset]))
+        if (isset($this->__originData[$key]))
         {
             return true;
         }
         $meta = $this->__meta;
         /** @var Column|null $column */
-        $column = $meta->getFields()[$offset] ?? null;
+        $column = $meta->getFields()[$key] ?? null;
         if ($column && '' !== $column->reference)
         {
             return $this->offsetExists($column->reference);
         }
         $class = ($this->__realClass ??= $meta->getRealModelClass());
-        if (isset(self::$__getterCache[$class][$offset]))
+        if (isset(self::$__getterCache[$class][$key]))
         {
-            $methodName = self::$__getterCache[$class][$offset];
+            $methodName = self::$__getterCache[$class][$key];
             if (false === $methodName)
             {
                 return false;
@@ -190,14 +186,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $methodName = 'get' . ucfirst($this->__getCamelName((string) $offset));
+            $methodName = 'get' . ucfirst($this->__getCamelName((string) $key));
             if (method_exists($this, $methodName))
             {
-                self::$__getterCache[$class][$offset] = $methodName;
+                self::$__getterCache[$class][$key] = $methodName;
             }
             else
             {
-                self::$__getterCache[$class][$offset] = false;
+                self::$__getterCache[$class][$key] = false;
 
                 return false;
             }
@@ -206,26 +202,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return null !== $this->{$methodName}();
     }
 
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function &offsetGet($offset)
+    public function &offsetGet(mixed $key): mixed
     {
         $meta = $this->__meta;
         /** @var Column|null $column */
-        $column = $meta->getFields()[$offset] ?? null;
+        $column = $meta->getFields()[$key] ?? null;
         if ($column && '' !== $column->reference)
         {
             return $this[$column->reference];
         }
         $getterExists = true;
         $class = ($this->__realClass ??= $meta->getRealModelClass());
-        if (isset(self::$__getterCache[$class][$offset]))
+        if (isset(self::$__getterCache[$class][$key]))
         {
-            $methodName = self::$__getterCache[$class][$offset];
+            $methodName = self::$__getterCache[$class][$key];
             if (false === $methodName)
             {
                 $getterExists = false;
@@ -233,14 +223,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $methodName = 'get' . ucfirst($this->__getCamelName((string) $offset));
+            $methodName = 'get' . ucfirst($this->__getCamelName((string) $key));
             if (method_exists($this, $methodName))
             {
-                self::$__getterCache[$class][$offset] = $methodName;
+                self::$__getterCache[$class][$key] = $methodName;
             }
             else
             {
-                self::$__getterCache[$class][$offset] = false;
+                self::$__getterCache[$class][$key] = false;
                 $getterExists = false;
             }
         }
@@ -257,22 +247,18 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $result = $this->__originData[$offset] ?? null;
+            $result = $this->__originData[$key] ?? null;
         }
 
         return $result;
     }
 
-    /**
-     * @param int|string $offset
-     * @param mixed      $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         $meta = $this->__meta;
         $fields = $meta->getFields();
         /** @var Column|null $column */
-        $column = $fields[$offset] ?? null;
+        $column = $fields[$key] ?? null;
         if ($column && '' !== $column->reference)
         {
             $this[$column->reference] = $value;
@@ -280,7 +266,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             return;
         }
         // 数据库bit类型字段处理
-        if (!$column && isset($fields[$camelName = $this->__getCamelName((string) $offset)]))
+        if (!$column && isset($fields[$camelName = $this->__getCamelName((string) $key)]))
         {
             $column = $fields[$camelName];
         }
@@ -290,27 +276,27 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
 
         $class = ($this->__realClass ??= $this->__meta->getRealModelClass());
-        if (isset(self::$__setterCache[$class][$offset]))
+        if (isset(self::$__setterCache[$class][$key]))
         {
-            $methodName = self::$__setterCache[$class][$offset];
+            $methodName = self::$__setterCache[$class][$key];
             if (false === $methodName)
             {
-                $this->__originData[$offset] = $value;
+                $this->__originData[$key] = $value;
 
                 return;
             }
         }
         else
         {
-            $methodName = 'set' . ucfirst($this->__getCamelName((string) $offset));
+            $methodName = 'set' . ucfirst($this->__getCamelName((string) $key));
             if (method_exists($this, $methodName))
             {
-                self::$__setterCache[$class][$offset] = $methodName;
+                self::$__setterCache[$class][$key] = $methodName;
             }
             else
             {
-                self::$__setterCache[$class][$offset] = false;
-                $this->__originData[$offset] = $value;
+                self::$__setterCache[$class][$key] = false;
+                $this->__originData[$key] = $value;
 
                 return;
             }
@@ -323,55 +309,45 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             // 提取字段中的属性到当前模型
             $extractProperties = $meta->getExtractPropertys();
             if (
-                (($name = $offset) && isset($extractProperties[$name]))
-                || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
-                || (($name = $this->__getCamelName((string) $offset)) && isset($extractProperties[$name]))
+                (($name = $key) && isset($extractProperties[$name]))
+                || (($name = Text::toUnderScoreCase($key)) && isset($extractProperties[$name]))
+                || (($name = $this->__getCamelName((string) $key)) && isset($extractProperties[$name]))
             ) {
                 $this->__parseExtractProperty($name, $extractProperties[$name]);
             }
         }
     }
 
-    /**
-     * @param int|string $offset
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
         $meta = $this->__meta;
         $fields = $meta->getFields();
         /** @var Column|null $column */
-        $column = $fields[$offset] ?? null;
+        $column = $fields[$key] ?? null;
         if ($column && '' !== $column->reference)
         {
             unset($this[$column->reference]);
         }
-        elseif (isset($this->__fieldNames[$offset]))
+        elseif (isset($this->__fieldNames[$key]))
         {
-            unset($this->__fieldNames[$offset]);
+            unset($this->__fieldNames[$key]);
         }
-        elseif (false !== ($index = array_search($offset, $this->__fieldNames)))
+        elseif (false !== ($index = array_search($key, $this->__fieldNames)))
         {
             unset($this->__fieldNames[$index]);
         }
-        elseif (isset($this->__originData[$offset]))
+        elseif (isset($this->__originData[$key]))
         {
-            unset($this->__originData[$offset]);
+            unset($this->__originData[$key]);
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function &__get(string $name)
+    public function &__get(string $name): mixed
     {
         return $this[$name];
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this[$name] = $value;
     }
@@ -476,19 +452,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @return mixed|false
      */
-    #[\ReturnTypeWillChange]
-    public function &current()
+    public function &current(): mixed
     {
         $value = $this[current($this->__fieldNames)];
 
         return $value;
     }
 
-    /**
-     * @return int|string|null
-     */
-    #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         return current($this->__fieldNames);
     }
@@ -520,8 +491,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }
@@ -569,10 +539,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * Get 元数据.
-     *
-     * @param string|object $object
      */
-    public static function __getMeta($object = null): Meta
+    public static function __getMeta(string|self|null $object = null): Meta
     {
         if ($object)
         {

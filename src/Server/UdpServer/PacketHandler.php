@@ -28,7 +28,7 @@ class PacketHandler implements IPacketHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IPacketData $data)
+    public function handle(IPacketData $data): mixed
     {
         $middlewares = &$this->middlewares;
         $index = &$this->index;

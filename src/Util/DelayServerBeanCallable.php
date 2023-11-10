@@ -19,10 +19,7 @@ class DelayServerBeanCallable
 
     private ?object $instance = null;
 
-    /**
-     * @param string|IServer $server
-     */
-    public function __construct($server, private readonly string $beanName, private readonly string $methodName, private readonly array $constructArgs = [])
+    public function __construct(string|IServer $server, private readonly string $beanName, private readonly string $methodName, private readonly array $constructArgs = [])
     {
         if (\is_string($server))
         {
@@ -61,12 +58,7 @@ class DelayServerBeanCallable
         return $this->returnsReference ??= ReflectionContainer::getMethodReflection(BeanFactory::getObjectClass($this->getInstance()), $this->methodName)->returnsReference();
     }
 
-    /**
-     * @param mixed ...$args
-     *
-     * @return mixed
-     */
-    public function &__invoke(...$args)
+    public function &__invoke(mixed ...$args): mixed
     {
         if ($this->returnsReference())
         {

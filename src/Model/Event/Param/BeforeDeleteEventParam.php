@@ -10,15 +10,11 @@ class BeforeDeleteEventParam extends EventParam
 {
     /**
      * 模型.
-     *
-     * @var \Imi\Model\BaseModel
      */
-    public $model;
+    public \Imi\Model\BaseModel $model;
 
     /**
      * 查询器.
-     *
-     * @var \Imi\Db\Query\Interfaces\IQuery
      */
-    public $query;
+    public \Imi\Db\Query\Interfaces\IQuery $query;
 }

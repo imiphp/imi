@@ -79,10 +79,8 @@ class AMQPResource extends BasePoolResource
 
     /**
      * 获取对象实例.
-     *
-     * @return \PhpAmqpLib\Connection\AbstractConnection
      */
-    public function getInstance()
+    public function getInstance(): AbstractConnection
     {
         return $this->connection;
     }

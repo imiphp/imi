@@ -9,10 +9,7 @@ namespace Imi\Util;
  */
 class LazyArrayObject extends \ArrayObject implements \JsonSerializable
 {
-    /**
-     * @param mixed $input
-     */
-    public function __construct($input = [], int $flags = self::ARRAY_AS_PROPS, string $iteratorClass = \ArrayIterator::class)
+    public function __construct(mixed $input = [], int $flags = self::ARRAY_AS_PROPS, string $iteratorClass = \ArrayIterator::class)
     {
         parent::__construct($input, $flags, $iteratorClass);
     }
@@ -20,8 +17,7 @@ class LazyArrayObject extends \ArrayObject implements \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getArrayCopy();
     }

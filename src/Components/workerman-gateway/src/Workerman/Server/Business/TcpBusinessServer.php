@@ -124,7 +124,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * {@inheritDoc}
      */
-    public function send($clientId, string $data): bool
+    public function send(int|string $clientId, string $data): bool
     {
         return Server::sendRaw($data, $clientId, $this->getName()) > 0;
     }
@@ -132,7 +132,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * {@inheritDoc}
      */
-    public function getClientAddress($clientId): IPEndPoint
+    public function getClientAddress(string|int $clientId): IPEndPoint
     {
         $session = Gateway::getSession($clientId);
 

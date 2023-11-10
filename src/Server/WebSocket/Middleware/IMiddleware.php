@@ -9,8 +9,5 @@ use Imi\Server\WebSocket\Message\IFrame;
 
 interface IMiddleware
 {
-    /**
-     * @return mixed
-     */
-    public function process(IFrame $frame, IMessageHandler $handler);
+    public function process(IFrame $frame, IMessageHandler $handler): mixed;
 }

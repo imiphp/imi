@@ -21,7 +21,7 @@ class BeanTaskHandler implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId): mixed
     {
         /** @var ITaskHandler $taskHandler */
         $taskHandler = App::getBean($this->taskHandlerClass);
@@ -32,7 +32,7 @@ class BeanTaskHandler implements ITaskHandler
     /**
      * {@inheritDoc}
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data): void
+    public function finish(\Swoole\Server $server, int $taskId, mixed $data): void
     {
         /** @var ITaskHandler $taskHandler */
         $taskHandler = App::getBean($this->taskHandlerClass);

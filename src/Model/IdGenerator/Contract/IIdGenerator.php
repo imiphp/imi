@@ -11,8 +11,5 @@ use Imi\Model\BaseModel;
  */
 interface IIdGenerator
 {
-    /**
-     * @return mixed
-     */
-    public function generate(?BaseModel $model, array $options = []);
+    public function generate(?BaseModel $model, array $options = []): mixed;
 }

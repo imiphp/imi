@@ -502,10 +502,8 @@ class ModelRelationManager
 
     /**
      * 模型是否有关联定义.
-     *
-     * @param string|Model $model
      */
-    public static function hasRelation($model): bool
+    public static function hasRelation(string|BaseModel $model): bool
     {
         return (bool) AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class);
     }
@@ -569,11 +567,9 @@ class ModelRelationManager
     /**
      * 获取当前模型关联字段名数组.
      *
-     * @param string|BaseModel $object
-     *
      * @return string[]
      */
-    public static function getRelationFieldNames($object): array
+    public static function getRelationFieldNames(string|BaseModel $object): array
     {
         $class = BeanFactory::getObjectClass($object);
         $staticRelationFieldsNames = &self::$relationFieldsNames;

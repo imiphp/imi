@@ -8,10 +8,8 @@ abstract class BaseEnum
 {
     /**
      * 根据值，获取常量名，失败返回null.
-     *
-     * @param mixed $value
      */
-    public static function getName($value): ?string
+    public static function getName(mixed $value): ?string
     {
         $map = EnumManager::getKVMap(static::class);
         $key = array_search($value, $map);
@@ -21,20 +19,16 @@ abstract class BaseEnum
 
     /**
      * 获取值
-     *
-     * @return mixed
      */
-    public static function getValue(string $name)
+    public static function getValue(string $name): mixed
     {
         return \constant(static::class . '::' . $name);
     }
 
     /**
      * 获取文本.
-     *
-     * @param mixed $value
      */
-    public static function getText($value): ?string
+    public static function getText(mixed $value): ?string
     {
         $enumItem = EnumManager::getEnumItem(static::class, $value);
         if ($enumItem)
@@ -49,10 +43,8 @@ abstract class BaseEnum
 
     /**
      * 获取配置.
-     *
-     * @param mixed $value
      */
-    public static function getData($value): ?array
+    public static function getData(mixed $value): ?array
     {
         return EnumManager::getEnumItem(static::class, $value);
     }
@@ -85,10 +77,8 @@ abstract class BaseEnum
 
     /**
      * 验证值是否合法.
-     *
-     * @param mixed $value
      */
-    public static function validate($value): bool
+    public static function validate(mixed $value): bool
     {
         return \in_array($value, static::getValues());
     }
@@ -98,11 +88,9 @@ abstract class BaseEnum
      *
      * 值不合法会抛出异常
      *
-     * @param mixed $value
-     *
      * @throws \InvalidArgumentException
      */
-    public static function assert($value): void
+    public static function assert(mixed $value): void
     {
         if (!static::validate($value))
         {

@@ -179,12 +179,8 @@ class SessionManager
 
     /**
      * 获取Session值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function get(?string $name = null, $default = null)
+    public function get(?string $name = null, mixed $default = null): mixed
     {
         if (null === $name)
         {
@@ -197,10 +193,8 @@ class SessionManager
 
     /**
      * 设置Session值
-     *
-     * @param mixed $value
      */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::set($this->data, $name, $value);
@@ -219,12 +213,8 @@ class SessionManager
 
     /**
      * 获取一次值后将该值删除，可用于验证码等一次性功能.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function once(string $name, $default = null)
+    public function once(string $name, mixed $default = null): mixed
     {
         $name = $this->parseName($name);
         $value = $this->get($name, $default);

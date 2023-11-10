@@ -157,7 +157,7 @@ class Server extends Base implements IWebSocketServer
     /**
      * {@inheritDoc}
      */
-    public function push($clientId, string $data, int $opcode = 1): bool
+    public function push(int|string $clientId, string $data, int $opcode = 1): bool
     {
         /** @var TcpConnection|null $connection */
         $connection = $this->worker->connections[$clientId] ?? null;

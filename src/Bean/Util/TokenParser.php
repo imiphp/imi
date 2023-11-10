@@ -55,7 +55,7 @@ class TokenParser
      *
      * @return mixed[]|string|null the token if exists, null otherwise
      */
-    public function next(bool $docCommentIsComment = true)
+    public function next(bool $docCommentIsComment = true): array|string|null
     {
         for ($i = $this->pointer; $i < $this->numTokens; ++$i)
         {
@@ -79,7 +79,7 @@ class TokenParser
      *
      * @return array<string, string> a list with all found class names for a use statement
      */
-    public function parseUseStatement()
+    public function parseUseStatement(): array
     {
         $groupRoot = '';
         $class = '';
@@ -153,7 +153,7 @@ class TokenParser
      *
      * @return array<string, string> a list with all found use statements
      */
-    public function parseUseStatements(string $namespaceName)
+    public function parseUseStatements(string $namespaceName): array
     {
         $statements = [];
         while ($token = $this->next())
@@ -183,7 +183,7 @@ class TokenParser
      *
      * @return string the found namespace
      */
-    public function parseNamespace()
+    public function parseNamespace(): string
     {
         $name = '';
         while (
@@ -203,7 +203,7 @@ class TokenParser
      *
      * @return string the found class name
      */
-    public function parseClass()
+    public function parseClass(): string
     {
         // Namespaces and class names are tokenized the same: T_STRINGs
         // separated by T_NS_SEPARATOR so we can use one function to provide

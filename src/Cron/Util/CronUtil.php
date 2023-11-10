@@ -43,10 +43,8 @@ class CronUtil
 
     /**
      * 增加 Cron 任务
-     *
-     * @param callable|string $task
      */
-    public static function addCron(Cron $cron, $task): void
+    public static function addCron(Cron $cron, callable|string $task): void
     {
         $client = new Client([
             // @phpstan-ignore-next-line
@@ -111,10 +109,8 @@ class CronUtil
 
     /**
      * 获取所有任务
-     *
-     * @return mixed
      */
-    public static function getRealTasks()
+    public static function getRealTasks(): mixed
     {
         $tasks = [];
         $client = new Client([
@@ -139,10 +135,8 @@ class CronUtil
 
     /**
      * 通过任务Id 查询状态
-     *
-     * @return mixed
      */
-    public static function hasTask(string $id)
+    public static function hasTask(string $id): mixed
     {
         $task = [];
         $client = new Client([
@@ -168,10 +162,8 @@ class CronUtil
 
     /**
      * 通过任务Id 获取单个任务
-     *
-     * @return mixed
      */
-    public static function getTask(string $id)
+    public static function getTask(string $id): mixed
     {
         $task = [];
         $client = new Client([

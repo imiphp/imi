@@ -25,10 +25,8 @@ abstract class BaseFacade
 
     /**
      * 获取实例.
-     *
-     * @return mixed
      */
-    public static function __getFacadeInstance()
+    public static function __getFacadeInstance(): mixed
     {
         $cache = &self::$cache;
         if (isset($cache[static::class]))
@@ -57,10 +55,8 @@ abstract class BaseFacade
 
     /**
      * 绑定门面.
-     *
-     * @param mixed ...$args
      */
-    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, ...$args): void
+    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, mixed ...$args): void
     {
         $cache = &self::$cache;
         if (isset($cache[$facadeClass]))
@@ -78,10 +74,7 @@ abstract class BaseFacade
         self::$cache = [];
     }
 
-    /**
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $arguments)
+    public static function __callStatic(string $method, array $arguments): mixed
     {
         return static::__getFacadeInstance()->{$method}(...$arguments);
     }

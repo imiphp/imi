@@ -23,11 +23,13 @@ class UdpRouteNotFoundHandler implements IUdpRouteNotFoundHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IPacketData $data, IPacketHandler $handler)
+    public function handle(IPacketData $data, IPacketHandler $handler): mixed
     {
         if (null !== $this->handler)
         {
             return App::getBean($this->handler)->handle($data, $handler);
         }
+
+        return null;
     }
 }

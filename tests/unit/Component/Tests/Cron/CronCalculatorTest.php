@@ -14,10 +14,7 @@ use Imi\Test\BaseTest;
  */
 class CronCalculatorTest extends BaseTest
 {
-    /**
-     * @return mixed
-     */
-    public function testInit()
+    public function testInit(): mixed
     {
         $cronCalculator = App::getBean('CronCalculator');
         $this->assertTrue(true);

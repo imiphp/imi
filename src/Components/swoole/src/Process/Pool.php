@@ -250,10 +250,8 @@ class Pool
 
     /**
      * 启动工作进程.
-     *
-     * @param int $workerId
      */
-    private function startWorker($workerId): void
+    private function startWorker(int $workerId): void
     {
         $workers = &$this->workers;
         if (isset($workers[$workerId]))

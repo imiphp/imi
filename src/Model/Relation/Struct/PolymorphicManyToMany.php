@@ -43,10 +43,8 @@ class PolymorphicManyToMany
 
     /**
      * 初始化多对多结构.
-     *
-     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany|\Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
      */
-    public function __construct(string $className, string $propertyName, $annotation)
+    public function __construct(string $className, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany|\Imi\Model\Annotation\Relation\PolymorphicToMany $annotation)
     {
         if (class_exists($annotation->model))
         {

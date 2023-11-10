@@ -30,7 +30,7 @@ class RequestInject extends BaseInjectValue
     /**
      * {@inheritDoc}
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return RequestContext::getBean($this->name, ...$this->args);
     }

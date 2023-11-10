@@ -14,13 +14,8 @@ class ObjectArrayHelper
 
     /**
      * 获取值
-     *
-     * @param array|object $object
-     * @param mixed        $default
-     *
-     * @return mixed
      */
-    public static function get(&$object, string $name, $default = null)
+    public static function get(array|object &$object, string $name, mixed $default = null): mixed
     {
         if ('' !== $name)
         {
@@ -66,11 +61,8 @@ class ObjectArrayHelper
 
     /**
      * 设置值
-     *
-     * @param array|object $object
-     * @param mixed        $value
      */
-    public static function set(&$object, string $name, $value): void
+    public static function set(array|object &$object, string $name, mixed $value): void
     {
         if ('' === $name)
         {
@@ -107,10 +99,8 @@ class ObjectArrayHelper
 
     /**
      * 移除值
-     *
-     * @param array|object $object
      */
-    public static function remove(&$object, string $name): void
+    public static function remove(array|object &$object, string $name): void
     {
         if ('' === $name)
         {
@@ -147,10 +137,8 @@ class ObjectArrayHelper
 
     /**
      * 值是否存在.
-     *
-     * @param array|object $object
      */
-    public static function exists($object, string $name): bool
+    public static function exists(array|object $object, string $name): bool
     {
         return null !== static::get($object, $name);
     }
@@ -181,10 +169,8 @@ class ObjectArrayHelper
      * 过滤属性.
      *
      * $mode只允许取值为：allow/deny
-     *
-     * @param array|object $object
      */
-    public static function filter(&$object, array $fields, string $mode = 'allow'): void
+    public static function filter(array|object &$object, array $fields, string $mode = 'allow'): void
     {
         if ('allow' === $mode)
         {

@@ -29,10 +29,8 @@ class Callback extends BaseInjectValue
 
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return [$this->class, $this->method];
     }

@@ -7,7 +7,6 @@ namespace Imi\Swoole\Server\Http\Listener;
 use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\Http\Dispatcher;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Listener\IRequestEventListener;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
 
@@ -18,10 +17,7 @@ class BeforeRequest implements IRequestEventListener
 {
     protected Dispatcher $dispatcher;
 
-    /**
-     * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
-     */
-    public function __construct(protected ISwooleServer $server)
+    public function __construct(protected \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server)
     {
     }
 

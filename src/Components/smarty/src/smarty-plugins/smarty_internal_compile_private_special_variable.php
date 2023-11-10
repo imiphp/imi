@@ -16,15 +16,14 @@ class smarty_internal_compile_private_special_variable extends Smarty_Internal_C
     /**
      * Compiles code for the special $smarty variables.
      *
-     * @param array                                 $args      array with attributes from parser
-     * @param \Smarty_Internal_TemplateCompilerBase $compiler  compiler object
-     * @param mixed                                 $parameter
+     * @param array                                 $args     array with attributes from parser
+     * @param \Smarty_Internal_TemplateCompilerBase $compiler compiler object
      *
      * @return string compiled code
      *
      * @throws \SmartyCompilerException
      */
-    public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
+    public function compile(array $args, Smarty_Internal_TemplateCompilerBase $compiler, mixed $parameter): string
     {
         $compiled_ref = null;
         $_index = preg_split("/\]\[/", substr((string) $parameter, 1, \strlen((string) $parameter) - 2));

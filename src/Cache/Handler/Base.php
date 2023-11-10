@@ -30,10 +30,8 @@ abstract class Base implements CacheInterface
 
     /**
      * 写入编码
-     *
-     * @param mixed $data
      */
-    protected function encode($data): string
+    protected function encode(mixed $data): string
     {
         if (null === $this->formatHandlerClass)
         {
@@ -51,10 +49,8 @@ abstract class Base implements CacheInterface
 
     /**
      * 读出解码
-     *
-     * @return mixed
      */
-    protected function decode(string $data)
+    protected function decode(string $data): mixed
     {
         if (null === $this->formatHandlerClass)
         {
@@ -83,10 +79,8 @@ abstract class Base implements CacheInterface
      * 检查值是否是数组或Traversable.
      *
      * @deprecated 3.0
-     *
-     * @param mixed $values
      */
-    protected function checkArrayOrTraversable($values): void
+    protected function checkArrayOrTraversable(mixed $values): void
     {
         if (!\is_array($values) && !$values instanceof \Traversable)
         {

@@ -100,10 +100,8 @@ class Config
 
     /**
      * 设置配置值
-     *
-     * @param mixed $value
      */
-    public static function set(string $name, $value): bool
+    public static function set(string $name, mixed $value): bool
     {
         if ('cli' === \PHP_SAPI)
         {
@@ -141,12 +139,8 @@ class Config
 
     /**
      * 获取配置值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public static function get(string $name, $default = null)
+    public static function get(string $name, mixed $default = null): mixed
     {
         if ('cli' === \PHP_SAPI)
         {

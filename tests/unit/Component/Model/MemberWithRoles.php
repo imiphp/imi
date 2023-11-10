@@ -29,14 +29,14 @@ class MemberWithRoles extends Member
     #[JoinToMiddle(field: 'id', middleField: 'member_id')]
     #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
     #[AutoSave]
-    protected $roleRelations = null;
+    protected ?iterable $roleRelations = null;
 
     /**
      * Get the value of roleRelation.
      *
      * @return MemberRoleRelation[]|null
      */
-    public function getRoleRelations()
+    public function getRoleRelations(): ?iterable
     {
         return $this->roleRelations;
     }
@@ -45,10 +45,8 @@ class MemberWithRoles extends Member
      * Set the value of roleRelation.
      *
      * @param MemberRoleRelation[]|null $roleRelations
-     *
-     * @return self
      */
-    public function setRoleRelations($roleRelations)
+    public function setRoleRelations(?iterable $roleRelations): self
     {
         $this->roleRelations = $roleRelations;
 
@@ -59,14 +57,14 @@ class MemberWithRoles extends Member
      * @var Role[]|null
      */
     #[Column(virtual: true)]
-    protected $roles;
+    protected ?iterable $roles = null;
 
     /**
      * Get the value of roles.
      *
      * @return Role[]|null
      */
-    public function getRoles()
+    public function getRoles(): ?iterable
     {
         return $this->roles;
     }
@@ -75,10 +73,8 @@ class MemberWithRoles extends Member
      * Set the value of roles.
      *
      * @param Role[]|null $roles
-     *
-     * @return self
      */
-    public function setRoles($roles)
+    public function setRoles(?iterable $roles): self
     {
         $this->roles = $roles;
 
@@ -92,14 +88,14 @@ class MemberWithRoles extends Member
     #[JoinToMiddle(field: 'id', middleField: 'member_id')]
     #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
     #[AutoSave]
-    protected $roleRelationsWith = null;
+    protected ?iterable $roleRelationsWith = null;
 
     /**
      * Get the value of roleRelation.
      *
      * @return MemberRoleRelation[]|null
      */
-    public function getRoleRelationsWith()
+    public function getRoleRelationsWith(): ?iterable
     {
         return $this->roleRelationsWith;
     }
@@ -108,10 +104,8 @@ class MemberWithRoles extends Member
      * Set the value of roleRelation.
      *
      * @param MemberRoleRelation[]|null $roleRelationsWith
-     *
-     * @return self
      */
-    public function setRoleRelationsWith($roleRelationsWith)
+    public function setRoleRelationsWith(?iterable $roleRelationsWith): self
     {
         $this->roleRelationsWith = $roleRelationsWith;
 
@@ -122,14 +116,14 @@ class MemberWithRoles extends Member
      * @var Role[]|null
      */
     #[Column(virtual: true)]
-    protected $rolesWith;
+    protected ?iterable $rolesWith = null;
 
     /**
      * Get the value of rolesWith.
      *
      * @return Role[]|null
      */
-    public function getRolesWith()
+    public function getRolesWith(): ?iterable
     {
         return $this->rolesWith;
     }
@@ -138,10 +132,8 @@ class MemberWithRoles extends Member
      * Set the value of rolesWith.
      *
      * @param Role[]|null $rolesWith
-     *
-     * @return self
      */
-    public function setRolesWith($rolesWith)
+    public function setRolesWith(?iterable $rolesWith): self
     {
         $this->rolesWith = $rolesWith;
 

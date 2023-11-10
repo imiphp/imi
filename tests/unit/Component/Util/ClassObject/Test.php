@@ -6,39 +6,20 @@ namespace Imi\Test\Component\Util\ClassObject;
 
 class Test
 {
-    /**
-     * @var mixed
-     */
-    public $a;
+    public mixed $a;
 
-    /**
-     * @var mixed
-     */
-    public $b;
+    public mixed $b;
 
-    /**
-     * @var string
-     */
-    public $c;
+    public string $c;
 
-    /**
-     * @param mixed  $a
-     * @param mixed  $b
-     * @param string $c
-     */
-    public function __construct($a, $b, $c = 'imi.com')
+    public function __construct(mixed $a, mixed $b, string $c = 'imi.com')
     {
         $this->a = $a;
         $this->b = $b;
         $this->c = $c;
     }
 
-    /**
-     * @param mixed  $a
-     * @param mixed  $b
-     * @param string $c
-     */
-    public function imi($a, $b, $c = 'imi.com'): void
+    public function imi(mixed $a, mixed $b, string $c = 'imi.com'): void
     {
     }
 

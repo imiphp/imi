@@ -71,12 +71,8 @@ class RequestContext
 
     /**
      * 获取上下文数据.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public static function get(string $name, $default = null)
+    public static function get(string $name, mixed $default = null): mixed
     {
         $instance = static::getInstance();
         $context = $instance->get($instance->getCurrentFlag(), true);
@@ -86,10 +82,8 @@ class RequestContext
 
     /**
      * 设置上下文数据.
-     *
-     * @param mixed $value
      */
-    public static function set(string $name, $value): void
+    public static function set(string $name, mixed $value): void
     {
         $instance = static::getInstance();
         $context = $instance->get($instance->getCurrentFlag(), true);
@@ -111,10 +105,8 @@ class RequestContext
 
     /**
      * 使用回调来使用当前请求上下文数据.
-     *
-     * @return mixed
      */
-    public static function use(callable $callback)
+    public static function use(callable $callback): mixed
     {
         $instance = static::getInstance();
         $context = $instance->get($instance->getCurrentFlag(), true);
@@ -124,10 +116,8 @@ class RequestContext
 
     /**
      * 获取一个闭包的值并将其持久化, 下次请求将直接从上下文中获取.
-     *
-     * @return mixed
      */
-    public static function remember(string $key, \Closure $closure)
+    public static function remember(string $key, \Closure $closure): mixed
     {
         $ctx = self::getContext();
 
@@ -167,10 +157,8 @@ class RequestContext
 
     /**
      * 在当前服务器上下文中获取Bean对象
-     *
-     * @param array $params
      */
-    public static function getServerBean(string $name, ...$params): object
+    public static function getServerBean(string $name, mixed ...$params): object
     {
         return static::get('server')->getBean($name, ...$params);
     }
@@ -201,11 +189,10 @@ class RequestContext
      * @template T
      *
      * @param class-string<T> $name
-     * @param mixed           ...$params
      *
      * @return T
      */
-    public static function getBean(string $name, ...$params)
+    public static function getBean(string $name, mixed ...$params): mixed
     {
         return self::getContainer()->get($name, ...$params);
     }
@@ -216,11 +203,10 @@ class RequestContext
      * @template T
      *
      * @param class-string<T> $name
-     * @param mixed           ...$params
      *
      * @return T
      */
-    public static function newInstance(string $name, ...$params)
+    public static function newInstance(string $name, mixed ...$params): mixed
     {
         return self::getContainer()->newInstance($name, ...$params);
     }

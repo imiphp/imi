@@ -23,10 +23,8 @@ trait TProcess
 
     /**
      * 发送消息.
-     *
-     * @return mixed
      */
-    public function sendMessage(string $action, array $data = [])
+    public function sendMessage(string $action, array $data = []): mixed
     {
         $data['a'] = $action;
         $message = json_encode($data, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
@@ -34,10 +32,7 @@ trait TProcess
         return $this->write($message);
     }
 
-    /**
-     * @param int|null $exitCode
-     */
-    public function exit($exitCode = 0): void
+    public function exit(?int $exitCode = 0): void
     {
         if ($this->pid > 0)
         {
@@ -105,10 +100,8 @@ trait TProcess
 
     /**
      * 发送 UnixSocket 消息.
-     *
-     * @param mixed $data
      */
-    public function sendUnixSocketMessage(string $action, $data = null): bool
+    public function sendUnixSocketMessage(string $action, mixed $data = null): bool
     {
         $message = serialize([
             'action' => $action,
@@ -120,10 +113,8 @@ trait TProcess
 
     /**
      * 发送 UnixSocket 消息.
-     *
-     * @param mixed $message
      */
-    public function sendUnixSocketMessageRaw($message): bool
+    public function sendUnixSocketMessageRaw(mixed $message): bool
     {
         $message = serialize($message);
 
@@ -132,10 +123,8 @@ trait TProcess
 
     /**
      * 进程使用 IMI.PROCESS.PIPE_MESSAGE 事件返回的 Connection 对象发送消息.
-     *
-     * @param mixed $data
      */
-    public function sendUnixSocketMessageByConnection(Connection $connection, string $action, $data = null): bool
+    public function sendUnixSocketMessageByConnection(Connection $connection, string $action, mixed $data = null): bool
     {
         $message = serialize([
             'action' => $action,

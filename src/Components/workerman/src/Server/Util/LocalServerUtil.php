@@ -34,7 +34,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
+    public function send(mixed $data, int|string|array|null $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -50,7 +50,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendByFlag(mixed $data, array|string|null $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -67,7 +67,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRaw(string $data, int|string|array|null $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -102,7 +102,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawByFlag(string $data, $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -147,7 +147,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendToAll(mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -191,7 +191,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendToGroup(string|array $groupName, mixed $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -207,7 +207,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawToGroup(string|array $groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -236,7 +236,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function close(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server)
@@ -275,7 +275,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function closeByFlag(string|array|null $flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $flag)
         {
@@ -311,7 +311,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * {@inheritDoc}
      */
-    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    public function exists(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
         $server = $this->getServer($serverName);
         if (!$server)

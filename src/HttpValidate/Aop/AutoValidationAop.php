@@ -19,12 +19,10 @@ class AutoValidationAop
 {
     /**
      * 验证 Http 参数.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\HttpValidate\Annotation\HttpValidation::class])]
     #[Before]
-    public function validateHttp(JoinPoint $joinPoint)
+    public function validateHttp(JoinPoint $joinPoint): void
     {
         $controller = $joinPoint->getTarget();
         $className = BeanFactory::getObjectClass($controller);

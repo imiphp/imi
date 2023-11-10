@@ -46,10 +46,8 @@ class TaskManager
     /**
      * 投递异步任务
      * 调用成功返回任务ID，失败返回false.
-     *
-     * @return int|bool
      */
-    public static function post(TaskInfo $taskInfo, int $workerId = -1)
+    public static function post(TaskInfo $taskInfo, int $workerId = -1): int|bool
     {
         return ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
     }
@@ -57,12 +55,8 @@ class TaskManager
     /**
      * 使用任务名称投递异步任务
      * 调用成功返回任务ID，失败返回false.
-     *
-     * @param mixed $data
-     *
-     * @return int|bool
      */
-    public static function nPost(string $name, $data, int $workerId = -1)
+    public static function nPost(string $name, mixed $data, int $workerId = -1): int|bool
     {
         return static::post(self::getTaskInfo($name, $data), $workerId);
     }
@@ -70,10 +64,8 @@ class TaskManager
     /**
      * 投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
-     *
-     * @return mixed
      */
-    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1)
+    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1): mixed
     {
         $server = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
         $result = $server->taskwait($taskInfo, $timeout, $workerId);
@@ -85,12 +77,8 @@ class TaskManager
     /**
      * 使用任务名称投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
-    public static function nPostWait(string $name, $data, float $timeout, int $workerId = -1)
+    public static function nPostWait(string $name, mixed $data, float $timeout, int $workerId = -1): mixed
     {
         return static::postWait(self::getTaskInfo($name, $data), $timeout, $workerId);
     }
@@ -126,10 +114,8 @@ class TaskManager
 
     /**
      * 获取 TaskInfo.
-     *
-     * @param mixed $data
      */
-    public static function getTaskInfo(string $name, $data): TaskInfo
+    public static function getTaskInfo(string $name, mixed $data): TaskInfo
     {
         $task = self::get($name);
         $paramClass = $task['options']['paramClass'];

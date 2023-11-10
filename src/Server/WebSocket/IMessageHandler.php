@@ -10,8 +10,6 @@ interface IMessageHandler
 {
     /**
      * 返回值为响应内容，为null则无任何响应.
-     *
-     * @return mixed
      */
-    public function handle(IFrame $frame);
+    public function handle(IFrame $frame): mixed;
 }

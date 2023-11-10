@@ -8,8 +8,6 @@ interface IRoute
 {
     /**
      * 路由解析处理.
-     *
-     * @param mixed $data
      */
-    public function parse($data): ?RouteResult;
+    public function parse(mixed $data): ?RouteResult;
 }

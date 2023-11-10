@@ -35,10 +35,8 @@ class Driver extends MysqlBase
 
     /**
      * Statement.
-     *
-     * @var \Swoole\Coroutine\MySQL\Statement|array|null
      */
-    protected $lastStmt = null;
+    protected \Swoole\Coroutine\MySQL\Statement|array|bool|null $lastStmt = null;
 
     /**
      * 是否缓存 Statement.
@@ -157,7 +155,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?MySQL
+    public function getInstance(): MySQL
     {
         return $this->instance;
     }
@@ -245,7 +243,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         if ($this->lastStmt && $this->lastStmt instanceof \Swoole\Coroutine\MySQL\Statement)
         {
@@ -324,7 +322,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return null;
     }
@@ -332,7 +330,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return true;
     }

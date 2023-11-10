@@ -28,7 +28,7 @@ class ReceiveHandler implements IReceiveHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IReceiveData $data)
+    public function handle(IReceiveData $data): mixed
     {
         $middlewares = &$this->middlewares;
         $index = &$this->index;

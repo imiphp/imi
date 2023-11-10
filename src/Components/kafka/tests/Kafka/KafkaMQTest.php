@@ -8,10 +8,7 @@ use Yurun\Util\HttpRequest;
 
 class KafkaMQTest extends BaseTestCase
 {
-    /**
-     * @var string
-     */
-    private $host = 'http://127.0.0.1:8080/';
+    private string $host = 'http://127.0.0.1:8080/';
 
     public function testPublish(): void
     {

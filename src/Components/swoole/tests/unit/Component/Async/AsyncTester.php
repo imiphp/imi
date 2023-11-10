@@ -26,11 +26,8 @@ class AsyncTester
         return new AsyncResult($a + $b);
     }
 
-    /**
-     * @return float|IAsyncResult
-     */
     #[Async]
-    public function testAsync3(float $a, float $b)
+    public function testAsync3(float $a, float $b): float|IAsyncResult
     {
         return $a + $b;
     }
@@ -55,11 +52,8 @@ class AsyncTester
         return new AsyncResult($a + $b);
     }
 
-    /**
-     * @return float|IAsyncResult
-     */
     #[Defer]
-    public function testDefer3(float $a, float $b)
+    public function testDefer3(float $a, float $b): float|IAsyncResult
     {
         return $a + $b;
     }
@@ -76,11 +70,8 @@ class AsyncTester
         return new AsyncResult($a + $b);
     }
 
-    /**
-     * @return float|IAsyncResult
-     */
     #[Defer]
-    public function testDeferAsync3(float $a, float $b)
+    public function testDeferAsync3(float $a, float $b): float|IAsyncResult
     {
         return $a + $b;
     }

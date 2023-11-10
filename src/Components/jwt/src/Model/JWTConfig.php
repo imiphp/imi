@@ -59,8 +59,10 @@ class JWTConfig
      * 设为 true 则为当前时间
      * 设为 false 不设置
      * 其它值则直接写入.
+     *
+     * @var bool|mixed
      */
-    private bool $issuedAt = true;
+    private mixed $issuedAt = true;
 
     /**
      * Token id.
@@ -174,7 +176,7 @@ class JWTConfig
      *
      * @return bool|mixed
      */
-    public function getIssuedAt()
+    public function getIssuedAt(): mixed
     {
         return $this->issuedAt;
     }

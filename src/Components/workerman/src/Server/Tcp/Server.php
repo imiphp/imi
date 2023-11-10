@@ -77,7 +77,7 @@ class Server extends Base implements ITcpServer
     /**
      * {@inheritDoc}
      */
-    public function send($clientId, string $data): bool
+    public function send(int|string $clientId, string $data): bool
     {
         /** @var TcpConnection|null $connection */
         $connection = $this->worker->connections[$clientId] ?? null;

@@ -18,12 +18,10 @@ class AsyncAop
 {
     /**
      * 异步执行.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Async\Annotation\Async::class])]
     #[Around]
-    public function parseAsync(AroundJoinPoint $joinPoint)
+    public function parseAsync(AroundJoinPoint $joinPoint): mixed
     {
         $result = \Imi\Async\Async::exec(static fn () => $joinPoint->proceed());
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
@@ -32,16 +30,16 @@ class AsyncAop
         {
             return $result;
         }
+
+        return null;
     }
 
     /**
      * 延后执行.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Async\Annotation\Defer::class])]
     #[Around]
-    public function parseDefer(AroundJoinPoint $joinPoint)
+    public function parseDefer(AroundJoinPoint $joinPoint): mixed
     {
         $result = \Imi\Async\Async::defer(static fn () => $joinPoint->proceed());
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
@@ -50,16 +48,16 @@ class AsyncAop
         {
             return $result;
         }
+
+        return null;
     }
 
     /**
      * 延后执行.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Async\Annotation\DeferAsync::class])]
     #[Around]
-    public function parseDeferAsync(AroundJoinPoint $joinPoint)
+    public function parseDeferAsync(AroundJoinPoint $joinPoint): mixed
     {
         $result = \Imi\Async\Async::deferAsync(static fn () => $joinPoint->proceed());
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
@@ -68,5 +66,7 @@ class AsyncAop
         {
             return $result;
         }
+
+        return null;
     }
 }

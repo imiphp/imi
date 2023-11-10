@@ -7,8 +7,8 @@ namespace Imi\Server\WebSocket\Message\Proxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @method        int|string                  getClientId()
- * @method static int|string                  getClientId()
+ * @method        string|int                  getClientId()
+ * @method static string|int                  getClientId()
  * @method        string                      getData()
  * @method static string                      getData()
  * @method        mixed                       getFormatData()
@@ -29,7 +29,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): string|int
     {
         return self::__getProxyInstance()->getClientId(...\func_get_args());
     }
@@ -45,7 +45,7 @@ class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocke
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return self::__getProxyInstance()->getFormatData(...\func_get_args());
     }

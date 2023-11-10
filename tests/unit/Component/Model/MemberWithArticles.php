@@ -24,14 +24,14 @@ class MemberWithArticles extends Member
     #[OneToMany(model: 'Article')]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'member_id')]
-    protected $articles = null;
+    protected ?iterable $articles = null;
 
     /**
      * Get the value of articles.
      *
      * @return Article[]|null
      */
-    public function getArticles()
+    public function getArticles(): ?iterable
     {
         return $this->articles;
     }
@@ -40,10 +40,8 @@ class MemberWithArticles extends Member
      * Set the value of articles.
      *
      * @param Article[]|null $articles
-     *
-     * @return self
      */
-    public function setArticles($articles)
+    public function setArticles(?iterable $articles): self
     {
         $this->articles = $articles;
 
@@ -56,14 +54,14 @@ class MemberWithArticles extends Member
     #[OneToMany(model: 'Article', with: true)]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'member_id')]
-    protected $articlesWith = null;
+    protected ?iterable $articlesWith = null;
 
     /**
      * Get the value of articles.
      *
      * @return Article[]|null
      */
-    public function getArticlesWith()
+    public function getArticlesWith(): ?iterable
     {
         return $this->articlesWith;
     }
@@ -72,10 +70,8 @@ class MemberWithArticles extends Member
      * Set the value of articles.
      *
      * @param Article[]|null $articlesWith
-     *
-     * @return self
      */
-    public function setArticlesWith($articlesWith)
+    public function setArticlesWith(?iterable $articlesWith): self
     {
         $this->articlesWith = $articlesWith;
 

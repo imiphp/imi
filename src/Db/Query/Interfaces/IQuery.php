@@ -17,19 +17,15 @@ interface IQuery extends IBaseWhereCollector
 {
     /**
      * 获取所有操作的记录.
-     *
-     * @return QueryOption
      */
-    public function getOption();
+    public function getOption(): QueryOption;
 
     /**
      * 设置操作记录.
      *
-     * @param QueryOption $option
-     *
      * @return static
      */
-    public function setOption($option): self;
+    public function setOption(QueryOption $option): self;
 
     /**
      * 获取数据库操作对象
@@ -187,11 +183,9 @@ interface IQuery extends IBaseWhereCollector
      * 1. id desc, age asc
      * 2. ['id'=>'desc', 'age'] // 缺省asc.
      *
-     * @param string|array $raw
-     *
      * @return static
      */
-    public function orderRaw($raw, array $binds = []): self;
+    public function orderRaw(string|array $raw, array $binds = []): self;
 
     /**
      * 设置分页
@@ -232,11 +226,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 设置 having 条件.
      *
-     * @param mixed $value
-     *
      * @return static
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = 'and'): self;
+    public function having(string $fieldName, string $operation, mixed $value, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 having 条件，用原生语句.
@@ -262,12 +254,9 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 绑定预处理参数.
      *
-     * @param string|int $name
-     * @param mixed      $value
-     *
      * @return static
      */
-    public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self;
+    public function bindValue(string|int $name, mixed $value, int $dataType = \PDO::PARAM_STR): self;
 
     /**
      * 批量绑定预处理参数.
@@ -295,19 +284,13 @@ interface IQuery extends IBaseWhereCollector
      * 查询首条记录.
      *
      * @param string|null $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return mixed
      */
-    public function find(?string $className = null);
+    public function find(?string $className = null): mixed;
 
     /**
      * 查询首条记录指定字段的值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public function value(string $field, $default = null);
+    public function value(string $field, mixed $default = null): mixed;
 
     /**
      * 得到某个列的数组.
@@ -335,10 +318,8 @@ interface IQuery extends IBaseWhereCollector
      * 查询所有记录，返回分块迭代器.
      *
      * @deprecated 3.0
-     *
-     * @return mixed
      */
-    public function chunkEach(int $count, string $column, ?string $alias = null);
+    public function chunkEach(int $count, string $column, ?string $alias = null): mixed;
 
     /**
      * 分页查询.
@@ -347,60 +328,44 @@ interface IQuery extends IBaseWhereCollector
 
     /**
      * 构建插入语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildInsertSql($data = null): string;
+    public function buildInsertSql(array|object|null $data = null): string;
 
     /**
      * 插入记录.
-     *
-     * @param array|object|null $data
      */
-    public function insert($data = null): IResult;
+    public function insert(array|object|null $data = null): IResult;
 
     /**
      * 构建批量插入语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildBatchInsertSql($data = null): string;
+    public function buildBatchInsertSql(array|object|null $data = null): string;
 
     /**
      * 批量插入数据
      * 以首个成员作为字段标准.
-     *
-     * @param array|object|null $data
      */
-    public function batchInsert($data = null): IResult;
+    public function batchInsert(array|object|null $data = null): IResult;
 
     /**
      * 构建更新语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildUpdateSql($data = null): string;
+    public function buildUpdateSql(array|object|null $data = null): string;
 
     /**
      * 更新数据.
-     *
-     * @param array|object|null $data
      */
-    public function update($data = null): IResult;
+    public function update(array|object|null $data = null): IResult;
 
     /**
      * 构建替换语句.
-     *
-     * @param array|object|null $data
      */
-    public function buildReplaceSql($data = null, array $uniqueFields = []): string;
+    public function buildReplaceSql(array|object|null $data = null, array $uniqueFields = []): string;
 
     /**
      * 替换数据（Replace）.
-     *
-     * @param array|object|null $data
      */
-    public function replace($data = null, array $uniqueFields = []): IResult;
+    public function replace(array|object|null $data = null, array $uniqueFields = []): IResult;
 
     /**
      * 构建删除语句.
@@ -452,28 +417,22 @@ interface IQuery extends IBaseWhereCollector
 
     /**
      * 聚合函数.
-     *
-     * @return mixed
      */
-    public function aggregate(string $functionName, string $fieldName);
+    public function aggregate(string $functionName, string $fieldName): mixed;
 
     /**
      * 设置update/insert/replace数据.
      *
-     * @param array|\Imi\Db\Query\Interfaces\IQuery $data
-     *
      * @return static
      */
-    public function setData($data): self;
+    public function setData(array $data): self;
 
     /**
      * 设置update/insert/replace的字段.
      *
-     * @param mixed $value
-     *
      * @return static
      */
-    public function setField(string $fieldName, $value): self;
+    public function setField(string $fieldName, mixed $value): self;
 
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入.
@@ -504,29 +463,23 @@ interface IQuery extends IBaseWhereCollector
     /**
      * 查询器别名.
      *
-     * @param callable|null $callable
-     *
      * @deprecated 3.0
      *
      * @return static
      */
-    public function alias(string $name, $callable = null): self;
+    public function alias(string $name, ?callable $callable = null): self;
 
     /**
      * 加锁
      *
-     * @param int|string|bool|null $value
-     *
      * @return static
      */
-    public function lock($value): self;
+    public function lock(int|string|bool|null $value): self;
 
     /**
      * 设置结果集类名.
-     *
-     * @return static
      */
-    public function setResultClass(string $resultClass);
+    public function setResultClass(string $resultClass): self;
 
     /**
      * 获取结果集类名.

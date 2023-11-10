@@ -6,21 +6,11 @@ namespace Imi\Test\Component\Util\ArrayList;
 
 class TestArrayListItem
 {
-    /**
-     * @var mixed
-     */
-    public $id;
+    public mixed $id;
 
-    /**
-     * @var mixed
-     */
-    public $name;
+    public mixed $name;
 
-    /**
-     * @param mixed $id
-     * @param mixed $name
-     */
-    public function __construct($id, $name)
+    public function __construct(mixed $id, mixed $name)
     {
         $this->id = $id;
         $this->name = $name;

@@ -18,15 +18,11 @@ class QueryCurdTest extends QueryCurdBaseTestCase
 
     /**
      * 测试 whereEx 的 SQL.
-     *
-     * @var string
      */
-    protected $expectedTestWhereExSql = 'select * from `tb_article` where (`id` = :p1 and (`id` in (:p2)))';
+    protected string $expectedTestWhereExSql = 'select * from `tb_article` where (`id` = :p1 and (`id` in (:p2)))';
 
     /**
      * 测试 JSON 查询的 SQL.
-     *
-     * @var string
      */
-    protected $expectedTestJsonSelectSql = 'select * from `tb_test_json` where `json_data`->\'$.uid\' = :p1';
+    protected string $expectedTestJsonSelectSql = 'select * from `tb_test_json` where `json_data`->\'$.uid\' = :p1';
 }

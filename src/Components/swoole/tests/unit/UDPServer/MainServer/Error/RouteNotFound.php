@@ -15,7 +15,7 @@ class RouteNotFound implements IUdpRouteNotFoundHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IPacketData $data, IPacketHandler $handler)
+    public function handle(IPacketData $data, IPacketHandler $handler): mixed
     {
         return 'gg';
     }

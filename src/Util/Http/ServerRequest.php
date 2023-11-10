@@ -30,10 +30,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * post数据.
-     *
-     * @var mixed
      */
-    protected $post = [];
+    protected mixed $post = [];
 
     /**
      * 包含 GET/POST/Cookie 数据.
@@ -49,10 +47,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 处理过的主体内容.
-     *
-     * @var array|object|null
      */
-    protected $parsedBody = null;
+    protected mixed $parsedBody = null;
 
     /**
      * 属性数组.
@@ -393,7 +389,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * {@inheritDoc}
      */
-    public function getAttribute(string $name, $default = null)
+    public function getAttribute(string $name, mixed $default = null): mixed
     {
         $attributes = $this->attributes;
         if (\array_key_exists($name, $attributes))

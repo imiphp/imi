@@ -103,7 +103,7 @@ class StoreHandler implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function bind(string $flag, $clientId): void
+    public function bind(string $flag, int|string $clientId): void
     {
         $this->getHandler()->bind($flag, $clientId);
     }
@@ -111,7 +111,7 @@ class StoreHandler implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function bindNx(string $flag, $clientId): bool
+    public function bindNx(string $flag, int|string $clientId): bool
     {
         return $this->getHandler()->bindNx($flag, $clientId);
     }
@@ -119,7 +119,7 @@ class StoreHandler implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
+    public function unbind(string $flag, int|string $clientId, ?int $keepTime = null): void
     {
         $this->getHandler()->unbind($flag, $clientId, $keepTime);
     }
@@ -143,7 +143,7 @@ class StoreHandler implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function getFlagByClientId($clientId): ?string
+    public function getFlagByClientId(int|string $clientId): ?string
     {
         return $this->getHandler()->getFlagByClientId($clientId);
     }

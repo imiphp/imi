@@ -15,10 +15,8 @@ class Message implements IMessage
 {
     /**
      * 主体内容.
-     *
-     * @var mixed
      */
-    protected $bodyData;
+    protected mixed $bodyData;
 
     /**
      * 配置属性.
@@ -75,7 +73,7 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function setProperties(array $properties)
+    public function setProperties(array $properties): self
     {
         $this->properties = $properties;
 
@@ -157,7 +155,7 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function setBodyData($data): self
+    public function setBodyData(mixed $data): self
     {
         $this->bodyData = $data;
 
@@ -167,7 +165,7 @@ class Message implements IMessage
     /**
      * {@inheritDoc}
      */
-    public function getBodyData()
+    public function getBodyData(): mixed
     {
         return $this->bodyData;
     }

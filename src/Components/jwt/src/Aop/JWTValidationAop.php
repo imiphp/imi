@@ -24,12 +24,10 @@ class JWTValidationAop
 {
     /**
      * 环绕注入.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\JWT\Annotation\JWTValidation::class])]
     #[Around]
-    public function around(AroundJoinPoint $joinPoint)
+    public function around(AroundJoinPoint $joinPoint): mixed
     {
         $target = $joinPoint->getTarget();
         $class = BeanFactory::getObjectClass($target);

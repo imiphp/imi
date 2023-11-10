@@ -15,11 +15,8 @@ use Imi\Timer\Timer;
 #[Listener(eventName: 'IMI.WORKERMAN.SERVER.WORKER_START', one: true)]
 class WorkerStartListener implements IEventListener
 {
-    /**
-     * @var \Imi\Queue\Service\QueueService
-     */
     #[Inject(name: 'imiQueue')]
-    protected $imiQueue;
+    protected \Imi\Queue\Service\QueueService $imiQueue;
 
     /**
      * {@inheritDoc}

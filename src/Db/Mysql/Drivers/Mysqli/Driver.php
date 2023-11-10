@@ -33,17 +33,13 @@ class Driver extends MysqlBase
 
     /**
      * Statement.
-     *
-     * @var \mysqli_stmt|false|null
      */
-    protected $lastStmt = null;
+    protected \mysqli_stmt|bool|null $lastStmt = null;
 
     /**
      * result.
-     *
-     * @var \mysqli_result|bool|null
      */
-    protected $lastResult = null;
+    protected \mysqli_result|bool|null $lastResult = null;
 
     /**
      * 是否缓存 Statement.
@@ -143,7 +139,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getInstance(): ?\mysqli
+    public function getInstance(): \mysqli
     {
         return $this->instance;
     }
@@ -231,7 +227,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function errorCode()
+    public function errorCode(): mixed
     {
         if ($this->lastStmt)
         {
@@ -331,7 +327,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function getAttribute($attribute)
+    public function getAttribute(mixed $attribute): mixed
     {
         return null;
     }
@@ -339,7 +335,7 @@ class Driver extends MysqlBase
     /**
      * {@inheritDoc}
      */
-    public function setAttribute($attribute, $value): bool
+    public function setAttribute(mixed $attribute, mixed $value): bool
     {
         return true;
     }

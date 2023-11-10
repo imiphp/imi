@@ -13,7 +13,7 @@ interface IEvent
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
      */
-    public function on($name, $callback, int $priority = 0): void;
+    public function on($name, mixed $callback, int $priority = 0): void;
 
     /**
      * 监听事件，仅触发一次
@@ -22,7 +22,7 @@ interface IEvent
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
      */
-    public function one($name, $callback, int $priority = 0): void;
+    public function one($name, mixed $callback, int $priority = 0): void;
 
     /**
      * 取消事件监听.

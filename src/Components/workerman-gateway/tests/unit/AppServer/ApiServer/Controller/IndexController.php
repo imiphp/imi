@@ -13,12 +13,9 @@ use Imi\Server\Http\Route\Annotation\Route;
 #[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         $response = RequestContext::get('response');
         $response->getBody()->write('imi');

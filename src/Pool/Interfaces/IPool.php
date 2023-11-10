@@ -36,10 +36,8 @@ interface IPool
 
     /**
      * 尝试获取资源，获取到则返回资源，没有获取到返回false.
-     *
-     * @return IPoolResource|bool
      */
-    public function tryGetResource();
+    public function tryGetResource(): IPoolResource|bool;
 
     /**
      * 创建一个不受连接池管理的资源.
@@ -83,8 +81,6 @@ interface IPool
 
     /**
      * 获得资源配置.
-     *
-     * @return mixed
      */
-    public function getResourceConfig();
+    public function getResourceConfig(): mixed;
 }

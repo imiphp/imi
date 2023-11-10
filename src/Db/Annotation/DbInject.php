@@ -28,10 +28,8 @@ class DbInject extends RequestInject
 
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return Db::getInstance($this->name, $this->queryType);
     }

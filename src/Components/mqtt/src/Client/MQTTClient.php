@@ -213,20 +213,16 @@ class MQTTClient
 
     /**
      * Ping.
-     *
-     * @return int|bool
      */
-    public function ping()
+    public function ping(): int|bool
     {
         return $this->send(new PingRequestPacket());
     }
 
     /**
      * 发布.
-     *
-     * @return int|bool
      */
-    public function publish(string $topic, string $payload, int $qosLevel = 0, bool $duplicate = false, bool $retained = false, ?int $identifier = null)
+    public function publish(string $topic, string $payload, int $qosLevel = 0, bool $duplicate = false, bool $retained = false, ?int $identifier = null): int|bool
     {
         $request = new PublishRequestPacket();
         $request->setTopic($topic);
@@ -241,10 +237,8 @@ class MQTTClient
 
     /**
      * 发布确认.
-     *
-     * @return int|bool
      */
-    public function publishAck(?int $identifier = null)
+    public function publishAck(?int $identifier = null): int|bool
     {
         $request = new PublishAckPacket();
         $request->setIdentifier($identifier);
@@ -254,10 +248,8 @@ class MQTTClient
 
     /**
      * 发布已收到（保证交付部分1）.
-     *
-     * @return int|bool
      */
-    public function publishReceived(?int $identifier = null)
+    public function publishReceived(?int $identifier = null): int|bool
     {
         $request = new PublishReceivedPacket();
         $request->setIdentifier($identifier);
@@ -267,10 +259,8 @@ class MQTTClient
 
     /**
      * 发布释放（确保交付的第2部分）.
-     *
-     * @return int|bool
      */
-    public function publishRelease(?int $identifier = null)
+    public function publishRelease(?int $identifier = null): int|bool
     {
         $request = new PublishReleasePacket();
         $request->setIdentifier($identifier);
@@ -280,10 +270,8 @@ class MQTTClient
 
     /**
      * 发布完成（保证交付的第3部分）.
-     *
-     * @return int|bool
      */
-    public function publishComplete(?int $identifier = null)
+    public function publishComplete(?int $identifier = null): int|bool
     {
         $request = new PublishCompletePacket();
         $request->setIdentifier($identifier);
@@ -293,10 +281,8 @@ class MQTTClient
 
     /**
      * 订阅.
-     *
-     * @return int|bool
      */
-    public function subscribe(string $topic, int $qosLevel = 0, ?int $identifier = null)
+    public function subscribe(string $topic, int $qosLevel = 0, ?int $identifier = null): int|bool
     {
         $request = new SubscribeRequestPacket();
         $request->setTopic($topic);
@@ -308,10 +294,8 @@ class MQTTClient
 
     /**
      * 取消订阅.
-     *
-     * @return int|bool
      */
-    public function unsubscribe(array $topics, ?int $identifier = null)
+    public function unsubscribe(array $topics, ?int $identifier = null): int|bool
     {
         $request = new UnsubscribeRequestPacket();
         $request->setTopics($topics);
@@ -322,10 +306,8 @@ class MQTTClient
 
     /**
      * 发送包.
-     *
-     * @return int|bool
      */
-    public function send(Packet $packet)
+    public function send(Packet $packet): int|bool
     {
         $stream = new PacketStream();
         $packet->write($stream);

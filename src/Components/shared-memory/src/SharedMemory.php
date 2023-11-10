@@ -17,7 +17,7 @@ class SharedMemory
      *
      * @param string $poolName 连接池名称
      */
-    public static function getNewInstance($poolName = null): Client
+    public static function getNewInstance(string $poolName = null): Client
     {
         return PoolManager::getResource($poolName ?? static::getDefaultPoolName())->getInstance();
     }
@@ -27,7 +27,7 @@ class SharedMemory
      *
      * @param string $poolName 连接池名称
      */
-    public static function getInstance($poolName = null): Client
+    public static function getInstance(string $poolName = null): Client
     {
         return PoolManager::getRequestContextResource($poolName ?? static::getDefaultPoolName())->getInstance();
     }
@@ -48,10 +48,8 @@ class SharedMemory
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function use(string $objectName, callable $callable, ?string $poolName = null)
+    public static function use(string $objectName, callable $callable, ?string $poolName = null): mixed
     {
         return PoolManager::use($poolName ?? static::getDefaultPoolName(), static function ($resource, Client $client) use ($objectName, $callable) {
             $object = $client->getObject($objectName);

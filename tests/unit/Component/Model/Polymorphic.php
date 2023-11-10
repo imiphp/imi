@@ -23,32 +23,23 @@ use Imi\Test\Component\Model\Base\PolymorphicBase;
 #[Inherit]
 class Polymorphic extends PolymorphicBase
 {
-    /**
-     * @var Article|null
-     */
     #[PolymorphicOneToOne(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToOne')]
     #[JoinFrom(field: 'one_to_one')]
     #[JoinTo(field: 'member_id')]
-    protected $oneToOneResult;
+    protected ?Article $oneToOneResult = null;
 
     /**
      * Get the value of oneToOneResult.
-     *
-     * @return Article|null
      */
-    public function getOneToOneResult()
+    public function getOneToOneResult(): ?Article
     {
         return $this->oneToOneResult;
     }
 
     /**
      * Set the value of oneToOneResult.
-     *
-     * @param Article|null $oneToOneResult
-     *
-     * @return self
      */
-    public function setOneToOneResult($oneToOneResult)
+    public function setOneToOneResult(?Article $oneToOneResult): self
     {
         $this->oneToOneResult = $oneToOneResult;
 
@@ -61,14 +52,14 @@ class Polymorphic extends PolymorphicBase
     #[PolymorphicOneToMany(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToMany')]
     #[JoinFrom(field: 'one_to_many')]
     #[JoinTo(field: 'member_id')]
-    protected $oneToManyResult = null;
+    protected ?iterable $oneToManyResult = null;
 
     /**
      * Get the value of oneToManyResult.
      *
      * @return Article[]|null
      */
-    public function getOneToManyResult()
+    public function getOneToManyResult(): ?iterable
     {
         return $this->oneToManyResult;
     }
@@ -77,10 +68,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of oneToManyResult.
      *
      * @param Article[]|null $oneToManyResult
-     *
-     * @return self
      */
-    public function setOneToManyResult($oneToManyResult)
+    public function setOneToManyResult(?iterable $oneToManyResult): self
     {
         $this->oneToManyResult = $oneToManyResult;
 
@@ -88,19 +77,19 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @var MemberRoleRelation|null
+     * @var MemberRoleRelation[]|null
      */
     #[PolymorphicManyToMany(model: 'Role', middle: 'MemberRoleRelation', rightMany: 'manyToManyResultList', type: 'type', typeValue: 1)]
     #[JoinToMiddle(field: 'many_to_many', middleField: 'member_id')]
     #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
-    protected $manyToManyResult = null;
+    protected ?iterable $manyToManyResult = null;
 
     /**
      * Get the value of manyToManyResult.
      *
-     * @return MemberRoleRelation|null
+     * @return MemberRoleRelation[]
      */
-    public function getManyToManyResult()
+    public function getManyToManyResult(): ?iterable
     {
         return $this->manyToManyResult;
     }
@@ -108,11 +97,9 @@ class Polymorphic extends PolymorphicBase
     /**
      * Set the value of manyToManyResult.
      *
-     * @param MemberRoleRelation|null $manyToManyResult
-     *
-     * @return self
+     * @param MemberRoleRelation[] $manyToManyResult
      */
-    public function setManyToManyResult($manyToManyResult)
+    public function setManyToManyResult(?iterable $manyToManyResult): self
     {
         $this->manyToManyResult = $manyToManyResult;
 
@@ -123,14 +110,14 @@ class Polymorphic extends PolymorphicBase
      * @var Role[]|null
      */
     #[Column(virtual: true)]
-    protected $manyToManyResultList;
+    protected ?iterable $manyToManyResultList = null;
 
     /**
      * Get the value of manyToManyResultList.
      *
      * @return Role[]|null
      */
-    public function getManyToManyResultList()
+    public function getManyToManyResultList(): ?iterable
     {
         return $this->manyToManyResultList;
     }
@@ -139,41 +126,30 @@ class Polymorphic extends PolymorphicBase
      * Set the value of manyToManyResultList.
      *
      * @param Role[]|null $manyToManyResultList
-     *
-     * @return self
      */
-    public function setManyToManyResultList($manyToManyResultList)
+    public function setManyToManyResultList(?iterable $manyToManyResultList): self
     {
         $this->manyToManyResultList = $manyToManyResultList;
 
         return $this;
     }
 
-    /**
-     * @var Member|Article|null
-     */
     #[PolymorphicToOne(model: 'Member', modelField: 'id', type: 'type', typeValue: 1, field: 'to_one')]
     #[PolymorphicToOne(model: 'Article', modelField: 'id', type: 'type', typeValue: 2, field: 'to_one')]
-    protected $toOneResult;
+    protected Member|Article|null $toOneResult = null;
 
     /**
      * Get the value of toOneResult.
-     *
-     * @return Member|Article|null
      */
-    public function getToOneResult()
+    public function getToOneResult(): Member|Article|null
     {
         return $this->toOneResult;
     }
 
     /**
      * Set the value of toOneResult.
-     *
-     * @param Member|Article|null $toOneResult
-     *
-     * @return self
      */
-    public function setToOneResult($toOneResult)
+    public function setToOneResult(Member|Article|null $toOneResult): self
     {
         $this->toOneResult = $toOneResult;
 
@@ -184,14 +160,14 @@ class Polymorphic extends PolymorphicBase
      * @var Role[]|null
      */
     #[PolymorphicToMany(model: 'Role', modelField: 'id', type: 'type', typeValue: 6, field: 'to_many', middle: 'MemberRoleRelation', middleLeftField: 'role_id', middleRightField: 'member_id')]
-    protected $toManyResult;
+    protected ?iterable $toManyResult = null;
 
     /**
      * Get the value of toManyResult.
      *
      * @return Role[]|null
      */
-    public function getToManyResult()
+    public function getToManyResult(): ?iterable
     {
         return $this->toManyResult;
     }
@@ -200,42 +176,31 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toManyResult.
      *
      * @param Role[]|null $toManyResult
-     *
-     * @return self
      */
-    public function setToManyResult($toManyResult)
+    public function setToManyResult(?iterable $toManyResult): self
     {
         $this->toManyResult = $toManyResult;
 
         return $this;
     }
 
-    /**
-     * @var Article|null
-     */
     #[PolymorphicOneToOne(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToOne', with: true)]
     #[JoinFrom(field: 'one_to_one')]
     #[JoinTo(field: 'member_id')]
-    protected $oneToOneResultWith;
+    protected ?Article $oneToOneResultWith = null;
 
     /**
      * Get the value of oneToOneResultWith.
-     *
-     * @return Article|null
      */
-    public function getOneToOneResultWith()
+    public function getOneToOneResultWith(): ?Article
     {
         return $this->oneToOneResultWith;
     }
 
     /**
      * Set the value of oneToOneResultWith.
-     *
-     * @param Article|null $oneToOneResultWith
-     *
-     * @return self
      */
-    public function setOneToOneResultWith($oneToOneResultWith)
+    public function setOneToOneResultWith(?Article $oneToOneResultWith): self
     {
         $this->oneToOneResultWith = $oneToOneResultWith;
 
@@ -248,14 +213,14 @@ class Polymorphic extends PolymorphicBase
     #[PolymorphicOneToMany(model: 'Article', type: 'title', typeValue: 'PolymorphicOneToMany', with: true)]
     #[JoinFrom(field: 'one_to_many')]
     #[JoinTo(field: 'member_id')]
-    protected $oneToManyResultWith = null;
+    protected ?iterable $oneToManyResultWith = null;
 
     /**
      * Get the value of oneToManyResultWith.
      *
      * @return Article[]|null
      */
-    public function getOneToManyResultWith()
+    public function getOneToManyResultWith(): ?iterable
     {
         return $this->oneToManyResultWith;
     }
@@ -264,10 +229,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of oneToManyResultWith.
      *
      * @param Article[]|null $oneToManyResultWith
-     *
-     * @return self
      */
-    public function setOneToManyResultWith($oneToManyResultWith)
+    public function setOneToManyResultWith(?iterable $oneToManyResultWith): self
     {
         $this->oneToManyResultWith = $oneToManyResultWith;
 
@@ -275,19 +238,19 @@ class Polymorphic extends PolymorphicBase
     }
 
     /**
-     * @var MemberRoleRelation|null
+     * @var MemberRoleRelation[]|null
      */
     #[PolymorphicManyToMany(model: 'Role', middle: 'MemberRoleRelation', rightMany: 'manyToManyResultListWith', type: 'type', typeValue: 1, with: true)]
     #[JoinToMiddle(field: 'many_to_many', middleField: 'member_id')]
     #[JoinFromMiddle(middleField: 'role_id', field: 'id')]
-    protected $manyToManyResultWith = null;
+    protected ?iterable $manyToManyResultWith = null;
 
     /**
      * Get the value of manyToManyResultWith.
      *
-     * @return MemberRoleRelation|null
+     * @return MemberRoleRelation[]
      */
-    public function getManyToManyResultWith()
+    public function getManyToManyResultWith(): ?iterable
     {
         return $this->manyToManyResultWith;
     }
@@ -295,11 +258,9 @@ class Polymorphic extends PolymorphicBase
     /**
      * Set the value of manyToManyResultWith.
      *
-     * @param MemberRoleRelation|null $manyToManyResultWith
-     *
-     * @return self
+     * @param MemberRoleRelation[] $manyToManyResultWith
      */
-    public function setManyToManyResultWith($manyToManyResultWith)
+    public function setManyToManyResultWith(?iterable $manyToManyResultWith): self
     {
         $this->manyToManyResultWith = $manyToManyResultWith;
 
@@ -310,14 +271,14 @@ class Polymorphic extends PolymorphicBase
      * @var Role[]|null
      */
     #[Column(virtual: true)]
-    protected $manyToManyResultListWith;
+    protected ?iterable $manyToManyResultListWith = null;
 
     /**
      * Get the value of manyToManyResultListWith.
      *
      * @return Role[]|null
      */
-    public function getManyToManyResultListWith()
+    public function getManyToManyResultListWith(): ?iterable
     {
         return $this->manyToManyResultListWith;
     }
@@ -326,10 +287,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of manyToManyResultListWith.
      *
      * @param Role[]|null $manyToManyResultListWith
-     *
-     * @return self
      */
-    public function setManyToManyResultListWith($manyToManyResultListWith)
+    public function setManyToManyResultListWith(?iterable $manyToManyResultListWith): self
     {
         $this->manyToManyResultListWith = $manyToManyResultListWith;
 
@@ -341,7 +300,7 @@ class Polymorphic extends PolymorphicBase
      */
     #[PolymorphicToOne(model: 'Member', modelField: 'id', type: 'type', typeValue: 1, field: 'to_one', with: true)]
     #[PolymorphicToOne(model: 'Article', modelField: 'id', type: 'type', typeValue: 2, field: 'to_one', with: true)]
-    protected $toOneResultWith;
+    protected ?iterable $toOneResultWith = null;
 
     /**
      * Get the value of toOneResultWith.
@@ -357,10 +316,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toOneResultWith.
      *
      * @param Member|Article|null $toOneResultWith
-     *
-     * @return self
      */
-    public function setToOneResultWith($toOneResultWith)
+    public function setToOneResultWith($toOneResultWith): self
     {
         $this->toOneResultWith = $toOneResultWith;
 
@@ -371,14 +328,14 @@ class Polymorphic extends PolymorphicBase
      * @var Role[]|null
      */
     #[PolymorphicToMany(model: 'Role', modelField: 'id', type: 'type', typeValue: 6, field: 'to_many', middle: 'MemberRoleRelation', middleLeftField: 'role_id', middleRightField: 'member_id', with: true)]
-    protected $toManyResultWith;
+    protected ?iterable $toManyResultWith = null;
 
     /**
      * Get the value of toManyResultWith.
      *
      * @return Role[]|null
      */
-    public function getToManyResultWith()
+    public function getToManyResultWith(): ?iterable
     {
         return $this->toManyResultWith;
     }
@@ -387,10 +344,8 @@ class Polymorphic extends PolymorphicBase
      * Set the value of toManyResultWith.
      *
      * @param Role[]|null $toManyResultWith
-     *
-     * @return self
      */
-    public function setToManyResultWith($toManyResultWith)
+    public function setToManyResultWith(?iterable $toManyResultWith): self
     {
         $this->toManyResultWith = $toManyResultWith;
 

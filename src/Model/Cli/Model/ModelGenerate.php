@@ -30,9 +30,6 @@ class ModelGenerate extends BaseCommand
 {
     /**
      * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
-     *
-     * @param string|bool $override
-     * @param string|bool $config
      */
     #[CommandAction(name: 'model', description: '模型生成', dynamicOptions: true)]
     #[Argument(name: 'namespace', type: \Imi\Cli\ArgType::STRING, required: true, comments: '生成的Model所在命名空间')]
@@ -52,7 +49,7 @@ class ModelGenerate extends BaseCommand
     #[Option(name: 'ddlDecode', type: \Imi\Cli\ArgType::STRING, comments: 'DDL 解码函数', default: '')]
     #[Option(name: 'bean', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型对象是否作为 bean 类使用', default: true)]
     #[Option(name: 'incrUpdate', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型是否启用增量更新', default: false)]
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean, bool $incrUpdate): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, string|bool $override, string|bool $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean, bool $incrUpdate): void
     {
         Event::trigger(BeforeGenerateModels::class, [], $this, BeforeGenerateModels::class);
         $db = Db::getInstance($poolName);
@@ -431,12 +428,8 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 处理字段默认值
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    private function parseFieldDefaultValue(string $type, $default)
+    private function parseFieldDefaultValue(string $type, mixed $default): mixed
     {
         if (null === $default)
         {

@@ -25,7 +25,7 @@ class OptionsMiddleware implements MiddlewareInterface
      *
      * @var string|string[]|null
      */
-    protected $allowOrigin = null;
+    protected string|array|null $allowOrigin = null;
 
     /**
      * 允许的请求头.

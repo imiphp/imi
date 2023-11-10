@@ -17,10 +17,8 @@ class Frame implements ISwooleWebSocketFrame
 
     /**
      * 格式化后的数据.
-     *
-     * @var mixed
      */
-    protected $data;
+    protected mixed $data;
 
     public function __construct(
         /**
@@ -34,7 +32,7 @@ class Frame implements ISwooleWebSocketFrame
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): int|string
     {
         return $this->frame->fd;
     }
@@ -50,7 +48,7 @@ class Frame implements ISwooleWebSocketFrame
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return $this->data;
     }

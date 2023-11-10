@@ -57,7 +57,7 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
-    public function getLastInsertId()
+    public function getLastInsertId(): int|string
     {
         return $this->result->getLastInsertId();
     }
@@ -73,7 +73,7 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
-    public function get(?string $className = null)
+    public function get(?string $className = null): mixed
     {
         return $this->result->get($className);
     }
@@ -94,7 +94,7 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
-    public function getColumn($column = 0): array
+    public function getColumn(string|int $column = 0): array
     {
         return $this->result->getColumn($column);
     }
@@ -102,9 +102,9 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
-    public function getScalar($columnKey = 0)
+    public function getScalar(string|int $column = 0): mixed
     {
-        return $this->result->getScalar($columnKey);
+        return $this->result->getScalar($column);
     }
 
     /**
@@ -194,8 +194,7 @@ class PaginateResult implements IPaginateResult
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }

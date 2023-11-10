@@ -329,21 +329,16 @@ class CronCalculator
 
     /**
      * 获取所有秒数可能性.
-     *
-     * @param string $second
-     * @param int    $lastTime
      */
-    public function getAllSecond($second, $lastTime): array
+    public function getAllSecond(string $second, int $lastTime): array
     {
         return $this->getAll($second, 'second', 0, 59, 's', $lastTime);
     }
 
     /**
      * 处理 2n、3n……格式.
-     *
-     * @return int|false
      */
-    private function parseN(CronRule $cronRule, int $lastTime)
+    private function parseN(CronRule $cronRule, int $lastTime): int|false
     {
         if ($lastTime < 0)
         {

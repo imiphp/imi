@@ -10,15 +10,11 @@ class BeforeFindEventParam extends EventParam
 {
     /**
      * 主键值们.
-     *
-     * @var array
      */
-    public $ids;
+    public array $ids;
 
     /**
      * 查询器.
-     *
-     * @var \Imi\Db\Query\Interfaces\IQuery
      */
-    public $query;
+    public \Imi\Db\Query\Interfaces\IQuery $query;
 }

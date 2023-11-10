@@ -361,11 +361,9 @@ abstract class Model extends BaseModel
     /**
      * 查询多条记录.
      *
-     * @param array|callable|null $where
-     *
      * @return static[]
      */
-    public static function select($where = null): array
+    public static function select(array|callable|null $where = null): array
     {
         $realClassName = static::__getRealClassName();
         $query = static::query();
@@ -734,10 +732,8 @@ abstract class Model extends BaseModel
 
     /**
      * 聚合函数.
-     *
-     * @return mixed
      */
-    public static function aggregate(string $functionName, string $fieldName, ?callable $queryCallable = null)
+    public static function aggregate(string $functionName, string $fieldName, ?callable $queryCallable = null): mixed
     {
         $query = static::query();
         if (null !== $queryCallable)
@@ -833,10 +829,8 @@ abstract class Model extends BaseModel
 
     /**
      * 处理where条件.
-     *
-     * @param mixed $where
      */
-    private static function parseWhere(IQuery $query, $where): void
+    private static function parseWhere(IQuery $query, mixed $where): void
     {
         if (\is_callable($where))
         {
@@ -862,10 +856,8 @@ abstract class Model extends BaseModel
 
     /**
      * @param bool|int $timeAccuracy 推荐最大精度6位（微秒），部分系统能提供9位精度（纳秒）
-     *
-     * @return int|string|null
      */
-    protected static function parseDateTime(?string $columnType, $timeAccuracy, ?float $microTime = null)
+    protected static function parseDateTime(?string $columnType, bool|int $timeAccuracy, ?float $microTime = null): int|string|null
     {
         $microTime ??= microtime(true);
 
@@ -883,11 +875,8 @@ abstract class Model extends BaseModel
 
     /**
      * 处理保存的数据.
-     *
-     * @param object|array $data
-     * @param static|null  $object
      */
-    private static function parseSaveData($data, string $type, ?self $object = null): LazyArrayObject
+    private static function parseSaveData(object|array $data, string $type, ?self $object = null): LazyArrayObject
     {
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();

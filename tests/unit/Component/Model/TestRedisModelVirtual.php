@@ -99,7 +99,7 @@ class TestRedisModelVirtual extends RedisModel
      *
      * @return static
      */
-    public function setAge($age): self
+    public function setAge(int $age): self
     {
         $this->age = $age;
 

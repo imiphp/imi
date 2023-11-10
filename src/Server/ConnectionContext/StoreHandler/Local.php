@@ -133,7 +133,7 @@ class Local implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function bind(string $flag, $clientId): void
+    public function bind(string $flag, int|string $clientId): void
     {
         $this->flagsMap[$clientId] = $flag;
         $this->clientIdsMap[$flag][] = $clientId;
@@ -142,7 +142,7 @@ class Local implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function bindNx(string $flag, $clientId): bool
+    public function bindNx(string $flag, int|string $clientId): bool
     {
         if (isset($this->flagsMap[$clientId]) || isset($this->clientIdsMap[$flag]))
         {
@@ -156,7 +156,7 @@ class Local implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
+    public function unbind(string $flag, int|string $clientId, ?int $keepTime = null): void
     {
         if (null !== $keepTime)
         {
@@ -213,7 +213,7 @@ class Local implements IHandler
     /**
      * {@inheritDoc}
      */
-    public function getFlagByClientId($clientId): ?string
+    public function getFlagByClientId(int|string $clientId): ?string
     {
         return $this->flagsMap[$clientId] ?? null;
     }

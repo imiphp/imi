@@ -10,15 +10,11 @@ class AfterDeleteEventParam extends EventParam
 {
     /**
      * 模型.
-     *
-     * @var \Imi\Model\BaseModel
      */
-    public $model;
+    public \Imi\Model\BaseModel $model;
 
     /**
      * 查询结果.
-     *
-     * @var \Imi\Db\Query\Interfaces\IResult
      */
-    public $result;
+    public \Imi\Db\Query\Interfaces\IResult $result;
 }

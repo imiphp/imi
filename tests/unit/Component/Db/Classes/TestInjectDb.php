@@ -12,11 +12,8 @@ use PHPUnit\Framework\Assert;
 #[Bean(name: 'TestInjectDb')]
 class TestInjectDb
 {
-    /**
-     * @var \Imi\Db\Interfaces\IDb
-     */
     #[DbInject]
-    protected $db;
+    protected IDb $db;
 
     public function test(): void
     {

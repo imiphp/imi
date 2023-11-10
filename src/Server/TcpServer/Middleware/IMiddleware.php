@@ -9,8 +9,5 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 
 interface IMiddleware
 {
-    /**
-     * @return mixed
-     */
-    public function process(IReceiveData $data, IReceiveHandler $handler);
+    public function process(IReceiveData $data, IReceiveHandler $handler): mixed;
 }

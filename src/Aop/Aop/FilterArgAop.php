@@ -18,12 +18,10 @@ class FilterArgAop
 {
     /**
      * 过滤方法参数.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Aop\Annotation\FilterArg::class])]
     #[Before]
-    public function parse(JoinPoint $joinPoint)
+    public function parse(JoinPoint $joinPoint): void
     {
         $class = BeanFactory::getObjectClass($joinPoint->getTarget());
         $method = $joinPoint->getMethod();

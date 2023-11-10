@@ -23,24 +23,18 @@ interface IGroupHandler
 
     /**
      * 加入组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
      */
-    public function joinGroup(string $groupName, $clientId): bool;
+    public function joinGroup(string $groupName, int|string $clientId): bool;
 
     /**
      * 离开组，组不存在则自动创建.
-     *
-     * @param int|string $clientId
      */
-    public function leaveGroup(string $groupName, $clientId): bool;
+    public function leaveGroup(string $groupName, int|string $clientId): bool;
 
     /**
      * 连接是否存在于组里.
-     *
-     * @param int|string $clientId
      */
-    public function isInGroup(string $groupName, $clientId): bool;
+    public function isInGroup(string $groupName, int|string $clientId): bool;
 
     /**
      * 获取所有连接ID.

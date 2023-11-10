@@ -10,10 +10,8 @@ trait TKafkaPool
 {
     /**
      * 使用连接池配置创建消费者.
-     *
-     * @param string|array|null $topic
      */
-    public function createConsumer($topic = null, array $config = []): Consumer
+    public function createConsumer(string|array|null $topic = null, array $config = []): Consumer
     {
         $resourceConfig = $this->getNextResourceConfig();
         $config = KafkaPool::createConsumerConfig(array_merge($resourceConfig, $config));

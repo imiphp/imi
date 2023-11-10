@@ -8,10 +8,7 @@ use Imi\Model\Enum\RelationPoolName;
 
 trait TRelation
 {
-    /**
-     * @param int|string|null $poolName
-     */
-    protected static function parsePoolName($poolName, string $parentModel, string $relationModel): ?string
+    protected static function parsePoolName(int|string|null $poolName, string $parentModel, string $relationModel): ?string
     {
         if (null === $poolName || \is_string($poolName))
         {

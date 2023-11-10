@@ -16,7 +16,7 @@ class ActionMiddleware implements IMiddleware
     /**
      * {@inheritDoc}
      */
-    public function process(IFrame $frame, IMessageHandler $handler)
+    public function process(IFrame $frame, IMessageHandler $handler): mixed
     {
         $requestContext = RequestContext::getContext();
         // 获取路由结果

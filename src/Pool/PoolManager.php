@@ -94,10 +94,8 @@ class PoolManager
 
     /**
      * 增加对象名称.
-     *
-     * @param array|null $resourceConfig
      */
-    public static function addName(string $name, string $poolClassName, Interfaces\IPoolConfig $config = null, $resourceConfig = null): void
+    public static function addName(string $name, string $poolClassName, Interfaces\IPoolConfig $config = null, ?array $resourceConfig = null): void
     {
         static::$pools[$name] = $pool = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
         $pool->open();
@@ -207,10 +205,8 @@ class PoolManager
 
     /**
      * 尝试获取资源，获取到则返回资源，没有获取到返回false.
-     *
-     * @return IPoolResource|bool
      */
-    public static function tryGetResource(string $name)
+    public static function tryGetResource(string $name): IPoolResource|bool
     {
         $resource = static::getInstance($name)->tryGetResource();
         if ($resource)
@@ -234,10 +230,8 @@ class PoolManager
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有两个参数：$resource(资源对象), $instance(操作实例对象，如数据库、Redis等)
      * 本方法返回值为回调的返回值
-     *
-     * @return mixed
      */
-    public static function use(string $name, callable $callback)
+    public static function use(string $name, callable $callback): mixed
     {
         $resource = static::getResource($name);
         try

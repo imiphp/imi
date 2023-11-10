@@ -30,7 +30,7 @@ class Inject extends BaseInjectValue
     /**
      * {@inheritDoc}
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return App::getBean($this->name, ...$this->args);
     }

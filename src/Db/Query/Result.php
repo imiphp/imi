@@ -32,10 +32,7 @@ class Result implements IResult
      */
     protected array $statementRecords = [];
 
-    /**
-     * @param \Imi\Db\Interfaces\IStatement|bool $statement
-     */
-    public function __construct($statement,
+    public function __construct(IStatement|bool $statement,
         /**
          * 查询结果类的类名，为null则为数组.
          */
@@ -75,7 +72,7 @@ class Result implements IResult
     /**
      * {@inheritDoc}
      */
-    public function getLastInsertId()
+    public function getLastInsertId(): int|string
     {
         if (!$this->isSuccess)
         {
@@ -114,7 +111,7 @@ class Result implements IResult
     /**
      * {@inheritDoc}
      */
-    public function get(?string $className = null)
+    public function get(?string $className = null): mixed
     {
         if (!$this->isSuccess)
         {
@@ -191,7 +188,7 @@ class Result implements IResult
     /**
      * {@inheritDoc}
      */
-    public function getColumn($column = 0): array
+    public function getColumn(string|int $column = 0): array
     {
         if (!$this->isSuccess)
         {
@@ -218,7 +215,7 @@ class Result implements IResult
     /**
      * {@inheritDoc}
      */
-    public function getScalar($columnKey = 0)
+    public function getScalar(string|int $column = 0): mixed
     {
         if (!$this->isSuccess)
         {
@@ -227,15 +224,15 @@ class Result implements IResult
         $record = $this->statementRecords[0] ?? null;
         if ($record)
         {
-            if (is_numeric($columnKey))
+            if (is_numeric($column))
             {
                 $keys = array_keys($record);
 
-                return $record[$keys[$columnKey]];
+                return $record[$keys[$column]];
             }
             else
             {
-                return $record[$columnKey];
+                return $record[$column];
             }
         }
 

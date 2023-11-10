@@ -11,9 +11,6 @@ class ActionMethodItem
      */
     protected ?string $type = null;
 
-    /**
-     * @param mixed $default
-     */
     public function __construct(
         /**
          * 参数名.
@@ -26,7 +23,7 @@ class ActionMethodItem
         /**
          * 默认值
          */
-        protected $default,
+        protected mixed $default,
         /**
          * 是否允许为 null.
          */
@@ -48,10 +45,8 @@ class ActionMethodItem
 
     /**
      * Get 默认值
-     *
-     * @return mixed
      */
-    public function getDefault()
+    public function getDefault(): mixed
     {
         return $this->default;
     }

@@ -62,10 +62,8 @@ class ConnectionContext
 
     /**
      * 销毁当前连接的上下文.
-     *
-     * @param int|string|null $clientId
      */
-    public static function destroy($clientId = null, ?string $serverName = null): void
+    public static function destroy(int|string|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -89,10 +87,8 @@ class ConnectionContext
 
     /**
      * 判断当前连接上下文是否存在.
-     *
-     * @param int|string|null $clientId
      */
-    public static function exists($clientId = null, ?string $serverName = null): bool
+    public static function exists(int|string|null $clientId = null, ?string $serverName = null): bool
     {
         if (!$clientId)
         {
@@ -108,13 +104,8 @@ class ConnectionContext
 
     /**
      * 获取上下文数据.
-     *
-     * @param mixed           $default
-     * @param int|string|null $clientId
-     *
-     * @return mixed
      */
-    public static function get(?string $name = null, $default = null, $clientId = null, ?string $serverName = null)
+    public static function get(?string $name = null, mixed $default = null, int|string|null $clientId = null, ?string $serverName = null): mixed
     {
         if (!$clientId)
         {
@@ -137,11 +128,8 @@ class ConnectionContext
 
     /**
      * 设置上下文数据.
-     *
-     * @param mixed           $value
-     * @param int|string|null $clientId
      */
-    public static function set(?string $name, $value, $clientId = null, ?string $serverName = null): void
+    public static function set(?string $name, mixed $value, int|string|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -166,10 +154,8 @@ class ConnectionContext
 
     /**
      * 批量设置上下文数据.
-     *
-     * @param int|string|null $clientId
      */
-    public static function muiltiSet(array $data, $clientId = null, ?string $serverName = null): void
+    public static function muiltiSet(array $data, int|string|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -197,10 +183,8 @@ class ConnectionContext
 
     /**
      * 使用回调并且自动加锁进行操作，回调用返回数据会保存进连接上下文.
-     *
-     * @param int|string|null $clientId
      */
-    public static function use(callable $callable, $clientId = null, ?string $serverName = null): void
+    public static function use(callable $callable, int|string|null $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -225,12 +209,8 @@ class ConnectionContext
 
     /**
      * 获取一个闭包的值并将其持久化, 下次请求将直接从连接上下文中获取.
-     *
-     * @param int|string|null $clientId
-     *
-     * @return mixed
      */
-    public static function remember(string $key, \Closure $closure, $clientId = null, ?string $serverName = null)
+    public static function remember(string $key, \Closure $closure, int|string|null $clientId = null, ?string $serverName = null): mixed
     {
         static::use(static function (array $ctx) use ($key, $closure, &$result) {
             if (isset($ctx[$key]))
@@ -271,20 +251,16 @@ class ConnectionContext
 
     /**
      * 获取当前上下文.
-     *
-     * @param int|string|null $clientId
      */
-    public static function getContext($clientId = null, ?string $serverName = null): array
+    public static function getContext(int|string|null $clientId = null, ?string $serverName = null): array
     {
         return static::get(null, null, $clientId, $serverName);
     }
 
     /**
      * 绑定一个标记到当前连接.
-     *
-     * @param int|string|null $clientId
      */
-    public static function bind(string $flag, $clientId = null, ?string $serverName = null): void
+    public static function bind(string $flag, int|string|null $clientId = null, ?string $serverName = null): void
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
@@ -293,10 +269,8 @@ class ConnectionContext
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
-     *
-     * @param int|string|null $clientId
      */
-    public static function bindNx(string $flag, $clientId = null, ?string $serverName = null): bool
+    public static function bindNx(string $flag, int|string|null $clientId = null, ?string $serverName = null): bool
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
@@ -307,10 +281,9 @@ class ConnectionContext
     /**
      * 取消绑定.
      *
-     * @param int|string $clientId
-     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
+     * @param int|null $keepTime 旧数据保持时间，null 则不保留
      */
-    public static function unbind(string $flag, $clientId, ?int $keepTime = null, ?string $serverName = null): void
+    public static function unbind(string $flag, int|string|null $clientId, ?int $keepTime = null, ?string $serverName = null): void
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
@@ -343,10 +316,8 @@ class ConnectionContext
 
     /**
      * 使用连接编号获取标记.
-     *
-     * @param int|string $clientId
      */
-    public static function getFlagByClientId($clientId, ?string $serverName = null): ?string
+    public static function getFlagByClientId(int|string $clientId, ?string $serverName = null): ?string
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
         $store = self::getConnectionContextStore($serverName);
@@ -409,10 +380,8 @@ class ConnectionContext
 
     /**
      * 获取当前连接号.
-     *
-     * @return int|string|null
      */
-    public static function getClientId()
+    public static function getClientId(): int|string|null
     {
         return RequestContext::get('clientId');
     }

@@ -179,7 +179,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setOption($option): self
+    public function setOption(QueryOption $option): self
     {
         $this->dbParamInc = 0;
         $this->option = $option;
@@ -325,7 +325,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
+    public function where(string $fieldName, string $operation, mixed $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->where[] = new Where($fieldName, $operation, $value, $logicalOperator);
 
@@ -442,7 +442,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function orderRaw($raw, array $binds = []): self
+    public function orderRaw(string|array $raw, array $binds = []): self
     {
         $optionOrder = &$this->option->order;
         if (\is_array($raw))
@@ -538,7 +538,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
+    public function having(string $fieldName, string $operation, mixed $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->having[] = new Having($fieldName, $operation, $value, $logicalOperator);
 
@@ -582,7 +582,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self
+    public function bindValue(string|int $name, mixed $value, int $dataType = \PDO::PARAM_STR): self
     {
         $this->binds[$name] = $value;
 
@@ -695,7 +695,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function aggregate(string $functionName, string $fieldName)
+    public function aggregate(string $functionName, string $fieldName): mixed
     {
         $field = new Field();
         $field->useRaw();
@@ -722,7 +722,7 @@ abstract class Query implements IQuery
      *
      * @return T
      */
-    protected function executeEx(string $sql, string $resultClass)
+    protected function executeEx(string $sql, string $resultClass): mixed
     {
         try
         {
@@ -751,7 +751,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setData($data): self
+    public function setData(array $data): self
     {
         $this->option->saveData = $data;
 
@@ -761,7 +761,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setField(string $fieldName, $value): self
+    public function setField(string $fieldName, mixed $value): self
     {
         $this->option->saveData[$fieldName] = $value;
 
@@ -814,7 +814,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function alias(string $name, $callable = null): self
+    public function alias(string $name, ?callable $callable = null): self
     {
         $aliasMap = &static::$aliasMap;
         if (!isset($aliasMap[$name]))
@@ -833,7 +833,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function lock($value): self
+    public function lock(int|string|bool|null $value): self
     {
         $this->option->lock = $value;
 
@@ -843,7 +843,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function setResultClass(string $resultClass)
+    public function setResultClass(string $resultClass): self
     {
         $this->resultClass = $resultClass;
 
@@ -931,7 +931,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildInsertSql($data = null): string
+    public function buildInsertSql(array|object|null $data = null): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1000,7 +1000,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildBatchInsertSql($data = null): string
+    public function buildBatchInsertSql(array|object|null $data = null): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1019,7 +1019,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildUpdateSql($data = null): string
+    public function buildUpdateSql(array|object|null $data = null): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1090,7 +1090,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function buildReplaceSql($data = null, array $uniqueFields = []): string
+    public function buildReplaceSql(array|object|null $data = null, array $uniqueFields = []): string
     {
         $this->dbParamInc = 0;
         if ($this->beforeBuildSqlCallbacks)
@@ -1234,7 +1234,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function find(?string $className = null)
+    public function find(?string $className = null): mixed
     {
         return $this->limit(1)
             ->select()
@@ -1244,7 +1244,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function value(string $field, $default = null)
+    public function value(string $field, mixed $default = null): mixed
     {
         $result = $this
             ->limit(1)
@@ -1317,10 +1317,8 @@ abstract class Query implements IQuery
 
     /**
      * 查询所有记录，返回分块迭代器.
-     *
-     * @return mixed
      */
-    public function chunkEach(int $count, string $column, ?string $alias = null)
+    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
     {
         return $this->chunkById($count, $column, $alias)->each();
     }
@@ -1328,7 +1326,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function insert($data = null): IResult
+    public function insert(array|object|null $data = null): IResult
     {
         return $this->execute($this->buildInsertSql($data));
     }
@@ -1336,7 +1334,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function batchInsert($data = null): IResult
+    public function batchInsert(array|object|null $data = null): IResult
     {
         return $this->execute($this->buildBatchInsertSql($data));
     }
@@ -1344,7 +1342,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function update($data = null): IResult
+    public function update(array|object|null $data = null): IResult
     {
         return $this->execute($this->buildUpdateSql($data));
     }
@@ -1352,7 +1350,7 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function replace($data = null, array $uniqueFields = []): IResult
+    public function replace(array|object|null $data = null, array $uniqueFields = []): IResult
     {
         return $this->execute($this->buildReplaceSql($data, $uniqueFields));
     }

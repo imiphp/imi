@@ -17,10 +17,8 @@ class PoolResource extends RequestInject
 {
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         return PoolManager::getRequestContextResource($this->name);
     }

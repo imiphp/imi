@@ -83,10 +83,8 @@ class QueryOption
 
     /**
      * 锁配置.
-     *
-     * @var int|string|null
      */
-    public $lock = null;
+    public int|string|null $lock = null;
 
     /**
      * 其它动态配置项.

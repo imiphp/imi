@@ -119,10 +119,8 @@ class Uri implements UriInterface, \Stringable
 
     /**
      * 生成Uri对象
-     *
-     * @return static
      */
-    public static function makeUri(string $host, string $path, string $query = '', ?int $port = 80, string $scheme = 'http', string $fragment = '', string $userInfo = '')
+    public static function makeUri(string $host, string $path, string $query = '', ?int $port = 80, string $scheme = 'http', string $fragment = '', string $userInfo = ''): static
     {
         return new static(static::makeUriString($host, $path, $query, $port, $scheme, $fragment, $userInfo));
     }

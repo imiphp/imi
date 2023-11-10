@@ -13,29 +13,18 @@ interface IStatement extends \Iterator
 
     /**
      * 绑定一列到一个 PHP 变量.
-     *
-     * @param mixed $column
-     * @param mixed $param
-     * @param mixed $driverData
      */
-    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = 0, $driverData = null): bool;
+    public function bindColumn(string|int $column, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool;
 
     /**
      * 绑定一个参数到指定的变量名.
-     *
-     * @param mixed $parameter
-     * @param mixed $variable
-     * @param mixed $driverOptions
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = 0, $driverOptions = null): bool;
+    public function bindParam(string|int $param, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool;
 
     /**
      * 把一个值绑定到一个参数.
-     *
-     * @param mixed $parameter
-     * @param mixed $value
      */
-    public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool;
+    public function bindValue(string|int $param, mixed $value, int $type = \PDO::PARAM_STR): bool;
 
     /**
      * 关闭游标，使语句能再次被执行。
@@ -49,10 +38,8 @@ interface IStatement extends \Iterator
 
     /**
      * 返回错误码
-     *
-     * @return mixed
      */
-    public function errorCode();
+    public function errorCode(): mixed;
 
     /**
      * 返回错误信息.
@@ -71,50 +58,33 @@ interface IStatement extends \Iterator
 
     /**
      * 从结果集中获取下一行.
-     *
-     * @return mixed
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0);
+    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed;
 
     /**
      * 返回一个包含结果集中所有行的数组.
-     *
-     * @param mixed $fetchArgument
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array;
+    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, mixed $fetchArgument = null, array $ctorArgs = []): array;
 
     /**
      * 从结果集中的下一行返回单独的一列。
-     *
-     * @param int|string $columnKey
-     *
-     * @return mixed
      */
-    public function fetchColumn($columnKey = 0);
+    public function fetchColumn(int $column = 0): mixed;
 
     /**
      * 获取下一行并作为一个对象返回。
-     *
-     * @return mixed
      */
-    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null);
+    public function fetchObject(string $className = \stdClass::class, ?array $ctorArgs = null): mixed;
 
     /**
      * 检索一个语句属性.
-     *
-     * @param mixed $attribute
-     *
-     * @return mixed
      */
-    public function getAttribute($attribute);
+    public function getAttribute(mixed $attribute): mixed;
 
     /**
      * 设置属性.
-     *
-     * @param mixed $attribute
-     * @param mixed $value
      */
-    public function setAttribute($attribute, $value): bool;
+    public function setAttribute(mixed $attribute, mixed $value): bool;
 
     /**
      * 在一个多行集语句句柄中推进到下一个行集.
@@ -133,10 +103,8 @@ interface IStatement extends \Iterator
 
     /**
      * 获取原对象实例.
-     *
-     * @return object
      */
-    public function getInstance();
+    public function getInstance(): object;
 
     /**
      * 获取数据库操作对象

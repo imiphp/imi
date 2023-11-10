@@ -35,10 +35,8 @@ interface IRpcClient
 
     /**
      * 获取实例对象
-     *
-     * @return mixed
      */
-    public function getInstance();
+    public function getInstance(): mixed;
 
     /**
      * 获取服务对象

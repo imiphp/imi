@@ -257,19 +257,14 @@ class RedisHandler
 
     /**
      * 登录凭证
-     *
-     * @var mixed
      */
-    private $auth = null;
+    private mixed $auth = null;
 
-    /**
-     * @param \Redis|\RedisCluster $redis
-     */
     public function __construct(
         /**
          * redis 对象
          */
-        private $redis)
+        private \Redis|\RedisCluster $redis)
     {
         if (!$this->isCluster() && $redis->isConnected())
         {
@@ -280,10 +275,7 @@ class RedisHandler
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         $redis = $this->redis;
         $result = $redis->{$name}(...$arguments);
@@ -315,7 +307,7 @@ class RedisHandler
      *
      * @return \Redis|\RedisCluster
      */
-    public function getInstance()
+    public function getInstance(): mixed
     {
         return $this->redis;
     }
@@ -358,10 +350,8 @@ class RedisHandler
      * eval扩展方法，结合了 eval、evalSha.
      *
      * 优先使用 evalSha 尝试，失败则使用 eval 方法
-     *
-     * @return mixed
      */
-    public function evalEx(string $script, ?array $args = null, ?int $numKeys = null)
+    public function evalEx(string $script, ?array $args = null, ?int $numKeys = null): mixed
     {
         $sha1 = sha1($script);
         $this->clearLastError();
@@ -391,12 +381,8 @@ class RedisHandler
 
     /**
      * scan.
-     *
-     * @param mixed $strNode
-     *
-     * @return mixed
      */
-    public function scan(?int &$iterator, ?string $pattern = null, int $count = 0, $strNode = null)
+    public function scan(?int &$iterator, ?string $pattern = null, int $count = 0, mixed $strNode = null): mixed
     {
         if (null === $strNode)
         {
@@ -411,10 +397,8 @@ class RedisHandler
 
     /**
      * scan 方法的扩展简易遍历方法.
-     *
-     * @return mixed
      */
-    public function scanEach(?string $pattern = null, int $count = 0)
+    public function scanEach(?string $pattern = null, int $count = 0): mixed
     {
         $redis = $this->redis;
         if ($this->isCluster())
@@ -454,20 +438,16 @@ class RedisHandler
 
     /**
      * hscan.
-     *
-     * @return mixed
      */
-    public function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
+    public function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         return $this->redis->hscan($key, $iterator, $pattern, $count);
     }
 
     /**
      * hscan 方法的扩展简易遍历方法.
-     *
-     * @return mixed
      */
-    public function hscanEach(string $key, ?string $pattern = null, int $count = 0)
+    public function hscanEach(string $key, ?string $pattern = null, int $count = 0): mixed
     {
         $it = null;
         while (false !== ($result = $this->hscan($key, $it, $pattern, $count)))
@@ -484,20 +464,16 @@ class RedisHandler
 
     /**
      * sscan.
-     *
-     * @return mixed
      */
-    public function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
+    public function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         return $this->redis->sscan($key, $iterator, $pattern, $count);
     }
 
     /**
      * sscan 方法的扩展简易遍历方法.
-     *
-     * @return mixed
      */
-    public function sscanEach(string $key, ?string $pattern = null, int $count = 0)
+    public function sscanEach(string $key, ?string $pattern = null, int $count = 0): mixed
     {
         $it = null;
         while (false !== ($result = $this->sscan($key, $it, $pattern, $count)))
@@ -514,20 +490,16 @@ class RedisHandler
 
     /**
      * zscan.
-     *
-     * @return mixed
      */
-    public function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
+    public function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         return $this->redis->zscan($key, $iterator, $pattern, $count);
     }
 
     /**
      * zscan 方法的扩展简易遍历方法.
-     *
-     * @return mixed
      */
-    public function zscanEach(string $key, ?string $pattern = null, int $count = 0)
+    public function zscanEach(string $key, ?string $pattern = null, int $count = 0): mixed
     {
         $it = null;
         while (false !== ($result = $this->zscan($key, $it, $pattern, $count)))
@@ -550,14 +522,8 @@ class RedisHandler
      * 如下链接，官方认为这不算 BUG，所以这里做了一个兼容处理
      *
      * @see https://github.com/phpredis/phpredis/issues/1549
-     *
-     * @param float|string $lng
-     * @param float|string $lat
-     * @param mixed        ...$other_triples_and_options
-     *
-     * @return mixed
      */
-    public function geoadd(string $key, $lng, $lat, string $member, ...$other_triples_and_options)
+    public function geoadd(string $key, float|string $lng, float|string $lat, string $member, mixed ...$other_triples_and_options): mixed
     {
         $redis = $this->redis;
         $serializer = $redis->getOption(\Redis::OPT_SERIALIZER);

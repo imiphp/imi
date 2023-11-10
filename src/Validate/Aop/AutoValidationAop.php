@@ -20,12 +20,10 @@ class AutoValidationAop
 {
     /**
      * 类构造方法-自动验证支持
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION_CONSTRUCT, allow: [\Imi\Validate\Annotation\AutoValidation::class])]
     #[After]
-    public function validateConstruct(JoinPoint $joinPoint)
+    public function validateConstruct(JoinPoint $joinPoint): void
     {
         $target = $joinPoint->getTarget();
         $className = BeanFactory::getObjectClass($target);
@@ -67,12 +65,10 @@ class AutoValidationAop
 
     /**
      * 方法调用-自动验证支持
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Validate\Annotation\AutoValidation::class])]
     #[Around]
-    public function validateMethod(AroundJoinPoint $joinPoint)
+    public function validateMethod(AroundJoinPoint $joinPoint): mixed
     {
         $target = $joinPoint->getTarget();
         $className = BeanFactory::getObjectClass($target);

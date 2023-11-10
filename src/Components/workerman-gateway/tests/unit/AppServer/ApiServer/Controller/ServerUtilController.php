@@ -66,11 +66,8 @@ class ServerUtilController extends HttpController
         return $result;
     }
 
-    /**
-     * @param int|string $clientId
-     */
     #[Action]
-    public function exists($clientId, string $flag): array
+    public function exists(int|string $clientId, string $flag): array
     {
         return [
             'clientId'   => Server::exists($clientId),
@@ -78,11 +75,8 @@ class ServerUtilController extends HttpController
         ];
     }
 
-    /**
-     * @param int|string $clientId
-     */
     #[Action]
-    public function close($clientId, string $flag): array
+    public function close(int|string $clientId, string $flag): array
     {
         return [
             'clientId' => Server::close($clientId),

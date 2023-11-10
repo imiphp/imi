@@ -10,10 +10,8 @@ abstract class BaseTestCase extends \Imi\Fpm\Test\BaseTest
 {
     /**
      * 请求主机.
-     *
-     * @var string
      */
-    protected $host;
+    protected string $host;
 
     public function __construct(string $name)
     {

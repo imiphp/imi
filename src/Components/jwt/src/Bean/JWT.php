@@ -177,10 +177,8 @@ class JWT
 
     /**
      * 生成 Token.
-     *
-     * @param mixed $data
      */
-    public function getToken($data, ?string $name = null, ?callable $beforeGetToken = null): Token
+    public function getToken(mixed $data, ?string $name = null, ?callable $beforeGetToken = null): Token
     {
         try
         {

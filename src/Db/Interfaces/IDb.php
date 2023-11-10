@@ -53,10 +53,8 @@ interface IDb extends IHashCode
 
     /**
      * 返回错误码
-     *
-     * @return mixed
      */
-    public function errorCode();
+    public function errorCode(): mixed;
 
     /**
      * 返回错误信息.
@@ -80,20 +78,13 @@ interface IDb extends IHashCode
 
     /**
      * 取回一个数据库连接的属性.
-     *
-     * @param mixed $attribute
-     *
-     * @return mixed
      */
-    public function getAttribute($attribute);
+    public function getAttribute(mixed $attribute): mixed;
 
     /**
      * 设置属性.
-     *
-     * @param mixed $attribute
-     * @param mixed $value
      */
-    public function setAttribute($attribute, $value): bool;
+    public function setAttribute(mixed $attribute, mixed $value): bool;
 
     /**
      * 检查是否在一个事务内.
@@ -122,10 +113,8 @@ interface IDb extends IHashCode
 
     /**
      * 获取原对象实例.
-     *
-     * @return object
      */
-    public function getInstance();
+    public function getInstance(): object;
 
     /**
      * Get 事务管理.
@@ -149,8 +138,6 @@ interface IDb extends IHashCode
 
     /**
      * 检查错误码是否为掉线
-     *
-     * @param mixed $code
      */
-    public function checkCodeIsOffline($code): bool;
+    public function checkCodeIsOffline(mixed $code): bool;
 }

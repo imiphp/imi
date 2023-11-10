@@ -23,10 +23,8 @@ interface IPoolResource extends IHashCode
 
     /**
      * 获取对象实例.
-     *
-     * @return mixed
      */
-    public function getInstance();
+    public function getInstance(): mixed;
 
     /**
      * 获取池子实例.

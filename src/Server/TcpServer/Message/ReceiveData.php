@@ -12,24 +12,19 @@ class ReceiveData implements IReceiveData
 {
     /**
      * 接收到的数据.
-     *
-     * @var mixed
      */
-    protected $formatData;
+    protected mixed $formatData;
 
     /**
      * 客户端地址
      */
     protected ?IPEndPoint $clientAddress = null;
 
-    /**
-     * @param int|string $clientId
-     */
     public function __construct(
         /**
          * 客户端连接的标识符.
          */
-        protected $clientId,
+        protected int|string $clientId,
         /**
          * 接收到的数据.
          */
@@ -41,7 +36,7 @@ class ReceiveData implements IReceiveData
     /**
      * {@inheritDoc}
      */
-    public function getClientId()
+    public function getClientId(): int|string
     {
         return $this->clientId;
     }
@@ -57,7 +52,7 @@ class ReceiveData implements IReceiveData
     /**
      * {@inheritDoc}
      */
-    public function getFormatData()
+    public function getFormatData(): mixed
     {
         return $this->formatData;
     }

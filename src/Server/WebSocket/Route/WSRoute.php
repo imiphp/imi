@@ -35,7 +35,7 @@ class WSRoute implements IRoute
     /**
      * {@inheritDoc}
      */
-    public function parse($data): ?RouteResult
+    public function parse(mixed $data): ?RouteResult
     {
         $router = $this->httpRoute->getRouter();
         /** @var \Psr\Http\Message\ServerRequestInterface|null $request */
@@ -58,10 +58,8 @@ class WSRoute implements IRoute
 
     /**
      * 增加路由规则，直接使用注解方式.
-     *
-     * @param mixed $callable
      */
-    public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, array $options = []): void
+    public function addRuleAnnotation(WSRouteAnnotation $annotation, mixed $callable, array $options = []): void
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))
@@ -99,10 +97,8 @@ class WSRoute implements IRoute
 
     /**
      * 检查条件是否匹配.
-     *
-     * @param array|object $data
      */
-    private function checkCondition($data, WSRouteAnnotation $annotation): bool
+    private function checkCondition(array|object $data, WSRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

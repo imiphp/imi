@@ -15,7 +15,7 @@ class RouteNotFound implements IWSRouteNotFoundHandler
     /**
      * {@inheritDoc}
      */
-    public function handle(IFrame $frame, IMessageHandler $handler)
+    public function handle(IFrame $frame, IMessageHandler $handler): mixed
     {
         return 'gg';
     }

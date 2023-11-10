@@ -24,11 +24,9 @@ trait TSingleton
     /**
      * 获取单例对象
      *
-     * @param array ...$args
-     *
      * @return static
      */
-    public static function getInstance(...$args): object
+    public static function getInstance(mixed ...$args): object
     {
         if (static::isChildClassSingleton())
         {
@@ -39,6 +37,7 @@ trait TSingleton
             }
             else
             {
+                // @phpstan-ignore-next-line
                 return $instances[static::class] = new static(...$args);
             }
         }
@@ -46,6 +45,7 @@ trait TSingleton
         {
             if (null === static::$__instance)
             {
+                // @phpstan-ignore-next-line
                 static::$__instance = new static(...$args);
             }
 

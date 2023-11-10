@@ -14,10 +14,7 @@ class JsonArrayParserTest extends BaseDataParserTestCase
         return new JsonArrayParser();
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getDecodeData()
+    protected function getDecodeData(): mixed
     {
         return [
             'name'    => 'imi',

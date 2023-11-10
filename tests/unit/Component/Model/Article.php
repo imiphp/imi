@@ -42,10 +42,8 @@ class Article extends ArticleBase
 
     /**
      * Set the value of ex.
-     *
-     * @return self
      */
-    public function setEx(?ArticleEx $ex)
+    public function setEx(?ArticleEx $ex): self
     {
         $this->ex = $ex;
 
@@ -67,44 +65,33 @@ class Article extends ArticleBase
 
     /**
      * Set the value of ex.
-     *
-     * @return self
      */
-    public function setExWith(?ArticleEx $exWith)
+    public function setExWith(?ArticleEx $exWith): self
     {
         $this->exWith = $exWith;
 
         return $this;
     }
 
-    /**
-     * @var ArticleEx|null
-     */
     #[OneToOne(model: 'ArticleEx', poolName: 'maindb')]
     #[JoinFrom(field: 'id')]
     #[JoinTo(field: 'article_id')]
     #[AutoSelect(status: false)]
     #[JsonNotNull]
-    protected $queryRelationsList;
+    protected ?ArticleEx $queryRelationsList = null;
 
     /**
      * Get the value of queryRelationsList.
-     *
-     * @return ArticleEx|null
      */
-    public function getQueryRelationsList()
+    public function getQueryRelationsList(): ?ArticleEx
     {
         return $this->queryRelationsList;
     }
 
     /**
      * Set the value of queryRelationsList.
-     *
-     * @param ArticleEx|null $queryRelationsList
-     *
-     * @return self
      */
-    public function setQueryRelationsList($queryRelationsList)
+    public function setQueryRelationsList(?ArticleEx $queryRelationsList): self
     {
         $this->queryRelationsList = $queryRelationsList;
 

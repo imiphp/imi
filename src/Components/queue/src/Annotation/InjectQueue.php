@@ -17,10 +17,8 @@ class InjectQueue extends Inject
 {
     /**
      * 获取注入值的真实值
-     *
-     * @return mixed
      */
-    public function getRealValue()
+    public function getRealValue(): mixed
     {
         /** @var \Imi\Queue\Service\QueueService $imiQueue */
         $imiQueue = App::getBean('imiQueue');

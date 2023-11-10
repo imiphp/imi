@@ -9,56 +9,42 @@ use Imi\RequestContext;
 
 class Files implements \ArrayAccess, \JsonSerializable
 {
-    /**
-     * @param int|string $offset
-     * @param mixed      $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         Log::warning('imi does not support to assign values to $_FILES');
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
         $files = $request->getUploadedFiles();
 
-        return isset($files[$offset]);
+        return isset($files[$key]);
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
         Log::warning('imi does not support to unset values from $_FILES');
     }
 
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $key): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
         $files = $request->getUploadedFiles();
-        if (isset($files[$offset]))
+        if (isset($files[$key]))
         {
             return [
-                'name'      => $files[$offset]->getClientFilename(),
-                'type'      => $files[$offset]->getClientMediaType(),
-                'tmp_name'  => $files[$offset]->getStream()->getMetadata('uri'),
-                'error'     => $files[$offset]->getError(),
-                'size'      => $files[$offset]->getSize(),
+                'name'      => $files[$key]->getClientFilename(),
+                'type'      => $files[$key]->getClientMediaType(),
+                'tmp_name'  => $files[$key]->getStream()->getMetadata('uri'),
+                'error'     => $files[$key]->getError(),
+                'size'      => $files[$key]->getSize(),
             ];
         }
+
+        return null;
     }
 
     public function __debugInfo(): array
@@ -69,8 +55,7 @@ class Files implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');

@@ -50,10 +50,8 @@ abstract class BaseRequestContextProxy
 
     /**
      * 设置请求上下文中的实例.
-     *
-     * @param mixed $instance
      */
-    public static function __setProxyInstance($instance): void
+    public static function __setProxyInstance(mixed $instance): void
     {
         $cache = &self::$cache;
         $currentClass = self::__getRealClassName();
@@ -95,18 +93,12 @@ abstract class BaseRequestContextProxy
         self::$cache = [];
     }
 
-    /**
-     * @return mixed
-     */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         return static::__getProxyInstance()->{$name}(...$arguments);
     }
 
-    /**
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $arguments)
+    public static function __callStatic(string $method, array $arguments): mixed
     {
         return static::__getProxyInstance()->{$method}(...$arguments);
     }

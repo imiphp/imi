@@ -15,10 +15,8 @@ interface IResult
 
     /**
      * 获取最后插入的ID.
-     *
-     * @return int|string
      */
-    public function getLastInsertId();
+    public function getLastInsertId(): int|string;
 
     /**
      * 获取影响行数.
@@ -29,10 +27,8 @@ interface IResult
      * 返回一行数据，数组或对象
      *
      * @param string|null $className 实体类名，为null则返回数组
-     *
-     * @return mixed
      */
-    public function get(?string $className = null);
+    public function get(?string $className = null): mixed;
 
     /**
      * 返回数组.
@@ -43,19 +39,13 @@ interface IResult
 
     /**
      * 获取一列.
-     *
-     * @param string|int $column
      */
-    public function getColumn($column = 0): array;
+    public function getColumn(string|int $column = 0): array;
 
     /**
      * 获取标量结果.
-     *
-     * @param int|string $columnKey
-     *
-     * @return mixed
      */
-    public function getScalar($columnKey = 0);
+    public function getScalar(string|int $column = 0): mixed;
 
     /**
      * 获取记录行数.

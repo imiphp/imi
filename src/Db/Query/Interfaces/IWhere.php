@@ -18,10 +18,8 @@ interface IWhere extends IBaseWhere
 
     /**
      * 值
-     *
-     * @return mixed
      */
-    public function getValue();
+    public function getValue(): mixed;
 
     /**
      * 字段名.
@@ -35,8 +33,6 @@ interface IWhere extends IBaseWhere
 
     /**
      * 值
-     *
-     * @param mixed $value
      */
-    public function setValue($value): void;
+    public function setValue(mixed $value): void;
 }

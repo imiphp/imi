@@ -59,10 +59,8 @@ class ToolTest extends BaseTest
 
     /**
      * @dataProvider boolProvider
-     *
-     * @param array|string $suffix
      */
-    public function testBool($suffix, array $results): void
+    public function testBool(array|string $suffix, array $results): void
     {
         $cmd = [
             ...getTestPhpBinaryArray(),
@@ -105,10 +103,8 @@ class ToolTest extends BaseTest
 
     /**
      * @dataProvider argumentProvider
-     *
-     * @param array|string $suffix
      */
-    public function testArgument($suffix, array $results): void
+    public function testArgument(array|string $suffix, array $results): void
     {
         $cmd = [
             ...getTestPhpBinaryArray(),
@@ -154,10 +150,8 @@ class ToolTest extends BaseTest
 
     /**
      * @dataProvider negatableProvider
-     *
-     * @param array|string $suffix
      */
-    public function testNegatable($suffix, array $results): void
+    public function testNegatable(array|string $suffix, array $results): void
     {
         $cmd = [
             ...getTestPhpBinaryArray(),

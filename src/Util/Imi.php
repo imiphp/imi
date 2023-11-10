@@ -67,10 +67,8 @@ class Imi
 
     /**
      * 检查验证比较规则集.
-     *
-     * @param string|array $rules
      */
-    public static function checkCompareRules($rules, callable $valueCallback): bool
+    public static function checkCompareRules(string|array $rules, callable $valueCallback): bool
     {
         foreach ((array) $rules as $fieldName => $rule)
         {
@@ -123,11 +121,8 @@ class Imi
 
     /**
      * 检查验证比较值集.
-     *
-     * @param string|array $rules
-     * @param mixed        $value
      */
-    public static function checkCompareValues($rules, $value): bool
+    public static function checkCompareValues(string|array $rules, mixed $value): bool
     {
         foreach ((array) $rules as $rule)
         {
@@ -142,11 +137,8 @@ class Imi
 
     /**
      * 检查验证比较值
-     *
-     * @param string|array $rule
-     * @param mixed        $value
      */
-    public static function checkCompareValue($rule, $value): bool
+    public static function checkCompareValue(string|array $rule, mixed $value): bool
     {
         if (isset($rule[0]) && '!' === $rule[0])
         {
@@ -328,10 +320,8 @@ class Imi
     /**
      * 获取类属性的值，值为beans配置或默认配置，支持传入Bean名称
      * 构造方法赋值无法取出.
-     *
-     * @return mixed
      */
-    public static function getClassPropertyValue(string $className, string $propertyName)
+    public static function getClassPropertyValue(string $className, string $propertyName): mixed
     {
         $value = BeanProxy::getInjectValue($className, $propertyName);
         if (null === $value)
@@ -563,10 +553,8 @@ class Imi
 
     /**
      * eval() 函数的安全替代方法.
-     *
-     * @return mixed
      */
-    public static function eval(string $code, ?string $fileName = null, bool $deleteFile = true)
+    public static function eval(string $code, ?string $fileName = null, bool $deleteFile = true): mixed
     {
         $tmpPath = &self::$tmpPath;
         if ('' === $tmpPath)

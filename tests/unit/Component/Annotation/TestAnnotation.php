@@ -15,11 +15,8 @@ class TestAnnotation
     #[EnumItem(text: 'test')]
     public const CONST_VALUE = 1;
 
-    /**
-     * @var \Imi\Log\ErrorLog
-     */
     #[Inject(name: 'ErrorLog')]
-    protected $errorLog;
+    protected \Imi\Log\ErrorLog $errorLog;
 
     #[Route(url: '/testAnnotation')]
     public function test(): void

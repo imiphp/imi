@@ -102,7 +102,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        public function send($clientId, string $data): bool
+        public function send(int|string $clientId, string $data): bool
         {
             return Server::sendRaw($data, $clientId, $this->getName()) > 0;
         }
@@ -110,7 +110,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        public function getClientAddress($clientId): IPEndPoint
+        public function getClientAddress(string|int $clientId): IPEndPoint
         {
             $session = Gateway::getSession($clientId);
 

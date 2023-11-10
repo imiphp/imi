@@ -18,23 +18,17 @@ use Imi\Server\Http\Route\Annotation\Route;
 #[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         $this->response->getBody()->write('imi');
 
         return $this->response;
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function publish(int $memberId = 19260817)
+    public function publish(int $memberId = 19260817): array
     {
         $message = new TestMessage();
         $message->setMemberId($memberId);
@@ -53,13 +47,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @param int $memberId
-     *
-     * @return mixed
-     */
     #[Action]
-    public function consume($memberId)
+    public function consume(int $memberId): array
     {
         $r1 = Redis::get($key1 = 'imi-amqp:consume:1:' . $memberId);
         $r2 = Redis::get($key2 = 'imi-amqp:consume:QueueTest:' . $memberId);

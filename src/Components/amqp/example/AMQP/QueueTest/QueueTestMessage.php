@@ -12,17 +12,13 @@ class QueueTestMessage
 
     /**
      * 用户ID.
-     *
-     * @var int
      */
-    protected $memberId;
+    protected int $memberId;
 
     /**
      * Get 用户ID.
-     *
-     * @return int
      */
-    public function getMemberId()
+    public function getMemberId(): int
     {
         return $this->memberId;
     }
@@ -31,10 +27,8 @@ class QueueTestMessage
      * Set 用户ID.
      *
      * @param int $memberId 用户ID
-     *
-     * @return self
      */
-    public function setMemberId(int $memberId)
+    public function setMemberId(int $memberId): self
     {
         $this->memberId = $memberId;
 

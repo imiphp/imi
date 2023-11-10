@@ -10,10 +10,7 @@ use Imi\Snowflake\SnowflakeUtil;
 
 class SnowflakeGenerator implements IIdGenerator
 {
-    /**
-     * @return mixed
-     */
-    public function generate(?BaseModel $model, array $options = [])
+    public function generate(?BaseModel $model, array $options = []): mixed
     {
         if (!isset($options['name']))
         {

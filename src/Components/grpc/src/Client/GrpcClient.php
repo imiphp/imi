@@ -59,7 +59,7 @@ class GrpcClient implements IRpcClient
      *
      * @param array $options 配置
      */
-    public function __construct($options)
+    public function __construct(array $options)
     {
         if (!isset($options['url']))
         {
@@ -152,10 +152,8 @@ class GrpcClient implements IRpcClient
      * 发送请求
      *
      * $metadata 格式：['key' => ['value']]
-     *
-     * @return int|bool
      */
-    public function send(string $package, string $service, string $name, \Google\Protobuf\Internal\Message $message, array $metadata = [])
+    public function send(string $package, string $service, string $name, \Google\Protobuf\Internal\Message $message, array $metadata = []): int|bool
     {
         if (!$this->isConnected())
         {

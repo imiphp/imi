@@ -20,10 +20,7 @@ abstract class BaseDataParserTestCase extends BaseTest
 
     abstract protected function getParser(): IParser;
 
-    /**
-     * @return mixed
-     */
-    abstract protected function getDecodeData();
+    abstract protected function getDecodeData(): mixed;
 
     abstract protected function getEncodeData(): string;
 }

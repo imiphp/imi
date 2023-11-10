@@ -9,46 +9,30 @@ use Imi\RequestContext;
 
 class Request implements \ArrayAccess, \JsonSerializable
 {
-    /**
-     * @param int|string $offset
-     * @param mixed      $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         Log::warning('imi does not support to assign values to $_REQUEST');
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return null !== $request->request($offset);
+        return null !== $request->request($key);
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
         Log::warning('imi does not support to unset values from $_REQUEST');
     }
 
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $key): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return $request->request($offset);
+        return $request->request($key);
     }
 
     public function __debugInfo(): array
@@ -59,8 +43,7 @@ class Request implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');

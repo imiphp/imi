@@ -10,15 +10,11 @@ class AfterBatchUpdateEventParam extends EventParam
 {
     /**
      * 初始化数据.
-     *
-     * @var \Imi\Util\LazyArrayObject
      */
-    public $data;
+    public \Imi\Util\LazyArrayObject $data;
 
     /**
      * 查询结果.
-     *
-     * @var \Imi\Db\Query\Interfaces\IResult
      */
-    public $result;
+    public \Imi\Db\Query\Interfaces\IResult $result;
 }

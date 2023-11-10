@@ -15,12 +15,9 @@ use Imi\Util\Stream\MemoryStream;
 #[HtmlView(baseDir: 'index/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         return $this->response
             ->withBody(new MemoryStream('imi'));

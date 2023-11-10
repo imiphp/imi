@@ -17,23 +17,17 @@ use KafkaApp\Kafka\QueueTest\QueueTestMessage;
 #[Controller(prefix: '/')]
 class IndexController extends HttpController
 {
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         $this->response->getBody()->write('imi');
 
         return $this->response;
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function publish(int $memberId = 19260817)
+    public function publish(int $memberId = 19260817): array
     {
         $producer = KafkaPool::getInstance();
         $producer->send('queue-imi-1', json_encode([
@@ -51,11 +45,8 @@ class IndexController extends HttpController
         ];
     }
 
-    /**
-     * @return mixed
-     */
     #[Action]
-    public function consume(int $memberId)
+    public function consume(int $memberId): array
     {
         $r1 = Redis::get($key1 = 'imi-kafka:consume:1:' . $memberId);
         $r2 = Redis::get($key2 = 'imi-kafka:consume:QueueTest:' . $memberId);

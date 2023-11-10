@@ -16,7 +16,7 @@ class Test implements IMiddleware
     /**
      * {@inheritDoc}
      */
-    public function process(IPacketData $data, IPacketHandler $handler)
+    public function process(IPacketData $data, IPacketHandler $handler): mixed
     {
         RequestContext::set('middlewareData', 'imi');
 

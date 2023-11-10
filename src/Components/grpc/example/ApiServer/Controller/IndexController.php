@@ -20,26 +20,18 @@ class IndexController extends HttpController
     #[GrpcService(serviceName: 'grpc.AuthService', interface: 'Grpc\\AuthServiceInterface')]
     protected $authService;
 
-    /**
-     * @return mixed
-     */
     #[Action]
     #[Route(url: '/')]
-    public function index()
+    public function index(): mixed
     {
         return $this->response;
     }
 
     /**
      * 测试登录.
-     *
-     * @param string $phone
-     * @param string $password
-     *
-     * @return mixed
      */
     #[Action]
-    public function testLogin($phone, $password)
+    public function testLogin(string $phone, string $password): array
     {
         $request = new LoginRequest();
         $request->setPhone($phone);

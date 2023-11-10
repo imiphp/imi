@@ -13,30 +13,24 @@ class ValidatorHelper
 {
     /**
      * 正则验证
-     *
-     * @param mixed $value
      */
-    public static function regex($value, string $rule): bool
+    public static function regex(mixed $value, string $rule): bool
     {
         return preg_match($rule, (string) $value) > 0;
     }
 
     /**
      * 小数验证
-     *
-     * @param mixed $value
      */
-    public static function decimal($value, ?float $min = null, ?float $max = null, ?int $accuracy = null): bool
+    public static function decimal(mixed $value, ?float $min = null, ?float $max = null, ?int $accuracy = null): bool
     {
         return static::number($value, $min, $max, $accuracy) && str_contains((string) $value, '.');
     }
 
     /**
      * 整数验证
-     *
-     * @param mixed $value
      */
-    public static function int($value, ?int $min = null, ?int $max = null): bool
+    public static function int(mixed $value, ?int $min = null, ?int $max = null): bool
     {
         // 整数验证
         if ((string) (int) $value !== (string) $value)
@@ -59,12 +53,8 @@ class ValidatorHelper
 
     /**
      * 数值验证，允许整数和小数.
-     *
-     * @param mixed          $value
-     * @param float|int|null $min
-     * @param float|int|null $max
      */
-    public static function number($value, $min = null, $max = null, ?int $accuracy = null): bool
+    public static function number(mixed $value, string|float|int|null $min = null, string|float|int|null $max = null, ?int $accuracy = null): bool
     {
         if (!is_numeric($value))
         {
@@ -93,20 +83,16 @@ class ValidatorHelper
 
     /**
      * 判断文本长度，以字节为单位.
-     *
-     * @param mixed $value
      */
-    public static function length($value, int $min, ?int $max = null): bool
+    public static function length(mixed $value, int $min, ?int $max = null): bool
     {
         return isset($value[$min - 1]) && (null === $max || !isset($value[$max]));
     }
 
     /**
      * 判断文本长度，以字符为单位.
-     *
-     * @param mixed $value
      */
-    public static function lengthChar($value, int $min, ?int $max = null): bool
+    public static function lengthChar(mixed $value, int $min, ?int $max = null): bool
     {
         $len = mb_strlen((string) $value, 'utf8');
         $result = ($len >= $min);
@@ -120,231 +106,176 @@ class ValidatorHelper
 
     /**
      * 判断空文本.
-     *
-     * @param mixed $value
      */
-    public static function emptyStr($value): bool
+    public static function emptyStr(mixed $value): bool
     {
         return '' === $value;
     }
 
     /**
      * 判断不为空文本.
-     *
-     * @param mixed $value
      */
-    public static function notEmptyStr($value): bool
+    public static function notEmptyStr(mixed $value): bool
     {
         return '' !== $value;
     }
 
     /**
      * 检测邮箱格式.
-     *
-     * @param mixed $email
      */
-    public static function email($email): bool
+    public static function email(mixed $email): bool
     {
         return false !== filter_var($email, \FILTER_VALIDATE_EMAIL);
     }
 
     /**
      * 检测中国手机号码格式.
-     *
-     * @param mixed $str
      */
-    public static function cnMobile($str): bool
+    public static function cnMobile(mixed $str): bool
     {
         return preg_match('/1\d{10}/', (string) $str) > 0;
     }
 
     /**
      * 检测中国电话号码格式，支持400、800等.
-     *
-     * @param mixed $str
      */
-    public static function tel($str): bool
+    public static function tel(mixed $str): bool
     {
         return preg_match('/^(((\d{3,4}-)?(\d{7,8}){1}(-\d{2,4})?)|((\d{3,4}-)?(\d{3,4}){1}(-\d{3,4})))$/', (string) $str) > 0;
     }
 
     /**
      * 检测中国手机电话号码格式.
-     *
-     * @param mixed $str
      */
-    public static function mobile($str): bool
+    public static function mobile(mixed $str): bool
     {
         return preg_match('/^(1(([35789][0-9])|(47)))\d{8}$/', (string) $str) > 0;
     }
 
     /**
      * 检测是否符合中国固话或手机格式，支持400、800等.
-     *
-     * @param mixed $str
      */
-    public static function phone($str): bool
+    public static function phone(mixed $str): bool
     {
         return static::mobile($str) || static::tel($str);
     }
 
     /**
      * 检测中国邮政编码
-     *
-     * @param mixed $str
      */
-    public static function postcode($str): bool
+    public static function postcode(mixed $str): bool
     {
         return preg_match('/^\d{6}$/', (string) $str) > 0;
     }
 
     /**
      * 检测URL地址
-     *
-     * @param mixed $str
      */
-    public static function url($str): bool
+    public static function url(mixed $str): bool
     {
         return false !== filter_var($str, \FILTER_VALIDATE_URL);
     }
 
     /**
      * 检测QQ号是否符合规则.
-     *
-     * @param mixed $str
      */
-    public static function qq($str): bool
+    public static function qq(mixed $str): bool
     {
         return preg_match('/^[1-9]{1}[0-9]{4,10}$/', (string) $str) > 0;
     }
 
     /**
      * 判断IP地址是否符合IP的格式，ipv4或ipv6.
-     *
-     * @param mixed $str
      */
-    public static function ip($str): bool
+    public static function ip(mixed $str): bool
     {
         return static::ipv4($str) || static::ipv6($str);
     }
 
     /**
      * 判断IP地址是否是合法的ipv4格式.
-     *
-     * @param mixed $str
      */
-    public static function ipv4($str): bool
+    public static function ipv4(mixed $str): bool
     {
         return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4);
     }
 
     /**
      * 判断IP地址是否是合法的ipv6格式.
-     *
-     * @param mixed $str
      */
-    public static function ipv6($str): bool
+    public static function ipv6(mixed $str): bool
     {
         return false !== filter_var($str, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6);
     }
 
     /**
      * 在两个数之间，不包含这2个数字.
-     *
-     * @param float|int $value
-     * @param float|int $max
-     * @param float|int $min
      */
-    public static function between($value, $min, $max): bool
+    public static function between(string|float|int $value, string|float|int $min, string|float|int $max): bool
     {
         return $value > $min && $value < $max;
     }
 
     /**
      * 在两个数之间，包含这2个数字.
-     *
-     * @param float|int $value
-     * @param float|int $max
-     * @param float|int $min
      */
-    public static function betweenEqual($value, $min, $max): bool
+    public static function betweenEqual(string|float|int $value, string|float|int $min, string|float|int $max): bool
     {
         return $value >= $min && $value <= $max;
     }
 
     /**
      * 小于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function lt($value, $num): bool
+    public static function lt(string|float|int $value, string|float|int $num): bool
     {
         return $value < $num;
     }
 
     /**
      * 小于等于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function ltEqual($value, $num): bool
+    public static function ltEqual(string|float|int $value, string|float|int $num): bool
     {
         return $value <= $num;
     }
 
     /**
      * 大于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function gt($value, $num): bool
+    public static function gt(string|float|int $value, string|float|int $num): bool
     {
         return $value > $num;
     }
 
     /**
      * 大于等于.
-     *
-     * @param float|int $value
-     * @param float|int $num
      */
-    public static function gtEqual($value, $num): bool
+    public static function gtEqual(string|float|int $value, string|float|int $num): bool
     {
         return $value >= $num;
     }
 
     /**
      * 等于.
-     *
-     * @param mixed $value
-     * @param mixed $num
      */
-    public static function equal($value, $num): bool
+    public static function equal(mixed $value, mixed $num): bool
     {
         return $value == $num;
     }
 
     /**
      * 不等于.
-     *
-     * @param mixed $value
-     * @param mixed $num
      */
-    public static function unequal($value, $num): bool
+    public static function unequal(mixed $value, mixed $num): bool
     {
         return $value != $num;
     }
 
     /**
      * 比较.
-     *
-     * @param mixed $valueLeft
-     * @param mixed $valueRight
      */
-    public static function compare($valueLeft, string $operation, $valueRight): bool
+    public static function compare(mixed $valueLeft, string $operation, mixed $valueRight): bool
     {
         return match ($operation)
         {
@@ -362,11 +293,8 @@ class ValidatorHelper
 
     /**
      * 值在范围内.
-     *
-     * @param mixed        $value
-     * @param string|array $list
      */
-    public static function in($value, $list): bool
+    public static function in(mixed $value, string|array $list): bool
     {
         if (!\is_array($list))
         {
@@ -378,11 +306,8 @@ class ValidatorHelper
 
     /**
      * 值不在范围内.
-     *
-     * @param mixed        $value
-     * @param string|array $list
      */
-    public static function notIn($value, $list): bool
+    public static function notIn(mixed $value, string|array $list): bool
     {
         if (!\is_array($list))
         {
@@ -395,10 +320,9 @@ class ValidatorHelper
     /**
      * 值在枚举值范围内.
      *
-     * @param mixed                  $value
      * @param class-string<BaseEnum> $enumClass
      */
-    public static function inEnum($value, string $enumClass): bool
+    public static function inEnum(mixed $value, string $enumClass): bool
     {
         return \in_array($value, $enumClass::getValues());
     }
@@ -406,30 +330,23 @@ class ValidatorHelper
     /**
      * 值不在枚举值范围内.
      *
-     * @param mixed                  $value
      * @param class-string<BaseEnum> $enumClass
      */
-    public static function notInEnum($value, string $enumClass): bool
+    public static function notInEnum(mixed $value, string $enumClass): bool
     {
         return !\in_array($value, $enumClass::getValues());
     }
 
     /**
      * 检测中国居民身份证，支持15位和18位.
-     *
-     * @param mixed $id_card
      */
-    public static function cnIdcard($id_card): bool
+    public static function cnIdcard(mixed $id_card): bool
     {
         $id_card = (string) $id_card;
         /**
          * 计算身份证校验码，根据国家标准GB 11643-1999.
-         *
-         * @param string $idcard_base
-         *
-         * @return int|false
          */
-        $idcard_verify_number = static function () use (&$id_card) {
+        $idcard_verify_number = static function () use (&$id_card): string|bool {
             if (17 !== \strlen($id_card))
             {
                 return false;
@@ -445,9 +362,8 @@ class ValidatorHelper
                 $checksum += (int) $id_card[$i] * $factor[$i];
             }
             $mod = $checksum % 11;
-            $verify_number = $verify_number_list[$mod];
 
-            return $verify_number;
+            return $verify_number_list[$mod];
         };
         /**
          * 18位身份证校验码有效性检查.
@@ -505,10 +421,8 @@ class ValidatorHelper
 
     /**
      * 文本验证
-     *
-     * @param mixed $str
      */
-    public static function text($str, int $min, ?int $max = null, bool $char = false): bool
+    public static function text(mixed $str, int $min, ?int $max = null, bool $char = false): bool
     {
         if ($char)
         {

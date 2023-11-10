@@ -12,11 +12,8 @@ use PHPUnit\Framework\Assert;
 #[Bean(name: 'TestInjectRedis')]
 class TestInjectRedis
 {
-    /**
-     * @var RedisHandler
-     */
     #[RedisInject]
-    protected $redis;
+    protected RedisHandler $redis;
 
     public function test(): void
     {

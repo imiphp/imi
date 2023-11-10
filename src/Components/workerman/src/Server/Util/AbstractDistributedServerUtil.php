@@ -11,7 +11,7 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawByFlag(string $data, $flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -69,7 +69,7 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRawToGroup(string|array $groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -92,7 +92,7 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function closeByFlag(string|array|null $flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         if (null === $flag)
         {
@@ -118,7 +118,7 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
     /**
      * {@inheritDoc}
      */
-    public function exists($clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
+    public function exists(int|string|array|null $clientId, ?string $serverName = null, bool $toAllWorkers = true): bool
     {
         $server = $this->getServer($serverName);
         if (!$server)

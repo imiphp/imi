@@ -15,10 +15,8 @@ class SendToGroupTask implements ITaskHandler
 {
     /**
      * 任务处理方法.
-     *
-     * @return mixed
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId): mixed
     {
         $group = $param->getData()['group'];
         $data = [
@@ -38,10 +36,8 @@ class SendToGroupTask implements ITaskHandler
 
     /**
      * 任务结束时触发.
-     *
-     * @param mixed $data
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data): void
+    public function finish(\Swoole\Server $server, int $taskId, mixed $data): void
     {
     }
 }

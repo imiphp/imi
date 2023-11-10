@@ -52,7 +52,7 @@ abstract class BaseMQTTController
      *
      * @return \BinSoul\Net\Mqtt\Packet\PublishAckPacket|\BinSoul\Net\Mqtt\Packet\PublishReceivedPacket|\BinSoul\Net\Mqtt\Packet\PublishReleasePacket|\BinSoul\Net\Mqtt\Packet\PublishCompletePacket|null
      */
-    abstract public function publish(PublishRequestPacket $request, ReceiveData $receiveData);
+    abstract public function publish(PublishRequestPacket $request, ReceiveData $receiveData): mixed;
 
     /**
      * 发布确认.

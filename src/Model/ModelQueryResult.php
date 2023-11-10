@@ -27,7 +27,7 @@ class ModelQueryResult extends Result
     /**
      * {@inheritDoc}
      */
-    public function get(?string $className = null)
+    public function get(?string $className = null): mixed
     {
         if (!$this->isSuccess)
         {

@@ -25,13 +25,11 @@ class Server extends BaseCommand
 {
     /**
      * 开启服务
-     *
-     * @param string|bool $d
      */
     #[CommandAction(name: 'start', description: '启动 swoole 服务')]
     #[Option(name: 'workerNum', type: \Imi\Cli\ArgType::INT, comments: '工作进程数量')]
-    #[Option(name: 'daemon', shortcut: 'd', type: \Imi\Cli\ArgType::MIXED, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件')]
-    public function start(?int $workerNum, $d): void
+    #[Option(name: 'daemon', shortcut: 'd', type: \Imi\Cli\ArgType::MIXED, default: false, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件')]
+    public function start(?int $workerNum, string|bool $d): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($workerNum, $d): void {
             $server = (function () use ($workerNum, $d) {

@@ -211,11 +211,10 @@ class App
      * @template T
      *
      * @param class-string<T> $name
-     * @param mixed           ...$params
      *
      * @return T
      */
-    public static function getBean(string $name, ...$params)
+    public static function getBean(string $name, mixed ...$params): mixed
     {
         return self::$container->get($name, ...$params);
     }
@@ -226,11 +225,10 @@ class App
      * @template T
      *
      * @param class-string<T> $name
-     * @param mixed           ...$params
      *
      * @return T
      */
-    public static function newInstance(string $name, ...$params)
+    public static function newInstance(string $name, mixed ...$params): mixed
     {
         return self::$container->newInstance($name, ...$params);
     }
@@ -241,11 +239,10 @@ class App
      * @template T
      *
      * @param class-string<T> $name
-     * @param array           $params
      *
      * @return T
      */
-    public static function getSingleton(string $name, ...$params)
+    public static function getSingleton(string $name, mixed ...$params): mixed
     {
         return self::$container->getSingleton($name, ...$params);
     }
@@ -276,22 +273,16 @@ class App
 
     /**
      * 获取应用上下文数据.
-     *
-     * @param mixed $default
-     *
-     * @return mixed
      */
-    public static function get(string $name, $default = null)
+    public static function get(string $name, mixed $default = null): mixed
     {
         return self::$context[$name] ?? $default;
     }
 
     /**
      * 设置应用上下文数据.
-     *
-     * @param mixed $value
      */
-    public static function set(string $name, $value, bool $readonly = false): void
+    public static function set(string $name, mixed $value, bool $readonly = false): void
     {
         if (isset(self::$contextReadonly[$name]))
         {
@@ -315,10 +306,8 @@ class App
 
     /**
      * 设置应用上下文数据，当指定名称不存在时才设置.
-     *
-     * @param mixed $value
      */
-    public static function setNx(string $name, $value, bool $readonly = false): bool
+    public static function setNx(string $name, mixed $value, bool $readonly = false): bool
     {
         if (\array_key_exists($name, self::$context))
         {

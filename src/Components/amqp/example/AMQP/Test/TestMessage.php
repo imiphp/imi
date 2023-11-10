@@ -10,17 +10,13 @@ class TestMessage extends Message
 {
     /**
      * 用户ID.
-     *
-     * @var int
      */
-    private $memberId;
+    private int $memberId;
 
     /**
      * 内容.
-     *
-     * @var string
      */
-    private $content;
+    private string $content;
 
     public function __construct()
     {
@@ -32,7 +28,7 @@ class TestMessage extends Message
     /**
      * {@inheritDoc}
      */
-    public function setBodyData($data): self
+    public function setBodyData(mixed $data): self
     {
         foreach ($data as $k => $v)
         {
@@ -45,7 +41,7 @@ class TestMessage extends Message
     /**
      * {@inheritDoc}
      */
-    public function getBodyData()
+    public function getBodyData(): mixed
     {
         return [
             'memberId'  => $this->memberId,
@@ -55,10 +51,8 @@ class TestMessage extends Message
 
     /**
      * Get 用户ID.
-     *
-     * @return int
      */
-    public function getMemberId()
+    public function getMemberId(): int
     {
         return $this->memberId;
     }
@@ -67,10 +61,8 @@ class TestMessage extends Message
      * Set 用户ID.
      *
      * @param int $memberId 用户ID
-     *
-     * @return self
      */
-    public function setMemberId(int $memberId)
+    public function setMemberId(int $memberId): self
     {
         $this->memberId = $memberId;
 
@@ -79,10 +71,8 @@ class TestMessage extends Message
 
     /**
      * Get 内容.
-     *
-     * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -91,10 +81,8 @@ class TestMessage extends Message
      * Set 内容.
      *
      * @param string $content 内容
-     *
-     * @return self
      */
-    public function setContent(string $content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 

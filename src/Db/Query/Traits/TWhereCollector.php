@@ -27,7 +27,7 @@ trait TWhereCollector
     /**
      * {@inheritDoc}
      */
-    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self
+    public function whereBetween(string $fieldName, mixed $begin, mixed $end, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->where($fieldName, 'between', [$begin, $end], $logicalOperator);
     }
@@ -35,7 +35,7 @@ trait TWhereCollector
     /**
      * {@inheritDoc}
      */
-    public function orWhereBetween(string $fieldName, $begin, $end): self
+    public function orWhereBetween(string $fieldName, mixed $begin, mixed $end): self
     {
         return $this->where($fieldName, 'between', [$begin, $end], LogicalOperator::OR);
     }
@@ -43,7 +43,7 @@ trait TWhereCollector
     /**
      * {@inheritDoc}
      */
-    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self
+    public function whereNotBetween(string $fieldName, mixed $begin, mixed $end, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->where($fieldName, 'not between', [$begin, $end], $logicalOperator);
     }
@@ -51,7 +51,7 @@ trait TWhereCollector
     /**
      * {@inheritDoc}
      */
-    public function orWhereNotBetween(string $fieldName, $begin, $end): self
+    public function orWhereNotBetween(string $fieldName, mixed $begin, mixed $end): self
     {
         return $this->where($fieldName, 'not between', [$begin, $end], LogicalOperator::OR);
     }
@@ -59,7 +59,7 @@ trait TWhereCollector
     /**
      * {@inheritDoc}
      */
-    public function orWhere(string $fieldName, string $operation, $value): self
+    public function orWhere(string $fieldName, string $operation, mixed $value): self
     {
         return $this->where($fieldName, $operation, $value, LogicalOperator::OR);
     }

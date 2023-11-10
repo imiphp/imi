@@ -571,6 +571,7 @@ class AnnotationParser
      */
     public function doParser(string $className): void
     {
+        /** @var \Imi\Bean\Annotation\Base[] $classAnnotations */
         $classAnnotations = AnnotationManager::getClassAnnotations($className, null, false);
         // 类
         foreach ($classAnnotations as $annotation)

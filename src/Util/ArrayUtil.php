@@ -13,10 +13,8 @@ class ArrayUtil
 
     /**
      * 从数组中移除一个或多个元素，重新组织为连续的键.
-     *
-     * @param mixed $value
      */
-    public static function remove(array $array, ...$value): array
+    public static function remove(array $array, mixed ...$value): array
     {
         foreach ($value as $item)
         {
@@ -31,10 +29,8 @@ class ArrayUtil
 
     /**
      * 从数组中移除一个或多个元素，保持原有键.
-     *
-     * @param mixed $value
      */
-    public static function removeKeepKey(array $array, ...$value): array
+    public static function removeKeepKey(array $array, mixed ...$value): array
     {
         foreach ($value as $item)
         {

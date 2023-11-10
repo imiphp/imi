@@ -8,40 +8,24 @@ use Imi\Server\Session\Session as ImiSession;
 
 class Session implements \ArrayAccess, \JsonSerializable
 {
-    /**
-     * @param int|string $offset
-     * @param mixed      $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
-        ImiSession::set($offset, $value);
+        ImiSession::set($key, $value);
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $key): bool
     {
-        return null !== ImiSession::get($offset);
+        return null !== ImiSession::get($key);
     }
 
-    /**
-     * @param int|string $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $key): void
     {
-        ImiSession::delete($offset);
+        ImiSession::delete($key);
     }
 
-    /**
-     * @param int|string $offset
-     *
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $key): mixed
     {
-        return ImiSession::get($offset);
+        return ImiSession::get($key);
     }
 
     public function __debugInfo(): array
@@ -52,8 +36,7 @@ class Session implements \ArrayAccess, \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ImiSession::get();
     }

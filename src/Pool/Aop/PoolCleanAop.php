@@ -18,12 +18,10 @@ class PoolCleanAop
 {
     /**
      * 过滤方法参数.
-     *
-     * @return mixed
      */
     #[PointCut(type: \Imi\Aop\PointCutType::ANNOTATION, allow: [\Imi\Pool\Annotation\PoolClean::class])]
     #[Before]
-    public function parse(JoinPoint $joinPoint)
+    public function parse(JoinPoint $joinPoint): void
     {
         /** @var \Imi\Pool\Annotation\PoolClean $poolClean */
         $poolClean = AnnotationManager::getMethodAnnotations(BeanFactory::getObjectClass($joinPoint->getTarget()), $joinPoint->getMethod(), PoolClean::class, true, true);

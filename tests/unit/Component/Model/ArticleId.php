@@ -45,10 +45,8 @@ class ArticleId extends Model
      * 赋值 id.
      *
      * @param int|null $id id
-     *
-     * @return static
      */
-    public function setId($id)
+    public function setId(?int $id): static
     {
         $this->id = null === $id ? null : (int) $id;
 
@@ -73,10 +71,8 @@ class ArticleId extends Model
      * 赋值 memberId.
      *
      * @param int|null $memberId member_id
-     *
-     * @return static
      */
-    public function setMemberId($memberId)
+    public function setMemberId(?int $memberId): static
     {
         $this->memberId = null === $memberId ? null : (int) $memberId;
 
@@ -102,10 +98,8 @@ class ArticleId extends Model
      * 赋值 title.
      *
      * @param string|null $title title
-     *
-     * @return static
      */
-    public function setTitle($title)
+    public function setTitle(?string $title): static
     {
         if (\is_string($title) && mb_strlen($title) > 255)
         {
@@ -135,10 +129,8 @@ class ArticleId extends Model
      * 赋值 content.
      *
      * @param string|null $content content
-     *
-     * @return static
      */
-    public function setContent($content)
+    public function setContent(?string $content): static
     {
         if (\is_string($content) && mb_strlen($content) > 16777215)
         {
@@ -168,10 +160,8 @@ class ArticleId extends Model
      * 赋值 time.
      *
      * @param string|null $time time
-     *
-     * @return static
      */
-    public function setTime($time)
+    public function setTime(?string $time): static
     {
         $this->time = null === $time ? null : (string) $time;
 

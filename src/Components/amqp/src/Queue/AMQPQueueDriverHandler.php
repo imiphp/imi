@@ -589,10 +589,8 @@ class AMQPQueueDriverHandler implements IQueueDriver
 
     /**
      * 获取队列的键.
-     *
-     * @param int|string $queueType
      */
-    public function getRedisQueueKey($queueType): string
+    public function getRedisQueueKey(int|string $queueType): string
     {
         return $this->redisPrefix . $this->name . ':' . strtolower(QueueType::getName($queueType) ?? $queueType);
     }
