@@ -454,15 +454,6 @@ interface IQuery extends IBaseWhereCollector
     public function getAutoParamName(string $prefix = ':p'): string;
 
     /**
-     * 查询器别名.
-     *
-     * @deprecated 3.0
-     *
-     * @return static
-     */
-    public function alias(string $name, ?callable $callable = null): self;
-
-    /**
      * 加锁
      *
      * @return static

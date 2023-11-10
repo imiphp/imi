@@ -77,13 +77,6 @@ abstract class Query implements IQuery
     protected string $originPrefix = '';
 
     /**
-     * 查询器别名集合.
-     *
-     * @var static[]
-     */
-    protected static array $aliasMap = [];
-
-    /**
      * 当前别名.
      */
     protected ?string $alias = null;
@@ -809,25 +802,6 @@ abstract class Query implements IQuery
         }
 
         return $this->getDb()->inTransaction();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function alias(string $name, ?callable $callable = null): self
-    {
-        $aliasMap = &static::$aliasMap;
-        if (!isset($aliasMap[$name]))
-        {
-            if ($callable)
-            {
-                $callable($this);
-            }
-            $this->alias = $name;
-            $aliasMap[$name] = $this;
-        }
-
-        return clone $aliasMap[$name];
     }
 
     /**
