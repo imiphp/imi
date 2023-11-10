@@ -20,7 +20,7 @@
 | minResources                 | 池子中最少资源数                                     | int    | 1                                   |
 | gcInterval                   | 资源回收时间间隔，单位：秒，`null`则不限制           | ?int   | 60                                  |
 | maxActiveTime                | 获取资源最大存活时间，单位：秒，`null`则不限制       | ?int   | `null`                              |
-| waitTimeout                  | 等待资源最大超时时间，单位：毫秒                     | int    | 3000                                |
+| waitTimeout                  | 等待资源最大超时时间，单位：秒秒                     | float    | 3                                |
 | heartbeatInterval            | 心跳时间间隔，单位：秒，`null`则不启用               | ?float | `null`                              |
 | checkStateWhenGetResource    | 当获取资源时是否检查状态，单位：秒，`null`则不限制   | bool   | `true`                              |
 | maxUsedTime                  | 每次获取资源最长使用时间，单位：秒，`null`则不限制   | ?float | `null`                              |

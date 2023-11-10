@@ -31,19 +31,19 @@ return [
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数
-                    // 'maxResources' => 10,
+                    // 'maxResources' => 32,
                     // 池子中最少资源数
-                    // 'minResources' => 2,
+                    // 'minResources' => 1,
                     // 资源回收时间间隔，单位：秒
                     // 'gcInterval' => 60,
                     // 获取资源最大存活时间，单位：秒
-                    // 'maxActiveTime' => 3600,
-                    // 等待资源最大超时时间，单位：毫秒
-                    // 'waitTimeout' => 3000,
+                    // 'maxActiveTime' => null,
+                    // 等待资源最大超时时间，单位：秒
+                    // 'waitTimeout' => 3,
                     // 心跳时间间隔，单位：秒
-                    // 'heartbeatInterval' => null,
+                    // 'heartbeatInterval' => 60,
                     // 当获取资源时，是否检查状态
-                    // 'checkStateWhenGetResource' => true,
+                    // 'checkStateWhenGetResource' => false,
                     // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
                     // 'maxUsedTime' => null,
                     // 资源创建后最大空闲回收时间，单位：秒；为 null 则不限制
@@ -98,19 +98,19 @@ return [
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数
-                    // 'maxResources' => 10,
+                    // 'maxResources' => 32,
                     // 池子中最少资源数
-                    // 'minResources' => 2,
+                    // 'minResources' => 1,
                     // 资源回收时间间隔，单位：秒
                     // 'gcInterval' => 60,
                     // 获取资源最大存活时间，单位：秒
-                    // 'maxActiveTime' => 3600,
-                    // 等待资源最大超时时间，单位：毫秒
-                    // 'waitTimeout' => 3000,
+                    // 'maxActiveTime' => null,
+                    // 等待资源最大超时时间，单位：秒
+                    // 'waitTimeout' => 3,
                     // 心跳时间间隔，单位：秒
-                    // 'heartbeatInterval' => null,
+                    // 'heartbeatInterval' => 60,
                     // 当获取资源时，是否检查状态
-                    // 'checkStateWhenGetResource' => true,
+                    // 'checkStateWhenGetResource' => false,
                     // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
                     // 'maxUsedTime' => null,
                     // 资源创建后最大空闲回收时间，单位：秒；为 null 则不限制

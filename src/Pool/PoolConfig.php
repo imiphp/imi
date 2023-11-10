@@ -16,7 +16,7 @@ class PoolConfig implements IPoolConfig
     /**
      * 池子中最多资源数.
      */
-    protected int $maxResources = 10;
+    protected int $maxResources = 32;
 
     /**
      * 池子中最少资源数.
@@ -36,9 +36,9 @@ class PoolConfig implements IPoolConfig
     protected ?int $maxActiveTime = null;
 
     /**
-     * 等待资源最大超时时间，单位：毫秒.
+     * 等待资源最大超时时间，单位：秒.
      */
-    protected int $waitTimeout = 3000;
+    protected float $waitTimeout = 3;
 
     /**
      * 每次获取资源最长使用时间，单位：秒.
@@ -62,7 +62,7 @@ class PoolConfig implements IPoolConfig
     /**
      * 心跳时间间隔，单位：秒.
      */
-    protected ?float $heartbeatInterval = null;
+    protected ?float $heartbeatInterval = 60;
 
     /**
      * 资源配置模式.
@@ -72,7 +72,7 @@ class PoolConfig implements IPoolConfig
     /**
      * 当获取资源时，是否检查状态
      */
-    protected bool $checkStateWhenGetResource = true;
+    protected bool $checkStateWhenGetResource = false;
 
     public function __construct(array $option = [])
     {
@@ -120,7 +120,7 @@ class PoolConfig implements IPoolConfig
     /**
      * {@inheritDoc}
      */
-    public function getWaitTimeout(): int
+    public function getWaitTimeout(): float
     {
         return $this->waitTimeout;
     }
@@ -148,7 +148,7 @@ class PoolConfig implements IPoolConfig
     /**
      * {@inheritDoc}
      */
-    public function setGcInterval(?int $gcInterval): self
+    public function setGCInterval(?int $gcInterval): self
     {
         $this->gcInterval = $gcInterval;
 
@@ -168,7 +168,7 @@ class PoolConfig implements IPoolConfig
     /**
      * {@inheritDoc}
      */
-    public function setWaitTimeout(int $waitTimeout): self
+    public function setWaitTimeout(float $waitTimeout): self
     {
         $this->waitTimeout = $waitTimeout;
 

@@ -32,7 +32,7 @@ interface IPoolConfig
     /**
      * 获取等待资源最大超时时间，单位：毫秒.
      */
-    public function getWaitTimeout(): int;
+    public function getWaitTimeout(): float;
 
     /**
      * 获取资源配置模式.
@@ -64,7 +64,7 @@ interface IPoolConfig
      *
      * @return static
      */
-    public function setGcInterval(?int $gcInterval): self;
+    public function setGCInterval(?int $gcInterval): self;
 
     /**
      * Set 资源最大存活时间，单位：秒.
@@ -78,11 +78,11 @@ interface IPoolConfig
     /**
      * Set 等待资源最大超时时间.
      *
-     * @param int $waitTimeout 等待资源最大超时时间
+     * @param float $waitTimeout 等待资源最大超时时间
      *
      * @return static
      */
-    public function setWaitTimeout(int $waitTimeout): self;
+    public function setWaitTimeout(float $waitTimeout): self;
 
     /**
      * 设置资源配置模式.

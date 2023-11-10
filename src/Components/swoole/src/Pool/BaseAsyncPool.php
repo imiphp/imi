@@ -87,7 +87,7 @@ abstract class BaseAsyncPool extends BasePool
     {
         $queue = $this->queue;
         $config = $this->config;
-        $waitTimeoutFloat = $config->getWaitTimeout() / 1000;
+        $waitTimeoutFloat = $config->getWaitTimeout();
         if ($this->getFree() <= 0 && $this->getCount() < $config->getMaxResources())
         {
             // 没有空闲连接，当前连接数少于最大连接数
