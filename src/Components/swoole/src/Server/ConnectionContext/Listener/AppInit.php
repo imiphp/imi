@@ -44,7 +44,7 @@ class AppInit implements IAppInitEventListener
             {
                 RequestContext::set('server', $server);
                 // @phpstan-ignore-next-line
-                $server->getBean('ConnectionContextStore')->init();
+                $server->getBean('ConnectionContextStore');
                 if (Imi::getClassPropertyValue('ServerGroup', 'status'))
                 {
                     /** @var \Imi\Server\Group\Handler\IGroupHandler $groupHandler */
