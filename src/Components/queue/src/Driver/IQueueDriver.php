@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Queue\Driver;
 
 use Imi\Queue\Contract\IMessage;
+use Imi\Queue\Enum\IQueueType;
 use Imi\Queue\Model\QueueStatus;
 
 /**
@@ -36,10 +37,8 @@ interface IQueueDriver
 
     /**
      * 清空队列.
-     *
-     * @param int|int[]|null $queueType 清空哪个队列，默认为全部
      */
-    public function clear($queueType = null): void;
+    public function clear(?IQueueType $queueType = null): void;
 
     /**
      * 将消息标记为成功

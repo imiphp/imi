@@ -10,6 +10,7 @@ use Imi\AMQP\Annotation\Queue;
 use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Contract\IQueueConsumer;
+use Imi\AMQP\Enum\ConsumerResult;
 use Imi\AMQP\Message;
 
 class QueueConsumer extends BaseConsumer implements IQueueConsumer
@@ -127,10 +128,10 @@ class QueueConsumer extends BaseConsumer implements IQueueConsumer
     /**
      * {@inheritDoc}
      */
-    protected function consume(IMessage $message): mixed
+    protected function consume(IMessage $message): ConsumerResult
     {
         $this->queue->push($message);
 
-        return null;
+        return ConsumerResult::Ack;
     }
 }

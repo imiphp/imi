@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Queue;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\Bean\BeanFactory;
-use Imi\Queue\Contract\IMessage;
-use Imi\Queue\Driver\IQueueDriver;
-use Imi\Queue\Model\QueueStatus;
 use Imi\RequestContext;
+use Imi\Bean\BeanFactory;
+use Imi\Bean\Annotation\Bean;
+use Imi\Queue\Enum\IQueueType;
+use Imi\Queue\Contract\IMessage;
+use Imi\Queue\Model\QueueStatus;
+use Imi\Queue\Driver\IQueueDriver;
 use Imi\Util\Traits\TDataToProperty;
 
 /**
@@ -153,7 +154,7 @@ class AMQPQueueDriver implements IQueueDriver
     /**
      * {@inheritDoc}
      */
-    public function clear($queueType = null): void
+    public function clear(?IQueueType $queueType = null): void
     {
         $this->getHandler()->clear($queueType);
     }

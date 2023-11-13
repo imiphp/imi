@@ -4,37 +4,33 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Enum;
 
-use Imi\Enum\Annotation\EnumItem;
-use Imi\Enum\BaseEnum;
-
 /**
  * 消费者执行结果.
  */
-class ConsumerResult extends BaseEnum
+enum ConsumerResult: int
 {
-    use \Imi\Util\Traits\TStaticClass;
+    /**
+     * 确认消息.
+     */
+    case Ack = 1;
 
     /**
-     * 用于消息消费成功
+     * 否定消息.
      */
-    #[EnumItem(text: '确认消息')]
-    public const ACK = 1;
+    case Nack = 2;
 
     /**
-     * 用于消息消费失败.
+     * 否定消息，并重回队列.
      */
-    #[EnumItem(text: '否定消息')]
-    public const NACK = 2;
+    case NackRequeue = 3;
 
     /**
-     * 用于消息消费失败，并重回队列.
+     * 拒绝消息.
      */
-    #[EnumItem(text: '否定消息，并重回队列')]
-    public const NACK_REQUEUE = 3;
+    case Reject = 4;
 
-    #[EnumItem(text: '拒绝消息')]
-    public const REJECT = 4;
-
-    #[EnumItem(text: '拒绝消息，并重回队列')]
-    public const REJECT_REQUEUE = 5;
+    /**
+     * 拒绝消息，并重回队列.
+     */
+    case RejectRequeue = 5;
 }

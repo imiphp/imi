@@ -68,7 +68,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         /**
          * {@inheritDoc}
          */
-        protected function consume(IMessage $message): mixed
+        protected function consume(IMessage $message): ConsumerResult
         {
             try
             {
@@ -80,16 +80,16 @@ if (class_exists(\Imi\AMQP\Main::class))
                     'closeByFlag'    => Server::closeByFlag($data['flag'], $serverName, false),
                     'sendRawToGroup' => Server::sendRawToGroup($data['group'], $data['data'], $serverName, false),
                     'sendRawToAll'   => Server::sendRawToAll($data['data'], $serverName, false),
-                    default          => ConsumerResult::ACK,
+                    default          => ConsumerResult::Ack,
                 };
 
-                return ConsumerResult::ACK;
+                return ConsumerResult::Ack;
             }
             catch (\Throwable $th)
             {
                 Log::error($th);
 
-                return ConsumerResult::NACK;
+                return ConsumerResult::Nack;
             }
         }
     }

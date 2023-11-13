@@ -10,6 +10,7 @@ use Imi\AMQP\Annotation\Queue;
 use Imi\AMQP\Base\BaseConsumer;
 use Imi\AMQP\Contract\IMessage;
 use Imi\AMQP\Contract\IQueueConsumer;
+use Imi\AMQP\Enum\ConsumerResult;
 use Imi\AMQP\Message;
 use Swoole\Coroutine\Channel;
 
@@ -131,11 +132,11 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         /**
          * {@inheritDoc}
          */
-        protected function consume(IMessage $message): mixed
+        protected function consume(IMessage $message): ConsumerResult
         {
             $this->resultChannel->push($message);
 
-            return null;
+            return ConsumerResult::Ack;
         }
     }
 }
