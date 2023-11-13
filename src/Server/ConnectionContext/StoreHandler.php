@@ -31,7 +31,7 @@ class StoreHandler implements IHandler
      */
     private ?IHandler $handler = null;
 
-    public function init(): void
+    public function __init(): void
     {
         $this->getHandler();
     }
