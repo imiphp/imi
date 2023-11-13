@@ -70,8 +70,6 @@ return [
                 // 'dbClass' => 'PdoMysqlDriver',
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => 'MysqliDriver',
-                // 使用 Swoole MySQL 驱动
-                // 'dbClass' => 'SwooleMysqlDriver',
                 // 数据库连接后，执行初始化的 SQL
                 // 'initSqls' => [
                 //     'select 1',
@@ -137,8 +135,6 @@ return [
                 // 'dbClass' => 'PdoMysqlDriver',
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => 'MysqliDriver',
-                // 使用 Swoole MySQL 驱动
-                // 'dbClass' => 'SwooleMysqlDriver',
                 // 数据库连接后，执行初始化的 SQL
                 // 'initSqls' => [
                 //     'select 1',
@@ -183,8 +179,6 @@ return [
                 // 'dbClass' => 'PdoMysqlDriver',
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => 'MysqliDriver',
-                // 使用 Swoole MySQL 驱动
-                // 'dbClass' => 'SwooleMysqlDriver',
                 // 数据库连接后，执行初始化的 SQL
                 // 'initSqls' => [
                 //     'select 1',

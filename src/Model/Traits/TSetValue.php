@@ -9,10 +9,7 @@ use Imi\Model\Meta;
 
 trait TSetValue
 {
-    /**
-     * @param mixed $value
-     */
-    protected static function parseSetInitValue(string $name, $value, Column $fieldAnnotation, Meta $meta): mixed
+    protected static function parseSetInitValue(string $name, mixed $value, Column $fieldAnnotation, Meta $meta): mixed
     {
         if ('' === $value)
         {
@@ -20,14 +17,11 @@ trait TSetValue
         }
         else
         {
-            return explode(',', $value);
+            return explode(',', (string) $value);
         }
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected static function parseSetSaveValue(string $name, $value, Column $fieldAnnotation, Meta $meta): mixed
+    protected static function parseSetSaveValue(string $name, mixed $value, Column $fieldAnnotation, Meta $meta): mixed
     {
         return implode(',', $value);
     }

@@ -10,20 +10,17 @@ use Imi\Util\LazyArrayObject;
 
 trait TJsonValue
 {
-    /**
-     * @param mixed $value
-     */
-    protected static function parseJsonInitValue(string $name, $value, Column $fieldAnnotation, Meta $meta): mixed
+    protected static function parseJsonInitValue(string $name, mixed $value, Column $fieldAnnotation, Meta $meta): mixed
     {
         $fieldsJsonDecode = $meta->getFieldsJsonDecode();
         $realJsonDecode = $fieldsJsonDecode[$name][0] ?? $meta->getJsonDecode();
         if ($realJsonDecode)
         {
-            $data = json_decode($value, $realJsonDecode->associative, $realJsonDecode->depth, $realJsonDecode->flags);
+            $data = json_decode((string) $value, $realJsonDecode->associative, $realJsonDecode->depth, $realJsonDecode->flags);
         }
         else
         {
-            $data = json_decode($value, true);
+            $data = json_decode((string) $value, true);
         }
         if (\JSON_ERROR_NONE === json_last_error())
         {
@@ -79,10 +76,7 @@ trait TJsonValue
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected static function parseJsonSaveValue(string $name, $value, Column $fieldAnnotation, Meta $meta): mixed
+    protected static function parseJsonSaveValue(string $name, mixed $value, Column $fieldAnnotation, Meta $meta): mixed
     {
         $fieldsJsonEncode = $meta->getFieldsJsonEncode();
         if (isset($fieldsJsonEncode[$name][0]))

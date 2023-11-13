@@ -25,14 +25,6 @@ class AMQPCoroutinePool extends BaseAsyncPool
     /**
      * {@inheritDoc}
      */
-    protected function createResource(): IPoolResource
-    {
-        return $this->createNewResource();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function createNewResource(): IPoolResource
     {
         $config = $this->getNextResourceConfig();

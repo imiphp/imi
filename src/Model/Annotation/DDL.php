@@ -12,9 +12,6 @@ use Imi\Bean\Annotation\Base;
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class DDL extends Base
 {
-    /**
-     * @todo $decode 类型改为：?callable
-     */
     public function __construct(
         /**
          * 表结构 SQL；CREATE TABLE 语句.

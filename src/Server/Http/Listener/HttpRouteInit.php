@@ -8,7 +8,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Annotation\RequestParam;
 use Imi\Server\Http\Parser\ControllerParser;
 use Imi\Server\Http\Route\Annotation\Action;
@@ -75,7 +74,6 @@ class HttpRouteInit implements IEventListener
                     $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, [
                         Route::class,
                         Middleware::class,
-                        ExtractData::class,
                         WSConfig::class,
                         RequestParam::class,
                     ]);
@@ -127,19 +125,6 @@ class HttpRouteInit implements IEventListener
                             }
                         }
                         $extractData = [];
-                        // @deprecated 3.0
-                        if ($annotations[ExtractData::class])
-                        {
-                            /** @var ExtractData $item */
-                            foreach ($annotations[ExtractData::class] as $item)
-                            {
-                                $extractData[$item->to] = [
-                                    'name'     => $item->name,
-                                    'default'  => $item->default,
-                                    'required' => false,
-                                ];
-                            }
-                        }
                         if ($annotations[RequestParam::class])
                         {
                             /** @var RequestParam $item */

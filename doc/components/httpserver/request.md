@@ -330,27 +330,3 @@ public function requestParam2(
     ];
 }
 ```
-
-### ExtractData 注解
-
-将在 imi 3.0 中废弃，推荐使用 `RequestParam` 注解。
-
-**代码示例：**
-
-```php
-/**
- * http参数验证测试
- * 
- * @return void
- */
-#[
-    Action,
-    ExtractData(name: '$get.id', to: 'id'),
-    ExtractData(name: '$get.name', to: 'name'),
-    ExtractData(name: '$get.age', to: 'age'),
-]
-public function httpValidation($id, $name, $age)
-{
-    return compact('id', 'name', 'age');
-}
-```

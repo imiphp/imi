@@ -83,14 +83,6 @@ class ArrayData implements \ArrayAccess, \Countable
         if (\is_string($name))
         {
             $name = explode('.', $name);
-            // TODO: 3.0 去除判断
-            // @phpstan-ignore-next-line
-            if (false === $name)
-            {
-                // @codeCoverageIgnoreStart
-                return $default;
-                // @codeCoverageIgnoreEnd
-            }
         }
         elseif (!\is_array($name))
         {

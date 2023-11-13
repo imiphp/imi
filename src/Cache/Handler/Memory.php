@@ -70,7 +70,6 @@ class Memory extends Base
      */
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        $this->checkArrayOrTraversable($keys);
         $object = self::$storage;
         $result = [];
         foreach ($keys as $key)
@@ -86,7 +85,6 @@ class Memory extends Base
      */
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkArrayOrTraversable($values);
         // ttl 支持 \DateInterval 格式
         if ($ttl instanceof \DateInterval)
         {
@@ -106,7 +104,6 @@ class Memory extends Base
      */
     public function deleteMultiple(iterable $keys): bool
     {
-        $this->checkArrayOrTraversable($keys);
         $object = self::$storage;
         foreach ($keys as $key)
         {

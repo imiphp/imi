@@ -14,5 +14,5 @@ class DbTest extends DbBaseTestCase
     /**
      * 连接池名.
      */
-    protected ?string $poolName = 'swooleMysql';
+    protected ?string $poolName = 'maindb';
 }

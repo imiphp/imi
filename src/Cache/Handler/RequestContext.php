@@ -65,7 +65,6 @@ class RequestContext extends Base
      */
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        $this->checkArrayOrTraversable($keys);
         $object = $this->getObject();
         $result = [];
         foreach ($keys as $key)
@@ -81,7 +80,6 @@ class RequestContext extends Base
      */
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkArrayOrTraversable($values);
         // ttl 支持 \DateInterval 格式
         if ($ttl instanceof \DateInterval)
         {
@@ -101,7 +99,6 @@ class RequestContext extends Base
      */
     public function deleteMultiple(iterable $keys): bool
     {
-        $this->checkArrayOrTraversable($keys);
         $object = $this->getObject();
         foreach ($keys as $key)
         {

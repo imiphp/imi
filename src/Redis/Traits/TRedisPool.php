@@ -16,7 +16,7 @@ trait TRedisPool
      *
      * @return \Imi\Redis\RedisResource
      */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
+    public function createNewResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $config = $this->getNextResourceConfig();
         $mode = $config['mode'] ?? RedisMode::STANDALONE;

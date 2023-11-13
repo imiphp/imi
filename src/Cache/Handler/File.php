@@ -36,7 +36,6 @@ class File extends Base
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        $this->checkKey($key);
         $fileName = $this->getFileName($key);
         // 缓存文件不存在
         if (!is_file($fileName))
@@ -86,7 +85,6 @@ class File extends Base
      */
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkKey($key);
         $fileName = $this->getFileName($key);
         // 自动建目录
         $dir = \dirname($fileName);
@@ -135,7 +133,6 @@ class File extends Base
      */
     public function delete(string $key): bool
     {
-        $this->checkKey($key);
         $fileName = $this->getFileName($key);
         if (is_file($fileName))
         {
@@ -180,7 +177,6 @@ class File extends Base
      */
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        $this->checkArrayOrTraversable($keys);
         $result = [];
         foreach ($keys as $key)
         {
@@ -195,7 +191,6 @@ class File extends Base
      */
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
-        $this->checkArrayOrTraversable($values);
         $result = true;
         // ttl 支持 \DateInterval 格式
         if ($ttl instanceof \DateInterval)
@@ -215,7 +210,6 @@ class File extends Base
      */
     public function deleteMultiple(iterable $keys): bool
     {
-        $this->checkArrayOrTraversable($keys);
         $result = true;
         foreach ($keys as $key)
         {
@@ -230,7 +224,6 @@ class File extends Base
      */
     public function has(string $key): bool
     {
-        $this->checkKey($key);
         $fileName = $this->getFileName($key);
         // 缓存文件不存在
         if (!is_file($fileName))

@@ -77,28 +77,11 @@ abstract class Query implements IQuery
     protected string $originPrefix = '';
 
     /**
-     * 查询器别名集合.
-     *
-     * @var static[]
-     */
-    protected static array $aliasMap = [];
-
-    /**
-     * 当前别名.
-     */
-    protected ?string $alias = null;
-
-    /**
      * 查询结果集类名.
      *
      * @var class-string<IResult>
      */
     protected string $resultClass = Result::class;
-
-    /**
-     * 别名 Sql 数据集合.
-     */
-    protected static array $aliasSqlMap = [];
 
     /**
      * 构建 Sql 前的回调.
@@ -814,25 +797,6 @@ abstract class Query implements IQuery
     /**
      * {@inheritDoc}
      */
-    public function alias(string $name, ?callable $callable = null): self
-    {
-        $aliasMap = &static::$aliasMap;
-        if (!isset($aliasMap[$name]))
-        {
-            if ($callable)
-            {
-                $callable($this);
-            }
-            $this->alias = $name;
-            $aliasMap[$name] = $this;
-        }
-
-        return clone $aliasMap[$name];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function lock(int|string|bool|null $value): self
     {
         $this->option->lock = $value;
@@ -873,53 +837,8 @@ abstract class Query implements IQuery
             $this->beforeBuildSqlCallbacks = [];
         }
 
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builderClass = static::SELECT_BUILDER_CLASS;
-            $sql = (new $builderClass($this))->build();
-            if ($alias)
-            {
-                $originBinds = $binds;
-                $binds = $this->binds;
-                // @phpstan-ignore-next-line todo 此处 $binds 为无效判断，已经利用 $alias 在前一个 if 中置空了。
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
+        $builderClass = static::SELECT_BUILDER_CLASS;
+        $sql = (new $builderClass($this))->build();
         if (!$this->isInitQueryType && !$this->isInTransaction())
         {
             $this->queryType = QueryType::READ;
@@ -942,57 +861,8 @@ abstract class Query implements IQuery
             }
             $this->beforeBuildSqlCallbacks = [];
         }
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-            $bindValues = [];
-            $numberKey = isset($data[0]);
-            foreach ($data as $k => $v)
-            {
-                if ($numberKey)
-                {
-                    $bindValues[':' . ($k + 1)] = $v;
-                }
-                else
-                {
-                    $bindValues[':' . $k] = $v;
-                }
-            }
-            $this->bindValues($bindValues);
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builderClass = static::INSERT_BUILDER_CLASS;
-            $sql = (new $builderClass($this))->build($data);
-            if ($alias)
-            {
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    // @phpstan-ignore-next-line
-                    'binds' => $binds,
-                ];
-            }
-        }
+        $builderClass = static::INSERT_BUILDER_CLASS;
+        $sql = (new $builderClass($this))->build($data);
 
         return $sql;
     }
@@ -1030,59 +900,8 @@ abstract class Query implements IQuery
             }
             $this->beforeBuildSqlCallbacks = [];
         }
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-            $bindValues = [];
-            foreach ($data as $k => $v)
-            {
-                $bindValues[':' . $k] = $v;
-            }
-            $this->bindValues($bindValues);
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builderClass = static::UPDATE_BUILDER_CLASS;
-            $sql = (new $builderClass($this))->build($data);
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
+        $builderClass = static::UPDATE_BUILDER_CLASS;
+        $sql = (new $builderClass($this))->build($data);
 
         return $sql;
     }
@@ -1101,59 +920,8 @@ abstract class Query implements IQuery
             }
             $this->beforeBuildSqlCallbacks = [];
         }
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-            $bindValues = [];
-            foreach ($data as $k => $v)
-            {
-                $bindValues[':' . $k] = $v;
-            }
-            $this->bindValues($bindValues);
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builderClass = static::REPLACE_BUILDER_CLASS;
-            $sql = (new $builderClass($this))->build($data, $uniqueFields);
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
+        $builderClass = static::REPLACE_BUILDER_CLASS;
+        $sql = (new $builderClass($this))->build($data, $uniqueFields);
 
         return $sql;
     }
@@ -1172,53 +940,8 @@ abstract class Query implements IQuery
             }
             $this->beforeBuildSqlCallbacks = [];
         }
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builderClass = static::DELETE_BUILDER_CLASS;
-            $sql = (new $builderClass($this))->build();
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
+        $builderClass = static::DELETE_BUILDER_CLASS;
+        $sql = (new $builderClass($this))->build();
 
         return $sql;
     }
@@ -1313,14 +1036,6 @@ abstract class Query implements IQuery
     public function chunkByOffset(int $count): ChunkByOffsetResult
     {
         return new ChunkByOffsetResult($this, $count);
-    }
-
-    /**
-     * 查询所有记录，返回分块迭代器.
-     */
-    public function chunkEach(int $count, string $column, ?string $alias = null): mixed
-    {
-        return $this->chunkById($count, $column, $alias)->each();
     }
 
     /**

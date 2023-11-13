@@ -11,8 +11,7 @@
     "require-dev": {},
     "autoload": {
         "psr-4": {
-            "Imi\\Grpc\\": "src/",
-            "Imi\\Server\\Grpc\\": "src/old-server/"
+            "Imi\\Grpc\\": "src/"
         }
     },
     "autoload-dev": {
