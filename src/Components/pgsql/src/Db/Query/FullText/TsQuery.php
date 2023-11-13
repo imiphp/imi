@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Db\Query\FullText;
 
-use Imi\Enum\Annotation\EnumItem;
-use Imi\Enum\BaseEnum;
+use Imi\Util\Traits\TStaticClass;
 
 /**
  * PostgreSQL tsquery 函数.
  */
-class TsQuery extends BaseEnum
+class TsQuery
 {
-    #[EnumItem(text: 'to_tsquery')]
+    use TStaticClass;
+
     public const TO_TSQUERY = 'to_tsquery';
 
-    #[EnumItem(text: 'plainto_tsquery')]
     public const PLAINTO_TSQUERY = 'plainto_tsquery';
 
-    #[EnumItem(text: 'phraseto_tsquery')]
     public const PHRASETO_TSQUERY = 'phraseto_tsquery';
 
-    #[EnumItem(text: 'websearch_to_tsquery')]
     public const WEBSEARCH_TO_TSQUERY = 'websearch_to_tsquery';
 }
