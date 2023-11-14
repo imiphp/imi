@@ -9,22 +9,17 @@ use Imi\Enum\Annotation\EnumItem;
 /**
  * 定时任务类型.
  */
-class CronTaskType extends \Imi\Cron\Consts\CronTaskType
+class CronTaskType
 {
     use \Imi\Util\Traits\TStaticClass;
 
-    #[EnumItem(text: '随机工作进程任务')]
     public const RANDOM_WORKER = 'random_worker';
 
-    #[EnumItem(text: '所有工作进程执行的任务')]
     public const ALL_WORKER = 'all_worker';
 
-    #[EnumItem(text: '后台任务')]
     public const TASK = 'task';
 
-    #[EnumItem(text: '进程')]
     public const PROCESS = 'process';
 
-    #[EnumItem(text: '定时任务进程')]
     public const CRON_PROCESS = 'cron_process';
 }
