@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Cron\Consts;
 
-use Imi\Enum\Annotation\EnumItem;
-
 /**
  * 定时任务类型.
  */

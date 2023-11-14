@@ -163,7 +163,7 @@ final class Container implements ContainerInterface
         if ($data['recursion'] ?? true)
         {
             // @phpstan-ignore-next-line
-            BeanFactory::initInstance($object, $params);
+            BeanFactory::initInstance($object, $params, $originId);
             if ($stored && $object !== $beanObjects[$originId])
             {
                 // 防止类 __init() 方法有协程上下文切换，导致单例被覆盖

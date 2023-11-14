@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Queue;
 
-use Imi\RequestContext;
-use Imi\Bean\BeanFactory;
 use Imi\Bean\Annotation\Bean;
-use Imi\Queue\Enum\IQueueType;
+use Imi\Bean\BeanFactory;
 use Imi\Queue\Contract\IMessage;
-use Imi\Queue\Model\QueueStatus;
 use Imi\Queue\Driver\IQueueDriver;
+use Imi\Queue\Enum\IQueueType;
+use Imi\Queue\Model\QueueStatus;
+use Imi\RequestContext;
 use Imi\Util\Traits\TDataToProperty;
 
 /**
