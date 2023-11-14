@@ -7,7 +7,7 @@ namespace Imi\Cron\Consts;
 /**
  * 任务唯一性等级.
  */
-enum UniqueLevel
+enum UniqueLevel: string
 {
     /**
      * 当前实例唯一
