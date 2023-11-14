@@ -53,7 +53,6 @@ function getRectorConfigCallback(string $path): callable
             \Rector\Php71\Rector\FuncCall\CountOnNullRector::class,
             \Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector::class,
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
-            \Rector\Php74\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector::class, // 性能很差
             \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // 调整包含默认值的参数顺序，会导致代码被破坏
             \Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector::class, // 常量自动加 final，无法继承覆盖了
         ]);
