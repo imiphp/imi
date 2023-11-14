@@ -11,14 +11,14 @@ class UUIDGenerator implements IIdGenerator
 {
     public function generate(?BaseModel $model, array $options = []): mixed
     {
-        switch ($type = $options['type'] ?? UUIDGeneratorType::RANDOM)
+        switch ($type = $options['type'] ?? UUIDGeneratorType::Random)
         {
-            case UUIDGeneratorType::TIME:
+            case UUIDGeneratorType::Time:
                 return uuid_create(UUID_TYPE_TIME);
-            case UUIDGeneratorType::RANDOM:
+            case UUIDGeneratorType::Random:
                 return uuid_create(UUID_TYPE_RANDOM);
-            case UUIDGeneratorType::MD5:
-            case UUIDGeneratorType::SHA1:
+            case UUIDGeneratorType::Md5:
+            case UUIDGeneratorType::Sha1:
                 $functionName = 'uuid_generate_' . $type;
                 if (isset($options['ns']))
                 {
