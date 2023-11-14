@@ -197,12 +197,15 @@ class BeanProxy
                     {
                         if (is_subclass_of($enumType, \BackedEnum::class))
                         {
-                            $value = $enumType::from($value);
-                            break;
+                            $case = $enumType::tryFrom($value);
                         }
                         else
                         {
-                            $value = EnumUtil::fromName($enumType, $value);
+                            $case = EnumUtil::tryFromName($enumType, $value);
+                        }
+                        if ($case)
+                        {
+                            $value = $case;
                             break;
                         }
                     }
