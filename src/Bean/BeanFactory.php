@@ -48,7 +48,7 @@ class BeanFactory
      * @param class-string<T> $class
      * @param mixed           ...$args
      */
-    public static function newBeanInstance(string $class, ?string $beanName = null, ...$args): T
+    public static function newBeanInstance(string $class, ?string $beanName = null, ...$args): mixed
     {
         $object = static::newInstanceNoInit($class, ...$args);
         static::initInstance($object, $args, $beanName);
@@ -123,7 +123,7 @@ class BeanFactory
      *
      * @param class-string<T> $class
      */
-    public static function newBeanInstanceEx(string $class, ?string $beanName = null, array $args = []): T
+    public static function newBeanInstanceEx(string $class, ?string $beanName = null, array $args = []): mixed
     {
         $object = static::newInstanceExNoInit($class, $args, $resultArgs);
         static::initInstance($object, $resultArgs, $beanName);

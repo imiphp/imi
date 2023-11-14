@@ -149,7 +149,12 @@ trait TWhereCollector
         $result = [];
         foreach ($condition as $key => $value)
         {
-            if (null === LogicalOperator::getText(strtolower($key)))
+            if (\in_array(strtolower($key), LogicalOperator::values()))
+            {
+                // 逻辑运算符
+                $result[] = new WhereBrackets(fn () => $this->parseWhereEx($value), $key);
+            }
+            else
             {
                 // 条件 k => v
                 if (\is_array($value))
@@ -194,11 +199,6 @@ trait TWhereCollector
                 {
                     $result[] = new Where($key, '=', $value);
                 }
-            }
-            else
-            {
-                // 逻辑运算符
-                $result[] = new WhereBrackets(fn () => $this->parseWhereEx($value), $key);
             }
         }
 

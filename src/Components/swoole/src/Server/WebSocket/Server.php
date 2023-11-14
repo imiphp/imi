@@ -56,7 +56,7 @@ class Server extends Base implements ISwooleWebSocketServer
     /**
      * 非控制帧类型.
      */
-    private int $nonControlFrameType = NonControlFrameType::Text;
+    private NonControlFrameType $nonControlFrameType = NonControlFrameType::Text;
 
     /**
      * {@inheritDoc}

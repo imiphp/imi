@@ -19,4 +19,16 @@ class LogicalOperator
     public const OR_NOT = 'or not';
 
     public const XOR_NOT = 'xor not';
+
+    public static function values(): array
+    {
+        return [
+            static::AND,
+            static::OR,
+            static::XOR,
+            static::AND_NOT,
+            static::OR_NOT,
+            static::XOR_NOT,
+        ];
+    }
 }

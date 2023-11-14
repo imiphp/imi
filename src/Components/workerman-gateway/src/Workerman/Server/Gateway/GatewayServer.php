@@ -24,7 +24,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * 非控制帧类型.
      */
-    private int $nonControlFrameType = NonControlFrameType::Text;
+    private NonControlFrameType $nonControlFrameType = NonControlFrameType::Text;
 
     /**
      * {@inheritDoc}

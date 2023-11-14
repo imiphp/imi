@@ -31,7 +31,7 @@ class Server extends Base implements IWebSocketServer
     /**
      * 非控制帧类型.
      */
-    private int $nonControlFrameType = NonControlFrameType::Text;
+    private NonControlFrameType $nonControlFrameType = NonControlFrameType::Text;
 
     /**
      * {@inheritDoc}

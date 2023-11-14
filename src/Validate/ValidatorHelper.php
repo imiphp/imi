@@ -319,8 +319,6 @@ class ValidatorHelper
 
     /**
      * 值在枚举值范围内.
-     *
-     * @param class-string<BaseEnum> $enumClass
      */
     public static function inEnum(mixed $value, string $enumClass): bool
     {
@@ -336,8 +334,6 @@ class ValidatorHelper
 
     /**
      * 值不在枚举值范围内.
-     *
-     * @param class-string<BaseEnum> $enumClass
      */
     public static function notInEnum(mixed $value, string $enumClass): bool
     {
