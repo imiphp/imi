@@ -172,7 +172,7 @@ class Server extends Base implements IWebSocketServer
     /**
      * {@inheritDoc}
      */
-    public function getNonControlFrameType(): int
+    public function getNonControlFrameType(): NonControlFrameType
     {
         return $this->nonControlFrameType;
     }

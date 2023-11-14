@@ -363,7 +363,7 @@ class Server extends Base implements ISwooleWebSocketServer
     /**
      * {@inheritDoc}
      */
-    public function getNonControlFrameType(): int
+    public function getNonControlFrameType(): NonControlFrameType
     {
         return $this->nonControlFrameType;
     }

@@ -147,7 +147,7 @@ class LocalServerUtil implements ISwooleServerUtil
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
-            $pushParams = (array) $server->getNonControlFrameType();
+            $pushParams = (array) $server->getNonControlFrameType()->value;
         }
         else
         {
@@ -268,7 +268,7 @@ class LocalServerUtil implements ISwooleServerUtil
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
-            $pushParams = (array) $server->getNonControlFrameType();
+            $pushParams = (array) $server->getNonControlFrameType()->value;
         }
         else
         {
@@ -354,7 +354,7 @@ class LocalServerUtil implements ISwooleServerUtil
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
-            $pushParams = (array) $server->getNonControlFrameType();
+            $pushParams = (array) $server->getNonControlFrameType()->value;
         }
         else
         {

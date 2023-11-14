@@ -46,9 +46,8 @@ class BeanFactory
      * @template T
      *
      * @param class-string<T> $class
-     * @param mixed           ...$args
      */
-    public static function newBeanInstance(string $class, ?string $beanName = null, ...$args): mixed
+    public static function newBeanInstance(string $class, ?string $beanName = null, mixed ...$args): mixed
     {
         $object = static::newInstanceNoInit($class, ...$args);
         static::initInstance($object, $args, $beanName);

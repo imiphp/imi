@@ -69,7 +69,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * Get 非控制帧类型.
      */
-    public function getNonControlFrameType(): int
+    public function getNonControlFrameType(): NonControlFrameType
     {
         return $this->nonControlFrameType;
     }
