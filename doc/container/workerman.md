@@ -46,8 +46,8 @@ imi v2.0 版本开始，支持运行在 Workerman 环境中。
         'namespace'   => 'Imi\WorkermanGateway\Test\AppServer\Gateway',
         'type'        => Imi\WorkermanGateway\Workerman\Server\Type::GATEWAY,
         'socketName'  => 'websocket://0.0.0.0:8081', // 网关监听的地址
-        'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::TEXT, // 配置 WebSocket 纯文本通信协议
-        // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::BINARY, // 配置 WebSocket 二进制通信协议
+        'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::Text, // 配置 WebSocket 纯文本通信协议
+        // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::Binary, // 配置 WebSocket 二进制通信协议
         'configs'     => [
             'lanIp'           => '127.0.0.1',
             'startPort'       => 12900,

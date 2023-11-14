@@ -113,7 +113,7 @@ return [
             'namespace'           => 'Imi\WorkermanGateway\Test\AppServer\Gateway',
             'type'                => Imi\WorkermanGateway\Workerman\Server\Type::GATEWAY,
             'socketName'          => 'websocket://127.0.0.1:13002',
-            'nonControlFrameType' => NonControlFrameType::BINARY,
+            'nonControlFrameType' => NonControlFrameType::Binary,
             'configs'             => [
                 'lanIp'           => '127.0.0.1',
                 'startPort'       => 12900,
