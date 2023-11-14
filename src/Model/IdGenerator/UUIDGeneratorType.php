@@ -9,11 +9,11 @@ namespace Imi\Model\IdGenerator;
  */
 enum UUIDGeneratorType
 {
-    public const Time = 'time';
+    case Time;
 
-    public const Random = 'random';
+    case Random;
 
-    public const Md5 = 'md5';
+    case Md5;
 
-    public const Sha1 = 'sha1';
+    case Sha1;
 }
