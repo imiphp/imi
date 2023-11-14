@@ -6,6 +6,8 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Enum\TestEnum;
+use Imi\Test\Component\Enum\TestEnumBean;
+use Imi\Test\Component\Enum\TestEnumBeanBacked;
 use Imi\Validate\ValidatorHelper;
 use PHPUnit\Framework\Assert;
 
@@ -349,12 +351,30 @@ class ValidatorHelperTest extends BaseTest
     {
         Assert::assertTrue(ValidatorHelper::inEnum(TestEnum::A, TestEnum::class));
         Assert::assertFalse(ValidatorHelper::inEnum(4, TestEnum::class));
+        if (\PHP_VERSION_ID >= 80100)
+        {
+            Assert::assertTrue(ValidatorHelper::inEnum(TestEnumBean::A, TestEnumBean::class));
+            Assert::assertTrue(ValidatorHelper::inEnum('A', TestEnumBean::class));
+            Assert::assertFalse(ValidatorHelper::inEnum(4, TestEnumBean::class));
+            Assert::assertTrue(ValidatorHelper::inEnum(TestEnumBeanBacked::A, TestEnumBeanBacked::class));
+            Assert::assertTrue(ValidatorHelper::inEnum('hello', TestEnumBeanBacked::class));
+            Assert::assertFalse(ValidatorHelper::inEnum(4, TestEnumBeanBacked::class));
+        }
     }
 
     public function testNotInEnum(): void
     {
         Assert::assertTrue(ValidatorHelper::notInEnum(4, TestEnum::class));
         Assert::assertFalse(ValidatorHelper::notInEnum(TestEnum::A, TestEnum::class));
+        if (\PHP_VERSION_ID >= 80100)
+        {
+            Assert::assertTrue(ValidatorHelper::notInEnum(4, TestEnumBean::class));
+            Assert::assertFalse(ValidatorHelper::notInEnum(TestEnumBean::A, TestEnumBean::class));
+            Assert::assertFalse(ValidatorHelper::notInEnum('A', TestEnumBean::class));
+            Assert::assertTrue(ValidatorHelper::notInEnum(4, TestEnumBeanBacked::class));
+            Assert::assertFalse(ValidatorHelper::notInEnum(TestEnumBeanBacked::A, TestEnumBeanBacked::class));
+            Assert::assertFalse(ValidatorHelper::notInEnum('hello', TestEnumBeanBacked::class));
+        }
     }
 
     public function testCnIdcard(): void

@@ -37,7 +37,7 @@ if (\PHP_VERSION_ID >= 80100)
         {
             foreach ($enum::cases() as $case)
             {
-                if (($case->value ?? $case->name) === $value)
+                if ($case === $value || ($case->value ?? $case->name) === $value)
                 {
                     return true;
                 }
