@@ -11,6 +11,8 @@ use Imi\Test\BaseTest;
 use Imi\Test\Component\Bean\BeanA;
 use Imi\Test\Component\Bean\BeanB;
 use Imi\Test\Component\Bean\BeanC;
+use Imi\Test\Component\Enum\TestEnumBean;
+use Imi\Test\Component\Enum\TestEnumBeanBacked;
 use Imi\Util\Imi;
 
 /**
@@ -406,6 +408,22 @@ class BeanTest extends BaseTest
         $this->assertInstanceOf(\Imi\Test\Component\Bean\ReadOnlyBean::class, $bean);
         // @phpstan-ignore-next-line
         $this->assertEquals('ReadOnlyBean', $bean->test());
+    }
+
+    public function testEnumBean(): void
+    {
+        if (\PHP_VERSION_ID < 80100)
+        {
+            $this->markTestSkipped();
+        }
+        /** @var \Imi\Test\Component\Bean\EnumBean $bean */
+        // @phpstan-ignore-next-line
+        $bean = App::getBean(\Imi\Test\Component\Bean\EnumBean::class);
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\EnumBean::class, $bean);
+        // @phpstan-ignore-next-line
+        $this->assertEquals(TestEnumBean::A, $bean->getEnum1());
+        $this->assertEquals(TestEnumBeanBacked::B, $bean->getEnum2());
     }
 
     // @phpstan-ignore-next-line

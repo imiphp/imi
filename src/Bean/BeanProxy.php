@@ -17,6 +17,7 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\Model\AopItem;
 use Imi\Config;
+use Imi\Util\EnumUtil;
 use Imi\Util\Imi;
 
 class BeanProxy
@@ -171,6 +172,41 @@ class BeanProxy
             {
                 $propRef = $refClass->getProperty($name);
                 $propRef->setAccessible(true);
+                if ($propRef->hasType())
+                {
+                    $type = $propRef->getType();
+                    foreach ((static function () use ($type) {
+                        if ($type instanceof \ReflectionNamedType)
+                        {
+                            if (is_subclass_of($typeName = $type->getName(), \UnitEnum::class))
+                            {
+                                yield $typeName;
+                            }
+                        }
+                        elseif ($type instanceof \ReflectionUnionType)
+                        {
+                            foreach ($type->getTypes() as $type)
+                            {
+                                if (is_subclass_of($typeName = $type->getName(), \UnitEnum::class))
+                                {
+                                    yield $typeName;
+                                }
+                            }
+                        }
+                    })() as $enumType)
+                    {
+                        if (is_subclass_of($enumType, \BackedEnum::class))
+                        {
+                            $value = $enumType::from($value);
+                            break;
+                        }
+                        else
+                        {
+                            $value = EnumUtil::fromName($enumType, $value);
+                            break;
+                        }
+                    }
+                }
                 $propRef->setValue($object, $value);
             }
         }

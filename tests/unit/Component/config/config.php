@@ -88,6 +88,10 @@ return [
         'DbQueryLog'        => [
             'enable' => true,
         ],
+        \Imi\Test\Component\Bean\EnumBean::class => [
+            'enum1' => 'A',
+            'enum2' => 'imi',
+        ],
     ],
     'imi-framework'     => 'very six',
 
