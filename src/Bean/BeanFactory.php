@@ -71,7 +71,7 @@ class BeanFactory
      */
     public static function newInstanceNoInit(string $class, ...$args)
     {
-        $classNameMap = &static::$classNameMap;
+        $classNameMap = &self::$classNameMap;
         if (isset($classNameMap[$class]))
         {
             $className = $classNameMap[$class];
@@ -95,7 +95,7 @@ class BeanFactory
             else
             {
                 $ref = ReflectionContainer::getClassReflection($class);
-                $className = static::getNewClassName($ref->getShortName());
+                $className = self::getNewClassName($ref->getShortName());
                 $tpl = static::getTpl($ref, $className);
                 Imi::eval($tpl);
             }
@@ -132,7 +132,7 @@ class BeanFactory
     public static function newBeanInstanceEx(string $class, ?string $beanName = null, array $args = [])
     {
         $object = static::newInstanceExNoInit($class, $args, $resultArgs);
-        static::initInstance($object, $resultArgs);
+        static::initInstance($object, $resultArgs, $beanName);
 
         return $object;
     }
@@ -188,7 +188,7 @@ class BeanFactory
      */
     private static function getNewClassName(string $className): string
     {
-        return $className . '__Bean__' . (++static::$counter);
+        return $className . '__Bean__' . (++self::$counter);
     }
 
     /**

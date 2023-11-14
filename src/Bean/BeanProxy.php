@@ -220,31 +220,24 @@ class BeanProxy
      */
     public static function getConfigInjects(string $className, ?string $beanName = null): array
     {
-        // 配置文件注入
-        $beanData = BeanManager::get($className);
-        if (null === $beanName)
+        $originBeanName = $beanName;
+        $count = 2;
+        while ($count--)
         {
-            if ($beanData)
+            // 配置文件注入
+            if (null === $beanName)
             {
-                $beanName = $beanData['beanName'];
+                $beanData = BeanManager::get($className);
+                if ($beanData)
+                {
+                    $beanName = $beanData['beanName'];
+                }
+                else
+                {
+                    $beanName = $className;
+                }
             }
-            else
-            {
-                $beanName = $className;
-            }
-        }
-        $beans = Config::get('@currentServer.beans');
-        if (isset($beans[$beanName]))
-        {
-            return $beans[$beanName];
-        }
-        elseif ($beanName !== $className && isset($beans[$className]))
-        {
-            return $beans[$className];
-        }
-        else
-        {
-            $beans = Config::get('@app.beans');
+            $beans ??= Config::get('@currentServer.beans');
             if (isset($beans[$beanName]))
             {
                 return $beans[$beanName];
@@ -252,6 +245,27 @@ class BeanProxy
             elseif ($beanName !== $className && isset($beans[$className]))
             {
                 return $beans[$className];
+            }
+            else
+            {
+                $beans ??= Config::get('@app.beans');
+                if (isset($beans[$beanName]))
+                {
+                    return $beans[$beanName];
+                }
+                elseif ($beanName !== $className && isset($beans[$className]))
+                {
+                    return $beans[$className];
+                }
+            }
+            if (null === $originBeanName)
+            {
+                break;
+            }
+            else
+            {
+                // 下次循环会根据类名尝试获取注入配置
+                $beanName = null;
             }
         }
 
