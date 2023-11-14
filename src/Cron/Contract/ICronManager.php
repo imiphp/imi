@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Cron\Contract;
 
 use Imi\Cron\Annotation\Cron;
+use Imi\Cron\Consts\UniqueLevel;
 use Imi\Cron\CronTask;
 
 /**
@@ -20,7 +21,7 @@ interface ICronManager
     /**
      * 增加定时任务
      */
-    public function addCron(string $id, ?string $type, callable|string $task, array $cronRules, mixed $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void;
+    public function addCron(string $id, ?string $type, callable|string $task, array $cronRules, mixed $data, float $lockExpire = 3, ?UniqueLevel $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void;
 
     /**
      * 移除定时任务

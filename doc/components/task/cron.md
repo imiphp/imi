@@ -339,9 +339,9 @@ class TaskProcess implements IProcess
 **unique:**
 
 定时任务唯一性设置
-当前实例唯一: current
-所有实例唯一: all
-不唯一: null
+当前实例唯一: `\Imi\Cron\Consts\UniqueLevel::Current`
+所有实例唯一: `\Imi\Cron\Consts\UniqueLevel::All`
+不唯一: `null`
 
 **redisPool:**
 

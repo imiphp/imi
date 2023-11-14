@@ -9,6 +9,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Cli\ImiCommand;
 use Imi\Cron\Annotation\Cron;
+use Imi\Cron\Consts\UniqueLevel;
 use Imi\Cron\Contract\ICronManager;
 use Imi\Cron\Contract\ICronTask;
 use Imi\Cron\CronTask;
@@ -104,7 +105,7 @@ class CronManager implements ICronManager
     /**
      * {@inheritDoc}
      */
-    public function addCron(string $id, ?string $type, callable|string $task, array $cronRules, mixed $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true): void
+    public function addCron(string $id, ?string $type, callable|string $task, array $cronRules, mixed $data, float $lockExpire = 3, ?UniqueLevel $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false, bool $successLog = true): void
     {
         if (isset($this->tasks[$id]))
         {

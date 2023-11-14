@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Cron\Annotation;
 
 use Imi\Bean\Annotation\Base;
+use Imi\Cron\Consts\UniqueLevel;
 
 /**
  * 定时任务注解.
@@ -62,7 +63,7 @@ class Cron extends Base
         /**
          * 定时任务唯一性设置；当前实例唯一: current；所有实例唯一: all；不唯一: null.
          */
-        public ?string $unique = null,
+        public ?UniqueLevel $unique = null,
         /**
          * 用于锁的 `Redis` 连接池名.
          */

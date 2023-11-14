@@ -7,6 +7,8 @@ namespace Imi\Cron;
 /**
  * 定时任务对象
  */
+use Imi\Cron\Consts\UniqueLevel;
+
 class CronTask
 {
     /**
@@ -51,12 +53,9 @@ class CronTask
          */
         private readonly float $maxExecutionTime = 3,
         /**
-         * 定时任务唯一性设置
-         * 当前实例唯一: current
-         * 所有实例唯一: all
-         * 不唯一: null.
+         * 定时任务唯一性设置.
          */
-        private readonly ?string $unique = null,
+        private readonly ?UniqueLevel $unique = null,
         /**
          * 用于锁的 `Redis` 连接池名.
          */
@@ -139,7 +138,7 @@ class CronTask
     /**
      * Get 在当前服务实例中唯一，只能同时执行一个.
      */
-    public function getUnique(): ?string
+    public function getUnique(): ?UniqueLevel
     {
         return $this->unique;
     }

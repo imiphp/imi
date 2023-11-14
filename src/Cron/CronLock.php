@@ -42,10 +42,10 @@ class CronLock
             {
                 case null:
                     return $this->noLocks[$id] = true;
-                case UniqueLevel::ALL:
+                case UniqueLevel::All:
                     $keyPrefix = 'imi:cron:lock:unique:all:';
                     break;
-                case UniqueLevel::CURRENT:
+                case UniqueLevel::Current:
                     $keyPrefix = 'imi:cron:lock:unique:' . App::get(ProcessAppContexts::MASTER_PID) . ':';
                     break;
                 default:
