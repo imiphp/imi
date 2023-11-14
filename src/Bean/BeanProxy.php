@@ -237,25 +237,25 @@ class BeanProxy
                     $beanName = $className;
                 }
             }
-            $beans ??= Config::get('@currentServer.beans');
-            if (isset($beans[$beanName]))
+            $serverBeans ??= Config::get('@currentServer.beans');
+            if (isset($serverBeans[$beanName]))
             {
-                return $beans[$beanName];
+                return $serverBeans[$beanName];
             }
-            elseif ($beanName !== $className && isset($beans[$className]))
+            elseif ($beanName !== $className && isset($serverBeans[$className]))
             {
-                return $beans[$className];
+                return $serverBeans[$className];
             }
             else
             {
-                $beans ??= Config::get('@app.beans');
-                if (isset($beans[$beanName]))
+                $appBeans ??= Config::get('@app.beans');
+                if (isset($appBeans[$beanName]))
                 {
-                    return $beans[$beanName];
+                    return $appBeans[$beanName];
                 }
-                elseif ($beanName !== $className && isset($beans[$className]))
+                elseif ($beanName !== $className && isset($appBeans[$className]))
                 {
-                    return $beans[$className];
+                    return $appBeans[$className];
                 }
             }
             if (null === $originBeanName)
