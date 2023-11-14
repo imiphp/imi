@@ -38,8 +38,23 @@ class BeanFactory
      */
     public static function newInstance(string $class, ...$args)
     {
-        $object = self::newInstanceNoInit($class, ...$args);
-        static::initInstance($object, $args);
+        return static::newBeanInstance($class, null, ...$args);
+    }
+
+    /**
+     * 实例化.
+     *
+     * @template T
+     *
+     * @param class-string<T> $class
+     * @param mixed           ...$args
+     *
+     * @return T
+     */
+    public static function newBeanInstance(string $class, ?string $beanName = null, ...$args)
+    {
+        $object = static::newInstanceNoInit($class, ...$args);
+        static::initInstance($object, $args, $beanName);
 
         return $object;
     }
@@ -56,14 +71,14 @@ class BeanFactory
      */
     public static function newInstanceNoInit(string $class, ...$args)
     {
-        $classNameMap = &self::$classNameMap;
+        $classNameMap = &static::$classNameMap;
         if (isset($classNameMap[$class]))
         {
             $className = $classNameMap[$class];
         }
         else
         {
-            if (self::$enableFileCache)
+            if (static::$enableFileCache)
             {
                 static::parseEvalName($class, $fileName, $className);
                 if (is_file($fileName))
@@ -80,7 +95,7 @@ class BeanFactory
             else
             {
                 $ref = ReflectionContainer::getClassReflection($class);
-                $className = self::getNewClassName($ref->getShortName());
+                $className = static::getNewClassName($ref->getShortName());
                 $tpl = static::getTpl($ref, $className);
                 Imi::eval($tpl);
             }
@@ -102,7 +117,21 @@ class BeanFactory
      */
     public static function newInstanceEx(string $class, array $args = [])
     {
-        $object = self::newInstanceExNoInit($class, $args, $resultArgs);
+        return static::newBeanInstanceEx($class, null, $args);
+    }
+
+    /**
+     * 增强实例化.
+     *
+     * @template T
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
+     */
+    public static function newBeanInstanceEx(string $class, ?string $beanName = null, array $args = [])
+    {
+        $object = static::newInstanceExNoInit($class, $args, $resultArgs);
         static::initInstance($object, $resultArgs);
 
         return $object;
@@ -137,16 +166,16 @@ class BeanFactory
             }
         }
 
-        return self::newInstanceNoInit($class, ...$resultArgs);
+        return static::newInstanceNoInit($class, ...$resultArgs);
     }
 
     /**
      * 初始化Bean对象
      */
-    public static function initInstance(object $object, array $args = []): void
+    public static function initInstance(object $object, array $args = [], ?string $beanName = null): void
     {
-        $class = self::getObjectClass($object);
-        BeanProxy::injectProps($object, $class);
+        $class = static::getObjectClass($object);
+        BeanProxy::injectProps($object, $class, false, $beanName);
         $ref = ReflectionContainer::getClassReflection($class);
         if ($ref->hasMethod('__init'))
         {
@@ -159,7 +188,7 @@ class BeanFactory
      */
     private static function getNewClassName(string $className): string
     {
-        return $className . '__Bean__' . (++self::$counter);
+        return $className . '__Bean__' . (++static::$counter);
     }
 
     /**

@@ -138,9 +138,9 @@ class BeanProxy
     /**
      * 注入属性.
      */
-    public static function injectProps(object $object, string $className, bool $reInit = false): void
+    public static function injectProps(object $object, string $className, bool $reInit = false, ?string $beanName = null): void
     {
-        [$injects, $configs] = static::getInjects($className);
+        [$injects, $configs] = static::getInjects($className, $beanName);
         if (!$injects && !$configs)
         {
             return;
@@ -218,17 +218,20 @@ class BeanProxy
     /**
      * 获取注入属性的配置们.
      */
-    public static function getConfigInjects(string $className): array
+    public static function getConfigInjects(string $className, ?string $beanName = null): array
     {
         // 配置文件注入
         $beanData = BeanManager::get($className);
-        if ($beanData)
+        if (null === $beanName)
         {
-            $beanName = $beanData['beanName'];
-        }
-        else
-        {
-            $beanName = $className;
+            if ($beanData)
+            {
+                $beanName = $beanData['beanName'];
+            }
+            else
+            {
+                $beanName = $className;
+            }
         }
         $beans = Config::get('@currentServer.beans');
         if (isset($beans[$beanName]))
@@ -260,9 +263,9 @@ class BeanProxy
      *
      * 返回：[$annotations, $configs]
      */
-    public static function getInjects(string $className): array
+    public static function getInjects(string $className, ?string $beanName = null): array
     {
-        $configs = static::getConfigInjects($className);
+        $configs = static::getConfigInjects($className, $beanName);
         $injects = BeanManager::getPropertyInjects($className);
         if ($configs && $injects)
         {
@@ -357,9 +360,9 @@ class BeanProxy
      *
      * @return mixed
      */
-    public static function getInjectValue(string $className, string $propertyName)
+    public static function getInjectValue(string $className, string $propertyName, ?string $beanName = null)
     {
-        [$annotations, $configs] = static::getInjects($className);
+        [$annotations, $configs] = static::getInjects($className, $beanName);
         if (isset($configs[$propertyName]))
         {
             return $configs[$propertyName];
