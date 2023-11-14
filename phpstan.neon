@@ -49,4 +49,14 @@ parameters:
             message: '#(Extending|Creating new|Calling) \S+ is not covered by backward compatibility promise\. The (class|method) might change in a minor PHPStan version\.#'
             paths:
                 - dev/PHPStan/FileFinder.php
+        - '#Class UnitEnum not found#'
+        - '#Class BackedEnum not found#'
+        - '#Call to static method .+\(\) on an unknown class (Backed|Unit)Enum#'
+        - '#Method Imi\\Util\\EnumUtil::.+\(\) has invalid return type (Backed|Unit)Enum#'
+        - '#unknown class Imi\\Test\\Component\\Bean\\EnumBean#'
+        - '#unknown class Imi\\Test\\Component\\Enum\\TestEnumBean#'
+        - '#unknown class Imi\\Test\\Component\\Enum\\TestEnumBeanBacked#'
+        - '#Class Imi\\Test\\Component\\Bean\\EnumBean not found#'
+        - '#Class Imi\\Test\\Component\\Enum\\TestEnumBean not found#'
+        - '#Class Imi\\Test\\Component\\Enum\\TestEnumBeanBacked not found#'
 services:

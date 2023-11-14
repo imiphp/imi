@@ -88,6 +88,16 @@ return [
         'DbQueryLog'        => [
             'enable' => true,
         ],
+        'EnumBean1' => [
+            'enum1' => 'A',
+            'enum2' => 'imi',
+            'enum3' => 'A',
+        ],
+        'EnumBean2' => [
+            'enum1' => 'B',
+            'enum2' => 'hello',
+            'enum3' => 'imi',
+        ],
     ],
     'imi-framework'     => 'very six',
 
