@@ -20,8 +20,8 @@ class UUIDGenerator implements IIdGenerator
                 return uuid_create(UUID_TYPE_TIME);
             case UUIDGeneratorType::Random:
                 return uuid_create(UUID_TYPE_RANDOM);
-            case UUIDGeneratorType::Md5:
-            case UUIDGeneratorType::Sha1:
+            case UUIDGeneratorType::MD5:
+            case UUIDGeneratorType::SHA1:
                 $functionName = 'uuid_generate_' . $type->name;
                 if (isset($options['ns']))
                 {

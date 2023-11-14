@@ -13,7 +13,7 @@ enum UUIDGeneratorType
 
     case Random;
 
-    case Md5;
+    case MD5;
 
-    case Sha1;
+    case SHA1;
 }
