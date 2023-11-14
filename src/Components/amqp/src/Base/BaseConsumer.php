@@ -100,7 +100,7 @@ abstract class BaseConsumer implements IConsumer
                         return;
                     }
                     ++$this->messageCount;
-                    $result = ConsumerResult::NACK;
+                    $result = ConsumerResult::Nack;
                     try
                     {
                         /** @var \Imi\AMQP\Message $messageInstance */
@@ -117,7 +117,7 @@ abstract class BaseConsumer implements IConsumer
                                 {
                                     Log::error($th);
 
-                                    return ConsumerResult::NACK;
+                                    return ConsumerResult::Nack;
                                 }
                             });
                         }
@@ -134,19 +134,19 @@ abstract class BaseConsumer implements IConsumer
                     {
                         switch ($result)
                         {
-                            case ConsumerResult::ACK:
+                            case ConsumerResult::Ack:
                                 $this->channel->basic_ack($message->getDeliveryTag());
                                 break;
-                            case ConsumerResult::NACK:
+                            case ConsumerResult::Nack:
                                 $this->channel->basic_nack($message->getDeliveryTag());
                                 break;
-                            case ConsumerResult::NACK_REQUEUE:
+                            case ConsumerResult::NackRequeue:
                                 $this->channel->basic_nack($message->getDeliveryTag(), false, true);
                                 break;
-                            case ConsumerResult::REJECT:
+                            case ConsumerResult::Reject:
                                 $this->channel->basic_reject($message->getDeliveryTag(), false);
                                 break;
-                            case ConsumerResult::REJECT_REQUEUE:
+                            case ConsumerResult::RejectRequeue:
                                 $this->channel->basic_reject($message->getDeliveryTag(), true);
                                 break;
                         }
@@ -159,5 +159,5 @@ abstract class BaseConsumer implements IConsumer
     /**
      * 消费任务
      */
-    abstract protected function consume(IMessage $message): mixed;
+    abstract protected function consume(IMessage $message): ConsumerResult;
 }

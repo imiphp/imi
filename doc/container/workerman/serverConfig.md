@@ -47,8 +47,8 @@ return [
             'host'        => '0.0.0.0',
             'port'        => 13002,
             'shareWorker' => 'http', // 与名字叫 http 的服务，共享 worker 进程
-            'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::TEXT, // 配置 WebSocket 纯文本通信协议
-            // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::BINARY, // 配置 WebSocket 二进制通信协议
+            'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::Text, // 配置 WebSocket 纯文本通信协议
+            // 'nonControlFrameType' => \Imi\Server\WebSocket\Enum\NonControlFrameType::Binary, // 配置 WebSocket 二进制通信协议
             'configs'     => [
             ],
         ],

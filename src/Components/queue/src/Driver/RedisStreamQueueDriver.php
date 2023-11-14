@@ -7,6 +7,7 @@ namespace Imi\Queue\Driver;
 use Imi\Bean\Annotation\Bean;
 use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Contract\IRedisStreamMessage;
+use Imi\Queue\Enum\IQueueType;
 use Imi\Queue\Exception\QueueException;
 use Imi\Queue\Model\QueueStatus;
 use Imi\Queue\Model\RedisStreamMessage;
@@ -205,7 +206,7 @@ class RedisStreamQueueDriver implements IQueueDriver
     /**
      * {@inheritDoc}
      */
-    public function clear($queueType = null): void
+    public function clear(?IQueueType $queueType = null): void
     {
         Redis::use(function (\Imi\Redis\RedisHandler $redis): void {
             $redis->del($this->getQueueKey());

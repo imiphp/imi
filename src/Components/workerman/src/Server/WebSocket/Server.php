@@ -31,7 +31,7 @@ class Server extends Base implements IWebSocketServer
     /**
      * 非控制帧类型.
      */
-    private int $nonControlFrameType = NonControlFrameType::TEXT;
+    private NonControlFrameType $nonControlFrameType = NonControlFrameType::Text;
 
     /**
      * {@inheritDoc}
@@ -40,7 +40,7 @@ class Server extends Base implements IWebSocketServer
     {
         parent::__construct($name, $config);
         $this->worker->protocol = Websocket::class;
-        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::TEXT;
+        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::Text;
     }
 
     /**
@@ -76,7 +76,7 @@ class Server extends Base implements IWebSocketServer
             try
             {
                 // @phpstan-ignore-next-line
-                $connection->websocketType = NonControlFrameType::TEXT === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
+                $connection->websocketType = NonControlFrameType::Text === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
                 $clientId = $connection->id;
                 $worker = $this->worker;
                 $request = new WorkermanRequest($worker, $connection, new Request($httpHeader), 'ws');
@@ -172,7 +172,7 @@ class Server extends Base implements IWebSocketServer
     /**
      * {@inheritDoc}
      */
-    public function getNonControlFrameType(): int
+    public function getNonControlFrameType(): NonControlFrameType
     {
         return $this->nonControlFrameType;
     }

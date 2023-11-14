@@ -9,17 +9,20 @@ use Imi\Model\IdGenerator\Contract\IIdGenerator;
 
 class UUIDGenerator implements IIdGenerator
 {
+    /**
+     * @param array{type?: UUIDGeneratorType, ns?: string, nsField?: string, name?: string, nameField?: string} $options
+     */
     public function generate(?BaseModel $model, array $options = []): mixed
     {
-        switch ($type = $options['type'] ?? UUIDGeneratorType::RANDOM)
+        switch ($type = $options['type'] ?? UUIDGeneratorType::Random)
         {
-            case UUIDGeneratorType::TIME:
+            case UUIDGeneratorType::Time:
                 return uuid_create(UUID_TYPE_TIME);
-            case UUIDGeneratorType::RANDOM:
+            case UUIDGeneratorType::Random:
                 return uuid_create(UUID_TYPE_RANDOM);
             case UUIDGeneratorType::MD5:
             case UUIDGeneratorType::SHA1:
-                $functionName = 'uuid_generate_' . $type;
+                $functionName = 'uuid_generate_' . $type->name;
                 if (isset($options['ns']))
                 {
                     $ns = $options['ns'];
@@ -44,7 +47,7 @@ class UUIDGenerator implements IIdGenerator
 
                 return $functionName($ns, $name);
             default:
-                throw new \InvalidArgumentException(sprintf('Invalid value %s in enum %s', $type, static::class));
+                throw new \InvalidArgumentException(sprintf('Invalid value %s in enum %s', $type->name, static::class));
         }
     }
 }

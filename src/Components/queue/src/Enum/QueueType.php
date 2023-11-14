@@ -4,44 +4,42 @@ declare(strict_types=1);
 
 namespace Imi\Queue\Enum;
 
-use Imi\Enum\Annotation\EnumItem;
-use Imi\Enum\BaseEnum;
-use Imi\Queue\Annotation\QueueTypeStructType;
-
 /**
  * 队列类型.
  */
-class QueueType extends BaseEnum
+enum QueueType: int implements IQueueType
 {
-    use \Imi\Util\Traits\TStaticClass;
+    /**
+     * 准备就绪.
+     */
+    case Ready = 1;
 
-    #[
-        EnumItem(text: '准备就绪'),
-        QueueTypeStructType(type: 'list')
-    ]
-    public const READY = 1;
+    /**
+     * 工作中.
+     */
+    case Working = 2;
 
-    #[
-        EnumItem(text: '工作中'),
-        QueueTypeStructType(type: 'zset')
-    ]
-    public const WORKING = 2;
+    /**
+     * 失败.
+     */
+    case Fail = 3;
 
-    #[
-        EnumItem(text: '失败'),
-        QueueTypeStructType(type: 'list')
-    ]
-    public const FAIL = 3;
+    /**
+     * 超时.
+     */
+    case Timeout = 4;
 
-    #[
-        EnumItem(text: '超时'),
-        QueueTypeStructType(type: 'list')
-    ]
-    public const TIMEOUT = 4;
+    /**
+     * 延时.
+     */
+    case Delay = 5;
 
-    #[
-        EnumItem(text: '延时'),
-        QueueTypeStructType(type: 'zset')
-    ]
-    public const DELAY = 5;
+    public function structType(): string
+    {
+        return match ($this)
+        {
+            self::Ready, self::Fail, self::Timeout => 'list',
+            self::Working, self::Delay => 'zset',
+        };
+    }
 }

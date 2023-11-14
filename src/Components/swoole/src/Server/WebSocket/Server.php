@@ -56,7 +56,7 @@ class Server extends Base implements ISwooleWebSocketServer
     /**
      * 非控制帧类型.
      */
-    private int $nonControlFrameType = NonControlFrameType::TEXT;
+    private NonControlFrameType $nonControlFrameType = NonControlFrameType::Text;
 
     /**
      * {@inheritDoc}
@@ -65,7 +65,7 @@ class Server extends Base implements ISwooleWebSocketServer
     {
         parent::__construct($name, $config, $isSubServer);
         $this->syncConnect = $config['syncConnect'] ?? true;
-        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::TEXT;
+        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::Text;
     }
 
     /**
@@ -363,7 +363,7 @@ class Server extends Base implements ISwooleWebSocketServer
     /**
      * {@inheritDoc}
      */
-    public function getNonControlFrameType(): int
+    public function getNonControlFrameType(): NonControlFrameType
     {
         return $this->nonControlFrameType;
     }

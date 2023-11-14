@@ -67,7 +67,7 @@ return [
         'port'                => 13002,
         'mode'                => \SWOOLE_BASE,
         'syncConnect'         => true,
-        'nonControlFrameType' => NonControlFrameType::BINARY,
+        'nonControlFrameType' => NonControlFrameType::Binary,
         'configs'             => [
             'worker_num'      => 2,
             'task_worker_num' => 1,

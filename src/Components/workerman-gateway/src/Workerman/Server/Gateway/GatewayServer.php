@@ -24,7 +24,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * 非控制帧类型.
      */
-    private int $nonControlFrameType = NonControlFrameType::TEXT;
+    private NonControlFrameType $nonControlFrameType = NonControlFrameType::Text;
 
     /**
      * {@inheritDoc}
@@ -32,7 +32,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::TEXT;
+        $this->nonControlFrameType = $config['nonControlFrameType'] ?? NonControlFrameType::Text;
     }
 
     /**
@@ -45,7 +45,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
             try
             {
                 // @phpstan-ignore-next-line
-                $connection->websocketType = NonControlFrameType::TEXT === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
+                $connection->websocketType = NonControlFrameType::Text === $this->nonControlFrameType ? Websocket::BINARY_TYPE_BLOB : Websocket::BINARY_TYPE_ARRAYBUFFER;
                 // @phpstan-ignore-next-line
                 $clientId = $connection->id;
                 RequestContext::muiltiSet([
@@ -69,7 +69,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
     /**
      * Get 非控制帧类型.
      */
-    public function getNonControlFrameType(): int
+    public function getNonControlFrameType(): NonControlFrameType
     {
         return $this->nonControlFrameType;
     }

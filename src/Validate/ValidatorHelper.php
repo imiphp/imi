@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Validate;
 
-use Imi\Enum\BaseEnum;
+use Imi\Util\EnumUtil;
 
 /**
  * 验证器工具类.
@@ -319,22 +319,25 @@ class ValidatorHelper
 
     /**
      * 值在枚举值范围内.
-     *
-     * @param class-string<BaseEnum> $enumClass
      */
     public static function inEnum(mixed $value, string $enumClass): bool
     {
-        return \in_array($value, $enumClass::getValues());
+        if (is_subclass_of($enumClass, \UnitEnum::class))
+        {
+            return EnumUtil::in($enumClass, $value);
+        }
+        else
+        {
+            return \in_array($value, $enumClass::getValues());
+        }
     }
 
     /**
      * 值不在枚举值范围内.
-     *
-     * @param class-string<BaseEnum> $enumClass
      */
     public static function notInEnum(mixed $value, string $enumClass): bool
     {
-        return !\in_array($value, $enumClass::getValues());
+        return !static::inEnum($value, $enumClass);
     }
 
     /**

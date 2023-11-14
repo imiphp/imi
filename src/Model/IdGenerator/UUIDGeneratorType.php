@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Model\IdGenerator;
 
-use Imi\Enum\BaseEnum;
-
 /**
  * UUID 生成器类型.
  */
-class UUIDGeneratorType extends BaseEnum
+enum UUIDGeneratorType
 {
-    use \Imi\Util\Traits\TStaticClass;
+    case Time;
 
-    public const TIME = 'time';
+    case Random;
 
-    public const RANDOM = 'random';
+    case MD5;
 
-    public const MD5 = 'md5';
-
-    public const SHA1 = 'sha1';
+    case SHA1;
 }

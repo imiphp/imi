@@ -11,6 +11,7 @@ use Imi\Kafka\Queue\Contract\IKafkaPushMessage;
 use Imi\Kafka\Queue\Model\KafkaPopMessage;
 use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Driver\IQueueDriver;
+use Imi\Queue\Enum\IQueueType;
 use Imi\Queue\Model\QueueStatus;
 use Imi\Util\Traits\TDataToProperty;
 use longlang\phpkafka\Consumer\Consumer;
@@ -107,7 +108,7 @@ class KafkaQueueDriver implements IQueueDriver
     /**
      * {@inheritDoc}
      */
-    public function clear($queueType = null): void
+    public function clear(?IQueueType $queueType = null): void
     {
         throw new \RuntimeException('Unsupport clear queue in KafkaQueueDriver');
     }

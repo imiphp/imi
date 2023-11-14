@@ -17,6 +17,7 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\Model\AopItem;
 use Imi\Config;
+use Imi\Util\EnumUtil;
 use Imi\Util\Imi;
 
 class BeanProxy
@@ -135,9 +136,9 @@ class BeanProxy
     /**
      * 注入属性.
      */
-    public static function injectProps(object $object, string $className, bool $reInit = false): void
+    public static function injectProps(object $object, string $className, bool $reInit = false, ?string $beanName = null): void
     {
-        [$injects, $configs] = static::getInjects($className);
+        [$injects, $configs] = static::getInjects($className, $beanName);
         if (!$injects && !$configs)
         {
             return;
@@ -169,6 +170,44 @@ class BeanProxy
             {
                 $propRef = $refClass->getProperty($name);
                 $propRef->setAccessible(true);
+                if ($propRef->hasType())
+                {
+                    $type = $propRef->getType();
+                    foreach ((static function () use ($type) {
+                        if ($type instanceof \ReflectionNamedType)
+                        {
+                            if (is_subclass_of($typeName = $type->getName(), \UnitEnum::class))
+                            {
+                                yield $typeName;
+                            }
+                        }
+                        elseif ($type instanceof \ReflectionUnionType)
+                        {
+                            foreach ($type->getTypes() as $type)
+                            {
+                                if (is_subclass_of($typeName = $type->getName(), \UnitEnum::class))
+                                {
+                                    yield $typeName;
+                                }
+                            }
+                        }
+                    })() as $enumType)
+                    {
+                        if (is_subclass_of($enumType, \BackedEnum::class))
+                        {
+                            $case = $enumType::tryFrom($value);
+                        }
+                        else
+                        {
+                            $case = EnumUtil::tryFromName($enumType, $value);
+                        }
+                        if ($case)
+                        {
+                            $value = $case;
+                            break;
+                        }
+                    }
+                }
                 $propRef->setValue($object, $value);
             }
         }
@@ -177,37 +216,54 @@ class BeanProxy
     /**
      * 获取注入属性的配置们.
      */
-    public static function getConfigInjects(string $className): array
+    public static function getConfigInjects(string $className, ?string $beanName = null): array
     {
-        // 配置文件注入
-        $beanData = BeanManager::get($className);
-        if ($beanData)
+        $originBeanName = $beanName;
+        $count = 2;
+        while ($count--)
         {
-            $beanName = $beanData['beanName'];
-        }
-        else
-        {
-            $beanName = $className;
-        }
-        $beans = Config::get('@currentServer.beans');
-        if (isset($beans[$beanName]))
-        {
-            return $beans[$beanName];
-        }
-        elseif ($beanName !== $className && isset($beans[$className]))
-        {
-            return $beans[$className];
-        }
-        else
-        {
-            $beans = Config::get('@app.beans');
-            if (isset($beans[$beanName]))
+            // 配置文件注入
+            if (null === $beanName)
             {
-                return $beans[$beanName];
+                $beanData = BeanManager::get($className);
+                if ($beanData)
+                {
+                    $beanName = $beanData['beanName'];
+                }
+                else
+                {
+                    $beanName = $className;
+                }
             }
-            elseif ($beanName !== $className && isset($beans[$className]))
+            $serverBeans ??= Config::get('@currentServer.beans');
+            if (isset($serverBeans[$beanName]))
             {
-                return $beans[$className];
+                return $serverBeans[$beanName];
+            }
+            elseif ($beanName !== $className && isset($serverBeans[$className]))
+            {
+                return $serverBeans[$className];
+            }
+            else
+            {
+                $appBeans ??= Config::get('@app.beans');
+                if (isset($appBeans[$beanName]))
+                {
+                    return $appBeans[$beanName];
+                }
+                elseif ($beanName !== $className && isset($appBeans[$className]))
+                {
+                    return $appBeans[$className];
+                }
+            }
+            if (null === $originBeanName)
+            {
+                break;
+            }
+            else
+            {
+                // 下次循环会根据类名尝试获取注入配置
+                $beanName = null;
             }
         }
 
@@ -219,9 +275,9 @@ class BeanProxy
      *
      * 返回：[$annotations, $configs]
      */
-    public static function getInjects(string $className): array
+    public static function getInjects(string $className, ?string $beanName = null): array
     {
-        $configs = static::getConfigInjects($className);
+        $configs = static::getConfigInjects($className, $beanName);
         $injects = BeanManager::getPropertyInjects($className);
         if ($configs && $injects)
         {
@@ -301,9 +357,9 @@ class BeanProxy
     /**
      * 获取注入类属性的值
      */
-    public static function getInjectValue(string $className, string $propertyName): mixed
+    public static function getInjectValue(string $className, string $propertyName, ?string $beanName = null): mixed
     {
-        [$annotations, $configs] = static::getInjects($className);
+        [$annotations, $configs] = static::getInjects($className, $beanName);
         if (isset($configs[$propertyName]))
         {
             return $configs[$propertyName];

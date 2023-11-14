@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Queue\Driver;
 
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
-use Imi\Queue\Annotation\QueueTypeStructType;
 use Imi\Queue\Contract\IMessage;
+use Imi\Queue\Enum\IQueueType;
 use Imi\Queue\Enum\QueueType;
 use Imi\Queue\Exception\QueueException;
 use Imi\Queue\Model\Message;
@@ -82,7 +81,7 @@ class RedisQueueDriver implements IQueueDriver
             if ($delay > 0)
             {
                 $args = [
-                    $this->getQueueKey(QueueType::DELAY),
+                    $this->getQueueKey(QueueType::Delay),
                     $this->getMessageKeyPrefix(),
                     $this->getMessageIdKey(),
                     microtime(true) + $delay,
@@ -121,7 +120,7 @@ class RedisQueueDriver implements IQueueDriver
             else
             {
                 $args = [
-                    $this->getQueueKey(QueueType::READY),
+                    $this->getQueueKey(QueueType::Ready),
                     $this->getMessageKeyPrefix(),
                     $this->getMessageIdKey(),
                     date('Ymd'),
@@ -217,8 +216,8 @@ class RedisQueueDriver implements IQueueDriver
                 redis.call('zadd', KEYS[2], ARGV[1] + score, messageId)
                 return hashResult
                 LUA, [
-                    $this->getQueueKey(QueueType::READY),
-                    $this->getQueueKey(QueueType::WORKING),
+                    $this->getQueueKey(QueueType::Ready),
+                    $this->getQueueKey(QueueType::Working),
                     $this->getMessageKeyPrefix(),
                     microtime(true),
                 ], 3);
@@ -277,8 +276,8 @@ class RedisQueueDriver implements IQueueDriver
             end
             return true
             LUA, [
-                $this->getQueueKey(QueueType::READY),
-                $this->getQueueKey(QueueType::DELAY),
+                $this->getQueueKey(QueueType::Ready),
+                $this->getQueueKey(QueueType::Delay),
                 $this->getMessageKeyPrefix(),
                 $message->getMessageId(),
             ], 3);
@@ -302,11 +301,11 @@ class RedisQueueDriver implements IQueueDriver
     /**
      * {@inheritDoc}
      */
-    public function clear($queueType = null): void
+    public function clear(?IQueueType $queueType = null): void
     {
         if (null === $queueType)
         {
-            $queueType = QueueType::getValues();
+            $queueType = QueueType::cases();
         }
         else
         {
@@ -338,9 +337,9 @@ class RedisQueueDriver implements IQueueDriver
             redis.call('del', KEYS[2] .. ARGV[1])
             return true
             LUA, [
-                $this->getQueueKey(QueueType::WORKING),
+                $this->getQueueKey(QueueType::Working),
                 $this->getMessageKeyPrefix(),
-                $this->getQueueKey(QueueType::TIMEOUT),
+                $this->getQueueKey(QueueType::Timeout),
                 $message->getMessageId(),
             ], 3);
 
@@ -372,8 +371,8 @@ class RedisQueueDriver implements IQueueDriver
             redis.call('rpush', KEYS[2], ARGV[1])
             return true
             LUA, [
-                $this->getQueueKey(QueueType::WORKING),
-                $requeue ? $this->getQueueKey(QueueType::READY) : $this->getQueueKey(QueueType::FAIL),
+                $this->getQueueKey(QueueType::Working),
+                $requeue ? $this->getQueueKey(QueueType::Ready) : $this->getQueueKey(QueueType::Fail),
                 $message->getMessageId(),
             ], 2);
 
@@ -400,21 +399,15 @@ class RedisQueueDriver implements IQueueDriver
     {
         return Redis::use(function (\Imi\Redis\RedisHandler $redis) {
             $status = [];
-            foreach (QueueType::getMap() as $key => $value)
+            foreach (QueueType::cases() as $case)
             {
-                /** @var QueueTypeStructType|null $queueTypeStructTypeAnnotation */
-                $queueTypeStructTypeAnnotation = AnnotationManager::getConstantAnnotations(QueueType::class, $key, QueueTypeStructType::class, onlyFirst: true);
-                if (!$queueTypeStructTypeAnnotation)
+                $count = match ($case->structType())
                 {
-                    throw new \RuntimeException(sprintf('Unknown QueueTypeStructType of %s::%s', QueueType::class, $key));
-                }
-                $count = match ($queueTypeStructTypeAnnotation->type)
-                {
-                    'list'  => $redis->lLen($this->getQueueKey($value)),
-                    'zset'  => $redis->zCard($this->getQueueKey($value)),
-                    default => throw new QueueException('Invalid type ' . $queueTypeStructTypeAnnotation->type),
+                    'list'  => $redis->lLen($this->getQueueKey($case)),
+                    'zset'  => $redis->zCard($this->getQueueKey($case)),
+                    default => throw new QueueException('Invalid type ' . $case->structType()),
                 };
-                $status[strtolower(QueueType::getName($value))] = $count;
+                $status[strtolower($case->name)] = $count;
             }
 
             return new QueueStatus($status);
@@ -435,8 +428,8 @@ class RedisQueueDriver implements IQueueDriver
             end
             return result
             LUA, [
-                $this->getQueueKey(QueueType::READY),
-                $this->getQueueKey(QueueType::FAIL),
+                $this->getQueueKey(QueueType::Ready),
+                $this->getQueueKey(QueueType::Fail),
             ], 2);
 
             if (false === $result)
@@ -469,8 +462,8 @@ class RedisQueueDriver implements IQueueDriver
             end
             return result
             LUA, [
-                $this->getQueueKey(QueueType::READY),
-                $this->getQueueKey(QueueType::TIMEOUT),
+                $this->getQueueKey(QueueType::Ready),
+                $this->getQueueKey(QueueType::Timeout),
             ], 2);
 
             if (false === $result)
@@ -509,8 +502,8 @@ class RedisQueueDriver implements IQueueDriver
         redis.call('zrem', KEYS[2], unpack(messageIds))
         return messageIdCount
         LUA, [
-            $this->getQueueKey(QueueType::READY),
-            $this->getQueueKey(QueueType::DELAY),
+            $this->getQueueKey(QueueType::Ready),
+            $this->getQueueKey(QueueType::Delay),
             microtime(true),
             $count,
         ], 2);
@@ -550,8 +543,8 @@ class RedisQueueDriver implements IQueueDriver
         redis.call('zrem', KEYS[1], unpack(messageIds))
         return messageIdCount
         LUA, [
-            $this->getQueueKey(QueueType::WORKING),
-            $this->getQueueKey(QueueType::TIMEOUT),
+            $this->getQueueKey(QueueType::Working),
+            $this->getQueueKey(QueueType::Timeout),
             microtime(true),
             $count,
         ], 2);
@@ -590,8 +583,8 @@ class RedisQueueDriver implements IQueueDriver
     /**
      * 获取队列的键.
      */
-    public function getQueueKey(int $queueType): string
+    public function getQueueKey(int|string|QueueType $queueType): string
     {
-        return $this->prefix . $this->keyName . ':' . strtolower(QueueType::getName($queueType));
+        return $this->prefix . $this->keyName . ':' . strtolower($queueType instanceof QueueType ? $queueType->name : (string) $queueType);
     }
 }

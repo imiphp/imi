@@ -83,7 +83,7 @@ return [
             'host'                => env('SERVER_HOST', '127.0.0.1'),
             'port'                => 13002,
             'shareWorker'         => 'http',
-            'nonControlFrameType' => NonControlFrameType::BINARY,
+            'nonControlFrameType' => NonControlFrameType::Binary,
             'configs'             => [
             ],
         ],

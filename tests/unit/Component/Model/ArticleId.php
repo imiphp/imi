@@ -10,6 +10,7 @@ use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Id;
 use Imi\Model\Annotation\Serializable;
 use Imi\Model\Annotation\Table;
+use Imi\Model\IdGenerator\UUIDGeneratorType;
 use Imi\Model\Model;
 
 /**
@@ -114,7 +115,7 @@ class ArticleId extends Model
      * content.
      */
     #[Column(name: 'content', type: 'mediumtext', length: 0, nullable: false, default: '')]
-    #[Id(index: false, generator: 'Imi\\Model\\IdGenerator\\UUIDGenerator', generatorOptions: ['type' => 'sha1', 'ns' => '99e4edaf-8363-466e-bddf-7254db57675c', 'nameField' => 'title'])]
+    #[Id(index: false, generator: 'Imi\\Model\\IdGenerator\\UUIDGenerator', generatorOptions: ['type' => UUIDGeneratorType::SHA1, 'ns' => '99e4edaf-8363-466e-bddf-7254db57675c', 'nameField' => 'title'])]
     protected ?string $content = null;
 
     /**

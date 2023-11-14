@@ -8,6 +8,7 @@ use Imi\AMQP\Contract\IQueueConsumer;
 use Imi\Bean\BeanFactory;
 use Imi\Queue\Contract\IMessage;
 use Imi\Queue\Driver\IQueueDriver;
+use Imi\Queue\Enum\IQueueType;
 use Imi\Queue\Enum\QueueType;
 use Imi\Queue\Exception\QueueException;
 use Imi\Queue\Model\QueueStatus;
@@ -333,7 +334,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 }
 
                 Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($score, $message): void {
-                    $redis->zAdd($this->getRedisQueueKey(QueueType::WORKING), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
+                    $redis->zAdd($this->getRedisQueueKey(QueueType::Working), $score, json_encode($message->toArray(), \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE));
                 }, $this->redisPoolName, true);
 
                 return $message;
@@ -359,12 +360,12 @@ class AMQPQueueDriverHandler implements IQueueDriver
     /**
      * {@inheritDoc}
      */
-    public function clear($queueType = null): void
+    public function clear(?IQueueType $queueType = null): void
     {
         Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($queueType): void {
             if (null === $queueType)
             {
-                $queueTypes = QueueType::getValues();
+                $queueTypes = QueueType::cases();
             }
             else
             {
@@ -376,7 +377,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
                 {
                     switch ($queueType)
                     {
-                        case QueueType::READY:
+                        case QueueType::Ready:
                             // 清空所有
                             while ($message = $this->pop())
                             {
@@ -387,18 +388,18 @@ class AMQPQueueDriverHandler implements IQueueDriver
                             $this->consumer->reopen();
                             $redis->del($this->getRedisQueueKey('deleted'));
                             break;
-                        case QueueType::WORKING:
-                            $redis->del($this->getRedisQueueKey(QueueType::WORKING));
+                        case QueueType::Working:
+                            $redis->del($this->getRedisQueueKey(QueueType::Working));
                             break;
-                        case QueueType::FAIL:
+                        case QueueType::Fail:
                             $this->failConsumer->getAMQPChannel()->queue_purge($this->failQueueName);
                             $this->failConsumer->reopen();
                             break;
-                        case QueueType::TIMEOUT:
+                        case QueueType::Timeout:
                             $this->timeoutConsumer->getAMQPChannel()->queue_purge($this->timeoutQueueName);
                             $this->timeoutConsumer->reopen();
                             break;
-                        case QueueType::DELAY:
+                        case QueueType::Delay:
                             $this->delayPublisher->getAMQPChannel()->queue_purge($this->delayQueueName);
                             break;
                     }
@@ -475,7 +476,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
             $status['ready'] = $ready;
 
             // working
-            $status['working'] = $redis->zCard($this->getRedisQueueKey(QueueType::WORKING));
+            $status['working'] = $redis->zCard($this->getRedisQueueKey(QueueType::Working));
 
             // fail
             $fail = 0;
@@ -590,9 +591,9 @@ class AMQPQueueDriverHandler implements IQueueDriver
     /**
      * 获取队列的键.
      */
-    public function getRedisQueueKey(int|string $queueType): string
+    public function getRedisQueueKey(string|IQueueType $queueType): string
     {
-        return $this->redisPrefix . $this->name . ':' . strtolower(QueueType::getName($queueType) ?? $queueType);
+        return $this->redisPrefix . $this->name . ':' . strtolower($queueType->name ?? $queueType);
     }
 
     /**
@@ -614,7 +615,7 @@ class AMQPQueueDriverHandler implements IQueueDriver
             redis.call('zrem', KEYS[1], unpack(messages))
             return messages
             LUA, [
-                $this->getRedisQueueKey(QueueType::WORKING),
+                $this->getRedisQueueKey(QueueType::Working),
                 microtime(true),
                 $count,
             ], 1);
