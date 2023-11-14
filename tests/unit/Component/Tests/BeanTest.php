@@ -418,12 +418,27 @@ class BeanTest extends BaseTest
         }
         /** @var \Imi\Test\Component\Bean\EnumBean $bean */
         // @phpstan-ignore-next-line
-        $bean = App::getBean(\Imi\Test\Component\Bean\EnumBean::class);
+        $bean = App::getBean('EnumBean1');
         // @phpstan-ignore-next-line
         $this->assertInstanceOf(\Imi\Test\Component\Bean\EnumBean::class, $bean);
         // @phpstan-ignore-next-line
         $this->assertEquals(TestEnumBean::A, $bean->getEnum1());
+        // @phpstan-ignore-next-line
         $this->assertEquals(TestEnumBeanBacked::B, $bean->getEnum2());
+        // @phpstan-ignore-next-line
+        $this->assertEquals(TestEnumBean::A, $bean->getEnum3());
+
+        /** @var \Imi\Test\Component\Bean\EnumBean $bean */
+        // @phpstan-ignore-next-line
+        $bean = App::getBean('EnumBean2');
+        // @phpstan-ignore-next-line
+        $this->assertInstanceOf(\Imi\Test\Component\Bean\EnumBean::class, $bean);
+        // @phpstan-ignore-next-line
+        $this->assertEquals(TestEnumBean::B, $bean->getEnum1());
+        // @phpstan-ignore-next-line
+        $this->assertEquals(TestEnumBeanBacked::A, $bean->getEnum2());
+        // @phpstan-ignore-next-line
+        $this->assertEquals(TestEnumBeanBacked::B, $bean->getEnum3());
     }
 
     // @phpstan-ignore-next-line

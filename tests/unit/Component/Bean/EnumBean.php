@@ -18,11 +18,17 @@ if (\PHP_VERSION_ID >= 80100)
 
     if (!class_exists(EnumBean::class, false))
     {
+        #[
+            Bean(name: 'EnumBean1'),
+            Bean(name: 'EnumBean2'),
+        ]
         class EnumBean
         {
             protected TestEnumBean $enum1;
 
             protected TestEnumBeanBacked $enum2;
+
+            protected TestEnumBean|TestEnumBeanBacked $enum3;
 
             public function getEnum1(): TestEnumBean
             {
@@ -32,6 +38,11 @@ if (\PHP_VERSION_ID >= 80100)
             public function getEnum2(): TestEnumBeanBacked
             {
                 return $this->enum2;
+            }
+
+            public function getEnum3(): TestEnumBean|TestEnumBeanBacked
+            {
+                return $this->enum3;
             }
         }
     }
