@@ -140,7 +140,7 @@ services:
         POSTGRESQL_VERSION: ${POSTGRESQL_VERSION}
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
-      - "/tmp/composer:/root/.composer/cache/files:rw"
+      - "/tmp/base_cache:/tmp/base_cache:rw"
       - shared-volume:/tmp/docker
     working_dir: /imi
     command: tail -f /dev/null
