@@ -50,6 +50,7 @@ elif [[ $testType = "components" ]]; then
         "mqtt"
         "smarty"
         "pgsql"
+        "connection-center"
     )
     phpUnitCommands=(
         "workerman"

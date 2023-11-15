@@ -1,0 +1,24 @@
+{
+    "name": "imiphp/imi-connection-center",
+    "type": "library",
+    "license": "MulanPSL-2.0",
+    "description": "imi connection center",
+    "require": {},
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\ConnectionCenter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\ConnectionCenter\\Test\\": "tests/"
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../../../dev/try-include-swoole.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

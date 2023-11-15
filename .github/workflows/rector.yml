@@ -65,7 +65,7 @@ jobs:
         with:
           path: /tmp/base_cache/rector
           key: ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-${{ github.run_id }}
-          restore-keys: | 
+          restore-keys: |
             ${{ runner.os }}-rector-${{ env.IMAGE_VERSION }}-
 
       - name: Analyse core
@@ -167,3 +167,8 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec -w /imi/src/Components/workerman-gateway ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
+
+      - name: Analyse connection-center
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker exec -w /imi/src/Components/connection-center ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
