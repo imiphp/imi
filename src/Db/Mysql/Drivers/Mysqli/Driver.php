@@ -137,9 +137,9 @@ class Driver extends MysqlBase
     }
 
     /**
-     * {@inheritDoc}
+     * @return \mysqli
      */
-    public function getInstance(): \mysqli
+    public function getInstance(): object
     {
         return $this->instance;
     }

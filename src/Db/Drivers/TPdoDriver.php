@@ -135,9 +135,9 @@ trait TPdoDriver
     }
 
     /**
-     * {@inheritDoc}
+     * @return \PDO
      */
-    public function getInstance(): \PDO
+    public function getInstance(): object
     {
         return $this->instance;
     }

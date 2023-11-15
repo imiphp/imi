@@ -169,9 +169,9 @@ if (class_exists(PostgreSQL::class, false))
         }
 
         /**
-         * {@inheritDoc}
+         * @return PostgreSQL
          */
-        public function getInstance(): PostgreSQL
+        public function getInstance(): object
         {
             return $this->instance;
         }
