@@ -10,7 +10,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Annotation\Callback;
 use Imi\Bean\Annotation\Inherit;
 use Imi\Db\Annotation\Transaction;
-use Imi\Enum\Annotation\EnumItem;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Table;
 use Imi\Test\BaseTest;
@@ -70,6 +69,6 @@ class InheritTest extends BaseTest
         $annotations = AnnotationManager::getConstantAnnotations(TestClass::class, 'CCC2');
         $this->assertCount(2, $annotations);
         $this->assertInstanceOf(Inherit::class, $annotations[0]);
-        $this->assertInstanceOf(EnumItem::class, $annotations[1]);
+        $this->assertInstanceOf(Inherit::class, $annotations[1]);
     }
 }

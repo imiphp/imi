@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
-use Imi\Test\Component\Enum\TestEnum;
 use Imi\Test\Component\Enum\TestEnumBean;
 use Imi\Test\Component\Enum\TestEnumBeanBacked;
 use Imi\Validate\ValidatorHelper;
@@ -349,8 +348,6 @@ class ValidatorHelperTest extends BaseTest
 
     public function testInEnum(): void
     {
-        Assert::assertTrue(ValidatorHelper::inEnum(TestEnum::A, TestEnum::class));
-        Assert::assertFalse(ValidatorHelper::inEnum(4, TestEnum::class));
         Assert::assertTrue(ValidatorHelper::inEnum(TestEnumBean::A, TestEnumBean::class));
         Assert::assertTrue(ValidatorHelper::inEnum('A', TestEnumBean::class));
         Assert::assertFalse(ValidatorHelper::inEnum(4, TestEnumBean::class));
@@ -361,8 +358,6 @@ class ValidatorHelperTest extends BaseTest
 
     public function testNotInEnum(): void
     {
-        Assert::assertTrue(ValidatorHelper::notInEnum(4, TestEnum::class));
-        Assert::assertFalse(ValidatorHelper::notInEnum(TestEnum::A, TestEnum::class));
         Assert::assertTrue(ValidatorHelper::notInEnum(4, TestEnumBean::class));
         Assert::assertFalse(ValidatorHelper::notInEnum(TestEnumBean::A, TestEnumBean::class));
         Assert::assertFalse(ValidatorHelper::notInEnum('A', TestEnumBean::class));

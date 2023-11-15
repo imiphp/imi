@@ -6,7 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Bean\BeanFactory;
 use Imi\Test\BaseTest;
-use Imi\Test\Component\Enum\TestEnum;
+use Imi\Test\Component\Enum\TestEnumBean;
 use Imi\Test\Component\Validate\Classes\TestAutoConstructValidator;
 use Imi\Test\Component\Validate\Classes\TestSceneAnnotationValidator;
 use Imi\Test\Component\Validate\Classes\TestSceneValidator;
@@ -87,7 +87,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->data = [
             'compare'       => -1,
             'decimal'       => 1.25,
-            'enum'          => TestEnum::A,
+            'enum'          => TestEnumBean::A,
             'in'            => 1,
             'int'           => 1,
             'required'      => '',

@@ -25,9 +25,6 @@ class Main extends BaseMain
         Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Event\Listener\LoadRuntimeListener::class, 19940100);
         Event::on('IMI.BUILD_RUNTIME', \Imi\Event\Listener\BuildRuntimeListener::class, 19940100);
 
-        Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Enum\Listener\LoadRuntimeListener::class, 19940000);
-        Event::on('IMI.BUILD_RUNTIME', \Imi\Enum\Listener\BuildRuntimeListener::class, 19940000);
-
         Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Core\Component\Listener\LoadRuntimeListener::class, ImiPriority::IMI_MAX);
         Event::on('IMI.BUILD_RUNTIME', \Imi\Core\Component\Listener\BuildRuntimeListener::class, ImiPriority::IMI_MAX);
 
