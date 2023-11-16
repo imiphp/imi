@@ -1,4 +1,4 @@
-# 错误处理
+# 全局异常处理
 
 [toc]
 
@@ -39,3 +39,40 @@ imi 框架底层支持将错误转为异常（通过`catchLevel`选项控制）�
 多个异常处理器将按顺序执行，可调用方法`stopPropagation`取消后续异常处理器执行并阻止系统默认的异常处理。
 
 > 请务必确保异常处理器内不要再次抛出异常，做好异常捕获安全处理。
+
+### Demo
+
+```php
+# 当 catchLevel 设置为 E_ALL 时，添加以下处理器配合处理错误通知
+
+<?php
+
+declare(strict_types=1);
+
+namespace Imi\App;
+
+use Imi\Log\AbstractErrorEventHandler;
+use Imi\Log\Log;
+use Psr\Log\LogLevel;
+
+class ErrorEventHandler extends AbstractErrorEventHandler
+{
+    public function handleError(int $errNo, string $errStr, string $errFile, int $errLine): void
+    {
+        if (str_contains($errFile, '/phpunit/src/'))
+        {
+            // 当前错误与用户代码无关错误且不影响程序正常执行，阻止其抛出异常并打印常规日志
+            $this->stopPropagation();
+
+            Log::log(LogLevel::INFO, $errStr);
+        }
+    }
+
+    public function handleException(\Throwable $throwable): void
+    {
+        // 可以处理更多异常状况...
+    }
+}
+
+```
+

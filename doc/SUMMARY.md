@@ -28,7 +28,7 @@
   * [事件监听](components/event/index.md)
   * [事件列表](core/events.md)
 * [中间件](core/middleware.md)
-* [全局错误处理](core/handleError.md)
+* [全局异常处理](core/handleError.md)
 * [内部进程间通讯](core/processCommunication.md)
 * [Server 对象](core/server.md)
 * [长连接分布式解决方案](core/long-connection-distributed.md)
