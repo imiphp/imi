@@ -111,7 +111,7 @@
         "test-smarty": "@php vendor/bin/phpunit -c src/Components/smarty/tests/phpunit.xml",
         "test-pgsql": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
         "test-phar": "@php src/Components/phar/tests/run-tests.php",
-        "test-connection-center": "@php src/Components/swoole/bin/phpunit -c src/Components/connection-center/tests/phpunit.xml",
+        "test-connection-center": "@php vendor/bin/phpunit -c src/Components/connection-center/tests/phpunit.xml",
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",
