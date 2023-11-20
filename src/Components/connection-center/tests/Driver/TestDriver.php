@@ -14,7 +14,7 @@ class TestDriver extends AbstractConnectionDriver
      */
     public static function createConnectionConfig(array $config): IConnectionConfig
     {
-        return TestDriverConfig::createFromArray($config);
+        return TestDriverConfig::createFromArray($config['resource'] ?? []);
     }
 
     /**

@@ -13,10 +13,7 @@ class TestDriverConfig implements IConnectionConfig
     public static function createFromArray(array $config): self
     {
         $object = new self();
-        foreach ($config as $key => $value)
-        {
-            $object->{$key} = $value;
-        }
+        $object->test = $config['test'] ?? null;
 
         return $object;
     }
