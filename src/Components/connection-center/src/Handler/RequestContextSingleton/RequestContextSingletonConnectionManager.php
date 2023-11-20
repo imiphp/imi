@@ -145,17 +145,16 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
                 // 删除连接上下文实例
                 unset($context[static::class][$this->id]);
             }
-            if ($enableStatistics = $this->config->isEnableStatistics())
+        }
+        // 关闭连接
+        $this->getDriver()->close($instance);
+        if ($this->config->isEnableStatistics())
+        {
+            if (isset($this->instanceMap[$instance]))
             {
                 $this->statistics->changeTotalConnectionCount(-1);
                 $this->statistics->changeUsedConnectionCount(-1);
             }
-        }
-        // 关闭连接
-        $this->getDriver()->close($instance);
-
-        if ($enableStatistics ?? $this->config->isEnableStatistics())
-        {
             $this->statistics->addReleaseConnectionTimes();
         }
     }

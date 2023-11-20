@@ -133,9 +133,9 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $this->assertEquals(2, $statistics->getCreateConnectionTimes());                // 改变
         $this->assertEquals(1, $statistics->getGetConnectionTimes());                   // 改变
         $this->assertEquals(1, $statistics->getReleaseConnectionTimes());
-        $this->assertEquals(1, $statistics->getTotalConnectionCount());
+        $this->assertEquals(1, $statistics->getTotalConnectionCount());                 // 改变
         $this->assertEquals(0, $statistics->getFreeConnectionCount());
-        $this->assertEquals(1, $statistics->getUsedConnectionCount());
+        $this->assertEquals(1, $statistics->getUsedConnectionCount());                  // 改变
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());            // 改变
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());  // 改变
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());           // 改变
@@ -145,10 +145,10 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $statistics = $connectionManager->getStatistics();
         $this->assertEquals(2, $statistics->getCreateConnectionTimes());
         $this->assertEquals(1, $statistics->getGetConnectionTimes());
-        $this->assertEquals(2, $statistics->getReleaseConnectionTimes()); // 改变
-        $this->assertEquals(0, $statistics->getTotalConnectionCount());
+        $this->assertEquals(2, $statistics->getReleaseConnectionTimes());   // 改变
+        $this->assertEquals(0, $statistics->getTotalConnectionCount());     // 改变
         $this->assertEquals(0, $statistics->getFreeConnectionCount());
-        $this->assertEquals(0, $statistics->getUsedConnectionCount());
+        $this->assertEquals(0, $statistics->getUsedConnectionCount());      // 改变
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());
