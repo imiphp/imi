@@ -540,7 +540,7 @@ jobs:
         run: composer test-snowflake
       - name: Test connection-center
         if: ${{ env.test_prepared && always() }}
-        run: composer test-connection-center
+        run: composer test-connection-center-common
       - name: Print logs
         if: failure()
         run: php .github\print-logs.php
