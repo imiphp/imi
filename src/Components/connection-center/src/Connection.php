@@ -12,7 +12,7 @@ class Connection implements IConnection
 {
     protected ConnectionStatus $status = ConnectionStatus::Available;
 
-    public function __construct(protected IConnectionManager $manager, protected mixed $instance)
+    public function __construct(protected IConnectionManager $manager, protected object $instance)
     {
     }
 
@@ -29,7 +29,7 @@ class Connection implements IConnection
         return $this->manager;
     }
 
-    public function getInstance(): mixed
+    public function getInstance(): object
     {
         if (ConnectionStatus::Unavailable === $this->status)
         {

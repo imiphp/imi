@@ -33,4 +33,19 @@ trait TConnectionManagerWritableStatistics
             $this->maxGetConnectionTime = $time;
         }
     }
+
+    public function changeTotalConnectionCount(int $quantity): int
+    {
+        return $this->totalConnectionCount += $quantity;
+    }
+
+    public function changeFreeConnectionCount(int $quantity): int
+    {
+        return $this->freeConnectionCount += $quantity;
+    }
+
+    public function changeUsedConnectionCount(int $quantity): int
+    {
+        return $this->usedConnectionCount += $quantity;
+    }
 }

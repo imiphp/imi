@@ -11,7 +11,7 @@ use Imi\ConnectionCenter\Enum\ConnectionStatus;
 
 interface IConnection
 {
-    public function __construct(IConnectionManager $manager, mixed $instance);
+    public function __construct(IConnectionManager $manager, object $instance);
 
     /**
      * 获取连接所属管理器.
@@ -21,7 +21,7 @@ interface IConnection
     /**
      * 获取连接资源管理的对象实例.
      */
-    public function getInstance(): mixed;
+    public function getInstance(): object;
 
     /**
      * 释放连接，回归连接管理器.
