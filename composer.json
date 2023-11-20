@@ -112,7 +112,7 @@
         "test-pgsql": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
         "test-phar": "@php src/Components/phar/tests/run-tests.php",
         "test-connection-center-common": "@php vendor/bin/phpunit -c src/Components/connection-center/tests/phpunit.xml",
-        "test-connection-center-swoole": "AMQP_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/connection-center/tests/phpunit.xml",
+        "test-connection-center-swoole": "CONNECTION_CENTER_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/connection-center/tests/phpunit.xml",
         "test-connection-center": [
             "@composer test-connection-center-common",
             "@composer test-connection-center-swoole"

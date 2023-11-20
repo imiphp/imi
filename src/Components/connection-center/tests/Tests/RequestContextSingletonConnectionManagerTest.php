@@ -11,6 +11,9 @@ use Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingleton
 use Imi\ConnectionCenter\Test\Driver\TestDriver;
 use PHPUnit\Framework\TestCase;
 
+use function Imi\env;
+use function Yurun\Swoole\Coroutine\goWait;
+
 class RequestContextSingletonConnectionManagerTest extends TestCase
 {
     public const EXCEPTION_MESSAGE_CLOSED = 'Connection manager is unavailable';
@@ -197,5 +200,25 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $connectionManager->close();
         // 关闭连接管理器，已分离连接不受影响
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+    }
+
+    public function testRequestContextDestory(): void
+    {
+        if ('swoole' !== env('CONNECTION_CENTER_TEST_MODE'))
+        {
+            $this->markTestSkipped();
+        }
+        $connectionManager = $this->testCreateConnectionManager();
+        $connectionOut = $connectionManager->getConnection();
+        $statistics = $connectionManager->getStatistics();
+        $this->assertEquals(1, $statistics->getTotalConnectionCount());
+        goWait(function () use ($connectionManager, $connectionOut): void {
+            $connection = $connectionManager->getConnection();
+            $this->assertTrue($connectionOut !== $connection);
+            $statistics = $connectionManager->getStatistics();
+            $this->assertEquals(2, $statistics->getTotalConnectionCount());
+        }, -1, true);
+        $statistics = $connectionManager->getStatistics();
+        $this->assertEquals(1, $statistics->getTotalConnectionCount());
     }
 }
