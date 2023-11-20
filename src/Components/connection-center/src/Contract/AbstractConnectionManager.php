@@ -21,8 +21,12 @@ abstract class AbstractConnectionManager implements IConnectionManager
 
     public function close(): void
     {
-        $this->available = false;
+        if (!$this->available)
+        {
+            throw new \RuntimeException('Connection manager is unavailable');
+        }
         $this->__close();
+        $this->available = false;
     }
 
     abstract protected function __close(): void;

@@ -40,6 +40,10 @@ class AlwaysNewConnectionManager extends AbstractConnectionManager
      */
     public function createConnection(): IConnection
     {
+        if (!$this->available)
+        {
+            throw new \RuntimeException('Connection manager is unavailable');
+        }
         $driver = $this->getDriver();
         // 创建连接
         $instance = $driver->createInstance();
@@ -58,6 +62,10 @@ class AlwaysNewConnectionManager extends AbstractConnectionManager
      */
     public function getConnection(): IConnection
     {
+        if (!$this->available)
+        {
+            throw new \RuntimeException('Connection manager is unavailable');
+        }
         if ($enableStatistics = $this->config->isEnableStatistics())
         {
             $beginTime = microtime(true);

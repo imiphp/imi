@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 class AlwaysNewConnectionManagerTest extends TestCase
 {
+    public const EXCEPTION_MESSAGE_CLOSED = 'Connection manager is unavailable';
+
     public function testCreateConnectionManager(bool $enableStatistics = true): AlwaysNewConnectionManager
     {
         $connectionManager = App::newInstance(AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'test' => true]));
@@ -150,5 +152,34 @@ class AlwaysNewConnectionManagerTest extends TestCase
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());
+    }
+
+    public function testClose(): void
+    {
+        $connectionManager = $this->testCreateConnectionManager();
+        $connection = $connectionManager->getConnection();
+        $connectionManager->close();
+
+        $connection->release(); // 连接管理器关闭后也可以释放连接
+
+        try
+        {
+            $connectionManager->createConnection();
+            $this->assertTrue(false);
+        }
+        catch (\RuntimeException $re)
+        {
+            $this->assertEquals(self::EXCEPTION_MESSAGE_CLOSED, $re->getMessage());
+        }
+
+        try
+        {
+            $connectionManager->getConnection();
+            $this->assertTrue(false);
+        }
+        catch (\RuntimeException $re)
+        {
+            $this->assertEquals(self::EXCEPTION_MESSAGE_CLOSED, $re->getMessage());
+        }
     }
 }
