@@ -23,4 +23,16 @@ interface IConnectionManagerConfig
      * 获取额外配置.
      */
     public function getConfig(): array;
+
+    /**
+     * 获取请求上下文资源检查状态间隔，单位：支持小数的秒.
+     *
+     * 为 null/0 则每次都检查
+     */
+    public function getRequestResourceCheckInterval(): ?float;
+
+    /**
+     * 获取是否在获取资源时检查状态
+     */
+    public function isCheckStateWhenGetResource(): bool;
 }

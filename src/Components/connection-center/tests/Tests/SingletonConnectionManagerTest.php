@@ -198,4 +198,24 @@ class SingletonConnectionManagerTest extends TestCase
         // 关闭连接管理器，已分离连接不受影响
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
     }
+
+    public function testCheckStateWhenGetResource(): void
+    {
+        $connectionManager = App::newInstance(SingletonConnectionManager::class, SingletonConnectionManager::createConfig([
+            'driver'                    => TestDriver::class,
+            'enableStatistics'          => true,
+            'resource'                  => ['test' => true],
+            'checkStateWhenGetResource' => true,
+        ]));
+
+        $this->assertTrue($connectionManager->isAvailable());
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(0, $instance->available);
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(1, $instance->available);
+    }
 }

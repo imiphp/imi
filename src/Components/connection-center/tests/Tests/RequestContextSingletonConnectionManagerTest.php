@@ -221,4 +221,24 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $statistics = $connectionManager->getStatistics();
         $this->assertEquals(1, $statistics->getTotalConnectionCount());
     }
+
+    public function testCheckStateWhenGetResource(): void
+    {
+        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig([
+            'driver'                    => TestDriver::class,
+            'enableStatistics'          => true,
+            'resource'                  => ['test' => true],
+            'checkStateWhenGetResource' => true,
+        ]));
+
+        $this->assertTrue($connectionManager->isAvailable());
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(0, $instance->available);
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(1, $instance->available);
+    }
 }

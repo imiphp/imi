@@ -42,15 +42,7 @@ class SingletonConnectionManager extends AbstractConnectionManager
      */
     public function createConnection(): IConnection
     {
-        if (!$this->available)
-        {
-            throw new \RuntimeException('Connection manager is unavailable');
-        }
-        $driver = $this->getDriver();
-        // 创建连接
-        $instance = $driver->createInstance();
-        // 连接
-        $driver->connect($instance);
+        $instance = $this->createInstance();
         if ($this->config->isEnableStatistics())
         {
             $this->statistics->addCreateConnectionTimes();
@@ -59,9 +51,6 @@ class SingletonConnectionManager extends AbstractConnectionManager
         return new Connection($this, $instance);
     }
 
-    /**
-     * @return Connection
-     */
     public function getConnection(): IConnection
     {
         if (!$this->available)
@@ -80,6 +69,24 @@ class SingletonConnectionManager extends AbstractConnectionManager
             {
                 $this->statistics->changeTotalConnectionCount(1);
                 $this->statistics->changeUsedConnectionCount(1);
+            }
+        }
+        else
+        {
+            $driver = $this->getDriver();
+            if ($this->config->isCheckStateWhenGetResource() && !$driver->checkAvailable($instance = $this->connection->getInstance()))
+            {
+                try
+                {
+                    $driver->close($instance);
+                    $instance = $driver->connect($instance);
+                    $this->connection = new Connection($this, $instance);
+                }
+                catch (\Throwable $th)
+                {
+                    $this->connection = null;
+                    throw $th;
+                }
             }
         }
         if ($enableStatistics)

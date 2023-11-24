@@ -52,15 +52,7 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
      */
     public function createConnection(): IConnection
     {
-        if (!$this->available)
-        {
-            throw new \RuntimeException('Connection manager is unavailable');
-        }
-        $driver = $this->getDriver();
-        // 创建连接
-        $instance = $driver->createInstance();
-        // 连接
-        $driver->connect($instance);
+        $instance = $this->createInstance();
         if ($this->config->isEnableStatistics())
         {
             $this->statistics->addCreateConnectionTimes();
@@ -92,6 +84,23 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
                 if (!isset($this->instanceMap[$instance]))
                 {
                     throw new \RuntimeException('Connection is not in this connection manager');
+                }
+
+                $driver = $this->getDriver();
+                if ($this->config->isCheckStateWhenGetResource() && !$driver->checkAvailable($instance))
+                {
+                    try
+                    {
+                        $connectionData = $this->instanceMap[$instance];
+                        $driver->close($instance);
+                        $context[static::class][$this->id] = $instance = $driver->connect($instance);
+                        $this->instanceMap[$instance] = $connectionData;
+                    }
+                    catch (\Throwable $th)
+                    {
+                        unset($context[static::class][$this->id]);
+                        throw $th;
+                    }
                 }
                 $connectionData = $this->instanceMap[$instance];
                 $connection = $connectionData->getConnection()->get();
@@ -190,13 +199,12 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
         foreach ($this->instanceMap as $instance => $connectionData)
         {
             $connection = $connectionData->getConnection()->get();
-            if ($connection)
+            if ($connection && ConnectionStatus::Available === $connection->getStatus())
             {
                 $connection->release();
             }
             else
             {
-                // 正常情况下不可到达此分支
                 $this->getDriver()->close($instance);
             }
         }

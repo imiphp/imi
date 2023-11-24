@@ -25,7 +25,7 @@ class TestDriver extends AbstractConnectionDriver
         $instance = new \stdClass();
         $instance->config = $this->config;
         $instance->connected = false;
-        $instance->reseted = true;
+        $instance->reseted = false;
         $instance->available = 0;
         $instance->ping = 0;
         usleep(1000); // 没有IO操作，防止执行过快，统计不到时长

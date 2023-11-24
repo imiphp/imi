@@ -36,7 +36,7 @@ abstract class AbstractConnectionManager implements IConnectionManager
         return $this->available;
     }
 
-    protected function getDriver(): IConnectionDriver
+    public function getDriver(): IConnectionDriver
     {
         if ($this->driver)
         {
@@ -46,5 +46,23 @@ abstract class AbstractConnectionManager implements IConnectionManager
         $driver = $this->config->getDriver();
 
         return $this->driver = App::newInstance($driver, $driver::createConnectionConfig($this->config->getConfig()));
+    }
+
+    protected function createInstance(bool $connect = true): object
+    {
+        if (!$this->available)
+        {
+            throw new \RuntimeException('Connection manager is unavailable');
+        }
+        $driver = $this->getDriver();
+        // 创建连接
+        $instance = $driver->createInstance();
+        if ($connect)
+        {
+            // 连接
+            $driver->connect($instance);
+        }
+
+        return $instance;
     }
 }

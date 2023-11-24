@@ -15,6 +15,8 @@ interface IConnectionManager
 
     public function getConfig(): IConnectionManagerConfig;
 
+    public function getDriver(): IConnectionDriver;
+
     /**
      * 创建新连接.
      */

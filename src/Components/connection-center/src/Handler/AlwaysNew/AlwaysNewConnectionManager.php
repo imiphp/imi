@@ -40,15 +40,7 @@ class AlwaysNewConnectionManager extends AbstractConnectionManager
      */
     public function createConnection(): IConnection
     {
-        if (!$this->available)
-        {
-            throw new \RuntimeException('Connection manager is unavailable');
-        }
-        $driver = $this->getDriver();
-        // 创建连接
-        $instance = $driver->createInstance();
-        // 连接
-        $driver->connect($instance);
+        $instance = $this->createInstance();
         if ($this->config->isEnableStatistics())
         {
             $this->statistics->addCreateConnectionTimes();
