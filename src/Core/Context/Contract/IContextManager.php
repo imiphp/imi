@@ -9,25 +9,25 @@ interface IContextManager
     /**
      * 创建上下文.
      */
-    public function create(string $flag, array $data = []): \ArrayObject;
+    public function create(string $id, array $data = []): \ArrayObject;
 
     /**
      * 销毁上下文.
      */
-    public function destroy(string $flag): bool;
+    public function destroy(string $id): bool;
 
     /**
      * 获取上下文.
      */
-    public function get(string $flag, bool $autoCreate = false): \ArrayObject;
+    public function get(string $id, bool $autoCreate = false): \ArrayObject;
 
     /**
      * 上下文是否存在.
      */
-    public function exists(string $flag): bool;
+    public function exists(string $id): bool;
 
     /**
      * 获取当前上下文标识.
      */
-    public function getCurrentFlag(): string;
+    public function getCurrentId(): string;
 }

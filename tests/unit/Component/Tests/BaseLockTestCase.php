@@ -31,7 +31,7 @@ abstract class BaseLockTestCase extends BaseTest
             {
                 Assert::assertTrue($result);
                 Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
-                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+                Assert::assertEquals(RequestContext::getCurrentId(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
             }
             finally
             {
@@ -54,7 +54,7 @@ abstract class BaseLockTestCase extends BaseTest
             {
                 Assert::assertTrue($result);
                 Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
-                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+                Assert::assertEquals(RequestContext::getCurrentId(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
             }
             finally
             {
@@ -73,7 +73,7 @@ abstract class BaseLockTestCase extends BaseTest
             Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
             $result = Lock::lock($this->lockConfigId, function () use ($lockId): void {
                 Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
-                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+                Assert::assertEquals(RequestContext::getCurrentId(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
             }, null, $lockId);
             Assert::assertTrue($result);
             Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
@@ -89,7 +89,7 @@ abstract class BaseLockTestCase extends BaseTest
             Assert::assertEquals('', Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
             $result = Lock::tryLock($this->lockConfigId, function () use ($lockId): void {
                 Assert::assertTrue(Lock::isLocked($this->lockConfigId, $lockId));
-                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+                Assert::assertEquals(RequestContext::getCurrentId(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
             }, $lockId);
             Assert::assertTrue($result);
             Assert::assertFalse(Lock::isLocked($this->lockConfigId, $lockId));
@@ -107,7 +107,7 @@ abstract class BaseLockTestCase extends BaseTest
             $result = Lock::lock($this->lockConfigId, static function (): void {
                 Assert::assertTrue(false);
             }, function () use ($lockId) {
-                Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
+                Assert::assertEquals(RequestContext::getCurrentId(), Lock::getInstance($this->lockConfigId, $lockId)->getLockFlag());
 
                 return true;
             }, $lockId);

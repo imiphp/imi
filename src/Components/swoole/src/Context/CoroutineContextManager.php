@@ -26,11 +26,11 @@ class CoroutineContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function create(string $flag, array $data = []): \ArrayObject
+    public function create(string $id, array $data = []): \ArrayObject
     {
-        if ($flag > -1)
+        if ($id > -1)
         {
-            $context = Coroutine::getContext((int) $flag);
+            $context = Coroutine::getContext((int) $id);
             // destroy
             if (!($context['__bindDestroy'] ?? false))
             {
@@ -49,28 +49,28 @@ class CoroutineContextManager implements IContextManager
         }
         else
         {
-            if (isset($this->contexts[$flag]))
+            if (isset($this->contexts[$id]))
             {
-                throw new ContextExistsException(sprintf('Context %s already exists!', $flag));
+                throw new ContextExistsException(sprintf('Context %s already exists!', $id));
             }
 
-            return $this->contexts[$flag] = new \ArrayObject($data, \ArrayObject::ARRAY_AS_PROPS);
+            return $this->contexts[$id] = new \ArrayObject($data, \ArrayObject::ARRAY_AS_PROPS);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function destroy(string $flag): bool
+    public function destroy(string $id): bool
     {
-        if ($flag > -1)
+        if ($id > -1)
         {
             return false; // 协程退出时自动销毁，无法手动销毁
         }
-        elseif (isset($this->contexts[$flag]))
+        elseif (isset($this->contexts[$id]))
         {
             Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
-            unset($this->contexts[$flag]);
+            unset($this->contexts[$id]);
 
             return true;
         }
@@ -83,11 +83,11 @@ class CoroutineContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function get(string $flag, bool $autoCreate = false): \ArrayObject
+    public function get(string $id, bool $autoCreate = false): \ArrayObject
     {
-        if ($flag > -1)
+        if ($id > -1)
         {
-            $context = Coroutine::getContext((int) $flag);
+            $context = Coroutine::getContext((int) $id);
             // destroy
             if (!($context['__bindDestroy'] ?? false))
             {
@@ -99,38 +99,38 @@ class CoroutineContextManager implements IContextManager
         }
         else
         {
-            if (!isset($this->contexts[$flag]))
+            if (!isset($this->contexts[$id]))
             {
                 if ($autoCreate)
                 {
-                    return $this->create($flag);
+                    return $this->create($id);
                 }
-                throw new ContextNotFoundException(sprintf('Context %s does not exists!', $flag));
+                throw new ContextNotFoundException(sprintf('Context %s does not exists!', $id));
             }
 
-            return $this->contexts[$flag];
+            return $this->contexts[$id];
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function exists(string $flag): bool
+    public function exists(string $id): bool
     {
-        if ($flag > -1)
+        if ($id > -1)
         {
-            return Coroutine::exists($flag);
+            return Coroutine::exists($id);
         }
         else
         {
-            return isset($this->contexts[$flag]);
+            return isset($this->contexts[$id]);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getCurrentFlag(): string
+    public function getCurrentId(): string
     {
         return (string) Coroutine::getCid();
     }
