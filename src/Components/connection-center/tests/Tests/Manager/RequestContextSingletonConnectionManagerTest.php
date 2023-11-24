@@ -2,22 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Imi\ConnectionCenter\Test\Tests;
+namespace Imi\ConnectionCenter\Test\Tests\Manager;
 
 use Imi\App;
 use Imi\ConnectionCenter\Contract\IConnection;
 use Imi\ConnectionCenter\Enum\ConnectionStatus;
-use Imi\ConnectionCenter\Handler\AlwaysNew\AlwaysNewConnectionManager;
+use Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager;
 use Imi\ConnectionCenter\Test\Driver\TestDriver;
 use PHPUnit\Framework\TestCase;
 
-class AlwaysNewConnectionManagerTest extends TestCase
+use function Imi\env;
+use function Yurun\Swoole\Coroutine\goWait;
+
+class RequestContextSingletonConnectionManagerTest extends TestCase
 {
     public const EXCEPTION_MESSAGE_CLOSED = 'Connection manager is unavailable';
 
-    public function testCreateConnectionManager(bool $enableStatistics = true): AlwaysNewConnectionManager
+    public function testCreateConnectionManager(bool $enableStatistics = true): RequestContextSingletonConnectionManager
     {
-        $connectionManager = App::newInstance(AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
+        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -27,7 +30,7 @@ class AlwaysNewConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testCreateConnection(AlwaysNewConnectionManager $connectionManager): void
+    public function testCreateConnection(RequestContextSingletonConnectionManager $connectionManager): void
     {
         $connection = $connectionManager->createConnection();
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -41,7 +44,7 @@ class AlwaysNewConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testGetConnection(AlwaysNewConnectionManager $connectionManager): IConnection
+    public function testGetConnection(RequestContextSingletonConnectionManager $connectionManager): IConnection
     {
         $connection = $connectionManager->getConnection();
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -57,7 +60,7 @@ class AlwaysNewConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testReleaseConnectionException(AlwaysNewConnectionManager $connectionManager): void
+    public function testReleaseConnectionException(RequestContextSingletonConnectionManager $connectionManager): void
     {
         $connection = $this->testGetConnection($connectionManager);
         $this->expectExceptionMessage('Connection is not in wait release status');
@@ -67,7 +70,7 @@ class AlwaysNewConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testReleaseConnection(AlwaysNewConnectionManager $connectionManager): void
+    public function testReleaseConnection(RequestContextSingletonConnectionManager $connectionManager): void
     {
         $connection = $this->testGetConnection($connectionManager);
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -133,9 +136,9 @@ class AlwaysNewConnectionManagerTest extends TestCase
         $this->assertEquals(2, $statistics->getCreateConnectionTimes());                // 改变
         $this->assertEquals(1, $statistics->getGetConnectionTimes());                   // 改变
         $this->assertEquals(1, $statistics->getReleaseConnectionTimes());
-        $this->assertEquals(0, $statistics->getTotalConnectionCount());
+        $this->assertEquals(1, $statistics->getTotalConnectionCount());                 // 改变
         $this->assertEquals(0, $statistics->getFreeConnectionCount());
-        $this->assertEquals(0, $statistics->getUsedConnectionCount());
+        $this->assertEquals(1, $statistics->getUsedConnectionCount());                  // 改变
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());            // 改变
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());  // 改变
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());           // 改变
@@ -145,10 +148,10 @@ class AlwaysNewConnectionManagerTest extends TestCase
         $statistics = $connectionManager->getStatistics();
         $this->assertEquals(2, $statistics->getCreateConnectionTimes());
         $this->assertEquals(1, $statistics->getGetConnectionTimes());
-        $this->assertEquals(2, $statistics->getReleaseConnectionTimes()); // 改变
-        $this->assertEquals(0, $statistics->getTotalConnectionCount());
+        $this->assertEquals(2, $statistics->getReleaseConnectionTimes());   // 改变
+        $this->assertEquals(0, $statistics->getTotalConnectionCount());     // 改变
         $this->assertEquals(0, $statistics->getFreeConnectionCount());
-        $this->assertEquals(0, $statistics->getUsedConnectionCount());
+        $this->assertEquals(0, $statistics->getUsedConnectionCount());      // 改变
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());
@@ -157,10 +160,15 @@ class AlwaysNewConnectionManagerTest extends TestCase
     public function testClose(): void
     {
         $connectionManager = $this->testCreateConnectionManager();
-        $connection = $connectionManager->getConnection();
+        $connectionByCreate = $connectionManager->createConnection();
+        $this->assertEquals(ConnectionStatus::Available, $connectionByCreate->getStatus());
+        $connectionByGet = $connectionManager->getConnection();
+        $this->assertEquals(ConnectionStatus::Available, $connectionByGet->getStatus());
         $connectionManager->close();
-
-        $connection->release(); // 连接管理器关闭后也可以释放连接
+        // 关闭连接管理器，创建的连接不受影响
+        $this->assertEquals(ConnectionStatus::Available, $connectionByCreate->getStatus());
+        // 关闭连接管理器，自动关闭所有连接
+        $this->assertEquals(ConnectionStatus::Unavailable, $connectionByGet->getStatus());
 
         try
         {
@@ -181,5 +189,56 @@ class AlwaysNewConnectionManagerTest extends TestCase
         {
             $this->assertEquals(self::EXCEPTION_MESSAGE_CLOSED, $re->getMessage());
         }
+    }
+
+    public function testDetach(): void
+    {
+        $connectionManager = $this->testCreateConnectionManager();
+        $connection = $connectionManager->getConnection();
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->detach();
+        $connectionManager->close();
+        // 关闭连接管理器，已分离连接不受影响
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+    }
+
+    public function testRequestContextDestory(): void
+    {
+        if ('swoole' !== env('CONNECTION_CENTER_TEST_MODE'))
+        {
+            $this->markTestSkipped();
+        }
+        $connectionManager = $this->testCreateConnectionManager();
+        $connectionOut = $connectionManager->getConnection();
+        $statistics = $connectionManager->getStatistics();
+        $this->assertEquals(1, $statistics->getTotalConnectionCount());
+        goWait(function () use ($connectionManager, $connectionOut): void {
+            $connection = $connectionManager->getConnection();
+            $this->assertTrue($connectionOut !== $connection);
+            $statistics = $connectionManager->getStatistics();
+            $this->assertEquals(2, $statistics->getTotalConnectionCount());
+        }, -1, true);
+        $statistics = $connectionManager->getStatistics();
+        $this->assertEquals(1, $statistics->getTotalConnectionCount());
+    }
+
+    public function testCheckStateWhenGetResource(): void
+    {
+        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig([
+            'driver'                    => TestDriver::class,
+            'enableStatistics'          => true,
+            'resource'                  => ['test' => true],
+            'checkStateWhenGetResource' => true,
+        ]));
+
+        $this->assertTrue($connectionManager->isAvailable());
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(0, $instance->available);
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(1, $instance->available);
     }
 }

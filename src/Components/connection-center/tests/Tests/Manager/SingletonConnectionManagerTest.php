@@ -2,25 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Imi\ConnectionCenter\Test\Tests;
+namespace Imi\ConnectionCenter\Test\Tests\Manager;
 
 use Imi\App;
 use Imi\ConnectionCenter\Contract\IConnection;
 use Imi\ConnectionCenter\Enum\ConnectionStatus;
-use Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager;
+use Imi\ConnectionCenter\Handler\Singleton\SingletonConnectionManager;
 use Imi\ConnectionCenter\Test\Driver\TestDriver;
 use PHPUnit\Framework\TestCase;
 
-use function Imi\env;
-use function Yurun\Swoole\Coroutine\goWait;
-
-class RequestContextSingletonConnectionManagerTest extends TestCase
+class SingletonConnectionManagerTest extends TestCase
 {
     public const EXCEPTION_MESSAGE_CLOSED = 'Connection manager is unavailable';
 
-    public function testCreateConnectionManager(bool $enableStatistics = true): RequestContextSingletonConnectionManager
+    public function testCreateConnectionManager(bool $enableStatistics = true): SingletonConnectionManager
     {
-        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
+        $connectionManager = App::newInstance(SingletonConnectionManager::class, SingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -30,7 +27,7 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testCreateConnection(RequestContextSingletonConnectionManager $connectionManager): void
+    public function testCreateConnection(SingletonConnectionManager $connectionManager): void
     {
         $connection = $connectionManager->createConnection();
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -44,7 +41,7 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testGetConnection(RequestContextSingletonConnectionManager $connectionManager): IConnection
+    public function testGetConnection(SingletonConnectionManager $connectionManager): IConnection
     {
         $connection = $connectionManager->getConnection();
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -60,7 +57,7 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testReleaseConnectionException(RequestContextSingletonConnectionManager $connectionManager): void
+    public function testReleaseConnectionException(SingletonConnectionManager $connectionManager): void
     {
         $connection = $this->testGetConnection($connectionManager);
         $this->expectExceptionMessage('Connection is not in wait release status');
@@ -70,7 +67,7 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
     /**
      * @depends testCreateConnectionManager
      */
-    public function testReleaseConnection(RequestContextSingletonConnectionManager $connectionManager): void
+    public function testReleaseConnection(SingletonConnectionManager $connectionManager): void
     {
         $connection = $this->testGetConnection($connectionManager);
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -202,29 +199,9 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
     }
 
-    public function testRequestContextDestory(): void
-    {
-        if ('swoole' !== env('CONNECTION_CENTER_TEST_MODE'))
-        {
-            $this->markTestSkipped();
-        }
-        $connectionManager = $this->testCreateConnectionManager();
-        $connectionOut = $connectionManager->getConnection();
-        $statistics = $connectionManager->getStatistics();
-        $this->assertEquals(1, $statistics->getTotalConnectionCount());
-        goWait(function () use ($connectionManager, $connectionOut): void {
-            $connection = $connectionManager->getConnection();
-            $this->assertTrue($connectionOut !== $connection);
-            $statistics = $connectionManager->getStatistics();
-            $this->assertEquals(2, $statistics->getTotalConnectionCount());
-        }, -1, true);
-        $statistics = $connectionManager->getStatistics();
-        $this->assertEquals(1, $statistics->getTotalConnectionCount());
-    }
-
     public function testCheckStateWhenGetResource(): void
     {
-        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig([
+        $connectionManager = App::newInstance(SingletonConnectionManager::class, SingletonConnectionManager::createConfig([
             'driver'                    => TestDriver::class,
             'enableStatistics'          => true,
             'resource'                  => ['test' => true],
