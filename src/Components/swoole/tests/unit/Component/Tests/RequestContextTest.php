@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Test\Component\Tests;
+namespace Imi\Swoole\Test\Component\Tests;
 
 use Imi\RequestContext;
 use Imi\Test\BaseTest;

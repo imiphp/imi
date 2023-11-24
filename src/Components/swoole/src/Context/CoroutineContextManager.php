@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Context;
 
+use Imi\Core\Context\ContextData;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
@@ -19,30 +20,38 @@ class CoroutineContextManager implements IContextManager
     /**
      * 上下文对象集合.
      *
-     * @var \ArrayObject[]
+     * @var ContextData[]
      */
     private array $contexts = [];
 
     /**
      * {@inheritDoc}
      */
-    public function create(string $id, array $data = []): \ArrayObject
+    public function create(string|int $id, array $data = []): ContextData
     {
         if ($id > -1)
         {
-            $context = Coroutine::getContext((int) $id);
+            $swooleContext = Coroutine::getContext((int) $id);
             // destroy
-            if (!($context['__bindDestroy'] ?? false))
+            if (!($swooleContext[static::class]['destroyBinded'] ?? false))
             {
-                $context['__bindDestroy'] = true;
+                $swooleContext[static::class]['destroyBinded'] = true;
                 Coroutine::defer($this->__destroy(...));
             }
-            if ($data)
+            $context = $swooleContext[static::class]['context'] ?? null;
+            if ($context)
             {
-                foreach ($data as $k => $v)
+                if ($data)
                 {
-                    $context[$k] = $v;
+                    foreach ($data as $k => $v)
+                    {
+                        $context[$k] = $v;
+                    }
                 }
+            }
+            else
+            {
+                $context = $swooleContext[static::class]['context'] = new ContextData($data);
             }
 
             return $context;
@@ -54,22 +63,40 @@ class CoroutineContextManager implements IContextManager
                 throw new ContextExistsException(sprintf('Context %s already exists!', $id));
             }
 
-            return $this->contexts[$id] = new \ArrayObject($data, \ArrayObject::ARRAY_AS_PROPS);
+            return $this->contexts[$id] = new ContextData($data);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function destroy(string $id): bool
+    public function destroy(string|int $id): bool
     {
         if ($id > -1)
         {
-            return false; // 协程退出时自动销毁，无法手动销毁
+            $swooleContext = Coroutine::getContext((int) $id);
+            if (!isset($swooleContext[static::class]['context']))
+            {
+                return false;
+            }
+            /** @var ContextData $context */
+            $context = $swooleContext[static::class]['context'];
+            $deferCallbacks = $context->getDeferCallbacks();
+            while (!$deferCallbacks->isEmpty())
+            {
+                $deferCallbacks->pop()();
+            }
+            unset($swooleContext[static::class]);
+
+            return true;
         }
         elseif (isset($this->contexts[$id]))
         {
-            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
+            $deferCallbacks = $this->contexts[$id]->getDeferCallbacks();
+            while (!$deferCallbacks->isEmpty())
+            {
+                $deferCallbacks->pop()();
+            }
             unset($this->contexts[$id]);
 
             return true;
@@ -83,19 +110,28 @@ class CoroutineContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function get(string $id, bool $autoCreate = false): \ArrayObject
+    public function get(string|int $id, bool $autoCreate = false): ContextData
     {
         if ($id > -1)
         {
-            $context = Coroutine::getContext((int) $id);
+            $swooleContext = Coroutine::getContext((int) $id);
             // destroy
-            if (!($context['__bindDestroy'] ?? false))
+            if (!($swooleContext[static::class]['destroyBinded'] ?? false))
             {
-                $context['__bindDestroy'] = true;
+                $swooleContext[static::class]['destroyBinded'] = true;
                 Coroutine::defer($this->__destroy(...));
             }
 
-            return $context;
+            if (!isset($swooleContext[static::class]['context']))
+            {
+                if ($autoCreate)
+                {
+                    return $swooleContext[static::class]['context'] = new ContextData();
+                }
+                throw new ContextNotFoundException(sprintf('Context %s does not exists!', $id));
+            }
+
+            return $swooleContext[static::class]['context'];
         }
         else
         {
@@ -115,11 +151,13 @@ class CoroutineContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function exists(string $id): bool
+    public function exists(string|int $id): bool
     {
         if ($id > -1)
         {
-            return Coroutine::exists($id);
+            $swooleContext = Coroutine::getContext((int) $id);
+
+            return $swooleContext && isset($swooleContext[static::class]['context']);
         }
         else
         {
@@ -130,7 +168,7 @@ class CoroutineContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function getCurrentId(): string
+    public function getCurrentId(): string|int
     {
         return (string) Coroutine::getCid();
     }
@@ -144,16 +182,12 @@ class CoroutineContextManager implements IContextManager
     {
         try
         {
+            // TODO: 实现新的连接管理器后移除
             Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
             $context = Coroutine::getContext();
             if (!$context)
             {
-                $coId = Coroutine::getCid();
-                $contextMap = &$this->contextMap;
-                if (isset($contextMap[$coId]))
-                {
-                    unset($contextMap[$coId]);
-                }
+                unset($this->contexts[Coroutine::getCid()]);
             }
         }
         catch (\Throwable $th)

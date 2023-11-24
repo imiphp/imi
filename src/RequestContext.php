@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Bean\Container;
+use Imi\Core\Context\ContextData;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\DefaultContextManager;
 use Imi\Server\Contract\IServer;
@@ -36,7 +37,7 @@ class RequestContext
     /**
      * 获取当前上下文标识.
      */
-    public static function getCurrentId(): string
+    public static function getCurrentId(): string|int
     {
         return static::getInstance()->getCurrentId();
     }
@@ -44,7 +45,7 @@ class RequestContext
     /**
      * 为当前请求创建上下文，返回当前协程ID.
      */
-    public static function create(array $data = []): \ArrayObject
+    public static function create(array $data = []): ContextData
     {
         $instance = static::getInstance();
 
@@ -54,7 +55,7 @@ class RequestContext
     /**
      * 销毁上下文.
      */
-    public static function destroy(?string $id = null): bool
+    public static function destroy(string|int|null $id = null): bool
     {
         $instance = static::getInstance();
 
@@ -64,7 +65,7 @@ class RequestContext
     /**
      * 上下文是否存在.
      */
-    public static function exists(string $id): bool
+    public static function exists(string|int $id): bool
     {
         return static::getInstance()->exists($id);
     }
@@ -137,10 +138,15 @@ class RequestContext
         }
     }
 
+    public static function defer(callable $callback): void
+    {
+        self::getContext()->defer($callback);
+    }
+
     /**
      * 获取当前上下文.
      */
-    public static function getContext(): \ArrayObject
+    public static function getContext(): ContextData
     {
         $instance = static::getInstance();
 

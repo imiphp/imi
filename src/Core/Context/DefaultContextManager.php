@@ -17,7 +17,7 @@ class DefaultContextManager implements IContextManager
     /**
      * 上下文对象集合.
      *
-     * @var \ArrayObject[]
+     * @var ContextData[]
      */
     private array $contexts = [];
 
@@ -26,7 +26,7 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function create(string $id, array $data = []): \ArrayObject
+    public function create(string|int $id, array $data = []): ContextData
     {
         if (isset($this->contexts[$id]))
         {
@@ -40,17 +40,23 @@ class DefaultContextManager implements IContextManager
             $this->bindAutoDestroy();
         }
 
-        return $this->contexts[$id] = new \ArrayObject($data, \ArrayObject::ARRAY_AS_PROPS);
+        return $this->contexts[$id] = new ContextData($data);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function destroy(string $id): bool
+    public function destroy(string|int $id): bool
     {
         if (isset($this->contexts[$id]))
         {
+            // TODO: 实现新的连接管理器后移除
             Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
+            $deferCallbacks = $this->contexts[$id]->getDeferCallbacks();
+            while (!$deferCallbacks->isEmpty())
+            {
+                $deferCallbacks->pop()();
+            }
             unset($this->contexts[$id]);
 
             return true;
@@ -64,7 +70,7 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function get(string $id, bool $autoCreate = false): \ArrayObject
+    public function get(string|int $id, bool $autoCreate = false): ContextData
     {
         if (!isset($this->contexts[$id]))
         {
@@ -81,7 +87,7 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function exists(string $id): bool
+    public function exists(string|int $id): bool
     {
         return isset($this->contexts[$id]);
     }
@@ -89,7 +95,7 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function getCurrentId(): string
+    public function getCurrentId(): string|int
     {
         return 'default';
     }
