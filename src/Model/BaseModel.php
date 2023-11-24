@@ -396,9 +396,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 {
                     continue;
                 }
+                // @phpstan-ignore-next-line
                 if (\in_array($name, $relationFieldNames ??= ($meta->hasRelation() ? ModelRelationManager::getRelationFieldNames($this) : [])))
                 {
                     /** @var AutoSelect|null $autoSelect */
+                    // @phpstan-ignore-next-line
                     $autoSelect = AnnotationManager::getPropertyAnnotations($realClass ??= ($this->__realClass ??= $meta->getRealModelClass()), $name, AutoSelect::class, true, true);
                     if ($autoSelect && !$autoSelect->alwaysShow)
                     {
