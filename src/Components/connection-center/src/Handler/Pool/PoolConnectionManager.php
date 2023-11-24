@@ -83,11 +83,8 @@ class PoolConnectionManager extends AbstractConnectionManager
         // 初始化队列
         $this->queue = new Channel($config->getPool()->getMaxResources());
         $this->resources = new \SplObjectStorage();
-        if (Coroutine::isIn())
-        {
-            // 填充最少资源数
-            $this->fillMinResources();
-        }
+        // 填充最少资源数
+        $this->fillMinResources();
         // 定时资源回收
         $this->startAutoGC();
         // 心跳
@@ -195,7 +192,11 @@ class PoolConnectionManager extends AbstractConnectionManager
             $this->getDriver()->reset($instance);
             $resource = $this->instanceMap[$instance];
             $resource->release();
-            $this->push($resource);
+            // 防止 __destruct() 期间释放连接
+            if (Coroutine::isIn())
+            {
+                $this->queue->push($resource);
+            }
         }
         else
         {
@@ -236,8 +237,7 @@ class PoolConnectionManager extends AbstractConnectionManager
         // 释放连接
         foreach ($this->instanceMap as $instance => $resource)
         {
-            $connectionRef = $resource->getConnection();
-            if ($connectionRef && $connection = $connectionRef->get())
+            if (($connection = $resource->getConnection()?->get()) && ConnectionStatus::Available === $connection->getStatus())
             {
                 $connection->release();
             }
@@ -287,7 +287,7 @@ class PoolConnectionManager extends AbstractConnectionManager
             $resource = new InstanceResource($instance);
             $this->resources->attach($resource);
             $this->instanceMap[$instance] = $resource;
-            $this->push($resource);
+            $this->queue->push($resource);
 
             return $resource;
         }
@@ -303,18 +303,6 @@ class PoolConnectionManager extends AbstractConnectionManager
         if ($buildQueue)
         {
             $this->buildQueue();
-        }
-    }
-
-    protected function push(InstanceResource $resource): void
-    {
-        if (Coroutine::isIn())
-        {
-            $this->queue->push($resource);
-        }
-        else
-        {
-            \Swoole\Coroutine\run(fn () => $this->queue->push($resource));
         }
     }
 

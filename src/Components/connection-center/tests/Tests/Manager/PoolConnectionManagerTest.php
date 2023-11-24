@@ -256,6 +256,8 @@ class PoolConnectionManagerTest extends TestCase
 
         $this->assertEquals(ConnectionStatus::Unavailable, $connection->getStatus());
         $this->assertFalse($instance->connected);
+
+        $connectionManager->close();
     }
 
     public function testGCMaxIdleTime(): void
@@ -288,6 +290,8 @@ class PoolConnectionManagerTest extends TestCase
 
         $this->assertEquals(ConnectionStatus::Unavailable, $connection->getStatus());
         $this->assertFalse($instance->connected);
+
+        $connectionManager->close();
     }
 
     public function testGCMaxUsedTime(): void
@@ -316,6 +320,8 @@ class PoolConnectionManagerTest extends TestCase
         }
         $this->assertEquals(ConnectionStatus::Unavailable, $connection->getStatus());
         $this->assertFalse($instance->connected);
+
+        $connectionManager->close();
     }
 
     public function testCheckStateWhenGetResource(): void
@@ -332,5 +338,7 @@ class PoolConnectionManagerTest extends TestCase
         $connection = $connectionManager->getConnection();
         $instance = $connection->getInstance();
         $this->assertEquals(1, $instance->available);
+
+        $connectionManager->close();
     }
 }
