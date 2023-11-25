@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Test\Component\Tests;
+namespace Imi\Swoole\Test\Component\Tests;
 
 use Imi\RequestContext;
 use Imi\Test\BaseTest;
+
+use function Yurun\Swoole\Coroutine\goWait;
 
 /**
  * @testdox RequestContext
@@ -15,13 +17,14 @@ class RequestContextTest extends BaseTest
     public function testDefer(): void
     {
         $result = [];
-        RequestContext::defer(static function () use (&$result): void {
-            $result[] = 1;
-        });
-        RequestContext::defer(static function () use (&$result): void {
-            $result[] = 2;
-        });
-        RequestContext::destroy();
+        goWait(static function () use (&$result): void {
+            RequestContext::defer(static function () use (&$result): void {
+                $result[] = 1;
+            });
+            RequestContext::defer(static function () use (&$result): void {
+                $result[] = 2;
+            });
+        }, -1, true);
         $this->assertEquals([2, 1], $result);
     }
 

@@ -82,7 +82,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
-        $this->lockCoId = RequestContext::getCurrentFlag();
+        $this->lockCoId = RequestContext::getCurrentId();
         $this->beginTime = microtime(true);
         if (null === $taskCallable)
         {
@@ -121,7 +121,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
-        $this->lockCoId = RequestContext::getCurrentFlag();
+        $this->lockCoId = RequestContext::getCurrentId();
         $this->beginTime = microtime(true);
         if (null !== $taskCallable)
         {
@@ -185,7 +185,7 @@ abstract class BaseLock implements ILockHandler
      */
     public function isLocked(): bool
     {
-        return $this->isLocked && $this->lockCoId === RequestContext::getCurrentFlag();
+        return $this->isLocked && $this->lockCoId === RequestContext::getCurrentId();
     }
 
     /**

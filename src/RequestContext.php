@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Bean\Container;
+use Imi\Core\Context\ContextData;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\DefaultContextManager;
 use Imi\Server\Contract\IServer;
@@ -36,37 +37,37 @@ class RequestContext
     /**
      * 获取当前上下文标识.
      */
-    public static function getCurrentFlag(): string
+    public static function getCurrentId(): string|int
     {
-        return static::getInstance()->getCurrentFlag();
+        return static::getInstance()->getCurrentId();
     }
 
     /**
      * 为当前请求创建上下文，返回当前协程ID.
      */
-    public static function create(array $data = []): \ArrayObject
+    public static function create(array $data = []): ContextData
     {
         $instance = static::getInstance();
 
-        return $instance->create($instance->getCurrentFlag(), $data);
+        return $instance->create($instance->getCurrentId(), $data);
     }
 
     /**
      * 销毁上下文.
      */
-    public static function destroy(?string $flag = null): bool
+    public static function destroy(string|int|null $id = null): bool
     {
         $instance = static::getInstance();
 
-        return $instance->destroy($flag ?? $instance->getCurrentFlag());
+        return $instance->destroy($id ?? $instance->getCurrentId());
     }
 
     /**
      * 上下文是否存在.
      */
-    public static function exists(string $flag): bool
+    public static function exists(string|int $id): bool
     {
-        return static::getInstance()->exists($flag);
+        return static::getInstance()->exists($id);
     }
 
     /**
@@ -75,7 +76,7 @@ class RequestContext
     public static function get(string $name, mixed $default = null): mixed
     {
         $instance = static::getInstance();
-        $context = $instance->get($instance->getCurrentFlag(), true);
+        $context = $instance->get($instance->getCurrentId(), true);
 
         return $context[$name] ?? $default;
     }
@@ -86,7 +87,7 @@ class RequestContext
     public static function set(string $name, mixed $value): void
     {
         $instance = static::getInstance();
-        $context = $instance->get($instance->getCurrentFlag(), true);
+        $context = $instance->get($instance->getCurrentId(), true);
         $context[$name] = $value;
     }
 
@@ -96,7 +97,7 @@ class RequestContext
     public static function muiltiSet(array $data): void
     {
         $instance = static::getInstance();
-        $context = $instance->get($instance->getCurrentFlag(), true);
+        $context = $instance->get($instance->getCurrentId(), true);
         foreach ($data as $k => $v)
         {
             $context[$k] = $v;
@@ -109,7 +110,7 @@ class RequestContext
     public static function use(callable $callback): mixed
     {
         $instance = static::getInstance();
-        $context = $instance->get($instance->getCurrentFlag(), true);
+        $context = $instance->get($instance->getCurrentId(), true);
 
         return $callback($context);
     }
@@ -137,14 +138,19 @@ class RequestContext
         }
     }
 
+    public static function defer(callable $callback): void
+    {
+        self::getContext()->defer($callback);
+    }
+
     /**
      * 获取当前上下文.
      */
-    public static function getContext(): \ArrayObject
+    public static function getContext(): ContextData
     {
         $instance = static::getInstance();
 
-        return $instance->get($instance->getCurrentFlag(), true);
+        return $instance->get($instance->getCurrentId(), true);
     }
 
     /**

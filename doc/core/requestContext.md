@@ -67,3 +67,21 @@ $result = \Imi\RequestContext::remember('myKey3', function () {
     return 1 + 2;
 });
 ```
+
+### 推迟执行
+
+当协程释放时触发，先进后出
+
+```php
+use function Yurun\Swoole\Coroutine\goWait;
+$result = [];
+goWait(static function () use (&$result): void {
+    RequestContext::defer(static function () use (&$result): void {
+        $result[] = 1;
+    });
+    RequestContext::defer(static function () use (&$result): void {
+        $result[] = 2;
+    });
+}, -1, true);
+var_dump($result); // [2, 1]
+```

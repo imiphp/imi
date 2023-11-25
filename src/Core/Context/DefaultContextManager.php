@@ -17,7 +17,7 @@ class DefaultContextManager implements IContextManager
     /**
      * 上下文对象集合.
      *
-     * @var \ArrayObject[]
+     * @var ContextData[]
      */
     private array $contexts = [];
 
@@ -26,11 +26,11 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function create(string $flag, array $data = []): \ArrayObject
+    public function create(string|int $id, array $data = []): ContextData
     {
-        if (isset($this->contexts[$flag]))
+        if (isset($this->contexts[$id]))
         {
-            throw new ContextExistsException(sprintf('Context %s already exists!', $flag));
+            throw new ContextExistsException(sprintf('Context %s already exists!', $id));
         }
 
         // 脚本执行结束时自动销毁上下文
@@ -40,18 +40,24 @@ class DefaultContextManager implements IContextManager
             $this->bindAutoDestroy();
         }
 
-        return $this->contexts[$flag] = new \ArrayObject($data, \ArrayObject::ARRAY_AS_PROPS);
+        return $this->contexts[$id] = new ContextData($data);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function destroy(string $flag): bool
+    public function destroy(string|int $id): bool
     {
-        if (isset($this->contexts[$flag]))
+        if (isset($this->contexts[$id]))
         {
+            // TODO: 实现新的连接管理器后移除
             Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
-            unset($this->contexts[$flag]);
+            $deferCallbacks = $this->contexts[$id]->getDeferCallbacks();
+            while (!$deferCallbacks->isEmpty())
+            {
+                $deferCallbacks->pop()();
+            }
+            unset($this->contexts[$id]);
 
             return true;
         }
@@ -64,32 +70,32 @@ class DefaultContextManager implements IContextManager
     /**
      * {@inheritDoc}
      */
-    public function get(string $flag, bool $autoCreate = false): \ArrayObject
+    public function get(string|int $id, bool $autoCreate = false): ContextData
     {
-        if (!isset($this->contexts[$flag]))
+        if (!isset($this->contexts[$id]))
         {
             if ($autoCreate)
             {
-                return $this->create($flag);
+                return $this->create($id);
             }
-            throw new ContextNotFoundException(sprintf('Context %s does not exists!', $flag));
+            throw new ContextNotFoundException(sprintf('Context %s does not exists!', $id));
         }
 
-        return $this->contexts[$flag];
+        return $this->contexts[$id];
     }
 
     /**
      * {@inheritDoc}
      */
-    public function exists(string $flag): bool
+    public function exists(string|int $id): bool
     {
-        return isset($this->contexts[$flag]);
+        return isset($this->contexts[$id]);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getCurrentFlag(): string
+    public function getCurrentId(): string|int
     {
         return 'default';
     }
@@ -99,9 +105,9 @@ class DefaultContextManager implements IContextManager
         register_shutdown_function(function (): void {
             if ($this->contexts)
             {
-                foreach ($this->contexts as $flag => $_)
+                foreach ($this->contexts as $id => $_)
                 {
-                    $this->destroy($flag);
+                    $this->destroy($id);
                 }
             }
         });
