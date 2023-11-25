@@ -20,7 +20,7 @@ use function Swoole\Coroutine\defer;
 
 if (class_exists(\Imi\AMQP\Main::class))
 {
-    #[Bean(name: 'AmqpServerUtil', env: 'swoole', recursion: false)]
+    #[Bean(name: 'AmqpServerUtil', env: 'swoole')]
     class AmqpServerUtil extends LocalServerUtil
     {
         /**

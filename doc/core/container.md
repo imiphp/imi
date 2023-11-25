@@ -285,8 +285,10 @@ namespace Test;
 #[Bean()]
 // 指定名称
 #[Bean(name: 'MyTest')]
-// 下面是禁用递归依赖和设置实例化类型，可以根据实际情况设置
-#[Bean(instanceType: \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_SINGLETON, recursion: false)]
+// 每次强制实例化
+#[Bean(instanceType: \Imi\Bean\Annotation\Bean::INSTANCE_TYPE_EACH_NEW)]
+// 启用递归特性，支持两个Bean类互相依赖
+#[Bean(recursion: true)]
 // 下面是限制生效的环境，支持一个或多个
 #[Bean(env: 'swoole')]
 #[Bean(env: ['swoole', 'workerman'])]

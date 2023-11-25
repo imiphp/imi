@@ -23,7 +23,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-#[Bean(name: 'ActionMiddleware', recursion: false)]
+#[Bean(name: 'ActionMiddleware')]
 class ActionMiddleware implements MiddlewareInterface
 {
     #[ServerInject(name: 'View')]

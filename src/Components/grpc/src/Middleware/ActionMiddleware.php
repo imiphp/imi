@@ -27,7 +27,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-#[Bean(name: 'GrpcActionMiddleware', recursion: false)]
+#[Bean(name: 'GrpcActionMiddleware')]
 class ActionMiddleware implements MiddlewareInterface
 {
     #[ServerInject(name: 'View')]

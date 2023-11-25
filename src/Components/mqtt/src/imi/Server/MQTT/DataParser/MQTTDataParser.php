@@ -11,7 +11,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\DataParser\IParser;
 use Imi\Server\MQTT\Exception\InvalidReceiveData;
 
-#[Bean(recursion: false)]
+#[Bean()]
 class MQTTDataParser implements IParser
 {
     #[Inject(name: \BinSoul\Net\Mqtt\DefaultPacketFactory::class)]

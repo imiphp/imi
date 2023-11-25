@@ -11,7 +11,7 @@ use Imi\Timer\Timer;
 /**
  * 连接上下文存储处理器-Local.
  */
-#[Bean(name: 'ConnectionContextLocal', recursion: false)]
+#[Bean(name: 'ConnectionContextLocal')]
 class Local implements IHandler
 {
     /**

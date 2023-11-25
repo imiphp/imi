@@ -7,7 +7,7 @@ namespace Imi\Server\Session;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Annotation\ServerInject;
 
-#[Bean(name: 'SessionConfig', recursion: false)]
+#[Bean(name: 'SessionConfig')]
 class SessionConfig
 {
     #[ServerInject(name: 'SessionCookie')]

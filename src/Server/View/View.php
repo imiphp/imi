@@ -13,7 +13,7 @@ use Imi\Server\View\Annotation\View as ViewAnnotation;
 /**
  * 视图类.
  */
-#[Bean(name: 'View', recursion: false)]
+#[Bean(name: 'View')]
 class View
 {
     /**

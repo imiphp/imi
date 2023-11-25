@@ -18,7 +18,7 @@ use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Util\Http\Consts\ResponseHeader;
 use Imi\Util\Http\Consts\StatusCode;
 
-#[Bean(name: 'GrpcHttpProxy', recursion: false)]
+#[Bean(name: 'GrpcHttpProxy')]
 class GrpcHttpProxy
 {
     #[Inject(name: 'GrpcInterfaceManager')]

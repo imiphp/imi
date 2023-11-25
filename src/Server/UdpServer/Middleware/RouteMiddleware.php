@@ -12,7 +12,7 @@ use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 use Imi\Server\UdpServer\Route\UdpRoute;
 
-#[Bean(name: 'UDPRouteMiddleware', recursion: false)]
+#[Bean(name: 'UDPRouteMiddleware')]
 class RouteMiddleware implements IMiddleware
 {
     #[ServerInject(name: 'UdpRoute')]

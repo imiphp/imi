@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\ConnectionContext\StoreHandler\Local;
 
-#[Bean(name: 'ConnectionContextAmqp', env: 'swoole', recursion: false)]
+#[Bean(name: 'ConnectionContextAmqp', env: 'swoole')]
 class Amqp extends Local
 {
     /**

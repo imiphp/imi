@@ -10,7 +10,7 @@ use Imi\Server\DataParser\DataParser;
 use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\IFrame;
 
-#[Bean(name: 'WebSocketDispatcher', recursion: false)]
+#[Bean(name: 'WebSocketDispatcher')]
 class Dispatcher
 {
     /**

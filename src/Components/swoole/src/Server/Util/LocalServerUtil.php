@@ -20,7 +20,7 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 
-#[Bean(name: 'LocalServerUtil', env: 'swoole', recursion: false)]
+#[Bean(name: 'LocalServerUtil', env: 'swoole')]
 class LocalServerUtil implements ISwooleServerUtil
 {
     protected bool $needResponse = true;

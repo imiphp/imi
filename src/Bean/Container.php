@@ -107,7 +107,7 @@ final class Container implements ContainerInterface
                         }
                         else
                         {
-                            $object = BeanFactory::newInstance($className, ...$params);
+                            $object = BeanFactory::newBeanInstance($className, $originId, ...$params);
                         }
                     }
                     else
@@ -130,7 +130,7 @@ final class Container implements ContainerInterface
                         }
                         else
                         {
-                            $object = BeanFactory::newInstance($className, ...$params);
+                            $object = BeanFactory::newBeanInstance($className, $originId, ...$params);
                         }
                     }
                     else
@@ -140,7 +140,7 @@ final class Container implements ContainerInterface
                 }
                 elseif (class_exists($id))
                 {
-                    $object = BeanFactory::newInstanceNoInit($id, ...$params);
+                    $object = BeanFactory::newBeanInstance($id, $originId, ...$params);
                 }
                 else
                 {
@@ -160,7 +160,7 @@ final class Container implements ContainerInterface
             $beanObjects[$originId] = $object;
         }
 
-        if ($data['recursion'] ?? true)
+        if ($data['recursion'] ?? false)
         {
             // @phpstan-ignore-next-line
             BeanFactory::initInstance($object, $params, $originId);
@@ -286,7 +286,7 @@ final class Container implements ContainerInterface
     /**
      * 绑定名称和类名.
      */
-    public function bind(string $name, string $class, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON, bool $recursion = true): void
+    public function bind(string $name, string $class, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON, bool $recursion = false): void
     {
         $this->binds[$name] = [
             'className'    => $class,
@@ -316,7 +316,7 @@ final class Container implements ContainerInterface
                 $value = [
                     'className'    => $value,
                     'instanceType' => Bean::INSTANCE_TYPE_SINGLETON,
-                    'recursion'    => true,
+                    'recursion'    => false,
                 ];
             }
             $result[$key] = $value;
@@ -336,7 +336,7 @@ final class Container implements ContainerInterface
                 $value = [
                     'className'    => $value,
                     'instanceType' => Bean::INSTANCE_TYPE_SINGLETON,
-                    'recursion'    => true,
+                    'recursion'    => false,
                 ];
             }
             $this->binds[$key] = $value;

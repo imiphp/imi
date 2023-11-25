@@ -120,7 +120,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  */
 #[
     \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\Http\Message\Contract\IHttpRequest::class, name: 'request'),
-    \Imi\Bean\Annotation\Bean(name: 'HttpRequestProxy', recursion: false)
+    \Imi\Bean\Annotation\Bean(name: 'HttpRequestProxy')
 ]
 class RequestProxyObject extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpRequest
 {

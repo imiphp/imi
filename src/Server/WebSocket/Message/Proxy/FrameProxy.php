@@ -22,7 +22,7 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  */
 #[
     \Imi\RequestContextProxy\Annotation\RequestContextProxy(class: \Imi\Server\WebSocket\Message\IFrame::class, name: 'frame'),
-    \Imi\Bean\Annotation\Bean(name: 'WebSocketFrameProxy', recursion: false)
+    \Imi\Bean\Annotation\Bean(name: 'WebSocketFrameProxy')
 ]
 class FrameProxy extends BaseRequestContextProxy implements \Imi\Server\WebSocket\Message\IFrame
 {

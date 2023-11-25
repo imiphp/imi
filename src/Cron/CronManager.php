@@ -18,7 +18,7 @@ use Imi\Util\Process\ProcessType;
 /**
  * 定时任务管理器.
  */
-#[Bean(name: 'CronManager', recursion: false)]
+#[Bean(name: 'CronManager')]
 class CronManager implements ICronManager
 {
     /**
