@@ -7,6 +7,8 @@ namespace Imi\Swoole\Test\Component\Tests;
 use Imi\RequestContext;
 use Imi\Test\BaseTest;
 
+use function Yurun\Swoole\Coroutine\goWait;
+
 /**
  * @testdox RequestContext
  */
@@ -14,12 +16,16 @@ class RequestContextTest extends BaseTest
 {
     public function testDefer(): void
     {
-        $success = false;
-        RequestContext::defer(static function () use (&$success): void {
-            $success = true;
-        });
-        RequestContext::destroy();
-        $this->assertTrue($success);
+        $result = [];
+        goWait(static function () use (&$result): void {
+            RequestContext::defer(static function () use (&$result): void {
+                $result[] = 1;
+            });
+            RequestContext::defer(static function () use (&$result): void {
+                $result[] = 2;
+            });
+        }, -1, true);
+        $this->assertEquals([2, 1], $result);
     }
 
     public function testRemember(): void

@@ -9,7 +9,6 @@ use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
 use Imi\Event\Event;
-use Imi\Log\Log;
 use Imi\Swoole\Util\Coroutine;
 
 /**
@@ -36,7 +35,7 @@ class CoroutineContextManager implements IContextManager
             if (!($swooleContext[static::class]['destroyBinded'] ?? false))
             {
                 $swooleContext[static::class]['destroyBinded'] = true;
-                Coroutine::defer($this->__destroy(...));
+                Coroutine::defer(fn () => $this->destroy($id));
             }
             $context = $swooleContext[static::class]['context'] ?? null;
             if ($context)
@@ -79,6 +78,8 @@ class CoroutineContextManager implements IContextManager
             {
                 return false;
             }
+            // TODO: 实现新的连接管理器后移除
+            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
             /** @var ContextData $context */
             $context = $swooleContext[static::class]['context'];
             $deferCallbacks = $context->getDeferCallbacks();
@@ -92,6 +93,8 @@ class CoroutineContextManager implements IContextManager
         }
         elseif (isset($this->contexts[$id]))
         {
+            // TODO: 实现新的连接管理器后移除
+            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
             $deferCallbacks = $this->contexts[$id]->getDeferCallbacks();
             while (!$deferCallbacks->isEmpty())
             {
@@ -119,7 +122,7 @@ class CoroutineContextManager implements IContextManager
             if (!($swooleContext[static::class]['destroyBinded'] ?? false))
             {
                 $swooleContext[static::class]['destroyBinded'] = true;
-                Coroutine::defer($this->__destroy(...));
+                Coroutine::defer(fn () => $this->destroy($id));
             }
 
             if (!isset($swooleContext[static::class]['context']))
@@ -171,28 +174,5 @@ class CoroutineContextManager implements IContextManager
     public function getCurrentId(): string|int
     {
         return (string) Coroutine::getCid();
-    }
-
-    /**
-     * 销毁当前请求的上下文.
-     *
-     * 不要手动调用！不要手动调用！不要手动调用！
-     */
-    public function __destroy(): void
-    {
-        try
-        {
-            // TODO: 实现新的连接管理器后移除
-            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
-            $context = Coroutine::getContext();
-            if (!$context)
-            {
-                unset($this->contexts[Coroutine::getCid()]);
-            }
-        }
-        catch (\Throwable $th)
-        {
-            Log::error($th);
-        }
     }
 }

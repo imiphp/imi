@@ -14,12 +14,15 @@ class RequestContextTest extends BaseTest
 {
     public function testDefer(): void
     {
-        $success = false;
-        RequestContext::defer(static function () use (&$success): void {
-            $success = true;
+        $result = [];
+        RequestContext::defer(static function () use (&$result): void {
+            $result[] = 1;
+        });
+        RequestContext::defer(static function () use (&$result): void {
+            $result[] = 2;
         });
         RequestContext::destroy();
-        $this->assertTrue($success);
+        $this->assertEquals([2, 1], $result);
     }
 
     public function testRemember(): void
