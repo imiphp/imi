@@ -11,6 +11,7 @@ use Imi\ConnectionCenter\Contract\IConnection;
 use Imi\ConnectionCenter\Contract\IConnectionManagerConfig;
 use Imi\ConnectionCenter\Contract\IConnectionManagerStatistics;
 use Imi\ConnectionCenter\Enum\ConnectionStatus;
+use Imi\Core\Context\ContextData;
 use Imi\RequestContext;
 
 /**
@@ -71,7 +72,7 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
             throw new \RuntimeException('Connection manager is unavailable');
         }
 
-        return RequestContext::use(function (\ArrayObject $context) {
+        return RequestContext::use(function (ContextData $context) {
             if ($enableStatistics = $this->config->isEnableStatistics())
             {
                 $beginTime = microtime(true);
@@ -115,8 +116,15 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
                 // 创建新实例
                 $connection = $this->createConnection();
                 $instance = $connection->getInstance();
-                $this->instanceMap[$instance] = new ConnectionData($connection, RequestContext::getCurrentFlag());
+                $this->instanceMap[$instance] = $connectionData = new ConnectionData($connection, RequestContext::getCurrentId());
                 $context[static::class][$this->id] = $instance;
+                $context->defer(static function () use ($connectionData): void {
+                    /** @var IConnection|null $connection */
+                    if (($connection = $connectionData->getConnection()->get()) && ConnectionStatus::Available === $connection->getStatus())
+                    {
+                        $connection->release();
+                    }
+                });
                 if ($enableStatistics)
                 {
                     $this->statistics->changeTotalConnectionCount(1);
@@ -148,11 +156,15 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
         if (isset($this->instanceMap[$instance]))
         {
             $connectionData = $this->instanceMap[$instance];
-            $context = RequestContext::getInstance()->get($connectionData->getContextFlag());
-            if (isset($context[static::class][$this->id]) && $context[static::class][$this->id] === $instance)
+            $requestContextInstance = RequestContext::getInstance();
+            if ($requestContextInstance->exists($contextFlag = $connectionData->getContextFlag()))
             {
-                // 删除连接上下文实例
-                unset($context[static::class][$this->id]);
+                $context = $requestContextInstance->get($contextFlag);
+                if (isset($context[static::class][$this->id]) && $context[static::class][$this->id] === $instance)
+                {
+                    // 删除连接上下文实例
+                    unset($context[static::class][$this->id]);
+                }
             }
         }
         // 关闭连接

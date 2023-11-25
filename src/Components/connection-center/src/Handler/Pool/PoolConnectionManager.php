@@ -65,6 +65,10 @@ class PoolConnectionManager extends AbstractConnectionManager
      */
     protected int $addingResources = 0;
 
+    protected ?\Closure $stopAutoGCClosure = null;
+
+    protected ?\Closure $stopHeartbeatClosure = null;
+
     /**
      * @param PoolConnectionManagerConfig $config
      */
@@ -370,7 +374,7 @@ class PoolConnectionManager extends AbstractConnectionManager
         if ($gcInterval > 0)
         {
             $this->gcTimerId = Timer::tick((int) ($gcInterval * 1000), $this->gc(...));
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopAutoGC(...), \Imi\Util\ImiPriority::IMI_MIN + 1);
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopAutoGCClosure ??= $this->stopAutoGC(...), \Imi\Util\ImiPriority::IMI_MIN + 1);
         }
     }
 
@@ -381,8 +385,11 @@ class PoolConnectionManager extends AbstractConnectionManager
     {
         if (null !== $this->gcTimerId)
         {
-            Event::off(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopAutoGC(...));
             Timer::del($this->gcTimerId);
+        }
+        if ($this->stopAutoGCClosure)
+        {
+            Event::off(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopAutoGCClosure);
         }
     }
 
@@ -447,7 +454,7 @@ class PoolConnectionManager extends AbstractConnectionManager
         if (null !== ($heartbeatInterval = $this->config->getPool()->getHeartbeatInterval()))
         {
             $this->heartbeatTimerId = Timer::tick((int) ($heartbeatInterval * 1000), $this->heartbeat(...));
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopHeartbeat(...), \Imi\Util\ImiPriority::IMI_MIN + 1);
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopHeartbeatClosure ??= $this->stopHeartbeat(...), \Imi\Util\ImiPriority::IMI_MIN + 1);
         }
     }
 
@@ -458,9 +465,12 @@ class PoolConnectionManager extends AbstractConnectionManager
     {
         if (null !== $this->heartbeatTimerId)
         {
-            Event::off(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopHeartbeat(...));
             Timer::del($this->heartbeatTimerId);
             $this->heartbeatTimerId = null;
+        }
+        if ($this->stopHeartbeatClosure)
+        {
+            Event::off(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], $this->stopHeartbeatClosure);
         }
     }
 

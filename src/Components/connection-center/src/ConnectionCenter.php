@@ -7,6 +7,7 @@ namespace Imi\ConnectionCenter;
 use Imi\App;
 use Imi\ConnectionCenter\Contract\IConnection;
 use Imi\ConnectionCenter\Contract\IConnectionManager;
+use Imi\ConnectionCenter\Enum\ConnectionStatus;
 use Imi\RequestContext;
 
 class ConnectionCenter
@@ -97,6 +98,14 @@ class ConnectionCenter
             $requestContext[static::class][$name] = [
                 'connection'  => $connection,
             ];
+            $connectionRef = \WeakReference::create($connection);
+            $requestContext->defer(static function () use ($connectionRef): void {
+                /** @var IConnection|null $connection */
+                if (($connection = $connectionRef->get()) && ConnectionStatus::Available === $connection->getStatus())
+                {
+                    $connection->release();
+                }
+            });
         }
         if (($managerConfig ?? $connection->getManager()->getConfig())->isCheckStateWhenGetResource())
         {

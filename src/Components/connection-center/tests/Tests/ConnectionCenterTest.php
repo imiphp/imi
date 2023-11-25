@@ -12,6 +12,7 @@ use Imi\ConnectionCenter\Handler\Pool\PoolConnectionManager;
 use Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager;
 use Imi\ConnectionCenter\Handler\Singleton\SingletonConnectionManager;
 use Imi\ConnectionCenter\Test\Driver\TestDriver;
+use Imi\RequestContext;
 use PHPUnit\Framework\TestCase;
 
 use function Imi\env;
@@ -139,6 +140,39 @@ class ConnectionCenterTest extends TestCase
         {
             $connection = self::$connectionCenter->getRequestContextConnection($name);
             $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        }
+
+        // 连接上下文销毁释放测试
+
+        // 请求上下文单例
+        if (RequestContext::exists(RequestContext::getCurrentId()))
+        {
+            RequestContext::destroy();
+            RequestContext::create();
+        }
+        $manager = self::$connectionCenter->getConnectionManager('requestContextSingleton');
+        $connection = self::$connectionCenter->getRequestContextConnection('requestContextSingleton');
+        $this->assertEquals(1, $manager->getStatistics()->getTotalConnectionCount());
+        RequestContext::destroy();
+        RequestContext::create();
+        $this->assertEquals(ConnectionStatus::Unavailable, $connection->getStatus());
+        $this->assertEquals(0, $manager->getStatistics()->getTotalConnectionCount());
+
+        // 连接池
+        if ('swoole' === env('CONNECTION_CENTER_TEST_MODE'))
+        {
+            if (RequestContext::exists(RequestContext::getCurrentId()))
+            {
+                RequestContext::destroy();
+                RequestContext::create();
+            }
+            $manager = self::$connectionCenter->getConnectionManager('pool');
+            $connection = self::$connectionCenter->getRequestContextConnection('pool');
+            $this->assertEquals(0, $manager->getStatistics()->getFreeConnectionCount());
+            RequestContext::destroy();
+            RequestContext::create();
+            $this->assertEquals(ConnectionStatus::Unavailable, $connection->getStatus());
+            $this->assertEquals(1, $manager->getStatistics()->getFreeConnectionCount());
         }
     }
 
