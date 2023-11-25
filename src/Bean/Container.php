@@ -107,7 +107,7 @@ final class Container implements ContainerInterface
                         }
                         else
                         {
-                            $object = BeanFactory::newInstance($className, ...$params);
+                            $object = BeanFactory::newBeanInstance($className, $originId, ...$params);
                         }
                     }
                     else
@@ -130,7 +130,7 @@ final class Container implements ContainerInterface
                         }
                         else
                         {
-                            $object = BeanFactory::newInstance($className, ...$params);
+                            $object = BeanFactory::newBeanInstance($className, $originId, ...$params);
                         }
                     }
                     else
@@ -140,7 +140,7 @@ final class Container implements ContainerInterface
                 }
                 elseif (class_exists($id))
                 {
-                    $object = BeanFactory::newInstance($id, ...$params);
+                    $object = BeanFactory::newBeanInstance($id, $originId, ...$params);
                 }
                 else
                 {
