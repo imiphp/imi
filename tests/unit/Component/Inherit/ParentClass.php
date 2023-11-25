@@ -7,8 +7,8 @@ namespace Imi\Test\Component\Inherit;
 use Imi\Aop\Annotation\FilterArg;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Annotation\Callback;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Db\Annotation\Transaction;
-use Imi\Enum\Annotation\EnumItem;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
@@ -24,10 +24,10 @@ class ParentClass
     #[Callback(class: 'Test', method: 'test')]
     public int $id2;
 
-    #[EnumItem]
+    #[Inherit]
     public const CCC = 1;
 
-    #[EnumItem]
+    #[Inherit]
     public const CCC2 = 1;
 
     #[FilterArg]

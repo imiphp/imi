@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests\Annotation;
 
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Test\BaseTest;
 
 /**
@@ -46,9 +47,9 @@ class AnnotationTest extends BaseTest
     public function testConstantAnnotation(): void
     {
         $annotations = AnnotationManager::getConstantAnnotations($this->className, 'CONST_VALUE');
-        /** @var \Imi\Enum\Annotation\EnumItem $enumItem */
+        /** @var Inherit|null $enumItem */
         $enumItem = $annotations[0] ?? null;
         $this->assertNotNull($enumItem);
-        $this->assertEquals('test', $enumItem->text);
+        $this->assertInstanceOf(Inherit::class, $enumItem);
     }
 }

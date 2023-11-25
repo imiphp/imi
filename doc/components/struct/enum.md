@@ -6,6 +6,10 @@
 
 > 此功能在 3.0 不会被内置，需要手动安装 `imi-old-enum` 组件。强烈建议使用 PHP 原生枚举！
 
+## 安装
+
+`composer require imiphp/imi-old-enum:~3.0.0`
+
 ## 枚举类定义
 
 继承`Imi\Enum\BaseEnum`类，然后在类常量上面写上注解`EnumItem`，参数是当前常量的文字说明。

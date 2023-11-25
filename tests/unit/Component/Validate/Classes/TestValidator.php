@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Validate\Classes;
 
+use Imi\Test\Component\Enum\TestEnumBean;
 use Imi\Validate\Annotation\Compare;
 use Imi\Validate\Annotation\Decimal;
 use Imi\Validate\Annotation\InEnum;
@@ -18,7 +19,7 @@ use Imi\Validate\Validator;
 
 #[Compare(name: 'compare', operation: '<', value: 0, exception: 'InvalidArgumentException', exCode: 0)]
 #[Decimal(name: 'decimal', min: 1, max: 10, accuracy: 2, exception: 'InvalidArgumentException', exCode: 0)]
-#[InEnum(name: 'enum', enum: 'Imi\\Test\\Component\\Enum\\TestEnum', exception: 'InvalidArgumentException', exCode: 0)]
+#[InEnum(name: 'enum', enum: TestEnumBean::class, exception: 'InvalidArgumentException', exCode: 0)]
 #[InList(name: 'in', list: [1, 2, 3], message: '{:value} 不在列表内', exception: 'InvalidArgumentException', exCode: 0)]
 #[Integer(name: 'int', min: 0, max: 100, message: '{:value} 不符合大于等于{min}且小于等于{max}', exception: 'InvalidArgumentException', exCode: 0)]
 #[Required(name: 'required', message: '{name}为必须参数', exception: 'InvalidArgumentException', exCode: 0)]
