@@ -119,7 +119,6 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
                 $this->instanceMap[$instance] = $connectionData = new ConnectionData($connection, RequestContext::getCurrentId());
                 $context[static::class][$this->id] = $instance;
                 $context->defer(static function () use ($connectionData): void {
-                    /** @var IConnection|null $connection */
                     if (($connection = $connectionData->getConnection()->get()) && ConnectionStatus::Available === $connection->getStatus())
                     {
                         $connection->release();

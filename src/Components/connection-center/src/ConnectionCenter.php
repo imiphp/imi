@@ -100,7 +100,6 @@ class ConnectionCenter
             ];
             $connectionRef = \WeakReference::create($connection);
             $requestContext->defer(static function () use ($connectionRef): void {
-                /** @var IConnection|null $connection */
                 if (($connection = $connectionRef->get()) && ConnectionStatus::Available === $connection->getStatus())
                 {
                     $connection->release();
