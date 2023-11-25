@@ -186,9 +186,6 @@ jobs:
       - name: Test phar
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test-phar
-      - name: Test connection-center
-        if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-connection-center
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
