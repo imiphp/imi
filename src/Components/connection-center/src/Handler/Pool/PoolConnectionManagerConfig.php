@@ -18,13 +18,13 @@ class PoolConnectionManagerConfig extends AbstractConnectionManagerConfig
             $poolConfig = [];
             if (isset($config['pool']))
             {
-                if (isset($config['pool']['maxResources']))
-                {
-                    $poolConfig['maxResources'] = $config['pool']['maxResources'];
-                }
                 if (isset($config['pool']['minResources']))
                 {
                     $poolConfig['minResources'] = $config['pool']['minResources'];
+                }
+                if (isset($config['pool']['maxResources']))
+                {
+                    $poolConfig['maxResources'] = $config['pool']['maxResources'];
                 }
                 if (isset($config['pool']['gcInterval']))
                 {
@@ -53,10 +53,6 @@ class PoolConnectionManagerConfig extends AbstractConnectionManagerConfig
                 if (isset($config['pool']['heartbeatInterval']))
                 {
                     $poolConfig['heartbeatInterval'] = $config['pool']['heartbeatInterval'];
-                }
-                if (isset($config['pool']['resourceConfigMode']))
-                {
-                    $poolConfig['resourceConfigMode'] = $config['pool']['resourceConfigMode'];
                 }
                 if (isset($config['pool']['checkStateWhenGetResource']))
                 {

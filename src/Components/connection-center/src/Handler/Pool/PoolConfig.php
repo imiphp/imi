@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\ConnectionCenter\Handler\Pool;
 
-use Imi\Pool\ResourceConfigMode;
-
 /**
  * 连接池连接管理器配置.
  */
@@ -13,13 +11,15 @@ class PoolConfig
 {
     public function __construct(
         /**
-         * 池子中最多资源数.
-         */
-        protected int $maxResources = 32,
-        /**
-         * 池子中最少资源数.
+         * 最少资源数.
+         *
+         * 启动连接池时会自动填充到该数量的连接
          */
         protected int $minResources = 1,
+        /**
+         * 最多资源数.
+         */
+        protected int $maxResources = 32,
         /**
          * 资源回收时间间隔，单位：秒.
          */
@@ -48,10 +48,6 @@ class PoolConfig
          * 心跳时间间隔，单位：秒.
          */
         protected ?float $heartbeatInterval = 60,
-        /**
-         * 资源配置模式.
-         */
-        protected int $resourceConfigMode = ResourceConfigMode::ROUND_ROBIN,
     ) {
     }
 
@@ -78,11 +74,6 @@ class PoolConfig
     public function getWaitTimeout(): float
     {
         return $this->waitTimeout;
-    }
-
-    public function getResourceConfigMode(): int
-    {
-        return $this->resourceConfigMode;
     }
 
     public function getMaxUsedTime(): ?float
