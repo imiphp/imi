@@ -45,7 +45,14 @@ abstract class AbstractConnectionManager implements IConnectionManager
 
         $driver = $this->config->getDriver();
 
-        return $this->driver = App::newInstance($driver, $driver::createConnectionConfig($this->config->getConfig()));
+        $connectionConfigs = [];
+        foreach ($this->config->getConfig()['resources'] ?? [] as $resource)
+        {
+            $connectionConfigs[] = $driver::createConnectionConfig($resource);
+        }
+        $connectionLoadBalancer = App::newInstance($this->config->getLoadBalancer(), $connectionConfigs);
+
+        return $this->driver = App::newInstance($driver, $connectionLoadBalancer);
     }
 
     protected function createInstance(bool $connect = true): object

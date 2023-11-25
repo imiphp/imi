@@ -9,5 +9,12 @@ namespace Imi\ConnectionCenter\Contract;
  */
 interface IConnectionConfig
 {
-    public static function createFromArray(array $config): self;
+    public static function create(string|array $config): self;
+
+    public static function parseStringConfig(string $string): array;
+
+    /**
+     * 权重.
+     */
+    public function getWeight(): float;
 }

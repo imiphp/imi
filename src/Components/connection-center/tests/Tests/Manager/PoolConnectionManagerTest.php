@@ -28,7 +28,7 @@ class PoolConnectionManagerTest extends TestCase
 
     public function testCreateConnectionManager(bool $enableStatistics = true): PoolConnectionManager
     {
-        $connectionManager = App::newInstance(PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
+        $connectionManager = App::newInstance(PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resources' => [['test' => true]]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -232,7 +232,7 @@ class PoolConnectionManagerTest extends TestCase
         $connectionManager = App::newInstance(PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'pool' => [
             'gcInterval'    => 1,
             'maxActiveTime' => 1,
-        ], 'resource' => ['test' => true]]));
+        ], 'resources' => [['test' => true]]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -266,7 +266,7 @@ class PoolConnectionManagerTest extends TestCase
             'minResources' => 0,
             'gcInterval'   => 1,
             'maxIdleTime'  => 1,
-        ], 'resource' => ['test' => true]]));
+        ], 'resources' => [['test' => true]]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -299,7 +299,7 @@ class PoolConnectionManagerTest extends TestCase
         $connectionManager = App::newInstance(PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'pool' => [
             'gcInterval'   => 1,
             'maxUsedTime'  => 1,
-        ], 'resource' => ['test' => true]]));
+        ], 'resources' => [['test' => true]]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -329,7 +329,7 @@ class PoolConnectionManagerTest extends TestCase
         $connectionManager = App::newInstance(PoolConnectionManager::class, PoolConnectionManager::createConfig([
             'driver'                    => TestDriver::class,
             'enableStatistics'          => true,
-            'resource'                  => ['test' => true],
+            'resources'                 => [['test' => true]],
             'checkStateWhenGetResource' => true,
         ]));
 

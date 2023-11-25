@@ -6,25 +6,32 @@ namespace Imi\ConnectionCenter\Contract;
 
 abstract class AbstractConnectionDriver implements IConnectionDriver
 {
-    public function __construct(protected IConnectionConfig $config)
+    public function __construct(protected IConnectionLoadBalancer $connectionLoadBalancer)
     {
     }
 
-    /**
-     * 设置连接配置.
-     */
-    public function setConnectionConfig(IConnectionConfig $config): self
+    public function setConnectionLoadBalancer(IConnectionLoadBalancer $connectionLoadBalancer): self
     {
-        $this->config = $config;
+        $this->connectionLoadBalancer = $connectionLoadBalancer;
 
         return $this;
     }
 
-    /**
-     * 获取连接配置.
-     */
-    public function getConnectionConfig(): IConnectionConfig
+    public function getConnectionLoadBalancer(): IConnectionLoadBalancer
     {
-        return $this->config;
+        return $this->connectionLoadBalancer;
     }
+
+    public function createInstance(): object
+    {
+        $config = $this->connectionLoadBalancer->choose();
+        if (!$config)
+        {
+            throw new \RuntimeException(sprintf('No connection config available in %s', static::class));
+        }
+
+        return $this->createInstanceByConfig($config);
+    }
+
+    abstract protected function createInstanceByConfig(IConnectionConfig $config): object;
 }

@@ -32,15 +32,15 @@ class ConnectionCenterTest extends TestCase
      */
     public function testAddConnectionManager(): void
     {
-        self::$connectionCenter->addConnectionManager('alwaysNew', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resource' => ['test' => true], 'checkStateWhenGetResource' => true]));
+        self::$connectionCenter->addConnectionManager('alwaysNew', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
 
-        self::$connectionCenter->addConnectionManager('requestContextSingleton', RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resource' => ['test' => true], 'checkStateWhenGetResource' => true]));
+        self::$connectionCenter->addConnectionManager('requestContextSingleton', RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
 
-        self::$connectionCenter->addConnectionManager('singleton', SingletonConnectionManager::class, SingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resource' => ['test' => true], 'checkStateWhenGetResource' => true]));
+        self::$connectionCenter->addConnectionManager('singleton', SingletonConnectionManager::class, SingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
 
         if ('swoole' === env('CONNECTION_CENTER_TEST_MODE'))
         {
-            self::$connectionCenter->addConnectionManager('pool', PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resource' => ['test' => true], 'checkStateWhenGetResource' => true]));
+            self::$connectionCenter->addConnectionManager('pool', PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
         }
 
         $this->assertTrue(true);
@@ -75,7 +75,7 @@ class ConnectionCenterTest extends TestCase
      */
     public function testRemoveConnectionManager(): void
     {
-        self::$connectionCenter->addConnectionManager('test', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resource' => ['test' => true]]));
+        self::$connectionCenter->addConnectionManager('test', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]]]));
         $this->assertTrue(self::$connectionCenter->hasConnectionManager('test'));
         self::$connectionCenter->removeConnectionManager('test');
         $this->assertFalse(self::$connectionCenter->hasConnectionManager('test'));

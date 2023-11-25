@@ -20,7 +20,7 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
 
     public function testCreateConnectionManager(bool $enableStatistics = true): RequestContextSingletonConnectionManager
     {
-        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
+        $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resources' => [['test' => true]]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 
@@ -227,7 +227,7 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $connectionManager = App::newInstance(RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig([
             'driver'                    => TestDriver::class,
             'enableStatistics'          => true,
-            'resource'                  => ['test' => true],
+            'resources'                 => [['test' => true]],
             'checkStateWhenGetResource' => true,
         ]));
 

@@ -15,6 +15,11 @@ interface IConnectionManagerConfig
     public function getDriver(): string;
 
     /**
+     * 获取负载均衡器.
+     */
+    public function getLoadBalancer(): string;
+
+    /**
      * 是否启用统计
      */
     public function isEnableStatistics(): bool;

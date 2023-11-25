@@ -151,6 +151,7 @@
 * [配置](components/config/index.md)
   * [配置读写](components/config/index.md)
   * [配置中心](components/config/center.md)
+* [连接中心](components/connectionCenter/index.md)
 * [连接池](components/pool/index.md)
 * [关系型数据库 (Db)](components/db/index.md)
   * [数据库驱动](components/db/index.md)

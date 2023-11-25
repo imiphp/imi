@@ -12,19 +12,19 @@ interface IConnectionDriver
     /**
      * 创建连接配置.
      */
-    public static function createConnectionConfig(array $config): IConnectionConfig;
+    public static function createConnectionConfig(string|array $config): IConnectionConfig;
 
-    public function __construct(IConnectionConfig $config);
-
-    /**
-     * 设置连接配置.
-     */
-    public function setConnectionConfig(IConnectionConfig $config): self;
+    public function __construct(IConnectionLoadBalancer $connectionLoadBalancer);
 
     /**
-     * 获取连接配置.
+     * 设置连接负载均衡器.
      */
-    public function getConnectionConfig(): IConnectionConfig;
+    public function setConnectionLoadBalancer(IConnectionLoadBalancer $connectionLoadBalancer): self;
+
+    /**
+     * 获取连接负载均衡器.
+     */
+    public function getConnectionLoadBalancer(): IConnectionLoadBalancer;
 
     /**
      * 创建新连接.

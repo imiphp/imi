@@ -17,7 +17,7 @@ class AlwaysNewConnectionManagerTest extends TestCase
 
     public function testCreateConnectionManager(bool $enableStatistics = true): AlwaysNewConnectionManager
     {
-        $connectionManager = App::newInstance(AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resource' => ['test' => true]]));
+        $connectionManager = App::newInstance(AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => $enableStatistics, 'resources' => [['test' => true]]]));
 
         $this->assertTrue($connectionManager->isAvailable());
 

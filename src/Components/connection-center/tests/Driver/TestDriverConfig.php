@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\ConnectionCenter\Test\Driver;
 
-use Imi\ConnectionCenter\Contract\IConnectionConfig;
+use Imi\ConnectionCenter\Contract\AbstractConnectionConfig;
 
-class TestDriverConfig implements IConnectionConfig
+class TestDriverConfig extends AbstractConnectionConfig
 {
     protected ?bool $test = null;
 
-    public static function createFromArray(array $config): self
+    protected static function __create(array $config): self
     {
-        $object = new self();
+        $object = new self($config['weight'] ?? 0);
         $object->test = $config['test'] ?? null;
 
         return $object;

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\ConnectionCenter\Contract;
 
+use Imi\ConnectionCenter\LoadBalancer\RandomLoadBalancer;
+
 abstract class AbstractConnectionManagerConfig implements IConnectionManagerConfig
 {
-    public function __construct(protected ?string $driver = null, protected ?bool $enableStatistics = null,
+    public function __construct(protected ?string $driver = null, protected ?string $loadBalancer = null, protected ?bool $enableStatistics = null,
         /**
          * 当前请求上下文资源检查状态间隔，单位：支持小数的秒.
          *
@@ -30,6 +32,7 @@ abstract class AbstractConnectionManagerConfig implements IConnectionManagerConf
         {
             throw new \InvalidArgumentException('ConnectionManager config [driver] not found');
         }
+        $this->loadBalancer ??= RandomLoadBalancer::class;
         $this->enableStatistics ??= false;
         $this->requestResourceCheckInterval ??= 30;
         $this->checkStateWhenGetResource ??= false;
@@ -38,6 +41,11 @@ abstract class AbstractConnectionManagerConfig implements IConnectionManagerConf
     public function getDriver(): string
     {
         return $this->driver;
+    }
+
+    public function getLoadBalancer(): string
+    {
+        return $this->loadBalancer;
     }
 
     public function isEnableStatistics(): bool
