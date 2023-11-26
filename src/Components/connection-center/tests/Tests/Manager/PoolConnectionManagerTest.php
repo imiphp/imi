@@ -410,6 +410,30 @@ class PoolConnectionManagerTest extends TestCase
         }
         $this->assertGreaterThan(0, $instance->ping);
 
+        // 测试心跳失败
+        $instance->pingResult = false;
+        for ($i = 0; $i < 2; ++$i)
+        {
+            sleep(1); // 等待触发
+            try
+            {
+                $connection = $connectionManager->getConnection();
+                if ($instance !== $connection->getInstance())
+                {
+                    break;
+                }
+            }
+            catch (\RuntimeException $e)
+            {
+                if ('Pool lock resource failed' !== $e->getMessage())
+                {
+                    throw $e;
+                }
+            }
+        }
+        $connection = $connectionManager->getConnection();
+        $this->assertTrue($instance !== $connection->getInstance());
+
         $connectionManager->close();
     }
 

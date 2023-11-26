@@ -39,6 +39,6 @@ class WeightLoadBalancer extends AbstractConnectionLoadBalancer
             }
         }
 
-        return $config ?? null;
+        return $config ?? null; // @codeCoverageIgnore
     }
 }

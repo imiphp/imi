@@ -12,8 +12,8 @@ class TestDriverConfig extends AbstractConnectionConfig
 
     protected static function __create(array $config): self
     {
-        $object = new self($config['weight'] ?? 0);
-        $object->test = $config['test'] ?? null;
+        $object = new self((int) ($config['weight'] ?? 0));
+        $object->test = isset($config['test']) ? (bool) $config['test'] : null;
 
         return $object;
     }

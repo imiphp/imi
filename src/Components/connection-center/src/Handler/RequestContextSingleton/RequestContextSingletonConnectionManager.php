@@ -84,7 +84,7 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
                 $instance = $context[static::class][$this->id];
                 if (!isset($this->instanceMap[$instance]))
                 {
-                    throw new \RuntimeException('Connection is not in this connection manager');
+                    throw new \RuntimeException('Connection is not in this connection manager'); // @codeCoverageIgnore
                 }
 
                 $driver = $this->getDriver();

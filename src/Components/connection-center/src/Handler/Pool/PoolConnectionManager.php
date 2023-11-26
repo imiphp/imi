@@ -405,10 +405,12 @@ class PoolConnectionManager extends AbstractConnectionManager
      */
     protected function heartbeat(): void
     {
+        // @codeCoverageIgnoreStart
         if ($this->heartbeatRunning)
         {
             return;
         }
+        // @codeCoverageIgnoreEnd
         try
         {
             $this->heartbeatRunning = true;
@@ -422,11 +424,13 @@ class PoolConnectionManager extends AbstractConnectionManager
                     {
                         $available = $driver->ping($resource->getInstance());
                     }
+                    // @codeCoverageIgnoreStart
                     catch (\Throwable $th)
                     {
                         $available = false;
                         Log::error($th);
                     }
+                    // @codeCoverageIgnoreEnd
                     finally
                     {
                         if ($available)

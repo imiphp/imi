@@ -16,7 +16,7 @@ abstract class BaseLoadBalancerTestCase extends TestCase
     {
         $configs = [
             TestDriverConfig::create(['test' => true, 'weight' => 1]),
-            TestDriverConfig::create(['test' => false, 'weight' => 2]),
+            TestDriverConfig::create('tcp://localhost/?test=1&weight=1'),
         ];
         /** @var IConnectionLoadBalancer $loadBalancer */
         $loadBalancer = new $this->class($configs);

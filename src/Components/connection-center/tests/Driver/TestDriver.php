@@ -55,6 +55,6 @@ class TestDriver extends AbstractConnectionDriver
     {
         ++$instance->ping;
 
-        return true;
+        return $instance->pingResult ?? true;
     }
 }
