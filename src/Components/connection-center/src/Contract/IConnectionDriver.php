@@ -17,11 +17,6 @@ interface IConnectionDriver
     public function __construct(IConnectionLoadBalancer $connectionLoadBalancer);
 
     /**
-     * 设置连接负载均衡器.
-     */
-    public function setConnectionLoadBalancer(IConnectionLoadBalancer $connectionLoadBalancer): self;
-
-    /**
      * 获取连接负载均衡器.
      */
     public function getConnectionLoadBalancer(): IConnectionLoadBalancer;

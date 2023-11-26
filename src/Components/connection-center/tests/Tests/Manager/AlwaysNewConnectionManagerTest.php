@@ -152,6 +152,8 @@ class AlwaysNewConnectionManagerTest extends TestCase
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());
+
+        $this->assertStringMatchesFormat('{"createConnectionTimes":2,"getConnectionTimes":1,"releaseConnectionTimes":2,"totalConnectionCount":0,"freeConnectionCount":0,"usedConnectionCount":0,"maxGetConnectionTime":%f,"minGetConnectionTime":%f,"lastGetConnectionTime":%f}', json_encode($statistics));
     }
 
     public function testClose(): void
@@ -181,5 +183,52 @@ class AlwaysNewConnectionManagerTest extends TestCase
         {
             $this->assertEquals(self::EXCEPTION_MESSAGE_CLOSED, $re->getMessage());
         }
+    }
+
+    public function testCloseFailed(): void
+    {
+        $connectionManager = $this->testCreateConnectionManager();
+        $connectionManager->close();
+        $this->expectExceptionMessage('Connection manager is unavailable');
+        $connectionManager->close();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testGetInstanceAfterRelease(AlwaysNewConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->getInstance();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testReleaseAfterRelease(AlwaysNewConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->release();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testDetachAfterRelease(AlwaysNewConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->detach();
     }
 }

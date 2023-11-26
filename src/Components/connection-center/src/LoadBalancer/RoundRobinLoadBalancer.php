@@ -20,7 +20,14 @@ class RoundRobinLoadBalancer extends AbstractConnectionLoadBalancer
     public function setConfigs(array $configs): self
     {
         parent::setConfigs($configs);
-        $this->position = random_int(0, \count($configs) - 1);
+        if ($configs)
+        {
+            $this->position = random_int(0, \count($configs) - 1);
+        }
+        else
+        {
+            $this->position = 0;
+        }
 
         return $this;
     }

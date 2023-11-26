@@ -21,9 +21,21 @@ class ConnectionCenterTest extends TestCase
 {
     protected static ConnectionCenter $connectionCenter;
 
+    protected static array $names = [];
+
     public function testNewInstance(): void
     {
         self::$connectionCenter = App::newInstance(ConnectionCenter::class);
+        $names = [
+            'alwaysNew',
+            'requestContextSingleton',
+            'singleton',
+        ];
+        if ('swoole' === env('CONNECTION_CENTER_TEST_MODE'))
+        {
+            $names[] = 'pool';
+        }
+        self::$names = $names;
         $this->assertTrue(true);
     }
 
@@ -32,18 +44,19 @@ class ConnectionCenterTest extends TestCase
      */
     public function testAddConnectionManager(): void
     {
-        self::$connectionCenter->addConnectionManager('alwaysNew', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
+        self::$connectionCenter->addConnectionManager('alwaysNew', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
 
-        self::$connectionCenter->addConnectionManager('requestContextSingleton', RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
+        self::$connectionCenter->addConnectionManager('requestContextSingleton', RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
 
-        self::$connectionCenter->addConnectionManager('singleton', SingletonConnectionManager::class, SingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
+        self::$connectionCenter->addConnectionManager('singleton', SingletonConnectionManager::class, SingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
 
         if ('swoole' === env('CONNECTION_CENTER_TEST_MODE'))
         {
-            self::$connectionCenter->addConnectionManager('pool', PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true]));
+            self::$connectionCenter->addConnectionManager('pool', PoolConnectionManager::class, PoolConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
         }
 
-        $this->assertTrue(true);
+        $this->expectExceptionMessage('Connection manager alwaysNew already exists');
+        self::$connectionCenter->addConnectionManager('alwaysNew', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
     }
 
     /**
@@ -106,16 +119,7 @@ class ConnectionCenterTest extends TestCase
      */
     public function testGetConnection(): void
     {
-        $names = [
-            'alwaysNew',
-            'requestContextSingleton',
-            'singleton',
-        ];
-        if ('swoole' === env('CONNECTION_CENTER_TEST_MODE'))
-        {
-            $names[] = 'pool';
-        }
-        foreach ($names as $name)
+        foreach (self::$names as $name)
         {
             $connection = self::$connectionCenter->getConnection($name);
             $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
@@ -127,23 +131,40 @@ class ConnectionCenterTest extends TestCase
      */
     public function testGetRequestContextConnection(): void
     {
-        $names = [
-            'alwaysNew',
-            'requestContextSingleton',
-            'singleton',
-        ];
-        if ('swoole' === env('CONNECTION_CENTER_TEST_MODE'))
+        foreach (self::$names as $name)
         {
-            $names[] = 'pool';
+            $connection1 = self::$connectionCenter->getRequestContextConnection($name);
+            $this->assertEquals(ConnectionStatus::Available, $connection1->getStatus());
+            $connection2 = self::$connectionCenter->getRequestContextConnection($name);
+            $this->assertEquals(ConnectionStatus::Available, $connection2->getStatus());
+            $this->assertTrue($connection1 === $connection2);
         }
-        foreach ($names as $name)
+    }
+
+    /**
+     * 连接获取过期测试.
+     */
+    public function testCheckStateWhenGetResource(): void
+    {
+        foreach (self::$names as $name)
         {
-            $connection = self::$connectionCenter->getRequestContextConnection($name);
-            $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+            $connection1 = self::$connectionCenter->getRequestContextConnection($name);
+            $this->assertEquals(ConnectionStatus::Available, $connection1->getStatus());
+
+            $connection1->getInstance()->connected = false;
+
+            $connection2 = self::$connectionCenter->getRequestContextConnection($name);
+            $this->assertEquals(ConnectionStatus::Available, $connection2->getStatus());
+
+            $this->assertTrue($connection1 !== $connection2);
         }
+    }
 
-        // 连接上下文销毁释放测试
-
+    /**
+     * 连接上下文销毁释放测试.
+     */
+    public function testRequestContextDestroy(): void
+    {
         // 请求上下文单例
         if (RequestContext::exists(RequestContext::getCurrentId()))
         {

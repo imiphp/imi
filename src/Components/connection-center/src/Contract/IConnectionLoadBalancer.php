@@ -12,6 +12,11 @@ interface IConnectionLoadBalancer
     /**
      * @param IConnectionConfig[] $configs
      */
+    public function __construct(array $configs);
+
+    /**
+     * @param IConnectionConfig[] $configs
+     */
     public function setConfigs(array $configs): self;
 
     /**

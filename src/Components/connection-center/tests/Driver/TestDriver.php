@@ -48,7 +48,7 @@ class TestDriver extends AbstractConnectionDriver
     {
         ++$instance->available;
 
-        return true;
+        return $instance->connected;
     }
 
     public function ping(object $instance): bool

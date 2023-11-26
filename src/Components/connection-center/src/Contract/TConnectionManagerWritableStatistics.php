@@ -39,6 +39,9 @@ trait TConnectionManagerWritableStatistics
         return $this->totalConnectionCount += $quantity;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function changeFreeConnectionCount(int $quantity): int
     {
         return $this->freeConnectionCount += $quantity;

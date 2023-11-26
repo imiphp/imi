@@ -46,17 +46,9 @@ class PoolConnectionManagerConfig extends AbstractConnectionManagerConfig
                 {
                     $poolConfig['maxIdleTime'] = $config['pool']['maxIdleTime'];
                 }
-                if (isset($config['pool']['requestResourceCheckInterval']))
-                {
-                    $poolConfig['requestResourceCheckInterval'] = $config['pool']['requestResourceCheckInterval'];
-                }
                 if (isset($config['pool']['heartbeatInterval']))
                 {
                     $poolConfig['heartbeatInterval'] = $config['pool']['heartbeatInterval'];
-                }
-                if (isset($config['pool']['checkStateWhenGetResource']))
-                {
-                    $poolConfig['checkStateWhenGetResource'] = $config['pool']['checkStateWhenGetResource'];
                 }
             }
             $this->pool = new PoolConfig(...$poolConfig);

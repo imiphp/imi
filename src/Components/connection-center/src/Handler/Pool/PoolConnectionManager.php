@@ -136,6 +136,7 @@ class PoolConnectionManager extends AbstractConnectionManager
         }
         /** @var InstanceResource|false $resource */
         $resource = $this->queue->pop($waitTimeout);
+        // @codeCoverageIgnoreStart
         if (!$resource)
         {
             if (\SWOOLE_CHANNEL_TIMEOUT === $this->queue->errCode)
@@ -151,6 +152,7 @@ class PoolConnectionManager extends AbstractConnectionManager
         {
             throw new \RuntimeException('Pool lock resource failed');
         }
+        // @codeCoverageIgnoreEnd
         $driver = $this->getDriver();
         if ($config->isCheckStateWhenGetResource() && !$driver->checkAvailable($instance = $resource->getInstance()))
         {
@@ -161,11 +163,13 @@ class PoolConnectionManager extends AbstractConnectionManager
                 $resource->setInstance($instance);
                 $this->instanceMap[$instance] = $resource;
             }
+            // @codeCoverageIgnoreStart
             catch (\Throwable $th)
             {
                 $this->removeResource($resource);
                 throw $th;
             }
+            // @codeCoverageIgnoreEnd
         }
 
         $connection = new Connection($this, $resource->getInstance());
@@ -184,7 +188,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     {
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         if (ConnectionStatus::WaitRelease !== $connection->getStatus())
         {
@@ -217,16 +221,16 @@ class PoolConnectionManager extends AbstractConnectionManager
     {
         if (!$this->available)
         {
-            throw new \RuntimeException('Connection manager is unavailable');
+            throw new \RuntimeException('Connection manager is unavailable'); // @codeCoverageIgnore
         }
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         $instance = $connection->getInstance();
         if (!isset($this->instanceMap[$instance]))
         {
-            throw new \RuntimeException('Connection is not in this connection manager');
+            throw new \RuntimeException('Connection is not in this connection manager'); // @codeCoverageIgnore
         }
         $resource = $this->instanceMap[$instance];
         $this->resources->detach($resource);
@@ -301,7 +305,10 @@ class PoolConnectionManager extends AbstractConnectionManager
         }
     }
 
-    public function removeResource(InstanceResource $resource, bool $buildQueue = false): void
+    /**
+     * @codeCoverageIgnore
+     */
+    protected function removeResource(InstanceResource $resource, bool $buildQueue = false): void
     {
         $this->resources->detach($resource);
         if ($buildQueue)
@@ -331,7 +338,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     /**
      * {@inheritDoc}
      */
-    public function gc(): void
+    protected function gc(): void
     {
         $hasGC = false;
         $poolConfig = $this->config->getPool();
@@ -368,7 +375,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     /**
      * 开始自动垃圾回收.
      */
-    public function startAutoGC(): void
+    protected function startAutoGC(): void
     {
         $gcInterval = $this->config->getPool()->getGCInterval();
         if ($gcInterval > 0)
@@ -381,7 +388,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     /**
      * 停止自动垃圾回收.
      */
-    public function stopAutoGC(): void
+    protected function stopAutoGC(): void
     {
         if (null !== $this->gcTimerId)
         {
@@ -396,7 +403,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     /**
      * 心跳.
      */
-    public function heartbeat(): void
+    protected function heartbeat(): void
     {
         if ($this->heartbeatRunning)
         {
@@ -413,7 +420,7 @@ class PoolConnectionManager extends AbstractConnectionManager
                     $driver ??= $this->getDriver();
                     try
                     {
-                        $available = $driver->checkAvailable($resource->getInstance());
+                        $available = $driver->ping($resource->getInstance());
                     }
                     catch (\Throwable $th)
                     {
@@ -449,7 +456,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     /**
      * 开始心跳维持资源.
      */
-    public function startHeartbeat(): void
+    protected function startHeartbeat(): void
     {
         if (null !== ($heartbeatInterval = $this->config->getPool()->getHeartbeatInterval()))
         {
@@ -461,7 +468,7 @@ class PoolConnectionManager extends AbstractConnectionManager
     /**
      * 停止心跳维持资源.
      */
-    public function stopHeartbeat(): void
+    protected function stopHeartbeat(): void
     {
         if (null !== $this->heartbeatTimerId)
         {
@@ -474,12 +481,12 @@ class PoolConnectionManager extends AbstractConnectionManager
         }
     }
 
-    public function getFree(): int
+    protected function getFree(): int
     {
         return $this->queue->length();
     }
 
-    public function getCount(): int
+    protected function getCount(): int
     {
         return \count($this->resources) + $this->addingResources;
     }

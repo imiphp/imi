@@ -46,7 +46,7 @@ class InstanceResource
         $id = (string) spl_object_id($this);
         if (ChannelContainer::hasChannel($id))
         {
-            ChannelContainer::removeChannel($id);
+            ChannelContainer::removeChannel($id); // @codeCoverageIgnore
         }
     }
 
@@ -65,11 +65,6 @@ class InstanceResource
         return $this->connection;
     }
 
-    public function hasConnection(): bool
-    {
-        return $this->connection && $this->connection->get();
-    }
-
     public function lock(float $timeout = 0): bool
     {
         if ($this->isFree || ChannelContainer::pop((string) spl_object_id($this), $timeout))
@@ -80,7 +75,7 @@ class InstanceResource
             return true;
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 
     public function release(): void
@@ -90,11 +85,13 @@ class InstanceResource
         $id = (string) spl_object_id($this);
         if (ChannelContainer::hasChannel($id))
         {
+            // @codeCoverageIgnoreStart
             $channel = ChannelContainer::getChannel($id);
             if (($channel->stats()['consumer_num'] ?? 0) > 0)
             {
                 $channel->push(true);
             }
+            // @codeCoverageIgnoreEnd
         }
     }
 

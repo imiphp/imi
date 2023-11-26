@@ -10,13 +10,6 @@ abstract class AbstractConnectionDriver implements IConnectionDriver
     {
     }
 
-    public function setConnectionLoadBalancer(IConnectionLoadBalancer $connectionLoadBalancer): self
-    {
-        $this->connectionLoadBalancer = $connectionLoadBalancer;
-
-        return $this;
-    }
-
     public function getConnectionLoadBalancer(): IConnectionLoadBalancer
     {
         return $this->connectionLoadBalancer;

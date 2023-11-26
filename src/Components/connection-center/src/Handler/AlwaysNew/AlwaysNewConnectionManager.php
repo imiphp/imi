@@ -76,7 +76,7 @@ class AlwaysNewConnectionManager extends AbstractConnectionManager
     {
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         if (ConnectionStatus::WaitRelease !== $connection->getStatus())
         {
@@ -89,6 +89,9 @@ class AlwaysNewConnectionManager extends AbstractConnectionManager
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function detachConnection(IConnection $connection): void
     {
         // 本管理器创建的连接本来就是分离的，无需处理

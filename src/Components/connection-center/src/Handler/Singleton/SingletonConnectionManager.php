@@ -79,14 +79,19 @@ class SingletonConnectionManager extends AbstractConnectionManager
                 try
                 {
                     $driver->close($instance);
-                    $instance = $driver->connect($instance);
-                    $this->connection = new Connection($this, $instance);
+                    $newInstance = $driver->connect($instance);
+                    if ($instance !== $newInstance)
+                    {
+                        $this->connection = new Connection($this, $newInstance);
+                    }
                 }
+                // @codeCoverageIgnoreStart
                 catch (\Throwable $th)
                 {
                     $this->connection = null;
                     throw $th;
                 }
+                // @codeCoverageIgnoreEnd
             }
         }
         if ($enableStatistics)
@@ -102,7 +107,7 @@ class SingletonConnectionManager extends AbstractConnectionManager
     {
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         if (ConnectionStatus::WaitRelease !== $connection->getStatus())
         {
@@ -130,15 +135,15 @@ class SingletonConnectionManager extends AbstractConnectionManager
     {
         if (!$this->available)
         {
-            throw new \RuntimeException('Connection manager is unavailable');
+            throw new \RuntimeException('Connection manager is unavailable'); // @codeCoverageIgnore
         }
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         if ($this->connection !== $connection)
         {
-            throw new \RuntimeException('Connection is not in this connection manager');
+            throw new \RuntimeException('Connection is not in this connection manager'); // @codeCoverageIgnore
         }
         $this->connection = null;
     }

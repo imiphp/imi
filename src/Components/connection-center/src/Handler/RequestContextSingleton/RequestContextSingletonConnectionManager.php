@@ -69,7 +69,7 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
     {
         if (!$this->available)
         {
-            throw new \RuntimeException('Connection manager is unavailable');
+            throw new \RuntimeException('Connection manager is unavailable'); // @codeCoverageIgnore
         }
 
         return RequestContext::use(function (ContextData $context) {
@@ -97,18 +97,22 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
                         $context[static::class][$this->id] = $instance = $driver->connect($instance);
                         $this->instanceMap[$instance] = $connectionData;
                     }
+                    // @codeCoverageIgnoreStart
                     catch (\Throwable $th)
                     {
                         unset($context[static::class][$this->id]);
                         throw $th;
                     }
+                    // @codeCoverageIgnoreEnd
                 }
                 $connectionData = $this->instanceMap[$instance];
                 $connection = $connectionData->getConnection()->get();
                 if (!$connection || ConnectionStatus::Available !== $connection->getStatus())
                 {
+                    // @codeCoverageIgnoreStart
                     $connection = new Connection($this, $instance);
                     $connectionData->setConnection($connection);
+                    // @codeCoverageIgnoreEnd
                 }
             }
             else
@@ -145,7 +149,7 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
     {
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         if (ConnectionStatus::WaitRelease !== $connection->getStatus())
         {
@@ -183,16 +187,16 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
     {
         if (!$this->available)
         {
-            throw new \RuntimeException('Connection manager is unavailable');
+            throw new \RuntimeException('Connection manager is unavailable'); // @codeCoverageIgnore
         }
         if ($connection->getManager() !== $this)
         {
-            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class));
+            throw new \RuntimeException(sprintf('Connection manager %s cannot release connection, because the connection manager of this connection is %s', static::class, $connection->getManager()::class)); // @codeCoverageIgnore
         }
         $instance = $connection->getInstance();
         if (!isset($this->instanceMap[$instance]))
         {
-            throw new \RuntimeException('Connection is not in this connection manager');
+            throw new \RuntimeException('Connection is not in this connection manager'); // @codeCoverageIgnore
         }
         $connectionData = $this->instanceMap[$instance];
         $context = RequestContext::getInstance()->get($connectionData->getContextFlag());
@@ -216,7 +220,7 @@ class RequestContextSingletonConnectionManager extends AbstractConnectionManager
             }
             else
             {
-                $this->getDriver()->close($instance);
+                $this->getDriver()->close($instance); // @codeCoverageIgnore
             }
         }
     }

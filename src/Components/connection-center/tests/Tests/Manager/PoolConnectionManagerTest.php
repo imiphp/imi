@@ -7,6 +7,7 @@ namespace Imi\ConnectionCenter\Test\Tests\Manager;
 use Imi\App;
 use Imi\ConnectionCenter\Contract\IConnection;
 use Imi\ConnectionCenter\Enum\ConnectionStatus;
+use Imi\ConnectionCenter\Handler\AlwaysNew\AlwaysNewConnectionManager;
 use Imi\ConnectionCenter\Handler\Pool\PoolConnectionManager;
 use Imi\ConnectionCenter\Test\Driver\TestDriver;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,12 @@ class PoolConnectionManagerTest extends TestCase
         {
             $this->markTestSkipped();
         }
+    }
+
+    public function testInvalidConfig(): void
+    {
+        $this->expectExceptionMessageMatches('/PoolConnectionManager__Bean__\d+ require Imi\\\ConnectionCenter\\\Handler\\\Pool\\\PoolConnectionManagerConfig, but Imi\\\ConnectionCenter\\\Handler\\\AlwaysNew\\\AlwaysNewConnectionManagerConfig/');
+        App::newInstance(PoolConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class]));
     }
 
     public function testCreateConnectionManager(bool $enableStatistics = true): PoolConnectionManager
@@ -164,6 +171,8 @@ class PoolConnectionManagerTest extends TestCase
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());
+
+        $this->assertStringMatchesFormat('{"createConnectionTimes":1,"getConnectionTimes":1,"releaseConnectionTimes":2,"totalConnectionCount":1,"freeConnectionCount":1,"usedConnectionCount":0,"maxGetConnectionTime":%f,"minGetConnectionTime":%f,"lastGetConnectionTime":%f}', json_encode($statistics));
     }
 
     public function testClose(): void
@@ -198,6 +207,14 @@ class PoolConnectionManagerTest extends TestCase
         {
             $this->assertEquals(self::EXCEPTION_MESSAGE_CLOSED, $re->getMessage());
         }
+    }
+
+    public function testCloseFailed(): void
+    {
+        $connectionManager = $this->testCreateConnectionManager();
+        $connectionManager->close();
+        $this->expectExceptionMessage('Connection manager is unavailable');
+        $connectionManager->close();
     }
 
     public function testDetach(): void
@@ -339,6 +356,99 @@ class PoolConnectionManagerTest extends TestCase
         $instance = $connection->getInstance();
         $this->assertEquals(1, $instance->available);
 
+        // 测试重连
+        $connection->release();
+        $instance->connected = false;
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertTrue($instance->connected);
+        $this->assertEquals(2, $instance->available);
+
         $connectionManager->close();
+    }
+
+    public function testHeartbeat(): void
+    {
+        $connectionManager = App::newInstance(PoolConnectionManager::class, PoolConnectionManager::createConfig([
+            'driver'                    => TestDriver::class,
+            'enableStatistics'          => true,
+            'resources'                 => [['test' => true]],
+            'pool'                      => [
+                'heartbeatInterval' => 1,
+            ],
+        ]));
+        $this->assertTrue($connectionManager->isAvailable());
+
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $this->assertTrue($instance->connected);
+        $this->assertEquals(0, $instance->ping);
+
+        // 被占用的连接不触发心跳
+        for ($i = 0; $i < 2; ++$i)
+        {
+            sleep(1); // 等待触发
+            // @phpstan-ignore-next-line
+            if ($instance->ping > 0)
+            {
+                break;
+            }
+        }
+        $this->assertEquals(0, $instance->ping);
+
+        // 空闲连接触发心跳
+        $connection->release();
+        for ($i = 0; $i < 2; ++$i)
+        {
+            sleep(1); // 等待触发
+            // @phpstan-ignore-next-line
+            if ($instance->ping > 0)
+            {
+                break;
+            }
+        }
+        $this->assertGreaterThan(0, $instance->ping);
+
+        $connectionManager->close();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testGetInstanceAfterRelease(PoolConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->getInstance();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testReleaseAfterRelease(PoolConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->release();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testDetachAfterRelease(PoolConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->detach();
     }
 }

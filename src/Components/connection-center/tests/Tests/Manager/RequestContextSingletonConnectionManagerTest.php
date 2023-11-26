@@ -155,6 +155,8 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $this->assertGreaterThan(0, $statistics->getMaxGetConnectionTime());
         $this->assertLessThan(\PHP_FLOAT_MAX, $statistics->getMinGetConnectionTime());
         $this->assertGreaterThan(0, $statistics->getLastGetConnectionTime());
+
+        $this->assertStringMatchesFormat('{"createConnectionTimes":2,"getConnectionTimes":1,"releaseConnectionTimes":2,"totalConnectionCount":0,"freeConnectionCount":0,"usedConnectionCount":0,"maxGetConnectionTime":%f,"minGetConnectionTime":%f,"lastGetConnectionTime":%f}', json_encode($statistics));
     }
 
     public function testClose(): void
@@ -191,6 +193,14 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         }
     }
 
+    public function testCloseFailed(): void
+    {
+        $connectionManager = $this->testCreateConnectionManager();
+        $connectionManager->close();
+        $this->expectExceptionMessage('Connection manager is unavailable');
+        $connectionManager->close();
+    }
+
     public function testDetach(): void
     {
         $connectionManager = $this->testCreateConnectionManager();
@@ -212,12 +222,16 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $connectionOut = $connectionManager->getConnection();
         $statistics = $connectionManager->getStatistics();
         $this->assertEquals(1, $statistics->getTotalConnectionCount());
-        goWait(function () use ($connectionManager, $connectionOut): void {
+        $connection = null;
+        goWait(function () use ($connectionManager, $connectionOut, &$connection): void {
             $connection = $connectionManager->getConnection();
             $this->assertTrue($connectionOut !== $connection);
             $statistics = $connectionManager->getStatistics();
             $this->assertEquals(2, $statistics->getTotalConnectionCount());
         }, -1, true);
+        $this->assertNotNull($connection);
+        usleep(1); // 协程挂起一下让 defer 执行
+        $this->assertEquals(ConnectionStatus::Unavailable, $connection->getStatus());
         $statistics = $connectionManager->getStatistics();
         $this->assertEquals(1, $statistics->getTotalConnectionCount());
     }
@@ -240,5 +254,51 @@ class RequestContextSingletonConnectionManagerTest extends TestCase
         $connection = $connectionManager->getConnection();
         $instance = $connection->getInstance();
         $this->assertEquals(1, $instance->available);
+
+        // 测试重连
+        $instance->connected = false;
+        $connection = $connectionManager->getConnection();
+        $instance = $connection->getInstance();
+        $this->assertTrue($instance->connected);
+        $this->assertEquals(2, $instance->available);
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testGetInstanceAfterRelease(RequestContextSingletonConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->getInstance();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testReleaseAfterRelease(RequestContextSingletonConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->release();
+    }
+
+    /**
+     * @depends testCreateConnectionManager
+     */
+    public function testDetachAfterRelease(RequestContextSingletonConnectionManager $connectionManager): void
+    {
+        $connection = $this->testGetConnection($connectionManager);
+        $this->assertEquals(ConnectionStatus::Available, $connection->getStatus());
+        $connection->release();
+
+        $this->expectExceptionMessage('Connection is not available');
+        $connection->detach();
     }
 }
