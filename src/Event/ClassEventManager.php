@@ -58,4 +58,18 @@ class ClassEventManager
 
         return [];
     }
+
+    public static function getObjectEvents(object $object): array
+    {
+        $result = [];
+        foreach (self::$map as $className => $classEvents)
+        {
+            if ($object instanceof $className)
+            {
+                $result[] = $classEvents;
+            }
+        }
+
+        return $result;
+    }
 }

@@ -7,6 +7,9 @@ namespace Imi\Event;
 /**
  * 事件管理器.
  */
+use Imi\App;
+use Imi\Event\Contract\IEvent;
+
 class EventManager
 {
     use \Imi\Util\Traits\TStaticClass;
@@ -20,13 +23,6 @@ class EventManager
 
     public static function setMap(array $map): void
     {
-        foreach (self::$map as $eventName => $events)
-        {
-            foreach ($events as $listenerClass => $event)
-            {
-                Event::off($eventName, $listenerClass);
-            }
-        }
         self::$map = $map;
         foreach ($map as $eventName => $events)
         {
@@ -34,11 +30,11 @@ class EventManager
             {
                 if ($event['one'] ?? false)
                 {
-                    Event::one($eventName, $listenerClass, $event['priority']);
+                    Event::one($eventName, static fn (IEvent $e) => App::newInstance($listenerClass)->handle($e), $event['priority']);
                 }
                 else
                 {
-                    Event::on($eventName, $listenerClass, $event['priority']);
+                    Event::on($eventName, static fn (IEvent $e) => App::newInstance($listenerClass)->handle($e), $event['priority']);
                 }
             }
         }

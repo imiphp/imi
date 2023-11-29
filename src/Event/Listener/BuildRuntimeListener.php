@@ -7,7 +7,6 @@ namespace Imi\Event\Listener;
 use Imi\Config;
 use Imi\Event\ClassEventManager;
 use Imi\Event\EventManager;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class BuildRuntimeListener implements IEventListener
@@ -15,7 +14,7 @@ class BuildRuntimeListener implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.event', true))
         {
