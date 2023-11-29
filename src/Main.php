@@ -6,6 +6,7 @@ namespace Imi;
 
 use Imi\Core\Runtime\Event\BuildRuntimeInfoEvent;
 use Imi\Core\Runtime\Event\LoadRuntimeInfoEvent;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\Event;
 use Imi\IDEHelper\BuildIDEHelper;
 use Imi\Main\BaseMain;
@@ -32,7 +33,7 @@ class Main extends BaseMain
 
         if (Config::get('@app.imi.ideHelper') ?? App::isDebug())
         {
-            Event::on('IMI.LOAD_RUNTIME', static fn (LoadRuntimeInfoEvent $e) => App::newInstance(BuildIDEHelper::class)->handle($e), ImiPriority::MIN);
+            Event::on('IMI.LOAD_RUNTIME', static fn (IEvent $e) => App::newInstance(BuildIDEHelper::class)->handle($e), ImiPriority::MIN);
         }
     }
 
