@@ -11,7 +11,7 @@ class BeforeInsertEventParam extends EventParam
     /**
      * 模型.
      */
-    public ?\Imi\Model\BaseModel $model;
+    public ?\Imi\Model\BaseModel $model = null;
 
     /**
      * 初始化数据.

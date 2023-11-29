@@ -7,6 +7,7 @@ namespace Imi\Workerman\Server\WebSocket\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
+use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
 
 /**
  * Message事件前置处理.
@@ -15,17 +16,15 @@ use Imi\RequestContext;
 class BeforeMessage implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param WorkermanWebSocketMessageEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        ['frame' => $frame] = $e->getData();
-
         // 中间件
         $requestContext = RequestContext::getContext();
         /** @var \Imi\Server\WebSocket\Dispatcher $dispatcher */
         $dispatcher = $requestContext['server']->getBean('WebSocketDispatcher');
-        $requestContext['frame'] = $frame;
-        $dispatcher->dispatch($frame);
+        $requestContext['frame'] = $e->frame;
+        $dispatcher->dispatch($e->frame);
     }
 }

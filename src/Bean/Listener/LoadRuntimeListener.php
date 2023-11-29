@@ -14,7 +14,7 @@ use Imi\Event\IEventListener;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -23,7 +23,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data']['bean'] ?? [];
+        $data = $e->data['bean'] ?? [];
         $parser = Annotation::getInstance()->getParser();
         if (($config['annotation_parser_data'] ?? true) && isset($data['annotationParserData']))
         {

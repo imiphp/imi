@@ -11,7 +11,7 @@ use Imi\Workerman\Process\ProcessManager;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -20,7 +20,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data']['workermanProcess'] ?? [];
+        $data = $e->data['workermanProcess'] ?? [];
         ProcessManager::setMap($data['process'] ?? []);
     }
 }

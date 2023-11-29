@@ -8,6 +8,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\Log\Log;
+use Imi\Pool\Event\CheckPoolResourceEvent;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\RequestContext;
@@ -85,11 +86,10 @@ class PoolManager
             }
         }
 
-        Event::trigger('IMI.CHECK_POOL_RESOURCE', [
-            'result' => &$result,
-        ]);
+        $event = new CheckPoolResourceEvent($result);
+        Event::dispatch($event);
 
-        return $result;
+        return $event->result;
     }
 
     /**

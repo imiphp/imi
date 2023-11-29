@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\TcpServer\Message\ReceiveData;
+use Imi\Workerman\Server\Http\Event\WorkermanTcpMessageEvent;
 
 /**
  * Receive事件前置处理.
@@ -16,17 +17,16 @@ use Imi\Server\TcpServer\Message\ReceiveData;
 class BeforeReceive implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param WorkermanTcpMessageEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        ['clientId' => $clientId, 'data' => $data] = $e->getData();
         // 上下文创建
         $requestContext = RequestContext::getContext();
         $requestContext['server'] = $server = $e->getTarget();
-        $requestContext['clientId'] = $clientId;
+        $requestContext['clientId'] = $e->clientId;
 
-        $imiReceiveData = new ReceiveData($clientId, $data);
+        $imiReceiveData = new ReceiveData($e->clientId, $e->data);
         $requestContext['receiveData'] = $imiReceiveData;
 
         // 中间件

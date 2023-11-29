@@ -14,6 +14,8 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanTcpMessageEvent;
 
 #[Bean(name: 'WorkermanGatewayTcpBusinessServer')]
 class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
@@ -86,10 +88,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new WorkermanConnectionCloseEvent($this, $clientId));
             RequestContext::destroy();
         });
 
@@ -103,11 +102,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                     'clientId' => $clientId,
                 ]);
 
-                Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
-                    'server'   => $this,
-                    'clientId' => $clientId,
-                    'data'     => $data,
-                ], $this);
+                Event::dispatch(new WorkermanTcpMessageEvent($this, $clientId, $data));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

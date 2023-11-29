@@ -11,6 +11,7 @@ use Imi\Event\Event;
 use Imi\Redis\RedisManager;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Swoole\Util\Coroutine;
@@ -297,17 +298,17 @@ class RedisServerUtil extends LocalServerUtil
             {
                 try
                 {
-                    $redis->subscribe([$this->channel], function ($redis, string $channel, string $msg): void {
-                        Coroutine::create(function () use ($msg): void {
+                    $redis->subscribe([$this->channel], static function ($redis, string $channel, string $msg): void {
+                        Coroutine::create(static function () use ($msg): void {
                             $data = json_decode($msg, true);
                             if (!isset($data['action'], $data['serverName']))
                             {
                                 return;
                             }
                             RequestContext::set('server', ServerManager::getServer($data['serverName']));
-                            Event::trigger('IMI.PIPE_MESSAGE.' . $data['action'], [
+                            Event::dispatch(new PipeMessageEvent('IMI.PIPE_MESSAGE.' . $data['action'], [
                                 'data' => $data,
-                            ], $this);
+                            ]));
                         });
                     });
                 }

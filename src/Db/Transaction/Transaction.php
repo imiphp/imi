@@ -28,7 +28,7 @@ class Transaction
     public function init(): void
     {
         $this->transactionLevels = $this->transactionCount = $this->currentTransaction = 0;
-        $this->__events = $this->__eventQueue = $this->__eventChangeRecords = $this->__sortedEventQueue = [];
+        $this->getEventController()->getEventDispatcher()->getListenerProvider()->clearListeners();
     }
 
     /**

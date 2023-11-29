@@ -8,6 +8,7 @@ use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
@@ -18,7 +19,7 @@ class WorkerPartPipeMessage implements IEventListener
     protected \Imi\Cron\CronWorker $cronWorker;
 
     /**
-     * {@inheritDoc}
+     * @param PipeMessageEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -26,7 +27,7 @@ class WorkerPartPipeMessage implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data'];
+        $data = $e->data['data'];
         $this->cronWorker->exec($data['id'], $data['data'], $data['task'], $data['type']);
     }
 }

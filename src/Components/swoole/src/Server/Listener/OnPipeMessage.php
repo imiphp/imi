@@ -6,6 +6,7 @@ namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\Event;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Swoole\Server\Event\Listener\IPipeMessageEventListener;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 
@@ -23,9 +24,9 @@ class OnPipeMessage implements IPipeMessageEventListener
         {
             return;
         }
-        Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-            'workerId'  => $e->workerId,
-            'data'      => $data,
-        ]);
+        Event::dispatch(new PipeMessageEvent('IMI.PIPE_MESSAGE.' . $action, [
+            'workerId' => $e->workerId,
+            'data'     => $data,
+        ]));
     }
 }

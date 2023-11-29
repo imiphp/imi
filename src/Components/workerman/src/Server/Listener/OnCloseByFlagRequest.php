@@ -7,6 +7,7 @@ namespace Imi\Workerman\Server\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
@@ -16,11 +17,11 @@ use Imi\Workerman\Server\Util\LocalServerUtil;
 class OnCloseByFlagRequest implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param PipeMessageEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        $data = $e->getData();
+        $data = $e->data;
         ['flag' => $flag, 'serverName' => $serverName] = $data['data'];
 
         /** @var LocalServerUtil $serverUtil */

@@ -7,7 +7,7 @@ namespace Imi\Workerman\Server\Udp\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Server\UdpServer\Message\IPacketData;
+use Imi\Workerman\Server\Http\Event\WorkermanUdpMessageEvent;
 
 /**
  * Packet事件前置处理.
@@ -16,15 +16,12 @@ use Imi\Server\UdpServer\Message\IPacketData;
 class BeforePacket implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param WorkermanUdpMessageEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        /** @var IPacketData $packetData */
-        ['packetData' => $packetData] = $e->getData();
-
         // 中间件
         $dispatcher = RequestContext::getServerBean('UdpDispatcher');
-        $dispatcher->dispatch($packetData);
+        $dispatcher->dispatch($e->packetData);
     }
 }

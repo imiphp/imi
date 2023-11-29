@@ -11,7 +11,7 @@ use Imi\Workerman\Process\ProcessManager;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -19,9 +19,8 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
         $data = [];
         $data['process'] = ProcessManager::getMap();
-        $eventData['data']['workermanProcess'] = $data;
+        $e->data['workermanProcess'] = $data;
     }
 }

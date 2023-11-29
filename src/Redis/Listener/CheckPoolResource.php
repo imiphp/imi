@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
+use Imi\Pool\Event\CheckPoolResourceEvent;
 use Imi\Pool\PoolManager;
 use Imi\Redis\RedisManager;
 
@@ -15,13 +16,13 @@ use Imi\Redis\RedisManager;
 class CheckPoolResource implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param CheckPoolResourceEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if ($connections = Config::get('@app.redis.connections'))
         {
-            $result = &$e->getData()['result'];
+            $result = &$e->result;
             foreach ($connections as $name => $_)
             {
                 if (!PoolManager::exists($name))

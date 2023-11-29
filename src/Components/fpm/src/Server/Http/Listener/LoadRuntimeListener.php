@@ -15,7 +15,7 @@ use Imi\Server\ServerManager;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -24,7 +24,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data']['route'] ?? [];
+        $data = $e->data['route'] ?? [];
         if (isset($data['rules']))
         {
             $server = ServerManager::createServer('main', [

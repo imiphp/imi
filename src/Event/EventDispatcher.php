@@ -10,11 +10,8 @@ use Imi\Event\Contract\IListenerProvider;
 
 class EventDispatcher implements IEventDispatcher
 {
-    protected IListenerProvider $listenerProvider;
-
-    public function __construct(?IListenerProvider $listenerProvider = null)
+    public function __construct(protected IListenerProvider $listenerProvider = new ListenerProvider())
     {
-        $this->listenerProvider = $listenerProvider ?? new ListenerProvider();
     }
 
     public function getListenerProvider(): IListenerProvider

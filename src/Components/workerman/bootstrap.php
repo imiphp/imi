@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Imi\Workerman;
 
 use Imi\App;
-use Imi\Event\Contract\IEvent;
+use Imi\Core\Runtime\Event\BuildRuntimeInfoEvent;
+use Imi\Core\Runtime\Event\LoadRuntimeInfoEvent;
 use Imi\Event\Event;
 
 return static function (): void {
@@ -43,8 +44,8 @@ return static function (): void {
     }
 
     // 事件监听
-    Event::on('IMI.LOAD_RUNTIME_INFO', static fn (IEvent $e) => App::newInstance(\Imi\Workerman\Process\Listener\LoadRuntimeListener::class)->handle($e), 19940000);
-    Event::on('IMI.BUILD_RUNTIME', static fn (IEvent $e) => App::newInstance(\Imi\Workerman\Process\Listener\BuildRuntimeListener::class)->handle($e), 19940000);
+    Event::on('IMI.LOAD_RUNTIME_INFO', static fn (LoadRuntimeInfoEvent $e) => App::newInstance(\Imi\Workerman\Process\Listener\LoadRuntimeListener::class)->handle($e), 19940000);
+    Event::on('IMI.BUILD_RUNTIME', static fn (BuildRuntimeInfoEvent $e) => App::newInstance(\Imi\Workerman\Process\Listener\BuildRuntimeListener::class)->handle($e), 19940000);
 
     App::runApp($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)), \Imi\Workerman\WorkermanApp::class);
 };

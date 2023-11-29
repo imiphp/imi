@@ -18,10 +18,7 @@ class CommonEvent implements IEvent
          * 事件名称.
          */
         protected string $__eventName,
-        /**
-         * 数据.
-         */
-        protected array $__data = []
+        protected ?object $__target = null
     ) {
     }
 
@@ -30,9 +27,9 @@ class CommonEvent implements IEvent
         return $this->__eventName;
     }
 
-    public function getData(): array
+    public function getTarget(): ?object
     {
-        return $this->__data;
+        return $this->__target;
     }
 
     public function stopPropagation(bool $isStop = true): void

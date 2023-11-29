@@ -11,7 +11,7 @@ use Imi\Event\IEventListener;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -19,9 +19,8 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
         $data = [];
         $data['cli'] = CliManager::getMap();
-        $eventData['data']['cli'] = $data;
+        $e->data['cli'] = $data;
     }
 }

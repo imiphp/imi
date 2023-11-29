@@ -16,7 +16,7 @@ use Imi\Server\ServerManager;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -35,8 +35,7 @@ class BuildRuntimeListener implements IEventListener
             /** @var HttpRoute $route */
             $route = $server->getBean('HttpRoute');
             (new HttpRouteInit())->handle(new EventParam(''));
-            $eventData = $e->getData();
-            $eventData['data']['route']['rules'] = $route->getRules();
+            $e->data['route']['rules'] = $route->getRules();
         }
     }
 }

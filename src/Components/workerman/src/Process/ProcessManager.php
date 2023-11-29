@@ -12,6 +12,7 @@ use Imi\Log\Handler\ConsoleHandler;
 use Imi\Log\Log;
 use Imi\Log\Logger;
 use Imi\RequestContext;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
@@ -131,9 +132,9 @@ class ProcessManager
                     {
                         return;
                     }
-                    Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
+                    Event::dispatch(new PipeMessageEvent('IMI.PIPE_MESSAGE.' . $action, [
                         'data' => $data,
-                    ]);
+                    ]));
                 };
                 $workerId = ImiWorker::getWorkerId();
                 Client::on('imi.process.message.' . $processName . '.' . $workerId, $callback);

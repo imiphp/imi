@@ -12,7 +12,7 @@ use Imi\Event\IEventListener;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -20,10 +20,9 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
         $data = [];
         $data['event'] = EventManager::getMap();
         $data['classEvent'] = ClassEventManager::getMap();
-        $eventData['data']['event'] = $data;
+        $e->data['event'] = $data;
     }
 }

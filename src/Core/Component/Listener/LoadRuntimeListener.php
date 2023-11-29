@@ -11,7 +11,7 @@ use Imi\Event\IEventListener;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -20,6 +20,6 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        ComponentManager::setComponents($e->getData()['data']['component']['components'] ?? []);
+        ComponentManager::setComponents($e->data['component']['components'] ?? []);
     }
 }

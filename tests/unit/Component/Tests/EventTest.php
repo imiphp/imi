@@ -7,6 +7,7 @@ namespace Imi\Test\Component\Tests;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Event\Classes\TestClassEvent;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -91,12 +92,9 @@ class EventTest extends BaseTest
 
     public function testListener(): void
     {
-        $return = null;
-        Event::trigger('IMITEST.EVENT.D', [
-            'name'   => 'imi',
-            'return' => &$return,
-        ], $this);
-        Assert::assertEquals(19260817, $return);
+        $event = new TestClassEvent('IMITEST.EVENT.D', null, 'imi');
+        Event::dispatch($event);
+        Assert::assertEquals(19260817, $event->return);
     }
 
     public function testClassListener1(): void

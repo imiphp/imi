@@ -21,4 +21,6 @@ interface IListenerProvider
     public function addListener(string|array $eventNames, callable $listener, int $priority = 0, bool $once = false): void;
 
     public function removeListener(string|array $eventNames, ?callable $listener = null): void;
+
+    public function clearListeners(): void;
 }

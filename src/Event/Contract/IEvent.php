@@ -12,6 +12,11 @@ interface IEvent
     public function getEventName(): string;
 
     /**
+     * 事件所在目标对象
+     */
+    public function getTarget(): ?object;
+
+    /**
      * 阻止事件继续传播.
      *
      * @param bool $stoped 是否阻止事件继续传播

@@ -16,6 +16,8 @@ use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 
 #[Bean(name: 'WorkermanGatewayWebSocketBusinessServer')]
@@ -120,10 +122,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new WorkermanConnectionCloseEvent($this, $clientId));
             RequestContext::destroy();
         });
 
@@ -137,12 +136,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                     'clientId' => $clientId,
                 ]);
 
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
-                    'server'   => $this,
-                    'clientId' => $clientId,
-                    'data'     => $data,
-                    'frame'    => new Frame($data, $clientId),
-                ], $this);
+                Event::dispatch(new WorkermanWebSocketMessageEvent($this, $clientId, $data, new Frame($data, $clientId)));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

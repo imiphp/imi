@@ -11,7 +11,7 @@ use Imi\Event\IEventListener;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -19,8 +19,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
-        $data = $eventData['data']['aop'] ?? [];
+        $data = $e->data['aop'] ?? [];
         if ((bool) ($cache = ($data['cache'] ?? null)) | (bool) ($dynamicRulesCache = ($data['dynamicRulesCache'] ?? null)))
         {
             AopManager::clear();

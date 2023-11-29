@@ -14,7 +14,7 @@ use Imi\Event\IEventListener;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -22,7 +22,6 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
         $data = [];
         $parser = Annotation::getInstance()->getParser();
         if (Config::get('@app.imi.runtime.annotation_parser_data', true))
@@ -57,6 +56,6 @@ class BuildRuntimeListener implements IEventListener
             $data['partial'] = PartialManager::getMap();
         }
         $data['bean'] = BeanManager::getMap();
-        $eventData['data']['bean'] = $data;
+        $e->data['bean'] = $data;
     }
 }

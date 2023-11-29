@@ -46,7 +46,7 @@ class Event
      * 取消事件监听.
      *
      * @param string|string[] $eventNames 事件名称
-     * @param mixed|null      $listener   回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
+     * @param callable|null   $listener   回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
      */
     public static function off(string|array $eventNames, ?callable $listener = null): void
     {

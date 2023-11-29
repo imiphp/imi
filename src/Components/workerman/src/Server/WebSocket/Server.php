@@ -20,6 +20,8 @@ use Imi\Util\ImiPriority;
 use Imi\Workerman\Http\Message\WorkermanRequest;
 use Imi\Workerman\Http\Message\WorkermanResponse;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
 use Imi\Workerman\Server\Http\Listener\BeforeRequest;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
@@ -91,11 +93,7 @@ class Server extends Base implements IWebSocketServer
                     'uri'        => (string) $request->getUri(),
                     'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [
-                    'server'   => $this,
-                    'request'  => $request,
-                    'response' => $response,
-                ], $this);
+                Event::dispatch(new WorkermanHttpRequestEvent($this, $request, $response));
                 Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
                     'server'     => $this,
                     'connection' => $connection,
@@ -127,13 +125,7 @@ class Server extends Base implements IWebSocketServer
                     'server'       => $this,
                     'clientId'     => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
-                    'server'           => $this,
-                    'connection'       => $connection,
-                    'clientId'         => $clientId,
-                    'data'             => $data,
-                    'frame'            => new Frame($data, $clientId),
-                ], $this);
+                Event::dispatch(new WorkermanWebSocketMessageEvent($this, $clientId, $data, new Frame($data, $clientId), $connection));
             }
             catch (\Throwable $th)
             {

@@ -12,7 +12,7 @@ use Imi\Event\IEventListener;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -21,7 +21,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data']['event'] ?? [];
+        $data = $e->data['event'] ?? [];
         EventManager::setMap($data['event'] ?? []);
         ClassEventManager::setMap($data['classEvent'] ?? []);
     }

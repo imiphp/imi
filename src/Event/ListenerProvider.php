@@ -93,6 +93,11 @@ class ListenerProvider implements IListenerProvider
         }
     }
 
+    public function clearListeners(): void
+    {
+        $this->listeners = $this->sortedListeners = $this->changedEventMap = [];
+    }
+
     protected function rebuildSortedListeners(string $eventName): void
     {
         if (isset($this->listeners[$eventName]))

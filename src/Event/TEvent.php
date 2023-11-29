@@ -12,12 +12,7 @@ trait TEvent
 
     public function getEventController(): EventController
     {
-        if (isset($this->eventController))
-        {
-            return $this->eventController;
-        }
-
-        return $this->eventController = new EventController($this);
+        return $this->eventController ?? ($this->eventController = new EventController($this));
     }
 
     /**
@@ -46,7 +41,7 @@ trait TEvent
      * 取消事件监听.
      *
      * @param string|string[] $eventNames 事件名称
-     * @param mixed|null      $listener   回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
+     * @param callable|null   $listener   回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
      */
     public function off(string|array $eventNames, ?callable $listener = null): void
     {
@@ -68,10 +63,10 @@ trait TEvent
     }
 
     /**
-     * 触发事件.
+     * 事件调度.
      */
     public function dispatch(?IEvent $event = null, ?string $eventName = null): void
     {
-        $this->getEventController()->dispatch($event ?? new CommonEvent($eventName));
+        $this->getEventController()->dispatch($event ?? new CommonEvent($eventName, $this));
     }
 }

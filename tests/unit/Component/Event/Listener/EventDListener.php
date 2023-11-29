@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Event\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Test\Component\Event\Classes\TestClassEvent;
 use Imi\Test\Component\Tests\EventTest;
 use PHPUnit\Framework\Assert;
 
@@ -13,14 +14,13 @@ use PHPUnit\Framework\Assert;
 class EventDListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param TestClassEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         Assert::assertEquals('IMITEST.EVENT.D', $e->getEventName());
         Assert::assertEquals(EventTest::class, \get_class($e->getTarget()));
-        $data = $e->getData();
-        Assert::assertEquals('imi', $data['name']);
-        $data['return'] = 19260817;
+        Assert::assertEquals('imi', $e->name);
+        $e->return = 19260817;
     }
 }

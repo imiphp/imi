@@ -12,7 +12,7 @@ use Imi\Swoole\Process\ProcessPoolManager;
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
@@ -21,7 +21,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data']['process'] ?? [];
+        $data = $e->data['process'] ?? [];
         ProcessManager::setMap($data['process'] ?? []);
         ProcessPoolManager::setMap($data['processPool'] ?? []);
     }

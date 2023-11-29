@@ -11,5 +11,5 @@ class AfterQueryEventParam extends EventParam
     /**
      * 模型.
      */
-    public ?\Imi\Model\BaseModel $model;
+    public ?\Imi\Model\BaseModel $model = null;
 }

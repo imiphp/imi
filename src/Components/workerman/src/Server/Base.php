@@ -15,6 +15,7 @@ use Imi\Log\Log;
 use Imi\Log\Logger;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\Group\TServerGroup;
 use Imi\Server\ServerManager;
@@ -22,6 +23,8 @@ use Imi\Util\Imi;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
+use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanErrorEvent;
 use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Connection\TcpConnection;
@@ -186,11 +189,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                ], $this);
+                Event::dispatch(new WorkermanConnectionCloseEvent($this, $clientId, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -231,13 +230,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                    'code'       => $code,
-                    'msg'        => $msg,
-                ], $this);
+                Event::dispatch(new WorkermanErrorEvent($this, $clientId, $connection, $code, $msg));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -327,9 +320,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                         {
                             return;
                         }
-                        Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                            'data'      => $data,
-                        ]);
+                        Event::dispatch(new PipeMessageEvent('IMI.PIPE_MESSAGE.' . $action, [
+                            'data' => $data,
+                        ]));
                     };
                     $workerId = ImiWorker::getWorkerId();
                     Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);

@@ -6,6 +6,7 @@ namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
 
@@ -16,11 +17,11 @@ use Imi\Swoole\SwooleWorker;
 class OnSendToClientIdsRequest implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param PipeMessageEvent $e
      */
     public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        $eData = $e->getData();
+        $eData = $e->data;
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $serverName = $data['serverName'];
