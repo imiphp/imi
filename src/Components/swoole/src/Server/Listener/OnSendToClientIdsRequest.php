@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
@@ -19,7 +18,7 @@ class OnSendToClientIdsRequest implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $eData = $e->getData();
         $workerId = $eData['workerId'] ?? -1;

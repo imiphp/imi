@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\IDEHelper;
 
 use Imi\Bean\BeanManager;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 use Imi\Util\Imi;
@@ -17,7 +16,7 @@ class BuildIDEHelper implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $this->buildBean();
         $this->save();

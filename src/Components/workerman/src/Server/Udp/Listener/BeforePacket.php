@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Udp\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\UdpServer\Message\IPacketData;
@@ -19,7 +18,7 @@ class BeforePacket implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         /** @var IPacketData $packetData */
         ['packetData' => $packetData] = $e->getData();

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Tcp\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\TcpServer\Message\ReceiveData;
@@ -19,7 +18,7 @@ class BeforeReceive implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         ['clientId' => $clientId, 'data' => $data] = $e->getData();
         // 上下文创建

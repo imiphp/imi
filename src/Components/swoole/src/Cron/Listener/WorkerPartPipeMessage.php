@@ -7,7 +7,6 @@ namespace Imi\Swoole\Cron\Listener;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
@@ -21,7 +20,7 @@ class WorkerPartPipeMessage implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (ProcessType::WORKER !== App::get(ProcessAppContexts::PROCESS_TYPE))
         {

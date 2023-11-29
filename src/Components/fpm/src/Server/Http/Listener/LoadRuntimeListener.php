@@ -6,7 +6,6 @@ namespace Imi\Fpm\Server\Http\Listener;
 
 use Imi\App;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Fpm\FpmAppContexts;
 use Imi\Fpm\Server\Type;
@@ -18,7 +17,7 @@ class LoadRuntimeListener implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $config = Config::get('@app.imi.runtime', []);
         if (!($config['route'] ?? true))

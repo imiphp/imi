@@ -6,7 +6,6 @@ namespace Imi\Workerman\Server\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Workerman\Server\Util\LocalServerUtil;
 
@@ -19,7 +18,7 @@ class OnSendRawToAllRequest implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $data = $e->getData();
         ['data' => $data, 'serverName' => $serverName] = $data['data'];

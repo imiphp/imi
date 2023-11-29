@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\WebSocket\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 
@@ -18,7 +17,7 @@ class BeforeMessage implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         ['frame' => $frame] = $e->getData();
 

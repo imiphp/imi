@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Pool\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Pool\PoolManager;
 
@@ -17,7 +16,7 @@ class WorkerExit implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         foreach (PoolManager::getNames() as $name)
         {

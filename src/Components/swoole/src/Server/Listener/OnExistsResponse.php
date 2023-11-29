@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Util\Co\ChannelContainer;
 
@@ -18,7 +17,7 @@ class OnExistsResponse implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $data = $e->getData()['data'];
         if (ChannelContainer::hasChannel($data['messageId']))

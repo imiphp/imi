@@ -7,7 +7,6 @@ namespace Imi\Workerman\HotUpdate\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
@@ -18,7 +17,7 @@ class OnServerCreateAfter implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $servers = ServerManager::getServers();
         $server = reset($servers);

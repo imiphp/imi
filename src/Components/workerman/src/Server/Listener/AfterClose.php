@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\ConnectionContext\Traits\TConnectionContextRelease;
@@ -23,7 +22,7 @@ class AfterClose implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!\in_array(RequestContext::getServer()->getProtocol(), Protocol::LONG_CONNECTION_PROTOCOLS))
         {

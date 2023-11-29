@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 use Imi\Util\ImiPriority;
@@ -19,7 +18,7 @@ class AfterError implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $data = $e->getData();
         Log::error(sprintf('Workerman error: %s, errCode: %s', $data['msg'], $data['code']));

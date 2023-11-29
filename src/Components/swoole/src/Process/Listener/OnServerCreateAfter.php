@@ -6,7 +6,6 @@ namespace Imi\Swoole\Process\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\ProcessManager;
@@ -18,7 +17,7 @@ class OnServerCreateAfter implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $servers = ServerManager::getServers();
         $server = reset($servers);

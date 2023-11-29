@@ -8,7 +8,6 @@ use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 #[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
@@ -17,7 +16,7 @@ class Init implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if ('cli' !== \PHP_SAPI)
         {

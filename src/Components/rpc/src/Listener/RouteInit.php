@@ -23,7 +23,7 @@ class RouteInit implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $this->parseAnnotations($e);
     }

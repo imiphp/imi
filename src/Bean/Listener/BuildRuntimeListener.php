@@ -9,7 +9,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanManager;
 use Imi\Bean\PartialManager;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class BuildRuntimeListener implements IEventListener
@@ -17,7 +16,7 @@ class BuildRuntimeListener implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.bean', true))
         {

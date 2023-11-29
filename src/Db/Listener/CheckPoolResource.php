@@ -7,7 +7,6 @@ namespace Imi\Db\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Db\Db;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 use Imi\Pool\PoolManager;
@@ -18,7 +17,7 @@ class CheckPoolResource implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if ($connections = Config::get('@app.db.connections'))
         {

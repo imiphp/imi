@@ -494,13 +494,7 @@ class TransactionTest extends BaseTest
 
     private function assertEmptyEvents(Transaction $event): void
     {
-        foreach (['__events', '__eventQueue', '__eventChangeRecords', '__sortedEventQueue'] as $property)
-        {
-            $propertyRef = new \ReflectionProperty($event, $property);
-            $propertyRef->setAccessible(true);
-            $events = $propertyRef->getValue($event);
-
-            $this->assertEquals([], $events);
-        }
+        $listeners = $event->getEventController()->getEventDispatcher()->getListenerProvider()->getListeners();
+        $this->assertEquals(0, \is_array($listeners) ? \count($listeners) : iterator_count($listeners));
     }
 }

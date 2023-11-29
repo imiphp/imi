@@ -11,7 +11,7 @@ class AfterSaveEventParam extends EventParam
     /**
      * 模型.
      */
-    public \Imi\Model\BaseModel $model;
+    public ?\Imi\Model\BaseModel $model;
 
     /**
      * 初始化数据.

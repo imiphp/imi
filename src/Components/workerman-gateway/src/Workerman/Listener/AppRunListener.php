@@ -7,7 +7,6 @@ namespace Imi\WorkermanGateway\Workerman\Listener;
 use GatewayWorker\Lib\Gateway;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 if (\Imi\Util\Imi::checkAppType('workerman'))
@@ -18,7 +17,7 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
         /**
          * 事件处理方法.
          */
-        public function handle(EventParam $e): void
+        public function handle(\Imi\Event\Contract\IEvent $e): void
         {
             foreach (Config::get('@app.workermanServer', []) as $item)
             {
