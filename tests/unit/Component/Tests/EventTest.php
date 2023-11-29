@@ -92,7 +92,7 @@ class EventTest extends BaseTest
 
     public function testListener(): void
     {
-        $event = new TestClassEvent('IMITEST.EVENT.D', null, 'imi');
+        $event = new TestClassEvent('IMITEST.EVENT.D', $this, 'imi');
         Event::dispatch($event);
         Assert::assertEquals(19260817, $event->return);
     }
@@ -107,12 +107,11 @@ class EventTest extends BaseTest
     public function testClassListener2(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
-        $testClass->on('test2', static function (EventParam $e) use ($testClass): void {
+        $testClass->on('test2', static function (TestClassEvent $e) use ($testClass): void {
             Assert::assertEquals('test2', $e->getEventName());
             Assert::assertEquals($testClass, $e->getTarget());
-            $data = $e->getData();
-            Assert::assertEquals('imi', $data['name']);
-            $data['return'] = 19260817;
+            Assert::assertEquals('imi', $e->name);
+            $e->return = 19260817;
         });
         $result = $testClass->test2();
         Assert::assertEquals(19260817, $result);

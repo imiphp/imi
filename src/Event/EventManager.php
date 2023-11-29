@@ -16,6 +16,11 @@ class EventManager
 
     private static array $map = [];
 
+    /**
+     * @var array<string, array<string, callable>>
+     */
+    private static array $listeners = [];
+
     public static function getMap(): array
     {
         return self::$map;
@@ -23,18 +28,29 @@ class EventManager
 
     public static function setMap(array $map): void
     {
+        foreach (self::$map as $eventName => $events)
+        {
+            foreach ($events as $listenerClass => $event)
+            {
+                if (isset(self::$listeners[$eventName][$listenerClass]))
+                {
+                    Event::off($eventName, self::$listeners[$eventName][$listenerClass]);
+                }
+            }
+        }
         self::$map = $map;
         foreach ($map as $eventName => $events)
         {
             foreach ($events as $listenerClass => $event)
             {
+                self::$listeners[$eventName][$listenerClass] = $listener = static fn (IEvent $e) => App::newInstance($listenerClass)->handle($e);
                 if ($event['one'] ?? false)
                 {
-                    Event::one($eventName, static fn (IEvent $e) => App::newInstance($listenerClass)->handle($e), $event['priority']);
+                    Event::one($eventName, $listener, $event['priority']);
                 }
                 else
                 {
-                    Event::on($eventName, static fn (IEvent $e) => App::newInstance($listenerClass)->handle($e), $event['priority']);
+                    Event::on($eventName, $listener, $event['priority']);
                 }
             }
         }
