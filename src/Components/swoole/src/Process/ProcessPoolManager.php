@@ -6,6 +6,8 @@ namespace Imi\Swoole\Process;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Swoole\Process\Pool\ProcessPoolProcessBegin;
+use Imi\Swoole\Process\Pool\ProcessPoolProcessEnd;
 use Imi\Swoole\Util\Imi;
 
 /**
@@ -86,15 +88,7 @@ class ProcessPoolManager
             \Swoole\Coroutine\run(static function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption): void {
                 $processInstance = App::newInstance($processPoolOption['className'], $args);
                 // 进程开始事件
-                Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [
-                    'name'          => $name,
-                    'pool'          => $pool,
-                    'workerId'      => $workerId,
-                    'workerNum'     => $workerNum,
-                    'args'          => $args,
-                    'ipcType'       => $ipcType,
-                    'msgQueueKey'   => $msgQueueKey,
-                ]);
+                Event::dispatch(new ProcessPoolProcessBegin($name, $pool, $workerId, $workerNum, $args, $ipcType, $msgQueueKey));
                 // 执行任务
                 $processInstance->run($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
             });
@@ -102,15 +96,7 @@ class ProcessPoolManager
 
         $pool->on('WorkerStop', imiCallable(static function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey): void {
             // 进程结束事件
-            Event::trigger('IMI.PROCESS_POOL.PROCESS.END', [
-                'name'          => $name,
-                'pool'          => $pool,
-                'workerId'      => $workerId,
-                'workerNum'     => $workerNum,
-                'args'          => $args,
-                'ipcType'       => $ipcType,
-                'msgQueueKey'   => $msgQueueKey,
-            ]);
+            Event::dispatch(new ProcessPoolProcessEnd($name, $pool, $workerId, $workerNum, $args, $ipcType, $msgQueueKey));
         }, true));
 
         return $pool;

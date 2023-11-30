@@ -73,11 +73,11 @@ return static function (): void {
                 throw $th;
             }
         }
-        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.END');
+        Event::dispatch(eventName: 'IMI.SWOOLE.MAIN_COROUTINE.END');
     });
     if (0 === $status)
     {
-        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
+        Event::dispatch(eventName: 'IMI.SWOOLE.MAIN_COROUTINE.AFTER');
     }
     else
     {

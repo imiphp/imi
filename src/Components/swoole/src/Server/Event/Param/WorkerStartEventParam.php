@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
-class WorkerStartEventParam extends EventParam
+class WorkerStartEventParam extends CommonEvent
 {
-    /**
-     * 服务器对象
-     */
-    public ?ISwooleServer $server = null;
-
-    /**
-     * Worker进程ID.
-     */
-    public int $workerId = 0;
+    public function __construct(
+        string $__eventName,
+        /**
+         * 服务器对象
+         */
+        public readonly ?ISwooleServer $server = null,
+        /**
+         * Worker进程ID.
+         */
+        public readonly int $workerId = 0,
+    ) {
+        parent::__construct($__eventName, $server);
+    }
 }

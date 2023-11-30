@@ -13,6 +13,7 @@ use Imi\Event\TEvent;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Event\ModelEvents;
+use Imi\Model\Event\Param\InitEventParam;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
@@ -105,10 +106,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         if ($isBean)
         {
             // 初始化前
-            $this->trigger(ModelEvents::BEFORE_INIT, [
-                'model' => $this,
-                'data'  => $data,
-            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+            $this->dispatch(new InitEventParam(ModelEvents::BEFORE_INIT, $this, $data));
         }
 
         if ($data)
@@ -123,10 +121,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         if ($isBean)
         {
             // 初始化后
-            $this->trigger(ModelEvents::AFTER_INIT, [
-                'model' => $this,
-                'data'  => $data,
-            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+            $this->dispatch(new InitEventParam(ModelEvents::AFTER_INIT, $this, $data));
         }
     }
 

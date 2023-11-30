@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 
-class AfterFindEventParam extends EventParam
+class AfterFindEventParam extends CommonEvent
 {
-    /**
-     * 主键值们.
-     */
-    public array $ids;
+    public function __construct(string $__eventName,
+        /**
+         * 主键值们.
+         */
+        public readonly array $ids,
 
-    /**
-     * 模型.
-     */
-    public ?\Imi\Model\BaseModel $model = null;
+        /**
+         * 模型.
+         */
+        public ?\Imi\Model\Model $model = null
+    ) {
+        parent::__construct($__eventName);
+    }
 }

@@ -84,6 +84,4 @@ function startServer(): void
 }
 
 startServer();
-\Swoole\Coroutine::defer(static function (): void {
-    \Imi\Event\Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [], null, \Imi\Swoole\Server\Event\Param\WorkerExitEventParam::class);
-});
+\Swoole\Coroutine::defer(static fn () => \Imi\Event\Event::dispatch(new \Imi\Swoole\Server\Event\Param\WorkerExitEventParam()));

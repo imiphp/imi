@@ -7,6 +7,7 @@ namespace Imi\RoadRunner\HotUpdate;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
+use Imi\HotUpdate\Event\HotUpdateBeginBuildEvent;
 use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Util\Imi;
@@ -177,14 +178,9 @@ class HotUpdateProcess
     private function beginBuildRuntime(array $changedFiles): void
     {
         $this->beginTime = microtime(true);
-        $result = null;
-        Event::trigger('IMI.HOTUPDATE.BEGIN_BUILD', [
-            'changedFiles'      => $changedFiles,
-            'changedFilesFile'  => $this->changedFilesFile,
-            'result'            => &$result,
-        ]);
-        // @phpstan-ignore-next-line
-        if ($result)
+        $event = new HotUpdateBeginBuildEvent($changedFiles, $this->changedFilesFile);
+        Event::dispatch($event);
+        if ($event->result)
         {
             return;
         }

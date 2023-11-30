@@ -9,7 +9,6 @@ use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Result\TResultEntityCreate;
 use Imi\Db\Statement\StatementManager;
-use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
 use Imi\Model\Model;
 
@@ -160,10 +159,9 @@ class Result implements IResult
             $list = [];
             foreach ($this->statementRecords as $item)
             {
+                /** @var Model $object */
                 $object = $className::createFromRecord($item);
-                $object->trigger(ModelEvents::AFTER_QUERY, [
-                    'model' => $object,
-                ], $object, AfterQueryEventParam::class);
+                $object->dispatch(new AfterQueryEventParam($object));
                 $list[] = $object;
             }
 

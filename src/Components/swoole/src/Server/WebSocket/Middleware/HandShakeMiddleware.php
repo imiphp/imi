@@ -58,10 +58,7 @@ class HandShakeMiddleware implements MiddlewareInterface
             ]);
 
             $server = $requestContext['server'];
-            $server->trigger('open', [
-                'server'   => &$server,
-                'request'  => &$request,
-            ], $this, OpenEventParam::class);
+            $server->dispatch(new OpenEventParam($server, $request));
         }
         else
         {

@@ -11,6 +11,8 @@ use Imi\Event\Event;
 use Imi\Log\Handler\ConsoleHandler;
 use Imi\Log\Log;
 use Imi\Log\Logger;
+use Imi\Process\Event\ProcessBeginEvent;
+use Imi\Process\Event\ProcessEndEvent;
 use Imi\RequestContext;
 use Imi\Server\Event\PipeMessageEvent;
 use Imi\Util\Imi;
@@ -142,10 +144,7 @@ class ProcessManager
             }
 
             // 进程开始事件
-            Event::trigger('IMI.PROCESS.BEGIN', [
-                'name'    => $processName,
-                'process' => $worker,
-            ]);
+            Event::dispatch(new ProcessBeginEvent($processName, $worker));
             try
             {
                 // 执行任务
@@ -160,10 +159,7 @@ class ProcessManager
             finally
             {
                 // 进程结束事件
-                Event::trigger('IMI.PROCESS.END', [
-                    'name'    => $processName,
-                    'process' => $worker,
-                ]);
+                Event::dispatch(new ProcessEndEvent($processName, $worker));
                 Log::info('Process stop [' . $processName . ']. pid: ' . getmypid());
             }
         };

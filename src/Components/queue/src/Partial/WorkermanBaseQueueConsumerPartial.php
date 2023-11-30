@@ -32,29 +32,18 @@ if (\Imi\Util\Imi::checkAppType('workerman'))
             {
                 try
                 {
-                    Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_POP', [
-                        'queue' => $queue,
-                    ], $this, ConsumerBeforePopParam::class);
+                    Event::dispatch(new ConsumerBeforePopParam($queue));
                     $message = $queue->pop();
-                    Event::trigger('IMI.QUEUE.CONSUMER.AFTER_POP', [
-                        'queue'     => $queue,
-                        'message'   => $message,
-                    ], $this, ConsumerAfterPopParam::class);
+                    Event::dispatch(new ConsumerAfterPopParam($queue, $message));
                     if (null === $message)
                     {
                         usleep((int) ($config->getTimespan() * 1000000));
                     }
                     else
                     {
-                        Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
-                            'queue'     => $queue,
-                            'message'   => $message,
-                        ], $this, ConsumerBeforeConsumeParam::class);
+                        Event::dispatch(new ConsumerBeforeConsumeParam($queue, $message));
                         $this->consume($message, $queue);
-                        Event::trigger('IMI.QUEUE.CONSUMER.AFTER_CONSUME', [
-                            'queue'     => $queue,
-                            'message'   => $message,
-                        ], $this, ConsumerAfterConsumeParam::class);
+                        Event::dispatch(new ConsumerAfterConsumeParam($queue, $message));
                     }
                 }
                 catch (\Throwable $th)

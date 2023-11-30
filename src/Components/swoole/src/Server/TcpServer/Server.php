@@ -107,11 +107,7 @@ class Server extends Base implements ISwooleTcpServer
                     {
                         ChannelContainer::pop('workerInit');
                     }
-                    $this->trigger('connect', [
-                        'server'          => $this,
-                        'clientId'        => $fd,
-                        'reactorId'       => $reactorId,
-                    ], $this, ConnectEventParam::class);
+                    $this->dispatch(new ConnectEventParam($this, $fd, $reactorId));
                 }
                 catch (\Throwable $th)
                 {
@@ -149,12 +145,7 @@ class Server extends Base implements ISwooleTcpServer
                     {
                         ChannelContainer::pop('workerInit');
                     }
-                    $this->trigger('receive', [
-                        'server'          => $this,
-                        'clientId'        => $fd,
-                        'reactorId'       => $reactorId,
-                        'data'            => $data,
-                    ], $this, ReceiveEventParam::class);
+                    $this->dispatch(new ReceiveEventParam($this, $fd, $reactorId, $data));
                 }
                 catch (\Throwable $th)
                 {
@@ -189,11 +180,7 @@ class Server extends Base implements ISwooleTcpServer
                     {
                         ChannelContainer::pop('workerInit');
                     }
-                    $this->trigger('close', [
-                        'server'          => $this,
-                        'clientId'        => $fd,
-                        'reactorId'       => $reactorId,
-                    ], $this, CloseEventParam::class);
+                    $this->dispatch(new CloseEventParam($this, $fd, $reactorId));
                 }
                 catch (\Throwable $th)
                 {

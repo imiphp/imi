@@ -57,16 +57,16 @@ trait TEvent
      * @param object|null $target     目标对象
      * @param string      $paramClass 参数类
      */
-    public function trigger(string $eventNames, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
+    public function trigger(string $eventName, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
-        $this->getEventController()->dispatch(new $paramClass($eventNames, $data, $target));
+        $this->getEventController()->dispatch(new $paramClass($eventName, $data, $target));
     }
 
     /**
      * 事件调度.
      */
-    public function dispatch(?IEvent $event = null, ?string $eventName = null): void
+    public function dispatch(?IEvent $event = null, ?string $eventName = null, ?object $target = null): void
     {
-        $this->getEventController()->dispatch($event ?? new CommonEvent($eventName, $this));
+        $this->getEventController()->dispatch($event ?? new CommonEvent($eventName, $target ?? $this));
     }
 }

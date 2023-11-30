@@ -14,6 +14,7 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Workerman\Server\Event\ConnectEvent;
 use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
 use Imi\Workerman\Server\Http\Event\WorkermanTcpMessageEvent;
 
@@ -74,10 +75,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 '__clientAddress' => $_SERVER['REMOTE_ADDR'],
                 '__clientPort'    => $_SERVER['REMOTE_PORT'],
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new ConnectEvent($this, $clientId));
             RequestContext::destroy();
         });
 

@@ -29,7 +29,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
         // 项目初始化事件
         if (0 === Worker::getWorkerId() && !$this->checkInitFlagFile($initFlagFile = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.app.init')))
         {
-            Event::trigger('IMI.APP.INIT', [], $e->getTarget());
+            Event::dispatch(eventName: 'IMI.APP.INIT', target: $e->getTarget());
 
             file_put_contents($initFlagFile, SwooleWorker::getMasterPid());
 

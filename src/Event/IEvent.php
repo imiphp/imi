@@ -41,10 +41,10 @@ interface IEvent
      * @param object|null $target     目标对象
      * @param string      $paramClass 参数类
      */
-    public function trigger(string $eventNames, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void;
+    public function trigger(string $eventName, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void;
 
     /**
      * 事件调度.
      */
-    public function dispatch(?ContractIEvent $event = null, ?string $eventName = null): void;
+    public function dispatch(?ContractIEvent $event = null, ?string $eventName = null, ?object $target = null): void;
 }

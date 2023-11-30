@@ -32,7 +32,7 @@ class Scanner
         $time = microtime(true);
         Helper::getMain('Imi', 'Imi');
         Annotation::getInstance()->initByNamespace('Imi');
-        Event::trigger('IMI.SCAN_IMI');
+        Event::dispatch(eventName: 'IMI.SCAN_IMI');
         if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
@@ -117,7 +117,7 @@ class Scanner
         {
             self::scanComponents($components);
         }
-        Event::trigger('IMI.SCAN_VENDOR');
+        Event::dispatch(eventName: 'IMI.SCAN_VENDOR');
         if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
@@ -134,7 +134,7 @@ class Scanner
         $namespace = App::getNamespace();
         Helper::getMain($namespace, 'app');
         Annotation::getInstance()->initByNamespace($namespace, true);
-        Event::trigger('IMI.SCAN_APP');
+        Event::dispatch(eventName: 'IMI.SCAN_APP');
         if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;

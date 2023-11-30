@@ -98,10 +98,7 @@ class SwooleWorkerHandler implements ISwooleWorker
         {
             $mainServer = ServerManager::getServer('main', ISwooleServer::class);
             // 触发项目的workerstart事件
-            Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
-                'server'    => $mainServer,
-                'workerId'  => $this->workerId,
-            ], $mainServer, WorkerStartEventParam::class);
+            Event::dispatch(new WorkerStartEventParam('IMI.MAIN_SERVER.WORKER.START.APP', $mainServer, $this->workerId));
             $this->workerStartAppComplete = true;
         }
         $func = static function (): void {

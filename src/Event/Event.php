@@ -58,21 +58,20 @@ class Event
      *
      * @deprecated 3.1
      *
-     * @param string      $eventNames 事件名称
      * @param array       $data       数据
      * @param object|null $target     目标对象
      * @param string      $paramClass 参数类
      */
-    public static function trigger(string $eventNames, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
+    public static function trigger(string $eventName, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
-        self::getInstance()->__trigger($eventNames, $data, $target, $paramClass);
+        self::getInstance()->__trigger($eventName, $data, $target, $paramClass);
     }
 
     /**
      * 触发事件.
      */
-    public static function dispatch(IEvent $event = null, ?string $eventName = null): void
+    public static function dispatch(IEvent $event = null, ?string $eventName = null, ?object $target = null): void
     {
-        self::getInstance()->__dispatch($event, $eventName);
+        self::getInstance()->__dispatch($event, $eventName, $target);
     }
 }

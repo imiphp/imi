@@ -120,10 +120,7 @@ class Server extends Base implements ISwooleHttpServer
                         'request'        => $request,
                         'response'       => $response,
                     ]);
-                    $this->trigger('request', [
-                        'request'  => $request,
-                        'response' => $response,
-                    ], $this, RequestEventParam::class);
+                    $this->dispatch(new RequestEventParam($this, $request, $response));
                 }
                 catch (\Throwable $th)
                 {
@@ -147,11 +144,7 @@ class Server extends Base implements ISwooleHttpServer
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId): void {
                 try
                 {
-                    $this->trigger('close', [
-                        'server'          => $this,
-                        'clientId'        => $fd,
-                        'reactorId'       => $reactorId,
-                    ], $this, CloseEventParam::class);
+                    $this->dispatch(new CloseEventParam($this, $fd, $reactorId));
                 }
                 catch (\Throwable $th)
                 {

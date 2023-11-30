@@ -99,7 +99,7 @@ abstract class BaseApp implements IApp
         }
 
         Helper::getMain($this->namespace, 'app');
-        Event::trigger('IMI.INIT_MAIN');
+        Event::dispatch(eventName: 'IMI.INIT_MAIN');
     }
 
     protected function loadDotEnv(): void

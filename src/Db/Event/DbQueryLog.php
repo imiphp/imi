@@ -50,16 +50,7 @@ class DbQueryLog
         finally
         {
             $endTime = microtime(true);
-            Event::trigger('IMI.DB.EXECUTE', [
-                'db'         => $db,
-                'sql'        => $sql,
-                'beginTime'  => $beginTime,
-                'endTime'    => $endTime,
-                'time'       => $endTime - $beginTime,
-                'bindValues' => $bindValues,
-                'result'     => $result ?? null,
-                'throwable'  => $th ?? null,
-            ], $db, DbExecuteEventParam::class);
+            Event::dispatch(new DbExecuteEventParam($db, null, $sql, $beginTime, $endTime, $endTime - $beginTime, $bindValues, $result ?? null, $th ?? null));
         }
     }
 
@@ -76,11 +67,7 @@ class DbQueryLog
         }
         finally
         {
-            Event::trigger('IMI.DB.PREPARE', [
-                'statement'  => $result ?? null,
-                'sql'        => $sql,
-                'throwable'  => $th ?? null,
-            ], $joinPoint->getTarget(), DbPrepareEventParam::class);
+            Event::dispatch(new DbPrepareEventParam($joinPoint->getTarget(), $result ?? null, $sql, $th ?? null));
         }
     }
 
@@ -104,17 +91,7 @@ class DbQueryLog
         finally
         {
             $endTime = microtime(true);
-            Event::trigger('IMI.DB.EXECUTE', [
-                'db'         => $db,
-                'statement'  => $statement,
-                'sql'        => $sql,
-                'beginTime'  => $beginTime,
-                'endTime'    => $endTime,
-                'time'       => $endTime - $beginTime,
-                'bindValues' => $bindValues,
-                'result'     => $result ?? null,
-                'throwable'  => $th ?? null,
-            ], $db, DbExecuteEventParam::class);
+            Event::dispatch(new DbExecuteEventParam($db, $statement, $sql, $beginTime, $endTime, $endTime - $beginTime, $bindValues, $result ?? null, $th ?? null));
         }
     }
 

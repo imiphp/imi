@@ -78,7 +78,7 @@ class App
         $appInstance->loadConfig();
         // 加载入口
         $appInstance->loadMain();
-        Event::trigger('IMI.LOAD_CONFIG');
+        Event::dispatch(eventName: 'IMI.LOAD_CONFIG');
         // 加载运行时
         $result = $appInstance->loadRuntime();
         if (LoadRuntimeResult::NONE === $result)
@@ -93,19 +93,19 @@ class App
             // 扫描项目
             Scanner::scanApp();
         }
-        Event::trigger('IMI.LOAD_RUNTIME');
+        Event::dispatch(eventName: 'IMI.LOAD_RUNTIME');
         // 初始化
         $appInstance->init();
         // 注册错误日志
         // @phpstan-ignore-next-line
         self::getBean('ErrorLog')->register();
-        Event::trigger('IMI.APP_RUN');
+        Event::dispatch(eventName: 'IMI.APP_RUN');
         // 运行
         if ($callback)
         {
-            Event::trigger('IMI.QUICK_START_BEFORE');
+            Event::dispatch(eventName: 'IMI.QUICK_START_BEFORE');
             $callback();
-            Event::trigger('IMI.QUICK_START_AFTER');
+            Event::dispatch(eventName: 'IMI.QUICK_START_AFTER');
         }
         else
         {
@@ -136,7 +136,7 @@ class App
             self::set(AppContexts::APP_PATH_PHYSICS, IMI_IN_PHAR ? \dirname(realpath($_SERVER['SCRIPT_FILENAME'])) : ($path ?? Imi::getNamespacePath($namespace, true)), true);
         }
         self::$isInited = true;
-        Event::trigger('IMI.INITED');
+        Event::dispatch(eventName: 'IMI.INITED');
     }
 
     /**

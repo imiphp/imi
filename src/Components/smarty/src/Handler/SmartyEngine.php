@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\View\Engine\IEngine;
+use Imi\Smarty\Event\SmartyNewEvent;
 use Imi\Util\Imi;
 
 /**
@@ -90,10 +91,7 @@ class SmartyEngine implements IEngine
                 $smarty->setCaching($this->caching);
                 $smarty->setCacheLifetime($this->cacheLifetime);
             }
-            Event::trigger('IMI.SMARTY.NEW', [
-                'smarty'        => $smarty,
-                'serverName'    => $serverName,
-            ]);
+            Event::dispatch(new SmartyNewEvent($smarty, $serverName));
             self::$instances[$serverName] = $smarty;
         }
 

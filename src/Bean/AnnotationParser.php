@@ -95,7 +95,7 @@ class AnnotationParser
         $this->doParser($className);
 
         // 触发完成事件
-        $this->trigger('parseComplete.' . $className);
+        $this->dispatch(eventName: 'parseComplete.' . $className);
     }
 
     /**

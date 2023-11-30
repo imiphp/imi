@@ -84,11 +84,7 @@ class Server extends Base implements ISwooleUdpServer
                     {
                         ChannelContainer::pop('workerInit');
                     }
-                    $this->trigger('packet', [
-                        'server'        => $this,
-                        'data'          => $data,
-                        'clientInfo'    => $clientInfo,
-                    ], $this, PacketEventParam::class);
+                    $this->dispatch(new PacketEventParam($this, $data, $clientInfo));
                 }
                 catch (\Throwable $th)
                 {

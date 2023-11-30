@@ -56,6 +56,9 @@ parameters:
         -
             message: '#Creating callable from a non-native method#'
             reportUnmatched: true
+        -
+            message: '#should return .*static\(.+\).+but returns .+#'
+            reportUnmatched: true
 services:
 includes:
     - phpstan-baseline/baseline-core.neon

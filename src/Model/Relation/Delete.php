@@ -10,6 +10,7 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoDelete;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Model;
+use Imi\Model\Relation\Event\ModelRelationOperationEvent;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -97,12 +98,7 @@ class Delete
 
         $modelField = $model[$propertyName];
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         if (null === $modelField)
         {
             $rightModel = $struct->getRightModel();
@@ -112,12 +108,7 @@ class Delete
         {
             $modelField->delete();
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -133,21 +124,11 @@ class Delete
         $rightModel = $struct->getRightModel();
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField): void {
             $query->where($rightField, '=', $model[$leftField]);
         });
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -163,21 +144,11 @@ class Delete
         $leftField = $struct->getLeftField();
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField): void {
             $query->where($middleLeftField, '=', $model[$leftField]);
         });
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -194,11 +165,7 @@ class Delete
                 $className = BeanFactory::getObjectClass($model);
                 $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotationItem,
-                ]);
+                Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem));
 
                 if (null === $model[$propertyName])
                 {
@@ -217,11 +184,7 @@ class Delete
                     $model[$propertyName]->delete();
                 }
 
-                Event::trigger($eventName . '.AFTER', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotationItem,
-                ]);
+                Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotationItem));
                 break;
             }
         }
@@ -239,12 +202,7 @@ class Delete
         $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $modelField = $model[$propertyName];
         if (null === $modelField)
@@ -258,12 +216,7 @@ class Delete
             $modelField->{$annotation->type} = $annotation->typeValue;
             $modelField->delete();
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -279,22 +232,12 @@ class Delete
         $rightModel = $struct->getRightModel();
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField, $annotation): void {
             $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model[$leftField]);
         });
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -310,22 +253,12 @@ class Delete
         $leftField = $struct->getLeftField();
         $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField, $annotation): void {
             $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model[$leftField]);
         });
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**

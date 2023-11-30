@@ -93,7 +93,7 @@ class RoadRunnerApp extends BaseApp
             'type'      => Type::HTTP,
             'namespace' => $this->namespace,
         ]);
-        Event::trigger('IMI.APP.INIT', [], $this);
+        Event::dispatch(eventName: 'IMI.APP.INIT', target: $this);
         $server->start();
     }
 

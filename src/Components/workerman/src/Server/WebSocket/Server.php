@@ -20,6 +20,7 @@ use Imi\Util\ImiPriority;
 use Imi\Workerman\Http\Message\WorkermanRequest;
 use Imi\Workerman\Http\Message\WorkermanResponse;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Event\WebSocketConnectEvent;
 use Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent;
 use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
 use Imi\Workerman\Server\Http\Listener\BeforeRequest;
@@ -94,13 +95,7 @@ class Server extends Base implements IWebSocketServer
                     'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
                 ]);
                 Event::dispatch(new WorkermanHttpRequestEvent($this, $request, $response));
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
-                    'server'     => $this,
-                    'connection' => $connection,
-                    'clientId'   => $clientId,
-                    'request'    => $request,
-                    'response'   => $response,
-                ], $this);
+                Event::dispatch(new WebSocketConnectEvent($this, $clientId, $request, $response, $connection));
                 if (!\in_array($response->getStatusCode(), [StatusCode::OK, StatusCode::SWITCHING_PROTOCOLS]))
                 {
                     $connection->close();

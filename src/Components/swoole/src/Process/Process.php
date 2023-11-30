@@ -85,11 +85,7 @@ trait TProcess
                     if (false !== $data)
                     {
                         $data = swoole_substr_unserialize($data, 4);
-                        Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                            'process' => $this,
-                            'action'  => $data['action'] ?? '',
-                            'data'    => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
-                        ], $this, PipeMessageEventParam::class);
+                        Event::dispatch(new PipeMessageEventParam($this, $data['action'] ?? '', \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data));
                     }
                 }
             });
@@ -171,12 +167,7 @@ trait TProcess
                     }
 
                     $data = swoole_substr_unserialize($data, 4);
-                    Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                        'process'    => $this,
-                        'action'     => $data['action'] ?? '',
-                        'data'       => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
-                        'connection' => $conn,
-                    ], $this, PipeMessageEventParam::class);
+                    Event::dispatch(new PipeMessageEventParam($this, $data['action'] ?? '', \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data, $conn));
                 }
             });
 

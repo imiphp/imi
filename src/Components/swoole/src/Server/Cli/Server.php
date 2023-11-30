@@ -50,9 +50,9 @@ class Server extends BaseCommand
                 }
                 PoolManager::clearPools();
                 CacheManager::clearPools();
-                Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
+                Event::dispatch(eventName: 'IMI.SWOOLE.SERVER.BEFORE_START');
                 // 创建服务器对象们前置操作
-                Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+                Event::dispatch(eventName: 'IMI.SERVERS.CREATE.BEFORE');
                 $mainServer = Config::get('@app.mainServer');
                 if (null === $mainServer)
                 {
@@ -71,7 +71,7 @@ class Server extends BaseCommand
                     }
                 }
                 // 创建服务器对象们后置操作
-                Event::trigger('IMI.SERVERS.CREATE.AFTER');
+                Event::dispatch(eventName: 'IMI.SERVERS.CREATE.AFTER');
 
                 $swooleServer = $server->getSwooleServer();
                 $options = [];

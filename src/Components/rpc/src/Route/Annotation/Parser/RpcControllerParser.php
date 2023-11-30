@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Config;
 use Imi\Event\Event;
+use Imi\Rpc\Route\Event\RpcAnnotationParserEvent;
 
 /**
  * 控制器注解处理器.
@@ -22,7 +23,7 @@ class RpcControllerParser extends BaseParser
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
         $eventName = 'IMI.RPC.ANNOTATION.PARSER:' . $annotation::class;
-        Event::trigger($eventName, compact('annotation', 'className', 'target', 'targetName'), $this);
+        Event::dispatch(new RpcAnnotationParserEvent($eventName, $this, $annotation, $className, $target, $targetName));
     }
 
     /**

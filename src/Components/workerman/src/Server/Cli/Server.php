@@ -54,9 +54,9 @@ class Server extends BaseCommand
             // 守护进程
             WorkermanServerWorker::$daemonize = $d;
 
-            Event::trigger('IMI.WORKERMAN.SERVER.BEFORE_START');
+            Event::dispatch(eventName: 'IMI.WORKERMAN.SERVER.BEFORE_START');
             // 创建服务器对象们前置操作
-            Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+            Event::dispatch(eventName: 'IMI.SERVERS.CREATE.BEFORE');
             $serverConfigs = Config::get('@app.workermanServer', []);
             $output = ImiCommand::getOutput();
             if (null === $name)
@@ -116,9 +116,9 @@ class Server extends BaseCommand
             // @phpstan-ignore-next-line
             ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
             // 创建服务器对象们后置操作
-            Event::trigger('IMI.SERVERS.CREATE.AFTER');
+            Event::dispatch(eventName: 'IMI.SERVERS.CREATE.AFTER');
             WorkermanServerUtil::initWorkermanWorker($name);
-            Event::trigger('IMI.APP.INIT', [], $this);
+            Event::dispatch(eventName: 'IMI.APP.INIT', target: $this);
         })();
         // gc
         gc_collect_cycles();

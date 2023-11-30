@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
+use Imi\Model\Event\ModelEvents;
 
-class AfterQueryEventParam extends EventParam
+class AfterQueryEventParam extends CommonEvent
 {
-    /**
-     * 模型.
-     */
-    public ?\Imi\Model\BaseModel $model = null;
+    public function __construct(
+        /**
+         * 模型.
+         */
+        public ?\Imi\Model\BaseModel $model = null
+    ) {
+        parent::__construct(ModelEvents::AFTER_QUERY, $model);
+    }
 }

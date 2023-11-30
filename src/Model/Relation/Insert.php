@@ -10,6 +10,7 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoInsert;
 use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Model;
+use Imi\Model\Relation\Event\ModelRelationOperationEvent;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -113,22 +114,12 @@ class Insert
         $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $modelField = $model[$propertyName];
         $modelField[$rightField] = $model[$leftField];
         $modelField->insert();
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -144,12 +135,7 @@ class Insert
         $rightModel = $struct->getRightModel();
         $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         foreach ($model[$propertyName] as $index => $row)
         {
@@ -162,12 +148,7 @@ class Insert
             $row[$rightField] = $model[$leftField];
             $row->insert();
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -183,12 +164,7 @@ class Insert
         $leftField = $struct->getLeftField();
         $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         foreach ($model[$propertyName] as $index => $row)
         {
@@ -201,12 +177,7 @@ class Insert
             $row[$middleLeftField] = $model[$leftField];
             $row->insert();
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -223,11 +194,7 @@ class Insert
                 $className = BeanFactory::getObjectClass($model);
                 $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotationItem,
-                ]);
+                Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem));
 
                 $modelField = $annotationItem->modelField;
                 $field = $annotationItem->field;
@@ -236,11 +203,7 @@ class Insert
                 $rightModel[$modelField] = $model[$field];
                 $rightModel->insert();
 
-                Event::trigger($eventName . '.AFTER', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotationItem,
-                ]);
+                Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotationItem));
                 break;
             }
         }
@@ -258,23 +221,13 @@ class Insert
         $rightField = $struct->getRightField();
         $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $modelField = $model[$propertyName];
         $modelField[$rightField] = $model[$leftField];
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->insert();
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -290,12 +243,7 @@ class Insert
         $rightModel = $struct->getRightModel();
         $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         foreach ($model[$propertyName] as $index => $row)
         {
@@ -309,12 +257,7 @@ class Insert
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -330,12 +273,7 @@ class Insert
         $leftField = $struct->getLeftField();
         $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         foreach ($model[$propertyName] as $index => $row)
         {
@@ -349,12 +287,7 @@ class Insert
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**

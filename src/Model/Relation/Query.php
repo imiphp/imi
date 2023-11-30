@@ -12,6 +12,7 @@ use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\BaseModel;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Model;
+use Imi\Model\Relation\Event\ModelRelationQueryEvent;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -144,13 +145,7 @@ class Query
             {
                 $query->withField(...$annotation->withFields);
             }
-            Event::trigger($eventName . '.BEFORE', [
-                'model'        => $model,
-                'propertyName' => $propertyName,
-                'annotation'   => $annotation,
-                'struct'       => $struct,
-                'query'        => $query,
-            ]);
+            Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
             $rightModel = $query->limit(1)->select()->get();
         }
         else
@@ -179,12 +174,7 @@ class Query
         }
 
         $model[$propertyName] = $rightModel;
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -240,13 +230,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()->getArray();
                 if ($list)
                 {
@@ -278,12 +262,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -343,13 +322,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()
                             ->getArray();
                 if ($list)
@@ -392,12 +365,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -447,13 +415,7 @@ class Query
                 {
                     $query->withField(...$annotation->withFields);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $rightModel = $query->limit(1)->select()->get();
             }
             else
@@ -483,12 +445,7 @@ class Query
         }
 
         $model[$propertyName] = $rightModel;
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -544,13 +501,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()->getArray();
                 if ($list)
                 {
@@ -582,12 +533,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -641,12 +587,7 @@ class Query
                         {
                             $query->withField(...$annotationItem->withFields);
                         }
-                        Event::trigger($eventName . '.BEFORE', [
-                            'model'        => $model,
-                            'propertyName' => $propertyName,
-                            'annotation'   => $annotationItem,
-                            'query'        => $query,
-                        ]);
+                        Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem, query: $query));
                         $leftModel = $query->limit(1)->select()->get();
                     }
                     else
@@ -684,11 +625,7 @@ class Query
                 break;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => isset($leftModel) ? ($annotationItem ?? null) : null,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, isset($leftModel) ? ($annotationItem ?? null) : null));
     }
 
     /**
@@ -757,13 +694,7 @@ class Query
                         {
                             $query->limit($annotationItem->limit);
                         }
-                        Event::trigger($eventName . '.BEFORE', [
-                            'model'        => $model,
-                            'propertyName' => $propertyName,
-                            'annotation'   => $annotationItem,
-                            'struct'       => $struct,
-                            'query'        => $query,
-                        ]);
+                        Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem, $struct, $query));
                         $list = $query->select()
                                     ->getArray();
                         if ($list)
@@ -812,12 +743,7 @@ class Query
                 break;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => isset($struct) ? ($annotationItem ?? null) : null,
-            'struct'       => $struct ?? null,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, isset($struct) ? ($annotationItem ?? null) : null, $struct ?? null));
     }
 
     /**
@@ -878,13 +804,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()
                               ->getArray();
                 if ($list)
@@ -927,12 +847,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**

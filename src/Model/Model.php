@@ -16,6 +16,15 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
+use Imi\Model\Event\Param\AfterDeleteEventParam;
+use Imi\Model\Event\Param\AfterInsertEventParam;
+use Imi\Model\Event\Param\AfterSaveEventParam;
+use Imi\Model\Event\Param\AfterUpdateEventParam;
+use Imi\Model\Event\Param\BeforeDeleteEventParam;
+use Imi\Model\Event\Param\BeforeInsertEventParam;
+use Imi\Model\Event\Param\BeforeSaveEventParam;
+use Imi\Model\Event\Param\BeforeUpdateEventParam;
+use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Traits\TJsonValue;
 use Imi\Model\Traits\TListValue;
 use Imi\Model\Traits\TSetValue;
@@ -92,10 +101,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 初始化前
-            $this->trigger(ModelEvents::BEFORE_INIT, [
-                'model' => $this,
-                'data'  => $data,
-            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+            $this->dispatch(new InitEventParam(ModelEvents::BEFORE_INIT, $this, $data));
         }
 
         if ($data)
@@ -136,10 +142,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 初始化后
-            $this->trigger(ModelEvents::AFTER_INIT, [
-                'model' => $this,
-                'data'  => $data,
-            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+            $this->dispatch(new InitEventParam(ModelEvents::AFTER_INIT, $this, $data));
         }
     }
 
@@ -275,20 +278,16 @@ abstract class Model extends BaseModel
 
         $realClassName = static::__getRealClassName();
         // 查找前
-        Event::trigger($realClassName . ':' . ModelEvents::BEFORE_FIND, [
-            'ids'   => $ids,
-            'query' => $query,
-        ], null, \Imi\Model\Event\Param\BeforeFindEventParam::class);
+        $event = new \Imi\Model\Event\Param\BeforeFindEventParam($realClassName . ':' . ModelEvents::BEFORE_FIND, $ids, $query);
+        Event::dispatch($event);
 
-        $result = $query->select()->get();
+        $result = $event->query->select()->get();
 
         // 查找后
-        Event::trigger($realClassName . ':' . ModelEvents::AFTER_FIND, [
-            'ids'   => $ids,
-            'model' => &$result,
-        ], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
+        $event = new \Imi\Model\Event\Param\AfterFindEventParam($realClassName . ':' . ModelEvents::AFTER_FIND, $ids, $result);
+        Event::dispatch($event);
 
-        return $result;
+        return $event->model;
     }
 
     /**
@@ -306,18 +305,16 @@ abstract class Model extends BaseModel
         }
 
         // 查询前
-        Event::trigger($realClassName . ':' . ModelEvents::BEFORE_SELECT, [
-            'query' => $query,
-        ], null, \Imi\Model\Event\Param\BeforeSelectEventParam::class);
+        $event = new \Imi\Model\Event\Param\BeforeSelectEventParam($realClassName . ':' . ModelEvents::BEFORE_SELECT, $query);
+        Event::dispatch($event);
 
-        $result = $query->select()->getArray();
+        $result = $event->query->select()->getArray();
 
         // 查询后
-        Event::trigger($realClassName . ':' . ModelEvents::AFTER_SELECT, [
-            'result' => &$result,
-        ], null, \Imi\Model\Event\Param\AfterSelectEventParam::class);
+        $event = new \Imi\Model\Event\Param\AfterSelectEventParam($realClassName . ':' . ModelEvents::AFTER_FIND, $result);
+        Event::dispatch($event);
 
-        return $result;
+        return $event->result;
     }
 
     /**
@@ -336,11 +333,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 插入前
-            $this->trigger(ModelEvents::BEFORE_INSERT, [
-                'model' => $this,
-                'data'  => $data,
-                'query' => $query,
-            ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
+            $this->dispatch(new BeforeInsertEventParam($this, $data, $query));
         }
 
         $result = $query->insert($data);
@@ -352,11 +345,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 插入后
-            $this->trigger(ModelEvents::AFTER_INSERT, [
-                'model'  => $this,
-                'data'   => $data,
-                'result' => $result,
-            ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
+            $this->dispatch(new AfterInsertEventParam($this, $data, $result));
         }
 
         if ($meta->hasRelation())
@@ -391,11 +380,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 更新前
-            $this->trigger(ModelEvents::BEFORE_UPDATE, [
-                'model' => $this,
-                'data'  => $data,
-                'query' => $query,
-            ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
+            $this->dispatch(new BeforeUpdateEventParam($this, $data, $query));
         }
 
         $hasIdWhere = false;
@@ -422,11 +407,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 更新后
-            $this->trigger(ModelEvents::AFTER_UPDATE, [
-                'model'  => $this,
-                'data'   => $data,
-                'result' => $result,
-            ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
+            $this->dispatch(new AfterUpdateEventParam($this, $data, $result));
         }
 
         if ($meta->hasRelation())
@@ -469,11 +450,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 保存前
-            $this->trigger(ModelEvents::BEFORE_SAVE, [
-                'model' => $this,
-                'data'  => $data,
-                'query' => $query,
-            ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+            $this->dispatch(new BeforeSaveEventParam($this, $data, $query));
         }
 
         if (true === $recordExists)
@@ -509,11 +486,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 保存后
-            $this->trigger(ModelEvents::AFTER_SAVE, [
-                'model'  => $this,
-                'data'   => $data,
-                'result' => $result,
-            ], $this, \Imi\Model\Event\Param\AfterSaveEventParam::class);
+            $this->dispatch(new AfterSaveEventParam($this, $data, $result));
         }
 
         return $result;
@@ -531,10 +504,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 删除前
-            $this->trigger(ModelEvents::BEFORE_DELETE, [
-                'model' => $this,
-                'query' => $query,
-            ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+            $this->dispatch(new BeforeDeleteEventParam($this, $query));
         }
 
         $hasIdWhere = false;
@@ -555,10 +525,7 @@ abstract class Model extends BaseModel
         if ($isBean)
         {
             // 删除后
-            $this->trigger(ModelEvents::AFTER_DELETE, [
-                'model'  => $this,
-                'result' => $result,
-            ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+            $this->dispatch(new AfterDeleteEventParam($this, $result));
         }
 
         if ($meta->hasRelation())
@@ -814,10 +781,10 @@ abstract class Model extends BaseModel
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();
         // 处理前
-        Event::trigger($realClassName . ':' . ModelEvents::BEFORE_PARSE_DATA, [
-            'data'   => &$data,
-            'object' => &$object,
-        ], null, \Imi\Model\Event\Param\BeforeParseDataEventParam::class);
+        $event = new \Imi\Model\Event\Param\BeforeParseDataEventParam($realClassName . ':' . ModelEvents::BEFORE_PARSE_DATA, $data, $object);
+        Event::dispatch($event);
+        $data = $event->data;
+        $object = $event->object;
 
         if (\is_object($data))
         {
@@ -950,13 +917,10 @@ abstract class Model extends BaseModel
 
         $result = new LazyArrayObject($result);
         // 处理后
-        Event::trigger($realClassName . ':' . ModelEvents::AFTER_PARSE_DATA, [
-            'data'   => &$data,     // 待处理的原始数据
-            'object' => &$object,   // 模型对象，注意可能为 null
-            'result' => &$result,   // 最终保存的数据
-        ], null, \Imi\Model\Event\Param\AfterParseDataEventParam::class);
+        $event = new \Imi\Model\Event\Param\AfterParseDataEventParam($realClassName . ':' . ModelEvents::AFTER_PARSE_DATA, $data, $object, $result);
+        Event::dispatch($event);
 
-        return $result;
+        return $event->result;
     }
 
     /**

@@ -17,12 +17,20 @@ class EventTest extends BaseTest
 {
     public function testNormal(): void
     {
-        Event::on('IMITEST.EVENT.A', function (EventParam $e): void {
+        Event::on('IMITEST.EVENT.A', function (EventParam|TestClassEvent $e): void {
             Assert::assertEquals('IMITEST.EVENT.A', $e->getEventName());
             Assert::assertEquals($this, $e->getTarget());
-            $data = $e->getData();
-            Assert::assertEquals('imi', $data['name']);
-            $data['return'] = 19260817;
+            if ($e instanceof EventParam)
+            {
+                $data = $e->getData();
+                Assert::assertEquals('imi', $data['name']);
+                $data['return'] = 19260817;
+            }
+            else
+            {
+                Assert::assertEquals('imi', $e->name);
+                $e->return = 19260817;
+            }
         });
 
         $return = null;
@@ -31,10 +39,15 @@ class EventTest extends BaseTest
             'return' => &$return,
         ], $this);
         Assert::assertEquals(19260817, $return);
+
+        $event = new TestClassEvent('IMITEST.EVENT.A', $this, 'imi');
+        Event::dispatch($event);
+        Assert::assertEquals(19260817, $event->return);
     }
 
     public function testOne(): void
     {
+        // trigger
         Event::one('IMITEST.EVENT.B', function (EventParam $e): void {
             Assert::assertEquals('IMITEST.EVENT.B', $e->getEventName());
             Assert::assertEquals($this, $e->getTarget());
@@ -57,13 +70,29 @@ class EventTest extends BaseTest
         ], $this);
         Assert::assertNull($return);
 
+        // dispatch
+        Event::one('IMITEST.EVENT.B', function (TestClassEvent $e): void {
+            Assert::assertEquals('IMITEST.EVENT.B', $e->getEventName());
+            Assert::assertEquals($this, $e->getTarget());
+            Assert::assertEquals('imi', $e->name);
+            $e->return = 19260817;
+        });
+
+        $event = new TestClassEvent('IMITEST.EVENT.B', $this, 'imi');
+        Event::dispatch($event);
+        Assert::assertEquals(19260817, $event->return);
+
+        $event = new TestClassEvent('IMITEST.EVENT.B', $this, 'imi');
+        Event::dispatch($event);
+        Assert::assertNull($event->return);
+
         // 测试在事件中取消事件监听
         $return = null;
         Event::one('IMITEST.EVENT.OFF', static function () use (&$return): void {
             Event::off('IMITEST.EVENT.OFF');
             $return = 114514;
         });
-        Event::trigger('IMITEST.EVENT.OFF');
+        Event::dispatch(eventName: 'IMITEST.EVENT.OFF');
         Assert::assertEquals(114514, $return);
     }
 
@@ -88,6 +117,10 @@ class EventTest extends BaseTest
             'return' => &$return,
         ], $this);
         Assert::assertNull($return);
+
+        $event = new TestClassEvent('IMITEST.EVENT.C', $this, 'imi');
+        Event::dispatch($event);
+        Assert::assertNull($event->return);
     }
 
     public function testListener(): void

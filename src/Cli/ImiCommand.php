@@ -195,7 +195,7 @@ class ImiCommand extends Command
      */
     protected function executeCommand(): int
     {
-        Event::trigger('IMI.COMMAND.BEFORE');
+        Event::dispatch(eventName: 'IMI.COMMAND.BEFORE');
         try
         {
             $args = $this->getCallToolArgs();
@@ -209,7 +209,7 @@ class ImiCommand extends Command
         }
         finally
         {
-            Event::trigger('IMI.COMMAND.AFTER');
+            Event::dispatch(eventName: 'IMI.COMMAND.AFTER');
         }
 
         return Command::SUCCESS;

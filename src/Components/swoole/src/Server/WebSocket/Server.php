@@ -150,10 +150,7 @@ class Server extends Base implements ISwooleWebSocketServer
                     ConnectionContext::create([
                         'uri' => (string) $request->getUri(),
                     ]);
-                    $this->trigger('handShake', [
-                        'request'   => $request,
-                        'response'  => $response,
-                    ], $this, HandShakeEventParam::class);
+                    $this->dispatch(new HandShakeEventParam($this, $request, $response));
                 }
                 catch (\Throwable $th)
                 {
@@ -195,10 +192,7 @@ class Server extends Base implements ISwooleWebSocketServer
                         'server'        => $this,
                         'clientId'      => $frame->fd,
                     ]);
-                    $this->trigger('message', [
-                        'server'    => $this,
-                        'frame'     => $frame,
-                    ], $this, MessageEventParam::class);
+                    $this->dispatch(new MessageEventParam($this, $frame));
                 }
                 catch (\Throwable $th)
                 {
@@ -236,11 +230,7 @@ class Server extends Base implements ISwooleWebSocketServer
                     RequestContext::muiltiSet([
                         'server'        => $this,
                     ]);
-                    $this->trigger('close', [
-                        'server'          => $this,
-                        'clientId'        => $fd,
-                        'reactorId'       => $reactorId,
-                    ], $this, CloseEventParam::class);
+                    $this->dispatch(new CloseEventParam($this, $fd, $reactorId));
                 }
                 catch (\Throwable $th)
                 {
@@ -272,10 +262,7 @@ class Server extends Base implements ISwooleWebSocketServer
                         'request'        => $request,
                         'response'       => $response,
                     ]);
-                    $this->trigger('request', [
-                        'request'  => $request,
-                        'response' => $response,
-                    ], $this, RequestEventParam::class);
+                    $this->dispatch(new RequestEventParam($this, $request, $response));
                 }
                 catch (\Throwable $th)
                 {
@@ -301,10 +288,7 @@ class Server extends Base implements ISwooleWebSocketServer
                     RequestContext::muiltiSet([
                         'server'        => $this,
                     ]);
-                    $this->trigger('disconnect', [
-                        'server'        => $this,
-                        'clientId'      => $fd,
-                    ], $this, DisconnectEventParam::class);
+                    $this->dispatch(new DisconnectEventParam($this, $fd));
                 }
                 catch (\Throwable $th)
                 {

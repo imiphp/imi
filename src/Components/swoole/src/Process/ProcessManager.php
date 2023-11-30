@@ -7,6 +7,8 @@ namespace Imi\Swoole\Process;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Log\Log;
+use Imi\Process\Event\ProcessBeginEvent;
+use Imi\Process\Event\ProcessEndEvent;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
@@ -152,10 +154,7 @@ class ProcessManager
                         }
                         $processEnded = true;
                         // 进程结束事件
-                        Event::trigger('IMI.PROCESS.END', [
-                            'name'      => $name,
-                            'process'   => $swooleProcess,
-                        ]);
+                        Event::dispatch(new ProcessEndEvent($name, $swooleProcess));
                     }
                 });
                 if ($inCoroutine = Coroutine::isIn())
@@ -167,10 +166,7 @@ class ProcessManager
                         }
                         $processEnded = true;
                         // 进程结束事件
-                        Event::trigger('IMI.PROCESS.END', [
-                            'name'      => $name,
-                            'process'   => $swooleProcess,
-                        ]);
+                        Event::dispatch(new ProcessEndEvent($name, $swooleProcess));
                     });
                 }
                 try
@@ -189,10 +185,7 @@ class ProcessManager
                         self::writeProcessInfo(self::buildUniqueId($name, $alias), $swooleProcess->id, $swooleProcess->pid);
                     }
                     // 进程开始事件
-                    Event::trigger('IMI.PROCESS.BEGIN', [
-                        'name'      => $name,
-                        'process'   => $swooleProcess,
-                    ]);
+                    Event::dispatch(new ProcessBeginEvent($name, $swooleProcess));
                     // 执行任务
                     /** @var IProcess $processInstance */
                     $processInstance = App::newInstance($processOption['className'], $args);
@@ -217,10 +210,7 @@ class ProcessManager
                     {
                         $processEnded = true;
                         // 进程结束事件
-                        Event::trigger('IMI.PROCESS.END', [
-                            'name'      => $name,
-                            'process'   => $swooleProcess,
-                        ]);
+                        Event::dispatch(new ProcessEndEvent($name, $swooleProcess));
                     }
                     if ($runWithManager)
                     {
