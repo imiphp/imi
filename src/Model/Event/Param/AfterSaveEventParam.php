@@ -13,7 +13,7 @@ class AfterSaveEventParam extends CommonEvent
         /**
          * 模型.
          */
-        public readonly ?\Imi\Model\BaseModel $model = null,
+        public readonly ?\Imi\Model\BaseModel $model,
 
         /**
          * 初始化数据.

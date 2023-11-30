@@ -13,7 +13,7 @@ class AfterDeleteEventParam extends CommonEvent
         /**
          * 模型.
          */
-        public readonly ?\Imi\Model\Model $model = null,
+        public readonly ?\Imi\Model\BaseModel $model,
 
         /**
          * 查询结果.

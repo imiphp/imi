@@ -13,7 +13,7 @@ class BeforeDeleteEventParam extends CommonEvent
         /**
          * 模型.
          */
-        public readonly ?\Imi\Model\BaseModel $model = null,
+        public readonly ?\Imi\Model\BaseModel $model,
 
         /**
          * 查询器.
