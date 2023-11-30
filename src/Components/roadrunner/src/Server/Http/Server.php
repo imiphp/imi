@@ -7,8 +7,8 @@ namespace Imi\RoadRunner\Server\Http;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Bean\Annotation\Bean;
+use Imi\Event\CommonEvent;
 use Imi\Event\Event;
-use Imi\Event\EventParam;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\RoadRunner\Http\Message\RoadRunnerResponse;
@@ -25,7 +25,6 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 use function Imi\cmd;
-use function Imi\ttyExec;
 
 #[Bean(name: 'RoadRunnerHttpServer')]
 class Server extends BaseServer
@@ -74,7 +73,7 @@ class Server extends BaseServer
                 $route = $this->getBean('HttpRoute');
                 if ($route->isEmpty())
                 {
-                    (new HttpRouteInit())->handle(new EventParam(''));
+                    (new HttpRouteInit())->handle(new CommonEvent(''));
                 }
                 /** @var \Imi\Server\Http\Dispatcher $dispatcher */
                 $dispatcher = $this->getBean('HttpDispatcher');

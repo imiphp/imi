@@ -6,8 +6,8 @@ namespace Imi\Pgsql\Test;
 
 use Imi\App;
 use Imi\Db\Interfaces\IDb;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\Event;
-use Imi\Event\EventParam;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use Imi\Swoole\SwooleApp;
@@ -20,7 +20,7 @@ class PHPUnitHook implements Extension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
-        Event::on('IMI.APP_RUN', static function (EventParam $param): void {
+        Event::on('IMI.APP_RUN', static function (IEvent $param): void {
             $param->stopPropagation();
             PoolManager::use(\in_array('pgsql', pdo_drivers()) ? 'maindb' : 'swoole', static function (IPoolResource $resource, IDb $db): void {
                 $truncateList = [
