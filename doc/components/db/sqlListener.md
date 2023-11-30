@@ -33,7 +33,7 @@ namespace Imi\Test\Component\Db\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Event\Param\DbExecuteEventParam;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
@@ -47,7 +47,7 @@ class DbExecuteListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         if ($e->throwable)
         {
@@ -79,7 +79,7 @@ namespace Imi\Test\Component\Db\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Event\Param\DbPrepareEventParam;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
@@ -93,7 +93,7 @@ class DbPrepareListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         if ($e->throwable)
         {

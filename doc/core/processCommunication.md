@@ -42,7 +42,7 @@ $process->sendUnixSocketMessage('动作名', 123); // 第二个参数可以带�
 ```php
 <?php
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
@@ -53,7 +53,7 @@ class MyListener implements IEventListener
     /**
      * @param PipeMessageEventParam $e
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         var_dump($e->action); // 获取动作名
         var_dump($e->data); // 获取数据
@@ -112,7 +112,7 @@ Server::sendMessage('test', [
 <?php
 namespace App\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
@@ -124,7 +124,7 @@ class TestMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         $data = $e->getData()['data'];
         var_dump($data['time']); // 接收到了上面发送来的 time
@@ -182,7 +182,7 @@ try {
 <?php
 namespace App\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
@@ -195,7 +195,7 @@ class TestRequestMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         $data = $e->getData()['data'];
         $datetime = date('Y-m-d H:i:s', $data['time']);
@@ -220,7 +220,7 @@ class TestRequestMessage implements IEventListener
 <?php
 namespace App\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
@@ -234,7 +234,7 @@ class TestResponseMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         $data = $e->getData()['data'];
         if(ChannelContainer::hasChannel($data['messageId']))

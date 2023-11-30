@@ -18,7 +18,7 @@ imi 框架提供了强大的事件机制，它可以让你在特定的时刻执�
 <?php
 namespace Imi\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
@@ -27,10 +27,8 @@ class Init implements IEventListener
 {
     /**
      * 事件处理方法
-     * @param EventParam $e
-     * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(IEvent $e): void
     {
         // ...
     }
@@ -39,7 +37,7 @@ class Init implements IEventListener
 
 首先需要定义一个类，类名和位置无所谓。
 
-类必须实现`IEventListener`接口和`public function handle(EventParam $e): void`方法。
+类必须实现`IEventListener`接口和`public function handle(IEvent $e): void`方法。
 
 然后在类上写`Listener`注解。
 
@@ -93,8 +91,26 @@ Event::off(['事件名1', '事件名2']);
 
 ```php
 use Imi\Event\Event;
+use Imi\Event\CommonEvent;
 
-Event::trigger('事件名称', '传入事件回调的数据', '目标对象', '参数类，默认为EventParam::class');
+// 定义事件类
+class MyEvent extends CommonEvent
+{
+    public function __construct(?object $__target = null)
+    {
+        parent::__construct('事件名称', $__target);
+    }
+}
+
+// 传入事件对象，不需要指定事件名称
+Event::dispatch(new MyEvent());
+// 指定事件名称，可不定义事件类
+Event::dispatch(eventName: '事件名称');
+// 指定事件名称，且传入事件目标对象
+Event::dispatch(eventName: '事件名称', target: $this);
+
+// 下面是旧写法，为了保持兼容暂时保留，即将在 3.1 废弃
+// Event::trigger('事件名称', '传入事件回调的数据', '目标对象', '参数类，默认为EventParam::class');
 ```
 
 ## 局部事件
