@@ -25,6 +25,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 use function Imi\cmd;
+use function Imi\ttyExec;
 
 #[Bean(name: 'RoadRunnerHttpServer')]
 class Server extends BaseServer

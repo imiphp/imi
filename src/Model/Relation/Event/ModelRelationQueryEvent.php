@@ -14,7 +14,7 @@ class ModelRelationQueryEvent extends CommonEvent
     public function __construct(string $__eventName,
         public readonly Model $model,
         public readonly string $propertyName,
-        public readonly RelationBase $annotation,
+        public readonly ?RelationBase $annotation,
         public readonly ?object $struct = null,
         public readonly ?IQuery $query = null,
     ) {
