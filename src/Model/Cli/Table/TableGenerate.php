@@ -12,6 +12,7 @@ use Imi\Cli\Contract\BaseCommand;
 use Imi\Db\Db;
 use Imi\Event\Event;
 use Imi\Model\Annotation\DDL;
+use Imi\Model\Cli\Table\Event\GenerateModelEvents;
 use Imi\Util\ClassObject;
 
 #[Command(name: 'generate')]
@@ -30,7 +31,7 @@ class TableGenerate extends BaseCommand
     #[Option(name: 'override', type: \Imi\Cli\ArgType::STRING, default: false, comments: '是否覆盖已存在的表，请慎重！true-全覆盖;false-不覆盖;默认缺省状态为false')]
     public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, string|bool $override): void
     {
-        Event::dispatch(eventName: 'IMI.GENERATE_MODEL.BEFORE');
+        Event::dispatch(eventName: GenerateModelEvents::BEFORE_GENERATE_MODEL);
         $override = (bool) json_decode((string) $override, false);
         // 数据库
         if (null === $database)
@@ -94,7 +95,7 @@ class TableGenerate extends BaseCommand
             $tables[] = $table;
             $this->output->writeln('Create <info>' . $table . '</info>');
         }
-        Event::dispatch(eventName: 'IMI.GENERATE_MODEL.AFTER');
+        Event::dispatch(eventName: GenerateModelEvents::AFTER_GENERATE_MODEL);
     }
 
     /**

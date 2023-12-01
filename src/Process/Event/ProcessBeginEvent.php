@@ -12,6 +12,6 @@ class ProcessBeginEvent extends CommonEvent
         public readonly string $name,
         public readonly object $process,
     ) {
-        parent::__construct('IMI.PROCESS.BEGIN');
+        parent::__construct(ProcessEvents::PROCESS_BEGIN);
     }
 }

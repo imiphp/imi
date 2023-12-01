@@ -6,6 +6,7 @@ namespace Imi\Test\Component;
 
 use Imi\App;
 use Imi\Cli\CliApp;
+use Imi\Core\CoreEvents;
 use Imi\Db\Interfaces\IDb;
 use Imi\Event\Contract\IEvent;
 use Imi\Event\Event;
@@ -20,7 +21,7 @@ class PHPUnitHook implements Extension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
-        Event::on('IMI.APP_RUN', static function (IEvent $param): void {
+        Event::on(CoreEvents::APP_RUN, static function (IEvent $param): void {
             $param->stopPropagation();
             if (file_exists($file = __DIR__ . '/.runtime/test'))
             {

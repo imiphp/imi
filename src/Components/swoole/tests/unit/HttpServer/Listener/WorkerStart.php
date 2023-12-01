@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\HttpServer\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Util\CronUtil;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Test\HttpServer\Cron\CronDWorker;
@@ -14,7 +15,7 @@ use Imi\Worker;
 
 use function Yurun\Swoole\Coroutine\goWait;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', one: true)]
+#[Listener(eventName: SwooleEvents::SERVER_WORKER_START, one: true)]
 class WorkerStart implements IWorkerStartEventListener
 {
     /**

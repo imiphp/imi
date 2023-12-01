@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Event\Param;
 
+use Imi\Db\Event\DbEvents;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Event\CommonEvent;
@@ -31,6 +32,6 @@ class DbPrepareEventParam extends CommonEvent
          */
         public readonly ?\Throwable $throwable = null
     ) {
-        parent::__construct('IMI.DB.PREPARE', $db);
+        parent::__construct(DbEvents::PREPARE, $db);
     }
 }

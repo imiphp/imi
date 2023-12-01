@@ -7,12 +7,13 @@ namespace Imi\Workerman\Server\WebSocket\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
+use Imi\Workerman\Event\WorkermanEvents;
+use Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent;
 
 /**
  * Message事件前置处理.
  */
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', priority: \Imi\Util\ImiPriority::IMI_MAX)]
+#[Listener(eventName: WorkermanEvents::SERVER_WEBSOCKET_MESSAGE, priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeMessage implements IEventListener
 {
     /**

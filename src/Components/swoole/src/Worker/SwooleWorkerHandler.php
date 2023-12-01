@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Contract\ISwooleWorker;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
@@ -98,7 +99,7 @@ class SwooleWorkerHandler implements ISwooleWorker
         {
             $mainServer = ServerManager::getServer('main', ISwooleServer::class);
             // 触发项目的workerstart事件
-            Event::dispatch(new WorkerStartEventParam('IMI.MAIN_SERVER.WORKER.START.APP', $mainServer, $this->workerId));
+            Event::dispatch(new WorkerStartEventParam(SwooleEvents::WORKER_APP_START, $mainServer, $this->workerId));
             $this->workerStartAppComplete = true;
         }
         $func = static function (): void {

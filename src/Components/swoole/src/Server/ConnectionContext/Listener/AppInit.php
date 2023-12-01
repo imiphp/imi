@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\ConnectionContext\Listener;
 
 use Imi\Bean\Annotation\Listener;
+use Imi\Core\CoreEvents;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\ServerManager;
@@ -13,7 +14,7 @@ use Imi\Swoole\Server\Event\Listener\IAppInitEventListener;
 use Imi\Swoole\Server\Traits\TServerPortInfo;
 use Imi\Util\Imi;
 
-#[Listener(eventName: 'IMI.APP.INIT', one: true)]
+#[Listener(eventName: CoreEvents::APP_INIT, one: true)]
 class AppInit implements IAppInitEventListener
 {
     use TServerPortInfo;

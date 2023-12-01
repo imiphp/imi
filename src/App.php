@@ -11,6 +11,7 @@ use Imi\Bean\Scanner;
 use Imi\Cli\ImiCommand;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Util\Imi;
 
@@ -78,7 +79,7 @@ class App
         $appInstance->loadConfig();
         // 加载入口
         $appInstance->loadMain();
-        Event::dispatch(eventName: 'IMI.LOAD_CONFIG');
+        Event::dispatch(eventName: CoreEvents::LOAD_CONFIG);
         // 加载运行时
         $result = $appInstance->loadRuntime();
         if (LoadRuntimeResult::NONE === $result)
@@ -93,19 +94,19 @@ class App
             // 扫描项目
             Scanner::scanApp();
         }
-        Event::dispatch(eventName: 'IMI.LOAD_RUNTIME');
+        Event::dispatch(eventName: CoreEvents::LOAD_RUNTIME);
         // 初始化
         $appInstance->init();
         // 注册错误日志
         // @phpstan-ignore-next-line
         self::getBean('ErrorLog')->register();
-        Event::dispatch(eventName: 'IMI.APP_RUN');
+        Event::dispatch(eventName: CoreEvents::APP_RUN);
         // 运行
         if ($callback)
         {
-            Event::dispatch(eventName: 'IMI.QUICK_START_BEFORE');
+            Event::dispatch(eventName: CoreEvents::BEFORE_QUICK_START);
             $callback();
-            Event::dispatch(eventName: 'IMI.QUICK_START_AFTER');
+            Event::dispatch(eventName: CoreEvents::AFTER_QUICK_START);
         }
         else
         {
@@ -136,7 +137,7 @@ class App
             self::set(AppContexts::APP_PATH_PHYSICS, IMI_IN_PHAR ? \dirname(realpath($_SERVER['SCRIPT_FILENAME'])) : ($path ?? Imi::getNamespacePath($namespace, true)), true);
         }
         self::$isInited = true;
-        Event::dispatch(eventName: 'IMI.INITED');
+        Event::dispatch(eventName: CoreEvents::INITED);
     }
 
     /**

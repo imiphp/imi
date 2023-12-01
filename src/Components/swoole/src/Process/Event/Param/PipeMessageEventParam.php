@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Process\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Process\Event\ProcessEvents;
 use Imi\Swoole\Process\Process;
 use Swoole\Coroutine\Server\Connection;
 
@@ -28,6 +29,6 @@ class PipeMessageEventParam extends CommonEvent
          */
         public readonly ?Connection $connection = null
     ) {
-        parent::__construct('IMI.PROCESS.PIPE_MESSAGE', $process);
+        parent::__construct(ProcessEvents::PIPE_MESSAGE, $process);
     }
 }

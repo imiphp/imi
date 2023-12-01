@@ -10,6 +10,7 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Event\Event;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Process\ProcessPoolManager;
 
@@ -25,7 +26,7 @@ class Process extends BaseCommand
     #[Option(name: 'pipeType', type: \Imi\Cli\ArgType::INT, comments: '管道类型，启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0')]
     public function start(string $name, ?bool $redirectStdinStdout, ?int $pipeType): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType): never {
+        Event::one(SwooleEvents::MAIN_COROUTINE_AFTER, function () use ($name, $redirectStdinStdout, $pipeType): never {
             $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
             $process->start();
             $result = \Swoole\Process::wait(true);
@@ -44,7 +45,7 @@ class Process extends BaseCommand
     #[Option(name: 'msgQueueKey', type: \Imi\Cli\ArgType::STRING, comments: '消息队列键，不传则根据注解配置设定')]
     public function pool(string $name, ?int $worker, ?int $ipcType, ?string $msgQueueKey): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', static function () use ($name, $worker, $ipcType, $msgQueueKey): void {
+        Event::one(SwooleEvents::MAIN_COROUTINE_AFTER, static function () use ($name, $worker, $ipcType, $msgQueueKey): void {
             $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
             $processPool->start();
         });
@@ -57,7 +58,7 @@ class Process extends BaseCommand
     #[Argument(name: 'name', type: \Imi\Cli\ArgType::STRING, required: true, comments: '进程名称，通过@Process注解定义')]
     public function run(string $name): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', static function () use ($name): void {
+        Event::one(SwooleEvents::MAIN_COROUTINE_AFTER, static function () use ($name): void {
             $processOption = ProcessManager::get($name);
             if (null === $processOption)
             {

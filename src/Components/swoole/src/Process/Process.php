@@ -7,6 +7,8 @@ namespace Imi\Swoole\Process;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Event\Event;
+use Imi\Process\Event\ProcessEvents;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Client;
@@ -75,7 +77,7 @@ trait TProcess
         else
         {
             $this->unixSocketClient = $client = $this->createUnixSocketClient();
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client): void {
+            Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END], static function () use ($client): void {
                 $client->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);
             Coroutine::create(function () use ($client): void {
@@ -137,7 +139,7 @@ trait TProcess
             return;
         }
         $this->unixSocketRunning = true;
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
+        Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END], function (): void {
             $this->stopUnixSocketServer();
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
         Coroutine::create(function (): void {

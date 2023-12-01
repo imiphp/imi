@@ -13,6 +13,6 @@ class BeforeCreateServerEvent extends CommonEvent
         public readonly array $config,
         public readonly array $args
     ) {
-        parent::__construct('IMI.SERVER.CREATE.BEFORE');
+        parent::__construct(ServerEvents::BEFORE_CREATE_SERVER);
     }
 }

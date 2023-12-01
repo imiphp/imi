@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
 class PipeMessageEventParam extends CommonEvent
@@ -23,6 +24,6 @@ class PipeMessageEventParam extends CommonEvent
          */
         public readonly mixed $message = null
     ) {
-        parent::__construct('IMI.MAIN_SERVER.PIPE_MESSAGE', $server);
+        parent::__construct(SwooleEvents::SERVER_PIPE_MESSAGE, $server);
     }
 }

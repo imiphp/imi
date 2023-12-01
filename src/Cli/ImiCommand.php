@@ -10,6 +10,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
+use Imi\Cli\Event\CommandEvents;
 use Imi\Event\Event;
 use Imi\Util\DocBlock;
 use Symfony\Component\Console\Command\Command;
@@ -195,7 +196,7 @@ class ImiCommand extends Command
      */
     protected function executeCommand(): int
     {
-        Event::dispatch(eventName: 'IMI.COMMAND.BEFORE');
+        Event::dispatch(eventName: CommandEvents::BEFORE_COMMAND);
         try
         {
             $args = $this->getCallToolArgs();
@@ -209,7 +210,7 @@ class ImiCommand extends Command
         }
         finally
         {
-            Event::dispatch(eventName: 'IMI.COMMAND.AFTER');
+            Event::dispatch(eventName: CommandEvents::AFTER_COMMAND);
         }
 
         return Command::SUCCESS;

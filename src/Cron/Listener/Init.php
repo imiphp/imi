@@ -9,8 +9,9 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\ServerEvents;
 
-#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
+#[Listener(eventName: ServerEvents::AFTER_CREATE_SERVERS, priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
 class Init implements IEventListener
 {
     /**

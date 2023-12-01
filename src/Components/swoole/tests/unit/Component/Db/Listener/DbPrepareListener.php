@@ -6,11 +6,12 @@ namespace Imi\Swoole\Test\Component\Db\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
+use Imi\Db\Event\DbEvents;
 use Imi\Db\Event\Param\DbPrepareEventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
-#[Listener(eventName: 'IMI.DB.PREPARE')]
+#[Listener(eventName: DbEvents::PREPARE)]
 class DbPrepareListener implements IEventListener
 {
     /**

@@ -10,6 +10,8 @@ use Imi\Event\Event;
 use Imi\HotUpdate\Event\HotUpdateBeginBuildEvent;
 use Imi\Log\Log;
 use Imi\Pool\Annotation\PoolClean;
+use Imi\Process\Event\ProcessEvents;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
@@ -121,7 +123,7 @@ class HotUpdateProcess extends BaseProcess
         $time = 0;
         $this->initBuildRuntime();
         $this->startBuildRuntimeTimer();
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
+        Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END], function (): void {
             $this->running = false;
         }, \Imi\Util\ImiPriority::IMI_MIN);
         /** @phpstan-ignore-next-line */

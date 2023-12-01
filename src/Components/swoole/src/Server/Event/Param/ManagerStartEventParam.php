@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
 class ManagerStartEventParam extends CommonEvent
@@ -15,6 +16,6 @@ class ManagerStartEventParam extends CommonEvent
          */
         public readonly ?ISwooleServer $server = null
     ) {
-        parent::__construct('IMI.MAIN_SERVER.MANAGER.START', $server);
+        parent::__construct(SwooleEvents::SERVER_MANAGER_START, $server);
     }
 }

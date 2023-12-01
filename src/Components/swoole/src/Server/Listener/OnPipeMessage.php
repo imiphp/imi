@@ -7,10 +7,11 @@ namespace Imi\Swoole\Server\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\Event;
 use Imi\Server\Event\PipeMessageEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Event\Listener\IPipeMessageEventListener;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.PIPE_MESSAGE')]
+#[Listener(eventName: SwooleEvents::SERVER_PIPE_MESSAGE)]
 class OnPipeMessage implements IPipeMessageEventListener
 {
     /**

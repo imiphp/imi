@@ -10,6 +10,7 @@ use Imi\Event\Event as ImiEvent;
 use Imi\Log\Log;
 use Imi\Process\Event\ProcessBeginEvent;
 use Imi\Process\Event\ProcessEndEvent;
+use Imi\Process\Event\ProcessEvents;
 use Imi\Queue\Service\QueueService;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
@@ -39,7 +40,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function run(\Swoole\Process $process): void
         {
             $running = true;
-            \Imi\Event\Event::on('IMI.PROCESS.END', static function () use (&$running): void {
+            \Imi\Event\Event::on(ProcessEvents::PROCESS_END, static function () use (&$running): void {
                 $running = false;
             }, ImiPriority::IMI_MAX);
             $imiQueue = $this->imiQueue;

@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Process\Event\ProcessBeginEvent;
 use Imi\Process\Event\ProcessEndEvent;
+use Imi\Process\Event\ProcessEvents;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
@@ -141,9 +142,9 @@ class ProcessManager
                     Log::info('Process start [' . $name . ']. pid: ' . getmypid() . ', UnixSocket: ' . $swooleProcess->getUnixSocketFile());
                 }
                 // 超时强制退出
-                Event::on('IMI.PROCESS.END', static fn () => Timer::after(3000, static fn () => SwooleEvent::exit()), ImiPriority::IMI_MAX);
+                Event::on(ProcessEvents::PROCESS_END, static fn () => Timer::after(3000, static fn () => SwooleEvent::exit()), ImiPriority::IMI_MAX);
                 // 正常退出
-                Event::on('IMI.PROCESS.END', static fn () => Signal::clear(), ImiPriority::IMI_MIN);
+                Event::on(ProcessEvents::PROCESS_END, static fn () => Signal::clear(), ImiPriority::IMI_MIN);
                 $processEnded = false;
                 imigo(static function () use ($name, $swooleProcess, &$processEnded): void {
                     if (Signal::wait(\SIGTERM))

@@ -14,6 +14,6 @@ class JoinGroupEvent extends CommonEvent
         public readonly string $groupName,
         public readonly string|int $clientId
     ) {
-        parent::__construct('IMI.SERVER.GROUP.JOIN', $server);
+        parent::__construct(ServerGroupEvents::JOIN_GROUP, $server);
     }
 }

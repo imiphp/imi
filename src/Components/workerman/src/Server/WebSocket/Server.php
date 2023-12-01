@@ -17,13 +17,14 @@ use Imi\Server\WebSocket\Enum\NonControlFrameType;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\ImiPriority;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Http\Message\WorkermanRequest;
 use Imi\Workerman\Http\Message\WorkermanResponse;
 use Imi\Workerman\Server\Base;
-use Imi\Workerman\Server\Event\WebSocketConnectEvent;
 use Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent;
-use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
 use Imi\Workerman\Server\Http\Listener\BeforeRequest;
+use Imi\Workerman\Server\WebSocket\Event\WebSocketConnectEvent;
+use Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Protocols\Websocket;
@@ -71,7 +72,7 @@ class Server extends Base implements IWebSocketServer
 
         if (!App::get('has_imi_workerman_http_request_event', false))
         {
-            Event::on('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
+            Event::on(WorkermanEvents::SERVER_HTTP_REQUEST, [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
             App::set('has_imi_workerman_http_request_event', true);
         }
         // @phpstan-ignore-next-line

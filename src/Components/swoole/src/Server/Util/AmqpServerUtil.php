@@ -14,6 +14,7 @@ use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Contract\IServer;
 use Imi\Server\DataParser\DataParser;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Worker;
 
 use function Swoole\Coroutine\defer;
@@ -58,7 +59,7 @@ if (class_exists(\Imi\AMQP\Main::class))
         {
             $this->server = $server = RequestContext::getServer();
             $this->consumerInstance = $server->getBean($this->consumerClass, $this);
-            Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
+            Event::one(SwooleEvents::SERVER_WORKER_EXIT, function (): void {
                 $this->subscribeEnable = false;
             });
             $this->startSubscribe();

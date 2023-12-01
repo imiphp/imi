@@ -17,6 +17,8 @@ use Imi\Cron\Message\IMessage;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Event\Event;
+use Imi\Process\Event\ProcessEvents;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
@@ -41,10 +43,10 @@ class CronProcess extends BaseProcess
 
     public function run(\Swoole\Process $process): void
     {
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
+        Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END], function (): void {
             $this->stop();
         }, \Imi\Util\ImiPriority::IMI_MIN);
-        Event::on('IMI.PROCESS.PIPE_MESSAGE', function (PipeMessageEventParam $e): void {
+        Event::on(\Imi\Swoole\Process\Event\ProcessEvents::PIPE_MESSAGE, function (PipeMessageEventParam $e): void {
             $data = $e->data;
             if ($data instanceof Result)
             {

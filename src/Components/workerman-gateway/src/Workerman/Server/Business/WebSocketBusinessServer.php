@@ -16,10 +16,11 @@ use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Server\Event\ConnectEvent;
-use Imi\Workerman\Server\Event\WebSocketConnectEvent;
 use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
-use Imi\Workerman\Server\Http\Event\WorkermanWebSocketMessageEvent;
+use Imi\Workerman\Server\WebSocket\Event\WebSocketConnectEvent;
+use Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 
 #[Bean(name: 'WorkermanGatewayWebSocketBusinessServer')]
@@ -52,7 +53,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::one('IMI.WORKERMAN.SERVER.WORKER_START', function (): void {
+        Event::one(WorkermanEvents::SERVER_WORKER_START, function (): void {
             $this->bindBusinessEvents();
         });
     }

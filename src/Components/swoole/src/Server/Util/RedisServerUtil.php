@@ -13,6 +13,7 @@ use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\Event\PipeMessageEvent;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Process\ProcessAppContexts;
@@ -36,7 +37,7 @@ class RedisServerUtil extends LocalServerUtil
 
     public function __init(): void
     {
-        Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
+        Event::one(SwooleEvents::SERVER_WORKER_EXIT, function (): void {
             $this->subscribeEnable = false;
         });
         $this->startSubscribe();

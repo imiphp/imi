@@ -14,6 +14,6 @@ class HotUpdateBeginBuildEvent extends CommonEvent
         public readonly array $changedFiles,
         public readonly string $changedFilesFile,
     ) {
-        parent::__construct('IMI.HOTUPDATE.BEGIN_BUILD');
+        parent::__construct(HotUpdateEvents::BEGIN_BUILD);
     }
 }

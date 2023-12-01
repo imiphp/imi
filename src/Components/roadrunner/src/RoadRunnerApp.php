@@ -9,6 +9,7 @@ use Imi\Bean\Scanner;
 use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\RoadRunner\Server\Type;
@@ -29,7 +30,7 @@ class RoadRunnerApp extends BaseApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
-        Event::one('IMI.SCAN_APP', function (): void {
+        Event::one(CoreEvents::SCAN_APP, function (): void {
             $this->onScanApp();
         });
     }
@@ -93,7 +94,7 @@ class RoadRunnerApp extends BaseApp
             'type'      => Type::HTTP,
             'namespace' => $this->namespace,
         ]);
-        Event::dispatch(eventName: 'IMI.APP.INIT', target: $this);
+        Event::dispatch(eventName: CoreEvents::APP_INIT, target: $this);
         $server->start();
     }
 

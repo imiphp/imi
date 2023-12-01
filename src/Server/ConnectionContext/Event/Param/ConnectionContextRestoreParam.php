@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\ConnectionContext\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Server\ConnectionContext\Event\ConnectionContextEvents;
 
 /**
  * 连接上下文数据恢复事件参数.
@@ -25,6 +26,6 @@ class ConnectionContextRestoreParam extends CommonEvent
          */
         public readonly ?string $serverName = null)
     {
-        parent::__construct('IMI.CONNECT_CONTEXT.RESTORE');
+        parent::__construct(ConnectionContextEvents::RESTORE);
     }
 }

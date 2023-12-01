@@ -9,6 +9,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Redis\Redis as ImiRedis;
 use Imi\Redis\RedisHandler;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Timer\Timer;
 use Imi\Worker;
 
@@ -128,13 +129,17 @@ class Redis implements IGroupHandler
         {
             // 心跳定时器
             $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, $this->pingTimer(...));
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
-                if ($this->timerId)
-                {
-                    Timer::del($this->timerId);
-                    $this->timerId = null;
-                }
-            }, \Imi\Util\ImiPriority::IMI_MIN);
+            // Swoole 兼容
+            if (class_exists(SwooleEvents::class))
+            {
+                Event::on(SwooleEvents::SERVER_WORKER_EXIT, function (): void {
+                    if ($this->timerId)
+                    {
+                        Timer::del($this->timerId);
+                        $this->timerId = null;
+                    }
+                }, \Imi\Util\ImiPriority::IMI_MIN);
+            }
         }
     }
 

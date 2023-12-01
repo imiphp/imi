@@ -11,12 +11,13 @@ use Imi\RequestContext;
 use Imi\Rpc\Contract\IRpcServer;
 use Imi\Rpc\Route\Annotation\Parser\RpcControllerParser;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Util\DelayServerBeanCallable;
 
 /**
  * RPC 服务器路由初始化.
  */
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', one: true)]
+#[Listener(eventName: SwooleEvents::SERVER_WORKER_START, one: true)]
 class RouteInit implements IEventListener
 {
     /**

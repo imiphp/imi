@@ -8,12 +8,13 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\TcpServer\Message\ReceiveData;
-use Imi\Workerman\Server\Http\Event\WorkermanTcpMessageEvent;
+use Imi\Workerman\Event\WorkermanEvents;
+use Imi\Workerman\Server\Tcp\Event\WorkermanTcpMessageEvent;
 
 /**
  * Receive事件前置处理.
  */
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.TCP.MESSAGE', priority: \Imi\Util\ImiPriority::IMI_MAX)]
+#[Listener(eventName: WorkermanEvents::SERVER_TCP_MESSAGE, priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeReceive implements IEventListener
 {
     /**

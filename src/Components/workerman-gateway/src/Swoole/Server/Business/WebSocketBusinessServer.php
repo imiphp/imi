@@ -10,6 +10,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Server\Server;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\SwooleWorker;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Socket\IPEndPoint;
@@ -49,7 +50,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function __construct(string $name, array $config)
         {
             parent::__construct($name, $config);
-            Event::one('IMI.MAIN_SERVER.WORKER.START', function (): void {
+            Event::one(SwooleEvents::SERVER_WORKER_START, function (): void {
                 if (!SwooleWorker::isTask())
                 {
                     $this->initGatewayWorker();

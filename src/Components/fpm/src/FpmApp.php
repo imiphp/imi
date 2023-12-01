@@ -8,6 +8,7 @@ use Imi\Bean\Scanner;
 use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Core\CoreEvents;
 use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
 use Imi\Fpm\Runtime\Handler\FpmRuntimeModeHandler;
@@ -95,7 +96,7 @@ class FpmApp extends BaseApp
                 'namespace' => $this->namespace,
             ]);
         }
-        Event::dispatch(eventName: 'IMI.APP.INIT', target: $this);
+        Event::dispatch(eventName: CoreEvents::APP_INIT, target: $this);
         $server->start();
     }
 

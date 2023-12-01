@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Server\Http\Event;
+namespace Imi\Workerman\Server\Udp\Event;
 
 use Imi\Event\CommonEvent;
 use Imi\Server\UdpServer\Message\IPacketData;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Workerman\Connection\UdpConnection;
 
@@ -17,6 +18,6 @@ class WorkermanUdpMessageEvent extends CommonEvent
         public readonly IPacketData $packetData,
         public readonly UdpConnection $connection,
     ) {
-        parent::__construct('IMI.WORKERMAN.SERVER.UDP.MESSAGE', $server);
+        parent::__construct(WorkermanEvents::SERVER_UDP_MESSAGE, $server);
     }
 }

@@ -22,6 +22,8 @@
 
 事件名：`IMI.DB.EXECUTE`
 
+常量：`Imi\Db\Event\DbEvents::EXECUTE`
+
 每一个 SQL 语句执行后都会触发该事件。
 
 示例：
@@ -36,8 +38,9 @@ use Imi\Db\Event\Param\DbExecuteEventParam;
 use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
+use Imi\Db\Event\DbEvents;
 
-#[Listener(eventName: 'IMI.DB.EXECUTE')]
+#[Listener(eventName: DbEvents::EXECUTE)]
 class DbExecuteListener implements IEventListener
 {
     /**
@@ -68,6 +71,8 @@ class DbExecuteListener implements IEventListener
 
 事件名：`IMI.DB.PREPARE`
 
+常量：`Imi\Db\Event\DbEvents::PREPARE`
+
 每一个 SQL 语句准备后都会触发该事件。
 
 示例：
@@ -82,8 +87,9 @@ use Imi\Db\Event\Param\DbPrepareEventParam;
 use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
+use Imi\Db\Event\DbEvents;
 
-#[Listener(eventName: 'IMI.DB.PREPARE')]
+#[Listener(eventName: DbEvents::PREPARE)]
 class DbPrepareListener implements IEventListener
 {
     /**

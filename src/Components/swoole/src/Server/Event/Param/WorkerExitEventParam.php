@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
 class WorkerExitEventParam extends CommonEvent
@@ -19,6 +20,6 @@ class WorkerExitEventParam extends CommonEvent
          */
         public readonly int $workerId = 0,
     ) {
-        parent::__construct('IMI.MAIN_SERVER.WORKER.EXIT');
+        parent::__construct(SwooleEvents::SERVER_WORKER_EXIT);
     }
 }

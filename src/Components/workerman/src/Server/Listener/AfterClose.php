@@ -10,12 +10,13 @@ use Imi\RequestContext;
 use Imi\Server\ConnectionContext\Traits\TConnectionContextRelease;
 use Imi\Server\Protocol;
 use Imi\Util\ImiPriority;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
 
 /**
  * Close事件后置处理.
  */
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.CLOSE', priority: ImiPriority::MIN)]
+#[Listener(eventName: WorkermanEvents::SERVER_CLOSE, priority: ImiPriority::MIN)]
 class AfterClose implements IEventListener
 {
     use TConnectionContextRelease;

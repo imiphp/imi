@@ -181,13 +181,13 @@ class Main extends \Imi\Main\AppBaseMain
     public function __init(): void
     {
         // 监听读取 Runtime 缓存
-        Event::on('IMI.LOAD_RUNTIME_INFO', function (LoadRuntimeInfoEvent $e) {
+        Event::on(\Imi\Core\CoreEvents::LOAD_RUNTIME_INFO, function (LoadRuntimeInfoEvent $e) {
             $cacheName = $e->getData()['cacheName']; // 缓存名称
             $data = $e->getData()['data']; // 数组
             YourManager::setData($data['myData'] ?? []); // 从 runtime 缓存读取到管理类里，myData 是自定义键名，可以换为别的
         });
         // 监听构建 Runtime 缓存
-        Event::on('IMI.BUILD_RUNTIME', function (BuildRuntimeInfoEvent $e) {
+        Event::on(\Imi\Core\CoreEvents::BUILD_RUNTIME, function (BuildRuntimeInfoEvent $e) {
             $cacheName = $e->getData()['cacheName']; // 缓存名称
             $data = $e->getData()['data']; // 数组
             $data['myData'] = YourManager::getData(); // 写入 runtime 缓存，myData 是自定义键名，可以换为别的

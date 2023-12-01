@@ -6,6 +6,7 @@ namespace Imi\Workerman\Server\Event;
 
 use Imi\Event\CommonEvent;
 use Imi\Server\Contract\IServer;
+use Imi\Workerman\Event\WorkermanEvents;
 use Workerman\Connection\ConnectionInterface;
 
 class ServerBufferDrainEvent extends CommonEvent
@@ -15,6 +16,6 @@ class ServerBufferDrainEvent extends CommonEvent
         public readonly string|int $clientId,
         public readonly ConnectionInterface $connection
     ) {
-        parent::__construct('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', $server);
+        parent::__construct(WorkermanEvents::SERVER_BUFFER_DRAIN, $server);
     }
 }

@@ -7,8 +7,9 @@ namespace Imi\Workerman\Test\AppServer\WebSocketServer\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\ConnectionContext;
 use Imi\Event\IEventListener;
+use Imi\Workerman\Event\WorkermanEvents;
 
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT')]
+#[Listener(eventName: WorkermanEvents::SERVER_WEBSOCKET_CONNECT)]
 class OnOpen implements IEventListener
 {
     /**

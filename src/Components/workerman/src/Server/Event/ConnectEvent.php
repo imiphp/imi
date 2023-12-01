@@ -6,6 +6,7 @@ namespace Imi\Workerman\Server\Event;
 
 use Imi\Event\CommonEvent;
 use Imi\Server\Contract\IServer;
+use Imi\Workerman\Event\WorkermanEvents;
 use Workerman\Connection\ConnectionInterface;
 
 class ConnectEvent extends CommonEvent
@@ -15,6 +16,6 @@ class ConnectEvent extends CommonEvent
         public readonly string|int $clientId,
         public readonly ?ConnectionInterface $connection = null
     ) {
-        parent::__construct('IMI.WORKERMAN.SERVER.CONNECT', $server);
+        parent::__construct(WorkermanEvents::SERVER_CONNECT, $server);
     }
 }

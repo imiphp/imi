@@ -7,10 +7,11 @@ namespace Imi\Aop\Listener;
 use Imi\Aop\AopAnnotationLoader;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
+use Imi\Core\CoreEvents;
 use Imi\Event\IEventListener;
 use Imi\Main\Helper;
 
-#[Listener(eventName: 'IMI.LOAD_RUNTIME', priority: 19940290)]
+#[Listener(eventName: CoreEvents::LOAD_RUNTIME, priority: 19940290)]
 class ImiInit implements IEventListener
 {
     /**

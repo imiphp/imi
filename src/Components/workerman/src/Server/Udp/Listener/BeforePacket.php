@@ -7,12 +7,13 @@ namespace Imi\Workerman\Server\Udp\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Workerman\Server\Http\Event\WorkermanUdpMessageEvent;
+use Imi\Workerman\Event\WorkermanEvents;
+use Imi\Workerman\Server\Udp\Event\WorkermanUdpMessageEvent;
 
 /**
  * Packet事件前置处理.
  */
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.UDP.MESSAGE', priority: \Imi\Util\ImiPriority::IMI_MAX)]
+#[Listener(eventName: WorkermanEvents::SERVER_UDP_MESSAGE, priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforePacket implements IEventListener
 {
     /**

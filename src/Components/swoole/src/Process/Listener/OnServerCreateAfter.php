@@ -7,11 +7,12 @@ namespace Imi\Swoole\Process\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
-#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', priority: -19940311, one: true)]
+#[Listener(eventName: ServerEvents::AFTER_CREATE_SERVERS, priority: -19940311, one: true)]
 class OnServerCreateAfter implements IEventListener
 {
     /**

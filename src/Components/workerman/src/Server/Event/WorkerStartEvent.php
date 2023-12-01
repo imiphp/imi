@@ -6,6 +6,7 @@ namespace Imi\Workerman\Server\Event;
 
 use Imi\Event\CommonEvent;
 use Imi\Server\Contract\IServer;
+use Imi\Workerman\Event\WorkermanEvents;
 use Workerman\Worker;
 
 class WorkerStartEvent extends CommonEvent
@@ -14,6 +15,6 @@ class WorkerStartEvent extends CommonEvent
         public readonly IServer $server,
         public readonly Worker $worker,
     ) {
-        parent::__construct('IMI.WORKERMAN.SERVER.WORKER_START', $server);
+        parent::__construct(WorkermanEvents::SERVER_WORKER_START, $server);
     }
 }

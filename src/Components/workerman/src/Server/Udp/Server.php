@@ -11,7 +11,7 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Workerman\Server\Base;
-use Imi\Workerman\Server\Http\Event\WorkermanUdpMessageEvent;
+use Imi\Workerman\Server\Udp\Event\WorkermanUdpMessageEvent;
 use Imi\Workerman\Server\Udp\Message\PacketData;
 use Workerman\Connection\UdpConnection;
 

@@ -6,9 +6,10 @@ namespace Imi\SharedMemory\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\ServerEvents;
 use Imi\Swoole\Process\ProcessManager;
 
-#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', one: true)]
+#[Listener(eventName: ServerEvents::AFTER_CREATE_SERVERS, one: true)]
 class AfterServersCreate implements IEventListener
 {
     /**

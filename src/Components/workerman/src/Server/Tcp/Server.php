@@ -11,7 +11,7 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Workerman\Server\Base;
-use Imi\Workerman\Server\Http\Event\WorkermanTcpMessageEvent;
+use Imi\Workerman\Server\Tcp\Event\WorkermanTcpMessageEvent;
 use Workerman\Connection\TcpConnection;
 
 #[Bean(name: 'WorkermanTcpServer')]

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Swoole\Server\Task;
 
@@ -36,6 +37,6 @@ class TaskEventParam extends CommonEvent
          */
         public readonly ?Task $task = null
     ) {
-        parent::__construct('IMI.MAIN_SERVER.TASK', $server);
+        parent::__construct(SwooleEvents::SERVER_TASK, $server);
     }
 }

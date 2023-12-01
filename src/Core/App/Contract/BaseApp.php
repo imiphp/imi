@@ -9,6 +9,7 @@ use Imi\AppContexts;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Config\DotEnv\DotEnv;
+use Imi\Core\CoreEvents;
 use Imi\Core\Runtime\Handler\DefaultRuntimeModeHandler;
 use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
@@ -99,7 +100,7 @@ abstract class BaseApp implements IApp
         }
 
         Helper::getMain($this->namespace, 'app');
-        Event::dispatch(eventName: 'IMI.INIT_MAIN');
+        Event::dispatch(eventName: CoreEvents::INIT_MAIN);
     }
 
     protected function loadDotEnv(): void

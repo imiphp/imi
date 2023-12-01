@@ -6,11 +6,12 @@ namespace Imi\Test\Component\Db\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
+use Imi\Db\Event\DbEvents;
 use Imi\Db\Event\Param\DbExecuteEventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
 
-#[Listener(eventName: 'IMI.DB.EXECUTE')]
+#[Listener(eventName: DbEvents::EXECUTE)]
 class DbExecuteListener implements IEventListener
 {
     /**

@@ -12,6 +12,6 @@ class ProcessEndEvent extends CommonEvent
         public readonly string $name,
         public readonly object $process,
     ) {
-        parent::__construct('IMI.PROCESS.END');
+        parent::__construct(ProcessEvents::PROCESS_END);
     }
 }

@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Server\Event;
+namespace Imi\Workerman\Server\WebSocket\Event;
 
 use Imi\Event\CommonEvent;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Http\Message\Request;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Http\Message\WorkermanResponse;
 use Workerman\Connection\ConnectionInterface;
 
@@ -19,6 +20,6 @@ class WebSocketConnectEvent extends CommonEvent
         public readonly ?WorkermanResponse $response = null,
         public readonly ?ConnectionInterface $connection = null,
     ) {
-        parent::__construct('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', $server);
+        parent::__construct(WorkermanEvents::SERVER_WEBSOCKET_CONNECT, $server);
     }
 }

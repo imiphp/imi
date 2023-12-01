@@ -8,10 +8,11 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
-#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', one: true)]
+#[Listener(eventName: ServerEvents::AFTER_CREATE_SERVERS, one: true)]
 class OnServerCreateAfter implements IEventListener
 {
     /**

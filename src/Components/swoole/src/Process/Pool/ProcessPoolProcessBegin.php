@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Process\Pool;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Swoole\Process\Pool;
 
 class ProcessPoolProcessBegin extends CommonEvent
@@ -18,6 +19,6 @@ class ProcessPoolProcessBegin extends CommonEvent
         public readonly int $ipcType,
         public readonly string $msgQueueKey
     ) {
-        parent::__construct('IMI.PROCESS_POOL.PROCESS.BEGIN');
+        parent::__construct(SwooleEvents::PROCESS_POOL_PROCESS_BEGIN);
     }
 }

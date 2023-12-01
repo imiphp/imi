@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event;
 
-class ModelEvents
+final class ModelEvents
 {
     use \Imi\Util\Traits\TStaticClass;
 

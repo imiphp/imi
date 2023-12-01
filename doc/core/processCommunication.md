@@ -37,7 +37,9 @@ $process->sendUnixSocketMessage('动作名', 123); // 第二个参数可以带�
 
 监听事件：`IMI.PROCESS.PIPE_MESSAGE`
 
-事件参数类：`\Imi\Swoole\Process\Event\Param\PipeMessageEventParam`
+常量：`Imi\Swoole\Process\Event\ProcessEvents::PIPE_MESSAGE`
+
+事件参数类：`Imi\Swoole\Process\Event\Param\PipeMessageEventParam`
 
 ```php
 <?php
@@ -47,7 +49,7 @@ use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
 
-#[Listener(eventName: 'IMI.PROCESS.PIPE_MESSAGE')]
+#[Listener(eventName: Imi\Swoole\Process\Event\ProcessEvents::PIPE_MESSAGE)]
 class MyListener implements IEventListener
 {
     /**

@@ -12,6 +12,6 @@ class SmartyNewEvent extends CommonEvent
         public readonly \Smarty $smarty,
         public readonly string $serverName,
     ) {
-        parent::__construct('IMI.SMARTY.NEW');
+        parent::__construct(SmartyEvents::NEW_SMARTY);
     }
 }

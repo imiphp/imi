@@ -7,8 +7,9 @@ namespace Imi\Workerman\Server\Http\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
+use Imi\Workerman\Event\WorkermanEvents;
 
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WORKER_START', one: true)]
+#[Listener(eventName: WorkermanEvents::SERVER_WORKER_START, one: true)]
 class SuperGlobals implements IEventListener
 {
     /**

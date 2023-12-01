@@ -14,6 +14,6 @@ class LeaveGroupEvent extends CommonEvent
         public readonly string $groupName,
         public readonly string|int $clientId
     ) {
-        parent::__construct('IMI.SERVER.GROUP.LEAVE', $server);
+        parent::__construct(ServerGroupEvents::LEAVE_GROUP, $server);
     }
 }

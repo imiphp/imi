@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Event\Param;
 
 use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
 class WorkerErrorEventParam extends CommonEvent
@@ -35,6 +36,6 @@ class WorkerErrorEventParam extends CommonEvent
          */
         public readonly int $signal = 0
     ) {
-        parent::__construct('IMI.MAIN_SERVER.WORKER_ERROR', $server);
+        parent::__construct(SwooleEvents::SERVER_WORKER_ERROR, $server);
     }
 }

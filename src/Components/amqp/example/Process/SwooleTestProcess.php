@@ -9,6 +9,7 @@ use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
 use Imi\Event\Event;
 use Imi\Log\Log;
+use Imi\Process\Event\ProcessEvents;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Coroutine;
@@ -27,7 +28,7 @@ class SwooleTestProcess extends BaseProcess
         $this->running = true;
         $this->runConsumer($this->testConsumer);
         $channel = new \Swoole\Coroutine\Channel();
-        Event::on('IMI.PROCESS.END', function () use ($channel): void {
+        Event::on(ProcessEvents::PROCESS_END, function () use ($channel): void {
             $this->running = false;
             $this->testConsumer->close();
             $channel->push(1);

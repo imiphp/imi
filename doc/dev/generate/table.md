@@ -32,6 +32,10 @@ vendor/bin/imi-xxx generate/table
 
 生成表工具的前置操作
 
+**常量：** `Imi\Model\Cli\Table\Event\GenerateModelEvents::BEFORE_GENERATE_MODEL`
+
 ### IMI.GENERATE_MODEL.AFTER
 
 生成表工具的后置操作
+
+**常量：** `Imi\Model\Cli\Table\Event\GenerateModelEvents::AFTER_GENERATE_MODEL`

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Core\Runtime\Event;
 
+use Imi\Core\CoreEvents;
 use Imi\Event\CommonEvent;
 
 class LoadRuntimeInfoEvent extends CommonEvent
@@ -15,6 +16,6 @@ class LoadRuntimeInfoEvent extends CommonEvent
         public array $data,
         public readonly bool $onlyImi
     ) {
-        $this->__eventName = 'IMI.LOAD_RUNTIME_INFO';
+        $this->__eventName = CoreEvents::LOAD_RUNTIME_INFO;
     }
 }

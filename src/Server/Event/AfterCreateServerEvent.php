@@ -15,6 +15,6 @@ class AfterCreateServerEvent extends CommonEvent
         public readonly array $args,
         public readonly IServer $server
     ) {
-        parent::__construct('IMI.SERVER.CREATE.AFTER');
+        parent::__construct(ServerEvents::AFTER_CREATE_SERVER);
     }
 }

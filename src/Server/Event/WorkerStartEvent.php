@@ -13,6 +13,6 @@ class WorkerStartEvent extends CommonEvent
         public readonly IServer $server,
         public readonly int $workerId
     ) {
-        parent::__construct('IMI.SERVER.WORKER_START', $server);
+        parent::__construct(ServerEvents::WORKER_START, $server);
     }
 }

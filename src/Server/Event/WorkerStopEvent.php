@@ -13,6 +13,6 @@ class WorkerStopEvent extends CommonEvent
         public readonly IServer $server,
         public readonly int $workerId
     ) {
-        parent::__construct('IMI.SERVER.WORKER_STOP', $server);
+        parent::__construct(ServerEvents::WORKER_STOP, $server);
     }
 }
