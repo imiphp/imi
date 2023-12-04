@@ -13,10 +13,10 @@ final class ServerGroupEvents
     /**
      * 加入服务器逻辑分组事件.
      */
-    public const JOIN_GROUP = 'IMI.SERVER.GROUP.JOIN';
+    public const JOIN_GROUP = 'imi.server.group.join';
 
     /**
      * 离开服务器逻辑分组事件.
      */
-    public const LEAVE_GROUP = 'IMI.SERVER.GROUP.LEAVE';
+    public const LEAVE_GROUP = 'imi.server.group.leave';
 }

@@ -118,7 +118,7 @@ class Query
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $leftValue = $model[$leftField];
         if (null === $leftValue)
@@ -196,7 +196,7 @@ class Query
         $struct = new OneToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $model[$propertyName] = new ArrayList($modelClass);
         $leftValue = $model[$leftField];
@@ -291,7 +291,7 @@ class Query
 
         $model[$propertyName] = new ArrayList($middleModel);
         $model[$annotation->rightMany] = new ArrayList($rightModel);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $leftValue = $model[$leftField];
         if (null !== $leftValue)
@@ -374,7 +374,7 @@ class Query
     public static function initByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         if (class_exists($annotation->model))
         {
@@ -454,7 +454,7 @@ class Query
     public static function initByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         if (class_exists($annotation->model))
         {
@@ -544,7 +544,7 @@ class Query
     public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotations, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
         foreach ($annotations as $annotationItem)
         {
             $typeValue = $annotationItem->typeValue;
@@ -636,7 +636,7 @@ class Query
     public static function initByPolymorphicToMany(Model $model, string $propertyName, array $annotations, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         foreach ($annotations as $annotationItem)
         {
@@ -752,7 +752,7 @@ class Query
     public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();

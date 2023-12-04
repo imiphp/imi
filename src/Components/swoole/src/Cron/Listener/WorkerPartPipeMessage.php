@@ -12,7 +12,7 @@ use Imi\Server\Event\PipeMessageEvent;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.cronTask')]
+#[Listener(eventName: 'imi.pipe_message.cronTask')]
 class WorkerPartPipeMessage implements IEventListener
 {
     #[Inject(name: 'CronWorker')]

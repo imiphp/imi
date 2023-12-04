@@ -35,7 +35,7 @@ $process->sendUnixSocketMessage('动作名', 123); // 第二个参数可以带�
 
 **进程监听消息：**
 
-监听事件：`IMI.PROCESS.PIPE_MESSAGE`
+监听事件：`imi.process.pipe_message`
 
 常量：`Imi\Swoole\Process\Event\ProcessEvents::PIPE_MESSAGE`
 
@@ -86,7 +86,7 @@ class MyListener implements IEventListener
 
 ### 事件名称
 
-`IMI.PIPE_MESSAGE.动作名`
+`imi.pipe_message.动作名`
 
 ## 代码示例
 
@@ -108,7 +108,7 @@ Server::sendMessage('test', [
 
 ### 监听
 
-事件名称为：`IMI.PIPE_MESSAGE.test`
+事件名称为：`imi.pipe_message.test`
 
 ```php
 <?php
@@ -118,7 +118,7 @@ use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.test')]
+#[Listener(eventName: 'imi.pipe_message.test')]
 class TestMessage implements IEventListener
 {
     /**
@@ -178,7 +178,7 @@ try {
 
 **监听请求：**
 
-事件名称为：`IMI.PIPE_MESSAGE.testRequest`
+事件名称为：`imi.pipe_message.testRequest`
 
 ```php
 <?php
@@ -189,7 +189,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.testRequest')]
+#[Listener(eventName: 'imi.pipe_message.testRequest')]
 class TestRequestMessage implements IEventListener
 {
     /**
@@ -216,7 +216,7 @@ class TestRequestMessage implements IEventListener
 
 > 暂时只有 Swoole 支持
 
-事件名称为：`IMI.PIPE_MESSAGE.testResponse`
+事件名称为：`imi.pipe_message.testResponse`
 
 ```php
 <?php
@@ -228,7 +228,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\Util\Co\ChannelContainer;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.testResponse')]
+#[Listener(eventName: 'imi.pipe_message.testResponse')]
 class TestResponseMessage implements IEventListener
 {
     /**

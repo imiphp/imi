@@ -97,7 +97,7 @@ class Delete
         $rightField = $struct->getRightField();
 
         $modelField = $model[$propertyName];
-        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         if (null === $modelField)
         {
@@ -122,7 +122,7 @@ class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
-        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $rightModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $rightField): void {
@@ -142,7 +142,7 @@ class Delete
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
-        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $middleModel::deleteBatch(static function (IModelQuery $query) use ($model, $leftField, $middleLeftField): void {
@@ -163,7 +163,7 @@ class Delete
             if ($model[$annotationItem->type] == $annotationItem->typeValue)
             {
                 $className = BeanFactory::getObjectClass($model);
-                $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+                $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
 
                 Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem));
 
@@ -200,7 +200,7 @@ class Delete
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -230,7 +230,7 @@ class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
-        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -251,7 +251,7 @@ class Delete
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
-        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.delete.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 

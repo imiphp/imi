@@ -10,5 +10,5 @@ class ConnectionContextEvents
 {
     use TStaticClass;
 
-    public const RESTORE = 'IMI.CONNECT_CONTEXT.RESTORE';
+    public const RESTORE = 'imi.connect_context.restore';
 }

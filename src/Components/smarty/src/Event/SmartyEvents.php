@@ -10,5 +10,5 @@ final class SmartyEvents
 {
     use TStaticClass;
 
-    public const NEW_SMARTY = 'IMI.SMARTY.NEW';
+    public const NEW_SMARTY = 'imi.smarty.new';
 }

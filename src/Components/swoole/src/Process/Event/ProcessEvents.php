@@ -10,5 +10,5 @@ final class ProcessEvents
 {
     use TStaticClass;
 
-    public const PIPE_MESSAGE = 'IMI.PROCESS.PIPE_MESSAGE';
+    public const PIPE_MESSAGE = 'imi.process.pipe_message';
 }

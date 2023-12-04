@@ -10,5 +10,5 @@ final class HotUpdateEvents
 {
     use TStaticClass;
 
-    public const BEGIN_BUILD = 'IMI.HOTUPDATE.BEGIN_BUILD';
+    public const BEGIN_BUILD = 'imi.hotupdate.begin_build';
 }

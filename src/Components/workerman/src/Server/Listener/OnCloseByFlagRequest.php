@@ -13,7 +13,7 @@ use Imi\Workerman\Server\Util\LocalServerUtil;
 /**
  * 发送给分组中的连接-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.closeByFlagRequest')]
+#[Listener(eventName: 'imi.pipe_message.closeByFlagRequest')]
 class OnCloseByFlagRequest implements IEventListener
 {
     /**

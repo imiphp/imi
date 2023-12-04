@@ -20,7 +20,7 @@
 
 ### SQL 执行
 
-事件名：`IMI.DB.EXECUTE`
+事件名：`imi.db.execute`
 
 常量：`Imi\Db\Event\DbEvents::EXECUTE`
 
@@ -69,7 +69,7 @@ class DbExecuteListener implements IEventListener
 
 ### 准备 SQL 语句
 
-事件名：`IMI.DB.PREPARE`
+事件名：`imi.db.prepare`
 
 常量：`Imi\Db\Event\DbEvents::PREPARE`
 

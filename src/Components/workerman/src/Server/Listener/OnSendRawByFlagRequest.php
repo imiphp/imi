@@ -13,7 +13,7 @@ use Imi\Workerman\Server\Util\LocalServerUtil;
 /**
  * 发送给标记对应的连接-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawByFlagRequest')]
+#[Listener(eventName: 'imi.pipe_message.sendRawByFlagRequest')]
 class OnSendRawByFlagRequest implements IEventListener
 {
     /**

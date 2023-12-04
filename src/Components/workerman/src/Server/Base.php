@@ -311,7 +311,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                         {
                             return;
                         }
-                        Event::dispatch(new PipeMessageEvent('IMI.PIPE_MESSAGE.' . $action, [
+                        Event::dispatch(new PipeMessageEvent('imi.pipe_message.' . $action, [
                             'data' => $data,
                         ]));
                     };

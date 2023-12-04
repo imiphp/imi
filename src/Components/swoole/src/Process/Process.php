@@ -120,7 +120,7 @@ trait TProcess
     }
 
     /**
-     * 进程使用 IMI.PROCESS.PIPE_MESSAGE 事件返回的 Connection 对象发送消息.
+     * 进程使用 imi.process.pipe_message 事件返回的 Connection 对象发送消息.
      */
     public function sendUnixSocketMessageByConnection(Connection $connection, string $action, mixed $data = null): bool
     {

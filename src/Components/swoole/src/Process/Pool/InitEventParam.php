@@ -15,7 +15,7 @@ class InitEventParam extends CommonEvent
          */
         public readonly ?Pool $pool = null
     ) {
-        parent::__construct('Init', $pool);
+        parent::__construct('inited', $pool);
     }
 
     /**

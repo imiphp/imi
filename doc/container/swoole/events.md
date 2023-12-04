@@ -4,25 +4,25 @@
 
 ## Swoole 环境事件
 
-### IMI.SWOOLE.MAIN_COROUTINE.END
+### imi.swoole.main_coroutine.end
 
 Swoole 主协程执行完毕事件，此事件在协程中
 
 **常量：** `Imi\Swoole\Event\SwooleEvents::MAIN_COROUTINE_END`
 
-### IMI.SWOOLE.MAIN_COROUTINE.AFTER
+### imi.swoole.main_coroutine.after
 
 Swoole 主协程执行完毕后置事件，此事件在非协程中
 
 **常量：** `Imi\Swoole\Event\SwooleEvents::MAIN_COROUTINE_AFTER`
 
-### IMI.SWOOLE.SERVER.BEFORE_START
+### imi.swoole.server.before_start
 
 Swoole 服务器开始前
 
 **常量：** `Imi\Swoole\Event\SwooleEvents::BEFORE_SERVER_START`
 
-### IMI.MAIN_SERVER.WORKER.START.APP
+### imi.main_server.worker.start.app
 
 在项目中监听 WorkerStart 事件
 
@@ -30,7 +30,7 @@ Swoole 服务器开始前
 
 **事件类：** `Imi\Swoole\Server\Event\Param\WorkerStartEventParam`
 
-### IMI.PROCESS_POOL.PROCESS.BEGIN
+### imi.process_pool.process.begin
 
 自定义进程池中的进程开始事件
 
@@ -38,7 +38,7 @@ Swoole 服务器开始前
 
 **事件类：** `Imi\Swoole\Process\Pool\ProcessPoolProcessBegin`
 
-### IMI.PROCESS_POOL.PROCESS.END
+### imi.process_pool.process.end
 
 自定义进程池中的进程结束事件
 
@@ -48,7 +48,7 @@ Swoole 服务器开始前
 
 ## Swoole Server 全局事件
 
-### IMI.MAIN_SERVER.START
+### imi.main_server.start
 
 OnStart
 
@@ -56,7 +56,7 @@ OnStart
 
 **事件类：** `Imi\Swoole\Server\Event\Param\StartEventParam`
 
-### IMI.MAIN_SERVER.SHUTDOWN
+### imi.main_server.shutdown
 
 OnShutdown
 
@@ -64,7 +64,7 @@ OnShutdown
 
 **事件类：** `Imi\Swoole\Server\Event\Param\ShutdownEventParam`
 
-### IMI.MAIN_SERVER.WORKER.START
+### imi.main_server.worker.start
 
 OnWorkerStart
 
@@ -72,7 +72,7 @@ OnWorkerStart
 
 **事件类：** `Imi\Swoole\Server\Event\Param\WorkerStartEventParam`
 
-### IMI.MAIN_SERVER.WORKER.STOP
+### imi.main_server.worker.stop
 
 OnWorkerStop
 
@@ -80,7 +80,7 @@ OnWorkerStop
 
 **事件类：** `Imi\Swoole\Server\Event\Param\WorkerStopEventParam`
 
-### IMI.MAIN_SERVER.MANAGER.START
+### imi.main_server.manager.start
 
 OnManagerStart
 
@@ -88,7 +88,7 @@ OnManagerStart
 
 **事件类：** `Imi\Swoole\Server\Event\Param\ManagerStartEventParam`
 
-### IMI.MAIN_SERVER.MANAGER.STOP
+### imi.main_server.manager.stop
 
 OnManagerStop
 
@@ -96,7 +96,7 @@ OnManagerStop
 
 **事件类：** `Imi\Swoole\Server\Event\Param\ManagerStopEventParam`
 
-### IMI.MAIN_SERVER.TASK
+### imi.main_server.task
 
 OnTask
 
@@ -104,7 +104,7 @@ OnTask
 
 **事件类：** `Imi\Swoole\Server\Event\Param\TaskEventParam`
 
-### IMI.MAIN_SERVER.FINISH
+### imi.main_server.finish
 
 OnFinish
 
@@ -112,7 +112,7 @@ OnFinish
 
 **事件类：** `Imi\Swoole\Server\Event\Param\FinishEventParam`
 
-### IMI.MAIN_SERVER.PIPE_MESSAGE
+### imi.main_server.pipe_message
 
 OnPipeMessage
 
@@ -120,7 +120,7 @@ OnPipeMessage
 
 **事件类：** `Imi\Swoole\Server\Event\Param\PipeMessageEventParam`
 
-### IMI.MAIN_SERVER.WORKER_ERROR
+### imi.main_server.worker_error
 
 OnWorkerError
 
@@ -128,7 +128,7 @@ OnWorkerError
 
 **事件类：** `Imi\Swoole\Server\Event\Param\WorkerErrorEventParam`
 
-### IMI.MAIN_SERVER.WORKER.EXIT
+### imi.main_server.worker.exit
 
 OnWorkerError
 
@@ -203,7 +203,7 @@ class CloseEventParam extends EventParam
 
 #### WebSocket 握手事件
 
-**事件名：**`handShake`
+**事件名：**`handshake`
 
 握手事件
 

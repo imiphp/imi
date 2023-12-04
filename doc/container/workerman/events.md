@@ -4,7 +4,7 @@
 
 ## Workerman Server 全局事件
 
-### IMI.WORKERMAN.SERVER.BUFFER_DRAIN
+### imi.workerman.server.buffer_drain
 
 onBufferDrain
 
@@ -12,7 +12,7 @@ onBufferDrain
 
 **事件类：** `Imi\Workerman\Server\Event\ServerBufferDrainEvent`
 
-### IMI.WORKERMAN.SERVER.BUFFER_FULL
+### imi.workerman.server.buffer_full
 
 onBufferFull
 
@@ -20,7 +20,7 @@ onBufferFull
 
 **事件类：** `Imi\Workerman\Server\Event\ServerBufferFullEvent`
 
-### IMI.WORKERMAN.SERVER.CLOSE
+### imi.workerman.server.close
 
 onClose
 
@@ -28,7 +28,7 @@ onClose
 
 **事件类：** `Imi\Workerman\Server\Event\WorkermanConnectionCloseEvent`
 
-### IMI.WORKERMAN.SERVER.CONNECT
+### imi.workerman.server.connect
 
 onConnect
 
@@ -36,7 +36,7 @@ onConnect
 
 **事件类：** `Imi\Workerman\Server\Event\ConnectEvent`
 
-### IMI.WORKERMAN.SERVER.ERROR
+### imi.workerman.server.error
 
 onError
 
@@ -44,7 +44,7 @@ onError
 
 **事件类：** `Imi\Workerman\Server\Event\WorkermanErrorEvent`
 
-### IMI.WORKERMAN.SERVER.WORKER_RELOAD
+### imi.workerman.server.worker_reload
 
 onWorkerReload
 
@@ -52,7 +52,7 @@ onWorkerReload
 
 **事件类：** `Imi\Workerman\Server\Event\WorkerReloadEvent`
 
-### IMI.WORKERMAN.SERVER.WORKER_START
+### imi.workerman.server.worker_start
 
 onWorkerStart
 
@@ -60,7 +60,7 @@ onWorkerStart
 
 **事件类：** `Imi\Workerman\Server\Event\WorkerStartEvent`
 
-### IMI.WORKERMAN.SERVER.WORKER_STOP
+### imi.workerman.server.worker_stop
 
 onWorkerStop
 
@@ -68,7 +68,7 @@ onWorkerStop
 
 **事件类：** `Imi\Workerman\Server\Event\WorkerStopEvent`
 
-### IMI.WORKERMAN.SERVER.HTTP.REQUEST
+### imi.workerman.server.http.request
 
 http onMessage
 
@@ -76,7 +76,7 @@ http onMessage
 
 **事件类：** `Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent`
 
-### IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT
+### imi.workerman.server.websocket.connect
 
 websocket onWebSocketConnect
 
@@ -84,7 +84,7 @@ websocket onWebSocketConnect
 
 **事件类：** `Imi\Workerman\Server\WebSocket\Event\WebSocketConnectEvent`
 
-### IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE
+### imi.workerman.server.websocket.message
 
 websocket onMessage
 
@@ -92,7 +92,7 @@ websocket onMessage
 
 **事件类：** `Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent`
 
-### IMI.WORKERMAN.SERVER.TCP.MESSAGE
+### imi.workerman.server.tcp.message
 
 tcp onMessage
 
@@ -100,7 +100,7 @@ tcp onMessage
 
 **事件类：** `Imi\Workerman\Server\Tcp\Event\WorkermanTcpMessageEvent`
 
-### IMI.WORKERMAN.SERVER.UDP.MESSAGE
+### imi.workerman.server.udp.message
 
 udp onMessage
 

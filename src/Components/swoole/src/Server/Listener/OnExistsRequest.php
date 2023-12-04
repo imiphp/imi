@@ -13,7 +13,7 @@ use Imi\Swoole\SwooleWorker;
 /**
  * 连接是否存在-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.existsRequest')]
+#[Listener(eventName: 'imi.pipe_message.existsRequest')]
 class OnExistsRequest implements IEventListener
 {
     /**

@@ -22,6 +22,6 @@ class HandShakeEventParam extends CommonEvent
          */
         public readonly ?IHttpResponse $response = null
     ) {
-        parent::__construct('handShake', $__target);
+        parent::__construct('handshake', $__target);
     }
 }

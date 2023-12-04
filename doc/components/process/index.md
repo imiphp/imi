@@ -134,7 +134,7 @@ ProcessManager::coRun($name, $args = [], $redirectStdinStdout = null, $pipeType 
 
 ### 运行进程，托管到 Manager 进程
 
-> 这个用法只能在`IMI.SERVERS.CREATE.AFTER`事件中使用！
+> 这个用法只能在`imi.servers.create.after`事件中使用！
 
 ```php
 /**

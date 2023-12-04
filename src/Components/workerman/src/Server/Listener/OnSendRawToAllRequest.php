@@ -13,7 +13,7 @@ use Imi\Workerman\Server\Util\LocalServerUtil;
 /**
  * 发送给所有连接-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawToAllRequest')]
+#[Listener(eventName: 'imi.pipe_message.sendRawToAllRequest')]
 class OnSendRawToAllRequest implements IEventListener
 {
     /**

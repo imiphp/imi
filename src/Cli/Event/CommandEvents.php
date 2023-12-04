@@ -13,10 +13,10 @@ final class CommandEvents
     /**
      * 命令行执行前置事件.
      */
-    public const BEFORE_COMMAND = 'IMI.COMMAND.BEFORE';
+    public const BEFORE_COMMAND = 'imi.command.before';
 
     /**
      * 命令行执行后置事件.
      */
-    public const AFTER_COMMAND = 'IMI.COMMAND.AFTER';
+    public const AFTER_COMMAND = 'imi.command.after';
 }

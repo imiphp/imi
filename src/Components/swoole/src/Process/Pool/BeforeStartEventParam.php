@@ -15,7 +15,7 @@ class BeforeStartEventParam extends CommonEvent
          */
         public readonly ?Pool $pool = null
     ) {
-        parent::__construct('BeforeStart', $pool);
+        parent::__construct('before.start', $pool);
     }
 
     /**

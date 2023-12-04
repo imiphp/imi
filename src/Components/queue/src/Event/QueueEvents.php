@@ -10,11 +10,11 @@ final class QueueEvents
 {
     use TStaticClass;
 
-    public const BEFORE_CONSUME = 'IMI.QUEUE.CONSUMER.BEFORE_CONSUME';
+    public const BEFORE_CONSUME = 'imi.queue.consumer.before_consume';
 
-    public const AFTER_CONSUME = 'IMI.QUEUE.CONSUMER.AFTER_CONSUME';
+    public const AFTER_CONSUME = 'imi.queue.consumer.after_consume';
 
-    public const BEFORE_POP = 'IMI.QUEUE.CONSUMER.BEFORE_POP';
+    public const BEFORE_POP = 'imi.queue.consumer.before_pop';
 
-    public const AFTER_POP = 'IMI.QUEUE.CONSUMER.AFTER_POP';
+    public const AFTER_POP = 'imi.queue.consumer.after_pop';
 }

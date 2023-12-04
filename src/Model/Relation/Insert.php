@@ -112,7 +112,7 @@ class Insert
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -133,7 +133,7 @@ class Insert
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
-        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -162,7 +162,7 @@ class Insert
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
-        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -192,7 +192,7 @@ class Insert
             if ($model[$annotationItem->type] == $annotationItem->typeValue)
             {
                 $className = BeanFactory::getObjectClass($model);
-                $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+                $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
                 Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem));
 
@@ -219,7 +219,7 @@ class Insert
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -241,7 +241,7 @@ class Insert
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
-        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
@@ -271,7 +271,7 @@ class Insert
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
-        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.insert.' . $className . '.' . $propertyName;
 
         Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 

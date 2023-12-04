@@ -307,7 +307,7 @@ class RedisServerUtil extends LocalServerUtil
                                 return;
                             }
                             RequestContext::set('server', ServerManager::getServer($data['serverName']));
-                            Event::dispatch(new PipeMessageEvent('IMI.PIPE_MESSAGE.' . $data['action'], [
+                            Event::dispatch(new PipeMessageEvent('imi.pipe_message.' . $data['action'], [
                                 'data' => $data,
                             ]));
                         });

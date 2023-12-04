@@ -12,7 +12,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 /**
  * 关闭指定标识-响应.
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.closeByFlagResponse')]
+#[Listener(eventName: 'imi.pipe_message.closeByFlagResponse')]
 class OnCloseByFlagResponse implements IEventListener
 {
     /**

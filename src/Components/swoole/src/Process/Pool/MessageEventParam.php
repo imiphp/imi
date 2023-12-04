@@ -27,7 +27,7 @@ class MessageEventParam extends WorkerEventParam
          */
         public readonly array $data = []
     ) {
-        parent::__construct('Message', $pool, $worker, $workerId);
+        parent::__construct('message', $pool, $worker, $workerId);
     }
 
     /**

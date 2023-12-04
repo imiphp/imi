@@ -12,7 +12,7 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 /**
  * 发送给指定连接-响应.
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendToGroupsResponse')]
+#[Listener(eventName: 'imi.pipe_message.sendToGroupsResponse')]
 class OnSendToGroupsResponse implements IEventListener
 {
     /**

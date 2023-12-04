@@ -13,10 +13,10 @@ final class ProcessEvents
     /**
      * 自定义进程开始.
      */
-    public const PROCESS_BEGIN = 'IMI.PROCESS.BEGIN';
+    public const PROCESS_BEGIN = 'imi.process.begin';
 
     /**
      * 自定义进程结束.
      */
-    public const PROCESS_END = 'IMI.PROCESS.END';
+    public const PROCESS_END = 'imi.process.end';
 }

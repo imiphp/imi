@@ -13,10 +13,10 @@ final class DbEvents
     /**
      * 数据库执行 SQL 语句.
      */
-    public const EXECUTE = 'IMI.DB.EXECUTE';
+    public const EXECUTE = 'imi.db.execute';
 
     /**
      * 数据库执行准备语句.
      */
-    public const PREPARE = 'IMI.DB.PREPARE';
+    public const PREPARE = 'imi.db.prepare';
 }

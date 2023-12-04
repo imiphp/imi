@@ -13,7 +13,7 @@ use Imi\Swoole\SwooleWorker;
 /**
  * 发送给所有 Worker 进程的连接-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawToAllRequest')]
+#[Listener(eventName: 'imi.pipe_message.sendRawToAllRequest')]
 class OnSendRawToAllRequest implements IEventListener
 {
     /**

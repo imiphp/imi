@@ -13,7 +13,7 @@ use Imi\Swoole\SwooleWorker;
 /**
  * 关闭指定标识-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.closeByFlagRequest')]
+#[Listener(eventName: 'imi.pipe_message.closeByFlagRequest')]
 class OnCloseByFlagRequest implements IEventListener
 {
     /**

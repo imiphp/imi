@@ -24,7 +24,7 @@ use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-#[Listener(eventName: 'IMI.INITED', priority: PHP_INT_MAX)]
+#[Listener(eventName: 'imi.inited', priority: PHP_INT_MAX)]
 class Init implements IEventListener
 {
     /**
