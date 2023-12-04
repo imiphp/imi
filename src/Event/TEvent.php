@@ -10,9 +10,13 @@ trait TEvent
 {
     private EventController $eventController;
 
+    protected string $eventDispatcher = EventDispatcher::class;
+
+    protected string $listenerProvider = ListenerProvider::class;
+
     public function getEventController(): EventController
     {
-        return $this->eventController ?? ($this->eventController = new EventController($this));
+        return $this->eventController ?? ($this->eventController = new EventController($this, new ($this->eventDispatcher)(new ($this->listenerProvider)())));
     }
 
     /**

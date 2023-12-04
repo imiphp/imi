@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests;
 
+use Imi\Event\CaseInsensitiveListenerProvider;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
 use Imi\Test\BaseTest;
@@ -160,5 +161,22 @@ class EventTest extends BaseTest
         $testClass->off('test3', $callable);
         $result = $testClass->test3();
         Assert::assertNull($result);
+    }
+
+    public function testCaseInsensitiveListenerProvider(): void
+    {
+        $event = new Event(listenerProvider: CaseInsensitiveListenerProvider::class);
+        $result = [];
+        $event->__on('TEST', static function () use (&$result): void {
+            $result[] = 'TEST';
+        });
+        $event->__on('test', static function () use (&$result): void {
+            $result[] = 'test';
+        });
+        $event->__dispatch(eventName: 'test');
+        $this->assertEquals([
+            'TEST',
+            'test',
+        ], $result);
     }
 }

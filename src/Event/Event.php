@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Event;
 
+use Imi\App;
+use Imi\AppContexts;
 use Imi\Event\Contract\IEvent;
 use Imi\Util\Traits\TSingleton;
 
@@ -19,6 +21,12 @@ class Event
     }
 
     use TSingleton;
+
+    public function __construct(?string $eventDispatcher = null, ?string $listenerProvider = null)
+    {
+        $this->eventDispatcher = $eventDispatcher ?? App::get(AppContexts::EVENT_DISPATCHER, EventDispatcher::class);
+        $this->listenerProvider = $listenerProvider ?? App::get(AppContexts::EVENT_LISTENER_PROVIDER, ListenerProvider::class);
+    }
 
     /**
      * 事件监听.
