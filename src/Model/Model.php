@@ -278,13 +278,13 @@ abstract class Model extends BaseModel
 
         $realClassName = static::__getRealClassName();
         // 查找前
-        $event = new \Imi\Model\Event\Param\BeforeFindEventParam($realClassName . ':' . ModelEvents::BEFORE_FIND, $ids, $query);
+        $event = new \Imi\Model\Event\Param\BeforeFindEventParam($realClassName . '.' . ModelEvents::BEFORE_FIND, $ids, $query);
         Event::dispatch($event);
 
         $result = $event->query->select()->get();
 
         // 查找后
-        $event = new \Imi\Model\Event\Param\AfterFindEventParam($realClassName . ':' . ModelEvents::AFTER_FIND, $ids, $result);
+        $event = new \Imi\Model\Event\Param\AfterFindEventParam($realClassName . '.' . ModelEvents::AFTER_FIND, $ids, $result);
         Event::dispatch($event);
 
         return $event->model;
@@ -305,13 +305,13 @@ abstract class Model extends BaseModel
         }
 
         // 查询前
-        $event = new \Imi\Model\Event\Param\BeforeSelectEventParam($realClassName . ':' . ModelEvents::BEFORE_SELECT, $query);
+        $event = new \Imi\Model\Event\Param\BeforeSelectEventParam($realClassName . '.' . ModelEvents::BEFORE_SELECT, $query);
         Event::dispatch($event);
 
         $result = $event->query->select()->getArray();
 
         // 查询后
-        $event = new \Imi\Model\Event\Param\AfterSelectEventParam($realClassName . ':' . ModelEvents::AFTER_FIND, $result);
+        $event = new \Imi\Model\Event\Param\AfterSelectEventParam($realClassName . '.' . ModelEvents::AFTER_FIND, $result);
         Event::dispatch($event);
 
         return $event->result;
@@ -781,7 +781,7 @@ abstract class Model extends BaseModel
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();
         // 处理前
-        $event = new \Imi\Model\Event\Param\BeforeParseDataEventParam($realClassName . ':' . ModelEvents::BEFORE_PARSE_DATA, $data, $object);
+        $event = new \Imi\Model\Event\Param\BeforeParseDataEventParam($realClassName . '.' . ModelEvents::BEFORE_PARSE_DATA, $data, $object);
         Event::dispatch($event);
         $data = $event->data;
         $object = $event->object;
@@ -917,7 +917,7 @@ abstract class Model extends BaseModel
 
         $result = new LazyArrayObject($result);
         // 处理后
-        $event = new \Imi\Model\Event\Param\AfterParseDataEventParam($realClassName . ':' . ModelEvents::AFTER_PARSE_DATA, $data, $object, $result);
+        $event = new \Imi\Model\Event\Param\AfterParseDataEventParam($realClassName . '.' . ModelEvents::AFTER_PARSE_DATA, $data, $object, $result);
         Event::dispatch($event);
 
         return $event->result;
