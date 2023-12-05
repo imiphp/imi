@@ -104,7 +104,7 @@ jobs:
           --health-retries=3
     env:
       TEST_TYPE: ${{ matrix.testType }}
-      SWOOLE_VERSION: v5.0.3
+      SWOOLE_VERSION: v5.1.1
       ROADRUNNER_VERSION: 2.7.*
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
       AMQP_SERVER_HOST: 127.0.0.1
