@@ -20,6 +20,14 @@ jobs:
       fail-fast: false
       matrix:
         swoole:
+          - version: 5.1-php8.3
+            postgresql_version: ""
+          - version: 5.1-php8.2
+            postgresql_version: ""
+          - version: 5.1-php8.1
+            postgresql_version: ""
+          - version: 5.1-php8.0
+            postgresql_version: ""
           - version: 5.0-php8.2
             postgresql_version: ""
           - version: 5.0-php8.1
@@ -281,13 +289,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.0", "8.1", "8.2"]
-        swoole: [v5.0.3, v4.8.13]
+        php: ["7.4", "8.0", "8.1", "8.2", "8.3"]
+        swoole: [v5.1.1, v5.0.3, v4.8.13]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
-            swoole: v5.0.3
-          - php: 8.2
+            swoole: [v5.1.1, v5.0.3]
+          - php: ["8.2", "8.3"]
             swoole: v4.8.13
     env:
       MYSQL_SERVER_PASSWORD: "root"
@@ -415,6 +423,8 @@ jobs:
           - version: "8.1"
             extensions: "apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, :opcache"
           - version: "8.2"
+            extensions: "bcmath, curl, openssl, mbstring, intl, json, mysqli, pdo, pdo_mysql, sockets, :opcache"
+          - version: "8.3"
             extensions: "bcmath, curl, openssl, mbstring, intl, json, mysqli, pdo, pdo_mysql, sockets, :opcache"
         roadrunner: [2.7.*]
     env:
