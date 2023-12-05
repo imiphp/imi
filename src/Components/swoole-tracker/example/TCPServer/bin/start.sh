@@ -10,8 +10,8 @@ if [ $? -eq 0 ]; then
 else
     php -dzend_extension=xdebug --ri xdebug > /dev/null 2&>1
     if [ $? -eq 0 ]; then
-        paramsXdebug="-dzend_extension=xdebug"
+        paramsXdebug="-dzend_extension=xdebug -dswoole.enable_fiber_mock -dxdebug.mode=coverage"
     fi
 fi
 
-nohup /usr/bin/env php $paramsXdebug -dxdebug.mode=coverage "$__DIR__/imi" swoole/start > /dev/null 2>&1 &
+nohup /usr/bin/env php $paramsXdebug "$__DIR__/imi" swoole/start > /dev/null 2>&1 &
