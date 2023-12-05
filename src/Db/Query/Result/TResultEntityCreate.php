@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Db\Query\Result;
 
 use Imi\Bean\BeanFactory;
-use Imi\Event\IEvent;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
 use Imi\Model\Model;
@@ -33,12 +32,9 @@ trait TResultEntityCreate
                 $object->{$k} = $v;
             }
         }
-        if (is_subclass_of($object, IEvent::class))
-        {
-            $object->trigger(ModelEvents::AFTER_QUERY, [
-                'model'      => $object,
-            ], $object, AfterQueryEventParam::class);
-        }
+        $object->trigger(ModelEvents::AFTER_QUERY, [
+            'model'      => $object,
+        ], $object, AfterQueryEventParam::class);
 
         return $object;
     }

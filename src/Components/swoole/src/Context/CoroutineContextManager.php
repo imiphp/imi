@@ -148,12 +148,7 @@ class CoroutineContextManager implements IContextManager
             $context = Coroutine::getContext();
             if (!$context)
             {
-                $coId = Coroutine::getCid();
-                $contextMap = &$this->contextMap;
-                if (isset($contextMap[$coId]))
-                {
-                    unset($contextMap[$coId]);
-                }
+                unset($this->contexts[Coroutine::getCid()]);
             }
         }
         catch (\Throwable $th)

@@ -18,7 +18,7 @@ class AfterFindEventParam extends EventParam
     /**
      * 模型.
      *
-     * @var \Imi\Model\BaseModel
+     * @var \Imi\Model\BaseModel|null
      */
     public $model;
 }

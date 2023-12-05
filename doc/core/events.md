@@ -58,7 +58,7 @@
 
 ### IMI.SERVER.CREATE.AFTER
 
-创建服务器对象前置后作，主服务器+子服务器，每个创建后都会触发！
+创建服务器对象后置操作，主服务器+子服务器，每个创建后都会触发！
 
 事件参数：
 
@@ -66,7 +66,7 @@
 
 ### IMI.SERVERS.CREATE.BEFORE
 
-创建服务器对象前置后作，只会触发一次！
+创建服务器前置操作，只会触发一次！
 
 事件参数：
 
@@ -74,7 +74,7 @@
 
 ### IMI.SERVERS.CREATE.AFTER
 
-创建服务器对象前置后作，只会触发一次！
+创建服务器后置操作，只会触发一次！
 
 事件参数：
 
@@ -143,12 +143,6 @@ string $name, $process
 ```php
 \Imi\Server\Contract\IServer $server, string $groupName, $clientId
 ```
-
-### IMI.REQUEST_CONTENT.CREATE
-
-请求上下文创建事件
-
-事件参数：无
 
 ### IMI.REQUEST_CONTENT.DESTROY
 
