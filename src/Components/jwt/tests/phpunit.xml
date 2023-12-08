@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false">
+    backupStaticAttributes="false"
+    bootstrap="./bootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false">
     <testsuites>
         <testsuite name="JWT">
             <directory>Unit</directory>
@@ -20,7 +21,7 @@
             <directory suffix=".php">../src</directory>
         </include>
         <report>
-            <clover outputFile="clover.xml"/>
+            <clover outputFile="clover.xml" />
         </report>
     </coverage>
 </phpunit>
