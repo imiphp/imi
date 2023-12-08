@@ -51,7 +51,6 @@ function getRectorConfigCallback(string $path): callable
         $rectorConfig->skip([
             '*/vendor/*',
             $path . '/src/Components/*',
-            \Rector\Php71\Rector\FuncCall\CountOnNullRector::class,
             \Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector::class,
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
             \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // 调整包含默认值的参数顺序，会导致代码被破坏
