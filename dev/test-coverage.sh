@@ -55,13 +55,13 @@ swoolePhpUnitCommands=(
 
 for name in "${phpUnitCommands[@]}"
 do
-    cmd="php $paramsXdebug src/Components/$name/vendor/bin/phpunit -c ./src/Components/$name/tests/phpunit.xml --coverage-php=./dev/cover/$name-coverage.php -v"
+    cmd="php $paramsXdebug src/Components/$name/vendor/bin/phpunit -c ./src/Components/$name/tests/phpunit.xml --coverage-php=./dev/cover/$name-coverage.php --bootstrap=./src/Components/$name/vendor/autoload.php -v"
     test "$name" "$cmd"
 done
 
 for name in "${swoolePhpUnitCommands[@]}"
 do
-    cmd="php $paramsXdebug src/Components/swoole/bin/swoole-phpunit -c ./src/Components/$name/tests/phpunit.xml --coverage-php=./dev/cover/$name-coverage.php -v"
+    cmd="php $paramsXdebug src/Components/swoole/bin/swoole-phpunit -c ./src/Components/$name/tests/phpunit.xml --coverage-php=./dev/cover/$name-coverage.php --bootstrap=./src/Components/$name/vendor/autoload.php -v"
     test "$name" "$cmd"
 done
 
