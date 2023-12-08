@@ -4,7 +4,12 @@ test() {
     local name=$1
     local cmd=$2
     echo "test $name...";
+    echo $cmd
     time $cmd
+    code=$?
+    if [ $code != 0 ]; then
+        exit $code
+    fi
 }
 
 __DIR__=$(cd `dirname $0`; pwd) && \

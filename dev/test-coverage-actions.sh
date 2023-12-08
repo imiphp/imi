@@ -6,6 +6,10 @@ test() {
     echo "test $name...";
     echo $cmd
     time $cmd
+    code=$?
+    if [ $code != 0 ]; then
+        exit $code
+    fi
 }
 
 __DIR__=$(cd `dirname $0`; pwd) && \
