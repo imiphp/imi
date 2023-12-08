@@ -85,6 +85,11 @@ return [
         ],
         // ide 助手文件生成
         'ideHelper' => null, // 是否生成IDE助手文件，如果为`null`则依据`App::isDebug()`决定
+        // imi 内部启动 php 进程时携带的 PHP 参数
+        'phpOptions' => [
+            // 例子：
+            // '-dzend_extension=xdebug'
+        ],
     ],
 
     // 统一的服务器配置
