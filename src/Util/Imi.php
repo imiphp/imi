@@ -343,7 +343,7 @@ class Imi
      */
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
-        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg((string) (App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']))) . ' ' . escapeshellarg($commandName);
+        $cmd = '"' . \PHP_BINARY . '" ' . ltrim(implode(' ', self::getCmdPhpOptions()) . ' ') . escapeshellarg((string) (App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']))) . ' ' . escapeshellarg($commandName);
         $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
@@ -374,6 +374,7 @@ class Imi
     {
         $cmd = [
             \PHP_BINARY,
+            ...self::getCmdPhpOptions(),
             App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']),
             $commandName,
         ];
@@ -399,6 +400,11 @@ class Imi
         }
 
         return $cmd;
+    }
+
+    public static function getCmdPhpOptions(): array
+    {
+        return Config::get('@app.imi.phpOptions', []);
     }
 
     /**

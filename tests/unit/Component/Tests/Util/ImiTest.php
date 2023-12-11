@@ -270,7 +270,7 @@ class ImiTest extends BaseTest
 
     public function testGetImiCmd(): void
     {
-        $cmd = '"' . \PHP_BINARY . '" ' . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME'])) . ' ' . escapeshellarg('test');
+        $cmd = '"' . \PHP_BINARY . '" ' . ltrim(implode(' ', Imi::getCmdPhpOptions()) . ' ') . escapeshellarg(App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME'])) . ' ' . escapeshellarg('test');
         $namespace = ' --app-namespace ' . escapeshellarg(App::getNamespace());
         $this->assertEquals($cmd . $namespace, Imi::getImiCmd('test'));
 
@@ -281,6 +281,7 @@ class ImiTest extends BaseTest
     {
         $cmdTpl = [
             \PHP_BINARY,
+            ...Imi::getCmdPhpOptions(),
             App::get(ProcessAppContexts::SCRIPT_NAME) ?? realpath($_SERVER['SCRIPT_FILENAME']),
             'test',
         ];

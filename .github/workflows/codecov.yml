@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 
+env:
+  PHP_VERSION: 8.2
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -105,8 +108,7 @@ jobs:
           --health-retries=3
     env:
       TEST_TYPE: ${{ matrix.testType }}
-      PHP_VERSION: 8.2
-      SWOOLE_VERSION: v5.0.3
+      SWOOLE_VERSION: v5.1.1
       ROADRUNNER_VERSION: 2.7.*
       IMI_ROADRUNNER_BINARY: ${{ github.workspace }}/rr
       AMQP_SERVER_HOST: 127.0.0.1
@@ -133,12 +135,14 @@ jobs:
           coverage: xdebug
           extensions: >
             apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
-            sockets, zip, inotify, event
-            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
+            sockets, zip, inotify, event, :opcache
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }},
+            xdebug-Yurunsoft/xdebug@fix-2221
       - name: Check Version
         run: |
           php -v
           php -m
+          php --ri xdebug
           php --ri swoole
       - name: Get composer cache directory
         id: composer-cache
@@ -186,7 +190,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: ${{ env.PHP_VERSION }}
           tools: pecl
           extensions: >
             bcmath, curl, openssl, mbstring, intl, json, sockets, zip, event

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Imi\Config;
 use Imi\Event\Event;
 use Imi\Util\Uri;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
@@ -50,7 +51,6 @@ function getRectorConfigCallback(string $path): callable
         $rectorConfig->skip([
             '*/vendor/*',
             $path . '/src/Components/*',
-            \Rector\Php71\Rector\FuncCall\CountOnNullRector::class,
             \Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector::class,
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
             \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // 调整包含默认值的参数顺序，会导致代码被破坏
@@ -105,7 +105,7 @@ function getTestPhpBinary(): string
         return $result;
     }
 
-    return $result . (\extension_loaded('xdebug') ? '' : ' -dzend_extension=xdebug') . ' -dxdebug.mode=coverage';
+    return $result . (\extension_loaded('xdebug') ? '' : ' -dzend_extension=xdebug') . ' -dxdebug.mode=coverage -dswoole.enable_fiber_mock';
 }
 
 /**
@@ -123,6 +123,7 @@ function getTestPhpBinaryArray(): array
             $result[] = '-dzend_extension=xdebug';
         }
         $result[] = '-dxdebug.mode=coverage';
+        $result[] = '-dswoole.enable_fiber_mock';
     }
 
     return $result;
@@ -206,6 +207,16 @@ if (isCodeCoverage())
 
         Event::on('IMI.SERVER.WORKER_STOP', $shutdownCallback);
         register_shutdown_function($shutdownCallback);
+        Event::on('IMI.LOAD_CONFIG', static function (): void {
+            $config = [];
+            if (!\extension_loaded('xdebug'))
+            {
+                $config[] = '-dzend_extension=xdebug';
+            }
+            $config[] = '-dxdebug.mode=coverage';
+            $config[] = '-dswoole.enable_fiber_mock';
+            Config::set('@app.imi.phpOptions', $config);
+        });
     })();
 }
 
