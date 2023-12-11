@@ -11,9 +11,11 @@ use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Util\ImiPriority;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Http\Message\WorkermanRequest;
 use Imi\Workerman\Http\Message\WorkermanResponse;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent;
 use Imi\Workerman\Server\Http\Listener\BeforeRequest;
 use Imi\Workerman\Server\Protocol\WorkermanHttp;
 use Workerman\Connection\ConnectionInterface;
@@ -55,7 +57,7 @@ class Server extends Base
         parent::bindEvents();
         if (!App::get('has_imi_workerman_http_request_event', false))
         {
-            Event::on('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
+            Event::on(WorkermanEvents::SERVER_HTTP_REQUEST, [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
             App::set('has_imi_workerman_http_request_event', true);
         }
         $this->worker->onMessage = function (ConnectionInterface $connection, $data): void {
@@ -71,11 +73,7 @@ class Server extends Base
                     'request'  => $request,
                     'response' => $response,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [
-                    'server'   => $this,
-                    'request'  => $request,
-                    'response' => $response,
-                ], $this);
+                Event::dispatch(new WorkermanHttpRequestEvent($this, $request, $response));
             }
             catch (\Throwable $th)
             {

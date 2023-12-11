@@ -7,22 +7,21 @@ namespace Imi\Event\Listener;
 use Imi\Config;
 use Imi\Event\ClassEventManager;
 use Imi\Event\EventManager;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $config = Config::get('@app.imi.runtime', []);
         if (!($config['event'] ?? true))
         {
             return;
         }
-        $data = $e->getData()['data']['event'] ?? [];
+        $data = $e->data['event'] ?? [];
         EventManager::setMap($data['event'] ?? []);
         ClassEventManager::setMap($data['classEvent'] ?? []);
     }

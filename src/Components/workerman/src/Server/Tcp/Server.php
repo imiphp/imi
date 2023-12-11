@@ -11,6 +11,7 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Tcp\Event\WorkermanTcpMessageEvent;
 use Workerman\Connection\TcpConnection;
 
 #[Bean(name: 'WorkermanTcpServer')]
@@ -47,12 +48,7 @@ class Server extends Base implements ITcpServer
                     'server'       => $this,
                     'clientId'     => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
-                    'server'           => $this,
-                    'connection'       => $connection,
-                    'clientId'         => $clientId,
-                    'data'             => $data,
-                ], $this);
+                Event::dispatch(new WorkermanTcpMessageEvent($this, $clientId, $data, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

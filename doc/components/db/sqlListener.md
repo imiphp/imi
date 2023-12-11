@@ -20,7 +20,9 @@
 
 ### SQL 执行
 
-事件名：`IMI.DB.EXECUTE`
+事件名：`imi.db.execute`
+
+常量：`Imi\Db\Event\DbEvents::EXECUTE`
 
 每一个 SQL 语句执行后都会触发该事件。
 
@@ -33,11 +35,12 @@ namespace Imi\Test\Component\Db\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Event\Param\DbExecuteEventParam;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
+use Imi\Db\Event\DbEvents;
 
-#[Listener(eventName: 'IMI.DB.EXECUTE')]
+#[Listener(eventName: DbEvents::EXECUTE)]
 class DbExecuteListener implements IEventListener
 {
     /**
@@ -47,7 +50,7 @@ class DbExecuteListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         if ($e->throwable)
         {
@@ -66,7 +69,9 @@ class DbExecuteListener implements IEventListener
 
 ### 准备 SQL 语句
 
-事件名：`IMI.DB.PREPARE`
+事件名：`imi.db.prepare`
+
+常量：`Imi\Db\Event\DbEvents::PREPARE`
 
 每一个 SQL 语句准备后都会触发该事件。
 
@@ -79,11 +84,12 @@ namespace Imi\Test\Component\Db\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Event\Param\DbPrepareEventParam;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
+use Imi\Db\Event\DbEvents;
 
-#[Listener(eventName: 'IMI.DB.PREPARE')]
+#[Listener(eventName: DbEvents::PREPARE)]
 class DbPrepareListener implements IEventListener
 {
     /**
@@ -93,7 +99,7 @@ class DbPrepareListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         if ($e->throwable)
         {

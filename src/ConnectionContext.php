@@ -371,11 +371,7 @@ class ConnectionContext
         }
         static::load($fromClientId, $toClientId, $serverName);
         static::bind($flag, $toClientId, $serverName);
-        Event::trigger('IMI.CONNECT_CONTEXT.RESTORE', [
-            'fromClientId' => $fromClientId,
-            'toClientId'   => $toClientId,
-            'serverName'   => $serverName,
-        ], null, ConnectionContextRestoreParam::class);
+        Event::dispatch(new ConnectionContextRestoreParam($fromClientId, $toClientId, $serverName));
     }
 
     /**

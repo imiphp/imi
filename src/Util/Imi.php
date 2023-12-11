@@ -11,6 +11,8 @@ use Imi\Bean\BeanManager;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
+use Imi\Core\Runtime\Event\BuildRuntimeInfoEvent;
+use Imi\Core\Runtime\Event\LoadRuntimeInfoEvent;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
@@ -487,11 +489,9 @@ class Imi
         $data = [];
         $data['imiVersion'] = App::getImiVersion();
         $data['imiVersionReference'] = App::getImiVersionReference();
-        Event::trigger('IMI.BUILD_RUNTIME', [
-            'cacheName' => $cacheName,
-            'data'      => &$data,
-        ]);
-        file_put_contents(File::path($cacheName, 'runtime.cache'), serialize($data));
+        $event = new BuildRuntimeInfoEvent($cacheName, $data);
+        Event::dispatch($event);
+        file_put_contents(File::path($cacheName, 'runtime.cache'), serialize($event->data));
     }
 
     /**
@@ -515,15 +515,10 @@ class Imi
         ) {
             return false;
         }
-        $success = true;
-        Event::trigger('IMI.LOAD_RUNTIME_INFO', [
-            'cacheName' => $cacheName,
-            'data'      => $data,
-            'success'   => &$success,
-            'onlyImi'   => $onlyImi,
-        ]);
+        $event = new LoadRuntimeInfoEvent($cacheName, $data, $onlyImi);
+        Event::dispatch($event);
 
-        return $success;
+        return $event->success;
     }
 
     /**

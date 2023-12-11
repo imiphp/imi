@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 
-class BeforeSelectEventParam extends EventParam
+class BeforeSelectEventParam extends CommonEvent
 {
-    /**
-     * 查询器.
-     */
-    public \Imi\Db\Query\Interfaces\IQuery $query;
+    public function __construct(string $__eventName,
+        /**
+         * 查询器.
+         */
+        public \Imi\Db\Query\Interfaces\IQuery $query
+    ) {
+        parent::__construct($__eventName);
+    }
 }

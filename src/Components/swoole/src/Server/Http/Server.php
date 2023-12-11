@@ -9,6 +9,7 @@ use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
@@ -89,7 +90,7 @@ class Server extends Base implements ISwooleHttpServer
      */
     protected function __bindEvents(): void
     {
-        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e): void {
+        Event::one(SwooleEvents::WORKER_APP_START, function (WorkerStartEventParam $e): void {
             // 内置事件监听
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
             if ($this->http2)
@@ -120,10 +121,7 @@ class Server extends Base implements ISwooleHttpServer
                         'request'        => $request,
                         'response'       => $response,
                     ]);
-                    $this->trigger('request', [
-                        'request'  => $request,
-                        'response' => $response,
-                    ], $this, RequestEventParam::class);
+                    $this->dispatch(new RequestEventParam($this, $request, $response));
                 }
                 catch (\Throwable $th)
                 {
@@ -147,11 +145,7 @@ class Server extends Base implements ISwooleHttpServer
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId): void {
                 try
                 {
-                    $this->trigger('close', [
-                        'server'          => $this,
-                        'clientId'        => $fd,
-                        'reactorId'       => $reactorId,
-                    ], $this, CloseEventParam::class);
+                    $this->dispatch(new CloseEventParam($this, $fd, $reactorId));
                 }
                 catch (\Throwable $th)
                 {

@@ -7,7 +7,10 @@ namespace Imi\Fpm\Runtime\Handler;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Config;
+use Imi\Core\CoreEvents;
 use Imi\Core\Runtime\Contract\IRuntimeModeHandler;
+use Imi\Core\Runtime\Event\BuildRuntimeInfoEvent;
+use Imi\Core\Runtime\Event\LoadRuntimeInfoEvent;
 use Imi\Event\Event;
 
 #[Bean(name: 'FpmRuntimeModeHandler')]
@@ -33,7 +36,7 @@ class FpmRuntimeModeHandler implements IRuntimeModeHandler
                 }
             }
         }
-        Event::on('IMI.BUILD_RUNTIME', \Imi\Fpm\Server\Http\Listener\BuildRuntimeListener::class);
-        Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Fpm\Server\Http\Listener\LoadRuntimeListener::class);
+        Event::on(CoreEvents::BUILD_RUNTIME, static fn (BuildRuntimeInfoEvent $e) => App::newInstance(\Imi\Fpm\Server\Http\Listener\BuildRuntimeListener::class)->handle($e));
+        Event::on(CoreEvents::LOAD_RUNTIME_INFO, static fn (LoadRuntimeInfoEvent $e) => App::newInstance(\Imi\Fpm\Server\Http\Listener\LoadRuntimeListener::class)->handle($e));
     }
 }

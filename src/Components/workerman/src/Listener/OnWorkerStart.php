@@ -7,17 +7,17 @@ namespace Imi\Workerman\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Util\Imi;
 
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WORKER_START', priority: \Imi\Util\ImiPriority::IMI_MAX, one: true)]
+#[Listener(eventName: WorkermanEvents::SERVER_WORKER_START, priority: \Imi\Util\ImiPriority::IMI_MAX, one: true)]
 class OnWorkerStart implements IEventListener
 {
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         Imi::setProcessName('worker');
         App::getApp()->loadConfig();

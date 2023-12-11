@@ -7,17 +7,17 @@ namespace Imi\Aop\Listener;
 use Imi\Aop\AopAnnotationLoader;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
+use Imi\Core\CoreEvents;
 use Imi\Event\IEventListener;
 use Imi\Main\Helper;
 
-#[Listener(eventName: 'IMI.LOAD_RUNTIME', priority: 19940290)]
+#[Listener(eventName: CoreEvents::LOAD_RUNTIME, priority: 19940290)]
 class ImiInit implements IEventListener
 {
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         // Aop 配置注入
         foreach (Helper::getMains() as $main)

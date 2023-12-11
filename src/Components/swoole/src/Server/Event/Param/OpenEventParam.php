@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Event\Param;
 
-use Imi\Event\EventParam;
-use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Event\CommonEvent;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Psr\Http\Message\ServerRequestInterface;
 
-class OpenEventParam extends EventParam
+class OpenEventParam extends CommonEvent
 {
-    /**
-     * 服务器对象
-     */
-    public ?ISwooleServer $server = null;
+    public function __construct(
+        /**
+         * 服务器对象
+         */
+        public readonly ?ISwooleServer $server = null,
 
-    /**
-     * 客户端连接的标识符.
-     */
-    public ?IHttpRequest $request = null;
+        /**
+         * 请求对象.
+         */
+        public readonly ?ServerRequestInterface $request = null
+    ) {
+        parent::__construct('open', $server);
+    }
 }

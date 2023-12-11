@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
-class ManagerStartEventParam extends EventParam
+class ManagerStartEventParam extends CommonEvent
 {
-    /**
-     * 服务器对象
-     */
-    public ?ISwooleServer $server = null;
+    public function __construct(
+        /**
+         * 服务器对象
+         */
+        public readonly ?ISwooleServer $server = null
+    ) {
+        parent::__construct(SwooleEvents::SERVER_MANAGER_START, $server);
+    }
 }

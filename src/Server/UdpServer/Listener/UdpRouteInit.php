@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\UdpServer\Listener;
 
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
@@ -28,7 +27,7 @@ class UdpRouteInit implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $this->parseAnnotations($e);
     }
@@ -36,7 +35,7 @@ class UdpRouteInit implements IEventListener
     /**
      * 处理注解路由.
      */
-    private function parseAnnotations(EventParam $e): void
+    private function parseAnnotations(\Imi\Event\Contract\IEvent $e): void
     {
         $controllerParser = UdpControllerParser::getInstance();
         $context = RequestContext::getContext();

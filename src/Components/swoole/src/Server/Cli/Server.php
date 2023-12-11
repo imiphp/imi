@@ -14,7 +14,9 @@ use Imi\Cli\Tools\Imi\Imi as ToolImi;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\Pool\PoolManager;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Imi as SwooleImiUtil;
 
@@ -31,7 +33,7 @@ class Server extends BaseCommand
     #[Option(name: 'daemon', shortcut: 'd', type: \Imi\Cli\ArgType::MIXED, default: false, comments: '是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件')]
     public function start(?int $workerNum, string|bool $d): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($workerNum, $d): void {
+        Event::one(SwooleEvents::MAIN_COROUTINE_AFTER, function () use ($workerNum, $d): void {
             $server = (function () use ($workerNum, $d) {
                 $this->outStartupInfo();
                 if (Config::get('@app.server.checkPoolResource', false))
@@ -50,9 +52,9 @@ class Server extends BaseCommand
                 }
                 PoolManager::clearPools();
                 CacheManager::clearPools();
-                Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
+                Event::dispatch(eventName: SwooleEvents::BEFORE_SERVER_START);
                 // 创建服务器对象们前置操作
-                Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+                Event::dispatch(eventName: ServerEvents::BEFORE_CREATE_SERVERS);
                 $mainServer = Config::get('@app.mainServer');
                 if (null === $mainServer)
                 {
@@ -71,7 +73,7 @@ class Server extends BaseCommand
                     }
                 }
                 // 创建服务器对象们后置操作
-                Event::trigger('IMI.SERVERS.CREATE.AFTER');
+                Event::dispatch(eventName: ServerEvents::AFTER_CREATE_SERVERS);
 
                 $swooleServer = $server->getSwooleServer();
                 $options = [];

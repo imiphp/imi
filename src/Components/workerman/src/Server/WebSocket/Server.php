@@ -17,10 +17,14 @@ use Imi\Server\WebSocket\Enum\NonControlFrameType;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\ImiPriority;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Http\Message\WorkermanRequest;
 use Imi\Workerman\Http\Message\WorkermanResponse;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent;
 use Imi\Workerman\Server\Http\Listener\BeforeRequest;
+use Imi\Workerman\Server\WebSocket\Event\WebSocketConnectEvent;
+use Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Protocols\Websocket;
@@ -68,7 +72,7 @@ class Server extends Base implements IWebSocketServer
 
         if (!App::get('has_imi_workerman_http_request_event', false))
         {
-            Event::on('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
+            Event::on(WorkermanEvents::SERVER_HTTP_REQUEST, [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
             App::set('has_imi_workerman_http_request_event', true);
         }
         // @phpstan-ignore-next-line
@@ -91,18 +95,8 @@ class Server extends Base implements IWebSocketServer
                     'uri'        => (string) $request->getUri(),
                     'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [
-                    'server'   => $this,
-                    'request'  => $request,
-                    'response' => $response,
-                ], $this);
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
-                    'server'     => $this,
-                    'connection' => $connection,
-                    'clientId'   => $clientId,
-                    'request'    => $request,
-                    'response'   => $response,
-                ], $this);
+                Event::dispatch(new WorkermanHttpRequestEvent($this, $request, $response));
+                Event::dispatch(new WebSocketConnectEvent($this, $clientId, $request, $response, $connection));
                 if (!\in_array($response->getStatusCode(), [StatusCode::OK, StatusCode::SWITCHING_PROTOCOLS]))
                 {
                     $connection->close();
@@ -127,13 +121,7 @@ class Server extends Base implements IWebSocketServer
                     'server'       => $this,
                     'clientId'     => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
-                    'server'           => $this,
-                    'connection'       => $connection,
-                    'clientId'         => $clientId,
-                    'data'             => $data,
-                    'frame'            => new Frame($data, $clientId),
-                ], $this);
+                Event::dispatch(new WorkermanWebSocketMessageEvent($this, $clientId, $data, new Frame($data, $clientId), $connection));
             }
             catch (\Throwable $th)
             {

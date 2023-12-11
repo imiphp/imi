@@ -7,18 +7,20 @@ namespace Imi\Swoole\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cli\ImiCommand;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Http\Listener\HttpRouteInit;
 use Imi\Server\Server;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\SwooleWorker;
 use Imi\Util\Imi;
 use Imi\Worker;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
+#[Listener(eventName: SwooleEvents::SERVER_WORKER_START, priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
 class AfterWorkerStart implements IWorkerStartEventListener
 {
     /**
@@ -29,7 +31,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
         // 项目初始化事件
         if (0 === Worker::getWorkerId() && !$this->checkInitFlagFile($initFlagFile = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.app.init')))
         {
-            Event::trigger('IMI.APP.INIT', [], $e->getTarget());
+            Event::dispatch(eventName: CoreEvents::APP_INIT, target: $e->getTarget());
 
             file_put_contents($initFlagFile, SwooleWorker::getMasterPid());
 

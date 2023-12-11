@@ -12,34 +12,25 @@ class TestClass
 
     public function test1(): mixed
     {
-        $return = null;
-        $this->trigger('test1', [
-            'name'   => 'imi',
-            'return' => &$return,
-        ], $this);
+        $event = new TestClassEvent('test1', $this, 'imi', null);
+        $this->dispatch($event);
 
-        return $return;
+        return $event->return;
     }
 
     public function test2(): mixed
     {
-        $return = null;
-        $this->trigger('test2', [
-            'name'   => 'imi',
-            'return' => &$return,
-        ], $this);
+        $event = new TestClassEvent('test2', $this, 'imi', null);
+        $this->dispatch($event);
 
-        return $return;
+        return $event->return;
     }
 
     public function test3(): mixed
     {
-        $return = null;
-        $this->trigger('test3', [
-            'name'   => 'imi',
-            'return' => &$return,
-        ], $this);
+        $event = new TestClassEvent('test3', $this, 'imi', null);
+        $this->dispatch($event);
 
-        return $return;
+        return $event->return;
     }
 }

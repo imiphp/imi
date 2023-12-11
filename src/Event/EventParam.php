@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Event;
 
+use Imi\Event\Contract\IEvent;
+
+/**
+ * @deprecated 3.1
+ */
 #[\AllowDynamicProperties]
-class EventParam
+class EventParam implements IEvent
 {
     /**
      * 阻止事件继续传播.

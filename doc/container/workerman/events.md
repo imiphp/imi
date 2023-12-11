@@ -4,163 +4,106 @@
 
 ## Workerman Server 全局事件
 
-### IMI.WORKERMAN.SERVER.BUFFER_DRAIN
+### imi.workerman.server.buffer_drain
 
 onBufferDrain
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_BUFFER_DRAIN`
 
-名称 | 描述
--|-
-server|服务器对象
-clientId|连接ID
-connection|Workerman Connection 对象
+**事件类：** `Imi\Workerman\Server\Event\ServerBufferDrainEvent`
 
-### IMI.WORKERMAN.SERVER.BUFFER_FULL
+### imi.workerman.server.buffer_full
 
 onBufferFull
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_BUFFER_FULL`
 
-名称 | 描述
--|-
-server|服务器对象
-clientId|连接ID
-connection|Workerman Connection 对象
+**事件类：** `Imi\Workerman\Server\Event\ServerBufferFullEvent`
 
-### IMI.WORKERMAN.SERVER.CLOSE
+### imi.workerman.server.close
 
 onClose
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_CLOSE`
 
-名称 | 描述
--|-
-server|服务器对象
-clientId|连接ID
-connection|Workerman Connection 对象
+**事件类：** `Imi\Workerman\Server\Event\WorkermanConnectionCloseEvent`
 
-### IMI.WORKERMAN.SERVER.CONNECT
+### imi.workerman.server.connect
 
 onConnect
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_CONNECT`
 
-名称 | 描述
--|-
-server|服务器对象
-clientId|连接ID
-connection|Workerman Connection 对象
+**事件类：** `Imi\Workerman\Server\Event\ConnectEvent`
 
-### IMI.WORKERMAN.SERVER.ERROR
+### imi.workerman.server.error
 
 onError
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_ERROR`
 
-名称 | 描述
--|-
-server|服务器对象
-clientId|连接ID
-connection|Workerman Connection 对象
-code|错误代码
-msg|错误信息
+**事件类：** `Imi\Workerman\Server\Event\WorkermanErrorEvent`
 
-### IMI.WORKERMAN.SERVER.WORKER_RELOAD
+### imi.workerman.server.worker_reload
 
 onWorkerReload
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_WORKER_RELOAD`
 
-名称 | 描述
--|-
-server|服务器对象
-worker|Workerman Worker 对象
+**事件类：** `Imi\Workerman\Server\Event\WorkerReloadEvent`
 
-### IMI.WORKERMAN.SERVER.WORKER_START
+### imi.workerman.server.worker_start
 
 onWorkerStart
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_WORKER_START`
 
-名称 | 描述
--|-
-server|服务器对象
-worker|Workerman Worker 对象
+**事件类：** `Imi\Workerman\Server\Event\WorkerStartEvent`
 
-### IMI.WORKERMAN.SERVER.WORKER_STOP
+### imi.workerman.server.worker_stop
 
 onWorkerStop
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_WORKER_STOP`
 
-名称 | 描述
--|-
-server|服务器对象
-worker|Workerman Worker 对象
+**事件类：** `Imi\Workerman\Server\Event\WorkerStopEvent`
 
-### IMI.WORKERMAN.SERVER.HTTP.REQUEST
+### imi.workerman.server.http.request
 
 http onMessage
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_HTTP_REQUEST`
 
-名称 | 描述
--|-
-server|服务器对象
-request|Request 对象
-response|Response 对象
+**事件类：** `Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent`
 
-### IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT
+### imi.workerman.server.websocket.connect
 
 websocket onWebSocketConnect
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_WEBSOCKET_CONNECT`
 
-名称 | 描述
--|-
-server|服务器对象
-connection|Workerman Connection 对象
-clientId|连接ID
-request|Request 对象
-response|Response 对象
+**事件类：** `Imi\Workerman\Server\WebSocket\Event\WebSocketConnectEvent`
 
-### IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE
+### imi.workerman.server.websocket.message
 
 websocket onMessage
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_WEBSOCKET_MESSAGE`
 
-名称 | 描述
--|-
-server|服务器对象
-connection|Workerman Connection 对象
-clientId|连接ID
-data|原始数据
-frame|`\Imi\Workerman\Cron\Protocol\Frame` 对象
+**事件类：** `Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent`
 
-### IMI.WORKERMAN.SERVER.TCP.MESSAGE
+### imi.workerman.server.tcp.message
 
 tcp onMessage
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_TCP_MESSAGE`
 
-名称 | 描述
--|-
-server|服务器对象
-connection|Workerman Connection 对象
-clientId|连接ID
-data|原始数据
+**事件类：** `Imi\Workerman\Server\Tcp\Event\WorkermanTcpMessageEvent`
 
-### IMI.WORKERMAN.SERVER.UDP.MESSAGE
+### imi.workerman.server.udp.message
 
 udp onMessage
 
-事件参数：
+**常量：** `Imi\Workerman\Event\WorkermanEvents::SERVER_UDP_MESSAGE`
 
-名称 | 描述
--|-
-server|服务器对象
-connection|Workerman Connection 对象
-data|原始数据
-packetData|`\Imi\Workerman\Server\Udp\Message\PacketData` 对象
+**事件类：** `Imi\Workerman\Server\Udp\Event\WorkermanUdpMessageEvent`

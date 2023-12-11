@@ -15,6 +15,9 @@ use Imi\Log\Log;
 use Imi\Log\Logger;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
+use Imi\Server\Event\PipeMessageEvent;
+use Imi\Server\Event\WorkerStartEvent;
+use Imi\Server\Event\WorkerStopEvent;
 use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\Group\TServerGroup;
 use Imi\Server\ServerManager;
@@ -22,6 +25,12 @@ use Imi\Util\Imi;
 use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
+use Imi\Workerman\Server\Event\ConnectEvent;
+use Imi\Workerman\Server\Event\ServerBufferDrainEvent;
+use Imi\Workerman\Server\Event\ServerBufferFullEvent;
+use Imi\Workerman\Server\Event\WorkerReloadEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanErrorEvent;
 use Symfony\Component\Console\Output\StreamOutput;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Connection\TcpConnection;
@@ -142,11 +151,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                ], $this);
+                Event::dispatch(new ServerBufferDrainEvent($this, $clientId, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -164,11 +169,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_FULL', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                ], $this);
+                Event::dispatch(new ServerBufferFullEvent($this, $clientId, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -186,11 +187,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                ], $this);
+                Event::dispatch(new WorkermanConnectionCloseEvent($this, $clientId, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -209,11 +206,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'clientId' => $clientId,
                 ]);
                 ConnectionContext::create();
-                Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                ], $this);
+                Event::dispatch(new ConnectEvent($this, $clientId, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -231,13 +224,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                    'code'       => $code,
-                    'msg'        => $msg,
-                ], $this);
+                Event::dispatch(new WorkermanErrorEvent($this, $clientId, $connection, $code, $msg));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -253,10 +240,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server' => $this,
                     'worker' => $worker,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.WORKER_RELOAD', [
-                    'server' => $this,
-                    'worker' => $worker,
-                ], $this);
+                Event::dispatch(new WorkerReloadEvent($this, $worker));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -327,9 +311,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                         {
                             return;
                         }
-                        Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                            'data'      => $data,
-                        ]);
+                        Event::dispatch(new PipeMessageEvent('imi.pipe_message.' . $action, [
+                            'data' => $data,
+                        ]));
                     };
                     $workerId = ImiWorker::getWorkerId();
                     Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
@@ -346,14 +330,8 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     }
                 }
 
-                Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
-                    'server' => $this,
-                    'worker' => $worker,
-                ], $this);
-                Event::trigger('IMI.SERVER.WORKER_START', [
-                    'server'   => $this,
-                    'workerId' => $worker->id,
-                ], $this);
+                Event::dispatch(new \Imi\Workerman\Server\Event\WorkerStartEvent($this, $worker));
+                Event::dispatch(new WorkerStartEvent($this, $worker->id));
 
                 \Imi\Worker::inited();
                 foreach (ServerManager::getServers() as $name => $_)
@@ -383,14 +361,8 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server' => $this,
                     'worker' => $worker,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.WORKER_STOP', [
-                    'server' => $this,
-                    'worker' => $worker,
-                ], $this);
-                Event::trigger('IMI.SERVER.WORKER_STOP', [
-                    'server'   => $this,
-                    'workerId' => $worker->id,
-                ], $this);
+                Event::dispatch(new \Imi\Workerman\Server\Event\WorkerStopEvent($this, $worker));
+                Event::dispatch(new WorkerStopEvent($this, $worker->id));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

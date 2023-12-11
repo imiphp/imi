@@ -35,25 +35,27 @@ $process->sendUnixSocketMessage('动作名', 123); // 第二个参数可以带�
 
 **进程监听消息：**
 
-监听事件：`IMI.PROCESS.PIPE_MESSAGE`
+监听事件：`imi.process.pipe_message`
 
-事件参数类：`\Imi\Swoole\Process\Event\Param\PipeMessageEventParam`
+常量：`Imi\Swoole\Process\Event\ProcessEvents::PIPE_MESSAGE`
+
+事件参数类：`Imi\Swoole\Process\Event\Param\PipeMessageEventParam`
 
 ```php
 <?php
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
 
-#[Listener(eventName: 'IMI.PROCESS.PIPE_MESSAGE')]
+#[Listener(eventName: Imi\Swoole\Process\Event\ProcessEvents::PIPE_MESSAGE)]
 class MyListener implements IEventListener
 {
     /**
      * @param PipeMessageEventParam $e
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         var_dump($e->action); // 获取动作名
         var_dump($e->data); // 获取数据
@@ -84,7 +86,7 @@ class MyListener implements IEventListener
 
 ### 事件名称
 
-`IMI.PIPE_MESSAGE.动作名`
+`imi.pipe_message.动作名`
 
 ## 代码示例
 
@@ -106,17 +108,17 @@ Server::sendMessage('test', [
 
 ### 监听
 
-事件名称为：`IMI.PIPE_MESSAGE.test`
+事件名称为：`imi.pipe_message.test`
 
 ```php
 <?php
 namespace App\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.test')]
+#[Listener(eventName: 'imi.pipe_message.test')]
 class TestMessage implements IEventListener
 {
     /**
@@ -124,7 +126,7 @@ class TestMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         $data = $e->getData()['data'];
         var_dump($data['time']); // 接收到了上面发送来的 time
@@ -176,18 +178,18 @@ try {
 
 **监听请求：**
 
-事件名称为：`IMI.PIPE_MESSAGE.testRequest`
+事件名称为：`imi.pipe_message.testRequest`
 
 ```php
 <?php
 namespace App\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.testRequest')]
+#[Listener(eventName: 'imi.pipe_message.testRequest')]
 class TestRequestMessage implements IEventListener
 {
     /**
@@ -195,7 +197,7 @@ class TestRequestMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         $data = $e->getData()['data'];
         $datetime = date('Y-m-d H:i:s', $data['time']);
@@ -214,19 +216,19 @@ class TestRequestMessage implements IEventListener
 
 > 暂时只有 Swoole 支持
 
-事件名称为：`IMI.PIPE_MESSAGE.testResponse`
+事件名称为：`imi.pipe_message.testResponse`
 
 ```php
 <?php
 namespace App\Listener;
 
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\Util\Co\ChannelContainer;
 
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.testResponse')]
+#[Listener(eventName: 'imi.pipe_message.testResponse')]
 class TestResponseMessage implements IEventListener
 {
     /**
@@ -234,7 +236,7 @@ class TestResponseMessage implements IEventListener
      * @param EventParam $e
      * @return void
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         $data = $e->getData()['data'];
         if(ChannelContainer::hasChannel($data['messageId']))

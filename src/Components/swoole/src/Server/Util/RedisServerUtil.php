@@ -11,7 +11,9 @@ use Imi\Event\Event;
 use Imi\Redis\RedisManager;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Process\ProcessAppContexts;
@@ -35,7 +37,7 @@ class RedisServerUtil extends LocalServerUtil
 
     public function __init(): void
     {
-        Event::one('IMI.MAIN_SERVER.WORKER.EXIT', function (): void {
+        Event::one(SwooleEvents::SERVER_WORKER_EXIT, function (): void {
             $this->subscribeEnable = false;
         });
         $this->startSubscribe();
@@ -297,17 +299,17 @@ class RedisServerUtil extends LocalServerUtil
             {
                 try
                 {
-                    $redis->subscribe([$this->channel], function ($redis, string $channel, string $msg): void {
-                        Coroutine::create(function () use ($msg): void {
+                    $redis->subscribe([$this->channel], static function ($redis, string $channel, string $msg): void {
+                        Coroutine::create(static function () use ($msg): void {
                             $data = json_decode($msg, true);
                             if (!isset($data['action'], $data['serverName']))
                             {
                                 return;
                             }
                             RequestContext::set('server', ServerManager::getServer($data['serverName']));
-                            Event::trigger('IMI.PIPE_MESSAGE.' . $data['action'], [
+                            Event::dispatch(new PipeMessageEvent('imi.pipe_message.' . $data['action'], [
                                 'data' => $data,
-                            ], $this);
+                            ]));
                         });
                     });
                 }

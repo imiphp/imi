@@ -11,6 +11,7 @@ use Imi\Cli\CliApp;
 use Imi\Cli\ImiCommand;
 use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Imi;
@@ -41,7 +42,7 @@ class WorkermanApp extends CliApp
         $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e): void {
             $this->onCommand($e);
         }, \PHP_INT_MAX - 1000);
-        Event::one('IMI.SCAN_APP', function (): void {
+        Event::one(CoreEvents::SCAN_APP, function (): void {
             $this->onScanApp();
         });
     }

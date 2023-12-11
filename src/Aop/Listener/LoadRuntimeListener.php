@@ -6,22 +6,20 @@ namespace Imi\Aop\Listener;
 
 use Imi\Aop\AopManager;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.aop', true))
         {
             return;
         }
-        $eventData = $e->getData();
-        $data = $eventData['data']['aop'] ?? [];
+        $data = $e->data['aop'] ?? [];
         if ((bool) ($cache = ($data['cache'] ?? null)) | (bool) ($dynamicRulesCache = ($data['dynamicRulesCache'] ?? null)))
         {
             AopManager::clear();

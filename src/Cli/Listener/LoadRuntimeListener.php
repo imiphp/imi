@@ -6,22 +6,21 @@ namespace Imi\Cli\Listener;
 
 use Imi\Cli\CliManager;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $config = Config::get('@app.imi.runtime', []);
         if (!($config['cli'] ?? true))
         {
             return;
         }
-        $data = $e->getData()['data']['cli'] ?? [];
+        $data = $e->data['cli'] ?? [];
         CliManager::setMap($data['cli'] ?? []);
     }
 }

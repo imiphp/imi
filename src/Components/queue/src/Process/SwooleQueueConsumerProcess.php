@@ -8,6 +8,9 @@ use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Event\Event as ImiEvent;
 use Imi\Log\Log;
+use Imi\Process\Event\ProcessBeginEvent;
+use Imi\Process\Event\ProcessEndEvent;
+use Imi\Process\Event\ProcessEvents;
 use Imi\Queue\Service\QueueService;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
@@ -37,7 +40,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
         public function run(\Swoole\Process $process): void
         {
             $running = true;
-            \Imi\Event\Event::on('IMI.PROCESS.END', static function () use (&$running): void {
+            \Imi\Event\Event::on(ProcessEvents::PROCESS_END, static function () use (&$running): void {
                 $running = false;
             }, ImiPriority::IMI_MAX);
             $imiQueue = $this->imiQueue;
@@ -65,10 +68,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                 $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs): void {
                     $processName = 'QueueConsumer-' . $group;
                     // 进程开始事件
-                    ImiEvent::trigger('IMI.PROCESS.BEGIN', [
-                        'name'      => $processName,
-                        'process'   => $e->getWorker(),
-                    ]);
+                    ImiEvent::dispatch(new ProcessBeginEvent($processName, $e->getWorker()));
                     Imi::setProcessName('process', [
                         'processName'   => $processName,
                     ]);
@@ -90,10 +90,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                         $consumer->stop();
                     }
                     // 进程结束事件
-                    ImiEvent::trigger('IMI.PROCESS.END', [
-                        'name'      => 'QueueConsumer-' . $group,
-                        'process'   => $e->getWorker(),
-                    ]);
+                    ImiEvent::dispatch(new ProcessEndEvent('QueueConsumer-' . $group, $e->getWorker()));
                 });
                 $processPool->start();
             }

@@ -9,21 +9,19 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanManager;
 use Imi\Bean\PartialManager;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.bean', true))
         {
             return;
         }
-        $eventData = $e->getData();
         $data = [];
         $parser = Annotation::getInstance()->getParser();
         if (Config::get('@app.imi.runtime.annotation_parser_data', true))
@@ -58,6 +56,6 @@ class BuildRuntimeListener implements IEventListener
             $data['partial'] = PartialManager::getMap();
         }
         $data['bean'] = BeanManager::getMap();
-        $eventData['data']['bean'] = $data;
+        $e->data['bean'] = $data;
     }
 }

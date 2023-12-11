@@ -7,22 +7,22 @@ namespace Imi\Db\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Db\Db;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Log\Log;
+use Imi\Pool\Event\CheckPoolResourceEvent;
 use Imi\Pool\PoolManager;
 
 #[Listener(eventName: 'IMI.CHECK_POOL_RESOURCE')]
 class CheckPoolResource implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param CheckPoolResourceEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if ($connections = Config::get('@app.db.connections'))
         {
-            $result = &$e->getData()['result'];
+            $result = &$e->result;
             foreach ($connections as $name => $_)
             {
                 if (!PoolManager::exists($name))

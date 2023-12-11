@@ -12,6 +12,7 @@ use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\BaseModel;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Model;
+use Imi\Model\Relation\Event\ModelRelationQueryEvent;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -117,7 +118,7 @@ class Query
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $leftValue = $model[$leftField];
         if (null === $leftValue)
@@ -144,13 +145,7 @@ class Query
             {
                 $query->withField(...$annotation->withFields);
             }
-            Event::trigger($eventName . '.BEFORE', [
-                'model'        => $model,
-                'propertyName' => $propertyName,
-                'annotation'   => $annotation,
-                'struct'       => $struct,
-                'query'        => $query,
-            ]);
+            Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
             $rightModel = $query->limit(1)->select()->get();
         }
         else
@@ -179,12 +174,7 @@ class Query
         }
 
         $model[$propertyName] = $rightModel;
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -206,7 +196,7 @@ class Query
         $struct = new OneToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $model[$propertyName] = new ArrayList($modelClass);
         $leftValue = $model[$leftField];
@@ -240,13 +230,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()->getArray();
                 if ($list)
                 {
@@ -278,12 +262,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -312,7 +291,7 @@ class Query
 
         $model[$propertyName] = new ArrayList($middleModel);
         $model[$annotation->rightMany] = new ArrayList($rightModel);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $leftValue = $model[$leftField];
         if (null !== $leftValue)
@@ -343,13 +322,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()
                             ->getArray();
                 if ($list)
@@ -392,12 +365,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -406,7 +374,7 @@ class Query
     public static function initByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         if (class_exists($annotation->model))
         {
@@ -447,13 +415,7 @@ class Query
                 {
                     $query->withField(...$annotation->withFields);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $rightModel = $query->limit(1)->select()->get();
             }
             else
@@ -483,12 +445,7 @@ class Query
         }
 
         $model[$propertyName] = $rightModel;
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -497,7 +454,7 @@ class Query
     public static function initByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         if (class_exists($annotation->model))
         {
@@ -544,13 +501,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()->getArray();
                 if ($list)
                 {
@@ -582,12 +533,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -598,7 +544,7 @@ class Query
     public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotations, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
         foreach ($annotations as $annotationItem)
         {
             $typeValue = $annotationItem->typeValue;
@@ -641,12 +587,7 @@ class Query
                         {
                             $query->withField(...$annotationItem->withFields);
                         }
-                        Event::trigger($eventName . '.BEFORE', [
-                            'model'        => $model,
-                            'propertyName' => $propertyName,
-                            'annotation'   => $annotationItem,
-                            'query'        => $query,
-                        ]);
+                        Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem, query: $query));
                         $leftModel = $query->limit(1)->select()->get();
                     }
                     else
@@ -684,11 +625,7 @@ class Query
                 break;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => isset($leftModel) ? ($annotationItem ?? null) : null,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, isset($leftModel) ? ($annotationItem ?? null) : null));
     }
 
     /**
@@ -699,7 +636,7 @@ class Query
     public static function initByPolymorphicToMany(Model $model, string $propertyName, array $annotations, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         foreach ($annotations as $annotationItem)
         {
@@ -757,13 +694,7 @@ class Query
                         {
                             $query->limit($annotationItem->limit);
                         }
-                        Event::trigger($eventName . '.BEFORE', [
-                            'model'        => $model,
-                            'propertyName' => $propertyName,
-                            'annotation'   => $annotationItem,
-                            'struct'       => $struct,
-                            'query'        => $query,
-                        ]);
+                        Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem, $struct, $query));
                         $list = $query->select()
                                     ->getArray();
                         if ($list)
@@ -812,12 +743,7 @@ class Query
                 break;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => isset($struct) ? ($annotationItem ?? null) : null,
-            'struct'       => $struct ?? null,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, isset($struct) ? ($annotationItem ?? null) : null, $struct ?? null));
     }
 
     /**
@@ -826,7 +752,7 @@ class Query
     public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation, ?array &$refData = null): void
     {
         $className = BeanFactory::getObjectClass($model);
-        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.query.' . $className . '.' . $propertyName;
 
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
@@ -878,13 +804,7 @@ class Query
                 {
                     $query->limit($annotation->limit);
                 }
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotation,
-                    'struct'       => $struct,
-                    'query'        => $query,
-                ]);
+                Event::dispatch(new ModelRelationQueryEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct, $query));
                 $list = $query->select()
                               ->getArray();
                 if ($list)
@@ -927,12 +847,7 @@ class Query
                 return;
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationQueryEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**

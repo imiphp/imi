@@ -8,9 +8,9 @@
 
 ### 插入事件
 
-**前置事件名：** `IMI.MODEL.RELATION.INSERT.模型类名.模型属性名.BEFORE`
+**前置事件名：** `imi.model.relation.insert.模型类名.模型属性名.before`
 
-**后置事件名：** `IMI.MODEL.RELATION.INSERT.模型类名.模型属性名.AFTER`
+**后置事件名：** `imi.model.relation.insert.模型类名.模型属性名.after`
 
 **事件参数：**
 
@@ -23,9 +23,9 @@
 
 ### 更新事件
 
-**前置事件名：** `IMI.MODEL.RELATION.UPDATE.模型类名.模型属性名.BEFORE`
+**前置事件名：** `imi.model.relation.update.模型类名.模型属性名.before`
 
-**后置事件名：** `IMI.MODEL.RELATION.UPDATE.模型类名.模型属性名.AFTER`
+**后置事件名：** `imi.model.relation.update.模型类名.模型属性名.after`
 
 **事件参数：**
 
@@ -33,9 +33,9 @@
 
 ### 删除事件
 
-**前置事件名：** `IMI.MODEL.RELATION.DELETE.模型类名.模型属性名.BEFORE`
+**前置事件名：** `imi.model.relation.delete.模型类名.模型属性名.before`
 
-**后置事件名：** `IMI.MODEL.RELATION.DELETE.模型类名.模型属性名.AFTER`
+**后置事件名：** `imi.model.relation.delete.模型类名.模型属性名.after`
 
 **事件参数：**
 
@@ -43,9 +43,9 @@
 
 ### 查询事件
 
-**前置事件名：** `IMI.MODEL.RELATION.QUERY.模型类名.模型属性名.BEFORE`
+**前置事件名：** `imi.model.relation.query.模型类名.模型属性名.before`
 
-**后置事件名：** `IMI.MODEL.RELATION.QUERY.模型类名.模型属性名.AFTER`
+**后置事件名：** `imi.model.relation.query.模型类名.模型属性名.after`
 
 **事件参数：**
 

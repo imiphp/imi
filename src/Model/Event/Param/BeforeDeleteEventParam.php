@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
+use Imi\Model\Event\ModelEvents;
 
-class BeforeDeleteEventParam extends EventParam
+class BeforeDeleteEventParam extends CommonEvent
 {
-    /**
-     * 模型.
-     */
-    public \Imi\Model\BaseModel $model;
+    public function __construct(
+        /**
+         * 模型.
+         */
+        public readonly ?\Imi\Model\BaseModel $model,
 
-    /**
-     * 查询器.
-     */
-    public \Imi\Db\Query\Interfaces\IQuery $query;
+        /**
+         * 查询器.
+         */
+        public readonly \Imi\Db\Query\Interfaces\IQuery $query
+    ) {
+        parent::__construct(ModelEvents::BEFORE_DELETE, $model);
+    }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Parser;
 
+use Imi\App;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\Event;
 use Imi\Event\EventManager;
 
@@ -22,11 +24,11 @@ class ListenerParser extends BaseParser
             EventManager::add($eventName, $className, $priority, $one);
             if ($one)
             {
-                Event::one($eventName, $className, $priority);
+                Event::one($eventName, static fn (IEvent $e) => App::newInstance($className)->handle($e), $priority);
             }
             else
             {
-                Event::on($eventName, $className, $priority);
+                Event::on($eventName, static fn (IEvent $e) => App::newInstance($className)->handle($e), $priority);
             }
         }
     }

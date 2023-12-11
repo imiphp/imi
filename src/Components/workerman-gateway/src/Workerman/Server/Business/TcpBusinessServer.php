@@ -14,6 +14,10 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Workerman\Event\WorkermanEvents;
+use Imi\Workerman\Server\Event\ConnectEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
+use Imi\Workerman\Server\Tcp\Event\WorkermanTcpMessageEvent;
 
 #[Bean(name: 'WorkermanGatewayTcpBusinessServer')]
 class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
@@ -29,7 +33,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::one('IMI.WORKERMAN.SERVER.WORKER_START', function (): void {
+        Event::one(WorkermanEvents::SERVER_WORKER_START, function (): void {
             $this->bindBusinessEvents();
         });
     }
@@ -72,10 +76,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 '__clientAddress' => $_SERVER['REMOTE_ADDR'],
                 '__clientPort'    => $_SERVER['REMOTE_PORT'],
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new ConnectEvent($this, $clientId));
             RequestContext::destroy();
         });
 
@@ -86,10 +87,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new WorkermanConnectionCloseEvent($this, $clientId));
             RequestContext::destroy();
         });
 
@@ -103,11 +101,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                     'clientId' => $clientId,
                 ]);
 
-                Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
-                    'server'   => $this,
-                    'clientId' => $clientId,
-                    'data'     => $data,
-                ], $this);
+                Event::dispatch(new WorkermanTcpMessageEvent($this, $clientId, $data));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

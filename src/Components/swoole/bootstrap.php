@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Imi\Swoole;
 
 use Imi\App;
+use Imi\Core\CoreEvents;
+use Imi\Core\Runtime\Event\BuildRuntimeInfoEvent;
+use Imi\Core\Runtime\Event\LoadRuntimeInfoEvent;
 use Imi\Event\Event;
 use Imi\Log\Log;
+use Imi\Swoole\Event\SwooleEvents;
 
 return static function (): void {
     $status = 0;
@@ -47,10 +51,10 @@ return static function (): void {
             }
 
             // 事件监听
-            Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Swoole\Process\Listener\LoadRuntimeListener::class, 19940000);
-            Event::on('IMI.BUILD_RUNTIME', \Imi\Swoole\Process\Listener\BuildRuntimeListener::class, 19940000);
-            Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Swoole\Task\Listener\LoadRuntimeListener::class, 19940000);
-            Event::on('IMI.BUILD_RUNTIME', \Imi\Swoole\Task\Listener\BuildRuntimeListener::class, 19940000);
+            Event::on(CoreEvents::LOAD_RUNTIME_INFO, static fn (LoadRuntimeInfoEvent $e) => App::newInstance(\Imi\Swoole\Process\Listener\LoadRuntimeListener::class)->handle($e), 19940000);
+            Event::on(CoreEvents::BUILD_RUNTIME, static fn (BuildRuntimeInfoEvent $e) => App::newInstance(\Imi\Swoole\Process\Listener\BuildRuntimeListener::class)->handle($e), 19940000);
+            Event::on(CoreEvents::LOAD_RUNTIME_INFO, static fn (LoadRuntimeInfoEvent $e) => App::newInstance(\Imi\Swoole\Task\Listener\LoadRuntimeListener::class)->handle($e), 19940000);
+            Event::on(CoreEvents::BUILD_RUNTIME, static fn (BuildRuntimeInfoEvent $e) => App::newInstance(\Imi\Swoole\Task\Listener\BuildRuntimeListener::class)->handle($e), 19940000);
 
             // 运行
             App::runApp($path ?? realpath(\dirname($_SERVER['SCRIPT_NAME'], 2)), \Imi\Swoole\SwooleApp::class);
@@ -71,11 +75,11 @@ return static function (): void {
                 throw $th;
             }
         }
-        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.END');
+        Event::dispatch(eventName: SwooleEvents::MAIN_COROUTINE_END);
     });
     if (0 === $status)
     {
-        Event::trigger('IMI.SWOOLE.MAIN_COROUTINE.AFTER');
+        Event::dispatch(eventName: SwooleEvents::MAIN_COROUTINE_AFTER);
     }
     else
     {

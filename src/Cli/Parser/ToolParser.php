@@ -25,7 +25,7 @@ class ToolParser extends BaseParser
         if ($annotation instanceof Command)
         {
             $data[$className]['Command'] = $annotation;
-            Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className);
+            Event::dispatch(eventName: 'TOOL_PARSER.PARSE_TOOL.' . $className);
         }
         elseif ($annotation instanceof CommandAction)
         {
@@ -34,7 +34,7 @@ class ToolParser extends BaseParser
                 $commandAnnotation = $data[$className]['Command'];
                 CliManager::addCommand($commandAnnotation->name, $annotation->name, $className, $targetName, $annotation->dynamicOptions, $commandAnnotation->separator);
                 $data[$className]['CommandAction'][$targetName] = $annotation;
-                Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className . '::' . $targetName);
+                Event::dispatch(eventName: 'TOOL_PARSER.PARSE_TOOL.' . $className . '::' . $targetName);
             };
             if (isset($data[$className]['Command']))
             {

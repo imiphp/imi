@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
 
 /**
  * 关闭指定标识-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.closeByFlagRequest')]
+#[Listener(eventName: 'imi.pipe_message.closeByFlagRequest')]
 class OnCloseByFlagRequest implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param PipeMessageEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        $eData = $e->getData();
+        $eData = $e->data;
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $serverName = $data['serverName'];

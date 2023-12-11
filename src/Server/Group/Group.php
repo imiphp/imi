@@ -8,6 +8,8 @@ use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Server\Contract\IServer;
+use Imi\Server\Group\Event\JoinGroupEvent;
+use Imi\Server\Group\Event\LeaveGroupEvent;
 use Imi\Server\Group\Handler\IGroupHandler;
 use Imi\Util\ArrayUtil;
 
@@ -107,11 +109,7 @@ class Group
 
                 return $contextData;
             }, $clientId, $this->server->getName());
-            Event::trigger('IMI.SERVER.GROUP.JOIN', [
-                'server'          => $this->server,
-                'groupName'       => $groupName,
-                'clientId'        => $clientId,
-            ]);
+            Event::dispatch(new JoinGroupEvent($this->server, $groupName, $clientId));
         }
     }
 
@@ -133,11 +131,7 @@ class Group
                     return $contextData;
                 }
             }, $clientId, $this->server->getName());
-            Event::trigger('IMI.SERVER.GROUP.LEAVE', [
-                'server'          => $this->server,
-                'groupName'       => $groupName,
-                'clientId'        => $clientId,
-            ]);
+            Event::dispatch(new LeaveGroupEvent($this->server, $groupName, $clientId));
         }
     }
 

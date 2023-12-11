@@ -6,7 +6,6 @@ namespace Imi\Model;
 
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Result;
-use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
 
 /**
@@ -98,9 +97,7 @@ class ModelQueryResult extends Result
             }
             if ($meta->isBean())
             {
-                $object->trigger(ModelEvents::AFTER_QUERY, [
-                    'model'      => $object,
-                ], $object, AfterQueryEventParam::class);
+                $object->dispatch(new AfterQueryEventParam($object));
             }
         }
         else
@@ -191,9 +188,7 @@ class ModelQueryResult extends Result
                 }
                 if ($isBean && !$hasRelation)
                 {
-                    $object->trigger(ModelEvents::AFTER_QUERY, [
-                        'model' => $object,
-                    ], $object, AfterQueryEventParam::class);
+                    $object->dispatch(new AfterQueryEventParam($object));
                 }
             }
             if ($hasRelation)
@@ -203,9 +198,7 @@ class ModelQueryResult extends Result
                 {
                     foreach ($list as $object)
                     {
-                        $object->trigger(ModelEvents::AFTER_QUERY, [
-                            'model' => $object,
-                        ], $object, AfterQueryEventParam::class);
+                        $object->dispatch(new AfterQueryEventParam($object));
                     }
                 }
             }

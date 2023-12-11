@@ -79,7 +79,7 @@ class CoroutineContextManager implements IContextManager
                 return false;
             }
             // TODO: 实现新的连接管理器后移除
-            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
+            Event::dispatch(eventName: 'IMI.REQUEST_CONTENT.DESTROY');
             /** @var ContextData $context */
             $context = $swooleContext[static::class]['context'];
             $deferCallbacks = $context->getDeferCallbacks();
@@ -94,7 +94,7 @@ class CoroutineContextManager implements IContextManager
         elseif (isset($this->contexts[$id]))
         {
             // TODO: 实现新的连接管理器后移除
-            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
+            Event::dispatch(eventName: 'IMI.REQUEST_CONTENT.DESTROY');
             $deferCallbacks = $this->contexts[$id]->getDeferCallbacks();
             while (!$deferCallbacks->isEmpty())
             {

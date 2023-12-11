@@ -6,22 +6,20 @@ namespace Imi\Core\Component\Listener;
 
 use Imi\Config;
 use Imi\Core\Component\ComponentManager;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.component', true))
         {
             return;
         }
-        $eventData = $e->getData();
-        $eventData['data']['component'] = [
+        $e->data['component'] = [
             'components' => ComponentManager::getComponents(),
         ];
     }

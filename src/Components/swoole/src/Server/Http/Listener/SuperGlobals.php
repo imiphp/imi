@@ -6,10 +6,11 @@ namespace Imi\Swoole\Server\Http\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', one: true)]
+#[Listener(eventName: SwooleEvents::SERVER_WORKER_START, one: true)]
 class SuperGlobals implements IWorkerStartEventListener
 {
     /**

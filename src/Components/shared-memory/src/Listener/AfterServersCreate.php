@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Imi\SharedMemory\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\ServerEvents;
 use Imi\Swoole\Process\ProcessManager;
 
-#[Listener(eventName: 'IMI.SERVERS.CREATE.AFTER', one: true)]
+#[Listener(eventName: ServerEvents::AFTER_CREATE_SERVERS, one: true)]
 class AfterServersCreate implements IEventListener
 {
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         ProcessManager::runWithManager('sharedMemory');
     }

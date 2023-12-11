@@ -6,8 +6,11 @@ namespace Imi\Swoole\Log;
 
 use Imi\Cli\ImiCommand;
 use Imi\Config;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Log\MonoLogger;
+use Imi\Process\Event\ProcessEvents;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Util\Coroutine;
 use Monolog\DateTimeImmutable;
 use Monolog\Level;
@@ -46,7 +49,7 @@ class SwooleLogger extends MonoLogger
             Coroutine::create(function (): void {
                 $this->__logProcessor();
             });
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END', 'IMI.SWOOLE.MAIN_COROUTINE.END', 'IMI.QUICK_START_AFTER'], function (): void {
+            Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END, SwooleEvents::MAIN_COROUTINE_END, CoreEvents::AFTER_QUICK_START], function (): void {
                 $this->asyncLogging = false;
                 $this->logChannel->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);

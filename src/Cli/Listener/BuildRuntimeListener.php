@@ -6,23 +6,21 @@ namespace Imi\Cli\Listener;
 
 use Imi\Cli\CliManager;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.cli', true))
         {
             return;
         }
-        $eventData = $e->getData();
         $data = [];
         $data['cli'] = CliManager::getMap();
-        $eventData['data']['cli'] = $data;
+        $e->data['cli'] = $data;
     }
 }

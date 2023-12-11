@@ -7,6 +7,8 @@ namespace Imi\Swoole\Process;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Event\Event;
+use Imi\Process\Event\ProcessEvents;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Process\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Client;
@@ -75,7 +77,7 @@ trait TProcess
         else
         {
             $this->unixSocketClient = $client = $this->createUnixSocketClient();
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], static function () use ($client): void {
+            Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END], static function () use ($client): void {
                 $client->close();
             }, \Imi\Util\ImiPriority::IMI_MIN + 1);
             Coroutine::create(function () use ($client): void {
@@ -85,11 +87,7 @@ trait TProcess
                     if (false !== $data)
                     {
                         $data = swoole_substr_unserialize($data, 4);
-                        Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                            'process' => $this,
-                            'action'  => $data['action'] ?? '',
-                            'data'    => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
-                        ], $this, PipeMessageEventParam::class);
+                        Event::dispatch(new PipeMessageEventParam($this, $data['action'] ?? '', \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data));
                     }
                 }
             });
@@ -122,7 +120,7 @@ trait TProcess
     }
 
     /**
-     * 进程使用 IMI.PROCESS.PIPE_MESSAGE 事件返回的 Connection 对象发送消息.
+     * 进程使用 imi.process.pipe_message 事件返回的 Connection 对象发送消息.
      */
     public function sendUnixSocketMessageByConnection(Connection $connection, string $action, mixed $data = null): bool
     {
@@ -141,7 +139,7 @@ trait TProcess
             return;
         }
         $this->unixSocketRunning = true;
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function (): void {
+        Event::on([SwooleEvents::SERVER_WORKER_EXIT, ProcessEvents::PROCESS_END], function (): void {
             $this->stopUnixSocketServer();
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
         Coroutine::create(function (): void {
@@ -171,12 +169,7 @@ trait TProcess
                     }
 
                     $data = swoole_substr_unserialize($data, 4);
-                    Event::trigger('IMI.PROCESS.PIPE_MESSAGE', [
-                        'process'    => $this,
-                        'action'     => $data['action'] ?? '',
-                        'data'       => \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data,
-                        'connection' => $conn,
-                    ], $this, PipeMessageEventParam::class);
+                    Event::dispatch(new PipeMessageEventParam($this, $data['action'] ?? '', \is_array($data) && \array_key_exists('data', $data) ? $data['data'] : $data, $conn));
                 }
             });
 

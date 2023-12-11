@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Db\Transaction;
 
+use Imi\Db\Transaction\Event\CommitTransactionEvent;
+use Imi\Db\Transaction\Event\RollbackTransactionEvent;
 use Imi\Event\TEvent;
 
 class Transaction
@@ -28,7 +30,7 @@ class Transaction
     public function init(): void
     {
         $this->transactionLevels = $this->transactionCount = $this->currentTransaction = 0;
-        $this->__events = $this->__eventQueue = $this->__eventChangeRecords = $this->__sortedEventQueue = [];
+        $this->getEventController()->getEventDispatcher()->getListenerProvider()->clearListeners();
     }
 
     /**
@@ -60,10 +62,7 @@ class Transaction
         {
             for (; $i >= 0; --$i)
             {
-                $this->trigger($prefixName . $i . '.commit', [
-                    'db'    => $this,
-                    'level' => $i,
-                ]);
+                $this->dispatch(new CommitTransactionEvent($prefixName . $i . '.commit', $this, $i));
                 $offEvents[] = $prefixName . $i . '.rollback';
             }
         }
@@ -112,10 +111,7 @@ class Transaction
         {
             for (; $i >= $transactionLevels; --$i)
             {
-                $this->trigger($prefixName . $i . '.rollback', [
-                    'db'    => $this,
-                    'level' => $i,
-                ]);
+                $this->dispatch(new RollbackTransactionEvent($prefixName . $i . '.rollback', $this, $i));
                 $offEvents[] = $prefixName . $i . '.commit';
             }
         }

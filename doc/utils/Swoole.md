@@ -24,7 +24,7 @@
 
 #### isWorkerStartAppComplete
 
-是否 IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕
+是否 imi.main_server.worker.start.app 事件执行完毕
 
 `public static function isWorkerStartAppComplete(): bool`
 

@@ -78,9 +78,7 @@ class Pool
         $this->masterPID = getmypid();
         $this->working = true;
 
-        $this->trigger('BeforeStart', [
-            'pool'  => $this,
-        ], $this, BeforeStartEventParam::class);
+        $this->dispatch(new BeforeStartEventParam($this));
 
         $this->listenSigChild();
 
@@ -149,9 +147,7 @@ class Pool
             $this->startWorker($i);
         }
 
-        $this->trigger('Init', [
-            'pool'      => $this,
-        ], $this, InitEventParam::class);
+        $this->dispatch(new InitEventParam($this));
     }
 
     public function wait(bool $blocking = true): bool
@@ -264,25 +260,13 @@ class Pool
         ]);
         $worker = new Process(function (Process $worker) use ($workerId): void {
             Process::signal(\SIGTERM, function () use ($worker, $workerId): void {
-                $this->trigger('WorkerExit', [
-                    'pool'      => $this,
-                    'worker'    => $worker,
-                    'workerId'  => $workerId,
-                ], $this, WorkerEventParam::class);
+                $this->dispatch(new WorkerEventParam('WorkerExit', $this, $worker, $workerId));
                 Event::exit();
             });
             register_shutdown_function(function () use ($worker, $workerId): void {
-                $this->trigger('WorkerStop', [
-                    'pool'      => $this,
-                    'worker'    => $worker,
-                    'workerId'  => $workerId,
-                ], $this, WorkerEventParam::class);
+                $this->dispatch(new WorkerEventParam('WorkerStop', $this, $worker, $workerId));
             });
-            $this->trigger('WorkerStart', [
-                'pool'      => $this,
-                'worker'    => $worker,
-                'workerId'  => $workerId,
-            ], $this, WorkerEventParam::class);
+            $this->dispatch(new WorkerEventParam('WorkerStart', $this, $worker, $workerId));
             Event::wait();
         });
         $pid = $worker->start();
@@ -307,12 +291,7 @@ class Pool
                     return;
                 }
                 $data = json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
-                $this->trigger('Message', [
-                    'pool'      => $this,
-                    'worker'    => $worker,
-                    'workerId'  => $workerId,
-                    'data'      => $data,
-                ], $this, MessageEventParam::class);
+                $this->dispatch(new MessageEventParam($this, $worker, $workerId, $data));
             });
         }
     }

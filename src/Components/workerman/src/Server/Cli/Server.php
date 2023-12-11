@@ -13,10 +13,13 @@ use Imi\Cli\CliApp;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\ImiCommand;
 use Imi\Config;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Pool\PoolManager;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\ServerManager;
 use Imi\Worker as ImiWorker;
+use Imi\Workerman\Event\WorkermanEvents;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Server as WorkermanServerUtil;
 use Imi\Workerman\Server\WorkermanServerWorker;
@@ -54,9 +57,9 @@ class Server extends BaseCommand
             // 守护进程
             WorkermanServerWorker::$daemonize = $d;
 
-            Event::trigger('IMI.WORKERMAN.SERVER.BEFORE_START');
+            Event::dispatch(eventName: WorkermanEvents::BEFORE_START_SERVER);
             // 创建服务器对象们前置操作
-            Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+            Event::dispatch(eventName: ServerEvents::BEFORE_CREATE_SERVERS);
             $serverConfigs = Config::get('@app.workermanServer', []);
             $output = ImiCommand::getOutput();
             if (null === $name)
@@ -116,9 +119,9 @@ class Server extends BaseCommand
             // @phpstan-ignore-next-line
             ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
             // 创建服务器对象们后置操作
-            Event::trigger('IMI.SERVERS.CREATE.AFTER');
+            Event::dispatch(eventName: ServerEvents::AFTER_CREATE_SERVERS);
             WorkermanServerUtil::initWorkermanWorker($name);
-            Event::trigger('IMI.APP.INIT', [], $this);
+            Event::dispatch(eventName: CoreEvents::APP_INIT, target: $this);
         })();
         // gc
         gc_collect_cycles();

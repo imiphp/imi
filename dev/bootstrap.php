@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use Imi\Config;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
+use Imi\Server\Event\ServerEvents;
 use Imi\Util\Uri;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
@@ -205,9 +207,9 @@ if (isCodeCoverage())
             }
         };
 
-        Event::on('IMI.SERVER.WORKER_STOP', $shutdownCallback);
+        Event::on(ServerEvents::WORKER_STOP, $shutdownCallback);
         register_shutdown_function($shutdownCallback);
-        Event::on('IMI.LOAD_CONFIG', static function (): void {
+        Event::on(CoreEvents::LOAD_CONFIG, static function (): void {
             $config = [];
             if (!\extension_loaded('xdebug'))
             {

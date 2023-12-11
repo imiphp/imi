@@ -13,6 +13,7 @@ use Imi\Event\Event;
 use Imi\Model\BaseModel;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Event\ModelEvents;
+use Imi\Model\Event\Param\AfterDeleteEventParam;
 use Imi\Model\Event\Param\BeforeDeleteEventParam;
 use Imi\Model\Model;
 use Imi\Model\ModelRelationManager;
@@ -117,10 +118,7 @@ trait TSoftDelete
         if ($isBean)
         {
             // 删除前
-            $this->trigger(ModelEvents::BEFORE_DELETE, [
-                'model' => $this,
-                'query' => $query,
-            ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+            $this->dispatch(new BeforeDeleteEventParam($this, $query));
         }
 
         $id = static::PRIMARY_KEYS ?? $meta->getId();
@@ -140,10 +138,7 @@ trait TSoftDelete
         if ($isBean)
         {
             // 删除后
-            $this->trigger(ModelEvents::AFTER_DELETE, [
-                'model'  => $this,
-                'result' => $result,
-            ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+            $this->dispatch(new AfterDeleteEventParam($this, $result));
         }
 
         if ($meta->hasRelation())
@@ -215,20 +210,16 @@ trait TSoftDelete
         }
 
         // 查找前
-        Event::trigger($realClassName . ':' . ModelEvents::BEFORE_FIND, [
-            'ids'   => $ids,
-            'query' => $query,
-        ], null, \Imi\Model\Event\Param\BeforeFindEventParam::class);
+        $event = new \Imi\Model\Event\Param\BeforeFindEventParam($realClassName . ':' . ModelEvents::BEFORE_FIND, $ids, $query);
+        Event::dispatch($event);
 
-        $result = $query->select()->get();
+        $result = $event->query->select()->get();
 
         // 查找后
-        Event::trigger($realClassName . ':' . ModelEvents::AFTER_FIND, [
-            'ids'   => $ids,
-            'model' => &$result,
-        ], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
+        $event = new \Imi\Model\Event\Param\AfterFindEventParam($realClassName . ':' . ModelEvents::AFTER_FIND, $ids, $result);
+        Event::dispatch($event);
 
-        return $result;
+        return $event->model;
     }
 
     /**

@@ -6,7 +6,7 @@ namespace Imi\Fpm\Server\Http\Listener;
 
 use Imi\App;
 use Imi\Config;
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 use Imi\Event\IEventListener;
 use Imi\Fpm\Server\Type;
 use Imi\Server\Http\Listener\HttpRouteInit;
@@ -16,9 +16,9 @@ use Imi\Server\ServerManager;
 class BuildRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\BuildRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         if (!Config::get('@app.imi.runtime.route', true))
         {
@@ -34,9 +34,8 @@ class BuildRuntimeListener implements IEventListener
             ]);
             /** @var HttpRoute $route */
             $route = $server->getBean('HttpRoute');
-            (new HttpRouteInit())->handle(new EventParam(''));
-            $eventData = $e->getData();
-            $eventData['data']['route']['rules'] = $route->getRules();
+            (new HttpRouteInit())->handle(new CommonEvent(''));
+            $e->data['route']['rules'] = $route->getRules();
         }
     }
 }

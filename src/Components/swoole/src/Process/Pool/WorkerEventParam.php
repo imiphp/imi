@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process\Pool;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 use Imi\Swoole\Process\Pool;
 use Swoole\Process;
 
-class WorkerEventParam extends EventParam
+class WorkerEventParam extends CommonEvent
 {
-    /**
-     * 进程池对象
-     */
-    protected ?Pool $pool = null;
+    public function __construct(
+        string $__eventName,
+        /**
+         * 进程池对象
+         */
+        public readonly ?Pool $pool = null,
 
-    /**
-     * 工作进程.
-     */
-    protected ?Process $worker = null;
+        /**
+         * 工作进程.
+         */
+        public readonly ?Process $worker = null,
 
-    /**
-     * 工作进程ID.
-     */
-    protected int $workerId = 0;
+        /**
+         * 工作进程ID.
+         */
+        public readonly int $workerId = 0
+    ) {
+        parent::__construct($__eventName, $pool);
+    }
 
     /**
      * Get 进程池对象

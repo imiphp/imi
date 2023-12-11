@@ -7,11 +7,19 @@ namespace Imi\Event;
 /**
  * 事件管理器.
  */
+use Imi\App;
+use Imi\Event\Contract\IEvent;
+
 class EventManager
 {
     use \Imi\Util\Traits\TStaticClass;
 
     private static array $map = [];
+
+    /**
+     * @var array<string, array<string, callable>>
+     */
+    private static array $listeners = [];
 
     public static function getMap(): array
     {
@@ -24,7 +32,10 @@ class EventManager
         {
             foreach ($events as $listenerClass => $event)
             {
-                Event::off($eventName, $listenerClass);
+                if (isset(self::$listeners[$eventName][$listenerClass]))
+                {
+                    Event::off($eventName, self::$listeners[$eventName][$listenerClass]);
+                }
             }
         }
         self::$map = $map;
@@ -32,13 +43,14 @@ class EventManager
         {
             foreach ($events as $listenerClass => $event)
             {
+                self::$listeners[$eventName][$listenerClass] = $listener = static fn (IEvent $e) => App::newInstance($listenerClass)->handle($e);
                 if ($event['one'] ?? false)
                 {
-                    Event::one($eventName, $listenerClass, $event['priority']);
+                    Event::one($eventName, $listener, $event['priority']);
                 }
                 else
                 {
-                    Event::on($eventName, $listenerClass, $event['priority']);
+                    Event::on($eventName, $listener, $event['priority']);
                 }
             }
         }

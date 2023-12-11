@@ -6,24 +6,24 @@ namespace Imi\Rpc\Listener;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Rpc\Contract\IRpcServer;
 use Imi\Rpc\Route\Annotation\Parser\RpcControllerParser;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Util\DelayServerBeanCallable;
 
 /**
  * RPC 服务器路由初始化.
  */
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START', one: true)]
+#[Listener(eventName: SwooleEvents::SERVER_WORKER_START, one: true)]
 class RouteInit implements IEventListener
 {
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $this->parseAnnotations($e);
     }
@@ -31,7 +31,7 @@ class RouteInit implements IEventListener
     /**
      * 处理注解路由.
      */
-    private function parseAnnotations(EventParam $e): void
+    private function parseAnnotations(\Imi\Event\Contract\IEvent $e): void
     {
         $controllerParser = RpcControllerParser::getInstance();
         foreach (ServerManager::getServers() as $name => $server)

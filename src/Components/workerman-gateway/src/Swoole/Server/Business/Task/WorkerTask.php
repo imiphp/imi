@@ -55,11 +55,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                                 '__clientAddress' => long2ip($message['client_ip']),
                                 '__clientPort'    => $message['client_port'],
                             ]);
-                            $server->trigger('connect', [
-                                'server'        => $server,
-                                'clientId'      => $clientId,
-                                'reactorId'     => 0,
-                            ], $server, ConnectEventParam::class);
+                            $server->dispatch(new ConnectEventParam($server, $clientId, 0));
                             break;
                         case GatewayProtocol::CMD_ON_MESSAGE:
                             $frame = new Frame();
@@ -70,17 +66,10 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                                 'server'        => $server,
                                 'clientId'      => $clientId,
                             ]);
-                            $server->trigger('message', [
-                                'server'    => $server,
-                                'frame'     => $frame,
-                            ], $server, MessageEventParam::class);
+                            $server->dispatch(new MessageEventParam($server, $frame));
                             break;
                         case GatewayProtocol::CMD_ON_CLOSE:
-                            $server->trigger('close', [
-                                'server'          => $server,
-                                'clientId'        => $clientId,
-                                'reactorId'       => 0,
-                            ], $server, CloseEventParam::class);
+                            $server->dispatch(new CloseEventParam($server, $clientId, 0));
                             break;
                         case GatewayProtocol::CMD_ON_WEBSOCKET_CONNECT:
                             $closeConnectionOnFail = true;
@@ -97,10 +86,7 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                                 'response'       => $response,
                             ]);
                             ConnectionContext::set('uri', (string) $request->getUri());
-                            $server->trigger('handShake', [
-                                'request'   => $request,
-                                'response'  => $response,
-                            ], $server, HandShakeEventParam::class);
+                            $server->dispatch(new HandShakeEventParam($server, $request, $response));
                             break;
                     }
                 }

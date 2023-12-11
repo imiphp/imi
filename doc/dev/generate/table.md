@@ -28,10 +28,14 @@ vendor/bin/imi-xxx generate/table
 
 ## 事件监听
 
-### IMI.GENERATE_MODEL.BEFORE
+### imi.generate_model.before
 
 生成表工具的前置操作
 
-### IMI.GENERATE_MODEL.AFTER
+**常量：** `Imi\Model\Cli\Table\Event\GenerateModelEvents::BEFORE_GENERATE_MODEL`
+
+### imi.generate_model.after
 
 生成表工具的后置操作
+
+**常量：** `Imi\Model\Cli\Table\Event\GenerateModelEvents::AFTER_GENERATE_MODEL`

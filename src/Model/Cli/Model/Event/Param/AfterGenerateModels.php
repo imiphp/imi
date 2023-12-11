@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Model\Cli\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 
-class AfterGenerateModels extends EventParam
+class AfterGenerateModels extends CommonEvent
 {
 }

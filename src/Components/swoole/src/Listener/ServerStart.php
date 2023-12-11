@@ -6,11 +6,12 @@ namespace Imi\Swoole\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Log\Log;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
 use Imi\Swoole\Server\Traits\TServerPortInfo;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.MANAGER.START', one: true)]
+#[Listener(eventName: SwooleEvents::SERVER_MANAGER_START, one: true)]
 class ServerStart implements IManagerStartEventListener
 {
     use TServerPortInfo;

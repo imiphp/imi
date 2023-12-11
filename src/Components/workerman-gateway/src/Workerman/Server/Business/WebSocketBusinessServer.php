@@ -16,6 +16,11 @@ use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Util\Socket\IPEndPoint;
+use Imi\Workerman\Event\WorkermanEvents;
+use Imi\Workerman\Server\Event\ConnectEvent;
+use Imi\Workerman\Server\Http\Event\WorkermanConnectionCloseEvent;
+use Imi\Workerman\Server\WebSocket\Event\WebSocketConnectEvent;
+use Imi\Workerman\Server\WebSocket\Event\WorkermanWebSocketMessageEvent;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 
 #[Bean(name: 'WorkermanGatewayWebSocketBusinessServer')]
@@ -48,7 +53,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        Event::one('IMI.WORKERMAN.SERVER.WORKER_START', function (): void {
+        Event::one(WorkermanEvents::SERVER_WORKER_START, function (): void {
             $this->bindBusinessEvents();
         });
     }
@@ -77,10 +82,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 '__clientAddress' => $_SERVER['REMOTE_ADDR'],
                 '__clientPort'    => $_SERVER['REMOTE_PORT'],
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new ConnectEvent($this, $clientId));
             RequestContext::destroy();
         });
 
@@ -99,11 +101,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                     'uri'             => (string) $request->getUri(),
                     'dataParser'      => $this->config['dataParser'] ?? JsonObjectParser::class,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
-                    'server'   => $this,
-                    'clientId' => $clientId,
-                    'request'  => $request,
-                ], $this);
+                Event::dispatch(new WebSocketConnectEvent($this, $clientId, $request));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)
@@ -120,10 +118,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                'server'   => $this,
-                'clientId' => $clientId,
-            ], $this);
+            Event::dispatch(new WorkermanConnectionCloseEvent($this, $clientId));
             RequestContext::destroy();
         });
 
@@ -137,12 +132,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                     'clientId' => $clientId,
                 ]);
 
-                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
-                    'server'   => $this,
-                    'clientId' => $clientId,
-                    'data'     => $data,
-                    'frame'    => new Frame($data, $clientId),
-                ], $this);
+                Event::dispatch(new WorkermanWebSocketMessageEvent($this, $clientId, $data, new Frame($data, $clientId)));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

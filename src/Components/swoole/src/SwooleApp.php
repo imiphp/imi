@@ -13,12 +13,15 @@ use Imi\Cli\CliApp;
 use Imi\Cli\ImiCommand;
 use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Lock\Lock;
 use Imi\Log\Log;
 use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
+use Imi\Process\Event\ProcessEvents;
 use Imi\Swoole\Context\CoroutineContextManager;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Log\SwooleLogger;
 use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Imi;
@@ -54,7 +57,7 @@ class SwooleApp extends CliApp
         $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e): void {
             $this->onCommand($e);
         }, \PHP_INT_MAX - 1000);
-        Event::one('IMI.SCAN_APP', function (): void {
+        Event::one(CoreEvents::SCAN_APP, function (): void {
             $this->onScanApp();
         });
     }
@@ -213,7 +216,7 @@ class SwooleApp extends CliApp
             // @phpstan-ignore-next-line
             Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
         }
-        Event::on(['IMI.PROCESS.BEGIN', 'IMI.MAIN_SERVER.WORKER.START'], static function (): void {
+        Event::on([ProcessEvents::PROCESS_BEGIN, SwooleEvents::SERVER_WORKER_START], static function (): void {
             PoolManager::init();
             CacheManager::init();
             Lock::init();

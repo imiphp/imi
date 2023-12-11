@@ -5,27 +5,24 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Udp\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Server\UdpServer\Message\IPacketData;
+use Imi\Workerman\Event\WorkermanEvents;
+use Imi\Workerman\Server\Udp\Event\WorkermanUdpMessageEvent;
 
 /**
  * Packet事件前置处理.
  */
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.UDP.MESSAGE', priority: \Imi\Util\ImiPriority::IMI_MAX)]
+#[Listener(eventName: WorkermanEvents::SERVER_UDP_MESSAGE, priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforePacket implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param WorkermanUdpMessageEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        /** @var IPacketData $packetData */
-        ['packetData' => $packetData] = $e->getData();
-
         // 中间件
         $dispatcher = RequestContext::getServerBean('UdpDispatcher');
-        $dispatcher->dispatch($packetData);
+        $dispatcher->dispatch($e->packetData);
     }
 }

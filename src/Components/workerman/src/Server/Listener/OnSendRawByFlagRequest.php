@@ -6,22 +6,22 @@ namespace Imi\Workerman\Server\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
  * 发送给标记对应的连接-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendRawByFlagRequest')]
+#[Listener(eventName: 'imi.pipe_message.sendRawByFlagRequest')]
 class OnSendRawByFlagRequest implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param PipeMessageEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        $data = $e->getData();
+        $data = $e->data;
         ['data' => $data, 'flag' => $flag, 'serverName' => $serverName] = $data['data'];
 
         /** @var LocalServerUtil $serverUtil */

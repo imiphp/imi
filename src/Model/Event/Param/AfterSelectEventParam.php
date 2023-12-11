@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 
-class AfterSelectEventParam extends EventParam
+class AfterSelectEventParam extends CommonEvent
 {
-    /**
-     * 查询结果.
-     *
-     * @var \Imi\Model\BaseModel[]
-     */
-    public array $result;
+    public function __construct(string $__eventName,
+        /**
+         * 查询结果.
+         *
+         * @var \Imi\Model\Model[]
+         */
+        public array $result
+    ) {
+        parent::__construct($__eventName);
+    }
 }

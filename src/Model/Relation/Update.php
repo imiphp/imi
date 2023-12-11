@@ -12,6 +12,7 @@ use Imi\Model\Annotation\Relation\AutoUpdate;
 use Imi\Model\Annotation\Relation\RelationBase;
 use Imi\Model\Contract\IModelQuery;
 use Imi\Model\Model;
+use Imi\Model\Relation\Event\ModelRelationOperationEvent;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -113,24 +114,14 @@ class Update
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $modelField = $model[$propertyName];
         $modelField[$rightField] = $model[$leftField];
         $modelField->update();
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -167,14 +158,9 @@ class Update
             $orphanRemoval = false;
         }
 
-        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
@@ -222,12 +208,7 @@ class Update
                 $row->save();
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -265,14 +246,9 @@ class Update
             $orphanRemoval = false;
         }
 
-        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
@@ -313,12 +289,7 @@ class Update
                 $row->save();
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -400,21 +371,13 @@ class Update
             if ($model[$annotationItem->type] == $annotationItem->typeValue)
             {
                 $className = BeanFactory::getObjectClass($model);
-                $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+                $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-                Event::trigger($eventName . '.BEFORE', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotationItem,
-                ]);
+                Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotationItem));
 
                 $model[$propertyName]->update();
 
-                Event::trigger($eventName . '.AFTER', [
-                    'model'        => $model,
-                    'propertyName' => $propertyName,
-                    'annotation'   => $annotationItem,
-                ]);
+                Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotationItem));
                 break;
             }
         }
@@ -430,25 +393,15 @@ class Update
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
 
         $modelField = $model[$propertyName];
         $modelField[$rightField] = $model[$leftField];
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->update();
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -485,14 +438,9 @@ class Update
             $orphanRemoval = false;
         }
 
-        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
@@ -541,12 +489,7 @@ class Update
                 $row->save();
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**
@@ -584,14 +527,9 @@ class Update
             $orphanRemoval = false;
         }
 
-        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+        $eventName = 'imi.model.relation.update.' . $className . '.' . $propertyName;
 
-        Event::trigger($eventName . '.BEFORE', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.BEFORE', $model, $propertyName, $annotation, $struct));
         $modelLeftValue = $model[$leftField];
         if ($orphanRemoval)
         {
@@ -634,12 +572,7 @@ class Update
                 $row->save();
             }
         }
-        Event::trigger($eventName . '.AFTER', [
-            'model'        => $model,
-            'propertyName' => $propertyName,
-            'annotation'   => $annotation,
-            'struct'       => $struct,
-        ]);
+        Event::dispatch(new ModelRelationOperationEvent($eventName . '.AFTER', $model, $propertyName, $annotation, $struct));
     }
 
     /**

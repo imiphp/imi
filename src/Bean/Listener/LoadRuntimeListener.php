@@ -9,22 +9,21 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanManager;
 use Imi\Bean\PartialManager;
 use Imi\Config;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
 class LoadRuntimeListener implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param \Imi\Core\Runtime\Event\LoadRuntimeInfoEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         $config = Config::get('@app.imi.runtime', []);
         if (!($config['bean'] ?? true))
         {
             return;
         }
-        $data = $e->getData()['data']['bean'] ?? [];
+        $data = $e->data['bean'] ?? [];
         $parser = Annotation::getInstance()->getParser();
         if (($config['annotation_parser_data'] ?? true) && isset($data['annotationParserData']))
         {

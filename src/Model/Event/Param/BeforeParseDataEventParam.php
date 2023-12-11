@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Model\Event\Param;
 
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
+use Imi\Model\Model;
 
-class BeforeParseDataEventParam extends EventParam
+class BeforeParseDataEventParam extends CommonEvent
 {
-    /**
-     * 处理前的数据.
-     */
-    public object|array $data;
+    public function __construct(string $__eventName,
+        /**
+         * 处理前的数据.
+         */
+        public object|array $data,
 
-    /**
-     * 对象或模型类名.
-     */
-    public object|string $object;
+        /**
+         * 模型对象.
+         */
+        public ?Model $object
+    ) {
+        parent::__construct($__eventName);
+    }
 }

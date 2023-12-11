@@ -6,7 +6,7 @@ namespace Imi\Fpm\Server;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Event\EventParam;
+use Imi\Event\CommonEvent;
 use Imi\Fpm\FpmAppContexts;
 use Imi\Fpm\Http\Message\FpmRequest;
 use Imi\Fpm\Http\Message\FpmResponse;
@@ -83,7 +83,7 @@ class Server extends BaseServer
             $route = $this->getBean('HttpRoute');
             if ($route->isEmpty() && !App::get(FpmAppContexts::ROUTE_INITED))
             {
-                (new HttpRouteInit())->handle(new EventParam(''));
+                (new HttpRouteInit())->handle(new CommonEvent(''));
             }
 
             /** @var \Imi\Server\Http\Dispatcher $dispatcher */

@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Contract\ISwooleWorker;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
@@ -29,7 +30,7 @@ class SwooleWorkerHandler implements ISwooleWorker
     private bool $isInited = false;
 
     /**
-     * IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕.
+     * imi.main_server.worker.start.app 事件执行完毕.
      */
     private bool $workerStartAppComplete = false;
 
@@ -93,15 +94,12 @@ class SwooleWorkerHandler implements ISwooleWorker
     public function inited(): void
     {
         $this->isInited = true;
-        // 触发 IMI.MAIN_SERVER.WORKER.START.APP 事件.
+        // 触发 imi.main_server.worker.start.app 事件.
         if (!$this->workerStartAppComplete)
         {
             $mainServer = ServerManager::getServer('main', ISwooleServer::class);
             // 触发项目的workerstart事件
-            Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
-                'server'    => $mainServer,
-                'workerId'  => $this->workerId,
-            ], $mainServer, WorkerStartEventParam::class);
+            Event::dispatch(new WorkerStartEventParam(SwooleEvents::WORKER_APP_START, $mainServer, $this->workerId));
             $this->workerStartAppComplete = true;
         }
         $func = static function (): void {

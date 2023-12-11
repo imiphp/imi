@@ -14,15 +14,15 @@
 
 | 事件名 | 常量 | 描述 |
 | ------ | ------ | ------ |
-| BeforeInsert | ModelEvents::BEFORE_INSERT | 插入前，insert()/save()触发 |
-| AfterInsert | ModelEvents::AFTER_INSERT | 插入后，insert()/save()触发 |
-| BeforeUpdate | ModelEvents::BEFORE_UPDATE | 更新前，update()/save()触发 |
-| AfterUpdate | ModelEvents::AFTER_UPDATE | 更新后，update()/save()触发 |
-| BeforeDelete | ModelEvents::BEFORE_DELETE | 删除前，delete()触发 |
-| AfterDelete | ModelEvents::AFTER_DELETE | 删除后，delete()触发 |
-| BeforeSave | ModelEvents::BEFORE_SAVE | 保存前，先于插入前和更新前触发 |
-| AfterSave | ModelEvents::AFTER_SAVE | 保存后，后于插入后和更新后触发 |
-| AfterQuery | ModelEvents::AFTER_QUERY | 只要最终查询出该模型就会触发 |
+| before.insert | ModelEvents::BEFORE_INSERT | 插入前，insert()/save()触发 |
+| after.insert | ModelEvents::AFTER_INSERT | 插入后，insert()/save()触发 |
+| before.update | ModelEvents::BEFORE_UPDATE | 更新前，update()/save()触发 |
+| after.update | ModelEvents::AFTER_UPDATE | 更新后，update()/save()触发 |
+| before.delete | ModelEvents::BEFORE_DELETE | 删除前，delete()触发 |
+| after.delete | ModelEvents::AFTER_DELETE | 删除后，delete()触发 |
+| before.save | ModelEvents::BEFORE_SAVE | 保存前，先于插入前和更新前触发 |
+| after.save | ModelEvents::AFTER_SAVE | 保存后，后于插入后和更新后触发 |
+| after.query | ModelEvents::AFTER_QUERY | 只要最终查询出该模型就会触发 |
 
 事件传递过来的参数类型为`Imi\Model\Event\Param\事件名EventParam`
 
@@ -85,47 +85,38 @@ class BeforeInsert implements IBeforeInsertEventListener
 
 | 事件名 | 常量 | 描述 |
 | ------ | ------ | ------ |
-| BeforeFind | ModelEvents::BEFORE_FIND | 查找前，Model::find()触发 |
-| AfterFind | ModelEvents::AFTER_FIND | 查找后，Model::find()触发 |
-| BeforeSelect | ModelEvents::BEFORE_SELECT | 查询前，Model::select()触发 |
-| AfterSelect | ModelEvents::AFTER_SELECT | 查询后，Model::select()触发 |
-| BeforeInit | ModelEvents::BEFORE_INIT | 初始化值前，newInstance()触发 |
-| AfterInit | ModelEvents::AFTER_INIT | 初始化值后，newInstance()触发 |
-| BeforeBatchUpdate | ModelEvents::BEFORE_BATCH_UPDATE | 批量更新前 |
-| AfterBatchUpdate | ModelEvents::AFTER_BATCH_UPDATE | 批量更新后 |
-| BeforeBatchDelete | ModelEvents::BEFORE_BATCH_DELETE | 批量删除前 |
-| AfterBatchDelete | ModelEvents::AFTER_BATCH_DELETE | 批量删除后 |
-| BeforeParseData | ModelEvents::BEFORE_PARSE_DATA | 处理 save、insert、update 数据前 |
-| AfterParseData | ModelEvents::AFTER_PARSE_DATA | 处理 save、insert、update 数据后 |
+| before.find | ModelEvents::BEFORE_FIND | 查找前，Model::find()触发 |
+| after.find | ModelEvents::AFTER_FIND | 查找后，Model::find()触发 |
+| before.select | ModelEvents::BEFORE_SELECT | 查询前，Model::select()触发 |
+| after.select | ModelEvents::AFTER_SELECT | 查询后，Model::select()触发 |
+| before.init | ModelEvents::BEFORE_INIT | 初始化值前，newInstance()触发 |
+| after.init | ModelEvents::AFTER_INIT | 初始化值后，newInstance()触发 |
+| before.parse_data | ModelEvents::BEFORE_PARSE_DATA | 处理 save、insert、update 数据前 |
+| after.parse_data | ModelEvents::AFTER_PARSE_DATA | 处理 save、insert、update 数据后 |
 
 事件传递过来的参数类型为`Imi\Model\Event\Param\事件名EventParam`
 
-> `BeforeInit`和`AfterInit`是例外，共用`Imi\Model\Event\Param\InitEventParam`类
+> `before.init`和`after.init`是例外，共用`Imi\Model\Event\Param\InitEventParam`类
 
 
 #### 模型类静态事件监听
 
-事件名称为`模型类名:事件名`，如：`XXX\Model\Test`+`:`+`BeforeBatchUpdate`=`XXX\Model\Test:BeforeBatchUpdate`
+事件名称为`模型类名:事件名`，如：`XXX\Model\Test`+`.`+`before.find`=`XXX\Model\Test.before.find`
 
 ```php
 <?php
 namespace XXX\Listener;
 
-use Imi\Model\Event\Param\BeforeBatchUpdateEventParam;
-use Imi\Model\Event\Listener\IBeforeBatchUpdateEventListener;
+use Imi\Model\Event\Param\BeforeFindEventParam;
+use Imi\Model\Event\Listener\IBeforeFindEventListener;
+use Imi\Model\Event\ModelEvents;
 
-#[Listener(eventName: 'XXX\Model\Test:BeforeBatchUpdate')]
-class BeforeBatchUpdate implements IBeforeBatchUpdateEventListener
+#[Listener(eventName: \XXX\Model\Test::class . '.' . ModelEvents::BEFORE_FIND)]
+class BeforeBatchUpdate implements IBeforeFindEventListener
 {
-    /**
-     * 事件处理方法
-     * @param BeforeBatchUpdateEventParam $e
-     * @return void
-     */
-    public function handle(BeforeBatchUpdateEventParam $e): void
+    public function handle(BeforeFindEventParam $e): void
     {
-        // $e->data->name = '123'; // 在更新前可以对数据赋值
+        
     }
 }
-
 ```

@@ -6,16 +6,16 @@ namespace Imi\Workerman\Test\AppServer\WebSocketServer\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\ConnectionContext;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Workerman\Event\WorkermanEvents;
 
-#[Listener(eventName: 'IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT')]
+#[Listener(eventName: WorkermanEvents::SERVER_WEBSOCKET_CONNECT)]
 class OnOpen implements IEventListener
 {
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
         ConnectionContext::set('requestUri', (string) ConnectionContext::get('uri'));
     }

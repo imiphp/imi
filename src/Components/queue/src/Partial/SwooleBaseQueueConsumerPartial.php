@@ -101,14 +101,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
             $queue = $this->imiQueue->getQueue($this->name);
             do
             {
-                Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_POP', [
-                    'queue' => $queue,
-                ], $this, ConsumerBeforePopParam::class);
+                Event::dispatch(new ConsumerBeforePopParam($queue));
                 $message = $queue->pop();
-                Event::trigger('IMI.QUEUE.CONSUMER.AFTER_POP', [
-                    'queue'     => $queue,
-                    'message'   => $message,
-                ], $this, ConsumerAfterPopParam::class);
+                Event::dispatch(new ConsumerAfterPopParam($queue, $message));
                 if (null === $message)
                 {
                     Coroutine::sleep($config->getTimespan());
@@ -120,15 +115,9 @@ if (\Imi\Util\Imi::checkAppType('swoole'))
                     $handler = $context[$handlerName] ?? null;
                     goWait(function () use ($queue, $message, $handlerName, $handler): void {
                         RequestContext::set($handlerName, $handler);
-                        Event::trigger('IMI.QUEUE.CONSUMER.BEFORE_CONSUME', [
-                            'queue'     => $queue,
-                            'message'   => $message,
-                        ], $this, ConsumerBeforeConsumeParam::class);
+                        Event::dispatch(new ConsumerBeforeConsumeParam($queue, $message));
                         $this->consume($message, $queue);
-                        Event::trigger('IMI.QUEUE.CONSUMER.AFTER_CONSUME', [
-                            'queue'     => $queue,
-                            'message'   => $message,
-                        ], $this, ConsumerAfterConsumeParam::class);
+                        Event::dispatch(new ConsumerAfterConsumeParam($queue, $message));
                     }, -1, true);
                 }
             }

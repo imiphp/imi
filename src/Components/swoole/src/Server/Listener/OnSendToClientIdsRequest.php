@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Server\Event\PipeMessageEvent;
 use Imi\Swoole\Server\Server;
 use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给指定连接-请求
  */
-#[Listener(eventName: 'IMI.PIPE_MESSAGE.sendToClientIdsRequest')]
+#[Listener(eventName: 'imi.pipe_message.sendToClientIdsRequest')]
 class OnSendToClientIdsRequest implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param PipeMessageEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        $eData = $e->getData();
+        $eData = $e->data;
         $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $serverName = $data['serverName'];

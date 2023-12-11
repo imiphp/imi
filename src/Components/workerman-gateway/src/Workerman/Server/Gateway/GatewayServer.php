@@ -10,6 +10,7 @@ use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\RequestContext;
 use Imi\Server\WebSocket\Enum\NonControlFrameType;
+use Imi\Workerman\Server\Event\ConnectEvent;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Protocols\Websocket;
 
@@ -52,11 +53,7 @@ class GatewayServer extends \Imi\Workerman\Server\Tcp\Server
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
-                    'server'     => $this,
-                    'clientId'   => $clientId,
-                    'connection' => $connection,
-                ], $this);
+                Event::dispatch(new ConnectEvent($this, $clientId, $connection));
                 RequestContext::destroy();
             }
             catch (\Throwable $th)

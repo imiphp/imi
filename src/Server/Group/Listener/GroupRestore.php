@@ -6,12 +6,13 @@ namespace Imi\Server\Group\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\ConnectionContext;
+use Imi\Server\ConnectionContext\Event\ConnectionContextEvents;
 use Imi\Server\ConnectionContext\Event\Listener\IConnectionContextRestoreListener;
 use Imi\Server\ConnectionContext\Event\Param\ConnectionContextRestoreParam;
 use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\ServerManager;
 
-#[Listener(eventName: 'IMI.CONNECT_CONTEXT.RESTORE')]
+#[Listener(eventName: ConnectionContextEvents::RESTORE)]
 class GroupRestore implements IConnectionContextRestoreListener
 {
     /**

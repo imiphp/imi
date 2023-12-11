@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Imi\Swoole\Task\Listener;
 
 use Imi\Bean\Annotation\Listener;
+use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Server\Event\Listener\ITaskEventListener;
 use Imi\Swoole\Server\Event\Param\TaskEventParam;
 use Imi\Swoole\Task\TaskInfo;
 
-#[Listener(eventName: 'IMI.MAIN_SERVER.TASK')]
+#[Listener(eventName: SwooleEvents::SERVER_TASK)]
 class MainServer implements ITaskEventListener
 {
     /**

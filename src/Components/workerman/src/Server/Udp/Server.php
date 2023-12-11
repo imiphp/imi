@@ -11,6 +11,7 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Udp\Event\WorkermanUdpMessageEvent;
 use Imi\Workerman\Server\Udp\Message\PacketData;
 use Workerman\Connection\UdpConnection;
 
@@ -47,12 +48,7 @@ class Server extends Base implements IUdpServer
                 $requestContext['server'] = $this;
                 $requestContext['connection'] = $connection;
                 $packetData = $requestContext['packetData'] = new PacketData($connection, $data);
-                Event::trigger('IMI.WORKERMAN.SERVER.UDP.MESSAGE', [
-                    'server'     => $this,
-                    'connection' => $connection,
-                    'data'       => $data,
-                    'packetData' => $packetData,
-                ], $this);
+                Event::dispatch(new WorkermanUdpMessageEvent($this, $data, $packetData, $connection));
             }
             catch (\Throwable $th)
             {

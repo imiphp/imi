@@ -12,6 +12,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\RedisEntity;
 use Imi\Model\Enum\RedisStorageMode;
 use Imi\Model\Event\ModelEvents;
+use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Key\KeyRule;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
@@ -74,10 +75,7 @@ abstract class RedisModel extends BaseModel
         if ($isBean)
         {
             // 初始化前
-            $this->trigger(ModelEvents::BEFORE_INIT, [
-                'model' => $this,
-                'data'  => $data,
-            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+            $this->dispatch(new InitEventParam(ModelEvents::BEFORE_INIT, $this, $data));
         }
 
         if ($data)
@@ -214,10 +212,7 @@ abstract class RedisModel extends BaseModel
         if ($isBean)
         {
             // 初始化后
-            $this->trigger(ModelEvents::AFTER_INIT, [
-                'model' => $this,
-                'data'  => $data,
-            ], $this, \Imi\Model\Event\Param\InitEventParam::class);
+            $this->dispatch(new InitEventParam(ModelEvents::AFTER_INIT, $this, $data));
         }
         $this->__ttl = static::__getRedisEntity($this)->ttl;
     }

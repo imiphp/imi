@@ -51,7 +51,7 @@ class ModelGenerate extends BaseCommand
     #[Option(name: 'incrUpdate', type: \Imi\Cli\ArgType::BOOLEAN, comments: '模型是否启用增量更新', default: false)]
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, string|bool $override, string|bool $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck, string $ddlEncode, string $ddlDecode, bool $bean, bool $incrUpdate): void
     {
-        Event::trigger(BeforeGenerateModels::class, [], $this, BeforeGenerateModels::class);
+        Event::dispatch(eventName: BeforeGenerateModels::class);
         $db = Db::getInstance($poolName);
         $tablePrefix = $db->getOption()['prefix'] ?? '';
         if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
@@ -262,7 +262,12 @@ class ModelGenerate extends BaseCommand
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
 
-            Event::trigger(BeforeGenerateModel::class, $data, $this, BeforeGenerateModel::class);
+            $event = new BeforeGenerateModel(...$data);
+            Event::dispatch($event);
+            foreach ($data as $dataKey => $_)
+            {
+                $data[$dataKey] = $event->{$dataKey};
+            }
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> BaseClass...');
@@ -276,11 +281,12 @@ class ModelGenerate extends BaseCommand
                 $content = $this->renderTemplate('template', $data);
                 File::putContents($fileName, $content);
             }
-            Event::trigger(AfterGenerateModel::class, $data, $this, AfterGenerateModel::class);
+            $event = new AfterGenerateModel(...$data);
+            Event::dispatch($event);
         }
         $this->output->writeln('<info>Complete</info>');
 
-        Event::trigger(AfterGenerateModels::class, [], $this, AfterGenerateModels::class);
+        Event::dispatch(eventName: AfterGenerateModels::class);
     }
 
     /**

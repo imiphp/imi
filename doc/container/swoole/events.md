@@ -4,329 +4,137 @@
 
 ## Swoole 环境事件
 
-### IMI.SWOOLE.MAIN_COROUTINE.END
+### imi.swoole.main_coroutine.end
 
 Swoole 主协程执行完毕事件，此事件在协程中
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::MAIN_COROUTINE_END`
 
-无
-
-### IMI.SWOOLE.MAIN_COROUTINE.AFTER
+### imi.swoole.main_coroutine.after
 
 Swoole 主协程执行完毕后置事件，此事件在非协程中
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::MAIN_COROUTINE_AFTER`
 
-无
-
-### IMI.SWOOLE.SERVER.BEFORE_START
+### imi.swoole.server.before_start
 
 Swoole 服务器开始前
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::BEFORE_SERVER_START`
 
-无
-
-### IMI.MAIN_SERVER.WORKER.START.APP
+### imi.main_server.worker.start.app
 
 在项目中监听 WorkerStart 事件
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::WORKER_APP_START`
 
-```php
-class WorkerStartEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\WorkerStartEventParam`
 
-    /**
-     * Worker进程ID
-     * @var int
-     */
-    public $workerId;
-}
-```
-
-### IMI.PROCESS_POOL.PROCESS.BEGIN
+### imi.process_pool.process.begin
 
 自定义进程池中的进程开始事件
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::PROCESS_POOL_PROCESS_BEGIN`
 
-```php
-string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $args, int $ipcType, string $msgQueueKey
-```
+**事件类：** `Imi\Swoole\Process\Pool\ProcessPoolProcessBegin`
 
-### IMI.PROCESS_POOL.PROCESS.END
+### imi.process_pool.process.end
 
 自定义进程池中的进程结束事件
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::PROCESS_POOL_PROCESS_END`
 
-```php
-string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $args, int $ipcType, string $msgQueueKey
-```
+**事件类：** `Imi\Swoole\Process\Pool\ProcessPoolProcessEnd`
 
 ## Swoole Server 全局事件
 
-### IMI.MAIN_SERVER.START
+### imi.main_server.start
 
 OnStart
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_START`
 
-```php
-class StartEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\StartEventParam`
 
-}
-```
-
-### IMI.MAIN_SERVER.SHUTDOWN
+### imi.main_server.shutdown
 
 OnShutdown
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_SHUTDOWN`
 
-```php
-class ShutdownEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\ShutdownEventParam`
 
-}
-```
-
-### IMI.MAIN_SERVER.WORKER.START
+### imi.main_server.worker.start
 
 OnWorkerStart
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_WORKER_START`
 
-```php
-class WorkerStartEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\WorkerStartEventParam`
 
-    /**
-     * Worker进程ID
-     * @var int
-     */
-    public $workerId;
-}
-```
-
-### IMI.MAIN_SERVER.WORKER.STOP
+### imi.main_server.worker.stop
 
 OnWorkerStop
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_WORKER_STOP`
 
-```php
-class WorkerStopEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\WorkerStopEventParam`
 
-    /**
-     * Worker进程ID
-     * @var int
-     */
-    public $workerId;
-}
-```
-
-### IMI.MAIN_SERVER.MANAGER.START
+### imi.main_server.manager.start
 
 OnManagerStart
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_MANAGER_START`
 
-```php
-class ManagerStartEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\ManagerStartEventParam`
 
-}
-```
-
-### IMI.MAIN_SERVER.MANAGER.STOP
+### imi.main_server.manager.stop
 
 OnManagerStop
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_MANAGER_STOP`
 
-```php
-class ManagerStopEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\ManagerStopEventParam`
 
-}
-```
-
-### IMI.MAIN_SERVER.TASK
+### imi.main_server.task
 
 OnTask
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_TASK`
 
-```php
-class TaskEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\TaskEventParam`
 
-    /**
-     * 任务ID
-     * @var int
-     */
-    public $taskId;
-
-    /**
-     * worker进程ID
-     * @var int
-     */
-    public $workerId;
-
-    /**
-     * 任务数据
-     * @var mixed
-     */
-    public $data;
-}
-```
-
-### IMI.MAIN_SERVER.FINISH
+### imi.main_server.finish
 
 OnFinish
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_FINISH`
 
-```php
-class FinishEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\FinishEventParam`
 
-    /**
-     * 任务ID
-     * @var int
-     */
-    public $taskId;
-
-    /**
-     * 任务数据
-     * @var mixed
-     */
-    public $data;
-}
-```
-
-### IMI.MAIN_SERVER.PIPE_MESSAGE
+### imi.main_server.pipe_message
 
 OnPipeMessage
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_PIPE_MESSAGE`
 
-```php
-class PipeMessageEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\PipeMessageEventParam`
 
-    /**
-     * Worker进程ID
-     * @var int
-     */
-    public $workerId;
-
-    /**
-     * 消息内容，可以是任意PHP类型
-     * @var mixed
-     */
-    public $message;
-}
-```
-
-### IMI.MAIN_SERVER.WORKER_ERROR
+### imi.main_server.worker_error
 
 OnWorkerError
 
-事件参数：
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_WORKER_ERROR`
 
-```php
-class WorkerErrorEventParam extends EventParam
-{
-    /**
-     * 服务器对象
-     * @var \Imi\Swoole\Server\Base
-     */
-    public $server;
+**事件类：** `Imi\Swoole\Server\Event\Param\WorkerErrorEventParam`
 
-    /**
-     * Worker进程ID
-     * @var int
-     */
-    public $workerId;
+### imi.main_server.worker.exit
 
-    /**
-     * Worker进程PID
-     *
-     * @var int
-     */
-    public $workerPid;
-    
-    /**
-     * 退出的状态码，范围是 1 ～255
-     *
-     * @var int
-     */
-    public $exitCode;
+OnWorkerError
 
-    /**
-     * 进程退出的信号
-     *
-     * @var int
-     */
-    public $signal;
-}
-```
+**常量：** `Imi\Swoole\Event\SwooleEvents::SERVER_WORKER_EXIT`
+
+**事件类：** `Imi\Swoole\Server\Event\Param\WorkerExitEventParam`
 
 ## Swoole Server 对象事件
 
@@ -395,7 +203,7 @@ class CloseEventParam extends EventParam
 
 #### WebSocket 握手事件
 
-**事件名：**`handShake`
+**事件名：**`handshake`
 
 握手事件
 

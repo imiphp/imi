@@ -7,6 +7,7 @@ namespace Imi\Bean;
 use Imi\App;
 use Imi\Config;
 use Imi\Core\Component\ComponentManager;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Main\Helper;
@@ -32,7 +33,7 @@ class Scanner
         $time = microtime(true);
         Helper::getMain('Imi', 'Imi');
         Annotation::getInstance()->initByNamespace('Imi');
-        Event::trigger('IMI.SCAN_IMI');
+        Event::dispatch(eventName: CoreEvents::SCAN_IMI);
         if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
@@ -117,7 +118,7 @@ class Scanner
         {
             self::scanComponents($components);
         }
-        Event::trigger('IMI.SCAN_VENDOR');
+        Event::dispatch(eventName: CoreEvents::SCAN_VENDOR);
         if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;
@@ -134,7 +135,7 @@ class Scanner
         $namespace = App::getNamespace();
         Helper::getMain($namespace, 'app');
         Annotation::getInstance()->initByNamespace($namespace, true);
-        Event::trigger('IMI.SCAN_APP');
+        Event::dispatch(eventName: CoreEvents::SCAN_APP);
         if ($statistics ?? env('IMI_SCAN_STATISTICS', true))
         {
             $time = microtime(true) - $time;

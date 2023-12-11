@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Http\Listener;
 
-use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\Http\Dispatcher;
+use Imi\Workerman\Server\Http\Event\WorkermanHttpRequestEvent;
 
 /**
  * request事件前置处理.
@@ -15,14 +15,13 @@ use Imi\Server\Http\Dispatcher;
 class BeforeRequest implements IEventListener
 {
     /**
-     * {@inheritDoc}
+     * @param WorkermanHttpRequestEvent $e
      */
-    public function handle(EventParam $e): void
+    public function handle(\Imi\Event\Contract\IEvent $e): void
     {
-        ['request' => $request] = $e->getData();
         // 中间件
         /** @var Dispatcher $dispatcher */
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $dispatcher->dispatch($request);
+        $dispatcher->dispatch($e->request);
     }
 }

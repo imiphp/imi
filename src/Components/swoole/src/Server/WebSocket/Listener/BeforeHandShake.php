@@ -14,7 +14,7 @@ use Imi\Util\Http\Consts\StatusCode;
 /**
  * HandShake事件前置处理.
  */
-#[ClassEventListener(className: \Imi\Swoole\Server\WebSocket\Server::class, eventName: 'handShake', priority: \Imi\Util\ImiPriority::IMI_MAX)]
+#[ClassEventListener(className: \Imi\Swoole\Server\WebSocket\Server::class, eventName: 'handshake', priority: \Imi\Util\ImiPriority::IMI_MAX)]
 class BeforeHandShake implements IHandShakeEventListener
 {
     /**
