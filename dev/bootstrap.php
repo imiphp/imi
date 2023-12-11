@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Imi\Config;
+use Imi\Core\CoreEvents;
 use Imi\Event\Event;
 use Imi\Server\Event\ServerEvents;
 use Imi\Util\Uri;
@@ -208,7 +209,7 @@ if (isCodeCoverage())
 
         Event::on(ServerEvents::WORKER_STOP, $shutdownCallback);
         register_shutdown_function($shutdownCallback);
-        Event::on('IMI.LOAD_CONFIG', static function (): void {
+        Event::on(CoreEvents::LOAD_CONFIG, static function (): void {
             $config = [];
             if (!\extension_loaded('xdebug'))
             {
