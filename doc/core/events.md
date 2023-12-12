@@ -90,6 +90,12 @@
 
 **常量：** `Imi\Server\ServerEvents::AFTER_CREATE_SERVERS`
 
+### imi.server.before_start
+
+服务器启动前
+
+**常量：** `Imi\Server\ServerEvents::BEFORE_SERVER_START`
+
 ### imi.server.worker_start
 
 服务器 worker 进程启动事件
@@ -97,6 +103,16 @@
 > 此事件常驻内存容器下，都会触发调用
 
 **常量：** `Imi\Server\ServerEvents::WORKER_START`
+
+**事件类：** `Imi\Server\Event\WorkerStartEvent`
+
+### imi.server.worker.app.start
+
+服务器 worker 进程启动事件
+
+> 此事件常驻内存容器下，都会触发调用
+
+**常量：** `Imi\Server\ServerEvents::WORKER_APP_START`
 
 **事件类：** `Imi\Server\Event\WorkerStartEvent`
 

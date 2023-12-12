@@ -57,7 +57,6 @@ class Server extends BaseCommand
             // 守护进程
             WorkermanServerWorker::$daemonize = $d;
 
-            Event::dispatch(eventName: WorkermanEvents::BEFORE_START_SERVER);
             // 创建服务器对象们前置操作
             Event::dispatch(eventName: ServerEvents::BEFORE_CREATE_SERVERS);
             $serverConfigs = Config::get('@app.workermanServer', []);
@@ -123,6 +122,10 @@ class Server extends BaseCommand
             WorkermanServerUtil::initWorkermanWorker($name);
             Event::dispatch(eventName: CoreEvents::APP_INIT, target: $this);
         })();
+        // 服务器启动前-Workerman
+        Event::dispatch(eventName: WorkermanEvents::BEFORE_START_SERVER);
+        // 服务器启动前-通用
+        Event::dispatch(eventName: ServerEvents::BEFORE_SERVER_START);
         // gc
         gc_collect_cycles();
         gc_mem_caches();

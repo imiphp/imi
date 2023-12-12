@@ -52,8 +52,7 @@ class Server extends BaseCommand
                 }
                 PoolManager::clearPools();
                 CacheManager::clearPools();
-                Event::dispatch(eventName: SwooleEvents::BEFORE_SERVER_START);
-                // 创建服务器对象们前置操作
+                // 创建服务器对象们前置操作-通用
                 Event::dispatch(eventName: ServerEvents::BEFORE_CREATE_SERVERS);
                 $mainServer = Config::get('@app.mainServer');
                 if (null === $mainServer)
@@ -99,6 +98,10 @@ class Server extends BaseCommand
 
                 return $server;
             })();
+            // 服务器启动前-Swoole
+            Event::dispatch(eventName: SwooleEvents::BEFORE_SERVER_START);
+            // 服务器启动前-通用
+            Event::dispatch(eventName: ServerEvents::BEFORE_SERVER_START);
             // gc
             gc_collect_cycles();
             gc_mem_caches();

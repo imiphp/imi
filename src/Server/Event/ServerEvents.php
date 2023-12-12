@@ -31,9 +31,19 @@ final class ServerEvents
     public const AFTER_CREATE_SERVERS = 'imi.servers.create.after';
 
     /**
+     * 服务器启动前.
+     */
+    public const BEFORE_SERVER_START = 'imi.server.before_start';
+
+    /**
      * 工作进程启动事件.
      */
     public const WORKER_START = 'imi.server.worker_start';
+
+    /**
+     * 在工作进程中执行的应用初始化.
+     */
+    public const WORKER_APP_START = 'imi.server.worker.app.start';
 
     /**
      * 工作进程停止事件.

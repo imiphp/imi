@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Imi\Workerman\Worker;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\Event\ServerEvents;
+use Imi\Server\Event\WorkerStartEvent;
 use Imi\Workerman\Contract\IWorkermanWorker;
 use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Worker;
@@ -68,6 +71,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     public function inited(): void
     {
         $this->isInited = true;
+        Event::dispatch(new WorkerStartEvent(ServerEvents::WORKER_APP_START, RequestContext::getServer(), $this->getWorkerId()));
     }
 
     /**

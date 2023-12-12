@@ -10,10 +10,8 @@ use Imi\Event\IEventListener;
 use Imi\Queue\Model\Message;
 use Imi\Swoole\Event\SwooleEvents;
 use Imi\Timer\Timer;
-use Imi\Workerman\Event\WorkermanEvents;
 
 #[Listener(eventName: SwooleEvents::WORKER_APP_START, one: true)]
-#[Listener(eventName: WorkermanEvents::SERVER_WORKER_START, one: true)]
 class WorkerStartListener implements IEventListener
 {
     #[Inject(name: 'imiQueue')]

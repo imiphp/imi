@@ -10,9 +10,10 @@ use Imi\Server\Contract\IServer;
 class WorkerStartEvent extends CommonEvent
 {
     public function __construct(
+        string $__eventName,
         public readonly IServer $server,
         public readonly int $workerId
     ) {
-        parent::__construct(ServerEvents::WORKER_START, $server);
+        parent::__construct($__eventName, $server);
     }
 }

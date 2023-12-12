@@ -7,9 +7,9 @@ namespace Imi\Grpc\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\IEventListener;
-use Imi\Swoole\Event\SwooleEvents;
+use Imi\Server\Event\ServerEvents;
 
-#[Listener(eventName: SwooleEvents::SERVER_WORKER_START, priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
+#[Listener(eventName: ServerEvents::WORKER_START, priority: \Imi\Util\ImiPriority::IMI_MIN, one: true)]
 class GrpcInit implements IEventListener
 {
     /**

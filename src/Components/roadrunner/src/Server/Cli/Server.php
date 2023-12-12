@@ -9,9 +9,11 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Event\Event;
 use Imi\RoadRunner\HotUpdate\HotUpdateProcess;
 use Imi\RoadRunner\Util\RoadRunner;
 use Imi\Server\Contract\IServer;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\ServerManager;
 
 #[Command(name: 'rr')]
@@ -25,7 +27,13 @@ class Server extends BaseCommand
     #[Option(name: 'config', shortcut: 'c', type: \Imi\Cli\ArgType::STRING, comments: '配置文件路径，默认 .rr.yaml')]
     public function start(?string $workDir, ?string $config): void
     {
+        // 创建服务器对象们前置操作-通用
+        Event::dispatch(eventName: ServerEvents::BEFORE_CREATE_SERVERS);
         $server = $this->createServer($workDir, $config);
+        // 创建服务器对象们后置操作
+        Event::dispatch(eventName: ServerEvents::AFTER_CREATE_SERVERS);
+        // 服务器启动前-通用
+        Event::dispatch(eventName: ServerEvents::BEFORE_SERVER_START);
         $server->start();
     }
 

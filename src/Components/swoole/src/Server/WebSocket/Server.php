@@ -9,9 +9,10 @@ use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\RequestContext;
+use Imi\Server\Event\ServerEvents;
+use Imi\Server\Event\WorkerStartEvent;
 use Imi\Server\Protocol;
 use Imi\Server\WebSocket\Enum\NonControlFrameType;
-use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
@@ -21,7 +22,6 @@ use Imi\Swoole\Server\Event\Param\DisconnectEventParam;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
 use Imi\Swoole\Server\Event\Param\MessageEventParam;
 use Imi\Swoole\Server\Event\Param\RequestEventParam;
-use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Http\Listener\BeforeRequest;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Util\Bit;
@@ -117,7 +117,7 @@ class Server extends Base implements ISwooleWebSocketServer
      */
     protected function __bindEvents(): void
     {
-        Event::one(SwooleEvents::WORKER_APP_START, function (WorkerStartEventParam $e): void {
+        Event::one(ServerEvents::WORKER_APP_START, function (WorkerStartEvent $e): void {
             // 内置事件监听
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         });
