@@ -9,9 +9,11 @@ use Imi\Config;
 use Imi\ConnectionCenter\Facade\ConnectionCenter;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Process\Event\ProcessEvents;
+use Imi\Server\Event\ServerEvents;
 
-#[Listener(eventName: 'IMI.PROCESS.BEGIN')]
-#[Listener(eventName: 'IMI.MAIN_SERVER.WORKER.START')]
+#[Listener(eventName: ProcessEvents::PROCESS_BEGIN)]
+#[Listener(eventName: ServerEvents::WORKER_START)]
 class InitConnectionCenterListener implements IEventListener
 {
     /**
