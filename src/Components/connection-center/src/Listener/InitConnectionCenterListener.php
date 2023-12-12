@@ -7,7 +7,7 @@ namespace Imi\ConnectionCenter\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\ConnectionCenter\Facade\ConnectionCenter;
-use Imi\Event\EventParam;
+use Imi\Event\Contract\IEvent;
 use Imi\Event\IEventListener;
 use Imi\Process\Event\ProcessEvents;
 use Imi\Server\Event\ServerEvents;
@@ -19,7 +19,7 @@ class InitConnectionCenterListener implements IEventListener
     /**
      * {@inheritDoc}
      */
-    public function handle(EventParam $e): void
+    public function handle(IEvent $e): void
     {
         foreach (Config::get('@app.connectionCenter', []) as $name => $connectionManagerConfig)
         {

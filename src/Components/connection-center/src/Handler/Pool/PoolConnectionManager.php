@@ -34,8 +34,6 @@ if (\extension_loaded('swoole'))
 
         /**
          * 队列.
-         *
-         * @var Channel<InstanceResource>|mixed
          */
         protected Channel $queue;
 
