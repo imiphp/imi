@@ -7,6 +7,7 @@ namespace Imi\Swoole\Server;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Server\Contract\BaseServer;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\Event\WorkerStartEvent;
 use Imi\Server\Event\WorkerStopEvent;
 use Imi\Server\Group\Exception\MethodNotFoundException;
@@ -225,7 +226,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 try
                 {
                     Event::dispatch(new WorkerStartEventParam(SwooleEvents::SERVER_WORKER_START, $this, $workerId));
-                    Event::dispatch(new WorkerStartEvent($this, $workerId));
+                    Event::dispatch(new WorkerStartEvent(ServerEvents::WORKER_START, $this, $workerId));
                 }
                 catch (\Throwable $th)
                 {

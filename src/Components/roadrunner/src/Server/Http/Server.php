@@ -14,6 +14,7 @@ use Imi\RequestContext;
 use Imi\RoadRunner\Http\Message\RoadRunnerResponse;
 use Imi\RoadRunner\Util\RoadRunner;
 use Imi\Server\Contract\BaseServer;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\Event\WorkerStartEvent;
 use Imi\Server\Event\WorkerStopEvent;
 use Imi\Server\Http\Listener\HttpRouteInit;
@@ -66,7 +67,8 @@ class Server extends BaseServer
         if (Imi::checkAppType('roadrunner'))
         {
             // worker
-            Event::dispatch(new WorkerStartEvent($this, 0));
+            Event::dispatch(new WorkerStartEvent(ServerEvents::WORKER_START, $this, 0));
+            Event::dispatch(new WorkerStartEvent(ServerEvents::WORKER_APP_START, $this, 0));
             try
             {
                 // 初始化路由

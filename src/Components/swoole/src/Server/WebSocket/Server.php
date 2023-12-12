@@ -9,9 +9,9 @@ use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\RequestContext;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\Protocol;
 use Imi\Server\WebSocket\Enum\NonControlFrameType;
-use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
@@ -117,7 +117,7 @@ class Server extends Base implements ISwooleWebSocketServer
      */
     protected function __bindEvents(): void
     {
-        Event::one(SwooleEvents::WORKER_APP_START, function (WorkerStartEventParam $e): void {
+        Event::one(ServerEvents::WORKER_APP_START, function (WorkerStartEventParam $e): void {
             // 内置事件监听
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         });

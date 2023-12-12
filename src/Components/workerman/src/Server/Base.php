@@ -16,6 +16,7 @@ use Imi\Log\Logger;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Event\PipeMessageEvent;
+use Imi\Server\Event\ServerEvents;
 use Imi\Server\Event\WorkerStartEvent;
 use Imi\Server\Event\WorkerStopEvent;
 use Imi\Server\Group\Contract\IServerGroup;
@@ -331,7 +332,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 }
 
                 Event::dispatch(new \Imi\Workerman\Server\Event\WorkerStartEvent($this, $worker));
-                Event::dispatch(new WorkerStartEvent($this, $worker->id));
+                Event::dispatch(new WorkerStartEvent(ServerEvents::WORKER_START, $this, $worker->id));
 
                 \Imi\Worker::inited();
                 foreach (ServerManager::getServers() as $name => $_)
