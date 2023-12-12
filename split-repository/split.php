@@ -189,6 +189,9 @@ static $storeRepoMap = [
     'src/Components/connection-center' => [
         'git@github.com:imiphp/imi-connection-center',
     ],
+    'src/Components/database' => [
+        'git@github.com:imiphp/imi-database',
+    ],
 ];
 
 setlocale(\LC_CTYPE, 'en_US.UTF-8');

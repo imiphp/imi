@@ -51,6 +51,7 @@ elif [[ $testType = "components" ]]; then
         "smarty"
         "pgsql"
         "connection-center"
+        "database"
     )
     phpUnitCommands=(
         "workerman"

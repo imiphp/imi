@@ -50,6 +50,7 @@ swoolePhpUnitCommands=(
     "smarty"
     "pgsql"
     "connection-center"
+    "database"
 )
 
 for name in "${phpUnitCommands[@]}"

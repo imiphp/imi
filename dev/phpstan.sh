@@ -26,6 +26,7 @@ components=(
   "workerman"
   "workerman-gateway"
   "connection-center"
+  "database"
 )
 
 analyze_component() {
