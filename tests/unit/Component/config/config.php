@@ -259,31 +259,4 @@ return [
         ],
     ],
     'yurun2'            => env('yurun'),
-    'tools'             => [
-        'generate/model'    => [
-            'namespace' => [
-                'Imi\Test\Component\Model' => [
-                    'tables'    => [
-                        'tb_tree'      => [
-                            'withRecords' => true,
-                        ],
-                        'tb_role'      => [
-                            'withRecords' => true,
-                        ],
-                        'tb_test_list' => [
-                            'fields' => [
-                                'list' => [
-                                    'typeDefinition' => false,
-                                ],
-                            ],
-                        ],
-                        'tb_article2'  => [
-                            'bean'       => false,
-                            'incrUpdate' => true,
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ],
 ];

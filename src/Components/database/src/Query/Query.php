@@ -117,7 +117,7 @@ abstract class Query implements IQuery
             }
             else
             {
-                $this->originPrefix = Db::getInstanceConfig($this->poolName, $this->queryType)['prefix'] ?? '';
+                $this->originPrefix = Db::getInstanceConfig($this->poolName, $this->queryType)?->prefix ?? '';
             }
         }
         else

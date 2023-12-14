@@ -6,6 +6,8 @@ namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Bean\ReflectionContainer;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Util\ChildClass;
+use Imi\Test\Component\Util\ParentClass;
 use Imi\Util\ClassObject;
 
 /**
@@ -124,8 +126,8 @@ class ClassObjectTest extends BaseTest
      */
     public function testGetSubClasses(): void
     {
-        $this->assertEquals([\Imi\Test\Component\Model\Unused::class], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\UnusedBase::class));
-        $this->assertEquals([], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\ArticleBase::class, [
+        $this->assertEquals([ChildClass::class], ClassObject::getSubClasses(ParentClass::class));
+        $this->assertEquals([], ClassObject::getSubClasses(ParentClass::class, [
             \Imi\Test\Component\Model\Member::class,
         ]));
     }

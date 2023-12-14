@@ -51,10 +51,10 @@ class Db
     /**
      * 获取数据库连接实例配置.
      */
-    public static function getInstanceConfig(?string $poolName = null, int $queryType = QueryType::WRITE): DatabaseDriverConfig
+    public static function getInstanceConfig(?string $poolName = null, int $queryType = QueryType::WRITE): ?DatabaseDriverConfig
     {
         // @phpstan-ignore-next-line
-        return ConnectionCenter::getConnectionManager(self::parsePoolName($poolName, $queryType))->getConfig();
+        return ConnectionCenter::getConnectionManager(self::parsePoolName($poolName, $queryType))->getDriver()->getConnectionLoadBalancer()->choose();
     }
 
     /**

@@ -59,10 +59,72 @@ return [
                 ],
             ],
         ],
+        'mysqli' => [
+            'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
+            'config'  => [
+                'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                'dbDriver'  => \Imi\Db\Mysql\Drivers\Mysqli\Driver::class,
+                'resources' => [
+                    [
+                        'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                        'port'        => env('MYSQL_SERVER_PORT', 3306),
+                        'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                        'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
+                        'database'    => 'db_imi_test',
+                        'charset'     => 'utf8mb4',
+                    ],
+                ],
+            ],
+        ],
+        'dbPrefix' => [
+            'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
+            'config'  => [
+                'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                'dbDriver'  => \Imi\Db\Mysql\Drivers\PdoMysql\Driver::class,
+                'resources' => [
+                    [
+                        'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                        'port'        => env('MYSQL_SERVER_PORT', 3306),
+                        'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                        'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
+                        'database'    => 'db_imi_test',
+                        'charset'     => 'utf8mb4',
+                        'prefix'      => 'tb_',
+                    ],
+                ],
+            ],
+        ],
     ],
     // db 配置
     'db'                => [
         // 默认连接池名
         'defaultPool' => 'maindb',
+    ],
+    'tools'             => [
+        'generate/model'    => [
+            'namespace' => [
+                'Imi\Model\Test\Model' => [
+                    'tables'    => [
+                        'tb_tree'      => [
+                            'withRecords' => true,
+                        ],
+                        'tb_role'      => [
+                            'withRecords' => true,
+                        ],
+                        'tb_test_list' => [
+                            'fields' => [
+                                'list' => [
+                                    'typeDefinition' => false,
+                                ],
+                            ],
+                        ],
+                        'tb_article2'  => [
+                            'bean'       => false,
+                            'incrUpdate' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

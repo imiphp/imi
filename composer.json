@@ -52,7 +52,8 @@
         },
         "files": [
             "dev/bootstrap.php",
-            "tests/helper.php"
+            "tests/helper.php",
+            "src/Components/model/vendor/autoload.php"
         ]
     },
     "suggest": {
