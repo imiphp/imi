@@ -191,6 +191,11 @@ jobs:
         run: |
           docker exec ${ENV_SERVICE} ./dev/phpstan.sh database
 
+      - name: Analyse model
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker exec ${ENV_SERVICE} ./dev/phpstan.sh model
+
       - name: Save All composer.lock And autoloader-suffix
         if: ${{ env.test_prepared && always() }}
         run: |

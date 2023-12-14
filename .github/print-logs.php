@@ -186,13 +186,19 @@ foreach ([
     }
 }
 
-echo '[connection-center]', \PHP_EOL;
-$fileName = \dirname(__DIR__) . '/src/Components/connection-center/tests/.runtime/logs/log-' . date('Y-m-d') . '.log';
-if (is_file($fileName))
+foreach ([
+    'connection-center',
+    'model',
+] as $component)
 {
-    echo file_get_contents($fileName), \PHP_EOL;
-}
-else
-{
-    echo 'Not found!', \PHP_EOL;
+    echo '[',$component,']', \PHP_EOL;
+    $fileName = \dirname(__DIR__) . '/src/Components/' . $component . '/tests/.runtime/logs/log-' . date('Y-m-d') . '.log';
+    if (is_file($fileName))
+    {
+        echo file_get_contents($fileName), \PHP_EOL;
+    }
+    else
+    {
+        echo 'Not found!', \PHP_EOL;
+    }
 }

@@ -40,6 +40,8 @@ phpUnitCommands=(
     "fpm"
     "jwt"
     "snowflake"
+    "database"
+    "model"
 )
 
 swoolePhpUnitCommands=(
@@ -50,7 +52,6 @@ swoolePhpUnitCommands=(
     "smarty"
     "pgsql"
     "connection-center"
-    "database"
 )
 
 for name in "${phpUnitCommands[@]}"

@@ -192,6 +192,9 @@ static $storeRepoMap = [
     'src/Components/database' => [
         'git@github.com:imiphp/imi-database',
     ],
+    'src/Components/model' => [
+        'git@github.com:imiphp/imi-model',
+    ],
 ];
 
 setlocale(\LC_CTYPE, 'en_US.UTF-8');
