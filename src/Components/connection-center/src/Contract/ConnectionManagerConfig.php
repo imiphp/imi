@@ -6,7 +6,7 @@ namespace Imi\ConnectionCenter\Contract;
 
 use Imi\ConnectionCenter\LoadBalancer\RandomLoadBalancer;
 
-abstract class AbstractConnectionManagerConfig implements IConnectionManagerConfig
+class ConnectionManagerConfig implements IConnectionManagerConfig
 {
     public function __construct(protected ?string $driver = null, protected ?string $loadBalancer = null, protected ?bool $enableStatistics = null,
         /**

@@ -7,6 +7,7 @@ namespace Imi\ConnectionCenter;
 use Imi\App;
 use Imi\ConnectionCenter\Contract\IConnection;
 use Imi\ConnectionCenter\Contract\IConnectionManager;
+use Imi\ConnectionCenter\Contract\IConnectionManagerConfig;
 use Imi\ConnectionCenter\Enum\ConnectionStatus;
 use Imi\RequestContext;
 
@@ -22,6 +23,11 @@ class ConnectionCenter
         if (isset($this->connectionManagers[$name]))
         {
             throw new \RuntimeException(sprintf('Connection manager %s already exists', $name));
+        }
+
+        if (!$config instanceof IConnectionManagerConfig)
+        {
+            $config = $connectionManagerClass::createConfig($config);
         }
 
         return $this->connectionManagers[$name] = App::newInstance($connectionManagerClass, $config);

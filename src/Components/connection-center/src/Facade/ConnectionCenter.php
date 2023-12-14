@@ -17,7 +17,7 @@ use Imi\Facade\BaseFacade;
  * @method static \Imi\ConnectionCenter\Contract\IConnection        getRequestContextConnection(string $name)
  */
 #[
-    \Imi\Facade\Annotation\Facade(class: \Imi\ConnectionCenter\ConnectionCenter::class)
+    \Imi\Facade\Annotation\Facade(class: \Imi\ConnectionCenter\AppConnectionCenter::class)
 ]
 class ConnectionCenter extends BaseFacade
 {

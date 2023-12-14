@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\ConnectionCenter\Handler\Pool;
 
-use Imi\ConnectionCenter\Contract\AbstractConnectionManagerConfig;
+use Imi\ConnectionCenter\Contract\ConnectionManagerConfig;
 
 /**
  * 连接池连接管理器配置.
  */
-class PoolConnectionManagerConfig extends AbstractConnectionManagerConfig
+class PoolConnectionManagerConfig extends ConnectionManagerConfig
 {
     public function __construct(?string $driver = null, ?bool $enableStatistics = null, protected ?PoolConfig $pool = null, array $config = [])
     {

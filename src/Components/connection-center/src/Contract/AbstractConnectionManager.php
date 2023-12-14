@@ -52,7 +52,7 @@ abstract class AbstractConnectionManager implements IConnectionManager
         }
         $connectionLoadBalancer = App::newInstance($this->config->getLoadBalancer(), $connectionConfigs);
 
-        return $this->driver = App::newInstance($driver, $connectionLoadBalancer);
+        return $this->driver = App::newInstance($driver, $this->config, $connectionLoadBalancer);
     }
 
     protected function createInstance(bool $connect = true): object

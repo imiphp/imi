@@ -46,7 +46,8 @@ class ConnectionCenterTest extends TestCase
     {
         self::$connectionCenter->addConnectionManager('alwaysNew', AlwaysNewConnectionManager::class, AlwaysNewConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
 
-        self::$connectionCenter->addConnectionManager('requestContextSingleton', RequestContextSingletonConnectionManager::class, RequestContextSingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
+        // 测试连接管理器配置传入数组
+        self::$connectionCenter->addConnectionManager('requestContextSingleton', RequestContextSingletonConnectionManager::class, ['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]);
 
         self::$connectionCenter->addConnectionManager('singleton', SingletonConnectionManager::class, SingletonConnectionManager::createConfig(['driver' => TestDriver::class, 'enableStatistics' => true, 'resources' => [['test' => true]], 'checkStateWhenGetResource' => true, 'requestResourceCheckInterval' => 0]));
 

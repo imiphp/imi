@@ -14,7 +14,12 @@ interface IConnectionDriver
      */
     public static function createConnectionConfig(string|array $config): IConnectionConfig;
 
-    public function __construct(IConnectionLoadBalancer $connectionLoadBalancer);
+    public function __construct(IConnectionManagerConfig $connectionManagerConfig, IConnectionLoadBalancer $connectionLoadBalancer);
+
+    /**
+     * 获取连接管理器配置.
+     */
+    public function getConnectionManagerConfig(): IConnectionManagerConfig;
 
     /**
      * 获取连接负载均衡器.

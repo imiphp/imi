@@ -6,8 +6,13 @@ namespace Imi\ConnectionCenter\Contract;
 
 abstract class AbstractConnectionDriver implements IConnectionDriver
 {
-    public function __construct(protected IConnectionLoadBalancer $connectionLoadBalancer)
+    public function __construct(protected IConnectionManagerConfig $connectionManagerConfig, protected IConnectionLoadBalancer $connectionLoadBalancer)
     {
+    }
+
+    public function getConnectionManagerConfig(): IConnectionManagerConfig
+    {
+        return $this->connectionManagerConfig;
     }
 
     public function getConnectionLoadBalancer(): IConnectionLoadBalancer

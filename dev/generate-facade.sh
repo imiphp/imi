@@ -12,7 +12,7 @@ src/Cli/bin/imi-cli --app-namespace "Imi\Swoole" --bootstrap "src/Components/swo
 
 src/Cli/bin/imi-cli --app-namespace "Imi" generate/facade "Imi\Server\Session\Session" "SessionManager" --request=true && \
 
-src/Cli/bin/imi-cli --app-namespace "Imi\ConnectionCenter" --bootstrap "src/Components/connection-center/vendor/autoload.php" generate/facade "Imi\ConnectionCenter\Facade\ConnectionCenter" "Imi\ConnectionCenter\ConnectionCenter" && \
+src/Cli/bin/imi-cli --app-namespace "Imi\ConnectionCenter" --bootstrap "src/Components/connection-center/vendor/autoload.php" generate/facade "Imi\ConnectionCenter\Facade\ConnectionCenter" "Imi\ConnectionCenter\AppConnectionCenter" && \
 
 dev/rector.sh core jwt queue swoole connection-center && \
 

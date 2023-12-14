@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\ConnectionCenter\Test\Tests;
 
+use Imi\ConnectionCenter\Contract\ConnectionManagerConfig;
 use Imi\ConnectionCenter\Contract\IConnectionDriver;
 use Imi\ConnectionCenter\Contract\IConnectionLoadBalancer;
 use Imi\ConnectionCenter\LoadBalancer\RandomLoadBalancer;
@@ -15,12 +16,20 @@ class DriverTest extends TestCase
 {
     public function testCreateDriver(): IConnectionDriver
     {
-        $driver = new TestDriver(new RandomLoadBalancer([
+        $driver = new TestDriver(new ConnectionManagerConfig(TestDriver::class), new RandomLoadBalancer([
             TestDriverConfig::create(['test' => true]),
         ]));
         $this->assertTrue(true);
 
         return $driver;
+    }
+
+    /**
+     * @depends testCreateDriver
+     */
+    public function testGetConnectionManagerConfig(IConnectionDriver $driver): void
+    {
+        $this->assertInstanceOf(ConnectionManagerConfig::class, $driver->getConnectionManagerConfig());
     }
 
     /**
@@ -44,7 +53,7 @@ class DriverTest extends TestCase
 
     public function testCreateInstanceFailed(): void
     {
-        $driver = new TestDriver(new RandomLoadBalancer([]));
+        $driver = new TestDriver(new ConnectionManagerConfig(TestDriver::class), new RandomLoadBalancer([]));
         $this->expectExceptionMessage('No connection config available');
         $driver->createInstance();
     }
