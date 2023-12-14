@@ -19,11 +19,6 @@ class Db
     use \Imi\Util\Traits\TStaticClass;
 
     /**
-     * 连接配置.
-     */
-    private static ?array $connections = null;
-
-    /**
      * 获取新的数据库连接实例.
      *
      * @param string|null $poolName  连接池名称

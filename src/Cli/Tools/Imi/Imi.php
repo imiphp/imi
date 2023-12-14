@@ -11,7 +11,6 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Core\Runtime\Runtime;
 use Imi\Log\Log;
-use Imi\Pool\Annotation\PoolClean;
 use Imi\Util\File;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Util\Text;
@@ -56,7 +55,6 @@ class Imi extends BaseCommand
     /**
      * 构建项目预加载缓存.
      */
-    #[PoolClean]
     #[CommandAction(name: 'buildRuntime', description: '构建项目预加载缓存')]
     #[Option(name: 'changedFilesFile', type: \Imi\Cli\ArgType::STRING, comments: '保存改变的文件列表的文件，一行一个')]
     #[Option(name: 'confirm', type: \Imi\Cli\ArgType::BOOLEAN, default: false, comments: '是否等待输入y后再构建')]

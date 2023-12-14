@@ -529,7 +529,7 @@ jobs:
           composer update --prefer-dist --no-progress
           Write-Output "::endgroup::"
           Write-Output "::group::Table Init"
-          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
+          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Model\Test"
           Write-Output "::endgroup::"
 
       - name: Install RoadRunner

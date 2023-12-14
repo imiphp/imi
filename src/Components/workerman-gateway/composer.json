@@ -4,6 +4,7 @@
     "license": "MulanPSL-2.0",
     "description": "imi workerman gateway component",
     "require": {
+        "workerman/workerman": "^4.0",
         "workerman/gateway-worker": "^3.0",
         "yurunsoft/workerman-gateway-sdk": "^1.0"
     },

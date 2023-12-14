@@ -35,6 +35,9 @@ parameters:
         -
             message: '#^Call to an undefined method Swoole\\Coroutine\\#'
             reportUnmatched: false
+        -
+            message: '#should return .*static\(.+\).+but returns .+#'
+            reportUnmatched: false
 
 services:
 includes:

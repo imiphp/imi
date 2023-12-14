@@ -53,7 +53,7 @@ class ModelGenerate extends BaseCommand
     {
         Event::dispatch(eventName: BeforeGenerateModels::class);
         $db = Db::getInstance($poolName);
-        $tablePrefix = $db->getOption()['prefix'] ?? '';
+        $tablePrefix = $db->getConfig()->prefix;
         if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
         {
             $prefix[] = $tablePrefix;

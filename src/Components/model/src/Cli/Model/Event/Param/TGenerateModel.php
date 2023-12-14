@@ -132,6 +132,13 @@ trait TGenerateModel
          * 是否检查字段长度.
          */
         public bool $lengthCheck = false,
+
+        /**
+         * 类注解代码
+         *
+         * @var string
+         */
+        public string $classAttributeCode = '',
     ) {
         parent::__construct(static::class);
     }

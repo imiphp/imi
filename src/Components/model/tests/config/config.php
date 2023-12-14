@@ -5,6 +5,11 @@ declare(strict_types=1);
 use function Imi\env;
 
 return [
+    // 组件命名空间
+    'components'        => [
+        'model' => 'Imi\Model',
+    ],
+
     // 日志配置
     'logger'            => [
         'channels' => [

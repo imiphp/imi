@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\Component;
 
 use Imi\App;
-use Imi\Db\Interfaces\IDb;
-use Imi\Pool\Interfaces\IPoolResource;
-use Imi\Pool\PoolManager;
 use Imi\Swoole\SwooleApp;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber;
@@ -52,18 +49,6 @@ class PHPUnitHook implements Extension
     {
         $this->channel = $channel = new Channel(1);
         Coroutine::create(static fn () => App::run('Imi\Swoole\Test\Component', SwooleApp::class, static function () use ($channel): void {
-            PoolManager::use('maindb', static function (IPoolResource $resource, IDb $db): void {
-                $truncateList = [
-                    'tb_article',
-                    'tb_member',
-                    'tb_update_time',
-                    'tb_performance',
-                ];
-                foreach ($truncateList as $table)
-                {
-                    $db->exec('TRUNCATE ' . $table);
-                }
-            });
             $channel->push(1);
             $channel->pop();
         }));

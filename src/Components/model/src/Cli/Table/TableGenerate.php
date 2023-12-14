@@ -56,7 +56,7 @@ class TableGenerate extends BaseCommand
             $query = Db::query($poolName ?? $meta->getDbPoolName());
             if ($meta->isUsePrefix())
             {
-                $table = ($query->getDb()->getOption()['prefix'] ?? '') . $table;
+                $table = $query->getDb()->getConfig()->prefix . $table;
             }
             if (\in_array($table, $tables))
             {
