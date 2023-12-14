@@ -117,7 +117,8 @@
             "@composer test-connection-center-common",
             "@composer test-connection-center-swoole"
         ],
-        "test-database": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/database/tests/phpunit.xml",
+        "test-database": "@php vendor/bin/phpunit -c src/Components/database/tests/phpunit.xml",
+        "test-model": "@php vendor/bin/phpunit -c src/Components/model/tests/phpunit.xml",
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",
@@ -134,7 +135,8 @@
             "@composer test-pgsql",
             "@composer test-phar",
             "@composer test-connection-center",
-            "@composer test-database"
+            "@composer test-database",
+            "@composer test-model"
         ]
     },
     "extra": {

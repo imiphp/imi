@@ -8,6 +8,9 @@
             <directory>./</directory>
         </testsuite>
     </testsuites>
+    <extensions>
+        <bootstrap class="Imi\Db\Test\PHPUnitHook" />
+    </extensions>
     <source>
         <include>
             <directory suffix=".php">../src</directory>

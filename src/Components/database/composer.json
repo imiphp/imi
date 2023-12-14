@@ -3,21 +3,34 @@
     "type": "library",
     "license": "MulanPSL-2.0",
     "description": "imi database",
-    "require": {},
+    "require": {
+        "imiphp/imi-connection-center": "~3.0.0"
+    },
     "require-dev": {},
     "autoload": {
         "psr-4": {
-            "Imi\\Database\\": "src/"
-        }
+            "Imi\\Db\\": "src/"
+        },
+        "files": [
+            "compatible.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Imi\\Database\\Test\\": "tests/"
+            "Imi\\Db\\Test\\": "tests/",
+            "Imi\\Db\\Dev\\": "dev/"
         },
         "files": [
             "../../../vendor/autoload.php",
-            "../../../dev/try-include-swoole.php"
+            "../../../dev/try-include-swoole.php",
+            "../connection-center/vendor/autoload.php"
         ]
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Db\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Db\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Db\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Db\\Dev\\Dev::postUpdate"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

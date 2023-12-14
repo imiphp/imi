@@ -9,10 +9,10 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Annotation\Callback;
 use Imi\Bean\Annotation\Inherit;
-use Imi\Db\Annotation\Transaction;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Table;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Annotation\CommentAnnotation;
 use Imi\Test\Component\Inherit\TestClass;
 
 /**
@@ -43,7 +43,7 @@ class InheritTest extends BaseTest
         $this->assertCount(3, $annotations);
         $this->assertInstanceOf(Inherit::class, $annotations[0]);
         $this->assertInstanceOf(FilterArg::class, $annotations[1]);
-        $this->assertInstanceOf(Transaction::class, $annotations[2]);
+        $this->assertInstanceOf(CommentAnnotation::class, $annotations[2]);
     }
 
     public function testProperty(): void
