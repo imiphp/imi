@@ -136,8 +136,7 @@ jobs:
           extensions: >
             apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, pdo_pgsql,
             sockets, zip, inotify, event, :opcache
-            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }},
-            xdebug-Yurunsoft/xdebug@fix-2221
+            swoole-swoole/swoole-src@${{ env.SWOOLE_VERSION }}
       - name: Check Version
         run: |
           php -v
