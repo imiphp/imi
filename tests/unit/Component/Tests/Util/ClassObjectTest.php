@@ -128,7 +128,7 @@ class ClassObjectTest extends BaseTest
     {
         $this->assertEquals([ChildClass::class], ClassObject::getSubClasses(ParentClass::class));
         $this->assertEquals([], ClassObject::getSubClasses(ParentClass::class, [
-            \Imi\Test\Component\Model\Member::class,
+            __CLASS__,
         ]));
     }
 

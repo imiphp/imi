@@ -46,18 +46,12 @@ parameters:
             message: '#Unsafe usage of new static\(\).+#'
             reportUnmatched: true
         -
-            message: '#unknown class Imi\\Swoole\\Util\\Coroutine#'
-            reportUnmatched: true
-        -
             message: '#Constant IMI_PATH not found#'
             reportUnmatched: true
 
         # 用 __call() 实现，并且在类注释中使用 phpdoc 声明方法
         -
             message: '#Creating callable from a non-native method#'
-            reportUnmatched: true
-        -
-            message: '#should return .*static\(.+\).+but returns .+#'
             reportUnmatched: true
 services:
 includes:
