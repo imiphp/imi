@@ -41,7 +41,7 @@ class ModelGenerate extends BaseCommand
     public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, string|bool $override, string|bool $config, ?string $basePath, bool $entity, bool $lengthCheck, bool $bean, bool $incrUpdate): void
     {
         $db = Db::getInstance($poolName);
-        $tablePrefix = $db->getOption()['prefix'] ?? '';
+        $tablePrefix = $db->getConfig()->prefix;
         if ('' !== $tablePrefix && !\in_array($tablePrefix, $prefix))
         {
             $prefix[] = $tablePrefix;

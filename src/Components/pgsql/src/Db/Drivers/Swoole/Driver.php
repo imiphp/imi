@@ -6,14 +6,13 @@ namespace Imi\Pgsql\Db\Drivers\Swoole;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
-use Imi\Config;
 use Imi\Db\Exception\DbException;
-use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBase;
 use Imi\Pgsql\Db\Util\SqlUtil;
 use Swoole\Coroutine\PostgreSQL;
+use Swoole\Coroutine\PostgreSQLStatement;
 
 if (class_exists(PostgreSQL::class, false))
 {
@@ -34,45 +33,16 @@ if (class_exists(PostgreSQL::class, false))
         protected string $lastSql = '';
 
         /**
-         * 最后查询结果.
-         *
-         * @var resource|null
+         * Statement.
          */
-        protected $lastQueryResult = null;
-
-        /**
-         * 是否缓存 Statement.
-         */
-        protected bool $isCacheStatement = false;
+        protected ?PostgreSQLStatement $lastStmt = null;
 
         /**
          * 事务管理.
          */
         protected ?Transaction $transaction = null;
 
-        /**
-         * 自增.
-         */
-        protected int $statementIncr = 0;
-
         protected bool $connected = false;
-
-        /**
-         * 参数格式：
-         * [
-         * 'host'       => 'PostgreSQL IP地址',
-         * 'username'   => '数据用户',
-         * 'password'   => '数据库密码',
-         * 'database'   => '数据库名',
-         * 'port'       => 'PostgreSQL端口 默认5432 可选参数',
-         * 'options'    => [], // 其它连接选项
-         * ].
-         */
-        public function __construct(array $option = [])
-        {
-            parent::__construct($option);
-            $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
-        }
 
         /**
          * {@inheritDoc}
@@ -109,22 +79,25 @@ if (class_exists(PostgreSQL::class, false))
          */
         protected function buildDSN(): string
         {
-            $option = $this->option;
-            if (isset($option['dsn']))
+            $config = $this->config;
+            if (null !== $config->dsn)
             {
-                return $option['dsn'];
+                return $config->dsn;
             }
             $otherOptionsContent = '';
-            foreach ($option['options'] ?? [] as $k => $v)
+            if (isset($config->option['options']))
             {
-                $otherOptionsContent .= ' ' . $k . '=' . $v;
+                foreach ($config->option['options'] as $k => $v)
+                {
+                    $otherOptionsContent .= ' ' . $k . '=' . $v;
+                }
             }
 
-            return 'host=' . ($option['host'] ?? '127.0.0.1')
-                    . ' port=' . ($option['port'] ?? '5432')
-                    . ' dbname=' . ($option['database'] ?? '')
-                    . ' user=' . ($option['username'] ?? '')
-                    . ' password=' . ($option['password'] ?? '')
+            return 'host=' . $config->host
+                    . ' port=' . ($config->port ?? self::DEFAULT_PORT)
+                    . ' dbname=' . ($config->database ?? '')
+                    . ' user=' . ($config->username ?? self::DEFAULT_USERNAME)
+                    . ' password=' . ($config->password ?? self::DEFAULT_PASSWORD)
                     . $otherOptionsContent
             ;
         }
@@ -134,7 +107,6 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function open(): bool
         {
-            $this->statementIncr = 0;
             $this->instance = $instance = new PostgreSQL();
 
             if ($this->connected = $instance->connect($this->buildDSN()))
@@ -153,10 +125,9 @@ if (class_exists(PostgreSQL::class, false))
         public function close(): void
         {
             $this->connected = false;
-            StatementManager::clear($this);
-            if (null !== $this->lastQueryResult)
+            if (null !== $this->lastStmt)
             {
-                $this->lastQueryResult = null;
+                $this->lastStmt = null;
             }
             if (null !== $this->instance)
             {
@@ -301,8 +272,8 @@ if (class_exists(PostgreSQL::class, false))
         {
             $this->lastSql = $sql;
             $instance = $this->instance;
-            $this->lastQueryResult = $lastQueryResult = $instance->query($sql);
-            if (false === $lastQueryResult)
+            $lastStmt = $instance->query($sql);
+            if (false === $lastStmt)
             {
                 if ($this->checkCodeIsOffline($this->errorCode()))
                 {
@@ -311,8 +282,47 @@ if (class_exists(PostgreSQL::class, false))
 
                 return 0;
             }
+            $this->lastStmt = $lastStmt;
 
-            return $instance->affectedRows($lastQueryResult);
+            return $lastStmt->affectedRows();
+        }
+
+        public function insert(string $sql): int|string|null
+        {
+            $this->lastSql = $sql;
+            $instance = $this->instance;
+            $lastStmt = $instance->query($sql);
+            if (false === $lastStmt)
+            {
+                if ($this->checkCodeIsOffline($this->errorCode()))
+                {
+                    $this->close();
+                }
+
+                return null;
+            }
+            $this->lastStmt = $lastStmt;
+
+            return $this->lastInsertId();
+        }
+
+        public function select(string $sql): array
+        {
+            $this->lastSql = $sql;
+            $instance = $this->instance;
+            $lastStmt = $instance->query($sql);
+            if (false === $lastStmt)
+            {
+                if ($this->checkCodeIsOffline($this->errorCode()))
+                {
+                    $this->close();
+                }
+
+                return [];
+            }
+            $this->lastStmt = $lastStmt;
+
+            return $lastStmt->fetchAll();
         }
 
         /**
@@ -351,11 +361,10 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function lastInsertId(?string $name = null): string
         {
-            $instance = $this->instance;
             if (null === $name)
             {
-                $queryResult = $instance->query($sql = 'select LASTVAL()');
-                if (false === $queryResult)
+                $lastStmt = $this->instance->query($sql = 'select LASTVAL()');
+                if (false === $lastStmt)
                 {
                     $errorCode = $this->errorCode();
                     $errorInfo = $this->errorInfo();
@@ -365,15 +374,14 @@ if (class_exists(PostgreSQL::class, false))
                     }
                     throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
-                $row = $instance->fetchRow($queryResult, 0);
+                $row = $lastStmt->fetchRow(0);
 
                 return (string) reset($row);
             }
             else
             {
-                $statementName = 'imi_stmt_' . (++$this->statementIncr);
-                $queryResult = $instance->prepare($statementName, $sql = 'SELECT CURRVAL($1)');
-                if (false === $queryResult)
+                $lastStmt = $this->instance->prepare($sql = 'SELECT CURRVAL($1)');
+                if (false === $lastStmt)
                 {
                     $errorCode = $this->errorCode();
                     $errorInfo = $this->errorInfo();
@@ -383,18 +391,17 @@ if (class_exists(PostgreSQL::class, false))
                     }
                     throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
-                $queryResult = $instance->execute($statementName, [$name]);
-                if (false === $queryResult)
+                if (false === $lastStmt->execute([$name]))
                 {
-                    $errorCode = $this->errorCode();
-                    $errorInfo = $this->errorInfo();
+                    $errorCode = $lastStmt->resultDiag['sqlstate'] ?? '';
+                    $errorInfo = $lastStmt->error ?? '';
                     if ($this->checkCodeIsOffline($errorCode))
                     {
                         $this->close();
                     }
-                    throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                    throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
                 }
-                $row = $instance->fetchRow($queryResult, 0);
+                $row = $lastStmt->fetchRow(0);
 
                 return (string) reset($row);
             }
@@ -405,7 +412,7 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function rowCount(): int
         {
-            return $this->instance->affectedRows($this->lastQueryResult);
+            return $this->lastStmt->affectedRows();
         }
 
         /**
@@ -413,34 +420,22 @@ if (class_exists(PostgreSQL::class, false))
          */
         public function prepare(string $sql, array $driverOptions = []): IPgsqlStatement
         {
-            if ($this->isCacheStatement && $stmtCache = StatementManager::get($this, $sql))
+            $this->lastSql = $sql;
+            $parsedSql = SqlUtil::parseSqlWithParams($sql, $sqlParamsMap);
+            $lastStmt = $this->instance->prepare($parsedSql);
+            if (false === $lastStmt)
             {
-                $stmt = $stmtCache['statement'];
-            }
-            else
-            {
-                $this->lastSql = $sql;
-                $parsedSql = SqlUtil::parseSqlWithParams($sql, $sqlParamsMap);
-                $statementName = 'imi_stmt_' . (++$this->statementIncr);
-                $this->lastQueryResult = $queryResult = $this->instance->prepare($statementName, $parsedSql);
-                if (false === $queryResult)
+                $errorCode = $this->errorCode();
+                $errorInfo = $this->errorInfo();
+                if ($this->checkCodeIsOffline($errorCode))
                 {
-                    $errorCode = $this->errorCode();
-                    $errorInfo = $this->errorInfo();
-                    if ($this->checkCodeIsOffline($errorCode))
-                    {
-                        $this->close();
-                    }
-                    throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+                    $this->close();
                 }
-                $stmt = BeanFactory::newInstance(Statement::class, $this, null, $sql, $statementName, $sqlParamsMap);
-                if ($this->isCacheStatement && !isset($stmtCache))
-                {
-                    StatementManager::setNX($stmt, true);
-                }
+                throw new DbException('SQL prepare error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
+            $this->lastStmt = $lastStmt;
 
-            return $stmt;
+            return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
         }
 
         /**
@@ -449,8 +444,8 @@ if (class_exists(PostgreSQL::class, false))
         public function query(string $sql): IPgsqlStatement
         {
             $this->lastSql = $sql;
-            $this->lastQueryResult = $queryResult = $this->instance->query($sql);
-            if (false === $queryResult)
+            $lastStmt = $this->instance->query($sql);
+            if (false === $lastStmt)
             {
                 $errorCode = $this->errorCode();
                 $errorInfo = $this->errorInfo();
@@ -460,8 +455,9 @@ if (class_exists(PostgreSQL::class, false))
                 }
                 throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
+            $this->lastStmt = $lastStmt;
 
-            return BeanFactory::newInstance(Statement::class, $this, $queryResult, $sql);
+            return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, null, true);
         }
 
         /**

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Imi\Pgsql\Db\Drivers\PdoPgsql;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Db\Drivers\TPdoDriver;
+use Imi\Db\ConnectionCenter\DatabaseDriverConfig;
+use Imi\Db\Drivers\PDO\TPDODriver;
 use Imi\Pgsql\Db\PgsqlBase;
 use Imi\Pgsql\Db\Util\SqlUtil;
 
@@ -15,15 +16,18 @@ use Imi\Pgsql\Db\Util\SqlUtil;
 #[Bean(name: 'PdoPgsqlDriver')]
 class Driver extends PgsqlBase
 {
-    use TPdoDriver {
-        __construct as private tPdoDriverConstruct;
-    }
+    use TPDODriver;
 
-    public function __construct(array $option = [])
+    public const DEFAULT_OPTIONS = [
+        \PDO::ATTR_STRINGIFY_FETCHES => false,
+        \PDO::ATTR_EMULATE_PREPARES  => false,
+        \PDO::ATTR_ERRMODE           => \PDO::ERRMODE_EXCEPTION,
+    ];
+
+    public function __construct(DatabaseDriverConfig $config)
     {
-        $option['username'] ??= 'postgres';
-        $this->tPdoDriverConstruct($option);
-        $this->statementClass = $option['statementClass'] ?? Statement::class;
+        parent::__construct($config);
+        $this->statementClass = Statement::class;
     }
 
     /**
@@ -31,12 +35,12 @@ class Driver extends PgsqlBase
      */
     protected function buildDSN(): string
     {
-        $option = $this->option;
+        $config = $this->config;
 
-        return $option['dsn'] ?? 'pgsql:'
-                 . 'host=' . ($option['host'] ?? '127.0.0.1')
-                 . ';port=' . ($option['port'] ?? '5432')
-                 . ';dbname=' . ($option['database'] ?? 'database')
+        return $config->dsn ?? 'pgsql:'
+                . 'host=' . $config->host
+                . ';port=' . ($config->port ?? self::DEFAULT_PORT)
+                . ';dbname=' . ($config->database ?? '')
         ;
     }
 
