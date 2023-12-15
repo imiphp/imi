@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pgsql\Test;
 
-trait TPdoPgTest
+trait TPDOPgTest
 {
     protected function setUp(): void
     {

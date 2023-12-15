@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Mysql\Drivers\PdoMysql;
+namespace Imi\Db\Mysql\Drivers\PDOMysql;
 
 use Imi\Db\Drivers\PDO\TPDOStatement;
 use Imi\Db\Mysql\Contract\IMysqlStatement;

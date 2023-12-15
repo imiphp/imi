@@ -30,7 +30,7 @@ return [
         'defaultPool' => 'maindb',
         'connections' => [
             'tradition' => [
-                'dbClass'  => 'PdoMysqlDriver',
+                'dbClass'  => 'PDOMysqlDriver',
                 'host'     => env('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'port'     => env('MYSQL_SERVER_PORT', 3306),
                 'username' => env('MYSQL_SERVER_USERNAME', 'root'),

@@ -2,6 +2,53 @@
 
 [toc]
 
+## 配置
+
+使用连接中心进行配置。
+
+`config/config.php`：
+
+```php
+[
+    'connectionCenter' => [
+        // 主数据库，maindb 是连接名称
+        'maindb' => [
+            // 连接管理器类名，Swoole 推荐用连接池
+            'manager' => \Imi\ConnectionCenter\Handler\Pool\PoolConnectionManager::class,
+            // 连接管理器类名，非 Swoole 推荐用连接上下文单例。更多连接管理器可前往连接中心文档查阅。
+            // 'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
+            // 连接管理器配置
+            'config'  => [
+                // 连接驱动类名，此处数据库固定写法
+                'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                // 数据库驱动类，详见对应数据库的驱动类文档
+                'dbDriver'  => 'PDOMysqlDriver',
+                // 连接配置
+                'resources' => [
+                    [
+                        'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                        'port'        => env('MYSQL_SERVER_PORT', 3306),
+                        'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                        'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
+                        'database'    => 'db_imi_test',
+                    ],
+                ],
+                // 是否启用统计，启用后可能会有微量性能损耗
+                'enableStatistics' => false,
+                // 当前请求上下文资源检查状态间隔，单位：支持小数的秒。为 null/0 则每次都检查
+                'requestResourceCheckInterval' => null,
+                // 是否在获取资源时检查状态
+                'checkStateWhenGetResource' => false,
+            ],
+        ],
+        // 从数据库，连接名称+.slave，如不需要区分主从也可不配置
+        'maindb.slave'    => [
+            // 结构同上
+        ],
+    ]
+]
+```
+
 ## Db 驱动对象操作
 
 用于直接执行 SQL

@@ -52,7 +52,7 @@ return [
             'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
             'config'  => [
                 'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
-                'dbDriver'  => \Imi\Db\Mysql\Drivers\PdoMysql\Driver::class,
+                'dbDriver'  => \Imi\Db\Mysql\Drivers\PDOMysql\Driver::class,
                 'resources' => [
                     [
                         'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
@@ -73,7 +73,7 @@ return [
             'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
             'config'  => [
                 'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
-                'dbDriver'  => \Imi\Db\Mysql\Drivers\PdoMysql\Driver::class,
+                'dbDriver'  => \Imi\Db\Mysql\Drivers\PDOMysql\Driver::class,
                 'resources' => [
                     [
                         'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
@@ -110,7 +110,7 @@ return [
             'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
             'config'  => [
                 'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
-                'dbDriver'  => \Imi\Db\Mysql\Drivers\PdoMysql\Driver::class,
+                'dbDriver'  => \Imi\Db\Mysql\Drivers\PDOMysql\Driver::class,
                 'resources' => [
                     [
                         'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),

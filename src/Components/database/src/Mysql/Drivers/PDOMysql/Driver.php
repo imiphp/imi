@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Db\Drivers\PdoPgsql;
+namespace Imi\Db\Mysql\Drivers\PDOMysql;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Db\ConnectionCenter\DatabaseDriverConfig;
 use Imi\Db\Drivers\PDO\TPDODriver;
-use Imi\Pgsql\Db\PgsqlBase;
-use Imi\Pgsql\Db\Util\SqlUtil;
+use Imi\Db\Mysql\Drivers\MysqlBase;
+use Imi\Db\Mysql\Util\SqlUtil;
 
 /**
- * PDO Pgsql驱动.
+ * PDO MySQL驱动.
  */
-#[Bean(name: 'PdoPgsqlDriver')]
-class Driver extends PgsqlBase
+#[Bean(name: 'PDOMysqlDriver')]
+class Driver extends MysqlBase
 {
     use TPDODriver;
 
@@ -37,10 +37,12 @@ class Driver extends PgsqlBase
     {
         $config = $this->config;
 
-        return $config->dsn ?? 'pgsql:'
-                . 'host=' . $config->host
-                . ';port=' . ($config->port ?? self::DEFAULT_PORT)
-                . ';dbname=' . ($config->database ?? '')
+        return $config->dsn ?? 'mysql:'
+                 . 'host=' . $config->host
+                 . ';port=' . ($config->port ?? self::DEFAULT_PORT)
+                 . ';dbname=' . ($config->database ?? '')
+                 . ';unix_socket=' . ($config->option['unix_socket'] ?? '')
+                 . ';charset=' . ($config->charset ?? self::DEFAULT_CHARSET)
         ;
     }
 

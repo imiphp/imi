@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Test\Tests\Pdo;
+namespace Imi\Db\Test\Tests\PDO;
 
 use Imi\Db\Test\Tests\DbBaseTestCase;
 

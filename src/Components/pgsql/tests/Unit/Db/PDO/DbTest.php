@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Test\Unit\Db\Pdo;
+namespace Imi\Pgsql\Test\Unit\Db\PDO;
 
-use Imi\Pgsql\Test\TPdoPgTest;
+use Imi\Pgsql\Test\TPDOPgTest;
 use Imi\Pgsql\Test\Unit\Db\DbBaseTestCase;
 
 /**
@@ -12,7 +12,7 @@ use Imi\Pgsql\Test\Unit\Db\DbBaseTestCase;
  */
 class DbTest extends DbBaseTestCase
 {
-    use TPdoPgTest;
+    use TPDOPgTest;
 
     /**
      * 连接池名.

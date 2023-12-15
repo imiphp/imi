@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Db\Drivers\PdoPgsql;
+namespace Imi\Pgsql\Db\Drivers\PDOPgsql;
 
 use Imi\Db\Drivers\PDO\TPDOStatement;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;

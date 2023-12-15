@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Test\Tests\Pdo;
+namespace Imi\Db\Test\Tests\PDO;
 
 use Imi\Db\Test\Tests\QueryCurdBaseTestCase;
 
 /**
- * @testdox PdoQueryCurd
+ * @testdox PDOQueryCurd
  */
 class QueryCurdTest extends QueryCurdBaseTestCase
 {

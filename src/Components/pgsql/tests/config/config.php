@@ -52,7 +52,7 @@ return [
             'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
             'config'  => [
                 'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
-                'dbDriver'  => \Imi\Pgsql\Db\Drivers\PdoPgsql\Driver::class,
+                'dbDriver'  => \Imi\Pgsql\Db\Drivers\PDOPgsql\Driver::class,
                 'resources' => [
                     [
                         'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
@@ -69,7 +69,7 @@ return [
             'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
             'config'  => [
                 'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
-                'dbDriver'  => \Imi\Pgsql\Db\Drivers\PdoPgsql\Driver::class,
+                'dbDriver'  => \Imi\Pgsql\Db\Drivers\PDOPgsql\Driver::class,
                 'resources' => [
                     [
                         'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Imi\Pgsql\Test\Unit\Db\Pdo;
+namespace Imi\Pgsql\Test\Unit\Db\PDO;
 
-use Imi\Pgsql\Test\TPdoPgTest;
+use Imi\Pgsql\Test\TPDOPgTest;
 use Imi\Pgsql\Test\Unit\Db\QueryCurdBaseTestCase;
 
 /**
- * @testdox PdoQueryCurd
+ * @testdox PDOQueryCurd
  */
 class QueryCurdTest extends QueryCurdBaseTestCase
 {
-    use TPdoPgTest;
+    use TPDOPgTest;
 
     /**
      * 连接池名.
