@@ -6,8 +6,10 @@ namespace Imi\Pgsql\Db\Drivers\Swoole;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
+use Imi\Db\ConnectionCenter\DatabaseDriverConfig;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Transaction\Transaction;
+use Imi\Log\Log;
 use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBase;
 use Imi\Pgsql\Db\Util\SqlUtil;
@@ -43,6 +45,17 @@ if (class_exists(PostgreSQL::class, false))
         protected ?Transaction $transaction = null;
 
         protected bool $connected = false;
+
+        public function __construct(DatabaseDriverConfig $config)
+        {
+            parent::__construct($config);
+            // @codeCoverageIgnoreStart
+            if (version_compare(\SWOOLE_VERSION, '5.1.1', '<='))
+            {
+                Log::warning(sprintf('You are using Swoole\Coroutine\PostgreSQL, you are using Swoole v%s, it is recommended that you upgrade to Swoole >= v5.1.2', \SWOOLE_VERSION));
+            }
+            // @codeCoverageIgnoreEnd
+        }
 
         /**
          * {@inheritDoc}

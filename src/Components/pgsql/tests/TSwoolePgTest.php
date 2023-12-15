@@ -8,7 +8,7 @@ trait TSwoolePgTest
 {
     protected function setUp(): void
     {
-        if (!class_exists(\Swoole\Coroutine\PostgreSQL::class, false))
+        if (!class_exists(\Swoole\Coroutine\PostgreSQL::class, false) || version_compare(\SWOOLE_VERSION, '5.1.1', '<='))
         {
             $this->markTestSkipped();
         }
