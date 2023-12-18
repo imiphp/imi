@@ -170,16 +170,32 @@ class Container implements ContainerInterface
 
         if ($data['recursion'] ?? true)
         {
-            // @phpstan-ignore-next-line
-            BeanFactory::initInstance($object, $params, $originId);
-            if ($stored && $object !== $beanObjects[$originId])
+            if ($stored)
             {
-                // 防止类 __init() 方法有协程上下文切换，导致单例被覆盖
-                return $beanObjects[$originId];
+                try
+                {
+                    BeanFactory::initInstance($object, $params, $originId);
+                    if ($object !== $beanObjects[$originId])
+                    {
+                        // 防止类 __init() 方法有协程上下文切换，导致单例被覆盖
+                        return $beanObjects[$originId];
+                    }
+                }
+                catch (\Throwable $th)
+                {
+                    if ($object === $beanObjects[$originId])
+                    {
+                        unset($beanObjects[$originId]);
+                    }
+                    throw $th;
+                }
+            }
+            else
+            {
+                BeanFactory::initInstance($object, $params, $originId);
             }
         }
 
-        // @phpstan-ignore-next-line
         return $object;
     }
 
@@ -272,7 +288,6 @@ class Container implements ContainerInterface
             $singletonObjects[$originId] = $object;
         }
 
-        // @phpstan-ignore-next-line
         return $object;
     }
 
