@@ -15,7 +15,7 @@ class InitClass
         $this->throw = App::get('InitClass.throw');
     }
 
-    public function __init()
+    public function __init(): void
     {
         if ($this->throw)
         {
