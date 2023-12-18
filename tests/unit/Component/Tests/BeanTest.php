@@ -11,6 +11,7 @@ use Imi\Test\BaseTest;
 use Imi\Test\Component\Bean\BeanA;
 use Imi\Test\Component\Bean\BeanB;
 use Imi\Test\Component\Bean\BeanC;
+use Imi\Test\Component\Bean\InitClass;
 use Imi\Test\Component\Enum\TestEnumBean;
 use Imi\Test\Component\Enum\TestEnumBeanBacked;
 use Imi\Util\Imi;
@@ -439,6 +440,23 @@ class BeanTest extends BaseTest
         $this->assertEquals(TestEnumBeanBacked::A, $bean->getEnum2());
         // @phpstan-ignore-next-line
         $this->assertEquals(TestEnumBeanBacked::B, $bean->getEnum3());
+    }
+
+    public function testInitThrow(): void
+    {
+        App::set('InitClass.throw', true);
+        try
+        {
+            App::getBean(InitClass::class);
+        }
+        catch (\Throwable $th)
+        {
+            $this->assertEquals('gg', $th->getMessage());
+        }
+
+        App::set('InitClass.throw', false);
+        $object = App::getBean(InitClass::class);
+        $this->assertFalse($object->isThrow());
     }
 
     // @phpstan-ignore-next-line
