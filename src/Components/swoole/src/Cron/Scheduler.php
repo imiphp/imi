@@ -49,49 +49,56 @@ class Scheduler extends \Imi\Cron\Scheduler
                  */
                 public function run(ITaskParam $param)
                 {
-                    /** @var \Imi\Cron\CronTask $task */
-                    $task = $param->getData();
-                    /** @var \Imi\Cron\CronManager $cronManager */
-                    $cronManager = App::getBean('CronManager');
-                    switch ($type = $task->getType())
+                    try
                     {
-                        case CronTaskType::RANDOM_WORKER:
-                            $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
-                            $taskClass = $task->getTask();
-                            $swooleServer->sendMessage(json_encode([
-                                'action'    => 'cronTask',
-                                'id'        => $task->getId(),
-                                'data'      => $task->getData(),
-                                'task'      => \is_callable($taskClass) ? null : $taskClass,
-                                'type'      => $type,
-                            ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE), random_int(0, $swooleServer->setting['worker_num'] - 1));
-                            break;
-                        case CronTaskType::ALL_WORKER:
-                            $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
-                            $taskClass = $task->getTask();
-                            $message = json_encode([
-                                'action'    => 'cronTask',
-                                'id'        => $task->getId(),
-                                'data'      => $task->getData(),
-                                'task'      => \is_callable($taskClass) ? null : $taskClass,
-                                'type'      => $type,
-                            ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
-                            for ($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
-                            {
-                                $swooleServer->sendMessage($message, $i);
-                            }
-                            break;
-                        case CronTaskType::TASK:
-                            $cronManager->getTaskCallable($task->getId(), $task->getTask(), $type)($task->getId(), $task->getData());
-                            break;
-                        case CronTaskType::PROCESS:
-                            $cronManager->getTaskCallable($task->getTask(), $task->getTask(), $type)($task->getId(), $task->getData());
-                            break;
-                        case CronTaskType::CRON_PROCESS:
-                            /** @var \Imi\Cron\CronWorker $cronWorker */
-                            $cronWorker = App::getBean('CronWorker');
-                            $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
-                            break;
+                        /** @var \Imi\Cron\CronTask $task */
+                        $task = $param->getData();
+                        /** @var \Imi\Cron\CronManager $cronManager */
+                        $cronManager = App::getBean('CronManager');
+                        switch ($type = $task->getType())
+                        {
+                            case CronTaskType::RANDOM_WORKER:
+                                $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
+                                $taskClass = $task->getTask();
+                                $swooleServer->sendMessage(json_encode([
+                                    'action'    => 'cronTask',
+                                    'id'        => $task->getId(),
+                                    'data'      => $task->getData(),
+                                    'task'      => \is_callable($taskClass) ? null : $taskClass,
+                                    'type'      => $type,
+                                ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE), random_int(0, $swooleServer->setting['worker_num'] - 1));
+                                break;
+                            case CronTaskType::ALL_WORKER:
+                                $swooleServer = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
+                                $taskClass = $task->getTask();
+                                $message = json_encode([
+                                    'action'    => 'cronTask',
+                                    'id'        => $task->getId(),
+                                    'data'      => $task->getData(),
+                                    'task'      => \is_callable($taskClass) ? null : $taskClass,
+                                    'type'      => $type,
+                                ], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+                                for ($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
+                                {
+                                    $swooleServer->sendMessage($message, $i);
+                                }
+                                break;
+                            case CronTaskType::TASK:
+                                $cronManager->getTaskCallable($task->getId(), $task->getTask(), $type)($task->getId(), $task->getData());
+                                break;
+                            case CronTaskType::PROCESS:
+                                $cronManager->getTaskCallable($task->getTask(), $task->getTask(), $type)($task->getId(), $task->getData());
+                                break;
+                            case CronTaskType::CRON_PROCESS:
+                                /** @var \Imi\Cron\CronWorker $cronWorker */
+                                $cronWorker = App::getBean('CronWorker');
+                                $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
+                                break;
+                        }
+                    }
+                    catch (\Throwable $th)
+                    {
+                        Log::error($th);
                     }
                 }
             }
