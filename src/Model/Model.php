@@ -9,7 +9,6 @@ use Imi\Bean\IBean;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-use Imi\Db\Query\QueryType;
 use Imi\Db\Query\Raw;
 use Imi\Db\Query\Result;
 use Imi\Event\Event;
@@ -227,7 +226,7 @@ abstract class Model extends BaseModel
             }
         }
 
-        return (bool) Db::select('select exists(' . $query->buildSelectSql() . ')', $query->getBinds(), static::__getMeta(static::__getRealClassName())->getDbPoolName(), QueryType::READ)->getScalar();
+        return (bool) Db::select('select exists(' . $query->buildSelectSql() . ')', $query->getBinds(), static::__getMeta(static::__getRealClassName())->getDbPoolName())->getScalar();
     }
 
     /**
