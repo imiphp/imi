@@ -9,7 +9,6 @@ use Imi\Bean\IBean;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-use Imi\Db\Query\QueryType;
 use Imi\Db\Query\Raw;
 use Imi\Db\Query\Result;
 use Imi\Event\Event;
