@@ -111,6 +111,12 @@
         "test-smarty": "@php vendor/bin/phpunit -c src/Components/smarty/tests/phpunit.xml",
         "test-pgsql": "@php src/Components/swoole/bin/swoole-phpunit -c src/Components/pgsql/tests/phpunit.xml",
         "test-phar": "@php src/Components/phar/tests/run-tests.php",
+        "test-connection-center-common": "@php vendor/bin/phpunit -c src/Components/connection-center/tests/phpunit.xml",
+        "test-connection-center-swoole": "CONNECTION_CENTER_TEST_MODE=swoole php src/Components/swoole/bin/swoole-phpunit -c src/Components/connection-center/tests/phpunit.xml",
+        "test-connection-center": [
+            "@composer test-connection-center-common",
+            "@composer test-connection-center-swoole"
+        ],
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",
@@ -125,7 +131,8 @@
             "@composer test-mqtt",
             "@composer test-smarty",
             "@composer test-pgsql",
-            "@composer test-phar"
+            "@composer test-phar",
+            "@composer test-connection-center"
         ]
     },
     "extra": {

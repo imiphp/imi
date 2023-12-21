@@ -25,6 +25,7 @@ components=(
   "swoole-tracker"
   "workerman"
   "workerman-gateway"
+  "connection-center"
 )
 
 analyze_component() {

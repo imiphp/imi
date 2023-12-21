@@ -49,6 +49,7 @@ swoolePhpUnitCommands=(
     "mqtt"
     "smarty"
     "pgsql"
+    "connection-center"
 )
 
 for name in "${phpUnitCommands[@]}"
