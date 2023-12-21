@@ -227,7 +227,7 @@ abstract class Model extends BaseModel
             }
         }
 
-        return (bool) Db::select('select exists(' . $query->buildSelectSql() . ')', $query->getBinds(), static::__getMeta(static::__getRealClassName())->getDbPoolName(), QueryType::READ)->getScalar();
+        return (bool) Db::select('select exists(' . $query->buildSelectSql() . ')', $query->getBinds(), static::__getMeta(static::__getRealClassName())->getDbPoolName())->getScalar();
     }
 
     /**

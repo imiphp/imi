@@ -333,7 +333,7 @@ class Db
     /**
      * 执行 SQL 返回结果.
      */
-    public static function select(string $sql, array $bindValues = [], ?string $poolName = null, int $queryType = QueryType::WRITE): ?IResult
+    public static function select(string $sql, array $bindValues = [], ?string $poolName = null, int $queryType = QueryType::READ): ?IResult
     {
         $db = self::getInstance($poolName, $queryType);
         if ($bindValues)
