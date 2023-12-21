@@ -57,6 +57,7 @@ function getRectorConfigCallback(string $path): callable
             \Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector::class,
             \Rector\CodeQuality\Rector\ClassMethod\OptionalParametersAfterRequiredRector::class, // 调整包含默认值的参数顺序，会导致代码被破坏
             \Rector\Php81\Rector\ClassConst\FinalizePublicClassConstantRector::class, // 常量自动加 final，无法继承覆盖了
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class, // 自说自话改never真下头
         ]);
 
         $rectorConfig->bootstrapFiles([
