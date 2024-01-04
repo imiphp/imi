@@ -867,4 +867,11 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals([':p1' => 'imi', ':p2' => 0], $query->getBinds());
         $this->assertEquals(SearchModifier::WITH_QUERY_EXPANSION, $options->getSearchModifier());
     }
+
+    public function testWhereNull(): void
+    {
+        $query = Db::query()->from('test')->where('a', 'is', null);
+        $this->assertEquals('select * from `test` where `a` is NULL', $query->buildSelectSql());
+        $this->assertEquals([], $query->getBinds());
+    }
 }

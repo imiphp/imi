@@ -162,6 +162,10 @@ class Where extends BaseWhere implements IWhere
                 {
                     $result .= $thisValues->toString($query);
                 }
+                elseif (null === $thisValues)
+                {
+                    $result .= 'NULL';
+                }
                 else
                 {
                     $value = $query->getAutoParamName();
