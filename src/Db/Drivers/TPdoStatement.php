@@ -319,6 +319,14 @@ trait TPdoStatement
      */
     protected function getDataTypeByValue($value): int
     {
+        if (\is_int($value))
+        {
+            return \PDO::PARAM_INT;
+        }
+        if (\is_string($value))
+        {
+            return \PDO::PARAM_STR;
+        }
         if (null === $value)
         {
             return \PDO::PARAM_NULL;
@@ -326,10 +334,6 @@ trait TPdoStatement
         if (\is_bool($value))
         {
             return \PDO::PARAM_BOOL;
-        }
-        if (\is_int($value))
-        {
-            return \PDO::PARAM_INT;
         }
         if (\is_resource($value))
         {
