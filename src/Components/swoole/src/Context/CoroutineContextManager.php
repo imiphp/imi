@@ -119,7 +119,7 @@ class CoroutineContextManager implements IContextManager
     {
         if ($flag > -1)
         {
-            return Coroutine::exists($flag);
+            return Coroutine::exists((int) $flag);
         }
         else
         {
