@@ -6,11 +6,10 @@ namespace Imi\Pgsql\Test;
 
 use Imi\App;
 use Imi\Core\CoreEvents;
+use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
 use Imi\Event\Contract\IEvent;
 use Imi\Event\Event;
-use Imi\Pool\Interfaces\IPoolResource;
-use Imi\Pool\PoolManager;
 use Imi\Swoole\SwooleApp;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
@@ -23,19 +22,18 @@ class PHPUnitHook implements Extension
     {
         Event::on(CoreEvents::APP_RUN, static function (IEvent $param): void {
             $param->stopPropagation();
-            PoolManager::use(\in_array('pgsql', pdo_drivers()) ? 'maindb' : 'swoole', static function (IPoolResource $resource, IDb $db): void {
-                $truncateList = [
+            Db::use(static function (IDb $db): void {
+                foreach ([
                     'tb_article',
                     'tb_member',
                     'tb_update_time',
                     'tb_performance',
                     'tb_no_inc_pk',
-                ];
-                foreach ($truncateList as $table)
+                ] as $table)
                 {
                     $db->exec('TRUNCATE ' . $table . ' RESTART IDENTITY');
                 }
-            });
+            }, \in_array('pgsql', pdo_drivers()) ? 'maindb' : 'swoole');
         }, 1);
         App::run('Imi\Pgsql\Test', SwooleApp::class, static function (): void {
         });

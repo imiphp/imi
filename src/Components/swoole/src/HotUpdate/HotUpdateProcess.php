@@ -9,7 +9,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\HotUpdate\Event\HotUpdateBeginBuildEvent;
 use Imi\Log\Log;
-use Imi\Pool\Annotation\PoolClean;
 use Imi\Process\Event\ProcessEvents;
 use Imi\Swoole\Event\SwooleEvents;
 use Imi\Swoole\Process\Annotation\Process;
@@ -103,7 +102,6 @@ class HotUpdateProcess extends BaseProcess
 
     private bool $running = false;
 
-    #[PoolClean]
     public function run(\Swoole\Process $process): void
     {
         if (!$this->status)

@@ -118,24 +118,6 @@ return [
 
     // 连接池配置
     'pools'         => [
-        // 主数据库
-        'maindb'    => [
-            'pool'        => [
-                'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                'config'       => [
-                    'maxResources'    => 10,
-                    'minResources'    => 1,
-                ],
-            ],
-            'resource'    => [
-                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('MYSQL_SERVER_PORT', 3306),
-                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'mysql',
-                'charset'     => 'utf8mb4',
-            ],
-        ],
         'redis'     => [
             'pool'        => [
                 'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,

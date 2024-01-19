@@ -118,5 +118,5 @@ vendor/bin/imi-swoole migration/命令 --poolName "连接池名"
 #### 指定连接参数
 
 ```shell
-vendor/bin/imi-swoole migration/命令 --driver "PdoMysqlDriver" --options "host=127.0.0.1&port=3306&username=root&password=root"
+vendor/bin/imi-swoole migration/命令 --driver "PDOMysqlDriver" --options "host=127.0.0.1&port=3306&username=root&password=root"
 ```

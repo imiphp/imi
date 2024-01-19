@@ -46,88 +46,63 @@ return [
         ],
     ],
 
-    // 连接池配置
-    'pools'         => [
+    'connectionCenter' => [
         // 主数据库
-        'maindb'          => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 0,
-                    'checkStateWhenGetResource' => false,
+        'maindb' => [
+            'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
+            'config'  => [
+                'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                'dbDriver'  => \Imi\Pgsql\Db\Drivers\PDOPgsql\Driver::class,
+                'resources' => [
+                    [
+                        'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                        'port'        => env('PGSQL_SERVER_PORT', 5432),
+                        'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                        'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
+                        'database'    => 'db_imi_test',
+                    ],
                 ],
             ],
-            // 连接池资源配置
-            'resource'    => [
-                'dbClass'     => 'PdoPgsqlDriver',
-                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('PGSQL_SERVER_PORT', 5432),
-                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-            ],
         ],
-        // 主数据库
+        // 从数据库
         'maindb.slave'    => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 0,
-                    'checkStateWhenGetResource' => false,
+            'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
+            'config'  => [
+                'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                'dbDriver'  => \Imi\Pgsql\Db\Drivers\PDOPgsql\Driver::class,
+                'resources' => [
+                    [
+                        'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                        'port'        => env('PGSQL_SERVER_PORT', 5432),
+                        'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                        'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
+                        'database'    => 'db_imi_test',
+                    ],
                 ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'dbClass'     => 'PdoPgsqlDriver',
-                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('PGSQL_SERVER_PORT', 5432),
-                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
             ],
         ],
-        'swoole'          => class_exists(\Swoole\Coroutine\PostgreSQL::class, false) ? [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 0,
-                    'checkStateWhenGetResource' => false,
+        ...(class_exists(\Swoole\Coroutine\PostgreSQL::class, false) ? [
+            'swoole'    => [
+                'manager' => \Imi\ConnectionCenter\Handler\Pool\PoolConnectionManager::class,
+                'config'  => [
+                    'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                    'dbDriver'  => \Imi\Pgsql\Db\Drivers\Swoole\Driver::class,
+                    'resources' => [
+                        [
+                            'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
+                            'port'        => env('PGSQL_SERVER_PORT', 5432),
+                            'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
+                            'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
+                            'database'    => 'db_imi_test',
+                        ],
+                    ],
                 ],
             ],
-            // 连接池资源配置
-            'resource'    => [
-                // @phpstan-ignore-next-line
-                'dbClass'     => version_compare(\SWOOLE_VERSION, '5.0', '>=') ? 'SwooleNewPgsqlDriver' : 'SwoolePgsqlDriver',
-                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('PGSQL_SERVER_PORT', 5432),
-                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-            ],
-        ] : [],
+        ] : []),
     ],
     // db 配置
     'db'            => [
         // 默认连接池名
         'defaultPool' => 'maindb',
-        'connections' => [
-            'maindb' => [
-                'dbClass'     => 'PdoPgsqlDriver',
-                'host'        => env('PGSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('PGSQL_SERVER_PORT', 5432),
-                'username'    => env('PGSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('PGSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-            ],
-        ],
     ],
 ];

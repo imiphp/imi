@@ -13,33 +13,27 @@ return [
     ],
     'ignoreNamespace'   => [
     ],
-    // 连接池配置
-    'pools'             => [
+    'connectionCenter' => [
         // 主数据库
-        'maindb'        => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 1,
-                    'checkStateWhenGetResource' => false,
-                ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('MYSQL_SERVER_PORT', 3306),
-                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-                'charset'     => 'utf8mb4',
-                'initSqls'    => [
-                    'SET @__pool_name="maindb"',
+        'maindb' => [
+            'manager' => \Imi\ConnectionCenter\Handler\RequestContextSingleton\RequestContextSingletonConnectionManager::class,
+            'config'  => [
+                'driver'    => \Imi\Db\ConnectionCenter\DatabaseDriver::class,
+                'dbDriver'  => \Imi\Db\Mysql\Drivers\PDOMysql\Driver::class,
+                'resources' => [
+                    [
+                        'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
+                        'port'        => env('MYSQL_SERVER_PORT', 3306),
+                        'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
+                        'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
+                        'database'    => 'db_imi_test',
+                    ],
                 ],
             ],
         ],
+    ],
+    // 连接池配置
+    'pools'             => [
         'redis_test'    => [
             'pool'        => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,
@@ -61,7 +55,7 @@ return [
         'defaultPool' => 'maindb',
         'connections' => [
             'tradition' => [
-                'dbClass'  => 'PdoMysqlDriver',
+                'dbClass'  => 'PDOMysqlDriver',
                 'host'     => env('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'port'     => env('MYSQL_SERVER_PORT', 3306),
                 'username' => env('MYSQL_SERVER_USERNAME', 'root'),

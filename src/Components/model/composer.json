@@ -1,0 +1,33 @@
+{
+    "name": "imiphp/imi-model",
+    "type": "library",
+    "license": "MulanPSL-2.0",
+    "description": "imi model",
+    "require": {
+        "imiphp/imi-database": "~3.0.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\Model\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Model\\Test\\": "tests/",
+            "Imi\\Model\\Dev\\": "dev/"
+        },
+        "files": [
+            "../../../vendor/autoload.php",
+            "../database/vendor/autoload.php"
+        ]
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Model\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Model\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Model\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Model\\Dev\\Dev::postUpdate"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

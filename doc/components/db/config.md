@@ -67,7 +67,7 @@ return [
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => 'PdoMysqlDriver',
+                // 'dbClass' => 'PDOMysqlDriver',
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => 'MysqliDriver',
                 // 数据库连接后，执行初始化的 SQL
@@ -132,7 +132,7 @@ return [
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => 'PdoMysqlDriver',
+                // 'dbClass' => 'PDOMysqlDriver',
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => 'MysqliDriver',
                 // 数据库连接后，执行初始化的 SQL
@@ -176,7 +176,7 @@ return [
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => 'PdoMysqlDriver',
+                // 'dbClass' => 'PDOMysqlDriver',
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => 'MysqliDriver',
                 // 数据库连接后，执行初始化的 SQL

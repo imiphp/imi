@@ -103,101 +103,6 @@ return [
 
     // 连接池配置
     'pools'             => [
-        // 主数据库
-        'maindb'                => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 1,
-                    'checkStateWhenGetResource' => false,
-                ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('MYSQL_SERVER_PORT', 3306),
-                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-                'charset'     => 'utf8mb4',
-                'initSqls'    => [
-                    'SET @__pool_name="maindb"',
-                ],
-            ],
-        ],
-        // 从数据库
-        'maindb.slave'          => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 1,
-                    'checkStateWhenGetResource' => false,
-                ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('MYSQL_SERVER_PORT', 3306),
-                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-                'charset'     => 'utf8mb4',
-                'initSqls'    => [
-                    'SET @__pool_name="maindb.slave"',
-                ],
-            ],
-        ],
-        // mysqli
-        'mysqli'                => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 1,
-                    'checkStateWhenGetResource' => false,
-                ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('MYSQL_SERVER_PORT', 3306),
-                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-                'charset'     => 'utf8mb4',
-                'dbClass'     => 'MysqliDriver',
-            ],
-        ],
-        'dbPrefix'              => [
-            'pool'        => [
-                // 协程池类名
-                'class'         => \Imi\Db\Pool\SyncDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 1,
-                    'checkStateWhenGetResource' => false,
-                ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'host'        => env('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => env('MYSQL_SERVER_PORT', 3306),
-                'username'    => env('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => env('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-                'charset'     => 'utf8mb4',
-                'prefix'      => 'tb_',
-            ],
-        ],
         'redis_test'            => [
             'pool'        => [
                 'class'        => \Imi\Redis\SyncRedisPool::class,
@@ -251,7 +156,7 @@ return [
         'defaultPool' => 'maindb',
         'connections' => [
             'tradition' => [
-                'dbClass'  => 'PdoMysqlDriver',
+                'dbClass'  => 'PDOMysqlDriver',
                 'host'     => env('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'port'     => env('MYSQL_SERVER_PORT', 3306),
                 'username' => env('MYSQL_SERVER_USERNAME', 'root'),
@@ -354,31 +259,4 @@ return [
         ],
     ],
     'yurun2'            => env('yurun'),
-    'tools'             => [
-        'generate/model'    => [
-            'namespace' => [
-                'Imi\Test\Component\Model' => [
-                    'tables'    => [
-                        'tb_tree'      => [
-                            'withRecords' => true,
-                        ],
-                        'tb_role'      => [
-                            'withRecords' => true,
-                        ],
-                        'tb_test_list' => [
-                            'fields' => [
-                                'list' => [
-                                    'typeDefinition' => false,
-                                ],
-                            ],
-                        ],
-                        'tb_article2'  => [
-                            'bean'       => false,
-                            'incrUpdate' => true,
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ],
 ];

@@ -40,6 +40,8 @@ phpUnitCommands=(
     "fpm"
     "jwt"
     "snowflake"
+    "database"
+    "model"
 )
 
 swoolePhpUnitCommands=(

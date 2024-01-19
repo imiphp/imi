@@ -107,6 +107,12 @@ jobs:
       - name: Test connection-center
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test-connection-center
+      - name: Test database
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-database
+      - name: Test model
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-model
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
@@ -195,6 +201,12 @@ jobs:
       - name: Test connection-center
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test-connection-center
+      - name: Test database
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-database
+      - name: Test model
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-model
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
@@ -300,6 +312,12 @@ jobs:
       - name: Test connection-center
         if: ${{ env.test_prepared && always() }}
         run: composer test-connection-center
+      - name: Test database
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-database
+      - name: Test model
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-model
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
@@ -433,6 +451,12 @@ jobs:
       - name: Test connection-center
         if: ${{ env.test_prepared && always() }}
         run: composer test-connection-center
+      - name: Test database
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-database
+      - name: Test model
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-model
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php
@@ -505,7 +529,7 @@ jobs:
           composer update --prefer-dist --no-progress
           Write-Output "::endgroup::"
           Write-Output "::group::Table Init"
-          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Test\Component"
+          php src\Cli\bin\imi-cli generate/table --app-namespace "Imi\Model\Test"
           Write-Output "::endgroup::"
 
       - name: Install RoadRunner
@@ -541,6 +565,12 @@ jobs:
       - name: Test connection-center
         if: ${{ env.test_prepared && always() }}
         run: composer test-connection-center-common
+      - name: Test database
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-database
+      - name: Test model
+        if: ${{ env.test_prepared && always() }}
+        run: composer test-model
       - name: Print logs
         if: failure()
         run: php .github\print-logs.php

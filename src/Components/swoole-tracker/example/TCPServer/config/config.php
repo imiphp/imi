@@ -65,45 +65,6 @@ return [
 
     // 连接池配置
     'pools'             => [
-        // 主数据库
-        // 'maindb'    =>    [
-        //     // 同步池子
-        //     'sync'    =>    [
-        //         'pool'    =>    [
-        //             'class'        =>    \Imi\Db\Pool\SyncDbPool::class,
-        //             'config'    =>    [
-        //                 'maxResources'    =>    10,
-        //                 'minResources'    =>    0,
-        //             ],
-        //         ],
-        //         'resource'    =>    [
-        //             'host'        => '127.0.0.1',
-        //             'port'        => 3306,
-        //             'username'    => 'root',
-        //             'password'    => 'root',
-        //             'database'    => 'database_name',
-        //             'charset'     => 'utf8mb4',
-        //         ],
-        //     ],
-        //     // 异步池子，worker进程使用
-        //     'async'    =>    [
-        //         'pool'    =>    [
-        //             'class'        =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-        //             'config'    =>    [
-        //                 'maxResources'    =>    10,
-        //                 'minResources'    =>    0,
-        //             ],
-        //         ],
-        //         'resource'    =>    [
-        //             'host'        => '127.0.0.1',
-        //             'port'        => 3306,
-        //             'username'    => 'root',
-        //             'password'    => 'root',
-        //             'database'    => 'database_name',
-        //             'charset'     => 'utf8mb4',
-        //         ],
-        //     ]
-        // ],
         'redis'    => [
             'sync'     => [
                 'pool'        => [

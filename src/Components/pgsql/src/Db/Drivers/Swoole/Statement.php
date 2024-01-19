@@ -10,6 +10,7 @@ use Imi\Pgsql\Db\Contract\IPgsqlStatement;
 use Imi\Pgsql\Db\PgsqlBaseStatement;
 use Imi\Swoole\Util\Coroutine;
 use Imi\Util\Text;
+use Swoole\Coroutine\PostgreSQLStatement;
 
 /**
  * Swoole Coroutine Pgsql 驱动 Statement.
@@ -35,25 +36,19 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         /**
          * 数据库操作对象
          */
-        protected ?IPgsqlDb $db, protected mixed $queryResult,
+        protected ?IPgsqlDb $db, protected ?PostgreSQLStatement $stmt,
         /**
          * 最后执行过的SQL语句.
          */
         protected string $lastSql,
         /**
-         * statement 名字.
-         */
-        protected ?string $statementName = null,
-        /**
          * SQL 参数映射.
          */
-        protected ?array $sqlParamsMap = null)
+        protected ?array $sqlParamsMap = null, bool $isExecuted = false)
     {
-        if ($queryResult)
+        if ($isExecuted)
         {
-            /** @var \Swoole\Coroutine\PostgreSQL $pgDb */
-            $pgDb = $db->getInstance();
-            if ($result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC))
+            if ($result = $stmt->fetchAll(\SW_PGSQL_ASSOC))
             {
                 $this->result = $result;
             }
@@ -61,12 +56,8 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         }
     }
 
-    public function __destruct()
+    public function close(): void
     {
-        if (null !== $this->statementName && Coroutine::isIn() && $this->db->isConnected())
-        {
-            $this->db->exec('DEALLOCATE ' . $this->statementName);
-        }
     }
 
     /**
@@ -82,7 +73,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function bindColumn(string|int $column, mixed &$var, int $type = \PDO::PARAM_STR, int $maxLength = 0, mixed $driverOptions = null): bool
     {
-        $this->bindValues[$column] = $column;
+        $this->bindValues[$column] = $var;
 
         return true;
     }
@@ -132,7 +123,14 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function errorCode(): mixed
     {
-        return $this->db->errorCode();
+        if ($this->stmt->resultDiag)
+        {
+            return $this->stmt->resultDiag['sqlstate'] ?? null;
+        }
+        else
+        {
+            return '';
+        }
     }
 
     /**
@@ -140,7 +138,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function errorInfo(): string
     {
-        return $this->db->errorInfo();
+        return $this->stmt->error ?? '';
     }
 
     /**
@@ -156,66 +154,53 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function execute(array $inputParameters = null): bool
     {
-        /** @var \Swoole\Coroutine\PostgreSQL $pgDb */
-        $pgDb = $this->db->getInstance();
-        if (null === $this->statementName)
+        if (null === $inputParameters)
         {
-            $this->queryResult = $queryResult = $pgDb->query($this->lastSql);
-            if (false === $queryResult)
+            $inputParameters = $this->bindValues;
+        }
+        $this->bindValues = $bindValues = [];
+        if ($inputParameters)
+        {
+            $sqlParamsMap = $this->sqlParamsMap;
+            if ($sqlParamsMap)
             {
-                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql() . \PHP_EOL);
+                foreach ($sqlParamsMap as $index => $paramName)
+                {
+                    if (isset($inputParameters[$paramName]))
+                    {
+                        $bindValues[$index] = $this->parseValue($inputParameters[$paramName]);
+                    }
+                    elseif (isset($inputParameters[$key = ':' . $paramName]))
+                    {
+                        $bindValues[$index] = $this->parseValue($inputParameters[$key]);
+                    }
+                    elseif (isset($inputParameters[$index]))
+                    {
+                        $bindValues[$index] = $this->parseValue($inputParameters[$index]);
+                    }
+                }
+            }
+            else
+            {
+                foreach ($inputParameters as $value)
+                {
+                    $bindValues[] = $this->parseValue($value);
+                }
             }
         }
-        else
+        $stmt = $this->stmt;
+        if (false === $stmt->execute($bindValues))
         {
-            if (null === $inputParameters)
+            $errorCode = $this->errorCode();
+            $errorInfo = $this->errorInfo();
+            if ($this->db->checkCodeIsOffline($errorCode))
             {
-                $inputParameters = $this->bindValues;
+                $this->db->close();
             }
-            $this->bindValues = $bindValues = [];
-            if ($inputParameters)
-            {
-                $sqlParamsMap = $this->sqlParamsMap;
-                if ($sqlParamsMap)
-                {
-                    foreach ($sqlParamsMap as $index => $paramName)
-                    {
-                        if (isset($inputParameters[$paramName]))
-                        {
-                            $bindValues[$index] = $this->parseValue($inputParameters[$paramName]);
-                        }
-                        elseif (isset($inputParameters[$key = ':' . $paramName]))
-                        {
-                            $bindValues[$index] = $this->parseValue($inputParameters[$key]);
-                        }
-                        elseif (isset($inputParameters[$index]))
-                        {
-                            $bindValues[$index] = $this->parseValue($inputParameters[$index]);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach ($inputParameters as $value)
-                    {
-                        $bindValues[] = $this->parseValue($value);
-                    }
-                }
-            }
-            $this->queryResult = $queryResult = $pgDb->execute($this->statementName, $bindValues);
-            if (false === $queryResult)
-            {
-                $errorCode = $this->errorCode();
-                $errorInfo = $this->errorInfo();
-                if ($this->db->checkCodeIsOffline($errorCode))
-                {
-                    $this->db->close();
-                }
-                throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
-            }
+            throw new DbException('SQL query error: [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
         }
         $this->updateLastInsertId();
-        $this->result = $pgDb->fetchAll($queryResult, \SW_PGSQL_ASSOC) ?: [];
+        $this->result = $stmt->fetchAll(\SW_PGSQL_ASSOC) ?: [];
 
         return true;
     }
@@ -223,7 +208,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0): mixed
+    public function fetch(?int $fetchStyle = null, ?int $cursorOrientation = null, int $cursorOffset = 0): mixed
     {
         $result = current($this->result);
         if ($result)
@@ -237,7 +222,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, mixed $fetchArgument = null, array $ctorArgs = []): array
+    public function fetchAll(?int $fetchStyle = null, mixed $fetchArgument = null, array $ctorArgs = []): array
     {
         return $this->result;
     }
@@ -332,7 +317,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
      */
     public function rowCount(): int
     {
-        return $this->db->rowCount();
+        return $this->stmt->affectedRows();
     }
 
     /**

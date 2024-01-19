@@ -58,6 +58,8 @@ elif [[ $testType = "components" ]]; then
         "fpm"
         "jwt"
         "snowflake"
+        "database"
+        "model"
     )
 
     test "workerman-gateway-workerman" "php $paramsXdebug vendor/bin/phpunit -c ./src/Components/workerman-gateway/tests/phpunit.xml --testsuite workerman --coverage-php=./dev/cover/workerman-gateway-coverage.php"

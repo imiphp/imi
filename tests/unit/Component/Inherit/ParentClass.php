@@ -8,9 +8,9 @@ use Imi\Aop\Annotation\FilterArg;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Annotation\Callback;
 use Imi\Bean\Annotation\Inherit;
-use Imi\Db\Annotation\Transaction;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
+use Imi\Test\Component\Annotation\CommentAnnotation;
 
 #[Entity]
 #[Bean]
@@ -31,19 +31,19 @@ class ParentClass
     public const CCC2 = 1;
 
     #[FilterArg]
-    #[Transaction]
+    #[CommentAnnotation]
     public function test(): void
     {
     }
 
     #[FilterArg]
-    #[Transaction]
+    #[CommentAnnotation]
     public function test2(): void
     {
     }
 
     #[FilterArg]
-    #[Transaction]
+    #[CommentAnnotation]
     public function test3(): void
     {
     }

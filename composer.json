@@ -52,7 +52,8 @@
         },
         "files": [
             "dev/bootstrap.php",
-            "tests/helper.php"
+            "tests/helper.php",
+            "src/Components/model/vendor/autoload.php"
         ]
     },
     "suggest": {
@@ -117,6 +118,8 @@
             "@composer test-connection-center-common",
             "@composer test-connection-center-swoole"
         ],
+        "test-database": "@php vendor/bin/phpunit -c src/Components/database/tests/phpunit.xml",
+        "test-model": "@php vendor/bin/phpunit -c src/Components/model/tests/phpunit.xml",
         "test-components": [
             "@composer test-swoole",
             "@composer test-workerman",
@@ -132,7 +135,9 @@
             "@composer test-smarty",
             "@composer test-pgsql",
             "@composer test-phar",
-            "@composer test-connection-center"
+            "@composer test-connection-center",
+            "@composer test-database",
+            "@composer test-model"
         ]
     },
     "extra": {

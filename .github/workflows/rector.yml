@@ -172,3 +172,13 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec -w /imi/src/Components/connection-center ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
+
+      - name: Analyse database
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker exec -w /imi/src/Components/database ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
+
+      - name: Analyse model
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker exec -w /imi/src/Components/model ${ENV_SERVICE} /imi/vendor/bin/rector process --dry-run
