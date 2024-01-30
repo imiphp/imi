@@ -29,7 +29,7 @@ $post = $this->request->getParsedBody();
 $cookies = $this->request->getCookieParams();
 $uploadFiles = $this->request->getUploadedFiles() ?? [];
 $server = $this->request->getServerParams();
-$body = (string) $this->request->getBody()->getContents();
+$body = (string) $this->request->getBody();
 $files = [];
 /** @var \Imi\Server\Http\Message\UploadedFile $v */
 foreach ($uploadFiles as $k => $v) {
