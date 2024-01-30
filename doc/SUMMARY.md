@@ -313,3 +313,4 @@
 * [YurunHttp](other/yurunhttp.md)
 * [第三方授权 SDK](other/yurun-oauth-login.md)
 * [第三方支付 SDK](other/paysdk.md)
+* [EasyWechat](other/easywechat.md)
