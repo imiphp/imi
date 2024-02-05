@@ -135,7 +135,7 @@ trait TLockableParser
                 {
                     return md5(serialize($value));
                 }
-            }, $lockable->id);
+            }, (string) $lockable->id);
         }
     }
 }

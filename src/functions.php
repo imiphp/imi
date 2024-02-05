@@ -148,14 +148,14 @@ namespace Imi
             }
             else
             {
-                fwrite(\STDOUT, $output);
+                fwrite(\STDOUT, (string) $output);
             }
         }
         else
         {
             if (!\extension_loaded('xdebug'))
             {
-                $output = htmlspecialchars($output, \ENT_SUBSTITUTE);
+                $output = htmlspecialchars((string) $output, \ENT_SUBSTITUTE);
             }
             echo '<pre>' . $output . '</pre>';
         }

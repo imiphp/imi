@@ -95,7 +95,7 @@ class Text
      */
     public static function toUnderScoreCase(string $name, bool $toLower = true): string
     {
-        $result = trim(preg_replace('/[A-Z]/', '_\0', $name), '_');
+        $result = trim((string) preg_replace('/[A-Z]/', '_\0', $name), '_');
         if ($toLower)
         {
             $result = strtolower($result);

@@ -103,7 +103,7 @@ class Where extends BaseWhere implements IWhere
         $thisValues = &$this->value;
         $operation = $this->operation;
         $result = $query->fieldQuote($this->fieldName) . ' ' . $operation . ' ';
-        switch (strtolower($operation))
+        switch (strtolower((string) $operation))
         {
             case 'between':
             case 'not between':
