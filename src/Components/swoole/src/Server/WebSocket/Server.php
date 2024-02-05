@@ -98,6 +98,10 @@ class Server extends Base implements ISwooleWebSocketServer
         $thisConfig = &$this->config;
         $thisConfig['configs']['open_websocket_protocol'] ??= true;
         $this->wss = \defined('SWOOLE_SSL') && isset($thisConfig['sockType']) && Bit::has($thisConfig['sockType'], \SWOOLE_SSL);
+        if (!$this->swooleServer instanceof WebSocketServer)
+        {
+            Log::warning(sprintf('The child server [%s] is of type WebSocket and the main server must also be of type WebSocket!', $this->getName()));
+        }
     }
 
     /**
