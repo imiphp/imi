@@ -48,21 +48,26 @@ class ModelTest extends BaseTest
         $record = NoIncPk::newInstance();
         $record->aId = 1;
         $this->assertEquals(1, $record->aId);
+        // @phpstan-ignore-next-line
         $this->assertEquals(1, $record->a_id);
         $this->assertEquals(1, $record['aId']);
         $this->assertEquals(1, $record['a_id']);
+        // @phpstan-ignore-next-line
         $record->a_id = 2;
         $this->assertEquals(2, $record->aId);
+        // @phpstan-ignore-next-line
         $this->assertEquals(2, $record->a_id);
         $this->assertEquals(2, $record['aId']);
         $this->assertEquals(2, $record['a_id']);
         $record['aId'] = 3;
         $this->assertEquals(3, $record->aId);
+        // @phpstan-ignore-next-line
         $this->assertEquals(3, $record->a_id);
         $this->assertEquals(3, $record['aId']);
         $this->assertEquals(3, $record['a_id']);
         $record['a_id'] = 4;
         $this->assertEquals(4, $record->aId);
+        // @phpstan-ignore-next-line
         $this->assertEquals(4, $record->a_id);
         $this->assertEquals(4, $record['aId']);
         $this->assertEquals(4, $record['a_id']);
