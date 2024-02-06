@@ -339,6 +339,7 @@ class RedisModelTest extends BaseTest
         {
             $this->markTestSkipped();
         }
+        // @phpstan-ignore-next-line
         $record = TestEnumRedisModel::newInstance([
             'id'         => 1,
             'name'       => 'a',
@@ -355,9 +356,12 @@ class RedisModelTest extends BaseTest
             'enumBacked' => TestEnumBeanBacked::B,
         ];
 
+        // @phpstan-ignore-next-line
         $record = TestEnumRedisModel::find('TestEnumRedisModel-1-a');
         $this->assertNotNull($record);
         $this->assertEquals($expected, $record->toArray());
+
+        // @phpstan-ignore-next-line
         $record = TestEnumRedisModel::find([
             'id'    => 1,
             'name'  => 'a',

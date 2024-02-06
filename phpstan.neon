@@ -51,6 +51,8 @@ parameters:
                 - dev/PHPStan/FileFinder.php
         - '#Class UnitEnum not found#'
         - '#Class BackedEnum not found#'
+        - '#unknown class UnitEnum#'
+        - '#unknown class BackedEnum#'
         - '#Call to static method .+\(\) on an unknown class (Backed|Unit)Enum#'
         - '#Method Imi\\Util\\EnumUtil::.+\(\) has invalid return type (Backed|Unit)Enum#'
         - '#unknown class Imi\\Test\\Component\\Bean\\EnumBean#'
