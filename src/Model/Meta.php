@@ -188,6 +188,11 @@ class Meta
      */
     private bool $incrUpdate = false;
 
+    /**
+     * 属性枚举集合.
+     */
+    private array $propertyEnumMap = [];
+
     public function __construct(string $modelClass, bool $inherit = false)
     {
         $this->inherit = $inherit;
@@ -281,6 +286,33 @@ class Meta
             if (null === $this->autoIncrementField && !$column->virtual && $column->isAutoIncrement)
             {
                 $this->autoIncrementField = $name;
+            }
+            if (\PHP_VERSION_ID >= 80100)
+            {
+                $reflectionProperty = new \ReflectionProperty($realModelClass, $name);
+                if ($reflectionProperty->hasType())
+                {
+                    $type = $reflectionProperty->getType();
+
+                    if ($type instanceof \ReflectionNamedType)
+                    {
+                        if (is_subclass_of($typeName = $type->getName(), \UnitEnum::class))
+                        {
+                            $this->propertyEnumMap[$name] = $typeName;
+                        }
+                    }
+                    elseif ($type instanceof \ReflectionUnionType)
+                    {
+                        foreach ($type->getTypes() as $type)
+                        {
+                            if (is_subclass_of($typeName = $type->getName(), \UnitEnum::class))
+                            {
+                                $this->propertyEnumMap[$name] = $typeName;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
         /** @var Serializable[][] $serializableSets */
@@ -660,5 +692,13 @@ class Meta
     public function isIncrUpdate(): bool
     {
         return $this->incrUpdate;
+    }
+
+    /**
+     * 获取属性枚举类名.
+     */
+    public function getPropertyEnumClass(string $propertyName): ?string
+    {
+        return $this->propertyEnumMap[$propertyName] ?? null;
     }
 }

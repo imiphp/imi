@@ -54,6 +54,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     protected static array $__setterCache = [];
 
     /**
+     * 枚举值转枚举对象方法缓存.
+     */
+    protected static array $__enumFromValueCache = [];
+
+    /**
      * 序列化后的所有字段属性名列表.
      */
     protected array $__fieldNames = [];
@@ -279,17 +284,37 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
             return;
         }
-        // 数据库bit类型字段处理
         if (!$column && isset($fields[$camelName = $this->__getCamelName((string) $offset)]))
         {
             $column = $fields[$camelName];
+            $offset = $camelName;
         }
+        $class = ($this->__realClass ??= $meta->getRealModelClass());
+        // 数据库bit类型字段处理
         if ($column && 'bit' === $column->type)
         {
             $value = (1 == $value || \chr(1) === $value);
         }
+        elseif (\PHP_VERSION_ID >= 80100)
+        {
+            $enumClass = $meta->getPropertyEnumClass($offset);
+            if (null !== $enumClass && !$value instanceof \UnitEnum)
+            {
+                if (!isset(self::$__enumFromValueCache[$class][$offset]))
+                {
+                    if (is_subclass_of($enumClass, \BackedEnum::class))
+                    {
+                        self::$__enumFromValueCache[$class][$offset] = $enumClass . '::tryFrom';
+                    }
+                    else
+                    {
+                        self::$__enumFromValueCache[$class][$offset] = static fn ($value) => \Imi\Util\EnumUtil::tryFromName($enumClass, $value);
+                    }
+                }
+                $value = self::$__enumFromValueCache[$class][$offset]($value);
+            }
+        }
 
-        $class = ($this->__realClass ??= $this->__meta->getRealModelClass());
         if (isset(self::$__setterCache[$class][$offset]))
         {
             $methodName = self::$__setterCache[$class][$offset];
@@ -302,7 +327,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $methodName = 'set' . ucfirst($this->__getCamelName((string) $offset));
+            $methodName = 'set' . ucfirst($offset);
             if (method_exists($this, $methodName))
             {
                 self::$__setterCache[$class][$offset] = $methodName;
@@ -325,7 +350,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             if (
                 (($name = $offset) && isset($extractProperties[$name]))
                 || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
-                || (($name = $this->__getCamelName((string) $offset)) && isset($extractProperties[$name]))
+                || (($name = $offset) && isset($extractProperties[$name]))
             ) {
                 $this->__parseExtractProperty($name, $extractProperties[$name]);
             }
