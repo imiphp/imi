@@ -1068,6 +1068,17 @@ abstract class Model extends BaseModel
             {
                 continue;
             }
+            if (\PHP_VERSION_ID >= 80100)
+            {
+                if ($value instanceof \BackedEnum)
+                {
+                    $value = $value->value;
+                }
+                elseif ($value instanceof \UnitEnum)
+                {
+                    $value = $value->name;
+                }
+            }
             $result[$dbFieldName] = $value;
         }
 

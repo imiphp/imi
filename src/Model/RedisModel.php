@@ -816,6 +816,17 @@ abstract class RedisModel extends BaseModel
                 unset($data[$name]);
                 continue;
             }
+            if (\PHP_VERSION_ID >= 80100)
+            {
+                if ($value instanceof \BackedEnum)
+                {
+                    $value = $value->value;
+                }
+                elseif ($value instanceof \UnitEnum)
+                {
+                    $value = $value->name;
+                }
+            }
             switch ($columnAnnotation->type)
             {
                 case 'json':

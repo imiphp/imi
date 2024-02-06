@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Enum\TestEnumBean;
+use Imi\Test\Component\Enum\TestEnumBeanBacked;
+use Imi\Test\Component\Model\TestEnumRedisModel;
 use Imi\Test\Component\Model\TestRedisModel;
 use Imi\Test\Component\Model\TestRedisModel2;
 use Imi\Test\Component\Model\TestRedisModelSerializable;
@@ -328,5 +331,42 @@ class RedisModelTest extends BaseTest
         {
             $this->assertEquals($value, $record2->{$name});
         }
+    }
+
+    public function testEnum(): void
+    {
+        if (\PHP_VERSION_ID < 80100)
+        {
+            $this->markTestSkipped();
+        }
+        // @phpstan-ignore-next-line
+        $record = TestEnumRedisModel::newInstance([
+            'id'         => 1,
+            'name'       => 'a',
+            'enum'       => TestEnumBean::A,
+            'enumBacked' => TestEnumBeanBacked::A,
+        ]);
+        $record->enumBacked = TestEnumBeanBacked::B;
+        $this->assertTrue($record->save());
+
+        $expected = [
+            'id'         => 1,
+            'name'       => 'a',
+            'enum'       => TestEnumBean::A,
+            'enumBacked' => TestEnumBeanBacked::B,
+        ];
+
+        // @phpstan-ignore-next-line
+        $record = TestEnumRedisModel::find('TestEnumRedisModel-1-a');
+        $this->assertNotNull($record);
+        $this->assertEquals($expected, $record->toArray());
+
+        // @phpstan-ignore-next-line
+        $record = TestEnumRedisModel::find([
+            'id'    => 1,
+            'name'  => 'a',
+        ]);
+        $this->assertNotNull($record);
+        $this->assertEquals($expected, $record->toArray());
     }
 }
