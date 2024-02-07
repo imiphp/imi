@@ -34,6 +34,11 @@ class ActionMethodItem
     protected ?string $type = null;
 
     /**
+     * 类型类名.
+     */
+    protected ?string $typeClass = null;
+
+    /**
      * @param mixed $default
      */
     public function __construct(string $name, bool $hasDefault, $default, bool $allowNull, ?\ReflectionType $type)
@@ -44,7 +49,41 @@ class ActionMethodItem
         $this->allowNull = $allowNull;
         if ($type instanceof \ReflectionNamedType)
         {
-            $this->type = $type->getName();
+            if (is_subclass_of($typeClass = $type->getName(), \UnitEnum::class))
+            {
+                $this->typeClass = $typeClass;
+                if (is_subclass_of($typeClass, \BackedEnum::class))
+                {
+                    $this->type = \BackedEnum::class;
+                }
+                else
+                {
+                    $this->type = \UnitEnum::class;
+                }
+            }
+            else
+            {
+                $this->type = $type->getName();
+            }
+        }
+        elseif ($type instanceof \ReflectionUnionType)
+        {
+            foreach ($type->getTypes() as $type)
+            {
+                if (is_subclass_of($typeClass = $type->getName(), \UnitEnum::class))
+                {
+                    $this->typeClass = $typeClass;
+                    if (is_subclass_of($typeClass, \BackedEnum::class))
+                    {
+                        $this->type = \BackedEnum::class;
+                    }
+                    else
+                    {
+                        $this->type = \UnitEnum::class;
+                    }
+                    break;
+                }
+            }
         }
     }
 
@@ -88,5 +127,13 @@ class ActionMethodItem
     public function allowNull(): bool
     {
         return $this->allowNull;
+    }
+
+    /**
+     * 获取类型类名.
+     */
+    public function getTypeClass(): ?string
+    {
+        return $this->typeClass;
     }
 }

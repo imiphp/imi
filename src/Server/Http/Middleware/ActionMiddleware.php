@@ -16,6 +16,7 @@ use Imi\Server\Http\Struct\ActionMethodItem;
 use Imi\Server\Session\Session;
 use Imi\Server\View\View;
 use Imi\Util\DelayServerBeanCallable;
+use Imi\Util\EnumUtil;
 use Imi\Util\ObjectArrayHelper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -284,6 +285,20 @@ class ActionMiddleware implements MiddlewareInterface
                         break;
                     case 'bool':
                         $value = (bool) $value;
+                        break;
+                    case \UnitEnum::class:
+                        $newValue = EnumUtil::tryFromName($actionMethodCacheItem->getTypeClass(), $value);
+                        if (null !== $newValue)
+                        {
+                            $value = $newValue;
+                        }
+                        break;
+                    case \BackedEnum::class:
+                        $newValue = $actionMethodCacheItem->getTypeClass()::tryFrom($value);
+                        if (null !== $newValue)
+                        {
+                            $value = $newValue;
+                        }
                         break;
                 }
             }

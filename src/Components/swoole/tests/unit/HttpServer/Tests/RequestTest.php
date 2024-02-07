@@ -384,4 +384,33 @@ class RequestTest extends BaseTest
             'value' => 'host',
         ], $response->json(true));
     }
+
+    public function testEnum(): void
+    {
+        if (\PHP_VERSION_ID < 80100)
+        {
+            $this->markTestSkipped();
+        }
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'enum/test1?enum=A&enumBacked=imi');
+        $this->assertEquals([
+            'enum'       => 'A',
+            'enumBacked' => 'imi',
+        ], $response->json(true));
+        $response = $http->get($this->host . 'enum/test2');
+        $this->assertEquals([
+            'enum'       => '',
+            'enumBacked' => '',
+        ], $response->json(true));
+        $response = $http->get($this->host . 'enum/test2?enum=A&enumBacked=imi');
+        $this->assertEquals([
+            'enum'       => 'A',
+            'enumBacked' => 'imi',
+        ], $response->json(true));
+        $response = $http->get($this->host . 'enum/test2?enum=x&enumBacked=x');
+        $this->assertEquals([
+            'enum'       => 'x',
+            'enumBacked' => 'x',
+        ], $response->json(true));
+    }
 }
