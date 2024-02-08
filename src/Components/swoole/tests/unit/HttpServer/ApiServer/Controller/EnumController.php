@@ -13,25 +13,28 @@ if (\PHP_VERSION_ID >= 80100 && !class_exists(EnumController::class, false))
     use Imi\Server\Http\Route\Annotation\Controller;
     use Imi\Test\Component\Enum\TestEnumBean;
     use Imi\Test\Component\Enum\TestEnumBeanBacked;
+    use Imi\Test\Component\Enum\TestEnumBeanBackedInt;
 
     #[Controller(prefix: '/enum/')]
     class EnumController extends HttpController
     {
         #[Action]
-        public function test1(TestEnumBean $enum, TestEnumBeanBacked $enumBacked): array
+        public function test1(TestEnumBean $enum, TestEnumBeanBacked $enumBacked, TestEnumBeanBackedInt $enumBackedInt): array
         {
             return [
-                'enum'       => $enum,
-                'enumBacked' => $enumBacked,
+                'enum'          => $enum,
+                'enumBacked'    => $enumBacked,
+                'enumBackedInt' => $enumBackedInt,
             ];
         }
 
         #[Action]
-        public function test2(TestEnumBean|string $enum = '', TestEnumBeanBacked|string $enumBacked = ''): array
+        public function test2(TestEnumBean|string $enum = '', TestEnumBeanBacked|string $enumBacked = '', TestEnumBeanBackedInt|int $enumBackedInt = 0): array
         {
             return [
-                'enum'       => $enum,
-                'enumBacked' => $enumBacked,
+                'enum'          => $enum,
+                'enumBacked'    => $enumBacked,
+                'enumBackedInt' => $enumBackedInt,
             ];
         }
     }

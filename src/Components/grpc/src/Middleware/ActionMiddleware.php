@@ -16,6 +16,7 @@ use Imi\Server\Http\Struct\ActionMethodItem;
 use Imi\Server\Session\Session;
 use Imi\Server\View\View;
 use Imi\Util\DelayServerBeanCallable;
+use Imi\Util\EnumUtil;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
 use Imi\Util\Http\Consts\ResponseHeader;
@@ -262,9 +263,10 @@ class ActionMiddleware implements MiddlewareInterface
             }
             elseif ($actionMethodCacheItem->hasDefault())
             {
-                $value = $actionMethodCacheItem->getDefault();
+                $result[] = $actionMethodCacheItem->getDefault();
+                continue;
             }
-            elseif (null !== ($type = $actionMethodCacheItem->getType()) && class_exists($type))
+            elseif (($types = $actionMethodCacheItem->getTypes()) && ActionMethodItem::TYPE_COMMON === $types[0]['type'] && class_exists($type = $types[0]['name']))
             {
                 if (is_subclass_of($type, \Google\Protobuf\Internal\Message::class))
                 {
@@ -290,17 +292,55 @@ class ActionMiddleware implements MiddlewareInterface
             }
             if (null !== $value)
             {
-                switch ($actionMethodCacheItem->getType())
+                foreach ($actionMethodCacheItem->getTypes() as $type)
                 {
-                    case 'int':
-                        $value = (int) $value;
-                        break;
-                    case 'float':
-                        $value = (float) $value;
-                        break;
-                    case 'bool':
-                        $value = (bool) $value;
-                        break;
+                    switch ($type['name'])
+                    {
+                        case 'int':
+                            $value = (int) $value;
+                            break 2;
+                        case 'float':
+                            $value = (float) $value;
+                            break 2;
+                        case 'bool':
+                            $value = (bool) $value;
+                            break 2;
+                        default:
+                            switch ($type['type'])
+                            {
+                                case ActionMethodItem::TYPE_UNIT_ENUM:
+                                    $newValue = EnumUtil::tryFromName($type['name'], $value);
+                                    if (null !== $newValue)
+                                    {
+                                        $value = $newValue;
+                                        break 3;
+                                    }
+                                    break;
+                                case ActionMethodItem::TYPE_BACKED_ENUM:
+                                    if ('int' === $type['enumBackingType'])
+                                    {
+                                        if (filter_var($value, \FILTER_VALIDATE_INT))
+                                        {
+                                            $newValue = $type['name']::tryFrom((int) $value);
+                                            if (null !== $newValue)
+                                            {
+                                                $value = $newValue;
+                                                break 3;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $newValue = $type['name']::tryFrom($value);
+                                        if (null !== $newValue)
+                                        {
+                                            $value = $newValue;
+                                            break 3;
+                                        }
+                                    }
+                                    break;
+                            }
+                    }
                 }
             }
             $result[] = $value;

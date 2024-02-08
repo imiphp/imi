@@ -249,13 +249,14 @@ class ActionMiddleware implements MiddlewareInterface
             }
             elseif ($actionMethodCacheItem->hasDefault())
             {
-                $value = $actionMethodCacheItem->getDefault();
+                $result[] = $actionMethodCacheItem->getDefault();
+                continue;
             }
             elseif ($actionMethodCacheItem->allowNull())
             {
                 $value = null;
             }
-            elseif (($type = $actionMethodCacheItem->getType()) && (UploadedFileInterface::class === $type || is_subclass_of($type, UploadedFileInterface::class)))
+            elseif (($types = $actionMethodCacheItem->getTypes()) && ActionMethodItem::TYPE_UPLOADED_FILE === $types[0]['type'])
             {
                 $uploadedFiles ??= $request->getUploadedFiles();
                 if (!isset($uploadedFiles[$paramName]))
@@ -268,6 +269,8 @@ class ActionMiddleware implements MiddlewareInterface
                 {
                     throw new \RuntimeException(sprintf('Upload file failed. error:%d', $value->getError()));
                 }
+                $result[] = $value;
+                continue;
             }
             else
             {
@@ -275,31 +278,55 @@ class ActionMiddleware implements MiddlewareInterface
             }
             if (null !== $value)
             {
-                switch ($actionMethodCacheItem->getType())
+                foreach ($actionMethodCacheItem->getTypes() as $type)
                 {
-                    case 'int':
-                        $value = (int) $value;
-                        break;
-                    case 'float':
-                        $value = (float) $value;
-                        break;
-                    case 'bool':
-                        $value = (bool) $value;
-                        break;
-                    case \UnitEnum::class:
-                        $newValue = EnumUtil::tryFromName($actionMethodCacheItem->getTypeClass(), $value);
-                        if (null !== $newValue)
-                        {
-                            $value = $newValue;
-                        }
-                        break;
-                    case \BackedEnum::class:
-                        $newValue = $actionMethodCacheItem->getTypeClass()::tryFrom($value);
-                        if (null !== $newValue)
-                        {
-                            $value = $newValue;
-                        }
-                        break;
+                    switch ($type['name'])
+                    {
+                        case 'int':
+                            $value = (int) $value;
+                            break 2;
+                        case 'float':
+                            $value = (float) $value;
+                            break 2;
+                        case 'bool':
+                            $value = (bool) $value;
+                            break 2;
+                        default:
+                            switch ($type['type'])
+                            {
+                                case ActionMethodItem::TYPE_UNIT_ENUM:
+                                    $newValue = EnumUtil::tryFromName($type['name'], $value);
+                                    if (null !== $newValue)
+                                    {
+                                        $value = $newValue;
+                                        break 3;
+                                    }
+                                    break;
+                                case ActionMethodItem::TYPE_BACKED_ENUM:
+                                    if ('int' === $type['enumBackingType'])
+                                    {
+                                        if (filter_var($value, \FILTER_VALIDATE_INT))
+                                        {
+                                            $newValue = $type['name']::tryFrom((int) $value);
+                                            if (null !== $newValue)
+                                            {
+                                                $value = $newValue;
+                                                break 3;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $newValue = $type['name']::tryFrom($value);
+                                        if (null !== $newValue)
+                                        {
+                                            $value = $newValue;
+                                            break 3;
+                                        }
+                                    }
+                                    break;
+                            }
+                    }
                 }
             }
             $result[] = $value;

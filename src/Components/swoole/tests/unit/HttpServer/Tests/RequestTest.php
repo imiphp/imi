@@ -392,25 +392,29 @@ class RequestTest extends BaseTest
             $this->markTestSkipped();
         }
         $http = new HttpRequest();
-        $response = $http->get($this->host . 'enum/test1?enum=A&enumBacked=imi');
+        $response = $http->get($this->host . 'enum/test1?enum=A&enumBacked=imi&enumBackedInt=1');
         $this->assertEquals([
-            'enum'       => 'A',
-            'enumBacked' => 'imi',
+            'enum'          => 'A',
+            'enumBacked'    => 'imi',
+            'enumBackedInt' => 1,
         ], $response->json(true));
         $response = $http->get($this->host . 'enum/test2');
         $this->assertEquals([
-            'enum'       => '',
-            'enumBacked' => '',
+            'enum'          => '',
+            'enumBacked'    => '',
+            'enumBackedInt' => 0,
         ], $response->json(true));
-        $response = $http->get($this->host . 'enum/test2?enum=A&enumBacked=imi');
+        $response = $http->get($this->host . 'enum/test2?enum=A&enumBacked=imi&enumBackedInt=1');
         $this->assertEquals([
-            'enum'       => 'A',
-            'enumBacked' => 'imi',
+            'enum'          => 'A',
+            'enumBacked'    => 'imi',
+            'enumBackedInt' => 1,
         ], $response->json(true));
-        $response = $http->get($this->host . 'enum/test2?enum=x&enumBacked=x');
+        $response = $http->get($this->host . 'enum/test2?enum=x&enumBacked=x&enumBackedInt=0');
         $this->assertEquals([
-            'enum'       => 'x',
-            'enumBacked' => 'x',
+            'enum'          => 'x',
+            'enumBacked'    => 'x',
+            'enumBackedInt' => 0,
         ], $response->json(true));
     }
 }

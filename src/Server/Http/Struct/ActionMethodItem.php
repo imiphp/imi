@@ -4,8 +4,30 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Struct;
 
+use Psr\Http\Message\UploadedFileInterface;
+
 class ActionMethodItem
 {
+    /**
+     * 内部类型-通用.
+     */
+    public const TYPE_COMMON = 1;
+
+    /**
+     * 内部类型-枚举.
+     */
+    public const TYPE_UNIT_ENUM = 2;
+
+    /**
+     * 内部类型-回退枚举.
+     */
+    public const TYPE_BACKED_ENUM = 3;
+
+    /**
+     * 内部类型-上传文件.
+     */
+    public const TYPE_UPLOADED_FILE = 4;
+
     /**
      * 参数名.
      */
@@ -29,14 +51,11 @@ class ActionMethodItem
     protected bool $allowNull = false;
 
     /**
-     * 类型.
+     * 类型数组.
+     *
+     * @var array{name: string, type: int, enumBackingType: string|null}[]
      */
-    protected ?string $type = null;
-
-    /**
-     * 类型类名.
-     */
-    protected ?string $typeClass = null;
+    protected array $types = [];
 
     /**
      * @param mixed $default
@@ -47,41 +66,63 @@ class ActionMethodItem
         $this->hasDefault = $hasDefault;
         $this->default = $default;
         $this->allowNull = $allowNull;
+        if ($type)
+        {
+            $this->parseTypes($type);
+        }
+    }
+
+    private function parseTypes(\ReflectionType $type): void
+    {
         if ($type instanceof \ReflectionNamedType)
         {
             if (is_subclass_of($typeClass = $type->getName(), \UnitEnum::class))
             {
-                $this->typeClass = $typeClass;
                 if (is_subclass_of($typeClass, \BackedEnum::class))
                 {
-                    $this->type = \BackedEnum::class;
+                    $type = self::TYPE_BACKED_ENUM;
+                    $reflectionEnum = new \ReflectionEnum($typeClass);
+                    $backingType = $reflectionEnum->getBackingType();
+                    if ($backingType)
+                    {
+                        $enumBackingType = $backingType->getName();
+                    }
                 }
                 else
                 {
-                    $this->type = \UnitEnum::class;
+                    $type = self::TYPE_UNIT_ENUM;
                 }
+                $this->types[] = [
+                    'name'            => $typeClass,
+                    'type'            => $type,
+                    'enumBackingType' => $enumBackingType ?? null,
+                ];
             }
             else
             {
-                $this->type = $type->getName();
+                $type = $type->getName();
+                if (UploadedFileInterface::class === $type || is_subclass_of($type, UploadedFileInterface::class))
+                {
+                    $type = self::TYPE_UPLOADED_FILE;
+                }
+                else
+                {
+                    $type = self::TYPE_COMMON;
+                }
+                $this->types[] = [
+                    'name'            => $typeClass,
+                    'type'            => $type,
+                    'enumBackingType' => null,
+                ];
             }
         }
         elseif ($type instanceof \ReflectionUnionType)
         {
             foreach ($type->getTypes() as $type)
             {
-                if (is_subclass_of($typeClass = $type->getName(), \UnitEnum::class))
+                if ($type instanceof \ReflectionNamedType)
                 {
-                    $this->typeClass = $typeClass;
-                    if (is_subclass_of($typeClass, \BackedEnum::class))
-                    {
-                        $this->type = \BackedEnum::class;
-                    }
-                    else
-                    {
-                        $this->type = \UnitEnum::class;
-                    }
-                    break;
+                    $this->parseTypes($type);
                 }
             }
         }
@@ -106,11 +147,13 @@ class ActionMethodItem
     }
 
     /**
-     * Get 类型.
+     * Get 类型数组.
+     *
+     * @return array{name: string, type: int, enumBackingType: string|null}[]
      */
-    public function getType(): ?string
+    public function getTypes(): array
     {
-        return $this->type;
+        return $this->types;
     }
 
     /**
@@ -127,13 +170,5 @@ class ActionMethodItem
     public function allowNull(): bool
     {
         return $this->allowNull;
-    }
-
-    /**
-     * 获取类型类名.
-     */
-    public function getTypeClass(): ?string
-    {
-        return $this->typeClass;
     }
 }
