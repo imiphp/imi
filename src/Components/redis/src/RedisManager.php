@@ -98,7 +98,7 @@ class RedisManager
         {
             throw new \RuntimeException('RedisHandler is not a valid connection center connection instance');
         }
-        if (ConnectionStatus::WaitRelease === $connection->getStatus())
+        if (ConnectionStatus::Available === $connection->getStatus())
         {
             $connection->getManager()->releaseConnection($connection);
         }
