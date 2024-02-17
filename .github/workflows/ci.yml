@@ -61,7 +61,9 @@ jobs:
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test redis
         if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-redis
+        run: |
+          docker ps
+          docker exec ${ENV_SERVICE} composer test-redis
       - name: Test swoole
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test-swoole
@@ -124,6 +126,8 @@ jobs:
         if: ${{ failure() }}
         with:
          wait-timeout-minutes: 5
+         limit-access-to-actor: true
+         limit-access-to-users: NHZEX
 
 #  ci-unix:
 #    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
