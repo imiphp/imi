@@ -99,7 +99,7 @@ services:
       REDIS_PASSWORD: "l83aa26"
       REDISCLI_AUTH: "l83aa26"
       REDIS_CLUSTER_REPLICAS: "1"
-      REDIS_NODES: "redis-cluster-node-0:6479 redis-cluster-node-1:6480 redis-cluster-node-2:6481"
+      REDIS_NODES: "redis-cluster-node-0:6379 redis-cluster-node-1:6379 redis-cluster-node-2:6379"
       REDIS_CLUSTER_CREATOR: "yes"
     ports:
       - "6479:6379"
