@@ -15,9 +15,9 @@ class PredisConnector implements IRedisConnector
     public static function connect(RedisDriverConfig $config): PredisHandler
     {
         $params = [
-            'scheme' => 'tcp',
-            'host'   => $config->host,
-            'port'   => $config->port,
+            'scheme'   => 'tcp',
+            'host'     => $config->host,
+            'port'     => $config->port,
             'database' => $config->database,
         ];
         if ($config->password)

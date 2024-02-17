@@ -8,8 +8,6 @@ use Imi\ConnectionCenter\Contract\AbstractConnectionDriver;
 use Imi\ConnectionCenter\Contract\IConnectionConfig;
 use Imi\Redis\Enum\RedisMode;
 use Imi\Redis\Handler\IRedisHandler;
-use Imi\Redis\Handler\PhpRedisHandler;
-use Imi\Redis\Handler\PredisHandler;
 
 class RedisConnectionDriver extends AbstractConnectionDriver
 {
