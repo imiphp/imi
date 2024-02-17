@@ -92,29 +92,35 @@ services:
   redis-cluster-node-0:
     container_name: redis-cluster-node-0
     image: bitnami/redis-cluster:7.2
+    depends_on:
+      - redis-cluster-node-1
+      - redis-cluster-node-2
     environment:
-      REDIS_PASSWORD: l83aa26
-      REDIS_NODES: "redis-cluster-node-0 redis-cluster-node-1 redis-cluster-node-2"
+      REDIS_PASSWORD: "l83aa26"
+      REDISCLI_AUTH: "l83aa26"
+      REDIS_CLUSTER_REPLICAS: "1"
+      REDIS_NODES: "redis-cluster-node-0:6379 redis-cluster-node-1:6379 redis-cluster-node-2:6379"
+      REDIS_CLUSTER_CREATOR: "yes"
+    ports:
+      - "6479:6379"
 
   redis-cluster-node-1:
     container_name: redis-cluster-node-1
     image: bitnami/redis-cluster:7.2
     environment:
-      REDIS_PASSWORD: l83aa26
-      REDIS_NODES: "redis-cluster-node-0 redis-cluster-node-1 redis-cluster-node-2"
+      REDIS_PASSWORD: "l83aa26"
+      REDIS_NODES: "redis-cluster-node-0:6479 redis-cluster-node-1:6480 redis-cluster-node-2:6481"
+    ports:
+      - "6480:6379"
 
   redis-cluster-node-2:
     container_name: redis-cluster-node-2
     image: bitnami/redis-cluster:7.2
-    depends_on:
-      - redis-cluster-node-0
-      - redis-cluster-node-1
     environment:
-      REDIS_PASSWORD: l83aa26
-      REDISCLI_AUTH: l83aa26
-      REDIS_CLUSTER_REPLICAS: "1"
-      REDIS_NODES: "redis-cluster-node-0 redis-cluster-node-1 redis-cluster-node-2"
-      REDIS_CLUSTER_CREATOR: "yes"
+      REDIS_PASSWORD: "l83aa26"
+      REDIS_NODES: "redis-cluster-node-0:6479 redis-cluster-node-1:6480 redis-cluster-node-2:6481"
+    ports:
+      - "6481:6379"
 
   swoole:
     container_name: "swoole"
@@ -127,8 +133,6 @@ services:
       - kafka1
       - postgres
       - redis-cluster-node-0
-      - redis-cluster-node-1
-      - redis-cluster-node-2
     environment:
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: ${REDIS_SERVER_HOST}
@@ -154,8 +158,6 @@ services:
       - kafka1
       - postgres
       - redis-cluster-node-0
-      - redis-cluster-node-1
-      - redis-cluster-node-2
     environment:
       MYSQL_SERVER_HOST: mysql
       REDIS_SERVER_HOST: ${REDIS_SERVER_HOST}

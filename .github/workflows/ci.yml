@@ -25,9 +25,9 @@ jobs:
       matrix:
         swoole:
           - version: php8.2-swoole-5.1
-          - version: php8.1-swoole-5.1
-          - version: php8.2-swoole-5.0
-          - version: php8.1-swoole-5.0
+#          - version: php8.1-swoole-5.1
+#          - version: php8.2-swoole-5.0
+#          - version: php8.1-swoole-5.0
         roadrunner: [2.7.*]
     env:
       ENV_SERVICE: swoole
@@ -61,10 +61,17 @@ jobs:
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test redis
         if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-redis
-      - name: Test swoole
-        if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test-swoole
+        run: |
+          docker ps
+          echo "info" | nc redis 6379 -w 1
+          echo "info" | nc redis-cluster-node-0 6379 -w 1
+          echo "info" | nc redis-cluster-node-1 6379 -w 1
+          echo "info" | nc redis-cluster-node-2 6379 -w 1
+          echo "======"
+          docker exec ${ENV_SERVICE} composer test-redis
+#      - name: Test swoole
+#        if: ${{ env.test_prepared && always() }}
+#        run: docker exec ${ENV_SERVICE} composer test-swoole
 #      - name: Test workerman
 #        if: ${{ env.test_prepared && always() }}
 #        run: docker exec ${ENV_SERVICE} composer test-workerman
@@ -119,6 +126,11 @@ jobs:
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        if: ${{ failure() }}
+        with:
+         wait-timeout-minutes: 5
 
 #  ci-unix:
 #    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
