@@ -59,16 +59,35 @@ jobs:
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test
-      - name: Test redis
+      - name: Test Env
         if: ${{ env.test_prepared && always() }}
         run: |
           docker ps
-          echo "info" | nc redis 6379 -w 1
-          echo "info" | nc redis-cluster-node-0 6379 -w 1
-          echo "info" | nc redis-cluster-node-1 6379 -w 1
-          echo "info" | nc redis-cluster-node-2 6379 -w 1
-          echo "======"
+          echo ">>> logs node-1"
+          docker logs redis-cluster-node-1 -t
+          echo ">>> logs node-2"
+          docker logs redis-cluster-node-2 -t
+          echo ">>> logs node-5"
+          docker logs redis-cluster-node-5 -t
+          echo ">>> logs node-0"
+          docker logs redis-cluster-node-0 -t
+          echo ">>> redis-cluster-node-1"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-1 6479 -w 1"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-1 6479 -w 1"
+          docker exec redis-cluster-node-1 cat /bitnami/redis/data/nodes.conf
+          echo ">>> redis-cluster-node-2"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-2 6479 -w 1"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-2 6479 -w 1"
+          docker exec redis-cluster-node-2 cat /bitnami/redis/data/nodes.conf
+          echo ">>> redis-cluster-node-0"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0 6479 -w 1"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0 6479 -w 1"
+          docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
+      - name: Test redis
+        if: ${{ env.test_prepared && always() }}
+        run: |
           docker exec ${ENV_SERVICE} composer test-redis
+          docker ps
 #      - name: Test swoole
 #        if: ${{ env.test_prepared && always() }}
 #        run: docker exec ${ENV_SERVICE} composer test-swoole
@@ -126,11 +145,11 @@ jobs:
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-        if: ${{ failure() }}
-        with:
-         wait-timeout-minutes: 5
+#      - name: Setup upterm session
+#        uses: lhotari/action-upterm@v1
+#        if: ${{ failure() }}
+#        with:
+#         wait-timeout-minutes: 5
 
 #  ci-unix:
 #    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
