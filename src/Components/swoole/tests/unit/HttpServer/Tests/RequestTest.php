@@ -422,7 +422,7 @@ class RequestTest extends BaseTest
         ], $response->json(true));
         $response = $http->post($this->host . 'params/test3', [
             'value' => 1,
-        ],'json');
+        ], 'json');
         $this->assertEquals([
             'value' => 1,
         ], $response->json(true));
