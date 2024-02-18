@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
 
-if (\PHP_VERSION_ID >= 80100 && !class_exists(EnumController::class, false))
+if (\PHP_VERSION_ID >= 80100 && !class_exists(ParamsController::class, false))
 {
     eval(<<<'PHP'
     namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
@@ -15,8 +15,8 @@ if (\PHP_VERSION_ID >= 80100 && !class_exists(EnumController::class, false))
     use Imi\Test\Component\Enum\TestEnumBeanBacked;
     use Imi\Test\Component\Enum\TestEnumBeanBackedInt;
 
-    #[Controller(prefix: '/enum/')]
-    class EnumController extends HttpController
+    #[Controller(prefix: '/params/')]
+    class ParamsController extends HttpController
     {
         #[Action]
         public function test1(TestEnumBean $enum, TestEnumBeanBacked $enumBacked, TestEnumBeanBackedInt $enumBackedInt): array
@@ -35,6 +35,14 @@ if (\PHP_VERSION_ID >= 80100 && !class_exists(EnumController::class, false))
                 'enum'          => $enum,
                 'enumBacked'    => $enumBacked,
                 'enumBackedInt' => $enumBackedInt,
+            ];
+        }
+
+        #[Action]
+        public function test3(string|int $value): array
+        {
+            return [
+                'value' => $value,
             ];
         }
     }

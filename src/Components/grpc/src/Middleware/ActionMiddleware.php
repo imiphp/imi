@@ -305,6 +305,9 @@ class ActionMiddleware implements MiddlewareInterface
                         case 'bool':
                             $value = (bool) $value;
                             break 2;
+                        case 'string':
+                            $value = (string) $value;
+                            break 2;
                         default:
                             switch ($type['type'])
                             {
