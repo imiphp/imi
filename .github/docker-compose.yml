@@ -90,7 +90,6 @@ services:
       - "9092:9092"
 
   redis-cluster-node-1:
-    container_name: redis-cluster-node-1
     image: bitnami/redis-cluster:7.2
     environment:
       REDIS_PORT_NUMBER: 6479
@@ -99,7 +98,6 @@ services:
 
 
   redis-cluster-node-2:
-    container_name: redis-cluster-node-2
     image: bitnami/redis-cluster:7.2
     environment:
       REDIS_PORT_NUMBER: 6479
@@ -107,7 +105,6 @@ services:
       REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
 
   redis-cluster-node-3:
-    container_name: redis-cluster-node-3
     image: bitnami/redis-cluster:7.2
     environment:
       REDIS_PORT_NUMBER: 6479
@@ -115,7 +112,6 @@ services:
       REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
 
   redis-cluster-node-4:
-    container_name: redis-cluster-node-4
     image: bitnami/redis-cluster:7.2
     environment:
       REDIS_PORT_NUMBER: 6479
@@ -123,7 +119,6 @@ services:
       REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
 
   redis-cluster-node-5:
-    container_name: redis-cluster-node-5
     image: bitnami/redis-cluster:7.2
     environment:
       REDIS_PORT_NUMBER: 6479
@@ -131,7 +126,6 @@ services:
       REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
 
   redis-cluster-node-0:
-    container_name: redis-cluster-node-0
     image: bitnami/redis-cluster:7.2
     depends_on:
       - redis-cluster-node-1

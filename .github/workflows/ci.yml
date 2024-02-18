@@ -56,33 +56,17 @@ jobs:
         uses: ./.github/actions/ci-prepare
         with:
           env: ${{ env.ENV_SERVICE }}
-      - name: Test
-        if: ${{ env.test_prepared && always() }}
-        run: docker exec ${ENV_SERVICE} composer test
       - name: Test Env
         if: ${{ env.test_prepared && always() }}
         run: |
           docker ps
-          echo ">>> logs node-1"
-          docker logs redis-cluster-node-1 -t
-          echo ">>> logs node-2"
-          docker logs redis-cluster-node-2 -t
-          echo ">>> logs node-5"
-          docker logs redis-cluster-node-5 -t
-          echo ">>> logs node-0"
-          docker logs redis-cluster-node-0 -t
-          echo ">>> redis-cluster-node-1"
-          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-1 6479 -w 1"
-          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-1 6479 -w 1"
-          docker exec redis-cluster-node-1 cat /bitnami/redis/data/nodes.conf
-          echo ">>> redis-cluster-node-2"
-          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-2 6479 -w 1"
-          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-2 6479 -w 1"
-          docker exec redis-cluster-node-2 cat /bitnami/redis/data/nodes.conf
           echo ">>> redis-cluster-node-0"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0 6479 -w 1"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0 6479 -w 1"
           docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
+      - name: Test
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test
       - name: Test redis
         if: ${{ env.test_prepared && always() }}
         run: |
