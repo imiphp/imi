@@ -25,9 +25,9 @@ jobs:
       matrix:
         swoole:
           - version: php8.2-swoole-5.1
-#          - version: php8.1-swoole-5.1
-#          - version: php8.2-swoole-5.0
-#          - version: php8.1-swoole-5.0
+          - version: php8.1-swoole-5.1
+          - version: php8.2-swoole-5.0
+          - version: php8.1-swoole-5.0
         roadrunner: [2.7.*]
     env:
       ENV_SERVICE: swoole
@@ -63,7 +63,6 @@ jobs:
           echo ">>> redis-cluster-node-0"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0 6479 -w 1"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0 6479 -w 1"
-          docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test
@@ -71,10 +70,9 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} composer test-redis
-          docker ps
-#      - name: Test swoole
-#        if: ${{ env.test_prepared && always() }}
-#        run: docker exec ${ENV_SERVICE} composer test-swoole
+      - name: Test swoole
+        if: ${{ env.test_prepared && always() }}
+        run: docker exec ${ENV_SERVICE} composer test-swoole
 #      - name: Test workerman
 #        if: ${{ env.test_prepared && always() }}
 #        run: docker exec ${ENV_SERVICE} composer test-workerman
@@ -129,11 +127,6 @@ jobs:
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
-#      - name: Setup upterm session
-#        uses: lhotari/action-upterm@v1
-#        if: ${{ failure() }}
-#        with:
-#         wait-timeout-minutes: 5
 
 #  ci-unix:
 #    name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
@@ -230,7 +223,6 @@ jobs:
 #        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-swoole-cli:
-    if: false
     name: Swoole-cli-${{ matrix.swoole-cli }}
     runs-on: ubuntu-latest
     strategy:
@@ -286,57 +278,75 @@ jobs:
           echo "::endgroup::"
           echo "test_prepared=1" >> $GITHUB_ENV
 
+      - name: Get redis cluster nodes
+        id: redis-cluster
+        run: |
+          echo "cluster-nodes=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-0):6479,$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-1):6479,$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-2):6479,$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-3):6479,$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-4):6479,$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-5):6479" >> $GITHUB_OUTPUT
+          echo "cluster-node0=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-cluster-node-0)" >> $GITHUB_OUTPUT
+      - name: Test Env
+        if: ${{ env.test_prepared && always() }}
+        run: |
+          docker ps
+          echo ">>> redis-cluster-node-0, ${{ steps.redis-cluster.outputs.cluster-node0 }}"
+          echo ">>> redis-cluster-nodes, ${{ steps.redis-cluster.outputs.cluster-nodes }}"
+          echo -e 'auth l83aa26\r\ninfo server' | nc ${{ steps.redis-cluster.outputs.cluster-node0 }} 6479 -w 1
+          echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc ${{ steps.redis-cluster.outputs.cluster-node0 }} 6479 -w 1
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: composer test
-      - name: Test swoole
+      - name: Test redis
         if: ${{ env.test_prepared && always() }}
-        run: composer test-swoole
-      - name: Test workerman
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-workerman
-      - name: Test workerman-gateway
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-workerman-gateway
-      - name: Test jwt
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-jwt
-      - name: Test queue
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-queue
-      - name: Test amqp
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-amqp
-      - name: Test kafka
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-kafka
-      - name: Test grpc
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-grpc
-      - name: Test snowflake
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-snowflake
-      - name: Test mqtt
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-mqtt
-      - name: Test smarty
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-smarty
+        env:
+          REDIS_SERVER_CLUSTER_SEEDS: ${{ steps.redis-cluster.outputs.cluster-nodes }}
+        run: composer test-redis
+      # - name: Test swoole
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-swoole
+      # - name: Test workerman
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-workerman
+      # - name: Test workerman-gateway
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-workerman-gateway
+      # - name: Test jwt
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-jwt
+      # - name: Test queue
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-queue
+      # - name: Test amqp
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-amqp
+      # - name: Test kafka
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-kafka
+      # - name: Test grpc
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-grpc
+      # - name: Test snowflake
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-snowflake
+      # - name: Test mqtt
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-mqtt
+      # - name: Test smarty
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-smarty
       # - name: Test pgsql
       #   if: ${{ matrix.swoole-cli == 'v5.0.3' && env.test_prepared && always() }}
       #   run: composer test-pgsql
-      - name: Test phar
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-phar
-      - name: Test connection-center
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-connection-center
-      - name: Test database
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-database
-      - name: Test model
-        if: ${{ env.test_prepared && always() }}
-        run: composer test-model
+      # - name: Test phar
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-phar
+      # - name: Test connection-center
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-connection-center
+      # - name: Test database
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-database
+      # - name: Test model
+      #   if: ${{ env.test_prepared && always() }}
+      #   run: composer test-model
       - name: Print logs
         if: failure()
         run: php .github/print-logs.php

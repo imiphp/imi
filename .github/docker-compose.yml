@@ -90,42 +90,57 @@ services:
       - "9092:9092"
 
   redis-cluster-node-1:
+    container_name: redis-cluster-node-1
     image: bitnami/redis-cluster:7.2
     environment:
-      REDIS_PORT_NUMBER: 6479
+      REDIS_PORT_NUMBER: 6480
       REDIS_PASSWORD: "l83aa26"
-      REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
-
+      REDIS_NODES: "redis-cluster-node-1:6480 redis-cluster-node-2:6481 redis-cluster-node-3:6482 redis-cluster-node-4:6483 redis-cluster-node-5:6484 redis-cluster-node-0:6479"
+    ports:
+      - "6480:6480"
 
   redis-cluster-node-2:
+    container_name: redis-cluster-node-2
     image: bitnami/redis-cluster:7.2
     environment:
-      REDIS_PORT_NUMBER: 6479
+      REDIS_PORT_NUMBER: 6481
       REDIS_PASSWORD: "l83aa26"
-      REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
+      REDIS_NODES: "redis-cluster-node-1:6480 redis-cluster-node-2:6481 redis-cluster-node-3:6482 redis-cluster-node-4:6483 redis-cluster-node-5:6484 redis-cluster-node-0:6479"
+    ports:
+      - "6481:6481"
 
   redis-cluster-node-3:
+    container_name: redis-cluster-node-3
     image: bitnami/redis-cluster:7.2
     environment:
-      REDIS_PORT_NUMBER: 6479
+      REDIS_PORT_NUMBER: 6482
       REDIS_PASSWORD: "l83aa26"
-      REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
+      REDIS_NODES: "redis-cluster-node-1:6480 redis-cluster-node-2:6481 redis-cluster-node-3:6482 redis-cluster-node-4:6483 redis-cluster-node-5:6484 redis-cluster-node-0:6479"
+    ports:
+      - "6482:6482"
 
   redis-cluster-node-4:
+    container_name: redis-cluster-node-4
     image: bitnami/redis-cluster:7.2
     environment:
-      REDIS_PORT_NUMBER: 6479
+      REDIS_PORT_NUMBER: 6483
       REDIS_PASSWORD: "l83aa26"
-      REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
+      REDIS_NODES: "redis-cluster-node-1:6480 redis-cluster-node-2:6481 redis-cluster-node-3:6482 redis-cluster-node-4:6483 redis-cluster-node-5:6484 redis-cluster-node-0:6479"
+    ports:
+      - "6483:6483"
 
   redis-cluster-node-5:
+    container_name: redis-cluster-node-5
     image: bitnami/redis-cluster:7.2
     environment:
-      REDIS_PORT_NUMBER: 6479
+      REDIS_PORT_NUMBER: 6484
       REDIS_PASSWORD: "l83aa26"
-      REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
+      REDIS_NODES: "redis-cluster-node-1:6480 redis-cluster-node-2:6481 redis-cluster-node-3:6482 redis-cluster-node-4:6483 redis-cluster-node-5:6484 redis-cluster-node-0:6479"
+    ports:
+      - "6484:6484"
 
   redis-cluster-node-0:
+    container_name: redis-cluster-node-0
     image: bitnami/redis-cluster:7.2
     depends_on:
       - redis-cluster-node-1
@@ -136,7 +151,7 @@ services:
     environment:
       REDIS_PORT_NUMBER: 6479
       REDIS_PASSWORD: "l83aa26"
-      REDIS_NODES: "redis-cluster-node-1:6479 redis-cluster-node-2:6479 redis-cluster-node-3:6479 redis-cluster-node-4:6479 redis-cluster-node-5:6479 redis-cluster-node-0:6479"
+      REDIS_NODES: "redis-cluster-node-1:6480 redis-cluster-node-2:6481 redis-cluster-node-3:6482 redis-cluster-node-4:6483 redis-cluster-node-5:6484 redis-cluster-node-0:6479"
       REDISCLI_AUTH: "l83aa26"
       REDIS_CLUSTER_REPLICAS: "1"
       REDIS_CLUSTER_CREATOR: "yes"
@@ -145,6 +160,8 @@ services:
       interval: 3s
       timeout: 60s
       retries: 30
+    ports:
+      - "6479:6479"
 
   swoole:
     container_name: "swoole"
