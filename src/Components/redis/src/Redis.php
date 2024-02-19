@@ -252,7 +252,10 @@ class Redis
 
     public static function __callStatic(string $name, array $arguments): mixed
     {
-        return RedisManager::getInstance()->{$name}(...$arguments);
+        return RedisManager::use(
+            null,
+            static fn (IConnection $resource, IRedisHandler $redis) => $redis->{$name}(...$arguments),
+        );
     }
 
     /**
