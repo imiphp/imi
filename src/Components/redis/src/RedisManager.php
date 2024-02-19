@@ -29,7 +29,9 @@ class RedisManager
         $manager = ConnectionCenter::getConnectionManager($poolName);
 
         /** @var IRedisHandler $instance */
-        return $manager->getDriver()->createInstance();
+        $instance = $manager->getDriver()->createInstance();
+
+        return $instance;
     }
 
     /**
@@ -45,7 +47,9 @@ class RedisManager
         $connection = ConnectionCenter::getRequestContextConnection($poolName);
 
         /** @var IRedisHandler $instance */
-        return $connection->getInstance();
+        $instance =  $connection->getInstance();
+
+        return $instance;
     }
 
     /**
@@ -61,11 +65,13 @@ class RedisManager
         {
             $connection = ConnectionCenter::getConnection($poolName);
 
-            return $callable($connection->getInstance());
+            return $callable($connection, $connection->getInstance());
         }
         else
         {
-            return $callable(static::getInstance($poolName));
+            $connection = ConnectionCenter::getRequestContextConnection($poolName);
+
+            return $callable($connection, $connection->getInstance());
         }
     }
 
