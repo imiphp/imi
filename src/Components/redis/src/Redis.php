@@ -272,7 +272,9 @@ class Redis
     public static function scan(?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         // todo 只适用于 phpredis
-        return RedisManager::getInstance()->scan($iterator, $pattern, $count);
+        return RedisManager::use(null, static function (IPoolResource $resource, IRedisHandler $redis) use (&$iterator, $pattern, $count) {
+            return $redis->scan($iterator, $pattern, $count);
+        });
     }
 
     /**
@@ -281,7 +283,9 @@ class Redis
     public static function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         // todo 只适用于 phpredis
-        return RedisManager::getInstance()->hscan($key, $iterator, $pattern, $count);
+        return RedisManager::use(null, static function (IPoolResource $resource, IRedisHandler $redis) use ($key, &$iterator, $pattern, $count) {
+            return $redis->hscan($key, $iterator, $pattern, $count);
+        });
     }
 
     /**
@@ -290,7 +294,9 @@ class Redis
     public static function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         // todo 只适用于 phpredis
-        return RedisManager::getInstance()->sscan($key, $iterator, $pattern, $count);
+        return RedisManager::use(null, static function (IPoolResource $resource, IRedisHandler $redis) use ($key, &$iterator, $pattern, $count) {
+            return $redis->sscan($key, $iterator, $pattern, $count);
+        });
     }
 
     /**
@@ -299,6 +305,8 @@ class Redis
     public static function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0): mixed
     {
         // todo 只适用于 phpredis
-        return RedisManager::getInstance()->zscan($key, $iterator, $pattern, $count);
+        return RedisManager::use(null, static function (IPoolResource $resource, IRedisHandler $redis) use ($key, &$iterator, $pattern, $count) {
+            return $redis->zscan($key, $iterator, $pattern, $count);
+        });
     }
 }
