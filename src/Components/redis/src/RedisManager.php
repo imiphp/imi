@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Imi\Redis;
 
 use Imi\Config;
-use Imi\ConnectionCenter\Contract\IConnection;
-use Imi\ConnectionCenter\Enum\ConnectionStatus;
 use Imi\ConnectionCenter\Facade\ConnectionCenter;
 use Imi\Redis\Handler\IRedisHandler;
 use Imi\Redis\Handler\PhpRedisClusterHandler;
@@ -22,32 +20,32 @@ class RedisManager
      * 获取新的 Redis 连接实例.
      *
      * @param string|null $poolName 连接池名称
+     *
      * @return PhpRedisHandler|PhpRedisClusterHandler|PredisHandler|PredisClusterHandler
      */
     public static function getNewInstance(?string $poolName = null): IRedisHandler
     {
         $poolName = self::parsePoolName($poolName);
         $manager = ConnectionCenter::getConnectionManager($poolName);
-        /** @var IRedisHandler $instance */
-        $instance = $manager->getDriver()->createInstance();
 
-        return $instance;
+        /** @var IRedisHandler $instance */
+        return $manager->getDriver()->createInstance();
     }
 
     /**
      * 获取 Redis 连接实例，每个RequestContext中共用一个.
      *
      * @param string $poolName 连接池名称
+     *
      * @return PhpRedisHandler|PhpRedisClusterHandler|PredisHandler|PredisClusterHandler
      */
     public static function getInstance(?string $poolName = null): IRedisHandler
     {
         $poolName = self::parsePoolName($poolName);
         $connection = ConnectionCenter::getRequestContextConnection($poolName);
-        /** @var IRedisHandler $instance */
-        $instance = $connection->getInstance();
 
-        return $instance;
+        /** @var IRedisHandler $instance */
+        return $connection->getInstance();
     }
 
     /**

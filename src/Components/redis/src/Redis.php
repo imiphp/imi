@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Redis;
 
 use Imi\ConnectionCenter\Contract\IConnection;
-use Imi\ConnectionCenter\Facade\ConnectionCenter;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Redis\Handler\IRedisHandler;
 
