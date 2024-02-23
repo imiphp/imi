@@ -7,7 +7,6 @@ namespace Imi\Swoole\Server\WebSocket\Middleware;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\RequestContext;
-use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\Server;
