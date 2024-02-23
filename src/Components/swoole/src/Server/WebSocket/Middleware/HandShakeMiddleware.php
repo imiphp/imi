@@ -55,7 +55,7 @@ class HandShakeMiddleware implements MiddlewareInterface
             /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
             $routeResult = $requestContext['routeResult'] ?? null;
             ConnectionContext::muiltiSet([
-                'dataParser' => $routeResult->routeItem->wsConfig->parserClass ?? JsonObjectParser::class,
+                'dataParser' => $routeResult->routeItem->wsConfig->parserClass ?? null,
                 'uri'        => (string) $request->getUri(),
             ]);
 
