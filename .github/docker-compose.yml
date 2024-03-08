@@ -5,9 +5,11 @@ volumes:
 services:
   shared-tmp:
     image: busybox
-    command: chmod -R 777 /tmp/docker
+    command: /tmp/shared-env.sh
     volumes:
       - shared-volume:/tmp/docker
+      - /tmp/shared:/tmp/host-docker
+      - ./shared-env.sh:/tmp/shared-env.sh
 
   mysql:
     image: mysql:${MYSQL_DOCKER_VERSION}
