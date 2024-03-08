@@ -60,9 +60,12 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker ps
+          ls -lha /tmp/docker
           echo ">>> redis-cluster-node-0"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0 6479 -w 1"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0 6479 -w 1"
+          echo ">>> redis-new"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-new 6377 -w 1"
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test
@@ -187,8 +190,11 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: |
           docker ps
+          ls -lha /tmp/docker
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6479 -w 1
           echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 127.0.0.1 6479 -w 1
+          echo ">>> redis-new"
+          echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6377 -w 1
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: composer test
