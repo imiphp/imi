@@ -217,9 +217,8 @@ jobs:
           REDIS_SERVER_TLS_PORT: "6443"
           REDIS_SERVER_TLS_PASSWORD: "l83aa26"
           REDIS_SERVER_TLS_CA_FILE: ${{ github.workspace }}/.github/service/redis-tls/certs/ca.crt
-          REDIS_SERVER_TLS_CERT_FILE: ${{ github.workspace }}/.github/service/redis-tls/certs/redis.crt
-          REDIS_SERVER_TLS_KEY_FILE: ${{ github.workspace }}/.github/service/redis-tls/certs/redis.key
-          REDIS_TLS_DH_PARAMS_FILE: ${{ github.workspace }}/.github/service/redis-tls/certs/redis.dh
+          REDIS_SERVER_TLS_CERT_FILE: ${{ github.workspace }}/.github/service/redis-tls/certs/client.crt
+          REDIS_SERVER_TLS_KEY_FILE: ${{ github.workspace }}/.github/service/redis-tls/certs/client.key
         run: composer test-redis
       - name: Test swoole
         if: ${{ env.test_prepared && always() }}
@@ -375,8 +374,8 @@ jobs:
           REDIS_SERVER_TLS_HOST: "127.0.0.1"
           REDIS_SERVER_TLS_PORT: "6443"
           REDIS_SERVER_TLS_CA_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/ca.crt
-          REDIS_SERVER_TLS_CERT_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/redis.crt
-          REDIS_SERVER_TLS_KEY_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/redis.key
+          REDIS_SERVER_TLS_CERT_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/client.crt
+          REDIS_SERVER_TLS_KEY_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/client.key
         run: composer test-redis
       - name: Test swoole
         if: ${{ env.test_prepared && always() }}
