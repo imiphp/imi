@@ -63,7 +63,7 @@ jobs:
           docker ps
           docker logs shared-tmp || true
           docker logs redis-new || true
-          docker exec ${ENV_SERVICE} bash -c "ls -lha /tmp/docker"
+          docker exec ${ENV_SERVICE} bash -c "ls -lha /run/shared"
           echo ">>> redis-cluster-node-0"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0 6479 -w 1"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0 6479 -w 1"
@@ -195,9 +195,11 @@ jobs:
           docker ps
           docker logs shared-tmp
           docker logs redis
-          ls -lha /tmp/shared || true
-          find /tmp/shared -name *.sock
-          tree -alfugh /tmp/shared
+          ls -lha /run/shared || true
+          find /run/shared -name *.sock
+          tree -alfugh /run/shared
+          echo ">>> redis"
+          echo -e 'info server' | nc 127.0.0.1 6379 -w 1
           echo ">>> redis-cluster"
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6479 -w 1
           echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 127.0.0.1 6479 -w 1
@@ -211,7 +213,7 @@ jobs:
         env:
           REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
           REDIS_SERVER_CLUSTER_SEEDS: "127.0.0.1:6479,127.0.0.1:6480,127.0.0.1:6481,127.0.0.1:6482,127.0.0.1:6483,127.0.0.1:6484"
-          REDIS_SERVER_UNIX_SOCK: "/tmp/shared/docker/redis.sock"
+          REDIS_SERVER_UNIX_SOCK: "/run/shared/redis.sock"
           REDIS_SERVER_TLS_HOST: "127.0.0.1"
           REDIS_SERVER_TLS_PORT: "6443"
           REDIS_SERVER_TLS_PASSWORD: "l83aa26"

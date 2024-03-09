@@ -1,15 +1,12 @@
 version: "3.4"
-volumes:
-  shared-volume:
-    driver: local
+
 services:
   shared-tmp:
     image: busybox
     container_name: shared-tmp
     command: /tmp/shared-env.sh
     volumes:
-      - shared-volume:/tmp/docker
-      - /tmp/shared:/tmp/host-run
+      - /run/shared:/run/shared
       - ./shared-env.sh:/tmp/shared-env.sh
 
   mysql:
@@ -50,7 +47,7 @@ services:
     command: redis-server /etc/redis.conf
     volumes:
       - ./redis.conf:/etc/redis.conf
-      - shared-volume:/tmp/docker
+      - /run/shared:/run/shared
     ports:
       - 6379:6379
 
@@ -61,7 +58,7 @@ services:
       - shared-tmp
     volumes:
       - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
-      - shared-volume:/tmp/docker
+      - /run/shared:/run/shared
     environment:
       REDIS_PORT_NUMBER: 6377
       REDIS_PASSWORD: "l83aa26"
@@ -225,7 +222,7 @@ services:
       REDIS_TLS_DH_PARAMS_FILE: "/imi/.github/service/redis-tls/certs/redis.dh"
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
-      - shared-volume:/tmp/docker
+      - /run/shared:/run/shared
     working_dir: /imi
     command: tail -f /dev/null
     tty: true
@@ -270,7 +267,7 @@ services:
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - "/tmp/base_cache:/tmp/base_cache:rw"
-      - shared-volume:/tmp/docker
+      - /run/shared:/run/shared
     working_dir: /imi
     command: tail -f /dev/null
 
