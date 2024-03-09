@@ -212,7 +212,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
       REDIS_SERVER_CLUSTER_SEEDS: "redis-cluster-node-0:6479,redis-cluster-node-1:6480,redis-cluster-node-2:6481,redis-cluster-node-3:6482,redis-cluster-node-4:6483,redis-cluster-node-5:6484"
-      REDIS_SERVER_UNIX_SOCK: "/tmp/docker/shared/redis.sock"
+      REDIS_SERVER_UNIX_SOCK: "/run/shared/redis.sock"
       REDIS_SERVER_TLS_HOST: "redis-new"
       REDIS_SERVER_TLS_PORT: "6443"
       REDIS_SERVER_TLS_PASSWORD: "l83aa26"
@@ -248,7 +248,7 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
       REDIS_SERVER_CLUSTER_SEEDS: "redis-cluster-node-0:6479,redis-cluster-node-1:6480,redis-cluster-node-2:6481,redis-cluster-node-3:6482,redis-cluster-node-4:6483,redis-cluster-node-5:6484"
-      REDIS_SERVER_UNIX_SOCK: "/tmp/docker/shared/redis.sock"
+      REDIS_SERVER_UNIX_SOCK: "/run/shared/redis.sock"
       REDIS_SERVER_TLS_HOST: "redis-new"
       REDIS_SERVER_TLS_PORT: "6443"
       REDIS_SERVER_TLS_PASSWORD: "l83aa26"

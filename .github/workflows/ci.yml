@@ -303,6 +303,7 @@ jobs:
             socket=/tmp/mysql.sock
       - name: Setup Redis
         uses: shogo82148/actions-setup-redis@v1
+        id: setup-redis
         with:
           redis-version: "7.2"
           redis-port: "6379"
@@ -370,12 +371,12 @@ jobs:
       - name: Test redis
         if: ${{ env.test_prepared && always() }}
         env:
-          REDIS_SERVER_UNIX_SOCK: ${{ steps.setup.outputs.redis-unix-socket }}
+          REDIS_SERVER_UNIX_SOCK: ${{ steps.setup-redis.outputs.redis-unix-socket }}
           REDIS_SERVER_TLS_HOST: "127.0.0.1"
           REDIS_SERVER_TLS_PORT: "6443"
-          REDIS_SERVER_TLS_CA_FILE: ${{ steps.setup.outputs.redis-tls-dir }}/ca.crt
-          REDIS_SERVER_TLS_CERT_FILE: ${{ steps.setup.outputs.redis-tls-dir }}/redis.crt
-          REDIS_SERVER_TLS_KEY_FILE: ${{ steps.setup.outputs.redis-tls-dir }}/redis.key
+          REDIS_SERVER_TLS_CA_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/ca.crt
+          REDIS_SERVER_TLS_CERT_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/redis.crt
+          REDIS_SERVER_TLS_KEY_FILE: ${{ steps.setup-redis.outputs.redis-tls-dir }}/redis.key
         run: composer test-redis
       - name: Test swoole
         if: ${{ env.test_prepared && always() }}
