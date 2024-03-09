@@ -18,7 +18,6 @@ concurrency:
 
 jobs:
   ci-linux:
-    if: false
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-latest
     strategy:
@@ -275,7 +274,6 @@ jobs:
         run: php .github/print-logs.php
 
   ci-macos:
-    if: false
     name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: macos-latest
     strategy:
@@ -306,7 +304,9 @@ jobs:
       - name: Setup Redis
         uses: shogo82148/actions-setup-redis@v1
         with:
-          redis-version: "6.x"
+          redis-version: "7.2"
+          redis-port: "6379"
+          redis-tls-port: "6443"
       - name: Get Openssl Dir
         id: opecssl-dir
         run: echo "path=$(brew --prefix openssl@1.1)" >> $GITHUB_OUTPUT
@@ -369,6 +369,13 @@ jobs:
         run: composer test
       - name: Test redis
         if: ${{ env.test_prepared && always() }}
+        env:
+          REDIS_SERVER_UNIX_SOCK: ${{ steps.setup.outputs.redis-unix-socket }}
+          REDIS_SERVER_TLS_HOST: "127.0.0.1"
+          REDIS_SERVER_TLS_PORT: "6443"
+          REDIS_SERVER_TLS_CA_FILE: ${{ steps.setup.outputs.redis-tls-dir }}/ca.crt
+          REDIS_SERVER_TLS_CERT_FILE: ${{ steps.setup.outputs.redis-tls-dir }}/redis.crt
+          REDIS_SERVER_TLS_KEY_FILE: ${{ steps.setup.outputs.redis-tls-dir }}/redis.key
         run: composer test-redis
       - name: Test swoole
         if: ${{ env.test_prepared && always() }}
@@ -420,7 +427,6 @@ jobs:
         run: php .github/print-logs.php
 
   ci-windows:
-    if: false
     name: Windows PHP-${{ matrix.php }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: windows-latest
     strategy:
