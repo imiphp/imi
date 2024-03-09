@@ -70,7 +70,8 @@ class RedisHandlerTest extends TestCase
             self::markTestSkipped('unixsock test not support windows');
         }
 
-        if (!env('REDIS_SERVER_UNIX_SOCK')) {
+        if (!env('REDIS_SERVER_UNIX_SOCK'))
+        {
             self::markTestSkipped('unixsock test not support, please set REDIS_SERVER_UNIX_SOCK');
         }
 
@@ -156,7 +157,8 @@ class RedisHandlerTest extends TestCase
             self::markTestSkipped('unixsock test not support windows');
         }
 
-        if (!env('REDIS_SERVER_UNIX_SOCK')) {
+        if (!env('REDIS_SERVER_UNIX_SOCK'))
+        {
             self::markTestSkipped('unixsock test not support, please set REDIS_SERVER_UNIX_SOCK');
         }
 
