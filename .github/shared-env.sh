@@ -1,9 +1,17 @@
 #!/bin/env sh
 
+set -ex
+
 echo "init shared"
 
+chmod -R 777 /tmp/host-run
 chmod -R 777 /tmp/docker
 
-ln -s /tmp/docker /tmp/host-docker/dir
+rm -f /tmp/docker/shared || true
+rm -rf /tmp/host-run/* || true
 
-tail -f /dev/zero
+ln -s /tmp/host-run /tmp/docker/shared
+
+chmod -R 777 /tmp/docker/shared
+
+tail -f /dev/null

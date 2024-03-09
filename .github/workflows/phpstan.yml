@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   phpstan:
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

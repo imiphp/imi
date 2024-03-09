@@ -12,7 +12,7 @@ runs:
     - name: Setup Services
       shell: bash
       run: |
-        docker-compose -f ./.github/docker-compose.yml up -d redis-cluster-node-0
+        docker-compose -f ./.github/docker-compose.yml up -d redis-cluster-node-0 redis-new
         docker-compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }}
         docker exec ${{ inputs.env }} php -v
         docker exec ${{ inputs.env }} php -m

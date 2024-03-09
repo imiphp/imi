@@ -5,10 +5,11 @@ volumes:
 services:
   shared-tmp:
     image: busybox
+    container_name: shared-tmp
     command: /tmp/shared-env.sh
     volumes:
       - shared-volume:/tmp/docker
-      - /tmp/shared:/tmp/host-docker
+      - /tmp/shared:/tmp/host-run
       - ./shared-env.sh:/tmp/shared-env.sh
 
   mysql:
@@ -59,7 +60,7 @@ services:
     depends_on:
       - shared-tmp
     volumes:
-      - "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
       - shared-volume:/tmp/docker
     environment:
       REDIS_PORT_NUMBER: 6377
@@ -214,14 +215,14 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
       REDIS_SERVER_CLUSTER_SEEDS: "redis-cluster-node-0:6479,redis-cluster-node-1:6480,redis-cluster-node-2:6481,redis-cluster-node-3:6482,redis-cluster-node-4:6483,redis-cluster-node-5:6484"
-      REDIS_SERVER_UNIX_SOCK: "/tmp/docker/redis.sock"
+      REDIS_SERVER_UNIX_SOCK: "/tmp/docker/shared/redis.sock"
       REDIS_SERVER_TLS_HOST: "redis-new"
       REDIS_SERVER_TLS_PORT: "6443"
       REDIS_SERVER_TLS_PASSWORD: "l83aa26"
-      REDIS_SERVER_TLS_CA_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/ca.crt"
-      REDIS_SERVER_TLS_CERT_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/redis.crt"
-      REDIS_SERVER_TLS_KEY_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/redis.key"
-      REDIS_TLS_DH_PARAMS_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/redis.dh"
+      REDIS_SERVER_TLS_CA_FILE: "/imi/.github/service/redis-tls/certs/ca.crt"
+      REDIS_SERVER_TLS_CERT_FILE: "/imi/.github/service/redis-tls/certs/redis.crt"
+      REDIS_SERVER_TLS_KEY_FILE: "/imi/.github/service/redis-tls/certs/redis.key"
+      REDIS_TLS_DH_PARAMS_FILE: "/imi/.github/service/redis-tls/certs/redis.dh"
     volumes:
       - "${GITHUB_WORKSPACE}:/imi:rw"
       - shared-volume:/tmp/docker
@@ -250,14 +251,14 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
       REDIS_SERVER_CLUSTER_SEEDS: "redis-cluster-node-0:6479,redis-cluster-node-1:6480,redis-cluster-node-2:6481,redis-cluster-node-3:6482,redis-cluster-node-4:6483,redis-cluster-node-5:6484"
-      REDIS_SERVER_UNIX_SOCK: "/tmp/docker/redis.sock"
+      REDIS_SERVER_UNIX_SOCK: "/tmp/docker/shared/redis.sock"
       REDIS_SERVER_TLS_HOST: "redis-new"
       REDIS_SERVER_TLS_PORT: "6443"
       REDIS_SERVER_TLS_PASSWORD: "l83aa26"
-      REDIS_SERVER_TLS_CA_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/ca.crt"
-      REDIS_SERVER_TLS_CERT_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/redis.crt"
-      REDIS_SERVER_TLS_KEY_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/redis.key"
-      REDIS_TLS_DH_PARAMS_FILE: "${GITHUB_ACTION_PATH}/.github/service/redis-tls/certs/redis.dh"
+      REDIS_SERVER_TLS_CA_FILE: "/imi/.github/service/redis-tls/certs/ca.crt"
+      REDIS_SERVER_TLS_CERT_FILE: "/imi/.github/service/redis-tls/certs/redis.crt"
+      REDIS_SERVER_TLS_KEY_FILE: "/imi/.github/service/redis-tls/certs/redis.key"
+      REDIS_TLS_DH_PARAMS_FILE: "/imi/.github/service/redis-tls/certs/redis.dh"
     build:
       context: .
       dockerfile: php.dockerfile
