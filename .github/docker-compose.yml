@@ -125,6 +125,7 @@ services:
       REDIS_PORT_NUMBER: 6480
       REDIS_PASSWORD: "l83aa26"
       REDIS_NODES: "redis-cluster-node-1:6445 redis-cluster-node-2:6446 redis-cluster-node-3:6447 redis-cluster-node-4:6448 redis-cluster-node-5:6449 redis-cluster-node-0:6444"
+      REDIS_TLS_ENABLED: "true"
       REDIS_TLS_PORT_NUMBER: 6445
       REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
       REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
@@ -144,6 +145,7 @@ services:
       REDIS_PORT_NUMBER: 6481
       REDIS_PASSWORD: "l83aa26"
       REDIS_NODES: "redis-cluster-node-1:6445 redis-cluster-node-2:6446 redis-cluster-node-3:6447 redis-cluster-node-4:6448 redis-cluster-node-5:6449 redis-cluster-node-0:6444"
+      REDIS_TLS_ENABLED: "true"
       REDIS_TLS_PORT_NUMBER: 6446
       REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
       REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
@@ -163,6 +165,7 @@ services:
       REDIS_PORT_NUMBER: 6482
       REDIS_PASSWORD: "l83aa26"
       REDIS_NODES: "redis-cluster-node-1:6445 redis-cluster-node-2:6446 redis-cluster-node-3:6447 redis-cluster-node-4:6448 redis-cluster-node-5:6449 redis-cluster-node-0:6444"
+      REDIS_TLS_ENABLED: "true"
       REDIS_TLS_PORT_NUMBER: 6447
       REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
       REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
@@ -182,6 +185,7 @@ services:
       REDIS_PORT_NUMBER: 6483
       REDIS_PASSWORD: "l83aa26"
       REDIS_NODES: "redis-cluster-node-1:6445 redis-cluster-node-2:6446 redis-cluster-node-3:6447 redis-cluster-node-4:6448 redis-cluster-node-5:6449 redis-cluster-node-0:6444"
+      REDIS_TLS_ENABLED: "true"
       REDIS_TLS_PORT_NUMBER: 6448
       REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
       REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
