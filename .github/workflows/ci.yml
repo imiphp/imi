@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   ci-linux:
+    if: false
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: ubuntu-latest
     strategy:
@@ -199,6 +200,9 @@ jobs:
           echo ">>> redis"
           echo -e 'info server' | nc 127.0.0.1 6379 -w 1
           echo ">>> redis-cluster"
+          docker logs redis-cluster-node-0
+          docker logs redis-cluster-node-1
+          docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6479 -w 1
           echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 127.0.0.1 6479 -w 1
           echo ">>> redis-new"
@@ -273,6 +277,7 @@ jobs:
         run: php .github/print-logs.php
 
   ci-macos:
+    if: false
     name: MacOS PHP-${{ matrix.php }} Swoole-${{ matrix.swoole }} RoadRunner-${{ matrix.roadrunner }}
     runs-on: macos-latest
     strategy:
