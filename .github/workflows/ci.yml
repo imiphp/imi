@@ -199,10 +199,15 @@ jobs:
           tree -alfugh /run/shared
           echo ">>> redis"
           echo -e 'info server' | nc 127.0.0.1 6379 -w 1
-          echo ">>> redis-cluster"
+          echo ">>> ====="
           docker logs redis-cluster-node-0
           docker logs redis-cluster-node-1
+          docker logs redis-cluster-node-2
+          echo ">>> ====="
           docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
+          docker exec redis-cluster-node-1 cat /bitnami/redis/data/nodes.conf
+          docker exec redis-cluster-node-2 cat /bitnami/redis/data/nodes.conf
+          echo ">>> redis-cluster"
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6479 -w 1
           echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 127.0.0.1 6479 -w 1
           echo ">>> redis-new"
