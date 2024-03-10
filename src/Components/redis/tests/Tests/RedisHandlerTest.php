@@ -102,11 +102,11 @@ class RedisHandlerTest extends TestCase
     public function testPhpRedisTlsClusterConnection(): void
     {
         foreach ([
-                    'REDIS_SERVER_TLS_CLUSTER_SEEDS',
-                    'REDIS_SERVER_TLS_CA_FILE',
-                    'REDIS_SERVER_TLS_CERT_FILE',
-                    'REDIS_SERVER_TLS_KEY_FILE',
-                 ] as $key)
+            'REDIS_SERVER_TLS_CLUSTER_SEEDS',
+            'REDIS_SERVER_TLS_CA_FILE',
+            'REDIS_SERVER_TLS_CERT_FILE',
+            'REDIS_SERVER_TLS_KEY_FILE',
+        ] as $key)
         {
             $value = env($key);
             if (empty($value))
@@ -227,11 +227,11 @@ class RedisHandlerTest extends TestCase
     public function testPredisTlsClusterConnection(): void
     {
         foreach ([
-                     'REDIS_SERVER_TLS_CLUSTER_SEEDS',
-                     'REDIS_SERVER_TLS_CA_FILE',
-                     'REDIS_SERVER_TLS_CERT_FILE',
-                     'REDIS_SERVER_TLS_KEY_FILE',
-                 ] as $key)
+            'REDIS_SERVER_TLS_CLUSTER_SEEDS',
+            'REDIS_SERVER_TLS_CA_FILE',
+            'REDIS_SERVER_TLS_CERT_FILE',
+            'REDIS_SERVER_TLS_KEY_FILE',
+        ] as $key)
         {
             $value = env($key);
             if (empty($value))
