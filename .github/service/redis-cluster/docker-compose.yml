@@ -1,0 +1,135 @@
+version: '2'
+services:
+  redis-node-0:
+    image: bitnami/redis-cluster:7.2
+    volumes:
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+    environment:
+      REDIS_PORT_NUMBER: 6379
+      REDIS_PASSWORD: l83aa26
+      REDISCLI_AUTH: l83aa26
+      REDIS_CLUSTER_REPLICAS: 1
+      REDIS_CLUSTER_CREATOR: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      REDIS_TLS_ENABLED: "true"
+      REDIS_TLS_PORT_NUMBER: 6443
+      REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
+      REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
+      REDIS_TLS_CA_FILE: "/opt/bitnami/redis/certs/ca.crt"
+      REDIS_TLS_DH_PARAMS_FILE: "/opt/bitnami/redis/certs/redis.dh"
+      REDIS_TLS_AUTH_CLIENTS: "yes"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -h 127.0.0.1 -p $${REDIS_PORT_NUMBER:-6379} -a $${REDIS_PASSWORD} CLUSTER INFO | grep 'cluster_state:ok'"]
+      interval: 3s
+      timeout: 60s
+      retries: 30
+    networks:
+      default:
+        ipv4_address: 172.10.1.2
+
+  redis-node-1:
+    image: bitnami/redis-cluster:7.2
+    volumes:
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+    environment:
+      REDIS_PORT_NUMBER: 6379
+      REDIS_PASSWORD: l83aa26
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      REDIS_TLS_ENABLED: "true"
+      REDIS_TLS_PORT_NUMBER: 6443
+      REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
+      REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
+      REDIS_TLS_CA_FILE: "/opt/bitnami/redis/certs/ca.crt"
+      REDIS_TLS_DH_PARAMS_FILE: "/opt/bitnami/redis/certs/redis.dh"
+      REDIS_TLS_AUTH_CLIENTS: "yes"
+    networks:
+      default:
+        ipv4_address: 172.10.1.3
+
+  redis-node-2:
+    image: bitnami/redis-cluster:7.2
+    volumes:
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+    environment:
+      REDIS_PORT_NUMBER: 6379
+      REDIS_PASSWORD: l83aa26
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      REDIS_TLS_ENABLED: "true"
+      REDIS_TLS_PORT_NUMBER: 6443
+      REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
+      REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
+      REDIS_TLS_CA_FILE: "/opt/bitnami/redis/certs/ca.crt"
+      REDIS_TLS_DH_PARAMS_FILE: "/opt/bitnami/redis/certs/redis.dh"
+      REDIS_TLS_AUTH_CLIENTS: "yes"
+    networks:
+      default:
+        ipv4_address: 172.10.1.4
+
+  redis-node-3:
+    image: bitnami/redis-cluster:7.2
+    volumes:
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+    environment:
+      REDIS_PORT_NUMBER: 6379
+      REDIS_PASSWORD: l83aa26
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      REDIS_TLS_ENABLED: "true"
+      REDIS_TLS_PORT_NUMBER: 6443
+      REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
+      REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
+      REDIS_TLS_CA_FILE: "/opt/bitnami/redis/certs/ca.crt"
+      REDIS_TLS_DH_PARAMS_FILE: "/opt/bitnami/redis/certs/redis.dh"
+      REDIS_TLS_AUTH_CLIENTS: "yes"
+    networks:
+      default:
+        ipv4_address: 172.10.1.5
+
+  redis-node-4:
+    image: bitnami/redis-cluster:7.2
+    volumes:
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+    environment:
+      REDIS_PORT_NUMBER: 6379
+      REDIS_PASSWORD: l83aa26
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      REDIS_TLS_ENABLED: "true"
+      REDIS_TLS_PORT_NUMBER: 6443
+      REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
+      REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
+      REDIS_TLS_CA_FILE: "/opt/bitnami/redis/certs/ca.crt"
+      REDIS_TLS_DH_PARAMS_FILE: "/opt/bitnami/redis/certs/redis.dh"
+      REDIS_TLS_AUTH_CLIENTS: "yes"
+    networks:
+      default:
+        ipv4_address: 172.10.1.6
+
+  redis-node-5:
+    image: bitnami/redis-cluster:7.2
+    volumes:
+      - "${GITHUB_WORKSPACE}/.github/service/redis-tls/certs:/opt/bitnami/redis/certs"
+    environment:
+      REDIS_PORT_NUMBER: 6379
+      REDIS_PASSWORD: l83aa26
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      REDIS_TLS_ENABLED: "true"
+      REDIS_TLS_PORT_NUMBER: 6443
+      REDIS_TLS_CERT_FILE: "/opt/bitnami/redis/certs/redis.crt"
+      REDIS_TLS_KEY_FILE: "/opt/bitnami/redis/certs/redis.key"
+      REDIS_TLS_CA_FILE: "/opt/bitnami/redis/certs/ca.crt"
+      REDIS_TLS_DH_PARAMS_FILE: "/opt/bitnami/redis/certs/redis.dh"
+      REDIS_TLS_AUTH_CLIENTS: "yes"
+    networks:
+      default:
+        ipv4_address: 172.10.1.7
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.10.1.0/24
