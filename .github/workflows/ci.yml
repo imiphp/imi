@@ -25,9 +25,9 @@ jobs:
       matrix:
         swoole:
           - version: php8.2-swoole-5.1
-#          - version: php8.1-swoole-5.1
-#          - version: php8.2-swoole-5.0
-#          - version: php8.1-swoole-5.0
+          - version: php8.1-swoole-5.1
+          - version: php8.2-swoole-5.0
+          - version: php8.1-swoole-5.0
         roadrunner: [2.7.*]
     env:
       ENV_SERVICE: swoole
@@ -208,7 +208,7 @@ jobs:
           echo ">>> redis-cluster"
           echo -e 'auth l83aa26\r\ninfo server' | nc 172.10.12.2 6379 -w 1
           echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 172.10.12.2 6379 -w 1
-          docker compose exec -f ./.github/service/redis-cluster/docker-compose.yml node-0 cat /bitnami/redis/data/nodes.conf
+          docker compose -f ./.github/service/redis-cluster/docker-compose.yml exec node-0 cat /bitnami/redis/data/nodes.conf
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: composer test
