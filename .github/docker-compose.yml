@@ -137,8 +137,8 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
-      REDIS_SERVER_CLUSTER_SEEDS: "redis-cluster-node-0:6379,redis-cluster-node-1:6379,redis-cluster-node-2:6379,redis-cluster-node-3:6379,redis-cluster-node-4:6379,redis-cluster-node-5:6379"
-      REDIS_SERVER_TLS_CLUSTER_SEEDS: "redis-cluster-node-0:6443,redis-cluster-node-1:6443,redis-cluster-node-2:6443,redis-cluster-node-3:6443,redis-cluster-node-4:6443,redis-cluster-node-5:6443"
+      REDIS_SERVER_CLUSTER_SEEDS: "172.10.12.2:6379,172.10.12.3:6379,172.10.12.4:6379,172.10.12.5:6379,172.10.12.6:6379,172.10.12.7:6379"
+      REDIS_SERVER_TLS_CLUSTER_SEEDS: "172.10.12.2:6443,172.10.12.3:6443,172.10.12.4:6443,172.10.12.5:6443,172.10.12.6:6443,172.10.12.7:6443"
       REDIS_SERVER_UNIX_SOCK: "/run/shared/redis.sock"
       REDIS_SERVER_TLS_HOST: "redis-new"
       REDIS_SERVER_TLS_PORT: "6443"
@@ -175,8 +175,8 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
-      REDIS_SERVER_CLUSTER_SEEDS: "redis-cluster-node-0:6379,redis-cluster-node-1:6379,redis-cluster-node-2:6379,redis-cluster-node-3:6379,redis-cluster-node-4:6379,redis-cluster-node-5:6379"
-      REDIS_SERVER_TLS_CLUSTER_SEEDS: "redis-cluster-node-0:6443,redis-cluster-node-1:6443,redis-cluster-node-2:6443,redis-cluster-node-3:6443,redis-cluster-node-4:6443,redis-cluster-node-5:6443"
+      REDIS_SERVER_CLUSTER_SEEDS: "172.10.12.2:6379,172.10.12.3:6379,172.10.12.4:6379,172.10.12.5:6379,172.10.12.6:6379,172.10.12.7:6379"
+      REDIS_SERVER_TLS_CLUSTER_SEEDS: "172.10.12.2:6443,172.10.12.3:6443,172.10.12.4:6443,172.10.12.5:6443,172.10.12.6:6443,172.10.12.7:6443"
       REDIS_SERVER_UNIX_SOCK: "/run/shared/redis.sock"
       REDIS_SERVER_TLS_HOST: "redis-new"
       REDIS_SERVER_TLS_PORT: "6443"

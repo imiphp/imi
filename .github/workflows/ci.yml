@@ -64,8 +64,8 @@ jobs:
           docker logs redis-new || true
           docker exec ${ENV_SERVICE} bash -c "ls -lha /run/shared"
           echo ">>> redis-cluster-node-0"
-          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0 6479 -w 1"
-          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0 6479 -w 1"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-cluster-node-0-1 6379 -w 1"
+          docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc redis-cluster-node-0-1 6379 -w 1"
           echo ">>> redis-new"
           docker exec ${ENV_SERVICE} bash -c "echo -e 'auth l83aa26\r\ninfo server' | nc redis-new 6377 -w 1"
       - name: Test
@@ -204,8 +204,6 @@ jobs:
           docker logs redis-cluster-node-0
           docker logs redis-cluster-node-1
           echo ">>> ====="
-          docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
-          docker exec redis-cluster-node-1 cat /bitnami/redis/data/nodes.conf
           echo ">>> redis-new"
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6377 -w 1
           echo ">>> ====="
@@ -213,6 +211,7 @@ jobs:
           echo ">>> redis-cluster"
           echo -e 'auth l83aa26\r\ninfo server' | nc 172.10.12.2 6379 -w 1
           echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 172.10.12.2 6379 -w 1
+          docker compose exec -f ./.github/service/redis-cluster/docker-compose.yml node-0 cat /bitnami/redis/data/nodes.conf
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: composer test
