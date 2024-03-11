@@ -201,9 +201,6 @@ jobs:
           echo ">>> redis"
           echo -e 'info server' | nc 127.0.0.1 6379 -w 1
           echo ">>> ====="
-          docker logs redis-cluster-node-0
-          docker logs redis-cluster-node-1
-          echo ">>> ====="
           echo ">>> redis-new"
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6377 -w 1
           echo ">>> ====="
