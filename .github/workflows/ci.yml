@@ -25,9 +25,9 @@ jobs:
       matrix:
         swoole:
           - version: php8.2-swoole-5.1
-          - version: php8.1-swoole-5.1
-          - version: php8.2-swoole-5.0
-          - version: php8.1-swoole-5.0
+#          - version: php8.1-swoole-5.1
+#          - version: php8.2-swoole-5.0
+#          - version: php8.1-swoole-5.0
         roadrunner: [2.7.*]
     env:
       ENV_SERVICE: swoole
@@ -72,8 +72,7 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         run: docker exec ${ENV_SERVICE} composer test
       - name: Test redis
-        #if: ${{ env.test_prepared && always() }}
-        if: false
+        if: ${{ env.test_prepared && always() }}
         run: |
           docker exec ${ENV_SERVICE} composer test-redis
       - name: Test swoole
@@ -151,8 +150,9 @@ jobs:
         shell: bash
         run: |
           sudo apt update && sudo apt install -y rsync netcat-openbsd tree
+          docker network create imi-ci-service-network --subnet 172.10.12.0/24
           docker compose -f ./.github/service/redis-cluster/docker-compose.yml up -d
-          docker compose -f ./.github/docker-compose.yml up -d redis-cluster-node-0 mysql postgres redis redis-new rabbitmq kafka1
+          docker compose -f ./.github/docker-compose.yml up -d mysql postgres redis redis-new rabbitmq kafka1
           echo "127.0.0.1 kafka1" | sudo tee -a /etc/hosts
       - name: Setup swoole-cli
         run: .github/script/install-swoole-cli.sh ${{ matrix.swoole-cli }}
@@ -206,16 +206,13 @@ jobs:
           echo ">>> ====="
           docker exec redis-cluster-node-0 cat /bitnami/redis/data/nodes.conf
           docker exec redis-cluster-node-1 cat /bitnami/redis/data/nodes.conf
-          echo ">>> redis-cluster"
-          echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6479 -w 1
-          echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 127.0.0.1 6479 -w 1
           echo ">>> redis-new"
           echo -e 'auth l83aa26\r\ninfo server' | nc 127.0.0.1 6377 -w 1
           echo ">>> ====="
           docker compose -f ./.github/service/redis-cluster/docker-compose.yml logs
           echo ">>> redis-cluster"
-          echo -e 'auth l83aa26\r\ninfo server' | nc 172.10.10.2 6379 -w 1
-          echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 172.10.10.2 6379 -w 1
+          echo -e 'auth l83aa26\r\ninfo server' | nc 172.10.12.2 6379 -w 1
+          echo -e 'auth l83aa26\r\ncluster info\r\ncluster nodes' | nc 172.10.12.2 6379 -w 1
       - name: Test
         if: ${{ env.test_prepared && always() }}
         run: composer test
@@ -223,8 +220,8 @@ jobs:
         if: ${{ env.test_prepared && always() }}
         env:
           REDIS_SERVER_CLUSTER_PASSWORD: "l83aa26"
-          REDIS_SERVER_CLUSTER_SEEDS: "172.10.10.2:6379,172.10.10.3:6379,172.10.10.4:6379,172.10.10.5:6379,172.10.10.6:6379,172.10.10.7:6379"
-          REDIS_SERVER_TLS_CLUSTER_SEEDS: "172.10.10.2:6443,172.10.10.3:6443,172.10.10.4:6443,172.10.10.5:6443,172.10.10.6:6443,172.10.10.7:6443"
+          REDIS_SERVER_CLUSTER_SEEDS: "172.10.12.2:6379,172.10.12.3:6379,172.10.12.4:6379,172.10.12.5:6379,172.10.12.6:6379,172.10.12.7:6379"
+          REDIS_SERVER_TLS_CLUSTER_SEEDS: "172.10.12.2:6443,172.10.12.3:6443,172.10.12.4:6443,172.10.12.5:6443,172.10.12.6:6443,172.10.12.7:6443"
           REDIS_SERVER_UNIX_SOCK: "/run/shared/redis.sock"
           REDIS_SERVER_TLS_HOST: "127.0.0.1"
           REDIS_SERVER_TLS_PORT: "6443"

@@ -12,8 +12,9 @@ runs:
     - name: Setup Services
       shell: bash
       run: |
+        docker network create imi-ci-service-network --subnet 172.10.12.0/24
         docker compose -f ./.github/service/redis-cluster/docker-compose.yml up -d
-        docker compose -f ./.github/docker-compose.yml up -d redis-cluster-node-0 redis-new
+        docker compose -f ./.github/docker-compose.yml up -d redis-new
         docker compose -f ./.github/docker-compose.yml up -d ${{ inputs.env }}
         docker exec ${{ inputs.env }} php -v
         docker exec ${{ inputs.env }} php -m
