@@ -25,7 +25,12 @@ class PointCut extends Base
         /**
          * 不允许的切入点，即使包含中有的，也可以被排除.
          */
-        public array $deny = []
+        public array $deny = [],
+        /**
+         * 优先级，越大越先执行.
+         * 为 null 时使用 Aspect 设置.
+         */
+        public ?int $priority = null
     ) {
     }
 }
