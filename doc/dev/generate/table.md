@@ -28,14 +28,35 @@ vendor/bin/imi-xxx generate/table
 
 ## 事件监听
 
-### imi.generate_model.before
+在生成表时，会触发以下事件：
 
-生成表工具的前置操作
+- `Imi\Model\Cli\Table\Event\Param\BeforeGenerateTables` - 生成所有表前置事件
+- `Imi\Model\Cli\Table\Event\Param\AfterGenerateTables` - 生成所有表前置事件
+- `Imi\Model\Cli\Table\Event\Param\BeforeGenerateTable` - 生成表前置事件
+- `Imi\Model\Cli\Table\Event\Param\AfterGenerateTable` - 生成表前置事件
 
-**常量：** `Imi\Model\Cli\Table\Event\GenerateModelEvents::BEFORE_GENERATE_MODEL`
+> 事件参数类都是事件名本身
 
-### imi.generate_model.after
+`BeforeGenerateTable`、`AfterGenerateTable` 事件参数：
 
-生成表工具的后置操作
+```php
+/**
+ * 模型类名.
+ */
+public string $className,
 
-**常量：** `Imi\Model\Cli\Table\Event\GenerateModelEvents::AFTER_GENERATE_MODEL`
+/**
+ * 表名.
+ */
+public string $tableName,
+
+/**
+ * 是否跳过.
+ */
+public bool $skip,
+
+/**
+ * DDL 语句.
+ */
+public string $ddl,
+```
