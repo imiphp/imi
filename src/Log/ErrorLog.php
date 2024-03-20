@@ -46,6 +46,10 @@ class ErrorLog
      */
     public function onError(int $errno, string $errstr, string $errfile, int $errline): void
     {
+        if (0 === (error_reporting() & $errno))
+        {
+            return;
+        }
         if ($this->exceptionLevel & $errno)
         {
             throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
