@@ -51,6 +51,10 @@ class ErrorLog
      */
     public function onError(int $errno, string $errstr, string $errfile, int $errline): void
     {
+        if (0 === (error_reporting() & $errno))
+        {
+            return;
+        }
         foreach ($this->errorEventHandlers as $class)
         {
             $handler = new $class();
