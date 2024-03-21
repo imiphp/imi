@@ -77,7 +77,7 @@ class AopAnnotationLoader
                                         'deny'  => $pointCut->deny,
                                         'extra' => $beforeAnnotation->toArray(),
                                     ];
-                                    AopManager::addBefore($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                    AopManager::addBefore($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                 }
                                 if ($afterAnnotation)
                                 {
@@ -85,7 +85,7 @@ class AopAnnotationLoader
                                         'deny'  => $pointCut->deny,
                                         'extra' => $afterAnnotation->toArray(),
                                     ];
-                                    AopManager::addAfter($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                    AopManager::addAfter($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                 }
                                 if ($aroundAnnotation)
                                 {
@@ -93,7 +93,7 @@ class AopAnnotationLoader
                                         'deny'  => $pointCut->deny,
                                         'extra' => $aroundAnnotation->toArray(),
                                     ];
-                                    AopManager::addAround($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                    AopManager::addAround($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                 }
                                 if ($afterReturningAnnotation)
                                 {
@@ -101,7 +101,7 @@ class AopAnnotationLoader
                                         'deny'  => $pointCut->deny,
                                         'extra' => $afterReturningAnnotation->toArray(),
                                     ];
-                                    AopManager::addAfterReturning($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                    AopManager::addAfterReturning($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                 }
                                 if ($afterThrowingAnnotation)
                                 {
@@ -109,7 +109,7 @@ class AopAnnotationLoader
                                         'deny'  => $pointCut->deny,
                                         'extra' => $afterThrowingAnnotation->toArray(),
                                     ];
-                                    AopManager::addAfterThrowing($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                    AopManager::addAfterThrowing($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                 }
                             }
                             break;
@@ -143,7 +143,7 @@ class AopAnnotationLoader
                                             'deny'  => $pointCut->deny,
                                             'extra' => $beforeAnnotation->toArray(),
                                         ];
-                                        AopManager::addBefore($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                        AopManager::addBefore($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                     }
                                     if ($afterAnnotation)
                                     {
@@ -151,7 +151,7 @@ class AopAnnotationLoader
                                             'deny'  => $pointCut->deny,
                                             'extra' => $afterAnnotation->toArray(),
                                         ];
-                                        AopManager::addAfter($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                        AopManager::addAfter($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                     }
                                     if ($aroundAnnotation)
                                     {
@@ -159,7 +159,7 @@ class AopAnnotationLoader
                                             'deny'  => $pointCut->deny,
                                             'extra' => $aroundAnnotation->toArray(),
                                         ];
-                                        AopManager::addAround($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                        AopManager::addAround($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                     }
                                     if ($afterReturningAnnotation)
                                     {
@@ -167,7 +167,7 @@ class AopAnnotationLoader
                                             'deny'  => $pointCut->deny,
                                             'extra' => $afterReturningAnnotation->toArray(),
                                         ];
-                                        AopManager::addAfterReturning($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                        AopManager::addAfterReturning($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                     }
                                     if ($afterThrowingAnnotation)
                                     {
@@ -175,7 +175,7 @@ class AopAnnotationLoader
                                             'deny'  => $pointCut->deny,
                                             'extra' => $afterThrowingAnnotation->toArray(),
                                         ];
-                                        AopManager::addAfterThrowing($class, $method, $callback, $aspectAnnotation->priority, $options);
+                                        AopManager::addAfterThrowing($class, $method, $callback, $pointCut->priority ?? $aspectAnnotation->priority, $options);
                                     }
                                 }
                             }

@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\App;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Aop\Classes\TestPriorityClass;
 
 /**
  * @testdox Aop
@@ -86,5 +87,14 @@ class AopTest extends BaseTest
         }
         $this->assertNotNull($throwable);
         $this->assertEquals('test', $throwable->getMessage());
+    }
+
+    public function testPriority(): void
+    {
+        $test = App::getBean(TestPriorityClass::class);
+        $list = [];
+        $result = $test->test($list);
+        $this->assertEquals(3, $result);
+        $this->assertEquals([3, 1, 2, 0], $list);
     }
 }
