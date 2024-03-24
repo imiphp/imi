@@ -20,6 +20,13 @@ class Driver extends MysqlBase
         __construct as private tPdoDriverConstruct;
     }
 
+    /**
+     * 检查是否离线的错误码索引.
+     *
+     * @readonly
+     */
+    protected int $checkIsOfflineCodeIndex = 1;
+
     public function __construct(array $option = [])
     {
         $option['username'] ??= 'root';

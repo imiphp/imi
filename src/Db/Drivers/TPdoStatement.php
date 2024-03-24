@@ -32,6 +32,13 @@ trait TPdoStatement
      */
     protected $lastInsertId = '';
 
+    /**
+     * 检查是否离线的错误码索引.
+     *
+     * @readonly
+     */
+    protected int $checkIsOfflineCodeIndex = 0;
+
     public function __construct(IDb $db, \PDOStatement $statement, bool $isExecuted = false)
     {
         $this->db = $db;
@@ -158,7 +165,7 @@ trait TPdoStatement
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->db->checkCodeIsOffline($e->errorInfo[0]))
+            if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->db->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
             {
                 $this->db->close();
             }

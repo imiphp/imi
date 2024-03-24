@@ -16,4 +16,11 @@ use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     use TPdoStatement;
+
+    /**
+     * 检查是否离线的错误码索引.
+     *
+     * @readonly
+     */
+    protected int $checkIsOfflineCodeIndex = 1;
 }
