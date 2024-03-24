@@ -30,10 +30,6 @@ abstract class PgsqlBase extends Base implements IPgsqlDb
 
     /**
      * {@inheritDoc}
-     *
-     * 只列出了 Postgres 代码中已使用的错误码
-     *
-     * @see http://www.postgres.cn/docs/13/errcodes-appendix.html
      */
     public function checkCodeIsOffline(string $sqlState, $code = null): bool
     {
