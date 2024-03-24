@@ -18,8 +18,6 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
 {
     use TPdoStatement;
 
-    public const OFFLINE_CODE_INDEX = 0;
-
     /**
      * 更新最后插入ID.
      */

@@ -20,8 +20,6 @@ class Driver extends MysqlBase
         __construct as private tPdoDriverConstruct;
     }
 
-    public const OFFLINE_CODE_INDEX = 1;
-
     public function __construct(array $option = [])
     {
         $option['username'] ??= 'root';

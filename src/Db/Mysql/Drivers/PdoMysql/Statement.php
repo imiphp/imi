@@ -16,6 +16,4 @@ use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     use TPdoStatement;
-
-    public const OFFLINE_CODE_INDEX = 1;
 }
