@@ -20,6 +20,8 @@ class Driver extends PgsqlBase
         __construct as private tPdoDriverConstruct;
     }
 
+    public const OFFLINE_CODE_INDEX = 0;
+
     public function __construct(array $option = [])
     {
         $option['username'] ??= 'postgres';

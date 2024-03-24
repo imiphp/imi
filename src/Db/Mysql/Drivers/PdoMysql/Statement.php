@@ -17,10 +17,5 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     use TPdoStatement;
 
-    /**
-     * 检查是否离线的错误码索引.
-     *
-     * @readonly
-     */
-    protected int $checkIsOfflineCodeIndex = 1;
+    public const OFFLINE_CODE_INDEX = 1;
 }

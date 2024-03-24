@@ -45,13 +45,6 @@ trait TPdoDriver
      */
     protected string $statementClass = '';
 
-    /**
-     * 检查是否离线的错误码索引.
-     *
-     * @readonly
-     */
-    protected int $checkIsOfflineCodeIndex = 0;
-
     public function __construct(array $option = [])
     {
         $option['password'] ??= '';
@@ -101,7 +94,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+            if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
             {
                 $this->close();
             }
@@ -173,7 +166,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+            if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
             {
                 $this->close();
             }
@@ -203,7 +196,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+            if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
             {
                 $this->close();
             }
@@ -226,7 +219,7 @@ trait TPdoDriver
             }
             catch (\PDOException $e)
             {
-                if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+                if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
                 {
                     $this->close();
                 }
@@ -335,7 +328,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+            if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
             {
                 $this->close();
             }
@@ -412,7 +405,7 @@ trait TPdoDriver
             }
             catch (\PDOException $e)
             {
-                if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+                if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
                 {
                     $this->close();
                 }
@@ -446,7 +439,7 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[$this->checkIsOfflineCodeIndex]) && $this->checkCodeIsOffline($e->errorInfo[$this->checkIsOfflineCodeIndex]))
+            if (isset($e->errorInfo[self::OFFLINE_CODE_INDEX]) && $this->checkCodeIsOffline($e->errorInfo[self::OFFLINE_CODE_INDEX]))
             {
                 $this->close();
             }
