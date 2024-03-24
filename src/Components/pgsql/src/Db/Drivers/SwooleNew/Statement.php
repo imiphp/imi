@@ -132,6 +132,10 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
         {
             return $this->stmt->resultDiag['sqlstate'] ?? null;
         }
+        elseif (null !== $this->stmt->error)
+        {
+            return '08006'; // connection_failure
+        }
         else
         {
             return '';

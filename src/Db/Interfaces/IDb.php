@@ -152,5 +152,5 @@ interface IDb extends IHashCode
      *
      * @param mixed $code
      */
-    public function checkCodeIsOffline($code): bool;
+    public function checkCodeIsOffline(string $sqlState, $code = null): bool;
 }

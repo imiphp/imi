@@ -13,5 +13,5 @@ interface IPgsqlDb extends IDb
      *
      * @param string|null $code
      */
-    public function checkCodeIsOffline($code): bool;
+    public function checkCodeIsOffline(string $sqlState, $code = null): bool;
 }
