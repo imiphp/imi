@@ -125,9 +125,9 @@ trait TPdoStatement
      */
     public function execute(array $inputParameters = null): bool
     {
+        $statement = $this->statement;
         try
         {
-            $statement = $this->statement;
             $statement->closeCursor();
             if ($inputParameters)
             {
@@ -147,18 +147,19 @@ trait TPdoStatement
             if (!$result)
             {
                 $errorCode = $this->errorCode();
-                $errorInfo = $this->errorInfo();
-                if ($this->db->checkCodeIsOffline($errorCode))
+                $errorInfo = $statement->errorInfo();
+                if ($this->db->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
                 {
                     $this->db->close();
                 }
-                throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
+                throw new DbException('SQL query error [' . $errorCode . '] ' . $errorInfo[2] . \PHP_EOL . 'sql: ' . $this->getSql() . \PHP_EOL);
             }
             $this->updateLastInsertId();
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->db->checkCodeIsOffline($e->errorInfo[0]))
+            $errorInfo = $statement->errorInfo();
+            if ($this->db->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->db->close();
             }

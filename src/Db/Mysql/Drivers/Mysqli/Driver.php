@@ -97,7 +97,7 @@ class Driver extends MysqlBase
         {
             return true;
         }
-        if ($this->checkCodeIsOffline($instance->errno))
+        if ($this->checkCodeIsOffline($instance->sqlstate, $instance->errno))
         {
             $this->close();
         }
@@ -156,7 +156,7 @@ class Driver extends MysqlBase
     {
         if (!$this->inTransaction() && !$this->instance->begin_transaction())
         {
-            if ($this->checkCodeIsOffline($this->instance->errno))
+            if ($this->checkCodeIsOffline($this->instance->sqlstate, $this->instance->errno))
             {
                 $this->close();
             }
@@ -176,7 +176,7 @@ class Driver extends MysqlBase
     {
         if (!$this->instance->commit())
         {
-            if ($this->checkCodeIsOffline($this->instance->errno))
+            if ($this->checkCodeIsOffline($this->instance->sqlstate, $this->instance->errno))
             {
                 $this->close();
             }
@@ -205,7 +205,7 @@ class Driver extends MysqlBase
         {
             $this->getTransaction()->rollBack($levels);
         }
-        elseif ($this->checkCodeIsOffline($this->instance->errno))
+        elseif ($this->checkCodeIsOffline($this->instance->sqlstate, $this->instance->errno))
         {
             $this->close();
         }
@@ -275,7 +275,7 @@ class Driver extends MysqlBase
         $this->lastSql = $sql;
         $instance = $this->instance;
         $this->lastStmt = null;
-        if (false === $instance->query($sql) && $this->checkCodeIsOffline($this->instance->errno))
+        if (false === $instance->query($sql) && $this->checkCodeIsOffline($instance->sqlstate, $this->instance->errno))
         {
             $this->close();
 
@@ -297,7 +297,7 @@ class Driver extends MysqlBase
         {
             $errorCode = $this->errorCode();
             $errorInfo = $this->errorInfo();
-            if ($this->checkCodeIsOffline($errorCode))
+            if ($this->checkCodeIsOffline($instance->sqlstate, $errorCode))
             {
                 $this->close();
             }
@@ -379,7 +379,7 @@ class Driver extends MysqlBase
             {
                 $errorCode = $this->errorCode();
                 $errorInfo = $this->errorInfo();
-                if ($this->checkCodeIsOffline($errorCode))
+                if ($this->checkCodeIsOffline($this->instance->sqlstate, $errorCode))
                 {
                     $this->close();
                 }
@@ -408,7 +408,7 @@ class Driver extends MysqlBase
         {
             $errorCode = $this->errorCode();
             $errorInfo = $this->errorInfo();
-            if ($this->checkCodeIsOffline($errorCode))
+            if ($this->checkCodeIsOffline($this->instance->sqlstate, $errorCode))
             {
                 $this->close();
             }

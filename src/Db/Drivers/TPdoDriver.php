@@ -86,15 +86,16 @@ trait TPdoDriver
             {
                 return true;
             }
-            // @phpstan-ignore-next-line
-            if ($this->checkCodeIsOffline($instance->errorCode()))
+            $errorInfo = $instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->close();
             }
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+            $errorInfo = $instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->close();
             }
@@ -149,12 +150,13 @@ trait TPdoDriver
      */
     public function beginTransaction(): bool
     {
+        $instance = $this->instance;
         try
         {
-            if (!$this->inTransaction() && !$this->instance->beginTransaction())
+            if (!$this->inTransaction() && !$instance->beginTransaction())
             {
-                // @phpstan-ignore-next-line
-                if ($this->checkCodeIsOffline($this->instance->errorCode()))
+                $errorInfo = $instance->errorInfo();
+                if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
                 {
                     $this->close();
                 }
@@ -166,7 +168,8 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+            $errorInfo = $instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->close();
             }
@@ -185,8 +188,8 @@ trait TPdoDriver
         {
             if (!$this->instance->commit())
             {
-                // @phpstan-ignore-next-line
-                if ($this->checkCodeIsOffline($this->instance->errorCode()))
+                $errorInfo = $this->instance->errorInfo();
+                if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
                 {
                     $this->close();
                 }
@@ -196,7 +199,8 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+            $errorInfo = $this->instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->close();
             }
@@ -219,7 +223,8 @@ trait TPdoDriver
             }
             catch (\PDOException $e)
             {
-                if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+                $errorInfo = $this->instance->errorInfo();
+                if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
                 {
                     $this->close();
                 }
@@ -236,9 +241,13 @@ trait TPdoDriver
             $this->getTransaction()->rollBack($levels);
         }
         // @phpstan-ignore-next-line
-        elseif ($this->checkCodeIsOffline($this->instance->errorCode()))
+        else
         {
-            $this->close();
+            $errorInfo = $this->instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
+            {
+                $this->close();
+            }
         }
 
         return $result;
@@ -328,7 +337,8 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+            $errorInfo = $this->instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->close();
             }
@@ -405,7 +415,8 @@ trait TPdoDriver
             }
             catch (\PDOException $e)
             {
-                if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+                $errorInfo = $this->instance->errorInfo();
+                if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
                 {
                     $this->close();
                 }
@@ -439,7 +450,8 @@ trait TPdoDriver
         }
         catch (\PDOException $e)
         {
-            if (isset($e->errorInfo[0]) && $this->checkCodeIsOffline($e->errorInfo[0]))
+            $errorInfo = $this->instance->errorInfo();
+            if ($this->checkCodeIsOffline($errorInfo[0], $errorInfo[1]))
             {
                 $this->close();
             }

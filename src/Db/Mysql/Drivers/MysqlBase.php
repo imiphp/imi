@@ -8,6 +8,7 @@ use Imi\Db\Drivers\Base;
 use Imi\Db\Mysql\Contract\IMysqlDb;
 use Imi\Db\Mysql\Query\MysqlQuery;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\SqlState;
 
 abstract class MysqlBase extends Base implements IMysqlDb
 {
@@ -32,7 +33,7 @@ abstract class MysqlBase extends Base implements IMysqlDb
      *
      * @see https://github.com/mysql/mysql-server/blob/HEAD/include/errmsg.h
      */
-    public function checkCodeIsOffline($code): bool
+    public function checkCodeIsOffline(string $sqlState, $code = null): bool
     {
         return \in_array($code, [
             2001, // CR_SOCKET_CREATE_ERROR
@@ -45,6 +46,6 @@ abstract class MysqlBase extends Base implements IMysqlDb
             2012, // CR_SERVER_HANDSHAKE_ERR
             2013, // CR_SERVER_LOST
             2026, // CR_SSL_CONNECTION_ERROR
-        ]);
+        ]) || SqlState::checkCodeIsOffline($sqlState);
     }
 }

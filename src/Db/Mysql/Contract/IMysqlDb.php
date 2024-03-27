@@ -13,5 +13,5 @@ interface IMysqlDb extends IDb
      *
      * @param int $code
      */
-    public function checkCodeIsOffline($code): bool;
+    public function checkCodeIsOffline(string $sqlState, $code = null): bool;
 }

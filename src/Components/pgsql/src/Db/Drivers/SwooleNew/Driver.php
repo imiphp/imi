@@ -261,6 +261,10 @@ if (class_exists(PostgreSQL::class, false))
                 {
                     return $this->instance->resultDiag['sqlstate'] ?? null;
                 }
+                elseif (null !== $this->instance->error)
+                {
+                    return '08006'; // connection_failure
+                }
                 else
                 {
                     return '';
