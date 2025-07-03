@@ -73,7 +73,7 @@ class UpdateBuilder extends BaseBuilder
                     {
                         $jsonSets[$field][] = [
                             'jsonKeywords' => $matches['jsonKeywords'],
-                            'raw'          => 'CONVERT(\'' . json_encode($v, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE) . '\',JSON)',
+                            'raw'          => 'CAST(\'' . json_encode($v, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE) . '\' AS JSON)',
                         ];
                     }
                 }
