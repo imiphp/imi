@@ -10,7 +10,7 @@ on:
 jobs:
   split-repository:
     if: github.repository == 'imiphp/imi'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       GITHUB_REF: ${{ github.ref }}
       GITHUB_REPOSITORY: ${{ github.repository }}

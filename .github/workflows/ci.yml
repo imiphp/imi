@@ -15,7 +15,7 @@ on:
 jobs:
   ci:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -107,7 +107,7 @@ jobs:
 
   ci-unix:
     name: Linux Swoole-${{ matrix.swoole.version }} RoadRunner-${{ matrix.roadrunner }} With Redis UnixSocket
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -186,7 +186,7 @@ jobs:
 
   ci-swoole-cli:
     name: Swoole-cli-${{ matrix.swoole-cli }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:

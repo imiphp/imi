@@ -13,7 +13,7 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       SWOOLE_DOCKER_VERSION: 4.8-php7.4
       POSTGRESQL_VERSION: v4.8.0

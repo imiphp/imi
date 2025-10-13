@@ -160,13 +160,13 @@ jobs:
         id: run-test-suite
         run: ./dev/test-coverage-actions.sh php $TEST_TYPE
       - name: Upload coverage file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.testType }}-coverage
           path: tests/coverage.php
       - name: Upload log files
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.testType }}-logs
           path: |
@@ -217,7 +217,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: "./tests/coverage.xml"
       - name: Upload coverage reports to artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: tests/coverage.xml
