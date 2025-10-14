@@ -144,21 +144,14 @@ class ServerRequestTest extends BaseTest
         $this->assertEquals(['name' => 'imi'], $request->getParsedBody());
 
         // form
-        $request = new class() extends ServerRequest {
-            /**
-             * {@inheritDoc}
-             */
-            protected function initBody(): void
-            {
-                $this->post = ['name' => 'imi'];
-            }
-        };
+        $request = new ServerRequest();
         foreach ([
             MediaType::APPLICATION_FORM_URLENCODED,
             MediaType::MULTIPART_FORM_DATA,
         ] as $contentType)
         {
-            $request->setHeader(RequestHeader::CONTENT_TYPE, $contentType);
+            $request->setPost(['name' => 'imi'])
+                ->setHeader(RequestHeader::CONTENT_TYPE, $contentType);
             $requestTmp = $request->withMethod(RequestMethod::POST);
             $this->assertEquals(['name' => 'imi'], $requestTmp->getParsedBody());
             $requestTmp = $request->withMethod(RequestMethod::PUT);

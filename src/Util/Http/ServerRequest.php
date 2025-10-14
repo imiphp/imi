@@ -286,11 +286,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
         $parsedBody = &$this->parsedBody;
         if (null === $parsedBody)
         {
-            if (!$this->bodyInited)
-            {
-                $this->initBody();
-                $this->bodyInited = true;
-            }
             $contentType = $this->getHeaderLine(RequestHeader::CONTENT_TYPE);
             if ('' === $contentType)
             {
@@ -311,7 +306,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 // json
                 elseif (MediaType::APPLICATION_JSON === $contentType)
                 {
-                    $content = $this->body->getContents();
+                    $content = $this->getBody()->getContents();
                     if ('' !== $content)
                     {
                         $parsedBody = json_decode($content, !Config::get('@currentServer.jsonBodyIsObject', false), 512, \JSON_THROW_ON_ERROR);
@@ -331,7 +326,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 ]))
                 {
                     $this->post = $parsedBody = new \DOMDocument();
-                    $parsedBody->loadXML($this->body->getContents());
+                    $parsedBody->loadXML($this->getBody()->getContents());
                 }
                 // 其它
                 else
