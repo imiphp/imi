@@ -196,6 +196,8 @@ class Validator implements IValidator
         $thisResults = [];
         $result = true;
         $sceneOption = $this->scene[$this->currentScene] ?? null;
+        // Optimize field lookup by using array keys instead of in_array
+        $sceneOptionMap = $sceneOption ? array_flip($sceneOption) : null;
         foreach ($this->rules as $annotation)
         {
             if (!$annotation instanceof Condition)
@@ -203,7 +205,7 @@ class Validator implements IValidator
                 continue;
             }
             $annotationName = $annotation->name;
-            if ($sceneOption && !\in_array($annotationName, $sceneOption))
+            if ($sceneOptionMap && !isset($sceneOptionMap[$annotationName]))
             {
                 continue;
             }

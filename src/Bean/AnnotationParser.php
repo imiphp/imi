@@ -34,6 +34,13 @@ class AnnotationParser
     private array $classes = [];
 
     /**
+     * 文件名到类名的反向映射.
+     *
+     * @var array<string, string>
+     */
+    private array $fileToClassMap = [];
+
+    /**
      * 处理器类名映射.
      */
     private array $parsers = [];
@@ -62,14 +69,14 @@ class AnnotationParser
 
     public function __construct()
     {
-        $this->initIncludeFiles = get_included_files();
+        $this->initIncludeFiles = array_flip(get_included_files());
         $this->enableAnnotationCache = Config::get('@app.imi.annotation.cache', false);
         AnnotationReader::addGlobalIgnoredName('noRector');
     }
 
     public function parse(string $className, bool $transaction = true, ?string $fileName = null): bool
     {
-        $autoload = (null === $fileName) || (!isset($this->files[$fileName]) && (!\in_array($fileName, $this->initIncludeFiles)));
+        $autoload = (null === $fileName) || (!isset($this->files[$fileName]) && !isset($this->initIncludeFiles[$fileName]));
         if (!class_exists($className, $autoload) && !interface_exists($className, false) && !trait_exists($className, false))
         {
             if ($autoload && !isset($this->files[$fileName]) && null !== $fileName)
@@ -151,6 +158,7 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
+            $this->fileToClassMap[$fileName] = $className;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -245,6 +253,7 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
+            $this->fileToClassMap[$fileName] = $className;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -339,6 +348,7 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
+            $this->fileToClassMap[$fileName] = $className;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -432,6 +442,7 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
+            $this->fileToClassMap[$fileName] = $className;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -516,6 +527,7 @@ class AnnotationParser
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
+            $this->fileToClassMap[$fileName] = $className;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -764,7 +776,7 @@ class AnnotationParser
             {
                 unset($thisFiles[$file]);
             }
-            if (!($className = array_search($file, $thisClasses)))
+            if (!($className = $this->fileToClassMap[$file] ?? false))
             {
                 if (is_file($file))
                 {
@@ -813,6 +825,7 @@ class AnnotationParser
         return [
             $this->files,
             $this->classes,
+            $this->fileToClassMap,
         ];
     }
 
@@ -823,6 +836,7 @@ class AnnotationParser
     {
         $this->files = $data[0];
         $this->classes = $data[1];
+        $this->fileToClassMap = $data[2] ?? [];
     }
 
     /**

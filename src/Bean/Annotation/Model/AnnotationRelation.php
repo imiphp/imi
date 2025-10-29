@@ -374,12 +374,14 @@ class AnnotationRelation
     {
         $classRelations = &$this->classRelations;
         $className = (array) $className;
+        // Optimize lookup by using array keys instead of in_array
+        $classNameMap = array_flip($className);
         foreach ($classRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if (\in_array($item->getClass(), $className))
+                if (isset($classNameMap[$item->getClass()]))
                 {
                     unset($list[$i]);
                     $haveUnset = true;
@@ -402,12 +404,14 @@ class AnnotationRelation
     {
         $methodRelations = &$this->methodRelations;
         $methodName = (array) $methodName;
+        // Optimize lookup by using array keys instead of in_array
+        $methodNameMap = array_flip($methodName);
         foreach ($methodRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className && \in_array($item->getMethod(), $methodName))
+                if ($item->getClass() === $className && isset($methodNameMap[$item->getMethod()]))
                 {
                     unset($list[$i]);
                     $haveUnset = true;
@@ -430,12 +434,14 @@ class AnnotationRelation
     {
         $propertyRelations = &$this->propertyRelations;
         $propertyName = (array) $propertyName;
+        // Optimize lookup by using array keys instead of in_array
+        $propertyNameMap = array_flip($propertyName);
         foreach ($propertyRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className && \in_array($item->getProperty(), $propertyName))
+                if ($item->getClass() === $className && isset($propertyNameMap[$item->getProperty()]))
                 {
                     unset($list[$i]);
                     $haveUnset = true;
@@ -458,12 +464,14 @@ class AnnotationRelation
     {
         $constantRelations = &$this->constantRelations;
         $constantName = (array) $constantName;
+        // Optimize lookup by using array keys instead of in_array
+        $constantNameMap = array_flip($constantName);
         foreach ($constantRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className && \in_array($item->getConstant(), $constantName))
+                if ($item->getClass() === $className && isset($constantNameMap[$item->getConstant()]))
                 {
                     unset($list[$i]);
                     $haveUnset = true;

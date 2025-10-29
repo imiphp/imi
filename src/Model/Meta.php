@@ -339,6 +339,8 @@ class Meta
         $this->bean = $entity->bean ?? true;
         $this->incrUpdate = $entity->incrUpdate ?? false;
         $serializableFieldNames = $parsedSerializableFieldNames = $fieldNames = [];
+        // Optimize field lookup by using array keys instead of in_array
+        $serializableFieldsMap = $serializables ? array_flip($serializables->fields) : [];
         foreach ($fields as $fieldName => $column)
         {
             $fieldNames[] = $fieldName;
@@ -366,7 +368,7 @@ class Meta
             }
             elseif ($serializables)
             {
-                if (\in_array($name, $serializables->fields))
+                if (isset($serializableFieldsMap[$name]))
                 {
                     // 在黑名单中的字段剔除
                     if ('deny' === $serializables->mode)
