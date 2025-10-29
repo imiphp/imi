@@ -1284,7 +1284,8 @@ abstract class Query implements IQuery
             $key = null;
         }
         // Optimize by converting to associative array for O(1) lookup
-        if ($key && !isset(array_flip($fields)[$key]))
+        $fieldsMap = array_flip($fields);
+        if ($key && !isset($fieldsMap[$key]))
         {
             $fields[] = $key;
         }
