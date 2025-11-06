@@ -22,6 +22,12 @@ jobs:
         swoole:
           - version: 6.1-php8.4
             postgresql_version: ""
+          - version: 6.1-php8.3
+            postgresql_version: ""
+          - version: 6.1-php8.2
+            postgresql_version: ""
+          - version: 6.1-php8.1
+            postgresql_version: ""
           - version: 5.0-php8.2
             postgresql_version: ""
           - version: 5.0-php8.1
@@ -286,30 +292,16 @@ jobs:
         php: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4"]
         swoole: [v6.1.0, v5.0.3, v4.8.13]
         roadrunner: [2.7.*]
-        # Compatibility matrix:
-        # - PHP 7.4: Swoole 4.8.13
-        # - PHP 8.0-8.1: Swoole 4.8.13, 5.0.3
-        # - PHP 8.2: Swoole 5.0.3
-        # - PHP 8.3-8.4: Swoole 5.0.3, 6.1.0
+        # Official Swoole compatibility:
+        # - Swoole 4.8.x: PHP 7.2+ (supports 7.4, 8.0, 8.1, 8.2, 8.3, 8.4)
+        # - Swoole 5.0.x: PHP 7.2+ (supports 7.4, 8.0, 8.1, 8.2, 8.3, 8.4)
+        # - Swoole 6.x: PHP 8.1+ (supports 8.1, 8.2, 8.3, 8.4 only)
         exclude:
-          - php: 7.4
-            swoole: v5.0.3
+          # Swoole 6.1.0 requires PHP 8.1+
           - php: 7.4
             swoole: v6.1.0
           - php: 8.0
             swoole: v6.1.0
-          - php: 8.1
-            swoole: v6.1.0
-          - php: 8.2
-            swoole: v4.8.13
-          - php: 8.2
-            swoole: v6.1.0
-          - php: 8.3
-            swoole: v4.8.13
-          - php: 8.4
-            swoole: v4.8.13
-          - php: 8.4
-            swoole: v5.0.3
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
