@@ -20,6 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         swoole:
+          - version: 6.1-php8.4
+            postgresql_version: ""
           - version: 5.0-php8.2
             postgresql_version: ""
           - version: 5.0-php8.1
@@ -190,7 +192,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swoole-cli: [v5.0.3, v4.8.11]
+        swoole-cli: [v6.1.0, v5.0.3, v4.8.11]
     env:
       MYSQL_DOCKER_VERSION: "8.0"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -281,14 +283,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.0", "8.1", "8.2"]
-        swoole: [v5.0.3, v4.8.13]
+        php: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4"]
+        swoole: [v6.1.0, v5.0.3, v4.8.13]
         roadrunner: [2.7.*]
         exclude:
           - php: 7.4
             swoole: v5.0.3
+          - php: 7.4
+            swoole: v6.1.0
+          - php: 8.0
+            swoole: v6.1.0
+          - php: 8.1
+            swoole: v6.1.0
           - php: 8.2
             swoole: v4.8.13
+          - php: 8.2
+            swoole: v6.1.0
+          - php: 8.3
+            swoole: v4.8.13
+          - php: 8.4
+            swoole: v4.8.13
+          - php: 8.4
+            swoole: v5.0.3
     env:
       MYSQL_SERVER_PASSWORD: "root"
       PHP_VERSION: ${{ matrix.php }}
@@ -420,6 +436,10 @@ jobs:
           - version: "8.1"
             extensions: "apcu, bcmath, curl, openssl, mbstring, intl, json, redis, mysqli, pdo, pdo_mysql, sockets, :opcache"
           - version: "8.2"
+            extensions: "bcmath, curl, openssl, mbstring, intl, json, mysqli, pdo, pdo_mysql, sockets, :opcache"
+          - version: "8.3"
+            extensions: "bcmath, curl, openssl, mbstring, intl, json, mysqli, pdo, pdo_mysql, sockets, :opcache"
+          - version: "8.4"
             extensions: "bcmath, curl, openssl, mbstring, intl, json, mysqli, pdo, pdo_mysql, sockets, :opcache"
         roadrunner: [2.7.*]
     env:

@@ -19,6 +19,7 @@
         "symfony/polyfill-php80": "^1.23",
         "symfony/polyfill-php81": "^1.23",
         "symfony/polyfill-php82": "^1.26",
+        "symfony/polyfill-php83": "^1.27",
         "symfony/process": "^5.1|^6.0",
         "vlucas/phpdotenv": "~5.3",
         "yurunsoft/doctrine-annotations": "^1.73.0"
