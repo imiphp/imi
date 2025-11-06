@@ -18,7 +18,7 @@ class ImiArgvInput extends Input
      */
     private bool $dynamicOptions = false;
 
-    public function __construct(array $argv = null, InputDefinition $definition = null)
+    public function __construct(?array $argv = null, ?InputDefinition $definition = null)
     {
         $argv ??= $_SERVER['argv'] ?? [];
 

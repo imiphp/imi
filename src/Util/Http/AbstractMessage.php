@@ -360,7 +360,7 @@ abstract class AbstractMessage implements IMessage
      *
      * @return static
      */
-    protected function mergeHeaders(array $headers, self $object = null): self
+    protected function mergeHeaders(array $headers, ?self $object = null): self
     {
         if (null === $object)
         {

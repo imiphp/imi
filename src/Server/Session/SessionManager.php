@@ -58,7 +58,7 @@ class SessionManager
      */
     protected string $handlerClass = \Imi\Server\Session\Handler\File::class;
 
-    public function __construct(SessionConfig $config = null)
+    public function __construct(?SessionConfig $config = null)
     {
         if (null !== $config)
         {

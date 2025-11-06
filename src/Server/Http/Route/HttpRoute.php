@@ -49,7 +49,7 @@ class HttpRoute
      * @param mixed                                   $callable   回调
      * @param \Imi\Server\Http\Route\Annotation\Route $annotation 路由定义注解，可选
      */
-    public function addRule(string $path, $callable, RouteAnnotation $annotation = null, array $options = []): void
+    public function addRule(string $path, $callable, ?RouteAnnotation $annotation = null, array $options = []): void
     {
         [$view, $viewOption] = ViewParser::getInstance()->getByCallable($callable);
         $checkCallables = [];

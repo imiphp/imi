@@ -23,7 +23,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      */
     protected $callback;
 
-    public function __construct(callable $callback = null, string $logicalOperator = LogicalOperator::AND)
+    public function __construct(?callable $callback = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->callback = $callback;
         $this->logicalOperator = $logicalOperator;

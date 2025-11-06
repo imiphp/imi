@@ -69,7 +69,7 @@ interface IStatement extends \Iterator
      *
      * @param array $inputParameters
      */
-    public function execute(array $inputParameters = null): bool;
+    public function execute(?array $inputParameters = null): bool;
 
     /**
      * 从结果集中获取下一行.

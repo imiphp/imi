@@ -161,7 +161,7 @@ class Statement extends PgsqlBaseStatement implements IPgsqlStatement
     /**
      * {@inheritDoc}
      */
-    public function execute(array $inputParameters = null): bool
+    public function execute(?array $inputParameters = null): bool
     {
         if (null === $inputParameters)
         {

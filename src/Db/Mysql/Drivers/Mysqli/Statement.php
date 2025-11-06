@@ -138,7 +138,7 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
     /**
      * {@inheritDoc}
      */
-    public function execute(array $inputParameters = null): bool
+    public function execute(?array $inputParameters = null): bool
     {
         $statement = $this->statement;
         if (null === $inputParameters)

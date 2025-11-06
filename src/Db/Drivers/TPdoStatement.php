@@ -123,7 +123,7 @@ trait TPdoStatement
     /**
      * {@inheritDoc}
      */
-    public function execute(array $inputParameters = null): bool
+    public function execute(?array $inputParameters = null): bool
     {
         $statement = $this->statement;
         try

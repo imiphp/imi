@@ -56,7 +56,7 @@ abstract class BasePool implements IPool
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
      * @param mixed                            $resourceConfig
      */
-    public function __construct(string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    public function __construct(string $name, ?Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         $this->name = $name;
         if (null !== $config)

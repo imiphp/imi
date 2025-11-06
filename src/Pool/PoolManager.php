@@ -98,7 +98,7 @@ class PoolManager
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
      * @param array|null                       $resourceConfig
      */
-    public static function addName(string $name, string $poolClassName, Interfaces\IPoolConfig $config = null, $resourceConfig = null): void
+    public static function addName(string $name, string $poolClassName, ?Interfaces\IPoolConfig $config = null, $resourceConfig = null): void
     {
         static::$pools[$name] = $pool = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
         $pool->open();
