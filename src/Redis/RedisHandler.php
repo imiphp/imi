@@ -478,9 +478,9 @@ class RedisHandler
         {
             if ($result)
             {
-                foreach ($result as $key => $value)
+                foreach ($result as $field => $value)
                 {
-                    yield $key => $value;
+                    yield $field => $value;
                 }
             }
         }
