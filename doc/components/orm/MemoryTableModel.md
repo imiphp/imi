@@ -160,7 +160,7 @@ $model->delete();
 ```php
 // 两种方式
 MTest::deleteBatch('k1', 'k2');
-MTest::deleteBatch(['k1', 'k2']);
+MTest::deleteBatch(...['k1', 'k2']);
 ```
 
 ### 统计数量
