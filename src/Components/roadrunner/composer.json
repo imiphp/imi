@@ -24,5 +24,10 @@
         ]
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "audit": {
+            "block-insecure": false
+        }
+    }
 }
