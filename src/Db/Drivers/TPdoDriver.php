@@ -83,7 +83,7 @@ trait TPdoDriver
         try
         {
             $driverName = $this->instance->getAttribute(\PDO::ATTR_DRIVER_NAME);
-            $is_oci = $driverName === 'oci';
+            $is_oci = 'oci' === $driverName;
             if ($instance->query($is_oci ? 'select 1 from dual' : 'select 1'))
             {
                 return true;
