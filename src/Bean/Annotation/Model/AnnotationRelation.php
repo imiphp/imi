@@ -113,9 +113,9 @@ class AnnotationRelation
         $this->classRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
-            foreach ((array) $alias as $class)
+            foreach ((array) $alias as $className)
             {
-                $this->classRelations[$class][] = $relation;
+                $this->classRelations[$className][] = $relation;
             }
         }
         $this->allRelations[$class] = null;
@@ -147,9 +147,9 @@ class AnnotationRelation
         $this->methodRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
-            foreach ((array) $alias as $class)
+            foreach ((array) $alias as $className)
             {
-                $this->methodRelations[$class][] = $relation;
+                $this->methodRelations[$className][] = $relation;
             }
         }
         $this->allRelations[$class] = null;
@@ -181,9 +181,9 @@ class AnnotationRelation
         $this->propertyRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
-            foreach ((array) $alias as $class)
+            foreach ((array) $alias as $className)
             {
-                $this->propertyRelations[$class][] = $relation;
+                $this->propertyRelations[$className][] = $relation;
             }
         }
         $this->allRelations[$class] = null;
@@ -215,9 +215,9 @@ class AnnotationRelation
         $this->constantRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
-            foreach ((array) $alias as $class)
+            foreach ((array) $alias as $className)
             {
-                $this->constantRelations[$class][] = $relation;
+                $this->constantRelations[$className][] = $relation;
             }
         }
         $this->allRelations[$class] = null;

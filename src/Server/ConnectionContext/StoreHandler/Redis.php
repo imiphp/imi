@@ -122,9 +122,9 @@ class Redis implements IHandler
                 $key,
             ];
             $count = 0;
-            foreach ($redis->scanEach($key . ':*') as $key)
+            foreach ($redis->scanEach($key . ':*') as $subKey)
             {
-                $keys[] = $key;
+                $keys[] = $subKey;
                 if (++$count >= 1000)
                 {
                     $redis->del($keys);
