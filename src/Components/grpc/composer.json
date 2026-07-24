@@ -6,7 +6,7 @@
     "require": {
         "imiphp/imi-rpc": "~2.1.0",
         "yurunsoft/yurun-http": "~4.4|~5.0",
-        "google/protobuf": "^3.10.0"
+        "google/protobuf": "^3.10.0 || ^4.33.6"
     },
     "require-dev": {
         "psr/http-message": "~1.0"
