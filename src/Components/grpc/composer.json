@@ -37,6 +37,9 @@
         "post-install-cmd": "Imi\\Grpc\\Dev\\Dev::postUpdate",
         "post-update-cmd": "Imi\\Grpc\\Dev\\Dev::postUpdate"
     },
+    "config": {
+        "policy": false
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
