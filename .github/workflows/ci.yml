@@ -315,9 +315,12 @@ jobs:
         run: |
           sudo mkdir -p /usr/local/include
           sudo ln -s $(brew --prefix pcre2)/include/pcre2.h /usr/local/include/
-      - name: Get Openssl Dir
+      # openssl@1.1 已从 Homebrew 移除，使用 openssl@3，否则 --with-openssl-dir 为空导致找不到 openssl/ssl.h
+      - name: Setup OpenSSL
         id: opecssl-dir
-        run: echo "path=$(brew --prefix openssl@1.1)" >> $GITHUB_OUTPUT
+        run: |
+          brew install openssl@3
+          echo "path=$(brew --prefix openssl@3)" >> $GITHUB_OUTPUT
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
