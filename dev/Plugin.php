@@ -96,6 +96,7 @@ class Plugin
     {
         $output = ImiCommand::getOutput();
         $running = 0;
+        $results = [];
         while (\count($processes))
         {
             foreach ($processes as $name => $process)
@@ -114,10 +115,19 @@ class Plugin
                     --$running;
                     $result = $process->isSuccessful() ? '<info>success</info>' : "<error>fail({$process->getExitCode()})</error>";
                     $output->writeln("[{$title}]: {$result}");
+                    $results[$name] = $process->isSuccessful();
                     unset($processes[$name]);
                 }
             }
             usleep(1000);
+        }
+
+        $output->writeln('');
+        $output->writeln('<comment>========== Results ==========</comment>');
+        foreach ($results as $name => $success)
+        {
+            $result = $success ? '<info>success</info>' : '<error>fail</error>';
+            $output->writeln("[{$name}]: {$result}");
         }
     }
 }
